@@ -1181,7 +1181,7 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 
 	public CMFile.CMVFSDir getCatalogRoot(final CMFile.CMVFSDir root)
 	{
-		return new CMFile.CMVFSDir(root,root.path+"catalog/") {
+		return new CMFile.CMVFSDir(root,root.getPath()+"catalog/") {
 			private CMFile.CMVFSFile[] myFiles=null;
 			private CMFile.CMVFSFile[] oldFiles=null;
 			@Override protected CMFile.CMVFSFile[] getFiles() {
@@ -1205,7 +1205,7 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 	{
 		if(catalog.size()==0)
 			return null;
-		CMFile.CMVFSDir catalogFileRoot=new CMFile.CMVFSDir(rootRoot, 48, rootRoot.path+rootName+"/");
+		CMFile.CMVFSDir catalogFileRoot=new CMFile.CMVFSDir(rootRoot, 48, rootRoot.getPath()+rootName+"/");
 		
 		HashMap<String,List<Physical>> usedCats=new HashMap<String,List<Physical>>();
 		for(int i=0;i<catalog.size();i++)
@@ -1213,7 +1213,7 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 			final Physical obj=(Physical)catalog.elementAt(i, 1);
 			CataData data=(CataData)catalog.elementAt(i, 2);
 			
-			catalogFileRoot.add(new CMFile.CMVFSFile(catalogFileRoot.path+obj.Name().replace(' ','_')+".cmare",48,System.currentTimeMillis(),"SYS")
+			catalogFileRoot.add(new CMFile.CMVFSFile(catalogFileRoot.getPath()+obj.Name().replace(' ','_')+".cmare",48,System.currentTimeMillis(),"SYS")
 			{
 				@Override public Object readData()
 				{
@@ -1232,7 +1232,7 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 			List<Physical> list=usedCats.get(data.category());
 			list.add(obj);
 		}
-		catalogFileRoot.add(new CMFile.CMVFSFile(catalogFileRoot.path+"all.cmare",48,System.currentTimeMillis(),"SYS")
+		catalogFileRoot.add(new CMFile.CMVFSFile(catalogFileRoot.getPath()+"all.cmare",48,System.currentTimeMillis(),"SYS")
 		{
 			@Override public Object readData()
 			{
@@ -1256,12 +1256,12 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 			CMFile.CMVFSDir catagoryRoot=catalogFileRoot;
 			if(cat.length()==0)
 			{
-				catagoryRoot=new CMFile.CMVFSDir(catalogFileRoot, 48, catalogFileRoot.path+"uncategorized/");
+				catagoryRoot=new CMFile.CMVFSDir(catalogFileRoot, 48, catalogFileRoot.getPath()+"uncategorized/");
 				catalogFileRoot.add(catagoryRoot);
 			}
 			else
 			{
-				catagoryRoot=new CMFile.CMVFSDir(catalogFileRoot, 48, catalogFileRoot.path+cat.toLowerCase()+"/");
+				catagoryRoot=new CMFile.CMVFSDir(catalogFileRoot, 48, catalogFileRoot.getPath()+cat.toLowerCase()+"/");
 				catalogFileRoot.add(catagoryRoot);
 			}
 			final List<Physical> objs=usedCats.get(cat);
@@ -1269,7 +1269,7 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 			{
 				for(final Physical obj : objs)
 				{
-					catagoryRoot.add(new CMFile.CMVFSFile(catagoryRoot.path+obj.Name().replace(' ','_')+".cmare",48,System.currentTimeMillis(),"SYS")
+					catagoryRoot.add(new CMFile.CMVFSFile(catagoryRoot.getPath()+obj.Name().replace(' ','_')+".cmare",48,System.currentTimeMillis(),"SYS")
 					{
 						@Override public Object readData()
 						{
@@ -1284,7 +1284,7 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 					});
 				}
 			}
-			catagoryRoot.add(new CMFile.CMVFSFile(catagoryRoot.path+"all.cmare",48,System.currentTimeMillis(),"SYS")
+			catagoryRoot.add(new CMFile.CMVFSFile(catagoryRoot.getPath()+"all.cmare",48,System.currentTimeMillis(),"SYS")
 			{
 				@Override public Object readData()
 				{

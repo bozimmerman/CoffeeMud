@@ -2544,7 +2544,7 @@ public class CMMap extends StdLibrary implements WorldMap
 	// this is a beautiful idea, but im scared of the memory of all the final refs
 	protected void addMapStatFiles(final List<CMFile.CMVFSFile> rootFiles, final Room R, final Environmental E, final CMFile.CMVFSDir root)
 	{
-		rootFiles.add(new CMFile.CMVFSDir(root,root.path+"stats/") {
+		rootFiles.add(new CMFile.CMVFSDir(root,root.getPath()+"stats/") {
 			@Override protected CMFile.CMVFSFile[] getFiles() {
 				List<CMFile.CMVFSFile> myFiles=new Vector<CMFile.CMVFSFile>();
 				String[] stats=E.getStatCodes();
@@ -2553,7 +2553,7 @@ public class CMMap extends StdLibrary implements WorldMap
 				{
 					final String statName=stats[i];
 					final String statValue=E.getStat(statName);
-					myFiles.add(new CMFile.CMVFSFile(this.path+statName,256,System.currentTimeMillis(),"SYS")
+					myFiles.add(new CMFile.CMVFSFile(this.getPath()+statName,256,System.currentTimeMillis(),"SYS")
 					{
 						@Override public int getMaskBits(MOB accessor)
 						{
@@ -2602,20 +2602,20 @@ public class CMMap extends StdLibrary implements WorldMap
 	
 	public CMFile.CMVFSDir getMapRoot(final CMFile.CMVFSDir root)
 	{
-		return new CMFile.CMVFSDir(root,root.path+"map/") {
+		return new CMFile.CMVFSDir(root,root.getPath()+"map/") {
 			@Override protected CMFile.CMVFSFile[] getFiles() {
 				List<CMFile.CMVFSFile> myFiles=new Vector<CMFile.CMVFSFile>(numAreas());
 				for(Enumeration<Area> a=CMLib.map().areas();a.hasMoreElements();)
 				{
 					final Area A=a.nextElement();
-					myFiles.add(new CMFile.CMVFSFile(this.path+cmfsFilenameify(A.Name())+".cmare",48,System.currentTimeMillis(),"SYS")
+					myFiles.add(new CMFile.CMVFSFile(this.getPath()+cmfsFilenameify(A.Name())+".cmare",48,System.currentTimeMillis(),"SYS")
 					{
 						@Override public Object readData()
 						{
 							return CMLib.coffeeMaker().getAreaXML(A, null, null, null, true);
 						}
 					});
-					myFiles.add(new CMFile.CMVFSDir(this,this.path+cmfsFilenameify(A.Name())+"/") {
+					myFiles.add(new CMFile.CMVFSDir(this,this.getPath()+cmfsFilenameify(A.Name())+"/") {
 						@Override protected CMFile.CMVFSFile[] getFiles() {
 							List<CMFile.CMVFSFile> myFiles=new Vector<CMFile.CMVFSFile>();
 							for(Enumeration<Room> r=A.getFilledProperMap();r.hasMoreElements();)
@@ -2626,17 +2626,17 @@ public class CMMap extends StdLibrary implements WorldMap
 									String roomID=R.roomID();
 									if(roomID.startsWith(A.Name()+"#"))
 										roomID=roomID.substring(A.Name().length()+1);
-									myFiles.add(new CMFile.CMVFSFile(this.path+cmfsFilenameify(R.roomID())+".cmare",48,System.currentTimeMillis(),"SYS")
+									myFiles.add(new CMFile.CMVFSFile(this.getPath()+cmfsFilenameify(R.roomID())+".cmare",48,System.currentTimeMillis(),"SYS")
 									{
 										@Override public Object readData()
 										{
 											return CMLib.coffeeMaker().getRoomXML(R, null, null, true);
 										}
 									});
-									myFiles.add(new CMFile.CMVFSDir(this,this.path+cmfsFilenameify(roomID).toLowerCase()+"/") {
+									myFiles.add(new CMFile.CMVFSDir(this,this.getPath()+cmfsFilenameify(roomID).toLowerCase()+"/") {
 										@Override protected CMFile.CMVFSFile[] getFiles() {
 											List<CMFile.CMVFSFile> myFiles=new Vector<CMFile.CMVFSFile>();
-											myFiles.add(new CMFile.CMVFSFile(this.path+"items.cmare",48,System.currentTimeMillis(),"SYS")
+											myFiles.add(new CMFile.CMVFSFile(this.getPath()+"items.cmare",48,System.currentTimeMillis(),"SYS")
 											{
 												@Override public Object readData()
 												{

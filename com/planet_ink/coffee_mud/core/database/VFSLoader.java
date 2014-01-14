@@ -94,7 +94,7 @@ public class VFSLoader
 					String author = DBConnections.getRes(R,"CMWHOM");
 					String data=DBConnections.getRes(R,"CMDATA");
 					row = new CMFile.CMVFSFile(filename,bits,mod,author);
-					row.data = B64Encoder.B64decode(data);
+					row.setData(B64Encoder.B64decode(data));
 				}
 			}
 		}
