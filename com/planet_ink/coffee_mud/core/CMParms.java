@@ -178,33 +178,33 @@ public class CMParms
 
 	public final static List<String> paramParse(final String str)
 	{
-		final Vector<String> commands=parse(str);
+		final List<String> commands=parse(str);
 		String s;
 		for(int i=0;i<commands.size();i++)
 		{
-			s=commands.elementAt(i);
+			s=commands.get(i);
 			if(s.startsWith("=")&&(s.length()>1)&&(i>0))
 			{
-				final String prev=commands.elementAt(i-1);
-				commands.setElementAt(prev+s,i-1);
-				commands.removeElementAt(i);
+				final String prev=commands.get(i-1);
+				commands.set(i-1,prev+s);
+				commands.remove(i);
 				i--;
 			}
 			else
 			if(s.endsWith("=")&&(s.length()>1)&&(i<(commands.size()-1)))
 			{
-				final String next=commands.elementAt(i+1);
-				commands.setElementAt(s+next,i);
-				commands.removeElementAt(i+1);
+				final String next=commands.get(i+1);
+				commands.set(i,s+next);
+				commands.remove(i+1);
 			}
 			else
 			if(s.equals("=")&&((i>0)&&(i<(commands.size()-1))))
 			{
-				final String prev=commands.elementAt(i-1);
-				final String next=commands.elementAt(i+1);
-				commands.setElementAt(prev+"="+next,i-1);
-				commands.removeElementAt(i);
-				commands.removeElementAt(i+1);
+				final String prev=commands.get(i-1);
+				final String next=commands.get(i+1);
+				commands.set(i-1,prev+"="+next);
+				commands.remove(i);
+				commands.remove(i+1);
 				i--;
 			}
 		}
@@ -375,7 +375,7 @@ public class CMParms
 		return parseAny(s,'~',false);
 	}
 	
-	public final static Vector<String> parseSentences(final String s)
+	public final static List<String> parseSentences(final String s)
 	{
 		final Vector<String> V=new Vector<String>(1);
 		if((s==null)||(s.length()==0)) return V;
@@ -625,17 +625,17 @@ public class CMParms
 	private static int strIndex(final Vector<String> V, final String str, final int start)
 	{
 		if(str.indexOf(' ')<0) return V.indexOf(str,start);
-		final Vector<String> V2=CMParms.parse(str);
+		final List<String> V2=CMParms.parse(str);
 		if(V2.size()==0) return -1;
-		int x=V.indexOf(V2.firstElement(),start);
+		int x=V.indexOf(V2.get(0),start);
 		boolean found=false;
 		while((x>=0)&&((x+V2.size())<=V.size())&&(!found))
 		{
 			found=true;
 			for(int v2=1;v2<V2.size();v2++)
-				if(!V.elementAt(x+v2).equals(V2.elementAt(v2)))
+				if(!V.get(x+v2).equals(V2.get(v2)))
 				{ found=false; break;}
-			if(!found) x=V.indexOf(V2.firstElement(),x+1);
+			if(!found) x=V.indexOf(V2.get(0),x+1);
 		}
 		if(found) return x;
 		return -1;
