@@ -298,6 +298,28 @@
 	</STRING>
 </STRING>
 
+<STRING id="adj_creature_color" select="any-1" insert="adj_mammal_color,adj_reptile_color" />
+
+<STRING id="adj_insect_color" select="any-1" insert="adj_mammal_color">
+	<STRING>green</STRING>
+	<STRING>dark green</STRING>
+</STRING>
+
+<STRING id="adj_reptile_color" select="any-1">
+	<STRING>green</STRING>
+	<STRING>dark green</STRING>
+	<STRING>light green</STRING>
+	<STRING>reddish</STRING>
+	<STRING>pale</STRING>
+</STRING>
+
+<STRING id="adj_mammal_color" select="any-1">
+	<STRING>black</STRING>
+	<STRING>brown</STRING>
+	<STRING>gray</STRING>
+	<STRING>white</STRING>
+</STRING>
+
 <STRING id="adj_roomwords" select="any-1">
 	<STRING>tidy</STRING><STRING>cluttered</STRING><STRING>messy</STRING><STRING>organized</STRING><STRING>comfortable</STRING>
 	<STRING>cramped</STRING><STRING>neat</STRING><STRING>relaxing</STRING><STRING>claustrophobic</STRING><STRING>cozy</STRING>

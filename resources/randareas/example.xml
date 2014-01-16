@@ -401,11 +401,13 @@ Required details: "id" "value"
 	<ROOM class="Road" condition="$theme='town' and $roomtag_nodetype='square'">
 		<TITLE>$a_streetprefix $_square_name</TITLE>
 		<DESCRIPTION></DESCRIPTION>
+		<MOB condition="1?3=1" select="any-1" insert="town_mobs" />
 		<EXIT class="Open" />
 	</ROOM>
 	<ROOM class="Road" condition="$theme='town' and $roomtag_nodetype!='square'">
 		<TITLE>$a_streetprefix $_street_name</TITLE>
 		<DESCRIPTION></DESCRIPTION>
+		<MOB condition="1?3=1" select="any-1" insert="town_mobs" />
 		<EXIT class="Open" />
 	</ROOM>
 </ROOM>
@@ -694,7 +696,7 @@ Required details: "id" "value"
 					<DISPLAY pickweight="1">$mob_name is watching you impatiently.</DISPLAY>
 					<DISPLAY pickweight="3">$mob_name is trying to seem in control.</DISPLAY>
 				</DISPLAY>
-				<ALIGNMENT>10000</ALIGNMENT>
+				<ALIGNMENT>0?10000</ALIGNMENT>
 				<ABILITY select="all">
 					<ABILITY condition="1?3=1" class="Skill_Trip" />
 					<ABILITY condition="1?3=1" class="Skill_Dirt" />
@@ -853,7 +855,7 @@ Required details: "id" "value"
 					<DISPLAY pickweight="1">$mob_name is taking food orders.</DISPLAY>
 					<DISPLAY pickweight="1">$mob_name is cleaning the tables.</DISPLAY>
 				</DISPLAY>
-				<ALIGNMENT>-10000?10000</ALIGNMENT>
+				<ALIGNMENT>0?10000</ALIGNMENT>
 				<BEHAVIOR select="all">
 					<BEHAVIOR class="MudChat" parms="" />
 					<BEHAVIOR class="Fighterness" parms="" />
@@ -924,7 +926,7 @@ Required details: "id" "value"
 					<DISPLAY pickweight="1">$mob_name is taking drink orders.</DISPLAY>
 					<DISPLAY pickweight="1">$mob_name is cleaning the bar.</DISPLAY>
 				</DISPLAY>
-				<ALIGNMENT>-10000?10000</ALIGNMENT>
+				<ALIGNMENT>0?10000</ALIGNMENT>
 				<BEHAVIOR select="all">
 					<BEHAVIOR class="MudChat" parms="" />
 					<BEHAVIOR class="CommonSpeaker" parms="" />
@@ -992,7 +994,7 @@ Required details: "id" "value"
 						<DISPLAY pickweight="1">$mob_name has rooms available.</DISPLAY>
 						<DISPLAY pickweight="1">$mob_name welcomes you.</DISPLAY>
 					</DISPLAY>
-					<ALIGNMENT>10000</ALIGNMENT>
+					<ALIGNMENT>0?10000</ALIGNMENT>
 					<BEHAVIOR select="all">
 						<BEHAVIOR class="CommonSpeaker" parms="" />
 						<BEHAVIOR class="MudChat" parms="" />
@@ -1098,7 +1100,7 @@ Required details: "id" "value"
 					<DISPLAY pickweight="1">$mob_name is here.</DISPLAY>
 					<DISPLAY pickweight="1">$mob_name welcomes you.</DISPLAY>
 				</DISPLAY>
-				<ALIGNMENT>10000</ALIGNMENT>
+				<ALIGNMENT>0?10000</ALIGNMENT>
 				<BEHAVIOR select="all">
 					<BEHAVIOR class="Healer" />
 					<BEHAVIOR class="CommonSpeaker" parms="" />
@@ -1212,7 +1214,7 @@ Required details: "id" "value"
 					<DISPLAY pickweight="1">$mob_name is ready to serve.</DISPLAY>
 					<DISPLAY pickweight="1">$mob_name is here.</DISPLAY>
 				</DISPLAY>
-				<ALIGNMENT>10000</ALIGNMENT>
+				<ALIGNMENT>0?10000</ALIGNMENT>
 				<BEHAVIOR select="all">
 					<BEHAVIOR class="MudChat" parms="" />
 					<BEHAVIOR class="Scavenger" parms="" />
@@ -1408,7 +1410,7 @@ Required details: "id" "value"
 					<DISPLAY pickweight="1">$mob_name is here.</DISPLAY>
 					<DISPLAY pickweight="1">$mob_name welcomes you.</DISPLAY>
 				</DISPLAY>
-				<ALIGNMENT>10000</ALIGNMENT>
+				<ALIGNMENT>0?10000</ALIGNMENT>
 				<BEHAVIOR select="all">
 					<BEHAVIOR class="Nanny" parms="RATE=1.0 NAME=&quot;${c:areaname} Stables&quot; WATCHES=&quot;mounts,wagons,followers&quot;" />
 					<BEHAVIOR class="Fighterness" parms="" />
@@ -1428,11 +1430,11 @@ Required details: "id" "value"
 					<WEAPONTYPE>SLASHING</WEAPONTYPE>
 				</ITEM>
 				<SHOPINVENTORY>
-					<ITEM class="GenRideable" name="a $mammal_color horse" display="$mob_name is here" number=20/>
-					<ITEM class="GenRideable" name="a $mammal_color horse" display="$mob_name is here" number=20/>
-					<ITEM class="GenRideable" name="a $mammal_color horse" display="$mob_name is here" number=20/>
-					<ITEM class="GenRideable" name="a $mammal_color horse" display="$mob_name is here" number=20/>
-					<ITEM class="GenRideable" name="a $mammal_color horse" display="$mob_name is here" number=20/>
+					<ITEM class="GenRideable" name="a $adj_mammal_color horse" display="$mob_name is here" number=20/>
+					<ITEM class="GenRideable" name="a $adj_mammal_color horse" display="$mob_name is here" number=20/>
+					<ITEM class="GenRideable" name="a $adj_mammal_color horse" display="$mob_name is here" number=20/>
+					<ITEM class="GenRideable" name="a $adj_mammal_color horse" display="$mob_name is here" number=20/>
+					<ITEM class="GenRideable" name="a $adj_mammal_color horse" display="$mob_name is here" number=20/>
 				</SHOPINVENTORY>
 			</MOB>
 		</ROOM>
@@ -1484,7 +1486,7 @@ Required details: "id" "value"
 					<DISPLAY pickweight="1">$mob_name is running around yelling.</DISPLAY>
 					<DISPLAY pickweight="1">$mob_name welcomes you.</DISPLAY>
 				</DISPLAY>
-				<ALIGNMENT>10000</ALIGNMENT>
+				<ALIGNMENT>0?10000</ALIGNMENT>
 				<BEHAVIOR select="all">
 					<BEHAVIOR class="MudChat" parms="" />
 					<BEHAVIOR class="Nanny" parms="" />
@@ -1560,7 +1562,7 @@ Required details: "id" "value"
 					<DISPLAY pickweight="1">$mob_name is here.</DISPLAY>
 					<DISPLAY pickweight="1">$mob_name is here, looking dapper.</DISPLAY>
 				</DISPLAY>
-				<ALIGNMENT>10000</ALIGNMENT>
+				<ALIGNMENT>0?10000</ALIGNMENT>
 				<BEHAVIOR select="all">
 					<BEHAVIOR class="MudChat" parms="" />
 					<BEHAVIOR class="Scavenger" parms="" />
@@ -1621,7 +1623,7 @@ Required details: "id" "value"
 					<DISPLAY pickweight="1">$mob_name is calling for bids.</DISPLAY>
 					<DISPLAY pickweight="1">$mob_name is here.</DISPLAY>
 				</DISPLAY>
-				<ALIGNMENT>-10000?10000</ALIGNMENT>
+				<ALIGNMENT>0?10000</ALIGNMENT>
 				<BEHAVIOR select="all">
 					<BEHAVIOR class="Fighterness" parms="" />
 				</BEHAVIOR>
@@ -1639,35 +1641,7 @@ Required details: "id" "value"
 					<WEAPONTYPE>BASHING</WEAPONTYPE>
 				</ITEM>
 			</MOB>
-			<MOB select="repeat-3">
-				<MOB id=town_cityguard" class="GenMob" level="$level_range" race="$_humanoid_races" gender="$anygender">
-					<NAME>(a(n)) ${c:__officertype}</NAME>
-					<DISPLAY select="pick-1">
-						<DISPLAY pickweight="1">$mob_name is here, smiling happily.</DISPLAY>
-						<DISPLAY pickweight="1">$mob_name is prepared to knock some heads together.</DISPLAY>
-						<DISPLAY pickweight="1">$mob_name is here.</DISPLAY>
-						<DISPLAY pickweight="1">$mob_name is watching you carefully.</DISPLAY>
-						<DISPLAY pickweight="1">$mob_name is on the beat.</DISPLAY>
-					</DISPLAY>
-					<ALIGNMENT>0</ALIGNMENT>
-					<BEHAVIOR select="all">
-						<BEHAVIOR class="Fighterness" parms="" />
-					</BEHAVIOR>
-					<ITEM class="GenArmor" LEVEL="$mob_level">
-						<NAME select="any-1"><NAME>a ${l:__officertype}`s uniform</NAME></NAME>
-						<DISPLAY>$item_name has been left here"</DISPLAY>
-						<MATERIAL>COTTON</MATERIAL>
-						<PROPERWORN>TORSO,LEGS</PROPERWORN>
-					</ITEM>
-					<ITEM class="GenWeapon" LEVEL="$mob_level">
-						<NAME>a ${l:__officertype} night stick</NAME>
-						<DISPLAY>$item_name has been left here"</DISPLAY>
-						<MATERIAL>WOOD</MATERIAL>
-						<WEAPONCLASS>BLUNT</WEAPONCLASS>
-						<WEAPONTYPE>BASHING</WEAPONTYPE>
-					</ITEM>
-				</MOB>
-			</MOB>
+			<MOB select="repeat-3" insert="town_cityguard" />
 		</ROOM>
 		<ROOM id="town_auctionhall" class="WoodRoom"  condition="$__townauctionhall&lt;1 and $__numshoptypes_all &gt; 10" define="__townauctionhall+=1,__townsecond+=1">
 			<TITLE select="any-1">
@@ -1721,7 +1695,7 @@ Required details: "id" "value"
 					<DISPLAY pickweight="1">$mob_name is calling for bids.</DISPLAY>
 					<DISPLAY pickweight="1">$mob_name is here.</DISPLAY>
 				</DISPLAY>
-				<ALIGNMENT>-10000?10000</ALIGNMENT>
+				<ALIGNMENT>0?10000</ALIGNMENT>
 				<BEHAVIOR select="all">
 					<BEHAVIOR class="MudChat" parms="" />
 					<BEHAVIOR class="Scavenger" parms="" />
@@ -1800,7 +1774,7 @@ Required details: "id" "value"
 					<DISPLAY pickweight="1">$mob_name is here.</DISPLAY>
 					<DISPLAY pickweight="1">$mob_name is here, rain or shine.</DISPLAY>
 				</DISPLAY>
-				<ALIGNMENT>10000</ALIGNMENT>
+				<ALIGNMENT>0?10000</ALIGNMENT>
 				<BEHAVIOR select="all">
 					<BEHAVIOR class="MudChat" parms="" />
 					<BEHAVIOR class="Scavenger" parms="" />
@@ -1877,7 +1851,7 @@ Required details: "id" "value"
 					<DISPLAY pickweight="1">$mob_name is here.</DISPLAY>
 					<DISPLAY pickweight="1">$mob_name is here, looking dapper.</DISPLAY>
 				</DISPLAY>
-				<ALIGNMENT>10000</ALIGNMENT>
+				<ALIGNMENT>0?10000</ALIGNMENT>
 				<BEHAVIOR select="all">
 					<BEHAVIOR class="MudChat" parms="" />
 					<BEHAVIOR class="Scavenger" parms="" />
@@ -1977,7 +1951,7 @@ Required details: "id" "value"
 					<DISPLAY pickweight="1">$mob_name is here.</DISPLAY>
 					<DISPLAY pickweight="1">$mob_name is here, ready to teach.</DISPLAY>
 				</DISPLAY>
-				<ALIGNMENT>10000</ALIGNMENT>
+				<ALIGNMENT>0?10000</ALIGNMENT>
 				<BEHAVIOR select="all">
 					<BEHAVIOR class="MudChat" parms="" />
 					<BEHAVIOR class="Fighterness" parms="" />
@@ -3109,10 +3083,123 @@ Required details: "id" "value"
 	</STRING>
 </STRING>
 
-<MOB id="dungeon_mobs" select="all" requires="level_range=int,theme=prison;rats;kobolds;orcs;trolls;town;goblins;random,aggrochance=int">
+<MOB id="town_mobs" select="all" requires="level_range=int,theme=town" insert="town_citizen,town_citizen,town_citizen">
+	<MOB id=town_cityguard" class="GenMob" level="$level_range" race="$_humanoid_races" gender="$anygender">
+		<NAME>(a(n)) ${c:__officertype}</NAME>
+		<DISPLAY select="pick-1">
+			<DISPLAY pickweight="1">$mob_name is here, smiling happily.</DISPLAY>
+			<DISPLAY pickweight="1">$mob_name is prepared to knock some heads together.</DISPLAY>
+			<DISPLAY pickweight="1">$mob_name is here.</DISPLAY>
+			<DISPLAY pickweight="1">$mob_name is watching you carefully.</DISPLAY>
+			<DISPLAY pickweight="1">$mob_name is on the beat.</DISPLAY>
+		</DISPLAY>
+		<ALIGNMENT>0?10000</ALIGNMENT>
+		<BEHAVIOR select="all">
+			<BEHAVIOR class="Fighterness" parms="" />
+			<BEHAVIOR class="Mobile" parms="" />
+		</BEHAVIOR>
+		<ITEM class="GenArmor" LEVEL="$mob_level">
+			<NAME select="any-1"><NAME>a ${l:__officertype}`s uniform</NAME></NAME>
+			<DISPLAY>$item_name has been left here"</DISPLAY>
+			<MATERIAL>COTTON</MATERIAL>
+			<PROPERWORN>TORSO,LEGS</PROPERWORN>
+		</ITEM>
+		<ITEM class="GenWeapon" LEVEL="$mob_level">
+			<NAME>a ${l:__officertype} night stick</NAME>
+			<DISPLAY>$item_name has been left here"</DISPLAY>
+			<MATERIAL>WOOD</MATERIAL>
+			<WEAPONCLASS>BLUNT</WEAPONCLASS>
+			<WEAPONTYPE>BASHING</WEAPONTYPE>
+		</ITEM>
+	</MOB>
+	<MOB class="GenMob" level="$level_range" race="$_humanoid_races" gender="$anygender">
+		<NAME>a street sweeper</NAME>
+		<DISPLAY select="pick-1">
+			<DISPLAY pickweight="1">$mob_name is here, cleaning up.</DISPLAY>
+			<DISPLAY pickweight="1">$mob_name is slacking on the job.</DISPLAY>
+			<DISPLAY pickweight="1">$mob_name is here.</DISPLAY>
+			<DISPLAY pickweight="1">$mob_name smiles at you.</DISPLAY>
+			<DISPLAY pickweight="1">$mob_name is on the job.</DISPLAY>
+		</DISPLAY>
+		<ALIGNMENT>0?10000</ALIGNMENT>
+		<BEHAVIOR select="all">
+			<BEHAVIOR class="Scavenger" parms="" />
+			<BEHAVIOR class="Mobile" parms="" />
+		</BEHAVIOR>
+		<ITEM class="GenArmor" LEVEL="$mob_level">
+			<NAME select="any-1"><NAME>a street sweeper`s uniform</NAME></NAME>
+			<DISPLAY>$item_name has been left here"</DISPLAY>
+			<MATERIAL>COTTON</MATERIAL>
+			<PROPERWORN>TORSO,LEGS</PROPERWORN>
+		</ITEM>
+		<ITEM class="GenWeapon" LEVEL="$mob_level">
+			<NAME>a broom</NAME>
+			<DISPLAY>$item_name has been left here"</DISPLAY>
+			<MATERIAL>WOOD</MATERIAL>
+			<WEAPONCLASS>BLUNT</WEAPONCLASS>
+			<WEAPONTYPE>BASHING</WEAPONTYPE>
+		</ITEM>
+	</MOB>
+	<MOB class="GenMob" level="$level_range" race="Cat" gender="$anygender">
+		<NAME>(a(n)) ${l:adj_mammal_color} cat</NAME>
+		<DISPLAY select="pick-1">
+			<DISPLAY pickweight="1">$mob_name hisses at you.</DISPLAY>
+			<DISPLAY pickweight="1">$mob_name is ignoring you.</DISPLAY>
+			<DISPLAY pickweight="1">$mob_name is here.</DISPLAY>
+			<DISPLAY pickweight="1">$mob_name is here.</DISPLAY>
+		</DISPLAY>
+		<BEHAVIOR select="all">
+			<BEHAVIOR class="Mobile" parms="" />
+		</BEHAVIOR>
+		<ALIGNMENT>0?10000</ALIGNMENT>
+	</MOB>
+	<MOB class="GenMob" level="$level_range" race="Dog" gender="$anygender">
+		<NAME>(a(n)) ${l:adj_mammal_color} dog</NAME>
+		<DISPLAY select="pick-1">
+			<DISPLAY pickweight="1">$mob_name barks at you.</DISPLAY>
+			<DISPLAY pickweight="1">$mob_name is looking at you.</DISPLAY>
+			<DISPLAY pickweight="1">$mob_name is here.</DISPLAY>
+			<DISPLAY pickweight="1">$mob_name is here.</DISPLAY>
+		</DISPLAY>
+		<BEHAVIOR select="all">
+			<BEHAVIOR class="Mobile" parms="" />
+		</BEHAVIOR>
+		<ALIGNMENT>0?10000</ALIGNMENT>
+	</MOB>
+	<MOB class="GenMob" level="$level_range" race="Rat" gender="$anygender">
+		<NAME>(a(n)) ${l:adj_mammal_color} rat</NAME>
+		<DISPLAY select="pick-1">
+			<DISPLAY pickweight="1">$mob_name scurries around.</DISPLAY>
+			<DISPLAY pickweight="1">$mob_name is nibbling on something.</DISPLAY>
+			<DISPLAY pickweight="1">$mob_name is here.</DISPLAY>
+			<DISPLAY pickweight="1">$mob_name is here.</DISPLAY>
+		</DISPLAY>
+		<BEHAVIOR select="all">
+			<BEHAVIOR class="Mobile" parms="" />
+		</BEHAVIOR>
+		<ALIGNMENT>0?10000</ALIGNMENT>
+	</MOB>
+</MOB>
+
+<MOB id=town_citizen" class="GenMob" level="$level_range" race="$_humanoid_races" gender="$anygender">
+	<NAME>(a(n)) ${l:__citypersontype}</NAME>
+	<DISPLAY select="pick-1">
+		<DISPLAY pickweight="1">$mob_name is here, smiling happily.</DISPLAY>
+		<DISPLAY pickweight="1">$mob_name is walking around.</DISPLAY>
+		<DISPLAY pickweight="1">$mob_name is here.</DISPLAY>
+		<DISPLAY pickweight="1">$mob_name waves hello to you.</DISPLAY>
+	</DISPLAY>
+	<BEHAVIOR select="all">
+		<BEHAVIOR class="ProtectedCitizen" parms="" />
+		<BEHAVIOR class="Mobile" parms="" />
+	</BEHAVIOR>
+	<ALIGNMENT>0?10000</ALIGNMENT>
+</MOB>
+	
+<MOB id="dungeon_mobs" select="all" requires="level_range=int,theme=prison;rats;kobolds;orcs;trolls;goblins;random,aggrochance=int">
 	<MOB select="all" condition="$theme='rats' or $theme='random'">
 		<MOB class="GenMob" level="$level_range" id="dungeon_rat" race="Rat" gender="$anygender">
-			<NAME>(a(n)) $adj_nasty_animal $mammal_color rat</NAME>
+			<NAME>(a(n)) $adj_nasty_animal $adj_mammal_color rat</NAME>
 			<DISPLAY select="pick-1">
 				<DISPLAY pickweight="1">$mob_name squeeks at you.</DISPLAY>
 				<DISPLAY pickweight="1">$mob_name bares its teeth at you.</DISPLAY>
@@ -3132,7 +3219,7 @@ Required details: "id" "value"
 			</BEHAVIOR>
 		</MOB>
 		<MOB class="GenMob" level="$level_range" id="dungeon_bat" race="Bat" gender="$anygender">
-			<NAME>(a(n)) $adj_nasty_animal $mammal_color bat</NAME>
+			<NAME>(a(n)) $adj_nasty_animal $adj_mammal_color bat</NAME>
 			<DISPLAY select="pick-1">
 				<DISPLAY pickweight="1">$mob_name dives at you.</DISPLAY>
 				<DISPLAY pickweight="1">$mob_name bares its teeth at you.</DISPLAY>
@@ -3152,7 +3239,7 @@ Required details: "id" "value"
 			</BEHAVIOR>
 		</MOB>
 		<MOB class="GenMob" level="$level_range" id="dungeon_spider" race="Spider" gender="$anygender">
-			<NAME>(a(n)) $adj_nasty_animal $insect_color spider</NAME>
+			<NAME>(a(n)) $adj_nasty_animal $adj_insect_color spider</NAME>
 			<DISPLAY select="pick-1">
 				<DISPLAY pickweight="1">$mob_name creeps towards you.</DISPLAY>
 				<DISPLAY pickweight="1">$mob_name opens its mandibles at you.</DISPLAY>
@@ -3172,7 +3259,7 @@ Required details: "id" "value"
 			</BEHAVIOR>
 		</MOB>
 		<MOB class="GenMob" level="$level_range" id="dungeon_blob" race="Blob" gender="N">
-			<NAME>(a(n)) $adj_nasty_animal $creature_color blob</NAME>
+			<NAME>(a(n)) $adj_nasty_animal $adj_creature_color blob</NAME>
 			<DISPLAY select="pick-1">
 				<DISPLAY pickweight="1">$mob_name creeps towards you.</DISPLAY>
 				<DISPLAY pickweight="1">$mob_name looks very menacing.</DISPLAY>
@@ -3213,7 +3300,7 @@ Required details: "id" "value"
 			</BEHAVIOR>
 		</MOB>
 		<MOB class="GenMob" level="$level_range" id="dungeon_snake" race="Snake" gender="$anygender">
-			<NAME>(a(n)) $adj_nasty_animal $reptile_color snake</NAME>
+			<NAME>(a(n)) $adj_nasty_animal $adj_reptile_color snake</NAME>
 			<DISPLAY select="pick-1">
 				<DISPLAY pickweight="1">$mob_name slinks towards you.</DISPLAY>
 				<DISPLAY pickweight="1">$mob_name shows its fangs you.</DISPLAY>
@@ -3233,7 +3320,7 @@ Required details: "id" "value"
 			</BEHAVIOR>
 		</MOB>
 		<MOB class="GenMob" level="$level_range" id="dungeon_lizard" race="Lizard" gender="$anygender">
-			<NAME>(a(n)) $adj_nasty_animal $reptile_color lizard</NAME>
+			<NAME>(a(n)) $adj_nasty_animal $adj_reptile_color lizard</NAME>
 			<DISPLAY select="pick-1">
 				<DISPLAY pickweight="1">$mob_name creeps towards you.</DISPLAY>
 				<DISPLAY pickweight="1">$mob_name flicks its tounge you.</DISPLAY>
@@ -4150,8 +4237,6 @@ http://mikemonaco.files.wordpress.com/2011/03/mundane-items-table2.pdf
 	<string>figurine</string><string>statuette</string><string>blank plaque</string>
 </string>
 
-<STRING id="creature_color" select="any-1" insert="mammal_color,reptile_color" />
-
 <STRING id="_prisoner_races" select="any-1" insert="any_prisoner_race" define="_prisoner_races" />
 
 <STRING id="any_prisoner_race" select="any-1">
@@ -4241,25 +4326,6 @@ http://mikemonaco.files.wordpress.com/2011/03/mundane-items-table2.pdf
 <string id="any_plural_digit" select="any-1"><string>2</string><string>3</string><string>4</string><string>5</string><string>6</string><string>7</string><string>8</string><string>9</string></string>
 <string id="any_digit" insert="any_plural_digit" select="any-1"><string>0</string><string>1</string></string>
 
-<STRING id="insect_color" select="any-1" insert="mammal_color">
-	<STRING>green</STRING>
-	<STRING>dark green</STRING>
-</STRING>
-
-<STRING id="reptile_color" select="any-1">
-	<STRING>green</STRING>
-	<STRING>dark green</STRING>
-	<STRING>light green</STRING>
-	<STRING>reddish</STRING>
-	<STRING>pale</STRING>
-</STRING>
-
-<STRING id="mammal_color" select="any-1">
-	<STRING>black</STRING>
-	<STRING>brown</STRING>
-	<STRING>gray</STRING>
-</STRING>
-
 <STRING id="noun_fun" select="any-1">
 	<STRING>enjoyment</STRING><STRING>entertainment</STRING><STRING>amusement</STRING><STRING>pleasure</STRING><STRING>jollification</STRING>
 	<STRING>merrymaking; recreation</STRING><STRING>diversion</STRING><STRING>leisure</STRING><STRING>merriment</STRING><STRING>cheerfulness</STRING>
@@ -4291,18 +4357,19 @@ http://mikemonaco.files.wordpress.com/2011/03/mundane-items-table2.pdf
 </STRING>
 
 <STRING id="__citygovttype" select="any-1" define="__citygovttype">
-	<STRING define="__chieftype=Chief,__officertype=Warrior,__cityhalltype=Villiage Hall,__citytype=Villiage,__cityattendant=Subchief">Chiefdom</STRING>
-	<STRING define="__chieftype=Prince,__officertype=Royalguard,__cityhalltype=City Palace,__citytype=Kingdom,__cityattendant=Courtier">Principality</STRING>
-	<STRING define="__chieftype=Mayor,__officertype=Cityguard,__cityhalltype=City Hall,__citytype=City,__cityattendant=Bureaucrat">Mayorality</STRING>
-	<STRING define="__chieftype=Lord,__officertype=Manorguard,__cityhalltype=Lords Manor,__citytype=Town,__cityattendant=Attendant">Aristocracy</STRING>
-	<STRING define="__chieftype=Captain,__officertype=Lieutenant,__cityhalltype=Captains Office,__citytype=Military Base,__cityattendant=Lieutenant">Dictatorship</STRING>
-	<STRING define="__chieftype=Bishop,__officertype=Paladin,__cityhalltype=Head Temple,__citytype=Holy City,__cityattendant=Priest">Theocracy</STRING>
+	<STRING define="__chieftype=Chief,__officertype=Warrior Guard,__cityhalltype=Village Hall,__citytype=Village,__cityattendant=Subchief,__citypersontype=Villager">Chiefdom</STRING>
+	<STRING define="__chieftype=Prince,__officertype=Royalguard,__cityhalltype=City Palace,__citytype=Kingdom,__cityattendant=Courtier,__citypersontype=Subject">Principality</STRING>
+	<STRING define="__chieftype=Mayor,__officertype=Cityguard,__cityhalltype=City Hall,__citytype=City,__cityattendant=Bureaucrat,__citypersontype=Citizen">Mayorality</STRING>
+	<STRING define="__chieftype=Lord,__officertype=Manorguard,__cityhalltype=Lords Manor,__citytype=Town,__cityattendant=Attendant,__citypersontype=Serf">Aristocracy</STRING>
+	<STRING define="__chieftype=Captain,__officertype=Military Guard,__cityhalltype=Captains Office,__citytype=Military Base,__cityattendant=Lieutenant,__citypersontype=Private">Dictatorship</STRING>
+	<STRING define="__chieftype=Bishop,__officertype=Holy Guard,__cityhalltype=Head Temple,__citytype=Holy City,__cityattendant=Priest,__citypersontype=Parishioner">Theocracy</STRING>
 </STRING>
 <STRING id="__officertype" select="any-1" predefine="temp=$__citygovttype">$__officertype</STRING>
 <STRING id="__chieftype" select="any-1" predefine="temp=$__citygovttype">$__chieftype</STRING>
 <STRING id="__cityhalltype" select="any-1" predefine="temp=$__citygovttype">$__cityhalltype</STRING>
 <STRING id="__citytype" select="any-1" predefine="temp=$__citygovttype">$__citytype</STRING>
 <STRING id="__cityattendant" select="any-1" predefine="temp=$__citygofttype">$__cityattendant</STRING>
+<STRING id="__citypersontype" select="any-1" predefine="temp=$__citygovttype">$__citypersontype</STRING>
 
 <STRING id="any_cheap_metal" select="any-1"><string>iron</string><string>lead</string><string>bronze</string><string>tin</string><string>brass</string></STRING>
 <STRING id="any_rich_metal" select="any-1"><string>silver</string><string>gold</string><string>copper</string><string>white_gold</string></STRING>
