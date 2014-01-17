@@ -135,17 +135,18 @@ public class Dice extends StdLibrary implements DiceLibrary
 		return pick(set);
 	}
 
-	public int rollGaussian(int number, int die, int modifier)
+	public int rollNormalDistribution(int number, int die, int modifier)
 	{
 		if(number<=0) 
 			return modifier;
 		int total=0;
+		double subtotal;
 		for(int i=0;i<number;i++)
 		{
-			double gauss=Math.abs(randomizer.nextGaussian() * die);
-			while((gauss < 1.0) || (gauss > (die+0.9999999999)))
-				gauss=Math.abs(randomizer.nextGaussian() * die);
-			total+=(int)Math.round(Math.floor(gauss));
+			subtotal=randomizer.nextDouble() * die;
+			subtotal += randomizer.nextDouble() * die;
+			subtotal += randomizer.nextDouble() * die;
+			total += 1 + (int)Math.round(Math.floor(subtotal / 2.9999));
 		}
 		return total + modifier;
 	}
