@@ -45,7 +45,7 @@ public interface DiceLibrary extends CMLibrary
 	public Object doublePick(Object[][] set);
 	public Object pick(List<? extends Object> set);
 	public int rollPercentage();
-	public int rollGaussian(int number, int die, int modifier);
+	public int rollNormalDistribution(int number, int die, int modifier);
 	public int rollLow(int number, int die, int modifier);
 	public Random getRandomizer();
 }
