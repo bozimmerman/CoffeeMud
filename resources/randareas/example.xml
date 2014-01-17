@@ -3084,7 +3084,7 @@ Required details: "id" "value"
 </STRING>
 
 <MOB id="town_mobs" select="all" requires="level_range=int,theme=town" insert="town_citizen,town_citizen,town_citizen">
-	<MOB id=town_cityguard" class="GenMob" level="$level_range" race="$_humanoid_races" gender="$anygender">
+	<MOB id="town_cityguard" class="GenMob" level="$level_range" race="$_humanoid_races" gender="$anygender">
 		<NAME>(a(n)) ${c:__officertype}</NAME>
 		<DISPLAY select="pick-1">
 			<DISPLAY pickweight="1">$mob_name is here, smiling happily.</DISPLAY>
@@ -3181,7 +3181,7 @@ Required details: "id" "value"
 	</MOB>
 </MOB>
 
-<MOB id=town_citizen" class="GenMob" level="$level_range" race="$_humanoid_races" gender="$anygender">
+<MOB id="town_citizen" class="GenMob" level="$level_range" race="$_humanoid_races" gender="$anygender">
 	<NAME>(a(n)) ${l:__citypersontype}</NAME>
 	<DISPLAY select="pick-1">
 		<DISPLAY pickweight="1">$mob_name is here, smiling happily.</DISPLAY>
