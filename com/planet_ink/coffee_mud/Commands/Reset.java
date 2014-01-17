@@ -153,8 +153,8 @@ public class Reset extends StdCommand
 					M.setMinTechLevelDiff((byte)(8-CMLib.dice().roll(1, 3, 0)));
 					M.setMaxTechLevelDiff((byte)10);
 				}
-				M.setEfficiencyPct(0.75+CMath.div(CMLib.dice().rollGaussian(1, 50, 0),100.0));
-				M.setReliabilityPct(0.75+CMath.div(CMLib.dice().rollGaussian(1, 50, 0),100.0));
+				M.setEfficiencyPct(0.75+CMath.div(CMLib.dice().rollNormalDistribution(1, 50, 0),100.0));
+				M.setReliabilityPct(0.75+CMath.div(CMLib.dice().rollNormalDistribution(1, 50, 0),100.0));
 				M.setManufactureredTypesList(CMParms.toStringList(types));
 				CMLib.tech().addManufacturer(M);
 			}
