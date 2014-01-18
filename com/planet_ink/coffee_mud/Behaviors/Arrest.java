@@ -60,16 +60,23 @@ public class Arrest extends StdBehavior implements LegalBehavior
 		return parms;
 	}
 	
-	public Properties getExtraLawParms()
+	public final String getExtraLawString()
 	{
-		String parms=getParms();
-		Properties p=new Properties();
-		int x=parms.indexOf(';');
+		final String extraLawString=getParms();
+		int x=extraLawString.indexOf(';');
 		if(x>=0)
 		{
-			parms=parms.substring(x+1).trim();
-			p.putAll(CMParms.parseEQParms(parms));
+			return extraLawString.substring(x+1).trim();
 		}
+		return "";
+	}
+	
+	public final Properties getExtraLawParms()
+	{
+		final String extraLawString=getExtraLawString();
+		final Properties p=new Properties();
+		if(extraLawString.length()>0)
+			p.putAll(CMParms.parseEQParms(extraLawString));
 		return p;
 	}
 	
@@ -407,6 +414,11 @@ public class Arrest extends StdBehavior implements LegalBehavior
 			return new XVector(lawName);
 		return super.externalFiles();
 	}
+
+	public final String getResourceKey(String lawName)
+	{
+		return "LEGAL-"+lawName+Long.toString(getExtraLawString().hashCode());
+	}
 	
 	protected Law getLaws(Environmental what, boolean cleanOnly)
 	{
@@ -419,15 +431,16 @@ public class Arrest extends StdBehavior implements LegalBehavior
 		if((lawName.equalsIgnoreCase("custom"))&&(what!=null))
 		{
 			modifiableLaw=true;
-			laws=(Law)Resources.getResource("LEGAL-"+what.Name());
+			laws=(Law)Resources.getResource(getResourceKey(what.Name()));
 		}
 		else
 		{
 			if(lawName.length()==0)
 				lawName="laws.ini";
-			laws=(Law)Resources.getResource("LEGAL-"+lawName);
+			laws=(Law)Resources.getResource(getResourceKey(lawName));
 			modifiableNames=false;
 		}
+
 		if((laws==null)&&(cleanOnly)) return null;
 
 		if(laws==null)
@@ -472,9 +485,9 @@ public class Arrest extends StdBehavior implements LegalBehavior
 			laws=(Law)CMClass.getCommon("DefaultLawSet");
 			laws.initialize(this,lawprops,modifiableNames,modifiableLaw);
 			if(lawName.equalsIgnoreCase("custom")&&(what!=null))
-				Resources.submitResource("LEGAL-"+what.name(),laws);
+				Resources.submitResource(getResourceKey(what.name()),laws);
 			else
-				Resources.submitResource("LEGAL-"+lawName,laws);
+				Resources.submitResource(getResourceKey(lawName),laws);
 		}
 		return laws;
 	}

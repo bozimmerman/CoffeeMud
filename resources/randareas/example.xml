@@ -284,6 +284,7 @@ Required details: "id" "value"
 	<BEHAVIOR select="all" id="dungeon_behaviors">
 		<BEHAVIOR condition="$theme='kobolds' or $theme='goblins'" class="RandomTraps" parms="mintraps=1 maxtraps=$AREA_SIZE/2 rooms=Y exits=Y" />
 		<BEHAVIOR condition="$theme='random'" class="RandomTraps" parms="mintraps=1 maxtraps=3 rooms=Y exits=Y" />
+		<BEHAVIOR condition="$theme='town'" class="Arrest" parms="laws.ini;OFFICERS=&quot;\&quot;$__officertype\&quot;&quot; JUDGE=&quot;\&quot;$__chieftype\&quot;&quot;"/>
 	</BEHAVIOR>
 </AREA>
 <AREA id="grid_dungeon" like="maze_dungeon" layout="GRIDCITY" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=prison;rats;kobolds;goblins;orcs;trolls;town;random" >
@@ -786,9 +787,6 @@ Required details: "id" "value"
 			</ITEM>
 		</ROOM>
 	</ROOM>
-	<!--
-	TODO: fourth priority (repeatable -- but only if above done): home
-	 -->
 	<ROOM select="all" condition="$theme='town' or $theme='random'">
 
 		<ROOM id="town_home" class="WoodRoom"  condition="$__townthird &gt; 5" define="__townhome+=1,patronname=$fantasy_name">
@@ -4144,7 +4142,6 @@ http://mikemonaco.files.wordpress.com/2011/03/mundane-items-table2.pdf
 	<ITEM class="genCoins" name="a pile of coins" ability="$level_range * 2"/>
 </ITEM>
 
-<!-- TODO: treasure items-->
 <ITEM id="dungeon_treasure_items" select="all" requires="level_range=int"  insert="level_weighted_gemstones,level_weighted_gem_baubles,level_weighted_bars,level_weighted_metal_baubles,any_alchemy_item,any_apothecary_item,any_distilling_item,any_herbalism_item">
 	<ITEM class="genCoins" name="a pile of coins" ability="$level_range * 20" />
 	<ITEM id="dungeon_treasure_equipment" select="pick-1+($level_range/20)" requires="level_range=int">
