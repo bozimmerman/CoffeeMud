@@ -245,6 +245,19 @@
 	<STRING>voiceless</STRING><STRING>whispering</STRING>
 </STRING>
 
+<STRING id="adj_forestwords" select="any-1">
+	<STRING>dank</STRING>
+	<STRING>quiet</STRING>
+	<STRING>still</STRING>
+	<STRING>dark</STRING>
+	<STRING>creepy</STRING>
+	<STRING>lonely</STRING>
+	<STRING>scary</STRING>
+	<STRING>gloomy</STRING>
+	<STRING>unsettling</STRING>
+	<STRING>dim</STRING>
+</STRING>
+
 <STRING id="adj_mustydark" select="any-1">
 	<STRING id="adj_mustydark_values">
 		<STRING>dank</STRING>
