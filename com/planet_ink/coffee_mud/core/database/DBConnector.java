@@ -74,28 +74,30 @@ public class DBConnector
 	
 	public DBConnector (){super();}
 	
-	public DBConnector (String NEWDBClass,
-						String NEWDBService, 
-						String NEWDBUser, 
-						String NEWDBPass, 
-						int NEWnumConnections,
-						int NEWdbPingIntMins,
-						boolean NEWReuse,
-						boolean NEWDoErrorQueueing,
-						boolean NEWRetryErrorQueue)
+	public DBConnector (String dbClass,
+						String dbService, 
+						String dbUser, 
+						String dbPass, 
+						int numConnections,
+						int dbPingIntMins,
+						boolean reuse,
+						boolean doErrorQueueing,
+						boolean retryErrorQueue)
 	{
 		super();
-		dbClass=NEWDBClass;
-		dbService=NEWDBService;
-		dbUser=NEWDBUser;
-		dbPass=NEWDBPass;
-		numConnections=NEWnumConnections;
-		doErrorQueueing=NEWDoErrorQueueing;
-		newErrorQueueing=NEWRetryErrorQueue;
-		dbReuse=NEWReuse;
-		dbPingIntMins=NEWdbPingIntMins;
-		if(dbPingIntMins<=0) dbPingIntMins=Integer.MAX_VALUE;
+		this.dbClass=dbClass;
+		this.dbService=dbService;
+		this.dbUser=dbUser;
+		this.dbPass=dbPass;
+		this.numConnections=numConnections;
+		this.doErrorQueueing=doErrorQueueing;
+		this.newErrorQueueing=retryErrorQueue;
+		this.dbReuse=reuse;
+		this.dbPingIntMins=dbPingIntMins;
+		if(this.dbPingIntMins<=0) 
+			this.dbPingIntMins=Integer.MAX_VALUE;
 	}
+
 	public void reconnect()
 	{
 		if(dbConnections!=null){ dbConnections.deregisterDriver(); dbConnections.killConnections();}
