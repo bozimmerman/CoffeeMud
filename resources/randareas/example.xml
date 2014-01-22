@@ -332,13 +332,13 @@ Required details: "id" "value"
 		<ITEM condition="1?10=1" select="any-1" insert="dungeon_junk" />
 	</ROOM>
 	<ROOM class="Road" condition="$theme='town'">
-		<TITLE>$_forest_path_name</TITLE>
+		<TITLE>(a(n)) $_forest_path_name</TITLE>
 		<DESCRIPTION select="any-1">
-			<DESCRIPTION condition="$_forest_path_roomtype=1">You are walking along ${l:_forest_path_name}.</DESCRIPTION>
+			<DESCRIPTION condition="$_forest_path_roomtype=1">You are walking along (a(n)) ${l:_forest_path_name}.</DESCRIPTION>
 			<DESCRIPTION condition="$_forest_path_roomtype=1"></DESCRIPTION>
 			<DESCRIPTION condition="$_forest_path_roomtype=1"></DESCRIPTION>
 			<DESCRIPTION condition="$_forest_path_roomtype=1"></DESCRIPTION>
-			<DESCRIPTION condition="$_forest_path_roomtype=0">You are lost in ${l:_forest_path_name}.</DESCRIPTION>
+			<DESCRIPTION condition="$_forest_path_roomtype=0">You are lost in (a(n)) ${l:_forest_path_name}.</DESCRIPTION>
 			<DESCRIPTION condition="$_forest_path_roomtype=0"></DESCRIPTION>
 			<DESCRIPTION condition="$_forest_path_roomtype=0"></DESCRIPTION>
 			<DESCRIPTION condition="$_forest_path_roomtype=0"></DESCRIPTION>
@@ -357,6 +357,7 @@ Required details: "id" "value"
 <STRING id="_forest_path_prefix" select="any-1">
 	<string>forest</string><string>wooded</string><string>forested</string><string>woody</string>
 	<string>sylvan</string><string>shady</string><string>tree-lined</string><string>clear</string>
+	<string>thick</string><string>light</string><string>deep</string>
 </STRING>
 
 <STRING id="_forest_nouns" select="any-1">
