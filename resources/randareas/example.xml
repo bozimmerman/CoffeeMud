@@ -315,86 +315,6 @@ Required details: "id" "value"
 	<string condition="$theme='trolls' or $theme='random'" define="nasty_race_name">troll</string>
 </STRING>
 
-<ROOM id="hallway_rooms" select="pick-1" condition="$roomtag_nodetype='street' or $roomtag_nodetype='surround'">
-	<ROOM class="CaveRoom" pickweight="5" condition="$theme!='town' and $theme!='forest'">
-		<TITLE>$a_streetprefix $_dungeon_hallways_street_name</TITLE>
-		<DESCRIPTION>$dungeon_hallways_street_desc</DESCRIPTION>
-		<EXIT class="Open" />
-		<MOB condition="1?3=1" select="any-1" insert="dungeon_mobs" />
-		<ITEM condition="1?10=1" select="any-1" insert="dungeon_junk" />
-	</ROOM>
-	<ROOM class="CaveRoom" pickweight="1" condition="$theme!='town' and $theme!='forest'">
-		<TITLE>$a_streetprefix $_dungeon_crawlways_street_name</TITLE>
-		<DESCRIPTION>$dungeon_crawlways_street_desc</DESCRIPTION>
-		<AFFECT class="Prop_Crawlspace" parms="" />
-		<EXIT class="Open" />
-		<MOB condition="1?6=1" select="any-1" insert="dungeon_mobs" />
-		<ITEM condition="1?10=1" select="any-1" insert="dungeon_junk" />
-	</ROOM>
-	<ROOM class="Road" condition="$theme='town'">
-		<TITLE>(a(n)) $_forest_path_name</TITLE>
-		<DESCRIPTION select="any-1">
-			<DESCRIPTION condition="$_forest_path_roomtype=1">You are walking along (a(n)) ${l:_forest_path_name}.</DESCRIPTION>
-			<DESCRIPTION condition="$_forest_path_roomtype=1"></DESCRIPTION>
-			<DESCRIPTION condition="$_forest_path_roomtype=1"></DESCRIPTION>
-			<DESCRIPTION condition="$_forest_path_roomtype=1"></DESCRIPTION>
-			<DESCRIPTION condition="$_forest_path_roomtype=0">You are lost in (a(n)) ${l:_forest_path_name}.</DESCRIPTION>
-			<DESCRIPTION condition="$_forest_path_roomtype=0"></DESCRIPTION>
-			<DESCRIPTION condition="$_forest_path_roomtype=0"></DESCRIPTION>
-			<DESCRIPTION condition="$_forest_path_roomtype=0"></DESCRIPTION>
-		</DESCRIPTION>
-		<EXIT class="Open" />
-	</ROOM>
-</ROOM>
-
-<STRING id="_forest_path_name" select="any-1" define="_forest_path_name">
-	<STRING pickweight=2 define="_forest_path_roomtype=1">$_forest_path_prefix $_forest_path_type</STRING>
-	<STRING pickweight=2 define="_forest_path_roomtype=0">$_forest_path_prefix $_forest_nouns</STRING>
-	<STRING pickweight=1 define="_forest_path_roomtype=1">$adj_forestwords $_forest_path_prefix $_forest_path_type</STRING>
-	<STRING pickweight=1 define="_forest_path_roomtype=0">$adj_forestwords $_forest_path_prefix $_forest_nouns</STRING>
-</STRING>
-
-<STRING id="_forest_path_prefix" select="any-1">
-	<string>forest</string><string>wooded</string><string>forested</string><string>woody</string>
-	<string>sylvan</string><string>shady</string><string>tree-lined</string><string>clear</string>
-	<string>thick</string><string>light</string><string>deep</string>
-</STRING>
-
-<STRING id="_forest_nouns" select="any-1">
-	<string>forest</string><string>woods</string><string>woodlands</string><string>timberlands</string>
-	<string>greenwood</string><string>thicket</string><string>growth</string><string>wildwood</string>
-</STRING>
-
-<STRING id="_forest_stuff_type" select="any-1">
-	<string>path</string><string>trail</string><string>pathway</string><string>way</string>
-	<string>footpath</string><string>beaten path</string>
-</STRING>
-
-<STRING id="dungeon_hallways_street_desc" select="all">
-	<STRING select="any-1" action="PREPEND">
-		<STRING>You stand in (a(n)) $adj_any $_dungeon_tunnelword that runs steeply $roomrun_desc_long.</STRING> 
-		<STRING>This $adj_any $_dungeon_tunnelword runs steeply $roomrun_desc_long.</STRING> 
-		<STRING>You are in (a(n)) $adj_any $_dungeon_tunnelword running $roomrun_desc_long.</STRING> 
-		<STRING>This $adj_any $_dungeon_tunnelword runs $roomrun_desc_long.</STRING> 
-		<STRING>You are walking through (a(n)) $adj_any $_dungeon_tunnelword running $roomrun_desc_long.</STRING>
-		<STRING>This $adj_any $_dungeon_tunnelword heads $roomrun_desc_long.</STRING>
-		<STRING>This $adj_any $_dungeon_tunnelword seems to head $roomrun_desc_long.</STRING>
-	</STRING>
-	<STRING select="all" id="dungeon_other_exits" action="APPEND" insert="desc_exits" />
-	<STRING select="any-1" insert="dungeon_random_blurbs" action="APPEND" />
-</STRING>
-
-<STRING id="_dungeon_hallways_street_name" define="_dungeon_hallways_street_name" select="any-1">
-	<STRING>cavernous $_dungeon_tunnelword</STRING>
-	<STRING>rocky $_dungeon_tunnelword</STRING>
-	<STRING>$_dungeon_tunnelword</STRING>
-	<STRING>dark cave $_dungeon_tunnelword</STRING>
-	<STRING>cavernous $roomrun_desc $_dungeon_tunnelword</STRING>
-	<STRING>rocky $roomrun_desc $_dungeon_tunnelword</STRING>
-	<STRING>$roomrun_desc $_dungeon_tunnelword</STRING>
-	<STRING>dark $roomrun_desc cave $_dungeon_tunnelword</STRING>
-</STRING>
-
 <STRING id="_dungeon_tunnelword" define="_dungeon_tunnelword" select="any-1">
 	<STRING>tunnel</STRING>
 	<STRING>corridor</STRING>
@@ -403,27 +323,152 @@ Required details: "id" "value"
 	<STRING>passageway</STRING>
 </STRING>
 
-<STRING id="_dungeon_crawlways_street_name" define="_dungeon_crawlways_street_name" select="any-1">
-	<STRING>small $_dungeon_hallways_street_name</STRING>
-	<STRING>narrow $_dungeon_hallways_street_name</STRING>
-	<STRING>short $_dungeon_hallways_street_name</STRING>
+<ROOM id="hallway_rooms" select="pick-1" condition="$roomtag_nodetype='street' or $roomtag_nodetype='surround'">
+	<ROOM class="CaveRoom" pickweight="5" condition="$theme!='town' and $theme!='forest'">
+		<TITLE>$a_streetprefix $_dungeon_hallways_street_name</TITLE>
+		<STRING id="_dungeon_crawlways_street_name" define="_dungeon_crawlways_street_name" select="any-1">
+			<STRING>small $_dungeon_hallways_street_name</STRING>
+			<STRING>narrow $_dungeon_hallways_street_name</STRING>
+			<STRING>short $_dungeon_hallways_street_name</STRING>
+		</STRING>
+		<DESCRIPTION>$dungeon_hallways_street_desc</DESCRIPTION>
+		<STRING id="dungeon_hallways_street_desc" select="all">
+			<STRING select="any-1" action="PREPEND">
+				<STRING>You stand in (a(n)) $adj_any $_dungeon_tunnelword that runs steeply $roomrun_desc_long.</STRING> 
+				<STRING>This $adj_any $_dungeon_tunnelword runs steeply $roomrun_desc_long.</STRING> 
+				<STRING>You are in (a(n)) $adj_any $_dungeon_tunnelword running $roomrun_desc_long.</STRING> 
+				<STRING>This $adj_any $_dungeon_tunnelword runs $roomrun_desc_long.</STRING> 
+				<STRING>You are walking through (a(n)) $adj_any $_dungeon_tunnelword running $roomrun_desc_long.</STRING>
+				<STRING>This $adj_any $_dungeon_tunnelword heads $roomrun_desc_long.</STRING>
+				<STRING>This $adj_any $_dungeon_tunnelword seems to head $roomrun_desc_long.</STRING>
+			</STRING>
+			<STRING select="all" id="dungeon_other_exits" action="APPEND" insert="desc_exits" />
+			<STRING select="any-1" insert="dungeon_random_blurbs" action="APPEND" />
+		</STRING>
+		<EXIT class="Open" />
+		<MOB condition="1?3=1" select="any-1" insert="dungeon_mobs" />
+		<ITEM condition="1?10=1" select="any-1" insert="dungeon_junk" />
+	</ROOM>
+	<ROOM class="CaveRoom" pickweight="1" condition="$theme!='town' and $theme!='forest'">
+		<TITLE>$a_streetprefix $_dungeon_crawlways_street_name</TITLE>
+		<STRING id="_dungeon_hallways_street_name" define="_dungeon_hallways_street_name" select="any-1">
+			<STRING>cavernous $_dungeon_tunnelword</STRING>
+			<STRING>rocky $_dungeon_tunnelword</STRING>
+			<STRING>$_dungeon_tunnelword</STRING>
+			<STRING>dark cave $_dungeon_tunnelword</STRING>
+			<STRING>cavernous $roomrun_desc $_dungeon_tunnelword</STRING>
+			<STRING>rocky $roomrun_desc $_dungeon_tunnelword</STRING>
+			<STRING>$roomrun_desc $_dungeon_tunnelword</STRING>
+			<STRING>dark $roomrun_desc cave $_dungeon_tunnelword</STRING>
+		</STRING>
+		<DESCRIPTION>$dungeon_crawlways_street_desc</DESCRIPTION>
+		<STRING id="dungeon_crawlways_street_desc" select="all">
+			<STRING select="any-1" action="prepend">
+				<STRING>You are in (a(n)) $adj_anynosize $_dungeon_tunnelword that runs narrowly $roomrun_desc_long.</STRING> 
+				<STRING>This $adj_anynosize $_dungeon_tunnelword runs narrowly $roomrun_desc_long.</STRING> 
+				<STRING>You are in (a(n)) $adj_anynosize $_dungeon_tunnelword squeezing $roomrun_desc_long.</STRING> 
+				<STRING>This $adj_anynosize $_dungeon_tunnelword runs $roomrun_desc_long.</STRING> 
+				<STRING>You are going through (a(n)) $adj_anynosize $_dungeon_tunnelword running $roomrun_desc_long.</STRING>
+				<STRING>This $adj_anynosize $_dungeon_tunnelword heads $roomrun_desc_long.</STRING>
+				<STRING>This $adj_anynosize $_dungeon_tunnelword seems to head $roomrun_desc_long.</STRING>
+			</STRING>
+			<STRING select="any-1">
+				<STRING>The $adj_phys_nosize ceiling is very low.</STRING>
+				<STRING>The $adj_phys_nosize ceiling is lower than usual.</STRING>
+			</STRING>
+			<STRING select="any-1" insert="dungeon_random_blurbs" action="APPEND" />
+		</STRING>
+		<AFFECT class="Prop_Crawlspace" parms="" />
+		<EXIT class="Open" />
+		<MOB condition="1?6=1" select="any-1" insert="dungeon_mobs" />
+		<ITEM condition="1?10=1" select="any-1" insert="dungeon_junk" />
+	</ROOM>
+	<ROOM class="Road" condition="$theme='town'">
+		<TITLE>(a(n)) $_forest_path_name</TITLE>
+		<DESCRIPTION>$forest_street_desc</DESCRIPTION>
+		<STRING id="forest_street_desc" select="all">
+			<STRING select="any-1" action="PREPEND">
+				<STRING condition="$_forest_path_roomtype=1">You are walking along (a(n)) ${l:_forest_path_name}. </STRING>
+				<STRING condition="$_forest_path_roomtype=1">You are on (a(n)) ${l:_forest_path_name}. </STRING>
+				<STRING condition="$_forest_path_roomtype=1">The ${l:_forest_path_name} goes through the $forest_nouns. </STRING>
+				<STRING condition="$_forest_path_roomtype=1">(A(n)) ${l:_forest_path_name} runs through the $forest_nouns </STRING>
+				<STRING condition="$_forest_path_roomtype=0">You are lost in (a(n)) ${l:_forest_path_name}. </STRING>
+				<STRING condition="$_forest_path_roomtype=0">You are deep in (a(n)) ${l:_forest_path_name}. </STRING>
+				<STRING condition="$_forest_path_roomtype=0">The ${l:_forest_path_name} surrounds you. </STRING>
+				<STRING condition="$_forest_path_roomtype=0">The ${l:_forest_path_name} is all around you. </STRING>
+			</STRING>
+			<STRING select="any-1" action="APPEND">
+				<STRING condition="$_forest_path_roomtype=1">The $_forest_path_type is lined by $adj_phys_size_tall trees. Several ${l:any_wood} trees are growing into the path. </STRING>
+				<STRING condition="$_forest_path_roomtype=1">Tracks in the soft ground make the $_forest_path_type easier to follow here. </STRING>
+				<STRING condition="$_forest_path_roomtype=1">${c:adj_phys_size_tall} trees curve over the $_forest_path_type like a canopy, blocking out most of the sky. </STRING>
+				<STRING condition="$_forest_path_roomtype=1">The trees are light enough here to make it easy to find your way along the $_forest_path_type. </STRING>
+				<STRING condition="$_forest_path_roomtype=0">The trees of $area_name are $adj_large and green, $adj_cramped together in impassable walls. </STRING>
+				<STRING condition="$_forest_path_roomtype=0">You $verb_forest_tread your way through the $noun_forest_brush of the deep forest. </STRING>
+				<STRING condition="$_forest_path_roomtype=0">The forest surrounds you, $adj_cramped ${any_tree}s making some directions impassible. </STRING>
+				<STRING condition="$_forest_path_roomtype=0">You feel a $noun_wind blow through the $adj_phys_size_tall trees of the deep forest. </STRING>
+			</STRING>
+			<STRING select="any-1" action="APPEND">
+				<STRING condition="$_forest_path_roomtype=1">The $_forest_path_type continues $roomrun_desc_long.</STRING>
+				<STRING condition="$_forest_path_roomtype=1">Beneath the long shadows you can see the $_forest_path_type running $roomrun_desc_long.</STRING>
+				<STRING condition="$_forest_path_roomtype=1">The $_forest_path_type runs $roomrun_desc_long.</STRING>
+				<STRING condition="$_forest_path_roomtype=1"></STRING>
+				<STRING condition="$_forest_path_roomtype=0"></STRING>
+				<STRING condition="$_forest_path_roomtype=0"></STRING>
+				<STRING condition="$_forest_path_roomtype=0"></STRING>
+				<STRING condition="$_forest_path_roomtype=0"></STRING>
+			</STRING>
+		</STRING>
+		<EXIT class="Open" />
+	</ROOM>
+</ROOM>
+
+<STRING id="noun_forest_brush" select="any-1">
+    <STRING>thicket</STRING>
+    <STRING>underbrush</STRING>
+    <STRING>brush<STRING>
+    <STRING>brushwood<STRING>
+    <STRING>bush<STRING>
+    <STRING>underwood<STRING>
+    <STRING>undergrowth<STRING>
 </STRING>
 
-<STRING id="dungeon_crawlways_street_desc"  select="all">
-	<STRING select="any-1" action="prepend">
-		<STRING>You are in (a(n)) $adj_anynosize $_dungeon_tunnelword that runs narrowly $roomrun_desc_long.</STRING> 
-		<STRING>This $adj_anynosize $_dungeon_tunnelword runs narrowly $roomrun_desc_long.</STRING> 
-		<STRING>You are in (a(n)) $adj_anynosize $_dungeon_tunnelword squeezing $roomrun_desc_long.</STRING> 
-		<STRING>This $adj_anynosize $_dungeon_tunnelword runs $roomrun_desc_long.</STRING> 
-		<STRING>You are going through (a(n)) $adj_anynosize $_dungeon_tunnelword running $roomrun_desc_long.</STRING>
-		<STRING>This $adj_anynosize $_dungeon_tunnelword heads $roomrun_desc_long.</STRING>
-		<STRING>This $adj_anynosize $_dungeon_tunnelword seems to head $roomrun_desc_long.</STRING>
-	</STRING>
-	<STRING select="any-1">
-		<STRING>The $adj_phys_nosize ceiling is very low.</STRING>
-		<STRING>The $adj_phys_nosize ceiling is lower than usual.</STRING>
-	</STRING>
-	<STRING select="any-1" insert="dungeon_random_blurbs" action="APPEND" />
+<STRING id="noun_wind" select="any-1">
+    <STRING>wind</STRING>
+    <STRING>breeze</STRING>
+    <STRING>gust<STRING>
+    <STRING>draft<STRING>
+</STRING>
+
+<STRING id="verb_forest_tread" select="any-1">
+    <STRING>stomp</STRING>
+    <STRING>underbrush</STRING>
+    <STRING>trample<STRING>
+    <STRING>tread<STRING>
+    <STRING>walk<STRING>
+    <STRING>push<STRING>
+</STRING>
+
+<STRING id="_forest_path_name" select="any-1" define="_forest_path_name">
+	<STRING pickweight=2 define="_forest_path_roomtype=1">$forest_path_prefix $_forest_path_type</STRING>
+	<STRING pickweight=2 define="_forest_path_roomtype=0">$forest_path_prefix $forest_nouns</STRING>
+	<STRING pickweight=1 define="_forest_path_roomtype=1">$adj_forestwords $forest_path_prefix $_forest_path_type</STRING>
+	<STRING pickweight=1 define="_forest_path_roomtype=0">$adj_forestwords $forest_path_prefix $forest_nouns</STRING>
+</STRING>
+
+<STRING id="forest_path_prefix" select="any-1">
+	<string>forest</string><string>wooded</string><string>forested</string><string>woody</string>
+	<string>sylvan</string><string>shady</string><string>tree-lined</string><string>clear</string>
+	<string>thick</string><string>light</string><string>deep</string>
+</STRING>
+
+<STRING id="forest_nouns" select="any-1">
+	<string>forest</string><string>woods</string><string>woodlands</string><string>timberlands</string>
+	<string>greenwood</string><string>thicket</string><string>growth</string><string>wildwood</string>
+</STRING>
+
+<STRING id="forest_stuff_type" select="any-1">
+	<string>path</string><string>trail</string><string>pathway</string><string>way</string>
+	<string>footpath</string><string>beaten path</string>
 </STRING>
 
 <ROOM id="interior_rooms" select="any-1" condition="$roomtag_nodetype='interior' or $roomtag_nodetype='square'">
@@ -4425,11 +4470,15 @@ http://mikemonaco.files.wordpress.com/2011/03/mundane-items-table2.pdf
 <STRING id="any_rich_metal" select="any-1"><string>silver</string><string>gold</string><string>copper</string><string>white_gold</string></STRING>
 <STRING id="any_metal" insert="any_cheap_metal,any_rich_metal" select="any-1"><string>zinc</string><string>steel</string><string>chromium</string><string>dragonscales</string></STRING>
 <STRING id="any_mithril" insert="any_metal" select="any-1"><string>mithril</string><string>adamantite</string><string>atlantite</string></STRING>
-<STRING id="any_wood" select="any-1">
-	<string>wood</string><string>pine</string><string>balsa</string><string>oak</string><string>maple</string><string>redwood</string><string>hickory</string><string>ironwood</string>
-	<string>yew</string><string>teak</string><string>cedar</string><string>elm</string><string>cherrywood</string><string>beechwood</string><string>willow</string><string>sycamore</string>
-	<string>spruce</string><string>mesquite</string><string>reed</string><string>bamboo</string>
+<STRING id="any_wood" select="any-1" insert="most_wood_values">
+	<string>wood</string><string>reed</string><string>bamboo</string>
 </STRING>
+<STRING id="most_wood_values" select="all">
+	<string>pine</string><string>balsa</string><string>oak</string><string>maple</string><string>redwood</string><string>hickory</string><string>ironwood</string>
+	<string>yew</string><string>teak</string><string>cedar</string><string>elm</string><string>cherrywood</string><string>beechwood</string><string>willow</string><string>sycamore</string>
+	<string>spruce</string><string>mesquite</string>
+</STRING>
+<STRING id="any_tree" select="any-1" insert="most_wood_values" />
 <STRING id="any_cheap_cloth" select="any-1"><string>hide</string><string>wool</string><string>cotton</string><string>hemp</string></STRING>
 <STRING id="any_rich_cloth" select="any-1"><string>spidersteel</string><string>silk</string><string>feathers</string><string>fur</string></STRING>
 <STRING id="any_cloth" insert="any_cheap_cloth,any_rich_cloth" select="any-1"></STRING>

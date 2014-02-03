@@ -34,6 +34,7 @@
 		<STRING>roomy</STRING>
 	</STRING>
 </STRING>
+
 <STRING id="adj_phys_size_small" select="any-1">
 	<STRING id="adj_phys_size_small_values">
 		<STRING>narrow</STRING>
@@ -41,6 +42,25 @@
 		<STRING>tight</STRING>
 		<STRING>small</STRING>
 		<STRING>constricted</STRING>
+	</STRING>
+</STRING>
+
+<STRING id="adj_phys_size_tall" select="any-1">
+	<STRING id="adj_phys_size_tall_values">
+		<STRING>tall</STRING>
+		<STRING>towering</STRING>
+		<STRING>lofty</STRING>
+		<STRING>giant</STRING>
+	</STRING>
+</STRING>
+
+<STRING id="adj_cramped" select="any-1">
+	<STRING id="adj_cramped_values">
+		<STRING>cramped</STRING>
+		<STRING>packed</STRING>
+		<STRING>crammed</STRING>
+		<STRING>jam-packed</STRING>
+		<STRING>crowded</STRING>
 	</STRING>
 </STRING>
 
@@ -170,6 +190,14 @@
 </STRING>
 
 <STRING id="adj_large" select="any-1">
+	<STRING>large</STRING>
+	<STRING>huge</STRING>
+	<STRING>big</STRING>
+	<STRING>oversized</STRING>
+	<STRING>massive</STRING>
+</STRING>
+
+<STRING id="adj_thick" select="any-1">
 	<STRING>large</STRING>
 	<STRING>huge</STRING>
 	<STRING>big</STRING>
