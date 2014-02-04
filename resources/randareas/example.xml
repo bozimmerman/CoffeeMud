@@ -411,11 +411,11 @@ Required details: "id" "value"
 				<STRING condition="$_forest_path_roomtype=1">The $_forest_path_type continues $roomrun_desc_long.</STRING>
 				<STRING condition="$_forest_path_roomtype=1">Beneath the long shadows you can see the $_forest_path_type running $roomrun_desc_long.</STRING>
 				<STRING condition="$_forest_path_roomtype=1">The $_forest_path_type runs $roomrun_desc_long.</STRING>
-				<STRING condition="$_forest_path_roomtype=1"></STRING>
-				<STRING condition="$_forest_path_roomtype=0"></STRING>
-				<STRING condition="$_forest_path_roomtype=0"></STRING>
-				<STRING condition="$_forest_path_roomtype=0"></STRING>
-				<STRING condition="$_forest_path_roomtype=0"></STRING>
+				<STRING condition="$_forest_path_roomtype=1">The faint $_forest_path_type goes $roomrun_desc_long.</STRING>
+				<STRING condition="$_forest_path_roomtype=0">It looks like you might pick your way $roomexits_desc_long.</STRING>
+				<STRING condition="$_forest_path_roomtype=0">Openings in the thick $noun_forest_brush can be seen $roomexits_desc_long.</STRING>
+				<STRING condition="$_forest_path_roomtype=0">You can push on through $roomexits_desc_long.</STRING>
+				<STRING condition="$_forest_path_roomtype=0">You can continue $roomexits_desc_long.</STRING>
 			</STRING>
 		</STRING>
 		<EXIT class="Open" />
