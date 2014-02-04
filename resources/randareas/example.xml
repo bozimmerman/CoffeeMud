@@ -383,7 +383,12 @@ Required details: "id" "value"
 		<MOB condition="1?6=1" select="any-1" insert="dungeon_mobs" />
 		<ITEM condition="1?10=1" select="any-1" insert="dungeon_junk" />
 	</ROOM>
-	<ROOM class="Road" condition="$theme='town'">
+	<ROOM class="Road" pickweight="1" condition="$theme='town'">
+		<TITLE>$a_streetprefix $_street_name</TITLE>
+		<DESCRIPTION></DESCRIPTION>
+		<EXIT class="Open" />
+	</ROOM>
+	<ROOM class="Road" condition="$theme='forest'">
 		<TITLE>(a(n)) $_forest_path_name</TITLE>
 		<DESCRIPTION>$forest_street_desc</DESCRIPTION>
 		<STRING id="forest_street_desc" select="all">
@@ -414,7 +419,7 @@ Required details: "id" "value"
 				<STRING condition="$_forest_path_roomtype=1">The faint $_forest_path_type goes $roomrun_desc_long.</STRING>
 				<STRING condition="$_forest_path_roomtype=0">It looks like you might pick your way $roomexits_desc_long.</STRING>
 				<STRING condition="$_forest_path_roomtype=0">Openings in the thick $noun_forest_brush can be seen $roomexits_desc_long.</STRING>
-				<STRING condition="$_forest_path_roomtype=0">You can push on through $roomexits_desc_long.</STRING>
+				<STRING condition="$_forest_path_roomtype=0">You can $verb_forest_tread on through $roomexits_desc_long.</STRING>
 				<STRING condition="$_forest_path_roomtype=0">You can continue $roomexits_desc_long.</STRING>
 			</STRING>
 		</STRING>
