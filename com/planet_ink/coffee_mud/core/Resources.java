@@ -250,6 +250,11 @@ public class Resources
 
 	public static final String makeFileResourceName(final String filename)
 	{
+		if(filename==null) return "resources/";
+		if(filename.startsWith("resources/")||filename.startsWith("/resources/"))
+			return filename;
+		if(filename.startsWith("/"))
+			return "resources"+filename;
 		return "resources/"+filename;
 	}
 
