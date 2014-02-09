@@ -39,7 +39,7 @@ Any tag may contain zero or more of the following meta-attributes:
           and the resulting tags added as contents of the host tag as if they were
           already inside it.  Remember, the listed tags will be parsed first, so
           any "condition", "select" or other operations will occur.
-"copyof"  a tag "id"or standard class id. This will cause the stats and attributes 
+"copyof"  a tag "id" or standard class id. This will cause the stats and attributes 
           and other details of the listed items into the current object.
 "validate" a boolean expression which must evaluate to true for the tag to be finally
           built into an object.  Check "condition" below for more information....
@@ -346,7 +346,7 @@ Required details: "id" "value"
 			<STRING select="any-1" insert="dungeon_random_blurbs" action="APPEND" />
 		</STRING>
 		<EXIT class="Open" />
-		<MOB condition="1?3=1" select="any-1" insert="dungeon_mobs" />
+		<MOB condition="1?2=1" select="any-1" insert="dungeon_mobs" />
 		<ITEM condition="1?10=1" select="any-1" insert="dungeon_junk" />
 	</ROOM>
 	<ROOM class="CaveRoom" pickweight="1" condition="$theme!='town' and $theme!='forest'">
@@ -380,7 +380,6 @@ Required details: "id" "value"
 		</STRING>
 		<AFFECT class="Prop_Crawlspace" parms="" />
 		<EXIT class="Open" />
-		<MOB condition="1?6=1" select="any-1" insert="dungeon_mobs" />
 		<ITEM condition="1?10=1" select="any-1" insert="dungeon_junk" />
 	</ROOM>
 	<ROOM class="Road" pickweight="1" condition="$theme='town'">
@@ -388,7 +387,7 @@ Required details: "id" "value"
 		<DESCRIPTION></DESCRIPTION>
 		<EXIT class="Open" />
 	</ROOM>
-	<ROOM class="Road" condition="$theme='forest'">
+	<ROOM class="Woods" id="forest_street_room" condition="$theme='forest' or $theme='random'">
 		<TITLE>(a(n)) $_forest_path_name</TITLE>
 		<DESCRIPTION>$forest_street_desc</DESCRIPTION>
 		<STRING id="forest_street_desc" select="all">
@@ -407,7 +406,7 @@ Required details: "id" "value"
 				<STRING condition="$_forest_path_roomtype=1">Tracks in the soft ground make the $_forest_path_type easier to follow here. </STRING>
 				<STRING condition="$_forest_path_roomtype=1">${c:adj_phys_size_tall} trees curve over the $_forest_path_type like a canopy, blocking out most of the sky. </STRING>
 				<STRING condition="$_forest_path_roomtype=1">The trees are light enough here to make it easy to find your way along the $_forest_path_type. </STRING>
-				<STRING condition="$_forest_path_roomtype=0">The trees of $area_name are $adj_large and green, $adj_cramped together in impassable walls. </STRING>
+				<STRING condition="$_forest_path_roomtype=0">The trees of $areaname are $adj_large and green, $adj_cramped together in impassable walls. </STRING>
 				<STRING condition="$_forest_path_roomtype=0">You $verb_forest_tread your way through the $noun_forest_brush of the deep forest. </STRING>
 				<STRING condition="$_forest_path_roomtype=0">The forest surrounds you, $adj_cramped ${any_tree}s making some directions impassible. </STRING>
 				<STRING condition="$_forest_path_roomtype=0">You feel a $noun_wind blow through the $adj_phys_size_tall trees of the deep forest. </STRING>
@@ -424,6 +423,7 @@ Required details: "id" "value"
 			</STRING>
 		</STRING>
 		<EXIT class="Open" />
+		<MOB condition="1?2=1" select="any-1" insert="forest_mobs" />
 	</ROOM>
 </ROOM>
 
@@ -471,13 +471,18 @@ Required details: "id" "value"
 	<string>greenwood</string><string>thicket</string><string>growth</string><string>wildwood</string>
 </STRING>
 
+<STRING id="_forest_path_type" define="_forest_path_type" insert="forest_stuff_type" select="any-1">
+	<string>path</string><string>trail</string><string>pathway</string><string>way</string>
+	<string>footpath</string><string>beaten path</string>
+</STRING>
+
 <STRING id="forest_stuff_type" select="any-1">
 	<string>path</string><string>trail</string><string>pathway</string><string>way</string>
 	<string>footpath</string><string>beaten path</string>
 </STRING>
 
 <ROOM id="interior_rooms" select="any-1" condition="$roomtag_nodetype='interior' or $roomtag_nodetype='square'">
-	<ROOM class="CaveRoom" condition="$theme!='town'">
+	<ROOM class="CaveRoom" condition="$theme!='town' and $theme!='forest'">
 		<TITLE>$a_streetprefix $_dungeon_hallways_street_name</TITLE>
 		<DESCRIPTION>$dungeon_interior_desc</DESCRIPTION>
 		<EXIT class="Open" />
@@ -496,6 +501,7 @@ Required details: "id" "value"
 		<MOB condition="1?3=1" select="any-1" insert="town_mobs" />
 		<EXIT class="Open" />
 	</ROOM>
+	<ROOM class="Woods" like="forest_street_room" condition="$theme='forest' or $theme='random'" />
 </ROOM>
 
 <STRING id="dungeon_interior_desc" select="all">
@@ -513,6 +519,61 @@ Required details: "id" "value"
 </STRING>
 
 <ROOM id="leaf_rooms" select="any-1" condition="$roomtag_nodetype='leaf'">
+	<ROOM class="Road" id="forest_interior_room" condition="$theme='forest' or $theme='random'">
+		<TITLE>(a(n)) $_forest_path_name</TITLE>
+		<DESCRIPTION>$forest_interior_desc</DESCRIPTION>
+		<STRING id="forest_interior_desc" select="all">
+			<STRING select="any-1" action="PREPEND">
+				<STRING>You are lost in (a(n)) ${l:_forest_path_name}. </STRING>
+				<STRING>You are deep in (a(n)) ${l:_forest_path_name}. </STRING>
+				<STRING>The ${l:_forest_path_name} surrounds you. </STRING>
+				<STRING>The ${l:_forest_path_name} is all around you. </STRING>
+			</STRING>
+			<STRING select="any-1" action="APPEND">
+				<STRING>The trees of $areaname are $adj_large and green, $adj_cramped together in impassable walls. </STRING>
+				<STRING>You $verb_forest_tread your way through the $noun_forest_brush of the deep forest. </STRING>
+				<STRING>The forest surrounds you, $adj_cramped ${any_tree}s making some directions impassible. </STRING>
+				<STRING>You feel a $noun_wind blow through the $adj_phys_size_tall trees of the deep forest. </STRING>
+			</STRING>
+			<STRING select="any-1" action="APPEND">
+				<STRING>It looks like you might pick your way $roomexits_desc_long.</STRING>
+				<STRING>Openings in the thick $noun_forest_brush can be seen $roomexits_desc_long.</STRING>
+				<STRING>You can $verb_forest_tread on through $roomexits_desc_long.</STRING>
+				<STRING>You can continue $roomexits_desc_long.</STRING>
+			</STRING>
+		</STRING>
+		<EXIT class="Open" />
+		<MOB condition="1?2=1" select="any-1" insert="forest_mobs">
+			<MOB class="genmob" level="$level_range + 3" gender="$anygender" race="Faerie">
+				<NAME>(a(n)) $adj_primary_colored_color faerie</NAME>
+				<DISPLAY select="pick-1">
+					<DISPLAY pickweight="1">$mob_name flitters around you.</DISPLAY>
+					<DISPLAY pickweight="1">$mob_name is watching you.</DISPLAY>
+					<DISPLAY pickweight="5">$mob_name is here.</DISPLAY>
+				</DISPLAY>
+				<ALIGNMENT>-3000?3000</ALIGNMENT>
+				<ABILITY select="all">
+					<ABILITY condition="1?3=1" class="Skill_Trip" />
+					<ABILITY condition="1?3=1" class="Skill_Dirt" />
+					<ABILITY condition="1?3=1" class="Skill_Disarm" />
+					<ABILITY condition="1?3=1" class="Spell_MagicMissile" />
+					<ABILITY condition="1?3=1" class="Spell_FaerieFire" />
+					<ABILITY condition="1?3=1" class="Chant_Barkskin" />
+					<ABILITY condition="1?3=1" class="Chant_Thorns" />
+				</ABILITY>
+				<BEHAVIOR select="all">
+					<BEHAVIOR class="MudChat" parms="" />
+					<BEHAVIOR class="Thiefness" parms="" />
+					<BEHAVIOR class="Scavenger" parms="" />
+					<BEHAVIOR CLASS="Mobile" />
+					<BEHAVIOR CLASS="BrotherHelper" />
+				</BEHAVIOR>
+				<ITEM>
+					<ITEM select="any-2" insert="dungeon_treasure_items" />
+				</ITEM>
+			</MOB>
+		</MOB>
+	</ROOM>
 	<ROOM select="all" condition="$theme='prison' or $theme='random'">
 		<ROOM class="CaveRoom">
 			<TITLE>(a(n)) $adj_nasty prison cell</TITLE>
@@ -873,7 +934,6 @@ Required details: "id" "value"
 		</ROOM>
 	</ROOM>
 	<ROOM select="all" condition="$theme='town' or $theme='random'">
-
 		<ROOM id="town_home" class="WoodRoom"  condition="$__townthird &gt; 5" define="__townhome+=1,patronname=$fantasy_name">
 			<TITLE select="any-1">
 				<TITLE>${c:patronname}'s house</TITLE>
@@ -3180,6 +3240,25 @@ Required details: "id" "value"
 	</STRING>
 </STRING>
 
+<MOB id="forest_mob" select="any-1" requires="level_range=int">
+	<MOB id="forest_mobs" select="all" requires="level_range=int">
+		<MOB class="genmob" copyof="Bee" level="$level_range - 2" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /><BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" /></MOB>
+		<MOB class="genmob" copyof="Doe" level="$level_range"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /></MOB>
+		<MOB class="genmob" copyof="Deer" level="$level_range"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /></MOB>
+		<MOB class="genmob" copyof="Deer" level="$level_range"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /></MOB>
+		<MOB class="genmob" copyof="Deer" level="$level_range"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /></MOB>
+		<MOB class="genmob" copyof="Buck" level="$level_range"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /><BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" /></MOB>
+		<MOB class="genmob" copyof="Fox" level="$level_range" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /><BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" /></MOB>
+		<MOB class="genmob" copyof="Troll" level="$level_range" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /><BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" /></MOB>
+		<MOB class="genmob" copyof="Falcon" level="$level_range" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /><BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" /></MOB>
+		<MOB class="genmob" copyof="Wolf" level="$level_range" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /><BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" /></MOB>
+		<MOB class="genmob" copyof="Monkey" level="$level_range" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /></MOB>
+		<MOB class="genmob" copyof="Squirrel" level="$level_range" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /></MOB>
+		<MOB class="genmob" copyof="Rattlesnake" level="$level_range" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /><BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" /></MOB>
+		<MOB class="genmob" copyof="Centaur" level="$level_range" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /><BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" /></MOB>
+	</MOB>
+</MOB>
+
 <MOB id="town_mobs" select="all" requires="level_range=int,theme=town" insert="town_citizen,town_citizen,town_citizen">
 	<MOB id="town_cityguard" class="GenMob" level="$level_range" race="$_humanoid_races" gender="$anygender">
 		<NAME>(a(n)) ${c:__officertype}</NAME>
@@ -4359,7 +4438,7 @@ http://mikemonaco.files.wordpress.com/2011/03/mundane-items-table2.pdf
 	<STRING>HalfElf</STRING>
 </STRING>
 
-<STRING id="_animal_races" select="any-1" insert="any_animal_race" define="_animal_races" />
+<STRING id="_animal_races" select="any-1" insert="any_mammal_race,any_reptile_race,any_bird_race" define="_animal_races" />
 
 <STRING id="any_bird_race" select="any-1">
 	<STRING>Bird</STRING>
@@ -4468,7 +4547,7 @@ http://mikemonaco.files.wordpress.com/2011/03/mundane-items-table2.pdf
 <STRING id="__chieftype" select="any-1" predefine="temp=$__citygovttype">$__chieftype</STRING>
 <STRING id="__cityhalltype" select="any-1" predefine="temp=$__citygovttype">$__cityhalltype</STRING>
 <STRING id="__citytype" select="any-1" predefine="temp=$__citygovttype">$__citytype</STRING>
-<STRING id="__cityattendant" select="any-1" predefine="temp=$__citygofttype">$__cityattendant</STRING>
+<STRING id="__cityattendant" select="any-1" predefine="temp=$__citygovttype">$__cityattendant</STRING>
 <STRING id="__citypersontype" select="any-1" predefine="temp=$__citygovttype">$__citypersontype</STRING>
 
 <STRING id="any_cheap_metal" select="any-1"><string>iron</string><string>lead</string><string>bronze</string><string>tin</string><string>brass</string></STRING>

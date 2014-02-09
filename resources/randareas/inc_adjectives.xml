@@ -431,6 +431,26 @@
 	<STRING>dark purple</STRING>
 </STRING>
 
+<STRING id="adj_primary_color" select="any-1">
+	<STRING>white</STRING>
+	<STRING>green</STRING>
+	<STRING>blue</STRING>
+	<STRING>red</STRING>
+	<STRING>yellow</STRING>
+	<STRING>cyan</STRING>
+	<STRING>purple</STRING>
+</STRING>
+
+<STRING id="adj_primary_colored_color" select="any-1">
+	<STRING>^wwhite^?</STRING>
+	<STRING>^ggreen^?</STRING>
+	<STRING>^bblue^?</STRING>
+	<STRING>^rred^?</STRING>
+	<STRING>^yyellow^?</STRING>
+	<STRING>^ccyan^?</STRING>
+	<STRING>^ppurple^?</STRING>
+</STRING>
+
 <STRING id="adj_colored_color" select="any-1">
 	<STRING>^wwhite^?</STRING>
 	<STRING>^ggreen^?</STRING>
