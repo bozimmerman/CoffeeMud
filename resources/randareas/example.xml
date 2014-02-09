@@ -543,8 +543,9 @@ Required details: "id" "value"
 			</STRING>
 		</STRING>
 		<EXIT class="Open" />
+		<MOB condition="$__defined_forest_faerie&lt;1" define="__defined_forest_faerie+=1" like="forest_faerie_mob" />
 		<MOB condition="1?2=1" select="any-1" insert="forest_mobs">
-			<MOB class="genmob" level="$level_range + 3" gender="$anygender" race="Faerie">
+			<MOB id="forest_faerie_mob" class="genmob" level="$level_range + 3" gender="$anygender" race="Faerie">
 				<NAME>(a(n)) $adj_primary_colored_color faerie</NAME>
 				<DISPLAY select="pick-1">
 					<DISPLAY pickweight="1">$mob_name flitters around you.</DISPLAY>
