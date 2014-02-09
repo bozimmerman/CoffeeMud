@@ -301,7 +301,12 @@ public class MWFileCache implements FileCacheManager
 			if((!pageFile.exists()) || (!pageFile.canRead()))
 			{
 				if(cacheActive)
-					cache.put(fileName, new FileCacheEntry(null,0));
+				{
+					synchronized(cache) 
+					{
+						cache.put(fileName, new FileCacheEntry(null,0));
+					}
+				}
 				throw HTTPException.standardException(HTTPStatus.S404_NOT_FOUND);
 			}
 			boolean cacheActiveThisFile=cacheActive;
@@ -326,7 +331,12 @@ public class MWFileCache implements FileCacheManager
 			{
 				logger.throwing("", "", e);
 				if(cacheActiveThisFile)
-					cache.put(fileName, new FileCacheEntry(null,0));
+				{
+					synchronized(cache) 
+					{
+						cache.put(fileName, new FileCacheEntry(null,0));
+					}
+				}
 				// not quite sure how we could get here.
 				throw HTTPException.standardException(HTTPStatus.S404_NOT_FOUND);
 			}
@@ -334,7 +344,12 @@ public class MWFileCache implements FileCacheManager
 			{
 				logger.throwing("", "", e);
 				if(cacheActiveThisFile)
-					cache.put(fileName, new FileCacheEntry(null,0));
+				{
+					synchronized(cache) 
+					{
+						cache.put(fileName, new FileCacheEntry(null,0));
+					}
+				}
 				throw HTTPException.standardException(HTTPStatus.S404_NOT_FOUND);
 			}
 		}
