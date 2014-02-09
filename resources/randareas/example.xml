@@ -557,7 +557,6 @@ Required details: "id" "value"
 					<ABILITY condition="1?3=1" class="Skill_Trip" />
 					<ABILITY condition="1?3=1" class="Skill_Dirt" />
 					<ABILITY condition="1?3=1" class="Skill_Disarm" />
-					<ABILITY condition="1?3=1" class="Spell_MagicMissile" />
 					<ABILITY condition="1?3=1" class="Spell_FaerieFire" />
 					<ABILITY condition="1?3=1" class="Chant_Barkskin" />
 					<ABILITY condition="1?3=1" class="Chant_Thorns" />
@@ -569,8 +568,18 @@ Required details: "id" "value"
 					<BEHAVIOR CLASS="Mobile" />
 					<BEHAVIOR CLASS="BrotherHelper" />
 				</BEHAVIOR>
-				<ITEM>
+				<ITEM select="all">
+					<ITEM class="GenArmor" LEVEL="$mob_level">
+						<NAME>faerie garb</NAME>
+						<DISPLAY>$item_name has been left here"</DISPLAY>
+						<MATERIAL>COTTON</MATERIAL>
+						<PROPERWORN>TORSO,LEGS</PROPERWORN><WORNAND>true</WORNAND>
+					</ITEM>
+					<ITEM class="GenWand" name="a faerie wand" level="$mob_level" readabletext="$wand_faerie_spell_choices" />
 					<ITEM select="any-2" insert="dungeon_treasure_items" />
+					<STRING id="wand_faerie_spell_choices" select="any-1">
+						<STRING>Spell_MagicMissile</STRING><STRING>Spell_Sleep</STRING><STRING>Spell_BurningHands</STRING><STRING>Spell_Frost</STRING><STRING>Spell_AcidArrow</STRING>
+					</STRING>
 				</ITEM>
 			</MOB>
 		</MOB>
@@ -968,7 +977,7 @@ Required details: "id" "value"
 					<NAME select="any-1"><NAME>a clothes</NAME></NAME>
 					<DISPLAY>$item_name has been left here"</DISPLAY>
 					<MATERIAL>COTTON</MATERIAL>
-					<PROPERWORN>TORSO,LEGS</PROPERWORN>
+					<PROPERWORN>TORSO,LEGS</PROPERWORN><WORNAND>true</WORNAND>
 				</ITEM>
 			</MOB>
 			<ITEM select="all">
@@ -1023,7 +1032,7 @@ Required details: "id" "value"
 					<NAME select="any-1"><NAME>a cook`s apron</NAME></NAME>
 					<DISPLAY>$item_name has been left here"</DISPLAY>
 					<MATERIAL>COTTON</MATERIAL>
-					<PROPERWORN>TORSO,LEGS</PROPERWORN>
+					<PROPERWORN>TORSO,LEGS</PROPERWORN><WORNAND>true</WORNAND>
 				</ITEM>
 				<ITEM class="GenWeapon" LEVEL="$mob_level">
 					<NAME>a rolling pin</NAME>
@@ -1095,7 +1104,7 @@ Required details: "id" "value"
 					<NAME select="any-1"><NAME>a bartender`s apron</NAME></NAME>
 					<DISPLAY>$item_name has been left here"</DISPLAY>
 					<MATERIAL>COTTON</MATERIAL>
-					<PROPERWORN>TORSO,LEGS</PROPERWORN>
+					<PROPERWORN>TORSO,LEGS</PROPERWORN><WORNAND>true</WORNAND>
 				</ITEM>
 				<ITEM class="GenWeapon" LEVEL="$mob_level">
 					<NAME>an lime peeler</NAME>
@@ -1162,7 +1171,7 @@ Required details: "id" "value"
 						<NAME select="any-1"><NAME>a conservative suit</NAME></NAME>
 						<DISPLAY>$item_name has been left here"</DISPLAY>
 						<MATERIAL>COTTON</MATERIAL>
-						<PROPERWORN>TORSO,LEGS</PROPERWORN>
+						<PROPERWORN>TORSO,LEGS</PROPERWORN><WORNAND>true</WORNAND>
 					</ITEM>
 					<ITEM class="GenWeapon" LEVEL="$mob_level" WORNAND="true">
 						<NAME>a broom</NAME>
@@ -1268,7 +1277,7 @@ Required details: "id" "value"
 					<NAME select="any-1"><NAME>a healer`s robe</NAME></NAME>
 					<DISPLAY>$item_name has been left here"</DISPLAY>
 					<MATERIAL>COTTON</MATERIAL>
-					<PROPERWORN>TORSO,LEGS</PROPERWORN>
+					<PROPERWORN>TORSO,LEGS</PROPERWORN><WORNAND>true</WORNAND>
 				</ITEM>
 				<ITEM class="GenWeapon" LEVEL="$mob_level">
 					<NAME>a holy sceptor</NAME>
@@ -1384,7 +1393,7 @@ Required details: "id" "value"
 					<NAME select="any-1"><NAME>(a(n)) apron</NAME></NAME>
 					<DISPLAY>$item_name has been left here"</DISPLAY>
 					<MATERIAL>COTTON</MATERIAL>
-					<PROPERWORN>WAIST,LEGS</PROPERWORN>
+					<PROPERWORN>WAIST,LEGS</PROPERWORN><WORNAND>true</WORNAND>
 					<LAYER>4</LAYER>
 				</ITEM>
 				<ITEM class="GenWeapon" LEVEL="$mob_level">
@@ -1578,7 +1587,7 @@ Required details: "id" "value"
 					<NAME select="any-1"><NAME>a stablehand`s uniform</NAME></NAME>
 					<DISPLAY>$item_name has been left here"</DISPLAY>
 					<MATERIAL>COTTON</MATERIAL>
-					<PROPERWORN>TORSO,LEGS</PROPERWORN>
+					<PROPERWORN>TORSO,LEGS</PROPERWORN><WORNAND>true</WORNAND>
 				</ITEM>
 				<ITEM class="GenWeapon" LEVEL="$mob_level">
 					<NAME>a shovel</NAME>
@@ -1655,7 +1664,7 @@ Required details: "id" "value"
 					<NAME select="any-1"><NAME>a nanny`s uniform</NAME></NAME>
 					<DISPLAY>$item_name has been left here"</DISPLAY>
 					<MATERIAL>COTTON</MATERIAL>
-					<PROPERWORN>TORSO,LEGS</PROPERWORN>
+					<PROPERWORN>TORSO,LEGS</PROPERWORN><WORNAND>true</WORNAND>
 				</ITEM>
 				<ITEM class="GenWeapon" LEVEL="$mob_level">
 					<NAME>a ruler</NAME>
@@ -1730,7 +1739,7 @@ Required details: "id" "value"
 					<NAME select="any-1"><NAME>a conservative uniform</NAME></NAME>
 					<DISPLAY>$item_name has been left here"</DISPLAY>
 					<MATERIAL>COTTON</MATERIAL>
-					<PROPERWORN>TORSO,LEGS</PROPERWORN>
+					<PROPERWORN>TORSO,LEGS</PROPERWORN><WORNAND>true</WORNAND>
 				</ITEM>
 				<ITEM class="GenWeapon" LEVEL="$mob_level">
 					<NAME>a money clip</NAME>
@@ -1789,7 +1798,7 @@ Required details: "id" "value"
 					<NAME select="any-1"><NAME>a ${l:__chieftype}`s uniform</NAME></NAME>
 					<DISPLAY>$item_name has been left here"</DISPLAY>
 					<MATERIAL>COTTON</MATERIAL>
-					<PROPERWORN>TORSO,LEGS</PROPERWORN>
+					<PROPERWORN>TORSO,LEGS</PROPERWORN><WORNAND>true</WORNAND>
 				</ITEM>
 				<ITEM class="GenWeapon" LEVEL="$mob_level">
 					<NAME>a gavel</NAME>
@@ -1864,7 +1873,7 @@ Required details: "id" "value"
 					<NAME select="any-1"><NAME>a colonel`s uniform</NAME></NAME>
 					<DISPLAY>$item_name has been left here"</DISPLAY>
 					<MATERIAL>COTTON</MATERIAL>
-					<PROPERWORN>TORSO,LEGS</PROPERWORN>
+					<PROPERWORN>TORSO,LEGS</PROPERWORN><WORNAND>true</WORNAND>
 				</ITEM>
 				<ITEM class="GenWeapon" LEVEL="$mob_level">
 					<NAME>an auction pointer</NAME>
@@ -1943,7 +1952,7 @@ Required details: "id" "value"
 					<NAME select="any-1"><NAME>(a(n)) postal uniform</NAME></NAME>
 					<DISPLAY>$item_name has been left here"</DISPLAY>
 					<MATERIAL>COTTON</MATERIAL>
-					<PROPERWORN>TORSO,LEGS</PROPERWORN>
+					<PROPERWORN>TORSO,LEGS</PROPERWORN><WORNAND>true</WORNAND>
 				</ITEM>
 				<ITEM class="GenWeapon" LEVEL="$mob_level">
 					<NAME>(a(n)) letter opener</NAME>
@@ -2019,7 +2028,7 @@ Required details: "id" "value"
 					<NAME select="any-1"><NAME>a conservative uniform</NAME></NAME>
 					<DISPLAY>$item_name has been left here"</DISPLAY>
 					<MATERIAL>COTTON</MATERIAL>
-					<PROPERWORN>TORSO,LEGS</PROPERWORN>
+					<PROPERWORN>TORSO,LEGS</PROPERWORN><WORNAND>true</WORNAND>
 				</ITEM>
 				<ITEM class="GenWeapon" LEVEL="$mob_level">
 					<NAME>a money clip</NAME>
@@ -2121,7 +2130,7 @@ Required details: "id" "value"
 					<NAME select="any-1"><NAME>a simple robe</NAME></NAME>
 					<DISPLAY>$item_name has been left here"</DISPLAY>
 					<MATERIAL>COTTON</MATERIAL>
-					<PROPERWORN>TORSO,LEGS</PROPERWORN>
+					<PROPERWORN>TORSO,LEGS</PROPERWORN><WORNAND>true</WORNAND>
 				</ITEM>
 				<ITEM class="GenWeapon" LEVEL="$mob_level">
 					<NAME>a ruler</NAME>
@@ -2736,7 +2745,7 @@ Required details: "id" "value"
 					</ITEM>
 					<ITEM pickweight="1" class="GenArmor" LEVEL="$mob_level">
 						<NAME select="any-1"><NAME>(a(n)) $adj_fancy sparkling robe</NAME><NAME>(a(n)) $adj_fancy robe</NAME></NAME>
-						<DISPLAY>$item_name has been left here"</DISPLAY><MATERIAL>LEATHER</MATERIAL><PROPERWORN>TORSO,LEGS,ARMS</PROPERWORN>
+						<DISPLAY>$item_name has been left here"</DISPLAY><MATERIAL>LEATHER</MATERIAL><PROPERWORN>TORSO,LEGS,ARMS</PROPERWORN><WORNAND>true</WORNAND>
 					</ITEM>
 				</ITEM>
 				<ITEM select="pick-1">
@@ -3279,7 +3288,7 @@ Required details: "id" "value"
 			<NAME select="any-1"><NAME>a ${l:__officertype}`s uniform</NAME></NAME>
 			<DISPLAY>$item_name has been left here"</DISPLAY>
 			<MATERIAL>COTTON</MATERIAL>
-			<PROPERWORN>TORSO,LEGS</PROPERWORN>
+			<PROPERWORN>TORSO,LEGS</PROPERWORN><WORNAND>true</WORNAND>
 		</ITEM>
 		<ITEM class="GenWeapon" LEVEL="$mob_level">
 			<NAME>a ${l:__officertype} night stick</NAME>
@@ -3308,7 +3317,7 @@ Required details: "id" "value"
 			<NAME select="any-1"><NAME>a street sweeper`s uniform</NAME></NAME>
 			<DISPLAY>$item_name has been left here"</DISPLAY>
 			<MATERIAL>COTTON</MATERIAL>
-			<PROPERWORN>TORSO,LEGS</PROPERWORN>
+			<PROPERWORN>TORSO,LEGS</PROPERWORN><WORNAND>true</WORNAND>
 		</ITEM>
 		<ITEM class="GenWeapon" LEVEL="$mob_level">
 			<NAME>a broom</NAME>
@@ -3553,8 +3562,7 @@ Required details: "id" "value"
 				<ITEM class="GenArmor" LEVEL="$mob_level">
 					<NAME>(a(n)) $adj_colored_color prisoner`s jumpsuit</NAME>
 					<DISPLAY>$item_name has been left here"</DISPLAY><MATERIAL>COTTON</MATERIAL>
-					<PROPERWORN>TORSO,ARMS,LEGS</PROPERWORN>
-					<WORNAND>true</WORNAND>
+					<PROPERWORN>TORSO,ARMS,LEGS</PROPERWORN><WORNAND>true</WORNAND>
 				</ITEM>
 				<ITEM select="pick-1">
 					<ITEM pickweight="1" class="GenWeapon" LEVEL="$mob_level">
