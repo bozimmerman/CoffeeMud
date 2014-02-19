@@ -520,12 +520,15 @@ Required details: "id" "value"
 
 <ROOM id="leaf_rooms" select="any-1" condition="$roomtag_nodetype='leaf'">
 	<ROOM class="Road" id="forest_interior_room" condition="$theme='forest' or $theme='random'">
-		<TITLE>(a(n)) $_forest_path_name</TITLE>
+		<TITLE>
+			<TITLE>$forest_path_prefix $forest_nouns</TITLE>
+			<TITLE>$adj_forestwords $forest_path_prefix $forest_nouns</TITLE>
+		</TITLE>
 		<DESCRIPTION>$forest_interior_desc</DESCRIPTION>
 		<STRING id="forest_interior_desc" select="all">
 			<STRING select="any-1" action="PREPEND">
-				<STRING>You are lost in (a(n)) ${l:_forest_path_name}. </STRING>
-				<STRING>You are deep in (a(n)) ${l:_forest_path_name}. </STRING>
+				<STRING>You are lost in ${l:room_title}. </STRING>
+				<STRING>You are deep in ${l:room_title}. </STRING>
 				<STRING>The ${l:_forest_path_name} surrounds you. </STRING>
 				<STRING>The ${l:_forest_path_name} is all around you. </STRING>
 			</STRING>

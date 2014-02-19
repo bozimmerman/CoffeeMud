@@ -504,9 +504,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		return val;
 	}
 
-	private StringBuffer getResourceFileData(String named)
+	private StringBuffer getResourceFileData(String named, boolean showErrors)
 	{
-		if(getQuest("*")!=null) return getQuest("*").getResourceFileData(named);
+		if(getQuest("*")!=null) return getQuest("*").getResourceFileData(named, showErrors);
 		return new CMFile(Resources.makeFileResourceName(named),null,CMFile.FLAG_LOGERRORS).text();
 	}
 
@@ -588,14 +588,14 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					parse=parse.substring(z+1);
 					if((filenames!=null)&&(!filenames.contains(filename))) 
 						filenames.addElement(filename);
-					results.append(parseLoads(getResourceFileData(filename).toString(),depth+1,filenames,null));
+					results.append(parseLoads(getResourceFileData(filename, true).toString(),depth+1,filenames,null));
 				}
 				else
 				{
 					String filename=parse.substring(y+5).trim();
 					if((filenames!=null)&&(!filenames.contains(filename))) 
 						filenames.addElement(filename);
-					results.append(parseLoads(getResourceFileData(filename).toString(),depth+1,filenames,null));
+					results.append(parseLoads(getResourceFileData(filename, true).toString(),depth+1,filenames,null));
 					break;
 				}
 			}
@@ -773,7 +773,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		filename=filename.trim();
 		List monsters=(List)Resources.getResource("RANDOMMONSTERS-"+filename);
 		if(monsters!=null) return monsters;
-		StringBuffer buf=getResourceFileData(filename);
+		StringBuffer buf=getResourceFileData(filename, true);
 		String thangName="null";
 		Room R=CMLib.map().roomLocation(scripted);
 		if(R!=null)
@@ -812,7 +812,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		filename=filename.trim();
 		List items=(List)Resources.getResource("RANDOMITEMS-"+filename);
 		if(items!=null) return items;
-		StringBuffer buf=getResourceFileData(filename);
+		StringBuffer buf=getResourceFileData(filename, true);
 		String thangName="null";
 		Room R=CMLib.map().roomLocation(scripted);
 		if(R!=null)

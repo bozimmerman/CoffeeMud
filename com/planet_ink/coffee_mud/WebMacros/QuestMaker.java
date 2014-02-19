@@ -793,7 +793,7 @@ public class QuestMaker extends StdWebMacro
 					httpReq.addFakeUrlParameter("QMPAGEERRORS","Unable to save your quest.  Please consult the log.");
 					return "";
 				}
-				Q.setScript("LOAD=quests/"+name+".quest");
+				Q.setScript("LOAD=quests/"+name+".quest",true);
 				if((Q.name().trim().length()==0)||(Q.duration()<0))
 				{
 					httpReq.addFakeUrlParameter("QMPAGEERRORS","Unable to create your quest.  Please consult the log.");

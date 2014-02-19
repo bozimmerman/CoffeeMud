@@ -183,7 +183,8 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 
 	// the rest of the script.  This may be semicolon-separated instructions,
 	// or a LOAD command followed by the quest script path.
-	public void setScript(String parm){
+	public boolean setScript(String parm, boolean showErrors)
+	{
 		rawScriptParameter=parm;
 		name="";
 		author="";
@@ -198,8 +199,12 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		runLevel=-1;
 		internalFiles=null;
 		durable=false;
-		setVars(parseLoadScripts(parm,new Vector(),new Vector()),0);
+		Vector questScripts=parseLoadScripts(parm,new Vector(),new Vector(),showErrors);
+		if(questScripts.size()==0)
+			return false;
+		setVars(questScripts,0);
 		if(isCopy()) spawn=SPAWN_NO;
+		return true;
 	}
 	public String script(){return rawScriptParameter;}
 
@@ -231,14 +236,16 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		}
 	}
 
-	public StringBuffer getResourceFileData(String named)
+	public StringBuffer getResourceFileData(String named, boolean showErrors)
 	{
 		int index=-1;
-		if(internalFiles!=null){
+		if(internalFiles!=null)
+		{
 			index=internalFiles.indexOf(named.toUpperCase().trim());
-			if(index>=0) return (StringBuffer)internalFiles.elementAt(index,2);
+			if(index>=0) 
+				return (StringBuffer)internalFiles.elementAt(index,2);
 		}
-		StringBuffer buf=new CMFile(Resources.makeFileResourceName(named),null,CMFile.FLAG_LOGERRORS).text();
+		StringBuffer buf=new CMFile(Resources.makeFileResourceName(named),null,showErrors?CMFile.FLAG_LOGERRORS:0).text();
 		return buf;
 	}
 
@@ -2173,7 +2180,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 							errorOccurred(q,isQuiet,"Quest '"+name()+"', no IMPORT MOBS file.");
 							break;
 						}
-						StringBuffer buf=getResourceFileData(CMParms.combine(p,2));
+						StringBuffer buf=getResourceFileData(CMParms.combine(p,2), true);
 						if((buf==null)||(buf.length()<20))
 						{
 							errorOccurred(q,isQuiet,"Quest '"+name()+"',Unknown XML file: '"+CMParms.combine(p,2)+"' for '"+name()+"'.");
@@ -2205,7 +2212,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 							errorOccurred(q,isQuiet,"Quest '"+name()+"', no import filename!");
 							break;
 						}
-						StringBuffer buf=getResourceFileData(CMParms.combine(p,2));
+						StringBuffer buf=getResourceFileData(CMParms.combine(p,2), true);
 						if((buf==null)||(buf.length()<20))
 						{
 							errorOccurred(q,isQuiet,"Quest '"+name()+"',Unknown XML file: '"+CMParms.combine(p,2)+"' for '"+name()+"'.");
@@ -2240,7 +2247,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 				{
 					boolean error=q.error;
 					List args2=new Vector();
-					parseQuestScriptWArgs(parseLoadScripts(s,args,args2),args2);
+					parseQuestScriptWArgs(parseLoadScripts(s,args,args2,true),args2);
 					if((!error)&&(q.error))
 						break;
 				}
@@ -2869,7 +2876,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		DefaultQuest Q2=(DefaultQuest)CMClass.getCommon("DefaultQuest");
 		Q2.setCopy(true);
 		Q2.setVars(baseVars,0);
-		Q2.setScript(script);
+		Q2.setScript(script,true);
 		CMLib.quests().addQuest(Q2);
 		if(reTime)
 		{
@@ -2911,7 +2918,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 
 		List args=new Vector();
 		questState=new QuestState();
-		Vector baseScript=parseLoadScripts(script(),new Vector(),args);
+		Vector baseScript=parseLoadScripts(script(),new Vector(),args,true);
 		if((!isCopy())&&(getSpawn()!=SPAWN_NO))
 		{
 			if(getSpawn()==SPAWN_FIRST)
@@ -3179,7 +3186,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		setDuration(-1);
 
 		List args=new Vector();
-		Vector script=parseLoadScripts(script(),new Vector(),args);
+		Vector script=parseLoadScripts(script(),new Vector(),args,true);
 		try{
 			setVars(script,questState.lastLine);
 			parseQuestScript(script,args,questState.lastLine);
@@ -3245,7 +3252,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		cleanQuestStep();
 		stoppingQuest=true;
 		if(!isCopy())
-			setScript(script()); // causes wait times/name to reload
+			setScript(script(),true); // causes wait times/name to reload
 		enterDormantState();
 		stoppingQuest=false;
 	}
@@ -3901,8 +3908,9 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		return false;
 	}
 
-	public Vector parseLoadScripts(String text, List oldArgs, List args)
+	public Vector parseLoadScripts(String text, List oldArgs, List args, boolean showErrors)
 	{
+		Vector script=new Vector();
 		if(text.trim().toUpperCase().startsWith("LOAD="))
 		{
 			String filename=null;
@@ -3918,8 +3926,9 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 						Object O=getObjectIfSpecified(parms,oldArgs,0,1);
 						args.add((O==null)?"":O);
 					}
-					StringBuffer buf=getResourceFileData(filename);
-					if(buf!=null) text=buf.toString();
+					StringBuffer buf=getResourceFileData(filename,showErrors);
+					if(buf!=null)
+						text=buf.toString();
 				}catch(CMException ex){
 					Log.errOut("DefaultQuest","'"+text+"' either has a space in the filename, or unknown parms.");
 				}
@@ -3954,7 +3963,6 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 				}
 			}
 		}
-		Vector script=new Vector();
 		Vector V=script;
 		while(text.length()>0)
 		{

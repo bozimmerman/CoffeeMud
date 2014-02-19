@@ -721,7 +721,7 @@ public class Modify extends StdCommand
 						newScript=CMLib.genEd().prompt(mob,oldScript,++showNumber,showFlag,"Script",false,false,CMLib.help().getHelpText("QUESTS",mob,true).toString(),null,null);
 						if(!newScript.equals(oldScript))
 						{
-							Q.setScript(newScript);
+							Q.setScript(newScript,true);
 							boolean revert=false;
 							if(Q.name().length()==0)
 							{
@@ -745,7 +745,7 @@ public class Modify extends StdCommand
 								}
 							}
 							if(revert)
-								Q.setScript(oldScript);
+								Q.setScript(oldScript,true);
 							else
 								CMLib.quests().save();
 						}

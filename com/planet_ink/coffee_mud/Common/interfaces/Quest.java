@@ -154,8 +154,9 @@ public interface Quest extends Tickable, CMCommon, Modifiable
 	 * script path.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#script()
 	 * @param parm the actual quest script
+	 * @param showErrors true to report file errors, false otherwise
 	 */
-	public void setScript(String parm);
+	public boolean setScript(String parm, boolean showErrors);
 	
 	/**
 	 * Accepts a pre-parsed quest script and extracts certain
@@ -280,9 +281,10 @@ public interface Quest extends Tickable, CMCommon, Modifiable
 	 * and return that one instead.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Quest
 	 * @param named the name of the resource path file to return
+	 * @param showErrors true to report file errors, false otherwise
 	 * @return the text of the file, if found.
 	 */
-	public StringBuffer getResourceFileData(String named);
+	public StringBuffer getResourceFileData(String named, boolean showErrors);
 	/**
 	 * Returns the index of a room, mob, or item of the given name
 	 * in use by this quest.

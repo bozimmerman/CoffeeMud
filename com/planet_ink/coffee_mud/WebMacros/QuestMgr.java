@@ -178,10 +178,10 @@ public class QuestMgr extends StdWebMacro
 		{
 			redirectF.saveText(script+postFix);
 			script=unRedirectedScript;
-			Q.setScript(Q.script());
+			Q.setScript(Q.script(),true);
 		}
 		else
-			Q.setScript(script+postFix);
+			Q.setScript(script+postFix,true);
 		if(Q.name().length()==0)
 			return "You must specify a VALID quest string.  This one contained no name.";
 		else

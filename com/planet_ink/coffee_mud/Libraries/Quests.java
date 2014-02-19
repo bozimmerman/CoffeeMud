@@ -145,7 +145,7 @@ public class Quests extends StdLibrary implements QuestManager
 				vF.saveRaw(O);
 			}
 			Q=(Quest)CMClass.getCommon("DefaultQuest");
-			Q.setScript(holidayDefinition);
+			Q.setScript(holidayDefinition,true);
 			addQuest(Q);
 			CMLib.database().DBUpdateQuest(Q);
 			Q=fetchQuest("holidays");
@@ -295,7 +295,7 @@ public class Quests extends StdLibrary implements QuestManager
 			CMFile F=new CMFile(Resources.makeFileResourceName(holidayFilename),null);
 			F.saveText(getDefaultHoliData(named,areaName),true);
 			Quest Q=fetchQuest("holidays");
-			if(Q!=null) Q.setScript(holidayDefinition);
+			if(Q!=null) Q.setScript(holidayDefinition,true);
 		}
 		return "";
 	}
@@ -344,7 +344,7 @@ public class Quests extends StdLibrary implements QuestManager
 		CMFile F=new CMFile(Resources.makeFileResourceName(holidayFilename),null);
 		F.saveText(buf);
 		Quest Q=fetchQuest("holidays");
-		if(Q!=null) Q.setScript(holidayDefinition);
+		if(Q!=null) Q.setScript(holidayDefinition,true);
 		return "Holiday deleted.";
 	}
 
@@ -765,7 +765,7 @@ public class Quests extends StdLibrary implements QuestManager
 		CMFile F=new CMFile(Resources.makeFileResourceName(holidayFilename),null);
 		F.saveText(buf);
 		Quest Q=fetchQuest("holidays");
-		if(Q!=null) Q.setScript(holidayDefinition);
+		if(Q!=null) Q.setScript(holidayDefinition,true);
 		return "";
 	}
 	
@@ -1850,7 +1850,7 @@ public class Quests extends StdLibrary implements QuestManager
 				Quest Q=(Quest)CMClass.getCommon("DefaultQuest");
 				CMFile newQF=new CMFile(Resources.makeFileResourceName("quests/"+name+".quest"),mob,CMFile.FLAG_LOGERRORS);
 				newQF.saveText(script);
-				Q.setScript("LOAD=quests/"+name+".quest");
+				Q.setScript("LOAD=quests/"+name+".quest",true);
 				if((Q.name().trim().length()==0)||(Q.duration()<0))
 				{
 					mob.tell("You must specify a VALID quest string.  This one contained errors.  Try AHELP QUESTS.");

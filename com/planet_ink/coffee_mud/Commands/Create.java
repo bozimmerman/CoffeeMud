@@ -1175,7 +1175,7 @@ public class Create extends StdCommand
 				String script=CMParms.combine(commands,2);
 				Quest Q=(Quest)CMClass.getCommon("DefaultQuest");
 				Q.setAuthor(mob.Name());
-				Q.setScript(script);
+				Q.setScript(script,true);
 				if((Q.name().trim().length()==0)||(Q.duration()<0))
 				{
 					mob.tell("You must specify a VALID quest string.  This one contained errors.  Try AHELP QUESTS.");

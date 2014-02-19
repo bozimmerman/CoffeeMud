@@ -54,11 +54,23 @@ public class QuestLoader
 				String questWinners=DBConnections.getRes(R,"CMQWINNS");
 				long flags=DBConnections.getLongRes(R, "CMQFLAGS");
 				Quest Q=(Quest)CMClass.getCommon("DefaultQuest");
-				Q.setScript(questScript);
-				Q.setWinners(questWinners);
 				Q.setFlags(flags);
+				boolean loaded=Q.setScript(questScript,!Q.suspended());
+				Q.setFlags(flags);
+				Q.setWinners(questWinners);
 				if(Q.name().length()==0)
 					Q.setName(questName);
+				if(!loaded)
+				{
+					if(!Q.suspended())
+					{
+						Log.sysOut("QuestLoader","Unable to load Quest '"+questName+"'.  Suspending.");
+						Q.setSuspended(true);
+					}
+					if(CMLib.quests().fetchQuest(Q.name())==null)
+						CMLib.quests().addQuest(Q);
+					continue;
+				}
 				if(Q.name().length()==0)
 					Log.sysOut("QuestLoader","Unable to load Quest '"+questName+"' due to blank name.");
 				else
