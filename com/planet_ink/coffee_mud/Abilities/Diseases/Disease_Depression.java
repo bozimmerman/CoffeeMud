@@ -108,7 +108,8 @@ public class Disease_Depression extends Disease
 			Command C=CMClass.getCommand("Sleep");
 			try{C.execute(mob,new XVector<String>("Sleep"),Command.METAFLAG_FORCED);}catch(Exception e){}
 		}
-		if(mob.curState().getFatigue()<CharState.FATIGUED_MILLIS)
+		if((mob.curState().getFatigue()<CharState.FATIGUED_MILLIS)
+		&&(mob.maxState().getFatigue()>Long.MIN_VALUE/2))
 			mob.curState().setFatigue(CharState.FATIGUED_MILLIS);
 		return true;
 	}

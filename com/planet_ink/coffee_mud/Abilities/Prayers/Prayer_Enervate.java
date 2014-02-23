@@ -14,8 +14,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
-
 import java.util.*;
 
 /* 
@@ -66,7 +64,8 @@ public class Prayer_Enervate extends Prayer
 				if(msg.value()<=0)
 				{
 					int harming=CMLib.dice().roll(10,adjustedLevel(mob,asLevel),50);
-					if(target.curState().getFatigue()<=CharState.FATIGUED_MILLIS)
+					if((target.curState().getFatigue()<=CharState.FATIGUED_MILLIS)
+					&&(target.maxState().getFatigue()>Long.MIN_VALUE/2))
 						target.curState().setFatigue(CharState.FATIGUED_MILLIS+1);
 					target.curState().adjMovement(-harming,target.maxState());
 					target.tell("You feel fatigued!");

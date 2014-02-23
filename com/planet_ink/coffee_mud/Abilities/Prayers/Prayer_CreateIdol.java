@@ -14,7 +14,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /* 
@@ -72,7 +71,8 @@ public class Prayer_CreateIdol extends Prayer
 		super.affectCharState(aff,affectableState);
 		if((affected instanceof Item)&&(((Item)affected).container()==null))
 		{
-			aff.curState().setFatigue(CharState.FATIGUED_MILLIS+10);
+			if(aff.maxState().getFatigue()>Long.MIN_VALUE/2)
+				aff.curState().setFatigue(CharState.FATIGUED_MILLIS+10);
 			affectableState.setMovement(20);
 		}
 	}

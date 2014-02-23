@@ -3038,9 +3038,9 @@ public class StdMOB implements MOB
 				}
 
 				tickStatus = Tickable.STATUS_OTHER;
-				if (!isMonster)
+				if((!isMonster)&&(maxState().getFatigue()>Long.MIN_VALUE/2))
 				{
-					if (CMLib.flags().isSleeping(this)) 
+					if (CMLib.flags().isSleeping(this))
 						curState().adjFatigue(-CharState.REST_PER_SLEEP, maxState());
 					else // rest/sit isn't here because fatigue is sleepiness, not exhaustion per se
 					if (!CMSecurity.isAllowed(this, location(), CMSecurity.SecFlag.IMMORT))

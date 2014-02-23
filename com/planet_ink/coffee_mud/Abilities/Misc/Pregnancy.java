@@ -16,8 +16,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
-
 import java.util.*;
 
 /*
@@ -361,7 +359,8 @@ public class Pregnancy extends StdAbility implements HealthCondition
 					else
 					{
 						// pregnant folk get fatigued more often.
-						mob.curState().adjFatigue(monthsRemaining*100,mob.maxState());
+						if(mob.maxState().getFatigue()>Long.MIN_VALUE/2)
+							mob.curState().adjFatigue(monthsRemaining*100,mob.maxState());
 						if((monthsRemaining<=1)&&(CMLib.dice().rollPercentage()==1))
 						{
 							if(CMLib.flags().isSleeping(mob))

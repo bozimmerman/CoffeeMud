@@ -14,7 +14,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /* 
@@ -80,7 +79,8 @@ public class Spell_Exhaustion extends Spell
 				{
 					target.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<T-NAME> become(s) exhausted!");
 					target.curState().setMovement(0);
-					target.curState().setFatigue(target.curState().getFatigue()+CharState.FATIGUED_MILLIS);
+					if(target.maxState().getFatigue()>Long.MIN_VALUE/2)
+						target.curState().setFatigue(target.curState().getFatigue()+CharState.FATIGUED_MILLIS);
 				}
 			}
 		}

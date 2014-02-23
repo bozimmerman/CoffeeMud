@@ -14,7 +14,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /* 
@@ -68,7 +67,8 @@ public class Chant_Rockfeet extends Chant
 			if(CMLib.dice().rollPercentage()>(msg.source().charStats().getStat(CharStats.STAT_STRENGTH)*3))
 			{
 				msg.source().curState().adjMovement(-1,msg.source().maxState());
-				msg.source().curState().adjFatigue(CMProps.getTickMillis(),msg.source().maxState());
+				if(msg.source().maxState().getFatigue()>Long.MIN_VALUE/2)
+					msg.source().curState().adjFatigue(CMProps.getTickMillis(),msg.source().maxState());
 			}
 		}
 		return;

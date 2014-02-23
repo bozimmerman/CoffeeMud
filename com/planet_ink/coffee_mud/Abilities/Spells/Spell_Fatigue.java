@@ -14,7 +14,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -81,7 +80,8 @@ public class Spell_Fatigue extends Spell
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
-					target.curState().adjFatigue(CharState.FATIGUED_MILLIS+((mob.phyStats().level()) * 5l * CMProps.getTickMillis()),target.maxState());
+					if(target.maxState().getFatigue()>Long.MIN_VALUE/2)
+						target.curState().adjFatigue(CharState.FATIGUED_MILLIS+((mob.phyStats().level()) * 5l * CMProps.getTickMillis()),target.maxState());
 					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> feel(s) incredibly fatigued!");
 				}
 			}

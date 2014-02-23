@@ -16,8 +16,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
-
 import java.lang.ref.WeakReference;
 import java.util.*;
 
@@ -293,8 +291,10 @@ public class StdRace implements Race
 				&&(fertile())
 				&&(msg.source().fetchWornItems(Wearable.WORN_LEGS|Wearable.WORN_WAIST,(short)-2048,(short)0).size()==0))
 				{
-					msg.source().curState().adjFatigue(CharState.FATIGUED_MILLIS,msg.source().maxState());
-					myChar.curState().adjFatigue(CharState.FATIGUED_MILLIS,myChar.maxState());
+					if(msg.source().maxState().getFatigue()>Long.MIN_VALUE/2)
+						msg.source().curState().adjFatigue(CharState.FATIGUED_MILLIS,msg.source().maxState());
+					if(myChar.maxState().getFatigue()>Long.MIN_VALUE/2)
+						myChar.curState().adjFatigue(CharState.FATIGUED_MILLIS,myChar.maxState());
 					Ability A=CMClass.getAbility("Spell_Blindness");
 					if(A!=null) A.invoke(myChar,myChar,true,myChar.phyStats().level());
 				}
@@ -323,14 +323,16 @@ public class StdRace implements Race
 						msg.source().tell("You are exhausted!");
 					else
 					{
-						msg.source().curState().adjFatigue(CharState.FATIGUED_MILLIS,msg.source().maxState());
+						if(msg.source().maxState().getFatigue()>Long.MIN_VALUE/2)
+							msg.source().curState().adjFatigue(CharState.FATIGUED_MILLIS,msg.source().maxState());
 						msg.source().curState().adjMovement(-msg.source().maxState().getMovement()/2, msg.source().maxState());
 					}
 					if(meExhausted)
 						myChar.tell("You are exhausted!");
 					else
 					{
-						myChar.curState().adjFatigue(CharState.FATIGUED_MILLIS,myChar.maxState());
+						if(myChar.maxState().getFatigue()>Long.MIN_VALUE/2)
+							myChar.curState().adjFatigue(CharState.FATIGUED_MILLIS,myChar.maxState());
 						myChar.curState().adjMovement(-myChar.maxState().getMovement()/2, myChar.maxState());
 					}
 					if(!srcExhausted && !meExhausted && (CMLib.dice().rollPercentage()<10))
