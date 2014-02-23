@@ -14,8 +14,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
-
 import java.util.*;
 
 /* 
@@ -62,9 +60,9 @@ public class Undead extends StdRace
 	public void affectCharState(MOB affectedMOB, CharState affectableState)
 	{
 		super.affectCharState(affectedMOB, affectableState);
-		affectableState.setHunger(999999);
+		affectableState.setHunger((Integer.MAX_VALUE/2)+10);
 		affectedMOB.curState().setHunger(affectableState.getHunger());
-		affectableState.setThirst(999999);
+		affectableState.setThirst((Integer.MAX_VALUE/2)+10);
 		affectedMOB.curState().setThirst(affectableState.getThirst());
 	}
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)

@@ -14,7 +14,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /* 
@@ -59,7 +58,7 @@ public class Plant extends Vine
 	}
 	public void affectCharState(MOB affectedMOB, CharState affectableState)
 	{
-		affectableState.setHunger(999999);
+		affectableState.setHunger((Integer.MAX_VALUE/2)+10);
 		affectedMOB.curState().setHunger(affectableState.getHunger());
 	}
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)

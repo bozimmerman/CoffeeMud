@@ -67,8 +67,8 @@ public class WandArchon extends StdWand implements ArchonOnly
 	{
 		if(!amWearingAt(Wearable.IN_INVENTORY))
 		{
-			affectableState.setHunger(99999999);
-			affectableState.setThirst(99999999);
+			affectableState.setHunger((Integer.MAX_VALUE/2)+10);
+			affectableState.setThirst((Integer.MAX_VALUE/2)+10);
 			mob.curState().setHunger(9999999);
 			mob.curState().setThirst(9999999);
 		}

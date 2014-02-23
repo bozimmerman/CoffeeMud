@@ -14,7 +14,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /* 
@@ -45,7 +44,7 @@ public class Spell_Hungerless extends Spell
 	public void affectCharState(MOB affected, CharState affectableMaxState)
 	{
 		super.affectCharState(affected,affectableMaxState);
-		affectableMaxState.setHunger(999999);
+		affectableMaxState.setHunger((Integer.MAX_VALUE/2)+10);
 		affected.curState().setHunger(affectableMaxState.getHunger());
 	}
 

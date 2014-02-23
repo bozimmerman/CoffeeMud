@@ -59,7 +59,7 @@ public class Flower extends Vine
 	}
 	public void affectCharState(MOB affectedMOB, CharState affectableState)
 	{
-		affectableState.setHunger(999999);
+		affectableState.setHunger((Integer.MAX_VALUE/2)+10);
 		affectedMOB.curState().setHunger(affectableState.getHunger());
 	}
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
