@@ -212,6 +212,11 @@ public class IMudInterface implements ImudServices, Serializable
 		return lastPacketReceivedTime;
 	}
 	
+	public void resetLastPacketReceivedTime()
+	{
+		lastPacketReceivedTime=System.currentTimeMillis();
+	}
+	
 	/**
 	 * Handles an incoming I3 packet asynchronously.
 	 * An implementation should make sure that asynchronously

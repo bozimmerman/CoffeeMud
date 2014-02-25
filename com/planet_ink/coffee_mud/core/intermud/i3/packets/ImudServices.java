@@ -113,6 +113,10 @@ public interface ImudServices {
 	 * @return the last packet received time
 	 */
 	public abstract long getLastPacketReceivedTime();
+	/**
+	 * reset the last packet received time
+	 */
+	public abstract void resetLastPacketReceivedTime();
 
 	/**
 	 * Given a local channel name, returns the remote
