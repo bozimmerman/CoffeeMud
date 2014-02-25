@@ -281,7 +281,7 @@ public class Intermud implements Runnable, Persistent, Serializable
 							long ellapsedTime = System.currentTimeMillis()-imud.getLastPacketReceivedTime(); 
 							if(ellapsedTime>(60  * 60 * 1000)) // one hour
 							{
-								Log.errOut("I3SaveTick","No I3 Ping response received in "+CMLib.time().date2EllapsedTime(ellapsedTime, TimeUnit.MILLISECONDS, false)+". Connected="+Intermud.isConnected());
+								Log.errOut("I3SaveTick","No I3 response received in "+CMLib.time().date2EllapsedTime(ellapsedTime, TimeUnit.MILLISECONDS, false)+". Connected="+Intermud.isConnected());
 								CMLib.threads().executeRunnable(new Runnable() {
 									public void run() {
 										try {
