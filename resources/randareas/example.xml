@@ -403,13 +403,13 @@ Required details: "id" "value"
 			</STRING>
 			<STRING select="any-1" action="APPEND">
 				<STRING condition="$_forest_path_roomtype=1">The $_forest_path_type is lined by $adj_phys_size_tall trees. Several ${l:any_wood} trees are growing into the path. </STRING>
-				<STRING condition="$_forest_path_roomtype=1">Tracks in the soft ground make the $_forest_path_type easier to follow here. </STRING>
+				<STRING condition="$_forest_path_roomtype=1">Tracks in the $adj_soft_ground ground make the $_forest_path_type easier to follow here. </STRING>
 				<STRING condition="$_forest_path_roomtype=1">${c:adj_phys_size_tall} trees curve over the $_forest_path_type like a canopy, blocking out most of the sky. </STRING>
 				<STRING condition="$_forest_path_roomtype=1">The trees are light enough here to make it easy to find your way along the $_forest_path_type. </STRING>
-				<STRING condition="$_forest_path_roomtype=0">The trees of $areaname are $adj_large and green, $adj_cramped together in impassable walls. </STRING>
-				<STRING condition="$_forest_path_roomtype=0">You $verb_forest_tread your way through the $noun_forest_brush of the deep forest. </STRING>
-				<STRING condition="$_forest_path_roomtype=0">The forest surrounds you, $adj_cramped ${any_tree}s making some directions impassible. </STRING>
-				<STRING condition="$_forest_path_roomtype=0">You feel a $noun_wind blow through the $adj_phys_size_tall trees of the deep forest. </STRING>
+				<STRING condition="$_forest_path_roomtype=0">The trees of $areaname are $adj_large and green, $adj_cramped together in $adj_impassable walls. </STRING>
+				<STRING condition="$_forest_path_roomtype=0">You $verb_forest_tread your way through the $noun_forest_brush of the $adj_dense_forest forest. </STRING>
+				<STRING condition="$_forest_path_roomtype=0">The forest surrounds you, $adj_cramped ${any_tree}s making some directions $adj_impassable. </STRING>
+				<STRING condition="$_forest_path_roomtype=0">You feel a $noun_wind blow through the $adj_phys_size_tall trees of the $adj_dense_forest forest. </STRING>
 			</STRING>
 			<STRING select="any-1" action="APPEND">
 				<STRING condition="$_forest_path_roomtype=1">The $_forest_path_type continues $roomrun_desc_long.</STRING>
@@ -417,7 +417,7 @@ Required details: "id" "value"
 				<STRING condition="$_forest_path_roomtype=1">The $_forest_path_type runs $roomrun_desc_long.</STRING>
 				<STRING condition="$_forest_path_roomtype=1">The faint $_forest_path_type goes $roomrun_desc_long.</STRING>
 				<STRING condition="$_forest_path_roomtype=0">It looks like you might pick your way $roomexits_desc_long.</STRING>
-				<STRING condition="$_forest_path_roomtype=0">Openings in the thick $noun_forest_brush can be seen $roomexits_desc_long.</STRING>
+				<STRING condition="$_forest_path_roomtype=0">Openings in the $adj_dense_forest $noun_forest_brush can be seen $roomexits_desc_long.</STRING>
 				<STRING condition="$_forest_path_roomtype=0">You can $verb_forest_tread on through $roomexits_desc_long.</STRING>
 				<STRING condition="$_forest_path_roomtype=0">You can continue $roomexits_desc_long.</STRING>
 			</STRING>
@@ -533,14 +533,14 @@ Required details: "id" "value"
 				<STRING>The ${l:_forest_path_name} is all around you. </STRING>
 			</STRING>
 			<STRING select="any-1" action="APPEND">
-				<STRING>The trees of $areaname are $adj_large and green, $adj_cramped together in impassable walls. </STRING>
-				<STRING>You $verb_forest_tread your way through the $noun_forest_brush of the deep forest. </STRING>
-				<STRING>The forest surrounds you, $adj_cramped ${any_tree}s making some directions impassible. </STRING>
-				<STRING>You feel a $noun_wind blow through the $adj_phys_size_tall trees of the deep forest. </STRING>
+				<STRING>The trees of $areaname are $adj_large and green, $adj_cramped together in $adj_impassable walls. </STRING>
+				<STRING>You $verb_forest_tread your way through the $noun_forest_brush of the $adj_dense_forest forest. </STRING>
+				<STRING>The forest surrounds you, $adj_cramped ${any_tree}s making some directions $adj_impassable. </STRING>
+				<STRING>You feel a $noun_wind blow through the $adj_phys_size_tall trees of the $adj_dense_forest forest. </STRING>
 			</STRING>
 			<STRING select="any-1" action="APPEND">
 				<STRING>It looks like you might pick your way $roomexits_desc_long.</STRING>
-				<STRING>Openings in the thick $noun_forest_brush can be seen $roomexits_desc_long.</STRING>
+				<STRING>Openings in the $adj_dense_forest $noun_forest_brush can be seen $roomexits_desc_long.</STRING>
 				<STRING>You can $verb_forest_tread on through $roomexits_desc_long.</STRING>
 				<STRING>You can continue $roomexits_desc_long.</STRING>
 			</STRING>
@@ -570,6 +570,7 @@ Required details: "id" "value"
 					<BEHAVIOR class="Scavenger" parms="" />
 					<BEHAVIOR CLASS="Mobile" />
 					<BEHAVIOR CLASS="BrotherHelper" />
+					<BEHAVIOR CLASS="ObjectGuardian" />
 				</BEHAVIOR>
 				<ITEM select="all">
 					<ITEM class="GenArmor" LEVEL="$mob_level">
@@ -586,6 +587,14 @@ Required details: "id" "value"
 				</ITEM>
 			</MOB>
 		</MOB>
+		<ITEM condition="1?4=1" select="any-1">
+			<ITEM class="GenContainer" name="A $adj_wooden_ragged chest" display="$item_name is here" HASLID="true" HASLOCK="false">
+				<CONTENT>
+					<ITEM select="any-5" insert="dungeon_treasure_items" />
+				</CONTENT>
+				<AFFECT class="Prop_Hidden" />
+			</ITEM>
+		</ITEM>
 	</ROOM>
 	<ROOM select="all" condition="$theme='prison' or $theme='random'">
 		<ROOM class="CaveRoom">

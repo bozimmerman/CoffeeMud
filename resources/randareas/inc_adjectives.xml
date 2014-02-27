@@ -35,6 +35,31 @@
 	</STRING>
 </STRING>
 
+<STRING id="adj_soft_ground" select="any-1">
+	<STRING>soft</STRING>
+	<STRING>muddy</STRING>
+	<STRING>loose</STRING>
+	<STRING>disturbed</STRING>
+	<STRING>open</STRING>
+</STRING>
+
+<STRING id="adj_impassable" select="any-1">
+	<STRING>unpassable</STRING>
+	<STRING>impassable</STRING>
+	<STRING>unnavigable</STRING>
+	<STRING>untraversable</STRING>
+	<STRING>impenetrable</STRING>
+	<STRING>blocked</STRING>
+	<STRING>barricaded</STRING>
+</STRING>
+
+<STRING id="adj_dense_forest" select="any-1">
+	<STRING>dense</STRING>
+	<STRING>deep</STRING>
+	<STRING>dark</STRING>
+	<STRING>thick</STRING>
+</STRING>
+
 <STRING id="adj_phys_size_small" select="any-1">
 	<STRING id="adj_phys_size_small_values">
 		<STRING>narrow</STRING>
