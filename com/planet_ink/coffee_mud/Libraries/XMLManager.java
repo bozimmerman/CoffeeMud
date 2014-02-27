@@ -49,7 +49,7 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 	protected int[]			endDex;
 	protected StringBuffer	buf;
 	protected List<XMLpiece>contents;
-	protected Set<Object>	illegalTags;
+	protected Set<String>	illegalTags;
 	
 	public XMLManager()
 	{
@@ -69,13 +69,14 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 			beginDex[i]=-1;
 			endDex[i]=-1;
 		}
+		
 		try
 		{
 			illegalTags=CMLib.coffeeFilter().getTagTable().keySet();
 		}
-		catch(Exception e)
-		{
-			illegalTags=new HashSet<Object>();
+		catch(Exception e) 
+		{ 
+			illegalTags=new HashSet<String>();
 		}
 	}
 

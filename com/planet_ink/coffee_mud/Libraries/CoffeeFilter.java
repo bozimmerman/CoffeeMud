@@ -36,11 +36,16 @@ import java.util.*;
 public class CoffeeFilter extends StdLibrary implements TelnetFilter
 {
 	public String ID(){return "CoffeeFilter";}
-	public Hashtable<Object,Integer> tagTable=null;
+	public Hashtable<String,Pronoun> tagTable=null;
 	
-	public Hashtable<Object, Integer> getTagTable()
+	public Map<String, Pronoun> getTagTable()
 	{
-		if(tagTable==null) tagTable=CMStrings.makeNumericHash(TelnetFilter.FILTER_DESCS);
+		if(tagTable==null)
+		{
+				tagTable=new Hashtable<String,Pronoun>();
+				for(Pronoun P : Pronoun.values())
+					tagTable.put(P.suffix, P);
+		}
 		return tagTable;
 	}
 	
@@ -950,8 +955,8 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 							case 'O': regarding=tool; break;
 							}
 							String replacement=null;
-							Integer I=getTagTable().get(cmd.substring(1));
-							if(I==null)
+							Pronoun P=getTagTable().get(cmd.substring(1));
+							if(P==null)
 							{
 								if((S!=null)&&(S.isAllowedMxp(buf.substring(loop,loop+1))))
 								{
@@ -960,7 +965,7 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 								}
 							}
 							else
-							switch(I.intValue())
+							switch(P)
 							{
 							case NAME:
 								{

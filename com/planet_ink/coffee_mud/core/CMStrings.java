@@ -133,6 +133,21 @@ public class CMStrings
 		return (("aeiou").indexOf(Character.toLowerCase(c))>=0);
 	}
 	
+	public final static int indexOfEndOfWord(String s, int startWith)
+	{
+		if((s==null)||(startWith>=s.length())||(startWith<0))
+			return -1;
+		for(int x=startWith;x<s.length();x++)
+		{
+			switch(s.charAt(x))
+			{
+			case ' ': case '.': case ',': case ';': case '?': case '!': return x;
+			default: break;
+			}
+		}
+		return s.length();
+	}
+	
 	public final static int indexOfLastVowel(final String s)
 	{ 
 		if(s==null) return -1;

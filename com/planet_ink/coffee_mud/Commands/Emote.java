@@ -10,6 +10,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.TelnetFilter.Pronoun;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -38,6 +39,7 @@ public class Emote extends StdCommand
 
 	private final String[] access={"EMOTE",",",";",":"};
 	public String[] getAccessWords(){return access;}
+	
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
@@ -52,8 +54,36 @@ public class Emote extends StdCommand
 			combinedCommands=combinedCommands.trim();
 		else
 			combinedCommands=" "+combinedCommands.trim();
+		Environmental target=null;
+		int x=combinedCommands.indexOf('/');
+		while(x>0)
+		{
+			int y=CMStrings.indexOfEndOfWord(combinedCommands,x+1);
+			if(y<0) y=combinedCommands.length();
+			String rest=combinedCommands.substring(x+1,y);
+			Pronoun P=Pronoun.NAME;
+			for(Pronoun p : Pronoun.values())
+			{
+				if((p.emoteSuffix!=null)&&(rest.endsWith(p.emoteSuffix)))
+				{
+					P=p;
+					rest=rest.substring(0,rest.length()-p.emoteSuffix.length());
+					break;
+				}
+			}
+			if(rest.length()>0)
+			{
+				Environmental E=mob.location().fetchFromRoomFavorMOBs(null, rest);
+				if((E!=null)&&(CMLib.flags().canBeSeenBy(E, mob)))
+				{
+					target=E;
+					combinedCommands=combinedCommands.substring(0,x)+"<T"+P.suffix+">"+combinedCommands.substring(y);
+				}
+			}
+			x=combinedCommands.indexOf('/',x+1);
+		}
 		String emote="^E<S-NAME>"+combinedCommands+" ^?";
-		CMMsg msg=CMClass.getMsg(mob,null,null,CMMsg.MSG_EMOTE,"^E"+mob.name()+combinedCommands+" ^?",emote,emote);
+		CMMsg msg=CMClass.getMsg(mob,target,null,CMMsg.MSG_EMOTE,emote);
 		if(mob.location().okMessage(mob,msg))
 			mob.location().send(mob,msg);
 		return false;

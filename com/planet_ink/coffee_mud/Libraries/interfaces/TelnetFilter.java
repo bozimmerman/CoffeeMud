@@ -33,26 +33,33 @@ import java.util.*;
 public interface TelnetFilter extends CMLibrary
 {
 	public final static String hexStr="0123456789ABCDEF";
-	public final static int HISHER=0;
-	public final static int HIMHER=1;
-	public final static int NAME=2;
-	public final static int NAMESELF=3;
-	public final static int HESHE=4;
-	public final static int ISARE=5;
-	public final static int HASHAVE=6;
-	public final static int YOUPOSS=7;
-	public final static int HIMHERSELF=8;
-	public final static int HISHERSELF=9;
-	public final static int SIRMADAM=10;
-	public final static int ISARE2=11;
-	public final static int NAMENOART=12;
-	public final static int ACCOUNTNAME=13;
-	public final static String[] FILTER_DESCS={"-HIS-HER","-HIM-HER","-NAME","-NAMESELF",
-											   "-HE-SHE","-IS-ARE","-HAS-HAVE","-YOUPOSS",
-											   "-HIM-HERSELF","-HIS-HERSELF",
-											   "-SIRMADAM","IS-ARE","-NAMENOART","-ACCOUNTNAME"};
 	
-	public Hashtable<Object, Integer> getTagTable();
+	public enum Pronoun 
+	{
+		HISHER("-HIS-HER","-h"), 
+		HIMHER("-HIM-HER","-m"), 
+		NAME("-NAME",null), 
+		NAMESELF("-NAMESELF","-s"), 
+		HESHE("-HE-SHE","-e"), 
+		ISARE("-IS-ARE",null), 
+		HASHAVE("-HAS-HAVE",null), 
+		YOUPOSS("-YOUPOSS","`s"),
+		HIMHERSELF("-HIM-HERSELF","-ms"), 
+		HISHERSELF("-HIS-HERSELF","-hs"), 
+		SIRMADAM("-SIRMADAM",null), 
+		ISARE2("IS-ARE",null), 
+		NAMENOART("-NAMENOART",null), 
+		ACCOUNTNAME("-ACCOUNTNAME",null);
+		public final String suffix;
+		public final String emoteSuffix;
+		private Pronoun(String suffix, String emoteSuffix)
+		{
+			this.suffix=suffix;
+			this.emoteSuffix=emoteSuffix;
+		}
+	}
+	
+	public Map<String, Pronoun> getTagTable();
 	public String simpleOutFilter(String msg);
 	// no word-wrapping, text filtering or ('\','n') -> '\n' translations
 	// (it's not a member of the interface either so probably shouldn't be public)
