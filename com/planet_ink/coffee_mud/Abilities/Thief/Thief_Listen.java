@@ -110,8 +110,7 @@ public class Thief_Listen extends ThiefSkill
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
-		if((affected!=null)
-		&&(affected instanceof Room)
+		if((affected instanceof Room)
 		&&(invoker()!=null)
 		&&(invoker().location()!=null)
 		&&(sourceRoom!=null)
