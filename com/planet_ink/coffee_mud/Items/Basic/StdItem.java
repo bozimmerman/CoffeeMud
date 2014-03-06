@@ -843,6 +843,11 @@ public class StdItem implements Item
 		case CMMsg.TYP_SNIFF:
 			return true;
 		case CMMsg.TYP_SIT:
+			if((this instanceof DeadBody)
+			&&(mob.phyStats().height()<=0)
+			&&(mob.phyStats().weight()<=0))
+				return true;
+			//$FALL-THROUGH$
 		case CMMsg.TYP_SLEEP:
 		case CMMsg.TYP_MOUNT:
 		case CMMsg.TYP_DISMOUNT:

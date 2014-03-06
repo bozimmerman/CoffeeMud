@@ -519,7 +519,7 @@ Required details: "id" "value"
 </STRING>
 
 <ROOM id="leaf_rooms" select="any-1" condition="$roomtag_nodetype='leaf'">
-	<ROOM class="Road" id="forest_interior_room" condition="$theme='forest' or $theme='random'">
+	<ROOM class="Woods" id="forest_interior_room" condition="$theme='forest' or $theme='random'">
 		<TITLE>
 			<TITLE>$forest_path_prefix $forest_nouns</TITLE>
 			<TITLE>$adj_forestwords $forest_path_prefix $forest_nouns</TITLE>
@@ -527,13 +527,13 @@ Required details: "id" "value"
 		<DESCRIPTION>$forest_interior_desc</DESCRIPTION>
 		<STRING id="forest_interior_desc" select="all">
 			<STRING select="any-1" action="PREPEND">
-				<STRING>You are lost in ${l:room_title}. </STRING>
-				<STRING>You are deep in ${l:room_title}. </STRING>
-				<STRING>The ${l:_forest_path_name} surrounds you. </STRING>
-				<STRING>The ${l:_forest_path_name} is all around you. </STRING>
+				<STRING>A thick copse in ${l:room_title}. </STRING>
+				<STRING>A dense corner of ${l:room_title}. </STRING>
+				<STRING>The ${forest_nouns} surrounds you. </STRING>
+				<STRING>The ${forest_nouns} is all around you. </STRING>
 			</STRING>
 			<STRING select="any-1" action="APPEND">
-				<STRING>The trees of $areaname are $adj_large and green, $adj_cramped together in $adj_impassable walls. </STRING>
+				<STRING>The $adj_large green trees of $areaname are $adj_cramped in $adj_impassable walls. </STRING>
 				<STRING>You $verb_forest_tread your way through the $noun_forest_brush of the $adj_dense_forest forest. </STRING>
 				<STRING>The forest surrounds you, $adj_cramped ${any_tree}s making some directions $adj_impassable. </STRING>
 				<STRING>You feel a $noun_wind blow through the $adj_phys_size_tall trees of the $adj_dense_forest forest. </STRING>
