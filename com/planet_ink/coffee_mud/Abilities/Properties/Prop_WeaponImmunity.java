@@ -67,14 +67,13 @@ public class Prop_WeaponImmunity extends Property implements TriggeredAffect
 				s=s.substring(1);
 			else
 				c=new Character('+');
-			if(s.startsWith("LEVEL"))
+			if((s!=null)&&(s.startsWith("LEVEL")))
 			{
 				c=((Character)c).charValue()+" "+s.substring(5).trim();
 				s=s.substring(5).trim();
 			}
 			flags.put(s,c);
 		}
-
 	}
 
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)

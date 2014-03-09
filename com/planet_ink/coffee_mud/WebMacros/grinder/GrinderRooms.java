@@ -273,13 +273,16 @@ public class GrinderRooms
 					{
 						if(!RoomData.isAllNum(MATCHING))
 							I2=(Item)I2.copyOf();
-						I2.unWear();
-						//if(worn) I2.wearEvenIfImpossible(M);
-						happilyAddItem(I2,R);
-						items.addElement(I2);
-						I2.setContainer(null);
-						String CONTAINER=httpReq.getUrlParameter("ITEMCONT"+i);
-						cstrings.addElement((CONTAINER==null)?"":CONTAINER);
+						if(I2!=null)
+						{
+							I2.unWear();
+							//if(worn) I2.wearEvenIfImpossible(M);
+							happilyAddItem(I2,R);
+							items.addElement(I2);
+							I2.setContainer(null);
+							String CONTAINER=httpReq.getUrlParameter("ITEMCONT"+i);
+							cstrings.addElement((CONTAINER==null)?"":CONTAINER);
+						}
 					}
 				}
 				for(int i=0;i<cstrings.size();i++)

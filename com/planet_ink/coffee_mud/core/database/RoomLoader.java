@@ -1128,7 +1128,7 @@ public class RoomLoader
 				Room R=CMLib.map().getRoom(CE.destRoomID);
 				if(R==null) continue;
 				if(R.getGridParent()!=null) R=R.getGridParent();
-				if((R.isSavable())&&(!done.contains(R.roomID())))
+				if((R!=null)&&(R.isSavable())&&(!done.contains(R.roomID())))
 				{
 					done.add(R.roomID());
 					HashSet<String> oldStrs=new HashSet<String>();

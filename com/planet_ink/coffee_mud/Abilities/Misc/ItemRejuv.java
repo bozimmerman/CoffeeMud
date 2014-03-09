@@ -122,6 +122,7 @@ public class ItemRejuv extends StdAbility implements ItemTicker
 						thatItem.setContainer((Container)newThisItem);
 				}
 				thisItem=newThisItem;
+				if(thisItem==null) continue;
 				if(thisItem instanceof Container)
 				{
 					Container C=(Container)thisItem;

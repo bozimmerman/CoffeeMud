@@ -1801,7 +1801,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 				Room R=CMLib.map().getRoom(CE.destRoomID);
 				if(R==null) continue;
 				if(R.getGridParent()!=null) R=R.getGridParent();
-				if((R.roomID().length()>0)&&(!done.contains(R.roomID())))
+				if((R!=null)&&(R.roomID().length()>0)&&(!done.contains(R.roomID())))
 				{
 					done.add(R.roomID());
 					Set<String> oldStrs=new HashSet<String>();

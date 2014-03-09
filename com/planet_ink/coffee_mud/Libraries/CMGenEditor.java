@@ -3822,30 +3822,32 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 						if((item!=null)&&((!(item instanceof ArchonOnly))||(CMSecurity.isASysOp(mob))))
 						{
 							item=(Environmental)item.copyOf();
-							if(item instanceof Physical)
-								((Physical)item).recoverPhyStats();
-							boolean ok=M.doISellThis(item);
-							if((item instanceof Ability)
-							   &&((M.isSold(ShopKeeper.DEAL_TRAINER))||(M.isSold(ShopKeeper.DEAL_CASTER))))
-								ok=true;
-							else
-							if(M.isSold(ShopKeeper.DEAL_INVENTORYONLY))
-								ok=true;
-							if((ok)||((mob.session()!=null)&&mob.session().confirm("This shopkeeper type does not sell that. Are you sure (y/N)?","N")))
+							if(item !=null)
 							{
-								boolean alreadyHasIt=false;
-
-								if(M.getShop().doIHaveThisInStock(item.Name(),null))
-								   alreadyHasIt=true;
-
-								if(!alreadyHasIt)
+								if(item instanceof Physical)
+									((Physical)item).recoverPhyStats();
+								boolean ok=M.doISellThis(item);
+								if((item instanceof Ability)
+								&&((M.isSold(ShopKeeper.DEAL_TRAINER))||(M.isSold(ShopKeeper.DEAL_CASTER))))
+									ok=true;
+								else
+								if(M.isSold(ShopKeeper.DEAL_INVENTORYONLY))
+									ok=true;
+								if((ok)||((mob.session()!=null)&&mob.session().confirm("This shopkeeper type does not sell that. Are you sure (y/N)?","N")))
 								{
-									mob.tell(item.ID()+" added.");
-									int num=1;
-									if(!(item instanceof Ability))
-										num=CMath.s_int(mob.session().prompt("How many? :",""));
-									int price=CMath.s_int(mob.session().prompt("At what price? :",""));
-									M.getShop().addStoreInventory(item,num,price);
+									boolean alreadyHasIt=false;
+									if(M.getShop().doIHaveThisInStock(item.Name(),null))
+									   alreadyHasIt=true;
+
+									if(!alreadyHasIt)
+									{
+										mob.tell(item.ID()+" added.");
+										int num=1;
+										if(!(item instanceof Ability))
+											num=CMath.s_int(mob.session().prompt("How many? :",""));
+										int price=CMath.s_int(mob.session().prompt("At what price? :",""));
+										M.getShop().addStoreInventory(item,num,price);
+									}
 								}
 							}
 						}
@@ -5566,18 +5568,20 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 						if(I!=null)
 						{
 							I=(Item)I.copyOf();
-							boolean done=false;
-							for(int v=0;v<DV.size();v++)
-								if(I.sameAs((Environmental)DV.elementAt(v,1)))
-								{ DV.setElementAt(v,2,Integer.valueOf(((Integer)DV.elementAt(v,2)).intValue()+1)); done=true; break;}
-							if(!done)
-								DV.addElement(I,Integer.valueOf(1));
-							else
-								I.destroy();
-							mob.tell(I.name()+" added.");
-							updateList=true;
+							if(I!=null)
+							{
+								boolean done=false;
+								for(int v=0;v<DV.size();v++)
+									if(I.sameAs((Environmental)DV.elementAt(v,1)))
+									{ DV.setElementAt(v,2,Integer.valueOf(((Integer)DV.elementAt(v,2)).intValue()+1)); done=true; break;}
+								if(!done)
+									DV.addElement(I,Integer.valueOf(1));
+								else
+									I.destroy();
+								mob.tell(I.name()+" added.");
+								updateList=true;
+							}
 						}
-
 					}
 				}
 				else

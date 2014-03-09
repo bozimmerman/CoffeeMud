@@ -581,15 +581,18 @@ public class StdRace implements Race
 					Item newItem=CMLib.utensils().isRuinedLoot(mob,thisItem);
 					if(newItem==null) continue;
 					if(newItem==thisItem) newItem=(Item)thisItem.copyOf();
-					if(newItem instanceof Container)
-						itemMap.put(thisItem,(Container)newItem);
-					if(thisItem.container()!=null)
-						containerMap.put(thisItem,thisItem.container());
-					newItem.setContainer(null);
-					newItem.setExpirationDate( System.currentTimeMillis() +
-											   CMProps.getIntVar( CMProps.Int.EXPIRE_MONSTER_EQ )* TimeManager.MILI_HOUR );
-					newItem.recoverPhyStats();
-					thisItem=newItem;
+					if(newItem != null)
+					{
+						if(newItem instanceof Container)
+							itemMap.put(thisItem,(Container)newItem);
+						if(thisItem.container()!=null)
+							containerMap.put(thisItem,thisItem.container());
+						newItem.setContainer(null);
+						newItem.setExpirationDate( System.currentTimeMillis() +
+												   CMProps.getIntVar( CMProps.Int.EXPIRE_MONSTER_EQ )* TimeManager.MILI_HOUR );
+						newItem.recoverPhyStats();
+						thisItem=newItem;
+					}
 				}
 				else
 					mob.delItem(thisItem);

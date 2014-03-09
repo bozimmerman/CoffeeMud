@@ -339,19 +339,22 @@ public class Catalog extends StdCommand
 					for(int i=0;i<names.length;i++)
 					{
 						M=CMLib.catalog().getCatalogMob(names[i]);
-						data=CMLib.catalog().getCatalogMobData(names[i]);
-						if((ID==null)||(ID.length()==0)||(CMLib.english().containsString(M.Name(),ID)))
+						if(M!=null)
 						{
-							list.append(CMStrings.padRight(M.Name(),34)).append(" ");
-							list.append(CMStrings.padRight(Integer.toString(data.numReferences()),3));
-							if(col==0)
+							data=CMLib.catalog().getCatalogMobData(names[i]);
+							if((ID==null)||(ID.length()==0)||(CMLib.english().containsString(M.Name(),ID)))
 							{
-								col++;
-							}
-							else
-							{
-								col++;
-								list.append("\n\r");
+								list.append(CMStrings.padRight(M.Name(),34)).append(" ");
+								list.append(CMStrings.padRight(Integer.toString(data.numReferences()),3));
+								if(col==0)
+								{
+									col++;
+								}
+								else
+								{
+									col++;
+									list.append("\n\r");
+								}
 							}
 						}
 					}
@@ -371,23 +374,26 @@ public class Catalog extends StdCommand
 					for(int i=0;i<names.length;i++)
 					{
 						I=CMLib.catalog().getCatalogItem(names[i]);
-						data=CMLib.catalog().getCatalogItemData(names[i]);
-						if((ID==null)||(ID.length()==0)||(CMLib.english().containsString(I.Name(),ID)))
+						if(I!=null)
 						{
-							list.append(CMStrings.padRight(I.Name(),34)+" ");
-							list.append(CMStrings.padRight(Integer.toString(data.numReferences()),3)+" ");
-							if(data.getRate()<=0.0)
+							data=CMLib.catalog().getCatalogItemData(names[i]);
+							if((ID==null)||(ID.length()==0)||(CMLib.english().containsString(I.Name(),ID)))
 							{
-								list.append("N/A   ");
-								list.append(CMStrings.padRight(" ",31));
+								list.append(CMStrings.padRight(I.Name(),34)+" ");
+								list.append(CMStrings.padRight(Integer.toString(data.numReferences()),3)+" ");
+								if(data.getRate()<=0.0)
+								{
+									list.append("N/A   ");
+									list.append(CMStrings.padRight(" ",31));
+								}
+								else
+								{
+									list.append(CMStrings.padRight(CMath.toPct(data.getRate()),6)+" ");
+									list.append(data.getWhenLive()?"L ":"D ");
+									list.append(CMStrings.padRight(data.getMaskStr(),29));
+								}
+								list.append("\n\r");
 							}
-							else
-							{
-								list.append(CMStrings.padRight(CMath.toPct(data.getRate()),6)+" ");
-								list.append(data.getWhenLive()?"L ":"D ");
-								list.append(CMStrings.padRight(data.getMaskStr(),29));
-							}
-							list.append("\n\r");
 						}
 					}
 					list.append("\n\r");

@@ -283,7 +283,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				}
 				if(A.appliesToClass(I)<0)
 					A = editors.get("N_A");
-				columns.set(d,A.ID());
+				if(A!=null)
+					columns.set(d,A.ID());
 			}
 			else
 			if(columns.get(d) instanceof List)

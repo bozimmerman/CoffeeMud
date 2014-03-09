@@ -1853,6 +1853,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		for(int c=0;c<comps.size();c++)
 		{
 			curr=comps.get(c);
+			if(curr==null) continue;
 			if(c>0) buf.append((String)curr.elementAt(0,2));
 			buf.append("(");
 			buf.append((String)curr.elementAt(1,2));

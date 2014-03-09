@@ -99,7 +99,7 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 					s=s.substring(0,x).trim();
 				}
 			}
-			if((s.length()>0)&&(d>0.0))
+			if((s!=null)&&(s.length()>0)&&(d>0.0))
 			{
 				int insertAt=-1;
 				for(int i=0;i<DV.size();i++)

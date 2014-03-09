@@ -301,6 +301,7 @@ public class QuestMaker extends StdWebMacro
 				case QuestManager.QM_COMMAND_$ABILITY:
 				{
 					if(oldValue==null) oldValue=defValue;
+					if(oldValue==null) oldValue="";
 					list.append("<TR><TD COLSPAN=2><BR></TD></TR>\n\r");
 					list.append("<TR><TD COLSPAN=2>"+descColor+lastLabel+"</B></FONT></I></TD></TR>\n\r");
 					list.append("<TR><TD>"+labelColor+keyNameFixed+"</B></FONT></I></TD>");
@@ -324,6 +325,7 @@ public class QuestMaker extends StdWebMacro
 				case QuestManager.QM_COMMAND_$EXISTING_QUEST_NAME:
 				{
 					if(oldValue==null) oldValue=defValue;
+					if(oldValue==null) oldValue="";
 					list.append("<TR><TD COLSPAN=2><BR></TD></TR>\n\r");
 					list.append("<TR><TD COLSPAN=2>"+descColor+lastLabel+"</B></FONT></I></TD></TR>\n\r");
 					list.append("<TR><TD>"+labelColor+keyNameFixed+"</B></FONT></I></TD>");
@@ -363,6 +365,7 @@ public class QuestMaker extends StdWebMacro
 				case QuestManager.QM_COMMAND_$ITEMXML:
 				{
 					if(oldValue==null) oldValue=defValue;
+					if(oldValue==null) oldValue="";
 					List<Item> itemList=new Vector();
 					itemList=RoomData.contributeItems(itemList);
 					Item oldItem=RoomData.getItemFromAnywhere(itemList,oldValue);
@@ -417,18 +420,21 @@ public class QuestMaker extends StdWebMacro
 				case QuestManager.QM_COMMAND_$MOBXML:
 				{
 					if(oldValue==null) oldValue=defValue;
-					List<MOB> mobList=new Vector();
-					mobList=RoomData.contributeMOBs(mobList);
-					MOB oldMob=RoomData.getMOBFromCode(mobList,oldValue);
-					list.append("<TR><TD COLSPAN=2><BR></TD></TR>\n\r");
-					list.append("<TR><TD COLSPAN=2>"+descColor+lastLabel+"</B></FONT></I></TD></TR>\n\r");
-					list.append("<TR><TD>"+labelColor+keyNameFixed+"</B></FONT></I></TD>");
-					list.append("<TD><SELECT NAME="+httpKeyName+">");
-					if(optionalEntry) list.append("<OPTION VALUE=\"\" "+((oldValue.length()==0)?"SELECTED":"")+">");
-					list.append(mobList(mobList,oldMob,oldValue));
-					list.append("</SELECT>");
-					list.append("<INPUT TYPE=BUTTON NAME=BUTT_"+httpKeyName+" VALUE=\"NEW\" ONCLICK=\"AddNewMob();\">");
-					list.append("</TD></TR>");
+					if(oldValue != null)
+					{
+						List<MOB> mobList=new Vector();
+						mobList=RoomData.contributeMOBs(mobList);
+						MOB oldMob=RoomData.getMOBFromCode(mobList,oldValue);
+						list.append("<TR><TD COLSPAN=2><BR></TD></TR>\n\r");
+						list.append("<TR><TD COLSPAN=2>"+descColor+lastLabel+"</B></FONT></I></TD></TR>\n\r");
+						list.append("<TR><TD>"+labelColor+keyNameFixed+"</B></FONT></I></TD>");
+						list.append("<TD><SELECT NAME="+httpKeyName+">");
+						if(optionalEntry) list.append("<OPTION VALUE=\"\" "+((oldValue.length()==0)?"SELECTED":"")+">");
+						list.append(mobList(mobList,oldMob,oldValue));
+						list.append("</SELECT>");
+						list.append("<INPUT TYPE=BUTTON NAME=BUTT_"+httpKeyName+" VALUE=\"NEW\" ONCLICK=\"AddNewMob();\">");
+						list.append("</TD></TR>");
+					}
 					break;
 				}
 				case QuestManager.QM_COMMAND_$MOBXML_ONEORMORE:
@@ -470,6 +476,7 @@ public class QuestMaker extends StdWebMacro
 				case QuestManager.QM_COMMAND_$FACTION:
 				{
 					if(oldValue==null) oldValue=defValue;
+					if(oldValue==null) oldValue="";
 					list.append("<TR><TD COLSPAN=2><BR></TD></TR>\n\r");
 					list.append("<TR><TD COLSPAN=2>"+descColor+lastLabel+"</B></FONT></I></TD></TR>\n\r");
 					list.append("<TR><TD>"+labelColor+keyNameFixed+"</B></FONT></I></TD>");

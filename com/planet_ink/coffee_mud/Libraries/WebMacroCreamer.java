@@ -187,8 +187,11 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 						int x=foundMacro.indexOf('?');
 						int len=foundMacro.length();
 						if(x>=0) foundMacro=foundMacro.substring(0,x);
-						WebMacro W=CMClass.getWebMacro(foundMacro.toUpperCase());
-						if(W!=null) s.replace(i,i+len+2,foundMacro);
+						if(foundMacro!=null)
+						{
+							WebMacro W=CMClass.getWebMacro(foundMacro.toUpperCase());
+							if(W!=null) s.replace(i,i+len+2,foundMacro);
+						}
 					}
 				}
 			}

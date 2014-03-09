@@ -461,14 +461,17 @@ public class CMLister extends StdLibrary implements ListingLibrary
 			s=reverseList.get(i);
 			if((tag!=null)&&(tag.length()>0))
 				s="^<"+tag+"^>"+s+"^</"+tag+"^>";
-			if(s.length()>colSize)
+			if(s!=null)
 			{
-				if(col == numCols) topicBuffer.append("\n\r");
-				topicBuffer.append(CMStrings.padRight(s,(colSize*2)+1)+" ");
-				++col;
+				if(s.length()>colSize)
+				{
+					if(col == numCols) topicBuffer.append("\n\r");
+					topicBuffer.append(CMStrings.padRight(s,(colSize*2)+1)+" ");
+					++col;
+				}
+				else
+					topicBuffer.append(CMStrings.padRight(s,colSize)+" ");
 			}
-			else
-				topicBuffer.append(CMStrings.padRight(s,colSize)+" ");
 		}
 		return topicBuffer;
 	}

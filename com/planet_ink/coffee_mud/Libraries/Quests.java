@@ -478,17 +478,17 @@ public class Quests extends StdLibrary implements QuestManager
 					&&(CMParms.combine(lineV,2).toUpperCase().indexOf("SHOPKEEPER")>0))
 						pricingMobIndex=v;
 				}
-				if(cmd.equals("GIVE")&&(var.equalsIgnoreCase("BEHAVIOR"))&&(lineV.size()>2)&&(pricingMobIndex<0))
+				if(cmd.equals("GIVE")&&("BEHAVIOR".equalsIgnoreCase(var))&&(lineV.size()>2)&&(pricingMobIndex<0))
 				{
 					var=lineV.elementAt(2).toUpperCase();
 					behaviors.addElement(var,CMParms.combineWithQuotes(lineV,3),Integer.valueOf(v));
 				}
-				if(cmd.equals("GIVE")&&(var.equalsIgnoreCase("AFFECT"))&&(lineV.size()>2)&&(pricingMobIndex<0))
+				if(cmd.equals("GIVE")&&("AFFECT".equalsIgnoreCase(var))&&(lineV.size()>2)&&(pricingMobIndex<0))
 				{
 					var=lineV.elementAt(2).toUpperCase();
 					properties.addElement(var,CMParms.combineWithQuotes(lineV,3),Integer.valueOf(v));
 				}
-				if(cmd.equals("GIVE")&&(var.equalsIgnoreCase("STAT"))&&(lineV.size()>2))
+				if(cmd.equals("GIVE")&&("STAT".equalsIgnoreCase(var))&&(lineV.size()>2))
 				{
 					var=lineV.elementAt(2).toUpperCase();
 					if((pricingMobIndex<0)||(var.equals("PRICEMASKS")))

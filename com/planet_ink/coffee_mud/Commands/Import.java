@@ -4656,7 +4656,10 @@ public class Import extends StdCommand
 					continue;
 				}
 				
-				if(CF!=null) buf=CF.textUnformatted();
+				if(CF!=null) 
+					buf=CF.textUnformatted();
+				if(buf == null)
+					buf = new StringBuffer("");
 				List<List<XMLLibrary.XMLpiece>> areas=new Vector();
 				if(session!=null)
 					session.rawPrint("Unpacking area(s) from file: '"+areaFileName+"'...");
@@ -4729,7 +4732,10 @@ public class Import extends StdCommand
 					returnAnError(session,"You are not allowed to import area in '"+areaFileName+"'.",compileErrors,commands);
 					continue;
 				}
-				if(CF!=null) buf=CF.textUnformatted();
+				if(CF!=null) 
+					buf=CF.textUnformatted();
+				if(buf == null)
+					buf = new StringBuffer("");
 				if(session!=null)
 					session.rawPrint("Unpacking area from file: '"+areaFileName+"'...");
 				Vector areaD=new Vector();
@@ -4775,7 +4781,10 @@ public class Import extends StdCommand
 					returnAnError(session,"You are not allowed to import room in '"+areaFileName+"'.",compileErrors,commands);
 					continue;
 				}
-				if(CF!=null) buf=CF.textUnformatted();
+				if(CF!=null) 
+					buf=CF.textUnformatted();
+				if(buf == null)
+					buf = new StringBuffer("");
 				if(session!=null) session.println("Unpacking room from file: '"+areaFileName+"'...");
 				String error=CMLib.coffeeMaker().fillCustomVectorFromXML(buf.toString(),custom,externalFiles);
 				if(error.length()==0) importCustomObjects(mob,custom,customBotherChecker,!prompt,nodelete);
@@ -4822,7 +4831,10 @@ public class Import extends StdCommand
 					returnAnError(session,"You are not allowed to import mobs in '"+areaFileName+"' here.",compileErrors,commands);
 					continue;
 				}
-				if(CF!=null) buf=CF.textUnformatted();
+				if(CF!=null) 
+					buf=CF.textUnformatted();
+				if(buf == null)
+					buf = new StringBuffer("");
 				if(session!=null)
 					session.rawPrint("Unpacking mobs from file: '"+areaFileName+"'...");
 				Vector mobs=new Vector();
@@ -4856,7 +4868,10 @@ public class Import extends StdCommand
 					returnAnError(session,"You are not allowed to import players in '"+areaFileName+"' here.",compileErrors,commands);
 					continue;
 				}
-				if(CF!=null) buf=CF.textUnformatted();
+				if(CF!=null) 
+					buf=CF.textUnformatted();
+				if(buf == null)
+					buf = new StringBuffer("");
 				if(session!=null)
 					session.rawPrint("Unpacking players from file: '"+areaFileName+"'...");
 				List<MOB> mobs=new Vector();
@@ -4980,7 +4995,10 @@ public class Import extends StdCommand
 					returnAnError(session,"You are not allowed to import items in '"+areaFileName+"' here.",compileErrors,commands);
 					continue;
 				}
-				if(CF!=null) buf=CF.textUnformatted();
+				if(CF!=null) 
+					buf=CF.textUnformatted();
+				if(buf == null)
+					buf = new StringBuffer("");
 				if(session!=null)
 					session.rawPrint("Unpacking items from file: '"+areaFileName+"'...");
 				Vector items=new Vector();
@@ -5194,7 +5212,8 @@ public class Import extends StdCommand
 		if((areaName.toUpperCase().startsWith(areaAuthor.toUpperCase()+" "))
 		&&(areaName.substring(areaAuthor.length()+1).trim().length()>0))
 			areaName=areaName.substring(areaAuthor.length()+1).trim();
-		if(areaName.endsWith("~")) areaName=areaName.substring(0,areaName.length()-1);
+		if((areaName!=null)&&(areaName.endsWith("~"))) 
+			areaName=areaName.substring(0,areaName.length()-1);
 
 		try
 		{

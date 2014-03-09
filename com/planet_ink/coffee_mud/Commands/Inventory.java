@@ -102,10 +102,13 @@ public class Inventory extends StdCommand
 				for(int v=0;v<V.size();v++)
 				{
 					I=V.elementAt(v);
-					if(v>0) msg.append(", ");
-					if(I instanceof Coins)
-						totalValue+=((Coins)I).getTotalValue();
-					msg.append(I.name());
+					if(I!=null)
+					{
+						if(v>0) msg.append(", ");
+						if(I instanceof Coins)
+							totalValue+=((Coins)I).getTotalValue();
+						msg.append(I.name());
+					}
 				}
 				msg.append(" ^N("+CMLib.beanCounter().abbreviatedPrice(key,totalValue)+")");
 				if(e.hasMoreElements()) msg.append("\n\r");

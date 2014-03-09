@@ -138,18 +138,21 @@ public class RandomTeleporter extends ActiveTicker
 			while(((++tries)<250)&&(R==null))
 			{
 				R=CMLib.map().getRandomRoom();
-				if((!CMLib.flags().isInFlight(mob))
-				&&((R.domainType()==Room.DOMAIN_INDOORS_AIR)
-				||(R.domainType()==Room.DOMAIN_OUTDOORS_AIR)))
-					R=null;
-				else
-				if((!CMLib.flags().isSwimming(mob))
-				&&((R.domainType()==Room.DOMAIN_INDOORS_UNDERWATER)
-				||(R.domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)))
-					R=null;
-				else
-				if(!okRoomForMe(mob.location(),R))
-					R=null;
+				if(R!=null)
+				{
+					if((!CMLib.flags().isInFlight(mob))
+					&&((R.domainType()==Room.DOMAIN_INDOORS_AIR)
+					||(R.domainType()==Room.DOMAIN_OUTDOORS_AIR)))
+						R=null;
+					else
+					if((!CMLib.flags().isSwimming(mob))
+					&&((R.domainType()==Room.DOMAIN_INDOORS_UNDERWATER)
+					||(R.domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)))
+						R=null;
+					else
+					if(!okRoomForMe(mob.location(),R))
+						R=null;
+				}
 			}
 			Room oldRoom=mob.location();
 			CMLib.tracking().wanderAway(mob,true,false);

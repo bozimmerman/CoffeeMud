@@ -513,28 +513,31 @@ public class DefaultClan implements Clan
 			for(int i=0;i<itemsToMove.size();i++)
 			{
 				I=itemsToMove.elementAt(i);
-				Room R=null;
-				if((getDonation()!=null)
-				&&(getDonation().length()>0))
-					R=CMLib.map().getRoom(getDonation());
-				if((R==null)
-				&&(getRecall()!=null)
-				&&(getRecall().length()>0))
-					R=CMLib.map().getRoom(getRecall());
-				if(I instanceof Container)
+				if(I!=null)
 				{
-					List<Item> V=((Container)I).getContents();
-					for(int v=0;v<V.size();v++)
-						V.get(v).setContainer(null);
+					Room R=null;
+					if((getDonation()!=null)
+					&&(getDonation().length()>0))
+						R=CMLib.map().getRoom(getDonation());
+					if((R==null)
+					&&(getRecall()!=null)
+					&&(getRecall().length()>0))
+						R=CMLib.map().getRoom(getRecall());
+					if(I instanceof Container)
+					{
+						List<Item> V=((Container)I).getContents();
+						for(int v=0;v<V.size();v++)
+							V.get(v).setContainer(null);
+					}
+					I.setContainer(null);
+					I.wearAt(Wearable.IN_INVENTORY);
+					if(R!=null)
+						R.moveItemTo(I);
+					else
+					if(M.isMine(I))
+						I.destroy();
+					did=true;
 				}
-				I.setContainer(null);
-				I.wearAt(Wearable.IN_INVENTORY);
-				if(R!=null)
-					R.moveItemTo(I);
-				else
-				if(M.isMine(I))
-					I.destroy();
-				did=true;
 			}
 		}
 		if((did)&&(!CMSecurity.isSaveFlag("NOPLAYERS")))

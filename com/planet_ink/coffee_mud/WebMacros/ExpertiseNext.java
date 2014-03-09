@@ -110,22 +110,25 @@ public class ExpertiseNext extends StdWebMacro
 		for(Enumeration e=experts.getDimensionVector(2).elements();e.hasMoreElements();)
 		{
 			E=(ExpertiseLibrary.ExpertiseDefinition)e.nextElement();
-			if(expertsAllows!=null)
+			if(E!=null)
 			{
-				qualLevel=(Integer)expertsAllows.get(E.ID);
-				if(qualLevel==null) continue;
-				if((levelCheck>=0)&&(levelCheck!=qualLevel.intValue()))
+				if(expertsAllows!=null)
+				{
+					qualLevel=(Integer)expertsAllows.get(E.ID);
+					if(qualLevel==null) continue;
+					if((levelCheck>=0)&&(levelCheck!=qualLevel.intValue()))
+						continue;
+				}
+				else
+				if((levelCheck>=0)&&(levelCheck!=E.getMinimumLevel()))
 					continue;
+				if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!E.ID.equals(lastID))))
+				{
+					httpReq.addFakeUrlParameter("EXPERTISE",E.ID);
+					return "";
+				}
+				lastID=E.ID;
 			}
-			else
-			if((levelCheck>=0)&&(levelCheck!=E.getMinimumLevel()))
-				continue;
-			if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!E.ID.equals(lastID))))
-			{
-				httpReq.addFakeUrlParameter("EXPERTISE",E.ID);
-				return "";
-			}
-			lastID=E.ID;
 		}
 		httpReq.addFakeUrlParameter("EXPERTISE","");
 		if(parms.containsKey("EMPTYOK"))

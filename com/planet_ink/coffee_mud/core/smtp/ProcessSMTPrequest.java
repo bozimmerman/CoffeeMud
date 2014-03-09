@@ -311,16 +311,19 @@ public class ProcessSMTPrequest implements Runnable
 													}
 												s2=newStr.toString();
 											}
-											if(s2.endsWith("="))
+											if(s2!=null)
 											{
-												nextAppended=true;
-												s2=s2.substring(0,s2.length()-1);
-											}
-											else
-											if(s2.endsWith("=<BR>"))
-											{
-												nextAppended=true;
-												s2=s2.substring(0,s2.length()-5);
+												if(s2.endsWith("="))
+												{
+													nextAppended=true;
+													s2=s2.substring(0,s2.length()-1);
+												}
+												else
+												if(s2.endsWith("=<BR>"))
+												{
+													nextAppended=true;
+													s2=s2.substring(0,s2.length()-5);
+												}
 											}
 										}
 										if(nextAppended)

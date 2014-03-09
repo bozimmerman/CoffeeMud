@@ -234,7 +234,7 @@ public class CMColor extends StdLibrary implements ColorLibrary
 							}
 							addCode=null;
 							for(int ii=0;ii<COLOR_ALLCOLORNAMES.length;ii++)
-								if(addColor.equalsIgnoreCase(COLOR_ALLCOLORNAMES[ii]))
+								if(COLOR_ALLCOLORNAMES[ii].equalsIgnoreCase(addColor))
 								{ addCode=COLOR_ALLHTTAGS[ii]; break;}
 							if(addCode!=null)
 							{
@@ -341,16 +341,19 @@ public class CMColor extends StdLibrary implements ColorLibrary
 								addColor=value.substring(0,x).trim();
 								value=value.substring(x+1).trim();
 							}
-							addCode=null;
-							for(int ii=0;ii<COLOR_ALLCOLORNAMES.length;ii++)
-								if(addColor.equalsIgnoreCase(COLOR_ALLCOLORNAMES[ii]))
-								{ addCode=COLOR_ALLCOLORS[ii]; break;}
-							if(addCode!=null)
+							if(addColor!=null)
 							{
-								if(newVal==null)
-									newVal=addCode;
-								else
-									newVal=mixColorCodes(newVal,addCode);
+								addCode=null;
+								for(int ii=0;ii<COLOR_ALLCOLORNAMES.length;ii++)
+									if(addColor.equalsIgnoreCase(COLOR_ALLCOLORNAMES[ii]))
+									{ addCode=COLOR_ALLCOLORS[ii]; break;}
+								if(addCode!=null)
+								{
+									if(newVal==null)
+										newVal=addCode;
+									else
+										newVal=mixColorCodes(newVal,addCode);
+								}
 							}
 						}
 						if(newVal!=null)

@@ -326,6 +326,7 @@ public class MXPElement implements Cloneable
 					userParm=userParms.get(u).toUpperCase().trim();
 				}
 				boolean found=false;
+				if(userParm!=null)
 				for(int a=0;a<aV.size();a++)
 				{
 					avParm=(String)aV.elementAt(a);
@@ -334,8 +335,8 @@ public class MXPElement implements Cloneable
 						found=true;
 						if(a>position) position=a;
 						attributeValues.remove(avParm);
-						String val=(avParm.equals(userParm))?"":userParms.get(u).trim().substring(avParm.length()+1);
-						attributeValues.put(avParm,val);
+						if(avParm != null)
+							attributeValues.put(avParm,(userParm.equals(avParm))?"":userParms.get(u).trim().substring(avParm.length()+1));
 						break;
 					}
 				}
