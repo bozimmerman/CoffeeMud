@@ -379,7 +379,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					{
 						if(tt==null) tt=parseBits(script,0,"CCC");
 						if((tt!=null)
-						&&(tt[1].equals(quest)||(tt[1].equals("*")))
+						&&((tt[1].equals(quest)||(tt[1].equals("*"))))
 						&&(CMath.s_int(tt[2])<0))
 						{
 							oncesDone.add(script);
