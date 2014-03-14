@@ -171,11 +171,11 @@ public class MWDataBuffers implements DataBuffers
 	private final void accessed() { lastStackTrace=Thread.currentThread().getStackTrace(); }
 	private final void finalized() { 
 		if(this.length>0) {
-			System.err.println("^^^^^^^^^^^^^^^^^^^^^^^\n\rMWDataBuffer Not Closed!\n\r"+this.length+" bytes stranded.\n\rFirst stack trace:");
+			System.err.println("^^^^^^^^^^^^^^^^^^^^^^^\n\rMWDataBuffer Not Closed!\n\r"+this.length+" bytes stranded in "+((list!=null)?list.size():0)+" items.\n\rFirst stack trace:");
 			if(createdStackTrace!=null) for(StackTraceElement f : createdStackTrace) System.err.println("  "+f.toString());
-			System.err.println("Last stack trace:"); 
+			System.err.println("Last stack trace:");
 			if(lastStackTrace!=null) for(StackTraceElement f : lastStackTrace) System.err.println(f.toString());
-			System.err.println("VVVVVVVVVVVVVVVVVVVVVVV");
+			System.err.println("vvvvvvvvvvvvvvvvvvvvvvv");
 		}
 	}
 	
@@ -185,7 +185,6 @@ public class MWDataBuffers implements DataBuffers
 		{
 			finalized();
 			close();
-			System.err.println("MWDataBuffer Not Closed!");
 		}
 		super.finalize();
 	}
