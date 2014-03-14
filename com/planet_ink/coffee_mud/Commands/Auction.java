@@ -361,9 +361,8 @@ public class Auction extends Channel implements Tickable
 			V.addElement("AUCTION");
 			V.addElement("The auction has been closed.");
 			CMLib.threads().deleteTick(this,Tickable.TICKID_LIVEAUCTION);
-			if(liveData.auctioningI != null)
-				liveData.auctioningM.moveItemTo(liveData.auctioningI);
-			if(liveData.highBid>0.0)
+			liveData.auctioningM.moveItemTo(liveData.auctioningI);
+			if((liveData.highBid>0.0)&&(liveData.highBidderM!=null))
 				CMLib.coffeeShops().returnMoney(liveData.highBidderM,liveData.currency,liveData.highBid);
 			liveData.auctioningM=null;
 			liveData.auctioningI=null;
