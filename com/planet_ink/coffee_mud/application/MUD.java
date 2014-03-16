@@ -65,7 +65,7 @@ import java.sql.*;
 public class MUD extends Thread implements MudHost
 {
 	private static final float	  HOST_VERSION_MAJOR	= (float)5.8;
-	private static final long	  HOST_VERSION_MINOR	= 1;
+	private static final long	  HOST_VERSION_MINOR	= 2;
 	private static enum MudState {STARTING,WAITING,ACCEPTING,STOPPED}
 
 
@@ -109,11 +109,13 @@ public class MUD extends Thread implements MudHost
 	{
 		Socket sock;
 		long startTime=0;
+		
 		public ConnectionAcceptor(Socket sock) throws SocketException, IOException
 		{
 			this.sock=sock;
 			sock.setSoLinger(true,3);
 		}
+		
 		public void run()
 		{
 			startTime=System.currentTimeMillis();
@@ -838,6 +840,7 @@ public class MUD extends Thread implements MudHost
 	{
 		return host;
 	}
+
 	public int getPort()
 	{
 		return port;
@@ -1551,12 +1554,22 @@ public class MUD extends Thread implements MudHost
 		}
 	}
 
-	public void setAcceptConnections(boolean truefalse){ acceptConns=truefalse;}
-	public boolean isAcceptingConnections(){ return acceptConns;}
-	public long getUptimeSecs() { return (System.currentTimeMillis()-startupTime)/1000;}
+	public void setAcceptConnections(boolean truefalse)
+	{ 
+		acceptConns=truefalse;
+	}
+	
+	public boolean isAcceptingConnections()
+	{ 
+		return acceptConns;
+	}
+	
+	public long getUptimeSecs() 
+	{ 
+		return (System.currentTimeMillis()-startupTime)/1000;
+	}
 
-	public String executeCommand(String cmd)
-		throws Exception
+	public String executeCommand(String cmd) throws Exception
 	{
 		Vector<String> V=CMParms.parse(cmd);
 		if(V.size()==0) throw new CMException("Unknown command!");
