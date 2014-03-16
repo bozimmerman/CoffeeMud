@@ -38,18 +38,20 @@ import java.util.*;
 public class StdTickGroup implements TickableGroup, Cloneable
 {
 	private final ThreadEngine myEngine;
-	private final long tickTime;
-	private volatile long nextTickTime;
-	private final int tickObjectCounter;
 	
+	private final long 	  tickTime;
+	private final int 	  tickObjectCounter;
+	private final String  name;
+	private final String  threadGroupName;
+	private final boolean solitaryTicker;
+	
+	private volatile long nextTickTime;
 	private volatile long lastStart=0;
 	private volatile long lastStop=0;
-	private long milliTotal=0;
-	private long tickTotal=0;
-	private boolean solitaryTicker;
+	private volatile long milliTotal=0;
+	private volatile int  tickTotal=0;
+	
 	private volatile TickClient lastClient=null;
-	private final String name;
-	private final String threadGroupName;
 	private volatile Thread currentThread = null;
 
 	private static volatile int tickObjReference=0;

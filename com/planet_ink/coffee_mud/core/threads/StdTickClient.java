@@ -28,7 +28,7 @@ public class StdTickClient implements TickClient
 	public volatile long   lastStart=0;
 	public volatile long   lastStop=0;
 	public volatile long   milliTotal=0;
-	public volatile long   tickTotal=0;
+	public volatile int	   tickTotal=0;
 	public volatile String status = null;
 
 	public StdTickClient(Tickable newClientObject, int newTickDown, int newTickID)
