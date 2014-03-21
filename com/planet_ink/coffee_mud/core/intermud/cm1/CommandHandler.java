@@ -147,7 +147,7 @@ public class CommandHandler implements Runnable
 				Class<? extends CM1Command> commandClass = commandList.get(cmd.toUpperCase().trim());
 				CM1Command command = CM1Command.newInstance(commandClass, req, rest);
 				if((command == null) || (!command.passesSecurityCheck(req.getUser(), req.getTarget())))
-					req.sendMsg("[UNKNOWN "+cmd.toUpperCase().trim()+"]");
+					req.sendMsg("[FAIL UNKNOWN "+cmd.toUpperCase().trim()+"]");
 				else
 					command.run();
 			}
