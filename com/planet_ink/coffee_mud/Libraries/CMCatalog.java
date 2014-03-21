@@ -1188,12 +1188,24 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 				if((myFiles==null)||(oldFiles!=super.files)||(catalogFileItemsRoot==null)||(catalogFileMobsRoot==null))
 				{
 					oldFiles=super.files;
+					CMFile.CMVFSDir mdir = getCatalogMobsRoot(this);
+					CMFile.CMVFSDir idir = getCatalogItemsRoot(this);
+					int xtra=((mdir==null)?0:1)+((idir==null)?0:1);
 					if(super.files!=null)
-						myFiles=Arrays.copyOf(super.files, super.files.length+2);
+						myFiles=Arrays.copyOf(super.files, super.files.length+xtra);
 					else
-						myFiles=new CMFile.CMVFSFile[2];
-					myFiles[myFiles.length-2]=getCatalogMobsRoot(this);
-					myFiles[myFiles.length-1]=getCatalogItemsRoot(this);
+						myFiles=new CMFile.CMVFSFile[xtra];
+					if(xtra==2)
+					{
+    					myFiles[myFiles.length-2]=mdir;
+    					myFiles[myFiles.length-1]=idir;
+					}
+					else
+					if(mdir != null)
+    					myFiles[myFiles.length-1]=mdir;
+					else
+					if(idir != null)
+    					myFiles[myFiles.length-1]=idir;
 					Arrays.sort(myFiles,CMFile.CMVFSDir.fcomparator);
 				}
 				return myFiles;

@@ -1,5 +1,5 @@
 # Build 5.8.2 Release ?/??/2014
-   0. 
+   1. CM1Server has "FILE" command now for directory browsing/manipulation
 # Build 5.8.1 Release 3/14/2014
    0. **** Database Schema Changes Were Made **** Make sure you follow the Installation Guide to upgrade your database. 
    1. QuestManager "STEP"ping feature now supports "STEP AUTO" to have steps proceed based on duration instead of MOBPROG triggers.

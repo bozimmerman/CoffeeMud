@@ -251,7 +251,7 @@ public class FileCmd extends CM1Command
 	
 	public String getHelp(MOB user, PhysicalAgent target, String rest)
 	{
-		String word=CMLib.english().getFirstWord(rest).toUpperCase().trim();
+		String word=CMLib.english().getFirstWord(rest==null?"":rest).toUpperCase().trim();
 		if (word.equals("READ"))
 			return "USAGE: "+getCommandWord()+" READ \"<FILENAME>\": returns contents of the file or directory as a block.";
 		else
