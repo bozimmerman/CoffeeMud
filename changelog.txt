@@ -1,5 +1,18 @@
 # Build 5.8.2 Release ?/??/2014
    1. CM1Server has "FILE" command now for directory browsing/manipulation
+   *. Channeling (magic) system for GenAbility and example spells
+   *. GenAbility can direct effect to the tick
+   *. GenAbility duration effect
+   *. OLC for players?
+   *. Char/Account approval system
+   *. Clan-Player level PVP ranking in Clans
+   *. Clan forums and web sites
+   *. Weapon/Armor/Item level system - detach char level from item reqs
+   *. Char and Account PVP ranking
+   *. Push regen rates to INI file
+   *. New combat system: turn based
+   *. Name generator, finally
+    
 # Build 5.8.1 Release 3/14/2014
    0. **** Database Schema Changes Were Made **** Make sure you follow the Installation Guide to upgrade your database. 
    1. QuestManager "STEP"ping feature now supports "STEP AUTO" to have steps proceed based on duration instead of MOBPROG triggers.
