@@ -457,7 +457,8 @@ make this permanent across engine reboots.</p>
       <h3><a name="q31" id="q31">Does CoffeeMud have an
 Overland Map
 ability?</a></h3>
-      <p>Yes, check out the
+      <p>Yes, there are two ways. The easiest is to set AWARERANGE in coffeemud.ini
+      to something higher than 0.  The other way is to check out the
 Regional Awareness skill. It is restricted
 in the base distribution, but can easily be made generally available to
 all players.&nbsp;</p>
@@ -501,13 +502,8 @@ the mob for his services, and makes sure that the mob is saved at the
 players home.</p>
       <h3><a name="q35" id="q35">How can my players
 sell their raw gathered resources?</a></h3>
-      <p>Yes. Put a healer mob up
-for sale at a shop. The healer mob
-should have the appropriate behaviors and skills to make them a healer
-(such as Healer, or NiceAbilities behaviors) and the Prop_Retainable
-property. That last will make it so that the player is forced to pay
-the mob for his services, and makes sure that the mob is saved at the
-players home.</p>
+      <p>Create a shopkeeper that sells hides, lumber, metal, rocks or some combination of those.  Next, if you like, use Shop Item Pricing to make resources
+      (-javaclass +GenResource +GenFoodResource +GetLiquidResource) more valuable than normal.</p>
       <h3><a name="q36" id="q36">How
 can I have a
 command like ROM's "SCAN" for seeing in
