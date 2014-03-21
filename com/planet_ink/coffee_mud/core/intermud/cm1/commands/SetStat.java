@@ -42,7 +42,9 @@ import java.util.concurrent.atomic.*;
 public class SetStat extends GetStat
 {
 	public String getCommandWord(){ return "SETSTAT";}
-	public SetStat(RequestHandler req, String parameters) {
+	
+	public SetStat(RequestHandler req, String parameters) 
+	{
 		super(req, parameters);
 	}
 	
