@@ -45,7 +45,7 @@ public class Prayer_ChainStrike extends Prayer
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Set<MOB> h=properTargets(mob,givenTarget,auto);
-		if(h==null) h=new HashSet();
+		if(h==null) h=new HashSet<MOB>();
 
 		Vector targets=new Vector(h);
 

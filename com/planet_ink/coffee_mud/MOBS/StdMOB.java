@@ -3026,7 +3026,8 @@ public class StdMOB implements MOB
 						setActions(actions() + 1.0); // bonus action is employed in default system
 					tickStatus = Tickable.STATUS_FIGHT;
 					peaceTime = 0;
-					CMLib.combat().tickCombat(this);
+					if(CMLib.flags().canAutoAttack(this))
+						CMLib.combat().tickCombat(this);
 				} 
 				else
 				{
@@ -4113,11 +4114,11 @@ public class StdMOB implements MOB
 			start = F.maximum();
 		if (start < F.minimum())
 			start = F.minimum();
-		Faction.FData data = factions.get(which);
+		Faction.FData data = factions.get(F.factionID().toUpperCase());
 		if (data == null)
 		{
 			data = F.makeFactionData(this);
-			factions.put(which, data);
+			factions.put(F.factionID().toUpperCase(), data);
 		}
 		data.setValue(start);
 	}
@@ -4128,10 +4129,10 @@ public class StdMOB implements MOB
 		Faction F = CMLib.factions().getFaction(which);
 		if (F == null)
 			return;
-		if (!factions.containsKey(which))
-			addFaction(which, amount);
+		if (!factions.containsKey(F.factionID().toUpperCase()))
+			addFaction(F.factionID(), amount);
 		else
-			addFaction(which, fetchFaction(which) + amount);
+			addFaction(F.factionID(), fetchFaction(F.factionID()) + amount);
 	}
 
 	public Enumeration<String> fetchFactions() 

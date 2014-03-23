@@ -45,6 +45,8 @@ public class Spell extends StdAbility
 	public String[] triggerStrings(){return triggerStrings;}
 	public int classificationCode(){return Ability.ACODE_SPELL;}
 	
+	protected static final int CHAIN_LENGTH=4;
+	
 	public boolean maliciousAffect(MOB mob,
 								   Physical target,
 								   int asLevel,

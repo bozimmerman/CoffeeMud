@@ -733,7 +733,7 @@ public class MUDGrinder extends StdWebMacro
 				F=(Faction)CMClass.getCommon("DefaultFaction");
 				if(F==null) return " @break@";
 				F.initializeFaction(template,last);
-				CMLib.factions().addFaction(F.factionID().toUpperCase(),F);
+				CMLib.factions().addFaction(F);
 			}
 			String errMsg=GrinderFactions.modifyFaction(httpReq, parms, F);
 			if(errMsg.length()==0)

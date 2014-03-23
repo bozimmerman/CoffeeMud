@@ -37,7 +37,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 */
 public interface FactionManager extends CMLibrary, Tickable
 {
-	public void addFaction(String factionID, Faction F);
+	public void addFaction(Faction F);
 	public Enumeration<Faction> factions();
 	public int numFactions();
 	public void clearFactions();

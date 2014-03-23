@@ -13,6 +13,7 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 /* 
    Copyright 2000-2014 Bo Zimmerman
@@ -58,6 +59,7 @@ public interface CMFlagLibrary extends CMLibrary
 	public boolean canBreatheHere(MOB M, Room R);
 	public boolean canSeeMetal(MOB M);
 	public boolean canWorkOnSomething(MOB M);
+	public boolean canAutoAttack(MOB M);
 	public boolean canConcentrate(MOB M);
 	public boolean isReadable(Item I);
 	public boolean isEnspelled(Physical F);

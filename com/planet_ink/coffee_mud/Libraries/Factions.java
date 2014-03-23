@@ -127,13 +127,13 @@ public class Factions extends StdLibrary implements FactionManager
 			if(!hashedFactionRanges.containsKey(UniqueCodeName))
 				hashedFactionRanges.put(UniqueCodeName,FR);
 		}
-		addFaction(factionID,F);
+		addFaction(F);
 		return F;
 	}
 
-	public void addFaction(String factionID, Faction F)
+	public void addFaction(Faction F)
 	{
-		factionSet.put(factionID.toUpperCase().trim(),F);
+		factionSet.put(F.factionID().toUpperCase().trim(),F);
 	}
 
 	public String makeFactionFilename(String factionID)
@@ -169,6 +169,11 @@ public class Factions extends StdLibrary implements FactionManager
 			factionSet.remove(F.factionID().toUpperCase());
 			Resources.removeResource(F.factionID());
 			return null;
+		}
+		if(!factionID.toLowerCase().endsWith(".ini"))
+		{
+			F=getFaction(factionID+".ini");
+			if(F!=null) return F;
 		}
 		CMFile f=new CMFile(Resources.makeFileResourceName(makeFactionFilename(factionID)),null,CMFile.FLAG_LOGERRORS);
 		if(!f.exists()) return null;

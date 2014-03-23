@@ -363,7 +363,75 @@ public interface PhyStats extends CMCommon, Modifiable
 	public final static int CAN_NOT_THINK=131072;
 	/** a bit setting, as from sensesMask(), flagging this mob as unable to engage in long tasks*/
 	public final static int CAN_NOT_WORK=262144;
+	/** a bit setting, as from sensesMask(), flagging this mob as unable to engage in standard combat ticks*/
+	public final static int CAN_NOT_AUTO_ATTACK=524288;
 	
+	/** STAT codes list, indexed by the 2nd root of the various sensesMask() CAN_SEE bitmasks */ 
+	public static final String[] CAN_SEE_CODES={"CANNOTSEE",
+												"CANSEEHIDDEN",
+												"CANSEEINVISIBLE",
+												"CANSEEEVIL",
+												"CANSEEGOOD",
+												"CANSEESNEAKERS",
+												"CANSEEBONUS",
+												"CANSEEDARK",
+												"CANSEEINFRARED",
+												"CANNOTHEAR",
+												"CANNOTMOVE",
+												"CANNOTSMELL",
+												"CANNOTTASTE",
+												"CANNOTSPEAK",
+												"CANNOTBREATHE",
+												"CANSEEVICTIM",
+												"CANSEEMETAL",
+												"CANNOTTHINK",
+												"CANNOTWORK",
+												"CANNOTAUTOATTACK"};
+	
+	/** Descriptions, indexed by the 2nd root of the various CAN_SEE sensesMask() bitmasks */ 
+	public static final String[] CAN_SEE_DESCS={"Is Blind",
+											 "Can see hidden",
+											 "Can see invisible",
+											 "Can see evil",
+											 "Can see good",
+											 "Can detect sneakers",
+											 "Can see magic",
+											 "Can see in the dark",
+											 "Has infravision",
+											 "Is Deaf",
+											 "Is Paralyzed",
+											 "Can not smell",
+											 "Can not eat",
+											 "Is Mute",
+											 "Can not breathe",
+											 "Can detect victims",
+											 "Can detect metal",
+											 "Can not concentrate",
+											 "Is too busy",
+											 "Is not auto-attacking"};
+	
+	/** Descriptive verbs, indexed by the 2nd root of the various CAN_SEE sensesMask() bitmasks */ 
+	public static final String[] CAN_SEE_VERBS={"Causes Blindness",
+												"Allows see hidden",
+												"Allows see invisible",
+												"Allows see evil",
+												"Allows see good",
+												"Allows detect sneakers",
+												"Allows see magic",
+												"Allows darkvision",
+												"Allows infravision",
+												"Causes Deafness",
+												"Causes Paralyzation",
+												"Deadens smell",
+												"Disallows eating",
+												"Causes Mutemess",
+												"Causes choking",
+												"Allows detect victims",
+												"Allows detect metal",
+												"Befuddles the mind",
+												"Occupies time",
+												"Prevents auto attacking"};
+
 	// sensemask stuff not applicable to mobs
 	/** a bit setting, as from sensesMask(), flagging this item/room as being unlocatable */
 	public final static int SENSE_UNLOCATABLE=1;
@@ -470,68 +538,6 @@ public interface PhyStats extends CMCommon, Modifiable
 	/** a bit setting, as from disposition(), flagging this object as being unattackable */
 	public final static int IS_UNATTACKABLE=2097152;
 
-	/** STAT codes list, indexed by the 2nd root of the various sensesMask() CAN_SEE bitmasks */ 
-	public static final String[] CAN_SEE_CODES={"CANNOTSEE",
-												"CANSEEHIDDEN",
-												"CANSEEINVISIBLE",
-												"CANSEEEVIL",
-												"CANSEEGOOD",
-												"CANSEESNEAKERS",
-												"CANSEEBONUS",
-												"CANSEEDARK",
-												"CANSEEINFRARED",
-												"CANNOTHEAR",
-												"CANNOTMOVE",
-												"CANNOTSMELL",
-												"CANNOTTASTE",
-												"CANNOTSPEAK",
-												"CANNOTBREATHE",
-												"CANSEEVICTIM",
-												"CANSEEMETAL",
-												"CANNOTTHINK",
-												"CANNOTWORK"};
-	
-	/** Descriptions, indexed by the 2nd root of the various CAN_SEE sensesMask() bitmasks */ 
-	public static final String[] CAN_SEE_DESCS={"Is Blind",
-											 "Can see hidden",
-											 "Can see invisible",
-											 "Can see evil",
-											 "Can see good",
-											 "Can detect sneakers",
-											 "Can see magic",
-											 "Can see in the dark",
-											 "Has infravision",
-											 "Is Deaf",
-											 "Is Paralyzed",
-											 "Can not smell",
-											 "Can not eat",
-											 "Is Mute",
-											 "Can not breathe",
-											 "Can detect victims",
-											 "Can detect metal",
-											 "Can not concentrate",
-											 "Is too busy"};
-	
-	/** Descriptive verbs, indexed by the 2nd root of the various CAN_SEE sensesMask() bitmasks */ 
-	public static final String[] CAN_SEE_VERBS={"Causes Blindness",
-												"Allows see hidden",
-												"Allows see invisible",
-												"Allows see evil",
-												"Allows see good",
-												"Allows detect sneakers",
-												"Allows see magic",
-												"Allows darkvision",
-												"Allows infravision",
-												"Causes Deafness",
-												"Causes Paralyzation",
-												"Deadens smell",
-												"Disallows eating",
-												"Causes Mutemess",
-												"Causes choking",
-												"Allows detect victims",
-												"Allows detect metal",
-												"Befuddles the mind",
-												"Occupies time"};
 	
 	/** STAT codes, indexed by the 2nd root of the various IS_ disposition() bitmasks */ 
 	public static final String[] IS_CODES={"ISSEEN",
