@@ -12,6 +12,28 @@
    *. Push regen rates to INI file
    *. New combat system: turn based
    *. Name generator, finally
+   *. make the tech install skill!!! all put/remove commands should check msg.value() for pct chance/competence
+      competence divides by manufacturer and class of item. Minimum of 1/5 pts on max other items same manufacturer/type
+      using expertises is a great idea.  Every time engineering levels up, gain a rank in appropriate expertise?
+   *. make components interact badly based on techlevel -- generators/batteries affect things they power, software affects controlled.
+      this encourages equality in tech level, which will bleed out into the comparative components (weapons, shields)
+   *. retest private libs, private dbtables, private classes, private area objects, private players
+   *. some way to reposition planets? esp relative to nearby ones
+   *. create solar systems, esp stars.  planets should be thin areas, solar systems are triggered to load when players fly near enough.
+   *. MoneyChanger/Banker behavior to discount currency by its distant origin (farther planet is from origin of currency, less its worth).
+   *. personal scanner/tricorder software: mineral scanner, computer interface (with ship perhaps?)!
+   *. entry systems for ships (default entry key card, voice code, identifying scanner)
+   *. make ship sensor systems
+   *. make tractor beam system -- esp important for pirates!
+   *. make ship shield systems murder motel again -- some good against phasers, some torpedos, some lasers
+   *. make ship phaser, laser systems murder motel again
+   *. make ship torpedo launchers and torpedo containers
+   *. make ship impulse and warp engines
+   *. make ship dampeners
+   *. engines should have max turn thrust, different from max thrust
+   *. finish main ship software for controlling all this stuff
+   *. add electronics to guides
+   *. add electronics to MG
     
 # Build 5.8.1 Release 3/14/2014
    0. **** Database Schema Changes Were Made **** Make sure you follow the Installation Guide to upgrade your database. 
