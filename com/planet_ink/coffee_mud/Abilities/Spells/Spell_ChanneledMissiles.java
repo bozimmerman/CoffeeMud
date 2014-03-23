@@ -78,12 +78,14 @@ public class Spell_ChanneledMissiles extends Spell
 		MOB mob=(MOB)affecting();
 		if(!super.tick(ticking,tickID))
 			return false;
+		/* this seems so safe, but ALWAYS fails!
 		if(mob.getVictim()==null)
 		{
 			unInvoke();
 			mob.recoverPhyStats();
 		}
 		else
+		*/
 			this.channelingClass.run();
 		return true;
 	}
@@ -150,7 +152,7 @@ public class Spell_ChanneledMissiles extends Spell
 		        							CMLib.combat().postDamage(mob,target[0],thisSpellA,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,Weapon.TYPE_BURSTING,((i==0)?"^SThe missile ":"^SAnother missile ")+"<DAMAGE> <T-NAME>!^?");
 		        					}
 		        				}
-		        				if(target[0].amDead())
+			        			if((target[0]==null)||(target[0].amDead())||(target[0].location()!=R))
 		        				{
 		        					target[0]=thisSpellA.getTarget(mob,commands,givenTarget,true,false);
 		        					if(target[0]==null)
