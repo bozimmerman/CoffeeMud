@@ -75,17 +75,15 @@ public class Spell_ChanneledMissiles extends Spell
 	{
 		if((affecting()==null)||(!(affecting() instanceof MOB))||(this.channelingClass==null))
 			return false;
-		MOB mob=(MOB)affecting();
+		final MOB mob=(MOB)affecting();
 		if(!super.tick(ticking,tickID))
 			return false;
-		/* this seems so safe, but ALWAYS fails!
 		if(mob.getVictim()==null)
 		{
 			unInvoke();
 			mob.recoverPhyStats();
 		}
 		else
-		*/
 			this.channelingClass.run();
 		return true;
 	}
@@ -127,7 +125,7 @@ public class Spell_ChanneledMissiles extends Spell
 		{
 			final int numMissiles=((int)Math.round(Math.floor(CMath.div(adjustedLevel(mob,asLevel),5)))+1);
 			final Room R=target[0].location();
-			CMMsg msg=CMClass.getMsg(mob,target[0],this,somanticCastCode(mob,target[0],auto),auto?"":"^S<S-NAME> begin(s) channeling magic towards <T-NAME>.^?");
+			CMMsg msg=CMClass.getMsg(mob,target[0],this,somanticCastCode(mob,target[0],auto),null);
 			if(R.okMessage(mob,msg))
 			{
 				R.send(mob,msg);
@@ -141,7 +139,7 @@ public class Spell_ChanneledMissiles extends Spell
 						{
 		        			for(int i=0;(i<numMissiles) && (target[0].location()==R);i++)
 		        			{
-		        				CMMsg msg=CMClass.getMsg(mob,target[0],thisSpellA,somanticCastCode(mob,target[0],auto),(i==0)?((auto?"A magic missile appears hurling full speed at <T-NAME>!":"^S<S-NAME> shoot(s) magic missiles at <T-NAMESELF>!^?")+CMLib.protocol().msp("spelldam2.wav",40)):null);
+		        				CMMsg msg=CMClass.getMsg(mob,target[0],thisSpellA,somanticCastCode(mob,target[0],auto),(i==0)?((auto?"Magic missiles appear hurling full speed at <T-NAME>!":"^S<S-NAME> channel(s) magic missiles toward(s) <T-NAMESELF>!^?")+CMLib.protocol().msp("spelldam2.wav",40)):null);
 		        				if((mob!=null)&&(mob.location()!=null)&&(mob.location().okMessage(mob,msg)))
 		        				{
 		        					mob.location().send(mob,msg);
@@ -167,6 +165,14 @@ public class Spell_ChanneledMissiles extends Spell
 		        				thisSpellA.unInvoke();
 		        				mob.recoverPhyStats();
 		        			}
+		        			else
+		        			{
+		        				if(mob.getVictim()==null)
+		        					mob.setVictim(target[0]);
+		        				if(target[0].getVictim()==null)
+		        					target[0].setVictim(mob);
+		        			}
+		        			
 						}
 					};
 					thisSpellA.channelingClass.run();
