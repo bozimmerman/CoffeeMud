@@ -589,6 +589,7 @@ public class Intermud implements Runnable, Persistent, Serializable
 				}
 				byte[] tmp = new byte[len];
 
+				final long startTime=System.currentTimeMillis();
 				while(!shutdown)
 				{
 					try
@@ -601,6 +602,8 @@ public class Intermud implements Runnable, Persistent, Serializable
 						if((e.getMessage()==null)||(e.getMessage().toUpperCase().indexOf("TIMED OUT")<0)) 
 							throw e;
 						CMLib.s_sleep(1000);
+						if((System.currentTimeMillis()-startTime)>(10 * 60 * 1000))
+							throw e;
 						Log.errOut("Intermud","Timeout receiving packet sized "+len);
 						continue;
 					}

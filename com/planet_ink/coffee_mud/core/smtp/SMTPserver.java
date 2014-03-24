@@ -342,7 +342,10 @@ public class SMTPserver extends Thread implements Tickable
 		catch(Exception e)
 		{
 			// if we've been interrupted, servsock will be null and serverOK will be true
-			Log.errOut(getName(),e.getMessage());
+			if(servsock != null)
+				Log.errOut(getName(),e.getMessage());
+			else
+				Log.infoOut(getName(),e.getMessage());
 			// this prevents initHost() from running if run() has failed (eg socket in use)
 			if (!serverOK)
 				isOK = false;

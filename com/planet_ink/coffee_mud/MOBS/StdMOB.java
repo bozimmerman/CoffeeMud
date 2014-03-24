@@ -4114,11 +4114,12 @@ public class StdMOB implements MOB
 			start = F.maximum();
 		if (start < F.minimum())
 			start = F.minimum();
-		Faction.FData data = factions.get(F.factionID().toUpperCase());
+		which = F.factionID().toUpperCase();
+		Faction.FData data = factions.get(which);
 		if (data == null)
 		{
 			data = F.makeFactionData(this);
-			factions.put(F.factionID().toUpperCase(), data);
+			factions.put(which, data);
 		}
 		data.setValue(start);
 	}
@@ -4129,10 +4130,11 @@ public class StdMOB implements MOB
 		Faction F = CMLib.factions().getFaction(which);
 		if (F == null)
 			return;
-		if (!factions.containsKey(F.factionID().toUpperCase()))
-			addFaction(F.factionID(), amount);
+		which = F.factionID().toUpperCase();
+		if (!factions.containsKey(which))
+			addFaction(which, amount);
 		else
-			addFaction(F.factionID(), fetchFaction(F.factionID()) + amount);
+			addFaction(which, fetchFaction(which) + amount);
 	}
 
 	public Enumeration<String> fetchFactions() 
