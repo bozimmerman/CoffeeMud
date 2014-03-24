@@ -139,7 +139,7 @@ public class GrinderAbilities {
 		A.setStat("VERB",(old==null)?"":old);
 		old=httpReq.getUrlParameter("FILENAME");
 		A.setStat("FILENAME",(old==null)?"":old);
-		old=httpReq.getUrlParameter("QUALITY");
+		old=httpReq.getUrlParameter("VQUALITY");
 		A.setStat("QUALITY",(old==null)?"":old);
 		old=httpReq.getUrlParameter("HERESTATS");
 		A.setStat("HERESTATS",(old==null)?"":old);

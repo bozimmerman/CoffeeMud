@@ -803,6 +803,7 @@ public class GenAbility extends StdAbility
 		for(int i=0;i<options.length;i++)
 			if(val.equalsIgnoreCase(options[i]))
 				return mask?(1<<i):i;
+		if(val.length()>0)
 		for(int i=0;i<options.length;i++)
 			if(options[i].toUpperCase().startsWith(val.toUpperCase()))
 				return mask?(1<<i):i;
