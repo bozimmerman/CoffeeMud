@@ -367,6 +367,15 @@ be to use the skill. Use ? to get a list of possible values.</p>
             </td>
           </tr>
           <tr>
+            <td><em>Ticks Between Casts</em></td>
+            <td>number of ticks that must ellapse before the skill can be used again.</td>
+          </tr>
+          <tr>
+            <td><em>Duration Override (0=NO)</em></td>
+            <td>if your skill affects the target over time, then the duration will be standard. 
+            If you wish to override the standard effect duration, set this to a number of ticks greater than 0.</td>
+          </tr>
+          <tr>
             <td><em>Affect
 String</em></td>
             <td>what is displayed
@@ -427,6 +436,10 @@ will target. If the value is 0, it will target only the invoker. Enter
 ? for a list.</td>
           </tr>
           <tr>
+            <td><em>Tick/Periodic Affects</em></td>
+            <td>the standard damage/healing and Extra Castings will apply at skill invocation time.  However, if your skill is set to affect the target over time, AND this is set to true, then those things will happen every tick until the effect expires.</td>
+          </tr>
+          <tr>
             <td><em>Quality
 Code</em></td>
             <td>whether this skill
@@ -467,7 +480,8 @@ invocation of this ability, a special trigger event will occur that can
 be handled by an IMASK_PROG p &lt;ability id&gt;. Such a script
 trigger
 would, for example, be the appropriate place to put damage commands for
-skills that do damage.</td>
+skills that do damage.  Periodic actions can be placed in RAND_PROG
+triggers.</td>
           </tr>
           <tr>
             <td><em>Target

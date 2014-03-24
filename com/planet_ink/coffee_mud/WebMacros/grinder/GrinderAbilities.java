@@ -65,8 +65,12 @@ public class GrinderAbilities {
 		A.setStat("MAXRANGE",(old==null)?"":old);
 		old=httpReq.getUrlParameter("TICKSBETWEENCASTS");
 		A.setStat("TICKSBETWEENCASTS",(old==null)?"0":old);
+		old=httpReq.getUrlParameter("TICKSOVERRIDE");
+		A.setStat("TICKSOVERRIDE",(old==null)?"0":old);
 		old=httpReq.getUrlParameter("DISPLAY");
 		A.setStat("DISPLAY",(old==null)?"DISPLAY":old);
+		old=httpReq.getUrlParameter("TICKAFFECTS");
+		A.setStat("TICKAFFECTS",(old==null)?"":""+old.equalsIgnoreCase("on"));
 		old=httpReq.getUrlParameter("AUTOINVOKE");
 		A.setStat("AUTOINVOKE",(old==null)?"":""+old.equalsIgnoreCase("on"));
 		Vector V=new Vector();

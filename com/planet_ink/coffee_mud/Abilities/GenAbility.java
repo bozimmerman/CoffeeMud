@@ -16,6 +16,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /*
@@ -69,7 +70,10 @@ public class GenAbility extends StdAbility
 	private static final int V_PDMG=24;//S
 	private static final int V_HELP=25;//S
 	private static final int V_TKBC=26;//I
-	private static final int NUM_VS=27;//S
+	private static final int V_TKOV=27;//I
+	private static final int V_TKAF=28;//B
+	private static final int V_CHAN=29;//B
+	private static final int NUM_VS=30;//S
 	private static final Object[] makeEmpty()
 	{
 		Object[] O=new Object[NUM_VS];
@@ -100,6 +104,9 @@ public class GenAbility extends StdAbility
 		O[V_PDMG]="1";
 		O[V_HELP]="<ABILITY>This ability is not yet documented.";
 		O[V_TKBC]=Integer.valueOf(0);
+		O[V_TKOV]=Integer.valueOf(0);
+		O[V_TKAF]=Boolean.FALSE;
+		O[V_CHAN]=Boolean.FALSE;
 		return O;
 	}
 	private static final Object V(String ID, int varNum)
@@ -122,7 +129,8 @@ public class GenAbility extends StdAbility
 	}
 	private ScriptingEngine scriptObj=null;
 	private long scriptParmHash=0;
-	public ScriptingEngine getScripter(){
+	public ScriptingEngine getScripter()
+	{
 		if(((String)V(ID,V_SCRP)).hashCode()!=scriptParmHash)
 		{
 			String parm=(String)V(ID,V_SCRP);
@@ -140,6 +148,7 @@ public class GenAbility extends StdAbility
 		}
 		return scriptObj;
 	}
+	private Runnable periodicEffect = null;
 
 
 	public String Name(){return name();}
@@ -157,11 +166,14 @@ public class GenAbility extends StdAbility
 	protected int canAffectCode(){return ((Integer)V(ID,V_CAFF)).intValue(); }
 	protected int canTargetCode(){return ((Integer)V(ID,V_CTAR)).intValue(); }
 	public int abstractQuality(){return ((Integer)V(ID,V_QUAL)).intValue();}
+	public int tickOverride() { return ((Integer)V(ID,V_TKOV)).intValue();}
+	
 	protected long timeToNextCast = 0;
-	public int ticksBetweenCasts() { return ((Integer)V(ID,V_TKBC)).intValue();}
-	public long getTimeOfNextCast(){ return timeToNextCast; }
-	public void setTimeOfNextCast(long absoluteTime) { timeToNextCast=absoluteTime;}
-
+	protected int getTicksBetweenCasts() { return ((Integer)V(ID,V_TKBC)).intValue();}
+	protected long getTimeOfNextCast(){ return timeToNextCast; }
+	protected void setTimeOfNextCast(long absoluteTime) { timeToNextCast=absoluteTime;}
+	
+	protected boolean isChannelingSkill() { return ((Boolean)V(ID,V_CHAN)).booleanValue(); }
 
 	public CMObject newInstance()
 	{
@@ -203,7 +215,7 @@ public class GenAbility extends StdAbility
 
 	public boolean isGeneric(){return true;}
 
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, Vector commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if((!auto)
 		&&(((String)V(ID,V_CMSK)).length()>0)
@@ -311,9 +323,9 @@ public class GenAbility extends StdAbility
 		if(!super.invoke(mob,commands,givenTarget, auto, asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success[]={proficiencyCheck(mob,0,auto)};
 
-		if(success)
+		if(success[0])
 		{
 			// it worked, so build a copy of this ability,
 			// and add it to the affects list of the
@@ -342,11 +354,14 @@ public class GenAbility extends StdAbility
 				castCode|=CMMsg.MASK_MALICIOUS;
 			if(auto) castCode|=CMMsg.MASK_ALWAYS;
 
-			CMMsg msg = CMClass.getMsg(mob, target, this, castCode, (auto?(String)V(ID,V_ACST):(String)V(ID,V_CAST)));
-			CMMsg msg2= null;
-			Integer OTH=(Integer)V(ID,V_ATT2);
+			final CMMsg msg = CMClass.getMsg(mob, target, this, castCode, (auto?(String)V(ID,V_ACST):(String)V(ID,V_CAST)));
+			final CMMsg msg2;
+			final Integer OTH=(Integer)V(ID,V_ATT2);
 			if(OTH.intValue()>0)
 				msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS|OTH.intValue()|(auto?CMMsg.MASK_ALWAYS:0),null);
+			else
+				msg2=null;
+			
 			if(mob.location().okMessage(mob,msg)&&(this.okMessage(mob, msg))
 			&&((msg2==null)||(mob.location().okMessage(mob,msg2)&&(this.okMessage(mob, msg2)))))
 			{
@@ -358,13 +373,14 @@ public class GenAbility extends StdAbility
 					if((canAffectCode()!=0)&&(target!=null))
 					{
 						if(abstractQuality()==Ability.QUALITY_MALICIOUS)
-							success=maliciousAffect(mob,target,asLevel,0,-1);
+							success[0]=maliciousAffect(mob,target,asLevel,tickOverride(),-1);
 						else
-							success=beneficialAffect(mob,target,asLevel,0);
+							success[0]=beneficialAffect(mob,target,asLevel,tickOverride());
 					}
 					setTimeOfNextCast(mob);
+					
 					String afterAffect=(String)V(ID,V_PAFF);
-					if((afterAffect.length()>0)&&(success))
+					if((afterAffect.length()>0)&&(success[0]))
 					{
 						Ability P=CMClass.getAbility("Prop_SpellAdder");
 						if(P!=null)
@@ -380,81 +396,103 @@ public class GenAbility extends StdAbility
 								{
 									A=(Ability)A.copyOf();
 									int tickDown=(abstractQuality()==Ability.QUALITY_MALICIOUS)?
-											getMaliciousTickdownTime(mob,target,0,asLevel):
-											getBeneficialTickdownTime(mob,target,0,asLevel);
+											getMaliciousTickdownTime(mob,target,tickOverride(),asLevel):
+											getBeneficialTickdownTime(mob,target,tickOverride(),asLevel);
 									A.startTickDown(mob,target,tickDown);
 								}
 							}
 						}
 					}
 				}
-				String DMG=(String)V(ID,V_PDMG);
-				int dmg=0;
-				if(DMG.trim().length()>0)
-					dmg=CMath.parseIntExpression(DMG,
-							new double[]{mob.phyStats().level(),
-							(target==null)?mob.phyStats().level():target.phyStats().level()});
-				if(((msg.value()<=0)&&((msg2==null)||(msg2.value()<=0)))
-				||(dmg>0))
+				final Physical finalTarget = target;
+				final MOB finalTargetMOB = (finalTarget instanceof MOB)?(MOB)finalTarget:mob;
+				final int finalCastCode = castCode;
+				final Ability me=this;
+				final Runnable skillAction = new Runnable()
 				{
-					if((msg.value()<=0)&&((msg2==null)||(msg2.value()<=0)))
-						dmg=dmg/2;
-					if((success)&&(((String)V(ID,V_PCST)).length()>0))
-						if((target==null)||(target instanceof Exit)||(target instanceof Area)
-						||(mob.location()==CMLib.map().roomLocation(target)))
+					public void run()
+					{
+						String DMG=(String)V(ID,V_PDMG);
+						int dmg=0;
+						if(DMG.trim().length()>0)
+							dmg=CMath.parseIntExpression(DMG,
+									new double[]{mob.phyStats().level(),
+									(finalTarget==null)?mob.phyStats().level():finalTarget.phyStats().level()});
+						if(((msg.value()<=0)&&((msg2==null)||(msg2.value()<=0)))
+						||(dmg>0))
 						{
+							if((msg.value()<=0)&&((msg2==null)||(msg2.value()<=0)))
+								dmg=dmg/2;
+							if((success[0])&&(((String)V(ID,V_PCST)).length()>0))
+								if((finalTarget==null)||(finalTarget instanceof Exit)||(finalTarget instanceof Area)
+								||(mob.location()==CMLib.map().roomLocation(finalTarget)))
+								{
+									if(dmg>0)
+									{
+										CMLib.combat().postDamage(mob,finalTargetMOB,me,dmg,CMMsg.MASK_ALWAYS|((OTH.intValue()<=0)?finalCastCode:OTH.intValue()),Weapon.TYPE_BURSTING,(String)V(ID,V_PCST));
+										dmg=0;
+									}
+									else
+									if(dmg<0)
+									{
+										CMLib.combat().postHealing(mob,finalTargetMOB,me,-dmg,CMMsg.MASK_ALWAYS|((OTH.intValue()<=0)?finalCastCode:OTH.intValue()),(String)V(ID,V_PCST));
+										dmg=0;
+									}
+									else
+										CMLib.map().roomLocation(finalTarget).show(mob,finalTarget,CMMsg.MSG_OK_ACTION,(String)V(ID,V_PCST));
+								}
 							if(dmg>0)
 							{
-								if(!(target instanceof MOB)) target=mob;
-								CMLib.combat().postDamage(mob,(MOB)target,this,dmg,CMMsg.MASK_ALWAYS|((OTH.intValue()<=0)?castCode:OTH.intValue()),Weapon.TYPE_BURSTING,(String)V(ID,V_PCST));
-								dmg=0;
+								CMLib.combat().postDamage(mob,finalTargetMOB,me,dmg,CMMsg.MASK_ALWAYS|((OTH.intValue()<=0)?finalCastCode:OTH.intValue()),Weapon.TYPE_BURSTING,null);
 							}
 							else
 							if(dmg<0)
 							{
-								if(!(target instanceof MOB)) target=mob;
-								CMLib.combat().postHealing(mob,(MOB)target,this,-dmg,CMMsg.MASK_ALWAYS|((OTH.intValue()<=0)?castCode:OTH.intValue()),(String)V(ID,V_PCST));
-								dmg=0;
+								CMLib.combat().postHealing(mob,finalTargetMOB,me,dmg,CMMsg.MASK_ALWAYS|((OTH.intValue()<=0)?finalCastCode:OTH.intValue()),null);
 							}
-							else
-								CMLib.map().roomLocation(target).show(mob,target,CMMsg.MSG_OK_ACTION,(String)V(ID,V_PCST));
+							if(CMLib.flags().isInTheGame(mob,true)&&((finalTarget==null)||CMLib.flags().isInTheGame((MOB)finalTarget,true)))
+							{
+								ScriptingEngine S=getScripter();
+								if((success[0])&&(S!=null))
+								{
+									CMMsg msg3=CMClass.getMsg(mob,finalTarget,me,CMMsg.MSG_OK_VISUAL,null,null,ID);
+									S.executeMsg(mob, msg3);
+									S.dequeResponses();
+								}
+								mob.location().recoverRoomStats();
+							}
 						}
-					if(dmg>0)
-					{
-						if(!(target instanceof MOB)) target=mob;
-						CMLib.combat().postDamage(mob,(MOB)target,this,dmg,CMMsg.MASK_ALWAYS|((OTH.intValue()<=0)?castCode:OTH.intValue()),Weapon.TYPE_BURSTING,null);
-					}
-					else
-					if(dmg<0)
-					{
-						if(!(target instanceof MOB)) target=mob;
-						CMLib.combat().postHealing(mob,(MOB)target,this,dmg,CMMsg.MASK_ALWAYS|((OTH.intValue()<=0)?castCode:OTH.intValue()),null);
-					}
-					if(CMLib.flags().isInTheGame(mob,true)&&((target==null)||CMLib.flags().isInTheGame((MOB)target,true)))
-					{
-						ScriptingEngine S=getScripter();
-						if((success)&&(S!=null))
+						if(((msg.value()<=0)&&((msg2==null)||(msg2.value()<=0)))
+						&&(CMLib.flags().isInTheGame(mob,true)&&((finalTarget==null)||CMLib.flags().isInTheGame(finalTarget,true))))
 						{
-							msg2=CMClass.getMsg(mob,target,this,CMMsg.MSG_OK_VISUAL,null,null,ID);
-							S.executeMsg(mob, msg2);
-							S.dequeResponses();
+							String afterCast=(String)V(ID,V_PABL);
+							if(afterCast.length()>0)
+							{
+								Ability P=CMClass.getAbility("Prop_SpellAdder");
+								if(P!=null) P.invoke(mob,new XVector(afterCast),finalTarget,true,asLevel);
+							}
 						}
-						mob.location().recoverRoomStats();
+						if((canAffectCode()!=0)&&(finalTarget!=null)&&(finalTargetMOB.amDead()||(!CMLib.flags().isInTheGame(finalTarget, true))))
+						{
+							Ability A=finalTarget.fetchEffect(ID());
+							if((!(A instanceof GenAbility))||(A.invoker()!=mob)) 
+								A=null;
+							if(A!=null)
+								A.unInvoke();
+						}
 					}
-
-				}
-				if(((msg.value()<=0)&&((msg2==null)||(msg2.value()<=0)))
-				&&(CMLib.flags().isInTheGame(mob,true)&&((target==null)||CMLib.flags().isInTheGame(target,true))))
+				};
+				this.periodicEffect=null;
+				skillAction.run();
+				if((canAffectCode()!=0)&&(finalTarget!=null)&&(finalTargetMOB.amDead()||(!CMLib.flags().isInTheGame(finalTarget, true))))
 				{
-					String afterCast=(String)V(ID,V_PABL);
-					if(afterCast.length()>0)
-					{
-						Ability P=CMClass.getAbility("Prop_SpellAdder");
-						if(P!=null) P.invoke(mob,new XVector(afterCast),target,true,asLevel);
-					}
+					Ability A=finalTarget.fetchEffect(ID());
+					if((!(A instanceof GenAbility))||(A.invoker()!=mob)) 
+						A=null;
+					if(A instanceof GenAbility)
+						((GenAbility)A).periodicEffect = skillAction;
 				}
 			}
-
 		}
 		else
 		if(abstractQuality()==Ability.QUALITY_MALICIOUS)
@@ -475,24 +513,47 @@ public class GenAbility extends StdAbility
 		ScriptingEngine S=getScripter();
 		if(S!=null)
 			S.executeMsg(myHost,msg);
+		if(isChannelingSkill()
+		&&(affecting()==invoker())
+		&&msg.amISource(invoker())
+		&&(abilityCode()==0)
+		&&(!msg.sourceMajor(CMMsg.MASK_ALWAYS))
+		&&(msg.sourceMajor()>0)
+		&&(msg.othersMinor()!=CMMsg.TYP_LOOK)
+		&&(msg.othersMinor()!=CMMsg.TYP_EXAMINE)
+		&&(msg.othersMajor()>0)
+		&&(msg.tool()!=this)
+		&&((msg.othersMajor(CMMsg.MASK_SOUND)&&msg.othersMajor(CMMsg.MASK_MOUTH))
+			||msg.othersMajor(CMMsg.MASK_HANDS)
+			||msg.othersMajor(CMMsg.MASK_MOVE))
+		&&((!(msg.tool() instanceof Ability))||(((Ability)msg.tool()).isNowAnAutoEffect())))
+		{
+			unInvoke();
+			msg.source().recoverPhyStats();
+		}
 		return;
 	}
 
 	public void affectPhyStats(Physical affectedEnv, PhyStats affectableStats)
 	{
-		if((Ability)V(ID,V_HERE)!=null)
-			((Ability)V(ID,V_HERE)).affectPhyStats(affectedEnv,affectableStats);
+		final Ability A=(Ability)V(ID,V_HERE);
+		if(A!=null)
+			A.affectPhyStats(affectedEnv,affectableStats);
+		if(isChannelingSkill())
+			affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_AUTO_ATTACK);
 	}
 	public void affectCharStats(MOB affectedMob, CharStats affectableStats)
 	{
-		if(((Ability)V(ID,V_HERE))!=null)
-			((Ability)V(ID,V_HERE)).affectCharStats(affectedMob,affectableStats);
+		final Ability A=(Ability)V(ID,V_HERE);
+		if(A!=null)
+			A.affectCharStats(affectedMob,affectableStats);
 
 	}
 	public void affectCharState(MOB affectedMob, CharState affectableMaxState)
 	{
-		if(((Ability)V(ID,V_HERE))!=null)
-			((Ability)V(ID,V_HERE)).affectCharState(affectedMob,affectableMaxState);
+		final Ability A=(Ability)V(ID,V_HERE);
+		if(A!=null)
+			A.affectCharState(affectedMob,affectableMaxState);
 	}
 
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
@@ -514,6 +575,8 @@ public class GenAbility extends StdAbility
 		if(S!=null)
 			if(!S.tick(ticking,tickID))
 				return false;
+		if(this.periodicEffect!=null)
+			this.periodicEffect.run();
 		return true;
 	}
 
@@ -547,7 +610,10 @@ public class GenAbility extends StdAbility
 										 "POSTCASTABILITY",//25S
 										 "POSTCASTDAMAGE",//26I
 										 "HELP",//27I
-										 "TICKSBETWEENCASTS"//28I
+										 "TICKSBETWEENCASTS",//28I
+										 "TICKSOVERRIDE",//29I
+										 "TICKAFFECTS", //30B
+										 "CHANNELING" //31B
 										};
 	public String[] getStatCodes(){return CODES;}
 	protected int getCodeNum(String code){
@@ -587,6 +653,9 @@ public class GenAbility extends StdAbility
 		case 26: return (String)V(ID,V_PDMG);
 		case 27: return (String)V(ID,V_HELP);
 		case 28: return ((Integer)V(ID,V_TKBC)).toString();
+		case 29: return ((Integer)V(ID,V_TKOV)).toString();
+		case 30: return ((Boolean)V(ID,V_TKAF)).toString();
+		case 31: return ((Boolean)V(ID,V_CHAN)).toString();
 		default:
 			if(code.equalsIgnoreCase("allxml")) return getAllXML();
 			break;
@@ -650,6 +719,9 @@ public class GenAbility extends StdAbility
 		case 26: SV(ID,V_PDMG,val); break;
 		case 27: SV(ID,V_HELP,val); break;
 		case 28: SV(ID,V_TKBC,Integer.valueOf(CMath.s_int(val))); break;
+		case 29: SV(ID,V_TKOV,Integer.valueOf(CMath.s_int(val))); break;
+		case 30: SV(ID,V_TKAF,Boolean.valueOf(CMath.s_bool(val))); break;
+		case 31: SV(ID,V_CHAN,Boolean.valueOf(CMath.s_bool(val))); break;
 		default:
 			if(code.equalsIgnoreCase("allxml")&&ID.equalsIgnoreCase("GenAbility")) parseAllXML(val);
 			break;

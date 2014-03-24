@@ -318,7 +318,13 @@ public class AbilityData extends StdWebMacro
 				if(parms.containsKey("TICKSBETWEENCASTS"))
 				{
 					String old=httpReq.getUrlParameter("TICKSBETWEENCASTS");
-					if(old==null) old=""+A.getTicksBetweenCasts();
+					if(old==null) old=""+A.getStat("TICKSBETWEENCASTS");
+					str.append(old+", ");
+				}
+				if(parms.containsKey("TICKSOVERRIDE"))
+				{
+					String old=httpReq.getUrlParameter("TICKSOVERRIDE");
+					if(old==null) old=""+A.getStat("TICKSOVERRIDE");
 					str.append(old+", ");
 				}
 				if(parms.containsKey("DISPLAY")) // affected string
@@ -332,6 +338,16 @@ public class AbilityData extends StdWebMacro
 					String old=httpReq.getUrlParameter("AUTOINVOKE");
 					if(old==null) 
 						old=A.getStat("AUTOINVOKE");
+					else
+						old=""+old.equalsIgnoreCase("on");
+					str.append(CMath.s_bool(old)?"CHECKED":"");
+					str.append(", ");
+				}
+				if(parms.containsKey("TICKAFFECTS"))
+				{
+					String old=httpReq.getUrlParameter("TICKAFFECTS");
+					if(old==null) 
+						old=A.getStat("TICKAFFECTS");
 					else
 						old=""+old.equalsIgnoreCase("on");
 					str.append(CMath.s_bool(old)?"CHECKED":"");

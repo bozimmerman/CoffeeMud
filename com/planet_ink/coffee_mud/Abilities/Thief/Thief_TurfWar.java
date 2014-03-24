@@ -48,10 +48,12 @@ public class Thief_TurfWar extends ThiefSkill
 	public static Ability sparringRoomA=null;
 	protected MOB defender=null;
 	protected long defenderPKILLMask=0;
+	
+	
 	protected long timeToNextCast = 0;
-	public int getTicksBetweenCasts() { return CMProps.getIntVar(CMProps.Int.TICKSPERMUDMONTH);}
-	public long getTimeOfNextCast(){ return timeToNextCast; }
-	public void setTimeOfNextCast(long absoluteTime) { timeToNextCast=absoluteTime;}
+	protected int getTicksBetweenCasts() { return CMProps.getIntVar(CMProps.Int.TICKSPERMUDMONTH);}
+	protected long getTimeOfNextCast(){ return timeToNextCast; }
+	protected void setTimeOfNextCast(long absoluteTime) { timeToNextCast=absoluteTime;}
 
 	public static synchronized Ability getSparringRoom()
 	{

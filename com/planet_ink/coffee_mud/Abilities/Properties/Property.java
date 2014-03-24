@@ -70,7 +70,6 @@ public class Property implements Ability
 	public int abilityCode(){return 0;}
 	public void setAbilityCode(int newCode){}
 	public int adjustedLevel(MOB mob, int asLevel){return -1;}
-	public int getTicksBetweenCasts() { return 0;}
 	public boolean bubbleAffect(){return false;}
 	public long flags(){return 0;}
 	public long getTickStatus(){return Tickable.STATUS_NOT;}

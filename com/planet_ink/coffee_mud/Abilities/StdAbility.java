@@ -99,9 +99,9 @@ public class StdAbility implements Ability
 	public boolean putInCommandlist(){return true;}
 	public boolean isAutoInvoked(){return false;}
 	public boolean bubbleAffect(){return false;}
-	public int getTicksBetweenCasts() { return 0;}
-	public long getTimeOfNextCast(){ return 0;}
-	public void setTimeOfNextCast(long absoluteTime){}
+	protected int getTicksBetweenCasts() { return 0;}
+	protected long getTimeOfNextCast(){ return 0;}
+	protected void setTimeOfNextCast(long absoluteTime){}
 	protected ExpertiseLibrary.SkillCostDefinition getRawTrainingCost() { return CMProps.getSkillTrainCostFormula(ID()); }
 
 	public ExpertiseLibrary.SkillCost getTrainingCost(MOB mob)

@@ -337,14 +337,6 @@ public interface Ability extends Environmental
 	public boolean isNowAnAutoEffect();
 	
 	/**
-	 * Returns the number of ticks between successful usages of this skill.
-	 * This is enforced only partially by StdAbility, and mostly by each
-	 * particular skill, which knows what "success" for it means.
-	 * @return the number of ticks between successful usages of this skill.
-	 */
-	public int getTicksBetweenCasts();
-	
-	/**
 	 * Returns an integer array telling the system how much mana, 
 	 * movement, or hit points are required to invoke this skill.
 	 * Use the Ability.USAGEINDEX_* constants to index the array.

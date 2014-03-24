@@ -278,7 +278,7 @@
                     <FONT COLOR=YELLOW>Is Auto-Invoking: </FONT><BR>
                 </TD>
                 <TD>
-                    <INPUT TYPE=CHECKBOX NAME=TRIGSTR @AbilityData?AUTOINVOKE@>
+                    <INPUT TYPE=CHECKBOX NAME=AUTOINVOKE @AbilityData?AUTOINVOKE@>
                 </TD>
             </TR>
             <TR>
@@ -307,6 +307,12 @@
                 </TD>
             </TR>
             <TR>
+                <TD><FONT COLOR=YELLOW>Duration Override (0=NO): </FONT></TD>
+                <TD>
+                    <INPUT TYPE=TEXT SIZE=10 MAXLENGTH=20 NAME=TICKSOVERRIDE VALUE="@AbilityData?TICKSOVERRIDE@">
+                </TD>
+            </TR>
+            <TR>
                 <TD><FONT COLOR=YELLOW>Can Affect: </FONT></TD>
                 <TD>
                     <SELECT NAME=CANAFFECTMASK MULTIPLE>@AbilityData?CANAFFECTMASK@</SELECT>
@@ -316,6 +322,14 @@
                 <TD><FONT COLOR=YELLOW>Can Target: </FONT></TD>
                 <TD>
                     <SELECT NAME=CANTARGETMASK MULTIPLE>@AbilityData?CANTARGETMASK@</SELECT>
+                </TD>
+            </TR>
+            <TR>
+                <TD>
+                    <FONT COLOR=YELLOW>Tick/Periodic Effects: </FONT><BR>
+                </TD>
+                <TD>
+                    <INPUT TYPE=CHECKBOX NAME=TICKAFFECTS @AbilityData?TICKAFFECTS@>
                 </TD>
             </TR>
             <TR>

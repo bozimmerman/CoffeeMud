@@ -46,7 +46,7 @@ public class Skill_CenterOfAttention extends BardSkill
 	public String[] triggerStrings(){return triggerStrings;}
 	public int classificationCode(){ return Ability.ACODE_SKILL|Ability.DOMAIN_FOOLISHNESS;}
 	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
-	public int getTicksBetweenCasts() { return (int)(CMProps.getMillisPerMudHour() / CMProps.getTickMillis() / 2); }
+	protected int getTicksBetweenCasts() { return (int)(CMProps.getMillisPerMudHour() / CMProps.getTickMillis() / 2); }
 
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
