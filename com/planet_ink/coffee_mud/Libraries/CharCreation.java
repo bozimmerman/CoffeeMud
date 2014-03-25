@@ -1723,6 +1723,11 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		LoginResult prelimResults = prelimChecks(session,playMe.name,playMe);
 		if(prelimResults!=null)
 			return prelimResults;
+		if(isExpired(acct,session,realMOB.playerStats().getAccountExpiration())) 
+		{
+			loginObj.state=LoginState.ACCTMENU_SHOWMENU;
+			return null;
+		}
 		LoginResult completeResult=completeCharacterLogin(session,playMe.name, wizi);
 		if(completeResult == LoginResult.NO_LOGIN)
 		{
@@ -2809,6 +2814,11 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		CMLib.coffeeTables().bump(mob,CoffeeTableRow.STAT_NEWPLAYERS);
 		mob.setSession(session);
 		session.setMob(mob);
+		if(isExpired(mob.playerStats().getAccount(),session,mob.playerStats().getAccountExpiration())) 
+		{
+			loginObj.state=LoginState.ACCTMENU_SHOWMENU;
+			return LoginResult.NO_LOGIN;
+		}
 		return LoginResult.NORMAL_LOGIN;
 	}
 	
