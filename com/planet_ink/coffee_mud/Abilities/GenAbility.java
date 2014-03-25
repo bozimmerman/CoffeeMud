@@ -421,7 +421,7 @@ public class GenAbility extends StdAbility
 						if(((msg.value()<=0)&&((msg2==null)||(msg2.value()<=0)))
 						||(dmg>0))
 						{
-							if((msg.value()<=0)&&((msg2==null)||(msg2.value()<=0)))
+							if((msg.value()>0)||((msg2!=null)&&(msg2.value()>0))&&(dmg>0))
 								dmg=dmg/2;
 							if((success[0])&&(((String)V(ID,V_PCST)).length()>0))
 								if((finalTarget==null)||(finalTarget instanceof Exit)||(finalTarget instanceof Area)
@@ -435,7 +435,7 @@ public class GenAbility extends StdAbility
 									else
 									if(dmg<0)
 									{
-										CMLib.combat().postHealing(mob,finalTargetMOB,me,-dmg,CMMsg.MASK_ALWAYS|((OTH.intValue()<=0)?finalCastCode:OTH.intValue()),(String)V(ID,V_PCST));
+										CMLib.combat().postHealing(mob,finalTargetMOB,me,CMMsg.MASK_ALWAYS|((OTH.intValue()<=0)?finalCastCode:OTH.intValue()),-dmg,(String)V(ID,V_PCST));
 										dmg=0;
 									}
 									else
@@ -448,7 +448,7 @@ public class GenAbility extends StdAbility
 							else
 							if(dmg<0)
 							{
-								CMLib.combat().postHealing(mob,finalTargetMOB,me,dmg,CMMsg.MASK_ALWAYS|((OTH.intValue()<=0)?finalCastCode:OTH.intValue()),null);
+								CMLib.combat().postHealing(mob,finalTargetMOB,me,CMMsg.MASK_ALWAYS|((OTH.intValue()<=0)?finalCastCode:OTH.intValue()),-dmg,null);
 							}
 							if(CMLib.flags().isInTheGame(mob,true)&&((finalTarget==null)||CMLib.flags().isInTheGame((MOB)finalTarget,true)))
 							{
@@ -484,7 +484,7 @@ public class GenAbility extends StdAbility
 				};
 				this.periodicEffect=null;
 				skillAction.run();
-				if((canAffectCode()!=0)&&(finalTarget!=null)&&(finalTargetMOB.amDead()||(!CMLib.flags().isInTheGame(finalTarget, true))))
+				if((canAffectCode()!=0)&&(finalTarget!=null)&&(!finalTargetMOB.amDead())&&(CMLib.flags().isInTheGame(finalTarget, true)))
 				{
 					Ability A=finalTarget.fetchEffect(ID());
 					if((!(A instanceof GenAbility))||(A.invoker()!=mob)) 
@@ -566,7 +566,7 @@ public class GenAbility extends StdAbility
 	}
 
 	public boolean tick(Tickable ticking, int tickID)
-	{
+	{ 
 		if((unInvoked)&&(canBeUninvoked()))
 			return false;
 		if(!super.tick(ticking,tickID))
