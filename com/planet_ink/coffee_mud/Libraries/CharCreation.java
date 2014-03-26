@@ -2857,7 +2857,8 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		CMLib.coffeeTables().bump(mob,CoffeeTableRow.STAT_NEWPLAYERS);
 		if(isExpired(mob.playerStats().getAccount(),session,mob)) 
 		{
-			loginObj.state=LoginState.ACCTMENU_START;
+			if(loginObj.acct!=null)
+				loginObj.state=LoginState.ACCTMENU_START;
 			mob.setSession(null);
 			session.setMob(null);
 			return LoginResult.NO_LOGIN;
