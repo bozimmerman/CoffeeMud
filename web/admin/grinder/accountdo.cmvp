@@ -46,6 +46,22 @@ document.location.href='account.cmvp?AUTH=@Authenticate?AUTH@&ACCOUNT=@AccountID
 //-->
 </SCRIPT>
 @endif@
+@if?CheckReqParm?FUNCTION=EXPIRENEVER@ @AccountOnline?EXPIRENEVER@ 
+<SCRIPT LANGUAGE=JavaScript>
+<!--
+if(window.alert) alert('Account will not expire.');
+document.location.href='account.cmvp?AUTH=@Authenticate?AUTH@&ACCOUNT=@AccountID@';
+//-->
+</SCRIPT>
+@endif@
+@if?CheckReqParm?FUNCTION=EXPIRENOW@ @AccountOnline?EXPIRENOW@ 
+<SCRIPT LANGUAGE=JavaScript>
+<!--
+if(window.alert) alert('Account is now expired.');
+document.location.href='account.cmvp?AUTH=@Authenticate?AUTH@&ACCOUNT=@AccountID@';
+//-->
+</SCRIPT>
+@endif@
 @if?CheckReqParm?FUNCTION=EDITACCOUNT@
 <SCRIPT LANGUAGE=JavaScript>
 <!--

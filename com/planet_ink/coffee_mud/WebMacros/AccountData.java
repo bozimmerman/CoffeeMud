@@ -60,7 +60,11 @@ public class AccountData extends StdWebMacro
 			if(parms.containsKey("NOTES"))
 				return ""+A.notes();
 			if(parms.containsKey("ACCTEXPIRATION"))
+			{
+				if(A.isSet(PlayerAccount.FLAG_NOEXPIRE))
+					return "Never";
 				return ""+CMLib.time().date2String(A.getAccountExpiration());
+			}
 			for(String flag : PlayerAccount.FLAG_DESCS)
 				if(parms.containsKey("IS"+flag))
 					return ""+A.isSet(flag);

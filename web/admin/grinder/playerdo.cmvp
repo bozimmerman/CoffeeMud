@@ -54,6 +54,22 @@ document.location.href='player.cmvp?AUTH=@Authenticate?AUTH@&PLAYER=@PlayerID@';
 //-->
 </SCRIPT>
 @endif@
+@if?CheckReqParm?FUNCTION=EXPIRENEVER@ @PlayerOnline?EXPIRENEVER@ 
+<SCRIPT LANGUAGE=JavaScript>
+<!--
+if(window.alert) alert('Player account will not expire.');
+document.location.href='player.cmvp?AUTH=@Authenticate?AUTH@&PLAYER=@PlayerID@';
+//-->
+</SCRIPT>
+@endif@
+@if?CheckReqParm?FUNCTION=EXPIRENOW@ @PlayerOnline?EXPIRENOW@ 
+<SCRIPT LANGUAGE=JavaScript>
+<!--
+if(window.alert) alert('Player account is now expired.');
+document.location.href='player.cmvp?AUTH=@Authenticate?AUTH@&PLAYER=@PlayerID@';
+//-->
+</SCRIPT>
+@endif@
 @if?CheckReqParm?FUNCTION=EDITPLAYER@ @MUDGrinder?EDITPLAYER@ 
 <SCRIPT LANGUAGE=JavaScript>
 <!--

@@ -14,6 +14,7 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import com.planet_ink.miniweb.interfaces.*;
+
 import java.util.*;
 
 /* 
@@ -68,12 +69,13 @@ public class AccountOnline extends StdWebMacro
 					if(A==null) return "false";
 					boolean canBan=false;
 					boolean canBoot=false;
-					
+					boolean canModify=false;
 					MOB authM=CMLib.players().getLoadPlayer(login);
 					if((authM!=null)&&(authM.playerStats()!=null)&&(authM.playerStats().getAccount().accountName().equals(A.accountName())))
 					{
 						canBan=true;
 						canBoot=true;
+						canModify=true;
 					}
 					else
 					if(authM!=null)
@@ -82,6 +84,8 @@ public class AccountOnline extends StdWebMacro
 							canBan=true;
 						if(CMSecurity.isAllowedEverywhere(authM,CMSecurity.SecFlag.BOOT))
 							canBoot=true;
+						if(CMSecurity.isAllowedEverywhere(authM, CMSecurity.SecFlag.CMDPLAYERS))
+							canModify=true;
 					}
 					
 					if(canBan&&(parms.containsKey("BANBYNAME")))
@@ -90,6 +94,17 @@ public class AccountOnline extends StdWebMacro
 						CMSecurity.ban(A.lastIP());
 					if(canBan&&(parms.containsKey("BANBYEMAIL")))
 						CMSecurity.ban(A.getEmail());
+					if(canModify&&(parms.containsKey("EXPIRENEVER")))
+					{
+						A.setFlag(PlayerAccount.FLAG_NOEXPIRE, true);
+						CMLib.database().DBUpdateAccount(A);
+					}
+					if(canModify&&(parms.containsKey("EXPIRENOW")))
+					{
+						A.setFlag(PlayerAccount.FLAG_NOEXPIRE, false);
+						A.setAccountExpiration(System.currentTimeMillis());
+						CMLib.database().DBUpdateAccount(A);
+					}
 					if((onlineM!=null)&&(onlineM.session()!=null))
 					{
 						if(canBoot&&(parms.containsKey("BOOT")))

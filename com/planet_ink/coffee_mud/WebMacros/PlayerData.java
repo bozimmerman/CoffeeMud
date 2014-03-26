@@ -320,8 +320,17 @@ public class PlayerData extends StdWebMacro
 			break;
 		}
 		case 62: str.append(CMProps.getBoolVar(CMProps.Bool.ACCOUNTEXPIRATION)?"true":"false"); break;
-		case 63: if(M.playerStats()!=null)str.append(CMLib.time().date2String(M.playerStats().getAccountExpiration()));
-					break;
+		case 63: 
+		{
+			if(M.playerStats()!=null)
+			{
+				if(CMSecurity.isAllowedEverywhere(M, CMSecurity.SecFlag.NOEXPIRE))
+					str.append("Never");
+				else
+					str.append(CMLib.time().date2String(M.playerStats().getAccountExpiration()));
+			}
+			 break;
+		}
 		case 64: {
 			for(int f=0;f<M.numFollowers();f++)
 				str.append(M.fetchFollower(f).name()).append(", ");

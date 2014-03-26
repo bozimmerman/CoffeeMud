@@ -15,6 +15,7 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /* 
@@ -64,10 +65,14 @@ public class GrinderAccounts
 				str=httpReq.getUrlParameter("EXPIRATION");
 				if(str!=null)
 				{
+					if(str.equalsIgnoreCase("Never"))
+						A.setFlag(PlayerAccount.FLAG_NOEXPIRE, true);
+					else
 					if(!CMLib.time().isValidDateString(str))
 						err="Invalid date string given.";
 					else
 					{
+						A.setFlag(PlayerAccount.FLAG_NOEXPIRE, false);
 						Calendar C=CMLib.time().string2Date(str);
 						A.setAccountExpiration(C.getTimeInMillis());
 					}

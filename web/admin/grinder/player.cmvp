@@ -86,6 +86,26 @@
 				document.RESOURCES.submit();
 			}
 		}
+		function ExpireNever()
+		{
+			if(confirm('Never expire this player?'))
+			{
+				document.RESOURCES.action='playerdo.cmvp';
+				document.RESOURCES.FUNCTION.value='EXPIRENEVER';
+				document.RESOURCES.PLAYER.value='@PlayerID@';
+				document.RESOURCES.submit();
+			}
+		}
+		function ExpireNow()
+		{
+			if(confirm('Expire this player now?'))
+			{
+				document.RESOURCES.action='playerdo.cmvp';
+				document.RESOURCES.FUNCTION.value='EXPIRENOW';
+				document.RESOURCES.PLAYER.value='@PlayerID@';
+				document.RESOURCES.submit();
+			}
+		}
 		function BanEmail()
 		{
 			if(confirm('Ban this Email Address?'))
@@ -214,13 +234,18 @@
 	</TABLE>
 @endif@
 @if?PlayerData?ACCTEXPUSED@
-	<CENTER><FONT COLOR=RED>Account expires: </FONT>
-	@if?!CheckReqParm?FUNCTION=EDIT@
+	<FONT COLOR=RED>Account expires: </FONT>
+	@if?CheckReqParm?FUNCTION=EDIT@
 		<INPUT TYPE=TEXT NAME=ACCTEXP SIZE=20 VALUE="@PlayerData?ACCTEXP@">
 	@else@
-		<FONT COLOR=BLACK>@PlayerData?ACCTEXP@</FONT>
+		<FONT COLOR=WHITE>@PlayerData?ACCTEXP@</FONT>
 	@endif@
-</CENTER>
+	@if?CheckAuthCode?AUTH_CMDPLAYERS=true@
+		&nbsp;&nbsp;&nbsp;
+		<A href="javascript:ExpireNever();"><FONT SIZE=-1 COLOR=RED>Expire Never</FONT></a>&nbsp;&nbsp;&nbsp;
+		<A href="javascript:ExpireNow();"><FONT SIZE=-1 COLOR=RED>Expire Now</FONT></a>
+		</FONT>
+	@endif@
 @endif@
 <TABLE WIDTH=100% BORDER=1 CELLSPACING=0 CELLPADDING=0>
 <TR>

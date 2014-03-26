@@ -80,6 +80,26 @@
 				document.RESOURCES.submit();
 			}
 		}
+		function ExpireNever()
+		{
+			if(confirm('Never expire this account?'))
+			{
+				document.RESOURCES.action='accountdo.cmvp';
+				document.RESOURCES.FUNCTION.value='EXPIRENEVER';
+				document.RESOURCES.ACCOUNT.value='@AccountID@';
+				document.RESOURCES.submit();
+			}
+		}
+		function ExpireNow()
+		{
+			if(confirm('Expire this account now?'))
+			{
+				document.RESOURCES.action='accountdo.cmvp';
+				document.RESOURCES.FUNCTION.value='EXPIRENOW';
+				document.RESOURCES.ACCOUNT.value='@AccountID@';
+				document.RESOURCES.submit();
+			}
+		}
 		function ReShow()
 		{
 			document.RESOURCES.FUNCTION.value='EDIT';
@@ -181,6 +201,12 @@
 			<INPUT TYPE=TEXT NAME=ACCTEXPIRATION SIZE=20 MAXLENGTH=20 VALUE="@AccountData?ACCTEXPIRATION@">
 		@else@
 			<FONT COLOR=WHITE>@AccountData?ACCTEXPIRATION@</FONT>&nbsp;
+			@if?CheckAuthCode?AUTH_CMDPLAYERS=true@
+				&nbsp;&nbsp;&nbsp;
+				<A href="javascript:ExpireNever();"><FONT SIZE=-1 COLOR=RED>Expire Never</FONT></a>&nbsp;&nbsp;&nbsp;
+				<A href="javascript:ExpireNow();"><FONT SIZE=-1 COLOR=RED>Expire Now</FONT></a>
+				</FONT>
+			@endif@
 		@endif@
 	</TD>
 </TR>

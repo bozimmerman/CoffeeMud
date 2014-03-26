@@ -244,9 +244,37 @@ public class GrinderPlayers extends GrinderMobs
 			case 60: break; // CAN'T do titles here!!
 			case 61: break; // dont do faction lists here
 			case 62: break; // dont do accountexpiration flag here.
-			case 63: if(M.playerStats()!=null)
-						M.playerStats().setAccountExpiration(CMLib.time().string2Millis(old));
-					 break;
+			case 63:
+			{
+				if(M.playerStats()!=null)
+				{
+					if(old.equalsIgnoreCase("Never"))
+					{
+						PlayerStats P=M.playerStats();
+						List<String> secFlags=CMParms.parseSemicolons(P.getSetSecurityFlags(null),true);
+						if(!secFlags.contains(CMSecurity.SecFlag.NOEXPIRE.name()))
+						{
+							secFlags.add(CMSecurity.SecFlag.NOEXPIRE.name());
+							P.getSetSecurityFlags(CMParms.toSemicolonList(secFlags));
+						}
+					}
+					else
+					{
+						PlayerStats P=M.playerStats();
+						List<String> secFlags=CMParms.parseSemicolons(P.getSetSecurityFlags(null),true);
+						if(secFlags.contains(CMSecurity.SecFlag.NOEXPIRE.name()))
+						{
+							secFlags.remove(CMSecurity.SecFlag.NOEXPIRE.name());
+							P.getSetSecurityFlags(CMParms.toSemicolonList(secFlags));
+						}
+						if(old.equalsIgnoreCase("Now"))
+							M.playerStats().setAccountExpiration(System.currentTimeMillis());
+						else
+							M.playerStats().setAccountExpiration(CMLib.time().string2Millis(old));
+					}
+				}
+				break;
+			}
 			case 64: 
 			{
 				if(M.playerStats()!=null)

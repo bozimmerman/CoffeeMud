@@ -16,6 +16,7 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /* 
@@ -101,6 +102,35 @@ public class PlayerOnline extends StdWebMacro
 								M.setImage("");
 								CMLib.database().DBUpdatePlayerMOBOnly(M);
 							}
+						}
+						if(canModify&&(parms.containsKey("EXPIRENEVER")))
+						{
+							PlayerStats P=M.playerStats();
+							if(P!=null)
+							{
+								List<String> secFlags=CMParms.parseSemicolons(P.getSetSecurityFlags(null),true);
+								if(!secFlags.contains(CMSecurity.SecFlag.NOEXPIRE.name()))
+								{
+									secFlags.add(CMSecurity.SecFlag.NOEXPIRE.name());
+									P.getSetSecurityFlags(CMParms.toSemicolonList(secFlags));
+								}
+							}
+							CMLib.database().DBUpdatePlayerMOBOnly(M);
+						}
+						if(canModify&&(parms.containsKey("EXPIRENOW")))
+						{
+							PlayerStats P=M.playerStats();
+							if(P!=null)
+							{
+								List<String> secFlags=CMParms.parseSemicolons(P.getSetSecurityFlags(null),true);
+								if(secFlags.contains(CMSecurity.SecFlag.NOEXPIRE.name()))
+								{
+									secFlags.remove(CMSecurity.SecFlag.NOEXPIRE.name());
+									P.getSetSecurityFlags(CMParms.toSemicolonList(secFlags));
+								}
+								P.setAccountExpiration(System.currentTimeMillis());
+							}
+							CMLib.database().DBUpdatePlayerMOBOnly(M);
 						}
 						if(canBan&&(parms.containsKey("BANBYEMAIL")))
 							CMSecurity.ban(M.playerStats().getEmail());
