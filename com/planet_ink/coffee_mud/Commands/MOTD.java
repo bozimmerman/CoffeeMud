@@ -208,6 +208,17 @@ public class MOTD extends StdCommand
 						buf.append("\n\r^ZYou have mail waiting. Enter 'EMAIL BOX' to read.^?^.\n\r");
 				}
 				
+				if((CMSecurity.isAllowed(mob, mob.location(), CMSecurity.SecFlag.CMDPLAYERS))
+				&&(CMProps.getBoolVar(CMProps.Bool.ACCOUNTEXPIRATION)))
+				{
+					List<String> l=CMLib.login().getExpiredList();
+					if(l.size()>0)
+					{
+						buf.append("\n\r^XThere are currently "+l.size()+" expired "+((CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)>1)?"accounts":"characters"));
+						buf.append(".  Enter LIST EXPIRED to view them.^?^.\n\r");
+					}
+				}
+				
 				List<Quest> qQVec=CMLib.quests().getPlayerPersistantQuests(mob);
 				if(mob.session()!=null)
 					if(buf.length()>0)
@@ -223,16 +234,6 @@ public class MOTD extends StdCommand
 					else
 					if(CMParms.combine(commands,1).equalsIgnoreCase("AGAIN"))
 						mob.session().println("No "+what+" to re-read.");
-				if((CMSecurity.isAllowed(mob, mob.location(), CMSecurity.SecFlag.CMDPLAYERS))
-				&&(CMProps.getBoolVar(CMProps.Bool.ACCOUNTEXPIRATION)))
-				{
-					List<String> l=CMLib.login().getExpiredList();
-					if(l.size()>0)
-					{
-						buf.append("\n\r^XThere are currently "+l.size()+" expired "+((CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)>1)?"accounts":"characters"));
-						buf.append(".  Enter LIST EXPIRED to view them.^?^.\n\r");
-					}
-				}
 			}
 			catch(HTTPRedirectException e){}
 			return false;

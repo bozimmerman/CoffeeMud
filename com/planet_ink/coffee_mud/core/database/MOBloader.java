@@ -1292,7 +1292,7 @@ public class MOBloader
 					C.add(Calendar.DATE,CMProps.getIntVar(CMProps.Int.TRIALDAYS));
 					expiration=C.getTimeInMillis();
 				}
-				if(now<expiration)
+				if(now>=expiration)
 					expiredPlayers.add(username);
 			}
 		}

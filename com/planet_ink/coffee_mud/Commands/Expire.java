@@ -36,6 +36,26 @@ public class Expire extends StdCommand
 {
 	public Expire(){}
 
+	private void unprotect(AccountStats stats)
+	{
+		if(stats instanceof PlayerStats)
+		{
+			PlayerStats P=(PlayerStats)stats;
+			List<String> secFlags=CMParms.parseSemicolons(P.getSetSecurityFlags(null),true);
+			if(secFlags.contains(CMSecurity.SecFlag.NOEXPIRE.name()))
+			{
+				secFlags.remove(CMSecurity.SecFlag.NOEXPIRE.name());
+				P.getSetSecurityFlags(CMParms.toSemicolonList(secFlags));
+			}
+		}
+		else
+		if(stats instanceof PlayerAccount)
+		{
+			PlayerAccount A=(PlayerAccount)stats;
+			A.setFlag(PlayerAccount.FLAG_NOEXPIRE, false);
+		}
+	}
+	
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
@@ -68,8 +88,12 @@ public class Expire extends StdCommand
 				mob.tell("No player/account named '"+playerName+"' was found.");
 				return false;
 			}
+			unprotect(stats);
 			long timeLeft=stats.getAccountExpiration()-System.currentTimeMillis();
-			mob.tell("Player '"+playerName+"' currently has "+(CMLib.english().returnTime(timeLeft,0))+" left.");
+			if(timeLeft<=0)
+				mob.tell("Player/Account '"+playerName+"' is now expired.");
+			else
+				mob.tell("Player/Account '"+playerName+"' currently has "+(CMLib.english().returnTime(timeLeft,0))+" left.");
 			return false;
 		}
 		else 
@@ -127,24 +151,13 @@ public class Expire extends StdCommand
 			}
 			else
 			{
-				if(stats instanceof PlayerStats)
-				{
-					PlayerStats P=(PlayerStats)stats;
-					List<String> secFlags=CMParms.parseSemicolons(P.getSetSecurityFlags(null),true);
-					if(secFlags.contains(CMSecurity.SecFlag.NOEXPIRE.name()))
-					{
-						secFlags.remove(CMSecurity.SecFlag.NOEXPIRE.name());
-						P.getSetSecurityFlags(CMParms.toSemicolonList(secFlags));
-					}
-				}
-				else
-				if(stats instanceof PlayerAccount)
-				{
-					PlayerAccount A=(PlayerAccount)stats;
-					A.setFlag(PlayerAccount.FLAG_NOEXPIRE, false);
-				}
+				unprotect(stats);
 				stats.setAccountExpiration(days+System.currentTimeMillis());
-				mob.tell("Player/Account '"+playerName+"' now has "+(CMLib.english().returnTime(stats.getAccountExpiration()-System.currentTimeMillis(),0))+" days left.");
+				long timeLeft=stats.getAccountExpiration()-System.currentTimeMillis();
+				if(timeLeft<=0)
+					mob.tell("Player/Account '"+playerName+"' is now expired.");
+				else
+					mob.tell("Player/Account '"+playerName+"' now has "+(CMLib.english().returnTime(timeLeft,0))+" days left.");
 			}
 			return false;
 		}

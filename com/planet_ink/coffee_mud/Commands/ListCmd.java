@@ -2400,6 +2400,7 @@ public class ListCmd extends StdCommand
 		/*71*/new ListCmdEntry("MANUFACTURERS",new SecFlag[]{SecFlag.LISTADMIN,SecFlag.CMDITEMS}),
 		/*72*/new ListCmdEntry("TECHSKILLS",new SecFlag[]{SecFlag.CMDMOBS,SecFlag.CMDITEMS,SecFlag.CMDROOMS,SecFlag.CMDAREAS,SecFlag.CMDEXITS,SecFlag.CMDRACES,SecFlag.CMDCLASSES,SecFlag.CMDABILITIES}),
 		/*73*/new ListCmdEntry("SOFTWARE",new SecFlag[]{SecFlag.CMDITEMS}),
+		/*74*/new ListCmdEntry("EXPIRED",new SecFlag[]{SecFlag.CMDPLAYERS})
 	};
 
 	public boolean pause(Session sess) 
@@ -2915,6 +2916,7 @@ public class ListCmd extends StdCommand
 						@Override public boolean passesFilter(Electronics obj) { return obj instanceof Software; }
 					})).toString()); 
 				break;
+		case 74: s.wraplessPrintln(listExpired(mob)); break;
 		case 999: listSql(mob,rest); break;
 		default:
 			s.println("List broke?!");

@@ -273,7 +273,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 					PlayerAccount A=e.nextElement();
 					if(A.isSet(PlayerAccount.FLAG_NOEXPIRE))
 						continue;
-					if(now<=A.getAccountExpiration())
+					if(now>=A.getAccountExpiration())
 						expired.add(A.accountName());
 				}
 			}
@@ -286,7 +286,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 					skipNames.add(M.Name());
 					if((CMSecurity.isASysOp(M)||CMSecurity.isAllowedEverywhere(M, CMSecurity.SecFlag.NOEXPIRE)))
 						continue;
-					if(now<=M.playerStats().getAccountExpiration())
+					if(now>=M.playerStats().getAccountExpiration())
 						expired.add(M.Name());
 				}
 				expired.addAll(CMLib.database().DBExpiredCharNameSearch(skipNames));
