@@ -269,7 +269,7 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 		public Tattoo copyOf(){ try{ return (Tattoo)this.clone(); } catch(Exception e){ return this; }}
 		public int compareTo(CMObject o) 
 		{ 
-			if(o==null) return (this==null)?0:1;
+			if(o==null) return 1;
 			return (this==o)?0:this.ID().compareTo(o.ID());
 		}
 		public String ID() { return tattooName; }

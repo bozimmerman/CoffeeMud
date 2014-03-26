@@ -2,6 +2,8 @@ package com.planet_ink.coffee_mud.core.database;
 
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMSecurity.SecFlag;
+import com.planet_ink.coffee_mud.core.CMSecurity.SecGroup;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.core.database.DBConnector.DBPreparedBatchEntry;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -16,6 +18,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.sql.*;
 import java.util.*;
 import java.util.Map.Entry;
@@ -1258,6 +1261,50 @@ public class MOBloader
 			DB.DBDone(D);
 		}
 		return accounts;
+	}
+	
+	public List<String> DBExpiredCharNameSearch(Set<String> skipNames)
+	{
+		DBConnection D=null;
+		String buf=null;
+		List<String> expiredPlayers = new ArrayList<String>();
+		final long now=System.currentTimeMillis();
+		try
+		{
+			D=DB.DBFetch();
+			ResultSet R=D.query("SELECT * FROM CMCHAR");
+			if(R!=null) while(R.next())
+			{
+				String username=DB.getRes(R,"CMUSERID");
+				if((skipNames!=null)&&(skipNames.contains(username)))
+					continue;
+				buf=DBConnections.getRes(R,"CMPFIL");
+				String secGrps=CMLib.xml().restoreAngleBrackets(CMLib.xml().returnXMLValue(buf,"SECGRPS"));
+				SecGroup g=CMSecurity.instance().createGroup("", CMParms.parseSemicolons(secGrps,true));
+				if(g.contains(SecFlag.NOEXPIRE, false))
+					continue;
+				long expiration;
+				if(CMLib.xml().returnXMLValue(buf,"ACCTEXP").length()>0)
+					expiration=CMath.s_long(CMLib.xml().returnXMLValue(buf,"ACCTEXP"));
+				else
+				{
+					Calendar C=Calendar.getInstance();
+					C.add(Calendar.DATE,CMProps.getIntVar(CMProps.Int.TRIALDAYS));
+					expiration=C.getTimeInMillis();
+				}
+				if(now<expiration)
+					expiredPlayers.add(username);
+			}
+		}
+		catch(Exception sqle)
+		{
+			Log.errOut("MOB",sqle);
+		}
+		finally
+		{
+			DB.DBDone(D);
+		}
+		return expiredPlayers;
 	}
 	
 	public PlayerLibrary.ThinnerPlayer DBUserSearch(String Login)

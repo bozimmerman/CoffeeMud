@@ -108,7 +108,7 @@ public class PresenceReaction extends StdAbility
 		{
 			List<String> parsed=CMParms.parseAny(parms,"~~",true);
 			for(Iterator<String> e=parsed.iterator();e.hasNext();)
-				addAffectOrBehavior((String)e.next());
+				addAffectOrBehavior(e.next());
 		}
 	}
 

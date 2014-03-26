@@ -3432,10 +3432,10 @@ public class Import extends StdCommand
 				if(V.size()==4)
 				{
 					forgiveZeroes=true;
-					codeStr2="'"+((String)V.get(0))+"' "
-							+"'"+((String)V.get(1))+"' "
-							+"'"+((String)V.get(2))+"' "
-							+"'"+((String)V.get(3))+"'";
+					codeStr2="'"+(V.get(0))+"' "
+							+"'"+(V.get(1))+"' "
+							+"'"+(V.get(2))+"' "
+							+"'"+(V.get(3))+"'";
 				}
 				else
 					returnAnError(session,"Invalid object codeStr2 line: "+codeStr2+", item not aborted, but stuff will be wrong!",compileErrors,commands);

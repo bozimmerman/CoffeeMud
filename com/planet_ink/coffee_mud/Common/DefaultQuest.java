@@ -2880,7 +2880,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		CMLib.quests().addQuest(Q2);
 		if(reTime)
 		{
-			Long ellapsed=(Long)stepEllapsedTimes.get(script);
+			Long ellapsed=stepEllapsedTimes.get(script);
 			if(ellapsed==null) ellapsed=Long.valueOf(0);
 			stepEllapsedTimes.remove(script);
 			ellapsed=Long.valueOf(ellapsed.longValue()+(System.currentTimeMillis()-lastStartDateTime));

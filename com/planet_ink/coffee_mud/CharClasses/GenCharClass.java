@@ -967,7 +967,7 @@ public class GenCharClass extends StdCharClass
 			{
 				requiredWeaponMaterials=new HashSet();
 				for(int v=0;v<V.size();v++)
-					requiredWeaponMaterials.add(Integer.valueOf(CMath.s_int((String)V.get(v))));
+					requiredWeaponMaterials.add(Integer.valueOf(CMath.s_int(V.get(v))));
 			}
 			else
 				requiredWeaponMaterials=null;

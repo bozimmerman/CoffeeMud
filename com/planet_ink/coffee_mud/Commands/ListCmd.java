@@ -1898,6 +1898,28 @@ public class ListCmd extends StdCommand
 	{
 		return CMParms.toStringList(RawMaterial.Material.values());
 	}
+	
+	public String listExpired(MOB mob)
+	{
+		StringBuilder buf=new StringBuilder("");
+		if(CMProps.getBoolVar(CMProps.Bool.ACCOUNTEXPIRATION))
+		{
+			final String theWord=(CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)>1)?"account":"character";
+			List<String> l=CMLib.login().getExpiredList();
+			if(l.size()>0)
+			{
+				buf.append("\n\rThere are currently "+l.size()+" expired "+theWord+"s.\n\r");
+				buf.append(CMLib.lister().reallyList2Cols(mob,new IteratorEnumeration<String>(l.iterator())).toString());
+				buf.append("\n\r\n\rUse EXPIRE command to alter them.^?^.\n\r");
+			}
+			else
+				buf.append("\n\rThere are no expired "+theWord+"s at this time.\n\r");
+		}
+		else
+			buf.append("\n\rAccount expiration system is not enabled on this mud.\n\r");
+		return buf.toString();
+	}
+	
 	public String listEnvResources(Session viewerS, String rest)
 	{
 		List<String> parms=CMParms.parse(rest.toUpperCase());

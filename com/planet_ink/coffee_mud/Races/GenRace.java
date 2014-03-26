@@ -433,7 +433,7 @@ public class GenRace extends StdRace
 		String aging=CMLib.xml().getValFromPieces(raceData,"AGING");
 		List<String> aV=CMParms.parseCommas(aging,true);
 		for(int v=0;v<aV.size();v++)
-			getAgingChart()[v]=CMath.s_int((String)aV.get(v));
+			getAgingChart()[v]=CMath.s_int(aV.get(v));
 		clrStatChgDesc();
 		// now RESOURCES!
 		List<XMLLibrary.XMLpiece> xV=CMLib.xml().getContentsFromPieces(raceData,"RESOURCES");

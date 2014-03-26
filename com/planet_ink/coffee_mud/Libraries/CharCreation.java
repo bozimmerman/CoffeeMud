@@ -260,6 +260,41 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		try{ C.execute(mob,CMParms.parse("MOTD NEW PAUSE"),0);}catch(Exception e){}
 	}
 
+	public List<String> getExpiredList()
+	{
+		final List<String> expired = new ArrayList<String>();
+		if(CMProps.getBoolVar(CMProps.Bool.ACCOUNTEXPIRATION))
+		{
+			final long now=System.currentTimeMillis();
+			if(CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)>1)
+			{
+				for(Enumeration<PlayerAccount> e = CMLib.players().accounts(null,null); e.hasMoreElements(); )
+				{
+					PlayerAccount A=e.nextElement();
+					if(A.isSet(PlayerAccount.FLAG_NOEXPIRE))
+						continue;
+					if(now<=A.getAccountExpiration())
+						expired.add(A.accountName());
+				}
+			}
+			else
+			{
+				HashSet<String> skipNames=new HashSet<String>();
+				for(Enumeration<MOB> e=CMLib.players().players();e.hasMoreElements();)
+				{
+					MOB M=e.nextElement();
+					skipNames.add(M.Name());
+					if((CMSecurity.isASysOp(M)||CMSecurity.isAllowedEverywhere(M, CMSecurity.SecFlag.NOEXPIRE)))
+						continue;
+					if(now<=M.playerStats().getAccountExpiration())
+						expired.add(M.Name());
+				}
+				expired.addAll(CMLib.database().DBExpiredCharNameSearch(skipNames));
+			}
+		}
+		return expired;
+	}
+	
 	public boolean isExpired(PlayerAccount acct, Session session, long expiration)
 	{
 		if(!CMProps.getBoolVar(CMProps.Bool.ACCOUNTEXPIRATION)) 
@@ -267,7 +302,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		if((acct!=null)&&(acct.isSet(PlayerAccount.FLAG_NOEXPIRE)))
 			return false;
 		if((session.mob()!=null)
-		&&((CMSecurity.isASysOp(session.mob()))||(CMSecurity.isAllowedEverywhere(session.mob(), CMSecurity.SecFlag.NOEXPIRE))))
+		&&(CMSecurity.isASysOp(session.mob())||CMSecurity.isAllowedEverywhere(session.mob(), CMSecurity.SecFlag.NOEXPIRE)))
 			return false;
 		if(expiration<=System.currentTimeMillis())
 		{
@@ -598,7 +633,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		rpt.append("\r\n"); rpt.append("SKILLS");
 		rpt.append("\t"); rpt.append(Long.toString(CMLib.ableMapper().numMappedAbilities()));
 		rpt.append("\r\n"); rpt.append("ANSI");
-		rpt.append("\t"); rpt.append((this!=null?"1":"0"));
+		rpt.append("\t"); rpt.append("1");
 		rpt.append("\r\n"); rpt.append("MCCP");
 		rpt.append("\t"); rpt.append((!CMSecurity.isDisabled(CMSecurity.DisFlag.MCCP)?"1":"0"));
 		rpt.append("\r\n"); rpt.append("MSP");
@@ -1079,8 +1114,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			
 			if(loginObj.acct!=null)
 			{
-				if(isExpired(loginObj.acct,session,loginObj.player.expiration)) 
-					return LoginResult.NO_LOGIN;
+				//if(isExpired(loginObj.acct,session,loginObj.player.expiration))  return LoginResult.NO_LOGIN; // this blocks archons!
 				session.setAccount(loginObj.acct);
 				StringBuilder loginMsg=new StringBuilder("");
 				loginMsg.append(session.getAddress()).append(" "+session.getTerminalType())

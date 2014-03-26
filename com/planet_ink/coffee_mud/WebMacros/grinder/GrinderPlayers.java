@@ -229,7 +229,7 @@ public class GrinderPlayers extends GrinderMobs
 				for(Enumeration<MOB.Tattoo> e=M.tattoos();e.hasMoreElements();)
 					M.delTattoo(e.nextElement());
 				for(int v=0;v<V.size();v++)
-					M.addTattoo(CMLib.database().parseTattoo((String)V.get(v)));
+					M.addTattoo(CMLib.database().parseTattoo(V.get(v)));
 				break;
 			}
 			case 59: 

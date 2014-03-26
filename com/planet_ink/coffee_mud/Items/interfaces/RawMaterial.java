@@ -875,7 +875,7 @@ public interface RawMaterial extends Item
 					Vector<Ability> listA=new Vector<Ability>();
 					for(Iterator<String> e=effectsV.iterator();e.hasNext();)
 					{
-						abilityID=(String)e.next();
+						abilityID=e.next();
 						parms="";
 						if((abilityID==null)||(abilityID.length()==0)) continue;
 						if(abilityID.charAt(abilityID.length()-1)==')')

@@ -306,6 +306,9 @@ public class DBInterface implements DatabaseEngine
 	public void DBUpdatePlayer(MOB mob)
 	{MOBloader.DBUpdate(mob);}
 	
+	public List<String> DBExpiredCharNameSearch(Set<String> skipNames)
+	{ return MOBloader.DBExpiredCharNameSearch(skipNames); }
+	
 	public void DBUpdatePlayerPlayerStats(MOB mob)
 	{MOBloader.DBUpdateJustPlayerStats(mob);}
 	

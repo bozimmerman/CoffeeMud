@@ -2,7 +2,7 @@
    1. CM1Server has "FILE" command now for directory browsing/manipulation
    2. GenAbility additions: can now alter default duration of effect skills, and whether the damage/healing/extra casts happen periodically.
    3. Added an example of a "Channeling" mechanic to spells, though it's pointless with the default combat system. See GenAbility and Spell_ChannelingMissiles/
-   *. Char/Account approval system
+   4. Coffeemud now has a Char/Account approval system.  Just use the expiration system with a trialdays of 0. Archons are notified of expired/unapproved users when they log in.
    *. Clan-Player level PVP ranking in Clans
    *. Clan forums and web sites
    *. Weapon/Armor/Item level system - detach char level from item reqs

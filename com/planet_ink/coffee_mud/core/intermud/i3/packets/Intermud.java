@@ -243,7 +243,7 @@ public class Intermud implements Runnable, Persistent, Serializable
 		List<String> V=CMParms.parseCommas(s,true);
 		for(int v=0;v<V.size();v++)
 		{
-			s=(String)V.get(v);
+			s=V.get(v);
 			List<String> V2=CMParms.parseAny(s,':',true);
 			if(V2.size()>=3)
 				name_servers.add(new NameServer(V2.get(0),CMath.s_int(V2.get(1)), V2.get(2)));

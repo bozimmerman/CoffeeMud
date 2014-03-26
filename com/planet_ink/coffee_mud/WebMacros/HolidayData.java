@@ -525,7 +525,7 @@ public class HolidayData extends StdWebMacro
 				List<String> priceV=CMParms.parseCommas(priceStr,true);
 				for(int v=0;v<priceV.size();v++)
 				{
-					String priceLine=(String)priceV.get(v);
+					String priceLine=priceV.get(v);
 					double priceFactor=0.0;
 					String mask="";
 					int x=priceLine.indexOf(' ');

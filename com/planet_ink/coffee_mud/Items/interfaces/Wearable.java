@@ -472,7 +472,7 @@ public interface Wearable extends Environmental
 							continue;
 						}
 					}
-					String dependencyMaskStr=((String)V.get(0)).toLowerCase();
+					String dependencyMaskStr=(V.get(0)).toLowerCase();
 					long dependencyMask=0;
 					List<String> subLocs = CMParms.parseAny(dependencyMaskStr, '|', true);
 					for(int s=0;s<subLocs.size();s++)

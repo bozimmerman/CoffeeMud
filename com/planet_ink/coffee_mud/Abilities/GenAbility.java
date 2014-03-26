@@ -812,7 +812,7 @@ public class GenAbility extends StdAbility
 			List<String> V=CMParms.parseCommas(val,true);
 			int num=0;
 			for(int v=0;v<V.size();v++)
-				num=num|(1<<convert(options,(String)V.get(v),false));
+				num=num|(1<<convert(options,V.get(v),false));
 			return num;
 		}
 		return 0;

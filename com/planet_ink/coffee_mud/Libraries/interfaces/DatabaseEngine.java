@@ -32,6 +32,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.JournalsLibrary.JournalEnt
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /* 
@@ -85,6 +86,7 @@ public interface DatabaseEngine extends CMLibrary
 	public void DBUpdateRoom(Room room);
 	public RoomnumberSet DBReadAreaRoomList(String areaName, boolean reportStatus);
 	public void DBUpdatePlayer(MOB mob);
+	public List<String> DBExpiredCharNameSearch(Set<String> skipNames);
 	public void DBUpdatePlayerPlayerStats(MOB mob);
 	public void DBUpdatePlayerMOBOnly(MOB mob);
 	public void DBUpdatePlayerAbilities(MOB mob);
