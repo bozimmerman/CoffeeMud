@@ -295,19 +295,29 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		return expired;
 	}
 	
-	public boolean isExpired(PlayerAccount acct, Session session, long expiration)
+	public boolean isExpired(PlayerAccount acct, Session session, MOB mob)
 	{
 		if(!CMProps.getBoolVar(CMProps.Bool.ACCOUNTEXPIRATION)) 
 			return false;
 		if((acct!=null)&&(acct.isSet(PlayerAccount.FLAG_NOEXPIRE)))
 			return false;
-		if((session.mob()!=null)
-		&&(CMSecurity.isASysOp(session.mob())||CMSecurity.isAllowedEverywhere(session.mob(), CMSecurity.SecFlag.NOEXPIRE)))
+		long expiration;
+		if(mob!=null)
+		{
+			if((CMSecurity.isASysOp(mob)||CMSecurity.isAllowedEverywhere(mob, CMSecurity.SecFlag.NOEXPIRE)))
+				return false;
+			expiration = mob.playerStats().getAccountExpiration();
+		}
+		else
+		if(acct != null)
+		{
+			expiration = acct.getAccountExpiration();
+		}
+		else
 			return false;
 		if(expiration<=System.currentTimeMillis())
 		{
 			session.println("\n\r"+CMProps.getVar(CMProps.Str.EXPCONTACTLINE)+"\n\r\n\r");
-			session.stopSession(false,false,false);
 			return true;
 		}
 		return false;
@@ -1757,7 +1767,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		LoginResult prelimResults = prelimChecks(session,playMe.name,playMe);
 		if(prelimResults!=null)
 			return prelimResults;
-		if(isExpired(acct,session,realMOB.playerStats().getAccountExpiration())) 
+		if(isExpired(acct,session,realMOB)) 
 		{
 			loginObj.state=LoginState.ACCTMENU_SHOWMENU;
 			return null;
@@ -2844,15 +2854,17 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.NEWPLAYERS);
 		for(int i=0;i<channels.size();i++)
 			CMLib.commands().postChannel(channels.get(i),mob.clans(),mob.Name()+" has just been created.",true);
-		CMLib.coffeeTables().bump(mob,CoffeeTableRow.STAT_LOGINS);
 		CMLib.coffeeTables().bump(mob,CoffeeTableRow.STAT_NEWPLAYERS);
-		mob.setSession(session);
-		session.setMob(mob);
-		if(isExpired(mob.playerStats().getAccount(),session,mob.playerStats().getAccountExpiration())) 
+		if(isExpired(mob.playerStats().getAccount(),session,mob)) 
 		{
-			loginObj.state=LoginState.ACCTMENU_SHOWMENU;
+			loginObj.state=LoginState.ACCTMENU_START;
+			mob.setSession(null);
+			session.setMob(null);
 			return LoginResult.NO_LOGIN;
 		}
+		CMLib.coffeeTables().bump(mob,CoffeeTableRow.STAT_LOGINS);
+		mob.setSession(session);
+		session.setMob(mob);
 		return LoginResult.NORMAL_LOGIN;
 	}
 	
@@ -3019,8 +3031,10 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		{
 			session.setMob(mob);
 			mob.setSession(session);
-			if(isExpired(mob.playerStats().getAccount(),session,mob.playerStats().getAccountExpiration())) 
+			if(isExpired(mob.playerStats().getAccount(),session,mob)) 
+			{
 				return LoginResult.NO_LOGIN;
+			}
 			if(loginsDisabled(mob))
 				return LoginResult.NO_LOGIN;
 			if(wiziFlag)
@@ -3061,7 +3075,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			}
 			mob.setSession(session);
 			session.setMob(mob);
-			if(isExpired(mob.playerStats().getAccount(),session,mob.playerStats().getAccountExpiration())) 
+			if(isExpired(mob.playerStats().getAccount(),session,mob)) 
 				return LoginResult.NO_LOGIN;
 			if(loginsDisabled(mob))
 				return LoginResult.NO_LOGIN;

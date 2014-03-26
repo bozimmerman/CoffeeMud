@@ -297,6 +297,12 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 		for(Session S : CMLib.sessions().allIterable())
 			if((!S.isStopped())&&(S.mob()!=null)&&(S.mob().Name().equals(deadMOB.Name())))
 				deadMOB=S.mob();
+		if(deadMOB.playerStats()!=null)
+		{
+			PlayerAccount A=deadMOB.playerStats().getAccount();
+			if(A!=null)
+				A.delPlayer(deadMOB);
+		}
 		Room deadLoc=deadMOB.location();
 		if(deleteAssets)
 		{
