@@ -109,6 +109,8 @@ public interface DatabaseEngine extends CMLibrary
 	public void DBDeleteRoom(Room room);
 	public void DBReadPlayer(MOB mob);
 	public List<MemberRecord> DBClanMembers(String clan);
+	public MemberRecord DBGetClanMember(String clan, String name);
+	public void DBUpdateClanKills(String clan, String name, int adjMobKills, int adjPlayerKills);
 	public void DBUpdateClanMembership(String name, String clan, int role);
 	public void DBReadAllClans();
 	public void DBUpdateClan(Clan C);

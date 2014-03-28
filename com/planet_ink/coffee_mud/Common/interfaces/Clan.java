@@ -447,14 +447,17 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	/**
 	 * Called when a member of this clan kills a member of another 
 	 * Will update the clan in the database.
+	 * @param killer the member of this clan that did the killing
+	 * @param killed the mob or member of other clan killed
 	 */
-	public void recordClanKill();
+	public void recordClanKill(MOB killer, MOB killed);
 	
 	/**
 	 * Returns the number of other-clan kills this clan has recorded.
+	 * @param killer the member of this clan that did the killing or NULL for all
 	 * @return the number of kills.
 	 */
-	public int getCurrentClanKills();
+	public int getCurrentClanKills(MOB killer);
 	
 	/**
 	 * Returns the total control points represented by the list of
@@ -782,8 +785,10 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	{
 		public String name;
 		public int role;
-		public MemberRecord(String name, int role) {
-			this.name=name; this.role=role;
+		public int mobpvps = 0;
+		public int playerpvps=0;
+		public MemberRecord(String name, int role, int mobpvps, int playerpvps) {
+			this.name=name; this.role=role; this.mobpvps=mobpvps; this.playerpvps=playerpvps;
 		}
 		public String toString() { return name;}
 	}
@@ -796,8 +801,8 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	{
 		public int level;
 		public long timestamp;
-		public FullMemberRecord(String name, int level, int role, long timestamp) {
-			super(name,role); this.level=level; this.timestamp=timestamp;
+		public FullMemberRecord(String name, int level, int role, long timestamp, int mobpvps, int playerpvps) {
+			super(name,role,mobpvps,playerpvps); this.level=level; this.timestamp=timestamp;
 		}
 	}
 	

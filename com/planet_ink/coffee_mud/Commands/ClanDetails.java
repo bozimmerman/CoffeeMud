@@ -48,7 +48,10 @@ public class ClanDetails extends StdCommand
 		StringBuffer msg=new StringBuffer("");
 		if(clanName.length()>0)
 		{
-			Clan foundClan=null;
+			Clan foundClan=CMLib.clans().getClan(clanName);
+			if(foundClan != null)
+				msg.append(foundClan.getDetail(mob));
+			else
 			for(Enumeration e=CMLib.clans().clans();e.hasMoreElements();)
 			{
 				Clan C=(Clan)e.nextElement();

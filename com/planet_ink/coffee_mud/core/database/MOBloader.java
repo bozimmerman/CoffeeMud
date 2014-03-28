@@ -12,6 +12,7 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.Clan.MemberRecord;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
@@ -157,7 +158,7 @@ public class MOBloader
 			while(R.next())
 			{
 				String clanID=DBConnections.getRes(R,"CMCLAN");
-				int clanRole = (int)DBConnections.getLongRes(R,"CMCLRO");
+				int clanRole = this.BuildClanMemberRole(R);
 				Clan C=CMLib.clans().getClan(clanID);
 				if(C!=null) mob.setClan(C.clanID(), clanRole);
 			}
@@ -706,6 +707,53 @@ public class MOBloader
 		DB.update("UPDATE CMCHAR SET CMEMAL='"+pstats.getEmail()+"' WHERE CMUSERID='"+mob.Name()+"'");
 	}
 
+	private int BuildClanMemberRole(ResultSet R)
+	{
+		int clanRole = (int)DBConnections.getLongRes(R,"CMCLRO");
+		if(clanRole >= 7) //TODO: deprecate this at some point
+			clanRole = CMath.bitNumber(clanRole);
+		return clanRole;
+	}
+	
+	private MemberRecord BuildClanMemberRecord(ResultSet R)
+	{
+		String username=DB.getRes(R,"CMUSERID");
+		int clanRole = BuildClanMemberRole(R);
+		int mobpvps=0;
+		int playerpvps=0;
+		String stats=DB.getRes(R,"CMCLSTS");
+		if(stats!=null)
+		{
+			String[] splitstats=stats.split(";");
+			if(splitstats.length>0) mobpvps=CMath.s_int(splitstats[0]);
+			if(splitstats.length>1) playerpvps=CMath.s_int(splitstats[1]);
+		}
+		return new Clan.MemberRecord(username,clanRole,mobpvps,playerpvps);
+	}
+	
+	public MemberRecord DBGetClanMember(String clan, String name)
+	{ 
+		DBConnection D=null;
+		try
+		{
+			D=DB.DBFetch();
+			ResultSet R=D.query("SELECT * FROM CMCHCL where CMCLAN='"+clan+"' and CMUSERID='"+name+"'");
+			if(R!=null) while(R.next())
+			{
+				return BuildClanMemberRecord(R);
+			}
+		}
+		catch(Exception sqle)
+		{
+			Log.errOut("MOB",sqle);
+		}
+		finally
+		{
+			DB.DBDone(D);
+		}
+		return null;
+	}
+	
 	public List<Clan.MemberRecord> DBClanMembers(String clan)
 	{
 		List<Clan.MemberRecord> members = new Vector<Clan.MemberRecord>();
@@ -716,12 +764,7 @@ public class MOBloader
 			ResultSet R=D.query("SELECT * FROM CMCHCL where CMCLAN='"+clan+"'");
 			if(R!=null) while(R.next())
 			{
-				String username=DB.getRes(R,"CMUSERID");
-				int clanRole = (int)DBConnections.getLongRes(R,"CMCLRO");
-				if(clanRole >= 7) //TODO: deprecate this at some point
-					clanRole = CMath.bitNumber(clanRole); 
-				Clan.MemberRecord member = new Clan.MemberRecord(username,clanRole);
-				members.add(member);
+				members.add(BuildClanMemberRecord(R));
 			}
 		}
 		catch(Exception sqle)
@@ -735,20 +778,82 @@ public class MOBloader
 		return members;
 	}
 
-	public void DBUpdateClan(String name, String clan, int role)
+	public void DBUpdateClanMembership(String name, String clan, int role)
 	{
 		MOB M=CMLib.players().getPlayer(name);
 		if(M!=null)
 		{
 			M.setClan(clan, role);
 		}
-		List<String> clanStatements=new LinkedList<String>();
-		clanStatements.add("DELETE FROM CMCHCL WHERE CMUSERID='"+name+"' AND CMCLAN='"+clan+"'");
-		if(role>=0)
-			clanStatements.add("INSERT INTO CMCHCL (CMUSERID, CMCLAN, CMCLRO) values ('"+name+"','"+clan+"',"+role+")");
-		DB.update(clanStatements.toArray(new String[0]));
+		DBConnection D=null;
+		try
+		{
+			D=DB.DBFetch();
+    		if(role<0)
+    			DB.update("DELETE FROM CMCHCL WHERE CMUSERID='"+name+"' AND CMCLAN='"+clan+"'");
+    		else
+    		{
+				ResultSet R=D.query("SELECT * FROM CMCHCL where CMCLAN='"+clan+"' and CMUSERID='"+name+"'");
+				if((R!=null) && (R.next()))
+				{
+					int clanRole = BuildClanMemberRole(R);
+					R.close();
+					if(clanRole == role)
+						return;
+					D.update("UPDATE CMCHCL SET CMCLRO="+role+" where CMCLAN='"+clan+"' and CMUSERID='"+name+"'", 0);
+				}
+				else
+				{
+					D.update("INSERT INTO CMCHCL (CMUSERID, CMCLAN, CMCLRO, CMCLSTS) values ('"+name+"','"+clan+"',"+role+",'0;0')",0);
+				}
+			}
+		}
+		catch(Exception sqle)
+		{
+			Log.errOut("MOB",sqle);
+		}
+		finally
+		{
+			DB.DBDone(D);
+		}
 	}
 
+	public void DBUpdateClanKills(String clan, String name, int adjMobKills, int adjPlayerKills)
+	{
+		if(((adjMobKills==0)&&(adjPlayerKills==0))
+		||(clan==null)
+		||(name==null))
+			return;
+		
+		DBConnection D=null;
+		try
+		{
+			D=DB.DBFetch();
+			ResultSet R=D.query("SELECT * FROM CMCHCL where CMCLAN='"+clan+"' and CMUSERID='"+name+"'");
+			MemberRecord M=null;
+			if(R!=null)
+			{
+				if(R.next())
+				{
+					M=BuildClanMemberRecord(R);
+					R.close();
+					M.mobpvps+=adjMobKills;
+					M.playerpvps+=adjPlayerKills;
+					String newStats=M.mobpvps+";"+M.playerpvps;
+					D.update("UPDATE CMCHCL SET CMCLSTS='"+newStats+"' where CMCLAN='"+clan+"' and CMUSERID='"+name+"'", 0);
+				}
+			}
+		}
+		catch(Exception sqle)
+		{
+			Log.errOut("MOB",sqle);
+		}
+		finally
+		{
+			DB.DBDone(D);
+		}
+	}
+	
 	public void DBUpdate(MOB mob)
 	{
 		DBUpdateJustMOB(mob);
@@ -875,10 +980,44 @@ public class MOBloader
 				,new String[][]{{pstats.getPrompt(),pstats.getColorStr(),pstats.getEmail(),
 								 pfxml,mob.baseCharStats().getNonBaseStatsAsString(),cleanXML.toString(),mob.description()}});
 		List<String> clanStatements=new LinkedList<String>();
-		clanStatements.add("DELETE FROM CMCHCL WHERE CMUSERID='"+mob.Name()+"'");
-		for(Pair<Clan,Integer> p : mob.clans())
-			clanStatements.add("INSERT INTO CMCHCL (CMUSERID, CMCLAN, CMCLRO) values ('"+mob.Name()+"','"+p.first.clanID()+"',"+p.second.intValue()+")");
-		DB.update(clanStatements.toArray(new String[0]));
+		DBConnection D=null;
+		try
+		{
+			D=DB.DBFetch();
+			ResultSet R=D.query("SELECT * FROM CMCHCL where  WHERE CMUSERID='"+mob.Name()+"'");
+			Set<String> savedClans=new HashSet<String>();
+			if(R!=null)
+			{
+				while(R.next())
+				{
+					String clanID=DB.getRes(R,"CMCLAN");
+					Pair<Clan,Integer> role=mob.getClanRole(clanID);
+					if(role==null)
+		    			clanStatements.add("DELETE FROM CMCHCL WHERE CMUSERID='"+mob.Name()+"' AND CMCLAN='"+clanID+"'");
+					else
+					{
+						MemberRecord M=BuildClanMemberRecord(R);
+						if(role.second.intValue()!=M.role)
+							clanStatements.add("UPDATE CMCHCL SET CMCLRO="+role+" where CMCLAN='"+clanID+"' and CMUSERID='"+mob.Name()+"'");
+					}
+					savedClans.add(clanID.toUpperCase());
+				}
+    			R.close();
+			}
+			for(Pair<Clan,Integer> p : mob.clans())
+				if(!savedClans.contains(p.first.clanID().toUpperCase()))
+					clanStatements.add("INSERT INTO CMCHCL (CMUSERID, CMCLAN, CMCLRO, CMCLSTS) values ('"+mob.Name()+"','"+p.first.clanID()+"',"+p.second.intValue()+",'0;0')");
+		}
+		catch(Exception sqle)
+		{
+			Log.errOut("MOB",sqle);
+		}
+		finally
+		{
+			DB.DBDone(D);
+		}
+		if(clanStatements.size()>0)
+			DB.update(clanStatements.toArray(new String[0]));
 	}
 
 	protected String getDBItemUpdateString(final MOB mob, final Item thisItem)

@@ -1215,14 +1215,14 @@ public class Clans extends StdLibrary implements ClanManager
 				for(Enumeration<Clan> e=clans();e.hasMoreElements();)
 				{
 					Clan C=e.nextElement(); if(C==winnerC) continue;
-					if((winnerC==null)||(C.getCurrentClanKills()>winnerC.getCurrentClanKills()))
+					if((winnerC==null)||(C.getCurrentClanKills(null)>winnerC.getCurrentClanKills(null)))
 						winnerC=C;
 				}
 				if(CMSecurity.isDebugging(CMSecurity.DbgFlag.CLANS))
-					Log.debugOut("DefaultClan","PKTrophy: "+((winnerC==null)?"Noone":winnerC.clanID())+" won with "+((winnerC==null)?"0":""+winnerC.getCurrentClanKills()));
+					Log.debugOut("DefaultClan","PKTrophy: "+((winnerC==null)?"Noone":winnerC.clanID())+" won with "+((winnerC==null)?"0":""+winnerC.getCurrentClanKills(null)));
 				if((winnerC!=null)
 				&&(!CMath.bset(winnerC.getTrophies(),Trophy.PlayerKills.flagNum()))
-				&&(winnerC.getCurrentClanKills()>0))
+				&&(winnerC.getCurrentClanKills(null)>0))
 				{
 					winnerC.setTrophies(winnerC.getTrophies()|Trophy.PlayerKills.flagNum());
 					clanAnnounceAll("The "+winnerC.getGovernmentName()+" "+winnerC.name()+" has been awarded the trophy for "+Trophy.PlayerKills.description+".");

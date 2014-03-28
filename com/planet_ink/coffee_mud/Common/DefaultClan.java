@@ -192,16 +192,31 @@ public class DefaultClan implements Clan
 		voteList.remove(CV);
 	}
 
-	public void recordClanKill()
+	public void recordClanKill(MOB killer, MOB killed)
 	{
 		clanKills();
 		clanKills.add(Long.valueOf(System.currentTimeMillis()));
 		updateClanKills();
+		if((killer != null)&&(killed != null))
+		{
+			if(killed.isMonster())
+				CMLib.database().DBUpdateClanKills(this.clanID(), killer.Name(), 1, 0);
+			else
+				CMLib.database().DBUpdateClanKills(this.clanID(), killer.Name(), 0, 1);
+		}
 	}
-	public int getCurrentClanKills()
+	public int getCurrentClanKills(MOB killer)
 	{
-		clanKills();
-		return clanKills.size();
+		if(killer==null)
+		{
+			clanKills();
+			return clanKills.size();
+		}
+		else
+		{
+			MemberRecord M = CMLib.database().DBGetClanMember(this.clanID(), killer.Name());
+			return M.playerpvps;
+		}
 	}
 
 	public boolean isOnlyFamilyApplicants()
@@ -720,7 +735,7 @@ public class DefaultClan implements Clan
 						case Points: msg.append("("+controlPoints+") "); break;
 						case Experience: msg.append("("+getExp()+") "); break;
 						case Members: msg.append("("+members.size()+") "); break;
-						case PlayerKills: msg.append("("+getCurrentClanKills()+") "); break;
+						case PlayerKills: msg.append("("+getCurrentClanKills(null)+") "); break;
 						case MemberLevel: { msg.append("("+filterMedianLevel(getFullMemberList())+") "); break; }
 					}
 					msg.append(" Prize: "+CMLib.clans().translatePrize(t)+"\n\r");
@@ -975,6 +990,11 @@ public class DefaultClan implements Clan
 		return filterMemberList(CMLib.database().DBClanMembers(clanID()), posFilter);
 	}
 
+	public MemberRecord getMember(String name)
+	{
+		return CMLib.database().DBGetClanMember(clanID(),name);
+	}
+
 	public List<FullMemberRecord> getFullMemberList()
 	{
 		List<FullMemberRecord> members=new Vector<FullMemberRecord>();
@@ -987,16 +1007,16 @@ public class DefaultClan implements Clan
 				if(M!=null)
 				{
 					if(M.lastTickedDateTime()>0)
-						members.add(new FullMemberRecord(member.name,M.basePhyStats().level(),member.role,M.lastTickedDateTime()));
+						members.add(new FullMemberRecord(member.name,M.basePhyStats().level(),member.role,M.lastTickedDateTime(),member.mobpvps,member.playerpvps));
 					else
-						members.add(new FullMemberRecord(member.name,M.basePhyStats().level(),member.role,M.playerStats().lastDateTime()));
+						members.add(new FullMemberRecord(member.name,M.basePhyStats().level(),member.role,M.playerStats().lastDateTime(),member.mobpvps,member.playerpvps));
 				}
 				else
 				{
 					PlayerLibrary.ThinPlayer tP = CMLib.database().getThinUser(member.name);
 					if(tP != null) 
 					{
-						members.add(new FullMemberRecord(member.name,tP.level,member.role,tP.last));
+						members.add(new FullMemberRecord(member.name,tP.level,member.role,tP.last,member.mobpvps,member.playerpvps));
 					} 
 					else 
 					{

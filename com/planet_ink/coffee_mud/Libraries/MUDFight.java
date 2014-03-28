@@ -1332,17 +1332,17 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 				Log.combatOut("KILL",killer.Name()+":"+killer.phyStats().getCombatStats()+":"+killer.curState().getCombatStats()+":"+((KI==null)?"null":KI.name())+":"+deadmob.Name()+":"+deadmob.phyStats().getCombatStats()+":"+deadmob.curState().getCombatStats()+":"+((DI==null)?"null":DI.name()));
 			}
 			if((deadmob!=null)&&(killer!=null)
-			&&(!deadmob.isMonster())&&(deadmob.soulMate()==null)
+			&&(deadmob.soulMate()==null)
 			&&(killer!=deadmob)&&(!killer.isMonster()))
 			{
-				CMLib.coffeeTables().bump(deadmob,CoffeeTableRow.STAT_PKDEATHS);
-				if((deadmob.session()!=null)
-				&&(killer.session()!=null)
-				&&(!deadmob.session().getAddress().equalsIgnoreCase(killer.session().getAddress())))
+				if(!deadmob.isMonster())
+					CMLib.coffeeTables().bump(deadmob,CoffeeTableRow.STAT_PKDEATHS);
+				if((killer.session()!=null)
+				&&((deadmob.session()==null)||(!deadmob.session().getAddress().equalsIgnoreCase(killer.session().getAddress()))))
 				{
 					List<Pair<Clan,Integer>> list = CMLib.clans().findRivalrousClans(killer, deadmob);
 					for(Pair<Clan,Integer> c : list)
-						c.first.recordClanKill();
+						c.first.recordClanKill(killer,deadmob);
 				}
 			}
 		}

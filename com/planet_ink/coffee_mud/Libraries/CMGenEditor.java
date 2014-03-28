@@ -4143,8 +4143,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		}
 	}
 	
-	protected void genClanMembers(MOB mob, Clan E, int showNumber, int showFlag)
-	throws IOException
+	protected void genClanMembers(MOB mob, Clan E, int showNumber, int showFlag) throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
 		String behave="NO";
@@ -4188,7 +4187,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 						if(index<0)
 						{
 							index=members.size();
-							members.add(new MemberRecord(M.name(),E.getGovernment().getAcceptPos()));
+							members.add(new MemberRecord(M.name(),E.getGovernment().getAcceptPos(),0,0));
 						}
 
 						int newRole=-1;

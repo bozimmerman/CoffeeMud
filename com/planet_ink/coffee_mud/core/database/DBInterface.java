@@ -114,7 +114,13 @@ public class DBInterface implements DatabaseEngine
 	{ return MOBloader.DBClanMembers(clan);}
 	
 	public void DBUpdateClanMembership(String name, String clan, int role)
-	{ MOBloader.DBUpdateClan(name,clan,role);}
+	{ MOBloader.DBUpdateClanMembership(name,clan,role);}
+	
+	public void DBUpdateClanKills(String clan, String name, int adjMobKills, int adjPlayerKills)
+	{ MOBloader.DBUpdateClanKills(clan,name,adjMobKills,adjPlayerKills); }
+	
+	public MemberRecord DBGetClanMember(String clan, String name)
+	{ return MOBloader.DBGetClanMember(clan, name); }
 	
 	public void DBUpdateClan(Clan C)
 	{ ClanLoader.DBUpdate(C);}
