@@ -984,7 +984,7 @@ public class MOBloader
 		try
 		{
 			D=DB.DBFetch();
-			ResultSet R=D.query("SELECT * FROM CMCHCL where  WHERE CMUSERID='"+mob.Name()+"'");
+			ResultSet R=D.query("SELECT * FROM CMCHCL WHERE CMUSERID='"+mob.Name()+"'");
 			Set<String> savedClans=new HashSet<String>();
 			if(R!=null)
 			{
