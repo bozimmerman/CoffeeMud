@@ -36,6 +36,8 @@ import java.util.*;
 public class PlayerNext extends StdWebMacro
 {
 	public String name() { return "PlayerNext"; }
+	
+	@Override public boolean isAdminMacro() { return true; }
 
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{

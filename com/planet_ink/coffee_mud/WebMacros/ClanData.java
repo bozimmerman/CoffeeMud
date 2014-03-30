@@ -43,6 +43,31 @@ public class ClanData extends StdWebMacro
 	// ACCEPTANCE, TYPE, POINTS, CLANIDRELATIONS, MEMBERSTART, MEMBERNEXT,
 	// MEMBERNAME, MEMBERPOS
 
+	public static List<MemberRecord> getMembers(Clan C, HTTPRequest httpReq)
+	{
+		List<MemberRecord> members=(List)httpReq.getRequestObjects().get("MEMBERS"+C.clanID());
+		if(members==null)
+		{
+			members=C.getMemberList();
+			httpReq.getRequestObjects().put("MEMBERS"+C.clanID(), members);
+		}
+		return members;
+	}
+	
+	public static MemberRecord getMember(Clan C, HTTPRequest httpReq, String cmember)
+	{
+		List<MemberRecord> members=getMembers(C,httpReq);
+		for(MemberRecord member : members)
+		{
+			String name=member.name;
+			if(name.equals(cmember))
+			{
+				return member;
+			}
+		}
+		return null;
+	}
+	
 	public static StringBuffer members(Clan C, HTTPRequest httpReq, java.util.Map<String,String> parms, int borderSize)
 	{
 		StringBuffer str=new StringBuffer("");
@@ -75,7 +100,7 @@ public class ClanData extends StdWebMacro
 			}
 			else
 			{
-				List<MemberRecord> members=C.getMemberList();
+				List<MemberRecord> members = getMembers(C,httpReq);
 				for(MemberRecord member : members)
 				{
 					themembers.addElement(member.name);
@@ -199,6 +224,22 @@ public class ClanData extends StdWebMacro
 			{
 				final boolean webify=parms.containsKey("WEBCOLOR");
 				final boolean decolor=parms.containsKey("NOCOLOR");
+				MOB M=Authenticate.getAuthenticatedMob(httpReq);
+				boolean authorized = false;
+				if(M!=null)
+				{
+					if(CMSecurity.isAllowedEverywhere(M, CMSecurity.SecFlag.CMDCLANS))
+						authorized=true;
+					else
+					{
+						Pair<Clan,Integer> roleP=M.getClanRole(C.clanID());
+						authorized = (roleP.first==C)?(C.getAuthority(roleP.second.intValue(), Clan.Function.LIST_MEMBERS)!=Clan.Authority.CAN_NOT_DO):false;
+					}
+				}
+				if(parms.containsKey("AUTHORIZED")||parms.containsKey("AUTH"))
+				{
+					return Boolean.toString(authorized);
+				}
 				StringBuffer str=new StringBuffer("");
 				if(parms.containsKey("PREMISE"))
 				{
@@ -206,25 +247,25 @@ public class ClanData extends StdWebMacro
 					if(old==null) old=C.getPremise();
 					str.append(old+", ");
 				}
-				if(parms.containsKey("RECALLID"))
+				if(parms.containsKey("RECALLID") && authorized )
 				{
 					String old=httpReq.getUrlParameter("RECALLID");
 					if(old==null) old=C.getRecall();
 					str.append(old+", ");
 				}
-				if(parms.containsKey("RECALL"))
+				if(parms.containsKey("RECALL") && authorized)
 				{
 					Room R=CMLib.map().getRoom(C.getRecall());
 					if(R!=null)	str.append(R.displayText()+", ");
 					else str.append("None, ");
 				}
-				if(parms.containsKey("MORGUEID"))
+				if(parms.containsKey("MORGUEID") && authorized)
 				{
 					String old=httpReq.getUrlParameter("MORGUEID");
 					if(old==null) old=C.getMorgue();
 					str.append(old+", ");
 				}
-				if(parms.containsKey("MORGUE"))
+				if(parms.containsKey("MORGUE") && authorized)
 				{
 					Room R=CMLib.map().getRoom(C.getMorgue());
 					if(R!=null)	str.append(R.displayText()+", ");
@@ -284,13 +325,13 @@ public class ClanData extends StdWebMacro
 								str.append(t.codeString+", ");
 					}
 				}
-				if(parms.containsKey("DONATIONID"))
+				if(parms.containsKey("DONATIONID") && authorized)
 				{
 					String old=httpReq.getUrlParameter("DONATIONID");
 					if(old==null) old=C.getDonation();
 					str.append(old+", ");
 				}
-				if(parms.containsKey("DONATION"))
+				if(parms.containsKey("DONATION") && authorized)
 				{
 					Room R=CMLib.map().getRoom(C.getDonation());
 					if(R!=null)	str.append(R.displayText()+", ");
@@ -370,10 +411,54 @@ public class ClanData extends StdWebMacro
 				{
 					if(httpReq.getUrlParameter("CLANMEMBER")!=null)
 						httpReq.removeUrlParameter("CLANMEMBER");
+					if(parms.containsKey("SORTBY"))
+					{
+						final List<MemberRecord> members=getMembers(C,httpReq);
+						String sort=parms.get("SORTBY");
+						if(sort.equalsIgnoreCase("NAME"))
+							Collections.sort(members, new Comparator<MemberRecord>(){
+								@Override public int compare(MemberRecord o1, MemberRecord o2) {
+	                                return o1.name.compareTo(o2.name);
+                                }
+							});
+						else
+						if(sort.equalsIgnoreCase("ROLE"))
+							Collections.sort(members, new Comparator<MemberRecord>(){
+								@Override public int compare(MemberRecord o1, MemberRecord o2) {
+	                                return new Integer(o1.role).compareTo(new Integer(o2.role));
+                                }
+							});
+						else
+						if(sort.equalsIgnoreCase("KILLS")||sort.equalsIgnoreCase("TOTALKILLS"))
+							Collections.sort(members, new Comparator<MemberRecord>(){
+								@Override public int compare(MemberRecord o1, MemberRecord o2) {
+	                                return new Integer(o1.mobpvps+o1.playerpvps).compareTo(new Integer(o2.mobpvps+o2.playerpvps));
+                                }
+							});
+						else
+						if(sort.equalsIgnoreCase("MOBKILLS"))
+							Collections.sort(members, new Comparator<MemberRecord>(){
+								@Override public int compare(MemberRecord o1, MemberRecord o2) {
+	                                return new Integer(o1.mobpvps).compareTo(new Integer(o2.mobpvps));
+                                }
+							});
+						else
+						if(sort.equalsIgnoreCase("PLAYERKILLS")||sort.equalsIgnoreCase("PVPKILLS"))
+							Collections.sort(members, new Comparator<MemberRecord>(){
+								@Override public int compare(MemberRecord o1, MemberRecord o2) {
+	                                return new Integer(o1.playerpvps).compareTo(new Integer(o2.playerpvps));
+                                }
+							});
+						else
+							return "[Unknown sort field: "+sort+"]";
+					}
 					return "";
 				}
 				if(parms.containsKey("NUMMEMBERS"))
-					str.append(""+C.getMemberList().size()+", ");
+				{
+					List<MemberRecord> members = getMembers(C,httpReq);
+					str.append(""+members.size()+", ");
+				}
 				if(parms.containsKey("MEMBERNEXT"))
 				{
 					final String cmember=httpReq.getUrlParameter("CLANMEMBER");
@@ -382,12 +467,21 @@ public class ClanData extends StdWebMacro
 					if(posFilter==null) posFilter=parms.get("CLANFUNCFILTER");
 					if(posFilter==null) posFilter="";
 					final Clan.Function reqFunction = (Clan.Function)CMath.s_valueOf(Clan.Function.values(), posFilter);
-					final List<MemberRecord> members=C.getMemberList();
+					List<MemberRecord> members = getMembers(C,httpReq);
 					for(MemberRecord member : members)
 					{
 						final String name=member.name;
 						if((reqFunction!=null)&&(C.getAuthority(member.role,reqFunction)==Clan.Authority.CAN_NOT_DO))
 							continue;
+						if((!authorized)&&((M==null)||(!M.Name().equalsIgnoreCase(name))))
+						{
+							if(reqFunction == null)
+								continue;
+							if((reqFunction!=Clan.Function.ASSIGN)
+							&&(reqFunction!=Clan.Function.HOME_PRIVS)
+							&&(reqFunction!=Clan.Function.DECLARE))
+								continue;
+						}
 						if((cmember==null)
 						||((cmember.length()>0)&&(cmember.equals(lastID))&&(!name.equals(lastID))))
 						{
@@ -411,17 +505,42 @@ public class ClanData extends StdWebMacro
 					String cmember=httpReq.getUrlParameter("CLANMEMBER");
 					if(cmember!=null)
 					{
-						List<MemberRecord> members=C.getMemberList();
-						for(MemberRecord member : members)
+						MemberRecord member = getMember(C,httpReq,cmember);
+						if(member!=null)
 						{
-							String name=member.name;
-							if(name.equals(cmember))
-							{
-								int i = member.role;
-								str.append(CMStrings.capitalizeAndLower(C.getRoleName(i,true,false))+", ");
-								break;
-							}
+							int i = member.role;
+							str.append(CMStrings.capitalizeAndLower(C.getRoleName(i,true,false))+", ");
 						}
+					}
+				}
+				if((parms.containsKey("MEMBERKILLS")||parms.containsKey("MEMBERTOTALKILLS")) && authorized)
+				{
+					String cmember=httpReq.getUrlParameter("CLANMEMBER");
+					if(cmember!=null)
+					{
+						MemberRecord member = getMember(C,httpReq,cmember);
+						if(member!=null)
+							str.append((member.mobpvps+member.playerpvps)+", ");
+					}
+				}
+				if(parms.containsKey("MEMBERMOBKILLS") && authorized)
+				{
+					String cmember=httpReq.getUrlParameter("CLANMEMBER");
+					if(cmember!=null)
+					{
+						MemberRecord member = getMember(C,httpReq,cmember);
+						if(member!=null)
+							str.append((member.mobpvps)+", ");
+					}
+				}
+				if((parms.containsKey("MEMBERPLAYERKILLS")||parms.containsKey("MEMBERPVPKILLS")) && authorized)
+				{
+					String cmember=httpReq.getUrlParameter("CLANMEMBER");
+					if(cmember!=null)
+					{
+						MemberRecord member = getMember(C,httpReq,cmember);
+						if(member!=null)
+							str.append((member.playerpvps)+", ");
 					}
 				}
 				if(parms.containsKey("OTHERCLANSTART"))

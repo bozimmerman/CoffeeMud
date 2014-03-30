@@ -53,6 +53,8 @@ public interface ListingLibrary extends CMLibrary
 	public StringBuilder reallyList2Cols(MOB viewerM, Enumeration<? extends Object> these, Filterer<Object>[] filters, ListStringer stringer);
 	public StringBuilder fourColumns(MOB viewerM, List<String> reverseList);
 	public StringBuilder fourColumns(MOB viewerM, List<String> reverseList, String tag);
+	public StringBuilder threeColumns(MOB viewerM, List<String> reverseList);
+	public StringBuilder threeColumns(MOB viewerM, List<String> reverseList, String tag);
 	public StringBuilder makeColumns(MOB viewerM, List<String> reverseList, String tag, int numCols);
 	
 	public static class ListStringer

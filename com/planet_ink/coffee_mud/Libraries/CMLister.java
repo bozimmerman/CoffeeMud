@@ -445,6 +445,16 @@ public class CMLister extends StdLibrary implements ListingLibrary
 		return makeColumns(viewerM,reverseList,tag,4);
 	}
 	
+	public StringBuilder threeColumns(MOB viewerM, List<String> reverseList)
+	{ 
+		return threeColumns(viewerM,reverseList,null);
+	}
+	
+	public StringBuilder threeColumns(MOB viewerM, List<String> reverseList, String tag)
+	{ 
+		return makeColumns(viewerM,reverseList,tag,3);
+	}
+	
 	public StringBuilder makeColumns(MOB viewerM, List<String> reverseList, String tag, int numCols)
 	{
 		StringBuilder topicBuffer=new StringBuilder("");

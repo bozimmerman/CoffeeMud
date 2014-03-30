@@ -261,6 +261,28 @@ public class Test extends StdCommand
 				mob.tell(str.toString());
 			}
 			else
+			if(what.equalsIgnoreCase("listpublicmacros"))
+			{
+				StringBuffer str=new StringBuffer("");
+				List<WebMacro> Ws=new ArrayList<WebMacro>();
+				for(Enumeration<WebMacro> w=CMClass.webmacros();w.hasMoreElements();)
+					Ws.add(w.nextElement());
+				Collections.sort(Ws,new Comparator<WebMacro>(){
+					@Override public int compare(WebMacro o1, WebMacro o2) {
+	                    return (o1==null)?((o2==null)?0:-1):(o2==null)?1:o1.ID().compareTo(o2.ID());
+                    }
+					
+				});
+				for(Iterator<WebMacro> w=Ws.iterator();w.hasNext();)
+				{
+					WebMacro W=w.next();
+					if(!W.isAdminMacro())
+						str.append(W.ID()+"\r");
+				}
+				mob.tell(str.toString());
+				
+			}
+			else
 			if(what.equalsIgnoreCase("timsdeconstruction"))
 			{
 				mob.tell("Checking...");
