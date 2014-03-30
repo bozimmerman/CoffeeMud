@@ -199,12 +199,12 @@ public class DefaultHttpClient implements HttpClient, Cloneable
 			if(e==cleanException) 
 				throw e; 
 		}
-		out.write((meth.toString()+" "+rest+" HTTP/1.1\n").getBytes());
+		out.write((meth.toString()+" "+rest+" HTTP/1.1\r\n").getBytes());
 		for(String key : reqHeaders.keySet())
-			out.write((key+": "+reqHeaders.get(key)+"\n").getBytes());
+			out.write((key+": "+reqHeaders.get(key)+"\r\n").getBytes());
 		for(String key : onesToClear)
 			reqHeaders.remove(key);
-		out.write("\n".getBytes());
+		out.write("\r\n".getBytes());
 		if(outBody!=null)
 			out.write(outBody);
 		long nextReadTimeout=(this.readTimeout>0)?(System.currentTimeMillis()+this.readTimeout):Long.MAX_VALUE;
