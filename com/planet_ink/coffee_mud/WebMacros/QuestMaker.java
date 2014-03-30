@@ -40,6 +40,8 @@ public class QuestMaker extends StdWebMacro
 {
 	public String name()	{return "QuestMaker";}
 
+	public boolean isAdminMacro()	{return true;}
+
 	private static final Pattern keyPattern=Pattern.compile("^AT_(.+)");
 	
 	public DVector getPage(MOB mob, HTTPRequest httpReq, String template, String page, String fileToGet)
