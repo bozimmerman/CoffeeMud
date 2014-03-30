@@ -204,7 +204,12 @@ public class Log extends java.util.logging.Logger
 		try
 		{
 			writer.println(str);
-			final long[] counts=this.WRITTEN.get(writer);
+			long[] counts=this.WRITTEN.get(writer);
+			if(counts == null)
+			{
+				counts=new long[2];
+				this.WRITTEN.put(writer, counts);
+			}
 			counts[0]++;
 			counts[1]+=str.length()+1;
 			if(((config.maxLines>0)&&(counts[0]>=config.maxLines))
