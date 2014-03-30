@@ -176,6 +176,18 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 	public int loadForumJournals(String list)
 	{
 		clearForumJournals();
+		List<ForumJournal> journals = parseForumJournals(list);
+		for(ForumJournal F : journals)
+		{
+			forumJournals.put(F.NAME().toUpperCase().trim(), F);
+			CMSecurity.registerJournal(F.NAME().toUpperCase().trim());
+		}
+		return forumJournals.size();
+	}
+	
+	public List<ForumJournal> parseForumJournals(String list)
+	{
+		List<ForumJournal> journals = new Vector<ForumJournal>(1);
 		while(list.length()>0)
 		{
 			int x=list.indexOf(',');
@@ -230,10 +242,9 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 					catch(Exception e){}
 				}
 			}
-			CMSecurity.registerJournal(item.toUpperCase().trim());
-			forumJournals.put(item.toUpperCase().trim(),new ForumJournal(item.trim(),flags));
+			journals.add(new ForumJournal(item.trim(),flags));
 		}
-		return forumJournals.size();
+		return journals;
 	}
 	
 	@SuppressWarnings("unchecked")
