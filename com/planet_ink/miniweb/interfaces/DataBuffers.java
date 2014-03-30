@@ -51,7 +51,7 @@ public interface DataBuffers extends Iterator<ByteBuffer>
 	 * Return the length of all bytes buffers here
 	 * @return an overall size
 	 */
-	public int getLength();
+	public long getLength();
 
 	/**
 	 * Return the last modified date of the data content
@@ -106,5 +106,5 @@ public interface DataBuffers extends Iterator<ByteBuffer>
 	 * Each range is 2 dimentional int array, startpos, endpos.
 	 * @param ranges the list of ranges
 	 */
-	public void setRanges(final List<int[]> ranges);
+	public void setRanges(final List<long[]> ranges);
 }

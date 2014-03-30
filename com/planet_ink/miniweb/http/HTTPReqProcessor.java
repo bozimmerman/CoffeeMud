@@ -90,6 +90,12 @@ public class HTTPReqProcessor implements HTTPFileGetter
 	{
 		if(buffers.getLength()==0) 
 			return null;
+		
+		if(buffers.getLength() > config.getFileCompMaxFileBytes())
+		{
+			return buffers;
+		}
+		
 		double deflatePreference = request.getSpecialEncodingAcceptability("deflate");
 		if(deflatePreference==0.0) 
 			deflatePreference = request.getSpecialEncodingAcceptability("x-deflate");
@@ -150,19 +156,19 @@ public class HTTPReqProcessor implements HTTPFileGetter
 	 * @return a first,last 
 	 * @throws HTTPException
 	 */
-	private int[] checkRangeRequest(int[] rangeAZ, int limit) throws HTTPException
+	private long[] checkRangeRequest(long[] rangeAZ, long limit) throws HTTPException
 	{
-		final int firstByte=rangeAZ[0];
+		final long firstByte=rangeAZ[0];
 		if((firstByte<0) || (firstByte>=limit))
 			throw HTTPException.standardException(HTTPStatus.S416_REQUEST_RANGE_NOT_SATISFIED);
-		int lastByte=limit;
+		long lastByte=limit;
 		if(rangeAZ.length==2)
 		{
 			lastByte=rangeAZ[1]+1;
 			if((lastByte<firstByte)|| (lastByte>limit))
 				throw HTTPException.standardException(HTTPStatus.S416_REQUEST_RANGE_NOT_SATISFIED);
 		}
-		return new int[]{firstByte,lastByte};
+		return new long[]{firstByte,lastByte};
 	}
 
 	/**
@@ -177,11 +183,11 @@ public class HTTPReqProcessor implements HTTPFileGetter
 	 */
 	private boolean setRangeRequests(HTTPRequest request, final DataBuffers buffers) throws HTTPException
 	{
-		final List<int[]> rangeXYSets = request.getRangeAZ();
+		final List<long[]> rangeXYSets = request.getRangeAZ();
 		if(rangeXYSets!=null)
 		{
-			List<int[]> ranges=new LinkedList<int[]>();
-			for(int[] range : rangeXYSets)
+			List<long[]> ranges=new LinkedList<long[]>();
+			for(long[] range : rangeXYSets)
 				ranges.add(checkRangeRequest(range,buffers.getLength()));
 			buffers.setRanges(ranges);
 			return true;

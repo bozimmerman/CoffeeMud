@@ -165,7 +165,7 @@ public interface HTTPRequest
 	 * being "from" and the second (if available) the "to".
 	 * @return a list of integer arrays for ranges requested
 	 */
-	public List<int[]> getRangeAZ();
+	public List<long[]> getRangeAZ();
 	
 	/**
 	 * Adds a new url parameter keypair, just as if it had been sent by the client.

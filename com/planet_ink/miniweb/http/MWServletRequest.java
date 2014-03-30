@@ -192,7 +192,7 @@ public class MWServletRequest implements SimpleServletRequest
 	}
 	
 	@Override
-	public List<int[]> getRangeAZ()
+	public List<long[]> getRangeAZ()
 	{
 		return request.getRangeAZ();
 	}

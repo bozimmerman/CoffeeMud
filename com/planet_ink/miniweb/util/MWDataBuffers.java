@@ -54,7 +54,7 @@ public class MWDataBuffers implements DataBuffers
 	private LinkedList<FileEntry> list;
 	private LinkedList<Closeable> closers;
 	private byte[]						   buffer=null;
-	private int							   length=0;
+	private long						   length=0;
 	private long						   lastModifiedTime=0;
 	
 	public MWDataBuffers()
@@ -291,7 +291,7 @@ public class MWDataBuffers implements DataBuffers
 	}
 	
 	@Override
-	public int getLength(){ return length; }
+	public long getLength(){ return length; }
 	
 	@Override
 	public Date getLastModified()
@@ -302,12 +302,12 @@ public class MWDataBuffers implements DataBuffers
 	}
 	
 	@Override
-	public void setRanges(final List<int[]> ranges)
+	public void setRanges(final List<long[]> ranges)
 	{
 		final LinkedList<FileEntry> ranged=new LinkedList<FileEntry>();
 		final HashSet<Object> usedObjs=new HashSet<Object>();
 		long newLen=0;
-		for(int[] range : ranges)
+		for(long[] range : ranges)
 		{
 			long pos=0;
 			Object startObj=null;
@@ -355,7 +355,7 @@ public class MWDataBuffers implements DataBuffers
 		for(FileEntry p : list)
 			if((p.data instanceof Closeable) && (!usedObjs.contains(p.data)))
 				try{ ((Closeable)p.data).close(); } catch(IOException e){}
-		this.length=(int)newLen;
+		this.length=newLen;
 		list=ranged;
 	}
 }

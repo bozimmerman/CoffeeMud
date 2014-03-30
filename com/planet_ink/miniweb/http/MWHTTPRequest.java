@@ -74,7 +74,7 @@ public class MWHTTPRequest implements HTTPRequest
 	private InputStream			 bodyStream   = null;		// the input stream for the main data body
 	private String				 uriPage	  = null;		// portion of the request without urlparameters
 	private boolean				 isFinished   = false;		// flag as to whether finishRequest and processing is ready
-	private List<int[]>			 byteRanges   = null;		// if this is a ranged request, this will hold the ranges requested
+	private List<long[]>		 byteRanges   = null;		// if this is a ranged request, this will hold the ranges requested
 	private Map<String,String>   cookies	  = new HashMap<String,String>(); // if cookies were received, they are mapped here
 	private InetAddress			 address;					// the inet address of the request incoming
 	private List<MultiPartData>  parts		  = null;		// if this is multi-part request, this will have a list of the parts
@@ -273,7 +273,7 @@ public class MWHTTPRequest implements HTTPRequest
 	 * @return a list of integer arrays for ranges requested
 	 */
 	@Override
-	public List<int[]> getRangeAZ()
+	public List<long[]> getRangeAZ()
 	{
 		return byteRanges;
 	}
@@ -419,7 +419,7 @@ public class MWHTTPRequest implements HTTPRequest
 	 * @return the list of 1 or 2 dimensional integer arrays
 	 * @throws HTTPException
 	 */
-	private List<int[]> parseRangeRequest(String rangeDefStr) throws HTTPException
+	private List<long[]> parseRangeRequest(String rangeDefStr) throws HTTPException
 	{
 		int descriptorIndex = rangeDefStr.indexOf('=');
 		if(descriptorIndex>0)
@@ -430,23 +430,23 @@ public class MWHTTPRequest implements HTTPRequest
 			rangeDefStr=rangeDefStr.substring(descriptorIndex+1).trim();
 		}
 		String[] allRangeDefs = rangeDefStr.split(",");
-		List<int[]> ranges = new LinkedList<int[]>();
+		List<long[]> ranges = new LinkedList<long[]>();
 		for(String rangeDef : allRangeDefs)
 		{
 			String[] rangeAZSetStrs = rangeDef.split("-");
 			try
 			{
-				int[] rangeSetAZ;
+				long[] rangeSetAZ;
 				if(rangeAZSetStrs.length==1)
 				{
-					rangeSetAZ= new int[1];
+					rangeSetAZ= new long[1];
 				}
 				else
 				{
-					rangeSetAZ= new int[2];
-					rangeSetAZ[1] = Integer.parseInt(rangeAZSetStrs[1]);
+					rangeSetAZ= new long[2];
+					rangeSetAZ[1] = Long.parseLong(rangeAZSetStrs[1]);
 				}
-				rangeSetAZ[0] = Integer.parseInt(rangeAZSetStrs[0]);
+				rangeSetAZ[0] = Long.parseLong(rangeAZSetStrs[0]);
 				ranges.add(rangeSetAZ);
 			}
 			catch(NumberFormatException e)

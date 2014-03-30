@@ -126,11 +126,30 @@ public enum HTTPHeader
 	}
 	/**
 	 * Return a header line with the given value
+	 * @param value the value to assign to the header
+	 * @return the name plus the value
+	 */
+	public String make(long value)
+	{
+		return name + ": " + value;
+	}
+	/**
+	 * Return a header line with the given value
 	 * and an end-of-line character attached
 	 * @param value the value to assign to the header
 	 * @return the name plus the value
 	 */
 	public String makeLine(int value)
+	{
+		return make(value) + EOLN;
+	}
+	/**
+	 * Return a header line with the given value
+	 * and an end-of-line character attached
+	 * @param value the value to assign to the header
+	 * @return the name plus the value
+	 */
+	public String makeLine(long value)
 	{
 		return make(value) + EOLN;
 	}
