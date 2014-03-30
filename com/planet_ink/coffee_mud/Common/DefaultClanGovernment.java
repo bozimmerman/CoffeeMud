@@ -49,7 +49,7 @@ public class DefaultClanGovernment implements ClanGovernment
 	/** The name of this government type, which is its identifier when ID above is -1 */
 	public String	name;
 	/** The category of this government type.  Players can only belong to one of each category */
-	public String category;
+	public String 	category;
 	/** The role automatically assigned to those who apply successfully */
 	public int		autoRole;
 	/** The role automatically assigned to those who are accepted */
@@ -90,7 +90,7 @@ public class DefaultClanGovernment implements ClanGovernment
 	public ClanPosition[] 			positions;
 	/** Whether an unfilled topRole is automatically filled by those who meet its innermask  */
 	public Clan.AutoPromoteFlag 	autoPromoteBy;
-
+	
 	// derived variable
 	public static final SearchIDList<Ability>  emptyIDs = new CMUniqSortSVec<Ability>(1);
 	public static final List<Ability>		   empty 	= new ReadOnlyList<Ability>(new Vector<Ability>());
