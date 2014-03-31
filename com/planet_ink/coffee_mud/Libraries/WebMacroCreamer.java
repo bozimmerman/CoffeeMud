@@ -114,7 +114,7 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 			@Override public List<MultiPartData> getMultiParts() { return new XVector<MultiPartData>(); }
 			@Override public double getSpecialEncodingAcceptability(String type) { return 0; }
 			@Override public String getFullHost() { return "localhost"; }
-			@Override public List<int[]> getRangeAZ() { return null; }
+			@Override public List<long[]> getRangeAZ() { return null; }
 			@Override public void addFakeUrlParameter(String name, String value) { params.put(name.toUpperCase(), value); }
 			@Override public void removeUrlParameter(String name) { params.remove(name.toUpperCase()); }
 			@Override public Map<String,Object> getRequestObjects() { return objects; }

@@ -10,11 +10,13 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.Clan.MemberRecord;
 import com.planet_ink.coffee_mud.Common.interfaces.Clan.Trophy;
+import com.planet_ink.coffee_mud.Common.interfaces.Clan.WebSite;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 /* 
    Copyright 2000-2014 Bo Zimmerman
@@ -212,6 +214,15 @@ public interface ClanManager extends CMLibrary
 	 * @return the Clan object associated with the given clan name
 	 */
 	public Clan findClan(String id);
+	
+	/**
+	 * Returns the Clan.WebSite objects corresponding to the
+	 * defined default web site(s) for this clan.
+	 * @see Clan.WebSite
+	 * @param clan the clan to find a site for
+	 * @return the Clan.WebSite objects
+	 */
+	public List<WebSite> parseClanWebSites(Clan clan);
 	
 	/**
 	 * Returns an enumeration of all the Clans in the game 

@@ -19,12 +19,12 @@ import com.planet_ink.coffee_mud.Common.interfaces.Clan.Function;
 import com.planet_ink.coffee_mud.Common.interfaces.Clan.Authority;
 import com.planet_ink.coffee_mud.Common.interfaces.Clan.MemberRecord;
 import com.planet_ink.coffee_mud.Common.interfaces.Clan.Trophy;
+import com.planet_ink.coffee_mud.Common.interfaces.Clan.WebSite;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
-
 
 import java.util.*;
 /**
@@ -1082,6 +1082,39 @@ public class Clans extends StdLibrary implements ClanManager
 		}
 	}
 
+	public List<WebSite> parseClanWebSites(Clan clan)
+	{
+		List<String> set=CMParms.parseCommas(CMProps.getVar(CMProps.Str.CLANWEBSITES),true);
+		List<WebSite> webSites = new Vector<WebSite>(1);
+		for(String s : set)
+		{
+			String originalS=s;
+			s=s.trim();
+			if(s.startsWith("["))
+			{
+				int x=s.indexOf(']');
+				String cat=s.substring(1,x).trim();
+				if(clan.getGovernment().getCategory().equalsIgnoreCase(cat))
+				{
+					s=s.substring(x+1).trim();
+					x=s.lastIndexOf(' ');
+					if(x>0)
+					{
+						Clan.WebSite W = new Clan.WebSite();
+						W.siteFilesPath = s.substring(0,x).trim();
+						W.siteTemplatePath = s.substring(x+1).trim();
+						webSites.add(W);
+					}
+					else
+					{
+						Log.errOut("Clans","Unparseable webclansites bit in coffeemud.ini: "+originalS);
+					}
+				}
+			}
+		}
+		return webSites;
+	}
+	
 	public void clanAnnounce(MOB mob, String msg)
 	{
 		List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.CLANINFO);

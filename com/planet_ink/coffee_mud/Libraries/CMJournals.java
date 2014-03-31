@@ -185,6 +185,32 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 		return forumJournals.size();
 	}
 	
+	public List<ForumJournal> parseClanForums(Clan clan)
+	{
+		List<String> set=CMParms.parseCommas(CMProps.getVar(CMProps.Str.CLANFORUMDATA),true);
+		StringBuilder myForumList=new StringBuilder("");
+		for(String s : set)
+		{
+			s=s.trim();
+			if(s.startsWith("["))
+			{
+				int x=s.indexOf(']');
+				String cat=s.substring(1,x).trim();
+				if(clan.getGovernment().getCategory().equalsIgnoreCase(cat))
+				{
+					s=s.substring(x+1).trim();
+					s=CMStrings.replaceAll(s, "<CLANTYPE>", clan.getGovernmentName());
+					s=CMStrings.replaceAll(s, "<CLANNAME>", clan.getName());
+					s=CMStrings.replaceAll(s, ",", ".");
+					if(myForumList.length()>0)
+						myForumList.append(',');
+					myForumList.append(s);
+				}
+			}
+		}
+		return parseForumJournals(myForumList.toString());
+	}
+	
 	public List<ForumJournal> parseForumJournals(String list)
 	{
 		List<ForumJournal> journals = new Vector<ForumJournal>(1);

@@ -47,6 +47,7 @@ public interface JournalsLibrary extends CMLibrary
 	public Enumeration<ForumJournal> forumJournals();
 	public ForumJournal getForumJournal(String named);
 	public int getNumForumJournals();
+	public List<ForumJournal> parseClanForums(Clan clan);
 	
 	public boolean subscribeToJournal(String journalName, String userName, boolean saveMailingList);
 	public boolean unsubscribeFromJournal(String journalName, String userName, boolean saveMailingList);

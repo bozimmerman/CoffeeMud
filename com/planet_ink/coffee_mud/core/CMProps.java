@@ -153,7 +153,9 @@ public class CMProps extends Properties
 		FORMULA_PVPDAMAGESPELLFUDGE,
 		FORMULA_PVPDAMAGEMELEEFUDGE,
 		FORMULA_PVPDAMAGERANGEDFUDGE,
-		DEFAULTPARENTAREA
+		DEFAULTPARENTAREA,
+		CLANWEBSITES,
+		CLANFORUMDATA
 	}
 
 	public static enum Int {
@@ -331,6 +333,7 @@ public class CMProps extends Properties
 	protected Pattern[][]		whiteLists = new Pattern[0][];
 	protected int   			pkillLevelDiff=26;
 	protected boolean   		loaded=false;
+	protected long				lastReset=System.currentTimeMillis();
 	protected long  			TIME_TICK=4000;
 	protected long  			MILLIS_PER_MUDHOUR=600000;
 	protected long  			TICKS_PER_RLMIN=(int)Math.round(60000.0/TIME_TICK);
@@ -1142,6 +1145,8 @@ public class CMProps extends Properties
 		setVar(Str.AUTOREACTION,getStr("AUTOREACTION"));
 		setVar(Str.WIZLISTMASK,getStr("WIZLISTMASK"));
 		setUpLowVar(Str.DEFAULTPARENTAREA,getStr("DEFAULTPARENTAREA"));
+		setUpLowVar(Str.CLANWEBSITES,getStr("CLANWEBSITES"));
+		setUpLowVar(Str.CLANFORUMDATA,getStr("CLANFORUMDATA"));
 		setUpLowVar(Str.STARTINGITEMS,getStr("STARTINGITEMS","1 Waterskin, 1 Ration, 1 Torch"));
 		setVar(Str.PREJUDICE,getStr("PREJUDICE"));
 		setUpLowVar(Str.PRICEFACTORS,getStr("PRICEFACTORS"));
@@ -1398,6 +1403,12 @@ public class CMProps extends Properties
 		}
 
 		CMLib.propertiesLoaded();
+		this.lastReset=System.currentTimeMillis();
+	}
+	
+	public static long getLastResetTime()
+	{
+		return p().lastReset;
 	}
 	
 	public final void resetSecurityVars() 

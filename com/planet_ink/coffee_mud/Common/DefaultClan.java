@@ -18,6 +18,7 @@ import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine.PlayerData;
+import com.planet_ink.coffee_mud.Libraries.interfaces.JournalsLibrary.ForumJournal;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -65,6 +66,9 @@ public class DefaultClan implements Clan
 	protected List<ClanVote> 	voteList=null;
 	protected List<Long> 		clanKills=new Vector<Long>();
 	protected Integer			overrideMinClanMembers=null;
+	protected List<ForumJournal>clanForums=null;
+	protected List<WebSite>     clanWebSites=null;
+	protected long				lastPropsReload=System.currentTimeMillis();
 
 	//*****************
 	public Hashtable<String,long[]> relations=new Hashtable<String,long[]>();
@@ -93,7 +97,29 @@ public class DefaultClan implements Clan
 		}
 	}
 
-	public ClanGovernment getGovernment() { return govt();}
+	public ClanGovernment getGovernment() 
+	{ 
+		return govt();
+	}
+
+	public List<WebSite> getWebSiteInfo() 
+	{
+		if(this.clanWebSites == null)
+		{
+			this.clanWebSites = CMLib.clans().parseClanWebSites(this);
+		}
+		return this.clanWebSites;
+	}
+	
+	public List<ForumJournal> getForumJournals() 
+	{
+		if(this.clanForums == null)
+		{
+			this.clanForums = CMLib.journals().parseClanForums(this);
+		}
+		return this.clanForums;
+	}
+	
 	
 	protected ClanGovernment govt() 
 	{
@@ -1168,6 +1194,14 @@ public class DefaultClan implements Clan
 			return true;
 		if(CMSecurity.isDisabled(CMSecurity.DisFlag.CLANTICKS))
 			return true;
+		if(lastPropsReload < CMProps.getLastResetTime())
+		{
+			lastPropsReload=CMProps.getLastResetTime();
+			this.clanWebSites=null;
+			this.clanForums=null;
+			this.overrideMinClanMembers=null;
+		}
+		
 		try{
 			List<FullMemberRecord> members=getFullMemberList();
 			int activeMembers=0;
@@ -1589,7 +1623,8 @@ public class DefaultClan implements Clan
 	public String[] getStatCodes(){ return CLAN_STATS;}
 	public int getSaveStatIndex(){ return CLAN_STATS.length;}
 	public boolean isStat(String code){ return CMParms.indexOf(getStatCodes(),code.toUpperCase().trim())>=0;}
-	public String getStat(String code) {
+	public String getStat(String code) 
+	{
 		int dex=CMParms.indexOf(getStatCodes(),code.toUpperCase().trim());
 		if(dex<0) return "";
 		switch(dex)
@@ -1638,7 +1673,8 @@ public class DefaultClan implements Clan
 		return "";
 	}
 	
-	public void setStat(String code, String val) {
+	public void setStat(String code, String val) 
+	{
 		int dex=CMParms.indexOf(getStatCodes(),code.toUpperCase().trim());
 		if(dex<0) return;
 		switch(dex) {

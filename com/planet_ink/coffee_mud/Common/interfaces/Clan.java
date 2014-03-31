@@ -930,6 +930,16 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	}
 	
 	/**
+	 * Information about the web site for this clan
+	 */
+	public static class WebSite
+	{
+		public String siteFilesPath = "";
+		public String siteTemplatePath = "";
+		
+	}
+	
+	/**
 	 * An enumeration of ways auto-promotion can work in a clan
 	 * @author bzimmerman
 	 */
