@@ -1,0 +1,176 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+<head>
+	<link rel="coffeemud icon" href="images/coffeemud.ico" >
+	<!-- tell spiders to sod off -->
+	<meta name="ROBOTS" content="NOINDEX, NOFOLLOW">
+	<link rel="STYLESHEET" TYPE="TEXT/CSS" HREF="coffeemud.css">
+	<link rel="STYLESHEET" TYPE="TEXT/CSS" HREF="forums.css">
+    <style type="text/css">
+        .nicEdit-selected {
+            border: 2px solid #0000ff !important;
+        }
+    
+        .nicEdit-panel {
+            background-color: #fff !important;
+        }
+        .nicEdit-main {
+            background-color: #fff !important;
+            border: 1px solid #000000 !important;
+        }
+    </style>
+	<title>Forums</title>
+	<script language=JavaScript>
+	<!--
+        var forumEditors=[];
+		var abort=false;
+		function Cancel(which)
+		{
+			document.FORUM.action="forum.cmvp";
+			document.FORUM.FUNCTION.value="";
+			document.FORUM.submit();
+		}
+		function Submit(which)
+		{
+			if(abort) return; 
+			if(window.confirm('Confirm: Subject changes?'))
+			{
+				abort=true;
+                for(var i=0;i<forumEditors.length;i++)
+                    for(var i2=0;i2<forumEditors[i].nicInstances.length;i2++)
+                        forumEditors[i].nicInstances[i2].saveContent();
+				document.FORUM.action="forum.cmvp";
+				document.FORUM.FUNCTION.value="ADMINSUBMIT";
+				document.FORUM.submit();
+			}
+		}
+	//-->
+	</SCRIPT>
+</head>
+
+<body>
+<FORM  ACCEPT-CHARSET="UTF-8" NAME=FORUM TARGET=_top METHOD=POST ACTION="forum.cmvp">
+<script language="JavaScript" type="text/javascript" src="textedit/nicEdit.js"></script>
+<INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
+<INPUT TYPE=HIDDEN NAME=JOURNAL VALUE="@RequestParameter?JOURNAL@">
+<INPUT TYPE=HIDDEN NAME=JOURNALPAGE VALUE="@RequestParameter?JOURNALPAGE@">
+<INPUT TYPE=HIDDEN NAME=FUNCTION VALUE="">
+<TABLE WIDTH=100% BORDER=0 CELLSPACING=0 CELLPADDING=0>
+	<TR>
+	<TD WIDTH=10px>&nbsp;</TD>
+	<TD><a href="@if?!Authenticate?SETPLAYER@index.cmvp@else@access.cmvp@endif@?AUTH=@Authenticate?AUTH@">
+		<IMG BORDER=0 SRC=images/cm50.gif>
+		</a>
+	</TD>
+	<TD ALIGN=RIGHT VALIGN=TOP>
+		<FONT COLOR=BLACK SIZE=-1>@if?!Authenticate?SETPLAYER@ @endif@</FONT>
+	</TD>
+	</TR>
+</TABLE>
+<BR><BR>
+<TABLE WIDTH=100% BORDER=1 CELLSPACING=0 CELLPADDING=0 BGCOLOR=LIGHTGREY>
+<TR BGCOLOR=BLACK><TD COLSPAN=6>&nbsp;<FONT COLOR=WHITE SIZE=-1><B>Forum : @JournalName?NOCOLOR@</B></FONT>&nbsp;</TD></TR>
+<TR><TD><FONT COLOR=BLACK SIZE=-1>@ForumInfo?LONGDESC@</TD></TR>
+</TABLE>
+<BR>
+<TABLE WIDTH=100% BORDER=0 CELLSPACING=3 CELLPADDING=3>
+<TR VALIGN=CENTER HEIGHT=15>
+	<TD ALIGN=RIGHT><FONT COLOR=WHITE SIZE=-1>&nbsp;</FONT>
+	</TD>
+	<TD WIDTH=100px BGCOLOR=BLACK VALIGN=CENTER HEIGHT=15 ONCLICK="javascript:Cancel('')">
+	<a href="javascript:Cancel('')" style="text-decoration:none">
+		<FONT COLOR=WHITE SIZE=-1>
+		&nbsp;<IMG BORDER=0 WIDTH=14 HEIGHT=14 SRC=images/docback.gif>&nbsp;&nbsp;<B>Forum</B>
+		</FONT>
+	</a>
+	</TD>
+</TR>
+</TABLE>
+<TABLE WIDTH=100% BORDER=0 CELLSPACING=0 CELLPADDING=0>
+<TR BGCOLOR=BLACK>
+	<TD COLSPAN=2>
+	&nbsp;<FONT COLOR=WHITE SIZE=-1><B>@JournalName?NOCOLOR@ Administration</B></FONT>&nbsp;
+	</TD>
+</TR>
+<TR BGCOLOR=LIGHTGREY>
+	<TD VALIGN=TOP>
+	<FONT SIZE=6><B>Short Description</B>
+	</TD>
+	<TD>
+<textarea id="SHORTDESC" name="SHORTDESC" style="height: 80px; width: 500px;">@ForumInfo?SHORTDESC@</textarea>
+        <script language="javascript">
+            forumEditors.push(new nicEditor({iconsPath : 'textedit/nicEditorIcons.gif', fullPanel: true}).panelInstance('SHORTDESC'));
+        </script>
+	</TD>
+</TR>
+<TR BGCOLOR=LIGHTBLUE>
+	<TD VALIGN=TOP>
+	<FONT SIZE=6><B>Long Description</B>
+	</TD>
+	<TD>
+<textarea id="LONGDESC" name="LONGDESC" style="height: 300px; width: 500px;">@ForumInfo?LONGDESC@</textarea>
+        <script language="javascript">
+            forumEditors.push(new nicEditor({iconsPath : 'textedit/nicEditorIcons.gif', fullPanel: true}).panelInstance('LONGDESC'));
+        </script>
+	</TD>
+</TR>
+<TR BGCOLOR=LIGHTGREY>
+	<TD VALIGN=TOP>
+	<FONT SIZE=6><B>Image Path</B>
+	</TD>
+	<TD>
+	<INPUT TYPE=TEXT NAME=IMAGEPATH SIZE=30>
+	</TD>
+</TR>
+<TR BGCOLOR=LIGHTBLUE>
+	<TD VALIGN=TOP>
+	<FONT SIZE=4><B>Read/Access Mask</B>
+	<FONT SIZE=-1><I>See Control Panel</I></B>
+	</TD>
+	<TD><FONT COLOR=BLACK><PRE>@ForumInfo?READMASK@</PRE></FONT></TD>
+</TR>
+<TR BGCOLOR=LIGHTGREY>
+	<TD VALIGN=TOP>
+	<FONT SIZE=4><B>Reply Mask</B>
+	<FONT SIZE=-1><I>See Control Panel</I></B>
+	</TD>
+	<TD><FONT COLOR=BLACK><PRE>@ForumInfo?REPLYMASK@</PRE></FONT></TD>
+</TR>
+<TR BGCOLOR=LIGHTBLUE>
+	<TD VALIGN=TOP>
+	<FONT SIZE=4><B>Posting Mask</B>
+	<FONT SIZE=-1><I>See Control Panel</I></B>
+	</TD>
+	<TD><FONT COLOR=BLACK><PRE>@ForumInfo?POSTMASK@</PRE></FONT></TD>
+</TR>
+<TR BGCOLOR=LIGHTGREY>
+	<TD VALIGN=TOP>
+	<FONT SIZE=4><B>Administration Mask</B>
+	<FONT SIZE=-1><I>See Control Panel</I></B>
+	</TD>
+	<TD><FONT COLOR=BLACK><PRE>@ForumInfo?ADMINMASK@</PRE></FONT></TD>
+</TR>
+<TR BGCOLOR=LIGHTBLUE><TD COLSPAN=2>&nbsp;</TD></TR>
+<TR BGCOLOR=LIGHTGREY>
+	<TD>&nbsp;</TD>
+	<TD>
+	<TABLE WIDTH=600px BORDER=0 CELLSPACING=0 CELLPADDING=0>
+	<TR>
+		<TD WIDTH=25%>&nbsp;</TD>
+		<TD WIDTH=25% ALIGN=CENTER><INPUT TYPE=BUTTON STYLE="width: 5em" VALUE=Submit ONCLICK="Submit('');"></TD>
+		<TD WIDTH=25% ALIGN=CENTER><INPUT TYPE=BUTTON STYLE="width: 5em" VALUE=Cancel ONCLICK="Cancel('');"></TD>
+		<TD WIDTH=25%>&nbsp;</TD>
+	</TR>
+	</TABLE>
+	&nbsp;
+	</TD>
+</TR>
+<TR BGCOLOR=LIGHTGREY><TD COLSPAN=2>&nbsp;</TD></TR>
+<TR BGCOLOR=BLACK HEIGHT=20>
+	<TD COLSPAN=2>&nbsp;</TD>
+</TR>
+</TABLE>
+</FORM>
+</body>
+</html>
