@@ -54,6 +54,13 @@ public interface ClanManager extends CMLibrary
 	public int numClans();
 
 	/**
+	 * Returns a list of clans which may or may not be assigned to the absolute file path specified.
+	 * @param sitePath the absolute path of the file
+	 * @return a list of clans at that path, or NULL for none (or empty list)
+	 */
+	public List<Clan> getWebPathClans(String sitePath);
+
+	/**
 	 * This method is used to determine the basic relationship between two clans.  The
 	 * two clans are evaluated, based on their declared relationship to each other, and
 	 * the relations they inherit from allys.  It is then compared with the passed in

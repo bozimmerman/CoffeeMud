@@ -493,7 +493,7 @@ public class HTTPReqProcessor implements HTTPFileGetter
 				HTTPOutputConverter converter;
 				try { 
 					converter = converterClass.newInstance();
-					return new MWDataBuffers(converter.convertOutput(config, request, HTTPStatus.S200_OK, buffers.flushToBuffer()), System.currentTimeMillis());
+					return new MWDataBuffers(converter.convertOutput(config, request, pageFile, HTTPStatus.S200_OK, buffers.flushToBuffer()), System.currentTimeMillis());
 				} catch (Exception e) { }
 				return buffers;
 			}
@@ -569,7 +569,7 @@ public class HTTPReqProcessor implements HTTPFileGetter
 						extraHeaders.put(HTTPHeader.CACHE_CONTROL, "no-cache");
 						final long dateTime=System.currentTimeMillis();
 						extraHeaders.put(HTTPHeader.EXPIRES, HTTPIOHandler.DATE_FORMAT.format(Long.valueOf(dateTime)));
-						buffers=new MWDataBuffers(converter.convertOutput(config, request, HTTPStatus.S200_OK, buffers.flushToBuffer()), dateTime);
+						buffers=new MWDataBuffers(converter.convertOutput(config, request, pageFile, HTTPStatus.S200_OK, buffers.flushToBuffer()), dateTime);
 						buffers = handleEncodingRequest(request, null, buffers, extraHeaders);
 					}
 					catch (Exception e)

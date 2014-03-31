@@ -1,5 +1,6 @@
 package com.planet_ink.miniweb.interfaces;
 
+import java.io.File;
 import java.nio.ByteBuffer;
 
 import com.planet_ink.miniweb.http.HTTPException;
@@ -43,8 +44,9 @@ public interface HTTPOutputConverter
 	 * @param request the http request bring processed
 	 * @param status the status of the request (so far)
 	 * @param buffer the input buffer
+	 * @param pageFile TODO
 	 * @return the output buffer
 	 * @throws HTTPException
 	 */
-	public ByteBuffer convertOutput(MiniWebConfig config, HTTPRequest request, HTTPStatus status, ByteBuffer buffer) throws HTTPException;
+	public ByteBuffer convertOutput(MiniWebConfig config, HTTPRequest request, File pageFile, HTTPStatus status, ByteBuffer buffer) throws HTTPException;
 }

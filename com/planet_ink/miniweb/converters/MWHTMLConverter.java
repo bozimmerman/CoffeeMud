@@ -1,6 +1,7 @@
 package com.planet_ink.miniweb.converters;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.nio.ByteBuffer;
 import java.util.HashMap;
 import java.util.Map;
@@ -50,7 +51,7 @@ public class MWHTMLConverter implements HTTPOutputConverter
 	 * @param buffer the input buffer
 	 * @throws HTTPException
 	 */
-	public ByteBuffer convertOutput(MiniWebConfig config, HTTPRequest request, HTTPStatus status, ByteBuffer buffer) throws HTTPException
+	public ByteBuffer convertOutput(MiniWebConfig config, HTTPRequest request, File pageFile, HTTPStatus status, ByteBuffer buffer) throws HTTPException
 	{
 		final int oldPosition=buffer.position();
 		final ByteArrayOutputStream out=new ByteArrayOutputStream();

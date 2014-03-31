@@ -30,6 +30,7 @@ import com.planet_ink.miniweb.server.MiniWebServer;
 import com.planet_ink.miniweb.util.MWThread;
 import com.planet_ink.miniweb.util.MiniWebConfig;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
@@ -64,13 +65,15 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 	public String ID(){return "WebMacroCreamer";}
 	
 	@Override
-	public ByteBuffer convertOutput(MiniWebConfig config, HTTPRequest request, HTTPStatus status, ByteBuffer buffer) throws HTTPException {
+	public ByteBuffer convertOutput(MiniWebConfig config, HTTPRequest request, File pageFile, HTTPStatus status, ByteBuffer buffer) throws HTTPException {
 		if(request.getRequestObjects().get("SYSTEM_HTTP_STATUS")==null)
 		{
 			request.getRequestObjects().put("SYSTEM_HTTP_STATUS", Integer.toString(status.getStatusCode()));
 			request.getRequestObjects().put("SYSTEM_HTTP_STATUS_INFO", status.description());
 		}
 		long[] systemStartTime=new long[]{System.currentTimeMillis()};
+		List<Clan> clanList = CMLib.clans().getWebPathClans(pageFile.getAbsolutePath());
+		
 		try
 		{
 			return ByteBuffer.wrap(virtualPageFilter(request, request.getRequestObjects(), systemStartTime,  new String[]{""}, new StringBuffer(new String(buffer.array()))).toString().getBytes());

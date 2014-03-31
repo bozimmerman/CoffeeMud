@@ -44,10 +44,11 @@ import java.util.*;
  */
 public class Clans extends StdLibrary implements ClanManager
 {
-	public SHashtable<String,Clan> all				  = new SHashtable<String,Clan>();
-	public List<Pair<Clan,Integer>>all2				  = new Vector<Pair<Clan,Integer>>();
-	public long	 		  		   lastGovernmentLoad = 0;
-
+	protected SHashtable<String,Clan> all				  = new SHashtable<String,Clan>();
+	protected List<Pair<Clan,Integer>>all2				  = new Vector<Pair<Clan,Integer>>();
+	protected long	 		  		  lastGovernmentLoad  = 0;
+	protected Map<String,List<Clan>>  webSiteMappings	  = new SHashtable<String,List<Clan>>();
+	
 	public String ID(){return "Clans";}
 
 	public boolean isCommonClanRelations(Clan C1, Clan C2, int relation)
@@ -1084,6 +1085,14 @@ public class Clans extends StdLibrary implements ClanManager
 
 	public List<WebSite> parseClanWebSites(Clan clan)
 	{
+		for(Iterator<String> keyIter = this.webSiteMappings.keySet().iterator();keyIter.hasNext();)
+		{
+			List<Clan> clanList = this.webSiteMappings.get(keyIter.next());
+			if(clanList.contains(clan))
+			{
+				clanList.remove(clan);
+			}
+		}
 		List<String> set=CMParms.parseCommas(CMProps.getVar(CMProps.Str.CLANWEBSITES),true);
 		List<WebSite> webSites = new Vector<WebSite>(1);
 		for(String s : set)
@@ -1104,6 +1113,13 @@ public class Clans extends StdLibrary implements ClanManager
 						W.siteFilesPath = s.substring(0,x).trim();
 						W.siteTemplatePath = s.substring(x+1).trim();
 						webSites.add(W);
+						List<Clan> clanList=webSiteMappings.get(W.siteFilesPath.toLowerCase());
+						if(clanList == null)
+						{
+							clanList=new SVector<Clan>(1);
+							webSiteMappings.put(W.siteFilesPath.toLowerCase(), clanList);
+						}
+						clanList.add(clan);
 					}
 					else
 					{
@@ -1114,6 +1130,12 @@ public class Clans extends StdLibrary implements ClanManager
 		}
 		return webSites;
 	}
+
+	public List<Clan> getWebPathClans(String sitePath)
+	{
+		return webSiteMappings.get(sitePath.toLowerCase());
+	}
+	
 	
 	public void clanAnnounce(MOB mob, String msg)
 	{
