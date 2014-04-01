@@ -1910,9 +1910,13 @@ public class CMFile extends File
 		{
 			if((!F.exists())&&(F.getParent()!=null))
 			{
-				final Clan C=CMLib.clans().getWebPathClan(F.getParent());
-				if((C!=null)&&(C.getWebSiteInfo()!=null))
-					F=new CMFile(C.getWebSiteInfo().siteTemplatePath+"/"+F.getName(),null);
+				String templatePath = CMLib.clans().getClanWebTemplateDir(F.getAbsolutePath());
+				if(templatePath==null)
+					templatePath = CMLib.clans().getClanWebTemplateDir(F.getParent());
+				else
+					templatePath += "/"+F.getName();
+				if(templatePath!=null)
+					F=new CMFile(templatePath,null);
 			}
 			return F;
 		}

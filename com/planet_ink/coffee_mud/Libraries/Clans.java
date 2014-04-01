@@ -19,7 +19,6 @@ import com.planet_ink.coffee_mud.Common.interfaces.Clan.Function;
 import com.planet_ink.coffee_mud.Common.interfaces.Clan.Authority;
 import com.planet_ink.coffee_mud.Common.interfaces.Clan.MemberRecord;
 import com.planet_ink.coffee_mud.Common.interfaces.Clan.Trophy;
-import com.planet_ink.coffee_mud.Common.interfaces.Clan.WebSitePathMap;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
@@ -44,11 +43,12 @@ import java.util.*;
  */
 public class Clans extends StdLibrary implements ClanManager
 {
-	protected SHashtable<String,Clan> all				  = new SHashtable<String,Clan>();
-	protected List<Pair<Clan,Integer>>all2				  = new Vector<Pair<Clan,Integer>>();
-	protected long	 		  		  lastGovernmentLoad  = 0;
-	protected Map<String,Clan>  	  webPathClanMappings = new SHashtable<String,Clan>();
-	
+	protected SHashtable<String,Clan>	all					= new SHashtable<String,Clan>();
+	protected List<Pair<Clan,Integer>>	all2				= new Vector<Pair<Clan,Integer>>();
+	protected long	 		  		  	lastGovernmentLoad  = 0;
+	protected Map<String,Clan>  	  	webPathClanMappings = new SHashtable<String,Clan>();
+	protected Map<String,String>		clanWebPathMappings = new SHashtable<String,String>();
+
 	public String ID(){return "Clans";}
 
 	public boolean isCommonClanRelations(Clan C1, Clan C2, int relation)
@@ -348,7 +348,8 @@ public class Clans extends StdLibrary implements ClanManager
 				CMLib.threads().startTickDown(C,Tickable.TICKID_CLAN,(int)CMProps.getTicksPerDay());
 			all.put(C.clanID().toUpperCase(),C);
 			all2.add(new Pair<Clan,Integer>(C,Integer.valueOf(C.getGovernment().getAcceptPos())));
-			C.getForumJournals(); // force initialization of its inner settings
+			setClanWebSiteMappings(C,CMProps.getVar(CMProps.Str.CLANWEBSITES));
+			CMLib.journals().registerClanForum(C,CMProps.getVar(CMProps.Str.CLANFORUMDATA));
 			CMLib.map().sendGlobalMessage(CMLib.map().deity(), CMMsg.TYP_CLANEVENT, 
 				CMClass.getMsg(CMLib.map().deity(), CMMsg.MSG_CLANEVENT, "+"+C.name()));
 		}
@@ -366,6 +367,8 @@ public class Clans extends StdLibrary implements ClanManager
 					all2.remove(p);
 					break;
 				}
+			setClanWebSiteMappings(C,null); // will delete mapping
+			CMLib.journals().registerClanForum(C,null); // will remove mapping
 			CMLib.map().sendGlobalMessage(CMLib.map().deity(), CMMsg.TYP_CLANEVENT, 
 					CMClass.getMsg(CMLib.map().deity(), CMMsg.MSG_CLANEVENT, "-"+C.name()));
 		}
@@ -1084,17 +1087,35 @@ public class Clans extends StdLibrary implements ClanManager
 		}
 	}
 
-	public Clan.WebSitePathMap parseClanWebSite(Clan clan)
+	public Clan getWebPathClanMapping(String webPath)
+	{
+		if(webPath==null)
+			return null;
+		return this.webPathClanMappings.get(webPath.toLowerCase().trim());
+	}
+	
+	public String getClanWebTemplateDir(String webPath)
+	{
+		if(webPath==null)
+			return null;
+		return this.clanWebPathMappings.get(webPath.toLowerCase().trim());
+	}
+	
+	private void setClanWebSiteMappings(Clan clan, String allMappingsStr)
 	{
 		for(Iterator<String> keyIter = this.webPathClanMappings.keySet().iterator();keyIter.hasNext();)
 		{
-			Clan foundClan = this.webPathClanMappings.get(keyIter.next());
+			final String key=keyIter.next();
+			Clan foundClan = this.webPathClanMappings.get(key);
 			if(foundClan == clan)
 			{
 				keyIter.remove();
+				clanWebPathMappings.remove(key);
 			}
 		}
-		List<String> set=CMParms.parseCommas(CMProps.getVar(CMProps.Str.CLANWEBSITES),true);
+		if(allMappingsStr==null)
+			return;
+		List<String> set=CMParms.parseCommas(allMappingsStr,true);
 		for(String s : set)
 		{
 			String originalS=s;
@@ -1109,18 +1130,20 @@ public class Clans extends StdLibrary implements ClanManager
 					x=s.lastIndexOf(' ');
 					if(x>0)
 					{
-						Clan.WebSitePathMap W = new Clan.WebSitePathMap();
 						String siteFilesPathStr=CMStrings.replaceAll(s.substring(0,x),"<CLANNAME>",clan.clanID());
 						siteFilesPathStr=CMStrings.replaceAll(siteFilesPathStr,"<CLANTYPE>",clan.getGovernmentName());
-						W.siteFilesPath = new CMFile(siteFilesPathStr.trim(),null).getAbsolutePath();
-						W.siteTemplatePath = new CMFile(s.substring(x+1).trim(),null).getAbsolutePath();
-						if(webPathClanMappings.containsKey(W.siteFilesPath.toLowerCase()))
+						String siteFilesPath = new CMFile(siteFilesPathStr.trim(),null).getAbsolutePath();
+						String siteTemplatePath = new CMFile(s.substring(x+1).trim(),null).getAbsolutePath();
+						if(webPathClanMappings.containsKey(siteFilesPath.toLowerCase()))
 						{
 							Log.errOut("Clans","Multiple clans at same webclansites path: in coffeemud.ini: "+originalS);
 						}
 						else
-							webPathClanMappings.put(W.siteFilesPath.toLowerCase(), clan);
-						return W;
+						{
+							webPathClanMappings.put(siteFilesPath.toLowerCase(), clan);
+							clanWebPathMappings.put(siteFilesPath.toLowerCase(), siteTemplatePath);
+						}
+						return;
 					}
 					else
 					{
@@ -1129,7 +1152,6 @@ public class Clans extends StdLibrary implements ClanManager
 				}
 			}
 		}
-		return null;
 	}
 
 	public Clan getWebPathClan(String sitePath)
@@ -1424,4 +1446,23 @@ public class Clans extends StdLibrary implements ClanManager
 	{
 		serviceClient.tickTicker(false);
 	}
+
+	@Override
+	public void propertiesLoaded() 
+	{
+		super.propertiesLoaded();
+		for(String clanID : all.keySet())
+		{
+			Clan C=all.get(clanID);
+			setClanWebSiteMappings(C,null);
+			CMLib.journals().registerClanForum(C,null);
+		}
+		for(String clanID : all.keySet())
+		{
+			Clan C=all.get(clanID);
+			setClanWebSiteMappings(C,CMProps.getVar(CMProps.Str.CLANWEBSITES));
+			CMLib.journals().registerClanForum(C,CMProps.getVar(CMProps.Str.CLANFORUMDATA));
+		}
+	}
+	
 }

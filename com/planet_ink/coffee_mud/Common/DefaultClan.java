@@ -66,8 +66,6 @@ public class DefaultClan implements Clan
 	protected List<ClanVote> 	voteList=null;
 	protected List<Long> 		clanKills=new Vector<Long>();
 	protected Integer			overrideMinClanMembers=null;
-	protected List<ForumJournal>clanForums=null;
-	protected WebSitePathMap	clanWebSite=null;
 	protected long				lastPropsReload=System.currentTimeMillis();
 
 	//*****************
@@ -102,24 +100,6 @@ public class DefaultClan implements Clan
 		return govt();
 	}
 
-	public WebSitePathMap getWebSiteInfo() 
-	{
-		getForumJournals(); // necessary for mapping integrity
-		return this.clanWebSite;
-	}
-	
-	public List<ForumJournal> getForumJournals() 
-	{
-		if(this.clanForums == null)
-		{
-			// handles both for integrity sake
-			this.clanForums = CMLib.journals().parseClanForums(this);
-			this.clanWebSite = CMLib.clans().parseClanWebSite(this);
-		}
-		return this.clanForums;
-	}
-	
-	
 	protected ClanGovernment govt() 
 	{
 		if((govt != null) && ((government < 0) || (lastGovernmentLoadTime == CMLib.clans().getLastGovernmentLoad())))
@@ -1196,8 +1176,6 @@ public class DefaultClan implements Clan
 		if(lastPropsReload < CMProps.getLastResetTime())
 		{
 			lastPropsReload=CMProps.getLastResetTime();
-			this.clanWebSite=null;
-			this.clanForums=null;
 			this.overrideMinClanMembers=null;
 		}
 		

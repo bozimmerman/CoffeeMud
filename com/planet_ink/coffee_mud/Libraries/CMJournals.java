@@ -39,8 +39,11 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 {
 	public String ID(){return "CMJournals";}
 	public final int QUEUE_SIZE=100;
-	protected final SHashtable<String,CommandJournal>	commandJournals=new SHashtable<String,CommandJournal>();
-	protected final SHashtable<String,ForumJournal>		forumJournals=new SHashtable<String,ForumJournal>();
+	protected final SHashtable<String,CommandJournal>	 commandJournals	= new SHashtable<String,CommandJournal>();
+	protected final SHashtable<String,ForumJournal>	 	 forumJournals		= new SHashtable<String,ForumJournal>();
+	protected final SHashtable<String,List<ForumJournal>>clanForums			= new SHashtable<String,List<ForumJournal>>();
+	
+	protected final static List<ForumJournal> emptyForums = new ReadOnlyVector<ForumJournal>(0);
 	
 	@SuppressWarnings("unchecked")
     protected Hashtable<String,JournalSummaryStats> getSummaryStats()
@@ -184,9 +187,20 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 		return forumJournals.size();
 	}
 	
-	public List<ForumJournal> parseClanForums(Clan clan)
+	public List<ForumJournal> getClanForums(Clan clan)
 	{
-		List<String> set=CMParms.parseCommas(CMProps.getVar(CMProps.Str.CLANFORUMDATA),true);
+		if(clan == null)
+			return null;
+		return this.clanForums.get(clan.clanID());
+	}
+	public void registerClanForum(Clan clan, String allClanForumDefs)
+	{
+		if(clan==null)
+			return;
+		this.clanForums.remove(clan.clanID());
+		if(allClanForumDefs==null)
+			return;
+		List<String> set=CMParms.parseCommas(allClanForumDefs,true);
 		StringBuilder myForumList=new StringBuilder("");
 		for(String s : set)
 		{
@@ -208,7 +222,8 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 			}
 		}
 		List<ForumJournal> journals = parseForumJournals(myForumList.toString());
-		return journals;
+		if((journals!=null)&&(journals.size()>0))
+			this.clanForums.put(clan.clanID(), journals);
 	}
 	
 	public List<ForumJournal> parseForumJournals(String list)
@@ -439,16 +454,22 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 	{ 
 		if(named==null)
 			return null;
+
 		named=named.toUpperCase().trim();
 		if(forumJournals.containsKey(named))
 			return forumJournals.get(named);
+
 		if(clan!=null)
 		{
-			for(Iterator<JournalsLibrary.ForumJournal> e=clan.getForumJournals().iterator();e.hasNext();)
+			List<ForumJournal> clanJournals=this.clanForums.get(clan.clanID());
+			if(clanJournals!=null)
 			{
-				JournalsLibrary.ForumJournal CJ=e.next();
-				if(CJ.NAME().equalsIgnoreCase(named))
-					return CJ;
+				for(Iterator<JournalsLibrary.ForumJournal> e=clanJournals.iterator();e.hasNext();)
+				{
+					JournalsLibrary.ForumJournal CJ=e.next();
+					if(CJ.NAME().equalsIgnoreCase(named))
+						return CJ;
+				}
 			}
 		}
 		return null;

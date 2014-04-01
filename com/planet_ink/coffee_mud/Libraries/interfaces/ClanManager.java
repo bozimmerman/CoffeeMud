@@ -10,7 +10,6 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.Clan.MemberRecord;
 import com.planet_ink.coffee_mud.Common.interfaces.Clan.Trophy;
-import com.planet_ink.coffee_mud.Common.interfaces.Clan.WebSitePathMap;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
@@ -224,15 +223,6 @@ public interface ClanManager extends CMLibrary
 	public Clan findClan(String id);
 	
 	/**
-	 * Returns the Clan.WebSite object corresponding to the
-	 * defined default web site for this clan.
-	 * @see Clan.WebSitePathMap
-	 * @param clan the clan to find a site for
-	 * @return the Clan.WebSite object
-	 */
-	public Clan.WebSitePathMap parseClanWebSite(Clan clan);
-	
-	/**
 	 * Returns an enumeration of all the Clans in the game 
 	 * @return an enumeration of all the Clans in the game
 	 */
@@ -256,6 +246,23 @@ public interface ClanManager extends CMLibrary
 	 * @param C the clan to remove
 	 */
 	public void removeClan(Clan C);
+	
+	/**
+	 * Returns the clan associated with a given specific web path.
+	 * It is derived from the clanwebsites entry in coffeemud.ini file.
+	 * @param webPath a full vfs resource path
+	 * @return the clan associated with the path, or null
+	 */
+	public Clan getWebPathClanMapping(String webPath);
+	
+	/**
+	 * Returns the template vfs path associated with a given specific 
+	 * web path. It is derived from the clanwebsites entry in 
+	 * coffeemud.ini file.
+	 * @param webPath a full vfs resource path
+	 * @return the template path associated with the resource path, or null
+	 */
+	public String getClanWebTemplateDir(String webPath);
 	
 	/**
 	 * Forces all clans to go through their maintenance process, which

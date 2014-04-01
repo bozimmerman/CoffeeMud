@@ -66,13 +66,14 @@ public class ForumJournalNext extends StdWebMacro
 		
 		Clan setClan=CMLib.clans().getClan(httpReq.getUrlParameter("CLAN"));
 		List<String> journals;
-		if(setClan!=null)
+		if((setClan!=null)&&(CMLib.journals().getClanForums(setClan)!=null))
 		{
 			journals=(List<String>)httpReq.getRequestObjects().get("JOURNALLIST_FOR_"+setClan.clanID());
 			if(journals==null)
 			{
-				journals=new Vector();
-				for(Iterator<JournalsLibrary.ForumJournal> e=setClan.getForumJournals().iterator();e.hasNext();)
+				journals=new Vector<String>();
+				final List<JournalsLibrary.ForumJournal> clanForumJournals=CMLib.journals().getClanForums(setClan);
+				for(Iterator<JournalsLibrary.ForumJournal> e=clanForumJournals.iterator();e.hasNext();)
 				{
 					JournalsLibrary.ForumJournal CJ=e.next();
 					if((!journals.contains(CJ.NAME().toUpperCase()))
