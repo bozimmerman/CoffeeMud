@@ -44,7 +44,7 @@ public interface HTTPOutputConverter
 	 * @param request the http request bring processed
 	 * @param status the status of the request (so far)
 	 * @param buffer the input buffer
-	 * @param pageFile TODO
+	 * @param pageFile the file whose data is being converted
 	 * @return the output buffer
 	 * @throws HTTPException
 	 */
