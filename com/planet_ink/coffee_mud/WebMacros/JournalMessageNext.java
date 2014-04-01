@@ -15,6 +15,7 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /* 
@@ -71,7 +72,9 @@ public class JournalMessageNext extends StdWebMacro
 		String mpage=httpReq.getUrlParameter("MESSAGEPAGE");
 		String parent=httpReq.getUrlParameter("JOURNALPARENT");
 		String dbsearch=httpReq.getUrlParameter("DBSEARCH");
-		List<JournalsLibrary.JournalEntry> msgs=JournalInfo.getMessages(journalName,page,mpage,parent,dbsearch,httpReq.getRequestObjects());
+		Clan setClan=CMLib.clans().getClan(httpReq.getUrlParameter("CLAN"));
+		JournalsLibrary.ForumJournal journal= CMLib.journals().getForumJournal(journalName,setClan);
+		List<JournalsLibrary.JournalEntry> msgs=JournalInfo.getMessages(journalName,journal,page,mpage,parent,dbsearch,httpReq.getRequestObjects());
 		while((entry==null)||(!CMLib.journals().canReadMessage(entry,srch,M,parms.containsKey("NOPRIV"))))
 		{
 			entry = JournalInfo.getNextEntry(msgs,last);

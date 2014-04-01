@@ -16,6 +16,7 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /* 
@@ -53,7 +54,7 @@ public class JournalInfo extends StdWebMacro
 	}
 
 	@SuppressWarnings("unchecked")
-	public static List<JournalsLibrary.JournalEntry> getMessages(String journalName, String page, String mpage, String parent, String dbsearch, Map<String,Object> objs)
+	public static List<JournalsLibrary.JournalEntry> getMessages(String journalName, JournalsLibrary.ForumJournal forumJournal, String page, String mpage, String parent, String dbsearch, Map<String,Object> objs)
 	{
 		if((parent!=null)&&(parent.length()>0))
 		{
@@ -84,7 +85,7 @@ public class JournalInfo extends StdWebMacro
 				msgs=CMLib.database().DBReadJournalMsgs(journalName);
 			else
 			{
-				JournalsLibrary.JournalSummaryStats stats = CMLib.journals().getJournalStats(journalName);
+				JournalsLibrary.JournalSummaryStats stats = CMLib.journals().getJournalStats(forumJournal);
 				long pageDate = CMath.s_long(page);
 				int limit = CMProps.getIntVar(CMProps.Int.JOURNALLIMIT);
 				if(limit<=0) limit=Integer.MAX_VALUE;
@@ -157,11 +158,15 @@ public class JournalInfo extends StdWebMacro
 		String msgKey=httpReq.getUrlParameter("JOURNALMESSAGE");
 		if(msgKey==null) 
 			return " @break@";
+		
+		Clan setClan=CMLib.clans().getClan(httpReq.getUrlParameter("CLAN"));
+		JournalsLibrary.ForumJournal journal= CMLib.journals().getForumJournal(journalName,setClan);
+		
 		String cardinal=httpReq.getUrlParameter("JOURNALCARDINAL");
 		JournalsLibrary.JournalEntry entry=null;
 		if(msgKey.equalsIgnoreCase("FORUMLATEST"))
 		{
-			JournalsLibrary.JournalSummaryStats stats = CMLib.journals().getJournalStats(journalName);
+			JournalsLibrary.JournalSummaryStats stats = CMLib.journals().getJournalStats(journal);
 			if((stats!=null)&&(stats.latestKey!=null)&&(stats.latestKey.length()>0))
 			{
 				entry=CMLib.database().DBReadJournalEntry(journalName, stats.latestKey);
@@ -177,7 +182,7 @@ public class JournalInfo extends StdWebMacro
 			String dbsearch=httpReq.getUrlParameter("DBSEARCH");
 			if((page!=null)&&(page.length()>0))
 			{
-				List<JournalsLibrary.JournalEntry> msgs=JournalInfo.getMessages(journalName,page,mpage,parent,dbsearch,httpReq.getRequestObjects());
+				List<JournalsLibrary.JournalEntry> msgs=JournalInfo.getMessages(journalName,journal,page,mpage,parent,dbsearch,httpReq.getRequestObjects());
 				entry= JournalInfo.getEntry(msgs,msgKey);
 			}
 		}
@@ -200,12 +205,11 @@ public class JournalInfo extends StdWebMacro
 		{
 			if(parms.containsKey("CANEDIT"))
 			{
-				JournalsLibrary.ForumJournal forum = CMLib.journals().getForumJournal(journalName);
 				if(M==null) return "false";
 				return String.valueOf(
 						entry.from.equals(M.Name())
 						|| priviledged
-						|| (forum!=null && forum.authorizationCheck(M, ForumJournalFlags.ADMIN))
+						|| (journal!=null && journal.authorizationCheck(M, ForumJournalFlags.ADMIN))
 						);
 			}
 			else

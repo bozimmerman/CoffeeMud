@@ -17,6 +17,7 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /* 
@@ -235,6 +236,14 @@ public class ClanData extends StdWebMacro
 						Pair<Clan,Integer> roleP=M.getClanRole(C.clanID());
 						authorized = (roleP.first==C)?(C.getAuthority(roleP.second.intValue(), Clan.Function.LIST_MEMBERS)!=Clan.Authority.CAN_NOT_DO):false;
 					}
+				}
+				if(parms.containsKey("MEMBERSONLINE"))
+				{
+					int numPlayers=0;
+					for(Session S : CMLib.sessions().localOnlineIterable())
+						if((S.mob()!=null)&&(!CMLib.flags().isCloaked(S.mob()))&&(S.mob().getClanRole(C.clanID())!=null))
+						   numPlayers++;
+					return Integer.toString(numPlayers);
 				}
 				if(parms.containsKey("AUTHORIZED")||parms.containsKey("AUTH"))
 				{

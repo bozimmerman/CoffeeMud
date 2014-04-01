@@ -17,6 +17,7 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /* 
@@ -53,7 +54,9 @@ public class ForumInfo extends StdWebMacro
 		MOB M = Authenticate.getAuthenticatedMob(httpReq);
 		if((!securityOverride)&&(CMLib.journals().isArchonJournalName(last))&&((M==null)||(!CMSecurity.isASysOp(M))))
 			return " @break@";
-		JournalsLibrary.ForumJournal journal = CMLib.journals().getForumJournal(last);
+		
+		Clan setClan=CMLib.clans().getClan(httpReq.getUrlParameter("CLAN"));
+		JournalsLibrary.ForumJournal journal=CMLib.journals().getForumJournal(last,setClan);
 		if(journal == null) 
 			return " @break@";
 		
@@ -118,7 +121,7 @@ public class ForumInfo extends StdWebMacro
 		if(parms.containsKey("EXPIRE"))
 			str.append( "").append(", ");
 		
-		JournalsLibrary.JournalSummaryStats stats = CMLib.journals().getJournalStats(last);
+		JournalsLibrary.JournalSummaryStats stats = CMLib.journals().getJournalStats(journal);
 		if(stats == null) 
 			return " @break@";
 		

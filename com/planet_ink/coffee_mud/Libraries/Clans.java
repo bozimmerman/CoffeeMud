@@ -281,7 +281,7 @@ public class Clans extends StdLibrary implements ClanManager
 
 	public Clan getClan(String id)
 	{
-		if(id.length()==0) return null;
+		if((id==null)||(id.length()==0)) return null;
 		Clan C=all.get(id.toUpperCase());
 		if(C!=null) return C;
 		for(Enumeration<Clan> e=all.elements();e.hasMoreElements();)

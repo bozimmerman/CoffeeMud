@@ -499,6 +499,35 @@ public class PlayerData extends StdWebMacro
 				str.append("<OPTION VALUE=F "+((old.equalsIgnoreCase("F"))?"SELECTED":"")+">F");
 				str.append("<OPTION VALUE=N "+((old.equalsIgnoreCase("N"))?"SELECTED":"")+">N");
 			}
+			if(parms.containsKey("PLAYERCLANRESET"))
+				httpReq.removeUrlParameter("CLAN");
+			else
+			if(parms.containsKey("PLAYERCLANNEXT"))
+			{
+				String prevClan=httpReq.getUrlParameter("CLAN");
+				boolean found=false;
+				boolean next=false;
+				for(Pair<Clan, Integer> p : M.clans())
+				{
+					if((prevClan == null)||(next))
+					{
+						httpReq.addFakeUrlParameter("CLAN", p.first.clanID());
+						found=true;
+						break;
+					}
+					else
+					if(p.first.clanID().equals(prevClan))
+						next=true;
+				}
+				if(!found)
+				{
+					httpReq.addFakeUrlParameter("CLAN","");
+					if(parms.containsKey("EMPTYOK"))
+						str.append("<!--EMPTY-->, ");
+					else
+						str.append(" @break@, ");
+				}
+			}
 			str.append(MobData.expertiseList(M,httpReq,parms));
 			str.append(MobData.classList(M,httpReq,parms));
 			str.append(MobData.itemList(M,M,httpReq,parms,0));

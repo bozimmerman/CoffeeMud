@@ -16,6 +16,7 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /* 
@@ -43,7 +44,8 @@ public class JournalFunction extends StdWebMacro
 		String journalName=httpReq.getUrlParameter("JOURNAL");
 		if(journalName==null) return "Function not performed -- no Journal specified.";
 		
-		JournalsLibrary.ForumJournal forum = CMLib.journals().getForumJournal(journalName);
+		Clan setClan=CMLib.clans().getClan(httpReq.getUrlParameter("CLAN"));
+		JournalsLibrary.ForumJournal forum=CMLib.journals().getForumJournal(journalName,setClan);
 		MOB M = Authenticate.getAuthenticatedMob(httpReq);
 		if(CMLib.journals().isArchonJournalName(journalName))
 		{
@@ -154,7 +156,7 @@ public class JournalFunction extends StdWebMacro
 			JournalInfo.clearJournalCache(httpReq, journalName);
 			if(parent!=null)
 				CMLib.database().DBTouchJournalMessage(parent);
-			CMLib.journals().clearJournalSummaryStats(journalName);
+			CMLib.journals().clearJournalSummaryStats(forum);
 			return "Post submitted.";
 		}
 		else
@@ -168,7 +170,7 @@ public class JournalFunction extends StdWebMacro
 			String longDesc=fixForumString(httpReq.getUrlParameter("LONGDESC"));
 			String shortDesc=fixForumString(httpReq.getUrlParameter("SHORTDESC"));
 			String imgPath=httpReq.getUrlParameter("IMGPATH");
-			JournalsLibrary.JournalSummaryStats stats = CMLib.journals().getJournalStats(journalName);
+			JournalsLibrary.JournalSummaryStats stats = CMLib.journals().getJournalStats(forum);
 			if(stats == null)
 				return "Changes not submitted -- No Stats!";
 			if(longDesc!=null)
@@ -178,7 +180,7 @@ public class JournalFunction extends StdWebMacro
 			if(imgPath!=null)
 				stats.imagePath=clearWebMacros(imgPath);
 			CMLib.database().DBUpdateJournalStats(journalName, stats);
-			CMLib.journals().clearJournalSummaryStats(journalName);
+			CMLib.journals().clearJournalSummaryStats(forum);
 			return "Changed applied.";
 		}
 		String parent=httpReq.getUrlParameter("JOURNALPARENT");
@@ -187,7 +189,7 @@ public class JournalFunction extends StdWebMacro
 		if(dbsearch==null) dbsearch="";
 		String page=httpReq.getUrlParameter("JOURNALPAGE");
 		String mpage=httpReq.getUrlParameter("MESSAGEPAGE");
-		List<JournalsLibrary.JournalEntry> msgs=JournalInfo.getMessages(journalName,page,mpage,parent,dbsearch,httpReq.getRequestObjects());
+		List<JournalsLibrary.JournalEntry> msgs=JournalInfo.getMessages(journalName,forum,page,mpage,parent,dbsearch,httpReq.getRequestObjects());
 		String msgKey=httpReq.getUrlParameter("JOURNALMESSAGE");
 		int cardinalNumber = CMath.s_int(httpReq.getUrlParameter("JOURNALCARDINAL"));
 		String srch=httpReq.getUrlParameter("JOURNALMESSAGESEARCH");
@@ -257,7 +259,7 @@ public class JournalFunction extends StdWebMacro
 					else
 					{
 						CMLib.database().DBWriteJournalReply(journalName,entry.key,from,"","",clearWebMacros(text));
-						CMLib.journals().clearJournalSummaryStats(journalName);
+						CMLib.journals().clearJournalSummaryStats(forum);
 						JournalInfo.clearJournalCache(httpReq, journalName);
 						messages.append("Reply to #"+cardinalNumber+" submitted<BR>");
 					}
@@ -318,7 +320,7 @@ public class JournalFunction extends StdWebMacro
 						JournalInfo.clearJournalCache(httpReq, journalName);
 						httpReq.addFakeUrlParameter("JOURNALMESSAGE","");
 					}
-					CMLib.journals().clearJournalSummaryStats(journalName);
+					CMLib.journals().clearJournalSummaryStats(forum);
 				}
 				else
 				if(parms.containsKey("EDIT"))
@@ -355,7 +357,7 @@ public class JournalFunction extends StdWebMacro
 								httpReq.addFakeUrlParameter("JOURNALMESSAGE",entry.parent);
 								httpReq.addFakeUrlParameter("JOURNALPARENT","");
 							}
-							CMLib.journals().clearJournalSummaryStats(journalName);
+							CMLib.journals().clearJournalSummaryStats(forum);
 						}
 					}
 					else
@@ -392,12 +394,12 @@ public class JournalFunction extends StdWebMacro
 							messages.append("The journal '"+journal+"' does not presently exist.  Aborted.<BR>");
 						else
 						{
-							CMLib.journals().clearJournalSummaryStats(journalName);
+							CMLib.journals().clearJournalSummaryStats(forum);
 							CMLib.database().DBDeleteJournal(journalName,entry.key);
 							if(journalName.toUpperCase().startsWith("SYSTEM_"))
 								entry.update=System.currentTimeMillis();
 							CMLib.database().DBWriteJournal(realName,entry);
-							CMLib.journals().clearJournalSummaryStats(realName);
+							CMLib.journals().clearJournalSummaryStats(forum);
 							JournalInfo.clearJournalCache(httpReq, journalName);
 							httpReq.addFakeUrlParameter("JOURNALMESSAGE","");
 							messages.append("Message #"+cardinalNumber+" transferred<BR>");

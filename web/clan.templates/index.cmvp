@@ -1,13 +1,157 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
-
+@if?!Authenticate@
+	<html><head>
+	<meta http-equiv="refresh" content="0; url=/access.cmvp" />
+	<script LANGUAGE=JavaScript>
+	<!--
+		document.location.href='/access.cmvp';
+	-->
+	</script>
+	</head>
+	<body><a href="/access.cmvp">CLICK HERE TO LOGIN</a></body></html>
+@else@
 <html>
 <head>
+	<!-- tell spiders to sod off -->
+	<meta name="ROBOTS" content="NOINDEX, NOFOLLOW">
 	<link rel="coffeemud icon" href="images/coffeemud.ico" >
 	<link rel="STYLESHEET" TYPE="TEXT/CSS" HREF="coffeemud.css">
 	<title>Home Page of @ClanID@</title>
+	<script language=JavaScript>
+	<!--
+		function DoForum(journal)
+		{
+			document.FORUM.action="forum.cmvp";
+			document.FORUM.JOURNAL.value=journal;
+			document.FORUM.submit();
+		}
+		function DoSearch(which)
+		{
+			if(abort) return; abort=true;
+			document.FORUM.action="forumsall.cmvp";
+			document.FORUM.JOURNALMESSAGE.value='';
+			document.FORUM.JOURNALPAGE.value='';
+			document.FORUM.DBSEARCH.value=which;
+			document.FORUM.submit();
+		}
+		function searchKeyPress(e,value)
+		{
+			if (typeof e == 'undefined' && window.event) { e = window.event; }
+			if (e.keyCode == 13)
+			{
+				DoSearch(value);
+			}
+		}
+	//-->
+	</script>
 </head>
+
 <body>
+<FORM  ACCEPT-CHARSET="UTF-8" NAME=FORUM TARGET=_top METHOD=POST ACTION="index.cmvp">
 <INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
-<!-- how to protect CLAN value for those that come here?! -->
+<INPUT TYPE=HIDDEN NAME=CLAN VALUE="@RequestParameter?CLAN@">
+<INPUT TYPE=HIDDEN NAME=JOURNAL VALUE="">
+<INPUT TYPE=HIDDEN NAME=DBSEARCH VALUE="">
+<INPUT TYPE=HIDDEN NAME=JOURNALMESSAGE VALUE="">
+<INPUT TYPE=HIDDEN NAME=JOURNALPAGE VALUE="0">
+<TABLE WIDTH=100% BORDER=0 CELLSPACING=0 CELLPADDING=0>
+<TR><TD WIDTH=320 VALIGN=TOP>
+<CENTER><FONT COLOR=BLUE SIZE=5><B>@ClanID@</B></FONT><P>
+<IMG src="/images/theguild.jpg">
+</CENTER>
+</TD><TD VALIGN=TOP>
+<TABLE WIDTH=100% BORDER=0 CELLSPACING=0 CELLPADDING=0>
+<TR><TD WIDTH=100% VALIGN=TOP>
+	<!--
+	<FONT COLOR=#90ee90><B>Server status: <a href="gamestatus.cmvp"><b>@MUDSERVERSTATUS@</B></a><BR>
+	<FONT COLOR=GREEN>Connection: </FONT><FONT COLOR=BLUE>@MudInfo?DOMAIN@:@MudInfo?PORT@</FONT><BR>
+	-->
+	<FONT COLOR=ORANGE><B>Members currently online: <FONT COLOR=RED><b>@ClanData?MEMBERSONLINE@/@NUMPLAYERS@</B></FONT>
+</FONT></TD></TR>
+<TR><TD WIDTH=100%>
+<BR>
+<LI><a href="/siplet/index.html"><FONT COLOR=GREEN><B>Play NOW</B></FONT></a><FONT COLOR=GREEN>&nbsp;(IE/NS7/FF)!</B></FONT>&nbsp;&nbsp;<a href="telnet:@MudInfo?DOMAIN@"><FONT SIZE=-2 COLOR=GREEN><I>(Others)</I></FONT></a>
+<NOSCRIPT>
+<LI><a href="telnet:@MudInfo?DOMAIN@"><FONT COLOR=GREEN><B>Play NOW!</B></FONT></a>
+</NOSCRIPT>
+@AddRequestParameter?ATLEASTONEFORUM=@
+@ForumJournalNext?RESET@
+@loop@
+	@ForumJournalNext@
+	<LI><a href="javascript:DoForum('@JournalName@');"><B><FONT COLOR=GREEN>@JournalName?NOCOLOR@</FONT></B></a><BR>
+	@AddRequestParameter?ATLEASTONEFORUM=true@
+@back@
+@if?RequestParameter?ATLEASTONEFORUM@
+	<LI><INPUT TYPE=TEXT SIZE=50 VALUE="" NAME=SEARCHBOX ONKEYDOWN="searchKeyPress(event,this.value);">
+	<a href="javascript:DoSearch(document.FORUM.SEARCHBOX.value)" style="text-decoration:none"><IMG BORDER=0 WIDTH=14 HEIGHT=14 SRC=/images/docquestion.gif>&nbsp;&nbsp;<B>Search All Forums</B></FONT></a>
+@endif@
+<P>&nbsp;&nbsp;&nbsp;&nbsp;<B>@ClanID@ Info</B><BR>
+<TABLE WIDTH=400 BORDER=1 CELLSPACING=0 CELLPADDING=0>
+	<TR>
+		<TD WIDTH=33%><FONT COLOR=GREEN><B>Type: </B></FONT></TD>
+		<TD WIDTH=66%><FONT COLOR=BLACK>@ClanData?TYPE@</FONT></TD>
+	</TR>
+	<TR>
+		<TD WIDTH=33%><FONT COLOR=GREEN><B>Status: </B></FONT></TD>
+		<TD WIDTH=66%><FONT COLOR=BLACK>@ClanData?STATUS@</FONT></TD>
+	</TR>
+	<TR>
+		<TD WIDTH=33%><FONT COLOR=GREEN><B>Premise: </B></FONT></TD>
+		<TD WIDTH=66%><FONT COLOR=BLACK>@ClanData?PREMISE@</FONT></TD>
+	</TR>
+	<TR>
+		<TD WIDTH=33%><FONT COLOR=GREEN><B>Home Room: </B></FONT></TD>
+		<TD WIDTH=66%><FONT COLOR=BLACK>@ClanData?RECALL@</FONT></TD>
+	</TR>
+	<TR>
+		<TD WIDTH=33%><FONT COLOR=GREEN><B>Morgue Room: </B></FONT></TD>
+		<TD WIDTH=66%><FONT COLOR=BLACK>@ClanData?MORGUE@</FONT></TD>
+	</TR>
+	<TR>
+		<TD WIDTH=33%><FONT COLOR=GREEN><B>Donation Room: </B></FONT></TD>
+		<TD WIDTH=66%><FONT COLOR=BLACK>@ClanData?DONATION@</FONT></TD>
+	</TR>
+	<TR>
+		<TD WIDTH=33%><FONT COLOR=GREEN><B>Tax Rate: </B></FONT></TD>
+		<TD WIDTH=66%><FONT COLOR=BLACK>@ClanData?TAX@</FONT></TD>
+	</TR>
+	<TR>
+		<TD WIDTH=33%><FONT COLOR=GREEN><B>Experience: </B></FONT></TD>
+		<TD WIDTH=66%>
+				<FONT COLOR=BLACK>@ClanData?EXP@
+				&nbsp;&nbsp;<FONT COLOR=GREEN>Level: </FONT><FONT COLOR=BLUE>@ClanData?LEVEL@</FONT>
+		</TD>
+	</TR>
+	<TR>
+		<TD WIDTH=33%><FONT COLOR=GREEN><B>Qualifications: </B></FONT></TD>
+		<TD WIDTH=66%><FONT COLOR=BLACK>@ClanData?ACCEPTANCE@</FONT></TD>
+	</TR>
+	<TR>
+		<TD WIDTH=33%><FONT COLOR=GREEN><B>Trophies: </B></FONT></TD>
+		<TD WIDTH=66%><FONT COLOR=BLACK>@ClanData?trophies@</FONT></TD>
+	</TR>
+	<TR>
+		<TD WIDTH=33%><FONT COLOR=GREEN><B>Members:</B> </FONT></TD>
+		<TD WIDTH=66%><FONT COLOR=BLACK>
+		@ClanData?memberstart@	@loop@ @Clandata?membernext&clanfuncfilter=HOME_PRIVS@ @ClanData?membername@ (@ClanData?memberpos@)<BR> @back@
+		</FONT></TD>
+	</TR>
+	<TR>
+		<TD WIDTH=33%><FONT COLOR=GREEN><B>Relations:</B> </FONT></TD>
+		<TD WIDTH=66%>
+		@ClanData?otherclanstart@
+		<TABLE WIDTH=100% BORDER=1>
+		@loop@
+			@ClanData?otherclannext@
+			<TR><TD>@ClanData?otherclanname@</B></TD><TD>@ClanData?clanidrelations@</TD></TR>
+		@back@
+		</TABLE>
+		</TD>
+	</TR>
+</TABLE>
+<P>
+</TD></TR>
+</TABLE></TR></TR></TABLE>
 </body>
 </html>
+@endif@

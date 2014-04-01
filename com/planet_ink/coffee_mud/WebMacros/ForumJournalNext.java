@@ -64,18 +64,39 @@ public class ForumJournalNext extends StdWebMacro
 			M=guestM;
 		}
 		
-		List<String> journals=(List<String>)httpReq.getRequestObjects().get("JOURNALLIST");
-		if(journals==null)
+		Clan setClan=CMLib.clans().getClan(httpReq.getUrlParameter("CLAN"));
+		List<String> journals;
+		if(setClan!=null)
 		{
-			journals=new Vector();
-			for(Enumeration e=CMLib.journals().forumJournals();e.hasMoreElements();)
+			journals=(List<String>)httpReq.getRequestObjects().get("JOURNALLIST_FOR_"+setClan.clanID());
+			if(journals==null)
 			{
-				JournalsLibrary.ForumJournal CJ=(JournalsLibrary.ForumJournal)e.nextElement();
-				if((!journals.contains(CJ.NAME().toUpperCase()))
-				&&(CMLib.masking().maskCheck(CJ.readMask(), M, true)))
-					journals.add(CJ.NAME());
+				journals=new Vector();
+				for(Iterator<JournalsLibrary.ForumJournal> e=setClan.getForumJournals().iterator();e.hasNext();)
+				{
+					JournalsLibrary.ForumJournal CJ=e.next();
+					if((!journals.contains(CJ.NAME().toUpperCase()))
+					&&(CMLib.masking().maskCheck(CJ.readMask(), M, true)))
+						journals.add(CJ.NAME());
+				}
+				httpReq.getRequestObjects().put("JOURNALLIST_FOR_"+setClan.clanID(),journals);
 			}
-			httpReq.getRequestObjects().put("JOURNALLIST",journals);
+		}
+		else
+		{
+			journals=(List<String>)httpReq.getRequestObjects().get("JOURNALLIST");
+			if(journals==null)
+			{
+				journals=new Vector();
+				for(Enumeration<JournalsLibrary.ForumJournal> e=CMLib.journals().forumJournals();e.hasMoreElements();)
+				{
+					JournalsLibrary.ForumJournal CJ=e.nextElement();
+					if((!journals.contains(CJ.NAME().toUpperCase()))
+					&&(CMLib.masking().maskCheck(CJ.readMask(), M, true)))
+						journals.add(CJ.NAME());
+				}
+				httpReq.getRequestObjects().put("JOURNALLIST",journals);
+			}
 		}
 		String lastID="";
 		HashSet<String> H=CMLib.journals().getArchonJournalNames();

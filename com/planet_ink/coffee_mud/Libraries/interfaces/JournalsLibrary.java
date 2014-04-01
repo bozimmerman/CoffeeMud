@@ -46,14 +46,15 @@ public interface JournalsLibrary extends CMLibrary
 	public int loadForumJournals(String list);
 	public Enumeration<ForumJournal> forumJournals();
 	public ForumJournal getForumJournal(String named);
+	public ForumJournal getForumJournal(String named, Clan clan);
 	public int getNumForumJournals();
 	public List<ForumJournal> parseClanForums(Clan clan);
 	
 	public boolean subscribeToJournal(String journalName, String userName, boolean saveMailingList);
 	public boolean unsubscribeFromJournal(String journalName, String userName, boolean saveMailingList);
 
-	public JournalSummaryStats getJournalStats(String journalName);
-	public void clearJournalSummaryStats(String journalName);
+	public JournalSummaryStats getJournalStats(ForumJournal journal);
+	public void clearJournalSummaryStats(ForumJournal journal);
 	
 
 	public enum MsgMkrResolution { SAVEFILE, CANCELFILE }

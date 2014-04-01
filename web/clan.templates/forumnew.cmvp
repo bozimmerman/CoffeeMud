@@ -91,6 +91,7 @@
 <body>
 <script language="JavaScript" type="text/javascript" src="textedit/nicEdit.js"></script>
 <FORM  ACCEPT-CHARSET="UTF-8" NAME=FORUM TARGET=_top METHOD=POST ACTION="forumnew.cmvp">
+<INPUT TYPE=HIDDEN NAME=CLAN VALUE="@RequestParameter?CLAN@">
 @if?CheckReqParm?!JOURNALMESSAGE=@
 <INPUT TYPE=HIDDEN NAME=JOURNALMESSAGE VALUE="@RequestParameter?JOURNALMESSAGE@">
 <INPUT TYPE=HIDDEN NAME=JOURNALPARENT VALUE="@RequestParameter?JOURNALPARENT@">
@@ -107,7 +108,7 @@
 	<TR>
 	<TD WIDTH=10px>&nbsp;</TD>
 	<TD><a href="@if?!Authenticate?SETPLAYER@index.cmvp@else@access.cmvp@endif@?AUTH=@Authenticate?AUTH@">
-		<IMG BORDER=0 SRC=images/cm50.gif>
+		<IMG BORDER=0 src=/images/cm50.gif>
 		</a>
 	</TD>
 	<TD ALIGN=RIGHT VALIGN=TOP>

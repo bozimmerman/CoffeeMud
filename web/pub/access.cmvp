@@ -14,9 +14,15 @@
 			document.ACCESS.action=action;
 			document.ACCESS.submit();
 		}
+		function ClickedClan(clanname,action)
+		{
+			document.ACCESS.CLAN.value=clanname;
+			document.ACCESS.action=action;
+			document.ACCESS.submit();
+		}
 		function Register()
 		{
-			document.ACCESS.LASTPAGE.value='access.cmvp';
+			document.ACCESS.LASTPAGE.value='/access.cmvp';
 			Clicked('register.cmvp');
 		}
 	//-->
@@ -43,20 +49,23 @@
 		<TR><TD WIDTH=50><FONT COLOR=BLACK>Login:</FONT></TD><TD WIDTH=150><INPUT TYPE=TEXT SIZE=10 NAME=LOGIN></TD></TR>
 		<TR><TD WIDTH=50><FONT COLOR=BLACK>Password:</FONT></TD><TD WIDTH=150><INPUT TYPE=PASSWORD SIZE=15 NAME=PASSWORD></TD></TR>
 		<TR><TD COLSPAN=2 WIDTH=200 ALIGN=CENTER>
+			<FORM  ACCEPT-CHARSET="UTF-8" NAME=ACCESS METHOD=POST ACTION=/access.cmvp TARGET=_top>
 			<INPUT TYPE=SUBMIT NAME=LOGINBUTTON VALUE=Login>
 			@if?IsAccountSystem@
 				<INPUT TYPE=HIDDEN NAME=LASTPAGE VALUE="">
 				<INPUT TYPE=BUTTON VALUE=Register ONCLICK="Register()">
 			@endif@
+			</FORM>
 		</TD></TR>
 		</TABLE>
 		</CENTER>
 		</FORM>
 	@else@
-		<FORM  ACCEPT-CHARSET="UTF-8" NAME=ACCESS METHOD=POST ACTION=access.cmvp TARGET=_top>
+		<FORM  ACCEPT-CHARSET="UTF-8" NAME=ACCESS METHOD=POST ACTION=/access.cmvp TARGET=_top>
 		<INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
 		<INPUT TYPE=HIDDEN NAME=AUTHPLAYER VALUE="@Authenticate?SETPLAYER@">
 		<INPUT TYPE=HIDDEN NAME=PLAYER VALUE="@PlayerData?NAME@">
+		<INPUT TYPE=HIDDEN NAME=CLAN VALUE="">
 <IMG ALIGN=LEFT src="images/logo.gif">
 		<BR>
 		<TABLE WIDTH=300 BORDER=0><TR><TD ALIGN=CENTER><H1>Welcome @PlayerData?NAME@!</H1></TD></TR></TABLE>
@@ -75,6 +84,12 @@
 			<A href="javascript:Clicked('picture.cmvp')"><FONT SIZE=5 COLOR=BLACK><B>Character Portrait</B></FONT></a>
 			<BR>
 			<A href="javascript:Clicked('forums.cmvp')"><FONT SIZE=5 COLOR=BLACK><B>Forums</B></FONT></a>
+			@PlayerData?PLAYERCLANRESET@
+			@loop@
+				@PlayerData?PLAYERCLANNEXT@
+				<BR>@AddRequestParameter?CLANENC=@@ClanID@@ @
+				<A href="javascript:Clicked('/clan/@RequestParameterEncoded?CLANENC@/index.cmvp')"><FONT SIZE=5 COLOR=BLACK><B>@ClanID@</B></FONT></a>
+			@back@
 			<BR>
 			<A href="javascript:Clicked('index.cmvp')"><FONT SIZE=5 COLOR=BLACK><B>Public Pages</B></FONT></a>
 			<BR>

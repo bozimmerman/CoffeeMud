@@ -55,12 +55,13 @@
 <INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
 <INPUT TYPE=HIDDEN NAME=JOURNAL VALUE="@RequestParameter?JOURNAL@">
 <INPUT TYPE=HIDDEN NAME=JOURNALPAGE VALUE="@RequestParameter?JOURNALPAGE@">
+<INPUT TYPE=HIDDEN NAME=CLAN VALUE="@RequestParameter?CLAN@">
 <INPUT TYPE=HIDDEN NAME=FUNCTION VALUE="">
 <TABLE WIDTH=100% BORDER=0 CELLSPACING=0 CELLPADDING=0>
 	<TR>
 	<TD WIDTH=10px>&nbsp;</TD>
 	<TD><a href="@if?!Authenticate?SETPLAYER@index.cmvp@else@access.cmvp@endif@?AUTH=@Authenticate?AUTH@">
-		<IMG BORDER=0 SRC=images/cm50.gif>
+		<IMG BORDER=0 src=/images/cm50.gif>
 		</a>
 	</TD>
 	<TD ALIGN=RIGHT VALIGN=TOP>
@@ -81,7 +82,7 @@
 	<TD WIDTH=100px BGCOLOR=BLACK VALIGN=CENTER HEIGHT=15 ONCLICK="javascript:Cancel('')">
 	<a href="javascript:Cancel('')" style="text-decoration:none">
 		<FONT COLOR=WHITE SIZE=-1>
-		&nbsp;<IMG BORDER=0 WIDTH=14 HEIGHT=14 SRC=images/docback.gif>&nbsp;&nbsp;<B>Forum</B>
+		&nbsp;<IMG BORDER=0 WIDTH=14 HEIGHT=14 src=/images/docback.gif>&nbsp;&nbsp;<B>Forum</B>
 		</FONT>
 	</a>
 	</TD>

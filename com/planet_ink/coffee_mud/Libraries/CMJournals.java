@@ -12,6 +12,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.JournalsLibrary.ForumJournal;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -61,39 +62,37 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 		return journalSummaryStats;
 	}
 	
-	public JournalSummaryStats getJournalStats(String journalName)
+	public JournalSummaryStats getJournalStats(ForumJournal journal)
 	{
-		ForumJournal journal = getForumJournal(journalName);
 		if(journal == null)
 			return null;
 		Hashtable<String,JournalSummaryStats> journalSummaryStats=getSummaryStats();
-		JournalSummaryStats stats = journalSummaryStats.get(journalName.toUpperCase().trim());
+		JournalSummaryStats stats = journalSummaryStats.get(journal.NAME().toUpperCase().trim());
 		if(stats == null)
 		{
 			synchronized(journal.NAME().intern())
 			{
-				stats = journalSummaryStats.get(journalName.toUpperCase().trim());
+				stats = journalSummaryStats.get(journal.NAME().toUpperCase().trim());
 				if(stats == null)
 				{
 					stats = new JournalSummaryStats();
 					stats.name = journal.NAME();
 					CMLib.database().DBReadJournalSummaryStats(stats);
-					journalSummaryStats.put(journalName.toUpperCase().trim(), stats);
+					journalSummaryStats.put(journal.NAME().toUpperCase().trim(), stats);
 				}
 			}
 		}
 		return stats;
 	}
 	
-	public void clearJournalSummaryStats(String journalName)
+	public void clearJournalSummaryStats(ForumJournal journal)
 	{
-		ForumJournal journal = getForumJournal(journalName);
 		if(journal == null)
 			return;
 		Hashtable<String,JournalSummaryStats> journalSummaryStats=getSummaryStats();
 		synchronized(journal.NAME().intern())
 		{
-			journalSummaryStats.remove(journalName.toUpperCase().trim());
+			journalSummaryStats.remove(journal.NAME().toUpperCase().trim());
 		}
 	}
 	
@@ -208,7 +207,8 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 				}
 			}
 		}
-		return parseForumJournals(myForumList.toString());
+		List<ForumJournal> journals = parseForumJournals(myForumList.toString());
+		return journals;
 	}
 	
 	public List<ForumJournal> parseForumJournals(String list)
@@ -430,7 +430,29 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 	
 	public Enumeration<ForumJournal> forumJournals(){ return forumJournals.elements();}
 	
-	public ForumJournal getForumJournal(String named) { return forumJournals.get(named.toUpperCase().trim());}
+	public ForumJournal getForumJournal(String named) 
+	{ 
+		return forumJournals.get(named.toUpperCase().trim());
+	}
+	
+	public ForumJournal getForumJournal(String named, Clan clan) 
+	{ 
+		if(named==null)
+			return null;
+		named=named.toUpperCase().trim();
+		if(forumJournals.containsKey(named))
+			return forumJournals.get(named);
+		if(clan!=null)
+		{
+			for(Iterator<JournalsLibrary.ForumJournal> e=clan.getForumJournals().iterator();e.hasNext();)
+			{
+				JournalsLibrary.ForumJournal CJ=e.next();
+				if(CJ.NAME().equalsIgnoreCase(named))
+					return CJ;
+			}
+		}
+		return null;
+	}
 	
 	private void clearForumJournals() 
 	{

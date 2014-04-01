@@ -1190,7 +1190,7 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 			CMLib.database().DBWriteJournal(forum.NAME(),msg);
 			if(parent.length()>0)
 				CMLib.database().DBTouchJournalMessage(parent,msg.date);
-			CMLib.journals().clearJournalSummaryStats(forum.NAME());
+			CMLib.journals().clearJournalSummaryStats(forum);
 			Resources.setPropResource("WEBMACROCREAMER", "LASTYAHOOMSGNUMBER",Integer.toString(sess.lastMsgNum));
 		}
 		return "Post "+sess.lastMsgNum+" submitted.";

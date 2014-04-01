@@ -44,7 +44,7 @@
 		function Cancel(which)
 		{
 			if(abort) return; abort=true;
-			document.FORUM.action="forums.cmvp";
+			document.FORUM.action="index.cmvp";
 			document.FORUM.JOURNALMESSAGE.value='';
 			document.FORUM.JOURNALPAGE.value='';
 			document.FORUM.submit();
@@ -123,12 +123,13 @@
 <INPUT TYPE=HIDDEN NAME=FUNCTION VALUE="">
 <INPUT TYPE=HIDDEN NAME=DBSEARCH VALUE="@RequestParameter?DBSEARCH@">
 <INPUT TYPE=HIDDEN NAME=JOURNALPAGE VALUE="@RequestParameter?JOURNALPAGE@">
+<INPUT TYPE=HIDDEN NAME=CLAN VALUE="@RequestParameter?CLAN@">
 <INPUT TYPE=HIDDEN NAME=MESSAGEPAGE VALUE="">
 <TABLE WIDTH=100% BORDER=0 CELLSPACING=0 CELLPADDING=0>
 	<TR>
 	<TD WIDTH=10px>&nbsp;</TD>
 	<TD><a href="@if?!Authenticate?SETPLAYER@index.cmvp@else@access.cmvp@endif@?AUTH=@Authenticate?AUTH@">
-		<IMG BORDER=0 SRC=images/cm50.gif>
+		<IMG BORDER=0 src=/images/cm50.gif>
 		</a>
 	</TD>
 	<TD ALIGN=RIGHT VALIGN=TOP>
@@ -167,7 +168,7 @@
 			<TD WIDTH=100px BGCOLOR=BLACK VALIGN=CENTER HEIGHT=15 ONCLICK="javascript:NewMessage('')">
 			<a href="javascript:NewMessage('')" style="text-decoration:none">
 				<FONT COLOR=WHITE SIZE=-1>
-				&nbsp;<IMG BORDER=0 WIDTH=14 HEIGHT=14 SRC=images/docbulb.gif>&nbsp;&nbsp;<B>New Thread</B>
+				&nbsp;<IMG BORDER=0 WIDTH=14 HEIGHT=14 src=/images/docbulb.gif>&nbsp;&nbsp;<B>New Thread</B>
 				</FONT>
 			</a>
 			</TD>
@@ -178,7 +179,7 @@
 			<TD WIDTH=100px BGCOLOR=BLACK VALIGN=CENTER HEIGHT=15 ONCLICK="javascript:DoAdmin('')">
 			<a href="javascript:DoAdmin('')" style="text-decoration:none">
 				<FONT COLOR=WHITE SIZE=-1>
-				&nbsp;<IMG BORDER=0 WIDTH=14 HEIGHT=14 SRC=images/dochammer.gif>&nbsp;&nbsp;<B>Admin</B>
+				&nbsp;<IMG BORDER=0 WIDTH=14 HEIGHT=14 src=/images/dochammer.gif>&nbsp;&nbsp;<B>Admin</B>
 				</FONT>
 			</a>
 			</TD>
@@ -186,7 +187,7 @@
 			<TD WIDTH=100px BGCOLOR=BLACK VALIGN=CENTER HEIGHT=15 ONCLICK="javascript:Cancel('')">
 			<a href="javascript:Cancel('')" style="text-decoration:none">
 				<FONT COLOR=WHITE SIZE=-1>
-				&nbsp;<IMG BORDER=0 WIDTH=14 HEIGHT=14 SRC=images/docbback.gif>&nbsp;&nbsp;<B>Forums</B>
+				&nbsp;<IMG BORDER=0 WIDTH=14 HEIGHT=14 src=/images/docbback.gif>&nbsp;&nbsp;<B>Home</B>
 				</FONT>
 			</a>
 			</TD>
@@ -258,7 +259,7 @@
 				<TD WIDTH=70px BGCOLOR=BLACK VALIGN=CENTER HEIGHT=15 ONCLICK="javascript:PrevPage('')">
 				<a href="javascript:PrevPage('')" style="text-decoration:none">
 					<FONT COLOR=WHITE SIZE=-1>
-					<IMG BORDER=0 WIDTH=14 HEIGHT=14 SRC=images/docback.gif><B>Previous</B>
+					<IMG BORDER=0 WIDTH=14 HEIGHT=14 src=/images/docback.gif><B>Previous</B>
 					</FONT>
 				</a>
 				</TD>
@@ -269,7 +270,7 @@
 				<TD WIDTH=50px BGCOLOR=BLACK VALIGN=CENTER HEIGHT=15 ONCLICK="javascript:NextPage('@RequestParameter?LASTENTRYTIME@')">
 				<a href="javascript:NextPage('')" style="text-decoration:none">
 					<FONT COLOR=WHITE SIZE=-1>
-					<B>Next</B>&nbsp;&nbsp;<IMG BORDER=0 WIDTH=14 HEIGHT=14 SRC=images/docforward.gif>
+					<B>Next</B>&nbsp;&nbsp;<IMG BORDER=0 WIDTH=14 HEIGHT=14 src=/images/docforward.gif>
 					</FONT>
 				</a>
 				</TD>
@@ -287,7 +288,7 @@
 		<TD WIDTH=120px BGCOLOR=BLACK VALIGN=CENTER HEIGHT=15 ONCLICK="javascript:DoSearch(document.FORUM.SEARCHBOX.value)">
 		<a href="javascript:DoSearch(document.FORUM.SEARCHBOX.value)" style="text-decoration:none">
 			<FONT COLOR=WHITE SIZE=-1>
-			&nbsp;<IMG BORDER=0 WIDTH=14 HEIGHT=14 SRC=images/docquestion.gif>&nbsp;&nbsp;<B>Search Forum</B>
+			&nbsp;<IMG BORDER=0 WIDTH=14 HEIGHT=14 src=/images/docquestion.gif>&nbsp;&nbsp;<B>Search Forum</B>
 			</FONT>
 		</a>
 		</TD>
@@ -296,7 +297,7 @@
 		<TD WIDTH=120px BGCOLOR=BLACK VALIGN=CENTER HEIGHT=15 ONCLICK="javascript:DoSearch('')">
 		<a href="javascript:DoSearch('')" style="text-decoration:none">
 			<FONT COLOR=WHITE SIZE=-1>
-			&nbsp;<IMG BORDER=0 WIDTH=14 HEIGHT=14 SRC=images/docback.gif>&nbsp;&nbsp;<B>View All Msgs</B>
+			&nbsp;<IMG BORDER=0 WIDTH=14 HEIGHT=14 src=/images/docback.gif>&nbsp;&nbsp;<B>View All Msgs</B>
 			</FONT>
 		</a>
 		</TD>
