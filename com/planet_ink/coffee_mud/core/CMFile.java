@@ -1912,9 +1912,11 @@ public class CMFile extends File
 			{
 				String templatePath = CMLib.clans().getClanWebTemplateDir(F.getAbsolutePath());
 				if(templatePath==null)
+				{
 					templatePath = CMLib.clans().getClanWebTemplateDir(F.getParent());
-				else
-					templatePath += "/"+F.getName();
+					if(templatePath!=null)
+						templatePath += "/"+F.getName();
+				}
 				if(templatePath!=null)
 					F=new CMFile(templatePath,null);
 			}
