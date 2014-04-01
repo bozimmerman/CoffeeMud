@@ -77,7 +77,8 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 			List<Clan> clanList = CMLib.clans().getWebPathClans(pageFile.getParent());
 			if((clanList!=null) && (clanList.size()>0))
 			{
-				
+				if(clanList.size()==1)
+					request.addFakeUrlParameter("CLAN", clanList.get(0).clanID());
 			}
 		}
 		
