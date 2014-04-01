@@ -5,8 +5,8 @@
 	<link rel="coffeemud icon" href="images/coffeemud.ico" >
 	<!-- tell spiders to sod off -->
 	<meta name="ROBOTS" content="NOINDEX, NOFOLLOW">
-	<link rel="STYLESHEET" TYPE="TEXT/CSS" HREF="coffeemud.css">
-	<link rel="STYLESHEET" TYPE="TEXT/CSS" HREF="forums.css">
+	<link rel="STYLESHEET" TYPE="TEXT/CSS" HREF="/coffeemud.css">
+	<link rel="STYLESHEET" TYPE="TEXT/CSS" HREF="/forums.css">
     <style type="text/css">
         .nicEdit-selected {
             border: 2px solid #0000ff !important;
@@ -59,10 +59,14 @@
 <TABLE WIDTH=100% BORDER=0 CELLSPACING=0 CELLPADDING=0>
 	<TR>
 	<TD WIDTH=10px>&nbsp;</TD>
-	<TD><a href="@if?!Authenticate?SETPLAYER@index.cmvp@else@access.cmvp@endif@?AUTH=@Authenticate?AUTH@">
-		<IMG BORDER=0 SRC=images/cm50.gif>
-		</a>
-	</TD>
+    <TD>@if?CheckReqParm?CLAN=@
+        <a href="@if?!Authenticate?SETPLAYER@index.cmvp@else@access.cmvp@endif@?AUTH=@Authenticate?AUTH@">
+        @else@
+        <a href="index.cmvp?AUTH=@Authenticate?AUTH@">
+        @endif@
+        <IMG BORDER=0 src=/images/cm50.gif>
+        </a>
+    </TD>
 	<TD ALIGN=RIGHT VALIGN=TOP>
 		<FONT COLOR=BLACK SIZE=-1>
 	@if?!Authenticate?SETPLAYER@ 
@@ -88,7 +92,7 @@
 	<TD WIDTH=100px BGCOLOR=BLACK VALIGN=CENTER HEIGHT=15 ONCLICK="javascript:Cancel('')">
 	<a href="javascript:Cancel('')" style="text-decoration:none">
 		<FONT COLOR=WHITE SIZE=-1>
-		&nbsp;<IMG BORDER=0 WIDTH=14 HEIGHT=14 SRC=images/docback.gif>&nbsp;&nbsp;<B>Forum</B>
+		&nbsp;<IMG BORDER=0 WIDTH=14 HEIGHT=14 src=/images/docback.gif>&nbsp;&nbsp;<B>Forum</B>
 		</FONT>
 	</a>
 	</TD>

@@ -5,8 +5,8 @@
 	<link rel="coffeemud icon" href="images/coffeemud.ico" >
 	<!-- tell spiders to sod off -->
 	<meta name="ROBOTS" content="NOINDEX, NOFOLLOW">
-	<link rel="STYLESHEET" TYPE="TEXT/CSS" HREF="coffeemud.css">
-	<link rel="STYLESHEET" TYPE="TEXT/CSS" HREF="forums.css">
+	<link rel="STYLESHEET" TYPE="TEXT/CSS" HREF="/coffeemud.css">
+	<link rel="STYLESHEET" TYPE="TEXT/CSS" HREF="/forums.css">
     <style type="text/css">
         .nicEdit-selected {
             border: 2px solid #0000ff !important;
@@ -106,10 +106,14 @@
 <TABLE WIDTH=100% BORDER=0 CELLSPACING=0 CELLPADDING=0>
 	<TR>
 	<TD WIDTH=10px>&nbsp;</TD>
-	<TD><a href="@if?!Authenticate?SETPLAYER@index.cmvp@else@access.cmvp@endif@?AUTH=@Authenticate?AUTH@">
-		<IMG BORDER=0 SRC=images/cm50.gif>
-		</a>
-	</TD>
+    <TD>@if?CheckReqParm?CLAN=@
+        <a href="@if?!Authenticate?SETPLAYER@index.cmvp@else@access.cmvp@endif@?AUTH=@Authenticate?AUTH@">
+        @else@
+        <a href="index.cmvp?AUTH=@Authenticate?AUTH@">
+        @endif@
+        <IMG BORDER=0 src=/images/cm50.gif>
+        </a>
+    </TD>
 	<TD ALIGN=RIGHT VALIGN=TOP>
 		<FONT COLOR=BLACK SIZE=-1>
 	@if?!Authenticate?SETPLAYER@ 
@@ -186,7 +190,7 @@
 	<TD ALIGN=LEFT VALIGN=TOP>
 <textarea id="NEWTEXT" name="NEWTEXT" style="height: 170px; width: 500px; background: white;">@if?CheckReqParm?!NEWTEXT=@ @RequestParameter?NEWTEXT@ @else@ @if?CheckReqParm?!QUOTEDMESSAGE=@ @JournalInfo?QUOTEDTEXT@<BR> @else@ @if?CheckReqParm?FUNCTION=EDITPOST@ @JournalInfo?MESSAGE@ @endif@ @endif@ @endif@</textarea>
 		<script language="javascript">
-            forumEditors.push(new nicEditor({iconsPath : 'textedit/nicEditorIcons.gif', fullPanel: true}).panelInstance('NEWTEXT'));
+            forumEditors.push(new nicEditor({iconsPath : '/textedit/nicEditorIcons.gif', fullPanel: true}).panelInstance('NEWTEXT'));
 		</script>
 	</TD>
 </TR>
