@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.core;
 import com.planet_ink.coffee_mud.Areas.interfaces.Area;
+import com.planet_ink.coffee_mud.Common.interfaces.Clan;
 import com.planet_ink.coffee_mud.Items.interfaces.Item;
 import com.planet_ink.coffee_mud.Libraries.interfaces.CatalogLibrary;
 import com.planet_ink.coffee_mud.Libraries.interfaces.WorldMap;
@@ -1905,6 +1906,16 @@ public class CMFile extends File
 	 */
 	public static class CMFileManager implements FileManager 
 	{
+		private CMFile getFinalFile(CMFile F)
+		{
+			if((!F.exists())&&(F.getParent()!=null))
+			{
+				final Clan C=CMLib.clans().getWebPathClan(F.getParent());
+				if((C!=null)&&(C.getWebSiteInfo()!=null))
+					F=new CMFile(C.getWebSiteInfo().siteTemplatePath+"/"+F.getName(),null);
+			}
+			return F;
+		}
 		@Override public char getFileSeparator() { 
 			return '/';
 		}
@@ -1912,21 +1923,26 @@ public class CMFile extends File
 			return new CMFile(localPath,null);
 		}
 		@Override public File createFileFromPath(File parent, String localPath) {
-			return new CMFile(parent.getAbsolutePath()+'/'+localPath,null);
+			return createFileFromPath(parent.getAbsolutePath()+'/'+localPath);
 		}
 		@Override public byte[] readFile(File file) throws IOException, FileNotFoundException {
-			return ((CMFile)file).raw();
+			return getFinalFile((CMFile)file).raw();
 		}
 		@Override public InputStream getFileStream(File file) throws IOException, FileNotFoundException {
-			return ((CMFile)file).getRawStream();
+			return getFinalFile((CMFile)file).getRawStream();
 		}
 		@Override
 		public RandomAccessFile getRandomAccessFile(File file) throws IOException, FileNotFoundException {
-			return new RandomAccessFile(new File(((CMFile)file).getLocalPathAndName()),"r");
+			return new RandomAccessFile(new File(getFinalFile((CMFile)file).getLocalPathAndName()),"r");
 		}
 		@Override
 		public boolean supportsRandomAccess(File file) { 
-			return ((CMFile)file).isLocalFile();
+			return getFinalFile((CMFile)file).isLocalFile();
+		}
+		@Override
+		public boolean allowedToReadData(File file) {
+			CMFile F=getFinalFile((CMFile)file);
+			return F.exists() && F.canRead();
 		}
 	}
 }

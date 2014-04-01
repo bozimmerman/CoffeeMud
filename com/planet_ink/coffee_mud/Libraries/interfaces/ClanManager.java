@@ -10,7 +10,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.Clan.MemberRecord;
 import com.planet_ink.coffee_mud.Common.interfaces.Clan.Trophy;
-import com.planet_ink.coffee_mud.Common.interfaces.Clan.WebSite;
+import com.planet_ink.coffee_mud.Common.interfaces.Clan.WebSitePathMap;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
@@ -52,13 +52,6 @@ public interface ClanManager extends CMLibrary
 	 * @return the number of clans in the game.
 	 */
 	public int numClans();
-
-	/**
-	 * Returns a list of clans which may or may not be assigned to the absolute file path specified.
-	 * @param sitePath the absolute path of the file
-	 * @return a list of clans at that path, or NULL for none (or empty list)
-	 */
-	public List<Clan> getWebPathClans(String sitePath);
 
 	/**
 	 * This method is used to determine the basic relationship between two clans.  The
@@ -124,6 +117,14 @@ public interface ClanManager extends CMLibrary
 	 * @return time in ms
 	 */
 	public long getLastGovernmentLoad();
+	
+
+	/**
+	 * Returns the clan which may or may not be assigned to the absolute file path specified.
+	 * @param sitePath the absolute path of the web dir assigned to this clan
+	 * @return a clan at that path, or NULL for none
+	 */
+	public Clan getWebPathClan(String sitePath);
 
 	/**
 	 * Returns whether the given clan set contains a clan that
@@ -223,13 +224,13 @@ public interface ClanManager extends CMLibrary
 	public Clan findClan(String id);
 	
 	/**
-	 * Returns the Clan.WebSite objects corresponding to the
-	 * defined default web site(s) for this clan.
-	 * @see Clan.WebSite
+	 * Returns the Clan.WebSite object corresponding to the
+	 * defined default web site for this clan.
+	 * @see Clan.WebSitePathMap
 	 * @param clan the clan to find a site for
-	 * @return the Clan.WebSite objects
+	 * @return the Clan.WebSite object
 	 */
-	public List<WebSite> parseClanWebSites(Clan clan);
+	public Clan.WebSitePathMap parseClanWebSite(Clan clan);
 	
 	/**
 	 * Returns an enumeration of all the Clans in the game 

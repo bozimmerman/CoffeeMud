@@ -74,12 +74,9 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 		long[] systemStartTime=new long[]{System.currentTimeMillis()};
 		if(pageFile.getParent()!=null)
 		{
-			List<Clan> clanList = CMLib.clans().getWebPathClans(pageFile.getParent());
-			if((clanList!=null) && (clanList.size()>0))
-			{
-				if(clanList.size()==1)
-					request.addFakeUrlParameter("CLAN", clanList.get(0).clanID());
-			}
+			Clan mappedClan = CMLib.clans().getWebPathClan(pageFile.getParent());
+			if(mappedClan!=null)
+				request.addFakeUrlParameter("CLAN", mappedClan.clanID());
 		}
 		
 		try

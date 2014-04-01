@@ -72,4 +72,12 @@ public interface FileManager
 	 * @return an open input stream for reading.
 	 */
 	public RandomAccessFile getRandomAccessFile(File file) throws IOException, FileNotFoundException;
+	
+	/**
+	 * Returns true if the file exists and is readable and meets any other
+	 * criteria the manager desires before deciding whether to allow reading.
+	 * @param file the file from this manager to check
+	 * @return true to proceed with reading, or false otherwise
+	 */
+	public boolean allowedToReadData(File file);
 }

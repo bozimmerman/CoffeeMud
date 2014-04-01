@@ -19,7 +19,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.Clan.Function;
 import com.planet_ink.coffee_mud.Common.interfaces.Clan.Authority;
 import com.planet_ink.coffee_mud.Common.interfaces.Clan.MemberRecord;
 import com.planet_ink.coffee_mud.Common.interfaces.Clan.Trophy;
-import com.planet_ink.coffee_mud.Common.interfaces.Clan.WebSite;
+import com.planet_ink.coffee_mud.Common.interfaces.Clan.WebSitePathMap;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
@@ -47,7 +47,7 @@ public class Clans extends StdLibrary implements ClanManager
 	protected SHashtable<String,Clan> all				  = new SHashtable<String,Clan>();
 	protected List<Pair<Clan,Integer>>all2				  = new Vector<Pair<Clan,Integer>>();
 	protected long	 		  		  lastGovernmentLoad  = 0;
-	protected Map<String,List<Clan>>  webSiteMappings	  = new SHashtable<String,List<Clan>>();
+	protected Map<String,Clan>  	  webPathClanMappings = new SHashtable<String,Clan>();
 	
 	public String ID(){return "Clans";}
 
@@ -348,6 +348,7 @@ public class Clans extends StdLibrary implements ClanManager
 				CMLib.threads().startTickDown(C,Tickable.TICKID_CLAN,(int)CMProps.getTicksPerDay());
 			all.put(C.clanID().toUpperCase(),C);
 			all2.add(new Pair<Clan,Integer>(C,Integer.valueOf(C.getGovernment().getAcceptPos())));
+			C.getForumJournals(); // force initialization of its inner settings
 			CMLib.map().sendGlobalMessage(CMLib.map().deity(), CMMsg.TYP_CLANEVENT, 
 				CMClass.getMsg(CMLib.map().deity(), CMMsg.MSG_CLANEVENT, "+"+C.name()));
 		}
@@ -1083,18 +1084,17 @@ public class Clans extends StdLibrary implements ClanManager
 		}
 	}
 
-	public List<WebSite> parseClanWebSites(Clan clan)
+	public Clan.WebSitePathMap parseClanWebSite(Clan clan)
 	{
-		for(Iterator<String> keyIter = this.webSiteMappings.keySet().iterator();keyIter.hasNext();)
+		for(Iterator<String> keyIter = this.webPathClanMappings.keySet().iterator();keyIter.hasNext();)
 		{
-			List<Clan> clanList = this.webSiteMappings.get(keyIter.next());
-			if(clanList.contains(clan))
+			Clan foundClan = this.webPathClanMappings.get(keyIter.next());
+			if(foundClan == clan)
 			{
-				clanList.remove(clan);
+				keyIter.remove();
 			}
 		}
 		List<String> set=CMParms.parseCommas(CMProps.getVar(CMProps.Str.CLANWEBSITES),true);
-		List<WebSite> webSites = new Vector<WebSite>(1);
 		for(String s : set)
 		{
 			String originalS=s;
@@ -1109,17 +1109,18 @@ public class Clans extends StdLibrary implements ClanManager
 					x=s.lastIndexOf(' ');
 					if(x>0)
 					{
-						Clan.WebSite W = new Clan.WebSite();
-						W.siteFilesPath = s.substring(0,x).trim();
-						W.siteTemplatePath = s.substring(x+1).trim();
-						webSites.add(W);
-						List<Clan> clanList=webSiteMappings.get(W.siteFilesPath.toLowerCase());
-						if(clanList == null)
+						Clan.WebSitePathMap W = new Clan.WebSitePathMap();
+						String siteFilesPathStr=CMStrings.replaceAll(s.substring(0,x),"<CLANNAME>",clan.clanID());
+						siteFilesPathStr=CMStrings.replaceAll(siteFilesPathStr,"<CLANTYPE>",clan.getGovernmentName());
+						W.siteFilesPath = new CMFile(siteFilesPathStr.trim(),null).getAbsolutePath();
+						W.siteTemplatePath = new CMFile(s.substring(x+1).trim(),null).getAbsolutePath();
+						if(webPathClanMappings.containsKey(W.siteFilesPath.toLowerCase()))
 						{
-							clanList=new SVector<Clan>(1);
-							webSiteMappings.put(W.siteFilesPath.toLowerCase(), clanList);
+							Log.errOut("Clans","Multiple clans at same webclansites path: in coffeemud.ini: "+originalS);
 						}
-						clanList.add(clan);
+						else
+							webPathClanMappings.put(W.siteFilesPath.toLowerCase(), clan);
+						return W;
 					}
 					else
 					{
@@ -1128,12 +1129,12 @@ public class Clans extends StdLibrary implements ClanManager
 				}
 			}
 		}
-		return webSites;
+		return null;
 	}
 
-	public List<Clan> getWebPathClans(String sitePath)
+	public Clan getWebPathClan(String sitePath)
 	{
-		return webSiteMappings.get(sitePath.toLowerCase());
+		return webPathClanMappings.get(sitePath.toLowerCase());
 	}
 	
 	

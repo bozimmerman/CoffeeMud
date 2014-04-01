@@ -74,5 +74,10 @@ public class MWFileManager implements FileManager
 	{
 		return true;
 	}
-
+	
+	@Override
+	public boolean allowedToReadData(File file)
+	{
+		return file.exists() && file.canRead();
+	}
 }

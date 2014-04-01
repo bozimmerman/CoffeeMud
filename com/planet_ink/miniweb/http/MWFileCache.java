@@ -298,7 +298,7 @@ public class MWFileCache implements FileCacheManager
 			entry = getFileData(fileName, eTag);
 			if(entry != null)
 				return new MWDataBuffers(entry.buf[CompressionType.NONE.ordinal()], entry.modified);
-			if((!pageFile.exists()) || (!pageFile.canRead()))
+			if(!fileManager.allowedToReadData(pageFile))
 			{
 				if(cacheActive)
 				{

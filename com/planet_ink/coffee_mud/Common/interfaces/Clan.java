@@ -10,6 +10,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.JournalsLibrary.ForumJournal;
 import com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary.CompiledZapperMask;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
@@ -740,6 +741,21 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	public boolean canBeAssigned(MOB mob, int role);
 
 	/**
+	 * Returns the WebSitePathMap object associated with this clan,
+	 * as designated in the clanwebsites entry in coffeemud.ini.
+	 * @return WebSitePathMap object for this clan, or null for none
+	 */
+	public WebSitePathMap getWebSiteInfo();
+	
+	/**
+	 * Returns the list of ForumJournal objects available to this
+	 * clan in the form of public web forums.  This is designated
+	 * in the clanforumdata entry in coffeemud.ini.
+	 * @return the list of forums for this clan, or empty
+	 */
+	public List<ForumJournal> getForumJournals();
+	
+	/**
 	 * Represents an individual clan vote
 	 * @author Bo Zimmerman
 	 *
@@ -932,7 +948,7 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	/**
 	 * Information about the web site for this clan
 	 */
-	public static class WebSite
+	public static class WebSitePathMap
 	{
 		public String siteFilesPath = "";
 		public String siteTemplatePath = "";
