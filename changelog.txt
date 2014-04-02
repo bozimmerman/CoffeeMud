@@ -5,7 +5,7 @@
    3. Added an example of a "Channeling" mechanic to spells, though it's pointless with the default combat system. See GenAbility and Spell_ChannelingMissiles/
    4. Coffeemud now has a Char/Account approval system. Use expiration system w/trialdays of 0. Archons are notified of expired/unapproved users.
    5. Clan-Player level PVP ranking support in clans.  CLANDETAILS has parms to show PVP and total war kills.  WebMacro capable of the same.
-   *. Clan forums and web sites
+   6. Clan forums and web sites supported -- see CLANWEBSITES and CLANFORUMDATA in coffeemud.ini file.  Still thinking about how clan leaders could modify it.
    *. Weapon/Armor/Item level system - detach char level from item reqs
    *. Char and Account PVP ranking
    *. Push regen rates to INI file
