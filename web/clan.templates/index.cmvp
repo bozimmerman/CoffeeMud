@@ -70,22 +70,47 @@
 </FONT></TD></TR>
 <TR><TD WIDTH=100%>
 <BR>
-<LI><a href="/siplet/index.html"><FONT COLOR=GREEN><B>Play NOW</B></FONT></a><FONT COLOR=GREEN>&nbsp;(IE/NS7/FF)!</B></FONT>&nbsp;&nbsp;<a href="telnet:@MudInfo?DOMAIN@"><FONT SIZE=-2 COLOR=GREEN><I>(Others)</I></FONT></a>
+<a href="/siplet/index.html"><FONT COLOR=GREEN><B>Play NOW</B></FONT></a><FONT COLOR=GREEN>&nbsp;(IE/NS7/FF)!</B></FONT>&nbsp;&nbsp;<a href="telnet:@MudInfo?DOMAIN@"><FONT SIZE=-2 COLOR=GREEN><I>(Others)</I></FONT></a>
 <NOSCRIPT>
-<LI><a href="telnet:@MudInfo?DOMAIN@"><FONT COLOR=GREEN><B>Play NOW!</B></FONT></a>
+<a href="telnet:@MudInfo?DOMAIN@"><FONT COLOR=GREEN><B>Play NOW!</B></FONT></a>
 </NOSCRIPT>
 @AddRequestParameter?ATLEASTONEFORUM=@
 @ForumJournalNext?RESET@
 @loop@
 	@ForumJournalNext@
-	<LI><a href="javascript:DoForum('@JournalName@');"><B><FONT COLOR=GREEN>@JournalName?NOCOLOR@</FONT></B></a><BR>
-	@AddRequestParameter?ATLEASTONEFORUM=true@
+	@if?CheckReqParm?ATLEASTONEFORUM=@
+<P>&nbsp;&nbsp;&nbsp;&nbsp;<B>Forums</B><BR>
+<TABLE WIDTH=400 BORDER=1 CELLSPACING=0 CELLPADDING=0>
+	<TR>
+		<TD><FONT COLOR=BLACK><B>Forum</B></FONT></TD>
+		<TD><FONT COLOR=BLACK><B>Last Post</B></FONT></TD>
+	</TR>
+	@endif@
+	<TR>
+		<TD><FONT COLOR=BLUE><B>
+		<a href="javascript:DoForum('@JournalName@');"><B><FONT COLOR=GREEN>@JournalName?NOCOLOR@</FONT></B></a>
+		@AddRequestParameter?ATLEASTONEFORUM=true@
+		</B></FONT></TD>
+		<TD><FONT COLOR=BLUE><B>
+		@AddRequestParameter?JOURNALMESSAGE=FORUMLATEST@
+		@if?JournalInfo?ISMESSAGE@
+			<FONT COLOR=BLACK SIZE=-2>@JournalInfo?DATEUPDATED@</FONT>
+			<FONT COLOR=DARKGREY SIZE=-2>@JournalInfo?TIMEUPDATED@</FONT>
+		@endif@
+		</B></FONT></TD>
+	</TR>
 @back@
-@if?RequestParameter?ATLEASTONEFORUM@
-	<LI><INPUT TYPE=TEXT SIZE=50 VALUE="" NAME=SEARCHBOX ONKEYDOWN="searchKeyPress(event,this.value);">
-	<a href="javascript:DoSearch(document.FORUM.SEARCHBOX.value)" style="text-decoration:none"><IMG BORDER=0 WIDTH=14 HEIGHT=14 SRC=/images/docquestion.gif>&nbsp;&nbsp;<B>Search All Forums</B></FONT></a>
+@if?CheckReqParm?ATLEASTONEFORUM=true@
+	<TR>
+		<TD COLSPAN=2><FONT COLOR=BLUE><B>
+			<INPUT TYPE=TEXT SIZE=35 VALUE="" NAME=SEARCHBOX ONKEYDOWN="searchKeyPress(event,this.value);">
+			<a href="javascript:DoSearch(document.FORUM.SEARCHBOX.value)" style="text-decoration:none"><FONT SIZE=-2>
+				<IMG BORDER=0 WIDTH=14 HEIGHT=14 SRC=/images/docquestion.gif>&nbsp;&nbsp;<B>Search All Forums</B></FONT></a>
+		</B></FONT></TD>
+	</TR>
+</TABLE>
 @endif@
-<P>&nbsp;&nbsp;&nbsp;&nbsp;<B>@ClanID@ Info</B><BR>
+<P>&nbsp;&nbsp;&nbsp;&nbsp;<B>Information</B><BR>
 <TABLE WIDTH=400 BORDER=1 CELLSPACING=0 CELLPADDING=0>
 	<TR>
 		<TD WIDTH=33%><FONT COLOR=GREEN><B>Type: </B></FONT></TD>
@@ -144,6 +169,52 @@
 		@loop@
 			@ClanData?otherclannext@
 			<TR><TD>@ClanData?otherclanname@</B></TD><TD>@ClanData?clanidrelations@</TD></TR>
+		@back@
+		</TABLE>
+		</TD>
+	</TR>
+	<TR>
+		<TD WIDTH=33%><FONT COLOR=GREEN><B>Top PVP:</B> </FONT></TD>
+		<TD WIDTH=66%>
+		@ClanData?memberstart&sortby=playerkills@
+		@AddRequestParameter?COUNTER=0@
+		<TABLE WIDTH=100% BORDER=1>
+		@loop@
+			@ClanData?membernext@ @AddRequestParameter?COUNTER=++@
+			@if?CheckReqParm?COUNTER=10&||COUNTER=11&||COUNTER=12@ @break@ @endif@
+			<TR>
+			<TD><FONT SIZE=-1>@RequestParameter?COUNTER@. @RequestParameter?CLANMEMBER@ (@ClanData?MEMBERPVPKILLS@)</FONT></TD>
+			@ClanData?membernext&emptyok@ @AddRequestParameter?COUNTER=++@
+			@if?!CheckReqParm?CLANMEMBER=@
+			<TD><FONT SIZE=-1>@RequestParameter?COUNTER@. @RequestParameter?CLANMEMBER@ (@ClanData?MEMBERPVPKILLS@)</FONT></TD>
+			@endif@ @if?!CheckReqParm?CLANMEMBER=@
+			@ClanData?membernext&emptyok@ @AddRequestParameter?COUNTER=++@
+			<TD><FONT SIZE=-1>@RequestParameter?COUNTER@. @RequestParameter?CLANMEMBER@ (@ClanData?MEMBERPVPKILLS@)</FONT></TD>
+			@endif@ 
+			</TR>
+		@back@
+		</TABLE>
+		</TD>
+	</TR>
+	<TR>
+		<TD WIDTH=33%><FONT COLOR=GREEN><B>Top PVE:</B> </FONT></TD>
+		<TD WIDTH=66%>
+		@ClanData?memberstart&sortby=mobkills@
+		@AddRequestParameter?COUNTER=0@
+		<TABLE WIDTH=100% BORDER=1>
+		@loop@
+			@ClanData?membernext@ @AddRequestParameter?COUNTER=++@
+			@if?CheckReqParm?COUNTER=10&||COUNTER=11&||COUNTER=12@ @break@ @endif@
+			<TR>
+			<TD><FONT SIZE=-1>@RequestParameter?COUNTER@. @RequestParameter?CLANMEMBER@ (@ClanData?MEMBERMOBKILLS@)</FONT></TD>
+			@ClanData?membernext&emptyok@ @AddRequestParameter?COUNTER=++@
+			@if?!CheckReqParm?CLANMEMBER=@
+			<TD><FONT SIZE=-1>@RequestParameter?COUNTER@. @RequestParameter?CLANMEMBER@ (@ClanData?MEMBERMOBKILLS@)</FONT></TD>
+			@endif@ @if?!CheckReqParm?CLANMEMBER=@
+			@ClanData?membernext&emptyok@ @AddRequestParameter?COUNTER=++@
+			<TD><FONT SIZE=-1>@RequestParameter?COUNTER@. @RequestParameter?CLANMEMBER@ (@ClanData?MEMBERMOBKILLS@)</FONT></TD>
+			@endif@ 
+			</TR>
 		@back@
 		</TABLE>
 		</TD>
