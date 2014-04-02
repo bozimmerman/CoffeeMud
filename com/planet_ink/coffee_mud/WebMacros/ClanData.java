@@ -441,21 +441,21 @@ public class ClanData extends StdWebMacro
 						if(sort.equalsIgnoreCase("KILLS")||sort.equalsIgnoreCase("TOTALKILLS"))
 							Collections.sort(members, new Comparator<MemberRecord>(){
 								@Override public int compare(MemberRecord o1, MemberRecord o2) {
-	                                return new Integer(o1.mobpvps+o1.playerpvps).compareTo(new Integer(o2.mobpvps+o2.playerpvps));
+	                                return new Integer(o2.mobpvps+o2.playerpvps).compareTo(new Integer(o1.mobpvps+o1.playerpvps));
                                 }
 							});
 						else
 						if(sort.equalsIgnoreCase("MOBKILLS"))
 							Collections.sort(members, new Comparator<MemberRecord>(){
 								@Override public int compare(MemberRecord o1, MemberRecord o2) {
-	                                return new Integer(o1.mobpvps).compareTo(new Integer(o2.mobpvps));
+	                                return new Integer(o2.mobpvps).compareTo(new Integer(o1.mobpvps));
                                 }
 							});
 						else
 						if(sort.equalsIgnoreCase("PLAYERKILLS")||sort.equalsIgnoreCase("PVPKILLS"))
 							Collections.sort(members, new Comparator<MemberRecord>(){
 								@Override public int compare(MemberRecord o1, MemberRecord o2) {
-	                                return new Integer(o1.playerpvps).compareTo(new Integer(o2.playerpvps));
+	                                return new Integer(o2.playerpvps).compareTo(new Integer(o1.playerpvps));
                                 }
 							});
 						else

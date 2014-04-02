@@ -79,7 +79,7 @@ public class ClanDetails extends StdCommand
 	                Pair<String,Integer>[] killerArray = topKillers.toArray(new Pair[0]);
 					Arrays.sort(killerArray,new Comparator<Pair<String,Integer>>(){
 	                    public int compare(Pair<String, Integer> o1, Pair<String, Integer> o2) {
-	                    	return o1.second.compareTo(o2.second);
+	                    	return o2.second.compareTo(o1.second);
 	                    }
 					});
 					if(topKillers.size()==0)
@@ -89,8 +89,11 @@ public class ClanDetails extends StdCommand
 						msg.append("^XTop ranked rival clan playerkillers of "+foundClan.name()+"^?^.\n\r\n\r");
 						topKillers.clear();
 						List<String> reverseList = new ArrayList<String>();
-						for(Pair<String,Integer> p : killerArray)
-							reverseList.add(p.first+" ("+p.second.intValue()+")");
+						for(int x=0;x<killerArray.length;x++)
+						{
+							Pair<String,Integer> p=killerArray[x];
+							reverseList.add((x+1)+". "+p.first+" ("+p.second.intValue()+")");
+						}
 						msg.append(CMLib.lister().threeColumns(mob, reverseList));
 					}
 				}
@@ -112,7 +115,7 @@ public class ClanDetails extends StdCommand
 	                Pair<String,Integer>[] killerArray = topKillers.toArray(new Pair[0]);
 					Arrays.sort(killerArray,new Comparator<Pair<String,Integer>>(){
 	                    public int compare(Pair<String, Integer> o1, Pair<String, Integer> o2) {
-	                    	return o1.second.compareTo(o2.second);
+	                    	return o2.second.compareTo(o1.second);
 	                    }
 					});
 					if(topKillers.size()==0)
@@ -122,8 +125,11 @@ public class ClanDetails extends StdCommand
 						msg.append("^XTop ranked rival clan killers of "+foundClan.name()+"^?^.\n\r\n\r");
 						topKillers.clear();
 						List<String> reverseList = new ArrayList<String>();
-						for(Pair<String,Integer> p : killerArray)
-							reverseList.add(p.first+" ("+p.second.intValue()+")");
+						for(int x=0;x<killerArray.length;x++)
+						{
+							Pair<String,Integer> p=killerArray[x];
+							reverseList.add((x+1)+". "+p.first+" ("+p.second.intValue()+")");
+						}
 						msg.append(CMLib.lister().threeColumns(mob, reverseList));
 					}
 				}
