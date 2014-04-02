@@ -7,10 +7,11 @@
    5. Clan-Player level PVP ranking support in clans.  CLANKILLS and CLANPVPKILLS commands added.  ClanData WebMacro capable of the same.
    6. Clan forums and web sites supported -- see CLANWEBSITES and CLANFORUMDATA in coffeemud.ini file.  Still thinking about how clan leaders could modify it.
    *. Weapon/Armor/Item level system - detach char level from item reqs
-   *. Char and Account PVP ranking
+   *. Char and Account PVP ranking perhaps a list of the top players in various categories such as rooms explored, experience, player kills, hours on, quests completed
    *. Push regen rates to INI file
    *. New combat system: turn based
    *. Name generator, finally
+   *. Fix siplet again -- maybe try applet?
    *. make the tech install skill!!! all put/remove commands should check msg.value() for pct chance/competence
       competence divides by manufacturer and class of item. Minimum of 1/5 pts on max other items same manufacturer/type
       using expertises is a great idea.  Every time engineering levels up, gain a rank in appropriate expertise?
