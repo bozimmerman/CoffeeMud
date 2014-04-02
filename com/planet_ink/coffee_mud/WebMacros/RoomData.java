@@ -850,8 +850,8 @@ public class RoomData extends StdWebMacro
 			@Override public double getSpecialEncodingAcceptability(String type) { return httpReq.getSpecialEncodingAcceptability(type); }
 			@Override public String getFullHost() { return httpReq.getFullHost(); }
 			@Override public List<long[]> getRangeAZ() { return httpReq.getRangeAZ(); }
-			@Override public void addFakeUrlParameter(String name, String value) { params.put(name.toUpperCase(), value); }
-			@Override public void removeUrlParameter(String name) { params.remove(name.toUpperCase()); }
+			@Override public void addFakeUrlParameter(String name, String value) { params.put(name.toLowerCase(), value); }
+			@Override public void removeUrlParameter(String name) { params.remove(name.toLowerCase()); }
 			@Override public Map<String,Object> getRequestObjects() { return httpReq.getRequestObjects(); }
 			@Override public float getHttpVer() { return httpReq.getHttpVer(); }
 		};

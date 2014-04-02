@@ -270,7 +270,7 @@ public class StdWebMacro implements WebMacro
 		return new StringBuilder("");
 	}
 	
-	protected PairSVector<String,String> parseOrderedParms(String parm)
+	protected PairSVector<String,String> parseOrderedParms(String parm, boolean preserveCase)
 	{
 		PairSVector<String,String> requestParms=new PairSVector<String,String>();
 		if((parm!=null)&&(parm.length()>0))
@@ -281,12 +281,25 @@ public class StdWebMacro implements WebMacro
 			{
 				switch(parm.charAt(i))
 				{
+				case '\\':
+					i++;
+					break;
 				case '&':
 				{
 					if(varSeq==null)
-						requestParms.add(parm.substring(lastDex,i).toUpperCase().trim(),parm.substring(lastDex,i).trim());
+					{
+						if(preserveCase)
+							requestParms.add(parm.substring(lastDex,i),parm.substring(lastDex,i));
+						else
+							requestParms.add(parm.substring(lastDex,i).toUpperCase().trim(),parm.substring(lastDex,i).trim());
+					}
 					else
-						requestParms.add(varSeq.toString().trim().toUpperCase(),parm.substring(lastDex,i).trim());
+					{
+						if(preserveCase)
+							requestParms.add(varSeq.toString(),parm.substring(lastDex,i));
+						else
+							requestParms.add(varSeq.toString().trim().toUpperCase(),parm.substring(lastDex,i).trim());
+					}
 					lastDex=i+1;
 					varSeq=null;
 					break;
@@ -304,9 +317,19 @@ public class StdWebMacro implements WebMacro
 			}
 			final int i=parm.length();
 			if(varSeq==null)
-				requestParms.add(parm.substring(lastDex,i).trim().toUpperCase(),parm.substring(lastDex,i).trim());
+			{
+				if(preserveCase)
+					requestParms.add(parm.substring(lastDex,i),parm.substring(lastDex,i));
+				else
+					requestParms.add(parm.substring(lastDex,i).trim().toUpperCase(),parm.substring(lastDex,i).trim());
+			}
 			else
-				requestParms.add(varSeq.toString().trim().toUpperCase(),parm.substring(lastDex,i).trim());
+			{
+				if(preserveCase)
+					requestParms.add(varSeq.toString(),parm.substring(lastDex,i));
+				else
+					requestParms.add(varSeq.toString().trim().toUpperCase(),parm.substring(lastDex,i).trim());
+			}
 		}
 		return requestParms;
 	}
@@ -427,8 +450,8 @@ public class StdWebMacro implements WebMacro
 				@Override public double getSpecialEncodingAcceptability(String type) { return httpReq.getSpecialEncodingAcceptability(type); }
 				@Override public String getFullHost() { return httpReq.getFullHost(); }
 				@Override public List<long[]> getRangeAZ() { return httpReq.getRangeAZ(); }
-				@Override public void addFakeUrlParameter(String name, String value) { params.put(name.toUpperCase(), value); }
-				@Override public void removeUrlParameter(String name) { params.remove(name.toUpperCase()); }
+				@Override public void addFakeUrlParameter(String name, String value) { params.put(name.toLowerCase(), value); }
+				@Override public void removeUrlParameter(String name) { params.remove(name.toLowerCase()); }
 				@Override public Map<String,Object> getRequestObjects() { return httpReq.getRequestObjects(); }
 				@Override public float getHttpVer() { return httpReq.getHttpVer(); }
 			};
@@ -482,7 +505,16 @@ public class StdWebMacro implements WebMacro
 	protected java.util.Map<String,String> parseParms(String parm)
 	{
 		final Hashtable<String,String> requestParms=new Hashtable<String,String>();
-		final PairSVector<String,String> requestParsed = parseOrderedParms(parm);
+		final PairSVector<String,String> requestParsed = parseOrderedParms(parm,false);
+		for(final Pair<String,String> P : requestParsed)
+			requestParms.put(P.first,P.second);
+		return requestParms;
+	}
+	
+	protected java.util.Map<String,String> parseParms(String parm, boolean preserveCase)
+	{
+		final Hashtable<String,String> requestParms=new Hashtable<String,String>();
+		final PairSVector<String,String> requestParsed = parseOrderedParms(parm,preserveCase);
 		for(final Pair<String,String> P : requestParsed)
 			requestParms.put(P.first,P.second);
 		return requestParms;

@@ -42,7 +42,7 @@ public class CoffeeTableRows extends StdWebMacro
 	{
 		if(parm.length()==0) parm="DATERANGE&LOGINS&MOSTONLINE&AVERAGEONLINE&TOTALHOURS&NEWPLAYERS&DEATHS&PKDEATHS&CLASSCHANGES&PURGES&MARRIAGES&BIRTHS&DIVORCES";
 		java.util.Map<String,String> parms=parseParms(parm);
-		PairSVector<String,String> orderedParms=parseOrderedParms(parm);
+		PairSVector<String,String> orderedParms=parseOrderedParms(parm,false);
 		String header=parms.get("HEADER");
 		if(header==null) header="";
 		String footer=parms.get("FOOTER");

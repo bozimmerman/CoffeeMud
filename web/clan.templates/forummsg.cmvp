@@ -1,3 +1,3 @@
 
-@AddFile?/forummsg.cmvp@
+@AddFile?/forummsg.cmvp&replace&images/=/images/&textedit/=/textedit/&coffeemud.css=/coffeemud.css&forums.css=/forums.css@
 

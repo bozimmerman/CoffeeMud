@@ -38,33 +38,48 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class AddFile extends StdWebMacro
 {
 	public String name() { return "AddFile"; }
 
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
-		java.util.Map<String,String> parms=parseParms(parm);
+		PairSVector<String,String> parms=super.parseOrderedParms(parm,true);
 		if((parms==null)||(parms.size()==0)) return "";
 		StringBuffer buf=new StringBuffer("");
 		boolean webify=false;
-		Vector V=new Vector();
-		V.addAll(parms.values());
-		for(int v=V.size()-1;v>=0;v--)
+		boolean replace=false;
+		for(Pair<String,String> p : parms)
 		{
-			String file=(String)V.elementAt(v);
+			String key=p.first;
+			String file = p.second;
 			if(file.length()>0)
 			{
 				try
 				{
-					if(file.equalsIgnoreCase("webify"))
+					if(key.trim().equalsIgnoreCase("webify"))
 						webify=true;
 					else
-					if(webify)
-						buf.append(webify(new StringBuffer(new String(getHTTPFileData(httpReq,file)))));
+					if(key.trim().equalsIgnoreCase("replace"))
+						replace=true;
 					else
-						buf.append(new String(getHTTPFileData(httpReq,file)));
+					if(replace)
+					{
+						int x=buf.indexOf(key);
+						while(x>=0)
+						{
+							if(webify)
+								buf.replace(x,x+key.length(),webify(new StringBuffer(file)).toString());
+							else
+								buf.replace(x,x+key.length(),file);
+							x=buf.indexOf(key,x+key.length());
+						}
+					}
+					else
+					if(webify)
+						buf.append(webify(new StringBuffer(new String(getHTTPFileData(httpReq,file.trim())))));
+					else
+						buf.append(new String(getHTTPFileData(httpReq,file.trim())));
 				}
 				catch(HTTPException e)
 				{
