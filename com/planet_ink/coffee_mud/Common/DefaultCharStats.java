@@ -55,18 +55,19 @@ public class DefaultCharStats implements CharStats
 		}
 	}
 	public void initializeClass(){}
+
 	// competency characteristics
-	protected short[] stats=new short[CharStats.CODES.instance().total()];
-	protected CharClass[] myClasses=null;
-	protected Integer[] myLevels=null;
-	protected Race myRace;
-	protected String raceName=null;
-	protected String genderName=null;
-	protected String displayClassName=null;
-	protected String displayClassLevel=null;
-	protected short[] bodyAlterations=null;
-	protected long unwearableBitmap=0;
-	protected int[] breathables=null;
+	protected short[] 		stats=new short[CharStats.CODES.instance().total()];
+	protected CharClass[] 	myClasses=null;
+	protected Integer[] 	myLevels=null;
+	protected Race 			myRace;
+	protected String 		raceName=null;
+	protected String 		genderName=null;
+	protected String 		displayClassName=null;
+	protected String 		displayClassLevel=null;
+	protected short[] 		bodyAlterations=null;
+	protected long 			unwearableBitmap=0;
+	protected int[] 		breathables=null;
 	
 	public DefaultCharStats()
 	{
