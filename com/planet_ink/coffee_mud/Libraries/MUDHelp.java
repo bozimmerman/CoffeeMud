@@ -1012,9 +1012,6 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 						}
 					}
 				}
-				//DVector suspiciousPairs=suspiciousTags(arcHelpFile);
-				//for(int d=0;d<suspiciousPairs.size();d++)
-				//	Syst/em.out.pri/ntln(suspiciousPairs.elementAt(d,1)+": "+suspiciousPairs.elementAt(d,2));
 				for(Enumeration<Object> e=arcHelpFile.keys();e.hasMoreElements();)
 				{
 					String key=(String)e.nextElement();
@@ -1074,9 +1071,6 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 						}
 					}
 				}
-				//DVector suspiciousPairs=suspiciousTags(helpFile);
-				//for(int d=0;d<suspiciousPairs.size();d++)
-				//	Syst/em.out.pri/ntln(suspiciousPairs.elementAt(d,1)+": "+suspiciousPairs.elementAt(d,2));
 				Resources.submitResource("MAIN HELP FILE",helpFile);
 			}
 			return helpFile;
