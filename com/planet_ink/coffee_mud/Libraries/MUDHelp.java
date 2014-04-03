@@ -1002,12 +1002,13 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 						&&(item.toUpperCase().startsWith("ARC_")))
 						{
 							arcHelpFile.load(new ByteArrayInputStream(new CMFile(Resources.buildResourcePath("help")+item,null,CMFile.FLAG_LOGERRORS).raw()));
-							/*
-							Properties chker=new Properties();
-							chker.load(new ByteArrayInputStream(new CMFile(Resources.buildResourcePath("help")+item,null,CMFile.FLAG_LOGERRORS).raw()));
-							for(Object key : chker.keySet())
-								System.out.println(item+": "+key);
-							*/
+							for(Object key : arcHelpFile.keySet())
+							{
+								String keyStr=key.toString();
+								for(int i=0;i<keyStr.length();i++)
+									if(Character.isLetter(keyStr.charAt(i))&&Character.isLowerCase(keyStr.charAt(i)))
+        								Log.debugOut("Lower key in "+item+": "+key+": "+arcHelpFile.getProperty(keyStr));
+							}
 						}
 					}
 				}
@@ -1042,23 +1043,6 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 		return new Properties();
 	}
 
-	protected DVector suspiciousTags(Properties p)
-	{
-		String k=null;
-		DVector pairs=new DVector(2);
-		for(Enumeration<Object> e=p.keys();e.hasMoreElements();)
-		{
-			k=(String)e.nextElement();
-			for(int i=0;i<k.length();i++)
-				if(Character.isLowerCase(k.charAt(i)))
-				{
-					pairs.addElement(k,p.get(k));
-					break;
-				}
-		}
-		return pairs;
-	}
-	
 	public Properties getHelpFile()
 	{
 		try
@@ -1080,12 +1064,13 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 						&&(!item.toUpperCase().startsWith("ARC_")))
 						{
 							helpFile.load(new ByteArrayInputStream(new CMFile(Resources.buildResourcePath("help")+item,null,CMFile.FLAG_LOGERRORS).raw()));
-							/*
-							Properties chker=new Properties();
-							chker.load(new ByteArrayInputStream(new CMFile(Resources.buildResourcePath("help")+item,null,CMFile.FLAG_LOGERRORS).raw()));
-							for(Object key : chker.keySet())
-								System.out.println(item+": "+key);
-							*/
+							for(Object key : helpFile.keySet())
+							{
+								String keyStr=key.toString();
+								for(int i=0;i<keyStr.length();i++)
+									if(Character.isLetter(keyStr.charAt(i))&&Character.isLowerCase(keyStr.charAt(i)))
+        								Log.debugOut("Lower key in "+item+": "+key+": "+helpFile.getProperty(keyStr));
+							}
 						}
 					}
 				}
