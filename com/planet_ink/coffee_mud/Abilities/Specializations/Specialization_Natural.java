@@ -14,7 +14,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 
@@ -67,4 +66,11 @@ public class Specialization_Natural extends Specialization_Weapon
 					+(10*(getXLEVELLevel((MOB)affected))));
 		}
 	}
+	
+	@Override
+	protected boolean canDamage(MOB mob, Weapon W)
+	{
+		return (W.weaponClassification()==Weapon.CLASS_NATURAL) || (!W.amWearingAt(Wearable.IN_INVENTORY));
+	}
+	
 }

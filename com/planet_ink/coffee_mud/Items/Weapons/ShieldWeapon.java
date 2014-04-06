@@ -30,7 +30,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class ShieldWeapon extends StdWeapon
+public class ShieldWeapon extends StdWeapon implements Shield
 {
 	public String ID(){	return "ShieldWeapon";}
 	public ShieldWeapon()

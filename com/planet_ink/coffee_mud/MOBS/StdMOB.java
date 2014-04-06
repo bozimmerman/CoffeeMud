@@ -1863,6 +1863,7 @@ public class StdMOB implements MOB
 				return false;
 		}
 
+		// the order here is significant (between eff and item -- see focus)
 		for (final Enumeration<Ability> a = effects(); a.hasMoreElements();)
 		{
 			final Ability A = a.nextElement();
@@ -2891,6 +2892,7 @@ public class StdMOB implements MOB
 				CMLib.commands().handleObserveComesToLife(this, srcM, msg);
 		}
 
+		// the order here is significant (between eff and item -- see focus)
 		eachItem(new EachApplicable<Item>() {
 			public final void apply(final Item I) {
 				I.executeMsg(me, msg);

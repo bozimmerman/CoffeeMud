@@ -47,9 +47,6 @@ public class Specialization_Weapon extends StdAbility
 	protected int weaponClass=-1;
 	protected int secondWeaponClass=-1;
 	
-	protected short[] bonuses=null;
-	protected Object cachePtr=null;
-
 	public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_WEAPON_USE;}
 
 	protected int getDamageBonus(MOB mob, int dmgType)
@@ -64,29 +61,47 @@ public class Specialization_Weapon extends StdAbility
 			return 0;
 		}
 	}
+	
+	protected boolean isWeaponMatch(Weapon W)
+	{
+		if((W.weaponClassification()==weaponClass)
+		||(weaponClass<0)
+		||(W.weaponClassification()==secondWeaponClass))
+			return true;
+		return false;
+	}
+	
+	protected boolean canDamage(MOB mob, Weapon W)
+	{
+		return !W.amWearingAt(Wearable.IN_INVENTORY);
+	}
+	
+	protected boolean isWearableItem(Item I)
+	{
+		return (I instanceof Weapon) && isWeaponMatch((Weapon)I);
+	}
+	
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
-		if((activated)
-		&&(msg.source()==affected)
-		&&(msg.target() instanceof MOB)
-		&&(msg.tool() instanceof Weapon))
+		if(activated && (msg.source()==affected))
 		{
-			Weapon w=(Weapon)msg.tool();
-			if((w.weaponClassification()==weaponClass)
-			||(weaponClass<0)
-			||(w.weaponClassification()==secondWeaponClass))
+			if((msg.target() instanceof MOB)
+			&&(msg.tool() instanceof Weapon))
 			{
-				if((msg.targetMinor()==CMMsg.TYP_WEAPONATTACK)&&(CMLib.dice().rollPercentage()<10))
-					helpProficiency((MOB)affected, 0);
-				else
-				if((msg.targetMinor()==CMMsg.TYP_DAMAGE)
-				&&((w.weaponClassification()==Weapon.CLASS_NATURAL)||(!w.amWearingAt(Wearable.IN_INVENTORY)))
-				&&(msg.value()>0))
-					msg.setValue(msg.value()+(this.getDamageBonus(msg.source(),w.weaponType())));
+				Weapon w=(Weapon)msg.tool();
+				if(isWeaponMatch(w))
+				{
+					if((msg.targetMinor()==CMMsg.TYP_WEAPONATTACK)&&(CMLib.dice().rollPercentage()<10))
+						helpProficiency((MOB)affected, 0);
+					else
+					if((msg.targetMinor()==CMMsg.TYP_DAMAGE)
+					&&(msg.value()>0)
+					&&(canDamage(msg.source(),w)))
+						msg.setValue(msg.value()+(this.getDamageBonus(msg.source(),w.weaponType())));
+				}
 			}
 		}
 	}
-
 
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
@@ -96,9 +111,7 @@ public class Specialization_Weapon extends StdAbility
 		{
 			Item myWeapon=((MOB)affected).fetchWieldedItem();
 			if((myWeapon instanceof Weapon)
-			&&((((Weapon)myWeapon).weaponClassification()==weaponClass)
- 			 ||(weaponClass<0)
-			 ||(((Weapon)myWeapon).weaponClassification()==secondWeaponClass)))
+			&&(isWeaponMatch((Weapon)myWeapon)))
 			{
 				activated=true;
 				affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()
@@ -108,4 +121,18 @@ public class Specialization_Weapon extends StdAbility
 			}
 		}
 	}
+	
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
+	{
+		if(!super.okMessage(myHost, msg))
+			return false;
+		if((msg.source()==affected)
+		&&(msg.target() instanceof Item)
+		&&((msg.targetMinor()==CMMsg.TYP_HOLD)||(msg.targetMinor()==CMMsg.TYP_WIELD))
+		&&(isWearableItem((Item)msg.target()))
+		&&(((Item)msg.target()).phyStats().level()>msg.source().phyStats().level()))
+			((Item)msg.target()).phyStats().setLevel(((Item)msg.target()).phyStats().level()-((1+getX4Level(msg.source()))/2));
+		return true;
+	}
+	
 }

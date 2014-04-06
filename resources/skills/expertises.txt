@@ -117,6 +117,15 @@ HELP_=<EXPERTISE>Improved devious mind for accomplishing more powerful crimes.
 FITNESS@x1=Fitness @x2,10,LEVEL,-SKILLFLAG +FITNESS,-MAXCLASSLEVEL +>={25+(5*@x1)},+INT {12+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>Ability to keep both mind and body in top shape so that fitness domain skills are performed at top efficiency.
 
+ARMORFOCUS@x1=Armor Focus @x2,10,LEVEL,-SKILL +Specialization_Armor,-MAXCLASSLEVEL +>={24+(5*@x1)},+WIS {10+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>The ability to wear higher level armor.
+
+SHIELDFOCUS@x1=Shield Focus @x2,10,X4,-SKILL +Specialization_Shield,-MAXCLASSLEVEL +>={24+(5*@x1)},+WIS {10+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>The ability to hold higher level shields.
+
+SHIELDSTRIKE@x1=Shield Striking @x2,10,LEVEL,-SKILL +Specialization_Shield,-MAXCLASSLEVEL +>={25+(5*@x1)},+STR {13+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>The ability to hit more often and for more damage when using a shield to attack.
+
 AXESTRIKE@x1=Axe Striking @x2,10,LEVEL,-SKILL +Specialization_Axe,-MAXCLASSLEVEL +>={24+(5*@x1)},+DEX {15+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to hit more often when using an axe.
 
@@ -125,6 +134,9 @@ HELP_=<EXPERTISE>The ability to do more damage when using a slashing/slicing-typ
 
 AXEPIERCE@x1=Axe Piercing @x2,10,X2,-SKILL +Specialization_Axe,-MAXCLASSLEVEL +>={27+(5*@x1)},+STR {15+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to do more damage when using a piercing-type axe.
+
+AXEFOCUS@x1=Axe Focus @x2,10,X4,-BASECLASS +Fighter -SKILL +Specialization_Axe,-MAXCLASSLEVEL +>={24+(5*@x1)},+WIS {10+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>The ability to wield higher level axes.
 
 UNARMEDSTRIKE@x1=Unarmed Striking @x2,10,LEVEL,-SKILL +Specialization_Natural +Druid_Bite +Druid_Rend,-MAXCLASSLEVEL +>={24+(5*@x1)},+DEX {15+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to hit more often when unarmed.
@@ -138,6 +150,9 @@ HELP_=<EXPERTISE>The ability to do more damage when using a piercing-type unarme
 UNARMEDBASH@x1=Unarmed Bashing @x2,10,X3,-SKILL +Specialization_Natural,-MAXCLASSLEVEL +>={27+(5*@x1)},+STR {15+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to do more damage when using a bashing-type unarmed attack.
 
+UNARMEDFOCUS@x1=Unarmed Focus @x2,10,X4,-BASECLASS +Fighter -SKILL +Specialization_Natural,-MAXCLASSLEVEL +>={27+(5*@x1)},+WIS {10+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>The ability to wield higher level natural weapons.
+
 BLUNTSTRIKE@x1=Blunt Striking @x2,10,LEVEL,-SKILL +Specialization_BluntWeapon,-MAXCLASSLEVEL +>={24+(5*@x1)},+DEX {15+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to hit more often when using a blunt-class weapon.
 
@@ -146,6 +161,9 @@ HELP_=<EXPERTISE>The ability to do more damage when using a piercing-type blunt-
 
 BLUNTBASH@x1=Blunt Bashing @x2,10,X3,-SKILL +Specialization_BluntWeapon,-MAXCLASSLEVEL +>={27+(5*@x1)},+STR {15+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to do more damage when using a bashing-type blunt-class weapon.
+
+BLUNTFOCUS@x1=Blunt Focus @x2,10,X4,-BASECLASS +Fighter -SKILL +Specialization_BluntWeapon,-MAXCLASSLEVEL +>={27+(5*@x1)},+WIS {10+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>The ability to use wield higher level blunt-class weapons.
 
 EDGEDSTRIKE@x1=Edged Striking @x2,10,LEVEL,-SKILL +Specialization_EdgedWeapon,-MAXCLASSLEVEL +>={24+(5*@x1)},+DEX {15+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to hit more often when using an edged-class weapon.
@@ -156,6 +174,9 @@ HELP_=<EXPERTISE>The ability to do more damage when using a slashing/slicing-typ
 EDGEPIERCE@x1=Edged Piercing @x2,10,X2,-SKILL +Specialization_EdgedWeapon,-MAXCLASSLEVEL +>={27+(5*@x1)},+STR {15+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to do more damage when using a piercing-type edged-class weapon.
 
+EDGEFOCUS@x1=Edged Focus @x2,10,X4,-BASECLASS +Fighter -SKILL +Specialization_EdgedWeapon,-MAXCLASSLEVEL +>={27+(5*@x1)},+WIS {10+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>The ability to wield higher level edged-class weapon.
+
 FLAILEDSTRIKE@x1=Flailed Striking @x2,10,LEVEL,-SKILL +Specialization_FlailedWeapon,-MAXCLASSLEVEL +>={24+(5*@x1)},+DEX {15+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to hit more often when using a flail-class weapon.
 
@@ -165,11 +186,17 @@ HELP_=<EXPERTISE>The ability to do more damage when using a slashing/slicing-typ
 FLAILEDBASH@x1=Flailed Bashing @x2,10,X3,-SKILL +Specialization_FlailedWeapon,-MAXCLASSLEVEL +>={27+(5*@x1)},+STR {15+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to do more damage when using a bashing-type flail-class weapon.
 
+FLAILEDFOCUS@x1=Flailed Focus @x2,10,X4,-BASECLASS +Fighter -SKILL +Specialization_FlailedWeapon,-MAXCLASSLEVEL +>={27+(5*@x1)},+WIS {10+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>The ability to wield higher level flail-class weapons.
+
 HAMMERSTRIKE@x1=Hammer Striking @x2,10,LEVEL,-SKILL +Specialization_Hammer,-MAXCLASSLEVEL +>={24+(5*@x1)},+DEX {15+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to hit more often when using a hammer.
 
 HAMMERBASH@x1=Hammer Bashing @x2,10,X3,-SKILL +Specialization_Hammer,-MAXCLASSLEVEL +>={27+(5*@x1)},+STR {15+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to do more damage when using a bashing-type hammer.
+
+HAMMERFOCUS@x1=Hammer Focus @x2,10,X4,-BASECLASS +Fighter -SKILL +Specialization_Hammer,-MAXCLASSLEVEL +>={27+(5*@x1)},+WIS {10+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>The ability to wield higher level hammers.
 
 POLESTRIKE@x1=Polearm Striking @x2,10,LEVEL,-SKILL +Specialization_Polearm,-MAXCLASSLEVEL +>={24+(5*@x1)},+DEX {15+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to hit more often when using a polearm-class weapon.
@@ -180,6 +207,9 @@ HELP_=<EXPERTISE>The ability to do more damage when using a slashing/slicing-typ
 POLEPIERCE@x1=Polearm Piercing @x2,10,X2,-SKILL +Specialization_Polearm,-MAXCLASSLEVEL +>={27+(5*@x1)},+STR {15+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to do more damage when using a piercing-type polearm-class weapon.
 
+POLEFOCUS@x1=Polearm Focus @x2,10,X4,-BASECLASS +Fighter -SKILL +Specialization_Polearm,-MAXCLASSLEVEL +>={27+(5*@x1)},+STR {10+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>The ability to wield higher level polearm-class weapons.
+
 RANGEDSTRIKE@x1=Ranged Striking @x2,10,LEVEL,-SKILL +Specialization_Ranged +Fighter_Fragmentation +Fighter_ImprovedThrowing,-MAXCLASSLEVEL +>={24+(5*@x1)},+DEX {15+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to hit more often when using a ranged or thrown weapon.
 
@@ -189,6 +219,9 @@ HELP_=<EXPERTISE>The ability to do more damage when using a piercing-type ranged
 RANGEDBASH@x1=Ranged Bashing @x2,10,X3,-SKILL +Specialization_Ranged,-MAXCLASSLEVEL +>={27+(5*@x1)},+INT {15+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to do more damage when using a bashing-type blunt-class ranged or thrown weapon.
 
+RANGEDFOCUS@x1=Ranged Focus @x2,10,X4,-BASECLASS +Fighter -SKILL +Specialization_Ranged,-MAXCLASSLEVEL +>={27+(5*@x1)},+WIS {10+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>The ability to wield higher level blunt-class ranged or thrown weapons.
+
 SWORDSTRIKE@x1=Sword Striking @x2,10,LEVEL,-SKILL +Specialization_Sword,-MAXCLASSLEVEL +>={24+(5*@x1)},+DEX {15+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to hit more often when using a sword.
 
@@ -197,6 +230,9 @@ HELP_=<EXPERTISE>The ability to do more damage when using a slashing/slicing-typ
 
 SWORDPIERCE@x1=Sword Piercing @x2,10,X2,-SKILL +Specialization_Sword,-MAXCLASSLEVEL +>={27+(5*@x1)},+STR {15+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to do more damage when using a piercing-type sword.
+
+SWORDFOCUS@x1=Sword Piercing @x2,10,X4,-BASECLASS +Fighter -SKILL +Specialization_Sword,-MAXCLASSLEVEL +>={27+(5*@x1)},+WIS {10+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>The ability to wield higher level swords.
 
 FASTDANCE@x1=Fast Dancing @x2,10,LEVEL,-SKILLFLAG +DANCING&MALICIOUS,-MAXCLASSLEVEL +>={15+(5*@x1)},+STR {12+@x1} +CHA {12+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to perform dances that have a more powerful malicious affect.

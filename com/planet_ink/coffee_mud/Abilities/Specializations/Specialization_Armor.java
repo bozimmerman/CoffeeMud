@@ -1,0 +1,118 @@
+package com.planet_ink.coffee_mud.Abilities.Specializations;
+import com.planet_ink.coffee_mud.Abilities.StdAbility;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.collections.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
+import java.util.*;
+
+/* 
+   Copyright 2000-2014 Bo Zimmerman
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+	   http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+*/
+public class Specialization_Armor extends StdAbility
+{
+	public String ID() { return "Specialization_Armor"; }
+	public String name(){ return "Armor Specialization";}
+	public String displayText(){ return "";}
+	protected int canAffectCode(){return CAN_MOBS;}
+	protected int canTargetCode(){return 0;}
+	public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
+	public boolean isAutoInvoked(){return true;}
+	public boolean canBeUninvoked(){return false;}
+
+	protected final static long WORN_ARMOR=Item.WORN_ARMS|Item.WORN_FEET|Item.WORN_HANDS|Item.WORN_HEAD|Item.WORN_LEFT_WRIST
+											|Item.WORN_LEGS|Item.WORN_RIGHT_WRIST|Item.WORN_TORSO|Item.WORN_WAIST;
+	
+	protected double bonus=-1;
+
+	public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_ARMORUSE;}
+
+	
+	private void recalculateBonus(MOB mob)
+	{
+		bonus=0;
+		if(mob!=null)
+		{
+			for(int i=0;i<mob.numItems();i++)
+			{
+				Item I=mob.getItem(i);
+				if((I!=null)
+				&&(I.basePhyStats().armor()>0)
+				&&(!I.amWearingAt(Item.IN_INVENTORY))
+				&&(!I.amWearingAt(Item.WORN_HELD))
+				&&(!I.amWearingAt(Item.WORN_FLOATING_NEARBY))
+				&&(CMath.banyset(I.rawProperLocationBitmap(), WORN_ARMOR)))
+				{
+					bonus+=1.0;
+				}
+			}
+		}
+	}
+	
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
+	{
+		if(msg.source()==affected)
+		{
+			if((msg.target() instanceof Armor)
+			&&((msg.targetMinor()==CMMsg.TYP_WEAR)||(msg.targetMinor()==CMMsg.TYP_REMOVE)||(msg.targetMinor()==CMMsg.TYP_DROP)))
+				bonus=-1;
+			else
+			if(msg.sourceMinor()==CMMsg.TYP_LIFE)
+				bonus=-1;
+		}
+	}
+
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
+	{
+		super.affectPhyStats(affected,affectableStats);
+		if(affected instanceof MOB)
+		{
+			if((bonus<0)&&(((MOB)affected).numItems()>0))
+				recalculateBonus((MOB)affected);
+			if(bonus>0)
+			affectableStats.setArmor(affectableStats.armor()
+					-(int)Math.round(bonus*CMath.div(proficiency(),100.0))
+					-(getXLEVELLevel((MOB)affected)/2));
+					
+		}
+	}
+	
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
+	{
+		if(!super.okMessage(myHost, msg))
+			return false;
+		if((msg.source()==affected)
+		&&(msg.target() instanceof Armor)
+		&&(msg.targetMinor()==CMMsg.TYP_WEAR)
+		&&(CMath.banyset(((Armor)msg.target()).rawProperLocationBitmap(), WORN_ARMOR))
+		&&(((Armor)msg.target()).phyStats().level()>msg.source().phyStats().level()))
+		{
+			((Armor)msg.target()).phyStats().setLevel(((Armor)msg.target()).phyStats().level()-((1+getXLEVELLevel(msg.source()))/2));
+		}
+		return true;
+	}
+	
+}
