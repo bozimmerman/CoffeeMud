@@ -184,8 +184,8 @@ public class DefaultSession implements Session
 					} }, 0, 100, 1);
 
 			sock[0].setSoTimeout(SOTIMEOUT);
-			rawout=sock[0].getOutputStream();
-			rawin=sock[0].getInputStream();
+			rawout=new BufferedOutputStream(sock[0].getOutputStream());
+			rawin=new BufferedInputStream(sock[0].getInputStream());
 			rawBytesOut(rawout,("\n\rConnecting to "+CMProps.getVar(CMProps.Str.MUDNAME)+"...\n\r").getBytes("US-ASCII"));
 			rawout.flush();
 			
@@ -357,7 +357,7 @@ public class DefaultSession implements Session
 		changeTelnetMode(rawout,TELNET_COMPRESS2,false);
 		out.flush();
 		rawout.flush();
-		rawout=sock[0].getOutputStream();
+		rawout=new BufferedOutputStream(sock[0].getOutputStream());
 		out = new PrintWriter(new OutputStreamWriter(rawout,CMProps.getVar(CMProps.Str.CHARSETOUTPUT)));
 		try{Thread.sleep(50);}catch(Exception e){}
 		changeTelnetMode(rawout,TELNET_COMPRESS2,false);
@@ -1372,7 +1372,7 @@ public class DefaultSession implements Session
 			if((last==TELNET_COMPRESS2)&&(getServerTelnetMode(last)))
 			{
 				setClientTelnetMode(last,false);
-				rawout=sock[0].getOutputStream();
+				rawout=new BufferedOutputStream(sock[0].getOutputStream());
 				out = new PrintWriter(new OutputStreamWriter(rawout,CMProps.getVar(CMProps.Str.CHARSETOUTPUT)));
 			}
 			if((mightSupportTelnetMode(last)&&(getServerTelnetMode(last))))

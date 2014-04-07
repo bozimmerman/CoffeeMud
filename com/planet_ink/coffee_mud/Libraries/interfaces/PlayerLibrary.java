@@ -57,7 +57,9 @@ public interface PlayerLibrary extends CMLibrary
 	public String getThinSortValue(ThinPlayer player, int code);
 	public Set<MOB> getPlayersHere(Room room);
 	public void changePlayersLocation(MOB mob, Room room);
-    public Pair<Long,int[]>[] parsePrideStats(final String[] nextPeriods, final String[] prideStats);
+	public Pair<Long,int[]>[] parsePrideStats(final String[] nextPeriods, final String[] prideStats);
+	public List<Pair<String,Integer>> getTopPridePlayers(TimeClock.TimePeriod period, AccountStats.PrideStat stat);
+	public List<Pair<String,Integer>> getTopPrideAccounts(TimeClock.TimePeriod period, AccountStats.PrideStat stat);
 	
 	public static final String[] CHAR_THIN_SORT_CODES={ "NAME","CLASS","RACE","LEVEL","AGE","LAST","EMAIL","IP"};
 	public static final String[] CHAR_THIN_SORT_CODES2={ "CHARACTER","CHARCLASS","RACE","LVL","HOURS","DATE","EMAILADDRESS","LASTIP"};
