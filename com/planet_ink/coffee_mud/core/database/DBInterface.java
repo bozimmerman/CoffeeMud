@@ -164,6 +164,12 @@ public class DBInterface implements DatabaseEngine
 	public List<PlayerAccount> DBListAccounts(String mask)
 	{ return MOBloader.DBListAccounts(mask);}
 	
+	public List<Pair<String,Integer>>[][] DBScanPrideAccountWinners(int topThisMany, short scanCPUPercent)
+	{ return MOBloader.DBScanPrideAccountWinners(topThisMany, scanCPUPercent); }
+	
+	public List<Pair<String,Integer>>[][] DBScanPridePlayerWinners(int topThisMany, short scanCPUPercent)
+	{ return MOBloader.DBScanPridePlayerWinners(topThisMany, scanCPUPercent); }
+	
 	public void DBPlayerNameChange(String oldName, String newName)
 	{ MOBloader.DBNameChange(oldName, newName);}
 	

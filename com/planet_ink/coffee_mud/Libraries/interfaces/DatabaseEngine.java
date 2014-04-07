@@ -84,6 +84,8 @@ public interface DatabaseEngine extends CMLibrary
 	public void DBUpdateMOBs(Room room);
 	public void DBCreateRoom(Room room);
 	public void DBUpdateRoom(Room room);
+	public List<Pair<String,Integer>>[][] DBScanPridePlayerWinners(int topThisMany, short scanCPUPercent);
+	public List<Pair<String,Integer>>[][] DBScanPrideAccountWinners(int topThisMany, short scanCPUPercent);
 	public RoomnumberSet DBReadAreaRoomList(String areaName, boolean reportStatus);
 	public void DBUpdatePlayer(MOB mob);
 	public List<String> DBExpiredCharNameSearch(Set<String> skipNames);

@@ -80,7 +80,7 @@ public class DefaultPlayerStats implements PlayerStats
 	protected RoomnumberSet  visitedRoomSet	= null;
 	protected DVector   	 levelInfo		= new DVector(3);
 	protected Set<String>	 introductions	= new SHashSet<String>();
-	protected long[]	 	 nextPeriods	= new long[TimeClock.TimePeriod.values().length];
+	protected long[]	 	 prideExpireTime= new long[TimeClock.TimePeriod.values().length];
 	protected int[][]		 prideStats		= new int[TimeClock.TimePeriod.values().length][AccountStats.PrideStat.values().length];
 	protected ItemCollection extItems;
 	
@@ -92,101 +92,6 @@ public class DefaultPlayerStats implements PlayerStats
 		super();
 		xtraValues=CMProps.getExtraStatCodesHolder(this);
 		extItems=(ItemCollection)CMClass.getCommon("WeakItemCollection");
-	}
-	
-	protected static String[] CODES={"CLASS","FRIENDS","IGNORE","TITLES",
-									 "ALIAS","LASTIP","LASTDATETIME",
-									 "CHANNELMASK",
-									 "COLORSTR","PROMPT","POOFIN",
-									 "POOFOUT","TRANPOOFIN","TRAINPOOFOUT",
-									 "ANNOUNCEMSG","NOTES","WRAP","BIRTHDAY",
-									 "ACCTEXPIRATION","INTRODUCTIONS","PAGEBREAK",
-									 "SAVEDPOSE","THEME", "LEGLEVELS"};
-	public String getStat(String code)
-	{
-		switch(getCodeNum(code))
-		{
-		case 0: return ID();
-		case 1: return getPrivateList(getFriends());
-		case 2: return getPrivateList(getIgnored());
-		case 3: return getTitleXML();
-		case 4: return getAliasXML();
-		case 5: return lastIP;
-		case 6: return ""+lLastDateTime;
-		case 7: return ""+channelMask;
-		case 8: return colorStr;
-		case 9: return prompt;
-		case 10: return poofin;
-		case 11: return poofout;
-		case 12: return tranpoofin;
-		case 13: return tranpoofout;
-		case 14: return announceMsg;
-		case 15: return notes;
-		case 16: return ""+wrap;
-		case 17: return CMParms.toStringList(birthday);
-		case 18: return ""+accountExpires;
-		case 19: return getPrivateList(introductions);
-		case 20: return ""+pageBreak;
-		case 21: return ""+savedPose;
-		case 22: return ""+theme;
-		case 23: return ""+getTotalLegacyLevels();
-		default:
-			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
-		}
-	}
-	public void setStat(String code, String val)
-	{
-		switch(getCodeNum(code))
-		{
-		case 0: break;
-		case 1: { friends.clear(); friends.addAll(getHashFrom(val)); break; }
-		case 2: { ignored.clear(); ignored.addAll(getHashFrom(val)); break; }
-		case 3: setTitleXML(CMLib.xml().parseAllXML(val)); break;
-		case 4: setAliasXML(CMLib.xml().parseAllXML(val)); break;
-		case 5: lastIP=val; break;
-		case 6: lLastDateTime=CMath.s_long(val); break;
-		case 7: channelMask=CMath.s_int(val); break;
-		case 8: colorStr=val; break;
-		case 9: prompt=val; break;
-		case 10: poofin=val; break;
-		case 11: poofout=val; break;
-		case 12: tranpoofin=val; break;
-		case 13: tranpoofout=val; break;
-		case 14: announceMsg=val; break;
-		case 15: notes=val; break;
-		case 16: wrap=CMath.s_int(val); break;
-		case 17: setBirthday(val); break;
-		case 18: accountExpires=CMath.s_long(val); break;
-		case 19: { introductions.clear(); introductions.addAll(getHashFrom(val)); break; }
-		case 20: pageBreak=CMath.s_int(val); break;
-		case 21: savedPose=val; break;
-		case 22: theme=CMath.s_int(val); break;
-		case 23: break; // legacy levels
-		default:
-			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
-			break;
-		}
-	}
-	public int getSaveStatIndex(){return (xtraValues==null)?getStatCodes().length:getStatCodes().length-xtraValues.length;}
-	private static String[] codes=null;
-	public String[] getStatCodes(){
-		if(codes==null)
-			codes=CMProps.getStatCodesList(CODES,this);
-		return codes;
-	}
-	public boolean isStat(String code){ return CMParms.indexOf(getStatCodes(),code.toUpperCase().trim())>=0;}
-	protected int getCodeNum(String code){
-		for(int i=0;i<CODES.length;i++)
-			if(code.equalsIgnoreCase(CODES[i])) return i;
-		return -1;
-	}
-	public boolean sameAs(PlayerStats E)
-	{
-		if(!(E instanceof DefaultPlayerStats)) return false;
-		for(int i=0;i<getStatCodes().length;i++)
-			if(!E.getStat(getStatCodes()[i]).equals(getStat(getStatCodes()[i])))
-				return false;
-		return true;
 	}
 	
 	public CMObject newInstance()
@@ -648,11 +553,11 @@ public class DefaultPlayerStats implements PlayerStats
 	    		prideStats[period.ordinal()][stat.ordinal()]+=amt;
 	    	else
 	    	{
-		    	if(now>nextPeriods[period.ordinal()])
+		    	if(now>prideExpireTime[period.ordinal()])
 		    	{
 					for(AccountStats.PrideStat stat2 : AccountStats.PrideStat.values())
 						prideStats[period.ordinal()][stat2.ordinal()]=0;
-					nextPeriods[period.ordinal()]=period.nextPeriod();
+					prideExpireTime[period.ordinal()]=period.nextPeriod();
 		    	}
 	    		prideStats[period.ordinal()][stat.ordinal()]+=amt;
 	    	}
@@ -679,7 +584,7 @@ public class DefaultPlayerStats implements PlayerStats
 			String code=codes[x].toUpperCase();
 			rest.append("<"+code+">"+CMLib.xml().parseOutAngleBrackets(getStat(code))+"</"+code+">");
 		}
-		rest.append("<NEXTPRIDEPERIODS>").append(CMParms.toTightStringList(nextPeriods)).append("</NEXTPRIDEPERIODS>");
+		rest.append("<NEXTPRIDEPERIODS>").append(CMParms.toTightStringList(prideExpireTime)).append("</NEXTPRIDEPERIODS>");
 		rest.append("<PRIDESTATS>");
 		for(TimeClock.TimePeriod period : TimeClock.TimePeriod.values())
 			rest.append(CMParms.toTightStringList(prideStats[period.ordinal()])).append(";");
@@ -921,7 +826,7 @@ public class DefaultPlayerStats implements PlayerStats
 		for(TimeClock.TimePeriod period : TimeClock.TimePeriod.values())
 			if(period.ordinal()>finalPrideStats.length)
 			{
-				this.nextPeriods[period.ordinal()]=finalPrideStats[period.ordinal()].first.longValue();
+				this.prideExpireTime[period.ordinal()]=finalPrideStats[period.ordinal()].first.longValue();
 				this.prideStats[period.ordinal()]=finalPrideStats[period.ordinal()].second;
 			}
 		
@@ -947,6 +852,7 @@ public class DefaultPlayerStats implements PlayerStats
 		}
 		return buf.toString();
 	}
+	
 	public String getSetSecurityFlags(String newFlags)
 	{
 		if(newFlags != null)
@@ -956,10 +862,12 @@ public class DefaultPlayerStats implements PlayerStats
 		return securityFlags.toString(';');
 		
 	}
+	
 	public CMSecurity.SecGroup getSecurityFlags()
 	{ 
 		return securityFlags;
 	}
+	
 	public void setPoofs(String poofIn, String poofOut, String tranPoofIn, String tranPoofOut)
 	{
 		poofin=poofIn;
@@ -968,8 +876,16 @@ public class DefaultPlayerStats implements PlayerStats
 		tranpoofout=tranPoofOut;
 	}
 	
-	public long getHygiene(){return hygiene;}
-	public void setHygiene(long newVal){hygiene=newVal;}
+	public long getHygiene()
+	{
+		return hygiene;
+	}
+	
+	public void setHygiene(long newVal)
+	{
+		hygiene=newVal;
+	}
+	
 	public boolean adjHygiene(long byThisMuch)
 	{
 		hygiene+=byThisMuch;
@@ -1019,17 +935,20 @@ public class DefaultPlayerStats implements PlayerStats
 	{
 		return roomSet().contains(CMLib.map().getExtendedRoomID(R));
 	}
+	
 	public boolean hasVisited(Area A)
 	{
 		int numRooms=A.getAreaIStats()[Area.Stats.VISITABLE_ROOMS.ordinal()];
 		if(numRooms<=0) return true;
 		return roomSet().roomCount(A.Name())>0;
 	}
+	
 	public void unVisit(Room R)
 	{
 		if(roomSet().contains(CMLib.map().getExtendedRoomID(R)))
 			roomSet().remove(CMLib.map().getExtendedRoomID(R));
 	}
+	
 	public void unVisit(Area A)
 	{
 		Room R;
@@ -1138,9 +1057,116 @@ public class DefaultPlayerStats implements PlayerStats
 		return 0;
 	}
 	
-	public PlayerAccount getAccount() { return account;}
-	public void setAccount(PlayerAccount account) { this.account = account;}
-	public ItemCollection getExtItems() { return extItems; }
+	public PlayerAccount getAccount() 
+	{ 
+		return account;
+	}
+	
+	public void setAccount(PlayerAccount account) 
+	{ 
+		this.account = account;
+	}
+	
+	public ItemCollection getExtItems() 
+	{ 
+		return extItems; 
+	}
+	
+	
+	protected static String[] CODES={"CLASS","FRIENDS","IGNORE","TITLES",
+									 "ALIAS","LASTIP","LASTDATETIME",
+									 "CHANNELMASK",
+									 "COLORSTR","PROMPT","POOFIN",
+									 "POOFOUT","TRANPOOFIN","TRAINPOOFOUT",
+									 "ANNOUNCEMSG","NOTES","WRAP","BIRTHDAY",
+									 "ACCTEXPIRATION","INTRODUCTIONS","PAGEBREAK",
+									 "SAVEDPOSE","THEME", "LEGLEVELS"};
+	public String getStat(String code)
+	{
+		switch(getCodeNum(code))
+		{
+		case 0: return ID();
+		case 1: return getPrivateList(getFriends());
+		case 2: return getPrivateList(getIgnored());
+		case 3: return getTitleXML();
+		case 4: return getAliasXML();
+		case 5: return lastIP;
+		case 6: return ""+lLastDateTime;
+		case 7: return ""+channelMask;
+		case 8: return colorStr;
+		case 9: return prompt;
+		case 10: return poofin;
+		case 11: return poofout;
+		case 12: return tranpoofin;
+		case 13: return tranpoofout;
+		case 14: return announceMsg;
+		case 15: return notes;
+		case 16: return ""+wrap;
+		case 17: return CMParms.toStringList(birthday);
+		case 18: return ""+accountExpires;
+		case 19: return getPrivateList(introductions);
+		case 20: return ""+pageBreak;
+		case 21: return ""+savedPose;
+		case 22: return ""+theme;
+		case 23: return ""+getTotalLegacyLevels();
+		default:
+			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
+		}
+	}
+	public void setStat(String code, String val)
+	{
+		switch(getCodeNum(code))
+		{
+		case 0: break;
+		case 1: { friends.clear(); friends.addAll(getHashFrom(val)); break; }
+		case 2: { ignored.clear(); ignored.addAll(getHashFrom(val)); break; }
+		case 3: setTitleXML(CMLib.xml().parseAllXML(val)); break;
+		case 4: setAliasXML(CMLib.xml().parseAllXML(val)); break;
+		case 5: lastIP=val; break;
+		case 6: lLastDateTime=CMath.s_long(val); break;
+		case 7: channelMask=CMath.s_int(val); break;
+		case 8: colorStr=val; break;
+		case 9: prompt=val; break;
+		case 10: poofin=val; break;
+		case 11: poofout=val; break;
+		case 12: tranpoofin=val; break;
+		case 13: tranpoofout=val; break;
+		case 14: announceMsg=val; break;
+		case 15: notes=val; break;
+		case 16: wrap=CMath.s_int(val); break;
+		case 17: setBirthday(val); break;
+		case 18: accountExpires=CMath.s_long(val); break;
+		case 19: { introductions.clear(); introductions.addAll(getHashFrom(val)); break; }
+		case 20: pageBreak=CMath.s_int(val); break;
+		case 21: savedPose=val; break;
+		case 22: theme=CMath.s_int(val); break;
+		case 23: break; // legacy levels
+		default:
+			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
+			break;
+		}
+	}
+	public int getSaveStatIndex(){return (xtraValues==null)?getStatCodes().length:getStatCodes().length-xtraValues.length;}
+	private static String[] codes=null;
+	public String[] getStatCodes(){
+		if(codes==null)
+			codes=CMProps.getStatCodesList(CODES,this);
+		return codes;
+	}
+	public boolean isStat(String code){ return CMParms.indexOf(getStatCodes(),code.toUpperCase().trim())>=0;}
+	protected int getCodeNum(String code){
+		for(int i=0;i<CODES.length;i++)
+			if(code.equalsIgnoreCase(CODES[i])) return i;
+		return -1;
+	}
+	public boolean sameAs(PlayerStats E)
+	{
+		if(!(E instanceof DefaultPlayerStats)) return false;
+		for(int i=0;i<getStatCodes().length;i++)
+			if(!E.getStat(getStatCodes()[i]).equals(getStat(getStatCodes()[i])))
+				return false;
+		return true;
+	}
 	
 	public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 }

@@ -54,7 +54,7 @@ public class DefaultPlayerAccount implements PlayerAccount
 	protected String[]			xtraValues			= null;
 	protected SHashSet<String>	acctFlags			= new SHashSet<String>();
 	protected volatile MOB 		fakePlayerM			= null;
-	protected long[]			nextPeriods			= new long[TimeClock.TimePeriod.values().length];
+	protected long[]			prideExpireTime		= new long[TimeClock.TimePeriod.values().length];
 	protected int[][]			prideStats			= new int[TimeClock.TimePeriod.values().length][AccountStats.PrideStat.values().length];
 	
 	protected SVector<PlayerLibrary.ThinPlayer> thinPlayers = new SVector<PlayerLibrary.ThinPlayer>();
@@ -205,11 +205,11 @@ public class DefaultPlayerAccount implements PlayerAccount
 	    		prideStats[period.ordinal()][stat.ordinal()]+=amt;
 	    	else
 	    	{
-		    	if(now>nextPeriods[period.ordinal()])
+		    	if(now>prideExpireTime[period.ordinal()])
 		    	{
 					for(AccountStats.PrideStat stat2 : AccountStats.PrideStat.values())
 						prideStats[period.ordinal()][stat2.ordinal()]=0;
-					nextPeriods[period.ordinal()]=period.nextPeriod();
+					prideExpireTime[period.ordinal()]=period.nextPeriod();
 		    	}
 	    		prideStats[period.ordinal()][stat.ordinal()]+=amt;
 	    	}
@@ -266,7 +266,7 @@ public class DefaultPlayerAccount implements PlayerAccount
 			else
 				rest.append("<"+code+">"+libXML.parseOutAngleBrackets(value)+"</"+code+">");
 		}
-		rest.append("<NEXTPRIDEPERIODS>").append(CMParms.toTightStringList(nextPeriods)).append("</NEXTPRIDEPERIODS>");
+		rest.append("<NEXTPRIDEPERIODS>").append(CMParms.toTightStringList(prideExpireTime)).append("</NEXTPRIDEPERIODS>");
 		rest.append("<PRIDESTATS>");
 		for(TimeClock.TimePeriod period : TimeClock.TimePeriod.values())
 			rest.append(CMParms.toTightStringList(prideStats[period.ordinal()])).append(";");
@@ -291,7 +291,7 @@ public class DefaultPlayerAccount implements PlayerAccount
 		for(TimeClock.TimePeriod period : TimeClock.TimePeriod.values())
 			if(period.ordinal()>finalPrideStats.length)
 			{
-				this.nextPeriods[period.ordinal()]=finalPrideStats[period.ordinal()].first.longValue();
+				this.prideExpireTime[period.ordinal()]=finalPrideStats[period.ordinal()].first.longValue();
 				this.prideStats[period.ordinal()]=finalPrideStats[period.ordinal()].second;
 			}
 		

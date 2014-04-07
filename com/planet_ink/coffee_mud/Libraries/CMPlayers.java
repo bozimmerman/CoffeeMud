@@ -47,7 +47,19 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 	protected long[] 					prePurgeLevels		= new long[1];
 	protected int						autoPurgeHash		= 0;
 	
-	public int numPlayers() { return playersList.size(); }
+	@SuppressWarnings("unchecked")
+	protected final List<Pair<String,Integer>>[][] topPlayers	 = new List[TimeClock.TimePeriod.values().length][AccountStats.PrideStat.values().length];
+	@SuppressWarnings("unchecked")
+	protected final List<Pair<String,Integer>>[][] topAccounts	 = new List[TimeClock.TimePeriod.values().length][AccountStats.PrideStat.values().length];
+	
+	protected final static List<Pair<String,Integer>> emptyPride = new ReadOnlyVector<Pair<String,Integer>>(1);
+	
+	
+	public int numPlayers() 
+	{ 
+		return playersList.size(); 
+	}
+	
 	public synchronized void addPlayer(MOB newOne)
 	{
 		if(getPlayer(newOne.Name())!=null) return;
@@ -110,6 +122,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 			return null;
 		return CMLib.database().DBReadAccount(calledThis);
 	}
+
 	public synchronized void addAccount(PlayerAccount acct)
 	{
 		if(acct==null) return;
@@ -119,7 +132,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 				return;
 		accountsList.add(acct);
 	}
-	
+
 	public PlayerAccount getLoadAccountByEmail(String email)
 	{
 		if(CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)<=1)
@@ -136,7 +149,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 		}
 		return null;
 	}
-		
+
 	public PlayerAccount getAccount(String calledThis)
 	{
 		calledThis=CMStrings.capitalizeAndLower(calledThis);
@@ -154,6 +167,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 			}
 		return null;
 	}
+
 	public MOB getPlayer(String calledThis)
 	{
 		calledThis=CMStrings.capitalizeAndLower(calledThis);
@@ -195,7 +209,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 		name=CMStrings.capitalizeAndLower(name);
 		return getLoadAccount(name)!=null;
 	}
-	
+
 	public boolean playerExists(String name)
 	{
 		if(name==null) return false;
@@ -205,8 +219,32 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 				return true;
 		return CMLib.database().DBUserSearch(name)!=null;
 	}
-	public Enumeration<MOB> players() { return playersList.elements(); }
-	public Enumeration<PlayerAccount> accounts() { return accountsList.elements(); }
+
+	public Enumeration<MOB> players() 
+	{
+		return playersList.elements(); 
+	}
+
+	public Enumeration<PlayerAccount> accounts() 
+	{ 
+		return accountsList.elements(); 
+	}
+
+	public List<Pair<String,Integer>> getTopPridePlayers(TimeClock.TimePeriod period, AccountStats.PrideStat stat)
+	{
+		List<Pair<String,Integer>> top=topPlayers[period.ordinal()][stat.ordinal()];
+		if(top == null)
+			top=emptyPride;
+		return top;
+	}
+
+	public List<Pair<String,Integer>> getTopPrideAccounts(TimeClock.TimePeriod period, AccountStats.PrideStat stat)
+	{
+		List<Pair<String,Integer>> top=topAccounts[period.ordinal()][stat.ordinal()];
+		if(top == null)
+			top=emptyPride;
+		return top;
+	}
 
 	public void renamePlayer(MOB mob, String oldName)
 	{
@@ -285,7 +323,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 			}
 		}
 	}
-	
+
 	public void obliteratePlayer(MOB deadMOB, boolean deleteAssets, boolean quiet)
 	{
 		if(deadMOB==null) return;
@@ -350,7 +388,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 		Log.sysOut(deadMOB.name()+" has been deleted.");
 		deadMOB.destroy();
 	}
-	
+
 	public synchronized void obliterateAccountOnly(PlayerAccount deadAccount)
 	{
 		deadAccount = getLoadAccount(deadAccount.getAccountName());
@@ -377,7 +415,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 		CMLib.database().DBDeleteAccount(deadAccount);
 		Log.sysOut(deadAccount.getAccountName()+" has been deleted.");
 	}
-	
+
 	public int savePlayers()
 	{
 		int processed=0;
@@ -412,20 +450,20 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 			if(pStats!=null)
 			{
 				if((pStats.getLastUpdated()==0)
-			    ||(pStats.getLastUpdated()<pStats.getLastDateTime())
-			    ||(noCachePlayers && (!CMLib.flags().isInTheGame(mob, true))))
-    			{
-    				setThreadStatus(serviceClient,"just saving "+mob.Name());
-    				CMLib.database().DBUpdatePlayerMOBOnly(mob);
-    				if(mob.Name().length()==0)
-    					continue;
-    				setThreadStatus(serviceClient,"just saving "+mob.Name()+", "+mob.numItems()+" items");
-    				CMLib.database().DBUpdatePlayerItems(mob);
-    				setThreadStatus(serviceClient,"just saving "+mob.Name()+", "+mob.numAbilities()+" abilities");
-    				CMLib.database().DBUpdatePlayerAbilities(mob);
-    				pStats.setLastUpdated(System.currentTimeMillis());
-    				processed++;
-    			}
+				||(pStats.getLastUpdated()<pStats.getLastDateTime())
+				||(noCachePlayers && (!CMLib.flags().isInTheGame(mob, true))))
+				{
+					setThreadStatus(serviceClient,"just saving "+mob.Name());
+					CMLib.database().DBUpdatePlayerMOBOnly(mob);
+					if(mob.Name().length()==0)
+						continue;
+					setThreadStatus(serviceClient,"just saving "+mob.Name()+", "+mob.numItems()+" items");
+					CMLib.database().DBUpdatePlayerItems(mob);
+					setThreadStatus(serviceClient,"just saving "+mob.Name()+", "+mob.numAbilities()+" abilities");
+					CMLib.database().DBUpdatePlayerAbilities(mob);
+					pStats.setLastUpdated(System.currentTimeMillis());
+					processed++;
+				}
 				if(noCachePlayers && (!CMLib.flags().isInTheGame(mob, true)))
 				{
 					delPlayer(mob);
@@ -541,7 +579,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 	}
 
 	@SuppressWarnings("unchecked")
-    public Pair<Long,int[]>[] parsePrideStats(final String[] nextPeriods, final String[] prideStats)
+	public Pair<Long,int[]>[] parsePrideStats(final String[] nextPeriods, final String[] prideStats)
 	{
 		final long now=System.currentTimeMillis();
 		final List<Pair<Long,int[]>> finalStats=new ArrayList<Pair<Long,int[]>>(TimeClock.TimePeriod.values().length);
@@ -874,11 +912,30 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 		{
 			name="THPlayers"+Thread.currentThread().getThreadGroup().getName().charAt(0);
 			serviceClient=CMLib.threads().startTickDown(this, Tickable.TICKID_SUPPORT|Tickable.TICKID_SOLITARYMASK, MudHost.TIME_SAVETHREAD_SLEEP, 1);
+			CMLib.threads().executeRunnable(new Runnable(){
+				@Override
+				public void run() 
+				{
+					final List<Pair<String,Integer>>[][] pStats = CMLib.database().DBScanPridePlayerWinners(10, (short)5);
+					for(int x=0;x<pStats.length;x++)
+						for(int y=0;y<pStats[x].length;y++)
+							topPlayers[x][y]=pStats[x][y];
+					if(CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)>1)
+					{
+						final List<Pair<String,Integer>>[][] aStats = CMLib.database().DBScanPrideAccountWinners(10, (short)5);
+						for(int x=0;x<aStats.length;x++)
+							for(int y=0;y<aStats[x].length;y++)
+								topAccounts[x][y]=aStats[x][y];
+					}
+				}
+				
+			});
 		}
 		return true;
 	}
-	
-	@Override public boolean tick(Tickable ticking, int tickID) 
+
+	@Override 
+	public boolean tick(Tickable ticking, int tickID) 
 	{
 		try
 		{
@@ -915,7 +972,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 		
 		return true;
 	}
-	
+
 	public boolean shutdown() 
 	{
 		playersList.clear();
@@ -927,7 +984,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 		}
 		return true;
 	}
-	
+
 	public void forceTick()
 	{
 		serviceClient.tickTicker(false);
