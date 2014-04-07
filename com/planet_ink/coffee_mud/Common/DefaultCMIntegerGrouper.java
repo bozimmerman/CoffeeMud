@@ -46,7 +46,7 @@ public class DefaultCMIntegerGrouper implements CMIntegerGrouper
 	
 	public String text()
 	{
-		return "{"+CMParms.toStringList(xs)+"},{"+CMParms.toStringList(ys)+"}";
+		return "{"+CMParms.toTightStringList(xs)+"},{"+CMParms.toTightStringList(ys)+"}";
 	}
 	public CMObject copyOf()
 	{

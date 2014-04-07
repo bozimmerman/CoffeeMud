@@ -4894,7 +4894,7 @@ public class Import extends StdCommand
 						PlayerAccount A=accounts.get(m);
 						for(int af=0;af<commands.size();af++)
 							if((commands.elementAt(af) instanceof String)
-							&&(A.accountName().equalsIgnoreCase((String)commands.elementAt(af))))
+							&&(A.getAccountName().equalsIgnoreCase((String)commands.elementAt(af))))
 							{
 								if(names==null) names=new Vector();
 								names.addElement(commands.elementAt(af));
@@ -4919,21 +4919,21 @@ public class Import extends StdCommand
 				for(int m=0;m<accounts.size();m++)
 				{
 					PlayerAccount A=accounts.get(m);
-					if(CMLib.players().accountExists(A.accountName()))
+					if(CMLib.players().accountExists(A.getAccountName()))
 					{
 						if(!prompt)
 						{
-							returnAnError(session,"Account '"+A.accountName()+"' already exists.  Skipping.",compileErrors,commands);
+							returnAnError(session,"Account '"+A.getAccountName()+"' already exists.  Skipping.",compileErrors,commands);
 							continue;
 						}
 						else
-						if((session!=null)&&(!session.confirm("Account: \""+A.accountName()+"\" exists, obliterate first?","Y")))
+						if((session!=null)&&(!session.confirm("Account: \""+A.getAccountName()+"\" exists, obliterate first?","Y")))
 							continue;
 						else
-							CMLib.players().obliterateAccountOnly(CMLib.players().getLoadAccount(A.accountName()));
+							CMLib.players().obliterateAccountOnly(CMLib.players().getLoadAccount(A.getAccountName()));
 					}
 					A.setLastUpdated(System.currentTimeMillis());
-					Log.sysOut("Import","Imported account: "+A.accountName());
+					Log.sysOut("Import","Imported account: "+A.getAccountName());
 					CMLib.database().DBCreateAccount(A);
 					CMLib.players().addAccount(A);
 				}

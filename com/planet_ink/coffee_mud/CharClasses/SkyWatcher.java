@@ -216,23 +216,20 @@ public class SkyWatcher extends StdCharClass
 	public String getOtherLimitsDesc(){return "Must remain Neutral to avoid skill and chant failure chances.";}
 	public String getOtherBonusDesc(){return "Attains Lunar Changes (lunar phase based bonuses/penalties) at level 5.  Can create a druidic connection with an area.  Benefits from freeing animals from cities.  Benefits from balancing the weather.";}
 
-	private static final double[] moonfactors={1.0,0.5,0.0,-0.5,-1.0,-0.5,0.0,0.5,2.0};
-
 	public void affectCharState(MOB affected, CharState affectableState)
 	{
 		super.affectCharState(affected,affectableState);
 		if(affected.location()!=null)
 		{
 			Room room=affected.location();
-			if((affected.charStats().getClassLevel(this)>=5)
-			   &&(room.getArea().getTimeObj().getMoonPhase()<moonfactors.length))
+			if(affected.charStats().getClassLevel(this)>=5)
 			{
 				affectableState.setMovement(affectableState.getMovement()
-											+(int)Math.round(CMath.mul(CMath.div(affectableState.getMovement(),8.0),moonfactors[room.getArea().getTimeObj().getMoonPhase()])));
+											+(int)Math.round(CMath.mul(CMath.div(affectableState.getMovement(),8.0),room.getArea().getTimeObj().getMoonPhase().getFactor())));
 				affectableState.setHitPoints(affectableState.getHitPoints()
-											+(int)Math.round(CMath.mul(CMath.div(affectableState.getHitPoints(),8.0),moonfactors[room.getArea().getTimeObj().getMoonPhase()])));
+											+(int)Math.round(CMath.mul(CMath.div(affectableState.getHitPoints(),8.0),room.getArea().getTimeObj().getMoonPhase().getFactor())));
 				affectableState.setMana(affectableState.getMana()
-											-(int)Math.round(CMath.mul(CMath.div(affectableState.getMana(),4.0),moonfactors[room.getArea().getTimeObj().getMoonPhase()])));
+											-(int)Math.round(CMath.mul(CMath.div(affectableState.getMana(),4.0),room.getArea().getTimeObj().getMoonPhase().getFactor())));
 			}
 		}
 	}
@@ -244,12 +241,12 @@ public class SkyWatcher extends StdCharClass
 			MOB mob=(MOB)affected;
 			Room room=mob.location();
 			int classLevel=mob.charStats().getClassLevel(this);
-			if((classLevel>=5)&&(room.getArea().getTimeObj().getMoonPhase()<moonfactors.length))
+			if(classLevel>=5)
 			{
 				affectableStats.setArmor(affectableStats.armor() // - is good
-										 -(int)Math.round(CMath.mul(classLevel,moonfactors[room.getArea().getTimeObj().getMoonPhase()])));
+										 -(int)Math.round(CMath.mul(classLevel,room.getArea().getTimeObj().getMoonPhase().getFactor())));
 				affectableStats.setAttackAdjustment(affectableStats.attackAdjustment() // - is bad
-										 -(int)Math.round(CMath.mul(classLevel,moonfactors[room.getArea().getTimeObj().getMoonPhase()])));
+										 -(int)Math.round(CMath.mul(classLevel,room.getArea().getTimeObj().getMoonPhase().getFactor())));
 			}
 		}
 	}

@@ -279,7 +279,7 @@ public class GrinderPlayers extends GrinderMobs
 			{
 				if(M.playerStats()!=null)
 				{
-					String oldAccountName =(M.playerStats().getAccount()!=null) ? M.playerStats().getAccount().accountName() : ""; 
+					String oldAccountName =(M.playerStats().getAccount()!=null) ? M.playerStats().getAccount().getAccountName() : ""; 
 					if(!old.equals(oldAccountName))
 					{
 						PlayerAccount newAccount = CMLib.players().getLoadAccount(old);

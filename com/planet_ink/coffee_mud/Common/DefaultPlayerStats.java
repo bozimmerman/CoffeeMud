@@ -12,6 +12,8 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.AccountStats.PrideStat;
+import com.planet_ink.coffee_mud.Common.interfaces.TimeClock.TimePeriod;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
@@ -78,6 +80,8 @@ public class DefaultPlayerStats implements PlayerStats
 	protected RoomnumberSet  visitedRoomSet	= null;
 	protected DVector   	 levelInfo		= new DVector(3);
 	protected Set<String>	 introductions	= new SHashSet<String>();
+	protected long[]	 	 nextPeriods	= new long[TimeClock.TimePeriod.values().length];
+	protected int[][]		 prideStats		= new int[TimeClock.TimePeriod.values().length][AccountStats.PrideStat.values().length];
 	protected ItemCollection extItems;
 	
 	protected Map<String,String>	alias	= new STreeMap<String,String>();
@@ -185,8 +189,20 @@ public class DefaultPlayerStats implements PlayerStats
 		return true;
 	}
 	
-	public CMObject newInstance(){try{return getClass().newInstance();}catch(Exception e){return new DefaultPlayerStats();}}
+	public CMObject newInstance()
+	{
+		try
+		{
+			return getClass().newInstance();
+		}
+		catch(Exception e)
+		{
+			return new DefaultPlayerStats();
+		}
+	}
+	
 	public void initializeClass(){}
+	
 	public CMObject copyOf()
 	{
 		try
@@ -214,13 +230,19 @@ public class DefaultPlayerStats implements PlayerStats
 			return new DefaultPlayerStats();
 		}
 	}
-	public String lastIP(){return lastIP;}
+	
+	public String getLastIP()
+	{
+		return lastIP;
+	}
+	
 	public void setLastIP(String ip)
 	{
 		lastIP=ip;
 		if(account != null)
 			account.setLastIP(ip);
 	}
+	
 	public String getEmail()
 	{
 		if(account != null)
@@ -229,38 +251,53 @@ public class DefaultPlayerStats implements PlayerStats
 			return ""; 
 		return email;
 	}
+	
 	public void setEmail(String newAdd)
 	{
 		email=newAdd;
 		if(account != null)
 			account.setEmail(newAdd);
 	}
+	
 	public int getTheme()
 	{
 		return theme;
 	}
+	
 	public void setTheme(int theme)
 	{
 		this.theme=theme;
 	}
-	public long lastUpdated(){return lastUpdated;}
+	
+	public long getLastUpdated()
+	{
+		return lastUpdated;
+	}
+	
 	public void setLastUpdated(long time)
 	{
 		lastUpdated=time;
 		if(account != null)
 			account.setLastUpdated(time);
 	}
-	public long lastDateTime(){return lLastDateTime;}
+	
+	public long getLastDateTime()
+	{
+		return lLastDateTime;
+	}
+	
 	public void setLastDateTime(long C)
 	{ 
 		lLastDateTime=C;
 		if(account != null)
 			account.setLastDateTime(C);
 	}
+	
 	public String getPasswordStr()
 	{
 		return (account!=null)?account.getPasswordStr():password;
 	}
+	
 	public void setPassword(String newPassword)
 	{
 		if(CMProps.getBoolVar(CMProps.Bool.HASHPASSWORDS)
@@ -271,6 +308,7 @@ public class DefaultPlayerStats implements PlayerStats
 		if(account != null)
 			account.setPassword(password);
 	}
+	
 	public boolean matchesPassword(String checkPass)
 	{
 		if(account!=null)
@@ -280,29 +318,102 @@ public class DefaultPlayerStats implements PlayerStats
 		return checkPass.equalsIgnoreCase(password);
 	}
 	
-	public int getWrap(){return wrap;}
-	public void setWrap(int newWrap){wrap=newWrap;}
-	public int getPageBreak(){return pageBreak;}
-	public void setPageBreak(int newBreak){pageBreak=newBreak;}
-	public String notes(){return notes;}
-	public void setNotes(String newnotes){notes=newnotes;}
-	public void setChannelMask(int newMask){ channelMask=newMask;}
-	public int getChannelMask(){ return channelMask;}
-	public MOB replyTo(){    return replyTo;	}
-	public int replyType(){    return replyType;}
-	public long replyTime(){	return replyTime;    }
+	public int getWrap()
+	{
+		return wrap;
+	}
+	
+	public void setWrap(int newWrap)
+	{
+		wrap=newWrap;
+	}
+	
+	public int getPageBreak()
+	{
+		return pageBreak;
+	}
+	
+	public void setPageBreak(int newBreak)
+	{
+		pageBreak=newBreak;
+	}
+	
+	public String getNotes()
+	{
+		return notes;
+	}
+	
+	public void setNotes(String newnotes)
+	{
+		notes=newnotes;
+	}
+	
+	public void setChannelMask(int newMask)
+	{ 
+		channelMask=newMask;
+	}
+	
+	public int getChannelMask()
+	{ 
+		return channelMask;
+	}
+	
+	public MOB getReplyToMOB()
+	{    
+		return replyTo;	
+	}
+	
+	public int getReplyType()
+	{    
+		return replyType;
+	}
+	
+	public long getReplyToTime()
+	{	
+		return replyTime;    
+	}
+	
 	public void setReplyTo(MOB mob, int replyType)
 	{    
 		replyTo=mob;
 		this.replyType=replyType;
 	}
-	public void setPrompt(String newPrompt){prompt=newPrompt;}
-	public String getColorStr(){return colorStr;}
-	public void setColorStr(String newColors){colorStr=newColors;}
-	public String announceMessage(){return announceMsg;}
-	public void setAnnounceMessage(String msg){announceMsg=msg;}
-	public String getSavedPose(){return savedPose;}
-	public void setSavedPose(String msg){savedPose=msg;}
+	
+	public void setPrompt(String newPrompt)
+	{
+		prompt=newPrompt;
+	}
+	
+	public String getColorStr()
+	{
+		return colorStr;
+	}
+	
+	public void setColorStr(String newColors)
+	{
+		colorStr=newColors;
+	}
+	
+	public String getAnnounceMessage()
+	{
+		return announceMsg;
+	}
+	
+	public void setAnnounceMessage(String msg)
+	{
+		announceMsg=msg;
+	}
+	
+	public String getSavedPose()
+	{
+		return savedPose;
+	}
+	
+	public void setSavedPose(String msg)
+	{
+		savedPose=msg;
+	}
+	
 	public String getPrompt()
 	{
 		if((prompt==null)||(prompt.length()==0))
@@ -314,8 +425,13 @@ public class DefaultPlayerStats implements PlayerStats
 		return prompt;
 	}
 
-	public boolean isIntroducedTo(String name){return introductions.contains(name.toUpperCase().trim());}
-	public void introduceTo(String name){
+	public boolean isIntroducedTo(String name)
+	{
+		return introductions.contains(name.toUpperCase().trim());
+	}
+	
+	public void introduceTo(String name)
+	{
 		if((!isIntroducedTo(name))&&(name.trim().length()>0))
 			introductions.add(name.toUpperCase().trim());
 	}
@@ -354,6 +470,7 @@ public class DefaultPlayerStats implements PlayerStats
 	{
 		return new ReadOnlyList<String>(tellStack);
 	}
+	
 	private RoomnumberSet roomSet()
 	{
 		if(visitedRoomSet==null)
@@ -460,11 +577,30 @@ public class DefaultPlayerStats implements PlayerStats
 		return str.toString();
 	}
 	
-	public String poofIn(){return poofin;}
-	public String poofOut(){return poofout;}
-	public String tranPoofIn(){return tranpoofin;}
-	public String tranPoofOut(){return tranpoofout;}
-	public int[] getBirthday(){return birthday;}
+	public String getPoofIn()
+	{
+		return poofin;
+	}
+	
+	public String getPoofOut()
+	{
+		return poofout;
+	}
+	
+	public String getTranPoofIn()
+	{
+		return tranpoofin;
+	}
+	public String getTranPoofOut()
+	{
+		return tranpoofout;
+	}
+	
+	public int[] getBirthday()
+	{
+		return birthday;
+	}
+	
 	public int initializeBirthday(int ageHours, Race R)
 	{
 		birthday=new int[4];
@@ -498,6 +634,39 @@ public class DefaultPlayerStats implements PlayerStats
 			list.append((e.next())+";");
 		return list.toString();
 	}
+	
+	@Override
+    public void bumpPrideStat(PrideStat stat, int amt) 
+	{
+		if(this.getAccount()!=null)
+			this.getAccount().bumpPrideStat(stat, amt);
+		final long now=System.currentTimeMillis();
+		if(stat!=null)
+	    for(TimeClock.TimePeriod period : TimeClock.TimePeriod.values())
+	    {
+	    	if(period==TimeClock.TimePeriod.ALLTIME)
+	    		prideStats[period.ordinal()][stat.ordinal()]+=amt;
+	    	else
+	    	{
+		    	if(now>nextPeriods[period.ordinal()])
+		    	{
+					for(AccountStats.PrideStat stat2 : AccountStats.PrideStat.values())
+						prideStats[period.ordinal()][stat2.ordinal()]=0;
+					nextPeriods[period.ordinal()]=period.nextPeriod();
+		    	}
+	    		prideStats[period.ordinal()][stat.ordinal()]+=amt;
+	    	}
+	    }
+    }
+	
+	@Override
+    public int getPrideStat(TimePeriod period, PrideStat stat) 
+	{
+	    if((period==null)||(stat==null))
+	    	return 0;
+	    return prideStats[period.ordinal()][stat.ordinal()];
+    }
+	
 	public String getXML()
 	{
 		String f=getPrivateList(getFriends());
@@ -510,6 +679,11 @@ public class DefaultPlayerStats implements PlayerStats
 			String code=codes[x].toUpperCase();
 			rest.append("<"+code+">"+CMLib.xml().parseOutAngleBrackets(getStat(code))+"</"+code+">");
 		}
+		rest.append("<NEXTPRIDEPERIODS>").append(CMParms.toTightStringList(nextPeriods)).append("</NEXTPRIDEPERIODS>");
+		rest.append("<PRIDESTATS>");
+		for(TimeClock.TimePeriod period : TimeClock.TimePeriod.values())
+			rest.append(CMParms.toTightStringList(prideStats[period.ordinal()])).append(";");
+		rest.append("</PRIDESTATS>");
 		
 		return ((f.length()>0)?"<FRIENDS>"+f+"</FRIENDS>":"")
 			+((i.length()>0)?"<IGNORED>"+i+"</IGNORED>":"")
@@ -517,7 +691,7 @@ public class DefaultPlayerStats implements PlayerStats
 			+"<WRAP>"+wrap+"</WRAP>"
 			+"<THEME>"+theme+"</THEME>"
 			+"<PAGEBREAK>"+pageBreak+"</PAGEBREAK>"
-			+((account!=null)?("<ACCOUNT>"+account.accountName()+"</ACCOUNT>"):"")
+			+((account!=null)?("<ACCOUNT>"+account.getAccountName()+"</ACCOUNT>"):"")
 			+getTitleXML()
 			+getAliasXML()
 			+getLegacyXML()
@@ -618,26 +792,27 @@ public class DefaultPlayerStats implements PlayerStats
 		account = null;
 		if(xmlStr==null) 
 			return;
+		final XMLLibrary xmlLib=CMLib.xml();
 		final boolean debug=CMSecurity.isDebugging(CMSecurity.DbgFlag.PLAYERSTATS);
 		if(debug) Log.debugOut("XML="+xmlStr);
-		List<XMLLibrary.XMLpiece> xml = CMLib.xml().parseAllXML(xmlStr);
-		String str=CMLib.xml().getValFromPieces(xml,"FRIENDS");
+		List<XMLLibrary.XMLpiece> xml = xmlLib.parseAllXML(xmlStr);
+		String str=xmlLib.getValFromPieces(xml,"FRIENDS");
 		if(debug) Log.debugOut("FRIENDS="+str);
 		friends.clear();
 		friends.addAll(getHashFrom(str));
-		str=CMLib.xml().getValFromPieces(xml,"IGNORED");
+		str=xmlLib.getValFromPieces(xml,"IGNORED");
 		if(debug) Log.debugOut("IGNORED="+str);
 		ignored.clear();
 		ignored.addAll(getHashFrom(str));
-		str=CMLib.xml().getValFromPieces(xml,"INTROS");
+		str=xmlLib.getValFromPieces(xml,"INTROS");
 		if(debug) Log.debugOut("INTROS="+str);
 		introductions.clear();
 		introductions.addAll(getHashFrom(str));
-		str=CMLib.xml().getValFromPieces(xml, "THEME");
+		str=xmlLib.getValFromPieces(xml, "THEME");
 		if(debug) Log.debugOut("THEME="+str);
 		if(CMath.isInteger(str))
 			theme=CMath.s_int(str);
-		str = CMLib.xml().getValFromPieces(xml,"ACCTEXP");
+		str = xmlLib.getValFromPieces(xml,"ACCTEXP");
 		if(debug) Log.debugOut("ACCTEXP="+str);
 		if((str!=null)&&(str.length()>0))
 			setAccountExpiration(CMath.s_long(str));
@@ -647,62 +822,62 @@ public class DefaultPlayerStats implements PlayerStats
 			C.add(Calendar.DATE,CMProps.getIntVar(CMProps.Int.TRIALDAYS));
 			setAccountExpiration(C.getTimeInMillis());
 		}
-		str=CMLib.xml().getValFromPieces(xml,"WRAP");
+		str=xmlLib.getValFromPieces(xml,"WRAP");
 		if(debug) Log.debugOut("WRAP="+str);
 		if(CMath.isInteger(str)) 
 			wrap=CMath.s_int(str);
-		str=CMLib.xml().getValFromPieces(xml,"PAGEBREAK");
+		str=xmlLib.getValFromPieces(xml,"PAGEBREAK");
 		if(debug) Log.debugOut("PAGEBREAK="+str);
 		if(CMath.isInteger(str)) 
 			pageBreak=CMath.s_int(str);
 		else
 			pageBreak=CMProps.getIntVar(CMProps.Int.PAGEBREAK);
-		str=CMLib.xml().restoreAngleBrackets(CMLib.xml().getValFromPieces(xml,"SECGRPS"));
+		str=xmlLib.restoreAngleBrackets(xmlLib.getValFromPieces(xml,"SECGRPS"));
 		if(debug) Log.debugOut("SECGRPS="+str);
 		getSetSecurityFlags(str);
 		setAliasXML(xml);
 		setTitleXML(xml);
 		setLegacyXML(xml);
-		str=CMLib.xml().getValFromPieces(xml,"BIRTHDAY");
+		str=xmlLib.getValFromPieces(xml,"BIRTHDAY");
 		if(debug) Log.debugOut("BIRTHDAY="+str);
 		setBirthday(str);
 		
-		poofin=CMLib.xml().getValFromPieces(xml,"POOFIN");
+		poofin=xmlLib.getValFromPieces(xml,"POOFIN");
 		if(debug) Log.debugOut("POOFIN="+poofin);
 		if(poofin==null) poofin="";
-		poofin=CMLib.xml().restoreAngleBrackets(poofin);
+		poofin=xmlLib.restoreAngleBrackets(poofin);
 		
-		poofout=CMLib.xml().getValFromPieces(xml,"POOFOUT");
+		poofout=xmlLib.getValFromPieces(xml,"POOFOUT");
 		if(debug) Log.debugOut("POOFOUT="+poofout);
 		if(poofout==null) poofout="";
-		poofout=CMLib.xml().restoreAngleBrackets(poofout);
+		poofout=xmlLib.restoreAngleBrackets(poofout);
 		
-		tranpoofin=CMLib.xml().getValFromPieces(xml,"TRANPOOFIN");
+		tranpoofin=xmlLib.getValFromPieces(xml,"TRANPOOFIN");
 		if(debug) Log.debugOut("TRANPOOFIN="+tranpoofin);
 		if(tranpoofin==null) tranpoofin="";
-		tranpoofin=CMLib.xml().restoreAngleBrackets(tranpoofin);
+		tranpoofin=xmlLib.restoreAngleBrackets(tranpoofin);
 		
-		tranpoofout=CMLib.xml().getValFromPieces(xml,"TRANPOOFOUT");
+		tranpoofout=xmlLib.getValFromPieces(xml,"TRANPOOFOUT");
 		if(debug) Log.debugOut("TRANPOOFOUT="+tranpoofout);
 		if(tranpoofout==null) tranpoofout="";
-		tranpoofout=CMLib.xml().restoreAngleBrackets(tranpoofout);
+		tranpoofout=xmlLib.restoreAngleBrackets(tranpoofout);
 		
-		announceMsg=CMLib.xml().getValFromPieces(xml,"ANNOUNCE");
+		announceMsg=xmlLib.getValFromPieces(xml,"ANNOUNCE");
 		if(debug) Log.debugOut("ANNOUNCE="+announceMsg);
 		if(announceMsg==null) announceMsg="";
-		announceMsg=CMLib.xml().restoreAngleBrackets(announceMsg);
+		announceMsg=xmlLib.restoreAngleBrackets(announceMsg);
 		
-		savedPose=CMLib.xml().getValFromPieces(xml,"POSE");
+		savedPose=xmlLib.getValFromPieces(xml,"POSE");
 		if(debug) Log.debugOut("POSE="+savedPose);
 		if(savedPose==null) savedPose="";
-		savedPose=CMLib.xml().restoreAngleBrackets(savedPose);
+		savedPose=xmlLib.restoreAngleBrackets(savedPose);
 		
-		notes=CMLib.xml().getValFromPieces(xml,"NOTES");
+		notes=xmlLib.getValFromPieces(xml,"NOTES");
 		if(debug) Log.debugOut("NOTES="+notes);
 		if(notes==null) notes="";
-		notes=CMLib.xml().restoreAngleBrackets(notes);
+		notes=xmlLib.restoreAngleBrackets(notes);
 		
-		str=CMLib.xml().getValFromPieces(xml,"DATES");
+		str=xmlLib.getValFromPieces(xml,"DATES");
 		if(debug) Log.debugOut("DATES="+str);
 		if(str==null) str="";
 		// now parse all the level date/times
@@ -727,7 +902,7 @@ public class DefaultPlayerStats implements PlayerStats
 		}
 		if(levelInfo.size()==0)
 			levelInfo.addElement(Integer.valueOf(0),Long.valueOf(System.currentTimeMillis()),"");
-		str = CMLib.xml().getValFromPieces(xml,"AREAS");
+		str = xmlLib.getValFromPieces(xml,"AREAS");
 		if(debug) Log.debugOut("AREAS="+str);
 		if(str!=null)
 			roomSet().parseXML("<AREAS>"+str+"</AREAS>");
@@ -736,12 +911,21 @@ public class DefaultPlayerStats implements PlayerStats
 		String[] codes=getStatCodes();
 		for(int i=getSaveStatIndex();i<codes.length;i++)
 		{
-			str=CMLib.xml().getValFromPieces(xml,codes[i].toUpperCase());
+			str=xmlLib.getValFromPieces(xml,codes[i].toUpperCase());
 			if(str==null) str="";
-			setStat(codes[i].toUpperCase(),CMLib.xml().restoreAngleBrackets(str));
+			setStat(codes[i].toUpperCase(),xmlLib.restoreAngleBrackets(str));
 		}
+		final String[] nextPeriods=xmlLib.getValFromPieces(xml, "NEXTPRIDEPERIODS").split(",");
+		final String[] prideStats=xmlLib.getValFromPieces(xml, "PRIDESTATS").split(";");
+		Pair<Long,int[]>[] finalPrideStats = CMLib.players().parsePrideStats(nextPeriods, prideStats);
+		for(TimeClock.TimePeriod period : TimeClock.TimePeriod.values())
+			if(period.ordinal()>finalPrideStats.length)
+			{
+				this.nextPeriods[period.ordinal()]=finalPrideStats[period.ordinal()].first.longValue();
+				this.prideStats[period.ordinal()]=finalPrideStats[period.ordinal()].second;
+			}
 		
-		str = CMLib.xml().getValFromPieces(xml,"ACCOUNT");
+		str = xmlLib.getValFromPieces(xml,"ACCOUNT");
 		if(debug) Log.debugOut("ACCOUNT="+str);
 		if(CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)>1)
 		{
@@ -809,13 +993,27 @@ public class DefaultPlayerStats implements PlayerStats
 		accountExpires=newVal;
 	}
 	
-	public void addRoomVisit(Room R)
+	public boolean addRoomVisit(Room R)
 	{
 		if((!CMSecurity.isDisabled(CMSecurity.DisFlag.ROOMVISITS))
 		&&(R!=null)
 		&&(!CMath.bset(R.phyStats().sensesMask(),PhyStats.SENSE_ROOMUNEXPLORABLE))
-		&&(!(R.getArea() instanceof AutoGenArea)))
+		&&(!(R.getArea() instanceof AutoGenArea))
+		&&(!hasVisited(R)))
+		{
+			int oldCount=roomSet().roomCount(R.getArea().Name());
 			roomSet().add(CMLib.map().getExtendedRoomID(R));
+			int newCount=roomSet().roomCount(R.getArea().Name());
+			if(newCount > oldCount)
+			{
+				bumpPrideStat(AccountStats.PrideStat.ROOMS_EXPLORED, 1);
+				int numRooms=R.getArea().getAreaIStats()[Area.Stats.VISITABLE_ROOMS.ordinal()];
+				if((numRooms>=0)&&(newCount==numRooms))
+					bumpPrideStat(AccountStats.PrideStat.AREAS_EXPLORED, 1);
+			}
+			return true;
+		}
+		return false;
 	}
 	public boolean hasVisited(Room R)
 	{

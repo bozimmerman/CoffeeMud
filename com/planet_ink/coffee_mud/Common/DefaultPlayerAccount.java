@@ -8,6 +8,7 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.TimeClock.TimePeriod;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
@@ -53,75 +54,31 @@ public class DefaultPlayerAccount implements PlayerAccount
 	protected String[]			xtraValues			= null;
 	protected SHashSet<String>	acctFlags			= new SHashSet<String>();
 	protected volatile MOB 		fakePlayerM			= null;
+	protected long[]			nextPeriods			= new long[TimeClock.TimePeriod.values().length];
+	protected int[][]			prideStats			= new int[TimeClock.TimePeriod.values().length][AccountStats.PrideStat.values().length];
 	
 	protected SVector<PlayerLibrary.ThinPlayer> thinPlayers = new SVector<PlayerLibrary.ThinPlayer>();
 
-	public DefaultPlayerAccount() {
+	public DefaultPlayerAccount() 
+	{
 		super();
 		xtraValues=CMProps.getExtraStatCodesHolder(this);
 	}
 	
-	protected static String[] CODES={"CLASS","FRIENDS","IGNORE","LASTIP","LASTDATETIME",
-									 "NOTES","ACCTEXPIRATION","FLAGS","EMAIL"};
-	public String getStat(String code)
+	public CMObject newInstance()
 	{
-		switch(getCodeNum(code))
+		try
 		{
-		case 0: return ID();
-		case 1: return getPrivateList(getFriends());
-		case 2: return getPrivateList(getIgnored());
-		case 3: return lastIP;
-		case 4: return ""+lastDateTime;
-		case 5: return notes;
-		case 6: return ""+accountExpiration;
-		case 7: return CMParms.toStringList(acctFlags);
-		case 8: return email;
-		default:
-			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
+			return getClass().newInstance();
 		}
-	}
-	public void setStat(String code, String val)
-	{
-		switch(getCodeNum(code))
+		catch(Exception e)
 		{
-		case 0: break;
-		case 1: { friends.clear(); friends.addAll(getHashFrom(val)); break; }
-		case 2: { ignored.clear(); ignored.addAll(getHashFrom(val)); break; }
-		case 3: lastIP=val; break;
-		case 4: lastDateTime=CMath.s_long(val); break;
-		case 5: notes=val; break;
-		case 6: accountExpiration=CMath.s_long(val); break;
-		case 7: acctFlags = new SHashSet<String>(CMParms.parseCommandFlags(val.toUpperCase(),PlayerAccount.FLAG_DESCS)); break;
-		case 8: email=val; break;
-		default:
-			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
-			break;
+			return new DefaultPlayerStats();
 		}
-	}
-	public int getSaveStatIndex(){return (xtraValues==null)?getStatCodes().length:getStatCodes().length-xtraValues.length;}
-	private static String[] codes=null;
-	public String[] getStatCodes(){
-		if(codes==null)
-			codes=CMProps.getStatCodesList(CODES,this);
-		return codes;
-	}
-	public boolean isStat(String code){ return CMParms.indexOf(getStatCodes(),code.toUpperCase().trim())>=0;}
-	protected int getCodeNum(String code){
-		for(int i=0;i<CODES.length;i++)
-			if(code.equalsIgnoreCase(CODES[i])) return i;
-		return -1;
-	}
-	public boolean sameAs(PlayerAccount E)
-	{
-		if(!(E instanceof DefaultPlayerAccount)) return false;
-		for(int i=0;i<getStatCodes().length;i++)
-			if(!E.getStat(getStatCodes()[i]).equals(getStat(getStatCodes()[i])))
-				return false;
-		return true;
 	}
 	
-	public CMObject newInstance(){try{return getClass().newInstance();}catch(Exception e){return new DefaultPlayerStats();}}
 	public void initializeClass(){}
+	
 	public CMObject copyOf()
 	{
 		try
@@ -137,15 +94,54 @@ public class DefaultPlayerAccount implements PlayerAccount
 			return new DefaultPlayerStats();
 		}
 	}
-	public String lastIP(){return lastIP;}
-	public void setLastIP(String ip){lastIP=ip;}
-	public String getEmail(){if(email==null) return ""; return email;}
-	public void setEmail(String newAdd){email=newAdd;}
-	public long lastUpdated(){return lastUpdated;}
-	public void setLastUpdated(long time){lastUpdated=time;}
-	public long lastDateTime(){return lastDateTime;}
-	public void setLastDateTime(long C){ lastDateTime=C;}
-	public String getPasswordStr(){return password;}
+	
+	public String getLastIP()
+	{
+		return lastIP;
+	}
+	
+	public void setLastIP(String ip)
+	{
+		lastIP=ip;
+	}
+	
+	public String getEmail()
+	{
+		if(email==null) 
+			return ""; 
+		return email;
+	}
+	
+	public void setEmail(String newAdd)
+	{
+		email=newAdd;
+	}
+	
+	public long getLastUpdated()
+	{
+		return lastUpdated;
+	}
+	
+	public void setLastUpdated(long time)
+	{
+		lastUpdated=time;
+	}
+	
+	public long getLastDateTime()
+	{
+		return lastDateTime;
+	}
+	
+	public void setLastDateTime(long C)
+	{ 
+		lastDateTime=C;
+	}
+	
+	public String getPasswordStr()
+	{
+		return password;
+	}
+	
 	public void setPassword(String newPassword)
 	{
 		if(CMProps.getBoolVar(CMProps.Bool.HASHPASSWORDS)
@@ -154,15 +150,25 @@ public class DefaultPlayerAccount implements PlayerAccount
 		else
 			password=newPassword;
 	}
+	
 	public boolean matchesPassword(String checkPass)
 	{
 		if(CMLib.encoder().isARandomHashString(password))
 			return CMLib.encoder().checkAgainstRandomHashString(checkPass, password);
 		return checkPass.equalsIgnoreCase(password);
 	}
-	public String notes(){return notes;}
-	public void setNotes(String newnotes){notes=newnotes;}
-	public SHashSet<String> getHashFrom(String str)
+	
+	public String getNotes()
+	{
+		return notes;
+	}
+	
+	public void setNotes(String newnotes)
+	{
+		notes=newnotes;
+	}
+	
+	protected SHashSet<String> getHashFrom(String str)
 	{
 		SHashSet<String> h=new SHashSet<String>();
 		int x=str.indexOf(';');
@@ -178,9 +184,46 @@ public class DefaultPlayerAccount implements PlayerAccount
 		return h;
 	}
 
-	public Set<String> getFriends(){return friends;}
-	public Set<String> getIgnored(){return ignored;}
+	public Set<String> getFriends()
+	{
+		return friends;
+	}
+	
+	public Set<String> getIgnored()
+	{
+		return ignored;
+	}
 
+	@Override
+    public void bumpPrideStat(PrideStat stat, int amt) 
+	{
+		final long now=System.currentTimeMillis();
+		if(stat!=null)
+	    for(TimeClock.TimePeriod period : TimeClock.TimePeriod.values())
+	    {
+	    	if(period==TimeClock.TimePeriod.ALLTIME)
+	    		prideStats[period.ordinal()][stat.ordinal()]+=amt;
+	    	else
+	    	{
+		    	if(now>nextPeriods[period.ordinal()])
+		    	{
+					for(AccountStats.PrideStat stat2 : AccountStats.PrideStat.values())
+						prideStats[period.ordinal()][stat2.ordinal()]=0;
+					nextPeriods[period.ordinal()]=period.nextPeriod();
+		    	}
+	    		prideStats[period.ordinal()][stat.ordinal()]+=amt;
+	    	}
+	    }
+    }
+	
+	@Override
+    public int getPrideStat(TimePeriod period, PrideStat stat) 
+	{
+	    if((period==null)||(stat==null))
+	    	return 0;
+	    return prideStats[period.ordinal()][stat.ordinal()];
+    }
+	
 	public MOB getAccountMob()
 	{
 		if(fakePlayerM!=null)
@@ -190,7 +233,7 @@ public class DefaultPlayerAccount implements PlayerAccount
 			if(fakePlayerM!=null)
 				return fakePlayerM;
 			fakePlayerM=CMClass.getMOB("StdMOB");
-			fakePlayerM.setName(accountName());
+			fakePlayerM.setName(getAccountName());
 			fakePlayerM.setPlayerStats((PlayerStats)CMClass.getCommon("DefaultPlayerStats"));
 			fakePlayerM.playerStats().setAccount(this);
 			fakePlayerM.playerStats().setEmail(getEmail());
@@ -223,6 +266,11 @@ public class DefaultPlayerAccount implements PlayerAccount
 			else
 				rest.append("<"+code+">"+libXML.parseOutAngleBrackets(value)+"</"+code+">");
 		}
+		rest.append("<NEXTPRIDEPERIODS>").append(CMParms.toTightStringList(nextPeriods)).append("</NEXTPRIDEPERIODS>");
+		rest.append("<PRIDESTATS>");
+		for(TimeClock.TimePeriod period : TimeClock.TimePeriod.values())
+			rest.append(CMParms.toTightStringList(prideStats[period.ordinal()])).append(";");
+		rest.append("</PRIDESTATS>");
 		return rest.toString();
 	}
 
@@ -237,15 +285,39 @@ public class DefaultPlayerAccount implements PlayerAccount
 			if(val==null) val="";
 			setStat(codes[i].toUpperCase(),libXML.restoreAngleBrackets(val));
 		}
+		final String[] nextPeriods=libXML.getValFromPieces(xml, "NEXTPRIDEPERIODS").split(",");
+		final String[] prideStats=libXML.getValFromPieces(xml, "PRIDESTATS").split(";");
+		Pair<Long,int[]>[] finalPrideStats = CMLib.players().parsePrideStats(nextPeriods, prideStats);
+		for(TimeClock.TimePeriod period : TimeClock.TimePeriod.values())
+			if(period.ordinal()>finalPrideStats.length)
+			{
+				this.nextPeriods[period.ordinal()]=finalPrideStats[period.ordinal()].first.longValue();
+				this.prideStats[period.ordinal()]=finalPrideStats[period.ordinal()].second;
+			}
+		
 	}
 
 
 	// Acct Expire Code
-	public long getAccountExpiration() {return accountExpiration;}
-	public void setAccountExpiration(long newVal){accountExpiration=newVal;}
+	public long getAccountExpiration() 
+	{
+		return accountExpiration;
+	}
 	
-	public String accountName() { return accountName;}
-	public void setAccountName(String name) { accountName = name;}
+	public void setAccountExpiration(long newVal)
+	{
+		accountExpiration=newVal;
+	}
+	
+	public String getAccountName() 
+	{ 
+		return accountName;
+	}
+	
+	public void setAccountName(String name) 
+	{ 
+		accountName = name;
+	}
 	
 	public void addNewPlayer(MOB mob) 
 	{
@@ -300,6 +372,7 @@ public class DefaultPlayerAccount implements PlayerAccount
 		catch(Exception e) {}
 		thinPlayers.clear();
 	}
+	
 	public Enumeration<MOB> getLoadPlayers() 
 	{
 		Vector<MOB> mobs = new Vector<MOB>(players.size());
@@ -310,6 +383,7 @@ public class DefaultPlayerAccount implements PlayerAccount
 		}
 		return mobs.elements();
 	}
+	
 	public Enumeration<PlayerLibrary.ThinPlayer> getThinPlayers() 
 	{
 		synchronized(thinPlayers)
@@ -325,10 +399,14 @@ public class DefaultPlayerAccount implements PlayerAccount
 		}
 		return thinPlayers.elements();
 	}
-	public Enumeration<String> getPlayers() {
+	
+	public Enumeration<String> getPlayers() 
+	{
 		return players.elements();
 	}
-	public void setPlayerNames(Vector<String> names) {
+	
+	public void setPlayerNames(Vector<String> names) 
+	{
 		if(names != null)
 		{
 			players = new SVector<String>(names);
@@ -340,8 +418,17 @@ public class DefaultPlayerAccount implements PlayerAccount
 			}
 		}
 	}
-	public int numPlayers() { return players.size();}
-	public boolean isSet(String flagName) { return acctFlags.contains(flagName.toUpperCase());}
+	
+	public int numPlayers() 
+	{ 
+		return players.size();
+	}
+	
+	public boolean isSet(String flagName) 
+	{ 
+		return acctFlags.contains(flagName.toUpperCase());
+	}
+	
 	public void setFlag(String flagName, boolean setOrUnset)
 	{
 		if(setOrUnset)
@@ -350,5 +437,65 @@ public class DefaultPlayerAccount implements PlayerAccount
 			acctFlags.remove(flagName.toUpperCase());
 	}
 	
+	protected static String[] CODES={"CLASS","FRIENDS","IGNORE","LASTIP","LASTDATETIME","NOTES","ACCTEXPIRATION","FLAGS","EMAIL"};
+	
+	public String getStat(String code)
+	{
+		switch(getCodeNum(code))
+		{
+		case 0: return ID();
+		case 1: return getPrivateList(getFriends());
+		case 2: return getPrivateList(getIgnored());
+		case 3: return lastIP;
+		case 4: return ""+lastDateTime;
+		case 5: return notes;
+		case 6: return ""+accountExpiration;
+		case 7: return CMParms.toStringList(acctFlags);
+		case 8: return email;
+		default:
+			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
+		}
+	}
+	
+	public void setStat(String code, String val)
+	{
+		switch(getCodeNum(code))
+		{
+		case 0: break;
+		case 1: { friends.clear(); friends.addAll(getHashFrom(val)); break; }
+		case 2: { ignored.clear(); ignored.addAll(getHashFrom(val)); break; }
+		case 3: lastIP=val; break;
+		case 4: lastDateTime=CMath.s_long(val); break;
+		case 5: notes=val; break;
+		case 6: accountExpiration=CMath.s_long(val); break;
+		case 7: acctFlags = new SHashSet<String>(CMParms.parseCommandFlags(val.toUpperCase(),PlayerAccount.FLAG_DESCS)); break;
+		case 8: email=val; break;
+		default:
+			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
+			break;
+		}
+	}
+	public int getSaveStatIndex(){return (xtraValues==null)?getStatCodes().length:getStatCodes().length-xtraValues.length;}
+	private static String[] codes=null;
+	public String[] getStatCodes(){
+		if(codes==null)
+			codes=CMProps.getStatCodesList(CODES,this);
+		return codes;
+	}
+	public boolean isStat(String code){ return CMParms.indexOf(getStatCodes(),code.toUpperCase().trim())>=0;}
+	protected int getCodeNum(String code){
+		for(int i=0;i<CODES.length;i++)
+			if(code.equalsIgnoreCase(CODES[i])) return i;
+		return -1;
+	}
+	public boolean sameAs(PlayerAccount E)
+	{
+		if(!(E instanceof DefaultPlayerAccount)) 
+			return false;
+		for(int i=0;i<getStatCodes().length;i++)
+			if(!E.getStat(getStatCodes()[i]).equals(getStat(getStatCodes()[i])))
+				return false;
+		return true;
+	}
 	public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 }

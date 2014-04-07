@@ -444,7 +444,7 @@ public class Test extends StdCommand
 				TimeClock NOW=mob.location().getArea().getTimeObj();
 				C.setMonth(mudmonth);
 				C.setDayOfMonth(mudday);
-				C.setTimeOfDay(0);
+				C.setHourOfDay(0);
 				if((mudmonth<NOW.getMonth())
 				||((mudmonth==NOW.getMonth())&&(mudday<NOW.getDayOfMonth())))
 					C.setYear(NOW.getYear()+1);

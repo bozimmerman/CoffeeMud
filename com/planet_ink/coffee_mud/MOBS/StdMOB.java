@@ -46,7 +46,8 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 @SuppressWarnings({ "unchecked", "rawtypes" })
 public class StdMOB implements MOB
 {
-	public String ID() {
+	public String ID() 
+	{
 		return "StdMOB";
 	}
 
@@ -144,27 +145,33 @@ public class StdMOB implements MOB
 		xtraValues = CMProps.getExtraStatCodesHolder(this);
 	}
 
-	public long lastTickedDateTime() {
+	public long lastTickedDateTime() 
+	{
 		return lastTickedTime;
 	}
 
-	public void flagVariableEq() {
+	public void flagVariableEq() 
+	{
 		lastTickedTime = -3;
 	}
 
-	public long getAgeMinutes()	{
+	public long getAgeMinutes()	
+	{
 		return ageMinutes;
 	}
 
-	public int getPractices() {
+	public int getPractices() 
+	{
 		return practices;
 	}
 
-	public int getExperience() {
+	public int getExperience() 
+	{
 		return experience;
 	}
 
-	public int getExpNextLevel() {
+	public int getExpNextLevel() 
+	{
 		return CMLib.leveler().getLevelExperience(basePhyStats().level());
 	}
 
@@ -205,50 +212,62 @@ public class StdMOB implements MOB
 		return ExpNextLevel - getExperience();
 	}
 
-	public int getTrains() {
+	public int getTrains() 
+	{
 		return trains;
 	}
 
-	public int getMoney() {
+	public int getMoney() 
+	{
 		return money;
 	}
 
-	public double getMoneyVariation() {
+	public double getMoneyVariation() 
+	{
 		return moneyVariation;
 	}
 
-	public int getBitmap() {
+	public int getBitmap() 
+	{
 		return attributesBitmap;
 	}
 
-	public void setAgeMinutes(long newVal) {
+	public void setAgeMinutes(long newVal) 
+	{
 		ageMinutes = newVal;
 	}
 
-	public void setExperience(int newVal) {
+	public void setExperience(int newVal) 
+	{
 		experience = newVal;
 	}
 
-	public void setExpNextLevel(int newVal) {
+	public void setExpNextLevel(int newVal) 
+	{
 	}
 
-	public void setPractices(int newVal) {
+	public void setPractices(int newVal) 
+	{
 		practices = newVal;
 	}
 
-	public void setTrains(int newVal) {
+	public void setTrains(int newVal) 
+	{
 		trains = newVal;
 	}
 
-	public void setMoney(int newVal) {
+	public void setMoney(int newVal) 
+	{
 		money = newVal;
 	}
 
-	public void setMoneyVariation(double newVal) {
+	public void setMoneyVariation(double newVal) 
+	{
 		moneyVariation = newVal;
 	}
 
-	public void setBitmap(int newVal) {
+	public void setBitmap(int newVal) 
+	{
 		attributesBitmap = newVal;
 	}
 
@@ -264,35 +283,43 @@ public class StdMOB implements MOB
 		return msg.toString();
 	}
 
-	public String getLiegeID() {
+	public String getLiegeID() 
+	{
 		return liegeID;
 	}
 
-	public String getWorshipCharID() {
+	public String getWorshipCharID() 
+	{
 		return worshipCharID;
 	}
 
-	public int getWimpHitPoint() {
+	public int getWimpHitPoint() 
+	{
 		return wimpHitPoint;
 	}
 
-	public int getQuestPoint() {
+	public int getQuestPoint() 
+	{
 		return questPoint;
 	}
 
-	public void setLiegeID(String newVal) {
+	public void setLiegeID(String newVal) 
+	{
 		liegeID = newVal;
 	}
 
-	public void setWorshipCharID(String newVal) {
+	public void setWorshipCharID(String newVal) 
+	{
 		worshipCharID = newVal;
 	}
 
-	public void setWimpHitPoint(int newVal) {
+	public void setWimpHitPoint(int newVal) 
+	{
 		wimpHitPoint = newVal;
 	}
 
-	public void setQuestPoint(int newVal) {
+	public void setQuestPoint(int newVal) 
+	{
 		questPoint = newVal;
 	}
 

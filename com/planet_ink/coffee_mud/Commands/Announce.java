@@ -43,8 +43,8 @@ public class Announce extends StdCommand
 	public void sendAnnounce(MOB from, String announcement, Session S)
 	{
 	  	StringBuffer Message=new StringBuffer("");
-		if((from!=null)&&(from.playerStats()!=null)&&(from.playerStats().announceMessage().length()>0))
-			Message.append(from.playerStats().announceMessage()+" '"+announcement+"'.^.^N");
+		if((from!=null)&&(from.playerStats()!=null)&&(from.playerStats().getAnnounceMessage().length()>0))
+			Message.append(from.playerStats().getAnnounceMessage()+" '"+announcement+"'.^.^N");
 		else
 		{
 		  	int alignType=2;
@@ -94,7 +94,7 @@ public class Announce extends StdCommand
 		{
 			String s=CMParms.combine(commands,1);
 			if(s.length()==0)
-				mob.tell("Your announce message is currently: "+mob.playerStats().announceMessage());
+				mob.tell("Your announce message is currently: "+mob.playerStats().getAnnounceMessage());
 			else
 			{
 				if(mob.playerStats()!=null)

@@ -959,7 +959,7 @@ public class MOBloader
 				+", CMWIMP="+mob.getWimpHitPoint()
 				+", CMQUES="+mob.getQuestPoint()
 				+", CMROID='"+strStartRoomID+"||"+strOtherRoomID+"'"
-				+", CMDATE='"+pstats.lastDateTime()+"'"
+				+", CMDATE='"+pstats.getLastDateTime()+"'"
 				+", CMCHAN="+pstats.getChannelMask()
 				+", CMATTA="+mob.basePhyStats().attackAdjustment()
 				+", CMAMOR="+mob.basePhyStats().armor()
@@ -970,7 +970,7 @@ public class MOBloader
 				+", CMWEIT="+mob.basePhyStats().weight()
 				+", CMPRPT=?"
 				+", CMCOLR=?"
-				+", CMLSIP='"+pstats.lastIP()+"'"
+				+", CMLSIP='"+pstats.getLastIP()+"'"
 				+", CMEMAL=?"
 				+", CMPFIL=?"
 				+", CMSAVE=?"
@@ -1302,23 +1302,23 @@ public class MOBloader
 	{
 		if(account == null) return;
 		String characters = CMParms.toSemicolonList(account.getPlayers());
-		DB.updateWithClobs("UPDATE CMACCT SET CMPASS='"+account.getPasswordStr()+"',  CMCHRS=?,  CMAXML=?  WHERE CMANAM='"+account.accountName()+"'",
+		DB.updateWithClobs("UPDATE CMACCT SET CMPASS='"+account.getPasswordStr()+"',  CMCHRS=?,  CMAXML=?  WHERE CMANAM='"+account.getAccountName()+"'",
 				new String[][]{{characters,account.getXML()}});
 	}
 
 	public void DBDeleteAccount(PlayerAccount account)
 	{
 		if(account == null) return;
-		DB.update("DELETE FROM CMACCT WHERE CMANAM='"+account.accountName()+"'");
+		DB.update("DELETE FROM CMACCT WHERE CMANAM='"+account.getAccountName()+"'");
 	}
 
 	public void DBCreateAccount(PlayerAccount account)
 	{
 		if(account == null) return;
-		account.setAccountName(CMStrings.capitalizeAndLower(account.accountName()));
+		account.setAccountName(CMStrings.capitalizeAndLower(account.getAccountName()));
 		String characters = CMParms.toSemicolonList(account.getPlayers());
 		DB.updateWithClobs("INSERT INTO CMACCT (CMANAM, CMPASS, CMCHRS, CMAXML) "
-				+"VALUES ('"+account.accountName()+"','"+account.getPasswordStr()+"',?,?)",new String[][]{{characters,account.getXML()}});
+				+"VALUES ('"+account.getAccountName()+"','"+account.getPasswordStr()+"',?,?)",new String[][]{{characters,account.getXML()}});
 	}
 	
 	public PlayerAccount MakeAccount(String username, ResultSet R) throws SQLException

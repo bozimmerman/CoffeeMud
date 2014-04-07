@@ -124,7 +124,7 @@ public class PlayerData extends StdWebMacro
 		case 0: str.append(M.Name()+", "); break;
 		case 1: str.append(M.description()+", "); break;
 		case 2:  if(M.playerStats()!=null)
-					str.append(CMLib.time().date2String(M.playerStats().lastDateTime())+", ");
+					str.append(CMLib.time().date2String(M.playerStats().getLastDateTime())+", ");
 				 break;
 		case 3: if(M.playerStats()!=null)
 					str.append(M.playerStats().getEmail()+", ");
@@ -206,7 +206,7 @@ public class PlayerData extends StdWebMacro
 		case 33: str.append(M.phyStats().weight()+", "); break;
 		case 34: str.append(CMStrings.capitalizeAndLower(M.baseCharStats().genderName())+", "); break;
 		case 35: if(M.playerStats()!=null)
-					 str.append(M.playerStats().lastDateTime()+", ");
+					 str.append(M.playerStats().getLastDateTime()+", ");
 				 break;
 		case 36: str.append(M.curState().getHitPoints()+", "); break;
 		case 37: str.append(M.curState().getMana()+", "); break;
@@ -219,7 +219,7 @@ public class PlayerData extends StdWebMacro
 					 str.append(M.session().getAddress()+", ");
 				 else
 				 if(M.playerStats()!=null)
-					 str.append(M.playerStats().lastIP()+", ");
+					 str.append(M.playerStats().getLastIP()+", ");
 				 break;
 		case 42:  str.append(M.getQuestPoint()+", "); break;
 		case 43: str.append(M.maxState().getHitPoints()+", "); break;
@@ -240,7 +240,7 @@ public class PlayerData extends StdWebMacro
 					 str.append("false, ");
 				 break;
 		case 50: if(M.playerStats()!=null)
-				 	str.append(M.playerStats().notes()+", ");
+				 	str.append(M.playerStats().getNotes()+", ");
 				 break;
 		case 51: if(M.playerStats()!=null)
 				 {
@@ -341,7 +341,7 @@ public class PlayerData extends StdWebMacro
 		}
 		case 65:
 			if((M.playerStats()!=null)&&(M.playerStats().getAccount()!=null))
-				str.append(M.playerStats().getAccount().accountName());
+				str.append(M.playerStats().getAccount().getAccountName());
 			break;
 		}
 		return str.toString();

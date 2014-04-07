@@ -136,7 +136,7 @@ public class Destroy extends StdCommand
 			return;
 		}
 		String playerList = CMParms.toStringList(theAccount.getPlayers());
-		if(mob.session().confirm("This will complete OBLITERATE the account '"+theAccount.accountName()+"' and players '"+playerList+"' forever.  Are you SURE?! (y/N)?","N"))
+		if(mob.session().confirm("This will complete OBLITERATE the account '"+theAccount.getAccountName()+"' and players '"+playerList+"' forever.  Are you SURE?! (y/N)?","N"))
 		{
 			for(Enumeration<String> p=theAccount.getPlayers();p.hasMoreElements();)
 			{
@@ -148,7 +148,7 @@ public class Destroy extends StdCommand
 			}
 			CMLib.players().obliterateAccountOnly(theAccount);
 			mob.location().recoverRoomStats();
-			Log.sysOut("Destroy",mob.Name()+" destroyed account "+theAccount.accountName()+" and players '"+playerList+"'.");
+			Log.sysOut("Destroy",mob.Name()+" destroyed account "+theAccount.getAccountName()+" and players '"+playerList+"'.");
 		}
 	}
 

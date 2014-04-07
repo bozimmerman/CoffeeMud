@@ -163,8 +163,8 @@ public class DefaultClimate implements Climate
 	}
 	public boolean canSeeTheStars(Room room)
 	{
-		if(((room.getArea().getTimeObj().getTODCode()!=TimeClock.TIME_NIGHT)
-				&&(room.getArea().getTimeObj().getTODCode()!=TimeClock.TIME_DUSK))
+		if(((room.getArea().getTimeObj().getTODCode()!=TimeClock.TimeOfDay.NIGHT)
+				&&(room.getArea().getTimeObj().getTODCode()!=TimeClock.TimeOfDay.DUSK))
 		||(!CMLib.map().hasASky(room)))
 			return false;
 		switch(weatherType(room))
@@ -185,7 +185,7 @@ public class DefaultClimate implements Climate
 
 	public boolean canSeeTheSun(Room room)
 	{
-		if(((room.getArea().getTimeObj().getTODCode()!=TimeClock.TIME_DAY)&&(room.getArea().getTimeObj().getTODCode()!=TimeClock.TIME_DAWN))
+		if(((room.getArea().getTimeObj().getTODCode()!=TimeClock.TimeOfDay.DAY)&&(room.getArea().getTimeObj().getTODCode()!=TimeClock.TimeOfDay.DAWN))
 		||(!CMLib.map().hasASky(room))
 		||(CMLib.flags().isInDark(room)))
 			return false;
@@ -267,7 +267,7 @@ public class DefaultClimate implements Climate
 			for(int g=0;g<Climate.NUM_WEATHER;g++)
 			{
 				// take the base chance for a seasonal weather occurrence (rain in winter, etc)
-				int seasonalNum=seasonal[(A.getTimeObj().getSeasonCode()*Climate.NUM_WEATHER)+g];
+				int seasonalNum=seasonal[(A.getTimeObj().getSeasonCode().ordinal()*Climate.NUM_WEATHER)+g];
 				// find the chance of changing from what it will be, to some new condition.
 				int changeNum=changeMap[(nextWeather*Climate.NUM_WEATHER)+g];
 				// add them together to find the chance of a particular change in a particular season
@@ -278,7 +278,7 @@ public class DefaultClimate implements Climate
 			}
 
 			// some sort of debugging commentary
-			/*StringBuffer buf=new StringBuffer(name()+"/"+(TimeClock.SEASON_DESCS[A.getTimeObj().getSeasonCode()])+"/"+Climate.WEATHER_DESCS[nextWeather]+"->");
+			/*StringBuffer buf=new StringBuffer(name()+"/"+(A.getTimeObj().getSeasonCode().toString())+"/"+Climate.WEATHER_DESCS[nextWeather]+"->");
 			for(int g=0;g<Climate.NUM_WEATHER;g++)
 			{
 				int seasonalNum=seasonal[(A.getTimeObj().getSeasonCode()*Climate.NUM_WEATHER)+g];
@@ -295,7 +295,7 @@ public class DefaultClimate implements Climate
 			for(int g=0;g<Climate.NUM_WEATHER;g++)
 			{
 				// take the base chance for a seasonal weather occurrence (rain in winter, etc)
-				int seasonalNum=seasonal[(A.getTimeObj().getSeasonCode()*Climate.NUM_WEATHER)+g];
+				int seasonalNum=seasonal[(A.getTimeObj().getSeasonCode().ordinal()*Climate.NUM_WEATHER)+g];
 				// find the chance of changing from what it will be, to some new condition.
 				int changeNum=changeMap[(nextWeather*Climate.NUM_WEATHER)+g];
 				// add them together to find the chance of a particular change in a particular season
@@ -391,10 +391,10 @@ public class DefaultClimate implements Climate
 		final String prefix;
 		//#    NORMAL, WET, COLD (WINTER), HOT (SUMMER), DRY
 		final int derivedClimate=A.getClimateType();
-		if(((derivedClimate&Area.CLIMASK_COLD)>0)||(A.getTimeObj().getSeasonCode()==TimeClock.SEASON_WINTER))
+		if(((derivedClimate&Area.CLIMASK_COLD)>0)||(A.getTimeObj().getSeasonCode()==TimeClock.Season.WINTER))
 			prefix=CMProps.getListFileValue(listFileEnum, 2);
 		else
-		if(((derivedClimate&Area.CLIMASK_HOT)>0)||(A.getTimeObj().getSeasonCode()==TimeClock.SEASON_SUMMER))
+		if(((derivedClimate&Area.CLIMASK_HOT)>0)||(A.getTimeObj().getSeasonCode()==TimeClock.Season.SUMMER))
 			prefix=CMProps.getListFileValue(listFileEnum, 3);
 		else
 		if((derivedClimate&Area.CLIMASK_WET)>0)

@@ -44,42 +44,42 @@ public class Reply extends StdCommand
 		if(mob==null) return false;
 		PlayerStats pstats=mob.playerStats();
 		if(pstats==null) return false;
-		if(pstats.replyTo()==null)
+		if(pstats.getReplyToMOB()==null)
 		{
 			mob.tell("No one has told you anything yet!");
 			return false;
 		}
-		if((pstats.replyTo().Name().indexOf('@')<0)
-		&&((CMLib.players().getPlayer(pstats.replyTo().Name())==null)
-			||(pstats.replyTo().isMonster())
-			||(!CMLib.flags().isInTheGame(pstats.replyTo(),true))))
+		if((pstats.getReplyToMOB().Name().indexOf('@')<0)
+		&&((CMLib.players().getPlayer(pstats.getReplyToMOB().Name())==null)
+			||(pstats.getReplyToMOB().isMonster())
+			||(!CMLib.flags().isInTheGame(pstats.getReplyToMOB(),true))))
 		{
-			mob.tell(pstats.replyTo().Name()+" is no longer logged in.");
+			mob.tell(pstats.getReplyToMOB().Name()+" is no longer logged in.");
 			return false;
 		}
 		if(CMParms.combine(commands,1).length()==0)
 		{
-			mob.tell("Tell '"+pstats.replyTo().Name()+"' what?");
+			mob.tell("Tell '"+pstats.getReplyToMOB().Name()+"' what?");
 			return false;
 		}
-		int replyType=pstats.replyType();
+		int replyType=pstats.getReplyType();
 		
 		switch(replyType)
 		{
 		case PlayerStats.REPLY_SAY:
-			if((pstats.replyTo().Name().indexOf('@')<0)
-			&&((mob.location()==null)||(!mob.location().isInhabitant(pstats.replyTo()))))
+			if((pstats.getReplyToMOB().Name().indexOf('@')<0)
+			&&((mob.location()==null)||(!mob.location().isInhabitant(pstats.getReplyToMOB()))))
 			{
-				mob.tell(pstats.replyTo().Name()+" is no longer in the room.");
+				mob.tell(pstats.getReplyToMOB().Name()+" is no longer in the room.");
 				return false;
 			}
-			CMLib.commands().postSay(mob,pstats.replyTo(),CMParms.combine(commands,1),false,false);
+			CMLib.commands().postSay(mob,pstats.getReplyToMOB(),CMParms.combine(commands,1),false,false);
 			break;
 		case PlayerStats.REPLY_TELL:
 		{
-			Session S=pstats.replyTo().session();
+			Session S=pstats.getReplyToMOB().session();
 			if(S!=null) S.snoopSuspension(1);
-			CMLib.commands().postSay(mob,pstats.replyTo(),CMParms.combine(commands,1),true,true);
+			CMLib.commands().postSay(mob,pstats.getReplyToMOB(),CMParms.combine(commands,1),true,true);
 			if(S!=null) S.snoopSuspension(-11);
 			break;
 		}
@@ -94,9 +94,9 @@ public class Reply extends StdCommand
 				break;
 			}
 		}
-		if((pstats.replyTo().session()!=null)
-		&&(pstats.replyTo().session().isAfk()))
-			mob.tell(pstats.replyTo().session().getAfkMessage());
+		if((pstats.getReplyToMOB().session()!=null)
+		&&(pstats.getReplyToMOB().session().isAfk()))
+			mob.tell(pstats.getReplyToMOB().session().getAfkMessage());
 		return false;
 	}
 	public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCombatActionCost(ID());}

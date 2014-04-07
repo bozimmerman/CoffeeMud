@@ -130,10 +130,10 @@ public class AccountCreate extends StdWebMacro
 		if(emailPassword)
 		{
 			CMLib.database().DBWriteJournal(CMProps.getVar(CMProps.Str.MAILBOX),
-					acct.accountName(),
-					acct.accountName(),
-					"Password for "+acct.accountName(),
-					"Your password for "+acct.accountName()+" is: "+password+"\n\rYou can login by pointing your mud client at "+CMProps.getVar(CMProps.Str.MUDDOMAIN)+" port(s):"+CMProps.getVar(CMProps.Str.MUDPORTS)+".\n\rAfter creating a character, you may use the PASSWORD command to change it once you are online.");
+					acct.getAccountName(),
+					acct.getAccountName(),
+					"Password for "+acct.getAccountName(),
+					"Your password for "+acct.getAccountName()+" is: "+password+"\n\rYou can login by pointing your mud client at "+CMProps.getVar(CMProps.Str.MUDDOMAIN)+" port(s):"+CMProps.getVar(CMProps.Str.MUDPORTS)+".\n\rAfter creating a character, you may use the PASSWORD command to change it once you are online.");
 		}
 		if(parms.containsKey("LOGIN"))
 		{

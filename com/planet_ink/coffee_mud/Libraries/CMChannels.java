@@ -514,7 +514,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 		&&(pStats.getAccount()!=null)
 		&&(msg.source()==mob))
 		{
-			String accountName=pStats.getAccount().accountName();
+			String accountName=pStats.getAccount().getAccountName();
 			if(msg.sourceMessage()!=null)
 				msg.setSourceMessage(CMStrings.replaceAll(msg.sourceMessage(), "<S-NAME>", accountName));
 			if(msg.targetMessage()!=null)

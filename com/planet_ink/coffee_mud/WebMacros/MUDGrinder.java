@@ -156,7 +156,7 @@ public class MUDGrinder extends StdWebMacro
 			if(!CMSecurity.isAllowedEverywhere(mob,CMSecurity.SecFlag.CMDPLAYERS)) return "@break@";
 			String err=new GrinderAccounts().runMacro(httpReq,parm);
 			if(err.length()>0) return err;
-			Log.sysOut("Grinder",mob.Name()+" modified account "+A.accountName());
+			Log.sysOut("Grinder",mob.Name()+" modified account "+A.getAccountName());
 			return "";
 		}
 		else
@@ -179,7 +179,7 @@ public class MUDGrinder extends StdWebMacro
 				deadMOB.destroy();
 			}
 			CMLib.players().obliterateAccountOnly(A);
-			Log.sysOut("Grinder",mob.Name()+" destroyed account "+A.accountName()+" and players '"+playerList+"'.");
+			Log.sysOut("Grinder",mob.Name()+" destroyed account "+A.getAccountName()+" and players '"+playerList+"'.");
 			return "";
 		}
 		else

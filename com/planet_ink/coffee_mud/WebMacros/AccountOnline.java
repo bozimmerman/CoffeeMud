@@ -71,7 +71,7 @@ public class AccountOnline extends StdWebMacro
 					boolean canBoot=false;
 					boolean canModify=false;
 					MOB authM=CMLib.players().getLoadPlayer(login);
-					if((authM!=null)&&(authM.playerStats()!=null)&&(authM.playerStats().getAccount().accountName().equals(A.accountName())))
+					if((authM!=null)&&(authM.playerStats()!=null)&&(authM.playerStats().getAccount().getAccountName().equals(A.getAccountName())))
 					{
 						canBan=true;
 						canBoot=true;
@@ -91,7 +91,7 @@ public class AccountOnline extends StdWebMacro
 					if(canBan&&(parms.containsKey("BANBYNAME")))
 						CMSecurity.ban(last);
 					if(canBan&&(parms.containsKey("BANBYIP")))
-						CMSecurity.ban(A.lastIP());
+						CMSecurity.ban(A.getLastIP());
 					if(canBan&&(parms.containsKey("BANBYEMAIL")))
 						CMSecurity.ban(A.getEmail());
 					if(canModify&&(parms.containsKey("EXPIRENEVER")))

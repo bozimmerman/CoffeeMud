@@ -590,8 +590,7 @@ public class BribeGateGuard extends StdBehavior
 			  }
 		  }
 		}
-		boolean nightTime = (mob.location().getArea().getTimeObj().getTODCode() ==
-							 TimeClock.TIME_NIGHT);
+		boolean nightTime = (mob.location().getArea().getTimeObj().getTODCode() == TimeClock.TimeOfDay.NIGHT);
 		if (nightTime) {
 		  if ( (!e.isLocked()) && (e.hasALock())) {
 			if (getMyKeyTo(mob, e) != null) {

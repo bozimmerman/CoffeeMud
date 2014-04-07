@@ -625,7 +625,11 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 	public void tickAging(MOB mob, long millisSinceLast)
 	{
 		if(mob==null) return;
-		mob.setAgeMinutes(mob.getAgeMinutes()+(millisSinceLast / 60000)); // this is really minutes
+		final long minutesEllapsed=(millisSinceLast / 60000);
+		mob.setAgeMinutes(mob.getAgeMinutes()+minutesEllapsed); // this is really minutes
+		if((minutesEllapsed>0)&&(mob.playerStats()!=null))
+			mob.playerStats().bumpPrideStat(AccountStats.PrideStat.MINUTES_ON, (int)minutesEllapsed);
+			
 		final PlayerStats stats = mob.playerStats();
 		if(stats==null) return;
 		final int[] birthDay = stats.getBirthday();
@@ -1000,12 +1004,12 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		case Room.DOMAIN_OUTDOORS_PLAINS:
 			switch(room.getArea().getTimeObj().getSeasonCode())
 			{
-			case TimeClock.SEASON_FALL:
-			case TimeClock.SEASON_WINTER:
+			case FALL:
+			case WINTER:
 				smell.append("There is a faint grassy smell here. ");
 				break;
-			case TimeClock.SEASON_SPRING:
-			case TimeClock.SEASON_SUMMER:
+			case SPRING:
+			case SUMMER:
 				smell.append("There is a floral grassy smell here. ");
 				break;
 			}
@@ -1013,12 +1017,12 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		case Room.DOMAIN_OUTDOORS_WOODS:
 			switch(room.getArea().getTimeObj().getSeasonCode())
 			{
-			case TimeClock.SEASON_FALL:
-			case TimeClock.SEASON_WINTER:
+			case FALL:
+			case WINTER:
 				smell.append("There is a faint woodsy smell here. ");
 				break;
-			case TimeClock.SEASON_SPRING:
-			case TimeClock.SEASON_SUMMER:
+			case SPRING:
+			case SUMMER:
 				smell.append("There is a rich woodsy smell here. ");
 				break;
 			}
@@ -1030,12 +1034,12 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		case Room.DOMAIN_OUTDOORS_ROCKS:
 			switch(room.getArea().getTimeObj().getSeasonCode())
 			{
-			case TimeClock.SEASON_FALL:
-			case TimeClock.SEASON_WINTER:
-			case TimeClock.SEASON_SUMMER:
+			case FALL:
+			case WINTER:
+			case SUMMER:
 				smell.append("It smells musty and rocky here. ");
 				break;
-			case TimeClock.SEASON_SPRING:
+			case SPRING:
 				smell.append("It smells musty, rocky, and a bit grassy here. ");
 				break;
 			}

@@ -9,6 +9,7 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.AccountStats.PrideStat;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
@@ -2943,10 +2944,16 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.cleanBit(funcParms));
 				returnable=false;
 				if(monster.location()!=null)
-				for(int a=0;a<TimeClock.SEASON_DESCS.length;a++)
-					if((TimeClock.SEASON_DESCS[a]).startsWith(arg1.toUpperCase())
-					&&(monster.location().getArea().getTimeObj().getSeasonCode()==a))
-					{returnable=true; break;}
+				{
+					arg1=arg1.toUpperCase();
+					for(TimeClock.Season season : TimeClock.Season.values())
+						if(season.toString().startsWith(arg1.toUpperCase())
+						&&(monster.location().getArea().getTimeObj().getSeasonCode()==season))
+						{
+							returnable=true; 
+							break;
+						}
+				}
 				break;
 			}
 			case 51: // isweather
@@ -2969,13 +2976,16 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					if(arg1.length()==0)
 						returnable=monster.location().getArea().getClimateObj().canSeeTheStars(monster.location());
 					else
-					for(int a=0;a<TimeClock.PHASE_DESC.length;a++)
-						if((TimeClock.PHASE_DESC[a]).startsWith(arg1.toUpperCase())
-						&&(monster.location().getArea().getTimeObj().getMoonPhase()==a))
-						{
-							returnable=true;
-							break;
-						}
+					{
+						arg1=arg1.toUpperCase();
+    					for(TimeClock.MoonPhase phase : TimeClock.MoonPhase.values())
+    						if(phase.toString().startsWith(arg1)
+    						&&(monster.location().getArea().getTimeObj().getMoonPhase()==phase))
+    						{
+    							returnable=true;
+    							break;
+    						}
+					}
 				}
 				break;
 			}
@@ -2986,22 +2996,22 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					returnable=false;
 				else
 				if(("daytime").startsWith(arg1)
-				&&(monster.location().getArea().getTimeObj().getTODCode()==TimeClock.TIME_DAY))
+				&&(monster.location().getArea().getTimeObj().getTODCode()==TimeClock.TimeOfDay.DAY))
 					returnable=true;
 				else
 				if(("dawn").startsWith(arg1)
-				&&(monster.location().getArea().getTimeObj().getTODCode()==TimeClock.TIME_DAWN))
+				&&(monster.location().getArea().getTimeObj().getTODCode()==TimeClock.TimeOfDay.DAWN))
 					returnable=true;
 				else
 				if(("dusk").startsWith(arg1)
-				&&(monster.location().getArea().getTimeObj().getTODCode()==TimeClock.TIME_DUSK))
+				&&(monster.location().getArea().getTimeObj().getTODCode()==TimeClock.TimeOfDay.DUSK))
 					returnable=true;
 				else
 				if(("nighttime").startsWith(arg1)
-				&&(monster.location().getArea().getTimeObj().getTODCode()==TimeClock.TIME_NIGHT))
+				&&(monster.location().getArea().getTimeObj().getTODCode()==TimeClock.TimeOfDay.NIGHT))
 					returnable=true;
 				else
-				if((monster.location().getArea().getTimeObj().getTimeOfDay()==CMath.s_int(arg1)))
+				if((monster.location().getArea().getTimeObj().getHourOfDay()==CMath.s_int(arg1)))
 					returnable=true;
 				else
 					returnable=false;
@@ -3549,7 +3559,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					case 4: val=""+CMLib.map().areaLocation(scripted).getTimeObj().getMonth(); break;
 					case 5: val=""+CMLib.map().areaLocation(scripted).getTimeObj().getYear(); break;
 					default:
-						val=""+CMLib.map().areaLocation(scripted).getTimeObj().getTimeOfDay(); break;
+						val=""+CMLib.map().areaLocation(scripted).getTimeObj().getHourOfDay(); break;
 					}
 					returnable=simpleEval(scripted,val,arg3,arg2,"DATETIME");
 				}
@@ -5178,7 +5188,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			case 50: // isseason
 			{
 				if(monster.location()!=null)
-					results.append(TimeClock.SEASON_DESCS[monster.location().getArea().getTimeObj().getSeasonCode()]);
+					results.append(monster.location().getArea().getTimeObj().getSeasonCode().toString());
 				break;
 			}
 			case 51: // isweather
@@ -5190,13 +5200,13 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			case 57: // ismoon
 			{
 				if(monster.location()!=null)
-					results.append(TimeClock.PHASE_DESC[monster.location().getArea().getTimeObj().getMoonPhase()]);
+					results.append(monster.location().getArea().getTimeObj().getMoonPhase().toString());
 				break;
 			}
 			case 38: // istime
 			{
 				if(lastKnownLocation!=null)
-					results.append(TimeClock.TOD_DESC[lastKnownLocation.getArea().getTimeObj().getTODCode()].toLowerCase());
+					results.append(lastKnownLocation.getArea().getTimeObj().getTODCode().getDesc().toLowerCase());
 				break;
 			}
 			case 39: // isday
@@ -5484,7 +5494,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				case 4: results.append(CMLib.map().areaLocation(scripted).getTimeObj().getMonth()); break;
 				case 5: results.append(CMLib.map().areaLocation(scripted).getTimeObj().getYear()); break;
 				default:
-					results.append(CMLib.map().areaLocation(scripted).getTimeObj().getTimeOfDay()); break;
+					results.append(CMLib.map().areaLocation(scripted).getTimeObj().getHourOfDay()); break;
 				}
 				break;
 			}
@@ -7059,10 +7069,20 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				if(newTarget instanceof MOB)
 				{
 					if(CMath.isNumber(val))
+					{
+						int ival=CMath.s_int(val);
+						int aval=ival-((MOB)newTarget).getQuestPoint();
 						((MOB)newTarget).setQuestPoint(CMath.s_int(val));
+						if((aval>0)&&(((MOB)newTarget).playerStats()!=null))
+							((MOB)newTarget).playerStats().bumpPrideStat(PrideStat.QUESTPOINTS_EARNED, aval);
+					}
 					else
 					if(val.startsWith("++")&&(CMath.isNumber(val.substring(2).trim())))
+					{
 						((MOB)newTarget).setQuestPoint(((MOB)newTarget).getQuestPoint()+CMath.s_int(val.substring(2).trim()));
+						if(((MOB)newTarget).playerStats()!=null)
+							((MOB)newTarget).playerStats().bumpPrideStat(PrideStat.QUESTPOINTS_EARNED, CMath.s_int(val.substring(2).trim()));
+					}
 					else
 					if(val.startsWith("--")&&(CMath.isNumber(val.substring(2).trim())))
 						((MOB)newTarget).setQuestPoint(((MOB)newTarget).getQuestPoint()-CMath.s_int(val.substring(2).trim()));
@@ -8857,7 +8877,11 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				{
 					Quest Q=getQuest(tt[2]);
 					if(Q!=null)
+					{
 						Q.declareWinner(whoName);
+						if((M!=null)&&(M.playerStats()!=null))
+							M.playerStats().bumpPrideStat(AccountStats.PrideStat.QUESTS_COMPLETED, 1);
+					}
 					else
 						logError(scripted,"MPQUESTWIN","Unknown","Quest: "+s);
 				}
@@ -10347,7 +10371,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					int lastTimeProgDone=-1;
 					if(lastTimeProgsDone.containsKey(Integer.valueOf(thisScriptIndex)))
 						lastTimeProgDone=lastTimeProgsDone.get(Integer.valueOf(thisScriptIndex)).intValue();
-					int time=mob.location().getArea().getTimeObj().getTimeOfDay();
+					int time=mob.location().getArea().getTimeObj().getHourOfDay();
 					if((t!=null)&&(lastTimeProgDone!=time))
 					{
 						boolean done=false;

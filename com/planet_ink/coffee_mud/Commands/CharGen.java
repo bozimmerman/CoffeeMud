@@ -538,7 +538,7 @@ public class CharGen extends StdCommand
 								R.setArea(c.A);
 								R.recoverPhyStats();
 							}
-							c.A.getTimeObj().setTimeOfDay(CMLib.dice().roll(1,c.A.getTimeObj().getHoursInDay(),-1));
+							c.A.getTimeObj().setHourOfDay(CMLib.dice().roll(1,c.A.getTimeObj().getHoursInDay(),-1));
 							
 							//Session S=(Session)CMClass.getCommon("FakeSession");
 							//S.initializeSession(null,"MEMORY");

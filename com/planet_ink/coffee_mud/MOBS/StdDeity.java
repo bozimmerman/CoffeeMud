@@ -649,7 +649,7 @@ public class StdDeity extends StdMOB implements Deity
 					break;
 				case TRIGGER_TIME:
 					if((msg.source().location()!=null)
-					&&(msg.source().location().getArea().getTimeObj().getTimeOfDay()==CMath.s_int(DT.parm1)))
+					&&(msg.source().location().getArea().getTimeObj().getHourOfDay()==CMath.s_int(DT.parm1)))
 					   yup=true;
 					break;
 				case TRIGGER_RANDOM:

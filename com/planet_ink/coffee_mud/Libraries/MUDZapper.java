@@ -506,12 +506,15 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 		return new StringBuilder("");
 	}
 
-	protected int determineSeason(String str)
+	protected int determineSeasonCode(String str)
 	{
 		str=str.toUpperCase().trim();
 		if(str.length()==0) return -1;
-		for(int i=0;i<TimeClock.SEASON_DESCS.length;i++)
-			if(TimeClock.SEASON_DESCS[i].startsWith(str))
+		TimeClock.Season season=(TimeClock.Season)CMath.s_valueOf(TimeClock.Season.class, str);
+		if(season != null)
+			return season.ordinal();
+		for(int i=0;i<TimeClock.Season.values().length;i++)
+			if(TimeClock.Season.values()[i].toString().startsWith(str))
 				return i;
 		return -1;
 	}
@@ -1202,14 +1205,14 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 								if(CMath.isInteger(str2.substring(1).trim()))
 								{
 									int season=CMath.s_int(str2.substring(1).trim());
-									if((season>=0)&&(season<TimeClock.SEASON_DESCS.length))
-										buf.append(TimeClock.SEASON_DESCS[season]+", ");
+									if((season>=0)&&(season<TimeClock.Season.values().length))
+										buf.append(TimeClock.Season.values()[season].toString()+", ");
 								}
 								else
 								{
-									int season=determineSeason(str2.substring(1).trim());
-									if((season>=0)&&(season<TimeClock.SEASON_DESCS.length))
-										buf.append(TimeClock.SEASON_DESCS[season]+", ");
+									int season=determineSeasonCode(str2.substring(1).trim());
+									if((season>=0)&&(season<TimeClock.Season.values().length))
+										buf.append(TimeClock.Season.values()[season].toString()+", ");
 								}
 						}
 						if(buf.toString().endsWith(", "))
@@ -1229,14 +1232,14 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 								if(CMath.isInteger(str2.substring(1).trim()))
 								{
 									int season=CMath.s_int(str2.substring(1).trim());
-									if((season>=0)&&(season<TimeClock.SEASON_DESCS.length))
-										buf.append(TimeClock.SEASON_DESCS[season]+", ");
+									if((season>=0)&&(season<TimeClock.Season.values().length))
+										buf.append(TimeClock.Season.values()[season].toString()+", ");
 								}
 								else
 								{
-									int season=determineSeason(str2.substring(1).trim());
-									if((season>=0)&&(season<TimeClock.SEASON_DESCS.length))
-										buf.append(TimeClock.SEASON_DESCS[season]+", ");
+									int season=determineSeasonCode(str2.substring(1).trim());
+									if((season>=0)&&(season<TimeClock.Season.values().length))
+										buf.append(TimeClock.Season.values()[season].toString()+", ");
 								}
 						}
 						if(buf.toString().endsWith(", "))
@@ -2824,8 +2827,11 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 								if(CMath.isInteger(str2.substring(1).trim()))
 									parms.addElement(Integer.valueOf(CMath.s_int(str2.substring(1).trim())));
 								else
-								if(determineSeason(str2.substring(1).trim())>=0)
-									parms.addElement(Integer.valueOf(determineSeason(str2.substring(1).trim())));
+								{
+									int seasonCode=determineSeasonCode(str2.substring(1).trim());
+									if(seasonCode>=0)
+										parms.addElement(Integer.valueOf(seasonCode));
+								}
 							}
 							v=V.size();
 						}
@@ -3756,7 +3762,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				{
 					if(room!=null)
 						for(final Object o : entry.parms)
-							if(room.getArea().getTimeObj().getTimeOfDay()==((Integer)o).intValue())
+							if(room.getArea().getTimeObj().getHourOfDay()==((Integer)o).intValue())
 								return false;
 				}
 				break;
@@ -3765,7 +3771,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					boolean found=false;
 					if(room!=null)
 						for(final Object o : entry.parms)
-							if(room.getArea().getTimeObj().getTimeOfDay()==((Integer)o).intValue())
+							if(room.getArea().getTimeObj().getHourOfDay()==((Integer)o).intValue())
 							{ found=true; break;}
 					if(!found) return false;
 				}
@@ -3774,7 +3780,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				{
 					if(room!=null)
 						for(final Object o : entry.parms)
-							if(room.getArea().getTimeObj().getSeasonCode()==((Integer)o).intValue())
+							if(room.getArea().getTimeObj().getSeasonCode().ordinal()==((Integer)o).intValue())
 								return false;
 				}
 				break;
@@ -3783,7 +3789,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					boolean found=false;
 					if(room!=null)
 						for(final Object o : entry.parms)
-							if(room.getArea().getTimeObj().getSeasonCode()==((Integer)o).intValue())
+							if(room.getArea().getTimeObj().getSeasonCode().ordinal()==((Integer)o).intValue())
 							{ found=true; break;}
 					if(!found) return false;
 				}

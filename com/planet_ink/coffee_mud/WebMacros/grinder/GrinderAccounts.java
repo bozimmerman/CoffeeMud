@@ -46,11 +46,11 @@ public class GrinderAccounts
 			PlayerAccount A=CMLib.players().getLoadAccount(last);
 			if(A!=null)
 			{
-				String newName=A.accountName();
+				String newName=A.getAccountName();
 				String str=null;
 				String err="";
 				str=httpReq.getUrlParameter("NAME");
-				if((str!=null)&&(!str.equalsIgnoreCase(A.accountName())))
+				if((str!=null)&&(!str.equalsIgnoreCase(A.getAccountName())))
 				{
 					str=CMStrings.capitalizeAndLower(str);
 					if(CMLib.players().getLoadAccount(str)==null)
@@ -85,7 +85,7 @@ public class GrinderAccounts
 				if(err.length()>0) 
 					return err;
 				else
-				if(!newName.equalsIgnoreCase(A.accountName()))
+				if(!newName.equalsIgnoreCase(A.getAccountName()))
 				{
 					Vector<MOB> V=new Vector<MOB>();
 					for(Enumeration<String> es=A.getPlayers();es.hasMoreElements();)

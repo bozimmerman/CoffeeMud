@@ -80,7 +80,7 @@ public interface PlayerAccount extends CMCommon, AccountStats, Modifiable
 	 * Returns this accounts name
 	 * @return this accounts name
 	 */
-	public String accountName();
+	public String getAccountName();
 	
 	/**
 	 * Sets this accounts unique name

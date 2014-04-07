@@ -714,12 +714,9 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 				   return true;
 				if((canSeeVictims(seer))&&(seer.getVictim()==seenP))
 					return true;
-				if(R.getArea().getClimateObj().canSeeTheMoon(R,null))
-					switch(R.getArea().getTimeObj().getMoonPhase())
-					{
-					case TimeClock.PHASE_FULL:
+				if((R.getArea().getClimateObj().canSeeTheMoon(R,null))
+				&&(R.getArea().getTimeObj().getMoonPhase()==TimeClock.MoonPhase.FULL))
 						return true;
-					}
 				return false;
 			}
 			return true;
@@ -731,10 +728,12 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 			&&(((Room)seenP).getArea().getClimateObj().canSeeTheMoon(((Room)seenP),null)))
 				switch(((Room)seenP).getArea().getTimeObj().getMoonPhase())
 				{
-				case TimeClock.PHASE_FULL:
-				case TimeClock.PHASE_WAXGIBBOUS:
-				case TimeClock.PHASE_WANEGIBBOUS:
+				case FULL:
+				case WAXGIBBOUS:
+				case WANEGIBBOUS:
 					return true;
+				default:
+					break;
 				}
 
 			if(isLightSource(seer))
@@ -756,13 +755,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 			{
 				if(R.getArea().getClimateObj().canSeeTheMoon(R,null))
 				{
-					switch(R.getArea().getTimeObj().getMoonPhase())
-					{
-					case TimeClock.PHASE_NEW:
-						return false;
-					default:
-						return true;
-					}
+					return R.getArea().getTimeObj().getMoonPhase() != TimeClock.MoonPhase.NEW;
 				}
 			}
 		}
@@ -773,11 +766,11 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 			&&(((Room)seen).getArea().getClimateObj().canSeeTheMoon(((Room)seen),null)))
 				switch(((Room)seen).getArea().getTimeObj().getMoonPhase())
 				{
-				case TimeClock.PHASE_FULL:
-				case TimeClock.PHASE_WAXGIBBOUS:
-				case TimeClock.PHASE_WANEGIBBOUS:
+				case FULL:
+				case WAXGIBBOUS:
+				case WANEGIBBOUS:
 					return false;
-				case TimeClock.PHASE_NEW:
+				case NEW:
 					return false;
 				default:
 					return true;

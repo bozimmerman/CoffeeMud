@@ -194,16 +194,16 @@ public class Transfer extends At
 			&&(CMSecurity.isAllowed(mob, mobRoom, CMSecurity.SecFlag.TRANSFER))
 			&&(CMSecurity.isAllowed(mob, room, CMSecurity.SecFlag.TRANSFER)))
 			{
-				if((mob.playerStats().tranPoofOut().length()>0)&&(mob.location()!=null))
-					M.location().show(mob,M,CMMsg.MSG_OK_VISUAL,mob.playerStats().tranPoofOut());
+				if((mob.playerStats().getTranPoofOut().length()>0)&&(mob.location()!=null))
+					M.location().show(mob,M,CMMsg.MSG_OK_VISUAL,mob.playerStats().getTranPoofOut());
 				room.bringMobHere(M,true);
-				if(mob.playerStats().tranPoofIn().length()>0)
-					room.showOthers(mob,M,CMMsg.MSG_OK_VISUAL,mob.playerStats().tranPoofIn());
+				if(mob.playerStats().getTranPoofIn().length()>0)
+					room.showOthers(mob,M,CMMsg.MSG_OK_VISUAL,mob.playerStats().getTranPoofIn());
 				if(!M.isMonster())
 					CMLib.commands().postLook(M,true);
 			}
 		}
-		if(mob.playerStats().tranPoofOut().length()==0)
+		if(mob.playerStats().getTranPoofOut().length()==0)
 			mob.tell("Done.");
 		return false;
 	}

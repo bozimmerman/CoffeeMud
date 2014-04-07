@@ -1550,17 +1550,107 @@ public class CMParms
 		return s.toString();
 	}
 
-	public final static String[] appendToArray(final String[] front, final String[] back)
+	public final static String toTightStringList(final long[] V)
 	{
-		if(back==null) return front;
-		if(front==null) return back;
-		if(back.length==0) return front;
-		final String[] newa = Arrays.copyOf(front, front.length + back.length);
-		for(int i=0;i<back.length;i++)
-			newa[newa.length-1-i]=back[back.length-1-i];
-		return newa;
+		if((V==null)||(V.length==0)){
+			return "";
+		}
+		final StringBuilder s=new StringBuilder(""+V[0]);
+		for(int v=1;v<V.length;v++)
+			s.append(',').append(V[v]);
+		return s.toString();
 	}
-	
+
+	public final static String toTightStringList(final short[] V)
+	{
+		if((V==null)||(V.length==0)){
+			return "";
+		}
+		final StringBuilder s=new StringBuilder(Short.toString(V[0]));
+		for(int v=1;v<V.length;v++)
+			s.append(',').append(V[v]);
+		return s.toString();
+	}
+
+	public final static String toTightStringList(final boolean[] V)
+	{
+		if((V==null)||(V.length==0)){
+			return "";
+		}
+		final StringBuilder s=new StringBuilder(""+V[0]);
+		for(int v=1;v<V.length;v++)
+			s.append(',').append(V[v]);
+		return s.toString();
+	}
+
+	public final static String toTightStringList(final byte[] V)
+	{
+		if((V==null)||(V.length==0)){
+			return "";
+		}
+		final StringBuilder s=new StringBuilder(Integer.toString(V[0]));
+		for(int v=1;v<V.length;v++)
+			s.append(',').append((int)V[v]);
+		return s.toString();
+	}
+
+	public final static String toTightStringList(final char[] V)
+	{
+		if((V==null)||(V.length==0)){
+			return "";
+		}
+		final StringBuilder s=new StringBuilder(""+((long)V[0]));
+		for(int v=1;v<V.length;v++)
+			s.append(',').append((long)V[v]);
+		return s.toString();
+	}
+
+	public final static String toTightStringList(final int[] V)
+	{
+		if((V==null)||(V.length==0)){
+			return "";
+		}
+		final StringBuilder s=new StringBuilder(Integer.toString(V[0]));
+		for(int v=1;v<V.length;v++)
+			s.append(',').append(V[v]);
+		return s.toString();
+	}
+
+	public final static String toTightStringList(final double[] V)
+	{
+		if((V==null)||(V.length==0)){
+			return "";
+		}
+		final StringBuilder s=new StringBuilder(""+V[0]);
+		for(int v=1;v<V.length;v++)
+			s.append(',').append(V[v]);
+		return s.toString();
+	}
+
+
+	public final static String toTightStringList(final List<?> V)
+	{
+		if((V==null)||(V.size()==0)){
+			return "";
+		}
+		final StringBuilder s=new StringBuilder(V.get(0).toString());
+		for(int v=1;v<V.size();v++)
+			s.append(',').append(V.get(v).toString());
+		return s.toString();
+	}
+
+	public final static String toTightStringList(final Set<?> V)
+	{
+		if((V==null)||(V.size()==0)){
+			return "";
+		}
+		Iterator<?> i=V.iterator();
+		final StringBuilder s=new StringBuilder(i.next().toString());
+		for(;i.hasNext();)
+			s.append(',').append(i.next().toString());
+		return s.toString();
+	}
+
 	public final static String toStringList(final Map<String,?> V)
 	{
 		if((V==null)||(V.size()==0)){
@@ -1572,6 +1662,17 @@ public class CMParms
 		return s.toString();
 	}
 
+	public final static String[] appendToArray(final String[] front, final String[] back)
+	{
+		if(back==null) return front;
+		if(front==null) return back;
+		if(back.length==0) return front;
+		final String[] newa = Arrays.copyOf(front, front.length + back.length);
+		for(int i=0;i<back.length;i++)
+			newa[newa.length-1-i]=back[back.length-1-i];
+		return newa;
+	}
+	
 	public final static Map<String,String> parseEQStringList(final String s)
 	{
 		Hashtable<String,String> h=new Hashtable<String,String>();

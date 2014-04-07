@@ -729,7 +729,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 			if((M!=null)&&(M.playerStats()!=null)) 
 			{
 				if(M.playerStats().getAccount()!=null)
-					buf.write(M.playerStats().getAccount().accountName().getBytes(Session.MSDP_CHARSET));
+					buf.write(M.playerStats().getAccount().getAccountName().getBytes(Session.MSDP_CHARSET));
 				else
 					buf.write(M.Name().getBytes(Session.MSDP_CHARSET));
 			}

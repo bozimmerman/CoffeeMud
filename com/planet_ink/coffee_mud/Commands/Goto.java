@@ -98,11 +98,11 @@ public class Goto extends At
 			if((stack.size()==0)||(stack.get(stack.size()-1)!=mob.location().roomID()))
 				stack.add(CMLib.map().getExtendedRoomID(mob.location()));
 		}
-		if(mob.playerStats().poofOut().length()>0)
-			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,mob.playerStats().poofOut());
+		if(mob.playerStats().getPoofOut().length()>0)
+			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,mob.playerStats().getPoofOut());
 		room.bringMobHere(mob,true);
-		if(mob.playerStats().poofIn().length()>0)
-			room.show(mob,null,CMMsg.MSG_OK_VISUAL,mob.playerStats().poofIn());
+		if(mob.playerStats().getPoofIn().length()>0)
+			room.show(mob,null,CMMsg.MSG_OK_VISUAL,mob.playerStats().getPoofIn());
 		CMLib.commands().postLook(mob,true);
 		return false;
 	}

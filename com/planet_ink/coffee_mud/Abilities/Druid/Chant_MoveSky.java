@@ -61,16 +61,16 @@ public class Chant_MoveSky extends Chant
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				if(mob.location().getArea().getTimeObj().getTODCode()==TimeClock.TIME_NIGHT)
+				if(mob.location().getArea().getTimeObj().getTODCode()==TimeClock.TimeOfDay.NIGHT)
 				{
 					mob.location().showHappens(CMMsg.MSG_OK_VISUAL,"The moon begin(s) to descend!");
-					int x=mob.location().getArea().getTimeObj().getHoursInDay()-mob.location().getArea().getTimeObj().getTimeOfDay();
+					int x=mob.location().getArea().getTimeObj().getHoursInDay()-mob.location().getArea().getTimeObj().getHourOfDay();
 					mob.location().getArea().getTimeObj().tickTock(x);
 				}
 				else
 				{
 					mob.location().showHappens(CMMsg.MSG_OK_VISUAL,"The sun hurries towards the horizon!");
-					int x=mob.location().getArea().getTimeObj().getDawnToDusk()[TimeClock.TIME_NIGHT]-mob.location().getArea().getTimeObj().getTimeOfDay();
+					int x=mob.location().getArea().getTimeObj().getDawnToDusk()[TimeClock.TimeOfDay.NIGHT.ordinal()]-mob.location().getArea().getTimeObj().getHourOfDay();
 					mob.location().getArea().getTimeObj().tickTock(x);
 				}
 			}

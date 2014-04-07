@@ -1009,7 +1009,7 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 									{
 										if((((MOB)regarding).playerStats()!=null)
 										&&(((MOB)regarding).playerStats().getAccount()!=null))
-											replacement=((MOB)regarding).playerStats().getAccount().accountName();
+											replacement=((MOB)regarding).playerStats().getAccount().getAccountName();
 										else
 											replacement=((MOB)regarding).name(mob);
 									}

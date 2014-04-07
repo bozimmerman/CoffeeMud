@@ -739,10 +739,10 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		{
 			report=new StringBuffer("\n\rCalendar/Clock settings:\n\r");
 			report.append("1. "+TC.getHoursInDay()+" hours per day\n\r");
-			report.append("2. Dawn Hour: "+TC.getDawnToDusk()[TimeClock.TIME_DAWN]+"\n\r");
-			report.append("3. Day Hour: "+TC.getDawnToDusk()[TimeClock.TIME_DAY]+"\n\r");
-			report.append("4. Dusk Hour: "+TC.getDawnToDusk()[TimeClock.TIME_DUSK]+"\n\r");
-			report.append("5. Night Hour: "+TC.getDawnToDusk()[TimeClock.TIME_NIGHT]+"\n\r");
+			report.append("2. Dawn Hour: "+TC.getDawnToDusk()[TimeClock.TimeOfDay.DAWN.ordinal()]+"\n\r");
+			report.append("3. Day Hour: "+TC.getDawnToDusk()[TimeClock.TimeOfDay.DAY.ordinal()]+"\n\r");
+			report.append("4. Dusk Hour: "+TC.getDawnToDusk()[TimeClock.TimeOfDay.DUSK.ordinal()]+"\n\r");
+			report.append("5. Night Hour: "+TC.getDawnToDusk()[TimeClock.TimeOfDay.NIGHT.ordinal()]+"\n\r");
 			report.append("6. Weekdays: "+CMParms.toStringList(TC.getWeekNames())+"\n\r");
 			report.append("7. Months: "+CMParms.toStringList(TC.getMonthNames())+"\n\r");
 			report.append("8. Year Title(s): "+CMParms.toStringList(TC.getYearNames()));
@@ -768,34 +768,34 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 					TC.setHoursInDay(val);
 					break;
 				case 2:
-					TC.getDawnToDusk()[TimeClock.TIME_DAWN]=val;
+					TC.getDawnToDusk()[TimeClock.TimeOfDay.DAWN.ordinal()]=val;
 					break;
 				case 3:
-					if((val>=0)&&(TC.getDawnToDusk()[TimeClock.TIME_DAWN]>=val))
+					if((val>=0)&&(TC.getDawnToDusk()[TimeClock.TimeOfDay.DAWN.ordinal()]>=val))
 						mob.tell("That value is before the dawn!");
 					else
-						TC.getDawnToDusk()[TimeClock.TIME_DAY]=val;
+						TC.getDawnToDusk()[TimeClock.TimeOfDay.DAY.ordinal()]=val;
 					break;
 				case 4:
-					if((val>=0)&&(TC.getDawnToDusk()[TimeClock.TIME_DAWN]>=val))
+					if((val>=0)&&(TC.getDawnToDusk()[TimeClock.TimeOfDay.DAWN.ordinal()]>=val))
 						mob.tell("That value is before the dawn!");
 					else
-					if((val>=0)&&(TC.getDawnToDusk()[TimeClock.TIME_DAY]>=val))
+					if((val>=0)&&(TC.getDawnToDusk()[TimeClock.TimeOfDay.DAY.ordinal()]>=val))
 						mob.tell("That value is before the day!");
 					else
-						TC.getDawnToDusk()[TimeClock.TIME_DUSK]=val;
+						TC.getDawnToDusk()[TimeClock.TimeOfDay.DUSK.ordinal()]=val;
 					break;
 				case 5:
-					if((val>=0)&&(TC.getDawnToDusk()[TimeClock.TIME_DAWN]>=val))
+					if((val>=0)&&(TC.getDawnToDusk()[TimeClock.TimeOfDay.DAWN.ordinal()]>=val))
 						mob.tell("That value is before the dawn!");
 					else
-					if((val>=0)&&(TC.getDawnToDusk()[TimeClock.TIME_DAY]>=val))
+					if((val>=0)&&(TC.getDawnToDusk()[TimeClock.TimeOfDay.DAY.ordinal()]>=val))
 						mob.tell("That value is before the day!");
 					else
-					if((val>=0)&&(TC.getDawnToDusk()[TimeClock.TIME_DUSK]>=val))
+					if((val>=0)&&(TC.getDawnToDusk()[TimeClock.TimeOfDay.DUSK.ordinal()]>=val))
 						mob.tell("That value is before the dusk!");
 					else
-						TC.getDawnToDusk()[TimeClock.TIME_NIGHT]=val;
+						TC.getDawnToDusk()[TimeClock.TimeOfDay.NIGHT.ordinal()]=val;
 					break;
 				}
 			}
@@ -1113,7 +1113,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	protected void genNotes(MOB mob, MOB M, int showNumber, int showFlag) throws IOException
 	{
 		if(M.playerStats()!=null)
-		M.playerStats().setNotes(prompt(mob,M.playerStats().notes(),showNumber,showFlag,"Private notes",true,false,null));
+		M.playerStats().setNotes(prompt(mob,M.playerStats().getNotes(),showNumber,showFlag,"Private notes",true,false,null));
 	}
 
 	protected void genPassword(MOB mob, MOB M, int showNumber, int showFlag)
@@ -7892,7 +7892,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			
 			if(CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)>1)
 			{
-				String oldAccountName = ((me.playerStats()!=null)&&(me.playerStats().getAccount()!=null))?me.playerStats().getAccount().accountName():"";
+				String oldAccountName = ((me.playerStats()!=null)&&(me.playerStats().getAccount()!=null))?me.playerStats().getAccount().getAccountName():"";
 				String accountName =CMStrings.capitalizeAndLower(prompt(mob,oldAccountName,++showNumber,showFlag,"Account",true,false,null));
 				while((!accountName.equals(oldAccountName))&&(CMLib.players().getLoadAccount(accountName)==null)
 				&&(mob.session()!=null)&&(!mob.session().isStopped()))
@@ -8415,8 +8415,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		while(!ok)
 		{
 			int showNumber=0;
-			String acctName=CMStrings.capitalizeAndLower(prompt(mob,A.accountName(),++showNumber,showFlag,"Name",true,false,null));
-			while((!acctName.equals(A.accountName()))
+			String acctName=CMStrings.capitalizeAndLower(prompt(mob,A.getAccountName(),++showNumber,showFlag,"Name",true,false,null));
+			while((!acctName.equals(A.getAccountName()))
 			&&(CMLib.players().getLoadAccount(acctName)!=null)
 			&&(mob.session()!=null)&&(!mob.session().isStopped()))
 			{

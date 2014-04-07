@@ -988,8 +988,8 @@ public class StdRoom implements Room
 					case '\n': addMe = !addMe; break;
 					case '\r': addMe=true; break;
 					case 'W': addMe = A.getClimateObj().weatherType(null)==code.num; break;
-					case 'C': addMe = A.getTimeObj().getTODCode()==code.num; break;
-					case 'S': addMe = A.getTimeObj().getSeasonCode()==code.num; break;
+					case 'C': addMe = A.getTimeObj().getTODCode().ordinal()==code.num; break;
+					case 'S': addMe = A.getTimeObj().getSeasonCode().ordinal()==code.num; break;
 					case 'M': addMe =  ((mob!=null)&&(CMath.bset(mob.phyStats().disposition(),code.num))); break;
 					case 'V': addMe =  ((mob!=null)&&(mob.playerStats()!=null)&&(mob.playerStats().hasVisited(this))); break;
 					}

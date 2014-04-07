@@ -76,11 +76,11 @@ public class Prop_ClosedSeason extends Property
 						return true;
 					break;
 				case 'C':
-					if(A.getTimeObj().getTODCode()==code.num)
+					if(A.getTimeObj().getTODCode().ordinal()==code.num)
 						return true;
 					break;
 				case 'S':
-					if(A.getTimeObj().getSeasonCode()==code.num)
+					if(A.getTimeObj().getSeasonCode().ordinal()==code.num)
 						return true;
 					break;
 				}

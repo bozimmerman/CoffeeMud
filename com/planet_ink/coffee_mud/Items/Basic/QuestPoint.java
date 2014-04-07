@@ -8,6 +8,7 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.AccountStats.PrideStat;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
@@ -63,7 +64,11 @@ public class QuestPoint extends StdItem
 				unWear();
 				setContainer(null);
 				if(!mob.isMine(this))
+				{
 					mob.setQuestPoint(mob.getQuestPoint()+1);
+					if(mob.playerStats()!=null)
+						mob.playerStats().bumpPrideStat(PrideStat.QUESTPOINTS_EARNED, 1);
+				}
 				if(!CMath.bset(msg.targetMajor(),CMMsg.MASK_OPTIMIZE))
 					mob.location().recoverRoomStats();
 				destroy();

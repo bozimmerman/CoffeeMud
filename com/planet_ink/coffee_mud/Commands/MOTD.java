@@ -94,7 +94,7 @@ public class MOTD extends StdCommand
 					String subject=entry.subj;
 					String message=entry.msg;
 					long compdate=entry.update;
-					if(compdate>mob.playerStats().lastDateTime())
+					if(compdate>mob.playerStats().getLastDateTime())
 					{
 						boolean allMine=to.equalsIgnoreCase(mob.Name())
 										||from.equalsIgnoreCase(mob.Name());
@@ -126,7 +126,7 @@ public class MOTD extends StdCommand
 				if((postalChains.size()>0)&&(P!=null))
 				{
 					List<PlayerData> V=CMLib.database().DBReadData(mob.Name(),postalChains);
-					Map<PostOffice,int[]> res=getPostalResults(V,mob.playerStats().lastDateTime());
+					Map<PostOffice,int[]> res=getPostalResults(V,mob.playerStats().getLastDateTime());
 					for(Iterator<PostOffice> e=res.keySet().iterator();e.hasNext();)
 					{
 						P=e.next();
@@ -144,7 +144,7 @@ public class MOTD extends StdCommand
 								V=CMLib.database().DBReadData(C.name(),postalChains);
 								if(V.size()>0)
 								{
-									res2.putAll(getPostalResults(V,mob.playerStats().lastDateTime()));
+									res2.putAll(getPostalResults(V,mob.playerStats().getLastDateTime()));
 								}
 							}
 							for(Iterator<PostOffice> e=res2.keySet().iterator();e.hasNext();)
@@ -180,7 +180,7 @@ public class MOTD extends StdCommand
 						String from=entry.from;
 						String message=entry.msg;
 						long compdate=entry.update;
-						if(compdate>mob.playerStats().lastDateTime())
+						if(compdate>mob.playerStats().getLastDateTime())
 						{
 							buf.append("\n\rNEW "+CMJ.NAME()+" from "+from+": "+message+"\n\r");
 							CJseparator=true;

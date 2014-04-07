@@ -90,7 +90,7 @@ public class StdBook extends StdItem
 			{
 				String adminReq=getAdminReq().trim();
 				boolean admin=(adminReq.length()>0)&&CMLib.masking().maskCheck(adminReq,mob,true);
-				long lastTime=mob.playerStats().lastDateTime();
+				long lastTime=mob.playerStats().getLastDateTime();
 				if((admin)&&(!CMLib.masking().maskCheck(getReadReq(),mob,true)))
 				{
 					mob.tell("You are not allowed to read "+name()+".");

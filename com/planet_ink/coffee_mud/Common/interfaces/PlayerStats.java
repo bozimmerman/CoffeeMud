@@ -46,12 +46,12 @@ public interface PlayerStats extends CMCommon, Modifiable, AccountStats
 	 * 
 	 * @return the time, in milis since 1970, that the player was last saved.
 	 */
-	public long lastUpdated();
+	public long getLastUpdated();
 	
 	/**
 	 * Sets the time, in milis since 1970, that the player was last saved.
 	 * 
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#lastUpdated()
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#getLastUpdated()
 	 * 
 	 * @param time the time, in milis since 1970, that the player was last saved.
 	 */
@@ -256,54 +256,54 @@ public interface PlayerStats extends CMCommon, Modifiable, AccountStats
 	 * For player with the GOTO command, this is the message seen by all when
 	 * the player arrives from using GOTO.
 	 * 
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#poofOut()
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#getPoofOut()
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#setPoofs(String, String, String, String)
 	 * 
 	 * @return the poof-in GOTO message
 	 */
-	public String poofIn();
+	public String getPoofIn();
 	
 	/**
 	 * For player with the GOTO command, this is the message seen by all when
 	 * the player leaves using GOTO.
 	 * 
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#poofIn()
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#getPoofIn()
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#setPoofs(String, String, String, String)
 	 * 
 	 * @return the poof-out GOTO message
 	 */
-	public String poofOut();
+	public String getPoofOut();
 
 	/**
 	 * For player with the TRANSFER command, this is the message seen by all when
 	 * the player arrives from using TRANSFER.
 	 * 
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#tranPoofOut()
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#getTranPoofOut()
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#setPoofs(String, String, String, String)
 	 * 
 	 * @return the poof-in TRANSFER message
 	 */
-	public String tranPoofIn();
+	public String getTranPoofIn();
 	
 	/**
 	 * For player with the TRANSFER command, this is the message seen by all when
 	 * the player leaves using TRANSFER.
 	 * 
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#tranPoofIn()
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#getTranPoofIn()
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#setPoofs(String, String, String, String)
 	 * 
 	 * @return the poof-out TRANSFER message
 	 */
-	public String tranPoofOut();
+	public String getTranPoofOut();
 
 	/**
 	 * For players with either the GOTO or TRANSFER command, this will set the 
 	 * various messages seen when coming and going using either of those commands.
 	 * 
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#tranPoofIn()
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#tranPoofOut()
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#poofIn()
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#poofOut()
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#getTranPoofIn()
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#getTranPoofOut()
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#getPoofIn()
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#getPoofOut()
 	 *  
 	 * @param poofIn the msg seen when entering a room using GOTO
 	 * @param poofOut the msg seen when leaving a room using TRANSFER
@@ -320,13 +320,13 @@ public interface PlayerStats extends CMCommon, Modifiable, AccountStats
 	 * 
 	 * @return prefix to announcements
 	 */
-	public String announceMessage();
+	public String getAnnounceMessage();
 
 	/**
 	 * For players with the ANNOUNCE command, this sets the message used to
 	 * prefix the announcements proclaimed.
 	 * 
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#announceMessage()
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#getAnnounceMessage()
 	 * 
 	 * @param msg prefix to announcements
 	 */
@@ -336,20 +336,20 @@ public interface PlayerStats extends CMCommon, Modifiable, AccountStats
 	 * Returns the last MOB player who sent this player a private instant message.
 	 * 
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#setReplyTo(MOB, int)
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#replyType()
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#replyTime()
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#getReplyType()
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#getReplyToTime()
 	 * 
 	 * @return the last MOB player who sent this player a private instant message.
 	 */
-	public MOB replyTo();
+	public MOB getReplyToMOB();
 
 	/**
 	 * Sets the last MOB player who sent this player a private instant message,
 	 * and some information about that tell (a defined constant).
 	 * 
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#replyTo()
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#replyType()
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#replyTime()
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#getReplyToMOB()
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#getReplyType()
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#getReplyToTime()
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#REPLY_SAY
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#REPLY_TELL
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#REPLY_YELL
@@ -364,27 +364,27 @@ public interface PlayerStats extends CMCommon, Modifiable, AccountStats
 	 * encoded constant.
 	 * 
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#setReplyTo(MOB, int)
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#replyTo()
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#replyTime()
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#getReplyToMOB()
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#getReplyToTime()
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#REPLY_SAY
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#REPLY_TELL
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#REPLY_YELL
 	 * 
 	 * @return the type of private message last sent to this player
 	 */
-	public int replyType();
+	public int getReplyType();
 	
 	/**
 	 * Returns the last time, in millis since 1970, that a player last
 	 * sent this playe a private message.
 	 * 
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#setReplyTo(MOB, int)
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#replyTo()
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#replyType()
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#getReplyToMOB()
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#getReplyType()
 	 * 
 	 * @return the last time this player got a private message
 	 */
-	public long replyTime();
+	public long getReplyToTime();
 	
 	/**
 	 * Returns a read-only Set of security flags that apply to this
@@ -521,8 +521,9 @@ public interface PlayerStats extends CMCommon, Modifiable, AccountStats
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#unVisit(Area)
 	 * 
 	 * @param R the room to credit the player with
+	 * @return true if this was first visit, false otherwise
 	 */
-	public void addRoomVisit(Room R);
+	public boolean addRoomVisit(Room R);
 
 	/**
 	 * Deletes the visitation record for all rooms in the given area.

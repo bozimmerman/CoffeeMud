@@ -1109,7 +1109,7 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 					if(A==null)
 						author=author.substring(0,author.indexOf('@'));
 					else
-						author=A.accountName();
+						author=A.getAccountName();
 				}
 				else
 					author=author.substring(0,author.indexOf('@'));

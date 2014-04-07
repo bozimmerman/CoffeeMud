@@ -222,7 +222,7 @@ public class WeatherAffects extends PuddleMaker
 		if((coldWeather(lastWeather))
 		&&(coldWeather(C.weatherType(null)))
 		&&(lastWeather!=C.weatherType(null))
-		&&(A.getTimeObj().getSeasonCode()==TimeClock.SEASON_WINTER)
+		&&(A.getTimeObj().getSeasonCode()==TimeClock.Season.WINTER)
 		&&(CMLib.dice().rollPercentage()<freezeOverChance))
 		{
 			if(ticking instanceof Room)
@@ -447,7 +447,7 @@ public class WeatherAffects extends PuddleMaker
 								S.mob().tell("^JA thunderous rumble and CRACK of lightning can be heard.^?"+CMLib.protocol().msp("thunder.wav",40));
 						}
 						else
-						if(R.getArea().getTimeObj().getTODCode()==TimeClock.TIME_DAY)
+						if(R.getArea().getTimeObj().getTODCode()==TimeClock.TimeOfDay.DAY)
 							S.mob().tell("^JA thunderous rumble and CRACK of lightning can be heard as the pounding rain soaks you.^?"+CMLib.protocol().msp("thunderandrain.wav",40));
 						else
 							S.mob().tell("^JA bolt of lightning streaks across the sky as the pounding rain soaks you!^?"+CMLib.protocol().msp("thunderandrain.wav",40));
@@ -531,7 +531,7 @@ public class WeatherAffects extends PuddleMaker
 						{
 							R2=e.nextElement();
 							if((R2!=R)&&(R2.numInhabitants()>0))
-								if((A.getTimeObj().getTODCode()==TimeClock.TIME_DAY)
+								if((A.getTimeObj().getTODCode()==TimeClock.TimeOfDay.DAY)
 								||(C.weatherType(R2)!=Climate.WEATHER_THUNDERSTORM))
 								{
 									if((R2.domainType()&Room.INDOORS)>0)
@@ -595,7 +595,7 @@ public class WeatherAffects extends PuddleMaker
 						{
 							R2=e.nextElement();
 							if((R2!=R)&&(R2.numInhabitants()>0))
-								if((A.getTimeObj().getTODCode()==TimeClock.TIME_DAY)
+								if((A.getTimeObj().getTODCode()==TimeClock.TimeOfDay.DAY)
 								||(C.weatherType(R2)!=Climate.WEATHER_THUNDERSTORM))
 								{
 									if((R2.domainType()&Room.INDOORS)>0)

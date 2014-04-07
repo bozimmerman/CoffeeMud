@@ -8,12 +8,12 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.AccountStats.PrideStat;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
-
 
 import java.util.*;
 
@@ -168,7 +168,11 @@ public class GenSuperPill extends GenPill implements ArchonOnly
 
 		mob.setPractices(mob.getPractices()+CMParms.getParmPlus(readableText,"prac"));
 		mob.setTrains(mob.getTrains()+CMParms.getParmPlus(readableText,"trai"));
-		mob.setQuestPoint(mob.getQuestPoint()+CMParms.getParmPlus(readableText,"ques"));
+		int qp=CMParms.getParmPlus(readableText,"ques");
+		if(qp!=0)
+			mob.setQuestPoint(mob.getQuestPoint()+qp);
+		if((qp>0)&&(mob.playerStats()!=null))
+			mob.playerStats().bumpPrideStat(PrideStat.QUESTPOINTS_EARNED, qp);
 		int newMoney=CMParms.getParmPlus(readableText,"coin");
 		if(newMoney!=0) CMLib.beanCounter().setMoney(mob,CMLib.beanCounter().getMoney(mob)+newMoney);
 		int exp=CMParms.getParmPlus(readableText,"expe");

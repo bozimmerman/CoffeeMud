@@ -120,17 +120,17 @@ public class Prop_ClosedDayNight extends Property
 		if(R==null) return false;
 		if((openTime<0)&&(closeTime<0))
 		{
-			closed=(R.getArea().getTimeObj().getTODCode()==TimeClock.TIME_NIGHT);
+			closed=(R.getArea().getTimeObj().getTODCode()==TimeClock.TimeOfDay.NIGHT);
 			if(dayFlag) closed=!closed;
 		}
 		else
 		{
 			if(openTime<closeTime)
-				closed=(R.getArea().getTimeObj().getTimeOfDay()<openTime)
-					||(R.getArea().getTimeObj().getTimeOfDay()>closeTime);
+				closed=(R.getArea().getTimeObj().getHourOfDay()<openTime)
+					||(R.getArea().getTimeObj().getHourOfDay()>closeTime);
 			else
-				closed=(R.getArea().getTimeObj().getTimeOfDay()>closeTime)
-					&&(R.getArea().getTimeObj().getTimeOfDay()<openTime);
+				closed=(R.getArea().getTimeObj().getHourOfDay()>closeTime)
+					&&(R.getArea().getTimeObj().getHourOfDay()<openTime);
 		}
 		return closed;
 	}

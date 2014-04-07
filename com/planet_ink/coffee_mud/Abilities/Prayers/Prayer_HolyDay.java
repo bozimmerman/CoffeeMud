@@ -112,7 +112,7 @@ public class Prayer_HolyDay extends Prayer
 		if((affected==null)||(!(affected instanceof Area)))
 			return super.tick(ticking,tickID);
 
-		if(((Area)affected).getTimeObj().getTimeOfDay()==15)
+		if(((Area)affected).getTimeObj().getHourOfDay()==15)
 			unInvoke();
 
 		return super.tick(ticking,tickID);

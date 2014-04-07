@@ -1245,11 +1245,11 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 								  buf.append(mob.location().getArea().name());
 							  c++; break; }
 				case 't': { 	 if(mob.location()!=null)
-								  buf.append(CMStrings.capitalizeAndLower(TimeClock.TOD_DESC[mob.location().getArea().getTimeObj().getTODCode()].toLowerCase()));
+								  buf.append(CMStrings.capitalizeAndLower(mob.location().getArea().getTimeObj().getTODCode().getDesc().toLowerCase()));
 							  c++; break;
 						  }
 				case 'T': { 	 if(mob.location()!=null)
-								  buf.append(mob.location().getArea().getTimeObj().getTimeOfDay());
+								  buf.append(mob.location().getArea().getTimeObj().getHourOfDay());
 							  c++; break;
 						  }
 				case '@': { 	 if(mob.location()!=null)

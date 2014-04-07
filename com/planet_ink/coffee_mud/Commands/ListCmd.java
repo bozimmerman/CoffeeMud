@@ -1299,10 +1299,10 @@ public class ListCmd extends StdCommand
 		{
 			PlayerLibrary.ThinPlayer selectedU=new PlayerLibrary.ThinPlayer();
 			selectedU.email=acct.getEmail();
-			selectedU.ip=acct.lastIP();
-			selectedU.last=acct.lastDateTime();
-			selectedU.name=acct.accountName();
-			thinAcctHash.put(acct.accountName(), selectedU);
+			selectedU.ip=acct.getLastIP();
+			selectedU.last=acct.getLastDateTime();
+			selectedU.name=acct.getAccountName();
+			thinAcctHash.put(acct.getAccountName(), selectedU);
 		}
 		int showBy=sortBy;
 		PlayerLibrary lib=CMLib.players();
@@ -1315,11 +1315,11 @@ public class ListCmd extends StdCommand
 				PlayerAccount selected = oldSet.get(0);
 				if(selected != null)
 				{
-					PlayerLibrary.ThinPlayer selectedU=thinAcctHash.get(selected.accountName());
+					PlayerLibrary.ThinPlayer selectedU=thinAcctHash.get(selected.getAccountName());
 					for(int u=1;u<oldSet.size();u++)
 					{
 						PlayerAccount acct = oldSet.get(u);
-						PlayerLibrary.ThinPlayer U=thinAcctHash.get(acct.accountName());
+						PlayerLibrary.ThinPlayer U=thinAcctHash.get(acct.getAccountName());
 						if(lib.getThinSortValue(selectedU,sortBy).compareTo(lib.getThinSortValue(U,sortBy))>0)
 						{
 							selected=acct;
@@ -1335,11 +1335,11 @@ public class ListCmd extends StdCommand
 				PlayerAccount selected = oldSet.get(0);
 				if(selected!=null)
 				{
-					PlayerLibrary.ThinPlayer selectedU=thinAcctHash.get(selected.accountName());
+					PlayerLibrary.ThinPlayer selectedU=thinAcctHash.get(selected.getAccountName());
 					for(int u=1;u<oldSet.size();u++)
 					{
 						PlayerAccount acct = oldSet.get(u);
-						PlayerLibrary.ThinPlayer U=thinAcctHash.get(acct.accountName());
+						PlayerLibrary.ThinPlayer U=thinAcctHash.get(acct.getAccountName());
 						if(CMath.s_long(lib.getThinSortValue(selectedU,sortBy))>CMath.s_long(lib.getThinSortValue(U,sortBy)))
 						{
 							selected=acct;
@@ -1357,8 +1357,8 @@ public class ListCmd extends StdCommand
 			PlayerAccount U=allAccounts.get(u);
 			StringBuilder line=new StringBuilder("");
 			line.append("[");
-			line.append(CMStrings.padRight(U.accountName(),COL_LEN1)+" ");
-			line.append(CMStrings.padRight(CMLib.time().date2String(U.lastDateTime()),COL_LEN2)+" ");
+			line.append(CMStrings.padRight(U.getAccountName(),COL_LEN1)+" ");
+			line.append(CMStrings.padRight(CMLib.time().date2String(U.getLastDateTime()),COL_LEN2)+" ");
 			String players = CMParms.toStringList(U.getPlayers());
 			Vector<String> pListsV = new Vector<String>();
 			while(players.length()>0)
@@ -1375,7 +1375,7 @@ public class ListCmd extends StdCommand
 			}
 			switch(showBy){
 			default: line.append(CMStrings.padRight(U.getEmail(),COL_LEN3)+" "); break;
-			case 7: line.append(CMStrings.padRight(U.lastIP(),COL_LEN3)+" "); break;
+			case 7: line.append(CMStrings.padRight(U.getLastIP(),COL_LEN3)+" "); break;
 			}
 			line.append("] ");
 			int len = line.length();

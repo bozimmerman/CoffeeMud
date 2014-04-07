@@ -2895,9 +2895,9 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 	public String getAccountXML(PlayerAccount account, Set<CMObject> custom, Set<String> files)
 	{
 		if(account==null) return "";
-		if(account.accountName().length()==0) return "";
+		if(account.getAccountName().length()==0) return "";
 		StringBuilder xml=new StringBuilder("");
-		xml.append("<NAME>").append(account.accountName()).append("</NAME>");
+		xml.append("<NAME>").append(account.getAccountName()).append("</NAME>");
 		xml.append("<PASS>").append(account.getPasswordStr()).append("</PASS>");
 		xml.append("<AXML>").append(account.getXML()).append("</AXML>");
 		xml.append("<PLAYERS>");
@@ -2964,7 +2964,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		str.append(CMLib.xml().convertXMLtoTag("WIMP",mob.getWimpHitPoint()));
 		str.append(CMLib.xml().convertXMLtoTag("QUES",mob.getQuestPoint()));
 		str.append(CMLib.xml().convertXMLtoTag("ROID",strStartRoomID+"||"+strOtherRoomID));
-		str.append(CMLib.xml().convertXMLtoTag("DATE",pstats.lastDateTime()));
+		str.append(CMLib.xml().convertXMLtoTag("DATE",pstats.getLastDateTime()));
 		str.append(CMLib.xml().convertXMLtoTag("CHAN",pstats.getChannelMask()));
 		str.append(CMLib.xml().convertXMLtoTag("ATTA",mob.basePhyStats().attackAdjustment()));
 		str.append(CMLib.xml().convertXMLtoTag("AMOR",mob.basePhyStats().armor()));
@@ -2977,7 +2977,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		str.append(CMLib.xml().convertXMLtoTag("COLR",pstats.getColorStr()));
 		for(Pair<Clan,Integer> p : mob.clans())
 			str.append("<CLAN ROLE=").append(p.second.toString()).append(">").append(p.first.clanID()).append("</CLAN>");
-		str.append(CMLib.xml().convertXMLtoTag("LSIP",pstats.lastIP()));
+		str.append(CMLib.xml().convertXMLtoTag("LSIP",pstats.getLastIP()));
 		str.append(CMLib.xml().convertXMLtoTag("EMAL",pstats.getEmail()));
 		str.append(CMLib.xml().convertXMLtoTag("PFIL",pfxml.toString()));
 		str.append(CMLib.xml().convertXMLtoTag("SAVE",mob.baseCharStats().getNonBaseStatsAsString()));

@@ -182,7 +182,7 @@ public class Polls extends StdLibrary implements PollManager
 			{
 				R.ip=mob.session().getAddress();
 				if((mob.playerStats()!=null)&&(mob.playerStats().getAccount()!=null))
-					R.ip+="\t"+mob.playerStats().getAccount().accountName();
+					R.ip+="\t"+mob.playerStats().getAccount().getAccountName();
 			}
 			P.addVoteResult(R);
 		}

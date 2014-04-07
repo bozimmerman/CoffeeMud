@@ -171,7 +171,7 @@ public class MassMailer implements Runnable
 				PlayerAccount P=CMLib.players().getLoadAccount(to);
 				if((P.getEmail().length()==0)) // no email addy to forward TO
 					continue;
-				toName=P.accountName();
+				toName=P.getAccountName();
 				toEmail=P.getEmail();
 			}
 			else

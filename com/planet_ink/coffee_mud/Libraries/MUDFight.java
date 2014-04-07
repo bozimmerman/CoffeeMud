@@ -9,6 +9,7 @@ import com.planet_ink.coffee_mud.CharClasses.Fighter;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.AccountStats.PrideStat;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
@@ -1336,7 +1337,11 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 			&&(killer!=deadmob)&&(!killer.isMonster()))
 			{
 				if(!deadmob.isMonster())
+				{
 					CMLib.coffeeTables().bump(deadmob,CoffeeTableRow.STAT_PKDEATHS);
+					if(killer.playerStats()!=null)
+						killer.playerStats().bumpPrideStat(PrideStat.PVPKILLS, 1);
+				}
 				if((killer.session()!=null)
 				&&((deadmob.session()==null)||(!deadmob.session().getAddress().equalsIgnoreCase(killer.session().getAddress()))))
 				{

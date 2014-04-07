@@ -143,7 +143,7 @@ public class DefaultPoll implements Poll
 				final String accountName;
 				final PlayerStats pstats=mob.playerStats();
 				if((pstats!=null)&&(pstats.getAccount()!=null))
-					accountName="\t"+pstats.getAccount().accountName();
+					accountName="\t"+pstats.getAccount().getAccountName();
 				else
 					accountName="\t\n";
 				if((R.ip.equals(address)||R.ip.startsWith(address+"\t")||R.ip.endsWith(accountName)))

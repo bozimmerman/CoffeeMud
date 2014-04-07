@@ -1014,7 +1014,7 @@ public class DefaultClan implements Clan
 					if(M.lastTickedDateTime()>0)
 						members.add(new FullMemberRecord(member.name,M.basePhyStats().level(),member.role,M.lastTickedDateTime(),member.mobpvps,member.playerpvps));
 					else
-						members.add(new FullMemberRecord(member.name,M.basePhyStats().level(),member.role,M.playerStats().lastDateTime(),member.mobpvps,member.playerpvps));
+						members.add(new FullMemberRecord(member.name,M.basePhyStats().level(),member.role,M.playerStats().getLastDateTime(),member.mobpvps,member.playerpvps));
 				}
 				else
 				{

@@ -410,7 +410,7 @@ public class Modify extends StdCommand
 		if(commands.size()==2)
 		{
 			theAccount=mob.playerStats().getAccount();
-			oldName=theAccount.accountName();
+			oldName=theAccount.getAccountName();
 			CMLib.genEd().modifyAccount(mob,theAccount);
 		}
 		else
@@ -430,12 +430,12 @@ public class Modify extends StdCommand
 				mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
 				return;
 			}
-			oldName=theAccount.accountName();
+			oldName=theAccount.getAccountName();
 			CMLib.genEd().modifyAccount(mob,theAccount);
 			mob.location().recoverRoomStats();
 		}
-		Log.sysOut("Modify",mob.Name()+" modified account "+theAccount.accountName()+".");
-		if(!oldName.equals(theAccount.accountName()))
+		Log.sysOut("Modify",mob.Name()+" modified account "+theAccount.getAccountName()+".");
+		if(!oldName.equals(theAccount.getAccountName()))
 		{
 			Vector<MOB> V=new Vector<MOB>();
 			for(Enumeration<String> es=theAccount.getPlayers();es.hasMoreElements();)
@@ -1284,7 +1284,7 @@ public class Modify extends StdCommand
 		{
 			CMLib.database().DBReadFollowers(M,false);
 			if(M.playerStats()!=null)
-				M.playerStats().setLastUpdated(M.playerStats().lastDateTime());
+				M.playerStats().setLastUpdated(M.playerStats().getLastDateTime());
 			M.recoverPhyStats();
 			M.recoverCharStats();
 		}
@@ -1704,8 +1704,8 @@ public class Modify extends StdCommand
 				return false;
 			}
 			TimeClock C=mob.location().getArea().getTimeObj();
-			int oldTOD=C.getTODCode();
-			C.setTimeOfDay(CMath.s_int((String)commands.get(2)));
+			TimeClock.TimeOfDay oldTOD=C.getTODCode();
+			C.setHourOfDay(CMath.s_int((String)commands.get(2)));
 			if(oldTOD!=C.getTODCode())
 				C.handleTimeChange();
 			C.save();

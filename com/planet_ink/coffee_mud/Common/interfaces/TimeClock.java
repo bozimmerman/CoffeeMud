@@ -1,4 +1,7 @@
 package com.planet_ink.coffee_mud.Common.interfaces;
+import java.util.Calendar;
+import java.util.Date;
+
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -134,62 +137,51 @@ public interface TimeClock extends Tickable, CMCommon
 	/**
 	 * Gets the current time of day (the hour).
 	 * 
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#setTimeOfDay(int)
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#setHourOfDay(int)
 	 * 
 	 * @return the time of day (hour)
 	 */
-	public int getTimeOfDay();
+	public int getHourOfDay();
 	
 	/**
 	 * Sets the time of day (the hour).
 	 * 
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#getTimeOfDay()
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#getHourOfDay()
 	 * 
 	 * @param t the time of day (the hour)
 	 * 
 	 * @return true, if the new time denotes a change of sun-orientation, false otherwise
 	 */
-	public boolean setTimeOfDay(int t);
+	public boolean setHourOfDay(int t);
 	
 	/**
 	 * Gets the TOD code, which is the sun-orientation (morning, evening, etc)
 	 * 
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#setTimeOfDay(int)
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#setHourOfDay(int)
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#setDawnToDusk(int, int, int, int)
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#TIME_DAWN
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#TIME_DUSK
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#TIME_DAY
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#TIME_NIGHT
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#TOD_DESC
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock.TimeOfDay
 	 * 
 	 * @return the TOD code
 	 */
-	public int getTODCode();
+	public TimeOfDay getTODCode();
 	
 	/**
 	 * Gets the moon phase an an enumeration.
 	 * 
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#MOON_PHASES
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#PHASE_DESC
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#PHASE_FULL
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#PHASE_NEW
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock.MoonPhase
 	 * 
 	 * @return the moon phase as an enumeration
 	 */
-	public int getMoonPhase();
+	public MoonPhase getMoonPhase();
 	
 	/**
 	 * Gets the season code.
 	 * 
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#SEASON_DESCS
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#SEASON_FALL
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#SEASON_SPRING
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#SEASON_SUMMER
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#SEASON_WINTER
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock.Season
 	 * 
 	 * @return the season code
 	 */
-	public int getSeasonCode();
+	public Season getSeasonCode();
 	
 	/**
 	 * Alters the time/day by the given number of hours (forward
@@ -290,11 +282,7 @@ public interface TimeClock extends Tickable, CMCommon
 	 * 
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#getTODCode()
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#setDawnToDusk(int, int, int, int)
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#TIME_DAWN
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#TIME_DUSK
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#TIME_DAY
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#TIME_NIGHT
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#TOD_DESC
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock.TimeOfDay
 	 * 
 	 * @return the dawn to dusk array
 	 */
@@ -306,11 +294,7 @@ public interface TimeClock extends Tickable, CMCommon
 	 * 
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#getDawnToDusk()
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#getTODCode()
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#TIME_DAWN
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#TIME_DUSK
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#TIME_DAY
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#TIME_NIGHT
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#TOD_DESC
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock.TimeOfDay
 	 * 
 	 * @param dawn the dawn hour
 	 * @param day the day hour
@@ -427,79 +411,141 @@ public interface TimeClock extends Tickable, CMCommon
 	 */
 	public void handleTimeChange();
 
-	/** The Moon Phase Constant MOON_PHASES, with long sentence descriptions of the various phases. */
-	public final static String[] MOON_PHASES={
-		"There is a new moon in the sky.",
-		"The moon is in the waxing crescent phase.",
-		"The moon is in its first quarter.",
-		"The moon is in the waxing gibbous phase (almost full).",
-		"There is a full moon in the sky.",
-		"The moon is in the waning gibbous phase (no longer full).",
-		"The moon is in its last quarter.",
-		"The moon is in the waning crescent phase.",
-		"There is a BLUE MOON! Oh my GOD! Run away!!!!!"
-	};
+	/**
+	 * Different time periods.
+	 * @author Bo Zimmerman
+	 */
+	public enum TimePeriod
+	{
+		HOUR(60L * 60L * 1000L), 
+		DAY(60L * 60L * 1000L * 24L), 
+		WEEK(60L * 60L * 1000L * 24L * 7L), 
+		MONTH(60L * 60L * 1000L * 24L * 30L), 
+		SEASON(60L * 60L * 1000L * 24L * 365L / 4L), 
+		YEAR(60L * 60L * 1000L * 24L * 365L), 
+		ALLTIME(0)
+		;
+		private final long increment;
+		private TimePeriod(long increment)
+		{
+			this.increment=increment;
+		}
+		public long getIncrement()
+		{
+			return increment;
+		}
+		public long nextPeriod()
+		{
+			Calendar calendar=Calendar.getInstance();
+			calendar.add(Calendar.MILLISECOND, -calendar.get(Calendar.MILLISECOND));
+			calendar.add(Calendar.SECOND, -calendar.get(Calendar.SECOND));
+			calendar.add(Calendar.MINUTE, -calendar.get(Calendar.MINUTE));
+			switch(this)
+			{
+			case HOUR:
+				calendar.add(Calendar.HOUR_OF_DAY,1);
+				break;
+			case DAY:
+				calendar.add(Calendar.HOUR_OF_DAY,-calendar.get(Calendar.HOUR_OF_DAY));
+				calendar.add(Calendar.DATE,1);
+				break;
+			case WEEK:
+				calendar.add(Calendar.DAY_OF_WEEK,-(calendar.get(Calendar.DAY_OF_WEEK)-1));
+				calendar.add(Calendar.HOUR_OF_DAY,-calendar.get(Calendar.HOUR_OF_DAY));
+				calendar.add(Calendar.WEEK_OF_YEAR,1);
+				break;
+			case MONTH:
+				calendar.add(Calendar.DAY_OF_MONTH,-(calendar.get(Calendar.DAY_OF_MONTH)-1));
+				calendar.add(Calendar.HOUR_OF_DAY,-calendar.get(Calendar.HOUR_OF_DAY));
+				calendar.add(Calendar.MONTH,1);
+				break;
+			case SEASON:
+				calendar.add(Calendar.DAY_OF_YEAR, -(calendar.get(Calendar.DAY_OF_YEAR) % (365/4)));
+				calendar.add(Calendar.HOUR_OF_DAY,-calendar.get(Calendar.HOUR_OF_DAY));
+				calendar.add(Calendar.DAY_OF_YEAR,(365/4));
+				break;
+			case YEAR:
+				calendar.add(Calendar.DAY_OF_YEAR,-(calendar.get(Calendar.DAY_OF_YEAR)-1));
+				calendar.add(Calendar.HOUR_OF_DAY,-calendar.get(Calendar.HOUR_OF_DAY));
+				calendar.add(Calendar.YEAR,1);
+				break;
+			case ALLTIME:
+				return Long.MAX_VALUE;
+			}
+			return calendar.getTimeInMillis();
+		}
+	}
+
+	/**
+	 * The phases of the moon
+	 * @author Bo Zimmerman
+	 */
+	public enum MoonPhase
+	{
+		NEW("There is a new moon in the sky.",1.0),
+		WAXCRESCENT("The moon is in the waxing crescent phase.",0.5),
+		WAXQUARTER("The moon is in its first quarter.",0.0),
+		WAXGIBBOUS("The moon is in the waxing gibbous phase (almost full).",-0.5),
+		FULL("There is a full moon in the sky.",-1.0),
+		WANEGIBBOUS("The moon is in the waning gibbous phase (no longer full).",-0.5),
+		WANEQUARTER("The moon is in its last quarter.",0.0),
+		WANECRESCENT("The moon is in the waning crescent phase.",0.5),
+		BLUE("There is a BLUE MOON! Oh my GOD! Run away!!!!!",2.0);
+		
+		private final String phaseDesc;
+		private final double factor;
+		
+		private MoonPhase(String desc, double factor) 
+		{
+			phaseDesc=desc;
+			this.factor=factor;
+		}
+		
+		public String getDesc() 
+		{
+			return phaseDesc;
+		}
+		
+		public double getFactor()
+		{
+			return factor;
+		}
+	}
+
+	/**
+	 * Time of Day enumeration
+	 * @author Bo Zimmerman
+	 */
+	public enum TimeOfDay
+	{
+		DAWN("It is dawn "),
+		DAY("It is daytime "),
+		DUSK("It is dusk "),
+		NIGHT("It is nighttime ")
+		;
+		private final String todDesc;
+		
+		private TimeOfDay(String desc)
+		{
+			todDesc=desc;
+		}
+		public String getDesc()
+		{
+			return todDesc;
+		}
+	}
 	
-	/** The Moon Phase Constant PHASE_NEW. */
-	public final static int PHASE_NEW=0;
+	/**
+	 * Enumeration for the season of the year
+	 * @author Bo Zimmerman
+	 */
+	public enum Season
+	{
+		SPRING,
+		SUMMER,
+		FALL,
+		WINTER
+	}
 	
-	/** The Moon Phase Constant PHASE_WAXCRESCENT. */
-	public final static int PHASE_WAXCRESCENT=1;
-	
-	/** The Moon Phase Constant PHASE_WAXQUARTER. */
-	public final static int PHASE_WAXQUARTER=2;
-	
-	/** The Moon Phase Constant PHASE_WAXGIBBOUS. */
-	public final static int PHASE_WAXGIBBOUS=3;
-	
-	/** The Moon Phase Constant PHASE_FULL. */
-	public final static int PHASE_FULL=4;
-	
-	/** The Moon Phase Constant PHASE_WANEGIBBOUS. */
-	public final static int PHASE_WANEGIBBOUS=5;
-	
-	/** The Moon Phase Constant PHASE_WANDEQUARTER. */
-	public final static int PHASE_WANDEQUARTER=6;
-	
-	/** The Moon Phase Constant PHASE_WANECRESCENT. */
-	public final static int PHASE_WANECRESCENT=7;
-	
-	/** The Moon Phase Constant PHASE_BLUE. */
-	public final static int PHASE_BLUE=8;
-	
-	/** The Moon Phase Constant PHASE_DESC, holding the coded short values of the moon phases. */
-	public final static String[] PHASE_DESC={"NEW","WAXCRESCENT","WAXQUARTER","WAXGIBBOUS","FULL","WANEGIBBOUS","WANEQUARTER","WANECRESCENT","BLUE"};
-	
-	/** The Constant TOD_DESC, with a sentence description of each sun-orientation (time of day). */
-	public final static String[] TOD_DESC={
-		"It is dawn ","It is daytime ","It is dusk ","It is nighttime "
-	};
-										   
-	/** The Time Of Day (TOD) Constant TIME_DAWN. */
-	public final static int TIME_DAWN=0;
-	
-	/** The Time Of Day (TOD) Constant TIME_DAY. */
-	public final static int TIME_DAY=1;
-	
-	/** The Time Of Day (TOD) Constant TIME_DUSK. */
-	public final static int TIME_DUSK=2;
-	
-	/** The Time Of Day (TOD) Constant TIME_NIGHT. */
-	public final static int TIME_NIGHT=3;
-	
-	/** The Season Constant SEASON_SPRING. */
-	public final static int SEASON_SPRING=0;
-	
-	/** The Season Constant SEASON_SUMMER. */
-	public final static int SEASON_SUMMER=1;
-	
-	/** The Season Constant SEASON_FALL. */
-	public final static int SEASON_FALL=2;
-	
-	/** The Season Constant SEASON_WINTER. */
-	public final static int SEASON_WINTER=3;
-	
-	/** The Season Constant SEASON_DESCS, with the string word name of each season. */
-	public final static String[] SEASON_DESCS={"SPRING","SUMMER","FALL","WINTER"};
-	
+	// old codes: 
 }

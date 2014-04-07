@@ -73,10 +73,10 @@ public class DefaultTimeClock implements TimeClock
 	public void setYearNames(String[] years){yearNames=years;}
 	public void setDawnToDusk(int dawn, int day, int dusk, int night)
 	{ 
-		dawnToDusk[TIME_DAWN]=dawn;
-		dawnToDusk[TIME_DAY]=day;
-		dawnToDusk[TIME_DUSK]=dusk;
-		dawnToDusk[TIME_NIGHT]=night;
+		dawnToDusk[TimeOfDay.DAWN.ordinal()]=dawn;
+		dawnToDusk[TimeOfDay.DAY.ordinal()]=day;
+		dawnToDusk[TimeOfDay.DUSK.ordinal()]=dusk;
+		dawnToDusk[TimeOfDay.NIGHT.ordinal()]=night;
 	}
 	public String[] getWeekNames(){return weekNames;}
 	public int getDaysInWeek(){return weekNames.length;}
@@ -88,13 +88,13 @@ public class DefaultTimeClock implements TimeClock
 		timeDesc.append(getYear());
 		timeDesc.append("/"+getMonth());
 		timeDesc.append("/"+getDayOfMonth());
-		timeDesc.append(" HR:"+getTimeOfDay());
+		timeDesc.append(" HR:"+getHourOfDay());
 		return timeDesc.toString();
 	}
 	public String getShortTimeDescription()
 	{
 		StringBuffer timeDesc=new StringBuffer("");
-		timeDesc.append("hour "+getTimeOfDay()+" on ");
+		timeDesc.append("hour "+getHourOfDay()+" on ");
 		if(getDaysInWeek()>0)
 		{
 			long x=((long)getYear())*((long)getMonthsInYear())*getDaysInMonth();
@@ -142,9 +142,9 @@ public class DefaultTimeClock implements TimeClock
 	{
 		StringBuffer timeDesc=new StringBuffer("");
 
-		if((CMLib.flags().canSee(mob))&&(getTODCode()>=0))
-			timeDesc.append(TOD_DESC[getTODCode()]);
-		timeDesc.append("(Hour: "+getTimeOfDay()+"/"+(getHoursInDay()-1)+")");
+		if(CMLib.flags().canSee(mob))
+			timeDesc.append(getTODCode().getDesc());
+		timeDesc.append("(Hour: "+getHourOfDay()+"/"+(getHoursInDay()-1)+")");
 		timeDesc.append("\n\rIt is ");
 		if(getDaysInWeek()>0)
 		{
@@ -157,9 +157,9 @@ public class DefaultTimeClock implements TimeClock
 		timeDesc.append(" day of "+getMonthNames()[getMonth()-1]);
 		if(getYearNames().length>0)
 			timeDesc.append(", "+CMStrings.replaceAll(getYearNames()[getYear()%getYearNames().length],"#",""+getYear()));
-		timeDesc.append(".\n\rIt is "+(TimeClock.SEASON_DESCS[getSeasonCode()]).toLowerCase()+".");
+		timeDesc.append(".\n\rIt is "+getSeasonCode().toString().toLowerCase()+".");
 		if((CMLib.flags().canSee(mob))
-		&&(getTODCode()==TimeClock.TIME_NIGHT)
+		&&(getTODCode()==TimeClock.TimeOfDay.NIGHT)
 		&&(CMLib.map().hasASky(room)))
 		{
 			switch(room.getArea().getClimateObj().weatherType(room))
@@ -176,49 +176,68 @@ public class DefaultTimeClock implements TimeClock
 			case Climate.WEATHER_DUSTSTORM:
 				timeDesc.append("\n\rThe dust obscures the moon."); break;
 			default:
-				if(getMoonPhase()>=0)
-					timeDesc.append("\n\r"+MOON_PHASES[getMoonPhase()]);
+				timeDesc.append("\n\r"+getMoonPhase().getDesc());
 				break;
 			}
 		}
 		return timeDesc.toString();
 	}
 
-	public int getYear(){return year;}
-	public void setYear(int y){year=y;}
-
-	public int getSeasonCode(){
-		int div=(int)Math.round(Math.floor(CMath.div(getMonthsInYear(),4.0)));
-		if(month<div) return TimeClock.SEASON_WINTER;
-		if(month<(div*2)) return TimeClock.SEASON_SPRING;
-		if(month<(div*3)) return TimeClock.SEASON_SUMMER;
-		return TimeClock.SEASON_FALL;
+	public int getYear()
+	{
+		return year;
 	}
-	public int getMonth(){return month;}
-	public void setMonth(int m){month=m;}
-	public int getMoonPhase(){return (int)Math.round(Math.floor(CMath.mul(CMath.div(getDayOfMonth(),getDaysInMonth()+1),8.0)));}
+	
+	public void setYear(int y)
+	{
+		year=y;
+	}
+
+	public Season getSeasonCode()
+	{
+		int div=(int)Math.round(Math.floor(CMath.div(getMonthsInYear(),4.0)));
+		if(month<div) return TimeClock.Season.WINTER;
+		if(month<(div*2)) return TimeClock.Season.SPRING;
+		if(month<(div*3)) return TimeClock.Season.SUMMER;
+		return TimeClock.Season.FALL;
+	}
+	
+	public int getMonth()
+	{
+		return month;
+	}
+	
+	public void setMonth(int m)
+	{
+		month=m;
+	}
+	
+	public MoonPhase getMoonPhase()
+	{
+		return TimeClock.MoonPhase.values()[(int)Math.round(Math.floor(CMath.mul(CMath.div(getDayOfMonth(),getDaysInMonth()+1),8.0)))];
+	}
 
 	public int getDayOfMonth(){return day;}
 	public void setDayOfMonth(int d){day=d;}
-	public int getTimeOfDay(){return time;}
-	public int getTODCode()
+	public int getHourOfDay(){return time;}
+	public TimeOfDay getTODCode()
 	{
-		if((time>=getDawnToDusk()[TimeClock.TIME_NIGHT])&&(getDawnToDusk()[TimeClock.TIME_NIGHT]>=0))
-			return TimeClock.TIME_NIGHT;
-		if((time>=getDawnToDusk()[TimeClock.TIME_DUSK])&&(getDawnToDusk()[TimeClock.TIME_DUSK]>=0))
-			return TimeClock.TIME_DUSK;
-		if((time>=getDawnToDusk()[TimeClock.TIME_DAY])&&(getDawnToDusk()[TimeClock.TIME_DAY]>=0))
-			return TimeClock.TIME_DAY;
-		if((time>=getDawnToDusk()[TimeClock.TIME_DAWN])&&(getDawnToDusk()[TimeClock.TIME_DAWN]>=0))
-			return TimeClock.TIME_DAWN;
+		if((time>=getDawnToDusk()[TimeClock.TimeOfDay.NIGHT.ordinal()])&&(getDawnToDusk()[TimeClock.TimeOfDay.NIGHT.ordinal()]>=0))
+			return TimeClock.TimeOfDay.NIGHT;
+		if((time>=getDawnToDusk()[TimeClock.TimeOfDay.DUSK.ordinal()])&&(getDawnToDusk()[TimeClock.TimeOfDay.DUSK.ordinal()]>=0))
+			return TimeClock.TimeOfDay.DUSK;
+		if((time>=getDawnToDusk()[TimeClock.TimeOfDay.DAY.ordinal()])&&(getDawnToDusk()[TimeClock.TimeOfDay.DAY.ordinal()]>=0))
+			return TimeClock.TimeOfDay.DAY;
+		if((time>=getDawnToDusk()[TimeClock.TimeOfDay.DAWN.ordinal()])&&(getDawnToDusk()[TimeClock.TimeOfDay.DAWN.ordinal()]>=0))
+			return TimeClock.TimeOfDay.DAWN;
 		// it's before night, dusk, day, and dawn... before dawn is still night.
-		if(getDawnToDusk()[TimeClock.TIME_NIGHT]>=0)
-			return TimeClock.TIME_NIGHT;
-		return TimeClock.TIME_DAY;
+		if(getDawnToDusk()[TimeClock.TimeOfDay.NIGHT.ordinal()]>=0)
+			return TimeClock.TimeOfDay.NIGHT;
+		return TimeClock.TimeOfDay.DAY;
 	}
-	public boolean setTimeOfDay(int t)
+	public boolean setHourOfDay(int t)
 	{
-		int oldCode=getTODCode();
+		TimeOfDay oldCode=getTODCode();
 		time=t;
 		return getTODCode()!=oldCode;
 	}
@@ -305,11 +324,11 @@ public class DefaultTimeClock implements TimeClock
 				if(C.getDayOfMonth()>getDayOfMonth()) return -1;
 				else 
 				if(C.getDayOfMonth()==getDayOfMonth())
-					if(C.getTimeOfDay()>getTimeOfDay()) return -1;
+					if(C.getHourOfDay()>getHourOfDay()) return -1;
 		numMudHours+=(getYear()-C.getYear())*(getHoursInDay()*getDaysInMonth()*getMonthsInYear());
 		numMudHours+=(getMonth()-C.getMonth())*(getHoursInDay()*getDaysInMonth());
 		numMudHours+=(getDayOfMonth()-C.getDayOfMonth())*getHoursInDay();
-		numMudHours+=(getTimeOfDay()-C.getTimeOfDay());
+		numMudHours+=(getHourOfDay()-C.getHourOfDay());
 		return numMudHours*CMProps.getMillisPerMudHour();
 	}
 	
@@ -337,13 +356,13 @@ public class DefaultTimeClock implements TimeClock
 								&&(!CMLib.flags().isSleeping(mob))
 								&&(CMLib.flags().canSee(mob)))
 								{
-									final String message = CMProps.getListFileValue(CMProps.ListFile.TOD_CHANGE_OUTSIDE, getTODCode());
+									final String message = CMProps.getListFileValue(CMProps.ListFile.TOD_CHANGE_OUTSIDE, getTODCode().ordinal());
 									if(message.trim().length()>0)
 										mob.tell(message);
 								}
 								else
 								{
-									final String message = CMProps.getListFileValue(CMProps.ListFile.TOD_CHANGE_INSIDE, getTODCode());
+									final String message = CMProps.getListFileValue(CMProps.ListFile.TOD_CHANGE_INSIDE, getTODCode().ordinal());
 									if(message.trim().length()>0)
 										mob.tell(message);
 								}
@@ -359,14 +378,14 @@ public class DefaultTimeClock implements TimeClock
 
 	public void tickTock(int howManyHours)
 	{
-		int todCode=getTODCode();
+		TimeOfDay todCode=getTODCode();
 		if(howManyHours!=0)
 		{
-			setTimeOfDay(getTimeOfDay()+howManyHours);
+			setHourOfDay(getHourOfDay()+howManyHours);
 			lastTicked=System.currentTimeMillis();
-			while(getTimeOfDay()>=getHoursInDay())
+			while(getHourOfDay()>=getHoursInDay())
 			{
-				setTimeOfDay(getTimeOfDay()-getHoursInDay());
+				setHourOfDay(getHourOfDay()-getHoursInDay());
 				setDayOfMonth(getDayOfMonth()+1);
 				if(getDayOfMonth()>getDaysInMonth())
 				{
@@ -379,9 +398,9 @@ public class DefaultTimeClock implements TimeClock
 					}
 				}
 			}
-			while(getTimeOfDay()<0)
+			while(getHourOfDay()<0)
 			{
-				setTimeOfDay(getHoursInDay()+getTimeOfDay());
+				setHourOfDay(getHoursInDay()+getHourOfDay());
 				setDayOfMonth(getDayOfMonth()-1);
 				if(getDayOfMonth()<1)
 				{
@@ -405,10 +424,10 @@ public class DefaultTimeClock implements TimeClock
 			"<DAY>"+getDayOfMonth()+"</DAY><MONTH>"+getMonth()+"</MONTH><YEAR>"+getYear()+"</YEAR>"
 			+"<HOURS>"+getHoursInDay()+"</HOURS><DAYS>"+getDaysInMonth()+"</DAYS>"
 			+"<MONTHS>"+CMParms.toStringList(getMonthNames())+"</MONTHS>"
-			+"<DAWNHR>"+getDawnToDusk()[TIME_DAWN]+"</DAWNHR>"
-			+"<DAYHR>"+getDawnToDusk()[TIME_DAY]+"</DAYHR>"
-			+"<DUSKHR>"+getDawnToDusk()[TIME_DUSK]+"</DUSKHR>"
-			+"<NIGHTHR>"+getDawnToDusk()[TIME_NIGHT]+"</NIGHTHR>"
+			+"<DAWNHR>"+getDawnToDusk()[TimeOfDay.DAWN.ordinal()]+"</DAWNHR>"
+			+"<DAYHR>"+getDawnToDusk()[TimeOfDay.DAY.ordinal()]+"</DAYHR>"
+			+"<DUSKHR>"+getDawnToDusk()[TimeOfDay.DUSK.ordinal()]+"</DUSKHR>"
+			+"<NIGHTHR>"+getDawnToDusk()[TimeOfDay.NIGHT.ordinal()]+"</NIGHTHR>"
 			+"<WEEK>"+CMParms.toStringList(getWeekNames())+"</WEEK>"
 			+"<YEARS>"+CMParms.toStringList(getYearNames())+"</YEARS>"
 			);
@@ -436,7 +455,7 @@ public class DefaultTimeClock implements TimeClock
 				else
 					timeRsc=bitV.get(0).xml;
 				List<XMLLibrary.XMLpiece> V=CMLib.xml().parseAllXML(timeRsc);
-				setTimeOfDay(CMLib.xml().getIntFromPieces(V,"TIME"));
+				setHourOfDay(CMLib.xml().getIntFromPieces(V,"TIME"));
 				setDayOfMonth(CMLib.xml().getIntFromPieces(V,"DAY"));
 				setMonth(CMLib.xml().getIntFromPieces(V,"MONTH"));
 				setYear(CMLib.xml().getIntFromPieces(V,"YEAR"));
@@ -449,10 +468,10 @@ public class DefaultTimeClock implements TimeClock
 						setHoursInDay(CMLib.time().globalClock().getHoursInDay());
 						setDaysInMonth(CMLib.time().globalClock().getDaysInMonth());
 						setMonthsInYear(CMLib.time().globalClock().getMonthNames());
-						setDawnToDusk(CMLib.time().globalClock().getDawnToDusk()[TIME_DAWN],
-									  CMLib.time().globalClock().getDawnToDusk()[TIME_DAY],
-									  CMLib.time().globalClock().getDawnToDusk()[TIME_DUSK],
-									  CMLib.time().globalClock().getDawnToDusk()[TIME_NIGHT]);
+						setDawnToDusk(CMLib.time().globalClock().getDawnToDusk()[TimeOfDay.DAWN.ordinal()],
+									  CMLib.time().globalClock().getDawnToDusk()[TimeOfDay.DAY.ordinal()],
+									  CMLib.time().globalClock().getDawnToDusk()[TimeOfDay.DUSK.ordinal()],
+									  CMLib.time().globalClock().getDawnToDusk()[TimeOfDay.NIGHT.ordinal()]);
 						setDaysInWeek(CMLib.time().globalClock().getWeekNames());
 						setYearNames(CMLib.time().globalClock().getYearNames());
 					}

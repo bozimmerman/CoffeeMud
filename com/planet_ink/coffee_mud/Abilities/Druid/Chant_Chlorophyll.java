@@ -68,7 +68,7 @@ public class Chant_Chlorophyll extends Chant
 		MOB mob=(MOB)affected;
 		Room R=mob.location();
 		if((R!=null)
-		&&((R.getArea().getTimeObj().getTODCode()==TimeClock.TIME_DAY)||(R.getArea().getTimeObj().getTODCode()==TimeClock.TIME_DAWN))
+		&&((R.getArea().getTimeObj().getTODCode()==TimeClock.TimeOfDay.DAY)||(R.getArea().getTimeObj().getTODCode()==TimeClock.TimeOfDay.DAWN))
 		&&((R.domainType()&Room.INDOORS)==0)
 		&&((R.getArea().getClimateObj().weatherType(R)==Climate.WEATHER_CLEAR)
 		   ||(R.getArea().getClimateObj().weatherType(R)==Climate.WEATHER_DROUGHT)

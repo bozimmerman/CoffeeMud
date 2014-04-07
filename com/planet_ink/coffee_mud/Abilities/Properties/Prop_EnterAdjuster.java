@@ -8,6 +8,7 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.AccountStats.PrideStat;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary;
@@ -151,7 +152,11 @@ public class Prop_EnterAdjuster extends Property implements TriggeredAffect
 
 			mob.setPractices(mob.getPractices()+CMParms.getParmPlus(parameters[0],"prac"));
 			mob.setTrains(mob.getTrains()+CMParms.getParmPlus(parameters[0],"trai"));
-			mob.setQuestPoint(mob.getQuestPoint()+CMParms.getParmPlus(parameters[0],"ques"));
+			int qp=CMParms.getParmPlus(parameters[0],"ques");
+			if(qp!=0)
+				mob.setQuestPoint(mob.getQuestPoint()+qp);
+			if((qp>0)&&(mob.playerStats()!=null))
+				mob.playerStats().bumpPrideStat(PrideStat.QUESTPOINTS_EARNED, qp);
 			int newMoney=CMParms.getParmPlus(parameters[0],"coin");
 			if(newMoney!=0) CMLib.beanCounter().setMoney(mob,CMLib.beanCounter().getMoney(mob)+newMoney);
 			int exp=CMParms.getParmPlus(parameters[0],"expe");

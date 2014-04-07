@@ -2200,7 +2200,7 @@ public class DefaultSession implements Session
 				finalMsg=M.Name()+": ";
 			else
 			if(acct!=null)
-				finalMsg=acct.accountName()+": ";
+				finalMsg=acct.getAccountName()+": ";
 			else
 				finalMsg="";
 			previousCmd.clear(); // will let system know you are back in login menu

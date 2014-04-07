@@ -61,7 +61,7 @@ public class Authenticate extends StdWebMacro
 		{
 			MOB mob=getAuthenticatedMob(httpReq);
 			if((mob!=null)&&(mob.playerStats()!=null)&&(mob.playerStats().getAccount()!=null))
-				httpReq.addFakeUrlParameter("ACCOUNT",mob.playerStats().getAccount().accountName());
+				httpReq.addFakeUrlParameter("ACCOUNT",mob.playerStats().getAccount().getAccountName());
 		}
 		if(authenticated(httpReq,login,getPassword(httpReq)))
 			return "true";
@@ -161,7 +161,7 @@ public class Authenticate extends StdWebMacro
 		&&(mob.Name().trim().length()>0)
 		&&(!CMSecurity.isBanned(mob.Name())))
 		{
-			final long lastLogin = System.currentTimeMillis() - mob.playerStats().lastDateTime();
+			final long lastLogin = System.currentTimeMillis() - mob.playerStats().getLastDateTime();
 			if(lastLogin > ONE_REAL_DAY)
 				mob.playerStats().setLastDateTime(System.currentTimeMillis());
 			return true;
@@ -171,9 +171,9 @@ public class Authenticate extends StdWebMacro
 			final PlayerAccount acct=CMLib.players().getLoadAccount(login);
 			if((acct!=null)
 			&&(acct.matchesPassword(password))
-			&&(!CMSecurity.isBanned(acct.accountName())))
+			&&(!CMSecurity.isBanned(acct.getAccountName())))
 			{
-				final long lastLogin = System.currentTimeMillis() - acct.lastDateTime();
+				final long lastLogin = System.currentTimeMillis() - acct.getLastDateTime();
 				if(lastLogin > ONE_REAL_DAY)
 					acct.setLastDateTime(System.currentTimeMillis());
 				return true;
@@ -205,7 +205,7 @@ public class Authenticate extends StdWebMacro
 					PlayerAccount acct=CMLib.players().getLoadAccount(login);
 					if((acct!=null)
 					&&(acct.matchesPassword(password))
-					&&(!CMSecurity.isBanned(acct.accountName())))
+					&&(!CMSecurity.isBanned(acct.getAccountName())))
 						mob=acct.getAccountMob();
 					else
 						mob=null;
@@ -217,7 +217,7 @@ public class Authenticate extends StdWebMacro
 			if((!mob.playerStats().matchesPassword(password))
 			||(mob.Name().trim().length()==0)
 			||(CMSecurity.isBanned(mob.Name()))
-			||((mob.playerStats().getAccount()!=null)&&(CMSecurity.isBanned(mob.playerStats().getAccount().accountName()))))
+			||((mob.playerStats().getAccount()!=null)&&(CMSecurity.isBanned(mob.playerStats().getAccount().getAccountName()))))
 				mob=null;
 		}
 		if(mob!=null)

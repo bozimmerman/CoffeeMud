@@ -54,12 +54,12 @@ public class AccountNext extends StdWebMacro
 		for(;pe.hasMoreElements();)
 		{
 			PlayerAccount account=pe.nextElement();
-			if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!account.accountName().equals(lastID))))
+			if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!account.getAccountName().equals(lastID))))
 			{
-				httpReq.addFakeUrlParameter("ACCOUNT",account.accountName());
+				httpReq.addFakeUrlParameter("ACCOUNT",account.getAccountName());
 				return "";
 			}
-			lastID=account.accountName();
+			lastID=account.getAccountName();
 		}
 		httpReq.addFakeUrlParameter("ACCOUNT","");
 		if(parms.containsKey("EMPTYOK"))

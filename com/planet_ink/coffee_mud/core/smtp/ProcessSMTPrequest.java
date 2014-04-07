@@ -80,7 +80,7 @@ public class ProcessSMTPrequest implements Runnable
 					if(checkFROMcase) // accounts cannot receive emails
 					{
 						final PlayerAccount A=CMLib.players().getLoadAccountByEmail(s);
-						if(A!=null) return A.accountName();
+						if(A!=null) return A.getAccountName();
 					}
 				}
 				return null;

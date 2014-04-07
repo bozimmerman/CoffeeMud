@@ -866,7 +866,7 @@ public class StdArea implements Area
 				||(((C.weatherType((Room)affected)==Climate.WEATHER_BLIZZARD)
 						||(C.weatherType((Room)affected)==Climate.WEATHER_DUSTSTORM))
 						&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.DARKWEATHER)))
-				||((getTimeObj().getTODCode()==TimeClock.TIME_NIGHT)&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.DARKNIGHTS))))
+				||((getTimeObj().getTODCode()==TimeClock.TimeOfDay.NIGHT)&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.DARKNIGHTS))))
 			&&((disposition&PhyStats.IS_LIGHTSOURCE)==0))
 				disposition=disposition|PhyStats.IS_DARK;
 		}

@@ -61,12 +61,12 @@ public interface AccountStats extends CMCommon
 	 * 
 	 * @return time, in milis since 1970, that the player last logged off.
 	 */
-	public long lastDateTime();
+	public long getLastDateTime();
 	
 	/**
 	 * Sets the time, in milis since 1970, that the player last logged off.
 	 * 
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.AccountStats#lastDateTime()
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.AccountStats#getLastDateTime()
 	 * 
 	 * @param C the time, in milis since 1970, that the player last logged off.
 	 */
@@ -79,12 +79,12 @@ public interface AccountStats extends CMCommon
 	 * 
 	 * @return the time, in milis since 1970, that the player was last saved.
 	 */
-	public long lastUpdated();
+	public long getLastUpdated();
 	
 	/**
 	 * Sets the time, in milis since 1970, that the player was last saved.
 	 * 
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.AccountStats#lastUpdated()
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.AccountStats#getLastUpdated()
 	 * 
 	 * @param time the time, in milis since 1970, that the player was last saved.
 	 */
@@ -130,12 +130,12 @@ public interface AccountStats extends CMCommon
 	 * 
 	 * @return the last IP address this player logged in from.
 	 */
-	public String lastIP();
+	public String getLastIP();
 
 	/**
 	 * Sets the last IP address this player logged in from.
 	 * 
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.AccountStats#lastIP()
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.AccountStats#getLastIP()
 	 * 
 	 * @param ip the last IP address this player logged in from.
 	 */
@@ -172,12 +172,12 @@ public interface AccountStats extends CMCommon
 	 * 
 	 * @return the administrative notes entered about this player.
 	 */
-	public String notes();
+	public String getNotes();
 
 	/**
 	 * Sets the administrative notes entered about this player.
 	 * 
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.AccountStats#notes()
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.AccountStats#getNotes()
 	 * 
 	 * @param newnotes the administrative notes entered about this player.
 	 */
@@ -200,6 +200,22 @@ public interface AccountStats extends CMCommon
 	public Set<String> getIgnored();
 	
 	/**
+	 * Add to one of the pride stats for this player or account
+	 * @see PrideStat
+	 * @param stat which pride stat to add to
+	 * @param amt the amount to add
+	 */
+	public void bumpPrideStat(PrideStat stat, int amt);
+	
+	/**
+	 * Get one of the pride stats for this player or account
+	 * @see PrideStat
+	 * @param period the time period to get the number for
+	 * @param stat which pride stat to get
+	 */
+	public int getPrideStat(TimeClock.TimePeriod period, PrideStat stat);
+	
+	/**
 	 * Returns an XML representation of all the data in this object, for
 	 * persistant storage.
 	 * 
@@ -217,4 +233,15 @@ public interface AccountStats extends CMCommon
 	 * @param str an XML representation of all the data in this object
 	 */
 	public void setXML(String str);
+	
+	/**
+	 * The recorded player and account statistics.
+	 * @author Bo Zimmerman
+	 *
+	 */
+	public enum PrideStat
+	{
+		PVPKILLS, AREAS_EXPLORED, ROOMS_EXPLORED, EXPERIENCE_GAINED, MINUTES_ON, QUESTS_COMPLETED, QUESTPOINTS_EARNED
+	}
+	
 }

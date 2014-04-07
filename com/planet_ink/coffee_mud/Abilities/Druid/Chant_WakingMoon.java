@@ -66,8 +66,8 @@ public class Chant_WakingMoon extends Chant
 		if(affected instanceof Room)
 		{
 			Room R=(Room)affected;
-			if((R.getArea().getTimeObj().getTODCode()!=TimeClock.TIME_DAWN)
-			&&(R.getArea().getTimeObj().getTODCode()!=TimeClock.TIME_DAY))
+			if((R.getArea().getTimeObj().getTODCode()!=TimeClock.TimeOfDay.DAWN)
+			&&(R.getArea().getTimeObj().getTODCode()!=TimeClock.TimeOfDay.DAY))
 				unInvoke();
 		}
 		return true;
@@ -80,8 +80,8 @@ public class Chant_WakingMoon extends Chant
 			Room R=mob.location();
 			if((R!=null)&&(!R.getArea().getClimateObj().canSeeTheMoon(R,null)))
 			{
-				if((R.getArea().getTimeObj().getTODCode()!=TimeClock.TIME_DAWN)
-				&&(R.getArea().getTimeObj().getTODCode()!=TimeClock.TIME_DAY))
+				if((R.getArea().getTimeObj().getTODCode()!=TimeClock.TimeOfDay.DAWN)
+				&&(R.getArea().getTimeObj().getTODCode()!=TimeClock.TimeOfDay.DAY))
 					return Ability.QUALITY_INDIFFERENT;
 				if((R.domainType()&Room.INDOORS)>0)
 					return Ability.QUALITY_INDIFFERENT;
@@ -97,8 +97,8 @@ public class Chant_WakingMoon extends Chant
 	{
 		Room target=mob.location();
 		if(target==null) return false;
-		if((target.getArea().getTimeObj().getTODCode()!=TimeClock.TIME_DAWN)
-		&&(target.getArea().getTimeObj().getTODCode()!=TimeClock.TIME_DAY))
+		if((target.getArea().getTimeObj().getTODCode()!=TimeClock.TimeOfDay.DAWN)
+		&&(target.getArea().getTimeObj().getTODCode()!=TimeClock.TimeOfDay.DAY))
 		{
 			mob.tell("You can only start this chant during the day.");
 			return false;

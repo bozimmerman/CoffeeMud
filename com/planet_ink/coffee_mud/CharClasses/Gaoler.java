@@ -193,9 +193,9 @@ public class Gaoler extends StdCharClass
 				if(Calendar.getInstance().get(Calendar.SECOND)!=done[2])
 				{
 					TimeClock clock =CMLib.map().getStartArea(host).getTimeObj(); 
-					if(done[0]!=clock.getTimeOfDay())
+					if(done[0]!=clock.getHourOfDay())
 						done[1]=0;
-					done[0]=clock.getTimeOfDay();
+					done[0]=clock.getHourOfDay();
 					done[2]=Calendar.getInstance().get(Calendar.SECOND);
 					
 					if(done[1]<(90+(10*((MOB)host).phyStats().level())))

@@ -48,17 +48,17 @@ public class AccountData extends StdWebMacro
 			PlayerAccount A = CMLib.players().getLoadAccount(last);
 			if(A==null) return "";
 			if(parms.containsKey("NAME")||parms.containsKey("ACCOUNT"))
-				return clearWebMacros(A.accountName());
+				return clearWebMacros(A.getAccountName());
 			if(parms.containsKey("CLASS"))
 				return clearWebMacros(A.ID());
 			if(parms.containsKey("LASTIP"))
-				return ""+A.lastIP();
+				return ""+A.getLastIP();
 			if(parms.containsKey("LASTDATETIME"))
-				return ""+CMLib.time().date2String(A.lastDateTime());
+				return ""+CMLib.time().date2String(A.getLastDateTime());
 			if(parms.containsKey("EMAIL"))
 				return ""+A.getEmail();
 			if(parms.containsKey("NOTES"))
-				return ""+A.notes();
+				return ""+A.getNotes();
 			if(parms.containsKey("ACCTEXPIRATION"))
 			{
 				if(A.isSet(PlayerAccount.FLAG_NOEXPIRE))

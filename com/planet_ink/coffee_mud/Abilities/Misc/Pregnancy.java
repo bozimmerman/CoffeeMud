@@ -371,7 +371,7 @@ public class Pregnancy extends StdAbility implements HealthCondition
 						if((monthsRemaining<=3)&&(CMLib.dice().rollPercentage()==1)&&(CMLib.dice().rollPercentage()==1))
 							mob.tell("You feel a kick in your gut.");
 						else
-						if((monthsRemaining>8)&&(mob.location()!=null)&&(mob.location().getArea().getTimeObj().getTimeOfDay()<2)&&(CMLib.dice().rollPercentage()==1))
+						if((monthsRemaining>8)&&(mob.location()!=null)&&(mob.location().getArea().getTimeObj().getHourOfDay()<2)&&(CMLib.dice().rollPercentage()==1))
 						{
 							if(CMLib.dice().rollPercentage()>25)
 								mob.tell("You feel really sick this morning.");

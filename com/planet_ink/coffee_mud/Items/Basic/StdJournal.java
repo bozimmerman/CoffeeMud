@@ -91,7 +91,7 @@ public class StdJournal extends StdItem
 				String adminReq=getAdminReq().trim();
 				boolean admin=((adminReq.length()>0)&&CMLib.masking().maskCheck(adminReq,mob,true))
 								||CMSecurity.isJournalAccessAllowed(mob,Name());
-				long lastTime=mob.playerStats().lastDateTime();
+				long lastTime=mob.playerStats().getLastDateTime();
 				if((!admin)&&(!CMLib.masking().maskCheck(getReadReq(),mob,true)))
 				{
 					mob.tell("You are not allowed to read "+name()+".");
@@ -392,7 +392,7 @@ public class StdJournal extends StdItem
 		&&(CMLib.masking().maskCheck(getReadReq(),msg.source(),true)))
 		{
 
-			long[] newestDate=CMLib.database().DBJournalLatestDateNewerThan(Name(),msg.source().Name(),msg.source().playerStats().lastDateTime());
+			long[] newestDate=CMLib.database().DBJournalLatestDateNewerThan(Name(),msg.source().Name(),msg.source().playerStats().getLastDateTime());
 			if((newestDate[0]>0)
 			&&((newestDate[0]!=lastDateRead[0])||(msg.source()!=lastReadTo)))
 			{
@@ -408,7 +408,7 @@ public class StdJournal extends StdItem
 		&&(msg.source().playerStats()!=null)
 		&&(CMLib.masking().maskCheck(getReadReq(),msg.source(),true)))
 		{
-			long[] newestDate=CMLib.database().DBJournalLatestDateNewerThan(Name(),msg.source().Name(),msg.source().playerStats().lastDateTime());
+			long[] newestDate=CMLib.database().DBJournalLatestDateNewerThan(Name(),msg.source().Name(),msg.source().playerStats().getLastDateTime());
 			if((newestDate[0]>0)
 			&&((newestDate[0]!=lastDateRead[0])||(msg.source()!=lastReadTo)))
 			{

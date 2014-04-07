@@ -3296,7 +3296,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 				TimeClock NOW=CMLib.time().globalClock();
 				C.setMonth(mudmonth);
 				C.setDayOfMonth(mudday);
-				C.setTimeOfDay(0);
+				C.setHourOfDay(0);
 				if((mudmonth<NOW.getMonth())
 				||((mudmonth==NOW.getMonth())&&(mudday<NOW.getDayOfMonth())))
 					C.setYear(NOW.getYear()+1);

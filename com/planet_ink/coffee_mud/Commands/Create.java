@@ -378,7 +378,7 @@ public class Create extends StdCommand
 		CMLib.players().addAccount(thisAcct);
 
 		mob.location().showHappens(CMMsg.MSG_OK_ACTION,"A new soul descends from the heavens and dissipates.\n\r");
-		Log.sysOut("Create",mob.Name()+" created account "+thisAcct.accountName()+".");
+		Log.sysOut("Create",mob.Name()+" created account "+thisAcct.getAccountName()+".");
 	}
 	
 	public MOB getNewCatalogMob(String mobID)

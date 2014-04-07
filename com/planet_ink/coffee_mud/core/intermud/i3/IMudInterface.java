@@ -370,7 +370,7 @@ public class IMudInterface implements ImudServices, Serializable
 					else
 						fpkt.idle_time=Long.toString(sess.getIdleMillis()/1000);
 					fpkt.ip_time="0"; // what IS this?
-					fpkt.loginout_time=CMLib.time().date2String(M.playerStats().lastDateTime());
+					fpkt.loginout_time=CMLib.time().date2String(M.playerStats().getLastDateTime());
 					fpkt.real_name="0"; // don't even know this
 					if(M.titledName().equals(M.name()))
 						fpkt.title="An ordinary "+M.charStats().displayClassName();
@@ -576,8 +576,8 @@ public class IMudInterface implements ImudServices, Serializable
 					PlayerStats pstats=smob.playerStats();
 					if(pstats!=null)
 					{
-						if((pstats.replyTo()!=null)&&(pstats.replyTo().Name().indexOf('@')>=0))
-							mob=pstats.replyTo();
+						if((pstats.getReplyToMOB()!=null)&&(pstats.getReplyToMOB().Name().indexOf('@')>=0))
+							mob=pstats.getReplyToMOB();
 						else
 							mob=CMClass.getFactoryMOB();
 						pstats.setReplyTo(mob, PlayerStats.REPLY_TELL);

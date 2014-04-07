@@ -115,7 +115,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 		if(acct==null) return;
 		if(accountsList.contains(acct)) return;
 		for(PlayerAccount A : accountsList) // dont consolodate this.
-			if(A.accountName().equals(acct.accountName()))
+			if(A.getAccountName().equals(acct.getAccountName()))
 				return;
 		accountsList.add(acct);
 	}
@@ -141,13 +141,13 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 	{
 		calledThis=CMStrings.capitalizeAndLower(calledThis);
 		for(PlayerAccount A : accountsList)
-			if(A.accountName().equals(calledThis))
+			if(A.getAccountName().equals(calledThis))
 				return A;
 		
 		for (MOB M : playersList)
 			if((M.playerStats()!=null)
 			&&(M.playerStats().getAccount()!=null)
-			&&(M.playerStats().getAccount().accountName().equals(calledThis)))
+			&&(M.playerStats().getAccount().getAccountName().equals(calledThis)))
 			{
 				addAccount(M.playerStats().getAccount());
 				return M.playerStats().getAccount();
@@ -176,7 +176,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 			CMLib.database().DBReadPlayer(M);
 			CMLib.database().DBReadFollowers(M,false);
 			if(M.playerStats()!=null)
-				M.playerStats().setLastUpdated(M.playerStats().lastDateTime());
+				M.playerStats().setLastUpdated(M.playerStats().getLastDateTime());
 			M.recoverPhyStats();
 			M.recoverCharStats();
 			Ability A=null;
@@ -353,7 +353,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 	
 	public synchronized void obliterateAccountOnly(PlayerAccount deadAccount)
 	{
-		deadAccount = getLoadAccount(deadAccount.accountName());
+		deadAccount = getLoadAccount(deadAccount.getAccountName());
 		if(deadAccount==null) return;
 		accountsList.remove(deadAccount);
 		
@@ -365,7 +365,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 			for(int b=0;b<protectedOnes.size();b++)
 			{
 				String B=protectedOnes.get(b);
-				if(!B.equalsIgnoreCase(deadAccount.accountName()))
+				if(!B.equalsIgnoreCase(deadAccount.getAccountName()))
 					newNoPurge.append(B+"\n");
 				else
 					somethingDone=true;
@@ -375,7 +375,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 		}
 
 		CMLib.database().DBDeleteAccount(deadAccount);
-		Log.sysOut(deadAccount.accountName()+" has been deleted.");
+		Log.sysOut(deadAccount.getAccountName()+" has been deleted.");
 	}
 	
 	public int savePlayers()
@@ -402,7 +402,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 				pStats.setLastUpdated(System.currentTimeMillis());
 				if(account!=null)
 				{
-					setThreadStatus(serviceClient,"saving account "+account.accountName()+" for "+mob.Name());
+					setThreadStatus(serviceClient,"saving account "+account.getAccountName()+" for "+mob.Name());
 					CMLib.database().DBUpdateAccount(account);
 					account.setLastUpdated(System.currentTimeMillis());
 				}
@@ -411,8 +411,8 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 			else
 			if(pStats!=null)
 			{
-				if((pStats.lastUpdated()==0)
-			    ||(pStats.lastUpdated()<pStats.lastDateTime())
+				if((pStats.getLastUpdated()==0)
+			    ||(pStats.getLastUpdated()<pStats.getLastDateTime())
 			    ||(noCachePlayers && (!CMLib.flags().isInTheGame(mob, true))))
     			{
     				setThreadStatus(serviceClient,"just saving "+mob.Name());
@@ -454,13 +454,13 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 	public String getThinSortValue(PlayerAccount account, int code) 
 	{
 		switch(code) {
-		case 0: return account.accountName();
-		case 1: return Long.toString(account.lastDateTime());
+		case 0: return account.getAccountName();
+		case 1: return Long.toString(account.getLastDateTime());
 		case 2: return account.getEmail();
-		case 3: return account.lastIP();
+		case 3: return account.getLastIP();
 		case 4: return Integer.toString(account.numPlayers());
 		}
-		return account.accountName();
+		return account.getAccountName();
 	}
 	
 	public int getCharThinSortCode(String codeName, boolean loose) 
@@ -540,6 +540,35 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 		return V.elements();
 	}
 
+	@SuppressWarnings("unchecked")
+    public Pair<Long,int[]>[] parsePrideStats(final String[] nextPeriods, final String[] prideStats)
+	{
+		final long now=System.currentTimeMillis();
+		final List<Pair<Long,int[]>> finalStats=new ArrayList<Pair<Long,int[]>>(TimeClock.TimePeriod.values().length);
+		for(TimeClock.TimePeriod period : TimeClock.TimePeriod.values())
+		{
+			Pair<Long,int[]> p=new Pair<Long,int[]>(Long.valueOf(0),new int[AccountStats.PrideStat.values().length]);
+			if((nextPeriods!=null)&&(nextPeriods.length>period.ordinal())&&(nextPeriods[period.ordinal()].length()>0))
+				p.first=Long.valueOf(CMath.s_long(nextPeriods[period.ordinal()]));
+			if(now>p.first.longValue())
+				p.first=Long.valueOf(period.nextPeriod());
+			else
+			if((prideStats.length>period.ordinal())&&(prideStats[period.ordinal()].length()>1))
+			{
+				final String[] prides=prideStats[period.ordinal()].split(",");
+				for(AccountStats.PrideStat stat : AccountStats.PrideStat.values())
+					if(prides.length > stat.ordinal())
+					{
+						final String statVal=prides[stat.ordinal()];
+						if(statVal.length()>0)
+							p.second[stat.ordinal()]=CMath.s_int(statVal);
+					}
+			}
+			finalStats.add(p);
+		}
+		return finalStats.toArray(new Pair[0]);
+	}
+	
 	@SuppressWarnings("unchecked")
 	public Enumeration<PlayerAccount> accounts(String sort, Map<String, Object> cache)
 	{
@@ -758,17 +787,17 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 			{
 				PlayerAccount PA=pe.nextElement();
 				if((PA.numPlayers() > 0)
-				||(isProtected(protectedOnes, PA.accountName())))
+				||(isProtected(protectedOnes, PA.getAccountName())))
 					continue;
-				final long lastDateTimePurge = PA.lastDateTime() + (TimeManager.MILI_DAY * CMProps.getIntVar(CMProps.Int.ACCOUNTPURGEDAYS));
-				final long lastUpdatedPurge = PA.lastUpdated() + (TimeManager.MILI_DAY * CMProps.getIntVar(CMProps.Int.ACCOUNTPURGEDAYS));
+				final long lastDateTimePurge = PA.getLastDateTime() + (TimeManager.MILI_DAY * CMProps.getIntVar(CMProps.Int.ACCOUNTPURGEDAYS));
+				final long lastUpdatedPurge = PA.getLastUpdated() + (TimeManager.MILI_DAY * CMProps.getIntVar(CMProps.Int.ACCOUNTPURGEDAYS));
 				final long accountExpPurge = PA.getAccountExpiration() + (TimeManager.MILI_DAY * CMProps.getIntVar(CMProps.Int.ACCOUNTPURGEDAYS));
 				long lastTime = lastDateTimePurge;
 				if(lastUpdatedPurge > lastTime) lastTime=lastUpdatedPurge;
 				if(accountExpPurge > lastTime) lastTime=accountExpPurge;
 				if(System.currentTimeMillis()>lastTime)
 				{
-					Log.sysOut(serviceClient.getName(),"AutoPurged account "+PA.accountName()+".");
+					Log.sysOut(serviceClient.getName(),"AutoPurged account "+PA.getAccountName()+".");
 					CMLib.players().obliterateAccountOnly(PA);
 				}
 			}
