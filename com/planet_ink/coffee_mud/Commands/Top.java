@@ -70,7 +70,7 @@ public class Top extends StdCommand
 		{
 			String desc=(period==TimePeriod.ALLTIME)?"All Time":"This Month";
 			str.append("^xTop "+(doPlayers?"Characters":"Accounts")+" "+desc+"\n\r^x"+slashes+"^.^N ^x"+slashes+"^.^N ^x"+slashes+"^.^N\n\r");
-			str.append(CMStrings.padRight("^HPVPKills", width)+"^. "+CMStrings.padRight("^HXP Gained", width)+"^. "+CMStrings.padRight("^HQuests Completed", width)+"^.^N\n\r");
+			str.append(CMStrings.padRight("^HPVP Kills", width)+"^. "+CMStrings.padRight("^HXP Gained", width)+"^. "+CMStrings.padRight("^HQuests Completed", width)+"^.^N\n\r");
 			set1=doPlayers?
 				CMLib.players().getTopPridePlayers(period, AccountStats.PrideStat.PVPKILLS):
 				CMLib.players().getTopPrideAccounts(period, AccountStats.PrideStat.PVPKILLS);

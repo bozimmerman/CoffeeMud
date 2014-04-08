@@ -586,6 +586,9 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 		for(TimeClock.TimePeriod period : TimeClock.TimePeriod.values())
 		{
 			Pair<Long,int[]> p=new Pair<Long,int[]>(Long.valueOf(0),new int[AccountStats.PrideStat.values().length]);
+			if(period==TimeClock.TimePeriod.ALLTIME)
+				p.first=Long.valueOf(Long.MAX_VALUE);
+			else
 			if((nextPeriods!=null)&&(nextPeriods.length>period.ordinal())&&(nextPeriods[period.ordinal()].length()>0))
 				p.first=Long.valueOf(CMath.s_long(nextPeriods[period.ordinal()]));
 			if(now>p.first.longValue())

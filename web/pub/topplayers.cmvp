@@ -1,0 +1,122 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+<head>
+	<link rel="coffeemud icon" href="images/coffeemud.ico" >
+	<!-- tell spiders to sod off -->
+	<meta name="ROBOTS" content="NOINDEX, NOFOLLOW">
+	<link rel="STYLESHEET" TYPE="TEXT/CSS" HREF="coffeemud.css">
+	<title>Top Players</title>
+	<script language=JavaScript>
+	<!--
+		function Clicked(action)
+		{
+			document.ACCESS.action=action;
+			document.ACCESS.submit();
+		}
+	//-->
+	</SCRIPT>
+</head>
+
+<body BGCOLOR=WHITE>
+	<CENTER>
+	<h2>Top 10 Player Lists</H2>
+	<br>
+	<a href="/"><FONT COLOR=BLUE>Back to public pages</FONT></A><br>
+	</CENTER>
+	<br>
+	<CENTER>
+	<h3>All Time</h3><p>
+	<TABLE WIDTH=1000 BORDER=1>
+		<TR>
+			<TD WIDTH=33% ALIGN=CENTER BGCOLOR=BLACK><FONT COLOR=WHITE><B>PVP Kills</B></FONT></TD>
+			<TD WIDTH=33% ALIGN=CENTER BGCOLOR=BLACK><FONT COLOR=WHITE><B>XP Gained</B></FONT></TD>
+			<TD WIDTH=33% ALIGN=CENTER BGCOLOR=BLACK><FONT COLOR=WHITE><B>Quests Completed</B></FONT></TD>
+		</TR>
+		@for?count=1,2,3,4,5,6,7,8,9,10@
+		<TR>
+			<TD WIDTH=33% BGCOLOR=WHITE>
+				<FONT COLOR=PURPLE><B>@RequestParameter?count@.</B>@PrideStat?ALLTIME&@@RequestParameter?count@@&NAME&PVPKILLS@</FONT>
+				<FONT ALIGN=RIGHT COLOR=RED><B>(@PrideStat?ALLTIME&@@RequestParameter?count@@&VALUE&PVPKILLS@)</B></FONT>
+			</TD>
+			<TD WIDTH=33% BGCOLOR=WHITE>
+				<FONT COLOR=PURPLE><B>@RequestParameter?count@.</B>@PrideStat?ALLTIME&@@RequestParameter?count@@&NAME&EXPERIENCE_GAINED@</FONT>
+				<FONT ALIGN=RIGHT COLOR=RED><B>(@PrideStat?ALLTIME&@@RequestParameter?count@@&VALUE&EXPERIENCE_GAINED@)</B></FONT>
+			</TD>
+			<TD WIDTH=33% BGCOLOR=WHITE>
+				<FONT COLOR=PURPLE><B>@RequestParameter?count@.</B>@PrideStat?ALLTIME&@@RequestParameter?count@@&NAME&QUESTS_COMPLETED@</FONT>
+				<FONT ALIGN=RIGHT COLOR=RED><B>(@PrideStat?ALLTIME&@@RequestParameter?count@@&VALUE&QUESTS_COMPLETED@)</B></FONT>
+			</TD>
+		</TR>
+		@next@
+		<TR>
+			<TD WIDTH=33% ALIGN=CENTER BGCOLOR=BLACK><FONT COLOR=WHITE><B>Minutes On</B></FONT></TD>
+			<TD WIDTH=33% ALIGN=CENTER BGCOLOR=BLACK><FONT COLOR=WHITE><B>Rooms Explored</B></FONT></TD>
+			<TD WIDTH=33% ALIGN=CENTER BGCOLOR=BLACK><FONT COLOR=WHITE><B>Areas Explored</B></FONT></TD>
+		</TR>
+		@for?count=1,2,3,4,5,6,7,8,9,10@
+		<TR>
+			<TD WIDTH=33% BGCOLOR=WHITE>
+				<FONT COLOR=PURPLE><B>@RequestParameter?count@.</B>@PrideStat?ALLTIME&@@RequestParameter?count@@&NAME&MINUTES_ON@</FONT>
+				<FONT ALIGN=RIGHT COLOR=RED><B>(@PrideStat?ALLTIME&@@RequestParameter?count@@&VALUE&MINUTES_ON@)</B></FONT>
+			</TD>
+			<TD WIDTH=33% BGCOLOR=WHITE>
+				<FONT COLOR=PURPLE><B>@RequestParameter?count@.</B>@PrideStat?ALLTIME&@@RequestParameter?count@@&NAME&ROOMS_EXPLORED@</FONT>
+				<FONT ALIGN=RIGHT COLOR=RED><B>(@PrideStat?ALLTIME&@@RequestParameter?count@@&VALUE&ROOMS_EXPLORED@)</B></FONT>
+			</TD>
+			<TD WIDTH=33% BGCOLOR=WHITE>
+				<FONT COLOR=PURPLE><B>@RequestParameter?count@.</B>@PrideStat?ALLTIME&@@RequestParameter?count@@&NAME&AREAS_EXPLORED@</FONT>
+				<FONT ALIGN=RIGHT COLOR=RED><B>(@PrideStat?ALLTIME&@@RequestParameter?count@@&VALUE&AREAS_EXPLORED@)</B></FONT>
+			</TD>
+		</TR>
+		@next@
+	</TABLE>
+	<br>
+	<h3>This Month</h3><p>
+	<TABLE WIDTH=1000 BORDER=1>
+		<TR>
+			<TD WIDTH=33% ALIGN=CENTER BGCOLOR=BLACK><FONT COLOR=WHITE><B>PVP Kills</B></FONT></TD>
+			<TD WIDTH=33% ALIGN=CENTER BGCOLOR=BLACK><FONT COLOR=WHITE><B>XP Gained</B></FONT></TD>
+			<TD WIDTH=33% ALIGN=CENTER BGCOLOR=BLACK><FONT COLOR=WHITE><B>Quests Completed</B></FONT></TD>
+		</TR>
+		@for?count=1,2,3,4,5,6,7,8,9,10@
+		<TR>
+			<TD WIDTH=33% BGCOLOR=WHITE>
+				<FONT COLOR=PURPLE><B>@RequestParameter?count@.</B>@PrideStat?MONTH&@@RequestParameter?count@@&NAME&PVPKILLS@</FONT>
+				<FONT ALIGN=RIGHT COLOR=RED><B>(@PrideStat?MONTH&@@RequestParameter?count@@&VALUE&PVPKILLS@)</B></FONT>
+			</TD>
+			<TD WIDTH=33% BGCOLOR=WHITE>
+				<FONT COLOR=PURPLE><B>@RequestParameter?count@.</B>@PrideStat?MONTH&@@RequestParameter?count@@&NAME&EXPERIENCE_GAINED@</FONT>
+				<FONT ALIGN=RIGHT COLOR=RED><B>(@PrideStat?MONTH&@@RequestParameter?count@@&VALUE&EXPERIENCE_GAINED@)</B></FONT>
+			</TD>
+			<TD WIDTH=33% BGCOLOR=WHITE>
+				<FONT COLOR=PURPLE><B>@RequestParameter?count@.</B>@PrideStat?MONTH&@@RequestParameter?count@@&NAME&QUESTS_COMPLETED@</FONT>
+				<FONT ALIGN=RIGHT COLOR=RED><B>(@PrideStat?MONTH&@@RequestParameter?count@@&VALUE&QUESTS_COMPLETED@)</B></FONT>
+			</TD>
+		</TR>
+		@next@
+		<TR>
+			<TD WIDTH=33% ALIGN=CENTER BGCOLOR=BLACK><FONT COLOR=WHITE><B>Minutes On</B></FONT></TD>
+			<TD WIDTH=33% ALIGN=CENTER BGCOLOR=BLACK><FONT COLOR=WHITE><B>Rooms Explored</B></FONT></TD>
+			<TD WIDTH=33% ALIGN=CENTER BGCOLOR=BLACK><FONT COLOR=WHITE><B>Areas Explored</B></FONT></TD>
+		</TR>
+		@for?count=1,2,3,4,5,6,7,8,9,10@
+		<TR>
+			<TD WIDTH=33% BGCOLOR=WHITE>
+				<FONT COLOR=PURPLE><B>@RequestParameter?count@.</B>@PrideStat?MONTH&@@RequestParameter?count@@&NAME&MINUTES_ON@</FONT>
+				<FONT ALIGN=RIGHT COLOR=RED><B>(@PrideStat?MONTH&@@RequestParameter?count@@&VALUE&MINUTES_ON@)</B></FONT>
+			</TD>
+			<TD WIDTH=33% BGCOLOR=WHITE>
+				<FONT COLOR=PURPLE><B>@RequestParameter?count@.</B>@PrideStat?MONTH&@@RequestParameter?count@@&NAME&ROOMS_EXPLORED@</FONT>
+				<FONT ALIGN=RIGHT COLOR=RED><B>(@PrideStat?MONTH&@@RequestParameter?count@@&VALUE&ROOMS_EXPLORED@)</B></FONT>
+			</TD>
+			<TD WIDTH=33% BGCOLOR=WHITE>
+				<FONT COLOR=PURPLE><B>@RequestParameter?count@.</B>@PrideStat?MONTH&@@RequestParameter?count@@&NAME&AREAS_EXPLORED@</FONT>
+				<FONT ALIGN=RIGHT COLOR=RED><B>(@PrideStat?MONTH&@@RequestParameter?count@@&VALUE&AREAS_EXPLORED@)</B></FONT>
+			</TD>
+		</TR>
+		@next@
+	</TABLE>
+	</CENTER>
+</body>
+</html>

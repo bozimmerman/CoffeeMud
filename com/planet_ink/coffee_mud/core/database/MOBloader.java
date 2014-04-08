@@ -1140,7 +1140,7 @@ public class MOBloader
 					{
 						final Pair<Long,int[]> p=allData[period.ordinal()];
 						final List<Pair<String,Integer>>[] topPeriods=top[period.ordinal()];
-						if(now < p.first.longValue())
+						if((period==TimeClock.TimePeriod.ALLTIME)||(now < p.first.longValue()))
 						{
 							for(AccountStats.PrideStat pride : AccountStats.PrideStat.values())
 							{

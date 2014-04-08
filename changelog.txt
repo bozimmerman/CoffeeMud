@@ -7,8 +7,8 @@
    5. Clan-Player level PVP ranking support in clans.  CLANKILLS and CLANPVPKILLS commands added.  ClanData WebMacro capable of the same.
    6. Clan forums and web sites supported -- see CLANWEBSITES and CLANFORUMDATA in coffeemud.ini file.  Still thinking about how clan leaders could modify it.
    7. Fighter classes now have armor & shield specializations, plus new expertises (Focuses) to allow wearing/wielding of slightly higher level items
-   *. Char and Account PVP ranking perhaps a list of the top players in various categories such as rooms explored, experience, player kills, hours on, quests completed
-        * add webmacro, mention top, fix ALLTIME, handle real-time adjustments
+   *. Players and Accounts now track PVPs, Rooms & Areas explored, mins played, xp & qp gained, and quests completed. Main web page or TOP command to see winners.
+        * handle real-time adjustments
    *. Push regen rates to INI file
    *. New combat system: turn based
    *. Name generator, finally

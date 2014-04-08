@@ -31,6 +31,7 @@ Players currently online: <FONT COLOR=RED><b>@NUMPLAYERS@</B></FONT>
 </NOSCRIPT>
 <LI><a href="access.cmvp"><FONT COLOR=GREEN><B>Player Access</B></FONT></a>
 <LI><a href="forums.cmvp"><FONT COLOR=GREEN><B>Public Forums</B></FONT></a>
+<LI><a href="topplayers.cmvp"><FONT COLOR=GREEN><B>Top Players</B></FONT></a>
 <LI><a href="helps.cmvp?FIRSTLETTER=A"><FONT COLOR=GREEN><B>Help Topics</B></FONT></a>
 <LI><a href="socials.cmvp"><FONT COLOR=GREEN><B>Socials List</B></FONT></a>
 <LI><a href="areas.cmvp"><FONT COLOR=GREEN><B>Installed Areas Information</B></FONT></a>
