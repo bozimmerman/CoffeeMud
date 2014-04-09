@@ -171,8 +171,8 @@ public class GenSuperPill extends GenPill implements ArchonOnly
 		int qp=CMParms.getParmPlus(readableText,"ques");
 		if(qp!=0)
 			mob.setQuestPoint(mob.getQuestPoint()+qp);
-		if((qp>0)&&(mob.playerStats()!=null))
-			mob.playerStats().bumpPrideStat(PrideStat.QUESTPOINTS_EARNED, qp);
+		if(qp>0)
+			CMLib.players().bumpPrideStat(mob,PrideStat.QUESTPOINTS_EARNED, qp);
 		int newMoney=CMParms.getParmPlus(readableText,"coin");
 		if(newMoney!=0) CMLib.beanCounter().setMoney(mob,CMLib.beanCounter().getMoney(mob)+newMoney);
 		int exp=CMParms.getParmPlus(readableText,"expe");

@@ -627,8 +627,8 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		if(mob==null) return;
 		final long minutesEllapsed=(millisSinceLast / 60000);
 		mob.setAgeMinutes(mob.getAgeMinutes()+minutesEllapsed); // this is really minutes
-		if((minutesEllapsed>0)&&(mob.playerStats()!=null))
-			mob.playerStats().bumpPrideStat(AccountStats.PrideStat.MINUTES_ON, (int)minutesEllapsed);
+		if(minutesEllapsed>0)
+			CMLib.players().bumpPrideStat(mob,AccountStats.PrideStat.MINUTES_ON, (int)minutesEllapsed);
 			
 		final PlayerStats stats = mob.playerStats();
 		if(stats==null) return;

@@ -52,7 +52,7 @@
 		<TR>
 			<TD WIDTH=33% ALIGN=CENTER BGCOLOR=BLACK><FONT COLOR=WHITE><B>Minutes On</B></FONT></TD>
 			<TD WIDTH=33% ALIGN=CENTER BGCOLOR=BLACK><FONT COLOR=WHITE><B>Rooms Explored</B></FONT></TD>
-			<TD WIDTH=33% ALIGN=CENTER BGCOLOR=BLACK><FONT COLOR=WHITE><B>Areas Explored</B></FONT></TD>
+			<TD WIDTH=33% ALIGN=CENTER BGCOLOR=BLACK><FONT COLOR=WHITE><B>QuestPoints Earned</B></FONT></TD>
 		</TR>
 		@for?count=1,2,3,4,5,6,7,8,9,10@
 		<TR>
@@ -65,8 +65,8 @@
 				<FONT ALIGN=RIGHT COLOR=RED><B>(@PrideStat?ALLTIME&@@RequestParameter?count@@&VALUE&ROOMS_EXPLORED@)</B></FONT>
 			</TD>
 			<TD WIDTH=33% BGCOLOR=WHITE>
-				<FONT COLOR=PURPLE><B>@RequestParameter?count@.</B>@PrideStat?ALLTIME&@@RequestParameter?count@@&NAME&AREAS_EXPLORED@</FONT>
-				<FONT ALIGN=RIGHT COLOR=RED><B>(@PrideStat?ALLTIME&@@RequestParameter?count@@&VALUE&AREAS_EXPLORED@)</B></FONT>
+				<FONT COLOR=PURPLE><B>@RequestParameter?count@.</B>@PrideStat?ALLTIME&@@RequestParameter?count@@&NAME&QUESTPOINTS_EARNED@</FONT>
+				<FONT ALIGN=RIGHT COLOR=RED><B>(@PrideStat?ALLTIME&@@RequestParameter?count@@&VALUE&QUESTPOINTS_EARNED@)</B></FONT>
 			</TD>
 		</TR>
 		@next@

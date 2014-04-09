@@ -1590,7 +1590,7 @@ public class CMParms
 		}
 		final StringBuilder s=new StringBuilder(Integer.toString(V[0]));
 		for(int v=1;v<V.length;v++)
-			s.append(',').append((int)V[v]);
+			s.append(',').append(V[v]);
 		return s.toString();
 	}
 

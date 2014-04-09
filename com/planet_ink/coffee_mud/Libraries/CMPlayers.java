@@ -47,6 +47,8 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 	protected long[] 					prePurgeLevels		= new long[1];
 	protected int						autoPurgeHash		= 0;
 	
+	protected final static int			PRIDE_TOP_SIZE		= 10;
+	protected final long[]				topPrideExpiration	= new long[TimeClock.TimePeriod.values().length];
 	@SuppressWarnings("unchecked")
 	protected final List<Pair<String,Integer>>[][] topPlayers	 = new List[TimeClock.TimePeriod.values().length][AccountStats.PrideStat.values().length];
 	@SuppressWarnings("unchecked")
@@ -246,6 +248,86 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 		return top;
 	}
 
+	private void removePrideStat(List<Pair<String,Integer>> top, String name, int start)
+	{
+		for(int i=start;i<top.size();i++)
+			if(top.get(i).first.equals(name))
+			{
+				top.remove(i);
+				break;
+			}
+	}
+	
+	public int bumpPrideStat(final MOB mob, final AccountStats.PrideStat stat, final int amt)
+	{
+		if((amt != 0)&&(mob!=null))
+		{
+			final PlayerStats pstats=mob.playerStats();
+			if(pstats != null)
+			{
+				pstats.bumpPrideStat(stat, amt);
+				adjustTopPrideStats(topPlayers,mob.Name(),stat,pstats);
+				if(pstats.getAccount() != null)
+				{
+					pstats.getAccount().bumpPrideStat(stat,amt);
+					adjustTopPrideStats(topAccounts,pstats.getAccount().getAccountName(),stat,pstats.getAccount());
+				}
+				return amt;
+			}
+		}
+		return 0;
+	}
+	
+	protected void adjustTopPrideStats(final List<Pair<String,Integer>>[][] topWhat, final String name, final AccountStats.PrideStat stat, final AccountStats astats)
+	{
+		final long now=System.currentTimeMillis();
+		for(TimeClock.TimePeriod period : TimeClock.TimePeriod.values())
+		{
+			List<Pair<String,Integer>> top=topWhat[period.ordinal()][stat.ordinal()];
+			if(top == null)
+				continue;
+			synchronized(top)
+			{
+				if((period!=TimeClock.TimePeriod.ALLTIME)&&(now > topPrideExpiration[period.ordinal()]))
+				{
+					topPrideExpiration[period.ordinal()] = period.nextPeriod();
+					top.clear();
+					List<Pair<String,Integer>> topA=(topWhat==topPlayers)?topAccounts[period.ordinal()][stat.ordinal()]:topPlayers[period.ordinal()][stat.ordinal()];
+					if(topA!=null)
+					{
+						topA.clear();
+					}
+				}
+				final int pVal=astats.getPrideStat(period, stat);
+				if(pVal <= 0)
+					removePrideStat(top,name,0);
+				else
+				{
+					boolean found=false;
+					for(int i=0;i<top.size();i++)
+					{
+						if(top.get(i).first.equals(name))
+						{
+							found=true;
+							top.get(i).second=Integer.valueOf(pVal);
+							break;
+						}
+						else
+						if(pVal > top.get(i).second.intValue())
+						{
+							top.add(i,new Pair<String,Integer>(name,Integer.valueOf(pVal)));
+							removePrideStat(top,name,i+1);
+							found=true;
+							break;
+						}
+					}
+					if((!found)&&(top.size()<PRIDE_TOP_SIZE))
+						top.add(new Pair<String,Integer>(name,Integer.valueOf(pVal)));
+				}
+			}
+		}
+	}
+	
 	public void renamePlayer(MOB mob, String oldName)
 	{
 		String newName = mob.Name();
@@ -919,17 +1001,19 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 				@Override
 				public void run() 
 				{
-					final List<Pair<String,Integer>>[][] pStats = CMLib.database().DBScanPridePlayerWinners(10, (short)5);
+					final List<Pair<String,Integer>>[][] pStats = CMLib.database().DBScanPridePlayerWinners(PRIDE_TOP_SIZE, (short)5);
 					for(int x=0;x<pStats.length;x++)
 						for(int y=0;y<pStats[x].length;y++)
 							topPlayers[x][y]=pStats[x][y];
 					if(CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)>1)
 					{
-						final List<Pair<String,Integer>>[][] aStats = CMLib.database().DBScanPrideAccountWinners(10, (short)5);
+						final List<Pair<String,Integer>>[][] aStats = CMLib.database().DBScanPrideAccountWinners(PRIDE_TOP_SIZE, (short)5);
 						for(int x=0;x<aStats.length;x++)
 							for(int y=0;y<aStats[x].length;y++)
 								topAccounts[x][y]=aStats[x][y];
 					}
+					for(TimeClock.TimePeriod period : TimeClock.TimePeriod.values())
+						topPrideExpiration[period.ordinal()] = period.nextPeriod();
 				}
 				
 			});

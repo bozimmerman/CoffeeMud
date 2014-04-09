@@ -91,7 +91,7 @@ public class Top extends StdCommand
 				str.append(CMStrings.padRight("^H"+(i+1)+((i>=9)?"":" ")+". ^N"+data,width)+"^.^N\n\r");
 			}
 			str.append("\n\r");
-			str.append(CMStrings.padRight("^HMins Online", width)+"^. "+CMStrings.padRight("^HRooms Explored", width)+"^. "+CMStrings.padRight("^HAreas Explored", width)+"^.^N\n\r");
+			str.append(CMStrings.padRight("^HMins Online", width)+"^. "+CMStrings.padRight("^HRooms Explored", width)+"^. "+CMStrings.padRight("^HQuestPoints Earned", width)+"^.^N\n\r");
 			set1=doPlayers?
 					CMLib.players().getTopPridePlayers(period, AccountStats.PrideStat.MINUTES_ON):
 					CMLib.players().getTopPrideAccounts(period, AccountStats.PrideStat.MINUTES_ON);
@@ -99,8 +99,8 @@ public class Top extends StdCommand
 					CMLib.players().getTopPridePlayers(period, AccountStats.PrideStat.ROOMS_EXPLORED):
 					CMLib.players().getTopPrideAccounts(period, AccountStats.PrideStat.ROOMS_EXPLORED);
 				set3=doPlayers?
-					CMLib.players().getTopPridePlayers(period, AccountStats.PrideStat.AREAS_EXPLORED):
-					CMLib.players().getTopPrideAccounts(period, AccountStats.PrideStat.AREAS_EXPLORED);
+					CMLib.players().getTopPridePlayers(period, AccountStats.PrideStat.QUESTPOINTS_EARNED):
+					CMLib.players().getTopPrideAccounts(period, AccountStats.PrideStat.QUESTPOINTS_EARNED);
 			for(int i=0;i<10;i++)
 			{
 				data = CMStrings.padRight((set1.size()>i)?("^N"+set1.get(i).first):"",nameWidth)+"^c"+((set1.size()>i)?("^N"+set1.get(i).second):"");

@@ -7073,15 +7073,14 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						int ival=CMath.s_int(val);
 						int aval=ival-((MOB)newTarget).getQuestPoint();
 						((MOB)newTarget).setQuestPoint(CMath.s_int(val));
-						if((aval>0)&&(((MOB)newTarget).playerStats()!=null))
-							((MOB)newTarget).playerStats().bumpPrideStat(PrideStat.QUESTPOINTS_EARNED, aval);
+						if(aval>0)
+							CMLib.players().bumpPrideStat((MOB)newTarget,PrideStat.QUESTPOINTS_EARNED, aval);
 					}
 					else
 					if(val.startsWith("++")&&(CMath.isNumber(val.substring(2).trim())))
 					{
 						((MOB)newTarget).setQuestPoint(((MOB)newTarget).getQuestPoint()+CMath.s_int(val.substring(2).trim()));
-						if(((MOB)newTarget).playerStats()!=null)
-							((MOB)newTarget).playerStats().bumpPrideStat(PrideStat.QUESTPOINTS_EARNED, CMath.s_int(val.substring(2).trim()));
+						CMLib.players().bumpPrideStat((MOB)newTarget,PrideStat.QUESTPOINTS_EARNED, CMath.s_int(val.substring(2).trim()));
 					}
 					else
 					if(val.startsWith("--")&&(CMath.isNumber(val.substring(2).trim())))
@@ -8879,8 +8878,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					if(Q!=null)
 					{
 						Q.declareWinner(whoName);
-						if((M!=null)&&(M.playerStats()!=null))
-							M.playerStats().bumpPrideStat(AccountStats.PrideStat.QUESTS_COMPLETED, 1);
+						CMLib.players().bumpPrideStat(M,AccountStats.PrideStat.QUESTS_COMPLETED, 1);
 					}
 					else
 						logError(scripted,"MPQUESTWIN","Unknown","Quest: "+s);

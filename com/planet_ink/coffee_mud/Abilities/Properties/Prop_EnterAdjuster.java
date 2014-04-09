@@ -155,8 +155,8 @@ public class Prop_EnterAdjuster extends Property implements TriggeredAffect
 			int qp=CMParms.getParmPlus(parameters[0],"ques");
 			if(qp!=0)
 				mob.setQuestPoint(mob.getQuestPoint()+qp);
-			if((qp>0)&&(mob.playerStats()!=null))
-				mob.playerStats().bumpPrideStat(PrideStat.QUESTPOINTS_EARNED, qp);
+			if(qp>0)
+				CMLib.players().bumpPrideStat(mob,PrideStat.QUESTPOINTS_EARNED, qp);
 			int newMoney=CMParms.getParmPlus(parameters[0],"coin");
 			if(newMoney!=0) CMLib.beanCounter().setMoney(mob,CMLib.beanCounter().getMoney(mob)+newMoney);
 			int exp=CMParms.getParmPlus(parameters[0],"expe");

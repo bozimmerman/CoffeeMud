@@ -669,7 +669,8 @@ public class StdRoom implements Room
 					recoverRoomStats();
 				if(msg.source().playerStats()!=null)
 				{
-					msg.source().playerStats().addRoomVisit(this);
+					if(msg.source().playerStats().addRoomVisit(this))
+						CMLib.players().bumpPrideStat(msg.source(),AccountStats.PrideStat.ROOMS_EXPLORED, 1);
 				}
 				break;
 			}

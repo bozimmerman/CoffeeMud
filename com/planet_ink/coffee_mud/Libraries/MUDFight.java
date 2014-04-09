@@ -1340,7 +1340,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 				{
 					CMLib.coffeeTables().bump(deadmob,CoffeeTableRow.STAT_PKDEATHS);
 					if(killer.playerStats()!=null)
-						killer.playerStats().bumpPrideStat(PrideStat.PVPKILLS, 1);
+						CMLib.players().bumpPrideStat(killer,PrideStat.PVPKILLS, 1);
 				}
 				if((killer.session()!=null)
 				&&((deadmob.session()==null)||(!deadmob.session().getAddress().equalsIgnoreCase(killer.session().getAddress()))))

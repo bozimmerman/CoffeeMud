@@ -624,8 +624,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 			}
 		}
 
-		if(mob.playerStats()!=null)
-			mob.playerStats().bumpPrideStat(PrideStat.EXPERIENCE_GAINED, amount);
+		CMLib.players().bumpPrideStat(mob,PrideStat.EXPERIENCE_GAINED, amount);
 		mob.setExperience(mob.getExperience()+amount);
 		if(homageMessage==null) homageMessage="";
 		if(!quiet)

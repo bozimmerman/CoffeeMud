@@ -66,8 +66,7 @@ public class QuestPoint extends StdItem
 				if(!mob.isMine(this))
 				{
 					mob.setQuestPoint(mob.getQuestPoint()+1);
-					if(mob.playerStats()!=null)
-						mob.playerStats().bumpPrideStat(PrideStat.QUESTPOINTS_EARNED, 1);
+					CMLib.players().bumpPrideStat(mob,PrideStat.QUESTPOINTS_EARNED, 1);
 				}
 				if(!CMath.bset(msg.targetMajor(),CMMsg.MASK_OPTIMIZE))
 					mob.location().recoverRoomStats();

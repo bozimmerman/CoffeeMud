@@ -221,7 +221,8 @@ public class Bard extends StdCharClass
 				}
 				if(!mob.playerStats().hasVisited(A))
 				{
-					mob.playerStats().addRoomVisit(R);
+					if(mob.playerStats().addRoomVisit(R))
+						CMLib.players().bumpPrideStat(mob,AccountStats.PrideStat.ROOMS_EXPLORED,1);
 					int xp=(int)Math.round(100.0*CMath.div(A.getAreaIStats()[Area.Stats.AVG_LEVEL.ordinal()],hostP.phyStats().level()));
 					if(xp>250) xp=250;
 					if((xp>0)&&CMLib.leveler().postExperience((MOB)host,null,null,xp,true))
@@ -230,7 +231,8 @@ public class Bard extends StdCharClass
 				else
 				{
 					int pctBefore=mob.playerStats().percentVisited((MOB)host,A);
-					mob.playerStats().addRoomVisit(R);
+					if(mob.playerStats().addRoomVisit(R))
+						CMLib.players().bumpPrideStat(mob,AccountStats.PrideStat.ROOMS_EXPLORED,1);
 					int pctAfter=mob.playerStats().percentVisited((MOB)host,A);
 					if((pctBefore<50)&&(pctAfter>=50))
 					{

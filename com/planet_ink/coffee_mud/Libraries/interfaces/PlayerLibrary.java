@@ -58,6 +58,7 @@ public interface PlayerLibrary extends CMLibrary
 	public Set<MOB> getPlayersHere(Room room);
 	public void changePlayersLocation(MOB mob, Room room);
 	public Pair<Long,int[]>[] parsePrideStats(final String[] nextPeriods, final String[] prideStats);
+	public int bumpPrideStat(final MOB mob, final AccountStats.PrideStat stat, final int amt);
 	public List<Pair<String,Integer>> getTopPridePlayers(TimeClock.TimePeriod period, AccountStats.PrideStat stat);
 	public List<Pair<String,Integer>> getTopPrideAccounts(TimeClock.TimePeriod period, AccountStats.PrideStat stat);
 	
