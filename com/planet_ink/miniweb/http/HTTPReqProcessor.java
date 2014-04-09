@@ -178,21 +178,32 @@ public class HTTPReqProcessor implements HTTPFileGetter
 	 * If there is a range parsing error, an http exception is thrown
 	 * @param request the request being processed
 	 * @param buffers the fully formed output buffer
-	 * @return true if a range was set, false otherwise
+	 * @return the final range, or null if no range set, or an exception of course
 	 * @throws HTTPException
 	 */
-	private boolean setRangeRequests(HTTPRequest request, final DataBuffers buffers) throws HTTPException
+	private long[] setRangeRequests(HTTPRequest request, final DataBuffers buffers) throws HTTPException
 	{
 		final List<long[]> rangeXYSets = request.getRangeAZ();
-		if(rangeXYSets!=null)
+		if((rangeXYSets!=null)&&(rangeXYSets.size()>0))
 		{
 			List<long[]> ranges=new LinkedList<long[]>();
+			final long[] fullRange=new long[]{buffers.getLength(),0};
 			for(long[] range : rangeXYSets)
-				ranges.add(checkRangeRequest(range,buffers.getLength()));
-			buffers.setRanges(ranges);
-			return true;
+			{
+				long[] newRange = checkRangeRequest(range,buffers.getLength());
+				if(newRange[0] < fullRange[0])
+					fullRange[0]=newRange[0];
+				if(newRange[1] > fullRange[1])
+					fullRange[1]=newRange[1];
+			}
+			if(fullRange[0] < fullRange[1])
+			{
+				ranges.add(fullRange);
+				buffers.setRanges(ranges);
+				return new long[]{fullRange[0],fullRange[1]-1};
+			}
 		}
-		return false;
+		return null;
 	}
 	
 	/**
@@ -223,8 +234,6 @@ public class HTTPReqProcessor implements HTTPFileGetter
 		str.append(HTTPIOHandler.CONN_HEADER);
 		str.append(HTTPHeader.getKeepAliveHeader());
 		str.append(HTTPHeader.DATE.makeLine(HTTPIOHandler.DATE_FORMAT.format(new Date(System.currentTimeMillis()))));
-		if((status == HTTPStatus.S206_PARTIAL_CONTENT)&&(response!=null))
-			str.append(HTTPHeader.CONTENT_RANGE.makeLine(request.getHeader(HTTPHeader.RANGE.lowerCaseName())+"/"+response.getLength()));
 		str.append(HTTPIOHandler.RANGE_HEADER);
 		str.append(EOLN);
 		return ByteBuffer.wrap(str.toString().getBytes());
@@ -587,8 +596,13 @@ public class HTTPReqProcessor implements HTTPFileGetter
 					checkIfModifiedSince(request,buffers);
 					buffers = handleEncodingRequest(request, pageFile, buffers, extraHeaders);
 				}
-				if(setRangeRequests(request, buffers))
+				final long fullSize = buffers.getLength();
+				final long[] fullRange = setRangeRequests(request, buffers);
+				if(fullRange != null)
+				{
 					responseStatus = HTTPStatus.S206_PARTIAL_CONTENT;
+					extraHeaders.put(HTTPHeader.CONTENT_RANGE, "bytes "+fullRange[0]+"-"+fullRange[1]+"/"+fullSize);
+				}
 				break;
 			}
 			default:

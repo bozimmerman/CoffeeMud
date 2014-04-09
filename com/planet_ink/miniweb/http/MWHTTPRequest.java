@@ -24,6 +24,7 @@ import com.planet_ink.miniweb.interfaces.HTTPIOHandler;
 import com.planet_ink.miniweb.interfaces.HTTPRequest;
 import com.planet_ink.miniweb.util.MiniWebConfig;
 import com.planet_ink.miniweb.util.MWThread;
+import com.planet_ink.miniweb.util.MiniWebConfig.DisableFlag;
 
 /*
 Copyright 2012-2014 Bo Zimmerman
@@ -86,6 +87,7 @@ public class MWHTTPRequest implements HTTPRequest
 	private final boolean		 overwriteDups;
 	private final int			 requestPort;
 	private final long			 requestLineSize;
+	private final Set<DisableFlag>disableFlags;
 	private List<String>		 headerRefs  = new LinkedList<String>();
 	private List<String>		 expects	 = new LinkedList<String>();
 	private Map<String,Object>   objects	 = new HashMap<String,Object>();
@@ -98,9 +100,11 @@ public class MWHTTPRequest implements HTTPRequest
 	 * @param overwriteDups true to overwrite dup url parameters, false to add #
 	 * @param requestLineSize number of bytes in a new request line
 	 * @param debugLogger null, or a logger object to send debug messages to
+	 * @param disableFlags a set of config disable flags, if any
 	 * @param buffer a buffer to use instead of creating a new one
 	 */
-	public MWHTTPRequest(InetAddress address, boolean isHttps, int requestPort, boolean overwriteDups, long requestLineSize, Logger debugLogger, ByteBuffer buffer)
+	public MWHTTPRequest(InetAddress address, boolean isHttps, int requestPort, boolean overwriteDups, 
+						 long requestLineSize, Logger debugLogger, Set<DisableFlag> disableFlags, ByteBuffer buffer)
 	{
 		this.address=address;
 		this.requestLineSize=requestLineSize;
@@ -112,6 +116,7 @@ public class MWHTTPRequest implements HTTPRequest
 		this.debugLogger=debugLogger;
 		this.requestPort=requestPort;
 		this.isHttps=isHttps;
+		this.disableFlags=disableFlags;
 		this.overwriteDups=overwriteDups;
 	}
 	
@@ -127,6 +132,7 @@ public class MWHTTPRequest implements HTTPRequest
 				previousRequest.overwriteDups,
 				previousRequest.requestLineSize,
 				previousRequest.debugLogger,
+				previousRequest.disableFlags,
 				previousRequest.overFlowBuf);
 	}
 	
@@ -415,6 +421,7 @@ public class MWHTTPRequest implements HTTPRequest
 	 * list of ranges requested  as integer arrays.  Each integer array
 	 * can be 1 or 2 dimensional, with the first dimension always
 	 * being "from" and the second (if available) the "to".
+	 * Will also "correct" the existing range request header for response compatibility.
 	 * @param rangeDefStr the raw range request string
 	 * @return the list of 1 or 2 dimensional integer arrays
 	 * @throws HTTPException
@@ -674,7 +681,7 @@ public class MWHTTPRequest implements HTTPRequest
 			throw new HTTPException(HTTPStatus.S400_BAD_REQUEST, "<html><body><h2>No Host: header received</h2>HTTP 1.1 requests must include the Host: header.</body></html>");
 		
 		// if this is a range request, get the byte ranges ready for the One Who Will Generate Output
-		if(headers.containsKey(HTTPHeader.RANGE.lowerCaseName()))
+		if(headers.containsKey(HTTPHeader.RANGE.lowerCaseName()) && (!disableFlags.contains(MiniWebConfig.DisableFlag.RANGED)))
 		{
 			if (isDebugging) debugLogger.finest("Got range request!");
 			byteRanges=parseRangeRequest(headers.get(HTTPHeader.RANGE.lowerCaseName()));

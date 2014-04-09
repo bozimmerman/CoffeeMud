@@ -100,7 +100,7 @@ public class HTTPReader implements HTTPIOHandler, Runnable
 		final InetAddress clientAddress=chan.socket().getInetAddress();
 		final long requestLineSize=config.getRequestLineBufBytes();
 		final boolean overwriteDups=config.getDupPolicy()==MiniWebConfig.DupPolicy.OVERWRITE;
-		this.currentReq=new MWHTTPRequest(clientAddress,isHttps, localPort, overwriteDups, requestLineSize, debugLogger, requestBuffer);
+		this.currentReq=new MWHTTPRequest(clientAddress,isHttps, localPort, overwriteDups, requestLineSize, debugLogger, config.getDisableFlags(), requestBuffer);
 		this.name=getReaderType()+"#"+idCounter.addAndGet(1);
 		this.startTime=System.currentTimeMillis();
 	}

@@ -8,6 +8,7 @@
    6. Clan forums and web sites supported -- see CLANWEBSITES and CLANFORUMDATA in coffeemud.ini file.  Still thinking about how clan leaders could modify it.
    7. Fighter classes now have armor & shield specializations, plus new expertises (Focuses) to allow wearing/wielding of slightly higher level items
    8. Players and Accounts now track PVPs, Rooms explored, mins played, xp & qp gained, and quests completed. Main web page or TOP command to see winners.
+   9. Embedded MiniWebServer upgraded to 2.1
    *. Push regen rates to INI file
    *. New combat system: turn based
    *. Name generator, finally

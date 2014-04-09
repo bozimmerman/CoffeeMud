@@ -3,9 +3,11 @@ package com.planet_ink.miniweb.util;
 import java.net.UnknownHostException;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Properties;
+import java.util.Set;
 import java.util.logging.Logger;
 
 import com.planet_ink.miniweb.interfaces.FileCacheManager;
@@ -83,6 +85,7 @@ public class MiniWebConfig implements Cloneable
 	private Map<String,String>    fileConverts					= new HashMap<String,String>();
 	
 	private Map<String,String> 	  miscFlags						= new HashMap<String,String>();
+	private Set<DisableFlag>	  disableFlags					= new HashSet<DisableFlag>();
 	
 	private SimpleServletManager  servletMan					= null;
 	private ServletSessionManager sessions						= null;
@@ -134,6 +137,8 @@ public class MiniWebConfig implements Cloneable
 	private Map<String,Map<Integer,KeyPairSearchTree<WebAddress>>>  fwds	= new HashMap<String,Map<Integer,KeyPairSearchTree<WebAddress>>>();
 	
 	public enum DupPolicy { ENUMERATE, OVERWRITE }
+	
+	public enum DisableFlag { RANGED }
 	
 	private DupPolicy dupPolicy = DupPolicy.OVERWRITE;
 	
@@ -646,6 +651,24 @@ public class MiniWebConfig implements Cloneable
 	{
 		this.maxThreadQueueSize = maxThreadQueueSize;
 	}
+	
+	/**
+	 * @param flag the flag to check
+	 * @return true if its disabled, false otherwise
+	 */
+	public final boolean isDisabled(DisableFlag flag)
+	{
+		return (flag != null) && disableFlags.contains(flag);
+	}
+	
+	/**
+	 * @return the disable flags
+	 */
+	public Set<DisableFlag> getDisableFlags()
+	{
+		return disableFlags;
+	}
+	
 	/**
 	 * @return the fileCacheMaxBytes
 	 */
@@ -1016,6 +1039,22 @@ public class MiniWebConfig implements Cloneable
 		setDebugFlag(getString(props,"DEBUGFLAG",debugFlag));
 		setDupPolicy(getString(props,"DUPPOLICY",dupPolicy.toString()));
 		setAccessLogFlag(getString(props,"ACCESSLOGS",accessLogFlag));
+		
+		String[] disableStrs=getString(props,"DISABLE","").split(",");
+		disableFlags.clear();
+		if((disableStrs.length>0)&&(disableStrs[0].trim().length()>0))
+		for(String disable : disableStrs)
+		{
+			disable=disable.toUpperCase().trim();
+			try 
+			{
+				disableFlags.add(DisableFlag.valueOf(disable));
+			} 
+			catch(Exception e) 
+			{
+				getLogger().severe("Unknown DISABLE flag in mw.ini: "+disable);
+			}
+		}
 		
 		Map<String,String> newServlets=getPrefixedPairs(props,"SERVLET",'/');
 		if(newServlets != null)
