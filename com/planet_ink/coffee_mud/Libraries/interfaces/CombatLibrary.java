@@ -13,6 +13,7 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 /* 
    Copyright 2000-2014 Bo Zimmerman
@@ -79,6 +80,7 @@ public interface CombatLibrary extends CMLibrary
 	public boolean isKnockedOutUponDeath(MOB mob, MOB fighting);
 	public boolean handleConsequences(MOB mob, MOB fighting, String[] commands, int[] lostExperience, String message);
 	public void tickCombat(MOB fighter);
+	public void recoverTick(MOB mob);
 	
 	/**
 	 * For a valid set of killers who are benefitting from having killed the given killed mob,

@@ -67,6 +67,9 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	protected LinkedList<CMath.CompiledOperation> pvpWeaponCritChanceFormula = null;
 	protected LinkedList<CMath.CompiledOperation> weaponCritDmgFormula = null;
 	protected LinkedList<CMath.CompiledOperation> pvpWeaponCritDmgFormula = null;
+	protected LinkedList<CMath.CompiledOperation> stateHitPointRecoverFormula = null;
+	protected LinkedList<CMath.CompiledOperation> stateManaRecoverFormula = null;
+	protected LinkedList<CMath.CompiledOperation> stateMovesRecoverFormula  = null;
 	
 	private static final int ATTACK_ADJUSTMENT = 50;
 
@@ -96,6 +99,10 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		pvpMeleeFudgeDamageFormula = CMath.compileMathExpression(CMProps.getVar(CMProps.Str.FORMULA_PVPDAMAGEMELEEFUDGE));
 		rangedFudgeDamageFormula = CMath.compileMathExpression(CMProps.getVar(CMProps.Str.FORMULA_DAMAGERANGEDFUDGE));
 		pvpRangedFudgeDamageFormula = CMath.compileMathExpression(CMProps.getVar(CMProps.Str.FORMULA_PVPDAMAGERANGEDFUDGE));
+		
+		stateHitPointRecoverFormula = CMath.compileMathExpression(CMProps.getVar(CMProps.Str.FORMULA_HITPOINTRECOVER));
+		stateManaRecoverFormula = CMath.compileMathExpression(CMProps.getVar(CMProps.Str.FORMULA_MANARECOVER));
+		stateMovesRecoverFormula = CMath.compileMathExpression(CMProps.getVar(CMProps.Str.FORMULA_MOVESRECOVER));
 		return true; 
 	}
 	
@@ -598,6 +605,51 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		}
 		return (int)Math.round(damageAmount);
 	}
+	
+	
+	public void recoverTick(MOB mob)
+	{
+		if((mob!=null)
+		&&(!mob.isInCombat())
+		&&(!CMLib.flags().isClimbing(mob)))
+		{
+			final CharStats charStats=mob.charStats();
+			final CharState curState=mob.curState();
+			final CharState maxState=mob.maxState();
+			final boolean isSleeping=(CMLib.flags().isSleeping(mob));
+			final boolean isSittingOrRiding=(!isSleeping) && ((CMLib.flags().isSitting(mob))||(mob.riding()!=null));
+			final boolean isFlying=(!isSleeping) && (!isSittingOrRiding) && CMLib.flags().isFlying(mob);
+			final boolean isSwimming=(!isSleeping) && (!isSittingOrRiding) && (!isFlying) && CMLib.flags().isSwimming(mob);
+			final double[] vals=new double[]{
+				charStats.getStat(CharStats.STAT_CONSTITUTION),
+				mob.phyStats().level(),
+				(curState.getHunger()<1)?1.0:0.0,
+				(curState.getThirst()<1)?1.0:0.0,
+				(curState.getFatigue()>CharState.FATIGUED_MILLIS)?1.0:0.0,
+				isSleeping?1.0:0.0,
+				isSittingOrRiding?1.0:0.0,
+				isFlying?1.0:0.0,
+				isSwimming?1.0:0.0
+			};
+			double hpGain = CMath.parseMathExpression(stateHitPointRecoverFormula, vals, 0.0);
+			
+			if((hpGain>0)&&(!CMLib.flags().isGolem(mob)))
+				curState.adjHitPoints((int)Math.round(hpGain),maxState);
+
+			vals[0]=((charStats.getStat(CharStats.STAT_INTELLIGENCE)+charStats.getStat(CharStats.STAT_WISDOM)));
+			double manaGain = CMath.parseMathExpression(stateManaRecoverFormula, vals, 0.0);
+			
+			if(manaGain>0)
+				curState.adjMana((int)Math.round(manaGain),maxState);
+			
+			vals[0]=charStats.getStat(CharStats.STAT_STRENGTH);
+			double moveGain = CMath.parseMathExpression(this.stateMovesRecoverFormula, vals, 0.0);
+			
+			if(moveGain>0)
+				curState.adjMovement((int)Math.round(moveGain),maxState);
+		}
+	}
+
 	
 	public void postWeaponDamage(MOB source, MOB target, Item item, boolean success)
 	{
