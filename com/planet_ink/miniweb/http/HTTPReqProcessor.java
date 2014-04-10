@@ -596,15 +596,16 @@ public class HTTPReqProcessor implements HTTPFileGetter
 					checkIfModifiedSince(request,buffers);
 					buffers = handleEncodingRequest(request, pageFile, buffers, extraHeaders);
 				}
-				if(buffers != null)
+				if(buffers == null)
 				{
-					final long fullSize = buffers.getLength();
-					final long[] fullRange = setRangeRequests(request, buffers);
-					if(fullRange != null)
-					{
-						responseStatus = HTTPStatus.S206_PARTIAL_CONTENT;
-						extraHeaders.put(HTTPHeader.CONTENT_RANGE, "bytes "+fullRange[0]+"-"+fullRange[1]+"/"+fullSize);
-					}
+					throw HTTPException.standardException(HTTPStatus.S500_INTERNAL_ERROR);
+				}
+				final long fullSize = buffers.getLength();
+				final long[] fullRange = setRangeRequests(request, buffers);
+				if(fullRange != null)
+				{
+					responseStatus = HTTPStatus.S206_PARTIAL_CONTENT;
+					extraHeaders.put(HTTPHeader.CONTENT_RANGE, "bytes "+fullRange[0]+"-"+fullRange[1]+"/"+fullSize);
 				}
 				break;
 			}
