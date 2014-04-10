@@ -37,6 +37,22 @@ of 25.<P><BR></FONT>
 	<TR><TD COLSPAN=4><HR></TD></TR>
 @back@
 </TABLE>
+<BR><FONT COLOR=BLACK><a name=STAT>Base Class Version of Above</a><BR></FONT>
+<TABLE WIDTH=100% BORDER=1>
+<TR><TD>BASECLASS</TD><TD>HP</TD><TD>MANA</TD><TD>MV</TD></TR>
+@BaseCharClassNext?RESET@
+@loop@
+@BaseCharClassNext@
+	@CharClassNext?RESET@
+	@CharClassNext@
+	<TR>
+	<TD><FONT COLOR=RED>@BaseCharClassName@</FONT></TD>
+	<TD><FONT SIZE=-1 COLOR=GREEN>@CharClassData?AVGHITPOINTS@</FONT></TD>
+	<TD><FONT SIZE=-1 COLOR=BLUE>@CharClassData?AVGMANA@</FONT></TD>
+	<TD><FONT SIZE=-1 COLOR=PURPLE>@CharClassData?AVGMOVEMENT@</FONT></TD>
+	</TR>
+@back@
+</TABLE>
 <P><BR>
 <HR>
 <CENTER><a name=CROSS><H2>Cross Class Skills Chart</H2></a></CENTER><P>

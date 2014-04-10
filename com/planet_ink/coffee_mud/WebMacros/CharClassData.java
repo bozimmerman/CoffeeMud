@@ -936,28 +936,124 @@ public class CharClassData extends StdWebMacro
 
 				if(parms.containsKey("AVGHITPOINTS"))
 				{
-					int maxCon=18+C.maxStatAdjustments()[CharStats.STAT_CONSTITUTION];
-					String f=C.getHitPointsFormula();
-					str.append("("+avgMath(10,10,20,f)+"/"+avgMath(18,10,20,f)+"/"+avgMath(maxCon,10,20,f)+") ");
-					str.append("("+avgMath(10,50,20,f)+"/"+avgMath(18,50,20,f)+"/"+avgMath(maxCon,50,20,f)+") ");
-					str.append("("+avgMath(10,90,20,f)+"/"+avgMath(18,90,20,f)+"/"+avgMath(maxCon,90,20,f)+") ");
+					if(parms.containsKey("BASE"))
+					{
+						int num=0;
+						long[][] avgs=new long[3][3];
+						for(Enumeration<CharClass> c=CMClass.charClasses();c.hasMoreElements();)
+						{
+							CharClass C1=c.nextElement();
+							if(C1.baseClass().equals(C.baseClass()))
+							{
+								int maxCon=18+C1.maxStatAdjustments()[CharStats.STAT_CONSTITUTION];
+								String f=C1.getHitPointsFormula();
+								num++;
+								avgs[0][0]+=avgMath(10,10,20,f);
+								avgs[0][1]+=avgMath(18,10,20,f);
+								avgs[0][2]+=avgMath(maxCon,10,20,f);
+								
+								avgs[1][0]+=avgMath(10,50,20,f);
+								avgs[1][1]+=avgMath(18,50,20,f);
+								avgs[1][2]+=avgMath(maxCon,50,20,f);
+								
+								avgs[2][0]+=avgMath(10,90,20,f);
+								avgs[2][1]+=avgMath(18,90,20,f);
+								avgs[2][2]+=avgMath(maxCon,90,20,f);
+							}
+						}
+						str.append("("+(avgs[0][0]/num)+"/"+(avgs[0][1]/num)+"/"+(avgs[0][2]/num)+") ");
+						str.append("("+(avgs[1][0]/num)+"/"+(avgs[1][1]/num)+"/"+(avgs[1][2]/num)+") ");
+						str.append("("+(avgs[2][0]/num)+"/"+(avgs[2][1]/num)+"/"+(avgs[2][2]/num)+") ");
+					}
+					else
+					{
+						int maxCon=18+C.maxStatAdjustments()[CharStats.STAT_CONSTITUTION];
+						String f=C.getHitPointsFormula();
+						str.append("("+avgMath(10,10,20,f)+"/"+avgMath(18,10,20,f)+"/"+avgMath(maxCon,10,20,f)+") ");
+						str.append("("+avgMath(10,50,20,f)+"/"+avgMath(18,50,20,f)+"/"+avgMath(maxCon,50,20,f)+") ");
+						str.append("("+avgMath(10,90,20,f)+"/"+avgMath(18,90,20,f)+"/"+avgMath(maxCon,90,20,f)+") ");
+					}
 				}
 
 				if(parms.containsKey("AVGMANA"))
 				{
-					int maxInt=18+C.maxStatAdjustments()[CharStats.STAT_INTELLIGENCE];
-					String f=C.getManaFormula();
-					str.append("("+avgMath(10,10,100,f)+"/"+avgMath(18,10,100,f)+"/"+avgMath(maxInt,10,100,f)+") ");
-					str.append("("+avgMath(10,50,100,f)+"/"+avgMath(18,50,100,f)+"/"+avgMath(maxInt,50,100,f)+") ");
-					str.append("("+avgMath(10,90,100,f)+"/"+avgMath(18,90,100,f)+"/"+avgMath(maxInt,90,100,f)+") ");
+					if(parms.containsKey("BASE"))
+					{
+						int num=0;
+						long[][] avgs=new long[3][3];
+						for(Enumeration<CharClass> c=CMClass.charClasses();c.hasMoreElements();)
+						{
+							CharClass C1=c.nextElement();
+							if(C1.baseClass().equals(C.baseClass()))
+							{
+		    					int maxInt=18+C1.maxStatAdjustments()[CharStats.STAT_INTELLIGENCE];
+		    					String f=C1.getManaFormula();
+								num++;
+								avgs[0][0]+=avgMath(10,10,100,f);
+								avgs[0][1]+=avgMath(18,10,100,f);
+								avgs[0][2]+=avgMath(maxInt,10,100,f);
+								
+								avgs[1][0]+=avgMath(10,50,100,f);
+								avgs[1][1]+=avgMath(18,50,100,f);
+								avgs[1][2]+=avgMath(maxInt,50,100,f);
+								
+								avgs[2][0]+=avgMath(10,90,100,f);
+								avgs[2][1]+=avgMath(18,90,100,f);
+								avgs[2][2]+=avgMath(maxInt,90,100,f);
+							}
+						}
+						str.append("("+(avgs[0][0]/num)+"/"+(avgs[0][1]/num)+"/"+(avgs[0][2]/num)+") ");
+						str.append("("+(avgs[1][0]/num)+"/"+(avgs[1][1]/num)+"/"+(avgs[1][2]/num)+") ");
+						str.append("("+(avgs[2][0]/num)+"/"+(avgs[2][1]/num)+"/"+(avgs[2][2]/num)+") ");
+					}
+					else
+					{
+    					int maxInt=18+C.maxStatAdjustments()[CharStats.STAT_INTELLIGENCE];
+    					String f=C.getManaFormula();
+    					str.append("("+avgMath(10,10,100,f)+"/"+avgMath(18,10,100,f)+"/"+avgMath(maxInt,10,100,f)+") ");
+    					str.append("("+avgMath(10,50,100,f)+"/"+avgMath(18,50,100,f)+"/"+avgMath(maxInt,50,100,f)+") ");
+    					str.append("("+avgMath(10,90,100,f)+"/"+avgMath(18,90,100,f)+"/"+avgMath(maxInt,90,100,f)+") ");
+					}
 				}
 				if(parms.containsKey("AVGMOVEMENT"))
 				{
-					String f=C.getMovementFormula();
-					int maxStrength=18+C.maxStatAdjustments()[CharStats.STAT_STRENGTH];
-					str.append("("+avgMath(10,10,100,f)+"/"+avgMath(18,10,100,f)+"/"+avgMath(maxStrength,10,100,f)+") ");
-					str.append("("+avgMath(10,50,100,f)+"/"+avgMath(18,50,100,f)+"/"+avgMath(maxStrength,50,100,f)+") ");
-					str.append("("+avgMath(10,90,100,f)+"/"+avgMath(18,90,100,f)+"/"+avgMath(maxStrength,90,100,f)+") ");
+					if(parms.containsKey("BASE"))
+					{
+						int num=0;
+						long[][] avgs=new long[3][3];
+						for(Enumeration<CharClass> c=CMClass.charClasses();c.hasMoreElements();)
+						{
+							CharClass C1=c.nextElement();
+							if(C1.baseClass().equals(C.baseClass()))
+							{
+		    					String f=C1.getMovementFormula();
+		    					int maxStrength=18+C1.maxStatAdjustments()[CharStats.STAT_STRENGTH];
+								num++;
+								avgs[0][0]+=avgMath(10,10,100,f);
+								avgs[0][1]+=avgMath(18,10,100,f);
+								avgs[0][2]+=avgMath(maxStrength,10,100,f);
+								
+								avgs[1][0]+=avgMath(10,50,100,f);
+								avgs[1][1]+=avgMath(18,50,100,f);
+								avgs[1][2]+=avgMath(maxStrength,50,100,f);
+								
+								avgs[2][0]+=avgMath(10,90,100,f);
+								avgs[2][1]+=avgMath(18,90,100,f);
+								avgs[2][2]+=avgMath(maxStrength,90,100,f);
+							}
+						}
+						str.append("("+(avgs[0][0]/num)+"/"+(avgs[0][1]/num)+"/"+(avgs[0][2]/num)+") ");
+						str.append("("+(avgs[1][0]/num)+"/"+(avgs[1][1]/num)+"/"+(avgs[1][2]/num)+") ");
+						str.append("("+(avgs[2][0]/num)+"/"+(avgs[2][1]/num)+"/"+(avgs[2][2]/num)+") ");
+					}
+					else
+					{
+    					String f=C.getMovementFormula();
+    					int maxStrength=18+C.maxStatAdjustments()[CharStats.STAT_STRENGTH];
+    					str.append("("+avgMath(10,10,100,f)+"/"+avgMath(18,10,100,f)+"/"+avgMath(maxStrength,10,100,f)+") ");
+    					str.append("("+avgMath(10,50,100,f)+"/"+avgMath(18,50,100,f)+"/"+avgMath(maxStrength,50,100,f)+") ");
+    					str.append("("+avgMath(10,90,100,f)+"/"+avgMath(18,90,100,f)+"/"+avgMath(maxStrength,90,100,f)+") ");
+					}
 				}
 
 				if(parms.containsKey("PRIME"))
