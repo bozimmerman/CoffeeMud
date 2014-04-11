@@ -1805,6 +1805,85 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		return false;
 	}
 
+	public void expendEnergy(final MOB mob, final boolean expendMovement)
+	{
+		if(mob==null)
+		{
+			return;
+		}
+		final Room room=mob.location();
+		if(room!=null)
+		{
+			final CharState curState=mob.curState();
+			final CharState maxState=mob.maxState();
+			if(expendMovement)
+			{
+				int move=-room.pointsPerMove(mob);
+				if(mob.phyStats().weight()>mob.maxCarry())
+					move+=(int)Math.round(CMath.mul(move,10.0*CMath.div(mob.phyStats().weight()-mob.maxCarry(),mob.maxCarry())));
+				curState.adjMovement(move,maxState);
+			}
+			if((!CMLib.flags().isSleeping(mob))
+			&&(!CMSecurity.isAllowed(mob,room,CMSecurity.SecFlag.IMMORT)))
+			{
+				int factor=mob.baseWeight()/500;
+				if(factor<1) factor=1;
+				if((!CMSecurity.isDisabled(CMSecurity.DisFlag.THIRST))
+				&&(mob.maxState().getThirst() < (Integer.MAX_VALUE/2)))
+					curState.adjThirst(-(room.thirstPerRound(mob)*factor),maxState.maxThirst(mob.baseWeight()));
+				if((!CMSecurity.isDisabled(CMSecurity.DisFlag.HUNGER))
+				&&(mob.maxState().getHunger() < (Integer.MAX_VALUE/2)))
+					curState.adjHunger(-factor,maxState.maxHunger(mob.baseWeight()));
+			}
+			final boolean thirsty=(curState.getThirst()<=0);
+			final boolean hungry=(curState.getHunger()<=0);
+			if((hungry||thirsty)&&(!expendMovement))
+			{
+				final int ticksThirsty=curState.adjTicksThirsty(thirsty);
+				final int ticksHungry=curState.adjTicksHungry(hungry);
+
+				if((ticksThirsty>CharState.DEATH_THIRST_TICKS)
+				||(ticksHungry>CharState.DEATH_HUNGER_TICKS))
+				{
+					if(thirsty)
+						mob.tell("YOU ARE DYING OF THIRST!");
+					if(hungry)
+						mob.tell("YOU ARE DYING OF HUNGER!");
+					CMLib.combat().postDeath(null,mob,null);
+				}
+				else
+				if(ticksThirsty>CharState.DEATH_THIRST_TICKS-30)
+					mob.tell("You are dehydrated, and near death.  DRINK SOMETHING!");
+				else
+				if(ticksHungry>CharState.DEATH_HUNGER_TICKS-30)
+					mob.tell("You are starved, and near death.  EAT SOMETHING!");
+				else
+				{
+					if(thirsty && ((ticksThirsty-1 % CharState.ANNOYANCE_DEFAULT_TICKS)==0))
+					{
+						if(ticksThirsty>((CharState.DEATH_THIRST_TICKS/2)+(CharState.DEATH_THIRST_TICKS/4)))
+							mob.tell("You are dehydrated! Drink something!");
+						else
+						if(ticksThirsty>(CharState.DEATH_THIRST_TICKS/2))
+							mob.tell("You are parched! Drink something!");
+						else
+							mob.tell("You are thirsty.");
+					}
+					if((hungry) && ((ticksHungry-1 % CharState.ANNOYANCE_DEFAULT_TICKS)==0))
+					{
+						if(ticksHungry>((CharState.DEATH_HUNGER_TICKS/2)+(CharState.DEATH_HUNGER_TICKS/4)))
+							mob.tell("You are starved! Eat something!");
+						else
+						if(ticksHungry>(CharState.DEATH_HUNGER_TICKS/2))
+							mob.tell("You are famished! Eat something!");
+						else
+							mob.tell("You are hungry.");
+					}
+				}
+			}
+		}
+	}
+	
 	public boolean handleConsequences(MOB mob, MOB fighting, String[] commands, int[] lostExperience, String message)
 	{
 		if((commands==null)||(commands.length==0)) return false;

@@ -1581,7 +1581,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 			}
 			if((nextTruePingReport==null)||(now>nextTruePingReport.longValue()))
 			{
-				final long tickMillis=CharState.ADJUST_FACTOR*CMProps.getTickMillis();
+				final long tickMillis=CharState.REAL_TICK_ADJUST_FACTOR*CMProps.getTickMillis();
 				reporteds.put("system.nextTruePing", new Long((nextTruePingReport==null)?(now+tickMillis):(nextTruePingReport.longValue()+tickMillis)));
 				if(supportables.containsKey("comm.tick")||supportables.containsKey("comm"))
 				{

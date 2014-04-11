@@ -3013,11 +3013,11 @@ public class StdMOB implements MOB
 				tickStatus = Tickable.STATUS_ALIVE;
 				if ((--recoverTickCter) <= 0)
 				{
-					curState().recoverTick(this, maxState);
-					recoverTickCter = CMProps.getIntVar(CMProps.Int.RECOVERRATE);
+					CMLib.combat().recoverTick(this);
+					recoverTickCter = CMProps.getIntVar(CMProps.Int.RECOVERRATE) * CharState.REAL_TICK_ADJUST_FACTOR;
 				}
 				if (!isMonster)
-					curState().expendEnergy(this, maxState, false);
+					CMLib.combat().expendEnergy(this, false);
 
 				if(!CMLib.flags().isGolem(this))
 				{

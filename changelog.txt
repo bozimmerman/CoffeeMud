@@ -9,7 +9,7 @@
    7. Fighter classes now have armor & shield specializations, plus new expertises (Focuses) to allow wearing/wielding of slightly higher level items
    8. Players and Accounts now track PVPs, Rooms explored, mins played, xp & qp gained, and quests completed. Main web page or TOP command to see winners.
    9. Embedded MiniWebServer upgraded to 2.1
-   *. Push regen rates to INI file
+  10. Regen rate formulas are now in INI/control panel. New formula allows faster recovery, esp at higher levels.
    *. New combat system: turn based
    *. Name generator, finally
    *. Fix siplet again -- maybe try applet?

@@ -937,7 +937,7 @@ public class CharClassData extends StdWebMacro
 				if(parms.containsKey("AVGHITPOINTS"))
 				{
 					int sh=CMProps.getIntVar(CMProps.Int.STARTHP);
-					if(parms.containsKey("BASE"))
+					if(parms.containsKey("AVGBASE"))
 					{
 						int num=0;
 						long[][] avgs=new long[3][3];
@@ -979,7 +979,7 @@ public class CharClassData extends StdWebMacro
 				if(parms.containsKey("AVGMANA"))
 				{
 					int sm=CMProps.getIntVar(CMProps.Int.STARTMANA);
-					if(parms.containsKey("BASE"))
+					if(parms.containsKey("AVGBASE"))
 					{
 						int num=0;
 						long[][] avgs=new long[3][3];
@@ -1020,7 +1020,7 @@ public class CharClassData extends StdWebMacro
 				if(parms.containsKey("AVGMOVEMENT"))
 				{
 					int sm=CMProps.getIntVar(CMProps.Int.STARTMOVE);
-					if(parms.containsKey("BASE"))
+					if(parms.containsKey("AVGBASE"))
 					{
 						int num=0;
 						long[][] avgs=new long[3][3];

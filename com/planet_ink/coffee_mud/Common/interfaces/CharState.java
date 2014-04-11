@@ -46,15 +46,17 @@ public interface CharState extends CMCommon, Modifiable
 	public final static int STAT_HUNGER=3;
 	/** stat constant for thirst */
 	public final static int STAT_THIRST=4;
+	/** stat constant for thirst */
+	public final static int STAT_TICKSHUNGRY=5;
+	/** stat constant for thirst */
+	public final static int STAT_TICKSTHIRSTY=6;
 	/** stat constant for number of other stat constants */
-	public final static int STAT_NUMSTATS=5;
-	/** stat constant for number of base stat constants */
-	public final static int STAT_NUM_BASE_STATS=5;
+	public final static int STAT_NUMSTATS=7;
 	
 	/** constant representing how many ticks between hunger/thirst messages*/
 	public final static int ANNOYANCE_DEFAULT_TICKS=60;
 	/** constant representing something*/
-	public final static int ADJUST_FACTOR=5;
+	public final static int REAL_TICK_ADJUST_FACTOR=5;
 	/** constant representing how many ticks a MOB can  be thirsty before death */
 	public final static int DEATH_THIRST_TICKS=(30*30)*6; // 6 hours
 	/** constant representing how many ticks a MOB can  be hungry before death */
@@ -102,6 +104,23 @@ public interface CharState extends CMCommon, Modifiable
 	 * @param newVal number of hit points
 	 */
 	public void setHitPoints(int newVal);
+	
+	/**
+	 * Used to bump and/or read the number of ticks
+	 * that this user has been consecutively thirsty
+	 * @param bumpUp true to bump the number by one
+	 * @return the ticks of thirstiness
+	 */
+	public int adjTicksThirsty(boolean bumpUp);
+	
+	/**
+	 * Used to bump and/or read the number of ticks
+	 * that this user has been consecutively hungry
+	 * @param bumpUp true to bump the number by one
+	 * @return the ticks of hungriness
+	 */
+	public int adjTicksHungry(boolean bumpUp);
+	
 	/**
 	 * Set the number of hit points, respecting boundaries. 0 is always lowest.
 	 * @param byThisMuch a positive or negative change in value
@@ -195,26 +214,6 @@ public interface CharState extends CMCommon, Modifiable
 	 * @return whether the highest or lowest boundary was reached
 	 */
 	public boolean adjMovement(int byThisMuch, CharState max);
-
-	/**
-	 * During rest, and even standing still, this method will be called to allow the
-	 * fields in this object to recover some of their value.  It is called by the
-	 * mob tick(Tickable,int) method every CMProps.getTickMillis() milliseconds
-	 * @see com.planet_ink.coffee_mud.MOBS.interfaces.MOB
-	 * @param mob the mob recovering
-	 * @param maxState The CharState objects which represents the maximum values for these fields
-	 */
-	public void recoverTick(MOB mob, CharState maxState);
-	/**
-	 * During movement and combat, this method will be called to allow the
-	 * movement to be expended and hunger/thirst to occur.  It is called by methods executing
-	 * the appropriate events when they are performed and by the mob tick(Tickable,int) method
-	 * @see com.planet_ink.coffee_mud.MOBS.interfaces.MOB
-	 * @param mob the mob expending
-	 * @param maxState The CharState objects which represents the maximum values for these fields
-	 * @param expendMovement whether to skip movement expending
-	 */
-	public void expendEnergy(MOB mob, CharState maxState, boolean expendMovement);
 
 	/**
 	 * Sets all the values in this object to a single given value

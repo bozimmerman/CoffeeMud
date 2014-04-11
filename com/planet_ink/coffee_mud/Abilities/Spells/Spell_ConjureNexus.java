@@ -14,7 +14,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /* 
@@ -65,7 +64,7 @@ public class Spell_ConjureNexus extends Spell
 				int oldMV=mob.curState().getMovement();
 				int oldHU=mob.curState().getHunger();
 				int oldTH=mob.curState().getThirst();
-				mob.curState().recoverTick(mob,mob.maxState());
+				CMLib.combat().recoverTick(mob);
 				mob.curState().setHitPoints(oldHP);
 				mob.curState().setMovement(oldMV);
 				mob.curState().setHunger(oldHU);

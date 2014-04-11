@@ -15,8 +15,6 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.SlaveryLibrary;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
-
 import java.util.*;
 
 /* 
@@ -227,7 +225,7 @@ public class Skill_Enslave extends StdSkill
 			if((--hungerTickDown)<=0)
 			{
 				hungerTickDown=HUNGERTICKMAX;
-				mob.curState().expendEnergy(mob,mob.maxState(),false);
+				CMLib.combat().expendEnergy(mob,false);
 				if((!mob.isInCombat())&&(CMLib.dice().rollPercentage()==1)&&(CMLib.dice().rollPercentage()<(masterAnger/10)))
 				{
 					MOB myMaster=getMaster();

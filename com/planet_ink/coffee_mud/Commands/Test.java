@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.Commands;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMath.CompiledOperation;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.core.interfaces.BoundedObject;
 import com.planet_ink.coffee_mud.core.interfaces.BoundedObject.BoundedCube;
@@ -21,6 +22,8 @@ import com.planet_ink.coffee_mud.WebMacros.interfaces.WebMacro;
 import com.planet_ink.miniweb.http.HTTPMethod;
 import com.planet_ink.miniweb.http.MultiPartData;
 import com.planet_ink.miniweb.interfaces.HTTPRequest;
+
+
 
 
 import java.io.InputStream;
@@ -222,6 +225,34 @@ public class Test extends StdCommand
 		mobs[1].bringToLife(R,true);
 	}
 
+	public int[] recoverMath(int level, int con, int inte, int wis, int str, boolean isHungry, boolean isThirsty, boolean isFatigued, boolean isSleeping, boolean isSittingOrRiding,boolean isFlying,boolean isSwimming)
+	{
+		/*	# @x1=stat(con/str/int-wis), @x2=level, @x3=hungry?1:0, @x4=thirsty?1:0, @x5=fatigued?0:1 # @x6=asleep?1:0, @x7=sitorride?1:0, @x8=flying?0:1, @x9=swimming?0:1 */
+		LinkedList<CompiledOperation> stateHitPointRecoverFormula = CMath.compileMathExpression("5+(((@x1 - (@xx*@x3/2.0) - (@xx*@x4/2.0))*@x2/9.0) + (@xx*@x6*.5) + (@xx/4.0*@x7) - (@xx/2.0*@x9))");
+		LinkedList<CompiledOperation> stateManaRecoverFormula = CMath.compileMathExpression("25+(((@x1 - (@xx*@x3/2.0) - (@xx*@x4/2.0) - (@xx*@x5/2.0))*@x2/50.0) + (@xx*@x6*.5) + (@xx/4.0*@x7) - (@xx/2.0*@x9))");
+		LinkedList<CompiledOperation> stateMovesRecoverFormula = CMath.compileMathExpression("25+(((@x1 - (@xx*@x3/2.0) - (@xx*@x4/2.0) - (@xx*@x5/2.0))*@x2/10.0) + (@xx*@x6*.5) + (@xx/4.0*@x7) + (@xx/4.0*@x8) - (@xx/2.0*@x9))");
+		final double[] vals=new double[]{
+			con,
+			level,
+			isHungry?1.0:0.0,
+			isThirsty?1.0:0.0,
+			isFatigued?1.0:0.0,
+			isSleeping?1.0:0.0,
+			isSittingOrRiding?1.0:0.0,
+			isFlying?1.0:0.0,
+			isSwimming?1.0:0.0
+		};
+		int[] v=new int[3];
+		v[0]= (int)Math.round(CMath.parseMathExpression(stateHitPointRecoverFormula, vals, 0.0));
+
+		vals[0]=((inte+wis));
+		v[1]= (int)Math.round(CMath.parseMathExpression(stateManaRecoverFormula, vals, 0.0));
+		
+		vals[0]=str;
+		v[2]= (int)Math.round(CMath.parseMathExpression(stateMovesRecoverFormula, vals, 0.0));
+		return v;
+	}
+
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
@@ -288,6 +319,66 @@ public class Test extends StdCommand
 					}
 				}
 			}
+			else
+			if(what.equalsIgnoreCase("recover"))
+			{
+				for(int level : new int[]{1,10,50,90})
+				{
+					int hp;
+					int mana;
+					int move;
+					int stat;
+					switch(level)
+					{
+					default:
+					case 1:
+						hp=20;
+						mana=100;
+						move=100;
+						stat=15;
+						break;
+					case 10:
+						hp=120;
+						mana=150;
+						move=190;
+						stat=17;
+						break;
+					case 50:
+						hp=500;
+						mana=420;
+						move=520;
+						stat=18;
+						break;
+					case 90:
+						hp=1200;
+						mana=700;
+						move=1000;
+						stat=18;
+						break;
+					}
+					StringBuilder str=new StringBuilder("level: "+level+"\n\r");
+					int[] resp;
+					resp=recoverMath(level,stat,stat,stat-4,stat,/*Hun*/false,/*Thirs*/false,/*Fatig*/false,/*Sleep*/false,/*Sit*/false,/*Fly*/false,/*Swim*/false);
+					str.append("standing: hpticks="+(hp/resp[0])+",  manaticks="+(mana/resp[1])+",  moveticks="+(move/resp[2])+"\n\r");
+					resp=recoverMath(level,stat,stat,stat-4,stat,/*Hun*/true,/*Thirs*/false,/*Fatig*/false,/*Sleep*/false,/*Sit*/false,/*Fly*/false,/*Swim*/false);
+					str.append("hungry: hpticks="+(hp/resp[0])+",  manaticks="+(mana/resp[1])+",  moveticks="+(move/resp[2])+"\n\r");
+					resp=recoverMath(level,stat,stat,stat-4,stat,/*Hun*/false,/*Thirs*/true,/*Fatig*/false,/*Sleep*/false,/*Sit*/false,/*Fly*/false,/*Swim*/false);
+					str.append("thirsty: hpticks="+(hp/resp[0])+",  manaticks="+(mana/resp[1])+",  moveticks="+(move/resp[2])+"\n\r");
+					resp=recoverMath(level,stat,stat,stat-4,stat,/*Hun*/false,/*Thirs*/false,/*Fatig*/true,/*Sleep*/false,/*Sit*/false,/*Fly*/false,/*Swim*/false);
+					str.append("fatigued: hpticks="+(hp/resp[0])+",  manaticks="+(mana/resp[1])+",  moveticks="+(move/resp[2])+"\n\r");
+					resp=recoverMath(level,stat,stat,stat-4,stat,/*Hun*/false,/*Thirs*/false,/*Fatig*/false,/*Sleep*/true,/*Sit*/false,/*Fly*/false,/*Swim*/false);
+					str.append("sleep: hpticks="+(hp/resp[0])+",  manaticks="+(mana/resp[1])+",  moveticks="+(move/resp[2])+"\n\r");
+					resp=recoverMath(level,stat,stat,stat-4,stat,/*Hun*/false,/*Thirs*/false,/*Fatig*/false,/*Sleep*/false,/*Sit*/true,/*Fly*/false,/*Swim*/false);
+					str.append("sitting: hpticks="+(hp/resp[0])+",  manaticks="+(mana/resp[1])+",  moveticks="+(move/resp[2])+"\n\r");
+					resp=recoverMath(level,stat,stat,stat-4,stat,/*Hun*/false,/*Thirs*/false,/*Fatig*/false,/*Sleep*/false,/*Sit*/false,/*Fly*/true,/*Swim*/false);
+					str.append("flying: hpticks="+(hp/resp[0])+",  manaticks="+(mana/resp[1])+",  moveticks="+(move/resp[2])+"\n\r");
+					resp=recoverMath(level,stat,stat,stat-4,stat,/*Hun*/false,/*Thirs*/false,/*Fatig*/false,/*Sleep*/false,/*Sit*/false,/*Fly*/false,/*Swim*/true);
+					str.append("swimming: hpticks="+(hp/resp[0])+",  manaticks="+(mana/resp[1])+",  moveticks="+(move/resp[2])+"\n\r");
+					str.append("\n\r");
+					mob.tell(str.toString());
+				}
+			}
+			else
 			if(what.equalsIgnoreCase("deconstruction"))
 			{
 				mob.tell("Building item sets...");
@@ -1536,6 +1627,4 @@ public class Test extends StdCommand
 	
 	public boolean canBeOrdered(){return false;}
 	public boolean securityCheck(MOB mob){return CMSecurity.isASysOp(mob);}
-	
-	
 }

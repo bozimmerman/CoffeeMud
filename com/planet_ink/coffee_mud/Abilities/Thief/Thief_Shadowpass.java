@@ -14,7 +14,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 import java.util.Map.Entry;
 
@@ -112,14 +111,14 @@ public class Thief_Shadowpass extends ThiefSkill
 							CMLib.commands().postLook(mob,true);
 							return beneficialVisualFizzle(mob,null,"<S-NAME> do(es) not know <S-HIS-HER> way through shadowpass.");
 						}
-						mob.curState().expendEnergy(mob,mob.maxState(),true);
+						CMLib.combat().expendEnergy(mob,true);
 					}
 					else
 					{
 						R=R.getRoomInDir(dir);
 						R.bringMobHere(mob,false);
 					}
-					mob.curState().expendEnergy(mob,mob.maxState(),true);
+					CMLib.combat().expendEnergy(mob,true);
 				}
 				CMLib.commands().postLook(mob,true);
 			}
@@ -133,8 +132,8 @@ public class Thief_Shadowpass extends ThiefSkill
 				CMLib.commands().postLook(mob,true);
 				return beneficialVisualFizzle(mob,null,"<S-NAME> lose(s) <S-HIS-HER> way through shadowpass.");
 			}
-			mob.curState().expendEnergy(mob,mob.maxState(),true);
-			mob.curState().expendEnergy(mob,mob.maxState(),true);
+			CMLib.combat().expendEnergy(mob,true);
+			CMLib.combat().expendEnergy(mob,true);
 		}
 		return success;
 	}

@@ -34,19 +34,16 @@ public class DefaultCharState implements CharState
 {
 	public String ID(){return "DefaultCharState";}
 	public String name() { return ID();}
-	protected final int[] DEFAULT_STATES={10,100,50,1000,500};
+	protected final static int[] DEFAULT_STATES={10,100,50,1000,500,0,0};
 	protected int[] states=DEFAULT_STATES.clone();
 	protected long Fatigue=0;
 
-	protected int botherCycle=0;
-	protected int ticksHungry=0;
-	protected int ticksThirsty=0;
-
-	protected int annoyanceTicker=ANNOYANCE_DEFAULT_TICKS;
-
 	public DefaultCharState(){}
+	
 	public CMObject newInstance(){try{return getClass().newInstance();}catch(Exception e){return new DefaultCharState();}}
+	
 	public void initializeClass(){}
+	
 	public void setAllValues(int def)
 	{
 		for(int i=0;i<states.length;i++)
@@ -59,9 +56,6 @@ public class DefaultCharState implements CharState
 		for(int i=0;i<DEFAULT_STATES.length;i++)
 			states[i]=DEFAULT_STATES[i];
 		Fatigue=0;
-		botherCycle=0;
-		ticksHungry=0;
-		ticksThirsty=0;
 	}
 	
 	public void copyInto(CharState intoState)
@@ -77,8 +71,16 @@ public class DefaultCharState implements CharState
 			intoState.setStat(getStatCodes()[i],getStat(getStatCodes()[i]));
 	}
 
-	public int getHitPoints(){return states[STAT_HITPOINTS];}
-	public void setHitPoints(int newVal){states[STAT_HITPOINTS]=newVal;}
+	public int getHitPoints()
+	{
+		return states[STAT_HITPOINTS];
+	}
+	
+	public void setHitPoints(int newVal)
+	{
+		states[STAT_HITPOINTS]=newVal;
+	}
+	
 	public boolean adjHitPoints(int byThisMuch, CharState max)
 	{
 		states[STAT_HITPOINTS]+=byThisMuch;
@@ -94,8 +96,17 @@ public class DefaultCharState implements CharState
 		}
 		return true;
 	}
-	public long getFatigue(){return Fatigue;}
-	public void setFatigue(long newVal){Fatigue=newVal;}
+	
+	public long getFatigue()
+	{
+		return Fatigue;
+	}
+	
+	public void setFatigue(long newVal)
+	{
+		Fatigue=newVal;
+	}
+	
 	public boolean adjFatigue(final long byThisMuch, final CharState max)
 	{
 		Fatigue+=byThisMuch;
@@ -106,8 +117,25 @@ public class DefaultCharState implements CharState
 		}
 		return true;
 	}
-	public int getHunger(){return states[STAT_HUNGER];}
-	public void setHunger(int newVal){states[STAT_HUNGER]=newVal; if(states[STAT_HUNGER]>0)ticksHungry=0;}
+	public int getHunger()
+	{
+		return states[STAT_HUNGER];
+	}
+	
+	public void setHunger(int newVal)
+	{
+		states[STAT_HUNGER]=newVal; 
+		if(states[STAT_HUNGER]>0)
+			states[STAT_TICKSHUNGRY]=0;
+	}
+	
+	public int adjTicksHungry(boolean bumpUp)
+	{
+		if(bumpUp)
+			states[STAT_TICKSHUNGRY]++;
+		return states[STAT_TICKSHUNGRY];
+	}
+	
 	public boolean adjHunger(int byThisMuch, int max)
 	{
 		if((byThisMuch>0)&&(states[STAT_HUNGER]==Integer.MAX_VALUE))
@@ -118,7 +146,8 @@ public class DefaultCharState implements CharState
 			states[STAT_HUNGER]=0;
 			return false;
 		}
-		if(states[STAT_HUNGER]>0) ticksHungry=0;
+		if(states[STAT_HUNGER]>0) 
+			states[STAT_TICKSHUNGRY]=0;
 		if(states[STAT_HUNGER]>max)
 		{
 			states[STAT_HUNGER]=max;
@@ -135,8 +164,26 @@ public class DefaultCharState implements CharState
 			return Integer.MAX_VALUE;
 		return (int)factor;
 	}
-	public int getThirst(){return states[STAT_THIRST];}
-	public void setThirst(int newVal){states[STAT_THIRST]=newVal; if(states[STAT_THIRST]>0) ticksThirsty=0;}
+	
+	public int getThirst()
+	{
+		return states[STAT_THIRST];
+	}
+	
+	public void setThirst(int newVal)
+	{
+		states[STAT_THIRST]=newVal; 
+		if(states[STAT_THIRST]>0) 
+			states[STAT_TICKSTHIRSTY]=0;
+	}
+	
+	public int adjTicksThirsty(boolean bumpUp)
+	{
+		if(bumpUp)
+			states[STAT_TICKSTHIRSTY]++;
+		return states[STAT_TICKSTHIRSTY];
+	}
+	
 	public boolean adjThirst(int byThisMuch, int max)
 	{
 		if((byThisMuch>0)&&(states[STAT_THIRST]==Integer.MAX_VALUE))
@@ -147,7 +194,8 @@ public class DefaultCharState implements CharState
 			states[STAT_THIRST]=0;
 			return false;
 		}
-		if(states[STAT_THIRST]>0) ticksThirsty=0;
+		if(states[STAT_THIRST]>0) 
+			states[STAT_TICKSTHIRSTY]=0;
 		if(states[STAT_THIRST]>max)
 		{
 			states[STAT_THIRST]=max;
@@ -155,6 +203,7 @@ public class DefaultCharState implements CharState
 		}
 		return true;
 	}
+	
 	public int maxThirst(int baseWeight)
 	{
 		long factor=baseWeight/250;
@@ -165,9 +214,21 @@ public class DefaultCharState implements CharState
 		return (int)factor;
 	}
 
-	public String getCombatStats(){return "H"+states[STAT_HITPOINTS]+":M"+states[STAT_MANA]+":V"+states[STAT_MOVE]+":F"+Fatigue;}
-	public int getMana(){return states[STAT_MANA];}
-	public void setMana(int newVal){ states[STAT_MANA]=newVal;}
+	public String getCombatStats()
+	{
+		return "H"+states[STAT_HITPOINTS]+":M"+states[STAT_MANA]+":V"+states[STAT_MOVE]+":F"+Fatigue;
+	}
+	
+	public int getMana()
+	{
+		return states[STAT_MANA];
+	}
+	
+	public void setMana(int newVal)
+	{ 
+		states[STAT_MANA]=newVal;
+	}
+	
 	public boolean adjMana(int byThisMuch, CharState max)
 	{
 		states[STAT_MANA]+=byThisMuch;
@@ -183,8 +244,17 @@ public class DefaultCharState implements CharState
 		}
 		return true;
 	}
-	public int getMovement(){return states[STAT_MOVE];}
-	public void setMovement(int newVal){ states[STAT_MOVE]=newVal;}
+	
+	public int getMovement()
+	{
+		return states[STAT_MOVE];
+	}
+	
+	public void setMovement(int newVal)
+	{ 
+		states[STAT_MOVE]=newVal;
+	}
+	
 	public boolean adjMovement(int byThisMuch, CharState max)
 	{
 		states[STAT_MOVE]+=byThisMuch;
@@ -199,166 +269,6 @@ public class DefaultCharState implements CharState
 			return false;
 		}
 		return true;
-	}
-
-	public void recoverTick(MOB mob, CharState maxState)
-	{
-		if(++botherCycle<ADJUST_FACTOR)
-			return;
-
-		botherCycle=0;
-		CharStats charStats=mob.charStats();
-		double con=charStats.getStat(CharStats.STAT_CONSTITUTION);
-		double man=((charStats.getStat(CharStats.STAT_INTELLIGENCE)+charStats.getStat(CharStats.STAT_WISDOM)));
-		double str=charStats.getStat(CharStats.STAT_STRENGTH);
-		if(getHunger()<1)
-		{
-			con=con*.50;
-			man=man*.50;
-			str=str*.50;
-		}
-		if(getThirst()<1)
-		{
-			con=con*.50;
-			man=man*.50;
-			str=str*.50;
-		}
-		if(getFatigue()>FATIGUED_MILLIS)
-			man=man*.5;
-
-		double lvl=mob.phyStats().level();
-		double lvlby1p5=CMath.div(lvl,1.5);
-		//double lvlby2=CMath.div(lvl,2.0);
-		//double lvlby3=CMath.div(lvl,3.0);
-
-		double hpGain=(con>1.0)?((con/50.0)*lvlby1p5)+(con/4.5)+2.0:1.0;
-		double manaGain=(man>2.0)?((man/90.0)*lvlby1p5)+(man/4.5)+2.0:1.0;
-		double moveGain=(str>1.0)?((str/50.0)*lvl)+(str/3.0)+5.0:1.0;
-
-		if(CMLib.flags().isSleeping(mob))
-		{
-			hpGain+=(hpGain/2.0);
-			manaGain+=(manaGain/2.0);
-			moveGain+=(moveGain/2.0);
-			if((mob.riding()!=null)&&(mob.riding() instanceof Item))
-			{
-				hpGain+=(hpGain/8.0);
-				manaGain+=(manaGain/8.0);
-				moveGain+=(moveGain/8.0);
-			}
-		}
-		else
-		if((CMLib.flags().isSitting(mob))||(mob.riding()!=null))
-		{
-			hpGain+=(hpGain/4.0);
-			manaGain+=(manaGain/4.0);
-			moveGain+=(moveGain/4.0);
-			if((mob.riding()!=null)&&(mob.riding() instanceof Item))
-			{
-				hpGain+=(hpGain/8.0);
-				manaGain+=(manaGain/8.0);
-				moveGain+=(moveGain/8.0);
-			}
-		}
-		else
-		{
-			if(CMLib.flags().isFlying(mob))
-				moveGain+=(moveGain/8.0);
-			else
-			if(CMLib.flags().isSwimming(mob))
-			{
-				hpGain-=(hpGain/2.0);
-				manaGain-=(manaGain/4.0);
-				moveGain-=(moveGain/2.0);
-			}
-		}
-
-		if((!mob.isInCombat())
-		&&(!CMLib.flags().isClimbing(mob)))
-		{
-			if((hpGain>0)&&(!CMLib.flags().isGolem(mob)))
-				adjHitPoints((int)Math.round(hpGain),maxState);
-			if(manaGain>0)
-				adjMana((int)Math.round(manaGain),maxState);
-			if(moveGain>0)
-				adjMovement((int)Math.round(moveGain),maxState);
-		}
-	}
-
-	public void expendEnergy(final MOB mob, final CharState maxState, final boolean expendMovement)
-	{
-		final Room room=mob.location();
-		if(room!=null)
-		{
-			if(expendMovement)
-			{
-				int move=-room.pointsPerMove(mob);
-				if(mob.phyStats().weight()>mob.maxCarry())
-					move+=(int)Math.round(CMath.mul(move,10.0*CMath.div(mob.phyStats().weight()-mob.maxCarry(),mob.maxCarry())));
-				adjMovement(move,maxState);
-			}
-			if((!CMLib.flags().isSleeping(mob))
-			&&(!CMSecurity.isAllowed(mob,room,CMSecurity.SecFlag.IMMORT)))
-			{
-				int factor=mob.baseWeight()/500;
-				if(factor<1) factor=1;
-				if((!CMSecurity.isDisabled(CMSecurity.DisFlag.THIRST))
-				&&(mob.maxState().getThirst() < (Integer.MAX_VALUE/2)))
-					adjThirst(-(room.thirstPerRound(mob)*factor),maxState.maxThirst(mob.baseWeight()));
-				if((!CMSecurity.isDisabled(CMSecurity.DisFlag.HUNGER))
-				&&(mob.maxState().getHunger() < (Integer.MAX_VALUE/2)))
-					adjHunger(-factor,maxState.maxHunger(mob.baseWeight()));
-			}
-			final boolean thirsty=(getThirst()<=0);
-			final boolean hungry=(getHunger()<=0);
-			if((hungry||thirsty)&&(!expendMovement))
-			{
-				if(thirsty)ticksThirsty++;
-				if(hungry)ticksHungry++;
-
-				if((ticksThirsty>DEATH_THIRST_TICKS)
-				||(ticksHungry>DEATH_HUNGER_TICKS))
-				{
-					if(thirsty)
-						mob.tell("YOU ARE DYING OF THIRST!");
-					if(hungry)
-						mob.tell("YOU ARE DYING OF HUNGER!");
-					CMLib.combat().postDeath(null,mob,null);
-				}
-				else
-				if(ticksThirsty>DEATH_THIRST_TICKS-30)
-					mob.tell("You are dehydrated, and near death.  DRINK SOMETHING!");
-				else
-				if(ticksHungry>DEATH_HUNGER_TICKS-30)
-					mob.tell("You are starved, and near death.  EAT SOMETHING!");
-				else
-				if((--annoyanceTicker)<=0)
-				{
-					annoyanceTicker=ANNOYANCE_DEFAULT_TICKS;
-
-					if(thirsty)
-					{
-						if(ticksThirsty>((DEATH_THIRST_TICKS/2)+(DEATH_THIRST_TICKS/4)))
-							mob.tell("You are dehydrated! Drink something!");
-						else
-						if(ticksThirsty>(DEATH_THIRST_TICKS/2))
-							mob.tell("You are parched! Drink something!");
-						else
-							mob.tell("You are thirsty.");
-					}
-					if(hungry)
-					{
-						if(ticksHungry>((DEATH_HUNGER_TICKS/2)+(DEATH_HUNGER_TICKS/4)))
-							mob.tell("You are starved! Eat something!");
-						else
-						if(ticksHungry>(DEATH_HUNGER_TICKS/2))
-							mob.tell("You are famished! Eat something!");
-						else
-							mob.tell("You are hungry.");
-					}
-				}
-			}
-		}
 	}
 
 	private final static String[] CODES={

@@ -14,7 +14,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /* 
@@ -116,7 +115,7 @@ public class Flower extends Vine
 	{
 		if(!super.tick(ticking,tickID)) return false;
 		if((tickID==Tickable.TICKID_MOB)&&(ticking instanceof MOB))
-			((MOB)ticking).curState().recoverTick(((MOB)ticking),((MOB)ticking).maxState());
+			CMLib.combat().recoverTick((MOB)ticking);
 		return true;
 	}
 

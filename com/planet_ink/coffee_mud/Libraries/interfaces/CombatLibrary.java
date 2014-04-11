@@ -81,6 +81,7 @@ public interface CombatLibrary extends CMLibrary
 	public boolean handleConsequences(MOB mob, MOB fighting, String[] commands, int[] lostExperience, String message);
 	public void tickCombat(MOB fighter);
 	public void recoverTick(MOB mob);
+	public void expendEnergy(final MOB mob, final boolean expendMovement);
 	
 	/**
 	 * For a valid set of killers who are benefitting from having killed the given killed mob,

@@ -37,12 +37,27 @@ public class FasterRecovery extends StdBehavior
 {
 	public String ID(){return "FasterRecovery";}
 	protected int canImproveCode(){return Behavior.CAN_ROOMS|Behavior.CAN_AREAS|Behavior.CAN_ITEMS;}
+	protected int burst=0;
+	protected int health=0;
+	protected int hits=0;
+	protected int mana=0;
+	protected int move=0;
 	
 	public String accountForYourself()
 	{ 
 		return "faster recovering";
 	}
 
+	
+	public void setParms(String parameters)
+	{
+		super.setParms(parameters);
+		burst=getVal(parameters,"BURST",0)-1;
+		health=getVal(parameters,"HEALTH",0)-1;
+		hits=getVal(parameters,"HITS",0)-1;
+		mana=getVal(parameters,"MANA",0)-1;
+		move=getVal(parameters,"MOVE",0)-1;
+	}
 	public static int getVal(String text, String key, int defaultValue)
 	{
 		text=text.toUpperCase();
@@ -81,13 +96,13 @@ public class FasterRecovery extends StdBehavior
 		for(int i2=0;i2<burst;i2++)
 			M.tick(M,Tickable.TICKID_MOB);
 		for(int i2=0;i2<health;i2++)
-			M.curState().recoverTick(M,M.maxState());
+			CMLib.combat().recoverTick(M);
 		if(hits!=0)
 		{
 			int oldMana=M.curState().getMana();
 			int oldMove=M.curState().getMovement();
-			for(int i2=0;i2<mana;i2++)
-				M.curState().recoverTick(M,M.maxState());
+			for(int i2=0;i2<hits;i2++)
+				CMLib.combat().recoverTick(M);
 			M.curState().setMana(oldMana);
 			M.curState().setMovement(oldMove);
 		}
@@ -96,7 +111,7 @@ public class FasterRecovery extends StdBehavior
 			int oldHP=M.curState().getHitPoints();
 			int oldMove=M.curState().getMovement();
 			for(int i2=0;i2<mana;i2++)
-				M.curState().recoverTick(M,M.maxState());
+				CMLib.combat().recoverTick(M);
 			M.curState().setHitPoints(oldHP);
 			M.curState().setMovement(oldMove);
 		}
@@ -105,7 +120,7 @@ public class FasterRecovery extends StdBehavior
 			int oldMana=M.curState().getMana();
 			int oldHP=M.curState().getHitPoints();
 			for(int i2=0;i2<mana;i2++)
-				M.curState().recoverTick(M,M.maxState());
+				CMLib.combat().recoverTick(M);
 			M.curState().setMana(oldMana);
 			M.curState().setHitPoints(oldHP);
 		}
@@ -131,11 +146,6 @@ public class FasterRecovery extends StdBehavior
 	}
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		int burst=getVal(getParms(),"BURST",0)-1;
-		int health=getVal(getParms(),"HEALTH",0)-1;
-		int hits=getVal(getParms(),"HITS",0)-1;
-		int mana=getVal(getParms(),"MANA",0)-1;
-		int move=getVal(getParms(),"MOVE",0)-1;
 		if(ticking instanceof Room)
 			doBe((Room)ticking,burst,health,hits,mana,move);
 		else

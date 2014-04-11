@@ -13,6 +13,7 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
@@ -867,7 +868,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 										? CMProps.getIntVar(CMProps.Int.RUNCOST)
 										: CMProps.getIntVar(CMProps.Int.WALKCOST);
 				for(int i=0;i<expense;i++)
-					mob.curState().expendEnergy(mob,mob.maxState(),true);
+					CMLib.combat().expendEnergy(mob,true);
 			}
 			if((!flee)&&(mob.curState().getMovement()<=0)&&(!gotoAllowed))
 			{

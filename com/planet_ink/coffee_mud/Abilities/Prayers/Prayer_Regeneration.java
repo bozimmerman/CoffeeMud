@@ -14,7 +14,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /* 
@@ -77,9 +76,9 @@ public class Prayer_Regeneration extends Prayer
 		&&((mob.fetchAbility(ID())==null)||proficiencyCheck(null,0,false))
 		&&(tickID==Tickable.TICKID_MOB))
 		{
-			mob.curState().recoverTick(mob,mob.maxState());
-			mob.curState().recoverTick(mob,mob.maxState());
-			mob.curState().recoverTick(mob,mob.maxState());
+			CMLib.combat().recoverTick(mob);
+			CMLib.combat().recoverTick(mob);
+			CMLib.combat().recoverTick(mob);
 		}
 		return super.tick(ticking,tickID);
 	}

@@ -165,7 +165,7 @@ public class Sinking extends StdAbility
 				&&(!mob.isMonster()))
 				{
 					isTreading=true;
-					mob.curState().expendEnergy(mob,mob.maxState(),true);
+					CMLib.combat().expendEnergy(mob,true);
 					mob.recoverPhyStats();
 					return true;
 				}
