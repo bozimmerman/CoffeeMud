@@ -1224,6 +1224,9 @@ public class CMProps extends Properties
 		if("manual".equalsIgnoreCase(s))
 			setIntVar(Int.COMBATSYSTEM,CombatLibrary.COMBAT_MANUAL);
 		else
+		if("turnbased".equalsIgnoreCase(s))
+			setIntVar(Int.COMBATSYSTEM,CombatLibrary.COMBAT_TURNBASED);
+		else
 			setIntVar(Int.COMBATSYSTEM,CombatLibrary.COMBAT_DEFAULT);
 		s=getStr("EQVIEW");
 		if("paragraph".equalsIgnoreCase(s))

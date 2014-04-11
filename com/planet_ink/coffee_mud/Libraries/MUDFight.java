@@ -1674,11 +1674,11 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		}
 	}
 
-	protected void subtickBeforeAttack(MOB fighter)
+	protected void subtickBeforeAttack(final MOB fighter, final int combatSystem)
 	{
 		// combat que system eats up standard commands
 		// before using any attacks
-		while((CMProps.getIntVar(CMProps.Int.COMBATSYSTEM)==CombatLibrary.COMBAT_QUEUE)
+		while(((combatSystem==CombatLibrary.COMBAT_QUEUE)||(combatSystem==CombatLibrary.COMBAT_TURNBASED))
 		&&(!fighter.amDead())
 		&&(fighter.dequeCommand()))
 			{}
@@ -1745,22 +1745,22 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 			weapon=fighter.fetchWieldedItem();
 		}
 
-
-		subtickBeforeAttack(fighter);
-		int combatSystem=CMProps.getIntVar(CMProps.Int.COMBATSYSTEM);
-		int saveAction=(combatSystem!=CombatLibrary.COMBAT_DEFAULT)?0:1;
+		final int combatSystem=CMProps.getIntVar(CMProps.Int.COMBATSYSTEM);
+		
+		subtickBeforeAttack(fighter, combatSystem);
 
 		int folrange=(CMath.bset(fighter.getBitmap(),MOB.ATT_AUTOMELEE)
 						&&(fighter.amFollowing()!=null)
 						&&(fighter.amFollowing().getVictim()==fighter.getVictim())
 						&&(fighter.amFollowing().rangeToTarget()>=0)
 						&&(fighter.amFollowing().fetchFollowerOrder(fighter)>=0))?
-								fighter.amFollowing().fetchFollowerOrder(fighter)+fighter.amFollowing().rangeToTarget():-1;
+							fighter.amFollowing().fetchFollowerOrder(fighter)+fighter.amFollowing().rangeToTarget():-1;
 		if(CMLib.flags().aliveAwakeMobile(fighter,true))
 		{
-			if((combatSystem!=CombatLibrary.COMBAT_MANUAL)
+			if(((combatSystem!=CombatLibrary.COMBAT_MANUAL)&&(combatSystem!=CombatLibrary.COMBAT_TURNBASED))
 			||(fighter.isMonster()))
 			{
+				final int saveAction=(combatSystem!=CombatLibrary.COMBAT_DEFAULT)?0:1;
 				int numAttacks=(int)Math.round(Math.floor(fighter.actions()))-saveAction;
 				if((combatSystem==CombatLibrary.COMBAT_DEFAULT)
 				&&(numAttacks>(int)Math.round(Math.floor(fighter.phyStats().speed()+0.9))))
@@ -1779,11 +1779,10 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 					else
 						break;
 				}
+				if(CMLib.dice().rollPercentage()>(fighter.charStats().getStat(CharStats.STAT_CONSTITUTION)*4))
+					fighter.curState().adjMovement(-1,fighter.maxState());
 			}
-			if(CMLib.dice().rollPercentage()>(fighter.charStats().getStat(CharStats.STAT_CONSTITUTION)*4))
-				fighter.curState().adjMovement(-1,fighter.maxState());
 		}
-
 		subtickAfterAttack(fighter);
 	}
 

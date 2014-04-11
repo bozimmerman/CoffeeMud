@@ -35,6 +35,7 @@ public interface CombatLibrary extends CMLibrary
 	public static final int COMBAT_DEFAULT=0;
 	public static final int COMBAT_QUEUE=1;
 	public static final int COMBAT_MANUAL=2;
+	public static final int COMBAT_TURNBASED=3;
 	
 	public Set<MOB> allPossibleCombatants(MOB mob, boolean beRuthless);
 	public Set<MOB> properTargets(Ability A, MOB caster, boolean beRuthless);
