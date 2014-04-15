@@ -110,6 +110,7 @@ public class StdMOB implements MOB
 	protected MOB				soulMate		= null;
 	protected int				atRange			= -1;
 	protected long				peaceTime		= 0;
+	protected volatile long		lastAttackTick	= 0;
 	protected boolean			kickFlag		= false;
 	protected boolean			imMobile		= false;
 	protected MOB				me 				= this;
@@ -175,6 +176,11 @@ public class StdMOB implements MOB
 		return CMLib.leveler().getLevelExperience(basePhyStats().level());
 	}
 
+	public long getLastAttackTick()
+	{
+		return lastAttackTick;
+	}
+	
 	public int getExpPrevLevel() 
 	{
 		if (basePhyStats().level() <= 1)
@@ -3044,6 +3050,14 @@ public class StdMOB implements MOB
 						lastTickedTime++;
 				}
 
+				if((CMProps.getIntVar(CMProps.Int.COMBATSYSTEM) == CombatLibrary.COMBAT_TURNBASED)
+				&&(isInCombat())
+				&&(lastAttackTick >= victim.getLastAttackTick()))
+				{
+					tickStatus = Tickable.STATUS_NOT;
+					return !removeFromGame;
+				}
+					
 				tickStatus = Tickable.STATUS_ALIVE;
 				if ((--recoverTickCter) <= 0)
 				{
