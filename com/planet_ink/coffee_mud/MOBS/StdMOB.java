@@ -333,7 +333,8 @@ public class StdMOB implements MOB
 		return bob;
 	}
 
-	public void initializeClass() {
+	public void initializeClass() 
+	{
 	}
 
 	public CMObject newInstance() 
@@ -349,35 +350,38 @@ public class StdMOB implements MOB
 		return new StdMOB();
 	}
 
-	public Room getStartRoom() {
+	public Room getStartRoom() 
+	{
 		return CMLib.map().getRoom(possStartRoom);
 	}
 
-	public void setStartRoom(Room room) {
+	public void setStartRoom(Room room) 
+	{
 		possStartRoom = room;
 	}
 
-	public long peaceTime() {
-		return peaceTime;
-	}
-
-	public void setDatabaseID(String id) {
+	public void setDatabaseID(String id) 
+	{
 		databaseID = id;
 	}
 
-	public boolean canSaveDatabaseID() {
+	public boolean canSaveDatabaseID() 
+	{
 		return true;
 	}
 
-	public String databaseID() {
+	public String databaseID() 
+	{
 		return databaseID;
 	}
 
-	public String Name() {
+	public String Name() 
+	{
 		return username;
 	}
 
-	public void setName(String newName) {
+	public void setName(String newName) 
+	{
 		username = newName;
 	}
 
@@ -435,18 +439,21 @@ public class StdMOB implements MOB
 			cachedImageName = null;
 	}
 
-	public long expirationDate() {
+	public long expirationDate() 
+	{
 		return expirationDate;
 	}
 
-	public void setExpirationDate(long time) {
+	public void setExpirationDate(long time) 
+	{
 		expirationDate = time;
 	}
 
 	// protected void finalize() {
 	// CMClass.unbumpCounter(this,CMClass.CMObjectType.MOB); }//removed for mem
 	// & perf
-	public final boolean amDestroyed() {
+	public final boolean amDestroyed() 
+	{
 		return this.amDestroyed;
 	}
 
@@ -592,15 +599,18 @@ public class StdMOB implements MOB
 		}
 	}
 
-	public boolean isGeneric() {
+	public boolean isGeneric() 
+	{
 		return false;
 	}
 
-	public PhyStats phyStats() {
+	public PhyStats phyStats() 
+	{
 		return phyStats;
 	}
 
-	public PhyStats basePhyStats() {
+	public PhyStats basePhyStats() 
+	{
 		return basePhyStats;
 	}
 
@@ -695,11 +705,13 @@ public class StdMOB implements MOB
 		return total;
 	}
 
-	public CharStats baseCharStats() {
+	public CharStats baseCharStats() 
+	{
 		return baseCharStats;
 	}
 
-	public CharStats charStats() {
+	public CharStats charStats() 
+	{
 		return charStats;
 	}
 
@@ -809,7 +821,8 @@ public class StdMOB implements MOB
 		return playerStats;
 	}
 
-	public void setPlayerStats(PlayerStats newStats) {
+	public void setPlayerStats(PlayerStats newStats) 
+	{
 		playerStats = newStats;
 	}
 
@@ -855,11 +868,13 @@ public class StdMOB implements MOB
 			location().affectCharState(this, maxState);
 	}
 
-	public boolean amDead() {
+	public boolean amDead() 
+	{
 		return amDead || removeFromGame;
 	}
 
-	public boolean amActive() {
+	public boolean amActive() 
+	{
 		return !removeFromGame;
 	}
 
@@ -1231,19 +1246,23 @@ public class StdMOB implements MOB
 		return true;
 	}
 
-	public void setAtRange(int newRange) {
+	public void setAtRange(int newRange) 
+	{
 		atRange = newRange;
 	}
 
-	public int rangeToTarget() {
+	public int rangeToTarget() 
+	{
 		return atRange;
 	}
 
-	public int maxRange() {
+	public int maxRange() 
+	{
 		return maxRange(null);
 	}
 
-	public int minRange() {
+	public int minRange() 
+	{
 		return maxRange(null);
 	}
 
@@ -1404,7 +1423,8 @@ public class StdMOB implements MOB
 			CMLib.players().changePlayersLocation(this,newRoom);
 	}
 
-	public Rideable riding() {
+	public Rideable riding() 
+	{
 		return riding;
 	}
 
@@ -1420,7 +1440,8 @@ public class StdMOB implements MOB
 			ride.addRider(this);
 	}
 
-	public final Session session() {
+	public final Session session() 
+	{
 		return mySession == null ? null : mySession.isFake() ? null : mySession;
 	}
 
@@ -1565,11 +1586,13 @@ public class StdMOB implements MOB
 		return displayText;
 	}
 
-	public String displayText() {
+	public String displayText() 
+	{
 		return displayText;
 	}
 
-	public void setDisplayText(String newDisplayText) {
+	public void setDisplayText(String newDisplayText) 
+	{
 		displayText = newDisplayText;
 	}
 
@@ -1591,7 +1614,11 @@ public class StdMOB implements MOB
 		else
 			return (String) description;
 	}
-	public String description(MOB viewerMob) { return description(); }
+	
+	public String description(MOB viewerMob) 
+	{ 
+		return description(); 
+	}
 
 	public void setDescription(String newDescription) 
 	{
@@ -1648,19 +1675,23 @@ public class StdMOB implements MOB
 		return mxp + CMLib.combat().standardMobCondition(viewer, this) + "^</HealthText^>";
 	}
 
-	public double actions() {
+	public double actions() 
+	{
 		return freeActions;
 	}
 
-	public void setActions(double remain) {
+	public void setActions(double remain) 
+	{
 		freeActions = remain;
 	}
 
-	public int commandQueSize() {
+	public int commandQueSize() 
+	{
 		return commandQue.size();
 	}
 
-	public void clearCommandQueue() {
+	public void clearCommandQueue() 
+	{
 		commandQue.clear();
 	}
 
@@ -2635,7 +2666,8 @@ public class StdMOB implements MOB
 			S.stdPrintln(source, target, tool, msg);
 	}
 
-	public void tell(final String msg) {
+	public void tell(final String msg) 
+	{
 		tell(this, this, null, msg);
 	}
 
@@ -2940,10 +2972,12 @@ public class StdMOB implements MOB
 		}
 	}
 
-	public void affectCharStats(MOB affectedMob, CharStats affectableStats) {
+	public void affectCharStats(MOB affectedMob, CharStats affectableStats) 
+	{
 	}
 
-	public long getTickStatus() {
+	public long getTickStatus() 
+	{
 		return tickStatus;
 	}
 
@@ -3197,10 +3231,13 @@ public class StdMOB implements MOB
 		return !removeFromGame;
 	}
 
-	public boolean isPlayer() {
+	public boolean isPlayer() 
+	{
 		return playerStats != null;
 	}
-	public boolean isMonster() {
+	
+	public boolean isMonster() 
+	{
 		return (mySession == null) || (mySession.isFake());
 	}
 
@@ -3216,7 +3253,8 @@ public class StdMOB implements MOB
 		return false;
 	}
 
-	public int compareTo(CMObject o) {
+	public int compareTo(CMObject o) 
+	{
 		return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));
 	}
 
@@ -3230,7 +3268,8 @@ public class StdMOB implements MOB
 		}
 	}
 
-	public void addItem(Item item, ItemPossessor.Expire expire) {
+	public void addItem(Item item, ItemPossessor.Expire expire) 
+	{
 		addItem(item);
 	}
 
@@ -3257,15 +3296,18 @@ public class StdMOB implements MOB
 		inventory.clear();
 	}
 
-	public int numItems() {
+	public int numItems() 
+	{
 		return inventory.size();
 	}
 
-	public Enumeration<Item> items() {
+	public Enumeration<Item> items() 
+	{
 		return inventory.elements();
 	}
 
-	public boolean isContent(Item I) {
+	public boolean isContent(Item I) 
+	{
 		return inventory.contains(I);
 	}
 
@@ -3388,11 +3430,13 @@ public class StdMOB implements MOB
 		}
 	}
 
-	public int numFollowers() {
+	public int numFollowers() 
+	{
 		return (followers == null) ? 0 : followers.size();
 	}
 
-	public Enumeration<Follower> followers() {
+	public Enumeration<Follower> followers() 
+	{
 		return (followers == null) ? EmptyEnumeration.INSTANCE : followers.elements();
 	}
 
@@ -3557,15 +3601,18 @@ public class StdMOB implements MOB
 
 	}
 
-	public void setSavable(boolean truefalse) {
+	public void setSavable(boolean truefalse) 
+	{
 		CMLib.flags().setSavable(this, truefalse);
 	}
 
-	public MOB soulMate() {
+	public MOB soulMate() 
+	{
 		return soulMate;
 	}
 
-	public void setSoulMate(MOB mob) {
+	public void setSoulMate(MOB mob) 
+	{
 		soulMate = mob;
 	}
 
@@ -3578,20 +3625,24 @@ public class StdMOB implements MOB
 		abilitys.addElement(to);
 	}
 
-	public void delAbility(Ability to) {
+	public void delAbility(Ability to) 
+	{
 		abilitys.removeElement(to);
 	}
 
-	public void delAllAbilities() {
+	public void delAllAbilities() 
+	{
 		abilitys.clear();
 		abilityUseCache.clear();
 	}
 
-	public int numAbilities() {
+	public int numAbilities() 
+	{
 		return abilitys.size();
 	}
 
-	public Enumeration<Ability> abilities() {
+	public Enumeration<Ability> abilities() 
+	{
 		return abilitys.elements();
 	}
 
@@ -3713,7 +3764,10 @@ public class StdMOB implements MOB
 		return clanAffects;
 	}
 	@Override
-	public Iterable<Pair<Clan, Integer>> clans() { return this.clans; }
+	public Iterable<Pair<Clan, Integer>> clans() 
+	{ 
+		return this.clans; 
+	}
 
 	@Override
 	public Pair<Clan, Integer> getClanRole(String clanID) 
@@ -3908,19 +3962,23 @@ public class StdMOB implements MOB
 		behaviors.addElement(to);
 	}
 
-	public void delBehavior(Behavior to) {
+	public void delBehavior(Behavior to) 
+	{
 		behaviors.removeElement(to);
 	}
 
-	public void delAllBehaviors() {
+	public void delAllBehaviors() 
+	{
 		behaviors.clear();
 	}
 
-	public int numBehaviors() {
+	public int numBehaviors() 
+	{
 		return behaviors.size();
 	}
 
-	public Enumeration<Behavior> behaviors() {
+	public Enumeration<Behavior> behaviors() 
+	{
 		return behaviors.elements();
 	}
 
@@ -4065,15 +4123,18 @@ public class StdMOB implements MOB
 		scripts.removeElement(S);
 	}
 
-	public void delAllScripts() {
+	public void delAllScripts() 
+	{
 		scripts.clear();
 	}
 
-	public int numScripts() {
+	public int numScripts() 
+	{
 		return (scripts == null) ? 0 : scripts.size();
 	}
 
-	public Enumeration<ScriptingEngine> scripts() {
+	public Enumeration<ScriptingEngine> scripts() 
+	{
 		return (scripts == null) ? EmptyEnumeration.INSTANCE : scripts.elements();
 	}
 
@@ -4179,7 +4240,8 @@ public class StdMOB implements MOB
 		return data.value();
 	}
 
-	public void removeFaction(String which) {
+	public void removeFaction(String which) 
+	{
 		factions.remove(which.toUpperCase());
 	}
 
@@ -4435,7 +4497,8 @@ public class StdMOB implements MOB
 		return false;
 	}
 
-	public void moveItemTo(Item container, ItemPossessor.Expire expire, Move... moveFlags) {
+	public void moveItemTo(Item container, ItemPossessor.Expire expire, Move... moveFlags) 
+	{
 		moveItemTo(container);
 	}
 
@@ -4539,15 +4602,18 @@ public class StdMOB implements MOB
 		}
 	}
 
-	public int getSaveStatIndex() {
+	public int getSaveStatIndex() 
+	{
 		return (xtraValues == null) ? getStatCodes().length : getStatCodes().length - xtraValues.length;
 	}
 
-	public String[] getStatCodes() {
+	public String[] getStatCodes() 
+	{
 		return CODES;
 	}
 
-	public boolean isStat(String code) {
+	public boolean isStat(String code) 
+	{
 		return CMParms.indexOf(getStatCodes(), code.toUpperCase().trim()) >= 0;
 	}
 
