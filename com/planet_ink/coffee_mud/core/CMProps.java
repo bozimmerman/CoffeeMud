@@ -41,7 +41,8 @@ import java.io.InputStreamReader;
 public class CMProps extends Properties
 {
 	private static final long serialVersionUID = -6592429720705457521L;
-	private static final CMProps[] props=new CMProps[256];
+	private static final CMProps[] props	   = new CMProps[256];
+	
 	public CMProps()
 	{
 		super();

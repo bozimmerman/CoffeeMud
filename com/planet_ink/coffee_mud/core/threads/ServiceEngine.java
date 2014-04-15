@@ -52,6 +52,8 @@ public class ServiceEngine implements ThreadEngine
 	private boolean 					 isSuspended=false;
 	private int 						 max_objects_per_thread=0;
 	private CMThreadPoolExecutor[]		 threadPools=new CMThreadPoolExecutor[256];
+	private volatile long				 globalTickID=0;
+	private final long 					 globalStartTime=System.currentTimeMillis();
 	
 	public String ID(){return "ServiceEngine";}
 	public String name() { return ID();}
@@ -163,6 +165,11 @@ public class ServiceEngine implements ThreadEngine
 		if(max_objects_per_thread>0) return max_objects_per_thread; 
 		max_objects_per_thread=0;
 		return 128;
+	}
+	
+	public long getTicksEllapsedSinceStartup()
+	{
+		return globalTickID;
 	}
 	
 	protected void delTickGroup(TickableGroup tock)
@@ -1205,6 +1212,7 @@ public class ServiceEngine implements ThreadEngine
 				while(isAllSuspended() && (!CMProps.getBoolVar(CMProps.Bool.MUDSHUTTINGDOWN)))
 					Thread.sleep(2000);
 				final long now=System.currentTimeMillis();
+				globalTickID = (now - globalStartTime) / CMProps.getTickMillis();
 				long nextWake=System.currentTimeMillis() + 3600000;
 				synchronized(allTicks) 
 				{

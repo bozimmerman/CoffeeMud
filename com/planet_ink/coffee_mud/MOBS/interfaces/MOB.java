@@ -78,7 +78,7 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 	public int rangeToTarget();
 	public boolean mayIFight(MOB mob);
 	public boolean mayPhysicallyAttack(MOB mob);
-	public long peaceTime();
+	public long getLastAttackTick();
 	
 	/** Primary mob communication */
 	public void tell(MOB source, Environmental target, Environmental tool, String msg);
