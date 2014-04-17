@@ -611,7 +611,8 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	{
 		if((mob!=null)
 		&&(!mob.isInCombat())
-		&&(!CMLib.flags().isClimbing(mob)))
+		&&(!CMLib.flags().isClimbing(mob))
+		&&(CMProps.getBoolVar(CMProps.Bool.MUDSTARTED)))
 		{
 			final CharStats charStats=mob.charStats();
 			final CharState curState=mob.curState();
