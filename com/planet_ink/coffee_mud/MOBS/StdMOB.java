@@ -3050,6 +3050,7 @@ public class StdMOB implements MOB
 						lastTickedTime++;
 				}
 
+				/*
 				if((CMProps.getIntVar(CMProps.Int.COMBATSYSTEM) == CombatLibrary.COMBAT_TURNBASED) && isInCombat())
 				{
 					if((actions() < 1.0)
@@ -3060,6 +3061,7 @@ public class StdMOB implements MOB
 						return !removeFromGame;
 					}
 				}
+				*/
 					
 				tickStatus = Tickable.STATUS_ALIVE;
 				if ((--recoverTickCter) <= 0)
