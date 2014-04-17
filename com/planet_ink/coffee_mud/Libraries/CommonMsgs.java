@@ -708,11 +708,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		}
 	}
 
-	protected String relativeCharStatTest(CharStats C,
-										  MOB mob,
-										  String weakword,
-										  String strongword,
-										  int stat)
+	protected String relativeCharStatTest(CharStats C, MOB mob, String weakword, String strongword, int stat)
 	{
 		double d=CMath.div(C.getStat(stat),mob.charStats().getStat(stat));
 		String prepend="";
