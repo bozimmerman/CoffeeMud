@@ -3050,12 +3050,15 @@ public class StdMOB implements MOB
 						lastTickedTime++;
 				}
 
-				if((CMProps.getIntVar(CMProps.Int.COMBATSYSTEM) == CombatLibrary.COMBAT_TURNBASED)
-				&&(isInCombat())
-				&&(lastAttackTick >= victim.getLastAttackTick()))
+				if((CMProps.getIntVar(CMProps.Int.COMBATSYSTEM) == CombatLibrary.COMBAT_TURNBASED) && isInCombat())
 				{
-					tickStatus = Tickable.STATUS_NOT;
-					return !removeFromGame;
+					if((actions() < 1.0)
+					&&(lastAttackTick >= victim.getLastAttackTick())
+					&&(victim.actions() >= 1.0))
+					{
+						tickStatus = Tickable.STATUS_NOT;
+						return !removeFromGame;
+					}
 				}
 					
 				tickStatus = Tickable.STATUS_ALIVE;
