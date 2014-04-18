@@ -22,6 +22,7 @@ import org.mozilla.javascript.*;
 
 import java.util.*;
 import java.util.Map.Entry;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -80,6 +81,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 	protected String				scriptKey		 = null;
 	protected boolean				debugBadScripts	 = false;
 	protected List<ScriptableResponse>que			 = new Vector<ScriptableResponse>();
+	protected final AtomicInteger	recurseCounter	 = new AtomicInteger();
 
 	public DefaultScriptingEngine()
 	{
@@ -9197,9 +9199,12 @@ public class DefaultScriptingEngine implements ScriptingEngine
 
 	public boolean okMessage(Environmental host, CMMsg msg)
 	{
-		if((!(host instanceof PhysicalAgent))||(msg.source()==null))
+		if((!(host instanceof PhysicalAgent))||(msg.source()==null)||(recurseCounter.get()>2))
 			return true;
 
+		try { // atomic recurse counter
+		recurseCounter.addAndGet(1);
+		
 		PhysicalAgent affecting = (PhysicalAgent)host;
 
 		List<DVector> scripts=getScripts();
@@ -9292,10 +9297,12 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					return false;
 			}
 		}
+		} finally { recurseCounter.addAndGet(-1); }
 		return true;
 	}
 	
-	protected String standardTriggerCheck(DVector script, String[] t, Environmental E) {
+	protected String standardTriggerCheck(DVector script, String[] t, Environmental E) 
+	{
 		if(E==null) return null;
 		if(t==null) t=parseBits(script,0,"CT");
 		String NAME=E.Name().toUpperCase();
@@ -9320,9 +9327,12 @@ public class DefaultScriptingEngine implements ScriptingEngine
 
 	public void executeMsg(Environmental host, CMMsg msg)
 	{
-		if((!(host instanceof PhysicalAgent))||(msg.source()==null))
+		if((!(host instanceof PhysicalAgent))||(msg.source()==null)||(recurseCounter.get() > 2))
 			return;
 
+		try { // atomic recurse counter
+		recurseCounter.addAndGet(1);
+		
 		PhysicalAgent affecting = (PhysicalAgent)host;
 		
 		MOB monster=getMakeMOB(affecting);
@@ -10143,6 +10153,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				break;
 			}
 		}
+		} finally { recurseCounter.addAndGet(-1); }
 	}
 
 	protected int getTriggerCode(String trigger, String[] ttrigger)
