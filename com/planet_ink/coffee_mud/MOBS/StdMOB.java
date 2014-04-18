@@ -46,7 +46,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 @SuppressWarnings({ "unchecked", "rawtypes" })
 public class StdMOB implements MOB
 {
-	public String ID() 
+	public String ID()
 	{
 		return "StdMOB";
 	}
@@ -3066,6 +3066,13 @@ public class StdMOB implements MOB
 							lastAttackTick=CMLib.threads().getTicksEllapsedSinceStartup();
 							setActions(actions() + (CMLib.flags().isSitting(this) ? phyStats().speed() / 2.0 : phyStats().speed()));
 						}
+					}
+					else
+					if((CMLib.threads().getTicksEllapsedSinceStartup() - lastAttackTick) >= 30)
+					{
+						setActions(0.0);
+						tickStatus = Tickable.STATUS_NOT;
+						return !removeFromGame;
 					}
 				}
 				else
