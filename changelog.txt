@@ -10,7 +10,7 @@
    8. Players and Accounts now track PVPs, Rooms explored, mins played, xp & qp gained, and quests completed. Main web page or TOP command to see winners.
    9. Embedded MiniWebServer upgraded to 2.1
   10. Regen rate formulas are now in INI/control panel. New formula allows faster recovery, esp at higher levels.
-  11. New combat system: TURNBASED -- rather simple and beta-y for now.
+  11. New combat system: TURNBASED -- rather simple and beta-y for now.  Comments/Suggestions welcome.
   12. PROMPT command now allows you to include current and max action points per tick %p and %P
    *. Name generator, finally
    *. Fix siplet again -- maybe try applet?
