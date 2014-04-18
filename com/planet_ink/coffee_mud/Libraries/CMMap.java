@@ -1648,7 +1648,9 @@ public class CMMap extends StdLibrary implements WorldMap
 	}
 	
 	public List<Room> findWorldRoomsLiberally(MOB mob, String cmd, String srchWhatAERIPMVK, int timePct, long maxMillis)
-	{ return findWorldRoomsLiberally(mob,cmd,srchWhatAERIPMVK,null,false,timePct,maxMillis); }
+	{ 
+		return findWorldRoomsLiberally(mob,cmd,srchWhatAERIPMVK,null,false,timePct,maxMillis); 
+	}
 	
 	public Room findAreaRoomLiberally(MOB mob, Area A,String cmd, String srchWhatAERIPMVK, int timePct)
 	{
@@ -1658,7 +1660,9 @@ public class CMMap extends StdLibrary implements WorldMap
 	}
 	
 	public List<Room> findAreaRoomsLiberally(MOB mob, Area A,String cmd, String srchWhatAERIPMVK, int timePct)
-	{ return findWorldRoomsLiberally(mob,cmd,srchWhatAERIPMVK,A,false,timePct,120); }
+	{ 
+		return findWorldRoomsLiberally(mob,cmd,srchWhatAERIPMVK,A,false,timePct,120); 
+	}
 	
 	protected Room addWorldRoomsLiberally(List<Room> rooms, List<? extends Environmental> choicesV)
 	{
@@ -1833,7 +1837,7 @@ public class CMMap extends StdLibrary implements WorldMap
 		// far too much of the world is dynamic, and far too many searches
 		// are looking for dynamic things.  the cached results would be useless
 		// as soon as they are put away -- that's why the limited caches time them out!
-		final boolean disableCaching=CMProps.getBoolVar(CMProps.Bool.MAPFINDSNOCACHE);
+		final boolean disableCaching= CMProps.getBoolVar(CMProps.Bool.MAPFINDSNOCACHE);
 		
 		final Vector<Room> rooms=(returnFirst)?null:new Vector<Room>();
 		
