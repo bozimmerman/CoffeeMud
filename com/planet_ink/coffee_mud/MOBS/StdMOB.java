@@ -3050,20 +3050,31 @@ public class StdMOB implements MOB
 						lastTickedTime++;
 				}
 
-				/*
+				tickStatus = Tickable.STATUS_ALIVE;
+
 				if((CMProps.getIntVar(CMProps.Int.COMBATSYSTEM) == CombatLibrary.COMBAT_TURNBASED) && isInCombat())
 				{
-					if((actions() < 1.0)
-					&&(lastAttackTick >= victim.getLastAttackTick())
-					&&(victim.actions() >= 1.0))
+					if(actions() < 1.0)
 					{
-						tickStatus = Tickable.STATUS_NOT;
-						return !removeFromGame;
+						if((lastAttackTick >= victim.getLastAttackTick()) && (victim.actions() >= 1.0))
+						{
+							tickStatus = Tickable.STATUS_NOT;
+							return !removeFromGame;
+						}
+						else
+						{
+							lastAttackTick=CMLib.threads().getTicksEllapsedSinceStartup();
+							setActions(actions() + (CMLib.flags().isSitting(this) ? phyStats().speed() / 2.0 : phyStats().speed()));
+						}
 					}
 				}
-				*/
+				else
+				{
+					if (commandQueSize() == 0)
+						setActions(actions() - Math.floor(actions()));
+					setActions(actions() + (CMLib.flags().isSitting(this) ? phyStats().speed() / 2.0 : phyStats().speed()));
+				}
 					
-				tickStatus = Tickable.STATUS_ALIVE;
 				if ((--recoverTickCter) <= 0)
 				{
 					CMLib.combat().recoverTick(this);
@@ -3097,10 +3108,6 @@ public class StdMOB implements MOB
 						}
 					}
 				}
-
-				if (commandQueSize() == 0)
-					setActions(actions() - Math.floor(actions()));
-				setActions(actions() + (CMLib.flags().isSitting(this) ? phyStats().speed() / 2.0 : phyStats().speed()));
 
 				if (isInCombat())
 				{

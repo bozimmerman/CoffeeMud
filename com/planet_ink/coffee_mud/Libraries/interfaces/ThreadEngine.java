@@ -56,4 +56,5 @@ public interface ThreadEngine extends CMLibrary, Runnable
 	public void executeRunnable(Runnable R);
 	public void executeRunnable(String threadGroupName, Runnable R);
 	public void debugDumpStack(final String ID, Thread theThread);
+	public long getTicksEllapsedSinceStartup();
 }

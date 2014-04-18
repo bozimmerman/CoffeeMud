@@ -1223,12 +1223,22 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 						  }
 				case 'm': { buf.append("^<Mana^>"+mob.curState().getMana()+"^</Mana^>"); c++; break;}
 				case 'M': { buf.append("^<MaxMana^>"+mob.maxState().getMana()+"^</MaxMana^>"); c++; break;}
+				case 'p': { buf.append("^<Point^>"+Math.round(Math.floor(mob.actions()))+"^</Point^>"); c++; break;}
+				case 'P': { buf.append("^<MaxPoint^>"+Math.round(Math.floor(mob.phyStats().speed()))+"^</MaxPoint^>"); c++; break;}
 				case 'r': {   if(mob.location()!=null)
 							  	buf.append(mob.location().displayText(mob));
 							  c++; break; }
 				case 'R': {   if((mob.location()!=null)&&CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.SYSMSGS))
 							  buf.append(mob.location().roomID());
 							  c++; break; }
+				case 't': { 	 if(mob.location()!=null)
+            					  buf.append(CMStrings.capitalizeAndLower(mob.location().getArea().getTimeObj().getTODCode().getDesc().toLowerCase()));
+            				  c++; break;
+            			  }
+            	case 'T': { 	 if(mob.location()!=null)
+            					  buf.append(mob.location().getArea().getTimeObj().getHourOfDay());
+            				  c++; break;
+            			  }
 				case 'v': { buf.append("^<Move^>"+mob.curState().getMovement()+"^</Move^>"); c++; break;}
 				case 'V': { buf.append("^<MaxMove^>"+mob.maxState().getMovement()+"^</MaxMove^>"); c++; break;}
 				case 'w': { buf.append(mob.phyStats().weight()); c++; break;}
@@ -1244,14 +1254,6 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 				case 'z': {   if(mob.location()!=null)
 								  buf.append(mob.location().getArea().name());
 							  c++; break; }
-				case 't': { 	 if(mob.location()!=null)
-								  buf.append(CMStrings.capitalizeAndLower(mob.location().getArea().getTimeObj().getTODCode().getDesc().toLowerCase()));
-							  c++; break;
-						  }
-				case 'T': { 	 if(mob.location()!=null)
-								  buf.append(mob.location().getArea().getTimeObj().getHourOfDay());
-							  c++; break;
-						  }
 				case '@': { 	 if(mob.location()!=null)
 								  buf.append(mob.location().getArea().getClimateObj().weatherDescription(mob.location()));
 							  c++; break;
