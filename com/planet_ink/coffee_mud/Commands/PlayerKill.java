@@ -36,7 +36,7 @@ public class PlayerKill extends StdCommand
 {
 	public PlayerKill(){}
 
-	private final String[] access={"PLAYERKILL","PKILL"};
+	private final String[] access={"PLAYERKILL","PKILL","PVP"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
