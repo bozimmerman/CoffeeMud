@@ -3058,14 +3058,14 @@ public class StdMOB implements MOB
 					{
 						if((lastAttackTick >= victim.getLastAttackTick()) && (victim.actions() >= 1.0))
 						{
-							if((CMLib.threads().getTicksEllapsedSinceStartup() - lastAttackTick) >= 30)
-								victim.setActions(0.0);
+							//if((CMLib.threads().getTicksEllapsedSinceStartup() - lastAttackTick) >= 30)
+							//	victim.setActions(0.0);
 							tickStatus = Tickable.STATUS_NOT;
 							return !removeFromGame;
 						}
 						else
 						{
-							lastAttackTick=CMLib.threads().getTicksEllapsedSinceStartup();
+							lastAttackTick=System.currentTimeMillis();
 							setActions(actions() + (CMLib.flags().isSitting(this) ? phyStats().speed() / 2.0 : phyStats().speed()));
 						}
 					}
