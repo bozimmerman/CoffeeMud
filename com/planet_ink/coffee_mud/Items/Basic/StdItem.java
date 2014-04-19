@@ -14,7 +14,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 
@@ -1636,6 +1635,7 @@ public class StdItem implements Item
 		case 4: setMiscText(val); break;
 		}
 	}
+	public String _(final String str, final String ... xs) { return CMLib.lang().fullSessionTranslation(str, xs); }
 	public int getSaveStatIndex(){return (xtraValues==null)?getStatCodes().length:getStatCodes().length-xtraValues.length;}
 	public String[] getStatCodes(){return CODES;}
 	public boolean isStat(String code){ return CMParms.indexOf(getStatCodes(),code.toUpperCase().trim())>=0;}

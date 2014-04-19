@@ -87,6 +87,7 @@ public class DBInterface implements DatabaseEngine
 	public void initializeClass(){}
 	public CMObject copyOf(){try{return (CMObject)this.clone();}catch(Exception e){return newInstance();}}
 	public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
+	public String _(final String str, final String ... xs) { return CMLib.lang().fullSessionTranslation(str, xs); }
 	public DBConnector getConnector(){ return DB;}
 	
 	public boolean activate(){ return true;}

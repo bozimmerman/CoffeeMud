@@ -17,7 +17,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.lang.ref.WeakReference;
 import java.util.*;
 
@@ -1287,6 +1286,7 @@ public class StdSpaceShip implements Area, SpaceShip
 	public String finalBudget(){ return "";}
 	public String finalDevalueRate(){ return "";}
    
+	public String _(final String str, final String ... xs) { return CMLib.lang().fullSessionTranslation(str, xs); }
 	public int getSaveStatIndex(){return getStatCodes().length;}
 	private static final String[] CODES={"CLASS","CLIMATE","DESCRIPTION","TEXT","THEME","BLURBS","OMLCOEFF","RADIUS"};
 	public String[] getStatCodes(){return CODES;}

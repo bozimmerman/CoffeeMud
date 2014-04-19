@@ -868,6 +868,7 @@ public class StdExit implements Exit
 	public int openDelayTicks()    { return 45;}
 	public void setOpenDelayTicks(int numTicks){}
 
+	public String _(final String str, final String ... xs) { return CMLib.lang().fullSessionTranslation(str, xs); }
 	public int getSaveStatIndex(){return getStatCodes().length;}
 	private static final String[] CODES={"CLASS","TEXT"};
 	public String[] getStatCodes(){return CODES;}

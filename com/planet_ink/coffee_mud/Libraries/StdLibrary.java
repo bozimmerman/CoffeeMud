@@ -42,6 +42,7 @@ public class StdLibrary implements CMLibrary, Tickable
 	}
 	public CMObject copyOf(){try{return (CMObject)this.clone();}catch(Exception e){return newInstance();}}
 	public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
+	public String _(final String str, final String ... xs) { return CMLib.lang().fullSessionTranslation(str, xs); }
 	public void initializeClass(){}
 	public boolean activate(){ return true;}
 	public void propertiesLoaded(){ }

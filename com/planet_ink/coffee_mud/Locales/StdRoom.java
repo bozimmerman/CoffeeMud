@@ -2157,6 +2157,7 @@ public class StdRoom implements Room
 		} catch(ArrayIndexOutOfBoundsException e){}
 	}
 	
+	public String _(final String str, final String ... xs) { return CMLib.lang().fullSessionTranslation(str, xs); }
 	public int getSaveStatIndex(){return (xtraValues==null)?getStatCodes().length:getStatCodes().length-xtraValues.length;}
 	protected static final String[] STDCODES={"CLASS","DISPLAY","DESCRIPTION","TEXT","AFFBEHAV","IMAGE","CLIMATE","ATMOSPHERE"};
 	private static String[] codes=null;

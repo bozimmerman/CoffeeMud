@@ -49,6 +49,7 @@ public class IMudClient implements I3Interface
 	public CMObject newInstance(){try{return getClass().newInstance();}catch(Exception e){return new IMudClient();}}
 	public void initializeClass(){}
 	public CMObject copyOf(){try{return (CMObject)this.clone();}catch(Exception e){return newInstance();}}
+	public String _(final String str, final String ... xs) { return CMLib.lang().fullSessionTranslation(str, xs); }
 	public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 	public boolean activate(){ return true;}
 	public boolean shutdown(){ return true;}

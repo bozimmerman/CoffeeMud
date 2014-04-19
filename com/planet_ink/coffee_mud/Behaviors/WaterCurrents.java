@@ -16,7 +16,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /* 
@@ -235,6 +234,7 @@ public class WaterCurrents extends ActiveTicker
 		public boolean bubbleAffect(){return false;}
 		public ExpertiseLibrary.SkillCost getTrainingCost(MOB mob)
 		{ return new ExpertiseLibrary.SkillCost(ExpertiseLibrary.CostType.TRAIN, Double.valueOf(1.0));}
+		public String _(final String str, final String ... xs) { return CMLib.lang().fullSessionTranslation(str, xs); }
 		public long flags(){return Ability.FLAG_TRANSPORTING;}
 		public long getTickStatus(){return Tickable.STATUS_NOT;}
 		public int usageType(){return 0;}

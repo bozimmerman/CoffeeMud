@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.Arrays;
 import java.util.List;
 import java.util.Vector;
@@ -61,6 +60,7 @@ public class QuestBound implements Ability
 	public void initializeClass(){}
 	public ExpertiseLibrary.SkillCost getTrainingCost(MOB mob)
 	{ return new ExpertiseLibrary.SkillCost(ExpertiseLibrary.CostType.TRAIN,Double.valueOf(1.0));}
+	public String _(final String str, final String ... xs) { return CMLib.lang().fullSessionTranslation(str, xs); }
 
 	public void setName(String newName){}
 	public void setDescription(String newDescription){}

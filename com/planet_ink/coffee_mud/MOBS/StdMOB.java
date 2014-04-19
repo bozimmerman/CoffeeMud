@@ -4594,6 +4594,11 @@ public class StdMOB implements MOB
 		}
 	}
 
+	public String _(final String str, final String ... xs) 
+	{ 
+		return CMLib.lang().fullSessionTranslation(str, xs); 
+	}
+	
 	protected static String[] CODES = { "CLASS", "LEVEL", "ABILITY", "TEXT" };
 
 	public String getStat(String code) 

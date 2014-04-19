@@ -14,6 +14,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.LanguageLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -649,5 +650,15 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 	public String finalTranslation(String item)
 	{
 		return basicParser(item,"FINAL-TRANSLATION",false,false);
+	}
+	
+	public String fullSessionTranslation(final String str, final String ... xs)
+	{
+		return CMStrings.replaceVariables(sessionTranslation(str), xs); 
+	}
+	
+	public String _(final String str, final String ... xs)
+	{
+		return CMStrings.replaceVariables(sessionTranslation(str), xs); 
 	}
 }

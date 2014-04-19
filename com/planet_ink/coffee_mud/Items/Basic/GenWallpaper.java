@@ -50,6 +50,7 @@ public class GenWallpaper implements Item
 		super();
 		//CMClass.bumpCounter(this,CMClass.CMObjectType.ITEM);//removed for mem & perf
 	}
+	public String _(final String str, final String ... xs) { return CMLib.lang().fullSessionTranslation(str, xs); }
 	public boolean isGeneric(){return true;}
 	public Rideable riding(){return null;}
 	public void setRiding(Rideable one){}

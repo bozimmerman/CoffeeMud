@@ -1738,6 +1738,8 @@ public class StdArea implements Area
 		return true;
 	}
 
+	public String _(final String str, final String ... xs) { return CMLib.lang().fullSessionTranslation(str, xs); }
+	
 	public int getSaveStatIndex(){return (xtraValues==null)?getStatCodes().length:getStatCodes().length-xtraValues.length;}
 	protected static final String[] STDAREACODES={"CLASS",
 												  "CLIMATE",

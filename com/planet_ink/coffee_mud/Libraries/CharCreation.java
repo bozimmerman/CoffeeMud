@@ -44,10 +44,12 @@ import java.util.*;
 public class CharCreation extends StdLibrary implements CharCreationLibrary
 {
 	public String ID(){return "CharCreation";}
-	public Hashtable<String,String> startRooms=new Hashtable<String,String>();
-	public Hashtable<String,String> deathRooms=new Hashtable<String,String>();
-	public Hashtable<String,String> bodyRooms=new Hashtable<String,String>();
-
+	public Map<String,String>		startRooms			= new Hashtable<String,String>();
+	public Map<String,String>		deathRooms			= new Hashtable<String,String>();
+	public Map<String,String>		bodyRooms			= new Hashtable<String,String>();
+	public Pair<String,Integer>[]	randomNameVowels 	= null;
+	public Pair<String,Integer>[]	randomNameConsonants= null;
+	
 	protected final String RECONFIRMSTR="\n\r^WTry entering ^HY^W or ^HN^W: ";
 	
 	protected int getTotalStatPoints()
@@ -3421,5 +3423,94 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			}
 			session.setStatus(status);
 		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	protected Pair<String,Integer>[] makeRandomNameSets(final String rawData)
+	{
+		List<Pair<String,Integer>> set=new ArrayList<Pair<String,Integer>>();
+		final String RAW_VOWEL_DATA="a7e7i7o7u7a7e7i7o7u7a7e7i7o7u7a7e7i7o7u7a7e7i7o7u7a7e7i7o7u7a7e7i7o7u7a7e7i7o7u7"
+				+"a7e7i7o7u7a7e7i7o7u7a7e7i7o7u7a7e7i7o7u7ae7ai7ao7au7aa7ea7eo7eu7ee7eau7ia7io7iu7ii7oa7oe7oi7ou7oo7'4y7ay7ay7ei7ei7ei7ua7ua7";
+		for(int i=0;i<RAW_VOWEL_DATA.length();i++)
+		{
+			int start=i;
+			while(!Character.isDigit(RAW_VOWEL_DATA.charAt(i)))
+				i++;
+			set.add(new Pair<String,Integer>(RAW_VOWEL_DATA.substring(start,i),Integer.valueOf(RAW_VOWEL_DATA.substring(i,i+1))));
+		}
+		return set.toArray(new Pair[0]);
+	}
+	
+	protected Pair<String,Integer>[] getRandomVowels()
+	{
+		if(randomNameVowels == null)
+		{
+			randomNameVowels=makeRandomNameSets("a7e7i7o7u7a7e7i7o7u7a7e7i7o7u7a7e7i7o7u7a7e7i7o7u7a7e7i7o7u7a7e7i7o7u7a7e7i7o7u7"
+					+"a7e7i7o7u7a7e7i7o7u7a7e7i7o7u7a7e7i7o7u7ae7ai7ao7au7aa7ea7eo7eu7ee7eau7ia7io7iu7ii7oa7oe7oi7ou7oo7'4y7ay7ay7ei7ei7ei7ua7ua7");
+		}
+		return randomNameVowels;
+	}
+
+	protected Pair<String,Integer>[] getRandomConsonants()
+	{
+		if(randomNameConsonants == null)
+		{
+			randomNameConsonants=makeRandomNameSets("b7c7d7f7g7h7j7k7l7m7n7p7qu6r7s7t7v7w7x7y7z7sc7ch7gh7ph7sh7th7wh6ck5nk5rk5sk7wk0cl6fl6gl6kl6ll6pl6sl6"
+					+"br6cr6dr6fr6gr6kr6pr6sr6tr6ss5st7str6b7c7d7f7g7h7j7k7l7m7n7p7r7s7t7v7w7b7c7d7f7g7h7j7k7l7m7n7p7r7s7t7v7w7br6dr6fr6gr6kr6");
+		}
+		return randomNameConsonants;
+	}
+	
+	public String generateRandomName(int minSyllable, int maxSyllable)
+	{
+		StringBuilder name=new StringBuilder("");
+		final DiceLibrary dice=CMLib.dice();
+		final int numSyllables = (maxSyllable<=minSyllable)?minSyllable:dice.roll(1, maxSyllable-minSyllable+1, minSyllable-1);
+		boolean isVowel=CMLib.dice().rollPercentage()>0;
+		final Pair<String,Integer>[] vowels=getRandomVowels();
+		final Pair<String,Integer>[] cons=getRandomConsonants();
+		for(int i=1;i<=numSyllables;i++)
+		{
+			Pair<String,Integer> data = null;
+			for(int x=0;x<100;x++)
+			{
+				if (isVowel) 
+				{
+					data=vowels[dice.roll(1, vowels.length, -1)];
+				}
+				else
+				{
+					data=cons[dice.roll(1, cons.length, -1)];
+				}
+				if(i==1)
+				{
+					if(CMath.bset(data.second.intValue(),2))
+					{
+						break;
+					}
+				}
+				else
+				if(i==numSyllables)
+				{
+					if(CMath.bset(data.second.intValue(),1))
+					{
+						break;
+					}
+				}
+				else
+				{
+					if(CMath.bset(data.second.intValue(),4))
+					{
+						break;
+					}
+				}
+			}
+			if(data != null)
+			{
+				name.append(data.first);
+			}
+			isVowel = !isVowel;
+		}
+		return CMStrings.capitalizeFirstLetter(name.toString());
 	}
 }

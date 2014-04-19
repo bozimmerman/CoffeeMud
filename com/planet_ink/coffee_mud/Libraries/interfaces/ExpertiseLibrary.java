@@ -61,6 +61,7 @@ public interface ExpertiseLibrary extends CMLibrary
 		private MaskingLibrary.CompiledZapperMask compiledListMask=null;
 		public ExpertiseDefinition parent=null;
 		private MaskingLibrary.CompiledZapperMask compiledFinalMask=null;
+		
 		public String name() 
 		{ 
 			return name;
@@ -153,6 +154,7 @@ public interface ExpertiseLibrary extends CMLibrary
 		public CMObject newInstance() { return this; }
 		public CMObject copyOf() { return this; }
 		public void initializeClass() {}
+		public String _(final String str, final String ... xs) { return CMLib.lang().fullSessionTranslation(str, xs); }
 	}
 	
 	/** Enumeration of the types of costs of gaining this ability */

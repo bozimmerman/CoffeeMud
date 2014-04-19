@@ -15,6 +15,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /*
@@ -165,6 +166,7 @@ public class StdAbility implements Ability
 	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	public int enchantQuality(){return abstractQuality();}
 	public void initializeClass(){}
+	public String _(final String str, final String ... xs) { return CMLib.lang().fullSessionTranslation(str, xs); }
 
 	protected int castingQuality(MOB mob, Physical target, int abstractQuality)
 	{

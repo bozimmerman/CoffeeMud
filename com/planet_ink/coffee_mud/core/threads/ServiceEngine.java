@@ -58,6 +58,7 @@ public class ServiceEngine implements ThreadEngine
 	public String ID(){return "ServiceEngine";}
 	public String name() { return ID();}
 	public CMObject newInstance(){try{return getClass().newInstance();}catch(Exception e){return new ServiceEngine();}}
+	public String _(final String str, final String ... xs) { return CMLib.lang().fullSessionTranslation(str, xs); }
 	
 	public void initializeClass() 
 	{
