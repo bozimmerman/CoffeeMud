@@ -792,6 +792,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			session.println("^w ^N");
 			session.println("^w* Enter an existing name to log in.^N");
 			session.println("^w* Enter a new name to create "+((CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)>1)?"an account":" a character")+".^N");
+			session.println("^w* Enter '*' to generate a random "+((CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)>1)?"account":"character")+" name.^N");
 			loginObj.state=LoginState.LOGIN_START;
 			if((Math.random()>0.5)&&(loginObj.attempt>0))
 				loginObj.attempt--;
@@ -804,6 +805,12 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			loginObj.reset=true;
 			loginObj.state=LoginState.LOGIN_START;
 			return LoginResult.NO_LOGIN;
+		}
+		if(loginObj.login.indexOf('*')>=0)
+		{
+			loginObj.login = generateRandomName(3, 6);
+			while((!isOkName(loginObj.login,false)) || (CMLib.players().playerExists(loginObj.login)) || (CMLib.players().accountExists(loginObj.login)))
+				loginObj.login = generateRandomName(3, 8);
 		}
 		if(loginObj.login.endsWith(" !"))
 		{
@@ -1382,7 +1389,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		{
 			if(parms.length<2)
 			{
-				session.promptPrint("\n\rPlease enter a name for your character: ");
+				session.promptPrint("\n\rPlease enter a name for your character, or '*'\n\r: ");
 				loginObj.state=LoginState.ACCTMENU_ADDTOCOMMAND;
 				return LoginResult.INPUT_REQUIRED;
 			}
@@ -1391,6 +1398,12 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 				session.println("Aborted.");
 				loginObj.state=LoginState.ACCTMENU_SHOWMENU;
 				return null;
+			}
+			if(parms[1].indexOf('*')>=0)
+			{
+				parms[1]=generateRandomName(3,6);
+				while((!isOkName(parms[1],false)) || (CMLib.players().playerExists(parms[1])) || (CMLib.players().accountExists(parms[1])))
+					parms[1] = generateRandomName(3, 8);
 			}
 			if(newCharactersAllowed(parms[1],session,acct,parms[1].equalsIgnoreCase(acct.getAccountName())))
 			{
@@ -3429,14 +3442,12 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	protected Pair<String,Integer>[] makeRandomNameSets(final String rawData)
 	{
 		List<Pair<String,Integer>> set=new ArrayList<Pair<String,Integer>>();
-		final String RAW_VOWEL_DATA="a7e7i7o7u7a7e7i7o7u7a7e7i7o7u7a7e7i7o7u7a7e7i7o7u7a7e7i7o7u7a7e7i7o7u7a7e7i7o7u7"
-				+"a7e7i7o7u7a7e7i7o7u7a7e7i7o7u7a7e7i7o7u7ae7ai7ao7au7aa7ea7eo7eu7ee7eau7ia7io7iu7ii7oa7oe7oi7ou7oo7'4y7ay7ay7ei7ei7ei7ua7ua7";
-		for(int i=0;i<RAW_VOWEL_DATA.length();i++)
+		for(int i=0;i<rawData.length();i++)
 		{
 			int start=i;
-			while(!Character.isDigit(RAW_VOWEL_DATA.charAt(i)))
+			while(!Character.isDigit(rawData.charAt(i)))
 				i++;
-			set.add(new Pair<String,Integer>(RAW_VOWEL_DATA.substring(start,i),Integer.valueOf(RAW_VOWEL_DATA.substring(i,i+1))));
+			set.add(new Pair<String,Integer>(rawData.substring(start,i),Integer.valueOf(rawData.substring(i,i+1))));
 		}
 		return set.toArray(new Pair[0]);
 	}
