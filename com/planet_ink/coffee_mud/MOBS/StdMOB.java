@@ -3069,16 +3069,6 @@ public class StdMOB implements MOB
 							setActions(actions() + (CMLib.flags().isSitting(this) ? phyStats().speed() / 2.0 : phyStats().speed()));
 						}
 					}
-					
-					// a 0, va 0, lat> = wait or passthru
-					// a 0, va 1, lat> = wait
-					// a 1, va 0, lat> = passthru
-					// a 1, va 1, lat> = passthru
-
-					// a 0, va 0, lat< = start attack, update lat
-					// a 1, va 0, lat< = 
-					// a 0, va 1, lat< = wait, enemy is attacking me
-					// a 1, va 1, lat< = wait, enemy is attacking me, a=0
 				}
 				else
 				{
