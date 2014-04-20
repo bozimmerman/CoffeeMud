@@ -156,7 +156,9 @@ public interface Room extends PhysicalAgent, ItemPossessor, Places
 	public Exit getExitInDir(int direction);
 	public Room prepareRoomInDir(Room fromRoom, int direction);
 	
-
+	public int getCombatTurnMobIndex();
+	public void setCombatTurnMobIndex(final int index);
+	
 	public int pointsPerMove(MOB mob);
 	public int thirstPerRound(MOB mob);
 

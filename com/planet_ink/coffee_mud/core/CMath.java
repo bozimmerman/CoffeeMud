@@ -559,6 +559,15 @@ public class CMath
 	 */
 	public final static int unsetb(final int num, final int bitmask) { return num & (~bitmask);}
 	/**
+	 * Sets or Unsets those bits in the given number which are
+	 * turned ON or OFF in the given bitmask.
+	 * @param num the given number
+	 * @param bitmask the given bitmask
+	 * @param setOrUnSet true to set the bit, false otherwise
+	 * @return the number with or without the bitmasks bits turned on.
+	 */
+	public final static int dobit(final int num, final int bitmask, boolean setOrUnSet) { return setOrUnSet?(num|bitmask):(num & (~bitmask));}
+	/**
 	 * Unsets those bits in the given number which are
 	 * turned ON in the given bitmask.
 	 * @param num the given number

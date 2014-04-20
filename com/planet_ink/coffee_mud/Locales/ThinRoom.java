@@ -36,7 +36,8 @@ import java.util.*;
    limitations under the License.
 */
 @SuppressWarnings({"unchecked","rawtypes"})
-public class ThinRoom implements Room {
+public class ThinRoom implements Room 
+{
 
 	public String ID(){return "ThinRoom";}
 	public String name(){ return "A Thin Room";}
@@ -317,8 +318,14 @@ public class ThinRoom implements Room {
 	}
 
 	private boolean amDestroyed=false;
-	public void destroy(){amDestroyed=true;}
-	public boolean amDestroyed(){return amDestroyed;}
+	public void destroy()
+	{
+		amDestroyed=true;
+	}
+	public boolean amDestroyed()
+	{
+		return amDestroyed;
+	}
 
 	protected static final PhyStats phyStats=(PhyStats)CMClass.getCommon("DefaultPhyStats");
 	public PhyStats phyStats(){return phyStats;}
@@ -342,8 +349,16 @@ public class ThinRoom implements Room {
 	public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 
 	public void setMiscText(String newMiscText){}
-	public String text(){return "";}
-	public String miscTextFormat(){return CMParms.FORMAT_UNDEFINED;}
+	
+	public String text()
+	{
+		return "";
+	}
+	
+	public String miscTextFormat()
+	{
+		return CMParms.FORMAT_UNDEFINED;
+	}
 
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{}
@@ -351,14 +366,28 @@ public class ThinRoom implements Room {
 	{}
 	public void affectCharState(MOB affectedMob, CharState affectableMaxState)
 	{}
+	
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		return;
 	}
+	
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		return true;
 	}
+	
 	public boolean tick(Tickable ticking, int tickID)
-	{ return true;    }
+	{ 
+		return true;
+	}
+	
+	@Override public int getCombatTurnMobIndex()
+	{
+		return 0;
+	}
+
+	@Override public void setCombatTurnMobIndex(final int index)
+	{
+	}
 }

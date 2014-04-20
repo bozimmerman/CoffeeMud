@@ -37,36 +37,37 @@ import java.util.*;
 public class StdRoom implements Room
 {
 	public String ID(){return "StdRoom";}
-	protected String	 	myID="";
-	protected String	 	name="the room";
-	protected String	 	displayText="Standard Room";
-	protected String	 	rawImageName=null;
-	protected String	 	cachedImageName=null;
-	protected Object	 	description=null;
-	protected Area  	 	myArea=null;
-	protected PhyStats   	phyStats=(PhyStats)CMClass.getCommon("DefaultPhyStats");
-	protected PhyStats   	basePhyStats=(PhyStats)CMClass.getCommon("DefaultPhyStats");
-	protected Exit[]  		exits=new Exit[Directions.NUM_DIRECTIONS()];
-	protected Room[]  		doors=new Room[Directions.NUM_DIRECTIONS()];
-	protected String[]   	xtraValues=null;
+	protected String		myID="";
+	protected String		name="the room";
+	protected String		displayText="Standard Room";
+	protected String		rawImageName=null;
+	protected String		cachedImageName=null;
+	protected Object		description=null;
+	protected Area			myArea=null;
+	protected PhyStats		phyStats=(PhyStats)CMClass.getCommon("DefaultPhyStats");
+	protected PhyStats		basePhyStats=(PhyStats)CMClass.getCommon("DefaultPhyStats");
+	protected Exit[]		exits=new Exit[Directions.NUM_DIRECTIONS()];
+	protected Room[]		doors=new Room[Directions.NUM_DIRECTIONS()];
+	protected String[]		xtraValues=null;
 	protected boolean		mobility=true;
-	protected GridLocale 	gridParent=null;
-	protected long  	 	tickStatus=Tickable.STATUS_NOT;
-	protected long  	 	expirationDate=0;
+	protected GridLocale	gridParent=null;
+	protected long			tickStatus=Tickable.STATUS_NOT;
+	protected long			expirationDate=0;
 	protected int			atmosphere=ATMOSPHERE_INHERIT;
 	protected int			climask=CLIMASK_INHERIT;
-	protected SVector<Ability>  		affects=null;
-	protected SVector<Behavior> 		behaviors=null;
-	protected SVector<ScriptingEngine>  scripts=null;
-	protected SVector<MOB> 				inhabitants=new SVector(1);
+	protected int			myResource=-1;
+	protected long			lastResourceTime=0;
+	protected boolean		amDestroyed=false;
+	protected boolean		skyedYet=false;
+	protected volatile int	combatTurnMobIndex=0;
+	protected SVector<Ability>			affects=null;
+	protected SVector<Behavior>			behaviors=null;
+	protected SVector<ScriptingEngine>	scripts=null;
+	protected SVector<MOB>				inhabitants=new SVector(1);
 	protected SVector<Item>				contents=new SVector(1);
-	protected Room 			  			me=this;
+	protected Room						me=this;
 
 	// base move points and thirst points per round
-	protected int myResource=-1;
-	protected long lastResourceTime=0;
-	protected boolean amDestroyed=false;
-	protected boolean skyedYet=false;
 	
 	public StdRoom()
 	{
@@ -1474,7 +1475,20 @@ public class StdRoom implements Room
 		gridParent=null;
 		amDestroyed=true;
 	}
-	public boolean amDestroyed(){return amDestroyed;}
+	public boolean amDestroyed()
+	{
+		return amDestroyed;
+	}
+	
+	public int getCombatTurnMobIndex()
+	{
+		return combatTurnMobIndex;
+	}
+
+	public void setCombatTurnMobIndex(final int index)
+	{
+		combatTurnMobIndex = index;
+	}
 
 	public boolean isHere(Environmental E)
 	{
