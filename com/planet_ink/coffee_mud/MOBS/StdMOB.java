@@ -97,7 +97,7 @@ public class StdMOB implements MOB
 	public CharState			curState		= (CharState) CMClass.getCommon("DefaultCharState");
 	public CharState			maxState		= (CharState) CMClass.getCommon("DefaultCharState");
 	public CharState			baseState		= (CharState) CMClass.getCommon("DefaultCharState");
-	private long				lastTickedTime  = 0;
+	private long				lastTickedTime	= 0;
 	private long				lastCommandTime	= System.currentTimeMillis();
 
 	protected Room				possStartRoom   = null;
@@ -110,9 +110,7 @@ public class StdMOB implements MOB
 	protected MOB				soulMate		= null;
 	protected int				atRange			= -1;
 	protected long				peaceTime		= 0;
-	protected volatile long		lastAttackTick	= 0;
 	protected boolean			kickFlag		= false;
-	protected boolean			imMobile		= false;
 	protected MOB				me 				= this;
 
 	protected long				tickStatus		= Tickable.STATUS_NOT;
@@ -176,11 +174,6 @@ public class StdMOB implements MOB
 		return CMLib.leveler().getLevelExperience(basePhyStats().level());
 	}
 
-	public long getLastAttackTick()
-	{
-		return lastAttackTick;
-	}
-	
 	public int getExpPrevLevel() 
 	{
 		if (basePhyStats().level() <= 1)
@@ -1024,13 +1017,14 @@ public class StdMOB implements MOB
 		CMLib.threads().startTickDown(this, Tickable.TICKID_MOB, 1);
 		if (tickStatus == Tickable.STATUS_NOT)
 		{
+			final boolean isImMobile=CMath.bset(phyStats.disposition(), PhyStats.CAN_NOT_MOVE);
 			try
 			{
-				imMobile = true;
+				phyStats.setDisposition(phyStats.disposition()|PhyStats.CAN_NOT_MOVE);
 				tick(this, Tickable.TICKID_MOB); // slap on the butt
 			} finally
 			{
-				imMobile = false;
+				phyStats.setDisposition(CMath.dobit(phyStats.disposition(),PhyStats.CAN_NOT_MOVE,isImMobile));
 			}
 		}
 	}
@@ -1091,9 +1085,10 @@ public class StdMOB implements MOB
 		CMLib.factions().updatePlayerFactions(this, location());
 		if (tickStatus == Tickable.STATUS_NOT)
 		{
+			final boolean isImMobile=CMath.bset(phyStats.disposition(), PhyStats.CAN_NOT_MOVE);
 			try
 			{
-				imMobile = true;
+				phyStats.setDisposition(phyStats.disposition()|PhyStats.CAN_NOT_MOVE);
 				tick(this, Tickable.TICKID_MOB); // slap on the butt
 			} 
 			catch (Exception t)
@@ -1102,7 +1097,7 @@ public class StdMOB implements MOB
 			} 
 			finally
 			{
-				imMobile = false;
+				phyStats.setDisposition(CMath.dobit(phyStats.disposition(), PhyStats.CAN_NOT_MOVE, isImMobile));
 			}
 		}
 		if (location() == null)
@@ -2117,7 +2112,7 @@ public class StdMOB implements MOB
 						if ((msg.sourceMinor() != CMMsg.TYP_WEAPONATTACK) && (msg.sourceMinor() != CMMsg.TYP_THROW))
 							return false;
 					}
-					if ((!CMLib.flags().canMove(this)) || (imMobile))
+					if (!CMLib.flags().canMove(this))
 					{
 						tell("You can't move!");
 						return false;
@@ -3037,10 +3032,11 @@ public class StdMOB implements MOB
 			else 
 			if (location() != null)
 			{
-				final Area A=location().getArea();
+				final Room R=location();
+				final Area A=R.getArea();
 				// handle variable equipment!
 				if ((lastTickedTime < 0) 
-				&& isMonster && location().getMobility()
+				&& isMonster && R.getMobility()
 				&& (A.getAreaState() != Area.State.FROZEN)
 				&& (A.getAreaState() != Area.State.STOPPED))
 				{
@@ -3056,17 +3052,29 @@ public class StdMOB implements MOB
 				{
 					if(actions() < 1.0)
 					{
-						if((lastAttackTick >= victim.getLastAttackTick()) && (victim.actions() >= 1.0))
+						int index = R.getCombatTurnMobIndex();
+						MOB M=null;
+						if((index >= R.numInhabitants())||((M=R.fetchInhabitant(index))==this)||(M==null)||(!M.isInCombat()))
 						{
-							//if((CMLib.threads().getTicksEllapsedSinceStartup() - lastAttackTick) >= 30)
-							//	victim.setActions(0.0);
-							tickStatus = Tickable.STATUS_NOT;
-							return !removeFromGame;
+							if((index<0)||(index>=R.numInhabitants()-1))
+								index=-1;
+							for(index++;index<R.numInhabitants();index++)
+							{
+								M=R.fetchInhabitant(index);
+								if((M!=null)&&(M.isInCombat()))
+								{
+									M.setActions(M.actions() + (CMLib.flags().isSitting(M) ? M.phyStats().speed() / 2.0 : M.phyStats().speed()));
+									R.setCombatTurnMobIndex(index);
+									break;
+								}
+							}
 						}
 						else
 						{
-							lastAttackTick=System.currentTimeMillis();
-							setActions(actions() + (CMLib.flags().isSitting(this) ? phyStats().speed() / 2.0 : phyStats().speed()));
+							if (lastTickedTime >= 0)
+								lastTickedTime = System.currentTimeMillis();
+							tickStatus = Tickable.STATUS_NOT;
+							return !removeFromGame;
 						}
 					}
 				}
@@ -3089,23 +3097,23 @@ public class StdMOB implements MOB
 				{
 					if (!CMLib.flags().canBreathe(this))
 					{
-						location().show(this, this, CMMsg.MSG_OK_VISUAL, ("^Z<S-NAME> can't breathe!^.^?") + CMLib.protocol().msp("choke.wav", 10));
+						R.show(this, this, CMMsg.MSG_OK_VISUAL, ("^Z<S-NAME> can't breathe!^.^?") + CMLib.protocol().msp("choke.wav", 10));
 						CMLib.combat().postDamage(this, this, null,
 								(int) Math.round(CMath.mul(Math.random(), basePhyStats().level() + 2)),
 								CMMsg.MASK_ALWAYS | CMMsg.TYP_WATER, -1, null);
 					}
 					else
-					if(!CMLib.flags().canBreatheHere(this,location()))
+					if(!CMLib.flags().canBreatheHere(this,R))
 					{
-						final int atmo=location().getAtmosphere();
+						final int atmo=R.getAtmosphere();
 						if((atmo&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LIQUID)
 						{
-							location().show(this, this, CMMsg.MSG_OK_VISUAL, ("^Z<S-NAME> <S-IS-ARE> drowning in "+RawMaterial.CODES.NAME(atmo).toLowerCase()+"!^.^?") + CMLib.protocol().msp("choke.wav", 10));
+							R.show(this, this, CMMsg.MSG_OK_VISUAL, ("^Z<S-NAME> <S-IS-ARE> drowning in "+RawMaterial.CODES.NAME(atmo).toLowerCase()+"!^.^?") + CMLib.protocol().msp("choke.wav", 10));
 							CMLib.combat().postDamage(this, this, null, (int) Math.round(CMath.mul(Math.random(), basePhyStats().level() + 2)), CMMsg.MASK_ALWAYS | CMMsg.TYP_WATER, -1, null);
 						}
 						else
 						{
-							location().show(this, this, CMMsg.MSG_OK_VISUAL, ("^Z<S-NAME> <S-IS-ARE> choking on "+RawMaterial.CODES.NAME(atmo).toLowerCase()+"!^.^?") + CMLib.protocol().msp("choke.wav", 10));
+							R.show(this, this, CMMsg.MSG_OK_VISUAL, ("^Z<S-NAME> <S-IS-ARE> choking on "+RawMaterial.CODES.NAME(atmo).toLowerCase()+"!^.^?") + CMLib.protocol().msp("choke.wav", 10));
 							CMLib.combat().postDamage(this, this, null, (int) Math.round(CMath.mul(Math.random(), basePhyStats().level() + 2)), CMMsg.MASK_ALWAYS | CMMsg.TYP_GAS, -1, null);
 						}
 					}
@@ -3135,7 +3143,7 @@ public class StdMOB implements MOB
 					if (CMLib.flags().isSleeping(this))
 						curState().adjFatigue(-CharState.REST_PER_SLEEP, maxState());
 					else // rest/sit isn't here because fatigue is sleepiness, not exhaustion per se
-					if (!CMSecurity.isAllowed(this, location(), CMSecurity.SecFlag.IMMORT))
+					if (!CMSecurity.isAllowed(this, R, CMSecurity.SecFlag.IMMORT))
 					{
 						curState().adjFatigue(Math.round(CMProps.getTickMillis()), maxState());
 						if (curState().getFatigue() > CharState.FATIGUED_MILLIS)
@@ -3149,7 +3157,7 @@ public class StdMOB implements MOB
 							}
 							if (smallChance && curState().getFatigue() > (CharState.FATIGUED_EXHAUSTED_MILLIS))
 							{
-								location().show(this, null, CMMsg.MSG_OK_ACTION, "<S-NAME> fall(s) asleep from exhaustion!!");
+								R.show(this, null, CMMsg.MSG_OK_ACTION, "<S-NAME> fall(s) asleep from exhaustion!!");
 								basePhyStats().setDisposition(basePhyStats().disposition() | PhyStats.IS_SLEEPING);
 								phyStats().setDisposition(phyStats().disposition() | PhyStats.IS_SLEEPING);
 							}
@@ -3162,7 +3170,7 @@ public class StdMOB implements MOB
 				}
 
 				final Rideable riding = riding();
-				if ((riding != null) && (CMLib.map().roomLocation(riding) != location()))
+				if ((riding != null) && (CMLib.map().roomLocation(riding) != R))
 					setRiding(null);
 
 				if ((!isMonster) && (soulMate() == null))
