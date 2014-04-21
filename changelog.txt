@@ -14,6 +14,8 @@
   12. A simple fantasy name generator is now included for account and character names.
   13. New combat system: TURNBASED -- rather simple and beta-y for now.  Comments/Suggestions welcome.
   14. New disable flag: ALL_AGEING to disable the ageing system
+  15. Script commands requiring location specifiers (mpat, mpgoto, mptransfer, mpechoat, etc) can find mobile mobs better using new
+      syntax with the AT (@) sign.  For example, mptransfer $n hassan@midgaard#3001
    *. make the tech install skill!!! all put/remove commands should check msg.value() for pct chance/competence
       competence divides by manufacturer and class of item. Minimum of 1/5 pts on max other items same manufacturer/type
       using expertises is a great idea.  Every time engineering levels up, gain a rank in appropriate expertise?
