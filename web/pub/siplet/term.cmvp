@@ -14,7 +14,7 @@ var theapplet = null;
 var lastReceived = new Date().getTime();
 
 var limit=50000;
-var pingDelay=500;
+var pingDelay=1000;
 var halflimit=limit/2;
 var tenthlimit=limit/10;
 var errorState=false;
