@@ -3764,20 +3764,22 @@ public class StdMOB implements MOB
 
 	protected final List<Ability> clanEffects() 
 	{
-		if (clanAffects == null)
+		List<Ability> affects=clanAffects;
+		if (affects == null)
 		{
 			final Iterator<Pair<Clan,Integer>> c=clans().iterator();
 			if(!c.hasNext())
-				clanAffects = CMLib.clans().getDefaultGovernment().getClanLevelEffects(this, null, null);
+				affects = CMLib.clans().getDefaultGovernment().getClanLevelEffects(this, null, null);
 			else
 			{
 				ReadOnlyMultiList<Ability> effects=new ReadOnlyMultiList<Ability>(); 
 				for(;c.hasNext();)
 					effects.addList(c.next().first.clanEffects(this));
-				clanAffects=effects;
+				affects=effects;
 			}
+			clanAffects=affects;
 		}
-		return clanAffects;
+		return affects;
 	}
 	@Override
 	public Iterable<Pair<Clan, Integer>> clans() 
