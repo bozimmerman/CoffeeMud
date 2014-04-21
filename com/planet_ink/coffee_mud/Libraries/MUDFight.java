@@ -75,7 +75,6 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 
 	public boolean activate()
 	{
-Log.errOut("activate"+this);
 		attackAdjustmentFormula = CMath.compileMathExpression(CMProps.getVar(CMProps.Str.FORMULA_ATTACKADJUSTMENT));
 		armorAdjustmentFormula= CMath.compileMathExpression(CMProps.getVar(CMProps.Str.FORMULA_ARMORADJUSTMENT));
 		attackerFudgeBonusFormula = CMath.compileMathExpression(CMProps.getVar(CMProps.Str.FORMULA_ATTACKFUDGEBONUS));
@@ -104,12 +103,16 @@ Log.errOut("activate"+this);
 		stateHitPointRecoverFormula = CMath.compileMathExpression(CMProps.getVar(CMProps.Str.FORMULA_HITPOINTRECOVER));
 		stateManaRecoverFormula = CMath.compileMathExpression(CMProps.getVar(CMProps.Str.FORMULA_MANARECOVER));
 		stateMovesRecoverFormula = CMath.compileMathExpression(CMProps.getVar(CMProps.Str.FORMULA_MOVESRECOVER));
-if(pvpAttackerFudgeBonusFormula==null) Log.errOut(this+"//pvpAttackerFudgeBonusFormula="+pvpAttackerFudgeBonusFormula);
-if(attackerFudgeBonusFormula==null) Log.errOut(this+"//attackerFudgeBonusFormula="+attackerFudgeBonusFormula);
+Log.errOut("BZ: asdf: "+attackerFudgeBonusFormula+"/"+pvpAttackerFudgeBonusFormula);
 		return true; 
 	}
 	
-	public void propertiesLoaded() { activate(); }
+	@Override 
+	public void propertiesLoaded() 
+	{
+Log.errOut("BZ: activate: "+this);
+		activate(); 
+	}
 	
 	public Set<MOB> allPossibleCombatants(MOB mob, boolean beRuthless)
 	{
@@ -282,8 +285,6 @@ if(attackerFudgeBonusFormula==null) Log.errOut(this+"//attackerFudgeBonusFormula
 			attacker.phyStats().level() > defender.phyStats().level() ? 1 : -1
 		};
 		final boolean isPVP=(attacker.isPlayer()&&defender.isPlayer());
-if(pvpAttackerFudgeBonusFormula==null) Log.errOut(this+"/pvpAttackerFudgeBonusFormula="+pvpAttackerFudgeBonusFormula);
-if(attackerFudgeBonusFormula==null) Log.errOut(this+"/attackerFudgeBonusFormula="+attackerFudgeBonusFormula);
 		int attackerFudgeBonusAmt = (int)Math.round(CMath.parseMathExpression(isPVP?pvpAttackerFudgeBonusFormula:attackerFudgeBonusFormula, vars, 0.0));
 		return rollToHit(adjustedAttackBonus(attacker,defender),adjustedArmor(defender),attackerFudgeBonusAmt);
 	}
