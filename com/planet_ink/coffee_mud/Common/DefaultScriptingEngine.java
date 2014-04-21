@@ -679,6 +679,21 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			rooms=CMLib.map().findWorldRoomsLiberally(null,thisName, "RIEPM",100,2000);
 		}
 		if(rooms.size()>0) return rooms.get(CMLib.dice().roll(1,rooms.size(),-1));
+		if(room == null)
+		{
+			int x=thisName.indexOf('@');
+			if(x>0)
+			{
+				Room R=CMLib.map().getRoom(thisName.substring(x+1));
+				if((R==null)||(R==imHere))
+				{
+					Area A=CMLib.map().getArea(thisName.substring(x+1));
+					R=(A!=null)?A.getRandomMetroRoom():null;
+				}
+				if((R!=null)&&(R!=imHere))
+					return getRoom(thisName.substring(0,x),R);
+			}
+		}
 		return room;
 	}
 
