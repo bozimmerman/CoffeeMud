@@ -1001,13 +1001,15 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 						&&item.toUpperCase().endsWith(".INI")
 						&&(item.toUpperCase().startsWith("ARC_")))
 						{
-							arcHelpFile.load(new ByteArrayInputStream(new CMFile(Resources.buildResourcePath("help")+item,null,CMFile.FLAG_LOGERRORS).raw()));
-							for(Object key : arcHelpFile.keySet())
+							Properties local=new Properties();
+							local.load(new ByteArrayInputStream(new CMFile(Resources.buildResourcePath("help")+item,null,CMFile.FLAG_LOGERRORS).raw()));
+							arcHelpFile.putAll(local);
+							for(Object key : local.keySet())
 							{
 								String keyStr=key.toString();
 								for(int i=0;i<keyStr.length();i++)
 									if(Character.isLetter(keyStr.charAt(i))&&Character.isLowerCase(keyStr.charAt(i)))
-        								Log.debugOut("Lower key in "+item+": "+key+": "+arcHelpFile.getProperty(keyStr));
+										Log.debugOut("Lower key in "+item+": "+key+": "+local.getProperty(keyStr));
 							}
 						}
 					}
@@ -1060,13 +1062,15 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 						&&item.toUpperCase().endsWith(".INI")
 						&&(!item.toUpperCase().startsWith("ARC_")))
 						{
-							helpFile.load(new ByteArrayInputStream(new CMFile(Resources.buildResourcePath("help")+item,null,CMFile.FLAG_LOGERRORS).raw()));
-							for(Object key : helpFile.keySet())
+							Properties local=new Properties();
+							local.load(new ByteArrayInputStream(new CMFile(Resources.buildResourcePath("help")+item,null,CMFile.FLAG_LOGERRORS).raw()));
+							helpFile.putAll(local);
+							for(Object key : local.keySet())
 							{
 								String keyStr=key.toString();
 								for(int i=0;i<keyStr.length();i++)
 									if(Character.isLetter(keyStr.charAt(i))&&Character.isLowerCase(keyStr.charAt(i)))
-        								Log.debugOut("Lower key in "+item+": "+key+": "+helpFile.getProperty(keyStr));
+										Log.debugOut("Lower key in "+item+": "+key+": "+local.getProperty(keyStr));
 							}
 						}
 					}
