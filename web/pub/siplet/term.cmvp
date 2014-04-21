@@ -19,6 +19,7 @@ var halflimit=limit/2;
 var tenthlimit=limit/10;
 var errorState=false;
 var myHttp=new xmlhttpPost();
+var appletVersion=false;
 
 function connectChecker()
 {
@@ -118,12 +119,26 @@ xmlhttpPost.prototype.exec = function(querystring,callbackFunc,tries)
 
 function closeWindow()
 {
-	myHttp.exec('DISCONNECT&TOKEN='+theapplet,function(success,status,txt){},5);
-	myHttp=new xmlhttpPost();
+	if(appletVersion === true)
+	{
+		theapplet.disconnectFromURL();
+	}
+	else
+	{
+		myHttp.exec('DISCONNECT&TOKEN='+theapplet,function(success,status,txt){},5);
+		myHttp=new xmlhttpPost();
+	}
 	top.document.location.href='/index.cmvp';
 }
+
 function reconnect()
 {
+	if(appletVersion === true)
+	{
+		theapplet.disconnectFromURL();
+		setTimeout('connect("@MudInfo?DOMAIN@",@MudInfo?PORT@);',500);
+	}
+	else
 	if(theapplet!=null)
 	{
 		myHttp.exec('DISCONNECT&TOKEN='+theapplet,function(success,status,txt){
@@ -269,6 +284,27 @@ function StopSound(key,playerName)
 
 function displayData()
 {
+	if(appletVersion===true)
+	{
+		if(!theapplet.isConnectedToURL())
+			goOffline();
+		else
+		{
+			theapplet.readURLData();
+			var t=theapplet.getURLData();
+			var s="";
+			s=s+t;
+			addToWindow(s);
+			t=theapplet.getJScriptCommands();
+			s="";
+			s=s+t;
+			if(s.length>0) eval(s);
+			lastReceived = new Date().getTime();
+			setTimeout('displayData();',pingDelay);
+		}
+		return;
+	}
+	else
 	if(theapplet==null) 
 		return;
 	myHttp.exec('POLL&TOKEN='+theapplet,function(success,status,txt)
@@ -306,6 +342,12 @@ function displayData()
 }
 function sendData(me)
 {
+	if(appletVersion===true)
+	{
+		var s=''+me;
+		theapplet.sendData(s);
+		return;
+	}
 	if(theapplet==null)
 		return;
 	var s=encodeURIComponent(''+me);
@@ -419,42 +461,67 @@ function connect(url,port,tries)
 {
 	errorState=false;
 	goCaution();
-	//window.onerror=new Function('NoJava();');
-	var safeurl=encodeURIComponent(url);
-	var safeport=encodeURIComponent(port);
-	myHttp.exec('CONNECT&URL='+safeurl+'&PORT='+safeport,function(success,status,txt){
-		var s='';
-		var connectWorked = success;
-		var x=txt.indexOf(';');
-		if(x<0)
-			connectWorked=false;
-		else
-		{
-			theapplet=txt.substr(0,x);
-			top.term.allapplets[top.term.currentWindow] = theapplet;
-			txt=txt.substr(x+1);
-			var tk=theapplet+";";
-			var x=txt.indexOf(tk);
-			if(x<0)
-				connectWorked=false;
-			else
-				s=txt.substr(0,x);
-		}
-		//window.onerror=null;
+	if(appletVersion === true)
+	{
+		window.onerror=new Function('NoJava();');
+		var s=theapplet.info();
+		window.onerror=null;
 		var thespan=top.term.document.getElementById(myname+'namer');
 		thespan.innerHTML=s
 		gauges=new Array(0);
+		var connectWorked = theapplet.connectToURL(url,port); 
 		if(!connectWorked)
 		{
-			goRed();
+			connectWorked = theapplet.connectToURL(url,@WebServerPort?CURRENT@); 
+			if(connectWorked) sendData('MUD\n\n\r\r');
 		}
+		if(!connectWorked)
+			goRed();
 		else
 		{
 			goGreen();
 			lastReceived = new Date().getTime();
 			setTimeout('displayData(); top.entry.boxFocus();',pingDelay);
 		}
-	});
+	}
+	else
+	{
+		var safeurl=encodeURIComponent(url);
+		var safeport=encodeURIComponent(port);
+		myHttp.exec('CONNECT&URL='+safeurl+'&PORT='+safeport,function(success,status,txt){
+			var s='';
+			var connectWorked = success;
+			var x=txt.indexOf(';');
+			if(x<0)
+				connectWorked=false;
+			else
+			{
+				theapplet=txt.substr(0,x);
+				top.term.allapplets[top.term.currentWindow] = theapplet;
+				txt=txt.substr(x+1);
+				var tk=theapplet+";";
+				var x=txt.indexOf(tk);
+				if(x<0)
+					connectWorked=false;
+				else
+					s=txt.substr(0,x);
+			}
+			//window.onerror=null;
+			var thespan=top.term.document.getElementById(myname+'namer');
+			thespan.innerHTML=s
+			gauges=new Array(0);
+			if(!connectWorked)
+			{
+				goRed();
+			}
+			else
+			{
+				goGreen();
+				lastReceived = new Date().getTime();
+				setTimeout('displayData(); top.entry.boxFocus();',pingDelay);
+			}
+		});
+	}
 }
 function addToPrompt(x,att)
 {
@@ -478,6 +545,13 @@ top.term.allwindows[top.term.currentWindow]=this;
 <SPAN ID=musicplayer NAME=musicplayer style="display:none"></SPAN>
 <SPAN ID=soundplayer NAME=soundplayer style="display:none"></SPAN>
 <script language=JavaScript>
+<!--
+	if(appletVersion===true)
+	{
+		document.write('<applet code="com.planet_ink.siplet.applet.Siplet" archive="/siplet/siplet.jar" codebase="siplet.jar" width="0" height="0" name="Siplet" id="Siplet" mayscript="TRUE"> </applet><BR>');
+		theapplet=document.getElementById("Siplet").create();
+		top.term.allapplets[top.term.currentWindow] = theapplet;
+	}
 	setTimeout('connect("@MudInfo?DOMAIN@",@MudInfo?PORT@);',500);
 //-->
 </script>

@@ -111,9 +111,9 @@ function closewindow(wname,wnum)
 {
 	var obj = alldivs[wnum];
 	var obj2 = document.getElementById(wname);
-    obj2.style.display="none";
-    //var obj3 = top.term.allapplets[wnum];
-    //obj3.disconnectFromURL();
+	obj2.style.display="none";
+	var obj3 = top.term.allapplets[wnum];
+	obj3.disconnectFromURL();
 	alldivs[wnum]=null;
 	obj2.innerHTML = '';
 	obj.innerHTML = '';
