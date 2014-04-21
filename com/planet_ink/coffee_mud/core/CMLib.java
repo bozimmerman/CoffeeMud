@@ -286,11 +286,9 @@ public class CMLib
 
 	public static final void propertiesLoaded() 
 	{
-Log.errOut("BZ:propertiesLoaded");
 		final CMLib lib=l();
 		for(Library lbry : Library.values())
 		{
-Log.errOut("BZ:propertiesLoaded:"+lbry.name()+"/"+lib.libraries[lbry.ordinal()]);
 			if((!CMProps.isPrivateToMe(lbry.toString())&&(libs[MudHost.MAIN_HOST]!=lib)))
 			{}
 			else
@@ -323,13 +321,15 @@ Log.errOut("BZ:propertiesLoaded:"+lbry.name()+"/"+lib.libraries[lbry.ordinal()])
 		}
 	}
 	
-	public final static CMLibrary library(final char tcode, final Library lcode) {
+	public final static CMLibrary library(final char tcode, final Library lcode) 
+	{
 		if(libs[tcode]!=null)
 			return libs[tcode].libraries[lcode.ordinal()];
 		return null;
 	}
 	
-	public final static Enumeration<CMLibrary> libraries(final Library code) {
+	public final static Enumeration<CMLibrary> libraries(final Library code) 
+	{
 		final Vector<CMLibrary> V=new Vector<CMLibrary>();
 		for(int l=0;l<libs.length;l++)
 			if((libs[l]!=null)

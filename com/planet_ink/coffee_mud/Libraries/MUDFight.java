@@ -104,14 +104,12 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		stateHitPointRecoverFormula = CMath.compileMathExpression(CMProps.getVar(CMProps.Str.FORMULA_HITPOINTRECOVER));
 		stateManaRecoverFormula = CMath.compileMathExpression(CMProps.getVar(CMProps.Str.FORMULA_MANARECOVER));
 		stateMovesRecoverFormula = CMath.compileMathExpression(CMProps.getVar(CMProps.Str.FORMULA_MOVESRECOVER));
-Log.errOut("BZ: asdf: "+attackerFudgeBonusFormula+"/"+pvpAttackerFudgeBonusFormula);
 		return true; 
 	}
 	
 	@Override 
 	public void propertiesLoaded() 
 	{
-Log.errOut("BZ: activate: "+this);
 		activate(); 
 	}
 	
@@ -286,7 +284,6 @@ Log.errOut("BZ: activate: "+this);
 			attacker.phyStats().level() > defender.phyStats().level() ? 1 : -1
 		};
 		final boolean isPVP=(attacker.isPlayer()&&defender.isPlayer());
-Log.errOut("BZ: rollToHit: "+pvpAttackerFudgeBonusFormula+"/"+attackerFudgeBonusFormula+"/"+attacker.phyStats()+"/"+defender.phyStats());
 		int attackerFudgeBonusAmt = (int)Math.round(CMath.parseMathExpression(isPVP?pvpAttackerFudgeBonusFormula:attackerFudgeBonusFormula, vars, 0.0));
 		return rollToHit(adjustedAttackBonus(attacker,defender),adjustedArmor(defender),attackerFudgeBonusAmt);
 	}

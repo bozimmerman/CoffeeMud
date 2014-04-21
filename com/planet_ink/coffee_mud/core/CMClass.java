@@ -2177,6 +2177,7 @@ public class CMClass extends ClassLoader
 				Log.errOut("CMClass","Fatal Error: libraries are unregistered: "+CMLib.unregistered().substring(0,CMLib.unregistered().length()-2));
 				return false;
 			}
+			CMLib.propertiesLoaded(); // cause props loaded on libraries, necc for some stuff
 
 			if((tCode!=MudHost.MAIN_HOST)&&(!CMProps.isPrivateToMe("COMMON")))
 				c.common=baseC.common;
