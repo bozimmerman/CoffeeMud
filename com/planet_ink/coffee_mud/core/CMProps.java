@@ -1412,6 +1412,7 @@ public class CMProps extends Properties
 			setBoolVar(Bool.EMAILFORWARDING,false);
 		}
 
+Log.errOut("BZ:resetSystemVars:propertiesLoaded");
 		CMLib.propertiesLoaded();
 		this.lastReset=System.currentTimeMillis();
 	}

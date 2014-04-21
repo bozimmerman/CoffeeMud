@@ -73,6 +73,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	
 	private static final int ATTACK_ADJUSTMENT = 50;
 
+	@Override
 	public boolean activate()
 	{
 		attackAdjustmentFormula = CMath.compileMathExpression(CMProps.getVar(CMProps.Str.FORMULA_ATTACKADJUSTMENT));
@@ -285,6 +286,7 @@ Log.errOut("BZ: activate: "+this);
 			attacker.phyStats().level() > defender.phyStats().level() ? 1 : -1
 		};
 		final boolean isPVP=(attacker.isPlayer()&&defender.isPlayer());
+Log.errOut("BZ: rollToHit: "+pvpAttackerFudgeBonusFormula+"/"+attackerFudgeBonusFormula+"/"+attacker.phyStats()+"/"+defender.phyStats());
 		int attackerFudgeBonusAmt = (int)Math.round(CMath.parseMathExpression(isPVP?pvpAttackerFudgeBonusFormula:attackerFudgeBonusFormula, vars, 0.0));
 		return rollToHit(adjustedAttackBonus(attacker,defender),adjustedArmor(defender),attackerFudgeBonusAmt);
 	}
