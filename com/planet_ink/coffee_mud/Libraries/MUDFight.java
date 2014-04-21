@@ -209,6 +209,39 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 			}
 		}
 	}
+
+	public boolean doTurnBasedCombat(final MOB mob, final Room R, final Area A)
+	{
+		int index = R.getCombatTurnMobIndex();
+		MOB M=null;
+		if(mob.actions() < 1.0)
+		{
+			if((index >= R.numInhabitants())||((M=R.fetchInhabitant(index))==this)||(M==null)||(!M.isInCombat()))
+			{
+				if((index<0)||(index>=R.numInhabitants()-1))
+					index=-1;
+				for(index++;index<R.numInhabitants();index++)
+				{
+					M=R.fetchInhabitant(index);
+					if((M!=null)&&(M.isInCombat()))
+					{
+						M.setActions((M.actions() - Math.floor(M.actions())) + (CMLib.flags().isSitting(M) ? M.phyStats().speed() / 2.0 : M.phyStats().speed()));
+						R.setCombatTurnMobIndex(index);
+						break;
+					}
+				}
+				return false;
+			}
+			else
+			{
+				return true;
+			}
+		}
+		else
+		if((index < R.numInhabitants())&&((M=R.fetchInhabitant(index))!=null)&&(M!=mob)&&(M.isInCombat()))
+			mob.setActions(mob.actions()-Math.floor(mob.actions()));
+		return false;
+	}
 	
 	public int adjustedArmor(MOB mob)
 	{
