@@ -286,9 +286,11 @@ public class CMLib
 
 	public static final void propertiesLoaded() 
 	{
+System.out.println("BZ:propertiesLoaded");
 		final CMLib lib=l();
 		for(Library lbry : Library.values())
 		{
+System.out.println("BZ:propertiesLoaded:"+lbry.name()+"/"+lib.libraries[lbry.ordinal()]);
 			if((!CMProps.isPrivateToMe(lbry.toString())&&(libs[MudHost.MAIN_HOST]!=lib)))
 			{}
 			else
