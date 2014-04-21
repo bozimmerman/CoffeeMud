@@ -13,6 +13,7 @@
   11. PROMPT command now allows you to include current and max action points per tick %p and %P
   12. A simple fantasy name generator is now included for account and character names.
   13. New combat system: TURNBASED -- rather simple and beta-y for now.  Comments/Suggestions welcome.
+  14. New disable flag: ALL_AGEING to disable the ageing system
    *. make the tech install skill!!! all put/remove commands should check msg.value() for pct chance/competence
       competence divides by manufacturer and class of item. Minimum of 1/5 pts on max other items same manufacturer/type
       using expertises is a great idea.  Every time engineering levels up, gain a rank in appropriate expertise?

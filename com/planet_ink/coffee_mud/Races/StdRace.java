@@ -182,7 +182,9 @@ public class StdRace implements Race
 	
 	public void agingAffects(MOB mob, CharStats baseStats, CharStats charStats)
 	{
-		if((baseStats.getStat(CharStats.STAT_AGE)>0)&&(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.IMMORT)))
+		if((baseStats.getStat(CharStats.STAT_AGE)>0)
+		&&(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.IMMORT))
+		&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.ALL_AGEING)))
 		{
 			switch(baseStats.ageCategory())
 			{

@@ -14,7 +14,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -107,7 +106,7 @@ public class Score extends Affect
 		else
 		if(mob.charStats().getStat(CharStats.STAT_GENDER)=='F') genderName="female";
 		msg.append("You are a ");
-		if(mob.baseCharStats().getStat(CharStats.STAT_AGE)>0)
+		if((mob.baseCharStats().getStat(CharStats.STAT_AGE)>0)&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.ALL_AGEING)))
 			msg.append("^!"+mob.baseCharStats().getStat(CharStats.STAT_AGE)+"^? year old ");
 		msg.append("^!"+genderName);
 		if((!CMSecurity.isDisabled(CMSecurity.DisFlag.RACES))

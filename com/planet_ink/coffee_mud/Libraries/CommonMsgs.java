@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.io.IOException;
@@ -624,7 +623,8 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 
 	public void tickAging(MOB mob, long millisSinceLast)
 	{
-		if(mob==null) return;
+		if((mob==null)||(CMSecurity.isDisabled(CMSecurity.DisFlag.ALL_AGEING))) 
+			return;
 		final long minutesEllapsed=(millisSinceLast / 60000);
 		mob.setAgeMinutes(mob.getAgeMinutes()+minutesEllapsed); // this is really minutes
 		if(minutesEllapsed>0)
@@ -1495,7 +1495,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 				&&(!viewedmob.charStats().getCurrentClass().raceless()))
 				{
 					myDescription.append(viewedmob.name(viewermob)+" the ");
-					if(viewedmob.charStats().getStat(CharStats.STAT_AGE)>0)
+					if((viewedmob.charStats().getStat(CharStats.STAT_AGE)>0)&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.ALL_AGEING)))
 						myDescription.append(viewedmob.charStats().ageName().toLowerCase()+" ");
 					myDescription.append(viewedmob.charStats().raceName());
 				}

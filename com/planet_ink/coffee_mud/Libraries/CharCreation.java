@@ -2815,7 +2815,8 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		mob.baseCharStats().getCurrentClass().startCharacter(mob,false,false);
 		CMLib.utensils().outfit(mob,mob.baseCharStats().getCurrentClass().outfit(mob));
 		mob.setStartRoom(getDefaultStartRoom(mob));
-		mob.baseCharStats().setStat(CharStats.STAT_AGE,mob.playerStats().initializeBirthday(0,mob.baseCharStats().getMyRace()));
+		if(!CMSecurity.isDisabled(CMSecurity.DisFlag.ALL_AGEING))
+			mob.baseCharStats().setStat(CharStats.STAT_AGE,mob.playerStats().initializeBirthday(0,mob.baseCharStats().getMyRace()));
 
 		StringBuffer introText=new CMFile(Resources.buildResourcePath("text")+"newchardone.txt",null,CMFile.FLAG_LOGERRORS).text();
 		try { introText = CMLib.webMacroFilter().virtualPageFilter(introText);}catch(Exception ex){}

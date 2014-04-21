@@ -400,7 +400,7 @@ public class StdMOB implements MOB
 
 	public String genericName() 
 	{
-		if (charStats().getStat(CharStats.STAT_AGE) > 0)
+		if ((charStats().getStat(CharStats.STAT_AGE) > 0)&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.ALL_AGEING)))
 			return charStats().ageName().toLowerCase() + " " + charStats().raceName().toLowerCase();
 		return charStats().raceName().toLowerCase();
 	}

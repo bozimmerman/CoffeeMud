@@ -81,7 +81,8 @@ public class HealthScanProgram extends GenSoftware
 		String genderName=(gender=='M')?"male":(gender=='F')?"female":"neuter";
 		str.append(M.name(viewerM)+" is a "+genderName+" "+M.charStats().getMyRace().name()+".\n\r");
 		String age=CMLib.flags().getAge(M);
-		str.append("Biological age: "+age+".\n\r");
+		if(!CMSecurity.isDisabled(CMSecurity.DisFlag.ALL_AGEING))
+			str.append("Biological age: "+age+".\n\r");
 		str.append("Health: "+CMath.toPct(M.curState().getHitPoints()/M.maxState().getHitPoints())
 				+"  "+CMStrings.removeColors(M.healthText(viewerM))+"\n\r");
 		List<Ability> diseases=CMLib.flags().domainAffects(M, Ability.ACODE_DISEASE);
