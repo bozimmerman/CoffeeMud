@@ -1098,7 +1098,7 @@ public class CMProps extends Properties
 	
 	public final void resetSystemVars()
 	{
-System.out.println("BZ:resetSystemVars");
+Log.errOut("BZ:resetSystemVars");
 		if(CMLib.lang()!=null)
 			CMLib.lang().setLocale(getStr("LANGUAGE"),getStr("COUNTRY"));
 		
@@ -1413,7 +1413,7 @@ System.out.println("BZ:resetSystemVars");
 			setBoolVar(Bool.EMAILFORWARDING,false);
 		}
 
-System.out.println("BZ:resetSystemVars:propertiesLoaded");
+Log.errOut("BZ:resetSystemVars:propertiesLoaded");
 		CMLib.propertiesLoaded();
 		this.lastReset=System.currentTimeMillis();
 	}
