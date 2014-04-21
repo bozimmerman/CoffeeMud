@@ -3050,32 +3050,12 @@ public class StdMOB implements MOB
 
 				if((CMProps.getIntVar(CMProps.Int.COMBATSYSTEM) == CombatLibrary.COMBAT_TURNBASED) && isInCombat())
 				{
-					if(actions() < 1.0)
+					if(CMLib.combat().doTurnBasedCombat(this,R,A))
 					{
-						int index = R.getCombatTurnMobIndex();
-						MOB M=null;
-						if((index >= R.numInhabitants())||((M=R.fetchInhabitant(index))==this)||(M==null)||(!M.isInCombat()))
-						{
-							if((index<0)||(index>=R.numInhabitants()-1))
-								index=-1;
-							for(index++;index<R.numInhabitants();index++)
-							{
-								M=R.fetchInhabitant(index);
-								if((M!=null)&&(M.isInCombat()))
-								{
-									M.setActions(M.actions() + (CMLib.flags().isSitting(M) ? M.phyStats().speed() / 2.0 : M.phyStats().speed()));
-									R.setCombatTurnMobIndex(index);
-									break;
-								}
-							}
-						}
-						else
-						{
-							if (lastTickedTime >= 0)
-								lastTickedTime = System.currentTimeMillis();
-							tickStatus = Tickable.STATUS_NOT;
-							return !removeFromGame;
-						}
+						if (lastTickedTime >= 0)
+							lastTickedTime = System.currentTimeMillis();
+						tickStatus = Tickable.STATUS_NOT;
+						return !removeFromGame;
 					}
 				}
 				else

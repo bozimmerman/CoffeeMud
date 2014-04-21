@@ -82,6 +82,7 @@ public interface CombatLibrary extends CMLibrary
 	public boolean handleConsequences(MOB mob, MOB fighting, String[] commands, int[] lostExperience, String message);
 	public void tickCombat(MOB fighter);
 	public void recoverTick(MOB mob);
+	public boolean doTurnBasedCombat(final MOB mob, final Room R, final Area A);
 	public void expendEnergy(final MOB mob, final boolean expendMovement);
 	
 	/**

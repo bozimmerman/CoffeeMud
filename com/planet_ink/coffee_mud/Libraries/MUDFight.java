@@ -216,7 +216,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		MOB M=null;
 		if(mob.actions() < 1.0)
 		{
-			if((index >= R.numInhabitants())||((M=R.fetchInhabitant(index))==this)||(M==null)||(!M.isInCombat()))
+			if((index >= R.numInhabitants())||((M=R.fetchInhabitant(index))==mob)||(M==null)||(!M.isInCombat()))
 			{
 				if((index<0)||(index>=R.numInhabitants()-1))
 					index=-1;
