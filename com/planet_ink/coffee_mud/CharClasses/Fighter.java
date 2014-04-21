@@ -80,6 +80,7 @@ public class Fighter extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Skill_TwoWeaponFighting",false);
 		
 		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Skill_Bash",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Fighter_WeaponSharpening",false);
 		
 		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Fighter_Cleave",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Fighter_Rescue",true);
