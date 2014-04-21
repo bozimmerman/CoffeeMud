@@ -3436,8 +3436,8 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	public boolean waiting(){return waitRemaining>=0;}
 	public int ticksRemaining(){return ticksRemaining;}
 	public int minsRemaining(){return (int)(ticksRemaining*CMProps.getTickMillis()/60000);}
-	private long tickStatus=Tickable.STATUS_NOT;
-	public long getTickStatus(){return tickStatus;}
+	private int tickStatus=Tickable.STATUS_NOT;
+	public int getTickStatus(){return tickStatus;}
 
 	public boolean tick(Tickable ticking, int tickID)
 	{

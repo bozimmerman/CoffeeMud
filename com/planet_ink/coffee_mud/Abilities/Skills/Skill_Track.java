@@ -36,6 +36,11 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Skill_Track extends StdSkill
 {
+	protected int cacheCode=-1;
+	private int tickStatus=0;
+	protected List<Room> theTrail=null;
+	public int nextDirection=-2;
+	
 	public String ID() { return "Skill_Track"; }
 	public String name(){ return "Tracking";}
 	protected String displayText="(Tracking)";
@@ -48,15 +53,10 @@ public class Skill_Track extends StdSkill
 	public int classificationCode(){return Ability.ACODE_SKILL;}
 	public long flags(){return Ability.FLAG_TRACKING;}
 	private Map<String,List<Room>> cachedPaths=new Hashtable<String,List<Room>>();
-	protected int cacheCode=-1;
-	private long tickStatus=0;
-	public long getTickStatus(){return tickStatus;} 
+	public int getTickStatus(){return tickStatus;} 
 	public int abilityCode(){return cacheCode;}
 	public void setAbilityCode(int newCode){cacheCode=newCode;}
 	public int usageType(){return USAGE_MOVEMENT;}
-
-	protected List<Room> theTrail=null;
-	public int nextDirection=-2;
 
 	public void affectPhyStats(Physical affectedEnv, PhyStats affectableStats)
 	{

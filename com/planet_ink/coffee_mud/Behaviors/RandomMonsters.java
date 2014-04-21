@@ -39,6 +39,7 @@ public class RandomMonsters extends ActiveTicker
 	protected int canImproveCode(){return Behavior.CAN_ROOMS|Behavior.CAN_AREAS;}
 
 	protected Vector maintained=new Vector();
+	protected int tickStatus=0;
 	protected int minMonsters=1;
 	protected int maxMonsters=1;
 	protected int avgMonsters=1;
@@ -265,8 +266,7 @@ public class RandomMonsters extends ActiveTicker
 		return true;
 	}
 
-	protected long tickStatus=0;
-	public long getTickStatus(){return tickStatus;}
+	public int getTickStatus(){return tickStatus;}
 
 	public boolean tick(Tickable ticking, int tickID)
 	{

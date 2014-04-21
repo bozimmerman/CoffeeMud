@@ -236,7 +236,7 @@ public class WaterCurrents extends ActiveTicker
 		{ return new ExpertiseLibrary.SkillCost(ExpertiseLibrary.CostType.TRAIN, Double.valueOf(1.0));}
 		public String _(final String str, final String ... xs) { return CMLib.lang().fullSessionTranslation(str, xs); }
 		public long flags(){return Ability.FLAG_TRANSPORTING;}
-		public long getTickStatus(){return Tickable.STATUS_NOT;}
+		public int getTickStatus(){return Tickable.STATUS_NOT;}
 		public int usageType(){return 0;}
 		//protected void finalize(){ CMClass.unbumpCounter(this,CMClass.CMObjectType.ABILITY); }//removed for mem & perf
 		public long expirationDate(){return 0;}

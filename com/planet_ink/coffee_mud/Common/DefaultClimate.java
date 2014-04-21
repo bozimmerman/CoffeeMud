@@ -35,8 +35,8 @@ public class DefaultClimate implements Climate
 {
 	public String ID(){return "DefaultClimate";}
 	public String name(){return "Climate Object";}
-	protected long tickStatus=Tickable.STATUS_NOT;
-	public long getTickStatus(){return tickStatus;}
+	protected int tickStatus=Tickable.STATUS_NOT;
+	public int getTickStatus(){return tickStatus;}
 	protected int currentWeather=WEATHER_CLEAR;
 	protected int nextWeather=WEATHER_CLEAR;
 	protected int weatherTicker=WEATHER_TICK_DOWN;

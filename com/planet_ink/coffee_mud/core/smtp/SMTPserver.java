@@ -56,7 +56,7 @@ public class SMTPserver extends Thread implements Tickable
 	public CMObject copyOf(){try{return (SMTPserver)this.clone();}catch(Exception e){return newInstance();}}
 	public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 	
-	public long 		tickStatus=STATUS_NOT;
+	public int	 		tickStatus=STATUS_NOT;
 	public boolean 		isOK = false;
 	private MudHost 	mud;
 	public CMProps 		page=null;
@@ -92,7 +92,7 @@ public class SMTPserver extends Thread implements Tickable
 		setDaemon(true);
 	}
 
-	public long getTickStatus(){return tickStatus;}
+	public int getTickStatus(){return tickStatus;}
 	public MudHost getMUD()	{return mud;}
 	public String domainName(){return domain;}
 	public String mailboxName(){return CMProps.getVar(CMProps.Str.MAILBOX);}

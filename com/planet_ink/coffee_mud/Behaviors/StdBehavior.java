@@ -40,7 +40,7 @@ public class StdBehavior implements Behavior
 	protected int canImproveCode(){return Behavior.CAN_MOBS;}
 	public long flags(){return 0;}
 	public boolean grantsAggressivenessTo(MOB M){return false;}
-	public long getTickStatus(){return Tickable.STATUS_NOT;}
+	public int getTickStatus(){return Tickable.STATUS_NOT;}
 	public void initializeClass(){}
 	public String accountForYourself(){ return "";}
 	protected boolean isSavableBehavior=true;

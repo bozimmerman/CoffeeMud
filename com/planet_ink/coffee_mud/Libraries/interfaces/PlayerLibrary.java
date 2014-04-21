@@ -90,7 +90,7 @@ public interface PlayerLibrary extends CMLibrary
 		public Tickable toTickable()
 		{
 			return new Tickable() {
-				public long getTickStatus() {return 0;}
+				public int getTickStatus() {return 0;}
 				public String name() { return name;}
 				public boolean tick(Tickable ticking, int tickID) { return false;}
 				public String ID() { return "StdMOB";}

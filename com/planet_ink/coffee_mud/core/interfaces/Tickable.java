@@ -52,7 +52,7 @@ public interface Tickable extends CMObject
 	 * @see Tickable#tick(Tickable, int)
 	 * @return the numeric status of this object
 	 */
-	public long getTickStatus();
+	public int getTickStatus();
 
 	/**
 	 * this is the method which is called periodically by the threading engine.  How often it
@@ -123,45 +123,45 @@ public interface Tickable extends CMObject
 	public final static int TICKID_SUPPORT=23;
 
 	/** a tick status constant representing  the state of waiting for tick access */
-	public static long STATUS_NOT=0;
+	public static int STATUS_NOT=0;
 	/** a tick status constant representing the state of just starting its tick access */
-	public static long STATUS_START=1;
+	public static int STATUS_START=1;
 	/** a tick status representing CLASS part  of its tick access  */
-	public static long STATUS_CLASS=2;
+	public static int STATUS_CLASS=2;
 	/** a tick status representing RACE part  of its tick access  */
-	public static long STATUS_RACE=3;
+	public static int STATUS_RACE=3;
 	/** a tick status representing COMBAT part  of its tick access  */
-	public static long STATUS_FIGHT=4;
+	public static int STATUS_FIGHT=4;
 	/** a tick status representing WEATHER part  of its tick access  */
-	public static long STATUS_WEATHER=5;
+	public static int STATUS_WEATHER=5;
 	/** a tick status representing DEAD part  of its tick access  */
-	public static long STATUS_DEAD=6;
+	public static int STATUS_DEAD=6;
 	/** a tick status representing ALIVE part  of its tick access  */
-	public static long STATUS_ALIVE=7;
+	public static int STATUS_ALIVE=7;
 	/** a tick status representing OTHER part  of its tick access  */
-	public static long STATUS_REBIRTH=8;
+	public static int STATUS_REBIRTH=8;
 	/** a tick status representing ALIVE part  of its tick access  */
-	public static long STATUS_OTHER=98;
+	public static int STATUS_OTHER=98;
 	/** a tick status representing the end of its tick access  */
-	public static long STATUS_END=99;
+	public static int STATUS_END=99;
 	/** a tick status MASK representing the tick access of an associated behavior */
-	public static long STATUS_BEHAVIOR=512;
+	public static int STATUS_BEHAVIOR=512;
 	/** a tick status MASK representing the tick access of an associated effect */
-	public static long STATUS_AFFECT=1024;
+	public static int STATUS_AFFECT=1024;
 	/** a tick status MASK representing the tick access of an associated script */
-	public static long STATUS_SCRIPT=2048;
+	public static int STATUS_SCRIPT=2048;
 	/** a tick status MASK  whose meaning is class dependent */
-	public static long STATUS_MISC=4096;
+	public static int STATUS_MISC=4096;
 	/** a tick status MASK  whose meaning is class dependent */
-	public static long STATUS_MISC2=8192;
+	public static int STATUS_MISC2=8192;
 	/** a tick status MASK  whose meaning is class dependent */
-	public static long STATUS_MISC3=16384;
+	public static int STATUS_MISC3=16384;
 	/** a tick status MASK  whose meaning is class dependent */
-	public static long STATUS_MISC4=32768;
+	public static int STATUS_MISC4=32768;
 	/** a tick status MASK  whose meaning is class dependent */
-	public static long STATUS_MISC5=65536;
+	public static int STATUS_MISC5=65536;
 	/** a tick status MASK  whose meaning is class dependent */
-	public static long STATUS_MISC6=131072;
+	public static int STATUS_MISC6=131072;
 	/** a tick status MASK  whose meaning is class dependent */
-	public static long STATUS_MISC7=131072*2;
+	public static int STATUS_MISC7=131072*2;
 }

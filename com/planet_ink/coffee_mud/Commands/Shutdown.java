@@ -146,7 +146,7 @@ public class Shutdown extends StdCommand implements Tickable
 		}.start();
 	}
 	
-	public long getTickStatus() { return Tickable.STATUS_ALIVE;}
+	public int getTickStatus() { return Tickable.STATUS_ALIVE;}
 	public String name() { return super.ID(); }
 	public boolean tick(Tickable ticking, int tickID) 
 	{

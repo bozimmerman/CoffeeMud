@@ -60,7 +60,7 @@ public class Auction extends Channel implements Tickable
 	protected static final int STATE_THREE=4;
 	protected static final int STATE_CLOSED=5;
 	
-	public long getTickStatus(){ return Tickable.STATUS_NOT;}
+	public int getTickStatus(){ return Tickable.STATUS_NOT;}
 
 	public void setLiveAuctionState(int code)
 	{

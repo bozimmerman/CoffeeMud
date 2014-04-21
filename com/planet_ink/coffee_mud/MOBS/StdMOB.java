@@ -113,7 +113,7 @@ public class StdMOB implements MOB
 	protected boolean			kickFlag		= false;
 	protected MOB				me 				= this;
 
-	protected long				tickStatus		= Tickable.STATUS_NOT;
+	protected int				tickStatus		= Tickable.STATUS_NOT;
 
 	/* containers of items and attributes */
 	protected 		   SVector<Item>		 	 inventory		= new SVector<Item>(1);
@@ -2977,7 +2977,7 @@ public class StdMOB implements MOB
 	{
 	}
 
-	public long getTickStatus() 
+	public int getTickStatus() 
 	{
 		return tickStatus;
 	}

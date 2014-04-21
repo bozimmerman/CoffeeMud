@@ -50,7 +50,7 @@ public class ThinRoom implements Room
 	public int minRange(){return 0;}
 	public boolean isSavable(){ return false;}
 	public void setSavable(boolean truefalse){}
-	public long getTickStatus(){return Tickable.STATUS_NOT;}
+	public int getTickStatus(){return Tickable.STATUS_NOT;}
 	protected String roomID="";
 	protected Area myArea=null;
 	protected static final Vector empty=new ReadOnlyVector(1);

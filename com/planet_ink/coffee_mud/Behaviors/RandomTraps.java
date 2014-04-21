@@ -51,8 +51,9 @@ public class RandomTraps extends ActiveTicker
 	protected boolean doRooms=false;
 
 	protected Vector restrictedLocales=null;
-	private long tickStatus=Tickable.STATUS_NOT;
-	public long getTickStatus(){return tickStatus;}
+	private int tickStatus=Tickable.STATUS_NOT;
+	
+	public int getTickStatus(){return tickStatus;}
 
 	public RandomTraps()
 	{

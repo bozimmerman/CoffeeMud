@@ -60,8 +60,8 @@ public class StdSpaceShip implements Area, SpaceShip
 	protected long 			radius			= 50;
 	protected double		omlCoeff		= SpaceObject.ATMOSPHERIC_DRAG_STREAMLINE + ((SpaceObject.ATMOSPHERIC_DRAG_BRICK-SpaceObject.ATMOSPHERIC_DRAG_STREAMLINE)/2.0);
 	protected SVector<Room> myRooms 		= new SVector();
-	protected State   		flag			= State.ACTIVE;
-	protected long  		tickStatus  	= Tickable.STATUS_NOT;
+	protected State			flag			= State.ACTIVE;
+	protected int			tickStatus  	= Tickable.STATUS_NOT;
 	protected String		author  		= ""; // will be used for owner, I guess.
 	protected PhyStats  	phyStats		= (PhyStats)CMClass.getCommon("DefaultPhyStats");
 	protected PhyStats  	basePhyStats	= (PhyStats)CMClass.getCommon("DefaultPhyStats");
@@ -527,7 +527,7 @@ public class StdSpaceShip implements Area, SpaceShip
 		return returnable;
 	}
 
-	public long getTickStatus(){ return tickStatus;}
+	public int getTickStatus(){ return tickStatus;}
 	
 	protected boolean changeRoomAir(Room R, Room notifyRoom, int atmoResource)
 	{

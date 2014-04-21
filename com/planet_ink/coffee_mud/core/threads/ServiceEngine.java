@@ -1261,14 +1261,14 @@ public class ServiceEngine implements ThreadEngine
 		
 		if(supportClient==null)
 		supportClient=startTickDown(null,new Tickable(){
-			private long tickStatus = Tickable.STATUS_NOT;
+			private int tickStatus = Tickable.STATUS_NOT;
 			@Override public String ID() { return "THThreads"; }
 			@Override public CMObject newInstance() { return this; }
 			@Override public CMObject copyOf() { return this; }
 			@Override public void initializeClass() {}
 			@Override public int compareTo(CMObject o) { return (o==this)?0:1;}
 			@Override public String name() { return ID(); }
-			@Override public long getTickStatus() { return tickStatus; }
+			@Override public int getTickStatus() { return tickStatus; }
 			@Override public boolean tick(Tickable ticking, int tickID) {
 				if((!CMSecurity.isDisabled(CMSecurity.DisFlag.UTILITHREAD))
 				&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.THREADTHREAD)))

@@ -43,8 +43,8 @@ import java.util.*;
 public class DefaultClan implements Clan
 {
 	public String ID(){return "DefaultClan";}
-	private long tickStatus=Tickable.STATUS_NOT;
-	public long getTickStatus(){return tickStatus;}
+	private int tickStatus=Tickable.STATUS_NOT;
+	public int getTickStatus(){return tickStatus;}
 
 	protected String 			clanName="";
 	protected String			clanCategory=null;

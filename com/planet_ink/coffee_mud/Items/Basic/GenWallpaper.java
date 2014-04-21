@@ -169,7 +169,7 @@ public class GenWallpaper implements Item
 		return text.toString();
 	}
 	public String miscTextFormat(){return CMParms.FORMAT_UNDEFINED;}
-	public long getTickStatus(){return Tickable.STATUS_NOT;}
+	public int getTickStatus(){return Tickable.STATUS_NOT;}
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(destroyed) return false;

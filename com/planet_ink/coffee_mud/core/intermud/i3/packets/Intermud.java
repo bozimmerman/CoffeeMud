@@ -261,14 +261,14 @@ public class Intermud implements Runnable, Persistent, Serializable
 		if((save_thread==null)||(!CMLib.threads().isTicking(save_thread, Tickable.TICKID_SUPPORT)))
 		{
 			save_thread=CMLib.threads().startTickDown(new Tickable(){
-				private long tickStatus=Tickable.STATUS_NOT;
+				private int tickStatus=Tickable.STATUS_NOT;
 				@Override public String ID() { return "I3SaveTick"+Thread.currentThread().getThreadGroup().getName().charAt(0); }
 				@Override public CMObject newInstance() { return this; }
 				@Override public CMObject copyOf() { return this; }
 				@Override public void initializeClass() { }
 				@Override public int compareTo(CMObject o) { return (o==this)?0:1; }
 				@Override public String name() { return ID(); }
-				@Override public long getTickStatus() { return tickStatus; }
+				@Override public int getTickStatus() { return tickStatus; }
 				@Override public boolean tick(Tickable ticking, int tickID) {
 					try {
 						if(CMSecurity.isDisabled(CMSecurity.DisFlag.I3))

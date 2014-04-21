@@ -55,7 +55,7 @@ public class QuestBound implements Ability
 	public int adjustedLevel(MOB mob, int asLevel){return -1;}
 	public boolean bubbleAffect(){return false;}
 	public long flags(){return 0;}
-	public long getTickStatus(){return Tickable.STATUS_NOT;}
+	public int getTickStatus(){return Tickable.STATUS_NOT;}
 	public int usageType(){return 0;}
 	public void initializeClass(){}
 	public ExpertiseLibrary.SkillCost getTrainingCost(MOB mob)

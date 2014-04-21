@@ -173,7 +173,7 @@ public class DefaultSession implements Session
 					@Override public void initializeClass() {}
 					@Override public int compareTo(CMObject o) { return 0;}
 					@Override public String name() { return ID(); }
-					@Override public long getTickStatus() { return 0; }
+					@Override public int getTickStatus() { return 0; }
 					@Override public boolean tick(Tickable ticking, int tickID) {
 						if(debugInputBuf.length()>0)
 						{
@@ -2444,7 +2444,7 @@ public class DefaultSession implements Session
 		public void initializeClass(){}
 		public CMObject copyOf(){try{return (CMObject)this.clone();}catch(Exception e){return newInstance();}}
 		public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
-		public long getTickStatus(){return 0;}
+		public int getTickStatus(){return 0;}
 		private MOB theMOB=null;
 		private int msgCode=-1;
 		private HashSet skipRooms=new HashSet();

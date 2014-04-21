@@ -143,7 +143,7 @@ public class StdCharClass implements CharClass
 	public int classLevelModifier(MOB myChar, Ability skill, int level)
 	{ return level;}
 
-	public long getTickStatus(){return Tickable.STATUS_NOT;}
+	public int getTickStatus(){return Tickable.STATUS_NOT;}
 	
 	public boolean tick(Tickable myChar, int tickID)
 	{

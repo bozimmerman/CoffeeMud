@@ -1231,7 +1231,7 @@ public class StdAbility implements Ability
 	public String accountForYourself(){return name();}
 	public int getTickDownRemaining(){return tickDown;}
 	public void setTickDownRemaining(int newTick){tickDown=newTick;}
-	public long getTickStatus(){ return Tickable.STATUS_NOT;}
+	public int getTickStatus(){ return Tickable.STATUS_NOT;}
 
 	public boolean canBeTaughtBy(MOB teacher, MOB student)
 	{

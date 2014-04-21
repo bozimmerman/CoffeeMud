@@ -264,7 +264,7 @@ public class Factions extends StdLibrary implements FactionManager
 	}
 	
 	public String name(){return "Factions";}
-	public long getTickStatus(){ return Tickable.STATUS_NOT;}
+	public int getTickStatus(){ return Tickable.STATUS_NOT;}
 	public String getName(String factionID) {  Faction f=getFaction(factionID); if(f!=null) return f.name(); return ""; }
 	public int getMinimum(String factionID) {  Faction f=getFaction(factionID); if(f!=null) return f.minimum(); return 0; }
 	public int getMaximum(String factionID) {  Faction f=getFaction(factionID); if(f!=null) return f.maximum(); return 0; }

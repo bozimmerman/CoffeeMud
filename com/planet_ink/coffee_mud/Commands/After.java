@@ -35,7 +35,7 @@ import java.util.*;
 public class After extends StdCommand implements Tickable
 {
 	public String name(){return "SysOpSkills";} // for tickables use
-	public long getTickStatus(){return Tickable.STATUS_NOT;}
+	public int getTickStatus(){return Tickable.STATUS_NOT;}
 
 	public List<AfterCommand> afterCmds=new Vector<AfterCommand>();
 

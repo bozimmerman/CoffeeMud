@@ -53,7 +53,7 @@ public class StdItem implements Item
 	protected int   		material=RawMaterial.RESOURCE_COTTON;
 	protected String[]  	xtraValues=null;
 	protected long  		dispossessionTime=0;
-	protected long  		tickStatus=Tickable.STATUS_NOT;
+	protected int			tickStatus=Tickable.STATUS_NOT;
 	protected String		databaseID="";
 	protected boolean 		destroyed=false;
 	protected Item 			me=this;
@@ -518,7 +518,7 @@ public class StdItem implements Item
 
 	public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 
-	public long getTickStatus(){return tickStatus;}
+	public int getTickStatus(){return tickStatus;}
 	
 	public boolean tick(final Tickable ticking, final int tickID)
 	{

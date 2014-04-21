@@ -47,7 +47,7 @@ public class ServerThread implements Tickable
 	private boolean 		running;
 	private ImudServices	intermuds;
 	private ListenThread 	listen_thread=null;
-	private volatile long 	tickStatus=Tickable.STATUS_NOT;
+	private volatile int 	tickStatus=Tickable.STATUS_NOT;
 	private Map<String,ServerObject> objects;
 	private Map<String,ServerUser>   interactives;
 
@@ -65,7 +65,7 @@ public class ServerThread implements Tickable
 	@Override public void initializeClass() { }
 	@Override public int compareTo(CMObject o) { return (o==this)?0:1; }
 	@Override public String name() { return "I3UserThread"+Thread.currentThread().getThreadGroup().getName().charAt(0); }
-	@Override public long getTickStatus() { return tickStatus; }
+	@Override public int getTickStatus() { return tickStatus; }
 	
 	protected synchronized ServerObject copyObject(String str) throws ObjectLoadException {
 		ServerObject ob;

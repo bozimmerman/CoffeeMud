@@ -58,7 +58,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 	protected boolean 				noDelay			= CMSecurity.isDisabled(CMSecurity.DisFlag.SCRIPTABLEDELAY);
 	
 	protected String				scope			 = "";
-	protected long					tickStatus		 = Tickable.STATUS_NOT;
+	protected int					tickStatus		 = Tickable.STATUS_NOT;
 	protected boolean				isSavable		 = true;
 	protected boolean				alwaysTriggers	 = false;
 
@@ -195,7 +195,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		return CMLib.quests().fetchQuest(named);
 	}
 
-	public long getTickStatus()
+	public int getTickStatus()
 	{
 		Tickable T=altStatusTickable;
 		if(T!=null) return T.getTickStatus();

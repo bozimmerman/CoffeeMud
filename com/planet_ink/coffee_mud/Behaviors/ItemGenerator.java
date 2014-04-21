@@ -180,7 +180,7 @@ public class ItemGenerator extends ActiveTicker
 		public CMObject copyOf(){return this;}
 		public int compareTo(CMObject o){return (o==this)?1:0;}
 		private int tickStatus=0;
-		public long getTickStatus(){return tickStatus;}
+		public int getTickStatus(){return tickStatus;}
 		public boolean tick(Tickable host, int tickID)
 		{
 			List<Item> allItems=(List<Item>)Resources.getResource("ITEMGENERATOR-ALLITEMS");

@@ -76,7 +76,7 @@ public class StdExit implements Exit
 	public String openWord(){return "open";}
 	public String displayText(MOB viewerMob) { return displayText(); }
 	public String name(MOB viewerMob) { return name(); }
-	public long getTickStatus(){return Tickable.STATUS_NOT;}
+	public int getTickStatus(){return Tickable.STATUS_NOT;}
 	public short exitUsage(short change){
 		if(change<0)
 		{

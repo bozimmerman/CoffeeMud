@@ -49,7 +49,8 @@ public class Patroller extends ActiveTicker
 	protected boolean rideOk=false;
 	protected boolean rideOnly=false;
 	protected List<Room> correction=null;
-	protected Vector cachedSteps=null;
+	protected List<String> cachedSteps=null;
+	protected int tickStatus=Tickable.STATUS_NOT;
 	protected WeakReference<Room> startRoom=new WeakReference<Room>(null);
 
 	protected volatile int rideCheckCt = 0;
@@ -78,12 +79,12 @@ public class Patroller extends ActiveTicker
 	}
 
 
-	protected Vector getSteps()
+	protected List<String> getSteps()
 	{
 		if(cachedSteps != null)
 			return cachedSteps;
 		
-		Vector V=new Vector();
+		Vector<String> V=new Vector<String>();
 		String path=getParms().trim();
 		int x=path.indexOf(';');
 		if(x<0) return V;
@@ -135,8 +136,7 @@ public class Patroller extends ActiveTicker
 		return super.okMessage(host,msg);
 	}
 	
-	protected long tickStatus=Tickable.STATUS_NOT;
-	public long getTickStatus(){	return tickStatus;}
+	public int getTickStatus(){	return tickStatus;}
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))
@@ -199,7 +199,7 @@ public class Patroller extends ActiveTicker
 			tickStatus=Tickable.STATUS_MISC+1;
 			
 			Room thatRoom=null;
-			Vector steps=getSteps();
+			List<String> steps=getSteps();
 			if(steps.size()==0)
 			{
 				tickStatus=Tickable.STATUS_NOT;
@@ -207,12 +207,12 @@ public class Patroller extends ActiveTicker
 			}
 			tickStatus=Tickable.STATUS_MISC+2;
 			if((step<0)||(step>=steps.size())) step=0;
-			String nxt=(String)steps.elementAt(step);
+			String nxt=steps.get(step);
 
 			if((nxt.equalsIgnoreCase("RESTART")||nxt.equalsIgnoreCase("REPEAT"))&&(step>0))
 			{
 				step=0;
-				nxt=(String)steps.elementAt(step);
+				nxt=steps.get(step);
 			}
 
 			if(nxt.equalsIgnoreCase("."))

@@ -51,7 +51,7 @@ public class StdRoom implements Room
 	protected String[]		xtraValues=null;
 	protected boolean		mobility=true;
 	protected GridLocale	gridParent=null;
-	protected long			tickStatus=Tickable.STATUS_NOT;
+	protected int			tickStatus=Tickable.STATUS_NOT;
 	protected long			expirationDate=0;
 	protected int			atmosphere=ATMOSPHERE_INHERIT;
 	protected int			climask=CLIMASK_INHERIT;
@@ -59,7 +59,7 @@ public class StdRoom implements Room
 	protected long			lastResourceTime=0;
 	protected boolean		amDestroyed=false;
 	protected boolean		skyedYet=false;
-	protected volatile int	combatTurnMobIndex=0;
+	protected volatile short combatTurnMobIndex=0;
 	protected SVector<Ability>			affects=null;
 	protected SVector<Behavior>			behaviors=null;
 	protected SVector<ScriptingEngine>	scripts=null;
@@ -96,17 +96,38 @@ public class StdRoom implements Room
 	{
 		return myID	;
 	}
-	public String Name(){ return name;}
-	public void setName(String newName){name=newName;}
+	
+	public String Name()
+	{
+		return name;
+	}
+	
+	public void setName(String newName)
+	{
+		name=newName;
+	}
+	
 	public String name()
 	{
 		if(phyStats().newName()!=null) return phyStats().newName();
 		return name;
 	}
-	public String name(MOB viewerMob) { return name(); }
+	
+	public String name(MOB viewerMob) 
+	{
+		return name(); 
+	}
 
-	public int getAtmosphereCode() { return atmosphere; }
-	public void setAtmosphere(int resourceCode) { atmosphere=resourceCode; }
+	public int getAtmosphereCode() 
+	{
+		return atmosphere; 
+	}
+	
+	public void setAtmosphere(int resourceCode) 
+	{
+		atmosphere=resourceCode; 
+	}
+	
 	public int getAtmosphere() 
 	{
 		if(getGridParent()!=null)
@@ -129,12 +150,14 @@ public class StdRoom implements Room
 		}
 		return cachedImageName;
 	}
+	
 	public String rawImage()
 	{
 		if(rawImageName==null) 
 			return "";
 		return rawImageName;
 	}
+	
 	public void setImage(String newImage)
 	{
 		if((newImage==null)||(newImage.trim().length()==0))
@@ -145,7 +168,10 @@ public class StdRoom implements Room
 			cachedImageName=null;
 	}
 	
-	public boolean isGeneric(){return false;}
+	public boolean isGeneric()
+	{
+		return false;
+	}
 	
 	protected void cloneFix(Room R)
 	{
@@ -235,9 +261,22 @@ public class StdRoom implements Room
 			return this.newInstance();
 		}
 	}
-	public int domainType(){return Room.DOMAIN_OUTDOORS_CITY;} 
-	public int getClimateTypeCode(){return climask;}
-	public void setClimateType(int climask){this.climask=climask;}
+	
+	public int domainType()
+	{
+		return Room.DOMAIN_OUTDOORS_CITY;
+	}
+	
+	public int getClimateTypeCode()
+	{
+		return climask;
+	}
+	
+	public void setClimateType(int climask)
+	{
+		this.climask=climask;
+	}
+	
 	public int getClimateType() 
 	{
 		if(getGridParent()!=null)
@@ -248,8 +287,16 @@ public class StdRoom implements Room
 		else
 			return (myArea==null)?CLIMASK_NORMAL:myArea.getClimateType();
 	}
-	public long expirationDate(){return expirationDate;}
-	public void setExpirationDate(long time){expirationDate=time;}
+	
+	public long expirationDate()
+	{
+		return expirationDate;
+	}
+	
+	public void setExpirationDate(long time)
+	{
+		expirationDate=time;
+	}
 	
 	public void setRawExit(int direction, Environmental to)
 	{
@@ -282,10 +329,12 @@ public class StdRoom implements Room
 	{
 		return displayText;
 	}
+	
 	public void setDisplayText(String newDisplayText)
 	{
 		displayText=newDisplayText;
 	}
+	
 	public String description()
 	{
 		if(description == null)
@@ -313,6 +362,7 @@ public class StdRoom implements Room
 		else
 			return ((String)description);
 	}
+	
 	public void setDescription(String newDescription)
 	{
 		if(newDescription.length()==0)
@@ -328,12 +378,18 @@ public class StdRoom implements Room
 	{
 		return CMLib.coffeeMaker().getPropertiesStr(this,true);
 	}
-	public String miscTextFormat(){return CMParms.FORMAT_UNDEFINED;}
+	
+	public String miscTextFormat()
+	{
+		return CMParms.FORMAT_UNDEFINED;
+	}
+	
 	public void setMiscText(String newMiscText)
 	{
 		if(newMiscText.trim().length()>0)
 			CMLib.coffeeMaker().setPropertiesStr(this,newMiscText,true);
 	}
+	
 	public void setRoomID(String newID)
 	{
 		if((myID!=null)&&(!myID.equals(newID)))
@@ -349,11 +405,13 @@ public class StdRoom implements Room
 		else
 			myID=newID;
 	}
+	
 	public Area getArea()
 	{
 		if(myArea==null) return CMClass.randomArea();
 		return myArea;
 	}
+	
 	public void setArea(Area newArea)
 	{
 		if(newArea!=myArea)
@@ -364,8 +422,15 @@ public class StdRoom implements Room
 		}
 	}
 
-	public void setGridParent(GridLocale room){gridParent=room; }
-	public GridLocale getGridParent(){return gridParent;}
+	public void setGridParent(GridLocale room)
+	{
+		gridParent=room; 
+	}
+	
+	public GridLocale getGridParent()
+	{
+		return gridParent;
+	}
 	
 	public void giveASky(int depth)
 	{
@@ -449,7 +514,11 @@ public class StdRoom implements Room
 		}
 	}
 
-	public List<Integer> resourceChoices(){return null;}
+	public List<Integer> resourceChoices()
+	{
+		return null;
+	}
+	
 	public void setResource(int resourceCode)
 	{
 		myResource=resourceCode;
@@ -493,10 +562,20 @@ public class StdRoom implements Room
 		return myResource;
 	}
 
-	public void toggleMobility(boolean onoff){mobility=onoff;}
-	public boolean getMobility(){return mobility;}
+	public void toggleMobility(boolean onoff)
+	{
+		mobility=onoff;
+	}
 	
-	protected Vector herbTwistChart(){return null;}
+	public boolean getMobility()
+	{
+		return mobility;
+	}
+	
+	protected Vector herbTwistChart()
+	{
+		return null;
+	}
 
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
@@ -848,8 +927,12 @@ public class StdRoom implements Room
 			}
 		} });
 	}
-	
-	public long getTickStatus(){return tickStatus;}
+
+	public int getTickStatus()
+	{
+		return tickStatus;
+	}
+
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		tickStatus=Tickable.STATUS_START;
@@ -889,12 +972,15 @@ public class StdRoom implements Room
 	private final EachApplicable<Ability> recoverPhyStatsEffectApplicable=new EachApplicable<Ability>() {
 		public final void apply(final Ability A) { A.affectPhyStats(me,phyStats); } 
 	};
+	
 	private final EachApplicable<Item> recoverPhyStatsItemApplicable=new EachApplicable<Item>(){ 
 		public final void apply(final Item I){ I.affectPhyStats(me,phyStats);} 
 	};
+	
 	private final EachApplicable<MOB> recoverPhyStatsInhabitantApplicable=new EachApplicable<MOB>(){ 
 		public final void apply(final MOB M){ M.affectPhyStats(me,phyStats);} 
 	};
+	
 	public void recoverPhyStats()
 	{
 		basePhyStats.copyInto(phyStats);
@@ -907,12 +993,13 @@ public class StdRoom implements Room
 		eachInhabitant(recoverPhyStatsInhabitantApplicable);
 	}
 	
-	private final EachApplicable<Item> recoverRoomStatsItemApplicable=new EachApplicable<Item>(){ 
+	private final EachApplicable<Item> recoverRoomStatsItemApplicable=new EachApplicable<Item>() { 
 		public final void apply(final Item I) 
 		{ 
 			I.recoverPhyStats();
 		} 
 	};
+	
 	private final EachApplicable<MOB> recoverRoomStatsInhabitantApplicable=new EachApplicable<MOB>(){ 
 		public final void apply(final MOB M) 
 		{ 
@@ -921,6 +1008,7 @@ public class StdRoom implements Room
 			M.recoverMaxState();
 		} 
 	};
+	
 	public void recoverRoomStats()
 	{
 		recoverPhyStats();
@@ -949,6 +1037,7 @@ public class StdRoom implements Room
 			if(A.bubbleAffect()) A.affectPhyStats(affected,affectableStats);
 		} });
 	}
+	
 	public void affectCharStats(final MOB affectedMob, final CharStats affectableStats)
 	{
 		getArea().affectCharStats(affectedMob,affectableStats);
@@ -956,6 +1045,7 @@ public class StdRoom implements Room
 			if(A.bubbleAffect()) A.affectCharStats(affectedMob,affectableStats);
 		} });
 	}
+	
 	public void affectCharState(final MOB affectedMob, final CharState affectableMaxState)
 	{
 		getArea().affectCharState(affectedMob,affectableMaxState);
@@ -963,7 +1053,11 @@ public class StdRoom implements Room
 			if(A.bubbleAffect()) A.affectCharState(affectedMob,affectableMaxState);
 		} });
 	}
-	public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
+	
+	public int compareTo(CMObject o)
+	{
+		return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));
+	}
 
 	protected String parseVariesCodes(final MOB mob, final Area A, final String text)
 	{
@@ -1020,13 +1114,15 @@ public class StdRoom implements Room
 		return text;
 	}
 
-	public String displayText(MOB mob){
+	public String displayText(MOB mob)
+	{
 		return parseVaries(mob,displayText());
 	}
-	public String description(MOB mob){
+	
+	public String description(MOB mob)
+	{
 		return parseVaries(mob,description());
 	}
-
 
 	public void bringMobHere(MOB mob, boolean andFollowers)
 	{
@@ -1098,7 +1194,11 @@ public class StdRoom implements Room
 		recoverRoomStats();
 	}
 
-	public void moveItemTo(Item container) { moveItemTo(container, Expire.Never);}
+	public void moveItemTo(Item container) 
+	{
+		moveItemTo(container, Expire.Never);
+	}
+	
 	public void moveItemTo(Item item, Expire expire, Move... moveFlags)
 	{
 		if(item==null) return;
@@ -1174,6 +1274,7 @@ public class StdRoom implements Room
 		}
 		recoverRoomStats();
 	}
+	
 	public Exit getReverseExit(int direction)
 	{
 		if((direction<0)||(direction>=Directions.NUM_DIRECTIONS()))
@@ -1183,6 +1284,7 @@ public class StdRoom implements Room
 			return opRoom.getExitInDir(Directions.getOpDirectionCode(direction));
 		return null;
 	}
+	
 	public Exit getPairedExit(int direction)
 	{
 		Exit opExit=getReverseExit(direction);
@@ -1275,6 +1377,7 @@ public class StdRoom implements Room
 		source.executeMsg(source,msg);
 		reallySend(source,msg,0);
 	}
+	
 	public void sendOthers(MOB source, CMMsg msg)
 	{
 		reallySend(source,msg,0);
@@ -1287,6 +1390,7 @@ public class StdRoom implements Room
 		sendOthers(everywhereMOB,msg);
 		everywhereMOB.destroy();
 	}
+	
 	public void showHappens(int allCode, Environmental like, String allMessage)
 	{
 		MOB everywhereMOB=CMClass.getMOB("StdMOB");
@@ -1299,6 +1403,7 @@ public class StdRoom implements Room
 		send(everywhereMOB,msg);
 		everywhereMOB.destroy();
 	}
+	
 	public boolean show(MOB source, Environmental target, int allCode, String allMessage)
 	{
 		CMMsg msg=CMClass.getMsg(source,target,null,allCode,allCode,allCode,allMessage);
@@ -1307,11 +1412,8 @@ public class StdRoom implements Room
 		send(source,msg);
 		return true;
 	}
-	public boolean show(MOB source, 
-						Environmental target, 
-						Environmental tool, 
-						int allCode, 
-						String allMessage)
+	
+	public boolean show(MOB source, Environmental target, Environmental tool, int allCode, String allMessage)
 	{
 		CMMsg msg=CMClass.getMsg(source,target,tool,allCode,allCode,allCode,allMessage);
 		if((!CMath.bset(allCode,CMMsg.MASK_ALWAYS))&&(!okMessage(source,msg)))
@@ -1319,6 +1421,7 @@ public class StdRoom implements Room
 		send(source,msg);
 		return true;
 	}
+	
 	public boolean show(MOB source, 
 						Environmental target, 
 						Environmental tool, 
@@ -1333,6 +1436,7 @@ public class StdRoom implements Room
 		send(source,msg);
 		return true;
 	}
+	
 	public boolean show(MOB source,
 						Environmental target,
 						Environmental tool,
@@ -1347,6 +1451,7 @@ public class StdRoom implements Room
 		send(source,msg);
 		return true;
 	}
+	
 	public boolean show(MOB source,
 						Environmental target,
 						Environmental tool,
@@ -1363,6 +1468,7 @@ public class StdRoom implements Room
 		send(source,msg);
 		return true;
 	}
+	
 	public boolean showOthers(MOB source,
 							  Environmental target,
 							  int allCode,
@@ -1374,6 +1480,7 @@ public class StdRoom implements Room
 		reallySend(source,msg,0);
 		return true;
 	}
+	
 	public boolean showOthers(MOB source,
 						   Environmental target,
 						   Environmental tool,
@@ -1386,6 +1493,7 @@ public class StdRoom implements Room
 		reallySend(source,msg,0);
 		return true;
 	}
+	
 	public boolean showSource(MOB source,
 						   Environmental target,
 						   int allCode,
@@ -1397,6 +1505,7 @@ public class StdRoom implements Room
 		source.executeMsg(source,msg);
 		return true;
 	}
+	
 	public boolean showSource(MOB source,
 						   Environmental target,
 						   Environmental tool,
@@ -1416,18 +1525,24 @@ public class StdRoom implements Room
 			return exits[dir];
 		return null;
 	}
+	
 	public Room[] rawDoors()
 	{
 		return doors;
 	}
 	
-	public boolean isSavable(){
+	public boolean isSavable()
+	{
 		return ((roomID().length()>0)
 				&&((getArea()==null)
 					|| (!CMath.bset(getArea().flags(),Area.FLAG_INSTANCE_CHILD)))
 				&&(CMLib.flags().isSavable(this)));
 	}
-	public void setSavable(boolean truefalse){ CMLib.flags().setSavable(this, truefalse);}
+	
+	public void setSavable(boolean truefalse)
+	{ 
+		CMLib.flags().setSavable(this, truefalse);
+	}
 
 	public void destroy()
 	{
@@ -1475,6 +1590,7 @@ public class StdRoom implements Room
 		gridParent=null;
 		amDestroyed=true;
 	}
+	
 	public boolean amDestroyed()
 	{
 		return amDestroyed;
@@ -1487,7 +1603,7 @@ public class StdRoom implements Room
 
 	public void setCombatTurnMobIndex(final int index)
 	{
-		combatTurnMobIndex = index;
+		combatTurnMobIndex = (short)index;
 	}
 
 	public boolean isHere(Environmental E)
@@ -1517,8 +1633,9 @@ public class StdRoom implements Room
 	
 	public MOB fetchRandomInhabitant()
 	{
-	   if(inhabitants.size()==0) return null;
-	   return fetchInhabitant(CMLib.dice().roll(1,numInhabitants(),-1));
+		if(inhabitants.size()==0) 
+			return null;
+		return fetchInhabitant(CMLib.dice().roll(1,numInhabitants(),-1));
 	}
 	
 	public MOB fetchInhabitant(String inhabitantID)
@@ -1529,7 +1646,9 @@ public class StdRoom implements Room
 			mob=(MOB)CMLib.english().fetchEnvironmental(inhabitants,inhabitantID, false);
 		return mob;
 	}
+	
 	private static final ReadOnlyVector<MOB> emptyMOBV=new ReadOnlyVector<MOB>(1);
+
 	public List<MOB> fetchInhabitants(String inhabitantID)
 	{
 		if(inhabitants.size()==0) return emptyMOBV;
@@ -1538,18 +1657,22 @@ public class StdRoom implements Room
 			inhabs=CMLib.english().fetchEnvironmentals(inhabitants,inhabitantID, false);
 		return inhabs;
 	}
+	
 	public void addInhabitant(MOB mob)
 	{
 		inhabitants.addElement(mob);
 	}
+	
 	public Enumeration<MOB> inhabitants()
 	{ 
 		return inhabitants.elements();
 	}
+	
 	public int numInhabitants()
 	{
 		return inhabitants.size();
 	}
+	
 	public int numPCInhabitants()
 	{
 		final Set<MOB> playerInhabitants=CMLib.players().getPlayersHere(this);
@@ -1560,10 +1683,12 @@ public class StdRoom implements Room
 				num++;
 		return num;
 	}
+	
 	public boolean isInhabitant(MOB mob)
 	{
 		return inhabitants.contains(mob);
 	}
+	
 	public MOB fetchInhabitant(int i)
 	{
 		try
@@ -1573,6 +1698,7 @@ public class StdRoom implements Room
 		catch(java.lang.ArrayIndexOutOfBoundsException x){}
 		return null;
 	}
+	
 	public void eachInhabitant(final EachApplicable<MOB> applier)
 	{
 		final List<MOB> inhabitants=this.inhabitants;
@@ -1585,25 +1711,29 @@ public class StdRoom implements Room
 			}
 		} catch(ArrayIndexOutOfBoundsException e){}
 	}
+	
 	public void delInhabitant(MOB mob)
 	{
 		inhabitants.removeElement(mob);
 	}
+	
 	public void delAllInhabitants(boolean destroy)
 	{
-		try{
-		  for(int i=numInhabitants()-1;i>=0;i--)
-		  {
-			  MOB M=fetchInhabitant(i);
-			  if(M!=null)
-			  {
-				  if(destroy || (M.location()==this))
-					  M.setLocation(null);
-				  M.destroy();
-			  }
-		  }
-		  inhabitants.clear();
-	  }catch(Exception e){}
+		try
+		{
+			for(int i=numInhabitants()-1;i>=0;i--)
+			{
+				MOB M=fetchInhabitant(i);
+				if(M!=null)
+				{
+					if(destroy || (M.location()==this))
+						M.setLocation(null);
+					M.destroy();
+				}
+			}
+			inhabitants.clear();
+		}
+		catch(Exception e){}
 	}
 
 	public Item findItem(String itemID)
@@ -1613,7 +1743,12 @@ public class StdRoom implements Room
 		if(item==null) item=(Item)CMLib.english().fetchEnvironmental(contents,itemID,false);
 		return item;
 	}
-	public Enumeration<Item> items() { return contents.elements();}
+	
+	public Enumeration<Item> items() 
+	{
+		return contents.elements();
+	}
+	
 	public Item findItem(Item goodLocation, String itemID)
 	{
 		if(contents.size()==0) return null;
@@ -1621,6 +1756,7 @@ public class StdRoom implements Room
 		if(item==null) item=CMLib.english().fetchAvailableItem(contents,itemID,goodLocation,Wearable.FILTER_ANY,false);
 		return item;
 	}
+	
 	public List<Item> findItems(Item goodLocation, String itemID)
 	{
 		if(contents.size()==0) return new Vector<Item>(1);
@@ -1629,6 +1765,7 @@ public class StdRoom implements Room
 			items=CMLib.english().fetchAvailableItems(contents,itemID,goodLocation,Wearable.FILTER_ANY,false);
 		return items;
 	}
+	
 	public List<Item> findItems(String itemID)
 	{
 		if(contents.size()==0) return new Vector<Item>(1);
@@ -1637,6 +1774,7 @@ public class StdRoom implements Room
 			items=CMLib.english().fetchEnvironmentals(contents,itemID, false);
 		return items;
 	}
+
 	public void addItem(Item item, Expire expire)
 	{
 		addItem(item);
@@ -1666,11 +1804,13 @@ public class StdRoom implements Room
 			item.recoverPhyStats();
 		}
 	}
+	
 	public void delItem(Item item)
 	{
 		contents.removeElement(item);
 		item.recoverPhyStats();
 	}
+	
 	public void delAllItems(boolean destroy)
 	{
 		if(destroy)
@@ -1686,14 +1826,17 @@ public class StdRoom implements Room
 			}
 		contents.clear();
 	}
+	
 	public int numItems()
 	{
 		return contents.size();
 	}
+	
 	public boolean isContent(Item item)
 	{
 		return contents.contains(item);
 	}
+	
 	public Item getItem(int i)
 	{
 		try
@@ -1703,6 +1846,7 @@ public class StdRoom implements Room
 		catch(java.lang.ArrayIndexOutOfBoundsException x){}
 		return null;
 	}
+	
 	public void eachItem(final EachApplicable<Item> applier)
 	{
 		final List<Item> contents=this.contents;
@@ -1715,11 +1859,13 @@ public class StdRoom implements Room
 			}
 		} catch(ArrayIndexOutOfBoundsException e){}
 	}
+	
 	public Item getRandomItem()
 	{
 		if(numItems()==0) return null;
 		return getItem(CMLib.dice().roll(1,numItems(),-1));
 	}
+	
 	public String getContextName(Environmental E)
 	{
 		if(E instanceof Exit)
@@ -1812,6 +1958,7 @@ public class StdRoom implements Room
 		}
 		return found;
 	}
+	
 	public PhysicalAgent fetchFromRoomFavorItems(Item goodLocation, String thingName)
 	{
 		// def was Wearable.FILTER_UNWORNONLY;
@@ -1867,10 +2014,12 @@ public class StdRoom implements Room
 	{
 		return fetchFromMOBRoom(mob,goodLocation,thingName,filter,true);
 	}
+	
 	public PhysicalAgent fetchFromMOBRoomFavorsMOBs(MOB mob, Item goodLocation, String thingName, Filterer<Environmental> filter)
 	{
 		return fetchFromMOBRoom(mob,goodLocation,thingName,filter,false);
 	}
+	
 	private PhysicalAgent fetchFromMOBRoom(MOB mob, Item goodLocation, String thingName, final Filterer<Environmental> filter, boolean favorItems)
 	{
 		PhysicalAgent found=null;
@@ -1941,8 +2090,15 @@ public class StdRoom implements Room
 	}
 
 	public int pointsPerMove(MOB mob)
-	{	return getArea().getClimateObj().adjustMovement(phyStats().weight(),mob,this);	}
-	protected int baseThirst(){return 1;}
+	{	
+		return getArea().getClimateObj().adjustMovement(phyStats().weight(),mob,this);	
+	}
+	
+	protected int baseThirst()
+	{
+		return 1;
+	}
+	
 	public int thirstPerRound(MOB mob)
 	{
 		final int derivedClimate=getClimateType();
@@ -1957,8 +2113,16 @@ public class StdRoom implements Room
 			adjustment+=1;
 		return getArea().getClimateObj().adjustWaterConsumption(baseThirst()+adjustment,mob,this);
 	}
-	public int minRange(){return Integer.MIN_VALUE;}
-	public int maxRange(){return((domainType()&Room.INDOORS)>0)?1:10;}
+	
+	public int minRange()
+	{
+		return Integer.MIN_VALUE;
+	}
+	
+	public int maxRange()
+	{
+		return((domainType()&Room.INDOORS)>0)?1:10;
+	}
 
 	public void addEffect(Ability to)
 	{
@@ -1969,6 +2133,7 @@ public class StdRoom implements Room
 		affects.addElement(to);
 		to.setAffectedOne(this);
 	}
+	
 	public void addNonUninvokableEffect(Ability to)
 	{
 		if(to==null) return;
@@ -1979,6 +2144,7 @@ public class StdRoom implements Room
 		affects.addElement(to);
 		to.setAffectedOne(this);
 	}
+	
 	public void delEffect(Ability to)
 	{
 		if(affects==null) return;
@@ -1989,6 +2155,7 @@ public class StdRoom implements Room
 				affects=new SVector(1);
 		}
 	}
+	
 	public void eachEffect(final EachApplicable<Ability> applier)
 	{
 		final List<Ability> affects=this.affects;
@@ -2002,6 +2169,7 @@ public class StdRoom implements Room
 			}
 		} catch(ArrayIndexOutOfBoundsException e){}
 	}
+	
 	public void delAllEffects(boolean unInvoke)
 	{
 		if(affects==null) return;
@@ -2016,17 +2184,23 @@ public class StdRoom implements Room
 		}
 		affects=new SVector(1);
 	}
+	
 	public int numEffects()
 	{
-		if(affects==null) return 0;
+		if(affects==null) 
+			return 0;
 		return affects.size();
 	}
 	
-	public Enumeration<Ability> effects(){return (affects==null)?EmptyEnumeration.INSTANCE:affects.elements();}
+	public Enumeration<Ability> effects()
+	{
+		return (affects==null)?EmptyEnumeration.INSTANCE:affects.elements();
+	}
 	
 	public Ability fetchEffect(int index)
 	{
-		if(affects==null) return null;
+		if(affects==null) 
+			return null;
 		try
 		{
 			return affects.elementAt(index);
@@ -2034,6 +2208,7 @@ public class StdRoom implements Room
 		catch(java.lang.ArrayIndexOutOfBoundsException x){}
 		return null;
 	}
+	
 	public Ability fetchEffect(String ID)
 	{
 		if(affects==null) return null;
@@ -2060,6 +2235,7 @@ public class StdRoom implements Room
 		to.startBehavior(this);
 		behaviors.addElement(to);
 	}
+	
 	public void delBehavior(Behavior to)
 	{
 		if(behaviors==null) return;
@@ -2071,6 +2247,7 @@ public class StdRoom implements Room
 				CMLib.threads().deleteTick(this,Tickable.TICKID_ROOM_BEHAVIOR);
 		}
 	}
+	
 	public void delAllBehaviors()
 	{
 		boolean didSomething=(behaviors!=null)&&(behaviors.size()>0);
@@ -2079,12 +2256,18 @@ public class StdRoom implements Room
 		if(didSomething && ((scripts==null)||(scripts.size()==0)))
 		  CMLib.threads().deleteTick(this,Tickable.TICKID_ROOM_BEHAVIOR);
 	}
+	
 	public int numBehaviors()
 	{
 		if(behaviors==null) return 0;
 		return behaviors.size();
 	}
-	public Enumeration<Behavior> behaviors() { return (behaviors==null)?EmptyEnumeration.INSTANCE:behaviors.elements();}
+	
+	public Enumeration<Behavior> behaviors() 
+	{
+		return (behaviors==null)?EmptyEnumeration.INSTANCE:behaviors.elements();
+	}
+	
 	public Behavior fetchBehavior(int index)
 	{
 		if(behaviors==null) return null;
@@ -2095,6 +2278,7 @@ public class StdRoom implements Room
 		catch(java.lang.ArrayIndexOutOfBoundsException x){}
 		return null;
 	}
+	
 	public Behavior fetchBehavior(String ID)
 	{
 		if(behaviors==null) return null;
@@ -2103,6 +2287,7 @@ public class StdRoom implements Room
 				return B;
 		return null;
 	}
+	
 	public void eachBehavior(final EachApplicable<Behavior> applier)
 	{
 		final List<Behavior> behaviors=this.behaviors;
@@ -2134,6 +2319,7 @@ public class StdRoom implements Room
 			scripts.addElement(S);
 		}
 	}
+	
 	public void delScript(ScriptingEngine S)
 	{
 		if(scripts!=null)
@@ -2147,6 +2333,7 @@ public class StdRoom implements Room
 			}
 		}
 	}
+	
 	public void delAllScripts()
 	{
 		boolean didSomething=(scripts!=null)&&(scripts.size()>0);
@@ -2155,9 +2342,27 @@ public class StdRoom implements Room
 		if(didSomething && ((behaviors==null)||(behaviors.size()==0)))
 		  CMLib.threads().deleteTick(this,Tickable.TICKID_ROOM_BEHAVIOR);
 	}
-	public int numScripts(){return (scripts==null)?0:scripts.size();}
-	public Enumeration<ScriptingEngine> scripts() { return (scripts==null)?EmptyEnumeration.INSTANCE:scripts.elements();}
-	public ScriptingEngine fetchScript(int x){try{return scripts.elementAt(x);}catch(Exception e){} return null;}
+	
+	public int numScripts()
+	{
+		return (scripts==null)?0:scripts.size();
+	}
+	
+	public Enumeration<ScriptingEngine> scripts() 
+	{
+		return (scripts==null)?EmptyEnumeration.INSTANCE:scripts.elements();
+	}
+	
+	public ScriptingEngine fetchScript(int x)
+	{
+		try
+		{
+			return scripts.elementAt(x);
+		}
+		catch(Exception e){}
+		return null;
+	}
+	
 	public void eachScript(final EachApplicable<ScriptingEngine> applier)
 	{
 		final List<ScriptingEngine> scripts=this.scripts;
@@ -2172,6 +2377,7 @@ public class StdRoom implements Room
 	}
 	
 	public String _(final String str, final String ... xs) { return CMLib.lang().fullSessionTranslation(str, xs); }
+	
 	public int getSaveStatIndex(){return (xtraValues==null)?getStatCodes().length:getStatCodes().length-xtraValues.length;}
 	protected static final String[] STDCODES={"CLASS","DISPLAY","DESCRIPTION","TEXT","AFFBEHAV","IMAGE","CLIMATE","ATMOSPHERE"};
 	private static String[] codes=null;

@@ -358,7 +358,7 @@ public class StdRace implements Race
 	public void level(MOB mob, List<String> gainedAbilityIDs){}
 	public int adjustExperienceGain(MOB host, MOB mob, MOB victim, int amount) { return amount;}
 
-	public long getTickStatus(){return Tickable.STATUS_NOT;}
+	public int getTickStatus(){return Tickable.STATUS_NOT;}
 	public boolean tick(Tickable myChar, int tickID){return true;}
 	public void startRacing(MOB mob, boolean verifyOnly)
 	{

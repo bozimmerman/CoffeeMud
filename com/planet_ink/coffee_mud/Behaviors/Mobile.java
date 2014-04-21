@@ -45,8 +45,8 @@ public class Mobile extends ActiveTicker implements MobileBehavior
 	protected int leash=0;
 	protected Map<Room,Integer> leashHash=null;
 	protected List<Integer> restrictedLocales=null;
-	protected long[] altStatusTaker=null;
-	protected long tickStatus=Tickable.STATUS_NOT;
+	protected int[] altStatusTaker=null;
+	protected int tickStatus=Tickable.STATUS_NOT;
 	protected int ticksSuspended=0;
 	
 	public String accountForYourself()
@@ -54,9 +54,9 @@ public class Mobile extends ActiveTicker implements MobileBehavior
 		return "wandering";
 	}
 	
-	public long getTickStatus()
+	public int getTickStatus()
 	{
-		long[] o=altStatusTaker;
+		int[] o=altStatusTaker;
 		if((o!=null)&&(o[0]!=Tickable.STATUS_NOT))
 			return o[0];
 		return tickStatus;
@@ -245,7 +245,7 @@ public class Mobile extends ActiveTicker implements MobileBehavior
 					}
 				}
 				tickStatus=Tickable.STATUS_MISC2+16;
-				altStatusTaker=new long[1];
+				altStatusTaker=new int[1];
 				CMLib.tracking().beMobile((MOB)ticking,dooropen,wander,false,objections!=null,altStatusTaker,objections);
 				if(mob.location()==room)
 					tickDown=0;

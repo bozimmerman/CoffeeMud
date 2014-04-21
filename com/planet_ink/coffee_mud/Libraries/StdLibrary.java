@@ -26,8 +26,10 @@ public class StdLibrary implements CMLibrary, Tickable
 	public String ID(){return "StdLibrary";}
 	protected String name=ID();
 	public String name(){return name; }
-	protected long tickStatus=Tickable.STATUS_NOT;
+	protected int tickStatus=Tickable.STATUS_NOT;
 	protected TickClient serviceClient=null; 
+	protected boolean isDebugging = false;
+	
 	public CMObject newInstance()
 	{
 		try
@@ -40,15 +42,34 @@ public class StdLibrary implements CMLibrary, Tickable
 		}
 		return new StdLibrary();
 	}
+
 	public CMObject copyOf(){try{return (CMObject)this.clone();}catch(Exception e){return newInstance();}}
 	public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 	public String _(final String str, final String ... xs) { return CMLib.lang().fullSessionTranslation(str, xs); }
-	public void initializeClass(){}
-	public boolean activate(){ return true;}
-	public void propertiesLoaded(){ }
-	public boolean shutdown(){ return true;}
-	public TickClient getServiceClient() { return serviceClient;}
-	protected boolean isDebugging = false;
+	
+	public void initializeClass()
+	{
+	}
+	
+	public boolean activate()
+	{
+		return true;
+	}
+	
+	public void propertiesLoaded()
+	{
+	}
+	
+	public boolean shutdown()
+	{
+		return true;
+	}
+	
+	public TickClient getServiceClient() 
+	{
+		return serviceClient;
+	}
+	
 	public void setThreadStatus(TickClient C, String msg)
 	{
 		if(C!=null)
@@ -58,12 +79,16 @@ public class StdLibrary implements CMLibrary, Tickable
 				Log.debugOut(C.getName(),msg);
 		}
 	}
+	
 	@Override
-	public long getTickStatus() {
+	public int getTickStatus() 
+	{
 		return Tickable.STATUS_NOT;
 	}
+	
 	@Override
-	public boolean tick(Tickable ticking, int tickID) {
+	public boolean tick(Tickable ticking, int tickID) 
+	{
 		return false;
 	}
 	

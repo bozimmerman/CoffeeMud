@@ -878,7 +878,8 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 	public TickClient getServiceClient() { return serviceClient;}
 	
 	@Override
-	public long getTickStatus() {
+	public int getTickStatus() 
+	{
 		return tickStatus;
 	}
 	

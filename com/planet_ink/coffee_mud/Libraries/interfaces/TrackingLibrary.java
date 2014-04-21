@@ -40,7 +40,7 @@ public interface TrackingLibrary extends CMLibrary
 	public List<Room> getRadiantRooms(final Room room, final RFilters filters, final int maxDepth);
 	public void getRadiantRooms(final Room room, List<Room> rooms, final RFilters filters, final Room radiateTo, final int maxDepth, final Set<Room> ignoreRooms);
 	public List<Room> getRadiantRooms(Room room, TrackingFlags flags, int maxDepth);
-	public boolean beMobile(MOB mob, boolean dooropen, boolean wander, boolean roomprefer, boolean roomobject, long[] status, List<Room> rooms);
+	public boolean beMobile(MOB mob, boolean dooropen, boolean wander, boolean roomprefer, boolean roomobject, int[] status, List<Room> rooms);
 	public void wanderAway(MOB M, boolean mindPCs, boolean andGoHome);
 	public void wanderFromTo(MOB M, Room toHere, boolean mindPCs);
 	public void wanderIn(MOB M, Room toHere);

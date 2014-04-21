@@ -49,7 +49,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 		return "complex triggered behaving";
 	}
 
-	public long getTickStatus()
+	public int getTickStatus()
 	{
 		Tickable T=engine();
 		if(T!=null) return T.getTickStatus();

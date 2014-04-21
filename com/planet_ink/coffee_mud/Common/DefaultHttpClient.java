@@ -43,7 +43,7 @@ public class DefaultHttpClient implements HttpClient, Cloneable
 	
 	private static enum HState { PREHEAD, INHEAD, INBODY, PRECHUNK, INCHUNK, POSTINCHUNK, POSTCHUNK }
 	
-	private volatile long tickStatus=Tickable.STATUS_NOT;
+	private volatile int tickStatus=Tickable.STATUS_NOT;
 	protected Map<String,String> reqHeaders=new CaselessTreeMap<String>();
 	protected Map<String,List<String>> respHeaders=new CaselessTreeMap<List<String>>();
 	protected Socket sock = null;
@@ -532,7 +532,7 @@ public class DefaultHttpClient implements HttpClient, Cloneable
 	}
 
 	@Override
-    public long getTickStatus() { return tickStatus; }
+	public int getTickStatus() { return tickStatus; }
 
 	@Override
 	public boolean tick(Tickable ticking, int tickID) 

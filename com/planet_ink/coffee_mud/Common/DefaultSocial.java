@@ -71,7 +71,7 @@ public class DefaultSocial implements Social
 	public void setSourceCode(int code){sourceCode=code;}
 	public void setOthersCode(int code){othersCode=code;}
 	public void setTargetCode(int code){targetCode=code;}
-	public long getTickStatus(){return Tickable.STATUS_NOT;}
+	public int getTickStatus(){return Tickable.STATUS_NOT;}
 	public String MSPfile(){return MSPfile;}
 	public void setMSPfile(String newFile){MSPfile=newFile;}
 	public long expirationDate(){return 0;}

@@ -49,7 +49,7 @@ public class StdArea implements Area
 	protected int		derivedAtmo		=Places.ATMOSPHERE_INHERIT;
 	protected int   	climask			=Area.CLIMASK_NORMAL;
 	protected int		derivedClimate	=Places.CLIMASK_INHERIT;
-	protected long  	tickStatus  	=Tickable.STATUS_NOT;
+	protected int	  	tickStatus  	=Tickable.STATUS_NOT;
 	protected long  	expirationDate  =0;
 	protected long  	lastPlayerTime  =System.currentTimeMillis();
 	protected State   	flag			=State.ACTIVE;
@@ -812,7 +812,7 @@ public class StdArea implements Area
 				a.next().executeMsg(myHost,msg);
 	}
 
-	public long getTickStatus(){ return tickStatus;}
+	public int getTickStatus(){ return tickStatus;}
 
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
