@@ -31,6 +31,8 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.ColorLibrary;
 public class CMStrings
 {
 	private CMStrings(){super();}
+	public final static String[] emptyStringArray=new String[0];
+	
 	private static CMStrings inst=new CMStrings();
 	public final static CMStrings instance(){return inst;}
 	
@@ -603,17 +605,19 @@ public class CMStrings
 	 */
 	public final static void replaceVariables(final StringBuffer str, final String values[])
 	{
-		if(((values==null)||(values.length==0))&&(str.indexOf("@")<0)) 
+		final int numValues=(values==null)?0:values.length;
+		if((numValues==0)&&(str.indexOf("@")<0)) 
 			return;
-		final int valueLen=(values.length<=10)?1:Integer.toString(values.length).length();
+		final int valueLen=(numValues<=10)?1:Integer.toString(numValues).length();
 		for(int i=0;i<str.length()-(1+valueLen);i++)
 			if((str.charAt(i)=='@') && (str.charAt(i+1)=='x') && (Character.isDigit(str.charAt(i+2))))
 			{
 				int endDex=1;
 				while((endDex < valueLen) && (Character.isDigit(str.charAt(i+2+endDex))))
 					endDex++;
-				final int valueDex = Integer.valueOf(str.substring(i+2,i+2+endDex)).intValue();
-				final String newValue = (valueDex >0 && valueDex <= values.length)?values[valueDex-1]:"";
+				final int variableIndex = Integer.valueOf(str.substring(i+2,i+2+endDex)).intValue();
+				@SuppressWarnings("null")
+				final String newValue = ((variableIndex >0) && (variableIndex <= numValues))?values[variableIndex-1]:"";
 				str.delete(i, i+2+endDex);
 				str.insert(i, newValue);
 				i--;
