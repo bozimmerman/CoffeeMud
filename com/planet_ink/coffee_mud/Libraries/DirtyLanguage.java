@@ -654,11 +654,13 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 	
 	public String fullSessionTranslation(final String str, final String ... xs)
 	{
-		return CMStrings.replaceVariables(sessionTranslation(str), xs); 
+		final String sessionStr=sessionTranslation(str);
+		return CMStrings.replaceVariables((sessionStr==null)?str:sessionStr, xs); 
 	}
 	
 	public String _(final String str, final String ... xs)
 	{
-		return CMStrings.replaceVariables(sessionTranslation(str), xs); 
+		final String sessionStr=sessionTranslation(str);
+		return CMStrings.replaceVariables((sessionStr==null)?str:sessionStr, xs); 
 	}
 }
