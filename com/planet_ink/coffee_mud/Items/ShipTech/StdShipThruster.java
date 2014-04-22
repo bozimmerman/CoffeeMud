@@ -171,6 +171,9 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipComponen
 		{
 			switch(msg.targetMinor())
 			{
+			case CMMsg.TYP_DROP:
+				me.setInstalledFactor((float)CMath.div(msg.value(),100.0));
+				break;
 			case CMMsg.TYP_ACTIVATE:
 				if(executeCommand(me, circuitKey, msg))
 					me.activate(true);

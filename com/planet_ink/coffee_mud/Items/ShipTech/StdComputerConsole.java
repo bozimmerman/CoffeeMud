@@ -266,6 +266,9 @@ public class StdComputerConsole extends StdRideable implements ShipComponent, El
 		{
 			switch(msg.targetMinor())
 			{
+			case CMMsg.TYP_DROP:
+				setInstalledFactor((float)CMath.div(msg.value(),100.0));
+				break;
 			case CMMsg.TYP_READ:
 				if(msg.source().riding()!=this)
 					lastReader=msg.source();

@@ -133,6 +133,9 @@ public class StdElecCompItem extends StdElecItem implements ShipComponent
 		{
 			switch(msg.targetMinor())
 			{
+			case CMMsg.TYP_DROP:
+				setInstalledFactor((float)CMath.div(msg.value(),100.0));
+				break;
 			case CMMsg.TYP_ACTIVATE:
 				if((msg.source().location()!=null)&&(!CMath.bset(msg.targetMajor(), CMMsg.MASK_CNTRLMSG)))
 					msg.source().location().show(msg.source(), this, CMMsg.MSG_OK_VISUAL, "<S-NAME> activate(s) <T-NAME>.");
