@@ -603,6 +603,8 @@ public class CMStrings
 	 */
 	public final static void replaceVariables(final StringBuffer str, final String values[])
 	{
+		if(((values==null)||(values.length==0))&&(str.indexOf("@")<0)) 
+			return;
 		final int valueLen=(values.length<=10)?1:Integer.toString(values.length).length();
 		for(int i=0;i<str.length()-(1+valueLen);i++)
 			if((str.charAt(i)=='@') && (str.charAt(i+1)=='x') && (Character.isDigit(str.charAt(i+2))))
@@ -628,6 +630,8 @@ public class CMStrings
 	 */
 	public final static String replaceVariables(final String str, final String values[])
 	{
+		if(((values==null)||(values.length==0))&&(str.indexOf('@')<0)) 
+			return str;
 		final StringBuffer buf = new StringBuffer(str);
 		replaceVariables(buf,values);
 		return buf.toString();
