@@ -167,7 +167,7 @@ public class AstroEngineering extends TechSkill
 	{
 		if(commands.size()<1)
 		{
-			mob.tell("What would you like to install or repair?");
+			mob.tell("What would you like to install, repair, or enhance?");
 			return false;
 		}
 		aborted = false;
