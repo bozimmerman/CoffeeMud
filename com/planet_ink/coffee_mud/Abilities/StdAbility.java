@@ -51,7 +51,7 @@ public class StdAbility implements Ability
 	protected long 				lastCastHelp	= 0;
 	protected boolean 			amDestroyed		= false;
 	
-	private static final int[] STATIC_USAGE_NADA=new int[3];
+	private static final int[] STATIC_USAGE_NADA= new int[3];
 	
 	public StdAbility()
 	{
@@ -82,10 +82,27 @@ public class StdAbility implements Ability
 	public void setImage(String newImage){}
 	public static final String[] empty={};
 	public String[] triggerStrings(){return empty;}
-	public int maxRange(){return adjustedMaxInvokerRange(0);}
-	public int minRange(){return 0;}
-	public double castingTime(final MOB mob, final List<String> cmds){return CMProps.getActionSkillCost(ID());}
-	public double combatCastingTime(final MOB mob, final List<String> cmds){return CMProps.getCombatActionSkillCost(ID());}
+	
+	public int maxRange()
+	{
+		return adjustedMaxInvokerRange(0);
+	}
+	
+	public int minRange()
+	{
+		return 0;
+	}
+	
+	public double castingTime(final MOB mob, final List<String> cmds)
+	{
+		return CMProps.getActionSkillCost(ID());
+	}
+	
+	public double combatCastingTime(final MOB mob, final List<String> cmds)
+	{
+		return CMProps.getCombatActionSkillCost(ID());
+	}
+	
 	public double checkedCastingCost(final MOB mob, final List<String> commands)
 	{
 		if(mob!=null)
@@ -97,13 +114,38 @@ public class StdAbility implements Ability
 		}
 		return castingTime(mob,commands);
 	}
-	public boolean putInCommandlist(){return true;}
-	public boolean isAutoInvoked(){return false;}
-	public boolean bubbleAffect(){return false;}
-	protected int getTicksBetweenCasts() { return 0;}
-	protected long getTimeOfNextCast(){ return 0;}
+	
+	public boolean putInCommandlist()
+	{
+		return true;
+	}
+	
+	public boolean isAutoInvoked()
+	{
+		return false;
+	}
+	
+	public boolean bubbleAffect()
+	{
+		return false;
+	}
+	
+	protected int getTicksBetweenCasts() 
+	{
+		return 0;
+	}
+	
+	protected long getTimeOfNextCast()
+	{
+		return 0;
+	}
+	
 	protected void setTimeOfNextCast(long absoluteTime){}
-	protected ExpertiseLibrary.SkillCostDefinition getRawTrainingCost() { return CMProps.getSkillTrainCostFormula(ID()); }
+	
+	protected ExpertiseLibrary.SkillCostDefinition getRawTrainingCost() 
+	{
+		return CMProps.getSkillTrainCostFormula(ID()); 
+	}
 
 	public ExpertiseLibrary.SkillCost getTrainingCost(MOB mob)
 	{
@@ -148,7 +190,12 @@ public class StdAbility implements Ability
 		}
 		return iniPracticesToPractice();
 	}
-	protected int iniPracticesToPractice(){return 1;}
+	
+	protected int iniPracticesToPractice()
+	{
+		return 1;
+	}
+	
 	public void setTimeOfNextCast(MOB caster)
 	{
 		long newTime=(getTicksBetweenCasts()*CMProps.getTickMillis());
@@ -159,14 +206,39 @@ public class StdAbility implements Ability
 		setTimeOfNextCast(System.currentTimeMillis() +newTime);
 	}
 	
-	public String miscTextFormat(){return CMParms.FORMAT_UNDEFINED;}
-	public long flags(){return 0;}
-	public int usageType(){return USAGE_MANA;}
+	public String miscTextFormat()
+	{
+		return CMParms.FORMAT_UNDEFINED;
+	}
+	
+	public long flags()
+	{
+		return 0;
+	}
+
+	public int usageType()
+	{
+		return USAGE_MANA;
+	}
+
 	protected int overrideMana(){return -1;} //-1=normal, Ability.COST_ALL=all, Ability.COST_PCT
-	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	public int enchantQuality(){return abstractQuality();}
-	public void initializeClass(){}
-	public String _(final String str, final String ... xs) { return CMLib.lang().fullSessionTranslation(str, xs); }
+
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	public int enchantQuality()
+	{
+		return abstractQuality();
+	}
+	
+	public void initializeClass() { }
+
+	public String _(final String str, final String ... xs) 
+	{
+		return CMLib.lang().fullSessionTranslation(str, xs);
+	}
 
 	protected int castingQuality(MOB mob, Physical target, int abstractQuality)
 	{
@@ -228,7 +300,8 @@ public class StdAbility implements Ability
 	protected int getXTIMELevel(MOB mob){return expertise(mob,ExpertiseLibrary.XFLAG_TIME);}
 	protected int getXPCOSTLevel(MOB mob){return expertise(mob,ExpertiseLibrary.XFLAG_XPCOST);}
 
-	protected int getXPCOSTAdjustment(MOB mob, int xpLoss){
+	protected int getXPCOSTAdjustment(MOB mob, int xpLoss)
+	{
 		int xLevel=getXPCOSTLevel(mob);
 		if(xLevel<=0) return xpLoss;
 		return xpLoss-(int)Math.round(CMath.mul(xpLoss,CMath.mul(.05,xLevel)));
@@ -241,8 +314,6 @@ public class StdAbility implements Ability
 		if(level<=0) return  max;
 		return max+(int)Math.round(Math.ceil(CMath.mul(max,CMath.mul(level,0.2))));
 	}
-
-
 
 	/**
 	 * Designates whether, when used as a property/effect, what sort of objects this
@@ -267,33 +338,93 @@ public class StdAbility implements Ability
 										 Ability.CAN_ROOMS|
 										 Ability.CAN_EXITS;}
 
-	public int classificationCode(){ return Ability.ACODE_SKILL; }
+	public int classificationCode()
+	{
+		return Ability.ACODE_SKILL;
+	}
 
 	public long expirationDate()
 	{
 		return (tickDown) * CMProps.getTickMillis();
 	}
-	public void setExpirationDate(long time){
+	
+	public void setExpirationDate(long time)
+	{
 		if(time>System.currentTimeMillis())
 			tickDown=(int)((time-System.currentTimeMillis())/CMProps.getTickMillis());
 	}
-	public boolean isNowAnAutoEffect(){ return isAnAutoEffect; }
-	public boolean isSavable(){ return savable;}
-	public void setSavable(boolean truefalse)   { savable=truefalse; }
-	public void destroy(){amDestroyed=true; affected=null; invoker=null; miscText=null; }
-	public boolean amDestroyed(){return amDestroyed;}
-	public void setName(String newName){}
-	public void setDisplayText(String newDisplayText){}
-	public void setDescription(String newDescription){}
-	public int abilityCode(){return 0;}
-	public void setAbilityCode(int newCode){}
-	public List<String> externalFiles(){return null;}
-	protected long minCastWaitTime(){return 0;}
+	
+	public boolean isNowAnAutoEffect()
+	{
+		return isAnAutoEffect;
+	}
+	
+	public boolean isSavable()
+	{
+		return savable;
+	}
+	
+	public void setSavable(boolean truefalse)
+	{
+		savable=truefalse;
+	}
+	
+	public void destroy()
+	{
+		amDestroyed=true;
+		affected=null;
+		invoker=null;
+		miscText=null;
+	}
+	
+	public boolean amDestroyed()
+	{
+		return amDestroyed;
+	}
+	
+	public void setName(String newName)
+	{}
+	
+	public void setDisplayText(String newDisplayText)
+	{}
+	
+	public void setDescription(String newDescription)
+	{}
+	
+	public int abilityCode()
+	{
+		return 0;
+	}
+	
+	public void setAbilityCode(int newCode)
+	{}
+	
+	public List<String> externalFiles()
+	{
+		return null;
+	}
+	
+	protected long minCastWaitTime()
+	{
+		return 0;
+	}
 
 	// ** For most abilities, the following stuff actually matters */
-	public void setMiscText(String newMiscText)    { miscText=newMiscText;}
-	public String text(){ return miscText;}
-	public int proficiency(){ return proficiency;}
+	public void setMiscText(String newMiscText)
+	{
+		miscText=newMiscText;
+	}
+	
+	public String text()
+	{
+		return miscText;
+	}
+	
+	public int proficiency()
+	{ 
+		return proficiency;
+	}
+	
 	public void setProficiency(int newProficiency)
 	{
 		proficiency=newProficiency;
@@ -401,8 +532,16 @@ public class StdAbility implements Ability
 		return adjLevel+getXLEVELLevel(caster);
 	}
 
-	public boolean canTarget(int can_code){return CMath.bset(canTargetCode(),can_code);}
-	public boolean canAffect(int can_code){return CMath.bset(canAffectCode(),can_code);}
+	public boolean canTarget(int can_code)
+	{
+		return CMath.bset(canTargetCode(),can_code);
+	}
+	
+	public boolean canAffect(int can_code)
+	{
+		return CMath.bset(canAffectCode(),can_code);
+	}
+	
 	public boolean canAffect(Physical P)
 	{
 		if((P==null)&&(canAffectCode()==0)) return true;
@@ -427,7 +566,9 @@ public class StdAbility implements Ability
 	}
 
 	public MOB getTarget(MOB mob, Vector commands, Environmental givenTarget)
-	{ return getTarget(mob,commands,givenTarget,false,false);    }
+	{
+		return getTarget(mob,commands,givenTarget,false,false);
+	}
 
 	public MOB getTarget(MOB mob, Vector commands, Environmental givenTarget, boolean quiet, boolean alreadyAffOk)
 	{
@@ -437,7 +578,7 @@ public class StdAbility implements Ability
 			target=(MOB)givenTarget;
 		else
 		if((targetName.length()==0)&&(mob.isInCombat())&&(castingQuality(mob,mob.getVictim())==Ability.QUALITY_MALICIOUS)&&(mob.getVictim()!=null))
-		   target=mob.getVictim();
+			target=mob.getVictim();
 		else
 		if((targetName.length()==0)&&(castingQuality(mob,mob)==Ability.QUALITY_BENEFICIAL_SELF))
 			target=mob;
@@ -446,7 +587,7 @@ public class StdAbility implements Ability
 			target=mob;
 		else
 		if(targetName.equalsIgnoreCase("self")||targetName.equalsIgnoreCase("me"))
-		   target=mob;
+			target=mob;
 		else
 		if((targetName.length()>0)&&(mob.location()!=null))
 		{
@@ -634,11 +775,15 @@ public class StdAbility implements Ability
 		return (Item)target;
 	}
 
-	public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
+	public int compareTo(CMObject o)
+	{
+		return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));
+	}
 
 	protected void cloneFix(Ability E)
 	{
 	}
+	
 	public CMObject copyOf()
 	{
 		try
@@ -684,6 +829,7 @@ public class StdAbility implements Ability
 	{
 		return affected;
 	}
+
 	public void setAffectedOne(Physical P)
 	{
 		affected=P;
@@ -725,8 +871,10 @@ public class StdAbility implements Ability
 
 	public void affectPhyStats(Physical affectedEnv, PhyStats affectableStats)
 	{}
+
 	public void affectCharStats(MOB affectedMob, CharStats affectableStats)
 	{}
+
 	public void affectCharState(MOB affectedMob, CharState affectableMaxState)
 	{}
 
@@ -734,7 +882,11 @@ public class StdAbility implements Ability
 	{
 		return invoker;
 	}
-	public void setInvoker(MOB mob){invoker=mob;}
+
+	public void setInvoker(MOB mob)
+	{
+		invoker=mob;
+	}
 
 	protected int[] buildCostArray(MOB mob, int consumed, int minimum)
 	{
@@ -775,7 +927,8 @@ public class StdAbility implements Ability
 				usageCosts[0]=((consumed-costDown)/divider);
 			if(usageCosts[0]<minimum) usageCosts[0]=minimum;
 		}
-		if(useMoves){
+		if(useMoves)
+		{
 			if(consumed==COST_ALL)
 			{
 				usageCosts[1]=(mob.maxState().getMovement()-costDown);
@@ -789,7 +942,8 @@ public class StdAbility implements Ability
 				usageCosts[1]=((consumed-costDown)/divider);
 			if(usageCosts[1]<minimum) usageCosts[1]=minimum;
 		}
-		if(useHits){
+		if(useHits)
+		{
 			if(consumed==COST_ALL)
 			{
 				usageCosts[2]=(mob.maxState().getHitPoints()-costDown);
@@ -933,6 +1087,7 @@ public class StdAbility implements Ability
 	{
 		return true;
 	}
+
 	public boolean invoke(MOB mob, Physical target, boolean auto, int asLevel)
 	{
 		Vector V=new Vector(1);
@@ -1086,11 +1241,7 @@ public class StdAbility implements Ability
 	}
 
 
-	public boolean maliciousAffect(MOB mob,
-								   Physical target,
-								   int asLevel,
-								   int tickAdjustmentFromStandard,
-								   int additionAffectCheckCode)
+	public boolean maliciousAffect(MOB mob, Physical target, int asLevel, int tickAdjustmentFromStandard, int additionAffectCheckCode)
 	{
 		boolean ok=true;
 		final Room room=mob.location();
@@ -1117,9 +1268,7 @@ public class StdAbility implements Ability
 		return ok;
 	}
 
-	public boolean beneficialWordsFizzle(MOB mob,
-										Environmental target,
-										String message)
+	public boolean beneficialWordsFizzle(MOB mob, Environmental target, String message)
 	{
 		// it didn't work, but tell everyone you tried.
 		CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_SPEAK,"^T"+message+"^?");
@@ -1130,9 +1279,7 @@ public class StdAbility implements Ability
 		return false;
 	}
 
-	public boolean beneficialVisualFizzle(MOB mob,
-										  Environmental target,
-										  String message)
+	public boolean beneficialVisualFizzle(MOB mob, Environmental target, String message)
 	{
 		// it didn't work, but tell everyone you tried.
 		CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_OK_VISUAL,message);
@@ -1144,9 +1291,7 @@ public class StdAbility implements Ability
 		return false;
 	}
 
-	public boolean maliciousFizzle(MOB mob,
-								   Environmental target,
-								   String message)
+	public boolean maliciousFizzle(MOB mob, Environmental target, String message)
 	{
 		// it didn't work, but tell everyone you tried.
 		CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_OK_VISUAL|CMMsg.MASK_MALICIOUS,message);
@@ -1172,10 +1317,8 @@ public class StdAbility implements Ability
 		}
 		return tickAdjustmentFromStandard;
 	}
-	public boolean beneficialAffect(MOB mob,
-								   Physical target,
-								   int asLevel,
-								   int tickAdjustmentFromStandard)
+
+	public boolean beneficialAffect(MOB mob, Physical target, int asLevel, int tickAdjustmentFromStandard)
 	{
 		boolean ok=true;
 		if(ok)
@@ -1228,10 +1371,25 @@ public class StdAbility implements Ability
 		savable=true;
 	}
 
-	public String accountForYourself(){return name();}
-	public int getTickDownRemaining(){return tickDown;}
-	public void setTickDownRemaining(int newTick){tickDown=newTick;}
-	public int getTickStatus(){ return Tickable.STATUS_NOT;}
+	public String accountForYourself()
+	{
+		return name();
+	}
+	
+	public int getTickDownRemaining()
+	{
+		return tickDown;
+	}
+	
+	public void setTickDownRemaining(int newTick)
+	{
+		tickDown=newTick;
+	}
+	
+	public int getTickStatus()
+	{
+		return Tickable.STATUS_NOT;
+	}
 
 	public boolean canBeTaughtBy(MOB teacher, MOB student)
 	{
@@ -1390,7 +1548,9 @@ public class StdAbility implements Ability
 	}
 
 	protected int verbalCastMask(MOB mob,Physical target, boolean auto)
-	{ return verbalCastCode(mob,target,auto)&CMMsg.MAJOR_MASK;}
+	{ 
+		return verbalCastCode(mob,target,auto)&CMMsg.MAJOR_MASK;
+	}
 
 	protected int somanticCastCode(MOB mob, Physical target, boolean auto)
 	{
@@ -1400,8 +1560,11 @@ public class StdAbility implements Ability
 		if(auto) affectType=affectType|CMMsg.MASK_ALWAYS;
 		return affectType;
 	}
+	
 	protected int somanticCastMask(MOB mob, Physical target, boolean auto)
-	{ return somanticCastCode(mob,target,auto)&CMMsg.MAJOR_MASK;}
+	{
+		return somanticCastCode(mob,target,auto)&CMMsg.MAJOR_MASK;
+	}
 
 	public boolean canBePracticedBy(MOB teacher, MOB student)
 	{
@@ -1525,11 +1688,11 @@ public class StdAbility implements Ability
 			}
 		}
 	}
+	
 	public void makeLongLasting()
 	{
 		tickDown=Integer.MAX_VALUE;
 	}
-
 
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
@@ -1574,7 +1737,10 @@ public class StdAbility implements Ability
 		return true;
 	}
 
-	public boolean isGeneric(){return false;}
+	public boolean isGeneric()
+	{
+		return false;
+	}
 
 	public int getSaveStatIndex(){return getStatCodes().length;}
 	private static final String[] CODES={"CLASS","TEXT","TICKDOWN"};
