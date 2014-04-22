@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /* 
@@ -39,6 +38,8 @@ public class Fighter_WeaponSharpening extends FighterSkill
 {
 	public String ID() { return "Fighter_WeaponSharpening"; }
 	public String name(){ return "Weapon Sharpening";}
+	protected String displayString="Sharpening";
+	public String displayText(){ return "("+displayString+")";}
 	private static final String[] triggerStrings = {"WEAPONSHARPENING","SHARPEN"};
 	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	public String[] triggerStrings(){return triggerStrings;}
@@ -47,18 +48,10 @@ public class Fighter_WeaponSharpening extends FighterSkill
 	public int maxRange(){return adjustedMaxInvokerRange(0);}
 	public int classificationCode(){ return Ability.ACODE_SKILL|Ability.DOMAIN_WEAPON_USE;}
 	public int usageType(){return USAGE_MANA;}
-	private int damageBonus = 1;
+	protected final static int TICKS_TO_SHARPEN=8;
+	protected Item weapon=null;
+	protected int damageBonus = 1;
 	
-	public void executeMsg(Environmental host, CMMsg msg)
-	{
-		super.executeMsg(host,msg);
-		if(affected instanceof Item)
-		{
-			if(((Item)affected).subjectToWearAndTear()&&(((Item)affected).usesRemaining()<95))
-				unInvoke();
-		}
-	}
-
 	public void setMiscText(String newMiscText) 
 	{
 		super.setMiscText(newMiscText);
@@ -66,8 +59,55 @@ public class Fighter_WeaponSharpening extends FighterSkill
 			damageBonus=CMath.s_int(newMiscText);
 	}
 	
+	public boolean tick(Tickable ticking, int tickID)
+	{
+		if(affected instanceof MOB)
+		{
+			MOB mob=(MOB)affected;
+			if((weapon==null)||(weapon.owner()!=affected)||(weapon.amDestroyed())||(!CMLib.flags().isInTheGame(mob, true))||(mob.location()==null))
+			{
+				weapon=null;
+				unInvoke();
+				return false;
+			}
+			if((this.tickDown % 2)==0)
+			{
+				mob.location().show(mob, weapon, CMMsg.MSG_HANDS, "<S-NAME> continue(s) sharpening <T-NAME> ("+CMath.toPct(CMath.div((TICKS_TO_SHARPEN-tickDown+1),TICKS_TO_SHARPEN))+").");
+			}
+		}
+		else
+		if(affected instanceof Item)
+		{
+			final Item weapon=(Item)affected;
+			if((weapon==null)
+			||(weapon.amDestroyed())
+			||(weapon.subjectToWearAndTear()&&(weapon.usesRemaining()<95)))
+			{
+				this.weapon=null;
+				unInvoke();
+				return false;
+			}
+		}
+		return super.tick(ticking, tickID);
+	}
+	
 	public void unInvoke()
 	{
+		if((affected instanceof MOB)
+		&&(weapon != null)
+		&&(!weapon.amDestroyed()))
+		{
+			MOB mob=(MOB)affected;
+			beneficialAffect(mob,weapon,0,0);
+			Ability A=weapon.fetchEffect(ID());
+			if(A!=null){ A.setMiscText(text()); A.makeLongLasting();}
+			weapon.recoverPhyStats();
+			if(mob.location()!=null)
+				mob.location().recoverRoomStats();
+			mob.tell(mob,weapon,null,"You have finished sharpening <T-NAME>.");
+			weapon = null;
+		}
+		else
 		if((affected instanceof Item)
 		&&(!((Item)affected).amDestroyed())
 		&&(((Item)affected).owner() instanceof MOB))
@@ -88,23 +128,23 @@ public class Fighter_WeaponSharpening extends FighterSkill
 		}
 	}
 	
-	public int castingQuality(MOB mob, Physical target)
-	{
-		if(mob!=null)
-		{
-			if(mob.isInCombat())
-				return Ability.QUALITY_INDIFFERENT;
-		}
-		return super.castingQuality(mob,target);
-	}
-	
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		Item weapon=super.getTarget(mob,null,givenTarget,null,commands,Wearable.FILTER_WORNONLY);
+		if(mob.fetchEffect(ID())!=null)
+		{
+			mob.tell(_("You are already sharpening something."));
+			return false;
+		}
+		Item weapon=super.getTarget(mob,null,givenTarget,null,commands,Wearable.FILTER_ANY);
 		if(weapon==null) return false;
 		if(!(weapon instanceof Weapon))
 		{
 			mob.tell(mob,weapon,null,_("<T-NAME> is not a weapon."));
+			return false;
+		}
+		if(weapon.fetchEffect(ID())!=null)
+		{
+			mob.tell(mob,weapon,null,_("<T-NAME> is already sharp."));
 			return false;
 		}
 		boolean isSharpenable;
@@ -163,16 +203,30 @@ public class Fighter_WeaponSharpening extends FighterSkill
 		boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			String str=auto?_("<T-NAME> looks sharper!"):_("<S-NAME> sharpen(s) <T-NAMESELF>.");
+			String str=auto?_("<T-NAME> looks sharper!"):_("<S-NAME> start(s) sharpening <T-NAMESELF>.");
 			CMMsg msg=CMClass.getMsg(mob,weapon,this,CMMsg.MSG_NOISYMOVEMENT,str);
 			if(mob.location().okMessage(mob,msg))
 			{
+				displayString="Sharpening "+weapon.name();
 				mob.location().send(mob,msg);
-				beneficialAffect(mob,weapon,asLevel,0);
-				Ability A=weapon.fetchEffect(ID());
-				if(A!=null){ A.setMiscText(""+bonus); A.makeLongLasting();}
-				weapon.recoverPhyStats();
-				mob.location().recoverRoomStats();
+				if(auto)
+				{
+					beneficialAffect(mob,weapon,asLevel,0);
+					Ability A=weapon.fetchEffect(ID());
+					if(A!=null){ A.setMiscText(""+bonus); A.makeLongLasting();}
+					weapon.recoverPhyStats();
+					mob.location().recoverRoomStats();
+				}
+				else
+				{
+					beneficialAffect(mob,mob,asLevel,TICKS_TO_SHARPEN);
+					Fighter_WeaponSharpening A=(Fighter_WeaponSharpening)mob.fetchEffect(ID());
+					if(A != null)
+					{
+						A.weapon=weapon;
+						A.setMiscText(""+bonus);
+					}
+				}
 			}
 		}
 		else
