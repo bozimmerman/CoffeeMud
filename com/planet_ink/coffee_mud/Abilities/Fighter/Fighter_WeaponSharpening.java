@@ -104,7 +104,7 @@ public class Fighter_WeaponSharpening extends FighterSkill
 		if(weapon==null) return false;
 		if(!(weapon instanceof Weapon))
 		{
-			mob.tell(mob,weapon,null,"<T-NAME> is not a weapon.");
+			mob.tell(mob,weapon,null,_("<T-NAME> is not a weapon."));
 			return false;
 		}
 		boolean isSharpenable;
@@ -137,23 +137,23 @@ public class Fighter_WeaponSharpening extends FighterSkill
 		}
 		if(!isSharpenable)
 		{
-			mob.tell(mob,weapon,null,"<T-NAME> can not be sharpened with this skill.");
+			mob.tell(mob,weapon,null,_("<T-NAME> can not be sharpened with this skill."));
 			return false;
 		}
 		if((weapon.subjectToWearAndTear())&&(weapon.usesRemaining()<95))
 		{
-			mob.tell(mob,weapon,null,"<T-NAME> needs repairing first.");
+			mob.tell(mob,weapon,null,_("<T-NAME> needs repairing first."));
 			return false;
 		}
 		if((!auto)&&(mob.isInCombat()))
 		{
-			mob.tell("You are a bit too busy to do that right now.");
+			mob.tell(_("You are a bit too busy to do that right now."));
 			return false;
 		}
 		int bonus=(int)Math.round(CMath.mul(0.10+(0.10*getXLEVELLevel(mob)),weapon.phyStats().damage()));
 		if(bonus<1)
 		{
-			mob.tell(mob,weapon,null,"<T-NAME> is too weak of a weapon to provide any more benefit from sharpening.");
+			mob.tell(mob,weapon,null,_("<T-NAME> is too weak of a weapon to provide any more benefit from sharpening."));
 			return false;
 		}
 		
@@ -163,7 +163,7 @@ public class Fighter_WeaponSharpening extends FighterSkill
 		boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			String str=auto?"<T-NAME> looks sharper!":"<S-NAME> sharpen(s) <T-NAMESELF>.";
+			String str=auto?_("<T-NAME> looks sharper!"):_("<S-NAME> sharpen(s) <T-NAMESELF>.");
 			CMMsg msg=CMClass.getMsg(mob,weapon,this,CMMsg.MSG_NOISYMOVEMENT,str);
 			if(mob.location().okMessage(mob,msg))
 			{
@@ -176,7 +176,7 @@ public class Fighter_WeaponSharpening extends FighterSkill
 			}
 		}
 		else
-			return beneficialVisualFizzle(mob,weapon,"<S-NAME> attempt(s) to tweak <T-NAME>, but just can't get it quite right.");
+			return beneficialVisualFizzle(mob,weapon,_("<S-NAME> attempt(s) to tweak <T-NAME>, but just can't get it quite right."));
 		return success;
 	}
 
