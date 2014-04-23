@@ -283,7 +283,7 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 			int code=getLocalExpCode(key);
 			if(code>=0)
 			{
-				Entry<String,Integer> X=mob.fetchExpertise(key);
+				Pair<String,Integer> X=mob.fetchExpertise(key);
 				for(int s=stages-1;s>=0;s--)
 				{
 					if((X!=null)&&(X.getValue().intValue()>=(s+1)))
@@ -366,7 +366,7 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 						int code=getLocalExpCode(key);
 						if(code>=0)
 						{
-							Entry<String,Integer> X=mob.fetchExpertise(key);
+							Pair<String,Integer> X=mob.fetchExpertise(key);
 							for(int s=stages-1;s>=0;s--)
 							{
 								if((X==null)||(X.getValue().intValue()<(s+1)))

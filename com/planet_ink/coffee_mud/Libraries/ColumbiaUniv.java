@@ -75,6 +75,7 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 		baseEduSetLists.clear();
 		return def;
 	}
+	
 	public String getExpertiseHelp(String ID, boolean exact)
 	{
 		if(ID==null) return null;
@@ -98,8 +99,39 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 		completeEduMap.remove(ID);
 		baseEduSetLists.clear();
 	}
-	public Enumeration<ExpertiseDefinition> definitions(){ return completeEduMap.elements();}
-	public ExpertiseDefinition getDefinition(String ID){ return (ID==null)?null:(ExpertiseDefinition)completeEduMap.get(ID.trim().toUpperCase());}
+	
+	public Enumeration<ExpertiseDefinition> definitions()
+	{
+		return completeEduMap.elements();
+	}
+	
+	public ExpertiseDefinition getDefinition(String ID)
+	{
+		if(ID!=null)
+		{
+			ID=ID.trim().toUpperCase();
+			ExpertiseDefinition def=completeEduMap.get(ID);
+			/*
+			if((def==null)&&(ID.startsWith("MANUFACTURER_"))&&(CMLib.tech().getManufacturer(ID.substring(13))!=null))
+			{
+				final Manufacturer manufacturer=CMLib.tech().getManufacturer(ID.substring(13));
+				ExpertiseDefinition baseDef=completeEduMap.get("MANUFACTURER");
+				if(baseDef != null)
+				{
+					def=(ExpertiseDefinition)baseDef.copyOf();
+					def.ID=ID;
+					def.baseName=ID;
+					def.name=CMStrings.replaceAll(def.name, "@x3", manufacturer.name());
+					def.
+					completeEduMap.put(ID, def);
+				}
+			}
+			*/
+			return def;
+		}
+		return null;
+	}
+
 	public ExpertiseDefinition findDefinition(String ID, boolean exactOnly)
 	{
 		ExpertiseDefinition D=getDefinition(ID);
@@ -136,6 +168,7 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 		}
 		return V;
 	}
+	
 	public List<ExpertiseDefinition> myListableExpertises(MOB mob)
 	{
 		ExpertiseDefinition D=null;
@@ -148,7 +181,11 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 		}
 		return V;
 	}
-	public int numExpertises(){return completeEduMap.size();}
+	
+	public int numExpertises()
+	{
+		return completeEduMap.size();
+	}
 	
 	private String expertMath(String s,int l)
 	{
@@ -189,7 +226,10 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 		return baseEduSetLists.get(baseExpertiseCode);
 	}
 
-	public int getStages(String baseExpertiseCode){return getStageCodes(baseExpertiseCode).size();}
+	public int getStages(String baseExpertiseCode)
+	{
+		return getStageCodes(baseExpertiseCode).size();
+	}
 
 	public String getGuessedBaseExpertiseName(final String expertiseCode)
 	{
@@ -201,17 +241,20 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 			return expertiseCode.substring(0,lastBadChar+1);
 		return expertiseCode;
 	}
+	
 	public List<String> getPeerStageCodes(final String expertiseCode)
 	{
 		return getStageCodes(getGuessedBaseExpertiseName(expertiseCode));
 	}
+	
 	public String getApplicableExpertise(String ID, int code)
 	{
 		return completeUsageMap[code].get(ID);
 	}
+	
 	public int getApplicableExpertiseLevel(String ID, int code, MOB mob)
 	{
-		Entry<String,Integer> e=mob.fetchExpertise(completeUsageMap[code].get(ID));
+		Pair<String,Integer> e=mob.fetchExpertise(completeUsageMap[code].get(ID));
 		if((e!=null)&&(e.getValue()!=null))
 			return e.getValue().intValue();
 		return 0;
@@ -566,5 +609,4 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 		teacher.location().send(teacher,msg);
 		return true;
 	}
-	
 }

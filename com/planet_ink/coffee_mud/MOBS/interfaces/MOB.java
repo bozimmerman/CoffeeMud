@@ -18,7 +18,6 @@ import java.util.Enumeration;
 import java.util.List;
 import java.util.Set;
 import java.util.Vector;
-import java.util.Map.Entry;
 
 
 /*
@@ -217,7 +216,7 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 	 * @param code the expertise code
 	 * @return the entry with the string and number
 	 */
-	public Entry<String,Integer> fetchExpertise(String code);
+	public Pair<String, Integer> fetchExpertise(String code);
 
 	/**
 	 * Deletes all expertises from the collection

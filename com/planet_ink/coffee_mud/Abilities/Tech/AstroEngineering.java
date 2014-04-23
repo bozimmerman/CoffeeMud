@@ -53,7 +53,9 @@ public class AstroEngineering extends TechSkill
 	protected volatile Item targetPanel = null;
 	protected volatile Room targetRoom  = null;
 	protected volatile Operation op = Operation.REPAIR;
-	protected static enum Operation { 
+	
+	protected static enum Operation 
+	{ 
 		INSTALL("installing"),
 		REPAIR("repairing"),
 		ENHANCE("enhancing");
@@ -64,6 +66,16 @@ public class AstroEngineering extends TechSkill
 		}
 	}
 
+	public int getManufacturerExpertiseLevel(MOB mob, Manufacturer manufacturer)
+	{
+		if((mob==null)||(manufacturer==null))
+			return 0;
+		Pair<String, Integer> exp = mob.fetchExpertise(manufacturer.name());
+		if(exp == null)
+			return 0;
+		return exp.getValue().intValue();
+	}
+	
 	public void unInvoke()
 	{
 		if(canBeUninvoked())

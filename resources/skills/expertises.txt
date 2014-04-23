@@ -515,3 +515,5 @@ HELP_=<EXPERTISE>The ability to cast communing-domain prayers at a higher power 
 SUMMON@x1=Summoning Mastery @x2,10,X1,-SKILLFLAG +SUMMONING,-MAXCLASSLEVEL +>={15+(5*@x1)},+CHA {12+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to cast summoning-type magic at a higher power level, allowing higher level creatures to be summoned.
 
+#MANUFACTURER=@x3,1,LEVEL,-SKILL +AstroEngineering,,+INT 5,0,1,0,0,0
+#HELP_=<EXPERTISE>Knowledge of the peculiarities of the products of the @x3 manufacturer.

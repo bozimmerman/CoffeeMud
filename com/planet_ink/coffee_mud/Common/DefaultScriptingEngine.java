@@ -4732,7 +4732,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					ExpertiseLibrary X=(ExpertiseLibrary)CMLib.expertises().findDefinition(arg2,true);
 					if(X!=null)
 					{
-						Entry<String,Integer> s=((MOB)E).fetchExpertise(X.ID());
+						Pair<String,Integer> s=((MOB)E).fetchExpertise(X.ID());
 						if(s!=null) results.append(s.getKey()+((s.getValue()!=null)?s.getValue().toString():""));
 					}
 					else

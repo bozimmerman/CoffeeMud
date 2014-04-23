@@ -76,7 +76,7 @@ public class Teach extends StdCommand
 			List<ExpertiseDefinition> V=CMLib.expertises().myListableExpertises(mob);
 			for(Enumeration<String> exi=mob.expertises();exi.hasMoreElements();)
 			{
-				Entry<String,Integer> e=mob.fetchExpertise(exi.nextElement());
+				Pair<String,Integer> e=mob.fetchExpertise(exi.nextElement());
 				List<String> codes = CMLib.expertises().getStageCodes(e.getKey());
 				if((codes==null)||(codes.size()==0))
 					V.add(CMLib.expertises().getDefinition(e.getKey()));

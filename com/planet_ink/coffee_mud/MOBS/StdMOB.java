@@ -4076,7 +4076,7 @@ public class StdMOB implements MOB
 			clearAbilityUsageCache();
 	}
 
-	@Override public Entry<String,Integer> fetchExpertise(final String baseCode)
+	@Override public Pair<String, Integer> fetchExpertise(final String baseCode)
 	{
 		if(baseCode==null) return null;
 		final Entry<String,Integer> p=CMath.getStringFollowedByNumber(baseCode, true);
@@ -4086,11 +4086,7 @@ public class StdMOB implements MOB
 		&&((num==null)||(p.getValue()==null)||(p.getValue().intValue()<=num.intValue())))
 		{
 			final Integer i=(p.getValue()==null)?num:p.getValue();
-			return new Entry<String,Integer>(){
-				@Override public String getKey() { return key; }
-				@Override public Integer getValue() { return i; }
-				@Override public Integer setValue(Integer value) { return value; }
-			};
+			return new Pair<String,Integer>(key,i);
 		}
 		return null;
 	}
