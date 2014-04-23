@@ -53,7 +53,7 @@ public class Expertises extends StdCommand
 			String exper=e.nextElement();
 			ExpertiseLibrary.ExpertiseDefinition def=CMLib.expertises().getDefinition(exper);
 			if(def==null)
-				expers.add("?"+exper+"^?");
+				expers.add(CMStrings.capitalizeAllFirstLettersAndLower(exper));
 			else
 				expers.add(def.name);
 		}
