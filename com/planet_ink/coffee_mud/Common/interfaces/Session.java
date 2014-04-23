@@ -488,7 +488,7 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Session#isBeingSnoopedBy(Session)
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Session#snoopSuspension(int)
 	 * @param session the session to snoop on me.
-	 * @param onOff TODO
+	 * @param onOff true to turn on snooping, false otherwise
 	 */
 	public void setBeingSnoopedBy(Session session, boolean onOff);
 	
