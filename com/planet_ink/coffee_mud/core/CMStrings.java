@@ -467,6 +467,67 @@ public class CMStrings
 		return new String(c).trim();
 	}
 	
+	public final static String capitalizeAllFirstLettersAndLower(final String name)
+	{
+		if((name==null)||(name.length()==0)) return "";
+		char[] c=name.toCharArray();
+		int i=0;
+		boolean firstLetter=true;
+		for(;i<c.length;i++)
+		{
+			if(c[i]=='^')
+			{
+				i++;
+				if(i<c.length)
+				{
+				  switch(c[i])
+				  {
+				  case ColorLibrary.COLORCODE_FANSI256: i+=3; break;
+				  case ColorLibrary.COLORCODE_BANSI256: i+=3; break;
+				  case ColorLibrary.COLORCODE_BACKGROUND: i++; break;
+				  case '<':
+					while(i<c.length-1)
+					{
+						if((c[i]!='^')||(c[i+1]!='>'))
+							i++;
+						else
+						{
+							i++;
+							break;
+						}
+					}
+					break;
+				  case '&':
+					while(i<c.length)
+					{
+						if(c[i]!=';')
+							i++;
+						else
+							break;
+					}
+					break;
+				  }
+				}
+			}
+			else
+			if(Character.isLetter(c[i]))
+			{
+				if(firstLetter)
+				{
+					c[i]=Character.toUpperCase(c[i]);
+					firstLetter=false;
+				}
+				else
+				if(!Character.isLowerCase(c[i]))
+					c[i]=Character.toLowerCase(c[i]);
+			}
+			else
+			if(Character.isWhitespace(c[i]))
+				firstLetter=true;
+		}
+		return new String(c).trim();
+	}
+	
 	public final static String capitalizeFirstLetter(final String name)
 	{
 		if((name==null)||(name.length()==0)) 
