@@ -86,37 +86,37 @@ public class StdWebMacro implements WebMacro
 		String[] lookup=CMLib.color().standardHTMLlookups();
 		while(i<s.length())
 		{
-		  if(s.charAt(i)=='^')
-		  {
-			  if(i<(s.length()-1))
-			  {
-				  final char c=s.charAt(i+1);
-				  //TODO: handle ~ and # here?
-				  String code=lookup[c];
-				  if(code!=null)
-				  {
-					  s.delete(i,i+2);
-					  if(code.startsWith("<"))
-					  {
-						  s.insert(i,code+">");
-						  i+=code.length();
-					  }
-					  else
-					  {
-						  s.insert(i,code);
-						  i+=code.length()-1;
-					  }
-				  }
-				  else
-				  if(c=='?')
-				  {
-					  s.delete(i,i+2);
-					  s.insert(i,"</FONT>");
-					  i+=7;
-				  }
-			  }
-		  }
-		  i++;
+			if(s.charAt(i)=='^')
+			{
+				if(i<(s.length()-1))
+				{
+					final char c=s.charAt(i+1);
+					//TODO: handle ~ and # here?
+					String code=lookup[c];
+					if(code!=null)
+					{
+						s.delete(i,i+2);
+						if(code.startsWith("<"))
+						{
+							s.insert(i,code+">");
+							i+=code.length();
+						}
+						else
+						{
+							s.insert(i,code);
+							i+=code.length()-1;
+						}
+					}
+					else
+					if(c=='?')
+					{
+						s.delete(i,i+2);
+						s.insert(i,"</FONT>");
+						i+=7;
+					}
+				}
+			}
+			i++;
 		}
 		return s;
 	}
@@ -196,20 +196,20 @@ public class StdWebMacro implements WebMacro
 					lastSpace=x;
 					break;
 				case '<':
-				   if((x<=s.length()-4)
-				   &&(s.substring(x,x+4).equalsIgnoreCase("<BR>")))
-				   {
+					if((x<=s.length()-4)
+					&&(s.substring(x,x+4).equalsIgnoreCase("<BR>")))
+					{
 						count=0;
 						x=x+3;
 						lastSpace=x+4;
-				   }
-				   else
-				   {
-					   s.setCharAt(x,'&');
-					   s.insert(x+1,"lt;");
-					   x+=3;
-				   }
-				   break;
+					}
+					else
+					{
+						s.setCharAt(x,'&');
+						s.insert(x+1,"lt;");
+						x+=3;
+					}
+					break;
 				case '-':
 					if((x>4)
 					&&(s.charAt(x-1)=='-')
