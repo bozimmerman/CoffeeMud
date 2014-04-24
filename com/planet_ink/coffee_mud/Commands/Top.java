@@ -64,7 +64,7 @@ public class Top extends StdCommand
 		List<Pair<String,Integer>> set3;
 		StringBuilder str=new StringBuilder();
 		final int width=ColFixer.fixColWidth(72, mob)/3;
-		final int nameWidth=width - (width/3);
+		final int nameWidth=width - (width/3)-3;
 		String slashes=CMStrings.repeat("=", width);
 		for(TimePeriod period : new TimePeriod[]{TimePeriod.ALLTIME,TimePeriod.MONTH})
 		{

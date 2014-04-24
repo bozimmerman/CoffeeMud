@@ -66,14 +66,13 @@ public class AstroEngineering extends TechSkill
 		}
 	}
 
-	public int getManufacturerExpertiseLevel(MOB mob, Manufacturer manufacturer)
+	public boolean isManufacturerExpertise(MOB mob, Manufacturer manufacturer)
 	{
 		if((mob==null)||(manufacturer==null))
-			return 0;
-		Pair<String, Integer> exp = mob.fetchExpertise(manufacturer.name());
-		if(exp == null)
-			return 0;
-		return exp.getValue().intValue();
+			return false;
+		if(mob.fetchExpertise(manufacturer.name())!=null)
+			return true;
+		return false;
 	}
 	
 	public void unInvoke()

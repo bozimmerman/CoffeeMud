@@ -2396,12 +2396,12 @@ public class CMMap extends StdLibrary implements WorldMap
 		final MOB expireM=getFactoryMOB(null);
 		try
 		{
-			Vector<Environmental> stuffToGo=new Vector<Environmental>();
+			final List<Environmental> stuffToGo=new ArrayList<Environmental>();
 			Item I=null;
 			MOB M=null;
 			Room R=null;
-			Vector<Room> roomsToGo=new Vector<Room>();
-			CMMsg expireMsg=CMClass.getMsg(expireM,R,null,CMMsg.MSG_EXPIRE,null);
+			List<Room> roomsToGo=new ArrayList<Room>();
+			final CMMsg expireMsg=CMClass.getMsg(expireM,R,null,CMMsg.MSG_EXPIRE,null);
 			for(Enumeration<Room> r=rooms();r.hasMoreElements();)
 			{
 				R=r.nextElement();
@@ -2410,7 +2410,7 @@ public class CMMap extends StdLibrary implements WorldMap
 				if((R.expirationDate()!=0)
 				&&(currentTime>R.expirationDate())
 				&&(R.okMessage(R,expireMsg)))
-					roomsToGo.addElement(R);
+					roomsToGo.add(R);
 				else
 				if(!R.amDestroyed())
 				{
@@ -2440,7 +2440,7 @@ public class CMMap extends StdLibrary implements WorldMap
 					boolean success=true;
 					for(int s=0;s<stuffToGo.size();s++)
 					{
-						Environmental E=stuffToGo.elementAt(s);
+						Environmental E=stuffToGo.get(s);
 						setThreadStatus(serviceClient,"expiring "+E.Name());
 						expireMsg.setTarget(E);
 						if(R.okMessage(expireM,expireMsg))
@@ -2454,7 +2454,7 @@ public class CMMap extends StdLibrary implements WorldMap
 			}
 			for(int r=0;r<roomsToGo.size();r++)
 			{
-				R=roomsToGo.elementAt(r);
+				R=roomsToGo.get(r);
 				expireM.setLocation(R);
 				expireMsg.setTarget(R);
 				setThreadStatus(serviceClient,"expirating room "+getExtendedRoomID(R));

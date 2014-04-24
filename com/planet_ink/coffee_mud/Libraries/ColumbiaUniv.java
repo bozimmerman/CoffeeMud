@@ -108,27 +108,7 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 	public ExpertiseDefinition getDefinition(String ID)
 	{
 		if(ID!=null)
-		{
-			ID=ID.trim().toUpperCase();
-			ExpertiseDefinition def=completeEduMap.get(ID);
-			/*
-			if((def==null)&&(ID.startsWith("MANUFACTURER_"))&&(CMLib.tech().getManufacturer(ID.substring(13))!=null))
-			{
-				final Manufacturer manufacturer=CMLib.tech().getManufacturer(ID.substring(13));
-				ExpertiseDefinition baseDef=completeEduMap.get("MANUFACTURER");
-				if(baseDef != null)
-				{
-					def=(ExpertiseDefinition)baseDef.copyOf();
-					def.ID=ID;
-					def.baseName=ID;
-					def.name=CMStrings.replaceAll(def.name, "@x3", manufacturer.name());
-					def.
-					completeEduMap.put(ID, def);
-				}
-			}
-			*/
-			return def;
-		}
+			return completeEduMap.get(ID.trim().toUpperCase());
 		return null;
 	}
 
