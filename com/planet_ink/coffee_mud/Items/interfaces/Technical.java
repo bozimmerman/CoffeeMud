@@ -43,12 +43,26 @@ public interface Technical
 	 */
 	public static enum TechType 
 	{
-		ANY, GIZMO, 
-		PERSONAL_WEAPON, PERSONAL_SENSOR, PERSONAL_SHIELD, PERSONAL_SOFTWARE,
-		PERSONAL_TRACTOR,
-		SHIP_SPACESHIP,SHIP_PANEL,
-		SHIP_WEAPON,SHIP_SHIELD,SHIP_ENGINE,SHIP_SENSOR,SHIP_POWER,SHIP_COMPUTER,
-		SHIP_SOFTWARE,SHIP_ENVIRO_CONTROL,SHIP_GENERATOR,SHIP_DAMPENER,SHIP_TRACTOR
+		ANY("Any"), GIZMO("Gizmo"), 
+		PERSONAL_WEAPON("Personal Weapon"), PERSONAL_SENSOR("Portable Sensor"), 
+		PERSONAL_SHIELD("Personal Shield"), PERSONAL_SOFTWARE("Micro Software"),
+		PERSONAL_TRACTOR("Personal Tractor"), PERSONAL_ATMOSUIT("Personal Atmosphere Suit"),
+		SHIP_SPACESHIP("Space Ship"),SHIP_PANEL("Ship Panel"),
+		SHIP_WEAPON("Ship Weapon"),SHIP_SHIELD("Ship Shield"),SHIP_ENGINE("Ship Engine"),
+		SHIP_SENSOR("Ship Sensor"),SHIP_POWER("Ship Power System"),SHIP_COMPUTER("Ship Computer"),
+		SHIP_SOFTWARE("Ship Software"),SHIP_ENVIRO_CONTROL("Ship Environmental System"),
+		SHIP_GENERATOR("Ship Power Generator"),SHIP_DAMPENER("Ship Inertial Dampener"),
+		SHIP_TRACTOR("Ship Tractor"),SHIP_REPLICATOR("Ship Food Replicator")
+		;
+		private String friendlyName;
+		private TechType(String name)
+		{
+			this.friendlyName=name;
+		}
+		public String getDisplayName()
+		{
+			return this.friendlyName;
+		}
 	}
 	
 	public int techLevel();

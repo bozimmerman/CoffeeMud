@@ -66,13 +66,42 @@ public class AstroEngineering extends TechSkill
 		}
 	}
 
-	public boolean isManufacturerExpertise(MOB mob, Manufacturer manufacturer)
+	/**
+	 * Here's the scoop: Send the manufacturer and item type, and look at a expertise list
+	 * for the level of expertise in each.  The sum is 0-50 normally, 25 for
+	 * each. Every time it comes up, there is a chance of expertise rating going up in 
+	 * that manufacturer and item type, and if less than 25, pulling down the oldest used
+	 * manufacturer or item type as knowledge fades.  Makes it tough to get to full knowledge
+	 * in everything.  Make sure undefined expertise names end with "%" so they are displayed 
+	 * right in the expertise command. 
+	 * @param mob
+	 * @param item
+	 * @return
+	 */
+	public int getBonus(MOB mob, Electronics item, int multiplyBy)
 	{
-		if((mob==null)||(manufacturer==null))
-			return false;
-		if(mob.fetchExpertise(manufacturer.name())!=null)
-			return true;
-		return false;
+		if((mob==null)||(item==null))
+			return 0;
+		double score = 0.0;
+		Manufacturer m=item.getFinalManufacturer();
+		if(m==null)
+			score+=0.5;
+		else
+		{
+			Pair<String,Integer> manuExpertise=mob.fetchExpertise(m.name()+"%");
+			if(manuExpertise!=null)
+				score += (0.5 * CMath.div(manuExpertise.second.intValue(), 100.0));
+		}
+		Technical.TechType ttype = item.getTechType();
+		if(ttype==null)
+			score+=0.5;
+		else
+		{
+			Pair<String,Integer> techTypeExpertise=mob.fetchExpertise(ttype.getDisplayName()+"%");
+			if(techTypeExpertise!=null)
+				score += (0.5 * CMath.div(techTypeExpertise.second.intValue(), 100.0));
+		}
+		return (int)Math.round(CMath.mul(multiplyBy, score));
 	}
 	
 	public void unInvoke()
@@ -95,8 +124,7 @@ public class AstroEngineering extends TechSkill
 				if(op==Operation.INSTALL)
 				{
 					CMMsg msg=CMClass.getMsg(mob,targetPanel,targetItem,CMMsg.MSG_PUT,"<S-NAME> install(s) <T-NAME> into <O-NAME>.");
-					//TODO: put an appropriate value
-					msg.setValue(100);
+					msg.setValue(50+getBonus(mob,(Electronics)targetItem,50));
 					if(room.okMessage(msg.source(), msg))
 						room.send(msg.source(), msg);
 				}
@@ -104,16 +132,14 @@ public class AstroEngineering extends TechSkill
 				if(op==Operation.REPAIR)
 				{
 					CMMsg msg=CMClass.getMsg(mob,targetItem,this,CMMsg.MSG_PUT,"<S-NAME> repair(s) <T-NAME>.");
-					//TODO: put an appropriate value
-					msg.setValue(1);
+					msg.setValue(CMLib.dice().roll(1, proficiency()/2, getBonus(mob,(Electronics)targetItem,50)));
 					if(room.okMessage(msg.source(), msg))
 						room.send(msg.source(), msg);
 				}
 				else
 				{
 					CMMsg msg=CMClass.getMsg(mob,targetItem,this,CMMsg.MSG_PUT,"<S-NAME> enhance(s) <T-NAME>.");
-					//TODO: put an appropriate value
-					msg.setValue(100);
+					msg.setValue((proficiency()/2)+getBonus(mob,(Electronics)targetItem,50));
 					if(room.okMessage(msg.source(), msg))
 						room.send(msg.source(), msg);
 				}
@@ -147,6 +173,7 @@ public class AstroEngineering extends TechSkill
 				int total=baseTickSpan;
 				int tickUp=(baseTickSpan-tickDown);
 				int pct=(int)Math.round(CMath.div(tickUp,total)*100.0);
+				//TODO: better dialog here .. describe what he's doing! Sci-fi or bust!
 				mob.location().show(mob,targetItem,this,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> continue(s) "+op.verb+" <T-NAME> ("+pct+"% completed).",null,"<S-NAME> continue(s) "+op.verb+" <T-NAME>.");
 			}
 			if((mob.soulMate()==null)&&(mob.playerStats()!=null)&&(mob.location()!=null))

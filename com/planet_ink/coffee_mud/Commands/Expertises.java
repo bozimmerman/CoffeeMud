@@ -53,7 +53,16 @@ public class Expertises extends StdCommand
 			String exper=e.nextElement();
 			ExpertiseLibrary.ExpertiseDefinition def=CMLib.expertises().getDefinition(exper);
 			if(def==null)
-				expers.add(CMStrings.capitalizeAllFirstLettersAndLower(exper));
+			{
+				Pair<String,Integer> p=mob.fetchExpertise(exper);
+				if(p==null)
+					expers.add("?"+CMStrings.capitalizeAllFirstLettersAndLower(exper));
+				else
+				if(p.first.endsWith("%"))
+					expers.add("?"+CMStrings.capitalizeAllFirstLettersAndLower(p.first.substring(0,p.first.length()-1))+" ("+p.second.intValue()+"%)");
+				else
+					expers.add("?"+CMStrings.capitalizeAllFirstLettersAndLower(p.first)+" "+p.second.intValue());
+			}
 			else
 				expers.add(def.name);
 		}
@@ -61,7 +70,9 @@ public class Expertises extends StdCommand
 		for(String expName : expers)
 		{
 			if(expName.startsWith("?"))
-				msg.append(CMStrings.padRight(expName,COL_LEN));
+			{
+				msg.append(CMStrings.padRight(expName.substring(1),COL_LEN));
+			}
 			else
 			if(expName.length()>=COL_LEN)
 			{
