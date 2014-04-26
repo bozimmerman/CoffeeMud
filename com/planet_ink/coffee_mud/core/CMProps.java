@@ -292,6 +292,10 @@ public class CMProps extends Properties
 		WEATHER_ENDS,
 		WEAPON_HIT_DESCS,
 		TECH_LEVEL_NAMES,
+		TECH_BABBLE_VERBS,
+		TECH_BABBLE_ADJ1,
+		TECH_BABBLE_ADJ2,
+		TECH_BABBLE_NOUN,
 		WEATHER_CLEAR, // try to always and forever keep these at the end...
 		WEATHER_CLOUDY, // try to always and forever keep these at the end...
 		WEATHER_WINDY, // try to always and forever keep these at the end...

@@ -957,6 +957,12 @@ public interface CMMsg extends CMCommon
 	public static final int TYP_LASER=111;
 	/** MINOR_MASK minor action code type, denoting a sonic action*/
 	public static final int TYP_SONIC=112;
+	/** MINOR_MASK minor action code type, denoting a tech repair*/
+	public static final int TYP_REPAIR=113;
+	/** MINOR_MASK minor action code type, denoting a tech enhance*/
+	public static final int TYP_ENHANCE=114;
+	/** MINOR_MASK minor action code type, denoting a tech install*/
+	public static final int TYP_INSTALL=115;
 
 	/** MINOR_MASK minor action code type, denoting a channel action -- 2000-2047 are channels*/
 	public static final int TYP_CHANNEL=2000; //(2000-2047 are channels)
@@ -983,7 +989,7 @@ public interface CMMsg extends CMCommon
 		"FACTIONCHANGE", "LOGIN", "LEVEL", "EXAMINE", "ORDER","EXPIRE","BORROW","HUH",
 		"LIFE", "BID", "CLANEVENT", "UNLOAD", "DUELCHALLENGE", "LEGALWARRANT", "DIG", 
 		"PREINVOKE","POSSESS","DISPOSSESS","POWERCURRENT","CONTEMPLATE","POUR","LOOKEXITS",
-		"LASER","SONIC"
+		"LASER","SONIC","REPAIR","ENHANCE","INSTALL"
 	};
 	
 	/** Index string descriptions of all the MAJOR_MASK code MAKS_s */
@@ -1271,4 +1277,10 @@ public interface CMMsg extends CMCommon
 	public static final int MSG_POUR=MASK_HANDS|MASK_MOVE|MASK_SOUND|TYP_POUR;
 	/** combined MAJOR and MINOR codes for useful event message type for looking around at exits*/
 	public static final int MSG_LOOK_EXITS=MASK_EYES|TYP_LOOK_EXITS;
+	/** combined MAJOR and MINOR codes for useful event message type for a tech repair*/
+	public static final int MSG_REPAIR=MASK_HANDS|TYP_REPAIR;
+	/** combined MAJOR and MINOR codes for useful event message type for a tech enhance*/
+	public static final int MSG_ENHANCE=MASK_HANDS|TYP_ENHANCE;
+	/** combined MAJOR and MINOR codes for useful event message type for a tech install*/
+	public static final int MSG_INSTALL=MASK_HANDS|TYP_INSTALL;
 }

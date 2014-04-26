@@ -83,7 +83,8 @@ public class Prop_NoPurge extends Property
 			else
 			if(affected instanceof Container)
 			{
-				if((msg.targetMinor()==CMMsg.TYP_PUT)
+				if(((msg.targetMinor()==CMMsg.TYP_PUT)
+					||(msg.targetMinor()==CMMsg.TYP_INSTALL))
 				&&(msg.target()!=null)
 				&&(msg.target()==affected)
 				&&(msg.target() instanceof Item)

@@ -826,6 +826,11 @@ public class StdItem implements Item
 		else
 		switch(msg.targetMinor())
 		{
+		case CMMsg.TYP_ENHANCE:
+		case CMMsg.TYP_REPAIR:
+			if(this instanceof Technical)
+				return true;
+			break;
 		case CMMsg.TYP_EXPIRE:
 		case CMMsg.TYP_LOOK:
 		case CMMsg.TYP_EXAMINE:
@@ -1123,6 +1128,7 @@ public class StdItem implements Item
 		case CMMsg.TYP_CLOSE:
 		case CMMsg.TYP_LOCK:
 		case CMMsg.TYP_PUT:
+		case CMMsg.TYP_INSTALL:
 		case CMMsg.TYP_UNLOCK:
 			if(this instanceof Container)
 				return true;

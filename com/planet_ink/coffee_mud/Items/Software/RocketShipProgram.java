@@ -385,6 +385,7 @@ public class RocketShipProgram extends GenShipProgram
 			case CMMsg.TYP_PUSH:
 			case CMMsg.TYP_PULL:
 			case CMMsg.TYP_PUT:
+			case CMMsg.TYP_INSTALL:
 				engines=null;
 				break;
 			}

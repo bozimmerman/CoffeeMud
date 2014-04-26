@@ -302,6 +302,7 @@ public class StdTriCorder extends StdElecContainer implements Electronics.Comput
 			case CMMsg.TYP_PUSH:
 			case CMMsg.TYP_PULL:
 			case CMMsg.TYP_PUT:
+			case CMMsg.TYP_INSTALL:
 				nextSoftwareCheck=0;
 				break;
 			case CMMsg.TYP_LOOK:

@@ -344,6 +344,7 @@ public class StdComputerConsole extends StdRideable implements ShipComponent, El
 			}
 			case CMMsg.TYP_GET:
 			case CMMsg.TYP_PUT:
+			case CMMsg.TYP_INSTALL:
 				nextSoftwareCheck=0;
 				break;
 			case CMMsg.TYP_LOOK:

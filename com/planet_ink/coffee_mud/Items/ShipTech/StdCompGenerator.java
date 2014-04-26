@@ -73,7 +73,7 @@ public class StdCompGenerator extends StdCompFuelConsumer implements Electronics
 			case CMMsg.TYP_GET:
 				clearFuelCache();
 				break;
-			case CMMsg.TYP_PUT:
+			case CMMsg.TYP_INSTALL:
 				clearFuelCache();
 				break;
 			case CMMsg.TYP_ACTIVATE:

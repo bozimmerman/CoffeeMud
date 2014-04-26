@@ -2153,6 +2153,9 @@ public class StdMOB implements MOB
 				case CMMsg.TYP_HANDS:
 				case CMMsg.TYP_LOCK:
 				case CMMsg.TYP_PUT:
+				case CMMsg.TYP_INSTALL:
+				case CMMsg.TYP_REPAIR:
+				case CMMsg.TYP_ENHANCE:
 				case CMMsg.TYP_UNLOCK:
 				case CMMsg.TYP_WRITE:
 					if (charStats().getBodyPart(Race.BODY_HAND) == 0)

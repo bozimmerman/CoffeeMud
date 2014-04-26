@@ -170,6 +170,43 @@ public class StdElecCompContainer extends StdElecContainer implements ShipCompon
 				if(CMLib.flags().canBeSeenBy(this, msg.source()))
 					msg.source().tell(name()+" is currently "+(activated()?"connected.\n\r":"deactivated/disconnected.\n\r"));
 				return;
+			case CMMsg.TYP_REPAIR:
+				if(CMLib.dice().rollPercentage()<msg.value())
+				{
+					setUsesRemaining(usesRemaining()<100?100:usesRemaining());
+					msg.source().tell(name()+" is now repaired.\n\r");
+				}
+				else
+				{
+					int repairRequired=100-usesRemaining();
+					if(repairRequired>0)
+					{
+						int repairApplied=(int)Math.round(CMath.mul(repairRequired, CMath.div(msg.value(), 100)));
+						if(repairApplied < 0)
+							repairApplied=1;
+						setUsesRemaining(usesRemaining()+repairApplied);
+						msg.source().tell(name()+" is now "+usesRemaining()+"% repaired.\n\r");
+					}
+				}
+				break;
+			case CMMsg.TYP_ENHANCE:
+				if((CMLib.dice().rollPercentage()<msg.value())&&(CMLib.dice().rollPercentage()<50))
+				{
+					float addAmt=0.01f;
+					if(getInstalledFactor() < 1.0)
+					{
+						addAmt=(float)(CMath.div(100.0, msg.value()) * 0.1);
+						if(addAmt < 0.1f)
+							addAmt=0.1f;
+					}
+					setInstalledFactor(this.getInstalledFactor()+addAmt);
+					msg.source().tell(msg.source(),this,null,"<T-NAME> is now enhanced.\n\r");
+				}
+				else
+				{
+					msg.source().tell(msg.source(),this,null,"Your attempt to enhance <T-NAME> has failed.\n\r");
+				}
+				break;
 			}
 		}
 		super.executeMsg(host, msg);

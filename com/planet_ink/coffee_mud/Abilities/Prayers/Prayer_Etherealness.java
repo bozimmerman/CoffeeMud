@@ -88,6 +88,9 @@ public class Prayer_Etherealness extends Prayer
 				break;
 			case CMMsg.TYP_GET:
 			case CMMsg.TYP_PUT:
+			case CMMsg.TYP_INSTALL:
+			case CMMsg.TYP_REPAIR:
+			case CMMsg.TYP_ENHANCE:
 			case CMMsg.TYP_DROP:
 			case CMMsg.TYP_HOLD:
 			case CMMsg.TYP_WIELD:

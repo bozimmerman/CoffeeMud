@@ -53,6 +53,7 @@ public class AstroEngineering extends TechSkill
 	protected volatile Item targetPanel = null;
 	protected volatile Room targetRoom  = null;
 	protected volatile Operation op = Operation.REPAIR;
+	protected volatile String altverb="";
 	
 	protected static enum Operation 
 	{ 
@@ -123,7 +124,7 @@ public class AstroEngineering extends TechSkill
 				else
 				if(op==Operation.INSTALL)
 				{
-					CMMsg msg=CMClass.getMsg(mob,targetPanel,targetItem,CMMsg.MSG_PUT,"<S-NAME> install(s) <T-NAME> into <O-NAME>.");
+					CMMsg msg=CMClass.getMsg(mob,targetPanel,targetItem,CMMsg.MSG_INSTALL,"<S-NAME> install(s) <T-NAME> into <O-NAME>.");
 					msg.setValue(50+getBonus(mob,(Electronics)targetItem,50));
 					if(room.okMessage(msg.source(), msg))
 						room.send(msg.source(), msg);
@@ -131,14 +132,14 @@ public class AstroEngineering extends TechSkill
 				else
 				if(op==Operation.REPAIR)
 				{
-					CMMsg msg=CMClass.getMsg(mob,targetItem,this,CMMsg.MSG_PUT,"<S-NAME> repair(s) <T-NAME>.");
+					CMMsg msg=CMClass.getMsg(mob,targetItem,this,CMMsg.MSG_REPAIR,"<S-NAME> repair(s) <T-NAME>.");
 					msg.setValue(CMLib.dice().roll(1, proficiency()/2, getBonus(mob,(Electronics)targetItem,50)));
 					if(room.okMessage(msg.source(), msg))
 						room.send(msg.source(), msg);
 				}
 				else
 				{
-					CMMsg msg=CMClass.getMsg(mob,targetItem,this,CMMsg.MSG_PUT,"<S-NAME> enhance(s) <T-NAME>.");
+					CMMsg msg=CMClass.getMsg(mob,targetItem,this,CMMsg.MSG_ENHANCE,"<S-NAME> enhance(s) <T-NAME>.");
 					msg.setValue((proficiency()/2)+getBonus(mob,(Electronics)targetItem,50));
 					if(room.okMessage(msg.source(), msg))
 						room.send(msg.source(), msg);
@@ -173,8 +174,12 @@ public class AstroEngineering extends TechSkill
 				int total=baseTickSpan;
 				int tickUp=(baseTickSpan-tickDown);
 				int pct=(int)Math.round(CMath.div(tickUp,total)*100.0);
-				//TODO: better dialog here .. describe what he's doing! Sci-fi or bust!
-				mob.location().show(mob,targetItem,this,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> continue(s) "+op.verb+" <T-NAME> ("+pct+"% completed).",null,"<S-NAME> continue(s) "+op.verb+" <T-NAME>.");
+				String verb=op.verb;
+				if(op==Operation.ENHANCE)
+					verb=altverb;
+				mob.location().show(mob,targetItem,this,CMMsg.MSG_NOISYMOVEMENT,
+						"<S-NAME> continue(s) "+verb+" <T-NAME> ("+pct+"% completed).",
+						null,"<S-NAME> continue(s) "+verb+" <T-NAME>.");
 			}
 			if((mob.soulMate()==null)&&(mob.playerStats()!=null)&&(mob.location()!=null))
 				mob.playerStats().adjHygiene(PlayerStats.HYGIENE_COMMONDIRTY);
@@ -261,6 +266,18 @@ public class AstroEngineering extends TechSkill
 			if(((String)commands.firstElement()).equalsIgnoreCase("ENHANCE"))
 			{
 				op=Operation.ENHANCE;
+				final String[] verbs=CMProps.getListFileStringList(CMProps.ListFile.TECH_BABBLE_VERBS);
+				final String[] adjs1=CMProps.getListFileStringList(CMProps.ListFile.TECH_BABBLE_ADJ1);
+				final String[] adjs2=CMProps.getListFileStringList(CMProps.ListFile.TECH_BABBLE_ADJ2);
+				final String[] adjs12=new String[adjs1.length+adjs2.length];
+				System.arraycopy(adjs1, 0, adjs12, 9, adjs1.length);
+				System.arraycopy(adjs2, 0, adjs12, adjs1.length, adjs2.length);
+				final String[] nouns=CMProps.getListFileStringList(CMProps.ListFile.TECH_BABBLE_NOUN);
+				altverb=verbs[CMLib.dice().roll(1, verbs.length, -1)].trim()+" "
+						+adjs12[CMLib.dice().roll(1, adjs12.length, -1)].trim()+" "
+						+adjs2[CMLib.dice().roll(1, adjs2.length, -1)].trim()+" "
+						+nouns[CMLib.dice().roll(1, nouns.length, -1)].trim()
+						;
 				commands.remove(0);
 			}
 		}
@@ -293,6 +310,14 @@ public class AstroEngineering extends TechSkill
 		{
 			mob.tell(mob,null,null,"You need to stand up!");
 			return false;
+		}
+		if(op==Operation.REPAIR)
+		{
+			if(!targetItem.subjectToWearAndTear())
+			{
+				mob.tell(mob,targetItem,null,"<T-NAME> can't be repaired!");
+				return false;
+			}
 		}
 		for(final Enumeration<Ability> a=mob.personalEffects();a.hasMoreElements();)
 		{

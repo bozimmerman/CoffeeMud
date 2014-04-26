@@ -100,6 +100,13 @@ public class StdElecPanel extends StdElecContainer implements Electronics.ElecPa
 					}
 				}
 				break;
+			case CMMsg.TYP_INSTALL:
+				if(msg.value()<=0)
+				{
+					msg.source().tell("You failed to install "+((ShipComponent)msg.tool()).name(msg.source())+" into "+name(msg.source())+".");
+					return false;
+				}
+				break;
 			}
 		}
 		return true;
@@ -112,6 +119,9 @@ public class StdElecPanel extends StdElecContainer implements Electronics.ElecPa
 			switch(msg.targetMinor())
 			{
 			case CMMsg.TYP_PUT:
+				((ShipComponent)msg.tool()).setInstalledFactor((float)0.0);
+				break;
+			case CMMsg.TYP_INSTALL:
 				if((msg.tool() instanceof ShipComponent)&&(msg.value()>=0))
 				{
 					if(msg.value()<=0)
