@@ -17,9 +17,7 @@
   15. Script commands requiring location specifiers (mpat, mpgoto, mptransfer, mpechoat, etc) can find mobile mobs better using new
       syntax with the AT (@) sign.  For example, mptransfer $n hassan@midgaard#3001
   16. New Fighter skill: Weapon Sharpening (for a small damage bonus)
-   *. make the tech install skill!!! all put/remove commands should check msg.value() for pct chance/competence
-      competence divides by manufacturer and class of item. Minimum of 1/5 pts on max other items same manufacturer/type
-      using expertises is a great idea.  Every time engineering levels up, gain a rank in appropriate expertise?
+   *. test the tech install skill!!! make sure put doesn't work, but remove does.  Check install level after.
    *. make components interact badly based on techlevel -- generators/batteries affect things they power, software affects controlled.
       this encourages equality in tech level, which will bleed out into the comparative components (weapons, shields)
    *. retest private libs, private dbtables, private classes, private area objects, private players

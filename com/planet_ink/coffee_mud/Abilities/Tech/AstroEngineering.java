@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Abilities.Tech;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
+import com.planet_ink.coffee_mud.Abilities.StdAbility;
 import com.planet_ink.coffee_mud.Abilities.Common.CommonSkill;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -67,18 +68,6 @@ public class AstroEngineering extends TechSkill
 		}
 	}
 
-	/**
-	 * Here's the scoop: Send the manufacturer and item type, and look at a expertise list
-	 * for the level of expertise in each.  The sum is 0-50 normally, 25 for
-	 * each. Every time it comes up, there is a chance of expertise rating going up in 
-	 * that manufacturer and item type, and if less than 25, pulling down the oldest used
-	 * manufacturer or item type as knowledge fades.  Makes it tough to get to full knowledge
-	 * in everything.  Make sure undefined expertise names end with "%" so they are displayed 
-	 * right in the expertise command. 
-	 * @param mob
-	 * @param item
-	 * @return
-	 */
 	public int getBonus(MOB mob, Electronics item, int multiplyBy)
 	{
 		if((mob==null)||(item==null))
@@ -105,6 +94,50 @@ public class AstroEngineering extends TechSkill
 		return (int)Math.round(CMath.mul(multiplyBy, score));
 	}
 	
+	public void giveBonus(MOB mob, Electronics item)
+	{
+		if((mob==null)||(item==null))
+			return;
+
+		if((System.currentTimeMillis()-lastCastHelp)<300000)
+			return;
+		
+		String experName;
+		if(CMLib.dice().rollPercentage()>50)
+		{
+			Manufacturer m=item.getFinalManufacturer();
+			if(m!=null)
+			{
+				experName=m.name();
+			}
+			else
+				return;
+		}
+		else
+		{
+			Technical.TechType ttype = item.getTechType();
+			if(ttype!=null)
+			{
+				experName=ttype.getDisplayName();
+			}
+			else
+				return;
+		}
+		Pair<String,Integer> expertise=mob.fetchExpertise(experName+"%");
+		if(expertise==null)
+		{
+			mob.addExpertise(experName+"%0");
+			expertise=mob.fetchExpertise(experName+"%");
+		}
+		final int currentExpertise=expertise.second.intValue();
+		if(((int)Math.round(Math.sqrt((mob.charStats().getStat(CharStats.STAT_INTELLIGENCE)))*34.0*Math.random()))>=currentExpertise)
+		{
+			expertise.second=Integer.valueOf(expertise.second.intValue()+1);
+			lastCastHelp=System.currentTimeMillis();
+			mob.tell(mob,null,null,"You gain some new insights about "+experName+".");
+		}
+	}
+	
 	public void unInvoke()
 	{
 		if(canBeUninvoked())
@@ -127,7 +160,10 @@ public class AstroEngineering extends TechSkill
 					CMMsg msg=CMClass.getMsg(mob,targetPanel,targetItem,CMMsg.MSG_INSTALL,"<S-NAME> install(s) <T-NAME> into <O-NAME>.");
 					msg.setValue(50+getBonus(mob,(Electronics)targetItem,50));
 					if(room.okMessage(msg.source(), msg))
+					{
 						room.send(msg.source(), msg);
+						giveBonus(mob,(Electronics)targetItem);
+					}
 				}
 				else
 				if(op==Operation.REPAIR)
@@ -135,14 +171,20 @@ public class AstroEngineering extends TechSkill
 					CMMsg msg=CMClass.getMsg(mob,targetItem,this,CMMsg.MSG_REPAIR,"<S-NAME> repair(s) <T-NAME>.");
 					msg.setValue(CMLib.dice().roll(1, proficiency()/2, getBonus(mob,(Electronics)targetItem,50)));
 					if(room.okMessage(msg.source(), msg))
+					{
 						room.send(msg.source(), msg);
+						giveBonus(mob,(Electronics)targetItem);
+					}
 				}
 				else
 				{
 					CMMsg msg=CMClass.getMsg(mob,targetItem,this,CMMsg.MSG_ENHANCE,"<S-NAME> enhance(s) <T-NAME>.");
 					msg.setValue((proficiency()/2)+getBonus(mob,(Electronics)targetItem,50));
 					if(room.okMessage(msg.source(), msg))
+					{
 						room.send(msg.source(), msg);
+						giveBonus(mob,(Electronics)targetItem);
+					}
 				}
 			}
 			aborted = false;
@@ -316,6 +358,15 @@ public class AstroEngineering extends TechSkill
 			if(!targetItem.subjectToWearAndTear())
 			{
 				mob.tell(mob,targetItem,null,"<T-NAME> can't be repaired!");
+				return false;
+			}
+		}
+		else
+		if(op==Operation.ENHANCE)
+		{
+			if((targetItem.subjectToWearAndTear())&&(targetItem.usesRemaining()<100))
+			{
+				mob.tell(mob,targetItem,null,"<T-NAME> must be repaired first!");
 				return false;
 			}
 		}
