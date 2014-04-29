@@ -15,6 +15,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 import java.net.*;
 import java.nio.ByteBuffer;
@@ -53,7 +54,7 @@ public class SetStat extends GetStat
 	{
 		try
 		{
-			PhysicalAgent P=req.getTarget();
+			final PhysicalAgent P=req.getTarget();
 			if(P==null)
 			{
 				req.sendMsg("[FAIL NO TARGET]");
@@ -72,7 +73,7 @@ public class SetStat extends GetStat
 				type=parameters.substring(0,x).toUpperCase().trim();
 				rest=parameters.substring(x+1).toUpperCase().trim();
 			}
-			Modifiable mod=getModifiable(type,P);
+			final Modifiable mod=getModifiable(type,P);
 			if(mod==null)
 			{
 				req.sendMsg("[FAIL "+getHelp(req.getUser(), P, "")+"]");
@@ -116,7 +117,7 @@ public class SetStat extends GetStat
 					{
 						if(adjuster=='-')
 						{
-							Ability A=((Physical)mod).fetchEffect(firstValue);
+							final Ability A=((Physical)mod).fetchEffect(firstValue);
 							if(A!=null)
 							{
 								((Physical)mod).delEffect(A);
@@ -127,15 +128,15 @@ public class SetStat extends GetStat
 						}
 						else
 						{
-							Ability A=CMClass.findAbility(firstValue);
+							final Ability A=CMClass.findAbility(firstValue);
 							if(A==null)
 								req.sendMsg("[FAIL "+firstValue+" NOT FOUND]");
 							else
 							if(adjuster=='+')
 							{
-								MOB M=CMClass.sampleMOB();
+								final MOB M=CMClass.sampleMOB();
 								M.setLocation(CMLib.map().roomLocation((Physical)mod));
-								try{A.invoke(M, CMParms.parse(restValue), (Physical)mod, true, 0);}catch(Exception e){}
+								try{A.invoke(M, CMParms.parse(restValue), (Physical)mod, true, 0);}catch(final Exception e){}
 								M.destroy();
 								req.sendMsg("[OK "+firstValue+"]");
 							}
@@ -157,7 +158,7 @@ public class SetStat extends GetStat
 					{
 						if(adjuster=='-')
 						{
-							Behavior A=((PhysicalAgent)mod).fetchBehavior(firstValue);
+							final Behavior A=((PhysicalAgent)mod).fetchBehavior(firstValue);
 							if(A!=null)
 							{
 								((PhysicalAgent)mod).delBehavior(A);
@@ -168,7 +169,7 @@ public class SetStat extends GetStat
 						}
 						else
 						{
-							Behavior A=CMClass.findBehavior(firstValue);
+							final Behavior A=CMClass.findBehavior(firstValue);
 							if(A==null)
 								req.sendMsg("[FAIL "+firstValue+" NOT FOUND]");
 							else
@@ -188,7 +189,7 @@ public class SetStat extends GetStat
 					{
 						if(adjuster=='-')
 						{
-							Ability A=((MOB)mod).fetchAbility(firstValue);
+							final Ability A=((MOB)mod).fetchAbility(firstValue);
 							if(A!=null)
 							{
 								((MOB)mod).delAbility(A);
@@ -199,7 +200,7 @@ public class SetStat extends GetStat
 						}
 						else
 						{
-							Ability A=CMClass.findAbility(firstValue);
+							final Ability A=CMClass.findAbility(firstValue);
 							if(A==null)
 								req.sendMsg("[FAIL "+firstValue+" NOT FOUND]");
 							else
@@ -213,13 +214,13 @@ public class SetStat extends GetStat
 					}
 					case 1:
 					{
-						Faction F=CMLib.factions().getFaction(firstValue);
+						final Faction F=CMLib.factions().getFaction(firstValue);
 						if(F==null)
 							req.sendMsg("[FAIL "+firstValue+" NOT EXIST]");
 						else
 						if(adjuster=='-')
 						{
-							int f=((MOB)mod).fetchFaction(F.factionID());
+							final int f=((MOB)mod).fetchFaction(F.factionID());
 							if(f<Integer.MAX_VALUE)
 							{
 								if(CMath.isInteger(restValue))
@@ -264,7 +265,7 @@ public class SetStat extends GetStat
 					{
 						if(adjuster=='-')
 						{
-							MOB M=((MOB)mod).fetchFollower(restValue);
+							final MOB M=((MOB)mod).fetchFollower(restValue);
 							if(M==null)
 								req.sendMsg("[FAIL "+restValue+" NOT FOUND]");
 							else
@@ -275,7 +276,7 @@ public class SetStat extends GetStat
 						}
 						else
 						{
-							Room R=CMLib.map().roomLocation((MOB)mod);
+							final Room R=CMLib.map().roomLocation((MOB)mod);
 							MOB M=null;
 							if(R!=null) M=R.fetchInhabitant(restValue);
 							if(M!=null)
@@ -297,7 +298,7 @@ public class SetStat extends GetStat
 					{
 						if(adjuster=='-')
 						{
-							Item M=((ItemPossessor)mod).findItem(firstValue);
+							final Item M=((ItemPossessor)mod).findItem(firstValue);
 							if(M==null)
 								req.sendMsg("[FAIL "+restValue+" NOT FOUND]");
 							else
@@ -308,7 +309,7 @@ public class SetStat extends GetStat
 						}
 						else
 						{
-							Room R=CMLib.map().roomLocation((Physical)mod);
+							final Room R=CMLib.map().roomLocation((Physical)mod);
 							Item M=null;
 							if((R!=null)&&(mod instanceof MOB)) M=R.findItem(firstValue);
 							if((R!=null)&&(mod instanceof Room)) M=((MOB)mod).findItem(firstValue);
@@ -332,7 +333,7 @@ public class SetStat extends GetStat
 					{
 						if(adjuster=='-')
 						{
-							MOB M=((Room)mod).fetchInhabitant(restValue);
+							final MOB M=((Room)mod).fetchInhabitant(restValue);
 							if(M==null)
 								req.sendMsg("[FAIL "+restValue+" NOT FOUND]");
 							else
@@ -367,9 +368,9 @@ public class SetStat extends GetStat
 				mod.setStat(stat, value);
 			else
 			{
-				String[] codes = this.getStatCodes(P, mod);
-				for(int i=0;i<codes.length;i++)
-					if(codes[i].equalsIgnoreCase(stat))
+				final String[] codes = this.getStatCodes(P, mod);
+				for (final String code : codes)
+					if(code.equalsIgnoreCase(stat))
 						if(P instanceof MOB)
 							CMLib.coffeeMaker().setGenMobStat((MOB)P, stat, value);
 						else
@@ -379,7 +380,7 @@ public class SetStat extends GetStat
 			}
 			req.sendMsg("[OK]");
 		}
-		catch(Exception ioe)
+		catch(final Exception ioe)
 		{
 			Log.errOut(className,ioe);
 			req.close();

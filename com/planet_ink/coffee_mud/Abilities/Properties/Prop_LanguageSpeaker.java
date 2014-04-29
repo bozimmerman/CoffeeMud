@@ -45,8 +45,8 @@ public class Prop_LanguageSpeaker extends Property
 	protected Language lang = null;
 	protected String langStr = "";
 
-	private Room homeRoom = null;
-	private Area homeArea = null;
+	private final Room homeRoom = null;
+	private final Area homeArea = null;
 	private CMClass.CMObjectType affectedType = CMClass.CMObjectType.AREA;
 
 	@Override
@@ -57,7 +57,7 @@ public class Prop_LanguageSpeaker extends Property
 		noMobs=CMParms.getParmBool(txt,"NOMOBS",false);
 		homeOnly=CMParms.getParmBool(txt,"HOMEONLY",false);
 		langStr=CMParms.getParmStr(txt,"LANGUAGE","").trim();
-		int x=txt.indexOf(';');
+		final int x=txt.indexOf(';');
 		mobMask=null;
 		if((x>=0)&&(txt.substring(x+1).trim().length()>0))
 			mobMask=CMLib.masking().getPreCompiledMask(txt.substring(x+1).trim());
@@ -90,8 +90,8 @@ public class Prop_LanguageSpeaker extends Property
 
 	public void startSpeaking(MOB mob)
 	{
-		Room mobHomeRoom=mob.getStartRoom();
-		Area mobHomeArea=((mobHomeRoom==null)?null:mobHomeRoom.getArea());
+		final Room mobHomeRoom=mob.getStartRoom();
+		final Area mobHomeArea=((mobHomeRoom==null)?null:mobHomeRoom.getArea());
 		if(((lang!=null)||(langStr.length()>0))
 		&&(doPlayers || mob.isMonster())
 		&&((!noMobs) || (!mob.isMonster()))

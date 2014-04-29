@@ -43,8 +43,8 @@ public class Stand extends StdCommand
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		boolean ifnecessary=((commands.size()>1)&&(((String)commands.lastElement()).equalsIgnoreCase("IFNECESSARY")));
-		Room room = CMLib.map().roomLocation(mob);
+		final boolean ifnecessary=((commands.size()>1)&&(((String)commands.lastElement()).equalsIgnoreCase("IFNECESSARY")));
+		final Room room = CMLib.map().roomLocation(mob);
 		if(CMLib.flags().isStanding(mob))
 		{
 			if(!ifnecessary)
@@ -56,7 +56,7 @@ public class Stand extends StdCommand
 		else
 		if(room!=null)
 		{
-			CMMsg msg=CMClass.getMsg(mob,null,null,CMMsg.MSG_STAND,mob.amDead()?null:"<S-NAME> stand(s) up.");
+			final CMMsg msg=CMClass.getMsg(mob,null,null,CMMsg.MSG_STAND,mob.amDead()?null:"<S-NAME> stand(s) up.");
 			if(room.okMessage(mob,msg))
 				room.send(mob,msg);
 		}

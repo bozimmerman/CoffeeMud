@@ -80,28 +80,28 @@ public class Thief_Lure extends ThiefSkill implements Trap
 		}
 		String str=(String)commands.lastElement();
 		commands.removeElementAt(commands.size()-1);
-		int dirCode=Directions.getGoodDirectionCode(str);
+		final int dirCode=Directions.getGoodDirectionCode(str);
 		if((dirCode<0)||(mob.location()==null)||(mob.location().getRoomInDir(dirCode)==null)||(mob.location().getExitInDir(dirCode)==null))
 		{
 			mob.tell("'"+str+"' is not a valid direction.");
 			return false;
 		}
-		String direction=Directions.getInDirectionName(dirCode);
+		final String direction=Directions.getInDirectionName(dirCode);
 
-		MOB target=this.getTarget(mob,commands,givenTarget);
+		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		int levelDiff=target.phyStats().level()-(mob.phyStats().level()+abilityCode()+(getXLEVELLevel(mob)*2));
+		final int levelDiff=target.phyStats().level()-(mob.phyStats().level()+abilityCode()+(getXLEVELLevel(mob)*2));
 
 		boolean success=proficiencyCheck(mob,-(levelDiff*(!CMLib.flags().canBeSeenBy(mob,target)?5:10)),auto);
 		success=success&&(CMLib.dice().rollPercentage()+(getXLEVELLevel(mob)*3)>target.charStats().getSave(CharStats.STAT_SAVE_TRAPS));
 		success=success&&(CMLib.dice().rollPercentage()+(getXLEVELLevel(mob)*3)>target.charStats().getSave(CharStats.STAT_SAVE_MIND));
 
 		str="<S-NAME> attempt(s) to lure <T-NAME> "+direction+".";
-		CMMsg msg=CMClass.getMsg(mob,target,this,(auto?CMMsg.MASK_ALWAYS:0)|CMMsg.MSG_SPEAK,str);
+		final CMMsg msg=CMClass.getMsg(mob,target,this,(auto?CMMsg.MASK_ALWAYS:0)|CMMsg.MSG_SPEAK,str);
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

@@ -54,7 +54,7 @@ public class Spell_FeatherFall extends Spell
 		int weight=mob.baseWeight();
 		for(int i=0;i<mob.numItems();i++)
 		{
-			Item I=mob.getItem(i);
+			final Item I=mob.getItem(i);
 			if((I!=null)&&(!I.amWearingAt(Wearable.WORN_FLOATING_NEARBY)))
 				weight+=I.phyStats().weight();
 		}
@@ -71,7 +71,7 @@ public class Spell_FeatherFall extends Spell
 		&&(msg.target() instanceof Item)
 		&&(((msg.tool()==null)||(msg.tool() instanceof MOB))))
 		{
-			MOB mob=msg.source();
+			final MOB mob=msg.source();
 			if((((Item)msg.target()).phyStats().weight()>(mob.maxCarry()-mobWeight(mob)))
 			&&(!mob.isMine(msg.target())))
 			{
@@ -88,7 +88,7 @@ public class Spell_FeatherFall extends Spell
 		// undo the affects of this spell
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		super.unInvoke();
 
 		if(canBeUninvoked())
@@ -99,7 +99,7 @@ public class Spell_FeatherFall extends Spell
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		MOB target=getTarget(mob,commands,givenTarget);
+		final MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
 		// the invoke method for spells receives as
@@ -108,7 +108,7 @@ public class Spell_FeatherFall extends Spell
 		// and added as String objects to a vector.
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
@@ -117,7 +117,7 @@ public class Spell_FeatherFall extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> become(s) very light!":"^S<S-NAME> invoke(s) immediate lightness upon <T-NAMESELF>.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> become(s) very light!":"^S<S-NAME> invoke(s) immediate lightness upon <T-NAMESELF>.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

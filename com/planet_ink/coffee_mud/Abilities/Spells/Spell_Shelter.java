@@ -16,7 +16,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 
@@ -67,7 +66,7 @@ public class Spell_Shelter extends Spell
 	{
 		if(!(affected instanceof MOB))
 			return;
-		MOB M=(MOB)affected;
+		final MOB M=(MOB)affected;
 
 		if(canBeUninvoked())
 		{
@@ -75,15 +74,15 @@ public class Spell_Shelter extends Spell
 				shelter=M.location();
 			Room backToRoom=M.getStartRoom();
 			int i=0;
-			LinkedList<MOB> mobs=new LinkedList<MOB>();
-			for(Enumeration<MOB> m=shelter.inhabitants();m.hasMoreElements();)
+			final LinkedList<MOB> mobs=new LinkedList<MOB>();
+			for(final Enumeration<MOB> m=shelter.inhabitants();m.hasMoreElements();)
 				mobs.add(m.nextElement());
-			for(MOB mob : mobs)
+			for(final MOB mob : mobs)
 			{
 				if(mob==null) break;
 				mob.tell("You return to your previous location.");
 
-				CMMsg enterMsg=CMClass.getMsg(mob,previousLocation,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,"<S-NAME> appears out of nowhere!");
+				final CMMsg enterMsg=CMClass.getMsg(mob,previousLocation,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,"<S-NAME> appears out of nowhere!");
 				backToRoom=getPreviousLocation(mob);
 				if(backToRoom==null)
 					backToRoom=mob.getStartRoom();
@@ -91,10 +90,10 @@ public class Spell_Shelter extends Spell
 				backToRoom.send(mob,enterMsg);
 				CMLib.commands().postLook(mob,true);
 			}
-			LinkedList<Item> items=new LinkedList<Item>();
-			for(Enumeration<Item> e=shelter.items();e.hasMoreElements();)
+			final LinkedList<Item> items=new LinkedList<Item>();
+			for(final Enumeration<Item> e=shelter.items();e.hasMoreElements();)
 				items.add(e.nextElement());
-			for(Item I : items)
+			for(final Item I : items)
 			{
 				if(I.container()==null)
 					backToRoom.moveItemTo(I, Expire.Player_Drop, Move.Followers);
@@ -102,7 +101,7 @@ public class Spell_Shelter extends Spell
 			i=0;
 			while(i<shelter.numItems())
 			{
-				Item I=shelter.getItem(i);
+				final Item I=shelter.getItem(i);
 				backToRoom.moveItemTo(I, Expire.Player_Drop, Move.Followers);
 				if(shelter.isContent(I))
 					i++;
@@ -141,27 +140,27 @@ public class Spell_Shelter extends Spell
 			return false;
 		}
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":"^S<S-NAME> wave(s) <S-HIS-HER> arms, speak(s), and suddenly vanish(es)!^?");
+			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":"^S<S-NAME> wave(s) <S-HIS-HER> arms, speak(s), and suddenly vanish(es)!^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				Set<MOB> h=properTargets(mob,givenTarget,false);
+				final Set<MOB> h=properTargets(mob,givenTarget,false);
 				if(h==null) return false;
 
-				Room thisRoom=mob.location();
+				final Room thisRoom=mob.location();
 				previousLocation=thisRoom;
 				shelter=CMClass.getLocale("MagicShelter");
-				Room newRoom=shelter;
+				final Room newRoom=shelter;
 				shelter.setArea(mob.location().getArea());
 				miscText=CMLib.map().getExtendedRoomID(mob.location());
-				for(Iterator f=h.iterator();f.hasNext();)
+				for (final Object element : h)
 				{
-					MOB follower=(MOB)f.next();
-					CMMsg enterMsg=CMClass.getMsg(follower,newRoom,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,"<S-NAME> appears out of nowhere.");
-					CMMsg leaveMsg=CMClass.getMsg(follower,thisRoom,this,verbalCastCode(mob,newRoom,auto),"<S-NAME> disappear(s) into oblivion.");
+					final MOB follower=(MOB)element;
+					final CMMsg enterMsg=CMClass.getMsg(follower,newRoom,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,"<S-NAME> appears out of nowhere.");
+					final CMMsg leaveMsg=CMClass.getMsg(follower,thisRoom,this,verbalCastCode(mob,newRoom,auto),"<S-NAME> disappear(s) into oblivion.");
 					if(thisRoom.okMessage(follower,leaveMsg)&&newRoom.okMessage(follower,enterMsg))
 					{
 						if(follower.isInCombat())

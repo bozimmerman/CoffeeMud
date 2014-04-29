@@ -70,7 +70,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 	{
 		if(journal == null)
 			return null;
-		Hashtable<String,JournalSummaryStats> journalSummaryStats=getSummaryStats();
+		final Hashtable<String,JournalSummaryStats> journalSummaryStats=getSummaryStats();
 		JournalSummaryStats stats = journalSummaryStats.get(journal.NAME().toUpperCase().trim());
 		if(stats == null)
 		{
@@ -94,7 +94,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 	{
 		if(journal == null)
 			return;
-		Hashtable<String,JournalSummaryStats> journalSummaryStats=getSummaryStats();
+		final Hashtable<String,JournalSummaryStats> journalSummaryStats=getSummaryStats();
 		synchronized(journal.NAME().intern())
 		{
 			journalSummaryStats.remove(journal.NAME().toUpperCase().trim());
@@ -121,15 +121,15 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 				list=list.substring(x+1);
 			}
 			x=item.indexOf(' ');
-			Hashtable<CommandJournalFlags,String> flags=new Hashtable<CommandJournalFlags,String>();
+			final Hashtable<CommandJournalFlags,String> flags=new Hashtable<CommandJournalFlags,String>();
 			String mask="";
 			if(x>0)
 			{
 				mask=item.substring(x+1).trim();
 				for(int pf=0;pf<CommandJournalFlags.values().length;pf++)
 				{
-					String flag = CommandJournalFlags.values()[pf].toString();
-					int keyx=mask.toUpperCase().indexOf(flag);
+					final String flag = CommandJournalFlags.values()[pf].toString();
+					final int keyx=mask.toUpperCase().indexOf(flag);
 					if(keyx>=0)
 					{
 						int keyy=mask.indexOf(' ',keyx+1);
@@ -159,7 +159,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 	{
 		if(entry==null)
 			return false;
-		String to=entry.to;
+		final String to=entry.to;
 		if((srchMatch!=null)
 		&&(srchMatch.length()>0)
 		&&((to.toLowerCase().indexOf(srchMatch)<0)
@@ -183,8 +183,8 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 	public int loadForumJournals(String list)
 	{
 		clearForumJournals();
-		List<ForumJournal> journals = parseForumJournals(list);
-		for(ForumJournal F : journals)
+		final List<ForumJournal> journals = parseForumJournals(list);
+		for(final ForumJournal F : journals)
 		{
 			forumJournals.put(F.NAME().toUpperCase().trim(), F);
 			CMSecurity.registerJournal(F.NAME().toUpperCase().trim());
@@ -207,15 +207,15 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 		this.clanForums.remove(clan.clanID());
 		if(allClanForumDefs==null)
 			return;
-		List<String> set=CMParms.parseCommas(allClanForumDefs,true);
-		StringBuilder myForumList=new StringBuilder("");
+		final List<String> set=CMParms.parseCommas(allClanForumDefs,true);
+		final StringBuilder myForumList=new StringBuilder("");
 		for(String s : set)
 		{
 			s=s.trim();
 			if(s.startsWith("["))
 			{
-				int x=s.indexOf(']');
-				String cat=s.substring(1,x).trim();
+				final int x=s.indexOf(']');
+				final String cat=s.substring(1,x).trim();
 				if(clan.getGovernment().getCategory().equalsIgnoreCase(cat))
 				{
 					s=s.substring(x+1).trim();
@@ -228,14 +228,14 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 				}
 			}
 		}
-		List<ForumJournal> journals = parseForumJournals(myForumList.toString());
+		final List<ForumJournal> journals = parseForumJournals(myForumList.toString());
 		if((journals!=null)&&(journals.size()>0))
 			this.clanForums.put(clan.clanID(), journals);
 	}
 
 	public List<ForumJournal> parseForumJournals(String list)
 	{
-		List<ForumJournal> journals = new Vector<ForumJournal>(1);
+		final List<ForumJournal> journals = new Vector<ForumJournal>(1);
 		while(list.length()>0)
 		{
 			int x=list.indexOf(',');
@@ -250,16 +250,16 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 				item=list.substring(0,x).trim();
 				list=list.substring(x+1);
 			}
-			Hashtable<ForumJournalFlags,String> flags=new Hashtable<ForumJournalFlags,String>();
+			final Hashtable<ForumJournalFlags,String> flags=new Hashtable<ForumJournalFlags,String>();
 			x=item.indexOf('=');
 			if(x > 0)
 			{
 				int y=x;
 				while((y>0)&&(!Character.isWhitespace(item.charAt(y))))
 					y--;
-				String rest = item.toUpperCase().substring(y+1).trim();
+				final String rest = item.toUpperCase().substring(y+1).trim();
 				item=item.substring(0,y);
-				Vector<Integer> flagDexes = new Vector<Integer>();
+				final Vector<Integer> flagDexes = new Vector<Integer>();
 				x=rest.indexOf('=');
 				while(x > 0)
 				{
@@ -273,24 +273,24 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 							ForumJournalFlags.valueOf(rest.substring(y,x).toUpperCase().trim());
 							flagDexes.addElement(Integer.valueOf(y));
 						}
-						catch(Exception e){}
+						catch(final Exception e){}
 					}
 					x=rest.indexOf('=',x+1);
 				}
 				flagDexes.addElement(Integer.valueOf(rest.length()));
 				int lastStart=0;
-				for(Integer flagDex : flagDexes)
+				for(final Integer flagDex : flagDexes)
 				{
-					String piece = rest.substring(lastStart,flagDex.intValue());
+					final String piece = rest.substring(lastStart,flagDex.intValue());
 					lastStart=flagDex.intValue();
 					x=piece.indexOf('=');
 					try
 					{
-						ForumJournalFlags flagVar = ForumJournalFlags.valueOf(piece.substring(0,x).toUpperCase().trim());
-						String flagVal = piece.substring(x+1);
+						final ForumJournalFlags flagVar = ForumJournalFlags.valueOf(piece.substring(0,x).toUpperCase().trim());
+						final String flagVal = piece.substring(x+1);
 						flags.put(flagVar, flagVal);
 					}
-					catch(Exception e){}
+					catch(final Exception e){}
 				}
 			}
 			journals.add(new ForumJournal(item.trim(),flags));
@@ -307,7 +307,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 		{
 			Item I=null;
 			H=new HashSet<String>();
-			for(Enumeration<Item> e=CMClass.basicItems();e.hasMoreElements();)
+			for(final Enumeration<Item> e=CMClass.basicItems();e.hasMoreElements();)
 			{
 				I=e.nextElement();
 				if((I instanceof ArchonOnly)
@@ -330,20 +330,20 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 	@Override
 	public String getScriptValue(MOB mob, String journal, String oldValue)
 	{
-		CommandJournal CMJ=getCommandJournal(journal);
+		final CommandJournal CMJ=getCommandJournal(journal);
 		if(CMJ==null) return oldValue;
-		String scriptFilename=CMJ.getScriptFilename();
+		final String scriptFilename=CMJ.getScriptFilename();
 		if((scriptFilename==null)||(scriptFilename.trim().length()==0)) return oldValue;
-		ScriptingEngine S=(ScriptingEngine)CMClass.getCommon("DefaultScriptingEngine");
+		final ScriptingEngine S=(ScriptingEngine)CMClass.getCommon("DefaultScriptingEngine");
 		S.setSavable(false);
 		S.setVarScope("*");
 		S.setScript("LOAD="+scriptFilename);
 		S.setVar(mob.Name(),"VALUE", oldValue);
-		CMMsg msg2=CMClass.getMsg(mob,mob,null,CMMsg.MSG_OK_VISUAL,null,null,"COMMANDJOURNAL_"+CMJ.NAME());
+		final CMMsg msg2=CMClass.getMsg(mob,mob,null,CMMsg.MSG_OK_VISUAL,null,null,"COMMANDJOURNAL_"+CMJ.NAME());
 		S.executeMsg(mob, msg2);
 		S.dequeResponses();
 		S.tick(mob,Tickable.TICKID_MOB);
-		String response=S.getVar("*","VALUE");
+		final String response=S.getVar("*","VALUE");
 		if(response!=null) return response;
 		return oldValue;
 	}
@@ -359,24 +359,24 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 		setThreadStatus(serviceClient,"expiration journal sweeping");
 		try
 		{
-			for(Enumeration<CommandJournal> e=commandJournals();e.hasMoreElements();)
+			for(final Enumeration<CommandJournal> e=commandJournals();e.hasMoreElements();)
 			{
-				CommandJournal CMJ=e.nextElement();
-				String num=CMJ.getFlag(CommandJournalFlags.EXPIRE);
+				final CommandJournal CMJ=e.nextElement();
+				final String num=CMJ.getFlag(CommandJournalFlags.EXPIRE);
 				if((num!=null)&&(CMath.isNumber(num))&&(CMath.s_double(num)>0.0))
 				{
 					setThreadStatus(serviceClient,"updating journal "+CMJ.NAME());
-					List<JournalsLibrary.JournalEntry> items=CMLib.database().DBReadJournalMsgs(CMJ.JOURNAL_NAME());
+					final List<JournalsLibrary.JournalEntry> items=CMLib.database().DBReadJournalMsgs(CMJ.JOURNAL_NAME());
 					if(items!=null)
 					for(int i=items.size()-1;i>=0;i--)
 					{
-						JournalEntry entry=items.get(i);
+						final JournalEntry entry=items.get(i);
 						long compdate=entry.update;
 						compdate=compdate+Math.round(CMath.mul(TimeManager.MILI_DAY,CMath.s_double(num)));
 						if(System.currentTimeMillis()>compdate)
 						{
-							String from=entry.from;
-							String message=entry.msg;
+							final String from=entry.from;
+							final String message=entry.msg;
 							Log.sysOut(Thread.currentThread().getName(),"Expired "+CMJ.NAME()+" from "+from+": "+message);
 							CMLib.database().DBDeleteJournal(CMJ.JOURNAL_NAME(),entry.key);
 						}
@@ -384,29 +384,29 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 					setThreadStatus(serviceClient,"command journal sweeping");
 				}
 			}
-		}catch(NoSuchElementException nse){}
+		}catch(final NoSuchElementException nse){}
 		try
 		{
-			for(Enumeration<ForumJournal> e=forumJournals();e.hasMoreElements();)
+			for(final Enumeration<ForumJournal> e=forumJournals();e.hasMoreElements();)
 			{
-				ForumJournal FMJ=e.nextElement();
-				String num=FMJ.getFlag(CommandJournalFlags.EXPIRE);
+				final ForumJournal FMJ=e.nextElement();
+				final String num=FMJ.getFlag(CommandJournalFlags.EXPIRE);
 				if((num!=null)&&(CMath.isNumber(num))&&(CMath.s_double(num)>0.0))
 				{
 					setThreadStatus(serviceClient,"updating journal "+FMJ.NAME());
-					List<JournalsLibrary.JournalEntry> items=CMLib.database().DBReadJournalMsgs(FMJ.NAME());
+					final List<JournalsLibrary.JournalEntry> items=CMLib.database().DBReadJournalMsgs(FMJ.NAME());
 					if(items!=null)
 					for(int i=items.size()-1;i>=0;i--)
 					{
-						JournalEntry entry=items.get(i);
+						final JournalEntry entry=items.get(i);
 						if(!CMath.bset(entry.attributes, JournalEntry.ATTRIBUTE_PROTECTED))
 						{
 							long compdate=entry.update;
 							compdate=compdate+Math.round(CMath.mul(TimeManager.MILI_DAY,CMath.s_double(num)));
 							if(System.currentTimeMillis()>compdate)
 							{
-								String from=entry.from;
-								String message=entry.msg;
+								final String from=entry.from;
+								final String message=entry.msg;
 								Log.debugOut(Thread.currentThread().getName(),"Expired "+FMJ.NAME()+" from "+from+": "+message);
 								CMLib.database().DBDeleteJournal(FMJ.NAME(),entry.key);
 							}
@@ -415,7 +415,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 					setThreadStatus(serviceClient,"forum journal sweeping");
 				}
 			}
-		}catch(NoSuchElementException nse){}
+		}catch(final NoSuchElementException nse){}
 	}
 
 	@Override
@@ -477,12 +477,11 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 
 		if(clan!=null)
 		{
-			List<ForumJournal> clanJournals=this.clanForums.get(clan.clanID());
+			final List<ForumJournal> clanJournals=this.clanForums.get(clan.clanID());
 			if(clanJournals!=null)
 			{
-				for(Iterator<JournalsLibrary.ForumJournal> e=clanJournals.iterator();e.hasNext();)
+				for (final ForumJournal CJ : clanJournals)
 				{
-					JournalsLibrary.ForumJournal CJ=e.next();
 					if(CJ.NAME().equalsIgnoreCase(named))
 						return CJ;
 				}
@@ -538,7 +537,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 			sess.setAfkFlag(false);
 			if(!menuMode)
 			{
-				String line=sess.prompt("^X"+CMStrings.padRight(""+vbuf.size(),3)+")^.^N ","");
+				final String line=sess.prompt("^X"+CMStrings.padRight(""+vbuf.size(),3)+")^.^N ","");
 				if(line.trim().equals("."))
 					menuMode=true;
 				else
@@ -546,11 +545,11 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 			}
 			else
 			{
-				LinkedList<String> paramsOut=new LinkedList<String>();
-				String option=sess.choose("^HMenu ^N(?/A/D/L/I/E/R/S/Q"+(canExtEdit?"/W":"")+")^H: ^N","ADLIERSQ?"+(canExtEdit?"W":""),"?",-1,paramsOut);
-				String paramAll=(paramsOut.size()>0)?CMParms.combine(paramsOut,0):null;
-				String param1=(paramsOut.size()>0)?paramsOut.getFirst():null;
-				String param2=(paramsOut.size()>1)?CMParms.combine(paramsOut,1):null;
+				final LinkedList<String> paramsOut=new LinkedList<String>();
+				final String option=sess.choose("^HMenu ^N(?/A/D/L/I/E/R/S/Q"+(canExtEdit?"/W":"")+")^H: ^N","ADLIERSQ?"+(canExtEdit?"W":""),"?",-1,paramsOut);
+				final String paramAll=(paramsOut.size()>0)?CMParms.combine(paramsOut,0):null;
+				final String param1=(paramsOut.size()>0)?paramsOut.getFirst():null;
+				final String param2=(paramsOut.size()>1)?CMParms.combine(paramsOut,1):null;
 				switch(option.charAt(0))
 				{
 				case 'S':
@@ -598,7 +597,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 							line=sess.prompt("Line to edit (0-"+(vbuf.size()-1)+"): ","");
 						if((CMath.isInteger(line))&&(CMath.s_int(line)>=0)&&(CMath.s_int(line)<(vbuf.size())))
 						{
-							int ln=CMath.s_int(line);
+							final int ln=CMath.s_int(line);
 							mob.tell("Current: \n\r"+CMStrings.padRight(""+ln,3)+") "+vbuf.get(ln));
 							String str=param2;
 							if(str==null)
@@ -624,7 +623,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 							line=sess.prompt("Line to delete (0-"+(vbuf.size()-1)+"): ","");
 						if((CMath.isInteger(line))&&(CMath.s_int(line)>=0)&&(CMath.s_int(line)<(vbuf.size())))
 						{
-							int ln=CMath.s_int(line);
+							final int ln=CMath.s_int(line);
 							vbuf.remove(ln);
 							mob.tell("Line "+ln+" deleted.");
 						}
@@ -642,16 +641,16 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 					if(mob.session()!=null)
 					{
 						StringBuilder oldDoc=new StringBuilder();
-						for(String s : vbuf)
+						for(final String s : vbuf)
 							oldDoc.append(s).append("\n");
 						vbuf.clear();
 						mob.session().sendGMCPEvent("IRE.Composer.Edit", "{\"title\":\""+MiniJSON.toJSONString(messageTitle)+"\",\"text\":\""+MiniJSON.toJSONString(oldDoc.toString())+"\"}");
 						oldDoc=null;
-						String newText=mob.session().prompt("Re-Enter the whole doc using your GMCP editor.\n\r" +
+						final String newText=mob.session().prompt("Re-Enter the whole doc using your GMCP editor.\n\r" +
 								"If the editor has not popped up, just hit enter and QUIT Without Saving immediately.\n\r" +
 								"Proceed: ");
-						String[] newDoc=newText.split("\\\\n");
-						for(String s : newDoc)
+						final String[] newDoc=newText.split("\\\\n");
+						for(final String s : newDoc)
 							vbuf.add(s);
 						if(newDoc.length>1)
 						{
@@ -662,7 +661,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 				}
 				case 'L':
 				{
-					StringBuffer list=new StringBuffer(messageTitle+"\n\r");
+					final StringBuffer list=new StringBuffer(messageTitle+"\n\r");
 					for(int v=0;v<vbuf.size();v++)
 						list.append(CMLib.coffeeFilter().colorOnlyFilter("^X"+CMStrings.padRight(""+v,3)+")^.^N ",sess)+vbuf.get(v)+"\n\r");
 					sess.rawPrint(list.toString());
@@ -679,7 +678,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 							line=sess.prompt("Line to insert before (0-"+(vbuf.size()-1)+"): ","");
 						if((CMath.isInteger(line))&&(CMath.s_int(line)>=0)&&(CMath.s_int(line)<(vbuf.size())))
 						{
-							int ln=CMath.s_int(line);
+							final int ln=CMath.s_int(line);
 							String str=param2;
 							if(str==null)
 								str=sess.prompt("Enter text to insert here.\n\r: ");
@@ -704,7 +703,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 		if((CMProps.getVar(CMProps.Str.MAILBOX).length()>0)
 		&&(CMLib.players().playerExists(userName)||CMLib.players().accountExists(userName)))
 		{
-			Map<String, List<String>> lists=Resources.getCachedMultiLists("mailinglists.txt",true);
+			final Map<String, List<String>> lists=Resources.getCachedMultiLists("mailinglists.txt",true);
 			List<String> mylist=lists.get(journalName);
 			if(mylist==null)
 			{
@@ -723,7 +722,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 				{
 					String subscribeTitle="Subscribed";
 					String subscribedMsg="You are now subscribed to "+journalName+". To unsubscribe, send an email with a subject of unsubscribe.";
-					String[] msgs =CMProps.getListVar(CMProps.StrList.SUBSCRIPTION_STRS);
+					final String[] msgs =CMProps.getListVar(CMProps.StrList.SUBSCRIPTION_STRS);
 					if((msgs!=null)&&(msgs.length>0))
 					{
 						if(msgs[0].length()>0)
@@ -749,8 +748,8 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 		if(CMProps.getVar(CMProps.Str.MAILBOX).length()==0)
 			return false;
 
-		Map<String, List<String>> lists=Resources.getCachedMultiLists("mailinglists.txt",true);
-		List<String> mylist=lists.get(journalName);
+		final Map<String, List<String>> lists=Resources.getCachedMultiLists("mailinglists.txt",true);
+		final List<String> mylist=lists.get(journalName);
 		if(mylist==null) return false;
 		for(int l=mylist.size()-1;l>=0;l--)
 			if(mylist.get(l).equalsIgnoreCase(userName))
@@ -761,7 +760,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 				{
 					String unsubscribeTitle="Un-Subscribed";
 					String unsubscribedMsg="You are no longer subscribed to "+journalName+". To subscribe again, send an email with a subject of subscribe.";
-					String[] msgs =CMProps.getListVar(CMProps.StrList.SUBSCRIPTION_STRS);
+					final String[] msgs =CMProps.getListVar(CMProps.StrList.SUBSCRIPTION_STRS);
 					if((msgs!=null)&&(msgs.length>2))
 					{
 						if(msgs[2].length()>0)

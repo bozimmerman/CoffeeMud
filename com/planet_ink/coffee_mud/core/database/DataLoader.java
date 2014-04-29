@@ -46,7 +46,7 @@ public class DataLoader
 	public List<PlayerData> DBRead(String playerID, String section)
 	{
 		DBConnection D=null;
-		Vector<PlayerData> rows=new Vector<PlayerData>();
+		final Vector<PlayerData> rows=new Vector<PlayerData>();
 		try
 		{
 			D=DB.DBFetch();
@@ -56,9 +56,9 @@ public class DataLoader
 			R=D.query("SELECT * FROM CMPDAT WHERE CMPLID='"+playerID+"' AND CMSECT='"+section+"'");
 			while(R.next())
 			{
-				String playerID2=DBConnections.getRes(R,"CMPLID");
-				String section2=DBConnections.getRes(R,"CMSECT");
-				PlayerData d = new PlayerData();
+				final String playerID2=DBConnections.getRes(R,"CMPLID");
+				final String section2=DBConnections.getRes(R,"CMSECT");
+				final PlayerData d = new PlayerData();
 				d.who=playerID2;
 				d.section=section2;
 				d.key=DBConnections.getRes(R,"CMPKEY");
@@ -66,7 +66,7 @@ public class DataLoader
 				rows.addElement(d);
 			}
 		}
-		catch(Exception sqle)
+		catch(final Exception sqle)
 		{
 			Log.errOut("DataLoader",sqle);
 		}
@@ -80,18 +80,18 @@ public class DataLoader
 	public List<PlayerData> DBReadAllPlayerData(String playerID)
 	{
 		DBConnection D=null;
-		Vector<PlayerData> rows=new Vector<PlayerData>();
+		final Vector<PlayerData> rows=new Vector<PlayerData>();
 		try
 		{
 			D=DB.DBFetch();
 			playerID = DB.injectionClean(playerID);
-			ResultSet R=D.query("SELECT * FROM CMPDAT WHERE CMPLID='"+playerID+"'");
+			final ResultSet R=D.query("SELECT * FROM CMPDAT WHERE CMPLID='"+playerID+"'");
 			while(R.next())
 			{
-				String playerID2=DBConnections.getRes(R,"CMPLID");
+				final String playerID2=DBConnections.getRes(R,"CMPLID");
 				if(playerID2.equalsIgnoreCase(playerID))
 				{
-					PlayerData d = new PlayerData();
+					final PlayerData d = new PlayerData();
 					d.who=playerID2;
 					d.section=DBConnections.getRes(R,"CMSECT");
 					d.key=DBConnections.getRes(R,"CMPKEY");
@@ -100,7 +100,7 @@ public class DataLoader
 				}
 			}
 		}
-		catch(Exception sqle)
+		catch(final Exception sqle)
 		{
 			Log.errOut("DataLoader",sqle);
 		}
@@ -126,7 +126,7 @@ public class DataLoader
 			while(R.next())
 				rows++;
 		}
-		catch(Exception sqle)
+		catch(final Exception sqle)
 		{
 			Log.errOut("DataLoader",sqle);
 		}
@@ -141,22 +141,22 @@ public class DataLoader
 	public List<PlayerData> DBReadKey(String section, String keyMask)
 	{
 		DBConnection D=null;
-		Vector<PlayerData> rows=new Vector<PlayerData>();
-		Pattern P=Pattern.compile(keyMask, Pattern.CASE_INSENSITIVE | Pattern.DOTALL);
+		final Vector<PlayerData> rows=new Vector<PlayerData>();
+		final Pattern P=Pattern.compile(keyMask, Pattern.CASE_INSENSITIVE | Pattern.DOTALL);
 		try
 		{
 			D=DB.DBFetch();
 			section = DB.injectionClean(section);
-			ResultSet R=D.query("SELECT * FROM CMPDAT WHERE CMSECT='"+section+"'");
+			final ResultSet R=D.query("SELECT * FROM CMPDAT WHERE CMSECT='"+section+"'");
 			while(R.next())
 			{
-				String plid=DBConnections.getRes(R,"CMPLID");
-				String sect=DBConnections.getRes(R,"CMSECT");
-				String key=DBConnections.getRes(R,"CMPKEY");
-				Matcher M=P.matcher(key);
+				final String plid=DBConnections.getRes(R,"CMPLID");
+				final String sect=DBConnections.getRes(R,"CMSECT");
+				final String key=DBConnections.getRes(R,"CMPKEY");
+				final Matcher M=P.matcher(key);
 				if(M.find())
 				{
-					PlayerData d = new PlayerData();
+					final PlayerData d = new PlayerData();
 					d.who=plid;
 					d.section=sect;
 					d.key=key;
@@ -165,7 +165,7 @@ public class DataLoader
 				}
 			}
 		}
-		catch(Exception sqle)
+		catch(final Exception sqle)
 		{
 			Log.errOut("DataLoader",sqle);
 		}
@@ -180,18 +180,18 @@ public class DataLoader
 	public List<PlayerData> DBReadKey(String key)
 	{
 		DBConnection D=null;
-		Vector<PlayerData> rows=new Vector<PlayerData>();
+		final Vector<PlayerData> rows=new Vector<PlayerData>();
 		try
 		{
 			D=DB.DBFetch();
 			key = DB.injectionClean(key);
-			ResultSet R=D.query("SELECT * FROM CMPDAT WHERE CMPKEY='"+key+"'");
+			final ResultSet R=D.query("SELECT * FROM CMPDAT WHERE CMPKEY='"+key+"'");
 			while(R.next())
 			{
-				String plid=DBConnections.getRes(R,"CMPLID");
-				String sect=DBConnections.getRes(R,"CMSECT");
+				final String plid=DBConnections.getRes(R,"CMPLID");
+				final String sect=DBConnections.getRes(R,"CMSECT");
 				key=DBConnections.getRes(R,"CMPKEY");
-				PlayerData d = new PlayerData();
+				final PlayerData d = new PlayerData();
 				d.who=plid;
 				d.section=sect;
 				d.key=key;
@@ -199,7 +199,7 @@ public class DataLoader
 				rows.addElement(d);
 			}
 		}
-		catch(Exception sqle)
+		catch(final Exception sqle)
 		{
 			Log.errOut("DataLoader",sqle);
 		}
@@ -214,7 +214,7 @@ public class DataLoader
 	public List<PlayerData> DBRead(String playerID, String section, String key)
 	{
 		DBConnection D=null;
-		Vector<PlayerData> rows=new Vector<PlayerData>();
+		final Vector<PlayerData> rows=new Vector<PlayerData>();
 		try
 		{
 			D=DB.DBFetch();
@@ -225,9 +225,9 @@ public class DataLoader
 			R=D.query("SELECT * FROM CMPDAT WHERE CMPLID='"+playerID+"' AND CMSECT='"+section+"' AND CMPKEY='"+key+"'");
 			while(R.next())
 			{
-				String playerID2=DBConnections.getRes(R,"CMPLID");
-				String section2=DBConnections.getRes(R,"CMSECT");
-				PlayerData d = new PlayerData();
+				final String playerID2=DBConnections.getRes(R,"CMPLID");
+				final String section2=DBConnections.getRes(R,"CMSECT");
+				final PlayerData d = new PlayerData();
 				d.who=playerID2;
 				d.section=section2;
 				d.key=DBConnections.getRes(R,"CMPKEY");
@@ -235,7 +235,7 @@ public class DataLoader
 				rows.addElement(d);
 			}
 		}
-		catch(Exception sqle)
+		catch(final Exception sqle)
 		{
 			Log.errOut("DataLoader",sqle);
 		}
@@ -250,15 +250,15 @@ public class DataLoader
 	public List<PlayerData> DBRead(String section)
 	{
 		DBConnection D=null;
-		Vector<PlayerData> rows=new Vector<PlayerData>();
+		final Vector<PlayerData> rows=new Vector<PlayerData>();
 		try
 		{
 			D=DB.DBFetch();
 			section = DB.injectionClean(section);
-			ResultSet R=D.query("SELECT * FROM CMPDAT WHERE CMSECT='"+section+"'");
+			final ResultSet R=D.query("SELECT * FROM CMPDAT WHERE CMSECT='"+section+"'");
 			while(R.next())
 			{
-				PlayerData d = new PlayerData();
+				final PlayerData d = new PlayerData();
 				d.who=DBConnections.getRes(R,"CMPLID");
 				d.section=DBConnections.getRes(R,"CMSECT");
 				d.key=DBConnections.getRes(R,"CMPKEY");
@@ -266,7 +266,7 @@ public class DataLoader
 				rows.addElement(d);
 			}
 		}
-		catch(Exception sqle)
+		catch(final Exception sqle)
 		{
 			Log.errOut("DataLoader",sqle);
 		}
@@ -281,24 +281,24 @@ public class DataLoader
 	public List<PlayerData> DBRead(String playerID, List<String> sections)
 	{
 		DBConnection D=null;
-		Vector<PlayerData> rows=new Vector<PlayerData>();
+		final Vector<PlayerData> rows=new Vector<PlayerData>();
 		if((sections==null)||(sections.size()==0))
 			return rows;
 		try
 		{
 			D=DB.DBFetch();
-			StringBuffer orClause=new StringBuffer("");
+			final StringBuffer orClause=new StringBuffer("");
 			for(int i=0;i<sections.size();i++)
 			{
-				String section = DB.injectionClean(sections.get(i));
+				final String section = DB.injectionClean(sections.get(i));
 				orClause.append("CMSECT='"+section+"' OR ");
 			}
-			String clause=orClause.toString().substring(0,orClause.length()-4);
+			final String clause=orClause.toString().substring(0,orClause.length()-4);
 			playerID = DB.injectionClean(playerID);
-			ResultSet R=D.query("SELECT * FROM CMPDAT WHERE CMPLID='"+playerID+"' AND ("+clause+")");
+			final ResultSet R=D.query("SELECT * FROM CMPDAT WHERE CMPLID='"+playerID+"' AND ("+clause+")");
 			while(R.next())
 			{
-				PlayerData d = new PlayerData();
+				final PlayerData d = new PlayerData();
 				d.who=DBConnections.getRes(R,"CMPLID");
 				d.section=DBConnections.getRes(R,"CMSECT");
 				d.key=DBConnections.getRes(R,"CMPKEY");
@@ -306,7 +306,7 @@ public class DataLoader
 				rows.addElement(d);
 			}
 		}
-		catch(Exception sqle)
+		catch(final Exception sqle)
 		{
 			Log.errOut("DataLoader",sqle);
 		}
@@ -327,8 +327,8 @@ public class DataLoader
 			{
 				D=DB.DBFetch();
 				key = DB.injectionClean(key);
-				ResultSet R=D.query("SELECT * FROM CMPDAT WHERE CMPKEY='"+key+"'");
-				boolean exists=R.next();
+				final ResultSet R=D.query("SELECT * FROM CMPDAT WHERE CMPKEY='"+key+"'");
+				final boolean exists=R.next();
 				DB.DBDone(D);
 				D=null;
 				if(exists)
@@ -337,7 +337,7 @@ public class DataLoader
 					DBCreate(name,section,key,xml);
 				return;
 			}
-			catch(Exception sqle)
+			catch(final Exception sqle)
 			{
 				Log.errOut("DataLoader",sqle);
 			}
@@ -363,11 +363,11 @@ public class DataLoader
 			playerID = DB.injectionClean(playerID);
 			section = DB.injectionClean(section);
 			D.update("DELETE FROM CMPDAT WHERE CMPLID='"+playerID+"' AND CMSECT='"+section+"'",0);
-			try{Thread.sleep(500);}catch(Exception e){}
+			try{Thread.sleep(500);}catch(final Exception e){}
 			if(DB.queryRows("SELECT * FROM CMPDAT WHERE CMPLID='"+playerID+"' AND CMSECT='"+section+"'")>0)
 				Log.errOut("Failed to delete data for player "+playerID+".");
 		}
-		catch(Exception sqle)
+		catch(final Exception sqle)
 		{
 			Log.errOut("DataLoader",sqle);
 		}
@@ -384,11 +384,11 @@ public class DataLoader
 		{
 			D=DB.DBFetch();
 			D.update("DELETE FROM CMPDAT WHERE CMPLID='"+playerID+"'",0);
-			try{Thread.sleep(500);}catch(Exception e){}
+			try{Thread.sleep(500);}catch(final Exception e){}
 			if(DB.queryRows("SELECT * FROM CMPDAT WHERE CMPLID='"+playerID+"'")>0)
 				Log.errOut("Failed to delete data for player "+playerID+".");
 		}
-		catch(Exception sqle)
+		catch(final Exception sqle)
 		{
 			Log.errOut("DataLoader",sqle);
 		}
@@ -409,11 +409,11 @@ public class DataLoader
 			section = DB.injectionClean(section);
 			key = DB.injectionClean(key);
 			D.update("DELETE FROM CMPDAT WHERE CMPKEY='"+key+"' AND CMPLID='"+playerID+"' AND CMSECT='"+section+"'",0);
-			try{Thread.sleep(500);}catch(Exception e){}
+			try{Thread.sleep(500);}catch(final Exception e){}
 			if(DB.queryRows("SELECT * FROM CMPDAT WHERE CMPKEY='"+key+"' AND CMPLID='"+playerID+"' AND CMSECT='"+section+"'")>0)
 				Log.errOut("Failed to delete data for player "+playerID+".");
 		}
-		catch(Exception sqle)
+		catch(final Exception sqle)
 		{
 			Log.errOut("DataLoader",sqle);
 		}
@@ -427,7 +427,7 @@ public class DataLoader
 	{
 		section = DB.injectionClean(section);
 		DB.update("DELETE FROM CMPDAT WHERE CMSECT='"+section+"'");
-		try{Thread.sleep(500);}catch(Exception e){}
+		try{Thread.sleep(500);}catch(final Exception e){}
 		if(DB.queryRows("SELECT * FROM CMPDAT WHERE CMSECT='"+section+"'")>0)
 			Log.errOut("Failed to delete data from section "+section+".");
 	}
@@ -454,12 +454,12 @@ public class DataLoader
 
 	public void DBReadArtifacts()
 	{
-		List<PlayerData> itemSet=CMLib.database().DBReadData("ARTIFACTS");
+		final List<PlayerData> itemSet=CMLib.database().DBReadData("ARTIFACTS");
 		for(int i=0;i<itemSet.size();i++)
 		{
-			PlayerData item=itemSet.get(i);
-			String itemID=item.who;
-			Ability A=CMClass.getAbility("Prop_Artifact");
+			final PlayerData item=itemSet.get(i);
+			final String itemID=item.who;
+			final Ability A=CMClass.getAbility("Prop_Artifact");
 			if(A!=null)
 			{
 				A.setMiscText("BOOT;"+itemID);

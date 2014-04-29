@@ -14,7 +14,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -44,17 +43,17 @@ public class Spell_KnowFate extends Spell
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		MOB target=this.getTarget(mob,commands,givenTarget);
+		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,somanticCastCode(mob,target,auto),auto?"":"^S<S-NAME> concentrate(s) on <T-NAMESELF>!^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,somanticCastCode(mob,target,auto),auto?"":"^S<S-NAME> concentrate(s) on <T-NAMESELF>!^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -62,17 +61,17 @@ public class Spell_KnowFate extends Spell
 				String[] aliasNames=new String[0];
 				if(mob.playerStats()!=null)
 					aliasNames=mob.playerStats().getAliasNames();
-				List<List<String>> combatV=new LinkedList<List<String>>();
-				for(int i=0;i<aliasNames.length;i++)
+				final List<List<String>> combatV=new LinkedList<List<String>>();
+				for (final String aliasName : aliasNames)
 				{
-					String alias=mob.playerStats().getAlias(aliasNames[i]);
+					final String alias=mob.playerStats().getAlias(aliasName);
 					if(alias.length()>0)
 					{
-						List<String> all_stuff=CMParms.parseSquiggleDelimited(alias,true);
-						  for(String stuff : all_stuff)
+						final List<String> all_stuff=CMParms.parseSquiggleDelimited(alias,true);
+						  for(final String stuff : all_stuff)
 						  {
-							Vector preCommands=CMParms.parse(stuff);
-						  	List THIS_CMDS=new Vector(preCommands.size());
+							final Vector preCommands=CMParms.parse(stuff);
+						  	final List THIS_CMDS=new Vector(preCommands.size());
 						  	combatV.add(THIS_CMDS);
 							for(int v=preCommands.size()-1;v>=0;v--)
 								THIS_CMDS.add(0,preCommands.elementAt(v));
@@ -86,13 +85,13 @@ public class Spell_KnowFate extends Spell
 				long hehp=0;
 				int draws=0;
 
-				Session fakeS=(Session)CMClass.getCommon("FakeSession");
+				final Session fakeS=(Session)CMClass.getCommon("FakeSession");
 				fakeS.initializeSession(null,Thread.currentThread().getThreadGroup().getName(),"MEMORY");
 				for(int tries=0;tries<20;tries++)
 				{
-					MOB newMOB=(MOB)mob.copyOf();
-					MOB newVictiM=(MOB)target.copyOf();
-					Room arenaR=CMClass.getLocale("StdRoom");
+					final MOB newMOB=(MOB)mob.copyOf();
+					final MOB newVictiM=(MOB)target.copyOf();
+					final Room arenaR=CMClass.getLocale("StdRoom");
 					arenaR.setArea(mob.location().getArea());
 					newMOB.setSession(fakeS);
 					arenaR.bringMobHere(newMOB,false);
@@ -109,7 +108,7 @@ public class Spell_KnowFate extends Spell
 					&&(!newVictiM.amDestroyed()))
 					{
 						if(newMOB.commandQueSize()==0)
-							for(List<String> cmd : combatV)
+							for(final List<String> cmd : combatV)
 								newMOB.enqueCommand(cmd, 0, 0);
 						final int nowHp=newMOB.curState().getHitPoints();
 						final int hisHp=newVictiM.curState().getHitPoints();
@@ -122,7 +121,7 @@ public class Spell_KnowFate extends Spell
 							newMOB.tick(newMOB,Tickable.TICKID_MOB);
 							newVictiM.tick(newVictiM,Tickable.TICKID_MOB);
 						}
-						catch(Exception t)
+						catch(final Exception t)
 						{
 							Log.errOut("Spell_KnowFate",t);
 						}

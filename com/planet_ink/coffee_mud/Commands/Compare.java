@@ -51,14 +51,14 @@ public class Compare extends StdCommand
 		Item compareThis=mob.findItem(null,(String)commands.elementAt(0));
 		if((compareThis==null)||(!CMLib.flags().canBeSeenBy(compareThis,mob)))
 		{
-			List<Environmental> V=CMLib.coffeeShops().getAllShopkeepers(mob.location(),mob);
+			final List<Environmental> V=CMLib.coffeeShops().getAllShopkeepers(mob.location(),mob);
 			if(V.size()>0)
 			{
 				for(int i=0;i<V.size();i++)
 				{
-					Environmental shopkeeper=V.get(i);
-					ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(shopkeeper);
-					Environmental itemToDo=SK.getShop().getStock((String)commands.elementAt(0),mob);
+					final Environmental shopkeeper=V.get(i);
+					final ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(shopkeeper);
+					final Environmental itemToDo=SK.getShop().getStock((String)commands.elementAt(0),mob);
 					if((itemToDo==null)||(!(itemToDo instanceof Item)))
 					{
 						continue; // next shopkeeper
@@ -88,7 +88,7 @@ public class Compare extends StdCommand
 			Item possible=null;
 			for(int i=0;i<mob.numItems();i++)
 			{
-				Item I=mob.getItem(i);
+				final Item I=mob.getItem(i);
 				if((I!=null)
 				&&(I!=compareThis)
 				&&(I.rawLogicalAnd()==compareThis.rawLogicalAnd()))
@@ -124,7 +124,7 @@ public class Compare extends StdCommand
 		if((compareThis instanceof Weapon)&&(toThis instanceof Weapon))
 		{
 			int cDmg=compareThis.basePhyStats().damage();
-			int tDmg=toThis.basePhyStats().damage();
+			final int tDmg=toThis.basePhyStats().damage();
 			cDmg+=(int)Math.round(CMath.div(compareThis.basePhyStats().attackAdjustment()-toThis.basePhyStats().attackAdjustment(),100.0)*cDmg);
 
 			if(cDmg==tDmg)

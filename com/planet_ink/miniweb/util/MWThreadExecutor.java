@@ -70,7 +70,7 @@ public class MWThreadExecutor extends ThreadPoolExecutor
 		{
 			@Override public void rejectedExecution(Runnable r, ThreadPoolExecutor executor)
 			{
-				try { executor.getQueue().put(r); } catch (InterruptedException e) { throw new RejectedExecutionException(e); }
+				try { executor.getQueue().put(r); } catch (final InterruptedException e) { throw new RejectedExecutionException(e); }
 			}
 		});
 	}
@@ -84,7 +84,7 @@ public class MWThreadExecutor extends ThreadPoolExecutor
 			{
 				active.put(r,new MWRunWrap(r,t));
 			}
-			catch(Throwable e)
+			catch(final Throwable e)
 			{
 				logger.throwing("", "", e);
 			}
@@ -100,7 +100,7 @@ public class MWThreadExecutor extends ThreadPoolExecutor
 			{
 				active.remove(r);
 			}
-			catch(Throwable e)
+			catch(final Throwable e)
 			{
 				logger.throwing("", "", e);
 			}
@@ -130,11 +130,11 @@ public class MWThreadExecutor extends ThreadPoolExecutor
 				rejectCount=0;
 			}
 		}
-		catch(RejectedExecutionException e)
+		catch(final RejectedExecutionException e)
 		{
 			// a thread is rejected only when the queue is filled.  Look for the blockages!
-			Collection<MWRunWrap> runsKilled = getTimeoutOutRuns(1);
-			for(MWRunWrap runnable : runsKilled)
+			final Collection<MWRunWrap> runsKilled = getTimeoutOutRuns(1);
+			for(final MWRunWrap runnable : runsKilled)
 				logger.severe("Pool_"+poolName+": Old(er) Runnable killed: "+runnable.toString());
 			lastRejectTime=System.currentTimeMillis();
 			rejectCount++;
@@ -152,14 +152,14 @@ public class MWThreadExecutor extends ThreadPoolExecutor
 	 */
 	public Collection<MWRunWrap> getTimeoutOutRuns(int maxToKill)
 	{
-		LinkedList<MWRunWrap> timedOut=new LinkedList<MWRunWrap>();
+		final LinkedList<MWRunWrap> timedOut=new LinkedList<MWRunWrap>();
 		if(timeoutMillis<=0) return timedOut;
-		LinkedList<Thread> killedOut=new LinkedList<Thread>();
+		final LinkedList<Thread> killedOut=new LinkedList<Thread>();
 		synchronized(active)
 		{
 			try
 			{
-				for(Iterator<MWRunWrap> i = active.values().iterator();i.hasNext();)
+				for(final Iterator<MWRunWrap> i = active.values().iterator();i.hasNext();)
 				{
 					final MWRunWrap runnable = i.next();
 					if(runnable.activeTimeMillis() > timeoutMillis)
@@ -167,7 +167,7 @@ public class MWThreadExecutor extends ThreadPoolExecutor
 						if(timedOut.size() >= maxToKill)
 						{
 							MWRunWrap leastWorstOffender=null;
-							for(MWRunWrap r : timedOut)
+							for(final MWRunWrap r : timedOut)
 							{
 								if((leastWorstOffender != null)
 								&&(r.activeTimeMillis() < leastWorstOffender.activeTimeMillis()))
@@ -182,24 +182,24 @@ public class MWThreadExecutor extends ThreadPoolExecutor
 							}
 						}
 						timedOut.add(runnable);
-						Thread thread = runnable.getThread();
+						final Thread thread = runnable.getThread();
 						killedOut.add(thread);
 						i.remove();
 					}
 				}
 			}
-			catch(Exception e)
+			catch(final Exception e)
 			{ /**/ }
 		}
 		while(killedOut.size()>0)
 		{
-			Thread thread = killedOut.remove();
+			final Thread thread = killedOut.remove();
 			try
 			{
 				thread.interrupt();
 				//CMLib.killThread(t,100,3);
 			}
-			catch(Exception e)
+			catch(final Exception e)
 			{ /**/ }
 		}
 		return timedOut;

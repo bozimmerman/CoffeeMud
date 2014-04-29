@@ -48,7 +48,7 @@ public class MSPplayer extends Thread
 			if(useExternal)
 				return "StopSound('"+key+"','"+playerName+"');\n\r";
 			if(clip!=null) clip.stop();
-			try{Thread.sleep(50);}catch(Exception e){}
+			try{Thread.sleep(50);}catch(final Exception e){}
 			if(playing)
 				interrupt();
 		}
@@ -70,7 +70,7 @@ public class MSPplayer extends Thread
 					clip=((Applet)applet).getAudioClip(new URL(url+key));
 			}
 		}
-		catch(MalformedURLException m)
+		catch(final MalformedURLException m)
 		{
 			clip=null;
 			playing=false;

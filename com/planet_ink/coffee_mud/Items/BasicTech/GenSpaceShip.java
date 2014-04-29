@@ -84,11 +84,11 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 		if(area==null)
 		{
 			area=CMClass.getAreaType("StdSpaceShip");
-			String num=Double.toString(Math.random());
+			final String num=Double.toString(Math.random());
 			area.setName("UNNAMED_"+num.substring(num.indexOf('.')+1));
 			area.setSavable(false);
 			area.setTheme(Area.THEME_TECHNOLOGY);
-			Room R=CMClass.getLocale("MetalRoom");
+			final Room R=CMClass.getLocale("MetalRoom");
 			R.setRoomID(area.Name()+"#0");
 			R.setSavable(false);
 			area.addProperRoom(R);
@@ -108,7 +108,7 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 			{
 				area.setSavable(false);
 				((SpaceShip)area).setKnownSource(this);
-				for(Enumeration<Room> r=area.getCompleteMap();r.hasMoreElements();)
+				for(final Enumeration<Room> r=area.getCompleteMap();r.hasMoreElements();)
 					CMLib.flags().setSavable(r.nextElement(), false);
 			}
 			else
@@ -117,7 +117,7 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 				getShipArea();
 			}
 		}
-		catch (CMException e)
+		catch (final CMException e)
 		{
 			Log.warnOut("Unable to parse space ship xml for some reason.");
 		}
@@ -146,9 +146,9 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 	@Override
 	public CMObject copyOf()
 	{
-		GenSpaceShip s=(GenSpaceShip)super.copyOf();
+		final GenSpaceShip s=(GenSpaceShip)super.copyOf();
 		s.destroyed=false;
-		String xml=CMLib.coffeeMaker().getAreaObjectXML(getShipArea(), null, null, null, true).toString();
+		final String xml=CMLib.coffeeMaker().getAreaObjectXML(getShipArea(), null, null, null, true).toString();
 		s.setShipArea(xml);
 		/*
 		if(s.getShipArea().Name().startsWith("UNNAMED_"))
@@ -171,7 +171,7 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 		{
 			CMLib.threads().deleteAllTicks(area);
 			String key=area.Name();
-			String registryNum=area.getBlurbFlag("REGISTRY");
+			final String registryNum=area.getBlurbFlag("REGISTRY");
 			if(registryNum!=null)
 				key+=registryNum;
 			CMLib.tech().unregisterAllElectronics(key);
@@ -186,7 +186,7 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 	{
 		getShipArea();
 		Room R=null;
-		List<String> V=CMParms.parseSemicolons(readableText(),true);
+		final List<String> V=CMParms.parseSemicolons(readableText(),true);
 		if(V.size()>0)
 			R=getShipArea().getRoom(V.get(CMLib.dice().roll(1,V.size(),-1)));
 		return R;
@@ -307,7 +307,7 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 	@Override
 	public void unDock(boolean toSpace)
 	{
-		LocationRoom R=getIsDocked();
+		final LocationRoom R=getIsDocked();
 		if(R!=null)
 		{
 			R.delItem(this);
@@ -322,7 +322,7 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 		}
 		if(toSpace)
 		{
-			SpaceObject o = getShipSpaceObject();
+			final SpaceObject o = getShipSpaceObject();
 			if((o != null)&&(R!=null))
 				CMLib.map().addObjectToSpace(o,R.coordinates());
 		}
@@ -351,9 +351,9 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 	@Override
 	public CMObject getOwnerObject()
 	{
-		String owner=getOwnerName();
+		final String owner=getOwnerName();
 		if(owner.length()==0) return null;
-		Clan C=CMLib.clans().getClan(owner);
+		final Clan C=CMLib.clans().getClan(owner);
 		if(C!=null) return C;
 		return CMLib.players().getLoadPlayer(owner);
 	}
@@ -362,11 +362,11 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 	@Override
 	public void renameSpaceShip(String newName)
 	{
-		Area area=this.area;
+		final Area area=this.area;
 		if(area instanceof SpaceShip)
 		{
 			final Room oldEntry=getDestinationRoom();
-			String oldName=area.Name();
+			final String oldName=area.Name();
 			String registryNum=area.getBlurbFlag("REGISTRY");
 			if(registryNum==null) registryNum="";
 			((SpaceShip)area).renameSpaceShip(newName);
@@ -376,14 +376,14 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 			setReadableText(oldEntry.roomID());
 			setShipArea(CMLib.coffeeMaker().getAreaObjectXML(area, null, null, null, true).toString());
 		}
-		for(String word : new String[]{"NAME","NEWNAME","SHIPNAME","SHIP"})
+		for(final String word : new String[]{"NAME","NEWNAME","SHIPNAME","SHIP"})
 		{
-			for(String rubs : new String[]{"<>","[]","{}","()"})
+			for(final String rubs : new String[]{"<>","[]","{}","()"})
 			{
 				if(Name().indexOf(rubs.charAt(0)+word+rubs.charAt(1))>=0)
 					setName(CMStrings.replaceAll(Name(), rubs.charAt(0)+word+rubs.charAt(1), newName));
 			}
-			for(String rubs : new String[]{"<>","[]","{}","()"})
+			for(final String rubs : new String[]{"<>","[]","{}","()"})
 			{
 				if(displayText().indexOf(rubs.charAt(0)+word+rubs.charAt(1))>=0)
 					setDisplayText(CMStrings.replaceAll(displayText(), rubs.charAt(0)+word+rubs.charAt(1), newName));
@@ -423,17 +423,17 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 			else
 			if((msg.targetMinor()==CMMsg.TYP_ACTIVATE)&&(CMath.bset(msg.targetMajor(), CMMsg.MASK_CNTRLMSG))&&(msg.targetMessage()!=null))
 			{
-				String[] parts=msg.targetMessage().split(" ");
-				TechCommand command=TechCommand.findCommand(parts);
+				final String[] parts=msg.targetMessage().split(" ");
+				final TechCommand command=TechCommand.findCommand(parts);
 				if(command!=null)
 				{
-					Object[] parms=command.confirmAndTranslate(parts);
+					final Object[] parms=command.confirmAndTranslate(parts);
 					if(parms!=null)
 					{
 						if(command==Technical.TechCommand.ACCELLLERATION)
 						{
-							ThrustPort dir=(ThrustPort)parms[0];
-							int amount=((Integer)parms[1]).intValue();
+							final ThrustPort dir=(ThrustPort)parms[0];
+							final int amount=((Integer)parms[1]).intValue();
 							//long specificImpulse=((Long)parms[2]).longValue();
 							switch(dir)
 							{
@@ -493,7 +493,7 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 
 	protected LocationRoom findNearestDocks(Room R)
 	{
-		List<LocationRoom> docks=new XVector<LocationRoom>();
+		final List<LocationRoom> docks=new XVector<LocationRoom>();
 		if(R!=null)
 		{
 			TrackingLibrary.TrackingFlags flags;
@@ -503,22 +503,22 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 					.plus(TrackingLibrary.TrackingFlag.NOHOMES)
 					.plus(TrackingLibrary.TrackingFlag.UNLOCKEDONLY)
 					.plus(TrackingLibrary.TrackingFlag.NOWATER);
-			List<Room> rooms=CMLib.tracking().getRadiantRooms(R, flags, 25);
-			for(Room R2 : rooms)
+			final List<Room> rooms=CMLib.tracking().getRadiantRooms(R, flags, 25);
+			for(final Room R2 : rooms)
 				if((R2.domainType()==Room.DOMAIN_OUTDOORS_SPACEPORT)
 				&&(R2 instanceof LocationRoom)
 				&&(R.getArea().inMyMetroArea(R2.getArea())))
 					docks.add((LocationRoom)R2);
 			if(docks.size()==0)
-				for(Enumeration<Room> r=R.getArea().getMetroMap();r.hasMoreElements();)
+				for(final Enumeration<Room> r=R.getArea().getMetroMap();r.hasMoreElements();)
 				{
-					Room R2=r.nextElement();
+					final Room R2=r.nextElement();
 					if((R2.domainType()==Room.DOMAIN_OUTDOORS_SPACEPORT)
 					&&(R2 instanceof LocationRoom))
 						docks.add((LocationRoom)R2);
 				}
 			if(docks.size()==0)
-				for(Room R2 : rooms)
+				for(final Room R2 : rooms)
 					if((R2.domainType()==Room.DOMAIN_OUTDOORS_SPACEPORT)
 					&&(R2 instanceof LocationRoom))
 						docks.add((LocationRoom)R2);
@@ -532,7 +532,7 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 	{
 		if(CMLib.clans().checkClanPrivilege(buyer, getOwnerName(), Clan.Function.PROPERTY_OWNER))
 		{
-			Pair<Clan,Integer> targetClan=CMLib.clans().findPrivilegedClan(buyer, Clan.Function.PROPERTY_OWNER);
+			final Pair<Clan,Integer> targetClan=CMLib.clans().findPrivilegedClan(buyer, Clan.Function.PROPERTY_OWNER);
 			if(targetClan!=null)
 				setOwnerName(targetClan.first.clanID());
 			else
@@ -566,7 +566,7 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 					}
 					me.renameSpaceShip(this.input.trim());
 					buyer.tell(name()+" is now signed over to "+getOwnerName()+".");
-					LocationRoom finalR=findNearestDocks(R);
+					final LocationRoom finalR=findNearestDocks(R);
 					if(finalR==null)
 					{
 						Log.errOut("Could not dock ship in area "+R.getArea().Name()+" due to lack of spaceport.");
@@ -588,7 +588,7 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 			buyer.tell(name()+" is now signed over to "+getOwnerName()+".");
 			if ((buyer.playerStats() != null) && (!buyer.playerStats().getExtItems().isContent(this)))
 				buyer.playerStats().getExtItems().addItem(this);
-			LocationRoom finalR=findNearestDocks(R);
+			final LocationRoom finalR=findNearestDocks(R);
 			if(finalR==null)
 				Log.errOut("Could not dock ship in area "+R.getArea().Name()+" due to lack of spaceport.");
 			else
@@ -683,8 +683,8 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 	public String[] getStatCodes()
 	{
 		if(codes!=null) return codes;
-		String[] MYCODES=CMProps.getStatCodesList(GenSpaceShip.MYCODES,this);
-		String[] superCodes=GenericBuilder.GENITEMCODES;
+		final String[] MYCODES=CMProps.getStatCodesList(GenSpaceShip.MYCODES,this);
+		final String[] superCodes=GenericBuilder.GENITEMCODES;
 		codes=new String[superCodes.length+MYCODES.length];
 		int i=0;
 		for(;i<superCodes.length;i++)
@@ -697,7 +697,7 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 	public boolean sameAs(Environmental E)
 	{
 		if(!(E instanceof GenSpaceShip)) return false;
-		String[] codes=getStatCodes();
+		final String[] codes=getStatCodes();
 		for(int i=0;i<codes.length;i++)
 			if(!E.getStat(codes[i]).equals(getStat(codes[i])))
 				return false;

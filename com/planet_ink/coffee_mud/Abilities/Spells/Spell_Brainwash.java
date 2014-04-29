@@ -121,7 +121,7 @@ public class Spell_Brainwash extends Spell
 			message=text();
 		else
 			message=CMParms.combine(commands,0);
-		MOB target=this.getTarget(mob,commands,givenTarget);
+		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
 		if(CMLib.flags().isAnimalIntelligence(target))
@@ -139,22 +139,22 @@ public class Spell_Brainwash extends Spell
 			return false;
 
 		// now see if it worked
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
-			MOB oldVictim=mob.getVictim();
-			MOB oldVictim2=target.getVictim();
+			final MOB oldVictim=mob.getVictim();
+			final MOB oldVictim2=target.getVictim();
 			// it worked, so build a copy of this ability,
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),(auto?"!":"^S<S-NAME> invoke(s) a spell upon the mind of <T-NAMESELF>, saying '"+message+"'.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),(auto?"!":"^S<S-NAME> invoke(s) a spell upon the mind of <T-NAMESELF>, saying '"+message+"'.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				super.maliciousAffect(mob,target,asLevel,0,CMMsg.MASK_MALICIOUS|CMMsg.TYP_MIND);
-				Ability A=target.fetchEffect(ID());
+				final Ability A=target.fetchEffect(ID());
 				if(A!=null) A.setMiscText(message);
 				if(mob.getVictim()!=oldVictim)
 					mob.setVictim(oldVictim);

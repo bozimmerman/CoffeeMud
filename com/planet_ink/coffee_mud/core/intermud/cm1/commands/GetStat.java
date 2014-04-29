@@ -15,6 +15,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.GenericBuilder;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 import java.net.*;
 import java.nio.ByteBuffer;
@@ -69,7 +70,7 @@ public class GetStat extends CM1Command
 
 	public boolean isApplicableTypeCode(String type, Physical P)
 	{
-		char c=getTypeCode(P);
+		final char c=getTypeCode(P);
 		for(int i=0;i<STATTYPES.length;i++)
 			if(STATTYPES[i].equalsIgnoreCase(type))
 				return TYPESTYPE[i].indexOf(c)>=0;
@@ -78,8 +79,8 @@ public class GetStat extends CM1Command
 
 	public String[] getApplicableStatCodes(Physical P)
 	{
-		char c=getTypeCode(P);
-		List<String> majorCodes = new LinkedList<String>();
+		final char c=getTypeCode(P);
+		final List<String> majorCodes = new LinkedList<String>();
 		for(int i=0;i<STATTYPES.length;i++)
 			if(TYPESTYPE[i].indexOf(c)>=0)
 				majorCodes.add(STATTYPES[i]);
@@ -88,7 +89,7 @@ public class GetStat extends CM1Command
 
 	public Modifiable getModifiable(String type, Physical P)
 	{
-		int x=CMParms.indexOf(STATTYPES,type.toUpperCase().trim());
+		final int x=CMParms.indexOf(STATTYPES,type.toUpperCase().trim());
 		if(x<0) return null;
 		if(!isApplicableTypeCode(type,P))
 			return null;
@@ -149,10 +150,10 @@ public class GetStat extends CM1Command
 	{
 		if(!UseGenBuilder(P,m))
 			return m.isStat(stat);
-		String[] codes = getStatCodes(P,m);
+		final String[] codes = getStatCodes(P,m);
 		if(codes != null)
-			for(int i=0;i<codes.length;i++)
-				if(codes[i].equalsIgnoreCase(stat))
+			for (final String code : codes)
+				if(code.equalsIgnoreCase(stat))
 					return true;
 		return false;
 	}
@@ -186,7 +187,7 @@ public class GetStat extends CM1Command
 	{
 		try
 		{
-			PhysicalAgent P=req.getTarget();
+			final PhysicalAgent P=req.getTarget();
 			if(P==null)
 			{
 				req.sendMsg("[FAIL NO TARGET]");
@@ -218,7 +219,7 @@ public class GetStat extends CM1Command
 					stat=stat.substring(1);
 				}
 			}
-			Modifiable mod=getModifiable(type,P);
+			final Modifiable mod=getModifiable(type,P);
 			if(mod==null)
 			{
 				req.sendMsg("[FAIL "+getHelp(req.getUser(), P, "")+"]");
@@ -239,7 +240,7 @@ public class GetStat extends CM1Command
 							req.sendMsg("[OK "+((Physical)mod).numEffects()+"]");
 						else
 						{
-							Ability A=((Physical)mod).fetchEffect(CMath.s_int(rest));
+							final Ability A=((Physical)mod).fetchEffect(CMath.s_int(rest));
 							if(A==null)
 								req.sendMsg("[FAIL NO EFFECT "+rest+"]");
 							else
@@ -258,7 +259,7 @@ public class GetStat extends CM1Command
 							req.sendMsg("[OK "+((PhysicalAgent)mod).numBehaviors()+"]");
 						else
 						{
-							Behavior A=((PhysicalAgent)mod).fetchBehavior(CMath.s_int(rest));
+							final Behavior A=((PhysicalAgent)mod).fetchBehavior(CMath.s_int(rest));
 							if(A==null)
 								req.sendMsg("[FAIL NO BEHAVIOR "+rest+"]");
 							else
@@ -277,7 +278,7 @@ public class GetStat extends CM1Command
 							req.sendMsg("[OK "+((MOB)mod).numAllAbilities()+"]");
 						else
 						{
-							Ability A=((MOB)mod).fetchAbility(CMath.s_int(rest));
+							final Ability A=((MOB)mod).fetchAbility(CMath.s_int(rest));
 							if(A==null)
 								req.sendMsg("[FAIL NO ABILITY "+rest+"]");
 							else
@@ -289,19 +290,19 @@ public class GetStat extends CM1Command
 					{
 						if(rest.trim().length()==0)
 						{
-							StringBuilder factions=new StringBuilder("");
-							for(Enumeration<String> f=((MOB)mod).fetchFactions();f.hasMoreElements();)
+							final StringBuilder factions=new StringBuilder("");
+							for(final Enumeration<String> f=((MOB)mod).fetchFactions();f.hasMoreElements();)
 								factions.append(' ').append(f);
 							req.sendMsg("[OK"+factions.toString()+"]");
 						}
 						else
 						{
-							Faction F=CMLib.factions().getFaction(rest);
+							final Faction F=CMLib.factions().getFaction(rest);
 							if(F==null)
 								req.sendMsg("[FAIL "+rest+" NOT EXIST]");
 							else
 							{
-								int f=((MOB)mod).fetchFaction(F.factionID());
+								final int f=((MOB)mod).fetchFaction(F.factionID());
 								if(f==Integer.MAX_VALUE)
 									req.sendMsg("[FAIL NO FACTION "+F.factionID()+"]");
 								else
@@ -315,14 +316,14 @@ public class GetStat extends CM1Command
 						if(rest.trim().length()==0)
 						{
 							int numExpertises=0;
-							for(Enumeration<String> i=((MOB)mod).expertises();i.hasMoreElements();numExpertises++)
+							for(final Enumeration<String> i=((MOB)mod).expertises();i.hasMoreElements();numExpertises++)
 								i.nextElement();
 							req.sendMsg("[OK "+numExpertises+"]");
 						}
 						else
 						{
 							int whichExpertise=CMath.s_int(rest);
-							Enumeration<String> i=((MOB)mod).expertises();
+							final Enumeration<String> i=((MOB)mod).expertises();
 							String EX=null;
 							while((whichExpertise>=0)&&(i.hasMoreElements()))
 							{
@@ -342,7 +343,7 @@ public class GetStat extends CM1Command
 							req.sendMsg("[OK "+((MOB)mod).numFollowers()+"]");
 						else
 						{
-							MOB M=((MOB)mod).fetchFollower(CMath.s_int(rest));
+							final MOB M=((MOB)mod).fetchFollower(CMath.s_int(rest));
 							if(M==null)
 								req.sendMsg("[FAIL NO FOLLOWER "+rest+"]");
 							else
@@ -361,7 +362,7 @@ public class GetStat extends CM1Command
 							req.sendMsg("[OK "+((ItemPossessor)mod).numItems()+"]");
 						else
 						{
-							Item I=((ItemPossessor)mod).getItem(CMath.s_int(rest));
+							final Item I=((ItemPossessor)mod).getItem(CMath.s_int(rest));
 							if(I==null)
 								req.sendMsg("[FAIL NO ITEM "+rest+"]");
 							else
@@ -380,7 +381,7 @@ public class GetStat extends CM1Command
 							req.sendMsg("[OK "+((Room)mod).numInhabitants()+"]");
 						else
 						{
-							MOB M=((Room)mod).fetchInhabitant(CMath.s_int(rest));
+							final MOB M=((Room)mod).fetchInhabitant(CMath.s_int(rest));
 							if(M==null)
 								req.sendMsg("[FAIL NO MOB "+rest+"]");
 							else
@@ -394,9 +395,9 @@ public class GetStat extends CM1Command
 				req.sendMsg("[OK "+mod.getStat(stat)+"]");
 			else
 			{
-				String[] codes = this.getStatCodes(P, mod);
-				for(int i=0;i<codes.length;i++)
-					if(codes[i].equalsIgnoreCase(stat))
+				final String[] codes = this.getStatCodes(P, mod);
+				for (final String code : codes)
+					if(code.equalsIgnoreCase(stat))
 						if(P instanceof MOB)
 							req.sendMsg("[OK "+CMLib.coffeeMaker().getGenMobStat((MOB)P, stat)+"]");
 						else
@@ -405,7 +406,7 @@ public class GetStat extends CM1Command
 
 			}
 		}
-		catch(Exception ioe)
+		catch(final Exception ioe)
 		{
 			Log.errOut(className,ioe);
 			req.close();
@@ -422,7 +423,7 @@ public class GetStat extends CM1Command
 		Modifiable mod=null;
 		if((rest!=null)&&(rest.trim().length()>0))
 		{
-			int x=rest.indexOf(' ');
+			final int x=rest.indexOf(' ');
 			if(x>0)
 				rest=rest.substring(0,x).toUpperCase().trim();
 			if(isApplicableTypeCode(rest, target))

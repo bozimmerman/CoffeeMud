@@ -60,9 +60,9 @@ public class Thief_Espionage extends ThiefSkill
 		super.executeMsg(myHost,msg);
 		if((msg.othersMajor(CMMsg.MASK_CHANNEL)))
 		{
-			int channelInt=msg.othersMinor()-CMMsg.TYP_CHANNEL;
-			ChannelsLibrary.CMChannel chan=CMLib.channels().getChannel(channelInt);
-			boolean areareq=chan.flags.contains(ChannelsLibrary.ChannelFlag.SAMEAREA);
+			final int channelInt=msg.othersMinor()-CMMsg.TYP_CHANNEL;
+			final ChannelsLibrary.CMChannel chan=CMLib.channels().getChannel(channelInt);
+			final boolean areareq=chan.flags.contains(ChannelsLibrary.ChannelFlag.SAMEAREA);
 			if((chan.flags.contains(ChannelsLibrary.ChannelFlag.CLANONLY)
 				||chan.flags.contains(ChannelsLibrary.ChannelFlag.CLANALLYONLY))
 			&&(invoker()!=null)
@@ -93,14 +93,14 @@ public class Thief_Espionage extends ThiefSkill
 			mob.tell("Commit espionage through whom?");
 			return false;
 		}
-		MOB target=this.getTarget(mob,commands,givenTarget,false,true);
+		final MOB target=this.getTarget(mob,commands,givenTarget,false,true);
 		if(target==null) return false;
 		if(target==mob)
 		{
 			mob.tell("You cannot do that with yourself?!");
 			return false;
 		}
-		Ability A=target.fetchEffect(ID());
+		final Ability A=target.fetchEffect(ID());
 		if(A!=null)
 		{
 			if(A.invoker()==mob)
@@ -127,19 +127,19 @@ public class Thief_Espionage extends ThiefSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		int levelDiff=target.phyStats().level()-(mob.phyStats().level()+abilityCode()+(getXLEVELLevel(mob)*2));
+		final int levelDiff=target.phyStats().level()-(mob.phyStats().level()+abilityCode()+(getXLEVELLevel(mob)*2));
 
-		boolean success=proficiencyCheck(mob,-(levelDiff*10),auto);
+		final boolean success=proficiencyCheck(mob,-(levelDiff*10),auto);
 
 		if(!success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,null,CMMsg.MSG_OK_VISUAL,auto?"":"Your attempt to commit espionage using <T-NAMESELF> fails; <T-NAME> spots you!",CMMsg.MSG_OK_VISUAL,auto?"":"You spot <S-NAME> trying to commit espionage through you.",CMMsg.NO_EFFECT,null);
+			final CMMsg msg=CMClass.getMsg(mob,target,null,CMMsg.MSG_OK_VISUAL,auto?"":"Your attempt to commit espionage using <T-NAMESELF> fails; <T-NAME> spots you!",CMMsg.MSG_OK_VISUAL,auto?"":"You spot <S-NAME> trying to commit espionage through you.",CMMsg.NO_EFFECT,null);
 			if(mob.location().okMessage(mob,msg))
 				mob.location().send(mob,msg);
 		}
 		else
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,auto?CMMsg.MSG_OK_VISUAL:CMMsg.MSG_THIEF_ACT,"You are now committing espionage with <T-NAME>.  Enter 'espionage <targetname>' again to disengage.",CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);
+			final CMMsg msg=CMClass.getMsg(mob,target,this,auto?CMMsg.MSG_OK_VISUAL:CMMsg.MSG_THIEF_ACT,"You are now committing espionage with <T-NAME>.  Enter 'espionage <targetname>' again to disengage.",CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

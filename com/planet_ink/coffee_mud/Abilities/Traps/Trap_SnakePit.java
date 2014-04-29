@@ -49,10 +49,10 @@ public class Trap_SnakePit extends Trap_RoomPit
 		if(mob.location()==null) return null;
 		for(int i=0;i<mob.location().numItems();i++)
 		{
-			Item I=mob.location().getItem(i);
+			final Item I=mob.location().getItem(i);
 			if(I instanceof CagedAnimal)
 			{
-				MOB M=((CagedAnimal)I).unCageMe();
+				final MOB M=((CagedAnimal)I).unCageMe();
 				if((M!=null)&&(M.baseCharStats().getMyRace().racialCategory().equalsIgnoreCase("Serpent")))
 					return I;
 			}
@@ -65,7 +65,7 @@ public class Trap_SnakePit extends Trap_RoomPit
 	{
 		if(P==null) return null;
 		Item I=getCagedAnimal(mob);
-		StringBuffer buf=new StringBuffer("<SNAKES>");
+		final StringBuffer buf=new StringBuffer("<SNAKES>");
 		int num=0;
 		while((I!=null)&&((++num)<6))
 		{
@@ -81,8 +81,8 @@ public class Trap_SnakePit extends Trap_RoomPit
 	@Override
 	public List<Item> getTrapComponents()
 	{
-		Vector V=new Vector();
-		Item I=CMClass.getItem("GenCaged");
+		final Vector V=new Vector();
+		final Item I=CMClass.getItem("GenCaged");
 		((CagedAnimal)I).setCageText(text());
 		I.recoverPhyStats();
 		I.text();
@@ -113,7 +113,7 @@ public class Trap_SnakePit extends Trap_RoomPit
 			{
 				for(int i=0;i<monsters.size();i++)
 				{
-					MOB M=(MOB)monsters.elementAt(i);
+					final MOB M=(MOB)monsters.elementAt(i);
 					if(M.amDead()||(!M.isInCombat()))
 						M.destroy();
 				}
@@ -131,10 +131,10 @@ public class Trap_SnakePit extends Trap_RoomPit
 		else
 		{
 			target.location().show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> hit(s) the pit floor with a THUMP!");
-			int damage=CMLib.dice().roll(trapLevel()+abilityCode(),6,1);
+			final int damage=CMLib.dice().roll(trapLevel()+abilityCode(),6,1);
 			CMLib.combat().postDamage(invoker(),target,this,damage,CMMsg.MASK_MALICIOUS|CMMsg.MASK_ALWAYS|CMMsg.TYP_JUSTICE,-1,null);
 		}
-		Vector snakes=new Vector();
+		final Vector snakes=new Vector();
 		String t=text();
 		int x=t.indexOf("</MOBITEM><MOBITEM>");
 		while(x>=0)
@@ -149,9 +149,9 @@ public class Trap_SnakePit extends Trap_RoomPit
 		for(int i=0;i<snakes.size();i++)
 		{
 			t=(String)snakes.elementAt(i);
-			Item I=CMClass.getItem("GenCaged");
+			final Item I=CMClass.getItem("GenCaged");
 			((CagedAnimal)I).setCageText(t);
-			MOB monster=((CagedAnimal)I).unCageMe();
+			final MOB monster=((CagedAnimal)I).unCageMe();
 			if(monster!=null)
 			{
 				monsters.addElement(monster);

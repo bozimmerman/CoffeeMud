@@ -52,18 +52,18 @@ public class GenMobilePortal extends GenPortal implements Rideable, Exit
 			break;
 		case CMMsg.TYP_ENTER:
 		{
-			Room R=CMLib.map().roomLocation(this);
+			final Room R=CMLib.map().roomLocation(this);
 			if((myStationaryPortal!=null)
 			&&(!myStationaryPortal.amDestroyed()))
 				myStationaryPortal.setReadableText(CMLib.map().getExtendedRoomID(R));
 			else
 			{
 				myStationaryPortal=null;
-				Room destR=getDestinationRoom();
-				Vector choices=new Vector();
+				final Room destR=getDestinationRoom();
+				final Vector choices=new Vector();
 				for(int i=0;i<destR.numItems();i++)
 				{
-					Item I=destR.getItem(i);
+					final Item I=destR.getItem(i);
 					if((I!=null)&&(I instanceof StdPortal))
 						choices.addElement(I);
 				}
@@ -74,7 +74,7 @@ public class GenMobilePortal extends GenPortal implements Rideable, Exit
 					if(M!=null)
 						for(int i=0;i<M.numItems();i++)
 						{
-							Item I=M.getItem(i);
+							final Item I=M.getItem(i);
 							if((I!=null)&&(I instanceof StdPortal))
 								choices.addElement(I);
 						}

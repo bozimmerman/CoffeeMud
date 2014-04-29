@@ -56,7 +56,7 @@ public class Spell_WallOfStone extends Spell
 		if((affected==null)||(!(affected instanceof Item)))
 			return true;
 
-		MOB mob=msg.source();
+		final MOB mob=msg.source();
 
 		if((invoker!=null)
 		&&(mob.isInCombat())
@@ -68,7 +68,7 @@ public class Spell_WallOfStone extends Spell
 				Item w=mob.fetchWieldedItem();
 				if(w==null) w=mob.myNaturalWeapon();
 				if(w==null) return false;
-				CMMsg msg2=CMClass.getMsg(mob,null,CMMsg.MSG_WEAPONATTACK,"^F^<FIGHT^><S-NAME> hack(s) at the wall of stone with "+w.name()+".^</FIGHT^>^?");
+				final CMMsg msg2=CMClass.getMsg(mob,null,CMMsg.MSG_WEAPONATTACK,"^F^<FIGHT^><S-NAME> hack(s) at the wall of stone with "+w.name()+".^</FIGHT^>^?");
 				CMLib.color().fixSourceFightColor(msg2);
 				if(mob.location().okMessage(mob,msg2))
 				{
@@ -99,7 +99,7 @@ public class Spell_WallOfStone extends Spell
 			{
 				final MOB actorM=(invoker!=null)? invoker : CMLib.map().deity();
 				((Room)theWall.owner()).show(actorM,null,CMMsg.MSG_OK_VISUAL,deathNotice);
-				Item wall=theWall;
+				final Item wall=theWall;
 				theWall=null;
 				wall.destroy();
 			}
@@ -130,7 +130,7 @@ public class Spell_WallOfStone extends Spell
 		}
 		for(int i=0;i<mob.location().numItems();i++)
 		{
-			Item I=mob.location().getItem(i);
+			final Item I=mob.location().getItem(i);
 			if((I!=null)&&(I.fetchEffect(ID())!=null))
 			{
 				mob.tell("There is already a wall of stone here.");
@@ -145,10 +145,10 @@ public class Spell_WallOfStone extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		Physical target = mob.location();
+		final Physical target = mob.location();
 
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
@@ -157,12 +157,12 @@ public class Spell_WallOfStone extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 
-			CMMsg msg = CMClass.getMsg(mob, target, this,verbalCastCode(mob,target,auto),auto?"A mighty wall of stone appears!":"^S<S-NAME> conjur(s) up a mighty wall of stone!^?");
+			final CMMsg msg = CMClass.getMsg(mob, target, this,verbalCastCode(mob,target,auto),auto?"A mighty wall of stone appears!":"^S<S-NAME> conjur(s) up a mighty wall of stone!^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				amountRemaining=mob.baseState().getHitPoints()/6;
-				Item I=CMClass.getItem("GenItem");
+				final Item I=CMClass.getItem("GenItem");
 				I.setName("a wall of stone");
 				I.setDisplayText("a mighty wall of stone has been erected here");
 				I.setDescription("The bricks are sold and sturdy.");

@@ -50,7 +50,7 @@ public class Undead extends StdRace
 	private static final int[] parts={0 ,2 ,2 ,1 ,1 ,2 ,2 ,1 ,2 ,2 ,1 ,0 ,1 ,1 ,0 ,0 };
 	@Override public int[] bodyMask(){return parts;}
 
-	private int[] agingChart={0,0,0,0,0,YEARS_AGE_LIVES_FOREVER,YEARS_AGE_LIVES_FOREVER,YEARS_AGE_LIVES_FOREVER,YEARS_AGE_LIVES_FOREVER};
+	private final int[] agingChart={0,0,0,0,0,YEARS_AGE_LIVES_FOREVER,YEARS_AGE_LIVES_FOREVER,YEARS_AGE_LIVES_FOREVER,YEARS_AGE_LIVES_FOREVER};
 	@Override public int[] getAgingChart(){return agingChart;}
 
 	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
@@ -105,10 +105,10 @@ public class Undead extends StdRace
 	{
 		if((myHost!=null)&&(myHost instanceof MOB))
 		{
-			MOB mob=(MOB)myHost;
+			final MOB mob=(MOB)myHost;
 			if(msg.amITarget(mob)&&(msg.targetMinor()==CMMsg.TYP_HEALING))
 			{
-				int amount=msg.value();
+				final int amount=msg.value();
 				if((amount>0)
 				&&(msg.tool() instanceof Ability)
 				&&(CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_HEALINGMAGIC|Ability.FLAG_HOLY))
@@ -128,7 +128,7 @@ public class Undead extends StdRace
 					&&(CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_UNHOLY))
 					&&(!CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_HOLY)))))
 			{
-				int amount=msg.value();
+				final int amount=msg.value();
 				if(amount>0)
 					msg.modify(msg.source(),mob,msg.tool(),CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,CMMsg.MSG_HEALING,CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,"The harming magic heals <T-NAMESELF>.");
 			}
@@ -175,7 +175,7 @@ public class Undead extends StdRace
 	@Override
 	public DeadBody getCorpseContainer(MOB mob, Room room)
 	{
-		DeadBody body=super.getCorpseContainer(mob,room);
+		final DeadBody body=super.getCorpseContainer(mob,room);
 		if((body!=null)&&(mob!=null))
 		{
 			if(!CMSecurity.isDisabled(CMSecurity.DisFlag.AUTODISEASE))
@@ -190,7 +190,7 @@ public class Undead extends StdRace
 			}
 			if(ID().equals("Undead"))
 			{
-				Ability A=CMClass.getAbility("Prop_Smell");
+				final Ability A=CMClass.getAbility("Prop_Smell");
 				body.addNonUninvokableEffect(A);
 				A.setMiscText(body.name()+" SMELLS HORRIBLE!");
 			}
@@ -201,7 +201,7 @@ public class Undead extends StdRace
 	@Override
 	public String healthText(MOB viewer, MOB mob)
 	{
-		double pct=(CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));
+		final double pct=(CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));
 
 		if(pct<.10)
 			return "^r" + mob.name(viewer) + "^r is near destruction!^N";

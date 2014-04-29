@@ -45,7 +45,7 @@ public class Trap_CaveIn extends StdTrap
 	@Override
 	public List<Item> getTrapComponents()
 	{
-		Vector V=new Vector();
+		final Vector V=new Vector();
 		for(int i=0;i<100;i++)
 			V.addElement(CMLib.materials().makeItemResource(RawMaterial.RESOURCE_WOOD));
 		return V;
@@ -56,7 +56,7 @@ public class Trap_CaveIn extends StdTrap
 		if(P==null) return null;
 		if(mob!=null)
 		{
-			Item I=findMostOfMaterial(mob.location(),RawMaterial.MATERIAL_WOODEN);
+			final Item I=findMostOfMaterial(mob.location(),RawMaterial.MATERIAL_WOODEN);
 			if(I!=null)
 				super.destroyResources(mob.location(),I.material(),100);
 		}
@@ -69,7 +69,7 @@ public class Trap_CaveIn extends StdTrap
 		if(!super.canSetTrapOn(mob,P)) return false;
 		if(mob!=null)
 		{
-			Item I=findMostOfMaterial(mob.location(),RawMaterial.MATERIAL_WOODEN);
+			final Item I=findMostOfMaterial(mob.location(),RawMaterial.MATERIAL_WOODEN);
 			if((I==null)
 			||(super.findNumberOfResource(mob.location(),I.material())<100))
 			{
@@ -79,7 +79,7 @@ public class Trap_CaveIn extends StdTrap
 		}
 		if(P instanceof Room)
 		{
-			Room R=(Room)P;
+			final Room R=(Room)P;
 			if(R.domainType()!=Room.DOMAIN_INDOORS_CAVE)
 			{
 				if(mob!=null)
@@ -125,14 +125,14 @@ public class Trap_CaveIn extends StdTrap
 				if((affected!=null)
 				&&(affected instanceof Room))
 				{
-					Room R=(Room)affected;
+					final Room R=(Room)affected;
 					for(int i=0;i<R.numInhabitants();i++)
 					{
-						MOB M=R.fetchInhabitant(i);
+						final MOB M=R.fetchInhabitant(i);
 						if((M!=null)&&(M!=invoker()))
 							if(invoker().mayIFight(M))
 							{
-								int damage=CMLib.dice().roll(trapLevel()+abilityCode(),20,1);
+								final int damage=CMLib.dice().roll(trapLevel()+abilityCode(),20,1);
 								CMLib.combat().postDamage(invoker(),M,this,damage,CMMsg.MASK_MALICIOUS|CMMsg.MASK_ALWAYS|CMMsg.TYP_JUSTICE,Weapon.TYPE_BASHING,"The cave-in <DAMAGE> <T-NAME>!");
 							}
 					}

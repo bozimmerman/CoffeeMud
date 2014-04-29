@@ -45,15 +45,15 @@ public class AddFile extends StdWebMacro
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
-		PairSVector<String,String> parms=super.parseOrderedParms(parm,true);
+		final PairSVector<String,String> parms=super.parseOrderedParms(parm,true);
 		if((parms==null)||(parms.size()==0)) return "";
-		StringBuffer buf=new StringBuffer("");
+		final StringBuffer buf=new StringBuffer("");
 		boolean webify=false;
 		boolean replace=false;
-		for(Pair<String,String> p : parms)
+		for(final Pair<String,String> p : parms)
 		{
-			String key=p.first;
-			String file = p.second;
+			final String key=p.first;
+			final String file = p.second;
 			if(file.length()>0)
 			{
 				try
@@ -82,7 +82,7 @@ public class AddFile extends StdWebMacro
 					else
 						buf.append(new String(getHTTPFileData(httpReq,file.trim())));
 				}
-				catch(HTTPException e)
+				catch(final HTTPException e)
 				{
 					Log.warnOut("Failed "+name()+" "+file);
 				}

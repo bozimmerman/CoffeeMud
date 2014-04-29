@@ -61,7 +61,7 @@ public class Spell_LightSensitivity extends Spell
 		// undo the affects of this spell
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		super.unInvoke();
 
 		if(canBeUninvoked())
@@ -92,7 +92,7 @@ public class Spell_LightSensitivity extends Spell
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		MOB target=this.getTarget(mob,commands,givenTarget);
+		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
 		if((!auto)&&(target.charStats().getBodyPart(Race.BODY_EYE)==0))
@@ -117,8 +117,8 @@ public class Spell_LightSensitivity extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			String autoStr="A flashing light blazes in the eyes of <T-NAME>!";
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?autoStr:"^SYou invoke a sensitive light into <T-NAME>s eyes.^?",verbalCastCode(mob,target,auto),auto?autoStr:"^S<S-NAME> invoke(s) a sensitive light into your eyes.^?",CMMsg.MSG_CAST_ATTACK_VERBAL_SPELL,auto?autoStr:"^S<S-NAME> invokes a sensitive light into <T-NAME>s eyes.^?");
+			final String autoStr="A flashing light blazes in the eyes of <T-NAME>!";
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?autoStr:"^SYou invoke a sensitive light into <T-NAME>s eyes.^?",verbalCastCode(mob,target,auto),auto?autoStr:"^S<S-NAME> invoke(s) a sensitive light into your eyes.^?",CMMsg.MSG_CAST_ATTACK_VERBAL_SPELL,auto?autoStr:"^S<S-NAME> invokes a sensitive light into <T-NAME>s eyes.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

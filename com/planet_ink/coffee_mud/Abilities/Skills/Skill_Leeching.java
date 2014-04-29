@@ -48,7 +48,7 @@ public class Skill_Leeching extends StdSkill
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		MOB target=getTarget(mob,commands,givenTarget);
+		final MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
 		if((!auto)&&(mob!=target)&&(!target.willFollowOrdersOf(mob)))
@@ -65,7 +65,7 @@ public class Skill_Leeching extends StdSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
@@ -73,11 +73,11 @@ public class Skill_Leeching extends StdSkill
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT|(auto?CMMsg.MASK_ALWAYS:0),auto?"":"^S<S-NAME> carefully applie(s) leeches to the skin of <T-NAME>.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT|(auto?CMMsg.MASK_ALWAYS:0),auto?"":"^S<S-NAME> carefully applie(s) leeches to the skin of <T-NAME>.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				Ability A=CMClass.getAbility("Disease_Leeches");
+				final Ability A=CMClass.getAbility("Disease_Leeches");
 				if(A!=null)
 					A.invoke(mob,target,true,adjustedLevel(mob,0));
 

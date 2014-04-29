@@ -70,7 +70,7 @@ public class Spell_Clone extends Spell
 	@Override
 	public void unInvoke()
 	{
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		super.unInvoke();
 		if((canBeUninvoked())&&(mob!=null))
 		{
@@ -85,16 +85,16 @@ public class Spell_Clone extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
 			invoker=mob;
-			CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,mob,auto),auto?"":"^S<S-NAME> incant(s), feeling <S-HIS-HER> body split in two.^?");
+			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,mob,auto),auto?"":"^S<S-NAME> incant(s), feeling <S-HIS-HER> body split in two.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				MOB myMonster = determineMonster(mob);
+				final MOB myMonster = determineMonster(mob);
 				Behavior B=CMClass.getBehavior("CombatAbilities");
 				myMonster.addBehavior(B);
 				B.startBehavior(myMonster);
@@ -149,10 +149,10 @@ public class Spell_Clone extends Spell
 	}
 	public MOB determineMonster(MOB caster)
 	{
-		MOB newMOB=(MOB)caster.copyOf();
+		final MOB newMOB=(MOB)caster.copyOf();
 		for(int i=0;i<newMOB.numItems();i++)
 		{
-			Item I=newMOB.getItem(i);
+			final Item I=newMOB.getItem(i);
 			I.delAllEffects(false);
 			I.basePhyStats().setAbility(0);
 			if(I instanceof Potion)

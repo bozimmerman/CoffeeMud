@@ -40,7 +40,7 @@ public class Assassin extends GenMob
 		username="an assassin";
 		setDescription("He`s all dressed in black, and has eyes as cold as ice.");
 		setDisplayText("An assassin stands here.");
-		Race R=CMClass.getRace("Human");
+		final Race R=CMClass.getRace("Human");
 		if(R!=null)
 		{
 			baseCharStats().setMyRace(R);
@@ -87,7 +87,7 @@ public class Assassin extends GenMob
 			addItem(I);
 			I.wearIfPossible(this);
 		}
-		Weapon d=CMClass.getWeapon("Dagger");
+		final Weapon d=CMClass.getWeapon("Dagger");
 		if(d!=null)
 		{
 			d.wearAt(Wearable.WORN_HELD);

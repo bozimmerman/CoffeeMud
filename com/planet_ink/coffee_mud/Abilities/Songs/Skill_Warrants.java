@@ -55,10 +55,10 @@ public class Skill_Warrants extends BardSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,(-25+mob.charStats().getStat(CharStats.STAT_CHARISMA)+(2*getXLEVELLevel(mob))),auto);
+		final boolean success=proficiencyCheck(mob,(-25+mob.charStats().getStat(CharStats.STAT_CHARISMA)+(2*getXLEVELLevel(mob))),auto);
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT|(auto?CMMsg.MASK_ALWAYS:0),null);
+			final CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT|(auto?CMMsg.MASK_ALWAYS:0),null);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -70,12 +70,12 @@ public class Skill_Warrants extends BardSkill
 					mob.tell("No one is wanted for anything here.");
 					return false;
 				}
-				StringBuffer buf=new StringBuffer("");
-				int colWidth=ListingLibrary.ColFixer.fixColWidth(14,mob.session());
+				final StringBuffer buf=new StringBuffer("");
+				final int colWidth=ListingLibrary.ColFixer.fixColWidth(14,mob.session());
 				buf.append(CMStrings.padRight("Name",colWidth)+" "+CMStrings.padRight("Victim",colWidth)+" "+CMStrings.padRight("Witness",colWidth)+" Crime\n\r");
 				for(int v=0;v<V.size();v++)
 				{
-					LegalWarrant W=V.get(v);
+					final LegalWarrant W=V.get(v);
 					buf.append(CMStrings.padRight(W.criminal().Name(),colWidth)+" ");
 					buf.append(CMStrings.padRight(W.victim()!=null?W.victim().Name():"N/A",colWidth)+" ");
 					buf.append(CMStrings.padRight(W.witness()!=null?W.witness().Name():"N/A",colWidth)+" ");

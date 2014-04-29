@@ -47,7 +47,7 @@ public class Chant_SummonFear extends Chant
 	{
 		if(mob!=null)
 		{
-			Set<MOB> h=properTargets(mob,target,false);
+			final Set<MOB> h=properTargets(mob,target,false);
 			if(h==null)
 				return Ability.QUALITY_INDIFFERENT;
 		}
@@ -57,7 +57,7 @@ public class Chant_SummonFear extends Chant
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		Set<MOB> h=properTargets(mob,givenTarget,auto);
+		final Set<MOB> h=properTargets(mob,givenTarget,auto);
 		if(h==null)
 		{
 			mob.tell("There doesn't appear to be anyone here worth scaring.");
@@ -71,20 +71,20 @@ public class Chant_SummonFear extends Chant
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
-			for(Iterator f=h.iterator();f.hasNext();)
+			for (final Object element : h)
 			{
-				MOB target=(MOB)f.next();
+				final MOB target=(MOB)element;
 
 				// it worked, so build a copy of this ability,
 				// and add it to the affects list of the
 				// affected MOB.  Then tell everyone else
 				// what happened.
-				CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),"^S<S-NAME> frighten(s) <T-NAMESELF> with <S-HIS-HER> chant.^?");
-				CMMsg msg2=CMClass.getMsg(mob,target,this,verbalCastMask(mob,target,auto)|CMMsg.TYP_MIND,null);
+				final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),"^S<S-NAME> frighten(s) <T-NAMESELF> with <S-HIS-HER> chant.^?");
+				final CMMsg msg2=CMClass.getMsg(mob,target,this,verbalCastMask(mob,target,auto)|CMMsg.TYP_MIND,null);
 				if((mob.location().okMessage(mob,msg))&&((mob.location().okMessage(mob,msg2))))
 				{
 					mob.location().send(mob,msg);

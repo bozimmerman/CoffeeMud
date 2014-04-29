@@ -41,10 +41,10 @@ public class Cobra extends Snake
 	@Override public int lightestWeight(){return 15;}
 	@Override public int weightVariance(){return 20;}
 	@Override public String racialCategory(){return "Serpent";}
-	private String[]racialAbilityNames={"Poison_Heartstopper"};
-	private int[]racialAbilityLevels={5};
-	private int[]racialAbilityProficiencies={30};
-	private boolean[]racialAbilityQuals={false};
+	private final String[]racialAbilityNames={"Poison_Heartstopper"};
+	private final int[]racialAbilityLevels={5};
+	private final int[]racialAbilityProficiencies={30};
+	private final boolean[]racialAbilityQuals={false};
 	@Override public String[] racialAbilityNames(){return racialAbilityNames;}
 	@Override public int[] racialAbilityLevels(){return racialAbilityLevels;}
 	@Override public int[] racialAbilityProficiencies(){return racialAbilityProficiencies;}

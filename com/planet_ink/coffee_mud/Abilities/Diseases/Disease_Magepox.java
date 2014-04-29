@@ -57,7 +57,7 @@ public class Disease_Magepox extends Disease
 		if(affected==null) return false;
 		if(!(affected instanceof MOB)) return true;
 
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		if((!mob.amDead())&&((--diseaseTick)<=0))
 		{
 			diseaseTick=DISEASE_DELAY();
@@ -76,7 +76,7 @@ public class Disease_Magepox extends Disease
 		if(hitsLost<0) hitsLost=0;
 		int movesLost=(affected.maxState().getMovement()-affected.curState().getMovement());
 		if(movesLost<0) movesLost=0;
-		int lostMana=hitsLost+movesLost;
+		final int lostMana=hitsLost+movesLost;
 		affectableState.setMana(affectableState.getMana()-lostMana);
 		if(affectableState.getMana()<0)
 			affectableState.setMana(0);

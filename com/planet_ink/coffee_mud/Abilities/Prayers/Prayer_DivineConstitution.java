@@ -77,11 +77,11 @@ public class Prayer_DivineConstitution extends Prayer
 		&&(conPts<maxPoints)
 		&&(CMLib.dice().rollPercentage()<(50+(5*getX1Level(msg.source())))))
 		{
-			MOB M=(MOB)affected;
+			final MOB M=(MOB)affected;
 			if(M!=null)
 			{
-				Room R=M.location();
-				int diff = (M.curState().getHitPoints() - M.maxState().getHitPoints()) + msg.value();
+				final Room R=M.location();
+				final int diff = (M.curState().getHitPoints() - M.maxState().getHitPoints()) + msg.value();
 				if((diff>0)
 				&&(msg.value()>diff))
 				{
@@ -102,7 +102,7 @@ public class Prayer_DivineConstitution extends Prayer
 		// undo the affects of this spell
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		super.unInvoke();
 
@@ -114,13 +114,13 @@ public class Prayer_DivineConstitution extends Prayer
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		MOB target=this.getTarget(mob,commands,givenTarget);
+		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
@@ -128,7 +128,7 @@ public class Prayer_DivineConstitution extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),(auto?"<T-NAME> become(s) covered by divine constitution.":"^S<S-NAME> "+prayWord(mob)+" for <T-NAMESELF> to be covered by divine constitution.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),(auto?"<T-NAME> become(s) covered by divine constitution.":"^S<S-NAME> "+prayWord(mob)+" for <T-NAMESELF> to be covered by divine constitution.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				conPts=1+(super.getXLEVELLevel(mob)/2);

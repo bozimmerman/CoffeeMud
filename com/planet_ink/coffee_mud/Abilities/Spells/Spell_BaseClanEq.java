@@ -54,9 +54,9 @@ public class Spell_BaseClanEq extends Spell
 	{
 		if(student!=null)
 		{
-			for(Enumeration<Ability> a=student.allAbilities();a.hasMoreElements();)
+			for(final Enumeration<Ability> a=student.allAbilities();a.hasMoreElements();)
 			{
-				Ability A=a.nextElement();
+				final Ability A=a.nextElement();
 				if((A!=null)&&(A instanceof Spell_BaseClanEq))
 				{
 					teacher.tell(student.name()+" already knows '"+A.name()+"', and may not learn another clan enchantment.");
@@ -76,15 +76,15 @@ public class Spell_BaseClanEq extends Spell
 			mob.tell("You aren't even a member of a clan.");
 			return false;
 		}
-		Pair<Clan,Integer> clanPair=CMLib.clans().findPrivilegedClan(mob, Clan.Function.ENCHANT);
+		final Pair<Clan,Integer> clanPair=CMLib.clans().findPrivilegedClan(mob, Clan.Function.ENCHANT);
 		if(clanPair==null)
 		{
 			mob.tell("You are not authorized to draw from the power of your clan.");
 			return false;
 		}
-		Clan C=clanPair.first;
-		String ClanName=C.clanID();
-		String ClanType=C.getGovernmentName();
+		final Clan C=clanPair.first;
+		final String ClanName=C.clanID();
+		final String ClanType=C.getGovernmentName();
 
 		// Invoking will be like:
 		//   CAST [CLANEQSPELL] ITEM QUANTITY
@@ -99,20 +99,20 @@ public class Spell_BaseClanEq extends Spell
 			mob.tell("Use how much clan enchantment power?");
 			return false;
 		}
-		Physical target=mob.location().fetchFromMOBRoomFavorsItems(mob,null,(String)commands.elementAt(0),Wearable.FILTER_UNWORNONLY);
+		final Physical target=mob.location().fetchFromMOBRoomFavorsItems(mob,null,(String)commands.elementAt(0),Wearable.FILTER_UNWORNONLY);
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
 			mob.tell("You don't see '"+((String)commands.elementAt(0))+"' here.");
 			return false;
 		}
 		// Add clan power check start
-		int points=CMath.s_int((String)commands.elementAt(1));
+		final int points=CMath.s_int((String)commands.elementAt(1));
 		if(points<=0)
 		{
 			mob.tell("You need to use at least 1 enchantment point.");
 			return false;
 		}
-		long exp=points*CMProps.getIntVar(CMProps.Int.CLANENCHCOST);
+		final long exp=points*CMProps.getIntVar(CMProps.Int.CLANENCHCOST);
 		if((C.getExp()<exp)||(exp<0))
 		{
 			mob.tell("You need "+exp+" to do that, but your "+C.getGovernmentName()+" has only "+C.getExp()+" experience points.");
@@ -130,19 +130,19 @@ public class Spell_BaseClanEq extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		C.setExp(C.getExp()-exp);
 		C.update();
 
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),"^S<S-NAME> move(s) <S-HIS-HER> fingers around <T-NAMESELF>, encanting intensely.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),"^S<S-NAME> move(s) <S-HIS-HER> fingers around <T-NAMESELF>, encanting intensely.^?");
 			if (mob.location().okMessage(mob, msg))
 			{
 				mob.location().send(mob, msg);
-				Ability A=CMClass.getAbility("Prop_ClanEquipment");
-				StringBuffer str=new StringBuffer("");
+				final Ability A=CMClass.getAbility("Prop_ClanEquipment");
+				final StringBuffer str=new StringBuffer("");
 				str.append(type); // Type of Enchantment
 				str.append(" ");
 				str.append(""+points);     // Power of Enchantment

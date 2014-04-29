@@ -51,7 +51,7 @@ public class Prayer_CurseItem extends Prayer
 		super.affectPhyStats(affected,affectableStats);
 		if(affected==null) return;
 		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_EVIL);
-		int xlvl=super.getXLEVELLevel(invoker());
+		final int xlvl=super.getXLEVELLevel(invoker());
 		if(affected instanceof MOB)
 			affectableStats.setArmor(affectableStats.armor()+(10+(2*xlvl)));
 		else
@@ -73,7 +73,7 @@ public class Prayer_CurseItem extends Prayer
 			super.unInvoke();
 			return;
 		}
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		if(canBeUninvoked())
 			mob.tell("The curse is lifted.");
 		super.unInvoke();
@@ -88,9 +88,9 @@ public class Prayer_CurseItem extends Prayer
 		if(affected==null) return true;
 		if(!(affected instanceof Item)) return true;
 
-		Item item=(Item)affected;
+		final Item item=(Item)affected;
 
-		MOB mob=msg.source();
+		final MOB mob=msg.source();
 		if((msg.tool()==item)&&(msg.sourceMinor()==CMMsg.TYP_THROW))
 		{
 			mob.tell("You can't seem to get rid of "+item.name()+".");
@@ -140,7 +140,7 @@ public class Prayer_CurseItem extends Prayer
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		MOB mobTarget=getTarget(mob,commands,givenTarget,true,false);
+		final MOB mobTarget=getTarget(mob,commands,givenTarget,true,false);
 		Item target=null;
 		if(mobTarget!=null)
 			target=Prayer_Curse.getSomething(mobTarget,true);
@@ -162,8 +162,8 @@ public class Prayer_CurseItem extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> <T-IS-ARE> cursed!":"^S<S-NAME> curse(s) <T-NAMESELF>.^?");
-			CMMsg msg2=CMClass.getMsg(mob,mobTarget,this,verbalCastCode(mob,mobTarget,auto),null);
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> <T-IS-ARE> cursed!":"^S<S-NAME> curse(s) <T-NAMESELF>.^?");
+			final CMMsg msg2=CMClass.getMsg(mob,mobTarget,this,verbalCastCode(mob,mobTarget,auto),null);
 			if((mob.location().okMessage(mob,msg))&&((mobTarget==null)||(mob.location().okMessage(mob,msg2))))
 			{
 				mob.location().send(mob,msg);

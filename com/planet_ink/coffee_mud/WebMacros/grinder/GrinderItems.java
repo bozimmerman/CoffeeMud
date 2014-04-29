@@ -60,13 +60,13 @@ public class GrinderItems
 								  Room R,
 								  MOB playerM)
 	{
-		String itemCode=httpReq.getUrlParameter("ITEM");
+		final String itemCode=httpReq.getUrlParameter("ITEM");
 		if(itemCode==null) return "@break@";
 
-		String mobNum=httpReq.getUrlParameter("MOB");
-		String newClassID=httpReq.getUrlParameter("CLASSES");
+		final String mobNum=httpReq.getUrlParameter("MOB");
+		final String newClassID=httpReq.getUrlParameter("CLASSES");
 
-		String sync=("SYNC"+((R==null)?((playerM!=null)?playerM.Name():null):R.roomID()));
+		final String sync=("SYNC"+((R==null)?((playerM!=null)?playerM.Name():null):R.roomID()));
 		synchronized(sync.intern())
 		{
 			if(R!=null)
@@ -88,13 +88,13 @@ public class GrinderItems
 					M=RoomData.getMOBFromCode(RoomData.getMOBCache(),mobNum);
 				if(M==null)
 				{
-					StringBuffer str=new StringBuffer("No MOB?!");
+					final StringBuffer str=new StringBuffer("No MOB?!");
 					str.append(" Got: "+mobNum);
 					str.append(", Includes: ");
 					if(R!=null)
 					for(int m=0;m<R.numInhabitants();m++)
 					{
-						MOB M2=R.fetchInhabitant(m);
+						final MOB M2=R.fetchInhabitant(m);
 						if((M2!=null)&&(M2.isSavable()))
 						   str.append(M2.Name()+"="+RoomData.getMOBCode(R,M2));
 					}
@@ -111,7 +111,7 @@ public class GrinderItems
 
 			if(I==null)
 			{
-				StringBuffer str=new StringBuffer("No Item?!");
+				final StringBuffer str=new StringBuffer("No Item?!");
 				str.append(" Got: "+itemCode);
 				str.append(", Includes: ");
 				if(M==null)
@@ -119,20 +119,20 @@ public class GrinderItems
 					if(R!=null)
 					for(int i=0;i<R.numItems();i++)
 					{
-						Item I2=R.getItem(i);
+						final Item I2=R.getItem(i);
 						if(I2!=null) str.append(I2.Name()+"="+RoomData.getItemCode(R,I2));
 					}
 				}
 				else
 					for(int i=0;i<M.numItems();i++)
 					{
-						Item I2=M.getItem(i);
+						final Item I2=M.getItem(i);
 						if(I2!=null) str.append(I2.Name()+"="+RoomData.getItemCode(M,I2));
 					}
 				return str.toString();
 			}
 			Item copyItem=(Item)I.copyOf();
-			Item oldI=I;
+			final Item oldI=I;
 			if((newClassID!=null)&&(!newClassID.equals(CMClass.classID(I))))
 			{
 				I=CMClass.getItem(newClassID);
@@ -295,7 +295,7 @@ public class GrinderItems
 					if(((I instanceof SpellHolder))
 					&&(CMClass.classID(I).indexOf("SuperPill")<0))
 					{
-						StringBuilder sp=new StringBuilder("");
+						final StringBuilder sp=new StringBuilder("");
 						if(httpReq.isUrlParameter("RSPELL1"))
 						{
 							int num=1;
@@ -305,7 +305,7 @@ public class GrinderItems
 							{
 								if(aff.length()>0)
 								{
-									Ability B=CMClass.getAbility(aff);
+									final Ability B=CMClass.getAbility(aff);
 									if(B==null) return "Unknown Ability '"+aff+"'.";
 									if(sp.length()>0)
 										sp.append(";");
@@ -337,7 +337,7 @@ public class GrinderItems
 				case 40: // map areas
 					if(I instanceof com.planet_ink.coffee_mud.Items.interfaces.RoomMap)
 					{
-						Vector<String> V=new Vector<String>();
+						final Vector<String> V=new Vector<String>();
 						if(httpReq.isUrlParameter("MAPAREAS"))
 						{
 							old=httpReq.getUrlParameter("MAPAREAS").trim();
@@ -406,7 +406,7 @@ public class GrinderItems
 				case 53: // has a lock
 					if(I instanceof Container)
 					{
-						boolean hasALid=((Container)I).hasALid();
+						final boolean hasALid=((Container)I).hasALid();
 						((Container)I).setLidsNLocks(hasALid||old.equals("on"),!(hasALid||old.equals("on")),old.equals("on"),old.equals("on"));
 					}
 					break;
@@ -511,11 +511,11 @@ public class GrinderItems
 				case 79: // recipedata
 					if(I instanceof Recipe)
 					{
-						String fieldName=parms.get("RECIPEFIELDNAME");
+						final String fieldName=parms.get("RECIPEFIELDNAME");
 						if(fieldName==null) return "No recipefieldname!";
 						int x=0;
 						String thisFieldname = CMStrings.replaceAll(fieldName,"###", ""+x);
-						List<String> finalData=new ArrayList<String>();
+						final List<String> finalData=new ArrayList<String>();
 						while(httpReq.isUrlParameter(thisFieldname))
 						{
 							old = httpReq.getUrlParameter(thisFieldname);
@@ -603,7 +603,7 @@ public class GrinderItems
 			I.text();
 			if(itemCode.startsWith("CATALOG-")||itemCode.startsWith("NEWCATA-"))
 			{
-				Item I2=CMLib.catalog().getCatalogItem(itemCode.substring(8));
+				final Item I2=CMLib.catalog().getCatalogItem(itemCode.substring(8));
 				if((I2!=null)&&(!I.Name().equalsIgnoreCase(I2.Name())))
 					I.setName(I2.Name());
 				httpReq.addFakeUrlParameter("ITEM",itemCode);
@@ -619,7 +619,7 @@ public class GrinderItems
 				{
 					if(cataData!=null)
 					{
-						CatalogLibrary.CataData data=CMLib.catalog().getCatalogItemData(I.Name());
+						final CatalogLibrary.CataData data=CMLib.catalog().getCatalogItemData(I.Name());
 						data.build(cataData.data());
 					}
 					CMLib.catalog().updateCatalog(I);
@@ -655,7 +655,7 @@ public class GrinderItems
 			else
 			if(I!=oldI)
 			{
-				ItemPossessor oldOwner=oldI.owner();
+				final ItemPossessor oldOwner=oldI.owner();
 				if(M==null)
 				{
 					if(R==null)
@@ -669,7 +669,7 @@ public class GrinderItems
 						R.recoverRoomStats();
 						for(int i=0;i<R.numItems();i++)
 						{
-							Item I2=R.getItem(i);
+							final Item I2=R.getItem(i);
 							if((I2.container()!=null)
 							&&(I2.container()==oldI))
 								if(I instanceof Container)
@@ -689,7 +689,7 @@ public class GrinderItems
 					if(R!=null) R.recoverRoomStats();
 					for(int i=0;i<M.numItems();i++)
 					{
-						Item I2=M.getItem(i);
+						final Item I2=M.getItem(i);
 						if((I2.container()!=null)
 						&&(I2.container()==oldI))
 							if(I instanceof Container)

@@ -39,7 +39,7 @@ public class DefaultLawSet implements Law
 {
 	@Override public String ID(){return "DefaultLawSet";}
 	@Override public String name() { return ID();}
-	@Override public CMObject newInstance(){try{return getClass().newInstance();}catch(Exception e){return new DefaultLawSet();}}
+	@Override public CMObject newInstance(){try{return getClass().newInstance();}catch(final Exception e){return new DefaultLawSet();}}
 	@Override public void initializeClass(){}
 	@Override public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 	@Override
@@ -49,7 +49,7 @@ public class DefaultLawSet implements Law
 		{
 			return (DefaultLawSet)this.clone();
 		}
-		catch(CloneNotSupportedException e)
+		catch(final CloneNotSupportedException e)
 		{
 			return newInstance();
 		}
@@ -59,13 +59,13 @@ public class DefaultLawSet implements Law
 	private boolean lawsModifiable=false;
 	private LegalBehavior legalDetails=null;
 
-	private List<List<String>>	otherCrimes=new Vector<List<String>>();
-	private List<String[]> 		otherBits=new Vector<String[]>();
-	private List<List<String>> 	bannedSubstances=new Vector<List<String>>();
-	private List<String[]> 		bannedBits=new Vector<String[]>();
-	private Map<String,String[]>abilityCrimes=new Hashtable<String,String[]>();
-	private Map<String,String[]>basicCrimes=new Hashtable<String,String[]>();
-	private Map<String, Object>	taxLaws=new Hashtable<String, Object>();
+	private final List<List<String>>	otherCrimes=new Vector<List<String>>();
+	private final List<String[]> 		otherBits=new Vector<String[]>();
+	private final List<List<String>> 	bannedSubstances=new Vector<List<String>>();
+	private final List<String[]> 		bannedBits=new Vector<String[]>();
+	private final Map<String,String[]>abilityCrimes=new Hashtable<String,String[]>();
+	private final Map<String,String[]>basicCrimes=new Hashtable<String,String[]>();
+	private final Map<String, Object>	taxLaws=new Hashtable<String, Object>();
 
 	private List<String> chitChat=new Vector<String>();
 	private List<String> chitChat2=new Vector<String>();
@@ -78,19 +78,19 @@ public class DefaultLawSet implements Law
 
 	private boolean activated=true;
 
-	private SVector<LegalWarrant> oldWarrants=new SVector<LegalWarrant>();
-	private SVector<LegalWarrant> warrants=new SVector<LegalWarrant>();
+	private final SVector<LegalWarrant> oldWarrants=new SVector<LegalWarrant>();
+	private final SVector<LegalWarrant> warrants=new SVector<LegalWarrant>();
 
 	private boolean arrestMobs=false;
 
 	private Properties theLaws=null;
 	private int lastMonthChecked=-1;
 
-	private String[] paroleMessages=new String[4];
-	private Integer[] paroleTimes=new Integer[4];
+	private final String[] paroleMessages=new String[4];
+	private final Integer[] paroleTimes=new Integer[4];
 
-	private String[] jailMessages=new String[4];
-	private Integer[] jailTimes=new Integer[4];
+	private final String[] jailMessages=new String[4];
+	private final Integer[] jailTimes=new Integer[4];
 
 	@Override
 	public void initialize(LegalBehavior details, Properties laws, boolean modifiableNames, boolean modifiableLaws)
@@ -140,7 +140,7 @@ public class DefaultLawSet implements Law
 		if(warrants.contains(W))
 			for(int w=0;w<warrants.size();w++)
 			{
-				LegalWarrant W2=warrants.elementAt(w);
+				final LegalWarrant W2=warrants.elementAt(w);
 				if(W2.criminal()==W.criminal())
 					W2.setState(state);
 			}
@@ -151,15 +151,15 @@ public class DefaultLawSet implements Law
 	{
 		Room treasuryR=null;
 		Container container=null;
-		String tres=(String)taxLaws().get("TREASURY");
+		final String tres=(String)taxLaws().get("TREASURY");
 		Item I=null;
 		if((tres!=null)&&(tres.length()>0))
 		{
-			List<String> V=CMParms.parseSemicolons(tres,false);
+			final List<String> V=CMParms.parseSemicolons(tres,false);
 			if(V.size()>0)
 			{
 				Room R=null;
-				String room=V.get(0);
+				final String room=V.get(0);
 				String item="";
 				if(V.size()>1) item=CMParms.combine(V,1);
 				if(!room.equalsIgnoreCase("*"))
@@ -174,7 +174,7 @@ public class DefaultLawSet implements Law
 				}
 				else
 				if(item.length()>0)
-				for(Enumeration<Room> e=A.getMetroMap();e.hasMoreElements();)
+				for(final Enumeration<Room> e=A.getMetroMap();e.hasMoreElements();)
 				{
 					R=e.nextElement();
 					I=R.findItem(item);
@@ -202,8 +202,8 @@ public class DefaultLawSet implements Law
 			if(tax==0.0) return;
 			tax=CMath.div(tax,100.0);
 			List<LandTitle> titles=CMLib.law().getAllUniqueTitles(A.getMetroMap(),"*",false);
-			Hashtable<String,Vector<LandTitle>> owners=new Hashtable<String,Vector<LandTitle>>();
-			for(LandTitle T : titles)
+			final Hashtable<String,Vector<LandTitle>> owners=new Hashtable<String,Vector<LandTitle>>();
+			for(final LandTitle T : titles)
 			{
 				Vector<LandTitle> D=owners.get(T.getOwnerName());
 				if(D==null)
@@ -214,25 +214,25 @@ public class DefaultLawSet implements Law
 				D.addElement(T);
 			}
 			titles=null;
-			Law.TreasurySet treas=getTreasuryNSafe(A);
-			Room treasuryR=treas.room;
-			Container container=treas.container;
-			String[] evasionBits=(String[])taxLaws().get("TAXEVASION");
+			final Law.TreasurySet treas=getTreasuryNSafe(A);
+			final Room treasuryR=treas.room;
+			final Container container=treas.container;
+			final String[] evasionBits=(String[])taxLaws().get("TAXEVASION");
 
-			for(String owner : owners.keySet())
+			for(final String owner : owners.keySet())
 			{
 				MOB responsibleMob=null;
-				Clan C=CMLib.clans().getClan(owner);
+				final Clan C=CMLib.clans().getClan(owner);
 				if(C!=null)
 					responsibleMob=C.getResponsibleMember();
 				else
 					responsibleMob=CMLib.players().getLoadPlayer(owner);
-				Vector<LandTitle> particulars=owners.get(owner);
+				final Vector<LandTitle> particulars=owners.get(owner);
 
 				double totalValue=0;
 				double paid=0;
 				double owed=0;
-				StringBuffer properties=new StringBuffer("");
+				final StringBuffer properties=new StringBuffer("");
 				LandTitle T=null;
 				List<Room> propertyRooms=null;
 
@@ -293,12 +293,12 @@ public class DefaultLawSet implements Law
 								T.setBackTaxes((int)Math.round((T.backTaxes())+owedOnThisLand));
 								if((T.getPrice()/T.backTaxes())<4)
 								{
-									Clan clanC=CMLib.clans().getClan(T.getOwnerName());
+									final Clan clanC=CMLib.clans().getClan(T.getOwnerName());
 									if(clanC!=null)
 									{
-										List<Pair<Clan,Integer>> clanSet=new Vector<Pair<Clan,Integer>>();
+										final List<Pair<Clan,Integer>> clanSet=new Vector<Pair<Clan,Integer>>();
 										clanSet.add(new Pair<Clan,Integer>(C,Integer.valueOf(0)));
-										List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.CLANINFO);
+										final List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.CLANINFO);
 										for(int i=0;i<channels.size();i++)
 											CMLib.commands().postChannel(channels.get(i),clanSet,T.getOwnerName()+" has lost the title to "+T.landPropertyID()+" due to failure to pay property taxes.",false);
 									}
@@ -343,10 +343,10 @@ public class DefaultLawSet implements Law
 						if(owed<0) owed=0;
 						if((treasuryR!=null)&&((owed+paid)>0))
 						{
-							List<Coins> V=CMLib.beanCounter().makeAllCurrency(CMLib.beanCounter().getCurrency(A),owed+paid);
+							final List<Coins> V=CMLib.beanCounter().makeAllCurrency(CMLib.beanCounter().getCurrency(A),owed+paid);
 							for(int v=0;v<V.size();v++)
 							{
-								Coins COIN=V.get(v);
+								final Coins COIN=V.get(v);
 								COIN.setContainer(container);
 								treasuryR.addItem(COIN);
 								COIN.putCoinsBack();
@@ -520,18 +520,18 @@ public class DefaultLawSet implements Law
 		otherBits.clear();
 		bannedSubstances.clear();
 		bannedBits.clear();
-		for(Enumeration<Object> e=laws.keys();e.hasMoreElements();)
+		for(final Enumeration<Object> e=laws.keys();e.hasMoreElements();)
 		{
-			String key=(String)e.nextElement();
-			String words=(String)laws.get(key);
-			int x=words.indexOf(';');
+			final String key=(String)e.nextElement();
+			final String words=(String)laws.get(key);
+			final int x=words.indexOf(';');
 			if(x>=0)
 			{
 				if(key.startsWith("CRIME"))
 				{
 					otherCrimes.add(CMParms.parse(words.substring(0,x)));
-					String[] bits=new String[Law.BIT_NUMBITS];
-					List<String> parsed=CMParms.parseSemicolons(words.substring(x+1),false);
+					final String[] bits=new String[Law.BIT_NUMBITS];
+					final List<String> parsed=CMParms.parseSemicolons(words.substring(x+1),false);
 					for(int i=0;i<Law.BIT_NUMBITS;i++)
 						if(i<parsed.size())
 							bits[i]=parsed.get(i);
@@ -543,8 +543,8 @@ public class DefaultLawSet implements Law
 				if(key.startsWith("BANNED"))
 				{
 					bannedSubstances.add(CMParms.parse(words.substring(0,x)));
-					String[] bits=new String[Law.BIT_NUMBITS];
-					List<String> parsed=CMParms.parseSemicolons(words.substring(x+1),false);
+					final String[] bits=new String[Law.BIT_NUMBITS];
+					final List<String> parsed=CMParms.parseSemicolons(words.substring(x+1),false);
 					for(int i=0;i<Law.BIT_NUMBITS;i++)
 						if(i<parsed.size())
 							bits[i]=parsed.get(i);
@@ -565,8 +565,8 @@ public class DefaultLawSet implements Law
 	{
 		if(theLaws!=null)
 		{
-			ByteArrayOutputStream out=new ByteArrayOutputStream();
-			try{ theLaws.store(out,"");}catch(IOException e){}
+			final ByteArrayOutputStream out=new ByteArrayOutputStream();
+			try{ theLaws.store(out,"");}catch(final IOException e){}
 			String s=CMStrings.replaceAll(out.toString(),"\n\r","~");
 			s=CMStrings.replaceAll(s,"\r\n","~");
 			s=CMStrings.replaceAll(s,"\n","~");
@@ -579,8 +579,8 @@ public class DefaultLawSet implements Law
 
 	private String[] getInternalBits(String bitStr)
 	{
-		String[] bits=new String[Law.BIT_NUMBITS];
-		List<String> parsed=CMParms.parseSemicolons(bitStr,false);
+		final String[] bits=new String[Law.BIT_NUMBITS];
+		final List<String> parsed=CMParms.parseSemicolons(bitStr,false);
 		for(int i=0;i<Law.BIT_NUMBITS;i++)
 			if(i<parsed.size())
 				bits[i]=parsed.get(i);
@@ -597,7 +597,7 @@ public class DefaultLawSet implements Law
 		LegalWarrant W=null;
 		for(int i=0;i<warrants.size();i++)
 		{
-			LegalWarrant W2=warrants.elementAt(i);
+			final LegalWarrant W2=warrants.elementAt(i);
 			if((W2.criminal()==criminal)
 			&&(W2.crime().equals(crime))
 			&&(legalDetails.isStillACrime(W2,debugging)))
@@ -613,11 +613,11 @@ public class DefaultLawSet implements Law
 	@Override
 	public LegalWarrant getCopkiller(Area A, LegalBehavior behav, MOB mob)
 	{
-		String[] copKillerInfo=basicCrimes().get("MURDER");
+		final String[] copKillerInfo=basicCrimes().get("MURDER");
 		if(copKillerInfo!=null)
 		for(int i=0;i<warrants.size();i++)
 		{
-			LegalWarrant W=warrants.elementAt(i);
+			final LegalWarrant W=warrants.elementAt(i);
 			if((W.criminal()==mob)
 			&&(W.crime().equals(copKillerInfo[Law.BIT_CRIMENAME]))
 			&&(W.victim()!=null)
@@ -632,11 +632,11 @@ public class DefaultLawSet implements Law
 	@Override
 	public LegalWarrant getLawResister(Area A, LegalBehavior behav, MOB mob)
 	{
-		String[] lawResistInfo=basicCrimes().get("RESISTINGARREST");
+		final String[] lawResistInfo=basicCrimes().get("RESISTINGARREST");
 		if(lawResistInfo!=null)
 		for(int i=0;i<warrants.size();i++)
 		{
-			LegalWarrant W=warrants.elementAt(i);
+			final LegalWarrant W=warrants.elementAt(i);
 			if((W.criminal()==mob)
 			&&(W.crime().equals(lawResistInfo[Law.BIT_CRIMENAME]))
 			&&(W.victim()!=null)
@@ -654,7 +654,7 @@ public class DefaultLawSet implements Law
 		int one=0;
 		for(int i=0;i<warrants.size();i++)
 		{
-			LegalWarrant W=warrants.elementAt(i);
+			final LegalWarrant W=warrants.elementAt(i);
 			if(W.criminal()==mob)
 			{
 				if(which==one)
@@ -671,7 +671,7 @@ public class DefaultLawSet implements Law
 		LegalWarrant W=null;
 		for(int i=0;i<oldWarrants.size();i++)
 		{
-			LegalWarrant W2=oldWarrants.elementAt(i);
+			final LegalWarrant W2=oldWarrants.elementAt(i);
 			if((W2.criminal()==criminal)&&(W2.crime().equals(crime)))
 			{
 				W=W2;

@@ -59,7 +59,7 @@ public class Follower extends ActiveTicker
 		maxTicks=0;
 		chance=100;
 		super.setParms(newParms);
-		Vector<String> V=CMParms.parse(newParms.toUpperCase());
+		final Vector<String> V=CMParms.parse(newParms.toUpperCase());
 		realFollow=V.contains("GROUP");
 		inventory=V.contains("INVENTORY")||V.contains("INV");
 	}
@@ -75,7 +75,7 @@ public class Follower extends ActiveTicker
 	{
 		super.executeMsg(affecting,msg);
 
-		MOB mob=msg.source();
+		final MOB mob=msg.source();
 		if(mob.amDead()) return;
 		if(mob.location()==null) return;
 
@@ -94,7 +94,7 @@ public class Follower extends ActiveTicker
 			&&(CMLib.dice().rollPercentage()<chance))
 			{
 				String directionWent=msg.othersMessage();
-				int x=directionWent.lastIndexOf(' ');
+				final int x=directionWent.lastIndexOf(' ');
 				if(x>=0)
 				{
 					directionWent=directionWent.substring(x+1);
@@ -116,7 +116,7 @@ public class Follower extends ActiveTicker
 			lastRoom=room;
 			for(int i=0;i<room.numInhabitants();i++)
 			{
-				MOB M=room.fetchInhabitant(i);
+				final MOB M=room.fetchInhabitant(i);
 				if((M!=null)
 				&&(M!=ticking)
 				&&(!CMSecurity.isAllowed(M,room,CMSecurity.SecFlag.CMDMOBS))
@@ -152,7 +152,7 @@ public class Follower extends ActiveTicker
 		&&((lastOwner==null)
 		   ||((!inventory)&&(!CMLib.flags().isInTheGame(lastOwner,false)))))
 		{
-			Item I=(Item)ticking;
+			final Item I=(Item)ticking;
 			if((I.owner()!=null)
 			&&(I.owner() instanceof MOB)
 			&&(CMLib.masking().maskCheck(getParms(),I.owner(),false))
@@ -162,7 +162,7 @@ public class Follower extends ActiveTicker
 			else
 			if(!inventory)
 			{
-				MOB M=pickRandomMOBHere(I,CMLib.map().roomLocation(I));
+				final MOB M=pickRandomMOBHere(I,CMLib.map().roomLocation(I));
 				if(M!=null) lastOwner=M;
 			}
 		}
@@ -178,11 +178,11 @@ public class Follower extends ActiveTicker
 				return true;
 			if(realFollow)
 			{
-				MOB mob=(MOB)ticking;
-				Room room=mob.location();
+				final MOB mob=(MOB)ticking;
+				final Room room=mob.location();
 				if(mob.amFollowing()==null)
 				{
-					MOB M=pickRandomMOBHere(mob,room);
+					final MOB M=pickRandomMOBHere(mob,room);
 					if(M!=null)
 						CMLib.commands().postFollow(mob,M,false);
 				}
@@ -190,9 +190,9 @@ public class Follower extends ActiveTicker
 			else
 			if(direction>=0)
 			{
-				MOB mob=(MOB)ticking;
-				Room thisRoom=mob.location();
-				Room otherRoom=thisRoom.getRoomInDir(direction);
+				final MOB mob=(MOB)ticking;
+				final Room thisRoom=mob.location();
+				final Room otherRoom=thisRoom.getRoomInDir(direction);
 
 				if(otherRoom!=null)
 				{
@@ -208,7 +208,7 @@ public class Follower extends ActiveTicker
 				boolean move=true;
 				for(int m=0;m<thisRoom.numInhabitants();m++)
 				{
-					MOB inhab=thisRoom.fetchInhabitant(m);
+					final MOB inhab=thisRoom.fetchInhabitant(m);
 					if((inhab!=null)
 					&&(CMSecurity.isAllowed(inhab,thisRoom,CMSecurity.SecFlag.CMDMOBS)
 					   ||CMSecurity.isAllowed(inhab,thisRoom,CMSecurity.SecFlag.CMDROOMS)))
@@ -224,10 +224,10 @@ public class Follower extends ActiveTicker
 		&&(lastOwner!=null)
 		&&(lastOwner.location()!=null))
 		{
-			Item I=(Item)ticking;
+			final Item I=(Item)ticking;
 			if(I.container()!=null) I.setContainer(null);
 
-			Room R=CMLib.map().roomLocation(I);
+			final Room R=CMLib.map().roomLocation(I);
 			if(R==null)	return true;
 
 			if(R!=lastOwner.location())

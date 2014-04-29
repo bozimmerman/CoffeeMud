@@ -46,7 +46,7 @@ public class Spell_SummonMonster extends Spell
 	@Override
 	public void unInvoke()
 	{
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		super.unInvoke();
 		if((canBeUninvoked())&&(mob!=null))
 		{
@@ -75,17 +75,17 @@ public class Spell_SummonMonster extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
-		Room R=mob.location();
+		final Room R=mob.location();
 		if(success)
 		{
 			invoker=mob;
-			CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":"^S<S-NAME> summon(s) help from the Java Plane....^?");
+			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":"^S<S-NAME> summon(s) help from the Java Plane....^?");
 			if(R.okMessage(mob,msg))
 			{
 				R.send(mob,msg);
-				MOB monster = determineMonster(mob, mob.phyStats().level()+((getX1Level(mob)+getXLEVELLevel(mob))/2));
+				final MOB monster = determineMonster(mob, mob.phyStats().level()+((getX1Level(mob)+getXLEVELLevel(mob))/2));
 				if(monster!=null)
 					beneficialAffect(mob,monster,asLevel,0);
 			}
@@ -104,10 +104,10 @@ public class Spell_SummonMonster extends Spell
 
 	public MOB determineMonster(MOB caster, int level)
 	{
-		Room R=caster.location();
+		final Room R=caster.location();
 		if(R==null) return null;
 		MOB newMOB=null;
-		Vector choices=new Vector();
+		final Vector choices=new Vector();
 		MOB M=null;
 		int range=0;
 		int diff=2;
@@ -131,7 +131,7 @@ public class Spell_SummonMonster extends Spell
 		while((choices.size()==0)&&(range<100))
 		{
 			range+=diff;
-			for(Enumeration e=CMClass.mobTypes();e.hasMoreElements();)
+			for(final Enumeration e=CMClass.mobTypes();e.hasMoreElements();)
 			{
 				M=(MOB)((MOB)e.nextElement()).newInstance();
 				if((M.basePhyStats().level()<level-range)
@@ -140,7 +140,7 @@ public class Spell_SummonMonster extends Spell
 				||(!CMLib.flags().isEvil(M))
 				||(!M.baseCharStats().getMyRace().canBreedWith(M.baseCharStats().getMyRace()))
 				||CMLib.flags().isGolem(M)
-				){ M.destroy(); try{Thread.sleep(1);}catch(Exception e1){} continue;}
+				){ M.destroy(); try{Thread.sleep(1);}catch(final Exception e1){} continue;}
 				choices.addElement(M);
 			}
 		}
@@ -187,7 +187,7 @@ public class Spell_SummonMonster extends Spell
 		newMOB.bringToLife(R,true);
 		CMLib.beanCounter().clearZeroMoney(newMOB,null);
 		R.showOthers(newMOB,null,CMMsg.MSG_OK_ACTION,"<S-NAME> appears!");
-		MOB victim=caster.getVictim();
+		final MOB victim=caster.getVictim();
 		newMOB.setStartRoom(null); // keep before postFollow for Conquest
 		CMLib.commands().postFollow(newMOB,caster,true);
 		if(newMOB.amFollowing()!=caster)

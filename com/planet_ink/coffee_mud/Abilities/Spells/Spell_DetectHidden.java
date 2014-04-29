@@ -50,7 +50,7 @@ public class Spell_DetectHidden extends Spell
 	{
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		super.unInvoke();
 		if(canBeUninvoked())
@@ -78,12 +78,12 @@ public class Spell_DetectHidden extends Spell
 		{
 			if(target instanceof MOB)
 			{
-				Room R=((MOB)target).location();
+				final Room R=((MOB)target).location();
 				boolean found=false;
 				if(R!=null)
 					for(int r=0;r<R.numInhabitants();r++)
 					{
-						MOB M=R.fetchInhabitant(r);
+						final MOB M=R.fetchInhabitant(r);
 						if((M!=null)&&(M!=mob)&&(M!=target)&&(CMLib.flags().isHidden(M)))
 						{ found=true; break;}
 					}
@@ -108,11 +108,11 @@ public class Spell_DetectHidden extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> gain(s) keen vision!":"^S<S-NAME> incant(s) softly and gain(s) keen vision!^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> gain(s) keen vision!":"^S<S-NAME> incant(s) softly and gain(s) keen vision!^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

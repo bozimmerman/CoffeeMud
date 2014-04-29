@@ -65,8 +65,8 @@ public class GenFatWallpaper extends GenWallpaper
 	@Override
 	public String[] getStatCodes()
 	{
-		String[] THINCODES=super.getStatCodes();
-		String[] codes=new String[THINCODES.length+1];
+		final String[] THINCODES=super.getStatCodes();
+		final String[] codes=new String[THINCODES.length+1];
 		for(int c=0;c<THINCODES.length;c++)
 			codes[c]=THINCODES[c];
 		codes[THINCODES.length]="DISPLAY";

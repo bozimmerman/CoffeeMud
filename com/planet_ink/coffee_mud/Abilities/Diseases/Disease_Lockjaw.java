@@ -57,7 +57,7 @@ public class Disease_Lockjaw extends Disease
 		if(affected==null) return false;
 		if(!(affected instanceof MOB)) return true;
 
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		if((!mob.amDead())&&((--diseaseTick)<=0))
 		{
 			diseaseTick=DISEASE_DELAY();
@@ -76,7 +76,7 @@ public class Disease_Lockjaw extends Disease
 		if(!(affected instanceof MOB))
 			return super.okMessage(myHost,msg);
 
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		// when this spell is on a MOBs Affected list,
 		// it should consistantly prevent the mob

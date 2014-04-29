@@ -52,18 +52,18 @@ public class Prayer_Heresy extends Prayer
 		LegalBehavior B=null;
 		if(mob.location()!=null) B=CMLib.law().getLegalBehavior(mob.location());
 
-		MOB target=getTarget(mob,commands,givenTarget);
+		final MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
-		MOB oldVictim=mob.getVictim();
+		final MOB oldVictim=mob.getVictim();
 		if((success)&&(B!=null))
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> accuse(s) <T-NAMESELF> of heresy"+againstTheGods(mob)+"!^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> accuse(s) <T-NAMESELF> of heresy"+againstTheGods(mob)+"!^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -75,7 +75,7 @@ public class Prayer_Heresy extends Prayer
 					String desc=null;
 					if(D==null)
 					{
-						Enumeration deities = CMLib.map().deities();
+						final Enumeration deities = CMLib.map().deities();
 						if(deities.hasMoreElements())
 							D=(MOB)deities.nextElement();
 					}
@@ -86,14 +86,14 @@ public class Prayer_Heresy extends Prayer
 					}
 					else
 						desc="Angering "+D.name()+" will bring doom upon us all!";
-					String crimeLocs="";
-					String crimeFlags="!witness";
-					int low=CMLib.ableMapper().lowestQualifyingLevel(ID());
-					int me=CMLib.ableMapper().qualifyingClassLevel(mob,this);
+					final String crimeLocs="";
+					final String crimeFlags="!witness";
+					final int low=CMLib.ableMapper().lowestQualifyingLevel(ID());
+					final int me=CMLib.ableMapper().qualifyingClassLevel(mob,this);
 					int lvl=(me-low)/5;
 					if(lvl<0) lvl=0;
 					if(lvl>Law.PUNISHMENT_HIGHEST) lvl=Law.PUNISHMENT_HIGHEST;
-					String sentence=Law.PUNISHMENT_DESCS[lvl];
+					final String sentence=Law.PUNISHMENT_DESCS[lvl];
 					B.addWarrant(CMLib.law().getLegalObject(mob.location()),target,D,crimeLocs,crimeFlags,crime,sentence,desc);
 				}
 			}

@@ -71,7 +71,7 @@ public class Weaponsmithing extends EnhancedCraftingSkill implements ItemCraftor
 	{
 		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Tickable.TICKID_MOB))
 		{
-			MOB mob=(MOB)affected;
+			final MOB mob=(MOB)affected;
 			if((buildingI==null)
 			||(getRequiredFire(mob,0)==null))
 			{
@@ -99,7 +99,7 @@ public class Weaponsmithing extends EnhancedCraftingSkill implements ItemCraftor
 		{
 			if((affected!=null)&&(affected instanceof MOB))
 			{
-				MOB mob=(MOB)affected;
+				final MOB mob=(MOB)affected;
 				if((buildingI!=null)&&(!aborted))
 				{
 					if(messedUp)
@@ -206,7 +206,7 @@ public class Weaponsmithing extends EnhancedCraftingSkill implements ItemCraftor
 			return (isANativeItem(I.Name()));
 		if(!(I instanceof Weapon))
 			return false;
-		Weapon W=(Weapon)I;
+		final Weapon W=(Weapon)I;
 		if((W instanceof AmmunitionWeapon)&&((AmmunitionWeapon)W).requiresAmmunition())
 			return false;
 		return true;
@@ -241,10 +241,10 @@ public class Weaponsmithing extends EnhancedCraftingSkill implements ItemCraftor
 			return true;
 		fireRequired=true;
 
-		CraftParms parsedVars=super.parseAutoGenerate(auto,givenTarget,commands);
+		final CraftParms parsedVars=super.parseAutoGenerate(auto,givenTarget,commands);
 		givenTarget=parsedVars.givenTarget;
 
-		PairVector<Integer,Integer> enhancedTypes=enhancedTypes(mob,commands);
+		final PairVector<Integer,Integer> enhancedTypes=enhancedTypes(mob,commands);
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,parsedVars.autoGenerate);
 		if(commands.size()==0)
 		{
@@ -260,8 +260,8 @@ public class Weaponsmithing extends EnhancedCraftingSkill implements ItemCraftor
 				return super.bundle(mob,commands);
 			return false;
 		}
-		List<List<String>> recipes=addRecipes(mob,loadRecipes());
-		String str=(String)commands.elementAt(0);
+		final List<List<String>> recipes=addRecipes(mob,loadRecipes());
+		final String str=(String)commands.elementAt(0);
 		bundling=false;
 		String startStr=null;
 		int duration=4;
@@ -274,21 +274,21 @@ public class Weaponsmithing extends EnhancedCraftingSkill implements ItemCraftor
 				allFlag=true;
 				mask="";
 			}
-			StringBuffer buf=new StringBuffer("Weapons <S-NAME> <S-IS-ARE> skilled at making:\n\r");
+			final StringBuffer buf=new StringBuffer("Weapons <S-NAME> <S-IS-ARE> skilled at making:\n\r");
 			int toggler=1;
-			int toggleTop=displayColumns();
-			int itemWidth=ListingLibrary.ColFixer.fixColWidth((78/toggleTop)-9,mob.session());
+			final int toggleTop=displayColumns();
+			final int itemWidth=ListingLibrary.ColFixer.fixColWidth((78/toggleTop)-9,mob.session());
 			for(int r=0;r<toggleTop;r++)
 				buf.append(CMStrings.padRight("Item",itemWidth)+" Lvl "+CMStrings.padRight("Amt",3)+((r<(toggleTop-1)?" ":"")));
 			buf.append("\n\r");
 			for(int r=0;r<recipes.size();r++)
 			{
-				List<String> V=recipes.get(r);
+				final List<String> V=recipes.get(r);
 				if(V.size()>0)
 				{
-					String item=replacePercent(V.get(RCP_FINALNAME),"");
-					int level=CMath.s_int(V.get(RCP_LEVEL));
-					String wood=getComponentDescription(mob,V,RCP_WOOD);
+					final String item=replacePercent(V.get(RCP_FINALNAME),"");
+					final int level=CMath.s_int(V.get(RCP_LEVEL));
+					final String wood=getComponentDescription(mob,V,RCP_WOOD);
 					if(wood.length()>5)
 					{
 						if(toggler>1) buf.append("\n\r");
@@ -319,12 +319,12 @@ public class Weaponsmithing extends EnhancedCraftingSkill implements ItemCraftor
 		else
 		if(str.equalsIgnoreCase("mend"))
 		{
-			Item fire=getRequiredFire(mob,parsedVars.autoGenerate);
+			final Item fire=getRequiredFire(mob,parsedVars.autoGenerate);
 			if(fire==null) return false;
 			buildingI=null;
 			activity = CraftingActivity.CRAFTING;
 			messedUp=false;
-			Vector newCommands=CMParms.parse(CMParms.combine(commands,1));
+			final Vector newCommands=CMParms.parse(CMParms.combine(commands,1));
 			buildingI=getTarget(mob,mob.location(),givenTarget,newCommands,Wearable.FILTER_UNWORNONLY);
 			if(!canMend(mob,buildingI,false)) return false;
 			activity = CraftingActivity.MENDING;
@@ -337,7 +337,7 @@ public class Weaponsmithing extends EnhancedCraftingSkill implements ItemCraftor
 		else
 		{
 			activity = CraftingActivity.CRAFTING;
-			Item fire=getRequiredFire(mob,parsedVars.autoGenerate);
+			final Item fire=getRequiredFire(mob,parsedVars.autoGenerate);
 			if(fire==null) return false;
 			buildingI=null;
 			messedUp=false;
@@ -348,15 +348,15 @@ public class Weaponsmithing extends EnhancedCraftingSkill implements ItemCraftor
 				amount=CMath.s_int((String)commands.lastElement());
 				commands.removeElementAt(commands.size()-1);
 			}
-			String recipeName=CMParms.combine(commands,0);
+			final String recipeName=CMParms.combine(commands,0);
 			List<String> foundRecipe=null;
-			List<List<String>> matches=matchingRecipeNames(recipes,recipeName,true);
+			final List<List<String>> matches=matchingRecipeNames(recipes,recipeName,true);
 			for(int r=0;r<matches.size();r++)
 			{
-				List<String> V=matches.get(r);
+				final List<String> V=matches.get(r);
 				if(V.size()>0)
 				{
-					int level=CMath.s_int(V.get(RCP_LEVEL));
+					final int level=CMath.s_int(V.get(RCP_LEVEL));
 					if((parsedVars.autoGenerate>0)||((level<=mob.phyStats().level())
 										&&(canDo(V.get(RCP_WEAPONCLASS),mob))))
 					{
@@ -378,11 +378,11 @@ public class Weaponsmithing extends EnhancedCraftingSkill implements ItemCraftor
 			woodRequired=adjustWoodRequired(woodRequired,mob);
 
 			if(amount>woodRequired) woodRequired=amount;
-			String otherRequired=foundRecipe.get(RCP_EXTRAREQ);
-			int[] pm={RawMaterial.MATERIAL_METAL,RawMaterial.MATERIAL_MITHRIL};
-			String spell=(foundRecipe.size()>RCP_SPELL)?foundRecipe.get(RCP_SPELL).trim():"";
+			final String otherRequired=foundRecipe.get(RCP_EXTRAREQ);
+			final int[] pm={RawMaterial.MATERIAL_METAL,RawMaterial.MATERIAL_MITHRIL};
+			final String spell=(foundRecipe.size()>RCP_SPELL)?foundRecipe.get(RCP_SPELL).trim():"";
 			bundling=spell.equalsIgnoreCase("BUNDLE");
-			int[][] data=fetchFoundResourceData(mob,
+			final int[][] data=fetchFoundResourceData(mob,
 												woodRequired,"metal",pm,
 												otherRequired.length()>0?1:0,otherRequired,null,
 												false,
@@ -394,7 +394,7 @@ public class Weaponsmithing extends EnhancedCraftingSkill implements ItemCraftor
 
 			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 				return false;
-			int lostValue=parsedVars.autoGenerate>0?0:
+			final int lostValue=parsedVars.autoGenerate>0?0:
 				CMLib.materials().destroyResourcesValue(mob.location(),woodRequired,data[0][FOUND_CODE],data[1][FOUND_CODE],null)
 				+CMLib.ableMapper().destroyAbilityComponents(componentsFoundList);
 			buildingI=CMClass.getItem(foundRecipe.get(RCP_CLASSTYPE));
@@ -411,7 +411,7 @@ public class Weaponsmithing extends EnhancedCraftingSkill implements ItemCraftor
 			displayText="You are smithing "+buildingI.name();
 			verb="smithing "+buildingI.name();
 			playSound="tinktinktink2.wav";
-			int hardness=RawMaterial.CODES.HARDNESS(data[0][FOUND_CODE])-6;
+			final int hardness=RawMaterial.CODES.HARDNESS(data[0][FOUND_CODE])-6;
 			buildingI.setDisplayText(itemName+" lies here");
 			buildingI.setDescription(itemName+". ");
 			buildingI.basePhyStats().setWeight(getStandardWeight(woodRequired,bundling));
@@ -423,7 +423,7 @@ public class Weaponsmithing extends EnhancedCraftingSkill implements ItemCraftor
 			addSpells(buildingI,spell);
 			if(buildingI instanceof Weapon)
 			{
-				Weapon w=(Weapon)buildingI;
+				final Weapon w=(Weapon)buildingI;
 				w.setWeaponClassification(specClass(foundRecipe.get(RCP_WEAPONCLASS)));
 				w.setWeaponType(specType(foundRecipe.get(RCP_WEAPONTYPE)));
 				w.setRanges(w.minRange(),CMath.s_int(foundRecipe.get(RCP_MAXRANGE)));
@@ -455,7 +455,7 @@ public class Weaponsmithing extends EnhancedCraftingSkill implements ItemCraftor
 			return true;
 		}
 
-		CMMsg msg=CMClass.getMsg(mob,buildingI,this,getActivityMessageType(),startStr);
+		final CMMsg msg=CMClass.getMsg(mob,buildingI,this,getActivityMessageType(),startStr);
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

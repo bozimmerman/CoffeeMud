@@ -60,12 +60,12 @@ public class GatheringSkill extends CommonSkill
 		if(supportedResources.containsKey(ID()))
 			return supportedResources.get(ID());
 		String mask=supportedResourceString();
-		List<Integer> maskV=new Vector();
+		final List<Integer> maskV=new Vector();
 		String str=mask;
 		while(mask.length()>0)
 		{
 			str=mask;
-			int x=mask.indexOf('|');
+			final int x=mask.indexOf('|');
 			if(x>=0)
 			{
 				str=mask.substring(0,x);
@@ -78,7 +78,7 @@ public class GatheringSkill extends CommonSkill
 				boolean found=false;
 				if(str.startsWith("_"))
 				{
-					int rsc=RawMaterial.CODES.FIND_IgnoreCase(str.substring(1));
+					final int rsc=RawMaterial.CODES.FIND_IgnoreCase(str.substring(1));
 					if(rsc>=0)
 					{
 						maskV.add(Integer.valueOf(rsc));
@@ -87,23 +87,23 @@ public class GatheringSkill extends CommonSkill
 				}
 				if(!found)
 				{
-					List<Integer> notResources=new ArrayList<Integer>();
-					int y=str.indexOf('-');
+					final List<Integer> notResources=new ArrayList<Integer>();
+					final int y=str.indexOf('-');
 					if(y>0)
 					{
-						List<String> restV=CMParms.parseAny(str.substring(y+1),"-",true);
+						final List<String> restV=CMParms.parseAny(str.substring(y+1),"-",true);
 						str=str.substring(0,y);
-						for(String sv : restV)
+						for(final String sv : restV)
 						{
-							 int code=RawMaterial.CODES.FIND_CaseSensitive(sv);
+							 final int code=RawMaterial.CODES.FIND_CaseSensitive(sv);
 							 if(code >= 0)
 								 notResources.add(Integer.valueOf(code));
 						}
 					}
-					RawMaterial.Material m=RawMaterial.Material.findIgnoreCase(str);
+					final RawMaterial.Material m=RawMaterial.Material.findIgnoreCase(str);
 					if(m!=null)
 					{
-						List<Integer> rscs=new XVector<Integer>(RawMaterial.CODES.COMPOSE_RESOURCES(m.mask()));
+						final List<Integer> rscs=new XVector<Integer>(RawMaterial.CODES.COMPOSE_RESOURCES(m.mask()));
 						maskV.addAll(rscs);
 						maskV.removeAll(notResources);
 						found=rscs.size()>0;
@@ -111,7 +111,7 @@ public class GatheringSkill extends CommonSkill
 				}
 				if(!found)
 				{
-					int rsc=RawMaterial.CODES.FIND_IgnoreCase(str);
+					final int rsc=RawMaterial.CODES.FIND_IgnoreCase(str);
 					if(rsc>=0)
 						maskV.add(Integer.valueOf(rsc));
 				}
@@ -137,18 +137,18 @@ public class GatheringSkill extends CommonSkill
 			return false;
 		}
 		int numHere=0;
-		Room R=mob.location();
+		final Room R=mob.location();
 		if(R==null) return false;
-		String name=CMParms.combine(what,2);
+		final String name=CMParms.combine(what,2);
 		int foundResource=-1;
 		Item foundAnyway=null;
-		List<Integer> maskV=myResources();
-		Hashtable foundAblesH=new Hashtable();
+		final List<Integer> maskV=myResources();
+		final Hashtable foundAblesH=new Hashtable();
 		Ability A=null;
 		long lowestNonZeroFoodNumber=Long.MAX_VALUE;
 		for(int i=0;i<R.numItems();i++)
 		{
-			Item I=R.getItem(i);
+			final Item I=R.getItem(i);
 			if(CMLib.english().containsString(I.Name(),name))
 			{
 				if(foundAnyway==null) foundAnyway=I;
@@ -192,7 +192,7 @@ public class GatheringSkill extends CommonSkill
 		}
 		if(lowestNonZeroFoodNumber==Long.MAX_VALUE)
 			lowestNonZeroFoodNumber=0;
-		Item I=(Item)CMLib.materials().makeResource(foundResource,Integer.toString(mob.location().domainType()),true,null);
+		final Item I=(Item)CMLib.materials().makeResource(foundResource,Integer.toString(mob.location().domainType()),true,null);
 		if(I==null)
 		{
 			commonTell(mob,"You could not bundle "+name+" due to "+foundResource+" being an invalid resource code.  Bug it!");
@@ -203,7 +203,7 @@ public class GatheringSkill extends CommonSkill
 		I.basePhyStats().setWeight(amount);
 		if(R.show(mob,null,I,getActivityMessageType(),"<S-NAME> create(s) <O-NAME>."))
 		{
-			int lostValue=CMLib.materials().destroyResourcesValue(R,amount,foundResource,-1,I);
+			final int lostValue=CMLib.materials().destroyResourcesValue(R,amount,foundResource,-1,I);
 			I.setBaseValue(lostValue);
 			if(I instanceof Food)
 				((Food)I).setNourishment(((Food)I).nourishment()*amount);
@@ -214,7 +214,7 @@ public class GatheringSkill extends CommonSkill
 		}
 		if(I instanceof Decayable)
 			((Decayable)I).setDecayTime(lowestNonZeroFoodNumber);
-		for(Enumeration e=foundAblesH.keys();e.hasMoreElements();)
+		for(final Enumeration e=foundAblesH.keys();e.hasMoreElements();)
 			I.addNonUninvokableEffect((Ability)((Environmental)foundAblesH.get(e.nextElement())).copyOf());
 		R.recoverRoomStats();
 		return true;

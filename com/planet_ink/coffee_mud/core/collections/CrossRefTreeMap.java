@@ -123,7 +123,7 @@ public class CrossRefTreeMap<T, K>
 		final TreeSet<K> tKs=map1.get(t);
 		if(tKs!=null)
 		{
-			for(K k : tKs)
+			for(final K k : tKs)
 			{
 				final TreeSet<T> kTs=map2.get(k);
 				if(kTs!=null)
@@ -146,7 +146,7 @@ public class CrossRefTreeMap<T, K>
 		final TreeSet<T> kTs=map2.get(k);
 		if(kTs!=null)
 		{
-			for(T t : kTs)
+			for(final T t : kTs)
 			{
 				final TreeSet<K> tKs=map1.get(t);
 				if(tKs!=null)

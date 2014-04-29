@@ -78,7 +78,7 @@ public class TellPacket extends Packet {
 			sender_visible_name = (String)v.elementAt(6);
 			message = (String)v.elementAt(7);
 		}
-		catch( ClassCastException e )
+		catch( final ClassCastException e )
 		{
 			throw new InvalidPacketException();
 		}

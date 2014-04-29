@@ -48,7 +48,7 @@ public class Chant_TremorSense extends Chant
 	@Override
 	public CMObject copyOf()
 	{
-		Chant_TremorSense obj=(Chant_TremorSense)super.copyOf();
+		final Chant_TremorSense obj=(Chant_TremorSense)super.copyOf();
 		obj.rooms=new Vector<Room>();
 		obj.rooms.addAll(rooms);
 		return obj;
@@ -63,7 +63,7 @@ public class Chant_TremorSense extends Chant
 			super.unInvoke();
 			return;
 		}
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		super.unInvoke();
 
@@ -72,8 +72,8 @@ public class Chant_TremorSense extends Chant
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-YOUPOSS> tremor sense fades.");
 		for(int r=0;r<rooms.size();r++)
 		{
-			Room R=rooms.elementAt(r);
-			Ability A=R.fetchEffect(ID());
+			final Room R=rooms.elementAt(r);
+			final Ability A=R.fetchEffect(ID());
 			if((A!=null)&&(A.invoker()==mob))
 				A.unInvoke();
 		}
@@ -104,7 +104,7 @@ public class Chant_TremorSense extends Chant
 					invoker.tell("You feel footsteps around you.");
 				else
 				{
-					int dir=CMLib.tracking().radiatesFromDir((Room)affected,rooms);
+					final int dir=CMLib.tracking().radiatesFromDir((Room)affected,rooms);
 					if(dir>=0)
 						invoker.tell("You feel footsteps "+Directions.getInDirectionName(dir));
 				}
@@ -118,7 +118,7 @@ public class Chant_TremorSense extends Chant
 					invoker.tell("You feel a ferocious rumble.");
 				else
 				{
-					int dir=CMLib.tracking().radiatesFromDir((Room)affected,rooms);
+					final int dir=CMLib.tracking().radiatesFromDir((Room)affected,rooms);
 					if(dir>=0)
 						invoker.tell("You feel a ferocious rumble "+Directions.getInDirectionName(dir));
 				}
@@ -148,7 +148,7 @@ public class Chant_TremorSense extends Chant
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
@@ -156,7 +156,7 @@ public class Chant_TremorSense extends Chant
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),(auto?"":"^S<S-NAME> chant(s) to <S-HIM-HERSELF>.  ")+"<T-NAME> gain(s) a sense of the earth!^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),(auto?"":"^S<S-NAME> chant(s) to <S-HIM-HERSELF>.  ")+"<T-NAME> gain(s) a sense of the earth!^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -169,7 +169,7 @@ public class Chant_TremorSense extends Chant
 				CMLib.tracking().getRadiantRooms(mob.location(),rooms,flags,null,5,null);
 				for(int r=0;r<rooms.size();r++)
 				{
-					Room R=rooms.elementAt(r);
+					final Room R=rooms.elementAt(r);
 					if((R!=mob.location())
 					&&(R.domainType()!=Room.DOMAIN_INDOORS_AIR)
 					&&(R.domainType()!=Room.DOMAIN_INDOORS_UNDERWATER)

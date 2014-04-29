@@ -92,7 +92,7 @@ public class Thief_Flay extends ThiefSkill
 			mob.tell("Not while in combat!");
 			return false;
 		}
-		MOB target=getTarget(mob,commands,givenTarget);
+		final MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
 		if(CMLib.flags().isSitting(mob))
@@ -109,7 +109,7 @@ public class Thief_Flay extends ThiefSkill
 		}
 		for(int i=0;i<target.numItems();i++)
 		{
-			Item I=target.getItem(i);
+			final Item I=target.getItem(i);
 			if((I!=null)&&((I.amWearingAt(Wearable.WORN_BACK))||(I.amWearingAt(Wearable.WORN_TORSO))))
 			{
 				mob.tell(target.name(mob)+" must be remove items worn on the torso or back first.");
@@ -117,7 +117,7 @@ public class Thief_Flay extends ThiefSkill
 			}
 		}
 
-		Item w=mob.fetchWieldedItem();
+		final Item w=mob.fetchWieldedItem();
 		Weapon ww=null;
 		if(!auto)
 		{
@@ -147,9 +147,9 @@ public class Thief_Flay extends ThiefSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
-		CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MALICIOUS|CMMsg.MSG_THIEF_ACT,"<S-NAME> flay(s) the bare back of <T-NAMESELF>!");
-		boolean makePeace = CMLib.flags().isBound(target) && (mob.getVictim() == null) && (target.getVictim() == null);
+		final boolean success=proficiencyCheck(mob,0,auto);
+		final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MALICIOUS|CMMsg.MSG_THIEF_ACT,"<S-NAME> flay(s) the bare back of <T-NAMESELF>!");
+		final boolean makePeace = CMLib.flags().isBound(target) && (mob.getVictim() == null) && (target.getVictim() == null);
 
 		if(success)
 		{
@@ -159,7 +159,7 @@ public class Thief_Flay extends ThiefSkill
 				maliciousAffect(mob,target,asLevel,0,-1);
 				if(target.fetchEffect(ID())!=null)
 				{
-					Ability A=CMClass.getAbility("Bleeding");
+					final Ability A=CMClass.getAbility("Bleeding");
 					if(A!=null) A.invoke(mob,target,true,asLevel);
 					if(makePeace)
 					{

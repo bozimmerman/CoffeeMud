@@ -45,21 +45,21 @@ public class Spell_AnalyzeDweomer extends Spell
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		Item target=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_ANY);
+		final Item target=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_ANY);
 		if(target==null) return false;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> analyze(s) the nature of <T-NAMESELF> carefully.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> analyze(s) the nature of <T-NAMESELF> carefully.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				StringBuffer str=new StringBuffer("");
+				final StringBuffer str=new StringBuffer("");
 				if(target instanceof Armor)
 				{
 					str.append("It is a kind of armor.  ");
@@ -67,8 +67,8 @@ public class Spell_AnalyzeDweomer extends Spell
 						str.append("It is worn on any one of the following: ");
 					else
 						str.append("It is worn on all of the following: ");
-					Wearable.CODES codes = Wearable.CODES.instance();
-					for(long wornCode : codes.all())
+					final Wearable.CODES codes = Wearable.CODES.instance();
+					for(final long wornCode : codes.all())
 						if(wornCode!=Wearable.IN_INVENTORY)
 						{
 							if((codes.name(wornCode).length()>0)
@@ -114,7 +114,7 @@ public class Spell_AnalyzeDweomer extends Spell
 					str.append("It is a corpse of a "+((DeadBody)target).charStats().getMyRace().name()+".  ");
 				if(target instanceof Weapon)
 				{
-					Weapon w=(Weapon)target;
+					final Weapon w=(Weapon)target;
 					str.append("It is a "+Weapon.CLASS_DESCS[w.weaponClassification()].toLowerCase()+" weapon.  ");
 					str.append("It does "+Weapon.TYPE_DESCS[w.weaponType()].toLowerCase()+" damage.  ");
 					if(w.minRange()>0)
@@ -123,14 +123,14 @@ public class Spell_AnalyzeDweomer extends Spell
 						str.append("It has a maximum range of "+w.maxRange()+".  ");
 				}
 				str.append("It is made of "+RawMaterial.CODES.NAME(target.material()).toLowerCase()+".  ");
-				Command C=CMClass.getCommand("Affect");
+				final Command C=CMClass.getCommand("Affect");
 				try
 				{
-					String affectStr=C.executeInternal(mob,0,target).toString();
+					final String affectStr=C.executeInternal(mob,0,target).toString();
 					if(affectStr.length()<5)
 						str.append("It is affected by: "+affectStr);
 				}
-				catch(Exception e){}
+				catch(final Exception e){}
 				if(mob.isMonster())
 					CMLib.commands().postSay(mob,null,str.toString().trim(),false,false);
 				else

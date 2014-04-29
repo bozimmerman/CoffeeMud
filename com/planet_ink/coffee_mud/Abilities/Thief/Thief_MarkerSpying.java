@@ -54,7 +54,7 @@ public class Thief_MarkerSpying extends ThiefSkill
 	{
 		if(mob!=null)
 		{
-			Thief_Mark A=(Thief_Mark)mob.fetchEffect("Thief_Mark");
+			final Thief_Mark A=(Thief_Mark)mob.fetchEffect("Thief_Mark");
 			if(A!=null)
 				return A.mark;
 		}
@@ -66,10 +66,10 @@ public class Thief_MarkerSpying extends ThiefSkill
 	{
 		if(super.canBeUninvoked())
 		{
-			MOB mark=getMark(invoker());
+			final MOB mark=getMark(invoker());
 			if(mark!=affected)
 			{
-				MOB invoker=invoker();
+				final MOB invoker=invoker();
 				unInvoke();
 				if((mark!=null)&&(mark.fetchEffect(ID())==null)&&(invoker!=null))
 					beneficialAffect(invoker,mark,0,Ability.TICKS_FOREVER);
@@ -89,7 +89,7 @@ public class Thief_MarkerSpying extends ThiefSkill
 		&&(CMLib.flags().isInTheGame(invoker(),true))
 		&&(getMark(invoker())==msg.source()))
 		{
-			CMMsg msg2=(CMMsg)msg.copyOf();
+			final CMMsg msg2=(CMMsg)msg.copyOf();
 			msg2.modify(invoker(),msg.target(),msg.tool(),msg.sourceCode(),msg.sourceMessage(),msg.targetCode(),msg.targetMessage(),CMMsg.NO_EFFECT,null);
 			invoker().tell("You remember something else from "+msg.source().Name()+"'s papers:");
 			msg.target().executeMsg(invoker(),msg2);
@@ -110,13 +110,13 @@ public class Thief_MarkerSpying extends ThiefSkill
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		MOB target=getMark(mob);
+		final MOB target=getMark(mob);
 		if(target==null)
 		{
 			mob.tell("You'll need to mark someone first.");
 			return false;
 		}
-		Ability A=target.fetchEffect(ID());
+		final Ability A=target.fetchEffect(ID());
 		if(A!=null)
 		{
 			if(A.invoker()==mob)
@@ -130,16 +130,16 @@ public class Thief_MarkerSpying extends ThiefSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 		if(!success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,null,CMMsg.MSG_OK_VISUAL,auto?"":"Your attempt to spy on <T-NAMESELF> fails; <T-NAME> spots you!",CMMsg.MSG_OK_VISUAL,auto?"":"You spot <S-NAME> trying to spy on you.",CMMsg.NO_EFFECT,null);
+			final CMMsg msg=CMClass.getMsg(mob,target,null,CMMsg.MSG_OK_VISUAL,auto?"":"Your attempt to spy on <T-NAMESELF> fails; <T-NAME> spots you!",CMMsg.MSG_OK_VISUAL,auto?"":"You spot <S-NAME> trying to spy on you.",CMMsg.NO_EFFECT,null);
 			if(mob.location().okMessage(mob,msg))
 				mob.location().send(mob,msg);
 		}
 		else
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,auto?CMMsg.MSG_OK_VISUAL:CMMsg.MSG_THIEF_ACT,"You are now spying on <T-NAME>.  Enter 'spy <targetname>' again to disengage.",CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);
+			final CMMsg msg=CMClass.getMsg(mob,target,this,auto?CMMsg.MSG_OK_VISUAL:CMMsg.MSG_THIEF_ACT,"You are now spying on <T-NAME>.  Enter 'spy <targetname>' again to disengage.",CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

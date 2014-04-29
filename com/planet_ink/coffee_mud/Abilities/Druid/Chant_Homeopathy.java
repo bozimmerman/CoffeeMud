@@ -48,26 +48,26 @@ public class Chant_Homeopathy extends Chant
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		MOB target=getTarget(mob,commands,givenTarget);
+		final MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"Something is happening to <T-NAME>!":"^S<S-NAME> chant(s) homeopathically to <T-NAME>^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"Something is happening to <T-NAME>!":"^S<S-NAME> chant(s) homeopathically to <T-NAME>^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				Ability D=null;
 				for(int t=0;t<target.numEffects();t++) // personal effects
 				{
-					Ability A=target.fetchEffect(t);
+					final Ability A=target.fetchEffect(t);
 					if((A!=null)&&(A instanceof DiseaseAffect))
 						D=A;
 				}
-				int roll=CMLib.dice().rollPercentage();
+				final int roll=CMLib.dice().rollPercentage();
 				if((roll>66)||(D==null))
 					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-YOUPOSS> condition is unchanged.");
 				else

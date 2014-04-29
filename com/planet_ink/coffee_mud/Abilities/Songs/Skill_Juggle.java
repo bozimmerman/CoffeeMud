@@ -74,15 +74,15 @@ public class Skill_Juggle extends BardSkill
 	{
 		if(juggles.size()>0)
 		{
-			StringBuffer str=new StringBuffer("(Juggling: ");
-			SVector<Item> V=juggles.copyOf();
+			final StringBuffer str=new StringBuffer("(Juggling: ");
+			final SVector<Item> V=juggles.copyOf();
 			for(int i=0;i<V.size();i++)
 			{
-				Item I=V.elementAt(i);
+				final Item I=V.elementAt(i);
 				boolean back=false;
 				for(int ii=0;ii<i;ii++)
 				{
-					Item I2=V.elementAt(ii);
+					final Item I2=V.elementAt(ii);
 					if(I2.name().equals(I.name()))
 					{ back=true; break;}
 				}
@@ -90,7 +90,7 @@ public class Skill_Juggle extends BardSkill
 				boolean morethanone=false;
 				for(int ii=i+1;ii<V.size();ii++)
 				{
-					Item I2=V.elementAt(ii);
+					final Item I2=V.elementAt(ii);
 					if(I2.name().equals(I.name()))
 					{ morethanone=true; break;}
 				}
@@ -122,7 +122,7 @@ public class Skill_Juggle extends BardSkill
 	protected void unJuggle(Item I)
 	{
 		if(I==null) return;
-		Ability A=I.fetchEffect("Spell_Fly");
+		final Ability A=I.fetchEffect("Spell_Fly");
 		if(A!=null) A.unInvoke();
 		juggles.removeElement(I);
 	}
@@ -133,7 +133,7 @@ public class Skill_Juggle extends BardSkill
 		if(juggles.contains(I)) return;
 		if(I.fetchEffect("Spell_Fly")==null)
 		{
-			Ability A=CMClass.getAbility("Spell_Fly");
+			final Ability A=CMClass.getAbility("Spell_Fly");
 			if(A!=null)
 			{
 				I.addEffect(A);
@@ -150,13 +150,13 @@ public class Skill_Juggle extends BardSkill
 		boolean anythingToDo=false;
 		if(!(affected instanceof MOB))
 			return;
-		MOB M=(MOB)affected;
-		Room R=M.location();
+		final MOB M=(MOB)affected;
+		final Room R=M.location();
 		if(R==null) return;
 		for(int i=0;i<juggles.size();i++)
 		{
 			Item I=null;
-			try{I=juggles.elementAt(i);}catch(Exception e){}
+			try{I=juggles.elementAt(i);}catch(final Exception e){}
 			if((I==null)
 			||(I.owner()==null)
 			||((I.owner() instanceof MOB)&&(I.owner()!=M))
@@ -168,10 +168,10 @@ public class Skill_Juggle extends BardSkill
 		}
 		if(anythingToDo)
 		{
-			SVector<Item> copy=juggles.copyOf();
+			final SVector<Item> copy=juggles.copyOf();
 			for(int i=0;i<copy.size();i++)
 			{
-				Item I=copy.elementAt(i);
+				final Item I=copy.elementAt(i);
 				if((I.owner()==null)
 				||((I.owner() instanceof MOB)&&(I.owner()!=M)))
 					unJuggle(I);
@@ -183,7 +183,7 @@ public class Skill_Juggle extends BardSkill
 		pause=true;
 		for(int i=0;i<M.numItems();i++)
 		{
-			Item I=M.getItem(i);
+			final Item I=M.getItem(i);
 			if((I!=null)
 			&&((I.amWearingAt(Wearable.WORN_WIELD)||I.amWearingAt(Wearable.WORN_HELD)))
 			&&(!juggles.contains(I))
@@ -208,11 +208,11 @@ public class Skill_Juggle extends BardSkill
 		if(lastJuggle>(System.currentTimeMillis()-500))
 			return;
 		lastJuggle=System.currentTimeMillis();
-		SVector<Item> copy=juggles.copyOf();
+		final SVector<Item> copy=juggles.copyOf();
 		int jug=-1;
 		for(int i=0;i<copy.size();i++)
 		{
-			Item I=copy.elementAt(i);
+			final Item I=copy.elementAt(i);
 			if(I.amWearingAt(Wearable.WORN_WIELD)||I.amWearingAt(Wearable.WORN_HELD))
 			{
 				I.setRawWornCode(Wearable.IN_INVENTORY);
@@ -224,7 +224,7 @@ public class Skill_Juggle extends BardSkill
 			jug=0;
 		for(int i=0;i<copy.size();i++)
 		{
-			Item I=copy.elementAt(i);
+			final Item I=copy.elementAt(i);
 			if((i==jug)||(i==jug+1))
 			{
 				if(!M.isMine(I))
@@ -283,7 +283,7 @@ public class Skill_Juggle extends BardSkill
 			&&(affected instanceof MOB)
 			&&(juggles.size()>0))
 			{
-				MOB mob=(MOB)affected;
+				final MOB mob=(MOB)affected;
 				if(mob.location()!=null)
 				{
 					if(!mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> juggle(s) "+juggles.size()+" items in the air."))
@@ -291,16 +291,16 @@ public class Skill_Juggle extends BardSkill
 					else
 					if(mob.isInCombat())
 					{
-						SVector<Item> copy=juggles.copyOf();
-						int maxAttacks=maxAttacks();
+						final SVector<Item> copy=juggles.copyOf();
+						final int maxAttacks=maxAttacks();
 						for(int i=0;((i<maxAttacks)&&(copy.size()>0));i++)
 						{
-							Item I=copy.elementAt(CMLib.dice().roll(1,copy.size(),-1));
+							final Item I=copy.elementAt(CMLib.dice().roll(1,copy.size(),-1));
 							I.unWear();
 							mob.moveItemTo(I);
 							if((mob.isMine(I))&&(CMLib.commands().postDrop(mob,I,true,false,false)))
 							{
-								Weapon w=CMClass.getWeapon("StdWeapon");
+								final Weapon w=CMClass.getWeapon("StdWeapon");
 								w.setName(I.name());
 								w.setDisplayText(I.displayText());
 								w.setDescription(I.description());
@@ -333,10 +333,10 @@ public class Skill_Juggle extends BardSkill
 	{
 		if((affected!=null)&&(affected instanceof MOB))
 		{
-			MOB M=(MOB)affected;
+			final MOB M=(MOB)affected;
 			while(juggles.size()>0)
 			{
-				Item I=juggles.elementAt(0);
+				final Item I=juggles.elementAt(0);
 				M.location().show(M,I,CMMsg.MSG_OK_ACTION,"<S-NAME> stop(s) juggling <T-NAMESELF>.");
 				unJuggle(I);
 				I.unWear();
@@ -388,7 +388,7 @@ public class Skill_Juggle extends BardSkill
 			commands.setElementAt("all",0);
 		}
 
-		Vector V=new Vector();
+		final Vector V=new Vector();
 		boolean allFlag=((String)commands.elementAt(0)).equalsIgnoreCase("all");
 		if(whatToJuggle.toUpperCase().startsWith("ALL.")){ allFlag=true; whatToJuggle="ALL "+whatToJuggle.substring(4);}
 		if(whatToJuggle.toUpperCase().endsWith(".ALL")){ allFlag=true; whatToJuggle="ALL "+whatToJuggle.substring(0,whatToJuggle.length()-4);}
@@ -398,7 +398,7 @@ public class Skill_Juggle extends BardSkill
 		while(doBugFix || ((allFlag)&&(addendum<=maxToJuggle)))
 		{
 			doBugFix=false;
-			Item juggleThis=mob.findItem(null,whatToJuggle+addendumStr);
+			final Item juggleThis=mob.findItem(null,whatToJuggle+addendumStr);
 			if((juggleThis!=null)&&(!juggleThis.amWearingAt(Wearable.IN_INVENTORY)))
 			{
 				if((!juggleThis.amWearingAt(Wearable.WORN_HELD))&&(!juggleThis.amWearingAt(Wearable.WORN_WIELD)))
@@ -427,7 +427,7 @@ public class Skill_Juggle extends BardSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
@@ -441,8 +441,8 @@ public class Skill_Juggle extends BardSkill
 			A.pause=true;
 			for(int i=0;i<V.size();i++)
 			{
-				Item I=(Item)V.elementAt(i);
-				CMMsg msg=CMClass.getMsg(mob,I,this,CMMsg.MSG_DELICATE_HANDS_ACT,"<S-NAME> start(s) juggling <T-NAMESELF>.");
+				final Item I=(Item)V.elementAt(i);
+				final CMMsg msg=CMClass.getMsg(mob,I,this,CMMsg.MSG_DELICATE_HANDS_ACT,"<S-NAME> start(s) juggling <T-NAMESELF>.");
 				if((A.juggles.size()<A.maxJuggles())
 				&&(mob.location().okMessage(mob,msg)))
 				{

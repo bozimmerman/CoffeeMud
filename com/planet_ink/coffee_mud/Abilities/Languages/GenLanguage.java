@@ -49,7 +49,7 @@ public class GenLanguage extends StdLanguage
 
 	private static final Object[] makeEmpty()
 	{
-		Object[] O=new Object[NUM_VS];
+		final Object[] O=new Object[NUM_VS];
 		O[V_NAME]="a language";
 		O[V_WSETS]=new Vector<String[]>();
 		O[V_HSETS]=new Hashtable<String,String>();
@@ -60,7 +60,7 @@ public class GenLanguage extends StdLanguage
 	private static final Object V(String ID, int varNum)
 	{
 		if(vars.containsKey(ID)) return vars.get(ID)[varNum];
-		Object[] O=makeEmpty();
+		final Object[] O=makeEmpty();
 		vars.put(ID,O);
 		return O[varNum];
 	}
@@ -71,7 +71,7 @@ public class GenLanguage extends StdLanguage
 			vars.get(ID)[varNum]=O;
 		else
 		{
-			Object[] O2=makeEmpty();
+			final Object[] O2=makeEmpty();
 			vars.put(ID,O2);
 			O2[varNum]=O;
 		}
@@ -101,11 +101,11 @@ public class GenLanguage extends StdLanguage
 	{
 		try
 		{
-			GenLanguage A=this.getClass().newInstance();
+			final GenLanguage A=this.getClass().newInstance();
 			A.ID=ID;
 			return A;
 		}
-		catch(Exception e)
+		catch(final Exception e)
 		{
 			Log.errOut(ID(),e);
 		}
@@ -156,9 +156,9 @@ public class GenLanguage extends StdLanguage
 		case 2: return (String)V(ID,V_NAME);
 		case 3: if(num==0)
 				{
-					List<String[]> words=(List<String[]>)V(ID,V_WSETS);
-					StringBuilder str=new StringBuilder("");
-					for(String[] wset : words)
+					final List<String[]> words=(List<String[]>)V(ID,V_WSETS);
+					final StringBuilder str=new StringBuilder("");
+					for(final String[] wset : words)
 					{
 						if(str.length()>0) str.append("/");
 						str.append(CMParms.toStringList(wset));
@@ -197,7 +197,7 @@ public class GenLanguage extends StdLanguage
 		if(val.trim().length()>0)
 		{
 			V(ID,V_NAME); // force creation, if necc
-			Object[] O=vars.get(ID);
+			final Object[] O=vars.get(ID);
 			vars.remove(ID);
 			vars.put(val,O);
 			if(num!=9)
@@ -214,8 +214,8 @@ public class GenLanguage extends StdLanguage
 				break;
 		case 3: if(num==0)
 				{
-					String[] allSets=val.split("/");
-					List<String[]> wordSets=new Vector<String[]>();
+					final String[] allSets=val.split("/");
+					final List<String[]> wordSets=new Vector<String[]>();
 					for(final String wordList : allSets)
 						wordSets.add(CMParms.parseCommas(wordList,true).toArray(new String[0]));
 					SV(ID,V_WSETS,wordSets);
@@ -249,7 +249,7 @@ public class GenLanguage extends StdLanguage
 
 	private void parseAllXML(String xml)
 	{
-		List<XMLLibrary.XMLpiece> V=CMLib.xml().parseAllXML(xml);
+		final List<XMLLibrary.XMLpiece> V=CMLib.xml().parseAllXML(xml);
 		if((V==null)||(V.size()==0)) return;
 		for(int c=0;c<getStatCodes().length;c++)
 			if(getStatCodes()[c].equals("CLASS"))
@@ -260,7 +260,7 @@ public class GenLanguage extends StdLanguage
 	}
 	private String getAllXML()
 	{
-		StringBuffer str=new StringBuffer("");
+		final StringBuffer str=new StringBuffer("");
 		for(int c=0;c<getStatCodes().length;c++)
 			if(!getStatCodes()[c].equals("TEXT"))
 				str.append("<"+getStatCodes()[c]+">"

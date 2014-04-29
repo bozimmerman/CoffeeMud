@@ -47,7 +47,7 @@ public class Spell_AlternateReality extends Spell
 	{
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		super.unInvoke();
 		if(canBeUninvoked())
@@ -60,7 +60,7 @@ public class Spell_AlternateReality extends Spell
 		if(!super.tick(ticking,tickID)) return false;
 		if(!(affected instanceof MOB))
 			return false;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		if(!mob.isInCombat())
 		{
 			unInvoke();
@@ -77,7 +77,7 @@ public class Spell_AlternateReality extends Spell
 		&&(msg.target()!=null)
 		&&(invoker()!=null))
 		{
-			Set<MOB> H=invoker().getGroupMembers(new HashSet<MOB>());
+			final Set<MOB> H=invoker().getGroupMembers(new HashSet<MOB>());
 			if(H.contains(msg.target()))
 			{
 				msg.source().tell("But you are on "+invoker().name()+"'s side!");
@@ -93,7 +93,7 @@ public class Spell_AlternateReality extends Spell
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		MOB target=super.getTarget(mob,commands,givenTarget);
+		final MOB target=super.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
 		if(target.getVictim()!=mob)
@@ -117,7 +117,7 @@ public class Spell_AlternateReality extends Spell
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> incant(s) to <T-NAME>.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> incant(s) to <T-NAME>.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -126,17 +126,17 @@ public class Spell_AlternateReality extends Spell
 					success=maliciousAffect(mob,target,asLevel,0,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_MIND|(auto?CMMsg.MASK_ALWAYS:0));
 					if(success)
 					{
-						Room R=target.location();
+						final Room R=target.location();
 						R.show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> change(s) sides!");
 						target.makePeace();
 						if(mob.getVictim()==target)
 							mob.setVictim(null);
-						Set<MOB> H=mob.getGroupMembers(new HashSet<MOB>());
+						final Set<MOB> H=mob.getGroupMembers(new HashSet<MOB>());
 						if(!H.contains(mob))H.add(mob);
-						Vector badGuys=new Vector();
+						final Vector badGuys=new Vector();
 						for(int i=0;i<R.numInhabitants();i++)
 						{
-							MOB M=R.fetchInhabitant(i);
+							final MOB M=R.fetchInhabitant(i);
 							if((M!=null)&&(M!=mob)&&(M!=target))
 							{
 								if(!H.contains(M))

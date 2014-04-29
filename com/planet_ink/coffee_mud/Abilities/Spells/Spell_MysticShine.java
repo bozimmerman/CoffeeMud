@@ -56,7 +56,7 @@ public class Spell_MysticShine extends Spell
 	public void unInvoke()
 	{
 		// undo the affects of this spell
-		Room room=CMLib.map().roomLocation(affected);
+		final Room room=CMLib.map().roomLocation(affected);
 		if((canBeUninvoked())&&(room!=null))
 			room.showHappens(CMMsg.MSG_OK_VISUAL,affected,"The gleam upon <S-NAME> dims.");
 		super.unInvoke();
@@ -67,7 +67,7 @@ public class Spell_MysticShine extends Spell
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		Physical target=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_ANY);
+		final Physical target=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_ANY);
 		if(target==null)
 		{
 			return false;
@@ -83,11 +83,11 @@ public class Spell_MysticShine extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 		final Room room=mob.location();
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"^S<T-NAME> begin(s) to really shine!":"^S<S-NAME> cause(s) the surface of <T-NAME> to mystically shine!^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"^S<T-NAME> begin(s) to really shine!":"^S<S-NAME> cause(s) the surface of <T-NAME> to mystically shine!^?");
 			if(room.okMessage(mob,msg))
 			{
 				room.send(mob,msg);

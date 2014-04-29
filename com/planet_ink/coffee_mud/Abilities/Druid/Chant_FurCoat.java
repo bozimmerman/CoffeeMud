@@ -51,7 +51,7 @@ public class Chant_FurCoat extends Chant
 		// undo the affects of this spell
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		if(canBeUninvoked())
 		if(theArmor!=null)
 		{
@@ -83,7 +83,7 @@ public class Chant_FurCoat extends Chant
 		||(theArmor.owner() instanceof Room)))
 			unInvoke();
 
-		MOB mob=msg.source();
+		final MOB mob=msg.source();
 		if(!msg.amITarget(theArmor))
 			return true;
 		else
@@ -154,7 +154,7 @@ public class Chant_FurCoat extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"A thick coat of fur appears on <T-NAME>.":"^S<S-NAME> chant(s) for a thick coat of fur!^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"A thick coat of fur appears on <T-NAME>.":"^S<S-NAME> chant(s) for a thick coat of fur!^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -164,16 +164,16 @@ public class Chant_FurCoat extends Chant
 				theArmor.setDescription("The coat is made of thick black fur.");
 				theArmor.setMaterial(RawMaterial.RESOURCE_FUR);
 				theArmor.basePhyStats().setArmor(2*CMLib.ableMapper().qualifyingClassLevel(mob,this));
-				long wornCode=(Wearable.WORN_TORSO|Wearable.WORN_ARMS|Wearable.WORN_FEET|Wearable.WORN_WAIST|Wearable.WORN_LEGS);
+				final long wornCode=(Wearable.WORN_TORSO|Wearable.WORN_ARMS|Wearable.WORN_FEET|Wearable.WORN_WAIST|Wearable.WORN_LEGS);
 				theArmor.setRawProperLocationBitmap(wornCode);
 				theArmor.setRawLogicalAnd(true);
 				for(int i=target.numItems()-1;i>=0;i--)
 				{
-					Item I=mob.getItem(i);
+					final Item I=mob.getItem(i);
 					if((I.rawWornCode()&wornCode)>0)
 						I.unWear();
 				}
-				Ability A=CMClass.getAbility("Prop_WearResister");
+				final Ability A=CMClass.getAbility("Prop_WearResister");
 				if( A != null )
 				{
 				  A.setMiscText("cold");

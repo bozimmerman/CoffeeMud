@@ -64,32 +64,32 @@ public class Fighter_BullRush extends FighterSkill
 		}
 		String str=(String)commands.lastElement();
 		commands.removeElementAt(commands.size()-1);
-		int dirCode=Directions.getGoodDirectionCode(str);
+		final int dirCode=Directions.getGoodDirectionCode(str);
 		if((dirCode<0)||(mob.location()==null)||(mob.location().getRoomInDir(dirCode)==null)||(mob.location().getExitInDir(dirCode)==null))
 		{
 			mob.tell("'"+str+"' is not a valid direction.");
 			return false;
 		}
-		String direction=Directions.getInDirectionName(dirCode);
+		final String direction=Directions.getInDirectionName(dirCode);
 
-		MOB target=this.getTarget(mob,commands,givenTarget);
+		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		int levelDiff=target.phyStats().level()-(((2*getXLEVELLevel(mob))+mob.phyStats().level()));
+		final int levelDiff=target.phyStats().level()-(((2*getXLEVELLevel(mob))+mob.phyStats().level()));
 
-		boolean success=proficiencyCheck(mob,-(levelDiff*5),auto);
+		final boolean success=proficiencyCheck(mob,-(levelDiff*5),auto);
 
 		str="^F^<FIGHT^><S-NAME> bullrush(es) <T-NAME> "+direction+".^</FIGHT^>^?";
-		CMMsg msg=CMClass.getMsg(mob,target,this,(auto?CMMsg.MASK_ALWAYS:0)|CMMsg.MASK_MOVE|CMMsg.MASK_SOUND|CMMsg.MASK_HANDS|CMMsg.TYP_JUSTICE,str);
+		final CMMsg msg=CMClass.getMsg(mob,target,this,(auto?CMMsg.MASK_ALWAYS:0)|CMMsg.MASK_MOVE|CMMsg.MASK_SOUND|CMMsg.MASK_HANDS|CMMsg.TYP_JUSTICE,str);
 		CMLib.color().fixSourceFightColor(msg);
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
-			MOB M1=mob.getVictim();
-			MOB M2=target.getVictim();
+			final MOB M1=mob.getVictim();
+			final MOB M2=target.getVictim();
 			mob.makePeace();
 			target.makePeace();
 			if((success)&&(CMLib.tracking().walk(mob,dirCode,false,false))&&(CMLib.flags().canBeHeardMovingBy(target,mob)))

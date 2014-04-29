@@ -69,7 +69,7 @@ public class Regeneration extends StdAbility implements HealthCondition
 		if((--regenTick)>0)
 			return true;
 		regenTick=maxTickDown;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		if(mob==null) return true;
 		if(mob.location()==null) return true;
 		if(mob.amDead()) return true;
@@ -90,7 +90,7 @@ public class Regeneration extends StdAbility implements HealthCondition
 			return false;
 		if((affected!=null)&&(affected instanceof MOB))
 		{
-			MOB M=(MOB)affected;
+			final MOB M=(MOB)affected;
 			if(msg.amISource(M)&&(msg.sourceMinor()==CMMsg.TYP_DEATH))
 			{
 				permanentDamage=0;
@@ -102,11 +102,11 @@ public class Regeneration extends StdAbility implements HealthCondition
 			&&(msg.tool()!=null)
 			&&(text().length()>0))
 			{
-				String text=text().toUpperCase();
+				final String text=text().toUpperCase();
 				boolean hurts=false;
 				if(msg.tool() instanceof Weapon)
 				{
-					Weapon W=(Weapon)msg.tool();
+					final Weapon W=(Weapon)msg.tool();
 					int x=text.indexOf(Weapon.TYPE_DESCS[W.weaponType()]);
 					if((x>=0)&&((x==0)||(text.charAt(x-1)=='+')))
 						hurts=true;
@@ -132,7 +132,7 @@ public class Regeneration extends StdAbility implements HealthCondition
 				else
 				if(msg.tool() instanceof Ability)
 				{
-					int classType=((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES;
+					final int classType=((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES;
 					switch(classType)
 					{
 					case Ability.ACODE_SPELL:
@@ -140,7 +140,7 @@ public class Regeneration extends StdAbility implements HealthCondition
 					case Ability.ACODE_CHANT:
 					case Ability.ACODE_SONG:
 						{
-							int x=text.indexOf("MAGIC");
+							final int x=text.indexOf("MAGIC");
 							if((x>=0)&&((x==0)||(text.charAt(x-1)=='+')))
 								hurts=true;
 						}
@@ -171,7 +171,7 @@ public class Regeneration extends StdAbility implements HealthCondition
 	{
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		super.unInvoke();
 		if(canBeUninvoked())
@@ -181,7 +181,7 @@ public class Regeneration extends StdAbility implements HealthCondition
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		MOB target=this.getTarget(mob,commands,givenTarget);
+		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -190,8 +190,8 @@ public class Regeneration extends StdAbility implements HealthCondition
 		boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			String str=auto?"":"<S-NAME> lay(s) regenerative magic upon <T-NAMESELF>.";
-			CMMsg msg=CMClass.getMsg(mob,target,null,CMMsg.MSG_QUIETMOVEMENT,str);
+			final String str=auto?"":"<S-NAME> lay(s) regenerative magic upon <T-NAMESELF>.";
+			final CMMsg msg=CMClass.getMsg(mob,target,null,CMMsg.MSG_QUIETMOVEMENT,str);
 			if(target.location().okMessage(target,msg))
 			{
 				target.location().send(target,msg);

@@ -14,7 +14,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -61,14 +60,14 @@ public class Prayer_MassHarm extends Prayer
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		Set<MOB> h=properTargets(mob,givenTarget,auto);
+		final Set<MOB> h=properTargets(mob,givenTarget,auto);
 		if(h==null) return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
-		int numEnemies=h.size();
-		for(Iterator e=h.iterator();e.hasNext();)
+		final boolean success=proficiencyCheck(mob,0,auto);
+		final int numEnemies=h.size();
+		for (final Object element : h)
 		{
-			MOB target=(MOB)e.next();
+			final MOB target=(MOB)element;
 			if(target!=mob)
 			{
 				if(success)
@@ -78,15 +77,15 @@ public class Prayer_MassHarm extends Prayer
 					// affected MOB.  Then tell everyone else
 					// what happened.
 					final Room R=target.location();
-					CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto)|CMMsg.MASK_MALICIOUS,auto?"<T-NAME> become(s) surrounded by a dark cloud.":"^S<S-NAME> sweep(s) <S-HIS-HER> hands over <T-NAMESELF>, "+prayingWord(mob)+".^?");
-					CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_UNDEAD|(auto?CMMsg.MASK_ALWAYS:0),null);
+					final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto)|CMMsg.MASK_MALICIOUS,auto?"<T-NAME> become(s) surrounded by a dark cloud.":"^S<S-NAME> sweep(s) <S-HIS-HER> hands over <T-NAMESELF>, "+prayingWord(mob)+".^?");
+					final CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_UNDEAD|(auto?CMMsg.MASK_ALWAYS:0),null);
 					if((R.okMessage(mob,msg))&&((R.okMessage(mob,msg2))))
 					{
 						R.send(mob,msg);
 						R.send(mob,msg2);
 						if((msg.value()<=0)&&(msg2.value()<=0))
 						{
-							int harming=CMLib.dice().roll(1,(adjustedLevel(mob,asLevel)+ 24) / numEnemies,8);
+							final int harming=CMLib.dice().roll(1,(adjustedLevel(mob,asLevel)+ 24) / numEnemies,8);
 							CMLib.combat().postDamage(mob,target,this,harming,CMMsg.MASK_ALWAYS|CMMsg.TYP_UNDEAD,Weapon.TYPE_BURSTING,"The unholy spell <DAMAGE> <T-NAME>!");
 						}
 					}

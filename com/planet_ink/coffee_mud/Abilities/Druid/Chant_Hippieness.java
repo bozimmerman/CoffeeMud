@@ -51,7 +51,7 @@ public class Chant_Hippieness extends Chant
 		affectableStats.setStat(CharStats.STAT_WISDOM,affectableStats.getStat(CharStats.STAT_WISDOM)-2);
 		if(affectableStats.getStat(CharStats.STAT_WISDOM)<1)
 			affectableStats.setStat(CharStats.STAT_WISDOM,1);
-		for(Pair<Clan,Integer> p : affected.clans())
+		for(final Pair<Clan,Integer> p : affected.clans())
 			oldClans.add(p);
 		affected.setClan("",Integer.MIN_VALUE); // deletes all clans
 	}
@@ -61,7 +61,7 @@ public class Chant_Hippieness extends Chant
 	{
 		if(affected instanceof MOB)
 		{
-			for(Pair<Clan,Integer> p : ((MOB)affected).clans())
+			for(final Pair<Clan,Integer> p : ((MOB)affected).clans())
 				oldClans.add(p);
 			((MOB)affected).setClan("",Integer.MIN_VALUE); // deletes all clans
 		}
@@ -86,16 +86,16 @@ public class Chant_Hippieness extends Chant
 			return false;
 		if(affected instanceof MOB)
 		{
-			MOB mob=(MOB)affected;
-			for(Pair<Clan,Integer> p : mob.clans())
+			final MOB mob=(MOB)affected;
+			for(final Pair<Clan,Integer> p : mob.clans())
 				oldClans.add(p);
 			mob.setClan("",Integer.MIN_VALUE); // deletes all clans
 
-			boolean mouthed=mob.fetchFirstWornItem(Wearable.WORN_MOUTH)!=null;
-			Room R=mob.location();
+			final boolean mouthed=mob.fetchFirstWornItem(Wearable.WORN_MOUTH)!=null;
+			final Room R=mob.location();
 			if((!mouthed)&&(R!=null)&&(R.numItems()>0))
 			{
-				Item I=R.getRandomItem();
+				final Item I=R.getRandomItem();
 				if((I!=null)&&(I.fitsOn(Wearable.WORN_MOUTH)))
 					CMLib.commands().postGet(mob,I.container(),I,false);
 			}
@@ -107,7 +107,7 @@ public class Chant_Hippieness extends Chant
 
 			if(mob.numItems()>0)
 			{
-				Item I=mob.getRandomItem();
+				final Item I=mob.getRandomItem();
 				if(mouthed)
 				{
 					if((I!=null)&&(!I.amWearingAt(Wearable.IN_INVENTORY))&&(!I.amWearingAt(Wearable.WORN_MOUTH)))
@@ -120,7 +120,7 @@ public class Chant_Hippieness extends Chant
 					&&(((Container)I).containTypes()==Container.CONTAIN_SMOKEABLES)
 					&&(((Container)I).getContents().size()==0))
 					{
-						Item smoke=CMClass.getItem("GenResource");
+						final Item smoke=CMClass.getItem("GenResource");
 						if(smoke!=null)
 						{
 							smoke.setName("some smoke");
@@ -152,12 +152,12 @@ public class Chant_Hippieness extends Chant
 		// undo the affects of this spell
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		super.unInvoke();
 
 		if(canBeUninvoked())
 		{
-			for(Pair<Clan,Integer> p : oldClans)
+			for(final Pair<Clan,Integer> p : oldClans)
 				mob.setClan(p.first.clanID(),p.second.intValue());
 			mob.tell("You don't feel quite so groovy.");
 		}
@@ -182,7 +182,7 @@ public class Chant_Hippieness extends Chant
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		MOB target=getTarget(mob,commands,givenTarget);
+		final MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 		if(CMLib.flags().isAnimalIntelligence(target))
 		{
@@ -197,7 +197,7 @@ public class Chant_Hippieness extends Chant
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
@@ -206,8 +206,8 @@ public class Chant_Hippieness extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			CMMsg msg=CMClass.getMsg(mob,target,this,(target.isMonster()?0:CMMsg.MASK_MALICIOUS)|verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> chant(s) to <T-NAMESELF>!^?");
-			CMMsg msg2=CMClass.getMsg(mob,target,this,(target.isMonster()?0:CMMsg.MASK_MALICIOUS)|CMMsg.MSK_CAST_VERBAL|CMMsg.TYP_DISEASE|(auto?CMMsg.MASK_ALWAYS:0),null);
+			final CMMsg msg=CMClass.getMsg(mob,target,this,(target.isMonster()?0:CMMsg.MASK_MALICIOUS)|verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> chant(s) to <T-NAMESELF>!^?");
+			final CMMsg msg2=CMClass.getMsg(mob,target,this,(target.isMonster()?0:CMMsg.MASK_MALICIOUS)|CMMsg.MSK_CAST_VERBAL|CMMsg.TYP_DISEASE|(auto?CMMsg.MASK_ALWAYS:0),null);
 			if((mob.location().okMessage(mob,msg))&&(mob.location().okMessage(mob,msg2)))
 			{
 				mob.location().send(mob,msg);
@@ -215,7 +215,7 @@ public class Chant_Hippieness extends Chant
 				if((msg.value()<=0)&&(msg2.value()<=0))
 				{
 					oldClans=new LinkedList<Pair<Clan,Integer>>();
-					for(Pair<Clan,Integer> p : target.clans())
+					for(final Pair<Clan,Integer> p : target.clans())
 						oldClans.add(p);
 					target.setClan("",Integer.MIN_VALUE); // deletes all clans
 					CMLib.commands().postSay(target,null,"Far out...",false,false);

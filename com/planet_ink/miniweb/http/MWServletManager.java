@@ -44,7 +44,7 @@ public class MWServletManager implements SimpleServletManager
 		servletStats = new Hashtable<Class<? extends SimpleServlet>, MWRequestStats>();
 		servletInit = new Hashtable<Class<? extends SimpleServlet>, Boolean>();
 
-		for(String context : config.getServlets().keySet())
+		for(final String context : config.getServlets().keySet())
 		{
 			String className=config.getServlets().get(context);
 			if(className.indexOf('.')<0)
@@ -52,10 +52,11 @@ public class MWServletManager implements SimpleServletManager
 			try
 			{
 				@SuppressWarnings("unchecked")
+				final
 				Class<? extends SimpleServlet> servletClass=(Class<? extends SimpleServlet>) Class.forName(className);
 				registerServlet(context, servletClass);
 			}
-			catch (ClassNotFoundException e)
+			catch (final ClassNotFoundException e)
 			{
 				config.getLogger().severe("Servlet Manager can't load "+className);
 			}
@@ -111,7 +112,7 @@ public class MWServletManager implements SimpleServletManager
 				servlet = c.newInstance();
 				servlet.init();
 			}
-			catch (Exception e){}
+			catch (final Exception e){}
 			servletInit.put(c, Boolean.TRUE);
 		}
 		return c;

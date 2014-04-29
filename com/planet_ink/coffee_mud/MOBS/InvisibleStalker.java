@@ -37,7 +37,7 @@ public class InvisibleStalker extends StdMOB
 	public InvisibleStalker()
 	{
 		super();
-		Random randomizer = new Random(System.currentTimeMillis());
+		final Random randomizer = new Random(System.currentTimeMillis());
 
 		username="an Invisible Stalker";
 		setDescription("A shimmering blob of energy.");

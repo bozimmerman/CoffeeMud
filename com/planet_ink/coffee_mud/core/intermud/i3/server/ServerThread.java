@@ -42,10 +42,10 @@ public class ServerThread implements Tickable
 {
 	private java.util.Date  boot_time=null;
 	private int 			count  = 1;
-	private String  		mud_name;
-	private int 			port;
+	private final String  		mud_name;
+	private final int 			port;
 	private boolean 		running;
-	private ImudServices	intermuds;
+	private final ImudServices	intermuds;
 	private ListenThread 	listen_thread=null;
 	private volatile int 	tickStatus=Tickable.STATUS_NOT;
 	private Map<String,ServerObject> objects;
@@ -79,7 +79,7 @@ public class ServerThread implements Tickable
 			ob.setObjectId(str);
 			objects.put(str, ob);
 		}
-		catch( Exception e )
+		catch( final Exception e )
 		{
 			throw new ObjectLoadException("Failed to load object: " + e.getMessage());
 		}
@@ -109,7 +109,7 @@ public class ServerThread implements Tickable
 				ob.setObjectId(str);
 				objects.put(str, ob);
 			}
-			catch( Exception e )
+			catch( final Exception e )
 			{
 				throw new ObjectLoadException("Failed to load object: " + e.getMessage());
 			}
@@ -119,7 +119,7 @@ public class ServerThread implements Tickable
 
 	protected synchronized void removeObject(ServerObject ob)
 	{
-		String id = ob.getObjectId();
+		final String id = ob.getObjectId();
 
 		if( !objects.containsKey(id) )
 		{
@@ -154,7 +154,7 @@ public class ServerThread implements Tickable
 		{
 			listen_thread = new ListenThread(port);
 		}
-		catch( java.io.IOException e )
+		catch( final java.io.IOException e )
 		{
 			Log.errOut("I3Server",e);
 			return;
@@ -165,7 +165,7 @@ public class ServerThread implements Tickable
 			Intermud.setup(intermuds,
 						   (PersistentPeer)Class.forName("com.planet_ink.coffee_mud.core.intermud.i3.IMudPeer").newInstance());
 		}
-		catch( Exception e )
+		catch( final Exception e )
 		{
 			Log.errOut("I3Server",e);
 			return;
@@ -203,7 +203,7 @@ public class ServerThread implements Tickable
 
 			for(i=0; i<users.length; i++)
 			{
-				ServerUser interactive = users[i];
+				final ServerUser interactive = users[i];
 
 
 				if( interactive.getDestructed() )
@@ -214,7 +214,7 @@ public class ServerThread implements Tickable
 				{
 					interactive.processInput();
 				}
-				catch( Exception e )
+				catch( final Exception e )
 				{
 					Log.errOut("IMServerThread",e);
 				}
@@ -225,7 +225,7 @@ public class ServerThread implements Tickable
 
 			for(i=0; i<things.length; i++)
 			{
-				ServerObject thing = things[i];
+				final ServerObject thing = things[i];
 
 				if( !thing.getDestructed() )
 				{
@@ -233,7 +233,7 @@ public class ServerThread implements Tickable
 					{
 						thing.processEvent();
 					}
-					catch( Exception e )
+					catch( final Exception e )
 					{
 						Log.errOut("IMServerThread",e);
 					}
@@ -260,7 +260,7 @@ public class ServerThread implements Tickable
 				{
 					new_user = (ServerUser)copyObject("com.planet_ink.coffee_mud.core.intermud.i3.IMudUser");
 				}
-				catch( ObjectLoadException e )
+				catch( final ObjectLoadException e )
 				{
 					continue;
 				}
@@ -273,7 +273,7 @@ public class ServerThread implements Tickable
 						new_user.connect();
 					}
 				}
-				catch( java.io.IOException e )
+				catch( final java.io.IOException e )
 				{
 					new_user.destruct();
 				}
@@ -290,10 +290,10 @@ public class ServerThread implements Tickable
 
 	protected synchronized ServerUser[] getInteractives()
 	{
-		ServerUser[] tmp = new ServerUser[interactives.size()];
+		final ServerUser[] tmp = new ServerUser[interactives.size()];
 		int i = 0;
 
-		for(ServerUser U : interactives.values())
+		for(final ServerUser U : interactives.values())
 		{
 			tmp[i++] = U;
 		}
@@ -326,9 +326,9 @@ public class ServerThread implements Tickable
 
 	protected synchronized ServerObject[] getObjects()
 	{
-		ServerObject[] tmp = new ServerObject[objects.size()];
+		final ServerObject[] tmp = new ServerObject[objects.size()];
 		int i = 0;
-		for(ServerObject O : objects.values())
+		for(final ServerObject O : objects.values())
 		{
 			tmp[i++] = O;
 		}

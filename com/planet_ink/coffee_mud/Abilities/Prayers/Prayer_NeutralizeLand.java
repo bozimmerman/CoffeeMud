@@ -48,7 +48,7 @@ public class Prayer_NeutralizeLand extends Prayer
 	{
 		if(mob!=null)
 		{
-			Room R=mob.location();
+			final Room R=mob.location();
 			if(R!=null)
 			{
 				boolean foundAny=false;
@@ -71,15 +71,15 @@ public class Prayer_NeutralizeLand extends Prayer
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
-		Room target=mob.location();
+		final boolean success=proficiencyCheck(mob,0,auto);
+		final Room target=mob.location();
 		if((target!=null)&&(success))
 		{
 			// it worked, so build a copy of this ability,
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> become(s) neutralized.":"^S<S-NAME> "+prayWord(mob)+", sweeping <S-HIS-HER> hands over <T-NAMESELF>.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> become(s) neutralized.":"^S<S-NAME> "+prayWord(mob)+", sweeping <S-HIS-HER> hands over <T-NAMESELF>.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -87,7 +87,7 @@ public class Prayer_NeutralizeLand extends Prayer
 				boolean foundSomethingAtLeast=false;
 				for(int a=0;a<target.numEffects();a++) // personal affects
 				{
-					Ability A=target.fetchEffect(a);
+					final Ability A=target.fetchEffect(a);
 					if((A!=null)
 					&&((A.canBeUninvoked())||(A.invoker()==mob)||A.text().equals(mob.Name())||(mob.getClanRole(A.text())!=null))
 					&&(!A.isAutoInvoked())

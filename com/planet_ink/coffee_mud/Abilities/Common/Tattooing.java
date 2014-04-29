@@ -57,7 +57,7 @@ public class Tattooing extends CommonSkill
 		{
 			if((affected!=null)&&(affected instanceof MOB)&&(!aborted)&&(!helping)&&(target!=null))
 			{
-				MOB mob=(MOB)affected;
+				final MOB mob=(MOB)affected;
 				if(writing.length()==0)
 					commonEmote(mob,"<S-NAME> mess(es) up the tattoo on "+target.name()+".");
 				else
@@ -75,7 +75,7 @@ public class Tattooing extends CommonSkill
 	{
 		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Tickable.TICKID_MOB))
 		{
-			MOB mob=(MOB)affected;
+			final MOB mob=(MOB)affected;
 			if((target==null)
 			||(mob.location()!=target.location())
 			||(!CMLib.flags().canBeSeenBy(target,mob)))
@@ -92,17 +92,17 @@ public class Tattooing extends CommonSkill
 			commonTell(mob,"You must specify whom you want to tattoo, what body part to tattoo, and what the tattoo looks like. Use 'REMOVE' as the description to remove a tattoo.");
 			return false;
 		}
-		String whom=(String)commands.firstElement();
+		final String whom=(String)commands.firstElement();
 		commands.removeElementAt(0);
-		String part=(String)commands.firstElement();
+		final String part=(String)commands.firstElement();
 		commands.removeElementAt(0);
-		String message=CMParms.combine(commands,0);
+		final String message=CMParms.combine(commands,0);
 		commands.clear();
 		commands.addElement(whom);
 
 		int partNum=-1;
-		StringBuffer allParts=new StringBuffer("");
-		long[] tattoable={Wearable.WORN_ARMS,
+		final StringBuffer allParts=new StringBuffer("");
+		final long[] tattoable={Wearable.WORN_ARMS,
 						  Wearable.WORN_LEGS,
 						  Wearable.WORN_HANDS,
 						  Wearable.WORN_HEAD,
@@ -112,11 +112,11 @@ public class Tattooing extends CommonSkill
 						  Wearable.WORN_NECK,
 						  Wearable.WORN_BACK,
 						  Wearable.WORN_TORSO};
-		Wearable.CODES codes = Wearable.CODES.instance();
+		final Wearable.CODES codes = Wearable.CODES.instance();
 		for(int i=0;i<codes.total();i++)
 		{
-			for(int ii=0;ii<tattoable.length;ii++)
-				if(codes.get(i)==tattoable[ii])
+			for (final long element : tattoable)
+				if(codes.get(i)==element)
 				{
 					if(codes.name(i).equalsIgnoreCase(part))
 						partNum=i;
@@ -129,10 +129,10 @@ public class Tattooing extends CommonSkill
 			commonTell(mob,"'"+part+"' is not a valid location.  Valid locations include: "+allParts.toString().substring(2));
 			return false;
 		}
-		long wornCode=codes.get(partNum);
-		String wornName=codes.name(partNum);
+		final long wornCode=codes.get(partNum);
+		final String wornName=codes.name(partNum);
 
-		MOB target=super.getTarget(mob,commands,givenTarget);
+		final MOB target=super.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
 		if(target.getWearPositions(wornCode)<=0)
@@ -148,9 +148,9 @@ public class Tattooing extends CommonSkill
 
 		int numTattsDone=0;
 		MOB.Tattoo tatToRemove=null;
-		for(Enumeration<MOB.Tattoo> e=target.tattoos();e.hasMoreElements();)
+		for(final Enumeration<MOB.Tattoo> e=target.tattoos();e.hasMoreElements();)
 		{
-			MOB.Tattoo T=e.nextElement();
+			final MOB.Tattoo T=e.nextElement();
 			if(T.tattooName.startsWith(wornName.toUpperCase()+":"))
 			{
 				numTattsDone++;
@@ -179,12 +179,12 @@ public class Tattooing extends CommonSkill
 		verb="tattooing "+target.name()+" on the "+wornName;
 		displayText="You are "+verb;
 		if(!proficiencyCheck(mob,0,auto)) writing="";
-		int duration=getDuration(35,mob,1,6);
+		final int duration=getDuration(35,mob,1,6);
 		String str="<S-NAME> start(s) tattooing "+message+" on <T-YOUPOSS> "+wornName.toLowerCase()+".";
 		if("REMOVE".startsWith(message.toUpperCase()))
 			str="<S-NAME> remove(s) the tattoo on <T-YOUPOSS> "+wornName.toLowerCase()+".";
 
-		CMMsg msg=CMClass.getMsg(mob,target,this,getActivityMessageType(),str);
+		final CMMsg msg=CMClass.getMsg(mob,target,this,getActivityMessageType(),str);
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
@@ -193,7 +193,7 @@ public class Tattooing extends CommonSkill
 			else
 			{
 				beneficialAffect(mob,mob,asLevel,duration);
-				Tattooing A=(Tattooing)mob.fetchEffect(ID());
+				final Tattooing A=(Tattooing)mob.fetchEffect(ID());
 				if(A!=null) A.target=target;
 			}
 		}

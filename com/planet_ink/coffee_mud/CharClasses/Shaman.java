@@ -40,7 +40,7 @@ public class Shaman extends Cleric
 	@Override public String baseClass(){return "Cleric";}
 	@Override public int getAttackAttribute(){return CharStats.STAT_WISDOM;}
 	@Override public int allowedWeaponLevel(){return CharClass.WEAPONS_NEUTRALCLERIC;}
-	private HashSet disallowedWeapons=buildDisallowedWeaponClasses();
+	private final HashSet disallowedWeapons=buildDisallowedWeaponClasses();
 	@Override protected HashSet disallowedWeaponClasses(MOB mob){return disallowedWeapons;}
 
 	public Shaman()
@@ -181,7 +181,7 @@ public class Shaman extends Cleric
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!(myHost instanceof MOB)) return super.okMessage(myHost,msg);
-		MOB myChar=(MOB)myHost;
+		final MOB myChar=(MOB)myHost;
 		if(!super.okMessage(myChar, msg))
 			return false;
 
@@ -189,7 +189,7 @@ public class Shaman extends Cleric
 		&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
 		&&(msg.sourceMinor()==CMMsg.TYP_ACID))
 		{
-			int recovery=myChar.charStats().getClassLevel(this);
+			final int recovery=myChar.charStats().getClassLevel(this);
 			msg.setValue(msg.value()-recovery);
 		}
 		else
@@ -197,7 +197,7 @@ public class Shaman extends Cleric
 		&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
 		&&(msg.sourceMinor()==CMMsg.TYP_ELECTRIC))
 		{
-			int recovery=msg.value();
+			final int recovery=msg.value();
 			msg.setValue(msg.value()+recovery);
 		}
 		return true;
@@ -209,7 +209,7 @@ public class Shaman extends Cleric
 		if(outfitChoices==null)
 		{
 			outfitChoices=new Vector();
-			Weapon w=CMClass.getWeapon("SmallMace");
+			final Weapon w=CMClass.getWeapon("SmallMace");
 			outfitChoices.add(w);
 		}
 		return outfitChoices;

@@ -48,7 +48,7 @@ public class Arachnid extends StdRace
 	private static final int[] parts={2 ,99,0 ,1 ,0 ,0 ,0 ,1 ,8 ,8 ,0 ,0 ,1 ,0 ,0 ,0 };
 	@Override public int[] bodyMask(){return parts;}
 
-	private int[] agingChart={0,0,0,1,1,1,1,2,2};
+	private final int[] agingChart={0,0,0,1,1,1,1,2,2};
 	@Override public int[] getAgingChart(){return agingChart;}
 
 	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();

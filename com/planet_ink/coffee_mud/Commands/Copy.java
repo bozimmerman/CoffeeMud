@@ -63,18 +63,18 @@ public class Copy extends StdCommand
 		String name=CMParms.combine(commands,0);
 		Environmental dest=mob.location();
 		Item srchContainer=null;
-		int x=name.indexOf('@');
+		final int x=name.indexOf('@');
 		if(x>0)
 		{
-			String rest=name.substring(x+1).trim();
+			final String rest=name.substring(x+1).trim();
 			name=name.substring(0,x).trim();
 			if((!rest.equalsIgnoreCase("room"))
 			&&(rest.length()>0))
 			{
-				MOB M=mob.location().fetchInhabitant(rest);
+				final MOB M=mob.location().fetchInhabitant(rest);
 				if(M==null)
 				{
-					Item I = mob.location().findItem(null, rest);
+					final Item I = mob.location().findItem(null, rest);
 					if(I instanceof Container)
 						srchContainer=I;
 					else
@@ -105,7 +105,7 @@ public class Copy extends StdCommand
 				{
 					if(commands.size()>1)
 					{
-						int subDirCode=Directions.getGoodDirectionCode((String)commands.lastElement());
+						final int subDirCode=Directions.getGoodDirectionCode((String)commands.lastElement());
 						if(subDirCode>=0)
 						{
 							commands.removeElementAt(commands.size()-1);
@@ -155,7 +155,7 @@ public class Copy extends StdCommand
 					E=CMLib.map().findFirstInventory(CMLib.map().rooms(), mob, name, 50);
 				if(E==null)
 					E=CMLib.map().findFirstShopStock(CMLib.map().rooms(), mob, name, 50);
-			}catch(NoSuchElementException e){}
+			}catch(final NoSuchElementException e){}
 		}
 		if((E==null)&&(srchContainer==null))
 		{
@@ -177,7 +177,7 @@ public class Copy extends StdCommand
 					mob.tell("You are not allowed to copy "+E.name());
 					return false;
 				}
-				MOB newMOB=(MOB)E.copyOf();
+				final MOB newMOB=(MOB)E.copyOf();
 				newMOB.setSession(null);
 				newMOB.setStartRoom(room);
 				newMOB.setLocation(room);
@@ -203,7 +203,7 @@ public class Copy extends StdCommand
 					mob.tell("You are not allowed to copy "+E.name());
 					return false;
 				}
-				Item newItem=(Item)E.copyOf();
+				final Item newItem=(Item)E.copyOf();
 				newItem.setContainer(null);
 				newItem.wearAt(0);
 				String end="from the sky";
@@ -245,7 +245,7 @@ public class Copy extends StdCommand
 				}
 				synchronized(("SYNC"+room.roomID()).intern())
 				{
-					Room newRoom=(Room)E.copyOf();
+					final Room newRoom=(Room)E.copyOf();
 					newRoom.clearSky();
 					if(newRoom instanceof GridLocale)
 						((GridLocale)newRoom).clearGrid(null);
@@ -311,7 +311,7 @@ public class Copy extends StdCommand
 				}
 				synchronized(("SYNC"+editRoom.roomID()).intern())
 				{
-					Exit oldE=editRoom.getRawExit(dirCode);
+					final Exit oldE=editRoom.getRawExit(dirCode);
 					if((oldE==null)||(oldE!=E))
 					{
 						editRoom.setRawExit(dirCode, E);
@@ -331,7 +331,7 @@ public class Copy extends StdCommand
 					mob.tell("You are not allowed to copy "+E.name());
 					return false;
 				}
-				Area newArea=(Area)E.copyOf();
+				final Area newArea=(Area)E.copyOf();
 				while(CMLib.map().getArea(newArea.Name())!=null)
 					newArea.setName("Copy of "+newArea.Name());
 				newArea.setSavable(true);
@@ -339,28 +339,28 @@ public class Copy extends StdCommand
 					newArea.addSubOp(mob.Name());
 				CMLib.map().addArea(newArea);
 				CMLib.database().DBCreateArea(newArea);
-				Map<Room,Room> translationMap=new HashMap<Room,Room>();
-				for(Enumeration<Room> r=((Area)E).getCompleteMap();r.hasMoreElements();)
+				final Map<Room,Room> translationMap=new HashMap<Room,Room>();
+				for(final Enumeration<Room> r=((Area)E).getCompleteMap();r.hasMoreElements();)
 				{
-					Room oldR=CMLib.map().getRoom(r.nextElement());
+					final Room oldR=CMLib.map().getRoom(r.nextElement());
 					if(oldR==null) continue;
 					CMLib.map().resetRoom(oldR);
-					Room R=(Room)oldR.copyOf();
+					final Room R=(Room)oldR.copyOf();
 					R.setArea(newArea); // adds the room to the area
-					int hashDex=R.roomID().indexOf('#');
+					final int hashDex=R.roomID().indexOf('#');
 					if(hashDex>0)
 						R.setRoomID(newArea.Name()+R.roomID().substring(hashDex));
 					else
 						R.setRoomID(newArea.Name()+R.roomID());
 					translationMap.put(oldR, R);
 				}
-				for(Enumeration<Room> ir=newArea.getCompleteMap();ir.hasMoreElements();)
+				for(final Enumeration<Room> ir=newArea.getCompleteMap();ir.hasMoreElements();)
 				{
-					Room R=CMLib.map().getRoom(ir.nextElement());
+					final Room R=CMLib.map().getRoom(ir.nextElement());
 					if(R==null) continue;
 					for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
 					{
-						Room dirR=R.rawDoors()[d];
+						final Room dirR=R.rawDoors()[d];
 						if(translationMap.containsKey(dirR))
 							R.rawDoors()[d]=translationMap.get(dirR);
 					}

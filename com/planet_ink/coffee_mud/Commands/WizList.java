@@ -43,8 +43,8 @@ public class WizList extends StdCommand
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		StringBuffer head=new StringBuffer("");
-		boolean isArchonLooker=CMSecurity.isASysOp(mob);
+		final StringBuffer head=new StringBuffer("");
+		final boolean isArchonLooker=CMSecurity.isASysOp(mob);
 		head.append("^x[");
 		head.append(CMStrings.padRight("Class",16)+" ");
 		head.append(CMStrings.padRight("Race",8)+" ");
@@ -53,14 +53,14 @@ public class WizList extends StdCommand
 			head.append(CMStrings.padRight("Last",18)+" ");
 		head.append("] Character Name^.^?\n\r");
 		mob.tell("^x["+CMStrings.centerPreserve("The Administrators of "+CMProps.getVar(CMProps.Str.MUDNAME),head.length()-10)+"]^.^?");
-		java.util.List<PlayerLibrary.ThinPlayer> allUsers=CMLib.database().getExtendedUserList();
+		final java.util.List<PlayerLibrary.ThinPlayer> allUsers=CMLib.database().getExtendedUserList();
 		String mask=CMProps.getVar(CMProps.Str.WIZLISTMASK);
 		if(mask.length()==0) mask="-ANYCLASS +Archon";
-		MaskingLibrary.CompiledZapperMask compiledMask=CMLib.masking().maskCompile(mask);
-		for(PlayerLibrary.ThinPlayer U : allUsers)
+		final MaskingLibrary.CompiledZapperMask compiledMask=CMLib.masking().maskCompile(mask);
+		for(final PlayerLibrary.ThinPlayer U : allUsers)
 		{
 			CharClass C;
-			MOB player = CMLib.players().getPlayer(U.name);
+			final MOB player = CMLib.players().getPlayer(U.name);
 			if(player != null)
 				C=player.charStats().getCurrentClass();
 			else

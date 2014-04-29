@@ -39,14 +39,14 @@ public class MindFlayer extends Humanoid
 	protected static List<RawMaterial> resources=new Vector<RawMaterial>();
 	@Override public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
 	@Override public String racialCategory(){return "Illithid";}
-	private String[]culturalAbilityNames={"Spell_MindFog","Spell_Charm","Undercommon"};
-	private int[]culturalAbilityProficiencies={100,50,25};
+	private final String[]culturalAbilityNames={"Spell_MindFog","Spell_Charm","Undercommon"};
+	private final int[]culturalAbilityProficiencies={100,50,25};
 	@Override public String[] culturalAbilityNames(){return culturalAbilityNames;}
 	@Override public int[] culturalAbilityProficiencies(){return culturalAbilityProficiencies;}
-	private String[]racialAbilityNames={"Spell_DetectSentience","Spell_CombatPrecognition"};
-	private int[]racialAbilityLevels={10,30};
-	private int[]racialAbilityProficiencies={50,30};
-	private boolean[]racialAbilityQuals={true,false};
+	private final String[]racialAbilityNames={"Spell_DetectSentience","Spell_CombatPrecognition"};
+	private final int[]racialAbilityLevels={10,30};
+	private final int[]racialAbilityProficiencies={50,30};
+	private final boolean[]racialAbilityQuals={true,false};
 	@Override public String[] racialAbilityNames(){return racialAbilityNames;}
 	@Override public int[] racialAbilityLevels(){return racialAbilityLevels;}
 	@Override public int[] racialAbilityProficiencies(){return racialAbilityProficiencies;}
@@ -56,7 +56,7 @@ public class MindFlayer extends Humanoid
 	private static final int[] parts={0 ,2 ,2 ,1 ,1 ,2 ,2 ,1 ,2 ,2 ,1 ,0 ,1 ,1 ,0 ,0 };
 	@Override public int[] bodyMask(){return parts;}
 
-	private int[] agingChart={0,2,20,110,175,263,350,390,430};
+	private final int[] agingChart={0,2,20,110,175,263,350,390,430};
 	@Override public int[] getAgingChart(){return agingChart;}
 
 	@Override

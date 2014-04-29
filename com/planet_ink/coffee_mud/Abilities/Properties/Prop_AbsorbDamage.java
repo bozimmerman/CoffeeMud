@@ -40,7 +40,7 @@ public class Prop_AbsorbDamage extends Property implements TriggeredAffect
 	@Override
 	public String accountForYourself()
 	{
-		String id="Absorbs damage of the following amount and types: "+text();
+		final String id="Absorbs damage of the following amount and types: "+text();
 		return id;
 	}
 
@@ -74,7 +74,7 @@ public class Prop_AbsorbDamage extends Property implements TriggeredAffect
 
 			int immune=text.indexOf("+ALL");
 			int x=-1;
-			for(int i : CharStats.CODES.SAVING_THROWS())
+			for(final int i : CharStats.CODES.SAVING_THROWS())
 				if((CharStats.CODES.CMMSGMAP(i)==msg.sourceMinor())
 				&&((msg.tool()==null)||(i!=CharStats.STAT_SAVE_MAGIC)))
 				{
@@ -91,7 +91,7 @@ public class Prop_AbsorbDamage extends Property implements TriggeredAffect
 
 			if((x<0)&&(msg.tool() instanceof Weapon))
 			{
-				Weapon W=(Weapon)msg.tool();
+				final Weapon W=(Weapon)msg.tool();
 				x=text.indexOf(Weapon.TYPE_DESCS[W.weaponType()]);
 				if(x<0) x=(CMLib.flags().isABonusItems(W))?text.indexOf("MAGIC"):-1;
 				if(x<0) x=text.indexOf(RawMaterial.CODES.NAME(W.material()));
@@ -128,7 +128,7 @@ public class Prop_AbsorbDamage extends Property implements TriggeredAffect
 
 			if((x<0)&&(msg.tool() instanceof Ability))
 			{
-				int classType=((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES;
+				final int classType=((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES;
 				switch(classType)
 				{
 				case Ability.ACODE_SPELL:

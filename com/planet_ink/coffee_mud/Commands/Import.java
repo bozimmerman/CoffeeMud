@@ -255,7 +255,7 @@ public class Import extends StdCommand
 		V=new XVector<String>(V);
 		// find area line first
 		String areaName="";
-		String firstLine=nextLine(V);
+		final String firstLine=nextLine(V);
 		if((firstLine.indexOf('~')>=0)&&(firstLine.indexOf('}')>=0))
 		{
 			String areaLine=firstLine;
@@ -301,7 +301,7 @@ public class Import extends StdCommand
 						return "";
 					if(lineAfter.endsWith("~"))
 						lineAfter=lineAfter.substring(0,lineAfter.length()-1);
-					int x=lineAfter.indexOf('}');
+					final int x=lineAfter.indexOf('}');
 					if(x>0) lineAfter=lineAfter.substring(x+1).trim();
 					if(CMParms.numBits(lineAfter)>1)
 						areaName=CMParms.getPastBit(lineAfter,0);
@@ -322,7 +322,7 @@ public class Import extends StdCommand
 			else
 			if((areaName.length()>13)&&((areaName.charAt(12)=='{')||(areaName.charAt(13)=='{')))
 			{
-				int x=areaName.indexOf('}',12);
+				final int x=areaName.indexOf('}',12);
 				if(x>12)
 					areaName=areaName.substring(x+1).trim();
 				else
@@ -337,9 +337,9 @@ public class Import extends StdCommand
 		||(areaName.indexOf('{')>=0)
 		||(areaName.indexOf("@@")>=0))
 		{
-			for(int s1=0;s1<colors.length;s1++)
-				if(areaName.indexOf(colors[s1][0])>=0)
-					areaName=CMStrings.replaceAll(areaName,colors[s1][0],colors[s1][1]);
+			for (final String[] color : colors)
+				if(areaName.indexOf(color[0])>=0)
+					areaName=CMStrings.replaceAll(areaName,color[0],color[1]);
 		}
 		return CMStrings.removeColors(CMLib.coffeeFilter().safetyFilter(areaName));
 	}
@@ -352,7 +352,7 @@ public class Import extends StdCommand
 				calledThis="#"+calledThis.substring(2);
 			if(hashedRoomSet.containsKey(areaName+calledThis))
 				return hashedRoomSet.get(areaName+calledThis);
-			for(String key : hashedRoomSet.keySet())
+			for(final String key : hashedRoomSet.keySet())
 				if(key.endsWith(calledThis))
 					return hashedRoomSet.get(key);
 		}
@@ -368,7 +368,7 @@ public class Import extends StdCommand
 			calledThis=calledThis.substring(1);
 		if(hashedRoomSet.containsKey(calledThis))
 			return hashedRoomSet.get(calledThis);
-		for(String key : hashedRoomSet.keySet())
+		for(final String key : hashedRoomSet.keySet())
 			if(key.endsWith("#"+calledThis))
 				return hashedRoomSet.get(key);
 		return null;
@@ -391,19 +391,19 @@ public class Import extends StdCommand
 		if(reLinkTable!=null)
 			for(int r=0;r<reLinkTable.size();r++)
 			{
-				String link=(String)reLinkTable.elementAt(r);
+				final String link=(String)reLinkTable.elementAt(r);
 				String nextLink="";
 				if(r<(reLinkTable.size()-1))
 					nextLink=(String)reLinkTable.elementAt(r+1);
-				int s1=link.indexOf('/');
-				int s2=link.lastIndexOf('/');
-				String sourceRoomID=link.substring(0,s1);
+				final int s1=link.indexOf('/');
+				final int s2=link.lastIndexOf('/');
+				final String sourceRoomID=link.substring(0,s1);
 				synchronized(("SYNC"+sourceRoomID).intern())
 				{
-					int direction=CMath.s_int(link.substring(s1+1,s2));
-					String destRoomID=link.substring(s2+1);
-					Room sourceRoom=getRoom(areaHashedRoomSet,hashedRoomSet,areaName,sourceRoomID);
-					Room destRoom=getRoom(areaHashedRoomSet,hashedRoomSet,areaName,destRoomID);
+					final int direction=CMath.s_int(link.substring(s1+1,s2));
+					final String destRoomID=link.substring(s2+1);
+					final Room sourceRoom=getRoom(areaHashedRoomSet,hashedRoomSet,areaName,sourceRoomID);
+					final Room destRoom=getRoom(areaHashedRoomSet,hashedRoomSet,areaName,destRoomID);
 					if((sourceRoom==null)||(destRoom==null))
 						Log.errOut("Import","Relink error: "+sourceRoomID+"="+sourceRoom+"/"+destRoomID+"="+destRoom);
 					else
@@ -427,38 +427,38 @@ public class Import extends StdCommand
 		}
 		try
 		{
-			for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
+			for(final Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 			{
-				Room R=(Room)r.nextElement();
+				final Room R=(Room)r.nextElement();
 				if(!R.getArea().Name().equalsIgnoreCase(areaName))
 					for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 					{
-						Room dirR=R.rawDoors()[d];
+						final Room dirR=R.rawDoors()[d];
 						if((dirR!=null)&&(dirR.getArea().Name().equalsIgnoreCase(areaName)))
 							reLinkTable.addElement(R.roomID()+"/"+d+"/"+dirR.roomID());
 					}
 			}
-		}catch(NoSuchElementException e){}
+		}catch(final NoSuchElementException e){}
 		while(true)
 		{
 			Room foundOne=null;
 			try
 			{
-				for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
+				for(final Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 				{
-					Room R=(Room)r.nextElement();
+					final Room R=(Room)r.nextElement();
 					if(R.getArea().Name().equalsIgnoreCase(areaName))
 					{
 						foundOne=R;
 						break;
 					}
 				}
-			}catch(NoSuchElementException e){}
+			}catch(final NoSuchElementException e){}
 			if(foundOne==null)
 				break;
 			CMLib.map().obliterateRoom(foundOne);
 		}
-		Area A1=CMLib.map().getArea(areaName);
+		final Area A1=CMLib.map().getArea(areaName);
 		if(A1!=null)
 		{
 			CMLib.database().DBDeleteArea(A1);
@@ -545,7 +545,7 @@ public class Import extends StdCommand
 					continue;
 				if(s.trim().startsWith("{"))
 				{
-					int x=s.trim().indexOf('}');
+					final int x=s.trim().indexOf('}');
 					if(x>0) s=s.substring(x+1).trim();
 				}
 				else
@@ -555,7 +555,7 @@ public class Import extends StdCommand
 					s=CMParms.parse(s).elementAt(2);
 				if(s.endsWith("~"))
 					s=s.substring(0,s.length()-1).trim();
-				int x=s.indexOf(' ');
+				final int x=s.indexOf(' ');
 				if(x>1) s=s.substring(0,x).trim();
 				if((s.length()==0)||(s.toUpperCase().equalsIgnoreCase("NONE")))
 					continue;
@@ -719,7 +719,7 @@ public class Import extends StdCommand
 	protected static String eatLine(List<String> V)
 	{
 		if(V.size()==0) return "";
-		String s=V.get(0);
+		final String s=V.get(0);
 		V.remove(0);
 		return s;
 	}
@@ -733,13 +733,13 @@ public class Import extends StdCommand
 
 	protected static Room changeRoomClass(Room R, String newClass)
 	{
-		Room R2=CMClass.getLocale(newClass);
+		final Room R2=CMClass.getLocale(newClass);
 		if(R2==null)
 		{
 			Log.errOut("Import","Cannot find room class "+newClass+".");
 			return R;
 		}
-		Area area=R.getArea();
+		final Area area=R.getArea();
 		if(area!=null) area.delProperRoom(R);
 		R2.setRoomID(R.roomID());
 		R2.setArea(R.getArea());
@@ -805,7 +805,7 @@ public class Import extends StdCommand
 		String s=eatLine(V);
 		while(s.indexOf('~')<0)
 		{
-			String l=eatLine(V);
+			final String l=eatLine(V);
 			if(l.startsWith(" "))
 				s+="%0D"+l;
 			else
@@ -833,12 +833,12 @@ public class Import extends StdCommand
 		||(s.indexOf('_')>=0)
 		||(s.indexOf("@@")>=0))
 		{
-			for(int s1=0;s1<colors.length;s1++)
-				if(s.indexOf(colors[s1][0])>=0)
-					s=CMStrings.replaceAll(s,colors[s1][0],colors[s1][1]);
+			for (final String[] color : colors)
+				if(s.indexOf(color[0])>=0)
+					s=CMStrings.replaceAll(s,color[0],color[1]);
 		}
 
-		int x=s.indexOf("@eng");
+		final int x=s.indexOf("@eng");
 		if(x>=0)
 		{
 			int y=s.indexOf("@rus",x);
@@ -899,10 +899,10 @@ public class Import extends StdCommand
 	{
 		if(files.size()==0) return;
 		if((!noPrompt)&&((mob==null)||(mob.session()==null))) return;
-		for(Enumeration e=files.keys();e.hasMoreElements();)
+		for(final Enumeration e=files.keys();e.hasMoreElements();)
 		{
 			String filename=(String)e.nextElement();
-			String data=(String)files.get(filename);
+			final String data=(String)files.get(filename);
 			if(customBother.contains(filename))
 			   continue;
 
@@ -935,11 +935,11 @@ public class Import extends StdCommand
 		{
 			if(custom.get(c) instanceof Race)
 			{
-				Race R=(Race)custom.get(c);
+				final Race R=(Race)custom.get(c);
 				if(customBother.contains(R.ID()))
 				   continue;
 
-				Race R2=CMClass.getRace(R.ID());
+				final Race R2=CMClass.getRace(R.ID());
 				if(R2==null)
 				{
 					if(!noPrompt)
@@ -964,11 +964,11 @@ public class Import extends StdCommand
 			else
 			if(custom.get(c) instanceof CharClass)
 			{
-				CharClass C=(CharClass)custom.get(c);
+				final CharClass C=(CharClass)custom.get(c);
 				if(customBother.contains(C.ID()))
 				   continue;
 
-				CharClass C2=CMClass.getCharClass(C.ID());
+				final CharClass C2=CMClass.getCharClass(C.ID());
 				if(C2==null)
 				{
 					if(!noPrompt)
@@ -993,11 +993,11 @@ public class Import extends StdCommand
 			else
 			if(custom.get(c) instanceof Ability)
 			{
-				Ability A=(Ability)custom.get(c);
+				final Ability A=(Ability)custom.get(c);
 				if(customBother.contains(A.ID()))
 				   continue;
 
-				Ability A2=CMClass.getAbility(A.ID());
+				final Ability A2=CMClass.getAbility(A.ID());
 				if(A2==null)
 				{
 					if(!noPrompt)
@@ -1023,11 +1023,11 @@ public class Import extends StdCommand
 			else
 			if(custom.get(c) instanceof Manufacturer)
 			{
-				Manufacturer M=(Manufacturer)custom.get(c);
+				final Manufacturer M=(Manufacturer)custom.get(c);
 				if(customBother.contains(M.name()))
 				   continue;
 
-				Manufacturer eM=CMLib.tech().getManufacturer(M.name());
+				final Manufacturer eM=CMLib.tech().getManufacturer(M.name());
 				if(eM==null)
 				{
 					if(!noPrompt)
@@ -1728,7 +1728,7 @@ public class Import extends StdCommand
 
 	protected static int importNumber(String s)
 	{
-		StringBuffer str=new StringBuffer("");
+		final StringBuffer str=new StringBuffer("");
 		for(int i=0;i<s.length();i++)
 			switch(s.charAt(i))
 			{
@@ -1769,7 +1769,7 @@ public class Import extends StdCommand
 						   List<String> socialData,
 						   List<String> roomProgData)
 	{
-		Vector helpsToEat=new Vector();
+		final Vector helpsToEat=new Vector();
 
 		List wasUsingThisOne=null;
 		List<String> useThisOne=null;
@@ -1886,7 +1886,7 @@ public class Import extends StdCommand
 				if(((importNumber(s)>0)||(s.equals("0") && (buf.size()>1) && (buf.get(1).indexOf('~')>0)))
 				&&(wasUsingThisOne!=null))
 				{
-					List<String> V=new Vector();
+					final List<String> V=new Vector();
 					wasUsingThisOne.add(V);
 					useThisOne=V;
 				}
@@ -1943,13 +1943,13 @@ public class Import extends StdCommand
 		};
 		str1=str1.toLowerCase().trim();
 		if(str1.startsWith("'")) str1=str1.substring(1);
-		for(int wt=0;wt<weaponTypes.length;wt++)
-			if(str1.startsWith(weaponTypes[wt][0]))
-			{ val1=CMath.s_int(weaponTypes[wt][1]); break;}
+		for (final String[] weaponType : weaponTypes)
+			if(str1.startsWith(weaponType[0]))
+			{ val1=CMath.s_int(weaponType[1]); break;}
 		if(val1==0)
-			for(int wt=0;wt<weaponTypes.length;wt++)
-				if(name.toLowerCase().indexOf(weaponTypes[wt][0])>=0)
-				{ val1=CMath.s_int(weaponTypes[wt][1]); break;}
+			for (final String[] weaponType : weaponTypes)
+				if(name.toLowerCase().indexOf(weaponType[0])>=0)
+				{ val1=CMath.s_int(weaponType[1]); break;}
 		if((name.toUpperCase().endsWith("HAMMER"))&&(val1==4))
 			val1=11;
 		switch(val1)
@@ -2084,7 +2084,7 @@ public class Import extends StdCommand
 	{
 		int i=str.indexOf('d');
 		if(i<0) return 11;
-		int roll=CMath.s_int(str.substring(0,i).trim());
+		final int roll=CMath.s_int(str.substring(0,i).trim());
 		str=str.substring(i+1).trim();
 
 		i=str.indexOf('+');
@@ -2126,14 +2126,14 @@ public class Import extends StdCommand
 		{
 			if(areaMOBS.containsKey(OfThisID.substring(1)))
 			{
-				MOB M=(MOB)((MOB)areaMOBS.get(OfThisID.substring(1))).copyOf();
+				final MOB M=(MOB)((MOB)areaMOBS.get(OfThisID.substring(1))).copyOf();
 				M.setStartRoom(putInRoom);
 				M.setLocation(putInRoom);
 				return M;
 			}
 			if(doneMOBS.containsKey(OfThisID.substring(1)))
 			{
-				MOB M=(MOB)((MOB)doneMOBS.get(OfThisID.substring(1))).copyOf();
+				final MOB M=(MOB)((MOB)doneMOBS.get(OfThisID.substring(1))).copyOf();
 				M.setStartRoom(putInRoom);
 				M.setLocation(putInRoom);
 				return M;
@@ -2143,14 +2143,14 @@ public class Import extends StdCommand
 		{
 			if(areaMOBS.containsKey(OfThisID))
 			{
-				MOB M=(MOB)((MOB)areaMOBS.get(OfThisID)).copyOf();
+				final MOB M=(MOB)((MOB)areaMOBS.get(OfThisID)).copyOf();
 				M.setStartRoom(putInRoom);
 				M.setLocation(putInRoom);
 				return M;
 			}
 			if(doneMOBS.containsKey(OfThisID))
 			{
-				MOB M=(MOB)((MOB)doneMOBS.get(OfThisID)).copyOf();
+				final MOB M=(MOB)((MOB)doneMOBS.get(OfThisID)).copyOf();
 				M.setStartRoom(putInRoom);
 				M.setLocation(putInRoom);
 				return M;
@@ -2166,7 +2166,7 @@ public class Import extends StdCommand
 			else
 			if(mobData.get(m) instanceof String)
 			{
-				String s=(String)mobData.get(m);
+				final String s=(String)mobData.get(m);
 				if((!s.toUpperCase().trim().startsWith("#MOB"))&&(s.length()>0))
 					returnAnError(session,"Eating mob immaterial line: "+mobData.get(m),compileErrors,commands);
 				continue;
@@ -2174,7 +2174,7 @@ public class Import extends StdCommand
 			else
 				continue;
 
-			String mobID=eatNextLine(objV);
+			final String mobID=eatNextLine(objV);
 
 			if(isBadID(mobID))
 			{
@@ -2187,23 +2187,23 @@ public class Import extends StdCommand
 			if(!mobID.equals(OfThisID))
 				continue;
 
-			String simpleName=CMLib.coffeeFilter().safetyFilter(eatLineSquiggle(objV));
+			final String simpleName=CMLib.coffeeFilter().safetyFilter(eatLineSquiggle(objV));
 			String mobName=CMLib.coffeeFilter().safetyFilter(eatLineSquiggle(objV));
-			String mobDisplay=CMLib.coffeeFilter().safetyFilter(eatLineSquiggle(objV));
-			String mobDescription=CMLib.coffeeFilter().safetyFilter(eatLineSquiggle(objV));
+			final String mobDisplay=CMLib.coffeeFilter().safetyFilter(eatLineSquiggle(objV));
+			final String mobDescription=CMLib.coffeeFilter().safetyFilter(eatLineSquiggle(objV));
 			Race R=null;
 			boolean circleFormat=false;
 			if(nextLine(objV).endsWith("~"))
 			{
-				String raceName=eatLineSquiggle(objV);
+				final String raceName=eatLineSquiggle(objV);
 				R=CMClass.getRace(raceName);
 				if(R==null)
 					R=CMClass.findRace(raceName);
-				String lowerRaceName=raceName.toUpperCase();
+				final String lowerRaceName=raceName.toUpperCase();
 				if(R==null)
-					for(Enumeration<Race> r=CMClass.races();r.hasMoreElements();)
+					for(final Enumeration<Race> r=CMClass.races();r.hasMoreElements();)
 					{
-						Race R2=r.nextElement();
+						final Race R2=r.nextElement();
 						if(R2.name().toLowerCase().startsWith(lowerRaceName))
 						{
 							R=R2;
@@ -2211,9 +2211,9 @@ public class Import extends StdCommand
 						}
 					}
 				if(R==null)
-					for(Enumeration<Race> r=CMClass.races();r.hasMoreElements();)
+					for(final Enumeration<Race> r=CMClass.races();r.hasMoreElements();)
 					{
-						Race R2=r.nextElement();
+						final Race R2=r.nextElement();
 						if(R2.name().toLowerCase().endsWith(lowerRaceName))
 						{
 							R=R2;
@@ -2221,9 +2221,9 @@ public class Import extends StdCommand
 						}
 					}
 				if(R==null)
-					for(Enumeration<Race> r=CMClass.races();r.hasMoreElements();)
+					for(final Enumeration<Race> r=CMClass.races();r.hasMoreElements();)
 					{
-						Race R2=r.nextElement();
+						final Race R2=r.nextElement();
 						if(R2.name().toLowerCase().indexOf(lowerRaceName)>=0)
 						{
 							R=R2;
@@ -2235,8 +2235,8 @@ public class Import extends StdCommand
 			if(R==null)
 				R=CMClass.getRace("StdRace");
 
-			String codeStr1=eatNextLine(objV);
-			String codeStr2=eatNextLine(objV);
+			final String codeStr1=eatNextLine(objV);
+			final String codeStr2=eatNextLine(objV);
 			String codeStr3=eatNextLine(objV);
 			String codeStr4=eatNextLine(objV);
 			String codeStr5="";
@@ -2260,11 +2260,11 @@ public class Import extends StdCommand
 			}
 			if(mobName.length()==0)
 				mobName="Unknown";
-			long actFlag=getBitMask(codeStr1,0);
-			long affFlag=getBitMask(codeStr1,1);
+			final long actFlag=getBitMask(codeStr1,0);
+			final long affFlag=getBitMask(codeStr1,1);
 			int aliFlag=CMath.s_int(CMParms.getBit(codeStr1,2));
 			MOB M=CMClass.getMOB("GenMob");
-			String checkName=mobName.trim().toUpperCase();
+			final String checkName=mobName.trim().toUpperCase();
 			if(CMath.isSet(actFlag,14)
 			||(checkName.indexOf("GHOUL")>=0)
 			||(checkName.indexOf("GHAST")>=0)
@@ -2281,13 +2281,13 @@ public class Import extends StdCommand
 				M=CMClass.getMOB("GenRideable");
 			for(int i=0;i<shopData.size();i++)
 			{
-				String s=((String)shopData.get(i)).trim();
+				final String s=((String)shopData.get(i)).trim();
 				if(("#"+s).startsWith(OfThisID+" ")||("#"+s).startsWith(OfThisID+"\t")||("#"+s).startsWith(OfThisID+"	"))
 				{
 					M=CMClass.getMOB("GenShopkeeper");
-					int i1=CMath.s_int(CMParms.getBit(s,1));
-					int i2=CMath.s_int(CMParms.getBit(s,2));
-					int i3=CMath.s_int(CMParms.getBit(s,3));
+					final int i1=CMath.s_int(CMParms.getBit(s,1));
+					final int i2=CMath.s_int(CMParms.getBit(s,2));
+					final int i3=CMath.s_int(CMParms.getBit(s,3));
 					//int i4=CMath.s_int(CMParms.getBit(s,4));
 					int whatIsell=ShopKeeper.DEAL_INVENTORYONLY;
 					if((i1>4)&&(i1<8)&&(i2>4)&&(i2<8)&&(i3>4)&&(i3<8))
@@ -2410,9 +2410,9 @@ public class Import extends StdCommand
 				M.addNonUninvokableEffect(CMClass.getAbility("Prayer_Curse"));
 			if(CMath.isSet(affFlag,11))
 			{
-				for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
+				for(final Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 				{
-					Ability A=a.nextElement();
+					final Ability A=a.nextElement();
 					if(A.ID().startsWith("Specialization"))
 						M.addNonUninvokableEffect((Ability)A.newInstance());
 				}
@@ -2429,7 +2429,7 @@ public class Import extends StdCommand
 
 			if(CMath.isSet(affFlag,15))
 			{
-				Ability A=(Ability)CMClass.getAbility("Thief_Sneak").copyOf();
+				final Ability A=(Ability)CMClass.getAbility("Thief_Sneak").copyOf();
 				A.setProficiency(100);
 				M.addAbility(A);
 			}
@@ -2577,10 +2577,10 @@ public class Import extends StdCommand
 
 			if(circleFormat)
 			{
-				long off=getBitMask(codeStr3,0);
-				long imm=getBitMask(codeStr3,1);
-				long res=getBitMask(codeStr3,2);
-				int size=CMath.s_int(CMParms.getCleanBit(codeStr5,2).trim());
+				final long off=getBitMask(codeStr3,0);
+				final long imm=getBitMask(codeStr3,1);
+				final long res=getBitMask(codeStr3,2);
+				final int size=CMath.s_int(CMParms.getCleanBit(codeStr5,2).trim());
 				switch(size)
 				{
 				case 0: M.basePhyStats().setWeight(1); break;
@@ -2591,7 +2591,7 @@ public class Import extends StdCommand
 				case 5: M.basePhyStats().setWeight(2000); break;
 				}
 				// ignore the above, coffeemud does it better!
-				int numAbiles=M.numAbilities();
+				final int numAbiles=M.numAbilities();
 				M.baseCharStats().getMyRace().startRacing(M,false);
 				//if(CMath.isSet(off,0)) // no area killers in coffeemud
 				//if(CMath.isSet(off,1)) // no circling in coffeemud
@@ -2632,7 +2632,7 @@ public class Import extends StdCommand
 					Behavior guardian=CMClass.getBehavior("GoodGuardian");
 					for(int b=M.numBehaviors()-1;b>=0;b--)
 					{
-						Behavior B=M.fetchBehavior(b);
+						final Behavior B=M.fetchBehavior(b);
 						if((B!=null)&&(CMath.bset(B.flags(),Behavior.FLAG_MOBILITY)))
 						{
 							if(guardian.ID().equals("GoodGuardian"))
@@ -2654,7 +2654,7 @@ public class Import extends StdCommand
 				if((M.numAllAbilities())>numAbiles)
 					M.addBehavior(CMClass.getBehavior("CombatAbilities"));
 
-				Ability resist=CMClass.getAbility("Prop_Resistance");
+				final Ability resist=CMClass.getAbility("Prop_Resistance");
 				if((CMath.isSet(res,0))||(CMath.isSet(imm,0)))
 					resist.setMiscText(resist.text()+" teleport");
 				if((CMath.isSet(res,1))||(CMath.isSet(imm,1)))
@@ -2724,7 +2724,7 @@ public class Import extends StdCommand
 				else
 				if(s.startsWith("X "))
 				{
-					String codeLine=eatLineSquiggle(objV);
+					final String codeLine=eatLineSquiggle(objV);
 					Behavior B=M.fetchBehavior("Sounder");
 					if(B==null)
 					{
@@ -2755,14 +2755,14 @@ public class Import extends StdCommand
 				String rest=null;
 				if(s.startsWith("#")&&(s.length()>1)&&(CMath.isNumber(""+s.charAt(1))))
 				{
-					String newS="M "+s.substring(1);
-					StringBuilder b=new StringBuilder("");
+					final String newS="M "+s.substring(1);
+					final StringBuilder b=new StringBuilder("");
 					while(s.indexOf('~')<=0)
 					{
 						mp++;
 						if(mp<mobProgData.size())
 						{
-							String s1=(String)mobProgData.get(mp);
+							final String s1=(String)mobProgData.get(mp);
 							//s1=CMStrings.replaceAll(s1, ";", "\\;");
 							b.append(s1);
 							//b.append(";");
@@ -2776,11 +2776,11 @@ public class Import extends StdCommand
 				}
 				if(s.startsWith("M "))
 				{
-					String MOBID=CMParms.getBit(s,1);
+					final String MOBID=CMParms.getBit(s,1);
 					if(!("#"+MOBID).equals(OfThisID))
 						continue;
 
-					String mobprg=CMParms.getBit(s,2).toUpperCase().trim();
+					final String mobprg=CMParms.getBit(s,2).toUpperCase().trim();
 					if(mobprg.equals("JANITOR.PRG"))
 						M.addBehavior(CMClass.getBehavior("Scavenger"));
 					else
@@ -2817,11 +2817,11 @@ public class Import extends StdCommand
 					{
 						try
 						{
-							CMFile F2=new CMFile(areaFileName,M,CMFile.FLAG_LOGERRORS);
+							final CMFile F2=new CMFile(areaFileName,M,CMFile.FLAG_LOGERRORS);
 							if((F2.exists())&&(!F2.isDirectory()))
 							{
-								int x=F2.getAbsolutePath().lastIndexOf('/');
-								String path=F2.getAbsolutePath().substring(0,x)+"/"+mobprg;
+								final int x=F2.getAbsolutePath().lastIndexOf('/');
+								final String path=F2.getAbsolutePath().substring(0,x)+"/"+mobprg;
 								StringBuffer buf=new CMFile(path,M,CMFile.FLAG_LOGERRORS).text();
 								if((buf==null)||(buf.length()==0))
 									returnAnError(session,"Unknown MobPrg: "+mobprg,compileErrors,commands);
@@ -2832,7 +2832,7 @@ public class Import extends StdCommand
 									else
 									if(buf.indexOf("\r")>0)
 										buf=new StringBuffer(CMStrings.replaceAll(buf.toString(),"\n",""));
-									List<String> V=Resources.getFileLineVector(buf);
+									final List<String> V=Resources.getFileLineVector(buf);
 									while(V.size()>0)
 									{
 										s=nextLine(V);
@@ -2855,7 +2855,7 @@ public class Import extends StdCommand
 									}
 								}
 							}
-						}catch(Exception e)
+						}catch(final Exception e)
 						{
 							returnAnError(session,"Unknown MobPrg: "+mobprg,compileErrors,commands);
 						}
@@ -2876,21 +2876,21 @@ public class Import extends StdCommand
 			}
 			if(scriptStuff.length()>0)
 			{
-				Behavior S=CMClass.getBehavior("Scriptable");
+				final Behavior S=CMClass.getBehavior("Scriptable");
 				S.setParms(scriptStuff);
 				M.addBehavior(S);
 			}
 
 			for(int mp=0;mp<specialData.size();mp++)
 			{
-				String s=(String)specialData.get(mp);
+				final String s=(String)specialData.get(mp);
 				if(s.startsWith("M "))
 				{
-					String MOBID=CMParms.getBit(s,1);
+					final String MOBID=CMParms.getBit(s,1);
 					if(!("#"+MOBID).equals(OfThisID))
 						continue;
 
-					String special=CMParms.getBit(s,2).toUpperCase().trim();
+					final String special=CMParms.getBit(s,2).toUpperCase().trim();
 					if((special.equals("SPEC_CAST_MAGE"))
 					||(special.equals("SPEC_WANDERER")))
 						M.addBehavior(CMClass.getBehavior("Mageness"));
@@ -3129,14 +3129,14 @@ public class Import extends StdCommand
 					else
 					if(special.equals("SPEC_OGRE_MEMBER"))
 					{
-						Behavior B=CMClass.getBehavior("ROMGangMember");
+						final Behavior B=CMClass.getBehavior("ROMGangMember");
 						B.setParms("Ogre");
 						M.addBehavior(B);
 					}
 					else
 					if(special.equals("SPEC_TROLL_MEMBER"))
 					{
-						Behavior B=CMClass.getBehavior("ROMGangMember");
+						final Behavior B=CMClass.getBehavior("ROMGangMember");
 						B.setParms("Troll");
 						M.addBehavior(B);
 					}
@@ -3156,7 +3156,7 @@ public class Import extends StdCommand
 			}
 			for(int a=0;a<M.numAbilities();a++)
 			{
-				Ability A=M.fetchAbility(a);
+				final Ability A=M.fetchAbility(a);
 				if(A!=null)
 					A.autoInvocation(M);
 			}
@@ -3168,8 +3168,8 @@ public class Import extends StdCommand
 			Behavior B=M.fetchBehavior("CombatAbilities");
 			if(B!=null)
 			{
-				Behavior BB=B;
-				for(Enumeration<Behavior> e=M.behaviors();e.hasMoreElements();)
+				final Behavior BB=B;
+				for(final Enumeration<Behavior> e=M.behaviors();e.hasMoreElements();)
 				{
 					B=e.nextElement();
 					if((B!=null)&&(B.getClass().getSuperclass().getName().endsWith("CombatAbilities")))
@@ -3196,8 +3196,8 @@ public class Import extends StdCommand
 
 	private static void applyItemApplyCode(String codesLine, Item I, Environmental adjuster, Environmental caster, Environmental resister)
 	{
-		int num=CMath.s_int(CMParms.getCleanBit(codesLine,0).trim());
-		int val=CMath.s_int(CMParms.getCleanBit(codesLine,1).trim());
+		final int num=CMath.s_int(CMParms.getCleanBit(codesLine,0).trim());
+		final int val=CMath.s_int(CMParms.getCleanBit(codesLine,1).trim());
 		switch(num)
 		{
 		case 1:
@@ -3319,14 +3319,14 @@ public class Import extends StdCommand
 			else
 			if(objectData.get(o) instanceof String)
 			{
-				String s=(String)objectData.get(o);
+				final String s=(String)objectData.get(o);
 				if((!s.toUpperCase().trim().startsWith("#OBJ"))&&(s.length()>0))
 					returnAnError(session,"Eating immaterial line: "+objectData.get(o)+", area="+areaName,compileErrors,commands);
 				continue;
 			}
 			else
 				continue;
-			String objectID=eatNextLine(objV);
+			final String objectID=eatNextLine(objV);
 			if(isBadID(objectID))
 			{
 				Log.errOut("IMPORT","Eating bad object id "+objectID);
@@ -3338,15 +3338,15 @@ public class Import extends StdCommand
 			if(!objectID.equals(OfThisID))
 				continue;
 
-			String simpleName=CMLib.coffeeFilter().safetyFilter(eatLineSquiggle(objV));
+			final String simpleName=CMLib.coffeeFilter().safetyFilter(eatLineSquiggle(objV));
 			String objectName=CMLib.coffeeFilter().safetyFilter(eatLineSquiggle(objV));
-			String objectDisplay=CMLib.coffeeFilter().safetyFilter(eatLineSquiggle(objV));
+			final String objectDisplay=CMLib.coffeeFilter().safetyFilter(eatLineSquiggle(objV));
 			String objectDescription="";
 			if((nextLine(objV).indexOf('~')>=0)||((nextLine(objV).length()>0)&&(!Character.isDigit(nextLine(objV).charAt(0)))))
 				objectDescription=CMLib.coffeeFilter().safetyFilter(eatLineSquiggle(objV));
-			String codeStr1=eatNextLine(objV);
+			final String codeStr1=eatNextLine(objV);
 			String codeStr2=eatNextLine(objV);
-			String codeStr3=eatNextLine(objV);
+			final String codeStr3=eatNextLine(objV);
 
 			if((!objectID.startsWith("#"))
 			||((objectName.length()==0)
@@ -3361,7 +3361,7 @@ public class Import extends StdCommand
 			if(objectName.length()==0)
 				objectName="Unknown";
 			boolean circleForm=false;
-			String obj=CMParms.getBit(codeStr1,0);
+			final String obj=CMParms.getBit(codeStr1,0);
 			if((obj.trim().length()>1)&&(Character.isLetter(obj.charAt(0))))
 				circleForm=true;
 			int objType=CMath.s_int(obj);
@@ -3403,15 +3403,15 @@ public class Import extends StdCommand
 			{
 				if(obj.equalsIgnoreCase("jukebox"))
 					continue;// NO JUKE BOXES!
-				for(int it=0;it<itemTypes.length;it++)
-					if(obj.equalsIgnoreCase(itemTypes[it][0]))
+				for (final String[] itemType : itemTypes)
+					if(obj.equalsIgnoreCase(itemType[0]))
 					{
-						objType=CMath.s_int(itemTypes[it][1]);
+						objType=CMath.s_int(itemType[1]);
 						break;
 					}
 			}
-			long extraFlag=getBitMask(codeStr1,1);
-			long wearFlag=getBitMask(codeStr1,2);
+			final long extraFlag=getBitMask(codeStr1,1);
+			final long wearFlag=getBitMask(codeStr1,2);
 
 			Ability adjuster=CMClass.getAbility("Prop_HaveAdjuster");
 			switch(objType)
@@ -3430,7 +3430,7 @@ public class Import extends StdCommand
 			boolean forgiveZeroes=false;
 			if((codeStr2.indexOf('~')>=0)&&(codeStr2.lastIndexOf('~')>codeStr2.indexOf('~')))
 			{
-				List<String> V=CMParms.parseSquiggles(codeStr2);
+				final List<String> V=CMParms.parseSquiggles(codeStr2);
 				if(V.size()==4)
 				{
 					forgiveZeroes=true;
@@ -3445,14 +3445,14 @@ public class Import extends StdCommand
 			}
 
 
-			String str1=CMParms.getBit(codeStr2,0);
-			String str2=CMParms.getBit(codeStr2,1);
+			final String str1=CMParms.getBit(codeStr2,0);
+			final String str2=CMParms.getBit(codeStr2,1);
 			String str3=CMParms.getBit(codeStr2,2);
-			String str4=CMParms.getBit(codeStr2,3);
-			int val1=(int)getBitMask(codeStr2,0);
-			int val2=(int)getBitMask(codeStr2,1);
-			int val3=(int)getBitMask(codeStr2,2);
-			int val4=(int)getBitMask(codeStr2,3);
+			final String str4=CMParms.getBit(codeStr2,3);
+			final int val1=(int)getBitMask(codeStr2,0);
+			final int val2=(int)getBitMask(codeStr2,1);
+			final int val3=(int)getBitMask(codeStr2,2);
+			final int val4=(int)getBitMask(codeStr2,3);
 			Item I=null;
 			switch(objType)
 			{
@@ -3646,7 +3646,7 @@ public class Import extends StdCommand
 						 if(R!=null)
 							 I.setReadableText(R.roomID());
 						 else
-						 for(Enumeration e=CMLib.map().rooms();e.hasMoreElements();)
+						 for(final Enumeration e=CMLib.map().rooms();e.hasMoreElements();)
 						 {
 							 R=(Room)e.nextElement();
 							 if(R.roomID().endsWith("#"+str4))
@@ -3717,9 +3717,9 @@ public class Import extends StdCommand
 				adjuster=CMClass.getAbility("Prop_WearAdjuster");
 				if(I.ID().equals("GenItem"))
 				{
-					long wear=I.rawProperLocationBitmap();
-					boolean bool=I.rawLogicalAnd();
-					boolean gettable=CMLib.flags().isGettable(I);
+					final long wear=I.rawProperLocationBitmap();
+					final boolean bool=I.rawLogicalAnd();
+					final boolean gettable=CMLib.flags().isGettable(I);
 					I=CMClass.getArmor("GenArmor");
 					I.setRawProperLocationBitmap(wear);
 					I.setRawLogicalAnd(bool);
@@ -3737,7 +3737,7 @@ public class Import extends StdCommand
 			}
 			if(CMParms.numBits(codeStr3)>2)
 			{
-				int level=CMath.s_int(CMParms.getCleanBit(codeStr3,0).trim());
+				final int level=CMath.s_int(CMParms.getCleanBit(codeStr3,0).trim());
 				I.basePhyStats().setLevel(level);
 				I.basePhyStats().setWeight(CMath.s_int(CMParms.getCleanBit(codeStr3,1).trim()) / 10);
 				if(I.basePhyStats().weight()<1) I.basePhyStats().setWeight(1);
@@ -3747,7 +3747,7 @@ public class Import extends StdCommand
 			}
 			else
 			{
-				int level=CMath.s_int(codeStr3);
+				final int level=CMath.s_int(codeStr3);
 				I.basePhyStats().setLevel(level);
 			}
 
@@ -3765,10 +3765,10 @@ public class Import extends StdCommand
 			}
 
 			boolean materialchange=false;
-			for(int ot=0;ot<objDescs.length;ot++)
-				if(objectDescription.equalsIgnoreCase(objDescs[ot][0]))
+			for (final String[] objDesc : objDescs)
+				if(objectDescription.equalsIgnoreCase(objDesc[0]))
 				{
-					I.setMaterial(CMath.s_int(objDescs[ot][1]));
+					I.setMaterial(CMath.s_int(objDesc[1]));
 					materialchange=true;
 					break;
 				}
@@ -3828,7 +3828,7 @@ public class Import extends StdCommand
 			if(CMath.isSet(extraFlag,8))
 				I.addNonUninvokableEffect(CMClass.getAbility("Prayer_Bless"));
 
-			Ability prop_WearZapper = CMClass.getAbility("Prop_WearZapper");
+			final Ability prop_WearZapper = CMClass.getAbility("Prop_WearZapper");
 
 			if(CMath.isSet(extraFlag,9))
 				prop_WearZapper.setMiscText(prop_WearZapper.text()+" -good");
@@ -3885,7 +3885,7 @@ public class Import extends StdCommand
 					boolean squiggleFound=false;
 					for(int y=0;y<objV.size();y++)
 					{
-						String ts=objV.get(y);
+						final String ts=objV.get(y);
 						if(ts.indexOf('~')>=0)
 						{
 							squiggleFound=true;
@@ -3903,7 +3903,7 @@ public class Import extends StdCommand
 					}
 					if(!squiggleFound)
 						objV.add("~");
-					String desc=CMLib.coffeeFilter().safetyFilter(eatLineSquiggle(objV));
+					final String desc=CMLib.coffeeFilter().safetyFilter(eatLineSquiggle(objV));
 					I.setDescription(I.description()+desc);
 					if(I.ID().equals("GenReadable"))
 						I.setReadableText(fixReadableContent(I.description()));
@@ -3938,7 +3938,7 @@ public class Import extends StdCommand
 				if(codeLine.equals("A"))
 				{
 					eatNextLine(objV);
-					String codesLine=eatNextLine(objV);
+					final String codesLine=eatNextLine(objV);
 					if(CMParms.numBits(codesLine)!=2)
 						returnAnError(session,"Malformed 'A' code for item "+objectID+", "+I.Name()+": "+codesLine+", area="+areaName,compileErrors,commands);
 					else
@@ -3948,17 +3948,17 @@ public class Import extends StdCommand
 				if(codeLine.equals("F"))
 				{
 					eatNextLine(objV);
-					String codesLine=eatNextLine(objV);
+					final String codesLine=eatNextLine(objV);
 					if(CMParms.numBits(codesLine)!=4)
 						returnAnError(session,"Malformed 'F' code for item "+objectID+", "+I.Name()+": "+codesLine+", area="+areaName,compileErrors,commands);
 					else
 					{
-						String codeType=CMParms.getBit(codesLine,0);
+						final String codeType=CMParms.getBit(codesLine,0);
 						if(codeType.equals("V"))
 						{
-							long res=getBitMask(codesLine,3);
-							long imm=getBitMask(codesLine,3);
-							String[] resistances={
+							final long res=getBitMask(codesLine,3);
+							final long imm=getBitMask(codesLine,3);
+							final String[] resistances={
 								" teleport",
 								" mind",
 								" magic",
@@ -3992,7 +3992,7 @@ public class Import extends StdCommand
 						{
 							int dis=0;
 							int sense=0;
-							long codeBits=getBitMask(codesLine,3);
+							final long codeBits=getBitMask(codesLine,3);
 							if(CMath.isSet(codeBits,0))
 								sense=sense|PhyStats.CAN_NOT_SEE;
 							if(CMath.isSet(codeBits,1))
@@ -4063,9 +4063,9 @@ public class Import extends StdCommand
 						}
 						else
 						{
-							long res=getBitMask(codesLine,3);
-							long imm=getBitMask(codesLine,3);
-							String[] resistances={
+							final long res=getBitMask(codesLine,3);
+							final long imm=getBitMask(codesLine,3);
+							final String[] resistances={
 								" teleport",
 								" mind",
 								" magic",
@@ -4155,7 +4155,7 @@ public class Import extends StdCommand
 				{
 					eatNextLine(objV); // extra
 					eatLineSquiggle(objV); // key word
-					String desc=CMLib.coffeeFilter().safetyFilter(eatLineSquiggle(objV)); // description
+					final String desc=CMLib.coffeeFilter().safetyFilter(eatLineSquiggle(objV)); // description
 					I.setDescription(I.description()+desc);
 					if(I.ID().equals("GenReadable"))
 						I.setReadableText(fixReadableContent(I.description()));
@@ -4164,7 +4164,7 @@ public class Import extends StdCommand
 				if(codeLine.equals("APPLY"))
 				{
 					eatNextLine(objV); // apply
-					String codesLine = eatNextLine(objV);
+					final String codesLine = eatNextLine(objV);
 					if(CMParms.numBits(codesLine)!=2)
 						returnAnError(session,"Malformed 'A' code for item "+objectID+", "+I.Name()+": "+codesLine+", area="+areaName,compileErrors,commands);
 					else
@@ -4174,7 +4174,7 @@ public class Import extends StdCommand
 				if(codeLine.startsWith("A "))
 				{
 					eatNextLine(objV); // apply
-					String codesLine = codeLine.substring(2).trim();
+					final String codesLine = codeLine.substring(2).trim();
 					if(CMParms.numBits(codesLine)!=2)
 						returnAnError(session,"Malformed 'A' code for item "+objectID+", "+I.Name()+": "+codesLine+", area="+areaName,compileErrors,commands);
 					else
@@ -4212,8 +4212,8 @@ public class Import extends StdCommand
 
 	public static Room applyRoomCodeBits(Room R, Room lastRoom, Map<Room,Room> petShops, long codeBits, boolean circleFormat)
 	{
-		Ability prop_RoomCapacity=CMClass.getAbility("Prop_ReqCapacity");
-		Ability prop_RoomLevels=CMClass.getAbility("Prop_ReqLevels");
+		final Ability prop_RoomCapacity=CMClass.getAbility("Prop_ReqCapacity");
+		final Ability prop_RoomLevels=CMClass.getAbility("Prop_ReqLevels");
 
 		if(CMath.isSet(codeBits,21)) // underwater room
 			R=changeRoomClass(R,"UnderWater");
@@ -4401,15 +4401,15 @@ public class Import extends StdCommand
 	{
 		boolean prompt=true;
 		boolean nodelete=false;
-		Hashtable doneItems=new Hashtable();
-		Hashtable doneRooms=new Hashtable();
-		Hashtable doneMOBS=new Hashtable();
-		Vector nextResetData=new Vector();
-		Hashtable laterLinks=new Hashtable();
+		final Hashtable doneItems=new Hashtable();
+		final Hashtable doneRooms=new Hashtable();
+		final Hashtable doneMOBS=new Hashtable();
+		final Vector nextResetData=new Vector();
+		final Hashtable laterLinks=new Hashtable();
 		boolean multiArea=false;
-		List<CMObject> custom=new Vector<CMObject>();
-		Hashtable externalFiles=new Hashtable();
-		Set<String> customBotherChecker=new HashSet();
+		final List<CMObject> custom=new Vector<CMObject>();
+		final Hashtable externalFiles=new Hashtable();
+		final Set<String> customBotherChecker=new HashSet();
 		boolean compileErrors=false;
 		String areaType=null;
 		commands.removeElementAt(0);
@@ -4463,36 +4463,36 @@ public class Import extends StdCommand
 			// continue pre-processing
 			for(int areaFile=commands.size()-1;areaFile>=0;areaFile--)
 			{
-				String areaFileName=(String)commands.elementAt(areaFile);
-				CMFile F=new CMFile(areaFileName,mob,CMFile.FLAG_LOGERRORS);
-				CMFile[] FF=F.listFiles();
+				final String areaFileName=(String)commands.elementAt(areaFile);
+				final CMFile F=new CMFile(areaFileName,mob,CMFile.FLAG_LOGERRORS);
+				final CMFile[] FF=F.listFiles();
 				if((FF!=null)&&(FF.length>0))
 				{
-					for(int f=0;f<FF.length;f++)
-						commands.addElement(FF[f].getAbsolutePath());
+					for (final CMFile element : FF)
+						commands.addElement(element.getAbsolutePath());
 					commands.removeElementAt(areaFile);
 				}
 			}
 		}
 
-		Vector mobData=new Vector(); // outside the for loop -- why?
-		Vector objectData=new Vector(); // outside the for loop -- why?
+		final Vector mobData=new Vector(); // outside the for loop -- why?
+		final Vector objectData=new Vector(); // outside the for loop -- why?
 
 		multiArea=commands.size()>1;
-		HashSet<String> baseFilesAlreadyDone=new HashSet<String>();
+		final HashSet<String> baseFilesAlreadyDone=new HashSet<String>();
 		while(commands.size()>0)
 		{
-			Object O=commands.remove(0);
-		Vector areaData=new Vector();
-		Vector roomData=new Vector();
-		Vector resetData=new Vector();
-		Vector mobProgData=new Vector();
-		Vector roomProgData=new Vector();
-		Vector objProgData=new Vector();
-		Vector shopData=new Vector();
-		Vector specialData=new Vector();
-		Vector newRooms=new Vector();
-		Vector socialData=new Vector();
+			final Object O=commands.remove(0);
+		final Vector areaData=new Vector();
+		final Vector roomData=new Vector();
+		final Vector resetData=new Vector();
+		final Vector mobProgData=new Vector();
+		final Vector roomProgData=new Vector();
+		final Vector objProgData=new Vector();
+		final Vector shopData=new Vector();
+		final Vector specialData=new Vector();
+		final Vector newRooms=new Vector();
+		final Vector socialData=new Vector();
 		Vector reLinkTable=null;
 
 		StringBuffer buf=null;
@@ -4513,14 +4513,14 @@ public class Import extends StdCommand
 		else
 		if(O instanceof java.util.zip.ZipInputStream)
 		{
-			java.util.zip.ZipInputStream i=(java.util.zip.ZipInputStream)O;
-			java.util.zip.ZipEntry entry=i.getNextEntry();
+			final java.util.zip.ZipInputStream i=(java.util.zip.ZipInputStream)O;
+			final java.util.zip.ZipEntry entry=i.getNextEntry();
 			if(entry==null)
 			{
 				i.close();
 				continue;
 			}
-			byte[] data = new byte[(int)entry.getSize()];
+			final byte[] data = new byte[(int)entry.getSize()];
 			int dex=0;
 			int read=i.read(data);
 			while((read>=0)&&(dex < entry.getSize()))
@@ -4544,13 +4544,13 @@ public class Import extends StdCommand
 		else
 		{
 			areaFileName=(String)O;
-			int x=areaFileName.lastIndexOf('.');
+			final int x=areaFileName.lastIndexOf('.');
 			final String ext=(x>0)?areaFileName.toLowerCase().substring(x+1):"";
 			// read in the .are file
 
 			if(ext.equalsIgnoreCase("zip"))
 			{
-				java.util.zip.ZipInputStream i=new java.util.zip.ZipInputStream(new CMFile(areaFileName,mob,CMFile.FLAG_LOGERRORS).getRawStream());
+				final java.util.zip.ZipInputStream i=new java.util.zip.ZipInputStream(new CMFile(areaFileName,mob,CMFile.FLAG_LOGERRORS).getRawStream());
 				if(commands.size()==0)
 					commands.add(i);
 				else
@@ -4572,11 +4572,11 @@ public class Import extends StdCommand
 				CF=new CMFile(areaFileName,mob,CMFile.FLAG_LOGERRORS);
 				buf=CF.text();
 				final StringBuffer finalBuf=new StringBuffer("");
-				String eoln=CMStrings.determineEOLN(buf);
+				final String eoln=CMStrings.determineEOLN(buf);
 				String resetsStr="";
 				if((buf!=null)&&(buf.length()>0))
 				{
-					int wldDivDex=buf.indexOf(eoln+eoln);
+					final int wldDivDex=buf.indexOf(eoln+eoln);
 					if(wldDivDex<0)
 						return returnAnError(session,"Malformed Zone at: '"+areaFileName+"'!",compileErrors,commands);
 					int startDex=0;
@@ -4663,7 +4663,7 @@ public class Import extends StdCommand
 					buf=CF.textUnformatted();
 				if(buf == null)
 					buf = new StringBuffer("");
-				List<List<XMLLibrary.XMLpiece>> areas=new Vector();
+				final List<List<XMLLibrary.XMLpiece>> areas=new Vector();
 				if(session!=null)
 					session.rawPrint("Unpacking area(s) from file: '"+areaFileName+"'...");
 				String error=CMLib.coffeeMaker().fillAreasVectorFromXML(buf.toString(),areas,custom,externalFiles);
@@ -4673,19 +4673,19 @@ public class Import extends StdCommand
 				if(session!=null)
 					session.rawPrintln("!");
 				if(session!=null) session.println("Found "+areas.size()+" areas.");
-				int num=areas.size();
+				final int num=areas.size();
 				int a=0;
 				while(areas.size()>0)
 				{
 					if(session!=null)
 						session.rawPrint("Unpacking area #"+(a+1)+"/"+num+"...");
-					List<XMLLibrary.XMLpiece> area=areas.get(0);
+					final List<XMLLibrary.XMLpiece> area=areas.get(0);
 					error=CMLib.coffeeMaker().unpackAreaFromXML(area,session,areaType,true);
 					if(session!=null)
 						session.rawPrintln("!");
 					if(error.startsWith("Area Exists: "))
 					{
-						String areaName=error.substring(13).trim();
+						final String areaName=error.substring(13).trim();
 						if((nodelete)&&(!prompt))
 							return returnAnError(session,"Area '"+areaName+"' already exists.",compileErrors,commands);
 						else
@@ -4697,16 +4697,16 @@ public class Import extends StdCommand
 							{
 								try
 								{
-									for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
+									for(final Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 									{
-										Room R=(Room)r.nextElement();
+										final Room R=(Room)r.nextElement();
 										if((R!=null)&&(!R.getArea().Name().equalsIgnoreCase(areaName)))
 										{
 											R.bringMobHere(mob,true);
 											break;
 										}
 									}
-								}catch(NoSuchElementException e){}
+								}catch(final NoSuchElementException e){}
 							}
 							if(!temporarilyDeleteArea(mob,reLinkTable,areaName))
 								return false;
@@ -4741,7 +4741,7 @@ public class Import extends StdCommand
 					buf = new StringBuffer("");
 				if(session!=null)
 					session.rawPrint("Unpacking area from file: '"+areaFileName+"'...");
-				Vector areaD=new Vector();
+				final Vector areaD=new Vector();
 				String error=CMLib.coffeeMaker().fillAreaAndCustomVectorFromXML(buf.toString(),areaD,custom,externalFiles);
 				if(error.length()==0) importCustomObjects(mob,custom,customBotherChecker,!prompt,nodelete);
 				if(error.length()==0) importCustomFiles(mob,externalFiles,customBotherChecker,!prompt,nodelete);
@@ -4751,7 +4751,7 @@ public class Import extends StdCommand
 					session.rawPrintln("!");
 				if(error.startsWith("Area Exists: "))
 				{
-					String areaName=error.substring(13).trim();
+					final String areaName=error.substring(13).trim();
 					if((nodelete)&&(!prompt))
 						return returnAnError(session,"Area '"+areaName+"' already exists.",compileErrors,commands);
 					else
@@ -4796,7 +4796,7 @@ public class Import extends StdCommand
 					error=CMLib.coffeeMaker().unpackRoomFromXML(buf.toString(),true);
 				if(error.startsWith("Room Exists: "))
 				{
-					Room R=CMLib.map().getRoom(error.substring(13).trim());
+					final Room R=CMLib.map().getRoom(error.substring(13).trim());
 					if(R!=null)
 					{
 						if((nodelete)&&(!prompt))
@@ -4804,18 +4804,18 @@ public class Import extends StdCommand
 						reLinkTable=new Vector();
 						try
 						{
-							for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
+							for(final Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 							{
-								Room R2=(Room)r.nextElement();
+								final Room R2=(Room)r.nextElement();
 								if(R2!=R)
 								for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 								{
-									Room dirR=R2.rawDoors()[d];
+									final Room dirR=R2.rawDoors()[d];
 									if((dirR!=null)&&(dirR==R))
 										reLinkTable.addElement(R2.roomID()+"/"+d+"/"+dirR.roomID());
 								}
 							}
-						}catch(NoSuchElementException e){}
+						}catch(final NoSuchElementException e){}
 						CMLib.map().obliterateRoom(R);
 					}
 					error=CMLib.coffeeMaker().unpackRoomFromXML(buf.toString(),true);
@@ -4840,7 +4840,7 @@ public class Import extends StdCommand
 					buf = new StringBuffer("");
 				if(session!=null)
 					session.rawPrint("Unpacking mobs from file: '"+areaFileName+"'...");
-				Vector mobs=new Vector();
+				final Vector mobs=new Vector();
 				String error=CMLib.coffeeMaker().fillCustomVectorFromXML(buf.toString(),custom,externalFiles);
 				if(error.length()==0) importCustomObjects(mob,custom,customBotherChecker,!prompt,nodelete);
 				if(error.length()==0) importCustomFiles(mob,externalFiles,customBotherChecker,!prompt,nodelete);
@@ -4853,7 +4853,7 @@ public class Import extends StdCommand
 					return returnAnError(session,"You must be in a room to import mobs.",compileErrors,commands);
 				for(int m=0;m<mobs.size();m++)
 				{
-					MOB M=(MOB)mobs.elementAt(m);
+					final MOB M=(MOB)mobs.elementAt(m);
 					M.setStartRoom(mob.location());
 					M.setLocation(mob.location());
 					M.bringToLife(mob.location(),true);
@@ -4877,8 +4877,8 @@ public class Import extends StdCommand
 					buf = new StringBuffer("");
 				if(session!=null)
 					session.rawPrint("Unpacking players from file: '"+areaFileName+"'...");
-				List<MOB> mobs=new Vector();
-				List<PlayerAccount> accounts=new Vector();
+				final List<MOB> mobs=new Vector();
+				final List<PlayerAccount> accounts=new Vector();
 				String error=CMLib.coffeeMaker().fillCustomVectorFromXML(buf.toString(),custom,externalFiles);
 				if(error.length()==0) importCustomObjects(mob,custom,customBotherChecker,!prompt,nodelete);
 				if(error.length()==0) importCustomFiles(mob,externalFiles,customBotherChecker,!prompt,nodelete);
@@ -4894,7 +4894,7 @@ public class Import extends StdCommand
 				{
 					for(int m=0;m<accounts.size();m++)
 					{
-						PlayerAccount A=accounts.get(m);
+						final PlayerAccount A=accounts.get(m);
 						for(int af=0;af<commands.size();af++)
 							if((commands.elementAt(af) instanceof String)
 							&&(A.getAccountName().equalsIgnoreCase((String)commands.elementAt(af))))
@@ -4907,7 +4907,7 @@ public class Import extends StdCommand
 				else
 				for(int m=0;m<mobs.size();m++)
 				{
-					MOB M=mobs.get(m);
+					final MOB M=mobs.get(m);
 					for(int af=0;af<commands.size();af++)
 						if((commands.elementAt(af) instanceof String)
 						&&(M.Name().equalsIgnoreCase((String)commands.elementAt(af))))
@@ -4921,7 +4921,7 @@ public class Import extends StdCommand
 					commands.removeElement(names.elementAt(n));
 				for(int m=0;m<accounts.size();m++)
 				{
-					PlayerAccount A=accounts.get(m);
+					final PlayerAccount A=accounts.get(m);
 					if(CMLib.players().accountExists(A.getAccountName()))
 					{
 						if(!prompt)
@@ -4942,7 +4942,7 @@ public class Import extends StdCommand
 				}
 				for(int m=0;m<mobs.size();m++)
 				{
-					MOB M=mobs.get(m);
+					final MOB M=mobs.get(m);
 					if(names!=null)
 					{
 						boolean found=false;
@@ -4971,7 +4971,7 @@ public class Import extends StdCommand
 					CMLib.players().addPlayer(M);
 					Log.sysOut("Import","Imported user: "+M.Name());
 					CMLib.login().notifyFriends(M,"^X"+M.Name()+" has just been created.^.^?");
-					List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.NEWPLAYERS);
+					final List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.NEWPLAYERS);
 					for(int i=0;i<channels.size();i++)
 						CMLib.commands().postChannel(channels.get(i),M.clans(),M.Name()+" has just been created.",true);
 					if(M.getStartRoom()==null)
@@ -5004,7 +5004,7 @@ public class Import extends StdCommand
 					buf = new StringBuffer("");
 				if(session!=null)
 					session.rawPrint("Unpacking items from file: '"+areaFileName+"'...");
-				Vector items=new Vector();
+				final Vector items=new Vector();
 				String error=CMLib.coffeeMaker().fillCustomVectorFromXML(buf.toString(),custom,externalFiles);
 				if(error.length()==0) importCustomObjects(mob,custom,customBotherChecker,!prompt,nodelete);
 				if(error.length()==0) importCustomFiles(mob,externalFiles,customBotherChecker,!prompt,nodelete);
@@ -5017,7 +5017,7 @@ public class Import extends StdCommand
 					return returnAnError(session,"You must be in a room to import items.",compileErrors,commands);
 				for(int i=0;i<items.size();i++)
 				{
-					Item I=(Item)items.elementAt(i);
+					final Item I=(Item)items.elementAt(i);
 					mob.location().addItem(I,ItemPossessor.Expire.Player_Drop);
 				}
 				mob.location().recoverRoomStats();
@@ -5026,14 +5026,14 @@ public class Import extends StdCommand
 				continue;
 			}
 		}
-		catch(Exception e)
+		catch(final Exception e)
 		{
 			Log.errOut("Import-",e);
 			return returnAnError(session,e.getMessage(),compileErrors,commands);
 		}
 
 
-		List<String> V=Resources.getFileLineVector(buf);
+		final List<String> V=Resources.getFileLineVector(buf);
 
 		// sort the data into general blocks, and identify area
 		if(session!=null) session.println("\n\rSorting data from file '"+areaFileName+"'...");
@@ -5044,12 +5044,12 @@ public class Import extends StdCommand
 		{
 			while(socialData.size()>0)
 			{
-				String codeLine=eatNextLine(socialData);
+				final String codeLine=eatNextLine(socialData);
 				if((!codeLine.startsWith("#"))&&(codeLine.trim().length()>0))
 				{
 					didSocials=true;
 					String word=codeLine.trim().toUpperCase();
-					int x=word.indexOf(' ');
+					final int x=word.indexOf(' ');
 					if(x>0) word=word.substring(0,x).trim();
 
 					Social S1=CMLib.socials().fetchSocial(word,true);
@@ -5176,7 +5176,7 @@ public class Import extends StdCommand
 				CMLib.socials().save(mob);
 			}
 		}
-		catch(Exception e)
+		catch(final Exception e)
 		{
 			Log.errOut("Import",e);
 			return returnAnError(session,e.getMessage(),compileErrors,commands);
@@ -5195,7 +5195,7 @@ public class Import extends StdCommand
 						{
 						if(!session.confirm("Would you like to continue (y/N)","N"))
 							return false;
-						}catch(Exception e){}
+						}catch(final Exception e){}
 					}
 					continue;
 				}
@@ -5204,7 +5204,7 @@ public class Import extends StdCommand
 			}
 		}
 		String areaName=getAreaName(areaData);
-		String areaAuthor=getAreaAuthor(areaData);
+		final String areaAuthor=getAreaAuthor(areaData);
 		if((areaName==null)||(areaName.length()==0))
 		{
 			if(!didSocials)
@@ -5225,16 +5225,16 @@ public class Import extends StdCommand
 			boolean exists=false;
 			try
 			{
-				for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
+				for(final Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 				{
-					Room R=(Room)r.nextElement();
+					final Room R=(Room)r.nextElement();
 					if(R.getArea().Name().equalsIgnoreCase(areaName))
 					{
 						exists=true;
 						break;
 					}
 				}
-			}catch(NoSuchElementException e){}
+			}catch(final NoSuchElementException e){}
 			if(exists)
 			{
 				if((nodelete)&&(!prompt))
@@ -5271,10 +5271,10 @@ public class Import extends StdCommand
 			// begin initial room-read
 			// build first room structures, leaving rest for later.
 			Room lastRoom=null;
-			Hashtable petShops=new Hashtable();
-			Hashtable<String,Room> areaRooms=new Hashtable<String,Room>();
-			Hashtable areaItems=new Hashtable();
-			Hashtable areaMOBS=new Hashtable();
+			final Hashtable petShops=new Hashtable();
+			final Hashtable<String,Room> areaRooms=new Hashtable<String,Room>();
+			final Hashtable areaItems=new Hashtable();
+			final Hashtable areaMOBS=new Hashtable();
 
 			for(int r=0;r<roomData.size();r++)
 			{
@@ -5289,7 +5289,7 @@ public class Import extends StdCommand
 				else
 				if(roomData.elementAt(r) instanceof String)
 				{
-					String s=(String)roomData.elementAt(r);
+					final String s=(String)roomData.elementAt(r);
 					if(!s.toUpperCase().trim().startsWith("#ROOM"))
 						returnAnError(session,"Eating immaterial line: "+roomData.elementAt(r)+", area="+areaName,compileErrors,commands);
 					continue;
@@ -5344,7 +5344,7 @@ public class Import extends StdCommand
 				if(R.expirationDate()!=0)
 					R.setExpirationDate(R.expirationDate()+(360000));
 
-				String codeLine=eatNextLine(roomV);
+				final String codeLine=eatNextLine(roomV);
 				if((!R.roomID().startsWith("#"))
 				||(R.displayText().length()==0)
 				||(CMParms.numBits(codeLine)<2)
@@ -5390,12 +5390,12 @@ public class Import extends StdCommand
 				if(CMParms.numBits(codeLine)==3)
 				{
 					codeBits=sectorType;
-					String secType=CMParms.getBit(codeLine,2);
+					final String secType=CMParms.getBit(codeLine,2);
 					sectorType=(int)getBitMask(codeLine,2);
-					for(int st=0;st<secTypes.length;st++)
-						if(secType.equalsIgnoreCase(secTypes[st][0]))
+					for (final String[] secType2 : secTypes)
+						if(secType.equalsIgnoreCase(secType2[0]))
 						{
-							sectorType=CMath.s_int(secTypes[st][1]);
+							sectorType=CMath.s_int(secType2[1]);
 							break;
 						}
 				}
@@ -5510,7 +5510,7 @@ public class Import extends StdCommand
 					roomV=(List)roomData.elementAt(r);
 				else
 					continue;
-				String roomID=eatLine(roomV);
+				final String roomID=eatLine(roomV);
 				Room R=getRoom(areaRooms,doneRooms,areaName,roomID);
 				if(R==null)
 				{
@@ -5527,8 +5527,8 @@ public class Import extends StdCommand
 					else
 					if(nextLine.toUpperCase().startsWith("E"))
 					{
-						String nameString=CMLib.coffeeFilter().safetyFilter(eatLineSquiggle(roomV));
-						String descString=CMLib.coffeeFilter().safetyFilter(eatLineSquiggle(roomV));
+						final String nameString=CMLib.coffeeFilter().safetyFilter(eatLineSquiggle(roomV));
+						final String descString=CMLib.coffeeFilter().safetyFilter(eatLineSquiggle(roomV));
 						Item I=null;
 						if(hasReadableContent(nameString))
 						{
@@ -5547,8 +5547,8 @@ public class Import extends StdCommand
 					if(nextLine.toUpperCase().startsWith("D"))
 					{
 						int dirCode=CMath.s_int(CMParms.getCleanBit(nextLine,0).substring(1).trim());
-						String descStr=CMLib.coffeeFilter().safetyFilter(eatLineSquiggle(roomV));
-						String nameStr=CMLib.coffeeFilter().safetyFilter(eatLineSquiggle(roomV));
+						final String descStr=CMLib.coffeeFilter().safetyFilter(eatLineSquiggle(roomV));
+						final String nameStr=CMLib.coffeeFilter().safetyFilter(eatLineSquiggle(roomV));
 						String codeStr=eatLine(roomV);
 						if(codeStr.equalsIgnoreCase("~"))
 							codeStr=eatLine(roomV);
@@ -5597,19 +5597,19 @@ public class Import extends StdCommand
 						}
 						if(codeStr.length()==0)
 						{
-							String nextStr=nextLine(roomV);
+							final String nextStr=nextLine(roomV);
 							if((CMParms.numBits(nextStr)==3)&&(CMath.isInteger(CMParms.getCleanBit(nextStr,0))))
 								codeStr=eatLine(roomV);
 						}
 						if((CMParms.numBits(codeStr)==1)&&(CMath.isInteger(codeStr.trim())))
 						{
-							String nextStr=nextLine(roomV);
+							final String nextStr=nextLine(roomV);
 							if((CMParms.numBits(nextStr)==2)&&(CMath.isInteger(CMParms.getCleanBit(nextStr,0))))
 								codeStr+=" "+eatLine(roomV);
 						}
-						int exitFlag=( CMath.s_int(CMParms.getCleanBit(codeStr,0).trim()) & 31);
-						int doorState=CMath.s_int(CMParms.getCleanBit(codeStr,1).trim());
-						int linkRoomID=CMath.s_int(CMParms.getCleanBit(codeStr,2).trim());
+						final int exitFlag=( CMath.s_int(CMParms.getCleanBit(codeStr,0).trim()) & 31);
+						final int doorState=CMath.s_int(CMParms.getCleanBit(codeStr,1).trim());
+						final int linkRoomID=CMath.s_int(CMParms.getCleanBit(codeStr,2).trim());
 						if(CMParms.numBits(codeStr)==11) // wierd circle format
 						{ /* all is well */}
 						else
@@ -5621,7 +5621,7 @@ public class Import extends StdCommand
 							returnAnError(session,"Room: "+R.roomID()+", Malformed exit codeStr "+codeStr+".  Aborting exit, area="+areaName,compileErrors,commands);
 							continue;
 						}
-						Exit X=CMClass.getExit("GenExit");
+						final Exit X=CMClass.getExit("GenExit");
 						Room linkRoom=getRoom(areaRooms,doneRooms,areaName,""+linkRoomID);
 						if(linkRoomID>=0)
 						{
@@ -5689,7 +5689,7 @@ public class Import extends StdCommand
 						{
 							try
 							{
-								for(Enumeration r2=CMLib.map().rooms();r2.hasMoreElements();)
+								for(final Enumeration r2=CMLib.map().rooms();r2.hasMoreElements();)
 								{
 									Room R2=(Room)r2.nextElement();
 									if((R2.roomID().endsWith("#"+linkRoomID))&&(R2!=R))
@@ -5699,7 +5699,7 @@ public class Import extends StdCommand
 											R2=CMLib.map().getRoom(R2);
 											for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 											{
-												Exit E3=R2.getRawExit(d);
+												final Exit E3=R2.getRawExit(d);
 												if((E3!=null)
 												&&(E3.temporaryDoorLink().length()>0)
 												&&(R.roomID().endsWith(E3.temporaryDoorLink())))
@@ -5723,7 +5723,7 @@ public class Import extends StdCommand
 										break;
 									}
 								}
-							}catch(NoSuchElementException e){}
+							}catch(final NoSuchElementException e){}
 							if(linkRoom==null)
 								X.setTemporaryDoorLink("#"+linkRoomID);
 							else
@@ -5760,7 +5760,7 @@ public class Import extends StdCommand
 							nextLine+= eatLineSquiggle(roomV);
 						if(nextLine.startsWith("C ")) nextLine=nextLine.substring(2).trim();
 						if(nextLine.endsWith("~")) nextLine=nextLine.substring(0,nextLine.length()-1);
-						long codeBits=getBitMask(nextLine,0);
+						final long codeBits=getBitMask(nextLine,0);
 						R=applyRoomCodeBits(R,lastRoom,petShops,codeBits,true);
 					}
 					else
@@ -5814,7 +5814,7 @@ public class Import extends StdCommand
 			}
 
 			if(session!=null) session.print("Loading objects..");
-			Hashtable containerHash=new Hashtable();
+			final Hashtable containerHash=new Hashtable();
 			MOB M=null;
 			Room R=null;
 			for(int nrd=0;nrd<nextResetData.size();nrd++)
@@ -5823,15 +5823,15 @@ public class Import extends StdCommand
 			while(resetData.size()>0)
 			{
 				if(session!=null) session.print(".");
-				String s=eatNextLine(resetData).trim();
+				final String s=eatNextLine(resetData).trim();
 				if((s.startsWith("#RE"))||(s.startsWith("*"))||(s.startsWith("S")))
 				{
 				}
 				else
 				if(s.startsWith("M "))
 				{
-					String mobID=CMParms.getCleanBit(s,2).trim();
-					String roomID=CMParms.getCleanBit(s,4).trim();
+					final String mobID=CMParms.getCleanBit(s,2).trim();
+					final String roomID=CMParms.getCleanBit(s,4).trim();
 					R=getRoom(areaRooms,doneRooms,areaName,roomID);
 					if(R==null)
 					{
@@ -5866,8 +5866,8 @@ public class Import extends StdCommand
 					}
 					else
 					{
-						String itemID=CMParms.getCleanBit(s,2).trim();
-						Item I=getItem("#"+itemID,session,areaName,CMParms.copyFlattenVector(objectData),CMParms.copyFlattenVector(objProgData),areaItems,doneItems,areaRooms,doneRooms,compileErrors,commands);
+						final String itemID=CMParms.getCleanBit(s,2).trim();
+						final Item I=getItem("#"+itemID,session,areaName,CMParms.copyFlattenVector(objectData),CMParms.copyFlattenVector(objProgData),areaItems,doneItems,areaRooms,doneRooms,compileErrors,commands);
 						if(I==null)
 						{
 							if(multiArea) nextResetData.addElement(s);
@@ -5897,7 +5897,7 @@ public class Import extends StdCommand
 									((ShopKeeper)M).setWhatIsSoldMask(0);
 									((ShopKeeper)M).addSoldType(ShopKeeper.DEAL_INVENTORYONLY);
 									((ShopKeeper)M).getShop().addStoreInventory(CMClass.getBasicItem("Parchment"),num,-1);
-									Item journal2=CMClass.getBasicItem("GenJournal");
+									final Item journal2=CMClass.getBasicItem("GenJournal");
 									journal2.setName("the adventurers journal");
 									journal2.setBaseValue(250);
 									journal2.recoverPhyStats();
@@ -5907,7 +5907,7 @@ public class Import extends StdCommand
 								else
 								if(((ShopKeeper)M).isSold(ShopKeeper.DEAL_WEAPONS))
 								{
-									Item arrows=CMClass.getBasicItem("GenAmmunition");
+									final Item arrows=CMClass.getBasicItem("GenAmmunition");
 									((Ammunition)arrows).setAmmunitionType("arrows");
 									arrows.setName("a pack of 20 arrows");
 									arrows.setUsesRemaining(20);
@@ -5942,10 +5942,10 @@ public class Import extends StdCommand
 				if(s.startsWith("EC "))
 				{
 					String roomID=CMParms.getCleanBit(s,1).trim();
-					String mobID=CMParms.getCleanBit(s,2).trim();
-					int x=roomID.lastIndexOf('#');
+					final String mobID=CMParms.getCleanBit(s,2).trim();
+					final int x=roomID.lastIndexOf('#');
 					if(x>=0) roomID=roomID.substring(x);
-					Room R2=getRoom(areaRooms,doneRooms,areaName,roomID);
+					final Room R2=getRoom(areaRooms,doneRooms,areaName,roomID);
 					MOB M2=null;
 					if(R2!=null)
 						M2=R2.fetchInhabitant(mobID);
@@ -5958,8 +5958,8 @@ public class Import extends StdCommand
 					}
 					else
 					{
-						String itemID=CMParms.getCleanBit(s,5).trim();
-						Item I=getItem("#"+itemID,session,areaName,CMParms.copyFlattenVector(objectData),CMParms.copyFlattenVector(objProgData),areaItems,doneItems,areaRooms,doneRooms,compileErrors,commands);
+						final String itemID=CMParms.getCleanBit(s,5).trim();
+						final Item I=getItem("#"+itemID,session,areaName,CMParms.copyFlattenVector(objectData),CMParms.copyFlattenVector(objProgData),areaItems,doneItems,areaRooms,doneRooms,compileErrors,commands);
 						if(I==null)
 						{
 							if(multiArea)
@@ -5994,8 +5994,8 @@ public class Import extends StdCommand
 					}
 					else
 					{
-						String itemID=CMParms.getCleanBit(s,2).trim();
-						Item I=getItem("#"+itemID,session,areaName,CMParms.copyFlattenVector(objectData),CMParms.copyFlattenVector(objProgData),areaItems,doneItems,areaRooms,doneRooms,compileErrors,commands);
+						final String itemID=CMParms.getCleanBit(s,2).trim();
+						final Item I=getItem("#"+itemID,session,areaName,CMParms.copyFlattenVector(objectData),CMParms.copyFlattenVector(objProgData),areaItems,doneItems,areaRooms,doneRooms,compileErrors,commands);
 						if(I==null)
 						{
 							if(multiArea)
@@ -6027,8 +6027,8 @@ public class Import extends StdCommand
 				else
 				if(s.startsWith("O "))
 				{
-					String itemID=CMParms.getCleanBit(s,2).trim();
-					String roomID=CMParms.getCleanBit(s,4).trim();
+					final String itemID=CMParms.getCleanBit(s,2).trim();
+					final String roomID=CMParms.getCleanBit(s,4).trim();
 					R=getRoom(areaRooms,doneRooms,areaName,roomID);
 					if(R==null)
 					{
@@ -6038,7 +6038,7 @@ public class Import extends StdCommand
 					}
 					else
 					{
-						Item I=getItem("#"+itemID,session,areaName,CMParms.copyFlattenVector(objectData),CMParms.copyFlattenVector(objProgData),areaItems,doneItems,areaRooms,doneRooms,compileErrors,commands);
+						final Item I=getItem("#"+itemID,session,areaName,CMParms.copyFlattenVector(objectData),CMParms.copyFlattenVector(objProgData),areaItems,doneItems,areaRooms,doneRooms,compileErrors,commands);
 						if(I==null)
 						{
 							if(multiArea) nextResetData.addElement(s);
@@ -6052,7 +6052,7 @@ public class Import extends StdCommand
 							R.addItem(I);
 							if(CMLib.flags().isGettable(I))
 							{
-								int rejuv=(int)Math.round(CMath.div((long)60000,CMProps.getTickMillis())*4.0);
+								final int rejuv=(int)Math.round(CMath.div((long)60000,CMProps.getTickMillis())*4.0);
 								I.basePhyStats().setRejuv(rejuv*I.basePhyStats().level());
 							}
 							I.recoverPhyStats();
@@ -6067,10 +6067,10 @@ public class Import extends StdCommand
 				else
 				if(s.startsWith("P "))
 				{
-					String itemID=CMParms.getCleanBit(s,2).trim();
-					String containerID=CMParms.getCleanBit(s,4).trim();
-					Item I=getItem("#"+itemID,session,areaName,CMParms.copyFlattenVector(objectData),CMParms.copyFlattenVector(objProgData),areaItems,doneItems,areaRooms,doneRooms,compileErrors,commands);
-					Container C=(Container)containerHash.get(containerID);
+					final String itemID=CMParms.getCleanBit(s,2).trim();
+					final String containerID=CMParms.getCleanBit(s,4).trim();
+					final Item I=getItem("#"+itemID,session,areaName,CMParms.copyFlattenVector(objectData),CMParms.copyFlattenVector(objProgData),areaItems,doneItems,areaRooms,doneRooms,compileErrors,commands);
+					final Container C=(Container)containerHash.get(containerID);
 					if(I==null)
 					{
 						if(multiArea) nextResetData.addElement(s);
@@ -6094,7 +6094,7 @@ public class Import extends StdCommand
 					else
 					if(C.owner() instanceof Room)
 					{
-						Room RR=(Room)C.owner();
+						final Room RR=(Room)C.owner();
 						if(I.basePhyStats().level()<1)
 							I.basePhyStats().setLevel(1);
 						RR.addItem(I);
@@ -6108,7 +6108,7 @@ public class Import extends StdCommand
 					else
 					if(C.owner() instanceof MOB)
 					{
-						MOB MM=(MOB)C.owner();
+						final MOB MM=(MOB)C.owner();
 						if(I.basePhyStats().level()<1)
 							I.basePhyStats().setLevel(MM.basePhyStats().level());
 						MM.addItem(I);
@@ -6122,7 +6122,7 @@ public class Import extends StdCommand
 				else
 				if(s.startsWith("D "))
 				{
-					String roomID=CMParms.getCleanBit(s,2).trim();
+					final String roomID=CMParms.getCleanBit(s,2).trim();
 					int dirCode=(int)getBitMask(s,3);
 					R=getRoom(areaRooms,doneRooms,areaName,roomID);
 					if(R==null)
@@ -6159,14 +6159,14 @@ public class Import extends StdCommand
 						}
 						if(dirCode<Directions.NUM_DIRECTIONS())
 						{
-							Exit E=R.getRawExit(dirCode);
+							final Exit E=R.getRawExit(dirCode);
 							if(E==null)
 								returnAnError(session,"Room: "+R.roomID()+", Unknown exit in dir: "+dirCode+" very confusing!, area="+areaName,compileErrors,commands);
 							else
 							{
-								int lockBit=(int)getBitMask(s,4);
+								final int lockBit=(int)getBitMask(s,4);
 								boolean HasDoor=E.hasADoor();
-								boolean HasLock=E.hasALock();
+								final boolean HasLock=E.hasALock();
 								boolean DefaultsClosed=E.defaultsClosed();
 								boolean DefaultsLocked=E.defaultsLocked();
 								boolean Open=E.isOpen();
@@ -6224,17 +6224,17 @@ public class Import extends StdCommand
 
 			}
 			// now fix the pet shops!
-			for(Enumeration e=petShops.keys();e.hasMoreElements();)
+			for(final Enumeration e=petShops.keys();e.hasMoreElements();)
 			{
-				Room storeRoom=(Room)e.nextElement();
-				Room shopRoom=(Room)petShops.get(storeRoom);
+				final Room storeRoom=(Room)e.nextElement();
+				final Room shopRoom=(Room)petShops.get(storeRoom);
 				ShopKeeper shopKeeper=null;
 				if(shopRoom==null)
 					returnAnError(session,"Unknown store room: "+storeRoom.roomID()+", area="+areaName,compileErrors,commands);
 				else
 				for(int i=0;i<shopRoom.numInhabitants();i++)
 				{
-					MOB sk=shopRoom.fetchInhabitant(i);
+					final MOB sk=shopRoom.fetchInhabitant(i);
 					if((sk!=null)&&(sk instanceof ShopKeeper))
 					{ shopKeeper=(ShopKeeper)sk; break;	}
 				}
@@ -6245,7 +6245,7 @@ public class Import extends StdCommand
 				{
 					shopKeeper.setWhatIsSoldMask(0);
 					shopKeeper.addSoldType(ShopKeeper.DEAL_PETS);
-					MOB pet=storeRoom.fetchInhabitant(0);
+					final MOB pet=storeRoom.fetchInhabitant(0);
 					if(pet!=null)
 					{
 						shopKeeper.getShop().addStoreInventory(pet,20,-1);
@@ -6257,23 +6257,23 @@ public class Import extends StdCommand
 			// now fix the smurfy wells
 			for(int r=0;r<newRooms.size();r++)
 			{
-				Room smurfRoom=(Room)newRooms.elementAt(r);
+				final Room smurfRoom=(Room)newRooms.elementAt(r);
 				for(int ei=0;ei<smurfRoom.numItems();ei++)
 				{
-					Item lookItem=smurfRoom.getItem(ei);
+					final Item lookItem=smurfRoom.getItem(ei);
 					if((lookItem!=null)&&(lookItem.displayText().length()==0))
 					{
 						for(int i=0;i<smurfRoom.numItems();i++)
 						{
-							Item I=smurfRoom.getItem(i);
+							final Item I=smurfRoom.getItem(i);
 							if((I!=null)
 							&&(I.displayText().length()>0)
 							&&(I.displayText().indexOf(lookItem.Name())>=0))
 							{
-								String description=lookItem.description();
+								final String description=lookItem.description();
 								smurfRoom.delItem(lookItem);
 
-								Item testItem=CMClass.getItem(I.ID());
+								final Item testItem=CMClass.getItem(I.ID());
 								if((testItem!=null)&&(testItem.description().equals(I.description())))
 									I.setDescription(description);
 								else
@@ -6303,7 +6303,7 @@ public class Import extends StdCommand
 				if(session!=null) session.println("Done!!!\n\r");
 			}
 		}
-		catch(Exception e)
+		catch(final Exception e)
 		{
 			Log.errOut("Import",e);
 			return returnAnError(session,e.getMessage(),compileErrors,commands);
@@ -6312,7 +6312,7 @@ public class Import extends StdCommand
 
 		if(nextResetData.size()>0)
 		{
-			StringBuffer nrf=new StringBuffer("Import bad resets:\n\r");
+			final StringBuffer nrf=new StringBuffer("Import bad resets:\n\r");
 			for(int nrd=0;nrd<nextResetData.size();nrd++)
 				nrf.append(((String)nextResetData.elementAt(nrd))+"\n\r");
 			returnAnError(session,nrf.toString(),compileErrors,commands);
@@ -6320,14 +6320,14 @@ public class Import extends StdCommand
 		}
 
 		if((doneRooms.size()>0)&&(session!=null)) session.print("\n\nSaving all areas imported...");
-		for(Enumeration e=doneRooms.elements();e.hasMoreElements();)
+		for(final Enumeration e=doneRooms.elements();e.hasMoreElements();)
 		{
-			Room saveRoom=(Room)e.nextElement();
+			final Room saveRoom=(Room)e.nextElement();
 			CMLib.database().DBCreateRoom(saveRoom);
 			// final exit clean-up optimization
 			for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 			{
-				Exit X=saveRoom.getRawExit(d);
+				final Exit X=saveRoom.getRawExit(d);
 				if((X!=null)
 				&&(X.isGeneric())
 				&&(!X.hasADoor())
@@ -6339,7 +6339,7 @@ public class Import extends StdCommand
 				&&(X.temporaryDoorLink().length()==0)
 				&&(X.displayText().equals(X.description())))
 				{
-					Exit E2=CMClass.getExit("OpenDescriptable");
+					final Exit E2=CMClass.getExit("OpenDescriptable");
 					E2.setMiscText(X.displayText());
 					saveRoom.setRawExit(d,E2);
 				}
@@ -6356,13 +6356,13 @@ public class Import extends StdCommand
 
 		if(laterLinks.size()>0)
 		{
-			for(Enumeration e=laterLinks.keys();e.hasMoreElements();)
+			for(final Enumeration e=laterLinks.keys();e.hasMoreElements();)
 			{
-				String key=(String)e.nextElement();
-				String dcode=(String)laterLinks.get(key);
+				final String key=(String)e.nextElement();
+				final String dcode=(String)laterLinks.get(key);
 				String roomID="";
 				String dirID="";
-				int x=key.lastIndexOf('/');
+				final int x=key.lastIndexOf('/');
 				if(x>=0)
 				{
 					roomID=key.substring(0,x);
@@ -6374,7 +6374,7 @@ public class Import extends StdCommand
 				Room R1=getRoom(doneRooms,doneRooms,"NOAREA",roomID);
 				if(R1!=null)
 				{
-					int dir=CMath.s_int(dirID);
+					final int dir=CMath.s_int(dirID);
 					Room RR=null;
 					Exit RE=null;
 					if(dir<Directions.NUM_DIRECTIONS())
@@ -6382,7 +6382,7 @@ public class Import extends StdCommand
 						RR=R1.rawDoors()[dir];
 						RE=R1.getRawExit(dir);
 					}
-					Room TR=getRoom(doneRooms,doneRooms,"NOAREA",dcode);
+					final Room TR=getRoom(doneRooms,doneRooms,"NOAREA",dcode);
 					if((RR==null)&&(TR==null))
 						returnAnError(session,"Room "+R1.roomID()+" links to unknown room "+dcode+" in direction "+Directions.getDirectionName(dir)+".",compileErrors,commands);
 					else
@@ -6401,13 +6401,13 @@ public class Import extends StdCommand
 		}
 
 		Area A=null;
-		for(Enumeration e=doneRooms.elements();e.hasMoreElements();)
+		for(final Enumeration e=doneRooms.elements();e.hasMoreElements();)
 		{
 			A=((Room)e.nextElement()).getArea();
 			A.setAreaState(Area.State.ACTIVE);
 		}
 		if(doneRooms.elements().hasMoreElements())
-			for(Enumeration a=CMLib.map().areas();a.hasMoreElements();)
+			for(final Enumeration a=CMLib.map().areas();a.hasMoreElements();)
 				((Area)a.nextElement()).fillInAreaRooms();
 		if(session!=null) session.println("done!");
 		return true;

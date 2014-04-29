@@ -64,7 +64,7 @@ public class Chant_Tangle extends Chant
 			return super.okMessage(myHost,msg);
 		}
 
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		// when this spell is on a MOBs Affected list,
 		// it should consistantly prevent the mob
@@ -92,7 +92,7 @@ public class Chant_Tangle extends Chant
 		// undo the affects of this spell
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		super.unInvoke();
 		if(canBeUninvoked())
@@ -108,7 +108,7 @@ public class Chant_Tangle extends Chant
 	{
 		if(mob!=null)
 		{
-			Item thePlants=Druid_MyPlants.myPlant(mob.location(),mob,0);
+			final Item thePlants=Druid_MyPlants.myPlant(mob.location(),mob,0);
 			if(thePlants==null)
 				 return Ability.QUALITY_INDIFFERENT;
 		}
@@ -118,7 +118,7 @@ public class Chant_Tangle extends Chant
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		MOB target=this.getTarget(mob,commands,givenTarget);
+		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
 		thePlants=Druid_MyPlants.myPlant(mob.location(),mob,0);
@@ -145,7 +145,7 @@ public class Chant_Tangle extends Chant
 				// and add it to the affects list of the
 				// affected MOB.  Then tell everyone else
 				// what happened.
-				CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),null);
+				final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),null);
 				if((mob.location().okMessage(mob,msg))&&(target.fetchEffect(this.ID())==null))
 				{
 					mob.location().send(mob,msg);

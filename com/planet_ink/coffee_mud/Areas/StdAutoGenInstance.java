@@ -52,14 +52,14 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 
 	protected String getStrippedRoomID(String roomID)
 	{
-		int x=roomID.indexOf('#');
+		final int x=roomID.indexOf('#');
 		if(x<0) return null;
 		return roomID.substring(x);
 	}
 
 	protected String convertToMyArea(String roomID)
 	{
-		String strippedID=getStrippedRoomID(roomID);
+		final String strippedID=getStrippedRoomID(roomID);
 		if(strippedID==null) return null;
 		return Name()+strippedID;
 	}
@@ -68,10 +68,10 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 	{
 		if((parentArea!=null)&&(parentArea.get()!=null))
 			return parentArea.get();
-		int x=Name().indexOf('_');
+		final int x=Name().indexOf('_');
 		if(x<0) return null;
 		if(!CMath.isNumber(Name().substring(0,x))) return null;
-		Area parentA = CMLib.map().getArea(Name().substring(x+1));
+		final Area parentA = CMLib.map().getArea(Name().substring(x+1));
 		if((parentA==null)
 		||(!CMath.bset(parentA.flags(),Area.FLAG_INSTANCE_PARENT))
 		||(CMath.bset(parentA.flags(),Area.FLAG_INSTANCE_CHILD)))
@@ -89,7 +89,7 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 	{
 		if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
 			return emptyStats;
-		Area parentArea=getParentArea();
+		final Area parentArea=getParentArea();
 		final String areaName = (parentArea==null)?Name():parentArea.Name();
 		int[] statData=(int[])Resources.getResource("STATS_"+areaName.toUpperCase());
 		if(statData!=null)
@@ -98,14 +98,14 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 		{
 			if(parentArea==null)
 			{
-				Enumeration<AreaInstanceChild> childE=instanceChildren.elements();
+				final Enumeration<AreaInstanceChild> childE=instanceChildren.elements();
 				int ct=0;
 				if(childE.hasMoreElements())
 				{
 					statData=new int[Area.Stats.values().length];
 					for(;childE.hasMoreElements();)
 					{
-						int[] theseStats=childE.nextElement().A.getAreaIStats();
+						final int[] theseStats=childE.nextElement().A.getAreaIStats();
 						if(theseStats != emptyStats)
 						{
 							ct++;
@@ -143,14 +143,14 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 			{
 				for(int i=instanceChildren.size()-1;i>=0;i--)
 				{
-					Area childA=instanceChildren.elementAt(i).A;
+					final Area childA=instanceChildren.elementAt(i).A;
 					if(childA.getAreaState() != Area.State.ACTIVE)
 					{
-						List<WeakReference<MOB>> V=instanceChildren.elementAt(i).mobs;
+						final List<WeakReference<MOB>> V=instanceChildren.elementAt(i).mobs;
 						boolean anyInside=false;
-						for(WeakReference<MOB> wmob : V)
+						for(final WeakReference<MOB> wmob : V)
 						{
-							MOB M=wmob.get();
+							final MOB M=wmob.get();
 							if((M!=null)
 							&&CMLib.flags().isInTheGame(M,true)
 							&&(M.location()!=null)
@@ -163,18 +163,18 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 						if(!anyInside)
 						{
 							instanceChildren.remove(i);
-							for(WeakReference<MOB> wmob : V)
+							for(final WeakReference<MOB> wmob : V)
 							{
-								MOB M=wmob.get();
+								final MOB M=wmob.get();
 								if((M!=null)
 								&&(M.location()!=null)
 								&&(M.location().getArea()==this))
 									M.setLocation(M.getStartRoom());
 							}
-							MOB mob=CMClass.sampleMOB();
-							for(Enumeration<Room> e=childA.getProperMap();e.hasMoreElements();)
+							final MOB mob=CMClass.sampleMOB();
+							for(final Enumeration<Room> e=childA.getProperMap();e.hasMoreElements();)
 							{
-								Room R=e.nextElement();
+								final Room R=e.nextElement();
 								R.executeMsg(mob,CMClass.getMsg(mob,R,null,CMMsg.MSG_EXPIRE,null));
 							}
 							CMLib.map().delArea(childA);
@@ -196,16 +196,16 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 		&&(msg.sourceMessage()!=null)
 		&&((msg.sourceMajor()&CMMsg.MASK_MAGIC)==0))
 		{
-			String said=CMStrings.getSayFromMessage(msg.sourceMessage());
+			final String said=CMStrings.getSayFromMessage(msg.sourceMessage());
 			if("RESET INSTANCE".equalsIgnoreCase(said))
 			{
 				Room returnToRoom=null;
-				Room thisRoom=msg.source().location();
+				final Room thisRoom=msg.source().location();
 				if(thisRoom.getArea()==this)
 				{
 					for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
 					{
-						Room R=thisRoom.getRoomInDir(d);
+						final Room R=thisRoom.getRoomInDir(d);
 						if((R!=null)&&(R.getArea()!=null)&&(R.getArea()!=this))
 							returnToRoom=R;
 					}
@@ -215,20 +215,20 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 					msg.addTrailerMsg(CMClass.getMsg(msg.source(),null,null,CMMsg.MSG_OK_ACTION,CMMsg.NO_EFFECT,CMMsg.NO_EFFECT, "You must be at an entrance to reset the area."));
 					return;
 				}
-				Area A=this.getParentArea();
+				final Area A=this.getParentArea();
 				if(A instanceof StdAutoGenInstance)
 				{
-					StdAutoGenInstance parentA=(StdAutoGenInstance)A;
+					final StdAutoGenInstance parentA=(StdAutoGenInstance)A;
 					synchronized(parentA.instanceChildren)
 					{
 						for(int i=parentA.instanceChildren.size()-1;i>=0;i--)
 						{
-							List<WeakReference<MOB>> V=parentA.instanceChildren.elementAt(i).mobs;
+							final List<WeakReference<MOB>> V=parentA.instanceChildren.elementAt(i).mobs;
 							if(parentA.instanceChildren.elementAt(i).A==this)
 							{
-								for(WeakReference<MOB> wM : V)
+								for(final WeakReference<MOB> wM : V)
 								{
-									MOB M=wM.get();
+									final MOB M=wM.get();
 									if((M!=null)
 									&&CMLib.flags().isInTheGame(M,true)
 									&&(M.location()!=null)
@@ -240,10 +240,10 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 									}
 								}
 								parentA.instanceChildren.remove(i);
-								MOB mob=CMClass.sampleMOB();
-								for(Enumeration<Room> e=getProperMap();e.hasMoreElements();)
+								final MOB mob=CMClass.sampleMOB();
+								for(final Enumeration<Room> e=getProperMap();e.hasMoreElements();)
 								{
-									Room R=e.nextElement();
+									final Room R=e.nextElement();
 									R.executeMsg(mob,CMClass.getMsg(mob,R,null,CMMsg.MSG_EXPIRE,null));
 								}
 								msg.addTrailerMsg(CMClass.getMsg(msg.source(),CMMsg.MSG_OK_ACTION,"The instance has been reset."));
@@ -275,9 +275,9 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 		{
 			if(msg.source().isMonster())
 			{
-				Set<MOB> friends=msg.source().getGroupMembers(new HashSet<MOB>());
+				final Set<MOB> friends=msg.source().getGroupMembers(new HashSet<MOB>());
 				boolean playerInvolved=false;
-				for(MOB M : friends)
+				for(final MOB M : friends)
 					playerInvolved = playerInvolved || (!M.isMonster());
 				if(!playerInvolved)
 				{
@@ -290,19 +290,19 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 				int myDex=-1;
 				for(int i=0;i<instanceChildren.size();i++)
 				{
-					List<WeakReference<MOB>> V=instanceChildren.elementAt(i).mobs;
-					for(Iterator<WeakReference<MOB>> vi = V.iterator();vi.hasNext();)
-					if(msg.source() == vi.next().get())
-					{
-						myDex=i; break;
-					}
+					final List<WeakReference<MOB>> V=instanceChildren.elementAt(i).mobs;
+					for (final WeakReference<MOB> weakReference : V)
+						if(msg.source() == weakReference.get())
+						{
+							myDex=i; break;
+						}
 				}
-				Set<MOB> grp = msg.source().getGroupMembers(new HashSet<MOB>());
+				final Set<MOB> grp = msg.source().getGroupMembers(new HashSet<MOB>());
 				for(int i=0;i<instanceChildren.size();i++)
 				{
 					if(i!=myDex)
 					{
-						List<WeakReference<MOB>> V=instanceChildren.elementAt(i).mobs;
+						final List<WeakReference<MOB>> V=instanceChildren.elementAt(i).mobs;
 						for(int v=V.size()-1;v>=0;v--)
 						{
 							final WeakReference<MOB> wmob=V.get(v);
@@ -344,28 +344,28 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 					newA.blurbFlags=new STreeMap<String,String>();
 					newA.setName((++instanceCounter)+"_"+Name());
 					newA.flags |= Area.FLAG_INSTANCE_CHILD;
-					Set<MOB> myGroup=msg.source().getGroupMembers(new HashSet<MOB>());
-					StringBuffer xml = Resources.getFileResource(getGeneratorXmlPath(), true);
+					final Set<MOB> myGroup=msg.source().getGroupMembers(new HashSet<MOB>());
+					final StringBuffer xml = Resources.getFileResource(getGeneratorXmlPath(), true);
 					if((xml==null)||(xml.length()==0))
 					{
 						msg.source().tell("Unable to load this area.  Please try again later.");
 						return false;
 					}
-					List<XMLLibrary.XMLpiece> xmlRoot = CMLib.xml().parseAllXML(xml);
-					Hashtable definedIDs = new Hashtable();
+					final List<XMLLibrary.XMLpiece> xmlRoot = CMLib.xml().parseAllXML(xml);
+					final Hashtable definedIDs = new Hashtable();
 					CMLib.percolator().buildDefinedIDSet(xmlRoot,definedIDs);
 					String idName = "";
-					List<String> idChoices = new Vector<String>();
-					for(String key : getAutoGenVariables().keySet())
+					final List<String> idChoices = new Vector<String>();
+					for(final String key : getAutoGenVariables().keySet())
 						if(key.equalsIgnoreCase("AREA_ID")||key.equalsIgnoreCase("AREA_IDS")||key.equalsIgnoreCase("AREAID")||key.equalsIgnoreCase("AREAIDS"))
 							idChoices.addAll(CMParms.parseCommas(getAutoGenVariables().get(key),true));
 //TODO: fix this
 //FIXME: this can select an area tag with inserts that don't resolve to isolated (real) areas.
 					if(idChoices.size()==0)
 					{
-						for(Object key : definedIDs.keySet())
+						for(final Object key : definedIDs.keySet())
 						{
-							Object val=definedIDs.get(key);
+							final Object val=definedIDs.get(key);
 							if((key instanceof String)
 							&&(val instanceof XMLLibrary.XMLpiece)
 							&&(((XMLLibrary.XMLpiece)val).tag.equalsIgnoreCase("area")))
@@ -419,8 +419,8 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 //FIXME: this can maybe pick town.
 					if(!definedIDs.containsKey("THEME"))
 					{
-						Map<String,String> unfilled = CMLib.percolator().getUnfilledRequirements(definedIDs,piece);
-						List<String> themes = CMParms.parseCommas(unfilled.get("THEME"), true);
+						final Map<String,String> unfilled = CMLib.percolator().getUnfilledRequirements(definedIDs,piece);
+						final List<String> themes = CMParms.parseCommas(unfilled.get("THEME"), true);
 						if(themes.size()>0)
 							definedIDs.put("THEME", themes.get(CMLib.dice().roll(1, themes.size(), -1)).toUpperCase().trim());
 					}
@@ -428,12 +428,12 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 					{
 						CMLib.percolator().checkRequirements(piece, definedIDs);
 					}
-					catch(CMException cme)
+					catch(final CMException cme)
 					{
 						msg.source().tell("Required ids for "+idName+" were missing: "+cme.getMessage());
 						return false;
 					}
-					for(MOB M : myGroup)
+					for(final MOB M : myGroup)
 						M.tell("^x------------------------------------------------------\n\r" +
 								 "Preparing to enter "+Name()+", please stand by...\n\r" +
 								 "------------------------------------------------------^N^.");
@@ -446,7 +446,7 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 							return false;
 						}
 					}
-					catch(CMException cme)
+					catch(final CMException cme)
 					{
 						Log.errOut("StdAutoGenInstance",cme);
 						msg.source().tell("Failed to finish entering the new area.  Try again later.");
@@ -462,12 +462,12 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 
 					getAreaIStats(); // if this is the first child ever, this will force stat making
 
-					Room R=redirectA.getRoom(redirectA.Name()+"#0");
+					final Room R=redirectA.getRoom(redirectA.Name()+"#0");
 					if(R!=null)
 					{
 						Exit E=R.getExitInDir(Directions.getOpDirectionCode(direction));
 						if(E==null) E = CMClass.getExit("Open");
-						int opDir=Directions.getOpDirectionCode(direction);
+						final int opDir=Directions.getOpDirectionCode(direction);
 						if(R.getRoomInDir(opDir)!=null)
 							msg.source().tell("An error has caused the following exit to be one-way.");
 						else
@@ -481,7 +481,7 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 					redirectA=instanceChildren.get(myDex).A;
 				if(redirectA instanceof StdAutoGenInstance)
 				{
-					Room R=redirectA.getRoom(redirectA.Name()+"#0");
+					final Room R=redirectA.getRoom(redirectA.Name()+"#0");
 					if(R!=null)
 					{
 						msg.setTarget(R);
@@ -533,8 +533,8 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 	public String[] getStatCodes()
 	{
 		if(codes!=null) return codes;
-		String[] MYCODES=CMProps.getStatCodesList(StdAutoGenInstance.MYCODES,this);
-		String[] superCodes=STDAREACODES;
+		final String[] MYCODES=CMProps.getStatCodesList(StdAutoGenInstance.MYCODES,this);
+		final String[] superCodes=STDAREACODES;
 		codes=new String[superCodes.length+MYCODES.length];
 		int i=0;
 		for(;i<superCodes.length;i++)
@@ -547,7 +547,7 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 	public boolean sameAs(Environmental E)
 	{
 		if(!(E instanceof StdAutoGenInstance)) return false;
-		String[] codes=getStatCodes();
+		final String[] codes=getStatCodes();
 		for(int i=0;i<codes.length;i++)
 			if(!E.getStat(codes[i]).equals(getStat(codes[i])))
 				return false;

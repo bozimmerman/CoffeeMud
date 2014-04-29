@@ -43,8 +43,8 @@ public class Spell_DispelDivination extends Spell
 
 	public List<Ability> returnOffensiveAffects(MOB caster, Physical fromMe)
 	{
-		List<Ability> offenders=new Vector<Ability>();
-		boolean admin=CMSecurity.isASysOp(caster);
+		final List<Ability> offenders=new Vector<Ability>();
+		final boolean admin=CMSecurity.isASysOp(caster);
 		Ability A=null;
 		for(int e=0;e<fromMe.numEffects();e++) // personal
 		{
@@ -71,13 +71,13 @@ public class Spell_DispelDivination extends Spell
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		Physical target=getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_ANY);
+		final Physical target=getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_ANY);
 		if(target==null) return false;
 
 		Ability revokeThis=null;
-		List<Ability> allDivinations=CMLib.flags().domainAffects(target,Ability.DOMAIN_DIVINATION);
-		boolean foundSomethingAtLeast=((allDivinations!=null)&&(allDivinations.size()>0));
-		List<Ability> affects=returnOffensiveAffects(mob,target);
+		final List<Ability> allDivinations=CMLib.flags().domainAffects(target,Ability.DOMAIN_DIVINATION);
+		final boolean foundSomethingAtLeast=((allDivinations!=null)&&(allDivinations.size()>0));
+		final List<Ability> affects=returnOffensiveAffects(mob,target);
 		if(affects.size()>0)
 			revokeThis=affects.get(CMLib.dice().roll(1,affects.size(),-1));
 
@@ -101,7 +101,7 @@ public class Spell_DispelDivination extends Spell
 		if(diff<0) diff=0;
 		else diff=diff*-20;
 
-		boolean success=proficiencyCheck(mob,diff,auto);
+		final boolean success=proficiencyCheck(mob,diff,auto);
 		if(success)
 		{
 			int affectType=verbalCastCode(mob,target,auto);
@@ -111,7 +111,7 @@ public class Spell_DispelDivination extends Spell
 				affectType=CMMsg.MSG_CAST_VERBAL_SPELL;
 			if(auto) affectType=affectType|CMMsg.MASK_ALWAYS;
 
-			CMMsg msg=CMClass.getMsg(mob,target,this,affectType,auto?revokeThis.name()+" is dispelled from <T-NAME>.":"^S<S-NAME> dispel(s) "+revokeThis.name()+" from <T-NAMESELF>.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,affectType,auto?revokeThis.name()+" is dispelled from <T-NAME>.":"^S<S-NAME> dispel(s) "+revokeThis.name()+" from <T-NAMESELF>.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

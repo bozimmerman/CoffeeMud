@@ -14,8 +14,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
-
 import java.util.*;
 
 /*
@@ -53,7 +51,7 @@ public class Spell_FlamingEnsnarement extends Spell
 		if(!(affected instanceof MOB))
 			return true;
 
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		// when this spell is on a MOBs Affected list,
 		// it should consistantly prevent the mob
@@ -90,7 +88,7 @@ public class Spell_FlamingEnsnarement extends Spell
 		// undo the affects of this spell
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		super.unInvoke();
 		if(canBeUninvoked())
@@ -104,7 +102,7 @@ public class Spell_FlamingEnsnarement extends Spell
 		&&(affected!=null)
 		&&(affected instanceof MOB))
 		{
-			MOB M=(MOB)affected;
+			final MOB M=(MOB)affected;
 			if((!M.amDead())&&(M.location()!=null))
 			{
 				CMLib.combat().postDamage(invoker,M,this,CMLib.dice().roll(2,4+super.getXLEVELLevel(invoker())+(2*super.getX1Level(invoker())),0),CMMsg.TYP_FIRE,-1,"<T-NAME> get(s) singed from <T-HIS-HER> flaming ensnarement!");
@@ -118,7 +116,7 @@ public class Spell_FlamingEnsnarement extends Spell
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		Set<MOB> h=properTargets(mob,givenTarget,auto);
+		final Set<MOB> h=properTargets(mob,givenTarget,auto);
 		if(h==null)
 		{
 			mob.tell("There doesn't appear to be anyone here worth ensnaring.");
@@ -137,29 +135,29 @@ public class Spell_FlamingEnsnarement extends Spell
 		if(success)
 		{
 			if(mob.location().show(mob,null,this,verbalCastCode(mob,null,auto),auto?"":"^S<S-NAME> speak(s) and wave(s) <S-HIS-HER> fingers at the ground.^?"))
-			for(Iterator f=h.iterator();f.hasNext();)
-			{
-				MOB target=(MOB)f.next();
-
-				// it worked, so build a copy of this ability,
-				// and add it to the affects list of the
-				// affected MOB.  Then tell everyone else
-				// what happened.
-				CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),null);
-				if((mob.location().okMessage(mob,msg))&&(target.fetchEffect(this.ID())==null))
+				for (final Object element : h)
 				{
-					mob.location().send(mob,msg);
-					if(msg.value()<=0)
+					final MOB target=(MOB)element;
+
+					// it worked, so build a copy of this ability,
+					// and add it to the affects list of the
+					// affected MOB.  Then tell everyone else
+					// what happened.
+					final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),null);
+					if((mob.location().okMessage(mob,msg))&&(target.fetchEffect(this.ID())==null))
 					{
-						amountRemaining=60;
-						if(target.location()==mob.location())
+						mob.location().send(mob,msg);
+						if(msg.value()<=0)
 						{
-							success=maliciousAffect(mob,target,asLevel,0,-1);
-							target.location().show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> become(s) ensnared in the flaming tendrils erupting from the ground, and is unable to move <S-HIS-HER> feet!");
+							amountRemaining=60;
+							if(target.location()==mob.location())
+							{
+								success=maliciousAffect(mob,target,asLevel,0,-1);
+								target.location().show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> become(s) ensnared in the flaming tendrils erupting from the ground, and is unable to move <S-HIS-HER> feet!");
+							}
 						}
 					}
 				}
-			}
 		}
 		else
 			return maliciousFizzle(mob,null,"<S-NAME> speak(s) and wave(s) <S-HIS-HER> fingers, but the spell fizzles.");

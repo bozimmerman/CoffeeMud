@@ -49,7 +49,7 @@ public class Trap_Tripline extends StdTrap
 		if(P==null) return null;
 		if(mob!=null)
 		{
-			Item I=findMostOfMaterial(mob.location(),RawMaterial.MATERIAL_CLOTH);
+			final Item I=findMostOfMaterial(mob.location(),RawMaterial.MATERIAL_CLOTH);
 			if(I!=null)
 				super.destroyResources(mob.location(),I.material(),1);
 		}
@@ -59,7 +59,7 @@ public class Trap_Tripline extends StdTrap
 	@Override
 	public List<Item> getTrapComponents()
 	{
-		Vector V=new Vector();
+		final Vector V=new Vector();
 		V.addElement(CMLib.materials().makeItemResource(RawMaterial.RESOURCE_COTTON));
 		return V;
 	}

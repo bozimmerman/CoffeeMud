@@ -65,7 +65,7 @@ public class Fighter_WeaponSharpening extends FighterSkill
 	{
 		if(affected instanceof MOB)
 		{
-			MOB mob=(MOB)affected;
+			final MOB mob=(MOB)affected;
 			if((weapon==null)||(weapon.owner()!=affected)||(weapon.amDestroyed())||(!CMLib.flags().isInTheGame(mob, true))||(mob.location()==null))
 			{
 				weapon=null;
@@ -100,9 +100,9 @@ public class Fighter_WeaponSharpening extends FighterSkill
 		&&(weapon != null)
 		&&(!weapon.amDestroyed()))
 		{
-			MOB mob=(MOB)affected;
+			final MOB mob=(MOB)affected;
 			beneficialAffect(mob,weapon,0,0);
-			Ability A=weapon.fetchEffect(ID());
+			final Ability A=weapon.fetchEffect(ID());
 			if(A!=null){ A.setMiscText(text()); A.makeLongLasting();}
 			weapon.recoverPhyStats();
 			if(mob.location()!=null)
@@ -115,7 +115,7 @@ public class Fighter_WeaponSharpening extends FighterSkill
 		&&(!((Item)affected).amDestroyed())
 		&&(((Item)affected).owner() instanceof MOB))
 		{
-			MOB M=(MOB)((Item)affected).owner();
+			final MOB M=(MOB)((Item)affected).owner();
 			if((!M.amDead())&&(CMLib.flags().isInTheGame(M,true))&&(!((Item)affected).amWearingAt(Wearable.IN_INVENTORY)))
 				M.tell(M,affected,null,_("<T-NAME> no longer seem(s) quite as sharp."));
 		}
@@ -140,7 +140,7 @@ public class Fighter_WeaponSharpening extends FighterSkill
 			mob.tell(_("You are already sharpening something."));
 			return false;
 		}
-		Item weapon=super.getTarget(mob,null,givenTarget,null,commands,Wearable.FILTER_ANY);
+		final Item weapon=super.getTarget(mob,null,givenTarget,null,commands,Wearable.FILTER_ANY);
 		if(weapon==null) return false;
 		if(!(weapon instanceof Weapon))
 		{
@@ -195,7 +195,7 @@ public class Fighter_WeaponSharpening extends FighterSkill
 			mob.tell(_("You are a bit too busy to do that right now."));
 			return false;
 		}
-		int bonus=(int)Math.round(CMath.mul(0.10+(0.10*getXLEVELLevel(mob)),weapon.phyStats().damage()));
+		final int bonus=(int)Math.round(CMath.mul(0.10+(0.10*getXLEVELLevel(mob)),weapon.phyStats().damage()));
 		if(bonus<1)
 		{
 			mob.tell(mob,weapon,null,_("<T-NAME> is too weak of a weapon to provide any more benefit from sharpening."));
@@ -205,11 +205,11 @@ public class Fighter_WeaponSharpening extends FighterSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			String str=auto?_("<T-NAME> looks sharper!"):_("<S-NAME> start(s) sharpening <T-NAMESELF>.");
-			CMMsg msg=CMClass.getMsg(mob,weapon,this,CMMsg.MSG_NOISYMOVEMENT,str);
+			final String str=auto?_("<T-NAME> looks sharper!"):_("<S-NAME> start(s) sharpening <T-NAMESELF>.");
+			final CMMsg msg=CMClass.getMsg(mob,weapon,this,CMMsg.MSG_NOISYMOVEMENT,str);
 			if(mob.location().okMessage(mob,msg))
 			{
 				displayString="Sharpening "+weapon.name();
@@ -217,7 +217,7 @@ public class Fighter_WeaponSharpening extends FighterSkill
 				if(auto)
 				{
 					beneficialAffect(mob,weapon,asLevel,0);
-					Ability A=weapon.fetchEffect(ID());
+					final Ability A=weapon.fetchEffect(ID());
 					if(A!=null){ A.setMiscText(""+bonus); A.makeLongLasting();}
 					weapon.recoverPhyStats();
 					mob.location().recoverRoomStats();
@@ -225,7 +225,7 @@ public class Fighter_WeaponSharpening extends FighterSkill
 				else
 				{
 					beneficialAffect(mob,mob,asLevel,TICKS_TO_SHARPEN);
-					Fighter_WeaponSharpening A=(Fighter_WeaponSharpening)mob.fetchEffect(ID());
+					final Fighter_WeaponSharpening A=(Fighter_WeaponSharpening)mob.fetchEffect(ID());
 					if(A != null)
 					{
 						A.weapon=weapon;

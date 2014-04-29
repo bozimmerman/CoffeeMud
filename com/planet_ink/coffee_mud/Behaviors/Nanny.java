@@ -15,8 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
-
 import java.util.*;
 
 /*
@@ -83,7 +81,7 @@ public class Nanny extends StdBehavior
 	{
 		if(mob==null) return 0.0;
 		double amt=0.0;
-		for(Payment P : payments)
+		for(final Payment P : payments)
 			if(P.mommyM==mob)
 				amt+=P.paid;
 		return amt;
@@ -92,7 +90,7 @@ public class Nanny extends StdBehavior
 	public boolean isDroppedOff(PhysicalAgent P)
 	{
 		if(P==null) return false;
-		for(DropOff D : dropOffs)
+		for(final DropOff D : dropOffs)
 			if(D.baby==P)
 				return true;
 		return false;
@@ -101,7 +99,7 @@ public class Nanny extends StdBehavior
 	public boolean isAssociated(PhysicalAgent P)
 	{
 		if(P==null) return false;
-		for(DropOff D : associations)
+		for(final DropOff D : associations)
 			if((D.mommyM==P)||(D.baby==P))
 				return true;
 		return false;
@@ -110,7 +108,7 @@ public class Nanny extends StdBehavior
 	public void addPayment(MOB mob,double amt)
 	{
 		if(mob==null) return;
-		for(Payment P : payments)
+		for(final Payment P : payments)
 			if(P.mommyM==mob)
 			{
 				P.paid += amt;
@@ -122,15 +120,15 @@ public class Nanny extends StdBehavior
 	public void clearTheSlate(MOB mob)
 	{
 		if(mob==null) return;
-		for(Payment P : payments)
+		for(final Payment P : payments)
 			if(P.mommyM==mob)
 				payments.remove(P);
 		if(dropOffs != null)
-			for(DropOff D : dropOffs)
+			for(final DropOff D : dropOffs)
 				if(D.mommyM==mob)
 				{
 					boolean found=false;
-					for(DropOff A : associations)
+					for(final DropOff A : associations)
 						found = found || (A.mommyM==D.mommyM);
 					if(!found)
 						associations.add(D);
@@ -142,12 +140,12 @@ public class Nanny extends StdBehavior
 	public double getAllOwedBy(MOB mob)
 	{
 		if(mob==null) return 0.0;
-		Room R=mob.location();
+		final Room R=mob.location();
 		if(R==null) return 0.0;
-		Area A=R.getArea();
+		final Area A=R.getArea();
 		if(A==null) return 0.0;
 		double amt=0.0;
-		for(DropOff D : dropOffs)
+		for(final DropOff D : dropOffs)
 			if(D.mommyM==mob)
 			{
 				long t=System.currentTimeMillis()-D.dropOffTime;
@@ -159,9 +157,9 @@ public class Nanny extends StdBehavior
 
 	public List<PhysicalAgent> getAllOwedFor(MOB mob)
 	{
-		List<PhysicalAgent> V=new Vector<PhysicalAgent>();
+		final List<PhysicalAgent> V=new Vector<PhysicalAgent>();
 		if(mob!=null)
-			for(DropOff D : dropOffs)
+			for(final DropOff D : dropOffs)
 				if(D.mommyM==mob)
 					V.add(D.baby);
 		return V;
@@ -176,7 +174,7 @@ public class Nanny extends StdBehavior
 		int mounts=0;
 		for(int v=0;v<V.size();v++)
 		{
-			PhysicalAgent E=V.get(v);
+			final PhysicalAgent E=V.get(v);
 			if(CMLib.flags().isBaby(E)||CMLib.flags().isChild(E))
 				babies++;
 			else
@@ -188,12 +186,12 @@ public class Nanny extends StdBehavior
 			else
 				friends++;
 		}
-		Vector pros=new Vector();
+		final Vector pros=new Vector();
 		if(babies>0) pros.addElement("little one"+((babies>1)?"s":""));
 		if(mounts>0) pros.addElement("mount"+((babies>1)?"s":""));
 		if(friends>0) pros.addElement("friend"+((babies>1)?"s":""));
 		if(objects>0) pros.addElement("thing"+((babies>1)?"s":""));
-		StringBuffer list=new StringBuffer("");
+		final StringBuffer list=new StringBuffer("");
 		for(int p=0;p<pros.size();p++)
 		{
 			list.append((String)pros.elementAt(p));
@@ -208,7 +206,7 @@ public class Nanny extends StdBehavior
 
 	public String getOwedFor(String currency, PhysicalAgent P)
 	{
-		for(DropOff D : dropOffs)
+		for(final DropOff D : dropOffs)
 			if(D.baby==P)
 			{
 				long t=System.currentTimeMillis()-D.dropOffTime;
@@ -221,12 +219,12 @@ public class Nanny extends StdBehavior
 	public String getAllOwedBy(String currency, MOB mob)
 	{
 		if(mob==null) return "";
-		Room R=mob.location();
+		final Room R=mob.location();
 		if(R==null) return "";
-		Area A=R.getArea();
+		final Area A=R.getArea();
 		if(A==null) return "";
-		StringBuffer owed=new StringBuffer("");
-		for(DropOff D : dropOffs)
+		final StringBuffer owed=new StringBuffer("");
+		for(final DropOff D : dropOffs)
 			if(D.mommyM==mob)
 			{
 				long t=System.currentTimeMillis()-D.dropOffTime;
@@ -244,7 +242,7 @@ public class Nanny extends StdBehavior
 		if(isDroppedOff(P)) return P;
 		if(P instanceof Container)
 		{
-			List<Item> V=((Container)P).getContents();
+			final List<Item> V=((Container)P).getContents();
 			Item I=null;
 			for(int v=0;v<V.size();v++)
 			{
@@ -262,20 +260,20 @@ public class Nanny extends StdBehavior
 		if(!super.okMessage(host,msg))
 			return false;
 		if(dropOffs==null) return true;
-		int targMinor=msg.targetMinor();
+		final int targMinor=msg.targetMinor();
 		if((msg.target()==host)
 		&&(targMinor==CMMsg.TYP_GIVE))
 		{
 			if(isDropOffable(msg.tool()))
 			{
-				String pronoun=this.getPronoun(new XVector(msg.tool()));
+				final String pronoun=this.getPronoun(new XVector(msg.tool()));
 				msg.source().tell(msg.source(),host,msg.tool(),"<T-NAME> won't accept <O-NAME>.  You should probably leave your "+pronoun+" here.");
 				return false;
 			}
 			if(msg.tool() instanceof Coins)
 			{
-				Coins C=(Coins)msg.tool();
-				String myCurrency=CMLib.beanCounter().getCurrency(host);
+				final Coins C=(Coins)msg.tool();
+				final String myCurrency=CMLib.beanCounter().getCurrency(host);
 				if(!C.getCurrency().equalsIgnoreCase(myCurrency))
 				{
 					if(host instanceof MOB)
@@ -295,8 +293,8 @@ public class Nanny extends StdBehavior
 		&&(!msg.targetMajor(CMMsg.MASK_INTERMSG))
 		&&(getDroppedOffObjIfAny((Item)msg.target()))!=null)
 		{
-			PhysicalAgent obj=getDroppedOffObjIfAny((Item)msg.target());
-			String amt=getOwedFor(CMLib.beanCounter().getCurrency(host),obj);
+			final PhysicalAgent obj=getDroppedOffObjIfAny((Item)msg.target());
+			final String amt=getOwedFor(CMLib.beanCounter().getCurrency(host),obj);
 			if((msg.source().location()==CMLib.map().roomLocation(host))
 			&&(host instanceof MOB))
 			{
@@ -325,7 +323,7 @@ public class Nanny extends StdBehavior
 				if((host instanceof MOB)&&(msg.source().location()==CMLib.map().roomLocation(host)))
 				{
 					CMLib.commands().postSay((MOB)host,msg.source(),"Not in my "+place+" you dont!");
-					MOB victim=msg.source().getVictim();
+					final MOB victim=msg.source().getVictim();
 					if(victim!=null) victim.makePeace();
 					msg.source().makePeace();
 				}
@@ -338,16 +336,16 @@ public class Nanny extends StdBehavior
 		if((msg.sourceMinor()==CMMsg.TYP_LEAVE)
 		&&(msg.target()==CMLib.map().roomLocation(host)))
 		{
-			PhysicalAgent obj=getDroppedOffObjIfAny(msg.source());
+			final PhysicalAgent obj=getDroppedOffObjIfAny(msg.source());
 			if(obj!=null)
 			{
 				if((msg.tool() instanceof Ability)
 				&&(msg.source().location()!=null))
 				{
-					Room R=CMLib.map().roomLocation(host);
-					boolean summon=CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_SUMMONING);
-					boolean teleport=CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_TRANSPORTING);
-					boolean shere=(msg.source().location()==R);
+					final Room R=CMLib.map().roomLocation(host);
+					final boolean summon=CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_SUMMONING);
+					final boolean teleport=CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_TRANSPORTING);
+					final boolean shere=(msg.source().location()==R);
 					if((!shere)&&((summon)||(teleport)))
 					{
 						if((msg.source().location()!=null)&&(msg.source().location()!=R))
@@ -358,7 +356,7 @@ public class Nanny extends StdBehavior
 				}
 				else
 				{
-					String amt=getOwedFor(CMLib.beanCounter().getCurrency(host),obj);
+					final String amt=getOwedFor(CMLib.beanCounter().getCurrency(host),obj);
 					if((msg.source().location()==CMLib.map().roomLocation(host))
 					&&(host instanceof MOB))
 					{
@@ -445,7 +443,7 @@ public class Nanny extends StdBehavior
 			return ultimateFollowing(P);
 		if(P instanceof Rideable)
 		{
-			Rideable R=(Rideable)P;
+			final Rideable R=(Rideable)P;
 			Environmental E2=null;
 			for(int r=0;r<R.numRiders();r++)
 			{
@@ -465,32 +463,32 @@ public class Nanny extends StdBehavior
 	public void addAssociationsIfNecessary(Set<PhysicalAgent> H)
 	{
 		PhysicalAgent P=null;
-		for(Object o : H)
+		for(final Object o : H)
 			if(o instanceof PhysicalAgent)
 			{
 				P=(PhysicalAgent)o;
 				if((P instanceof Rider)&&(((Rider)P).riding()!=null)&&(!H.contains(((Rider)P).riding())))
 					H.add(P);
 			}
-		for(Object o : H)
+		for(final Object o : H)
 			if(o instanceof PhysicalAgent)
 			{
 				P=(PhysicalAgent)o;
 				if((isDropOffable(P))&&(!isAssociated(P)))
 				{
-					MOB source=getMommyOf(P);
+					final MOB source=getMommyOf(P);
 					if(source!=null)
 						associations.add(new DropOff(source,P,System.currentTimeMillis()));
 				}
 				if(P instanceof MOB)
 				{
-					MOB mob=(MOB)P;
+					final MOB mob=(MOB)P;
 					for(int t=0;t<mob.numItems();t++)
 					{
-						Item I=mob.getItem(t);
+						final Item I=mob.getItem(t);
 						if(isDropOffable(I)&&(!isAssociated(I)))
 						{
-							MOB source=getMommyOf(I);
+							final MOB source=getMommyOf(I);
 							if(source!=null)
 								associations.add(new DropOff(source,I,System.currentTimeMillis()));
 						}
@@ -501,9 +499,9 @@ public class Nanny extends StdBehavior
 
 	public List<PhysicalAgent> myCurrentAssocs(MOB mob)
 	{
-		Vector<PhysicalAgent> V=new Vector<PhysicalAgent>();
+		final Vector<PhysicalAgent> V=new Vector<PhysicalAgent>();
 		if(mob!=null)
-			for(DropOff A : associations)
+			for(final DropOff A : associations)
 				if(A.mommyM==mob)
 					V.add(A.baby);
 		return V;
@@ -518,8 +516,8 @@ public class Nanny extends StdBehavior
 		if((msg.targetMinor()==CMMsg.TYP_ENTER)
 		&&(msg.target()==CMLib.map().roomLocation(host)))
 		{
-			String currency=CMLib.beanCounter().getCurrency(host);
-			Set H=msg.source().getGroupMembers(new HashSet<MOB>());
+			final String currency=CMLib.beanCounter().getCurrency(host);
+			final Set H=msg.source().getGroupMembers(new HashSet<MOB>());
 			msg.source().getRideBuddies(H);
 			if(!H.contains(msg.source()))
 				H.add(msg.source());
@@ -528,12 +526,12 @@ public class Nanny extends StdBehavior
 			{
 				H2 = new HashSet<Environmental>();
 				H2.addAll(H);
-				for(Iterator i = H2.iterator(); i.hasNext(); )
+				for (final Object element : H2)
 				{
-					Environmental E = (Environmental)i.next();
+					final Environmental E = (Environmental)element;
 					if(E instanceof Rideable)
 					{
-						Rideable R = (Rideable)E;
+						final Rideable R = (Rideable)E;
 						for(int r = 0; r<R.numRiders(); r++)
 							if(!H.contains(R.fetchRider(r)))
 								H.add(R.fetchRider(r));
@@ -543,8 +541,8 @@ public class Nanny extends StdBehavior
 			while(H.size() > H2.size());
 
 			addAssociationsIfNecessary(H);
-			List<PhysicalAgent> myAssocs=myCurrentAssocs(msg.source());
-			StringBuffer list=new StringBuffer("");
+			final List<PhysicalAgent> myAssocs=myCurrentAssocs(msg.source());
+			final StringBuffer list=new StringBuffer("");
 			for(int m=0;m<myAssocs.size();m++)
 			{
 				list.append(myAssocs.get(m).name());
@@ -560,12 +558,12 @@ public class Nanny extends StdBehavior
 							+CMLib.beanCounter().abbreviatedPrice(currency,hourlyRate)+" per hour, each.  " +
 							"No payment is due until you return to fetch your "+getPronoun(myAssocs)+".");
 
-			double owed=getAllOwedBy(msg.source());
-			double paid=getPaidBy(msg.source());
+			final double owed=getAllOwedBy(msg.source());
+			final double paid=getPaidBy(msg.source());
 			if(owed>0)
 			{
-				List<PhysicalAgent> myStuff=getAllOwedFor(msg.source());
-				String pronoun=getPronoun(myStuff);
+				final List<PhysicalAgent> myStuff=getAllOwedFor(msg.source());
+				final String pronoun=getPronoun(myStuff);
 				sayLaters.addElement(msg.source(),"Welcome back, "+msg.source().name()+"! If are here for your "+pronoun
 								+", the total bill is: "+getAllOwedBy(currency, msg.source())
 								+" ("+CMLib.beanCounter().abbreviatedPrice(currency,owed-paid)+"). "
@@ -578,22 +576,22 @@ public class Nanny extends StdBehavior
 		&&(msg.tool() instanceof Coins))
 		{
 			addPayment(msg.source(),((Coins)msg.tool()).getTotalValue());
-			double owed=getAllOwedBy(msg.source());
-			double paid=getPaidBy(msg.source());
-			String currency=CMLib.beanCounter().getCurrency(host);
+			final double owed=getAllOwedBy(msg.source());
+			final double paid=getPaidBy(msg.source());
+			final String currency=CMLib.beanCounter().getCurrency(host);
 			if((paid>owed)&&(host instanceof MOB))
 			{
-				double change=paid-owed;
-				Coins C=CMLib.beanCounter().makeBestCurrency(currency,change);
-				MOB source=msg.source();
+				final double change=paid-owed;
+				final Coins C=CMLib.beanCounter().makeBestCurrency(currency,change);
+				final MOB source=msg.source();
 				if((change>0.0)&&(C!=null))
 				{
 					// this message will actually end up triggering the hand-over.
-					CMMsg newMsg=CMClass.getMsg((MOB)host,source,C,CMMsg.MSG_SPEAK,"^T<S-NAME> say(s) 'Heres your change.' to <T-NAMESELF>.^?");
+					final CMMsg newMsg=CMClass.getMsg((MOB)host,source,C,CMMsg.MSG_SPEAK,"^T<S-NAME> say(s) 'Heres your change.' to <T-NAMESELF>.^?");
 					C.setOwner((MOB)host);
-					long num=C.getNumberOfCoins();
-					String curr=C.getCurrency();
-					double denom=C.getDenomination();
+					final long num=C.getNumberOfCoins();
+					final String curr=C.getCurrency();
+					final double denom=C.getDenomination();
 					C.destroy();
 					C.setNumberOfCoins(num);
 					C.setCurrency(curr);
@@ -606,7 +604,7 @@ public class Nanny extends StdBehavior
 			((Coins)msg.tool()).destroy();
 			if(paid>=owed)
 			{
-				List<PhysicalAgent> V=getAllOwedFor(msg.source());
+				final List<PhysicalAgent> V=getAllOwedFor(msg.source());
 				PhysicalAgent P=null;
 				for(int v=0;v<V.size();v++)
 				{
@@ -656,7 +654,7 @@ public class Nanny extends StdBehavior
 	@Override
 	public String getParms()
 	{
-		StringBuffer parms=new StringBuffer("");
+		final StringBuffer parms=new StringBuffer("");
 		parms.append("RATE="+hourlyRate+" ");
 		parms.append("NAME=\""+place+"\" ");
 		parms.append("WATCHES=\"");
@@ -672,10 +670,10 @@ public class Nanny extends StdBehavior
 		if(dropOffs!=null)
 		{
 			parms.append(" |~| ");
-			Vector<String> oldNames=new Vector<String>();
+			final Vector<String> oldNames=new Vector<String>();
 			String eName=null;
 			String oName=null;
-			for(DropOff D : dropOffs)
+			for(final DropOff D : dropOffs)
 			{
 				parms.append("<DROP>");
 
@@ -696,11 +694,11 @@ public class Nanny extends StdBehavior
 	public void setParms(String parms)
 	{
 		super.setParms(parms);
-		int x=super.parms.indexOf("|~|");
+		final int x=super.parms.indexOf("|~|");
 		if(x>0) dropOffs=null;
 		hourlyRate=CMParms.getParmDouble(parms,"RATE",2.0);
 		place=CMParms.getParmStr(parms,"NAME","nursery");
-		List<String> watches=CMParms.parseCommas(CMParms.getParmStr(parms,"WATCHES","Babies,Children").toUpperCase(),true);
+		final List<String> watches=CMParms.parseCommas(CMParms.getParmStr(parms,"WATCHES","Babies,Children").toUpperCase(),true);
 		String watch=null;
 		watchesBabies=false;
 		watchesChildren=false;
@@ -734,22 +732,22 @@ public class Nanny extends StdBehavior
 			return true;
 		if(dropOffs==null)
 		{
-			int x=super.parms.indexOf("|~|");
+			final int x=super.parms.indexOf("|~|");
 			dropOffs=new SVector<DropOff>();
 			if(x>0)
 			{
-				String codes=super.parms.substring(x+3);
+				final String codes=super.parms.substring(x+3);
 				parms=parms.substring(0,3);
 				if(codes.trim().length()>0)
 				{
-					List<XMLLibrary.XMLpiece> V=CMLib.xml().parseAllXML(codes);
+					final List<XMLLibrary.XMLpiece> V=CMLib.xml().parseAllXML(codes);
 					XMLLibrary.XMLpiece P=null;
-					Hashtable parsedPlayers=new Hashtable();
+					final Hashtable parsedPlayers=new Hashtable();
 					long time=0;
 					String eName=null;
 					PhysicalAgent PA=null;
 					String oName=null;
-					Room R=CMLib.map().roomLocation((Environmental)ticking);
+					final Room R=CMLib.map().roomLocation((Environmental)ticking);
 					MOB M=null;
 					if((V!=null)&&(R!=null))
 					for(int v=0;v<V.size();v++)
@@ -799,9 +797,9 @@ public class Nanny extends StdBehavior
 			sayLaters.removeElementAt(s);
 		}
 
-		Room R=CMLib.map().roomLocation((Environmental)ticking);
+		final Room R=CMLib.map().roomLocation((Environmental)ticking);
 		if(R!=null)
-		for(DropOff D : associations)
+		for(final DropOff D : associations)
 		{
 			if(R.isHere(D.baby))
 			{
@@ -824,7 +822,7 @@ public class Nanny extends StdBehavior
 		}
 
 		if(!changedSinceLastSave)
-			for(DropOff D : dropOffs)
+			for(final DropOff D : dropOffs)
 				if((D.baby instanceof MOB)
 				&&(R!=null)
 				&&(!R.isInhabitant((MOB)D.baby)))
@@ -832,7 +830,7 @@ public class Nanny extends StdBehavior
 					dropOffs.remove(D);
 					changedSinceLastSave=true;
 				}
-		for(DropOff D : dropOffs)
+		for(final DropOff D : dropOffs)
 			if((D.baby instanceof Item)
 			&&(R!=null)
 			&&(!R.isContent((Item)D.baby)))
@@ -845,7 +843,7 @@ public class Nanny extends StdBehavior
 		{
 			if(R!=null)
 			{
-				Vector<MOB> mobsToSave=new Vector<MOB>();
+				final Vector<MOB> mobsToSave=new Vector<MOB>();
 				if(ticking instanceof MOB)
 					mobsToSave.addElement((MOB)ticking);
 				MOB M=null;
@@ -859,7 +857,7 @@ public class Nanny extends StdBehavior
 					&&(!mobsToSave.contains(M)))
 						mobsToSave.addElement(M);
 				}
-				for(DropOff D : dropOffs)
+				for(final DropOff D : dropOffs)
 				{
 					if((D.baby instanceof MOB)
 					&&(R.isInhabitant((MOB)D.baby))
@@ -870,7 +868,7 @@ public class Nanny extends StdBehavior
 			}
 
 
-			Vector<Item> itemsToSave=new Vector<Item>();
+			final Vector<Item> itemsToSave=new Vector<Item>();
 			if(ticking instanceof Item)
 				itemsToSave.addElement((Item)ticking);
 			Item I=null;
@@ -885,7 +883,7 @@ public class Nanny extends StdBehavior
 					&&(!itemsToSave.contains(I)))
 						itemsToSave.addElement(I);
 				}
-				for(DropOff D : dropOffs)
+				for(final DropOff D : dropOffs)
 				{
 					if((D.baby instanceof Item)
 					&&(R.isContent((Item)D.baby))
@@ -901,8 +899,8 @@ public class Nanny extends StdBehavior
 
 		if((dropOffs.size()>0)&&(ticking instanceof MOB)&&(CMLib.dice().rollPercentage()<10)&&(R!=null))
 		{
-			MOB mob=(MOB)ticking;
-			PhysicalAgent PA=dropOffs.get(CMLib.dice().roll(1,dropOffs.size(),-1)).baby;
+			final MOB mob=(MOB)ticking;
+			final PhysicalAgent PA=dropOffs.get(CMLib.dice().roll(1,dropOffs.size(),-1)).baby;
 			if(CMLib.flags().isBaby(PA))
 			{
 				if(PA.fetchEffect("Soiled")!=null)
@@ -939,7 +937,7 @@ public class Nanny extends StdBehavior
 						R.show(mob, PA, CMMsg.MSG_NOISE,"<S-NAME> speak(s) quietly with <T-NAME>.");
 					else
 					{
-						List<RawMaterial> V=((MOB)PA).charStats().getMyRace().myResources();
+						final List<RawMaterial> V=((MOB)PA).charStats().getMyRace().myResources();
 						boolean comb=false;
 						if(V!=null)
 						for(int v=0;v<V.size();v++)

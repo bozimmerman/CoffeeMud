@@ -77,7 +77,7 @@ public class Spell_Boomerang extends Spell
 		if(affected instanceof Item)
 		{
 			final Item I=(Item)affected;
-			MOB owner=getOwner(I);
+			final MOB owner=getOwner(I);
 			if((owner!=null)&&(I.owner()!=null)&&(I.owner()!=owner))
 			{
 				if(!owner.isMine(I))
@@ -113,8 +113,8 @@ public class Spell_Boomerang extends Spell
 		}
 		if((affected instanceof Item)&&(text().length()>0))
 		{
-			Item I=(Item)affected;
-			MOB owner=getOwner(I);
+			final Item I=(Item)affected;
+			final MOB owner=getOwner(I);
 			if((owner!=null)&&(I.owner()!=null)&&(I.owner()!=owner))
 			{
 				if((msg.sourceMinor()==CMMsg.TYP_DROP)||(msg.target()==I)||(msg.tool()==I))
@@ -148,17 +148,17 @@ public class Spell_Boomerang extends Spell
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		Item target=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_ANY);
+		final Item target=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_ANY);
 		if(target==null) return false;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,somanticCastCode(mob,target,auto),auto?"":"^S<S-NAME> point(s) at <T-NAMESELF> and cast(s) a spell.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,somanticCastCode(mob,target,auto),auto?"":"^S<S-NAME> point(s) at <T-NAMESELF> and cast(s) a spell.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

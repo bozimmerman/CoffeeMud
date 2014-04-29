@@ -110,7 +110,7 @@ public class Spirit extends Undead
 	@Override
 	public String healthText(MOB viewer, MOB mob)
 	{
-		double pct=(CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));
+		final double pct=(CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));
 
 		if(pct<.10)
 			return "^r" + mob.name(viewer) + "^r is near banishment!^N";

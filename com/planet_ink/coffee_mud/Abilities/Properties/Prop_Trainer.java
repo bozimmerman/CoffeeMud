@@ -63,9 +63,9 @@ public class Prop_Trainer extends Prop_StatTrainer
 		{
 			built=true;
 			CharClass C=null;
-			Vector allowedClasses=new Vector();
-			Vector allowedExpertises=new Vector();
-			Vector<String> V=CMParms.parse(text());
+			final Vector allowedClasses=new Vector();
+			final Vector allowedExpertises=new Vector();
+			final Vector<String> V=CMParms.parse(text());
 			String s=null;
 			for(int v=0;v<V.size();v++)
 			{
@@ -76,8 +76,8 @@ public class Prop_Trainer extends Prop_StatTrainer
 				{
 					if((v>0)&&(V.elementAt(v-1).equalsIgnoreCase("ALL")))
 					{
-						String baseClass=C.baseClass();
-						for(Enumeration c=CMClass.charClasses();c.hasMoreElements();)
+						final String baseClass=C.baseClass();
+						for(final Enumeration c=CMClass.charClasses();c.hasMoreElements();)
 						{
 							C=(CharClass)c.nextElement();
 							if((C.baseClass().equalsIgnoreCase(baseClass))
@@ -90,19 +90,19 @@ public class Prop_Trainer extends Prop_StatTrainer
 				}
 				else
 				{
-					ExpertiseLibrary.ExpertiseDefinition def=CMLib.expertises().getDefinition(s);
+					final ExpertiseLibrary.ExpertiseDefinition def=CMLib.expertises().getDefinition(s);
 					if(def!=null) allowedExpertises.addElement(def);
 				}
 			}
 			if(allowedClasses.size()==0)
-			for(Enumeration c=CMClass.charClasses();c.hasMoreElements();)
+			for(final Enumeration c=CMClass.charClasses();c.hasMoreElements();)
 				allowedClasses.addElement(c.nextElement());
 			if(allowedExpertises.size()==0)
-			for(Enumeration e=CMLib.expertises().definitions();e.hasMoreElements();)
+			for(final Enumeration e=CMLib.expertises().definitions();e.hasMoreElements();)
 				allowedExpertises.addElement(e.nextElement());
 
 
-			MOB mob=(MOB)affected;
+			final MOB mob=(MOB)affected;
 			for(int c=0;c<allowedClasses.size();c++)
 			{
 				C=(CharClass)allowedClasses.elementAt(c);

@@ -50,7 +50,7 @@ public class Chant_Blight extends Chant
 		// undo the affects of this spell
 		if((affected==null)||(!(affected instanceof Room)))
 			return;
-		Room R=(Room)affected;
+		final Room R=(Room)affected;
 		if(canBeUninvoked())
 			R.showHappens(CMMsg.MSG_OK_VISUAL,"The blight is ended.");
 
@@ -76,12 +76,12 @@ public class Chant_Blight extends Chant
 		if(affected==null) return false;
 		if(affected instanceof Room)
 		{
-			Room R=(Room)affected;
+			final Room R=(Room)affected;
 			if(isBlightable(R.myResource()))
 				R.setResource(RawMaterial.RESOURCE_SAND);
 			for(int i=0;i<R.numItems();i++)
 			{
-				Item I=R.getItem(i);
+				final Item I=R.getItem(i);
 				if((I!=null)&&(isBlightable(I.material())))
 				{
 					R.showHappens(CMMsg.MSG_OK_VISUAL,I.name()+" withers away.");
@@ -104,7 +104,7 @@ public class Chant_Blight extends Chant
 		&&(msg.target() instanceof MOB)
 		&&(((MOB)msg.target()).charStats().getMyRace().racialCategory().equals("Vegetation")))
 		{
-			int recovery=(int)Math.round(CMath.div((msg.value()),2.0));
+			final int recovery=(int)Math.round(CMath.div((msg.value()),2.0));
 			msg.setValue(msg.value()+recovery);
 		}
 		return true;
@@ -125,7 +125,7 @@ public class Chant_Blight extends Chant
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		Room target=mob.location();
+		final Room target=mob.location();
 		if(target==null) return false;
 		if(target.fetchEffect(ID())!=null)
 		{
@@ -139,7 +139,7 @@ public class Chant_Blight extends Chant
 		// and added as String objects to a vector.
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
@@ -148,7 +148,7 @@ public class Chant_Blight extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> chant(s) to the ground.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> chant(s) to the ground.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

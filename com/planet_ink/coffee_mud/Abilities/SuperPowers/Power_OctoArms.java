@@ -53,14 +53,14 @@ public class Power_OctoArms extends SuperPower
 		   &&(affected!=null)
 		   &&(affected instanceof MOB))
 		{
-			MOB mob=(MOB)affected;
+			final MOB mob=(MOB)affected;
 			if((mob.isInCombat())
 			&&(CMLib.flags().aliveAwakeMobileUnbound(mob,true))
 			&&(mob.charStats().getBodyPart(Race.BODY_ARM)>2))
 			{
 				if(CMLib.dice().rollPercentage()>95)
 					helpProficiency(mob, 0);
-				int arms=mob.charStats().getBodyPart(Race.BODY_ARM)-2;
+				final int arms=mob.charStats().getBodyPart(Race.BODY_ARM)-2;
 				if((naturalWeapon==null)
 				||(naturalWeapon.amDestroyed()))
 				{
@@ -88,7 +88,7 @@ public class Power_OctoArms extends SuperPower
 		if(!(affected instanceof MOB))
 			return true;
 
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		if(msg.amISource(mob)
 		&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
 		&&(msg.tool() instanceof Weapon)

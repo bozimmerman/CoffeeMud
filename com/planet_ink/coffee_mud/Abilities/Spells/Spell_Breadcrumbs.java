@@ -48,7 +48,7 @@ public class Spell_Breadcrumbs extends Spell
 		// undo the affects of this spell
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		super.unInvoke();
 
 		if(canBeUninvoked())
@@ -59,14 +59,14 @@ public class Spell_Breadcrumbs extends Spell
 	@Override
 	public String displayText()
 	{
-		StringBuffer str=new StringBuffer("(Breadcrumb Trail: ");
+		final StringBuffer str=new StringBuffer("(Breadcrumb Trail: ");
 		if(trail!=null)
 		synchronized(trail)
 		{
 			Room lastRoom=null;
 			for(int v=trail.size()-1;v>=0;v--)
 			{
-				Room R=(Room)trail.elementAt(v);
+				final Room R=(Room)trail.elementAt(v);
 				if(lastRoom!=null)
 				{
 					int dir=-1;
@@ -91,14 +91,14 @@ public class Spell_Breadcrumbs extends Spell
 	{
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		if((msg.amISource(mob))
 		&&(trail!=null)
 		&&(msg.targetMinor()==CMMsg.TYP_ENTER)
 		&&(msg.target()!=null)
 		&&(msg.target() instanceof Room))
 		{
-			Room newRoom=(Room)msg.target();
+			final Room newRoom=(Room)msg.target();
 			boolean kill=false;
 			int t=0;
 			while(t<trail.size())
@@ -106,7 +106,7 @@ public class Spell_Breadcrumbs extends Spell
 				if(kill) trail.removeElement(trail.elementAt(t));
 				else
 				{
-					Room R=(Room)trail.elementAt(t);
+					final Room R=(Room)trail.elementAt(t);
 					if(R==newRoom)
 						kill=true;
 					t++;
@@ -115,7 +115,7 @@ public class Spell_Breadcrumbs extends Spell
 			if(kill) return;
 			for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 			{
-				Room adjacentRoom=newRoom.getRoomInDir(d);
+				final Room adjacentRoom=newRoom.getRoomInDir(d);
 				if((adjacentRoom!=null)
 				   &&(newRoom.getExitInDir(d)!=null))
 				{
@@ -126,7 +126,7 @@ public class Spell_Breadcrumbs extends Spell
 						if(kill) trail.removeElement(trail.elementAt(t));
 						else
 						{
-							Room R=(Room)trail.elementAt(t);
+							final Room R=(Room)trail.elementAt(t);
 							if(R==adjacentRoom)
 								kill=true;
 							t++;
@@ -159,14 +159,14 @@ public class Spell_Breadcrumbs extends Spell
 			return false;
 
 		// now see if it worked
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
 			// it worked, so build a copy of this ability,
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> attain(s) mysterious breadcrumbs.":"^S<S-NAME> invoke(s) the mystical breadcrumbs.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> attain(s) mysterious breadcrumbs.":"^S<S-NAME> invoke(s) the mystical breadcrumbs.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

@@ -54,7 +54,7 @@ public class Skill_Convert extends StdSkill
 		// undo the affects of this spell
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		super.unInvoke();
 
@@ -125,7 +125,7 @@ public class Skill_Convert extends StdSkill
 		{
 			if(convertStack.containsFirst(target))
 			{
-				Long L=convertStack.getSecond(convertStack.indexOfFirst(target));
+				final Long L=convertStack.getSecond(convertStack.indexOfFirst(target));
 				if((System.currentTimeMillis()-L.longValue())>CMProps.getMillisPerMudHour()*5)
 					convertStack.removeElementFirst(target);
 			}
@@ -138,7 +138,7 @@ public class Skill_Convert extends StdSkill
 			}
 		}
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 		boolean targetMadeSave=CMLib.dice().roll(1,100,0)>(target.charStats().getSave(CharStats.STAT_FAITH));
 		if(CMSecurity.isASysOp(mob)) targetMadeSave=false;
 		if((!target.isMonster())&&(success)&&(targetMadeSave)&&(target.getMyDeity()!=null))
@@ -159,7 +159,7 @@ public class Skill_Convert extends StdSkill
 				}
 				targetMadeSave=!success;
 			}
-			catch(Exception e)
+			catch(final Exception e)
 			{
 				return false;
 			}
@@ -173,17 +173,17 @@ public class Skill_Convert extends StdSkill
 			if(dRoom==mob.location()) dRoom=null;
 			if(target.getMyDeity()!=null)
 			{
-				Ability A=target.fetchEffect(ID());
+				final Ability A=target.fetchEffect(ID());
 				if(A!=null){ A.unInvoke(); target.delEffect(A);}
-				CMMsg msg2=CMClass.getMsg(target,D,this,CMMsg.MSG_REBUKE,null);
+				final CMMsg msg2=CMClass.getMsg(target,D,this,CMMsg.MSG_REBUKE,null);
 				if((mob.location().okMessage(mob,msg2))&&((dRoom==null)||(dRoom.okMessage(mob,msg2))))
 				{
 					mob.location().send(target,msg2);
 					if(dRoom!=null) dRoom.send(target,msg2);
 				}
 			}
-			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_SPEAK,auto?"<T-NAME> <T-IS-ARE> converted!":"<S-NAME> convert(s) <T-NAMESELF> to the worship of "+D.name()+".");
-			CMMsg msg2=CMClass.getMsg(target,D,this,CMMsg.MSG_SERVE,null);
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_SPEAK,auto?"<T-NAME> <T-IS-ARE> converted!":"<S-NAME> convert(s) <T-NAMESELF> to the worship of "+D.name()+".");
+			final CMMsg msg2=CMClass.getMsg(target,D,this,CMMsg.MSG_SERVE,null);
 			if((mob.location().okMessage(mob,msg))
 			   &&(mob.location().okMessage(mob,msg2))
 			   &&((dRoom==null)||(dRoom.okMessage(mob,msg2))))
@@ -201,7 +201,7 @@ public class Skill_Convert extends StdSkill
 				if(target.isMonster())
 				{
 					beneficialAffect(mob,target,asLevel,(int)(TimeManager.MILI_HOUR/CMProps.getTickMillis()));
-					Skill_Convert A=(Skill_Convert)target.fetchEffect(ID());
+					final Skill_Convert A=(Skill_Convert)target.fetchEffect(ID());
 					if(A!=null) A.priorFaith=target.getWorshipCharID();
 				}
 
@@ -211,7 +211,7 @@ public class Skill_Convert extends StdSkill
 		{
 			if((target.isMonster())&&(target.fetchEffect("Prayer_ReligiousDoubt")==null))
 			{
-				Ability A=CMClass.getAbility("Prayer_ReligiousDoubt");
+				final Ability A=CMClass.getAbility("Prayer_ReligiousDoubt");
 				if(A!=null) A.invoke(mob,target,true,asLevel);
 			}
 			else

@@ -62,8 +62,8 @@ public class Thief_MarkTrapped extends ThiefSkill
 		{
 			if(lastMarked.size()>=5)
 			{
-				Physical P2=lastMarked.removeFirst();
-				Ability A=P2.fetchEffect(ID());
+				final Physical P2=lastMarked.removeFirst();
+				final Ability A=P2.fetchEffect(ID());
 				if((A!=null)&&(A.invoker()==invoker()))
 				{
 					A.unInvoke();
@@ -83,7 +83,7 @@ public class Thief_MarkTrapped extends ThiefSkill
 			mob.tell("What item would you like to mark as trapped?");
 			return false;
 		}
-		int dir=Directions.getGoodDirectionCode(CMParms.combine(commands,0));
+		final int dir=Directions.getGoodDirectionCode(CMParms.combine(commands,0));
 		Physical item=givenTarget;
 		if((dir>=0)
 		&&(item==null)
@@ -118,12 +118,12 @@ public class Thief_MarkTrapped extends ThiefSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
 			CMMsg msg;
-			Ability A=item.fetchEffect(ID());
+			final Ability A=item.fetchEffect(ID());
 			if((A!=null)&&((givenTarget==null)||(auto)))
 				msg=CMClass.getMsg(mob,item,null,CMMsg.MSG_THIEF_ACT,"<S-NAME> remove(s) the mark on <T-NAME>.",CMMsg.MSG_THIEF_ACT,null,CMMsg.MSG_THIEF_ACT,null);
 			else

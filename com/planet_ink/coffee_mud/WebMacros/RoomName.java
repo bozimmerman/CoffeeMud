@@ -39,11 +39,11 @@ public class RoomName extends StdWebMacro
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
-		String last=httpReq.getUrlParameter("ROOM");
+		final String last=httpReq.getUrlParameter("ROOM");
 		if(last==null) return " @break@";
 		if(last.length()>0)
 		{
-			Room R=CMLib.map().getRoom(last);
+			final Room R=CMLib.map().getRoom(last);
 			if(R!=null)
 				return clearWebMacros(R.displayText());
 		}

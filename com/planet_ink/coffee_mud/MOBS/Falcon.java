@@ -37,7 +37,7 @@ public class Falcon extends StdMOB
 	public Falcon()
 	{
 		super();
-		Random randomizer = new Random(System.currentTimeMillis());
+		final Random randomizer = new Random(System.currentTimeMillis());
 
 		username="a falcon";
 		setDescription("a small hunting bird.");

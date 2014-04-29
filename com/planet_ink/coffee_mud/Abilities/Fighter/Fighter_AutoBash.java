@@ -55,12 +55,12 @@ public class Fighter_AutoBash extends FighterSkill
 		if(!super.tick(ticking,tickID))
 			return false;
 
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		if((numberOfShields<0)&&(tickID==Tickable.TICKID_MOB))
 		{
 			numberOfShields=0;
-			for(Enumeration<Item> i=mob.items(); i.hasMoreElements(); )
+			for(final Enumeration<Item> i=mob.items(); i.hasMoreElements(); )
 			{
 				final Item I=i.nextElement();
 				if((I instanceof Shield)
@@ -79,7 +79,7 @@ public class Fighter_AutoBash extends FighterSkill
 			&&(CMLib.flags().aliveAwakeMobileUnbound(mob,true))
 			&&(proficiencyCheck(null,0,false)))
 			{
-				Ability A=mob.fetchAbility("Skill_Bash");
+				final Ability A=mob.fetchAbility("Skill_Bash");
 				if(A!=null) A.invoke(mob,mob.getVictim(),false,adjustedLevel(mob,0));
 				if(CMLib.dice().rollPercentage()<(10/numberOfShields))
 					helpProficiency(mob, 0);
@@ -96,7 +96,7 @@ public class Fighter_AutoBash extends FighterSkill
 		if(!(affected instanceof MOB))
 			return;
 
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		if(msg.amISource(mob)&&(msg.target() instanceof Shield))
 			numberOfShields=-1;
@@ -114,13 +114,13 @@ public class Fighter_AutoBash extends FighterSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
 			mob.tell("You will now automatically bash opponents when you fight.");
 			beneficialAffect(mob,mob,asLevel,0);
-			Ability A=mob.fetchEffect(ID());
+			final Ability A=mob.fetchEffect(ID());
 			if(A!=null) A.makeLongLasting();
 		}
 		else

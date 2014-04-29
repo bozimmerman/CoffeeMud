@@ -75,7 +75,7 @@ public class MOBTeacher extends CombatAbilities
 		}
 		for(int i=0;i<mob.baseCharStats().numClasses();i++)
 		{
-			CharClass C1=mob.baseCharStats().getMyClass(i);
+			final CharClass C1=mob.baseCharStats().getMyClass(i);
 			if((C1!=null)
 			&&(mob.baseCharStats().getClassLevel(C1)>0))
 				mob.baseCharStats().setClassLevel(C1,1);
@@ -87,10 +87,10 @@ public class MOBTeacher extends CombatAbilities
 
 	protected void classAbles(MOB mob, Map<String,Ability> myAbles, int pct)
 	{
-		boolean stdCharClass=mob.charStats().getCurrentClass().ID().equals("StdCharClass");
-		String className=mob.charStats().getCurrentClass().ID();
+		final boolean stdCharClass=mob.charStats().getCurrentClass().ID().equals("StdCharClass");
+		final String className=mob.charStats().getCurrentClass().ID();
 		Ability A=null;
-		for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
+		for(final Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 		{
 			A=a.nextElement();
 
@@ -101,13 +101,13 @@ public class MOBTeacher extends CombatAbilities
 			&&((!stdCharClass)||(CMLib.ableMapper().availableToTheme(A.ID(),Area.THEME_FANTASY,true))))
 				addAbility(mob,A,pct,myAbles);
 		}
-		for(ClanGovernment G : CMLib.clans().getStockGovernments())
+		for(final ClanGovernment G : CMLib.clans().getStockGovernments())
 		{
 			G.getClanLevelAbilities(Integer.valueOf(Integer.MAX_VALUE));
 			for(final Enumeration<AbilityMapping> m= CMLib.ableMapper().getClassAbles(G.getName(), false);m.hasMoreElements();)
 			{
-				AbilityMapping M=m.nextElement();
-				Ability A2=CMClass.getAbility(M.abilityID);
+				final AbilityMapping M=m.nextElement();
+				final Ability A2=CMClass.getAbility(M.abilityID);
 				addAbility(mob,A2,pct,myAbles);
 			}
 		}
@@ -124,18 +124,18 @@ public class MOBTeacher extends CombatAbilities
 			if(!noExpertises)
 			{
 				noExpertises=true;
-				MOB mob=(MOB)ticking;
+				final MOB mob=(MOB)ticking;
 				if(teachEverything)
 				{
-					for(Enumeration<ExpertiseLibrary.ExpertiseDefinition> e=CMLib.expertises().definitions();e.hasMoreElements();)
+					for(final Enumeration<ExpertiseLibrary.ExpertiseDefinition> e=CMLib.expertises().definitions();e.hasMoreElements();)
 						mob.addExpertise(e.nextElement().ID);
 					trainableExpertises=null;
 				}
 				else
 				{
 					boolean someNew=true;
-					CharStats oldBase=(CharStats)mob.baseCharStats().copyOf();
-					for(int i: CharStats.CODES.BASE())
+					final CharStats oldBase=(CharStats)mob.baseCharStats().copyOf();
+					for(final int i: CharStats.CODES.BASE())
 						mob.baseCharStats().setStat(i,100);
 					for(int i=0;i<mob.baseCharStats().numClasses();i++)
 						mob.baseCharStats().setClassLevel(mob.baseCharStats().getMyClass(i),100);
@@ -143,7 +143,7 @@ public class MOBTeacher extends CombatAbilities
 					while(someNew)
 					{
 						someNew=false;
-						List<ExpertiseDefinition> V=CMLib.expertises().myQualifiedExpertises(mob);
+						final List<ExpertiseDefinition> V=CMLib.expertises().myQualifiedExpertises(mob);
 						ExpertiseLibrary.ExpertiseDefinition def=null;
 						for(int v=0;v<V.size();v++)
 						{
@@ -170,7 +170,7 @@ public class MOBTeacher extends CombatAbilities
 	{
 		if(CMLib.dice().rollPercentage()<=pct)
 		{
-			Ability A2=myAbles.get(A.ID());
+			final Ability A2=myAbles.get(A.ID());
 			if(A2==null)
 			{
 				A=(Ability)A.copyOf();
@@ -190,9 +190,9 @@ public class MOBTeacher extends CombatAbilities
 		myMOB.baseCharStats().setMyLevels(""+myMOB.phyStats().level());
 		myMOB.recoverCharStats();
 
-		Hashtable myAbles=new Hashtable();
+		final Hashtable myAbles=new Hashtable();
 		Ability A=null;
-		for(Enumeration<Ability> a=myMOB.allAbilities();a.hasMoreElements();)
+		for(final Enumeration<Ability> a=myMOB.allAbilities();a.hasMoreElements();)
 		{
 			A=a.nextElement();
 			if(A!=null) myAbles.put(A.ID(),A);
@@ -214,7 +214,7 @@ public class MOBTeacher extends CombatAbilities
 		if(V!=null)
 		for(int v=V.size()-1;v>=0;v--)
 		{
-			String s=(String)V.elementAt(v);
+			final String s=(String)V.elementAt(v);
 			if(s.equalsIgnoreCase("NOCOMMON"))
 			{
 				noCommon=true;
@@ -235,7 +235,7 @@ public class MOBTeacher extends CombatAbilities
 		if(V!=null)
 		for(int v=0;v<V.size();v++)
 		{
-			String s=(String)V.elementAt(v);
+			final String s=(String)V.elementAt(v);
 			if(s.endsWith("%"))
 			{
 				pct=CMath.s_int(s.substring(0,s.length()-1));
@@ -243,7 +243,7 @@ public class MOBTeacher extends CombatAbilities
 			}
 
 			A=CMClass.getAbility(s);
-			CharClass C=CMClass.findCharClass(s);
+			final CharClass C=CMClass.findCharClass(s);
 			if((C!=null)&&(C.availabilityCode()!=0))
 			{
 				teachEverything=false;
@@ -259,7 +259,7 @@ public class MOBTeacher extends CombatAbilities
 			}
 			else
 			{
-				ExpertiseLibrary.ExpertiseDefinition def=CMLib.expertises().getDefinition(s);
+				final ExpertiseLibrary.ExpertiseDefinition def=CMLib.expertises().getDefinition(s);
 				if(def!=null)
 				{
 					myMOB.addExpertise(def.ID);
@@ -275,7 +275,7 @@ public class MOBTeacher extends CombatAbilities
 		if(lvl<1) lvl=1;
 		for(int i=0;i<myMOB.baseCharStats().numClasses();i++)
 		{
-			CharClass C=myMOB.baseCharStats().getMyClass(i);
+			final CharClass C=myMOB.baseCharStats().getMyClass(i);
 			if((C!=null)&&(myMOB.baseCharStats().getClassLevel(C)>=0))
 				myMOB.baseCharStats().setClassLevel(C,lvl);
 		}
@@ -312,8 +312,8 @@ public class MOBTeacher extends CombatAbilities
 		super.executeMsg(affecting,msg);
 		if(!canFreelyBehaveNormal(affecting))
 			return;
-		MOB monster=myMOB;
-		MOB student=msg.source();
+		final MOB monster=myMOB;
+		final MOB student=msg.source();
 
 		if((!msg.amISource(monster))
 		&&(!student.isMonster())
@@ -325,7 +325,7 @@ public class MOBTeacher extends CombatAbilities
 			String sayMsg=CMStrings.getSayFromMessage(msg.sourceMessage());
 			if(sayMsg==null)
 			{
-				int start=msg.sourceMessage().indexOf('\'');
+				final int start=msg.sourceMessage().indexOf('\'');
 				if(start>0)
 					sayMsg=msg.sourceMessage().substring(start+1);
 				else
@@ -384,7 +384,7 @@ public class MOBTeacher extends CombatAbilities
 					CMLib.commands().postSay(monster,student,"I can't teach you everything at once. Try the QUALIFY command.",true,false);
 					return;
 				}
-				Ability myAbility=CMClass.findAbility(s.trim().toUpperCase(),monster);
+				final Ability myAbility=CMClass.findAbility(s.trim().toUpperCase(),monster);
 				if(myAbility==null)
 				{
 					ExpertiseLibrary.ExpertiseDefinition theExpertise=null;
@@ -392,35 +392,35 @@ public class MOBTeacher extends CombatAbilities
 					{
 						trainableExpertises=new LinkedList<ExpertiseLibrary.ExpertiseDefinition>();
 						trainableExpertises.addAll(CMLib.expertises().myListableExpertises(monster));
-						for(Enumeration<String> exi=monster.expertises();exi.hasMoreElements();)
+						for(final Enumeration<String> exi=monster.expertises();exi.hasMoreElements();)
 						{
-							Pair<String,Integer> EXI=monster.fetchExpertise(exi.nextElement());
+							final Pair<String,Integer> EXI=monster.fetchExpertise(exi.nextElement());
 							if(EXI.getValue()==null)
 							{
-								ExpertiseLibrary.ExpertiseDefinition def=CMLib.expertises().getDefinition(EXI.getKey());
+								final ExpertiseLibrary.ExpertiseDefinition def=CMLib.expertises().getDefinition(EXI.getKey());
 								if((def != null) && (!trainableExpertises.contains(def)))
 									trainableExpertises.add(def);
 							}
 							else
 							{
-								List<String> childrenIDs=CMLib.expertises().getStageCodes(EXI.getKey());
-								for(String experID : childrenIDs)
+								final List<String> childrenIDs=CMLib.expertises().getStageCodes(EXI.getKey());
+								for(final String experID : childrenIDs)
 								{
-									ExpertiseLibrary.ExpertiseDefinition def=CMLib.expertises().getDefinition(experID);
+									final ExpertiseLibrary.ExpertiseDefinition def=CMLib.expertises().getDefinition(experID);
 									if((def != null) && (!trainableExpertises.contains(def)))
 										trainableExpertises.add(def);
 								}
 							}
 						}
 					}
-					for(ExpertiseLibrary.ExpertiseDefinition def : trainableExpertises)
+					for(final ExpertiseLibrary.ExpertiseDefinition def : trainableExpertises)
 					{
 						if((def.name.equalsIgnoreCase(s))
 						&&(theExpertise==null))
 							theExpertise=def;
 					}
 					if(theExpertise==null)
-					for(ExpertiseLibrary.ExpertiseDefinition def : trainableExpertises)
+					for(final ExpertiseLibrary.ExpertiseDefinition def : trainableExpertises)
 					{
 						if((CMLib.english().containsString(def.name,s)
 						&&(theExpertise==null)))
@@ -436,9 +436,9 @@ public class MOBTeacher extends CombatAbilities
 						CMLib.commands().postSay(monster,student,"I've heard of "+s+", but that's an class-- try TRAINing  for it.",true,false);
 					else
 					{
-						for(Enumeration e=CMLib.expertises().definitions(); e.hasMoreElements();)
+						for(final Enumeration e=CMLib.expertises().definitions(); e.hasMoreElements();)
 						{
-							ExpertiseLibrary.ExpertiseDefinition def=(ExpertiseLibrary.ExpertiseDefinition)e.nextElement();
+							final ExpertiseLibrary.ExpertiseDefinition def=(ExpertiseLibrary.ExpertiseDefinition)e.nextElement();
 							if(def.name.equalsIgnoreCase(s))
 							{
 								theExpertise=def;
@@ -459,7 +459,7 @@ public class MOBTeacher extends CombatAbilities
 					monster.recoverCharStats();
 				}
 
-				int prof75=(int)Math.round(CMath.mul(CMLib.ableMapper().getMaxProficiency(student,true,myAbility.ID()),0.75));
+				final int prof75=(int)Math.round(CMath.mul(CMLib.ableMapper().getMaxProficiency(student,true,myAbility.ID()),0.75));
 				myAbility.setProficiency(prof75/2);
 				CMLib.expertises().postTeach(monster,student,myAbility);
 				monster.baseCharStats().setStat(CharStats.STAT_INTELLIGENCE,19);

@@ -45,7 +45,7 @@ public class Spell_Youth extends Spell
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		MOB target=this.getTarget(mob,commands,givenTarget);
+		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -57,7 +57,7 @@ public class Spell_Youth extends Spell
 		// and add it to the affects list of the
 		// affected MOB.  Then tell everyone else
 		// what happened.
-		CMMsg msg=CMClass.getMsg(mob,target,this,somanticCastCode(mob,target,auto),auto?"":"^S<S-NAME> wave(s) <S-HIS-HER> arms around <T-NAMESELF>, drawing forth <T-HIS-HER> youthful self.^?");
+		final CMMsg msg=CMClass.getMsg(mob,target,this,somanticCastCode(mob,target,auto),auto?"":"^S<S-NAME> wave(s) <S-HIS-HER> arms around <T-NAMESELF>, drawing forth <T-HIS-HER> youthful self.^?");
 		if(success)
 		{
 			if(mob.location().okMessage(mob,msg))
@@ -71,15 +71,15 @@ public class Spell_Youth extends Spell
 				}
 				else
 				{
-					int[] chart=target.baseCharStats().getMyRace().getAgingChart();
+					final int[] chart=target.baseCharStats().getMyRace().getAgingChart();
 					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> grow(s) younger!");
-					int cat=target.baseCharStats().ageCategory();
+					final int cat=target.baseCharStats().ageCategory();
 					int age=target.baseCharStats().getStat(CharStats.STAT_AGE);
 					if(cat>=Race.AGE_ANCIENT)
 					{
-						int diff=chart[Race.AGE_ANCIENT]-chart[Race.AGE_VENERABLE];
+						final int diff=chart[Race.AGE_ANCIENT]-chart[Race.AGE_VENERABLE];
 						age=age-chart[Race.AGE_ANCIENT];
-						int num=(diff>0)?(int)Math.abs(Math.floor(CMath.div(age,diff))):0;
+						final int num=(diff>0)?(int)Math.abs(Math.floor(CMath.div(age,diff))):0;
 						if(num<=0)
 							age=(int)Math.round(CMath.div(chart[cat]+chart[cat-1],2.0));
 						else
@@ -89,12 +89,12 @@ public class Spell_Youth extends Spell
 						age=(int)Math.round(CMath.div(chart[cat]+chart[cat-1],2.0));
 					if(target.playerStats()!=null)
 					{
-						TimeClock C=CMLib.time().globalClock();
+						final TimeClock C=CMLib.time().globalClock();
 						target.playerStats().getBirthday()[2]=C.getYear()-age;
-						int day=C.getDayOfMonth();
-						int month=C.getMonth();
-						int bday=mob.playerStats().getBirthday()[0];
-						int bmonth=mob.playerStats().getBirthday()[1];
+						final int day=C.getDayOfMonth();
+						final int month=C.getMonth();
+						final int bday=mob.playerStats().getBirthday()[0];
+						final int bmonth=mob.playerStats().getBirthday()[1];
 						if((month<bmonth)||((month==bmonth)&&(day<bday)))
 							age--;
 						target.baseCharStats().setStat(CharStats.STAT_AGE,age);

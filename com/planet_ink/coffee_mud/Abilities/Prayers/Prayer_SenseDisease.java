@@ -52,7 +52,7 @@ public class Prayer_SenseDisease extends Prayer
 		// undo the affects of this spell
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		super.unInvoke();
 		if(canBeUninvoked())
@@ -79,7 +79,7 @@ public class Prayer_SenseDisease extends Prayer
 		Vector V=null;
 		for(int i=0;i<R.numInhabitants();i++)
 		{
-			MOB M=R.fetchInhabitant(i);
+			final MOB M=R.fetchInhabitant(i);
 			if((M!=null)&&(M!=mob)&&(getDisease(M)!=null))
 			{
 				if(V==null) V=new Vector();
@@ -88,7 +88,7 @@ public class Prayer_SenseDisease extends Prayer
 		}
 		for(int i=0;i<R.numItems();i++)
 		{
-			Item I=R.getItem(i);
+			final Item I=R.getItem(i);
 			if((I!=null)
 			&&(I.container()==null)
 			&&(getDisease(I)!=null))
@@ -108,8 +108,8 @@ public class Prayer_SenseDisease extends Prayer
 		String dirs="";
 		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 		{
-			Room R=mob.location().getRoomInDir(d);
-			Exit E=mob.location().getExitInDir(d);
+			final Room R=mob.location().getRoomInDir(d);
+			final Exit E=mob.location().getExitInDir(d);
 			if((R!=null)&&(E!=null)&&(diseased(mob,R).size()>0))
 			{
 				if(last.length()>0)
@@ -117,13 +117,13 @@ public class Prayer_SenseDisease extends Prayer
 				last=Directions.getFromDirectionName(d);
 			}
 		}
-		Vector V=diseased(mob,mob.location());
+		final Vector V=diseased(mob,mob.location());
 		if(V.size()>0)
 		{
 			boolean didSomething=false;
 			for(int v=0;v<V.size();v++)
 			{
-				Environmental E=(Environmental)V.elementAt(v);
+				final Environmental E=(Environmental)V.elementAt(v);
 				if(CMLib.flags().canBeSeenBy(E,mob))
 				{
 					didSomething=true;
@@ -175,7 +175,7 @@ public class Prayer_SenseDisease extends Prayer
 		Physical target=mob;
 		if((auto)&&(givenTarget!=null)) target=givenTarget;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
@@ -183,7 +183,7 @@ public class Prayer_SenseDisease extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> attain(s) disease senses!":"^S<S-NAME> listen(s) for a message from "+hisHerDiety(mob)+".^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> attain(s) disease senses!":"^S<S-NAME> listen(s) for a message from "+hisHerDiety(mob)+".^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

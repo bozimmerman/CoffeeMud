@@ -44,7 +44,7 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 		if(tagTable==null)
 		{
 				tagTable=new Hashtable<String,Pronoun>();
-				for(Pronoun P : Pronoun.values())
+				for(final Pronoun P : Pronoun.values())
 					tagTable.put(P.suffix, P);
 		}
 		return tagTable;
@@ -55,7 +55,7 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 	public String simpleOutFilter(String msg)
 	{
 		if(msg==null) return null;
-		StringBuffer buf=new StringBuffer(msg);
+		final StringBuffer buf=new StringBuffer(msg);
 		for(int i=0;i<buf.length();i++)
 		{
 			switch(buf.charAt(i))
@@ -100,7 +100,7 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 	public String[] wrapOnlyFilter(String msg, int wrap)
 	{
 		int loop=0;
-		StringBuilder buf=new StringBuilder(msg);
+		final StringBuilder buf=new StringBuilder(msg);
 		int len=(wrap>0)?wrap:Integer.MAX_VALUE;
 		int lastSpace=0;
 		int firstAlpha=-1;
@@ -142,8 +142,8 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 					&&((buf.substring(loop+2,loop+7).equalsIgnoreCase("sound"))
 					   ||(buf.substring(loop+2,loop+7).equalsIgnoreCase("music"))))
 					{
-						int x=buf.indexOf("(",loop+7);
-						int y=buf.indexOf(")",loop+7);
+						final int x=buf.indexOf("(",loop+7);
+						final int y=buf.indexOf(")",loop+7);
 						if((x>=0)&&(y>=x))
 						{
 							buf.delete(loop,y+1);
@@ -169,8 +169,8 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 				case '%':
 					if(loop<buf.length()-2)
 					{
-						int dig1=hexStr.indexOf(buf.charAt(loop+1));
-						int dig2=hexStr.indexOf(buf.charAt(loop+2));
+						final int dig1=hexStr.indexOf(buf.charAt(loop+1));
+						final int dig2=hexStr.indexOf(buf.charAt(loop+2));
 						if((dig1>=0)&&(dig2>=0))
 						{
 							buf.setCharAt(loop,(char)((dig1*16)+dig2));
@@ -318,7 +318,7 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 			if((S!=null)&&(S.getClientTelnetMode(Session.TELNET_ANSI)))
 			{
 				ColorState lastColor=S.getLastColor();
-				ColorState currColor=S.getCurrentColor();
+				final ColorState currColor=S.getCurrentColor();
 				if((lastColor.foregroundCode==currColor.foregroundCode)
 				&&(lastColor.backgroundCode==currColor.backgroundCode))
 					lastColor=ColorLibrary.COLORSTATE_NORMAL;
@@ -385,7 +385,7 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 			{
 				enDex++;
 				num=CMath.hexDigit(str.charAt(enDex));
-				int num2=CMath.hexDigit(str.charAt(enDex+1));
+				final int num2=CMath.hexDigit(str.charAt(enDex+1));
 				if((num>=0)&&(num2>=0))
 					finalNum=(num*16)+num2;
 			}
@@ -584,8 +584,8 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 		if(msg==null) return null;
 
 		if(msg.length()==0) return msg;
-		StringBuffer buf=new StringBuffer(msg);
-		Session CS=S;
+		final StringBuffer buf=new StringBuffer(msg);
+		final Session CS=S;
 		//if(CS==null) CS=(Session)CMClass.getCommon("DefaultSession");
 		int loop=0;
 
@@ -698,14 +698,14 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 		if(msg==null) return null;
 
 		if(msg.length()==0) return msg;
-		String newMsg=(S==null)?null:CMLib.lang().sessionTranslation(msg);
+		final String newMsg=(S==null)?null:CMLib.lang().sessionTranslation(msg);
 		if(newMsg!=null) msg=newMsg;
 
 		boolean doSagain=false;
 		boolean firstSdone=false;
-		StringBuffer buf=new StringBuffer(msg);
+		final StringBuffer buf=new StringBuffer(msg);
 
-		int wrap=(S!=null)?S.getWrap():78;
+		final int wrap=(S!=null)?S.getWrap():78;
 		int len=(wrap>0)?wrap:Integer.MAX_VALUE;
 		int loop=0;
 		int lastSpace=0;
@@ -768,8 +768,8 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 					&&((buf.substring(loop+2,loop+7).equalsIgnoreCase("sound"))
 					   ||(buf.substring(loop+2,loop+7).equalsIgnoreCase("music"))))
 					{
-						int x=buf.indexOf("(",loop+7);
-						int y=buf.indexOf(")",loop+7);
+						final int x=buf.indexOf("(",loop+7);
+						final int y=buf.indexOf(")",loop+7);
 						if((x>=0)&&(y>=x))
 						{
 							if((S!=null)
@@ -849,8 +849,8 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 				case '%':
 					if(loop<buf.length()-2)
 					{
-						int dig1=hexStr.indexOf(buf.charAt(loop+1));
-						int dig2=hexStr.indexOf(buf.charAt(loop+2));
+						final int dig1=hexStr.indexOf(buf.charAt(loop+1));
+						final int dig2=hexStr.indexOf(buf.charAt(loop+2));
 						if((dig1>=0)&&(dig2>=0))
 						{
 							buf.setCharAt(loop,(char)((dig1*16)+dig2));
@@ -867,12 +867,12 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 				case '(':
 					if((!wrapOnly)&&(loop<(buf.length()-1)))
 					{
-						char c2=Character.toUpperCase(buf.charAt(loop+1));
+						final char c2=Character.toUpperCase(buf.charAt(loop+1));
 						if(((loop<buf.length()-2)&&(buf.charAt(loop+2)==')')&&(c2=='S'))
 						||((loop<buf.length()-3)&&(buf.charAt(loop+3)==')')&&(Character.toUpperCase(buf.charAt(loop+2))=='S')&&((c2=='Y')||(c2=='E'))))
 						{
-							String lastWord=getLastWord(buf,lastSp,lastSpace);
-							int lastParen=(c2=='S')?loop+2:loop+3;
+							final String lastWord=getLastWord(buf,lastSp,lastSpace);
+							final int lastParen=(c2=='S')?loop+2:loop+3;
 							if(lastWord.equals("A")
 							||lastWord.equals("YOU")
 							||lastWord.equals("1")
@@ -961,7 +961,7 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 							case 'O': regarding=tool; break;
 							}
 							String replacement=null;
-							Pronoun P=getTagTable().get(cmd.substring(1));
+							final Pronoun P=getTagTable().get(cmd.substring(1));
 							if(P==null)
 							{
 								if((S!=null)&&(S.isAllowedMxp(buf.substring(loop,loop+1))))
@@ -1199,7 +1199,7 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 								break;
 							case ISARE2:
 								{
-									String lastWord=getLastWord(buf,lastSp,lastSpace);
+									final String lastWord=getLastWord(buf,lastSp,lastSpace);
 									if((lastWord.equals("A")||lastWord.equals("YOU")||lastWord.equals("1")||doSagain))
 										replacement="is";
 									else
@@ -1221,7 +1221,7 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 							}
 							if(replacement!=null)
 							{
-								String newReplacement=CMLib.lang().filterTranslation(replacement);
+								final String newReplacement=CMLib.lang().filterTranslation(replacement);
 								if(newReplacement!=null) replacement=newReplacement;
 								buf.delete(loop,ldex+1);
 								buf.insert(loop,replacement.toCharArray());
@@ -1360,7 +1360,7 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 		int x=0;
 		while(x<input.length())
 		{
-			char c=input.charAt(x);
+			final char c=input.charAt(x);
 			if(c=='\'')
 				input.setCharAt(x,'`');
 			else
@@ -1378,7 +1378,7 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 			else
 			if(c==8)
 			{
-				String newStr=input.toString();
+				final String newStr=input.toString();
 				if(x==0)
 					input=new StringBuilder(newStr.substring(x+1));
 				else
@@ -1397,7 +1397,7 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 	public String fullInFilter(String input)
 	{
 		if(input==null) return null;
-		StringBuilder buf=new StringBuilder(input);
+		final StringBuilder buf=new StringBuilder(input);
 		for(int i=0;i<buf.length();i++)
 		{
 			switch(buf.charAt(i))
@@ -1418,7 +1418,7 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 	@Override
 	public String safetyFilter(String s)
 	{
-		StringBuffer s1=new StringBuffer(s);
+		final StringBuffer s1=new StringBuffer(s);
 
 		int x=-1;
 		while((++x)<s1.length())

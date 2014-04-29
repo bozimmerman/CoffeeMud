@@ -43,26 +43,26 @@ public class TimsItemTable extends StdWebMacro
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		long endTime=System.currentTimeMillis()+(1000*60*10);
-		int min=CMath.s_int((httpReq.getUrlParameter("MIN")));
+		final int min=CMath.s_int((httpReq.getUrlParameter("MIN")));
 		if(min>0)
 			endTime=System.currentTimeMillis()+(1000*60*((long)min));
-		java.util.Map<String,String> parms=parseParms(parm);
-		StringBuffer str=new StringBuffer("<TABLE WIDTH=100% BORDER=1>");
+		final java.util.Map<String,String> parms=parseParms(parm);
+		final StringBuffer str=new StringBuffer("<TABLE WIDTH=100% BORDER=1>");
 		if(parms.containsKey("WORLD"))
 		{
 			str.append("<TR><TD>Name</TD><TD>LVL</TD><TD>TVLV</TD><TD>DIFF</TD><TD>DIFF%</TD><TD>ARM</TD><TD>ATT</TD><TD>DAM</TD><TD>ADJ</TD><TD>CAST</TD><TD>RESIST</TD></TR>");
-			Vector onesDone=new Vector();
-			for(Enumeration a=CMLib.map().areas();a.hasMoreElements();)
+			final Vector onesDone=new Vector();
+			for(final Enumeration a=CMLib.map().areas();a.hasMoreElements();)
 			{
-				Area A=(Area)a.nextElement();
-				for(Enumeration r=A.getCompleteMap();r.hasMoreElements();)
+				final Area A=(Area)a.nextElement();
+				for(final Enumeration r=A.getCompleteMap();r.hasMoreElements();)
 				{
-					Room R=(Room)r.nextElement();
+					final Room R=(Room)r.nextElement();
 					if((endTime>0)&&(System.currentTimeMillis()>endTime))
 						break;
 					for(int i=0;i<R.numItems();i++)
 					{
-						Item I=R.getItem(i);
+						final Item I=R.getItem(i);
 						if((endTime>0)&&(System.currentTimeMillis()>endTime))
 							break;
 						if(!doneBefore(onesDone,I)) str.append(addRow(I));
@@ -73,11 +73,11 @@ public class TimsItemTable extends StdWebMacro
 					{
 						if((endTime>0)&&(System.currentTimeMillis()>endTime))
 							break;
-						MOB M=R.fetchInhabitant(m);
+						final MOB M=R.fetchInhabitant(m);
 						if(M==null) continue;
 						for(int i=0;i<M.numItems();i++)
 						{
-							Item I=M.getItem(i);
+							final Item I=M.getItem(i);
 							if((endTime>0)&&(System.currentTimeMillis()>endTime))
 								break;
 							if(!doneBefore(onesDone,I)) str.append(addRow(I));
@@ -85,10 +85,10 @@ public class TimsItemTable extends StdWebMacro
 						if((endTime>0)&&(System.currentTimeMillis()>endTime))
 							break;
 						if(!(M instanceof ShopKeeper)) continue;
-						ShopKeeper SK=(ShopKeeper)M;
-						for(Iterator<Environmental> i=SK.getShop().getStoreInventory();i.hasNext();)
+						final ShopKeeper SK=(ShopKeeper)M;
+						for(final Iterator<Environmental> i=SK.getShop().getStoreInventory();i.hasNext();)
 						{
-							Environmental E=i.next();
+							final Environmental E=i.next();
 							if((endTime>0)&&(System.currentTimeMillis()>endTime))
 								break;
 							if((E instanceof Item)
@@ -103,17 +103,17 @@ public class TimsItemTable extends StdWebMacro
 		if(parms.containsKey("CRAFTED"))
 		{
 			str.append("<TR><TD>Name</TD><TD>LVL</TD><TD>TVLV</TD><TD>DIFF</TD><TD>DIFF%</TD><TD>ARM</TD><TD>ATT</TD><TD>DAM</TD><TD>ADJ</TD><TD>CAST</TD><TD>RESIST</TD></TR>");
-			List<ItemCraftor> allCraftingSkills=new SVector<ItemCraftor>();
-			for(Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
+			final List<ItemCraftor> allCraftingSkills=new SVector<ItemCraftor>();
+			for(final Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
 			{
-				Ability A=e.nextElement();
+				final Ability A=e.nextElement();
 				if(A instanceof ItemCraftor)
 					allCraftingSkills.add((ItemCraftor)A.copyOf());
 			}
-			List<ItemCraftor> craftingSkills=new SVector<ItemCraftor>();
-			for(ItemCraftor skill : allCraftingSkills)
+			final List<ItemCraftor> craftingSkills=new SVector<ItemCraftor>();
+			for(final ItemCraftor skill : allCraftingSkills)
 			{
-				int ii=CMLib.ableMapper().lowestQualifyingLevel(skill.ID());
+				final int ii=CMLib.ableMapper().lowestQualifyingLevel(skill.ID());
 				for(int i=0;i<=craftingSkills.size();i++)
 					if(i>=craftingSkills.size())
 					{
@@ -127,11 +127,11 @@ public class TimsItemTable extends StdWebMacro
 						break;
 					}
 			}
-			for(ItemCraftor skill : craftingSkills)
+			for(final ItemCraftor skill : craftingSkills)
 			{
-				List<ItemCraftor.ItemKeyPair> pairs=skill.craftAllItemSets(false);
+				final List<ItemCraftor.ItemKeyPair> pairs=skill.craftAllItemSets(false);
 				if(pairs!=null)
-					for(ItemCraftor.ItemKeyPair IP : pairs)
+					for(final ItemCraftor.ItemKeyPair IP : pairs)
 						if(IP.item instanceof Weapon)
 							str.append(addRow(IP.item));
 						else
@@ -142,32 +142,32 @@ public class TimsItemTable extends StdWebMacro
 		else
 		if(parms.containsKey("ITEMS"))
 		{
-			int[] materials={RawMaterial.RESOURCE_STEEL,RawMaterial.RESOURCE_IRON,RawMaterial.RESOURCE_OAK,RawMaterial.RESOURCE_LEATHER,RawMaterial.RESOURCE_COTTON};
+			final int[] materials={RawMaterial.RESOURCE_STEEL,RawMaterial.RESOURCE_IRON,RawMaterial.RESOURCE_OAK,RawMaterial.RESOURCE_LEATHER,RawMaterial.RESOURCE_COTTON};
 			str.append("<TR><TD>Type</TD><TD>Level</TD>");
-			for(int m=0;m<materials.length;m++)
-				str.append("<TD>"+RawMaterial.CODES.NAME(materials[m])+"</TD>");
+			for (final int material : materials)
+				str.append("<TD>"+RawMaterial.CODES.NAME(material)+"</TD>");
 			str.append("</TR>");
 			//str.append("<TD>Attack</TD>");
 			//str.append("<TD>Damage</TD>");
-			Wearable.CODES codes = Wearable.CODES.instance();
+			final Wearable.CODES codes = Wearable.CODES.instance();
 			for(int level=1;level<=91;level++)
 			{
 				str.append("<TR><TD>Armor</TD><TD>"+level+"</TD>");
-				for(int m=0;m<materials.length;m++)
+				for (final int material : materials)
 				{
 					int armorBonus=0;
-					for(long wornCode : codes.all())
+					for(final long wornCode : codes.all())
 					{
 						if((wornCode == Wearable.IN_INVENTORY)
 						|| (wornCode == Wearable.WORN_HELD)
 						|| (wornCode == Wearable.WORN_WIELD)
 						|| (wornCode == Wearable.WORN_MOUTH))
 						 	continue;
-						Armor A=CMClass.getArmor("GenArmor");
+						final Armor A=CMClass.getArmor("GenArmor");
 						A.setRawProperLocationBitmap(wornCode);
 						A.setMaterial(RawMaterial.RESOURCE_STEEL);
 						if((CharClass.ARMOR_WEARMASK & wornCode) > 0)
-							A.setMaterial(materials[m]);
+							A.setMaterial(material);
 						A.basePhyStats().setLevel(level);
 						A.basePhyStats().setWeight(5);
 						A.recoverPhyStats();
@@ -181,12 +181,12 @@ public class TimsItemTable extends StdWebMacro
 			for(int level=1;level<=91;level++)
 			{
 				str.append("<TR><TD>Weapons</TD><TD>"+level+"</TD>");
-				for(int m=0;m<materials.length;m++)
+				for (final int material : materials)
 				{
-					Weapon W=CMClass.getWeapon("GenWeapon");
+					final Weapon W=CMClass.getWeapon("GenWeapon");
 					W.setWeaponClassification(Weapon.CLASS_SWORD);
 					W.setWeaponType(Weapon.TYPE_SLASHING);
-					W.setMaterial(materials[m]);
+					W.setMaterial(material);
 					W.setRawProperLocationBitmap(Wearable.WORN_WIELD|Wearable.WORN_HELD);
 					W.setRawLogicalAnd(false);
 					W.basePhyStats().setLevel(level);
@@ -219,17 +219,17 @@ public class TimsItemTable extends StdWebMacro
 
 	public String addRow(Item I)
 	{
-		StringBuffer row=new StringBuffer("");
-		int lvl=I.phyStats().level();
+		final StringBuffer row=new StringBuffer("");
+		final int lvl=I.phyStats().level();
 		row.append("<TR>");
 		row.append("<TD>"+I.name()+"</TD>");
 		row.append("<TD>"+lvl+"</TD>");
-		int[] castMul=new int[1];
-		Ability[] RET=CMLib.itemBuilder().getTimsAdjResCast(I,castMul);
-		Ability ADJ=RET[0];
-		Ability RES=RET[1];
-		Ability CAST=RET[2];
-		int tlvl=CMLib.itemBuilder().timsLevelCalculator(I,ADJ,RES,CAST,castMul[0]);
+		final int[] castMul=new int[1];
+		final Ability[] RET=CMLib.itemBuilder().getTimsAdjResCast(I,castMul);
+		final Ability ADJ=RET[0];
+		final Ability RES=RET[1];
+		final Ability CAST=RET[2];
+		final int tlvl=CMLib.itemBuilder().timsLevelCalculator(I,ADJ,RES,CAST,castMul[0]);
 		row.append("<TD>"+tlvl+"</TD>");
 		int diff=tlvl-lvl; if(diff<0) diff=diff*-1;
 		row.append("<TD>"+diff+"</TD>");

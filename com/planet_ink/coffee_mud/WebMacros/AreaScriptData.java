@@ -40,22 +40,22 @@ public class AreaScriptData extends AreaScriptNext
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
-		java.util.Map<String,String> parms=parseParms(parm);
+		final java.util.Map<String,String> parms=parseParms(parm);
 
-		String area=httpReq.getUrlParameter("AREA");
+		final String area=httpReq.getUrlParameter("AREA");
 		if((area==null)||(area.length()==0)) return "@break@";
-		String script=httpReq.getUrlParameter("AREASCRIPT");
+		final String script=httpReq.getUrlParameter("AREASCRIPT");
 		if((script==null)||(script.length()==0)) return "@break@";
-		TreeMap<String,ArrayList<AreaScriptInstance>> list = getAreaScripts(httpReq,area);
-		ArrayList<AreaScriptInstance> subList = list.get(script);
+		final TreeMap<String,ArrayList<AreaScriptInstance>> list = getAreaScripts(httpReq,area);
+		final ArrayList<AreaScriptInstance> subList = list.get(script);
 		if(subList == null) return " @break@";
 		AreaScriptInstance entry = null;
 		String last=httpReq.getUrlParameter("AREASCRIPTHOST");
 		if((last!=null)&&(last.length()>0))
 		{
-			for(AreaScriptInstance inst : subList)
+			for(final AreaScriptInstance inst : subList)
 			{
-				String hostName = CMParms.combineWith(inst.path, '.',0, inst.path.size()) + "." + inst.fileName;
+				final String hostName = CMParms.combineWith(inst.path, '.',0, inst.path.size()) + "." + inst.fileName;
 				if(hostName.equalsIgnoreCase(last))
 				{
 					entry=inst;
@@ -74,9 +74,9 @@ public class AreaScriptData extends AreaScriptNext
 				return "";
 			}
 			String lastID="";
-			for(AreaScriptInstance inst : subList)
+			for(final AreaScriptInstance inst : subList)
 			{
-				String hostName = CMParms.combineWith(inst.path, '.',0, inst.path.size()) + "." + inst.fileName;
+				final String hostName = CMParms.combineWith(inst.path, '.',0, inst.path.size()) + "." + inst.fileName;
 				if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!hostName.equals(lastID))))
 				{
 					httpReq.addFakeUrlParameter("AREASCRIPTHOST",hostName);
@@ -91,7 +91,7 @@ public class AreaScriptData extends AreaScriptNext
 			return " @break@";
 		}
 
-		StringBuilder str = new StringBuilder("");
+		final StringBuilder str = new StringBuilder("");
 
 		if(parms.containsKey("NUMHOSTS"))
 			str.append(subList.size()+", ");
@@ -106,12 +106,12 @@ public class AreaScriptData extends AreaScriptNext
 			try
 			{
 				str.append(URLEncoder.encode(entry.instanceKey,"UTF-8")+", ");
-			}catch(Exception e){}
+			}catch(final Exception e){}
 
 		if(parms.containsKey("PATH") && (entry != null))
 		{
-			String path=Resources.makeFileResourceName(entry.fileName);
-			int x=path.lastIndexOf('/');
+			final String path=Resources.makeFileResourceName(entry.fileName);
+			final int x=path.lastIndexOf('/');
 			str.append(((x<0)?"":path.substring(0,x))+", ");
 		}
 
@@ -124,44 +124,44 @@ public class AreaScriptData extends AreaScriptNext
 				String s = entry.customScript;
 				if(parms.containsKey("PARSELED") && (s.trim().length()>0))
 				{
-					StringBuffer st=new StringBuffer("");
-					List<List<String>> V = CMParms.parseDoubleDelimited(s,'~',';');
-					for(List<String> LV : V)
+					final StringBuffer st=new StringBuffer("");
+					final List<List<String>> V = CMParms.parseDoubleDelimited(s,'~',';');
+					for(final List<String> LV : V)
 					{
-						for(String L : LV)
+						for(final String L : LV)
 							st.append(L+"\n\r");
 						st.append("\n\r");
 					}
 					s=st.toString();
 				}
 				str.append(webify(new StringBuffer(s))+", ");
-			}catch(Exception e){}
+			}catch(final Exception e){}
 
 		if(parms.containsKey("FILENAME") && (entry != null))
 		{
-			String path=Resources.makeFileResourceName(entry.fileName);
-			int x=path.lastIndexOf('/');
+			final String path=Resources.makeFileResourceName(entry.fileName);
+			final int x=path.lastIndexOf('/');
 			str.append(((x<0)?path:path.substring(x+1))+", ");
 		}
 
 		if(parms.containsKey("ENCODEDPATH") && (entry != null))
 		{
-			String path=Resources.makeFileResourceName(entry.fileName);
-			int x=path.lastIndexOf('/');
+			final String path=Resources.makeFileResourceName(entry.fileName);
+			final int x=path.lastIndexOf('/');
 			try
 			{
 				str.append(URLEncoder.encode(((x<0)?"":path.substring(0,x)),"UTF-8")+", ");
-			}catch(Exception e){}
+			}catch(final Exception e){}
 		}
 
 		if(parms.containsKey("ENCODEDFILENAME") && (entry != null))
 		{
-			String path=Resources.makeFileResourceName(entry.fileName);
-			int x=path.lastIndexOf('/');
+			final String path=Resources.makeFileResourceName(entry.fileName);
+			final int x=path.lastIndexOf('/');
 			try
 			{
 				str.append(URLEncoder.encode(((x<0)?path:path.substring(x+1)),"UTF-8")+", ");
-			}catch(Exception e){}
+			}catch(final Exception e){}
 		}
 
 		if(parms.containsKey("ROOM") && (entry != null) && (entry.path.size()>1))

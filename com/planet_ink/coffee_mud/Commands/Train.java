@@ -42,17 +42,17 @@ public class Train extends StdCommand
 
 	public static Vector getAllPossibleThingsToTrainFor()
 	{
-		Vector V=new Vector();
+		final Vector V=new Vector();
 		V.addElement("HIT POINTS");
 		V.addElement("MANA");
 		V.addElement("MOVEMENT");
 		V.addElement("GAIN");
 		V.addElement("PRACTICES");
-		for(int i: CharStats.CODES.BASE())
+		for(final int i: CharStats.CODES.BASE())
 			V.add(CharStats.CODES.DESC(i));
-		for(Enumeration c=CMClass.charClasses();c.hasMoreElements();)
+		for(final Enumeration c=CMClass.charClasses();c.hasMoreElements();)
 		{
-			CharClass C=(CharClass)c.nextElement();
+			final CharClass C=(CharClass)c.nextElement();
 			if((!CMath.bset(C.availabilityCode(),Area.THEME_SKILLONLYMASK))&&(C.availabilityCode()!=0))
 				V.add(C.name().toUpperCase().trim());
 		}
@@ -80,9 +80,9 @@ public class Train extends StdCommand
 				teacherName=null;
 		}
 
-		String abilityName=CMParms.combine(commands,0).toUpperCase();
-		StringBuffer thingsToTrainFor=new StringBuffer("");
-		for(int i: CharStats.CODES.BASE())
+		final String abilityName=CMParms.combine(commands,0).toUpperCase();
+		final StringBuffer thingsToTrainFor=new StringBuffer("");
+		for(final int i: CharStats.CODES.BASE())
 			thingsToTrainFor.append(CharStats.CODES.DESC(i)+", ");
 
 		int trainsRequired=1;
@@ -100,9 +100,9 @@ public class Train extends StdCommand
 		CharClass theClass=null;
 		if((!CMSecurity.isDisabled(CMSecurity.DisFlag.CLASSTRAINING))&&(abilityCode<0))
 		{
-			for(Enumeration c=CMClass.charClasses();c.hasMoreElements();)
+			for(final Enumeration c=CMClass.charClasses();c.hasMoreElements();)
 			{
-				CharClass C=(CharClass)c.nextElement();
+				final CharClass C=(CharClass)c.nextElement();
 				int classLevel=mob.charStats().getClassLevel(C);
 				if(classLevel<0) classLevel=0;
 				if((C.name().toUpperCase().startsWith(abilityName.toUpperCase()))
@@ -186,7 +186,7 @@ public class Train extends StdCommand
 		if(teacher==null)
 		for(int i=0;i<mob.location().numInhabitants();i++)
 		{
-			MOB possTeach=mob.location().fetchInhabitant(i);
+			final MOB possTeach=mob.location().fetchInhabitant(i);
 			if((possTeach!=null)&&(possTeach!=mob))
 			{
 				teacher=possTeach;
@@ -255,8 +255,8 @@ public class Train extends StdCommand
 				if((!CMProps.getVar(CMProps.Str.MULTICLASS).startsWith("MULTI"))
 				&&(!CMProps.getVar(CMProps.Str.MULTICLASS).endsWith("MULTI")))
 				{
-					CharClass C=CMClass.getCharClass(mob.charStats().getCurrentClass().baseClass());
-					String baseClassName=(C!=null)?C.name():mob.charStats().getCurrentClass().baseClass();
+					final CharClass C=CMClass.getCharClass(mob.charStats().getCurrentClass().baseClass());
+					final String baseClassName=(C!=null)?C.name():mob.charStats().getCurrentClass().baseClass();
 					mob.tell("You can only learn that from another "+baseClassName+".");
 				}
 				else
@@ -272,7 +272,7 @@ public class Train extends StdCommand
 
 		if(abilityCode<100)
 		{
-			int teachStat=teacher.charStats().getStat(abilityCode);
+			final int teachStat=teacher.charStats().getStat(abilityCode);
 			if(curStat>=teachStat)
 			{
 				mob.tell("You can only train with someone whose score is higher than yours.");
@@ -281,7 +281,7 @@ public class Train extends StdCommand
 			curStat=mob.baseCharStats().getStat(abilityCode);
 		}
 
-		CMMsg msg=CMClass.getMsg(teacher,mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> train(s) with <T-NAMESELF>.");
+		final CMMsg msg=CMClass.getMsg(teacher,mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> train(s) with <T-NAMESELF>.");
 		if(!mob.location().okMessage(mob,msg))
 			return false;
 		mob.location().send(mob,msg);

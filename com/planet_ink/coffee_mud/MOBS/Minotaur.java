@@ -38,7 +38,7 @@ public class Minotaur extends StdMOB
 	public Minotaur()
 	{
 		super();
-		Random randomizer = new Random(System.currentTimeMillis());
+		final Random randomizer = new Random(System.currentTimeMillis());
 
 		username="a minotaur";
 		setDescription("A tall humanoid with the head of a bull, and the body of a very muscular man.  It\\`s covered in red fur.");
@@ -54,7 +54,7 @@ public class Minotaur extends StdMOB
 		baseCharStats().setMyRace(CMClass.getRace("Minotaur"));
 		baseCharStats().getMyRace().startRacing(this,false);
 
-		Weapon mainWeapon=CMClass.getWeapon("BattleAxe");
+		final Weapon mainWeapon=CMClass.getWeapon("BattleAxe");
 		if(mainWeapon!=null)
 		{
 			mainWeapon.wearAt(Wearable.WORN_WIELD);

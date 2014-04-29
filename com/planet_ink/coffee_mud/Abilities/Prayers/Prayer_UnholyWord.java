@@ -50,11 +50,11 @@ public class Prayer_UnholyWord extends Prayer
 		super.affectPhyStats(affected,affectableStats);
 		if(affected==null) return;
 		if(!(affected instanceof MOB)) return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		if(mob==invoker) return;
 
-		int xlvl=super.getXLEVELLevel(invoker());
+		final int xlvl=super.getXLEVELLevel(invoker());
 		if(CMLib.flags().isEvil(mob))
 		{
 			affectableStats.setArmor(affectableStats.armor()-15-(6*xlvl));
@@ -74,7 +74,7 @@ public class Prayer_UnholyWord extends Prayer
 		// undo the affects of this spell
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		super.unInvoke();
 
@@ -88,14 +88,14 @@ public class Prayer_UnholyWord extends Prayer
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
-		String str=auto?"The unholy word is spoken.":"^S<S-NAME> speak(s) the unholy word"+ofDiety(mob)+" to <T-NAMESELF>.^?";
+		final boolean success=proficiencyCheck(mob,0,auto);
+		final String str=auto?"The unholy word is spoken.":"^S<S-NAME> speak(s) the unholy word"+ofDiety(mob)+" to <T-NAMESELF>.^?";
 
-		Room room=mob.location();
+		final Room room=mob.location();
 		if(room!=null)
 		for(int i=0;i<room.numInhabitants();i++)
 		{
-			MOB target=room.fetchInhabitant(i);
+			final MOB target=room.fetchInhabitant(i);
 			if(target==null) break;
 			int affectType=CMMsg.MSG_CAST_VERBAL_SPELL;
 			if(auto) affectType=affectType|CMMsg.MASK_ALWAYS;
@@ -108,7 +108,7 @@ public class Prayer_UnholyWord extends Prayer
 				// and add it to the affects list of the
 				// affected MOB.  Then tell everyone else
 				// what happened.
-				CMMsg msg=CMClass.getMsg(mob,target,this,affectType,str);
+				final CMMsg msg=CMClass.getMsg(mob,target,this,affectType,str);
 				if(room.okMessage(mob,msg))
 				{
 					room.send(mob,msg);
@@ -116,7 +116,7 @@ public class Prayer_UnholyWord extends Prayer
 					{
 						if(CMLib.flags().canBeHeardSpeakingBy(mob,target))
 						{
-							Item I=Prayer_Curse.getSomething(mob,true);
+							final Item I=Prayer_Curse.getSomething(mob,true);
 							if(I!=null)
 							{
 								Prayer_Curse.endLowerBlessings(I,CMLib.ableMapper().lowestQualifyingLevel(ID()));

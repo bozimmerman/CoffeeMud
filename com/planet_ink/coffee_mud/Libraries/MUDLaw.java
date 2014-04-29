@@ -43,10 +43,10 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 	@Override
 	public Law getTheLaw(Room R, MOB mob)
 	{
-		LegalBehavior B=getLegalBehavior(R);
+		final LegalBehavior B=getLegalBehavior(R);
 		if(B!=null)
 		{
-			Area A2=getLegalObject(R.getArea());
+			final Area A2=getLegalObject(R.getArea());
 			return B.legalInfo(A2);
 		}
 		return null;
@@ -56,10 +56,10 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 	public LegalBehavior getLegalBehavior(Area A)
 	{
 		if(A==null) return null;
-		List<Behavior> V=CMLib.flags().flaggedBehaviors(A,Behavior.FLAG_LEGALBEHAVIOR);
+		final List<Behavior> V=CMLib.flags().flaggedBehaviors(A,Behavior.FLAG_LEGALBEHAVIOR);
 		if(V.size()>0) return (LegalBehavior)V.get(0);
 		LegalBehavior B=null;
-		for(Enumeration<Area> e=A.getParents();e.hasMoreElements();)
+		for(final Enumeration<Area> e=A.getParents();e.hasMoreElements();)
 		{
 			B=getLegalBehavior(e.nextElement());
 			if(B!=null) break;
@@ -70,7 +70,7 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 	public LegalBehavior getLegalBehavior(Room R)
 	{
 		if(R==null) return null;
-		List<Behavior> V=CMLib.flags().flaggedBehaviors(R,Behavior.FLAG_LEGALBEHAVIOR);
+		final List<Behavior> V=CMLib.flags().flaggedBehaviors(R,Behavior.FLAG_LEGALBEHAVIOR);
 		if(V.size()>0) return (LegalBehavior)V.get(0);
 		return getLegalBehavior(R.getArea());
 	}
@@ -78,11 +78,11 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 	public Area getLegalObject(Area A)
 	{
 		if(A==null) return null;
-		List<Behavior> V=CMLib.flags().flaggedBehaviors(A,Behavior.FLAG_LEGALBEHAVIOR);
+		final List<Behavior> V=CMLib.flags().flaggedBehaviors(A,Behavior.FLAG_LEGALBEHAVIOR);
 		if(V.size()>0) return A;
 		Area A2=null;
 		Area A3=null;
-		for(Enumeration<Area> e=A.getParents();e.hasMoreElements();)
+		for(final Enumeration<Area> e=A.getParents();e.hasMoreElements();)
 		{
 			A2=e.nextElement();
 			A3=getLegalObject(A2);
@@ -104,7 +104,7 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 		int streets=0;
 		int buildings=0;
 		Room R=null;
-		for(Enumeration<Room> e=A.getCompleteMap();e.hasMoreElements();)
+		for(final Enumeration<Room> e=A.getCompleteMap();e.hasMoreElements();)
 		{
 			R=e.nextElement();
 			if((R==null)||(R.roomID()==null)||(R.roomID().length()==0)) continue;
@@ -126,13 +126,13 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 	@Override
 	public List<LandTitle> getAllUniqueTitles(Enumeration<Room> e, String owner, boolean includeRentals)
 	{
-		Vector<LandTitle> V=new Vector<LandTitle>();
-		HashSet<Room> roomsDone=new HashSet<Room>();
+		final Vector<LandTitle> V=new Vector<LandTitle>();
+		final HashSet<Room> roomsDone=new HashSet<Room>();
 		Room R=null;
 		for(;e.hasMoreElements();)
 		{
 			R=e.nextElement();
-			LandTitle T=getLandTitle(R);
+			final LandTitle T=getLandTitle(R);
 			if((T!=null)
 			&&(!V.contains(T))
 			&&(includeRentals||(!T.rentalProperty()))
@@ -141,11 +141,11 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 				||(owner.equals("*")&&(T.getOwnerName().length()>0))
 				||(T.getOwnerName().equals(owner))))
 			{
-				List<Room> V2=T.getAllTitledRooms();
+				final List<Room> V2=T.getAllTitledRooms();
 				boolean proceed=true;
 				for(int v=0;v<V2.size();v++)
 				{
-					Room R2=V2.get(v);
+					final Room R2=V2.get(v);
 					if(!roomsDone.contains(R2))
 						roomsDone.add(R2);
 					else
@@ -175,7 +175,7 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 	public LandTitle getLandTitle(Room room)
 	{
 		if(room==null) return null;
-		LandTitle title=getLandTitle(room.getArea());
+		final LandTitle title=getLandTitle(room.getArea());
 		if(title!=null) return title;
 		for(final Enumeration<Ability> a=room.effects();a.hasMoreElements();)
 		{
@@ -191,8 +191,8 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 	{
 		if(isHomePeerRoom(room.getRoomInDir(Directions.DOWN)))
 			return true;
-		Set<Room> peerRooms=getHomePeersOnThisFloor(room,new HashSet<Room>());
-		for(Room R : peerRooms)
+		final Set<Room> peerRooms=getHomePeersOnThisFloor(room,new HashSet<Room>());
+		for(final Room R : peerRooms)
 		{
 			if(isHomePeerRoom(R.getRoomInDir(Directions.DOWN)))
 				return true;
@@ -225,14 +225,14 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 	@Override
 	public boolean isRoomSimilarlyTitled(LandTitle title, Room R)
 	{
-		LandTitle ptitle = ifLandTitle(R);
+		final LandTitle ptitle = ifLandTitle(R);
 		if(ptitle ==null) return false;
 		if(ptitle.getOwnerName().length()==0)
 		{
 			for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
 			{
-				Room sideRoom=R.getRoomInDir(d);
-				LandTitle psTitle=ifLandTitle(sideRoom);
+				final Room sideRoom=R.getRoomInDir(d);
+				final LandTitle psTitle=ifLandTitle(sideRoom);
 				if(psTitle.getOwnerName().equals(title.getOwnerName()))
 					return true;
 			}
@@ -249,7 +249,7 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 		{
 			if((d!=Directions.UP)&&(d!=Directions.DOWN)&&(d!=Directions.GATE))
 			{
-				Room sideRoom=room.getRoomInDir(d);
+				final Room sideRoom=room.getRoomInDir(d);
 				if(isHomePeerRoom(sideRoom)  &&(!doneRooms.contains(sideRoom)))
 				{
 					doneRooms.add(sideRoom);
@@ -265,8 +265,8 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 	{
 		if(isHomePeerRoom(room.getRoomInDir(Directions.UP)))
 			return true;
-		Set<Room> peerRooms=getHomePeersOnThisFloor(room,new HashSet<Room>());
-		for(Room R : peerRooms)
+		final Set<Room> peerRooms=getHomePeersOnThisFloor(room,new HashSet<Room>());
+		for(final Room R : peerRooms)
 		{
 			if(isHomePeerRoom(R.getRoomInDir(Directions.UP)))
 				return true;
@@ -279,7 +279,7 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 	{
 		final int dirCode=CMLib.map().getExitDir(room,exit);
 		if(dirCode<0) return false;
-		Room otherRoom=room.getRoomInDir(dirCode);
+		final Room otherRoom=room.getRoomInDir(dirCode);
 		if(otherRoom==null) return false;
 		return doesHavePriviledgesHere(mob,otherRoom);
 	}
@@ -287,14 +287,14 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 	@Override
 	public boolean doesHavePriviledgesHere(MOB mob, Room room)
 	{
-		LandTitle title=getLandTitle(room);
+		final LandTitle title=getLandTitle(room);
 		if(title==null) return false;
 		if(title.getOwnerName()==null) return false;
 		if(title.getOwnerName().length()==0) return false;
 		if(title.getOwnerName().equals(mob.Name())) return true;
 		if((title.getOwnerName().equals(mob.getLiegeID())&&(mob.isMarriedToLiege())))
 			return true;
-		Pair<Clan,Integer> clanRole=mob.getClanRole(title.getOwnerName());
+		final Pair<Clan,Integer> clanRole=mob.getClanRole(title.getOwnerName());
 		if((clanRole!=null)&&(clanRole.first.getAuthority(clanRole.second.intValue(), Clan.Function.HOME_PRIVS)!=Clan.Authority.CAN_NOT_DO))
 			return true;
 		if(mob.amFollowing()!=null)
@@ -309,20 +309,20 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 			return true;
 		if(overrideID.length()>0)
 		{
-			Pair<Clan,Integer> clanPair=mob.getClanRole(overrideID);
+			final Pair<Clan,Integer> clanPair=mob.getClanRole(overrideID);
 			if((clanPair!=null)&&(clanPair.first.getAuthority(clanPair.second.intValue(), Clan.Function.HOME_PRIVS)!=Clan.Authority.CAN_NOT_DO))
 				return true;
 		}
 		for(int i=0;i<R.numInhabitants();i++)
 		{
-			MOB M=R.fetchInhabitant(i);
+			final MOB M=R.fetchInhabitant(i);
 			if(CMLib.law().doesHavePriviledgesHere(M,R))
 				return true;
 			if(overrideID.length()>0)
 			{
 				if(M.Name().equals(overrideID))
 					return true;
-				Pair<Clan,Integer> clanPair=M.getClanRole(overrideID);
+				final Pair<Clan,Integer> clanPair=M.getClanRole(overrideID);
 				if((clanPair!=null)&&(clanPair.first.getAuthority(clanPair.second.intValue(), Clan.Function.HOME_PRIVS)!=Clan.Authority.CAN_NOT_DO))
 					return true;
 			}
@@ -333,7 +333,7 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 	@Override
 	public String getLandOwnerName(Room room)
 	{
-		LandTitle title=getLandTitle(room);
+		final LandTitle title=getLandTitle(room);
 		if(title==null) return "";
 		if(title.getOwnerName()==null) return "";
 		return title.getOwnerName();
@@ -342,7 +342,7 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 	@Override
 	public boolean doesOwnThisProperty(String name, Room room)
 	{
-		LandTitle title=getLandTitle(room);
+		final LandTitle title=getLandTitle(room);
 		if(title==null) return false;
 		if(title.getOwnerName()==null) return false;
 		if(title.getOwnerName().length()==0) return false;
@@ -365,7 +365,7 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 	@Override
 	public Deity getClericInfused(Room room)
 	{
-		Ability A=getClericInfusion(room);
+		final Ability A=getClericInfusion(room);
 		if(A==null) return null;
 		return CMLib.map().getDeity(A.text());
 	}
@@ -373,14 +373,14 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 	@Override
 	public boolean doesOwnThisProperty(MOB mob, Room room)
 	{
-		LandTitle title=getLandTitle(room);
+		final LandTitle title=getLandTitle(room);
 		if(title==null) return false;
 		if(title.getOwnerName()==null) return false;
 		if(title.getOwnerName().length()==0) return false;
 		if(title.getOwnerName().equals(mob.Name())) return true;
 		if((title.getOwnerName().equals(mob.getLiegeID())&&(mob.isMarriedToLiege())))
 			return true;
-		Pair<Clan,Integer> clanRole=mob.getClanRole(title.getOwnerName());
+		final Pair<Clan,Integer> clanRole=mob.getClanRole(title.getOwnerName());
 		if((clanRole!=null)&&(clanRole.first.getAuthority(clanRole.second.intValue(),Clan.Function.PROPERTY_OWNER)!=Clan.Authority.CAN_NOT_DO))
 			return true;
 		if(mob.amFollowing()!=null)
@@ -392,9 +392,9 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 	public boolean isLegalOfficerHere(MOB mob)
 	{
 		if((mob==null)||(mob.location()==null)) return false;
-		Area A=this.getLegalObject(mob.location());
+		final Area A=this.getLegalObject(mob.location());
 		if(A==null) return false;
-		LegalBehavior B=this.getLegalBehavior(A);
+		final LegalBehavior B=this.getLegalBehavior(A);
 		if(B==null) return false;
 		return B.isAnyOfficer(A, mob);
 	}
@@ -402,9 +402,9 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 	public boolean isLegalJudgeHere(MOB mob)
 	{
 		if((mob==null)||(mob.location()==null)) return false;
-		Area A=this.getLegalObject(mob.location());
+		final Area A=this.getLegalObject(mob.location());
 		if(A==null) return false;
-		LegalBehavior B=this.getLegalBehavior(A);
+		final LegalBehavior B=this.getLegalBehavior(A);
 		if(B==null) return false;
 		return B.isJudge(A, mob);
 	}

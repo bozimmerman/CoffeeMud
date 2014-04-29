@@ -51,17 +51,17 @@ public class FileInfo extends StdWebMacro
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
-		java.util.Map<String,String> parms=parseParms(parm);
+		final java.util.Map<String,String> parms=parseParms(parm);
 		String path=httpReq.getUrlParameter("PATH");
 		if(path==null) path="";
 		String file=httpReq.getUrlParameter("FILE");
 		if(file==null) file="";
-		MOB M = Authenticate.getAuthenticatedMob(httpReq);
+		final MOB M = Authenticate.getAuthenticatedMob(httpReq);
 		if(M==null) return "[authentication error]";
 		try
 		{
-			String filepath=path.endsWith("/")?path+file:path+"/"+file;
-			String pathKey="CMFSFILE_"+trimSlash(filepath);
+			final String filepath=path.endsWith("/")?path+file:path+"/"+file;
+			final String pathKey="CMFSFILE_"+trimSlash(filepath);
 			CMFile F=(CMFile)httpReq.getRequestObjects().get(pathKey);
 			if(F==null)
 			{
@@ -80,18 +80,18 @@ public class FileInfo extends StdWebMacro
 				return ""+F.canVFSEquiv();
 			if(parms.containsKey("ISTEXT"))
 			{
-				int x=F.getName().lastIndexOf('.');
+				final int x=F.getName().lastIndexOf('.');
 				if(x<0) return "false";
-				String mime=MIMEType.getMIMEType(F.getName().substring(x)).getType();
+				final String mime=MIMEType.getMIMEType(F.getName().substring(x)).getType();
 				if(mime.toUpperCase().startsWith("TEXT"))
 					return "true";
 				return "false";
 			}
 			if(parms.containsKey("ISBINARY"))
 			{
-				int x=F.getName().lastIndexOf('.');
+				final int x=F.getName().lastIndexOf('.');
 				if(x<0) return "true";
-				String mime=MIMEType.getMIMEType(F.getName().substring(x)).getType();
+				final String mime=MIMEType.getMIMEType(F.getName().substring(x)).getType();
 				if(mime.toUpperCase().startsWith("TEXT"))
 					return "false";
 				return "true";
@@ -110,7 +110,7 @@ public class FileInfo extends StdWebMacro
 				return s;
 			}
 		}
-		catch(Exception e)
+		catch(final Exception e)
 		{
 			return "[error]";
 		}

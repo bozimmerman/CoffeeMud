@@ -80,7 +80,7 @@ public class StdTub extends StdRideable implements Drink
 
 	protected int getExtraLiquidResourceType()
 	{
-		List<Item> V=getContents();
+		final List<Item> V=getContents();
 		for(int v=0;v<V.size();v++)
 			if((V.get(v) instanceof Drink)
 			&&((V.get(v).material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LIQUID))
@@ -193,7 +193,7 @@ public class StdTub extends StdRideable implements Drink
 			return false;
 		if(msg.amITarget(this))
 		{
-			MOB mob=msg.source();
+			final MOB mob=msg.source();
 			switch(msg.targetMinor())
 			{
 			case CMMsg.TYP_DRINK:
@@ -225,7 +225,7 @@ public class StdTub extends StdRideable implements Drink
 				&&(msg.tool()!=msg.target())
 				&&(msg.tool() instanceof Drink))
 				{
-					Drink thePuddle=(Drink)msg.tool();
+					final Drink thePuddle=(Drink)msg.tool();
 					if(!thePuddle.containsDrink())
 					{
 						mob.tell(thePuddle.name()+" is empty.");
@@ -267,7 +267,7 @@ public class StdTub extends StdRideable implements Drink
 		if((msg.source().riding()==this)
 		&&(CMLib.commands().isHygienicMessage(msg, 0, PlayerStats.HYGIENE_WATERCLEAN)))
 		{
-			int extraRsc=getExtraLiquidResourceType();
+			final int extraRsc=getExtraLiquidResourceType();
 			if((amountOfLiquidRemaining>1)
 			&&(this.liquidType==RawMaterial.RESOURCE_FRESHWATER)
 			&&((extraRsc<0)||(extraRsc==RawMaterial.RESOURCE_FRESHWATER)))
@@ -278,13 +278,13 @@ public class StdTub extends StdRideable implements Drink
 
 		if(msg.amITarget(this))
 		{
-			MOB mob=msg.source();
+			final MOB mob=msg.source();
 			switch(msg.targetMinor())
 			{
 			case CMMsg.TYP_DRINK:
 				amountOfLiquidRemaining-=amountOfThirstQuenched;
-				boolean thirsty=mob.curState().getThirst()<=0;
-				boolean full=!mob.curState().adjThirst(amountOfThirstQuenched,mob.maxState().maxThirst(mob.baseWeight()));
+				final boolean thirsty=mob.curState().getThirst()<=0;
+				final boolean full=!mob.curState().adjThirst(amountOfThirstQuenched,mob.maxState().maxThirst(mob.baseWeight()));
 				if(thirsty)
 					mob.tell("You are no longer thirsty.");
 				else
@@ -299,8 +299,8 @@ public class StdTub extends StdRideable implements Drink
 			case CMMsg.TYP_FILL:
 				if((msg.tool()!=null)&&(msg.tool() instanceof Drink))
 				{
-					Drink thePuddle=(Drink)msg.tool();
-					int amountToTake=amountTakenToFillMe(thePuddle);
+					final Drink thePuddle=(Drink)msg.tool();
+					final int amountToTake=amountTakenToFillMe(thePuddle);
 					thePuddle.setLiquidRemaining(thePuddle.liquidRemaining()-amountToTake);
 					if(amountOfLiquidRemaining<=0)
 						setLiquidType(thePuddle.liquidType());

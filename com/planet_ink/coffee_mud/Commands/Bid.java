@@ -42,7 +42,7 @@ public class Bid extends StdCommand
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		Environmental shopkeeper=CMLib.english().parseShopkeeper(mob,commands,"Bid how much, on what, with whom?");
+		final Environmental shopkeeper=CMLib.english().parseShopkeeper(mob,commands,"Bid how much, on what, with whom?");
 		if(shopkeeper==null) return false;
 		if(commands.size()<2)
 		{
@@ -61,7 +61,7 @@ public class Bid extends StdCommand
 			mob.tell("It does not look like '"+bidStr+"' is enough to offer.");
 			return false;
 		}
-		Object[] bidThang=CMLib.english().parseMoneyStringSDL(mob,bidStr,null);
+		final Object[] bidThang=CMLib.english().parseMoneyStringSDL(mob,bidStr,null);
 		bidStr=CMLib.beanCounter().nameCurrencyShort((String)bidThang[0],CMath.mul(((Double)bidThang[1]).doubleValue(),((Long)bidThang[2]).longValue()));
 		commands.removeElementAt(0);
 
@@ -74,7 +74,7 @@ public class Bid extends StdCommand
 		}
 
 		String whatName=CMParms.combine(commands,0);
-		Vector V=new Vector();
+		final Vector V=new Vector();
 		boolean allFlag=((String)commands.elementAt(0)).equalsIgnoreCase("all");
 		if(whatName.toUpperCase().startsWith("ALL.")){ allFlag=true; whatName="ALL "+whatName.substring(4);}
 		if(whatName.toUpperCase().endsWith(".ALL")){ allFlag=true; whatName="ALL "+whatName.substring(0,whatName.length()-4);}
@@ -83,8 +83,8 @@ public class Bid extends StdCommand
 		while(doBugFix || ((allFlag)&&(addendum<=maxToDo)))
 		{
 			doBugFix=false;
-			ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(shopkeeper);
-			Environmental itemToDo=SK.getShop().getStock(whatName,mob);
+			final ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(shopkeeper);
+			final Environmental itemToDo=SK.getShop().getStock(whatName,mob);
 			if(itemToDo==null) break;
 			if(CMLib.flags().canBeSeenBy(itemToDo,mob))
 				V.addElement(itemToDo);
@@ -97,8 +97,8 @@ public class Bid extends StdCommand
 		else
 		for(int v=0;v<V.size();v++)
 		{
-			Environmental thisThang=(Environmental)V.elementAt(v);
-			CMMsg newMsg=CMClass.getMsg(mob,shopkeeper,thisThang,
+			final Environmental thisThang=(Environmental)V.elementAt(v);
+			final CMMsg newMsg=CMClass.getMsg(mob,shopkeeper,thisThang,
 					CMMsg.MSG_BID,"<S-NAME> bid(s) "+bidStr+" on <O-NAME> with <T-NAMESELF>.",
 					CMMsg.MSG_BID,"<S-NAME> bid(s) '"+bidStr+"' on <O-NAME> with <T-NAMESELF>.",
 					CMMsg.MSG_BID,"<S-NAME> place(s) a bid with <T-NAMESELF>."

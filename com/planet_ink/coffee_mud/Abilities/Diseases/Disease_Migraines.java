@@ -58,7 +58,7 @@ public class Disease_Migraines extends Disease
 		if(!(affected instanceof MOB))
 			return true;
 
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		if((msg.amISource(mob))
 		&&(msg.tool() instanceof Ability))
 		{

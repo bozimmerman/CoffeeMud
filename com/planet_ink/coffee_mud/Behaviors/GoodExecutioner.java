@@ -40,14 +40,14 @@ public class GoodExecutioner  extends StdBehavior
 	private boolean doPlayers=false;
 	private boolean norecurse=false;
 	protected long deepBreath=System.currentTimeMillis();
-	private DVector protectedOnes = new DVector(2);
+	private final DVector protectedOnes = new DVector(2);
 
 	@Override
 	public void setParms(String newParms)
 	{
 		super.setParms(newParms);
 		newParms=newParms.toUpperCase();
-		Vector<String> V=CMParms.parse(newParms);
+		final Vector<String> V=CMParms.parse(newParms);
 		doPlayers=V.contains("PLAYERS")||V.contains("PLAYER");
 	}
 
@@ -79,7 +79,7 @@ public class GoodExecutioner  extends StdBehavior
 	public void executeMsg(Environmental affecting, CMMsg msg)
 	{
 		super.executeMsg(affecting,msg);
-		MOB source=msg.source();
+		final MOB source=msg.source();
 		if(!canFreelyBehaveNormal(affecting))
 		{
 			deepBreath=System.currentTimeMillis();
@@ -87,13 +87,13 @@ public class GoodExecutioner  extends StdBehavior
 		}
 		if(msg.sourceMinor()==CMMsg.TYP_LIFE)
 		{
-			MOB observer=(MOB)affecting;
+			final MOB observer=(MOB)affecting;
 			if((observer.getVictim() == msg.source())
 			||(msg.source().getVictim() == observer))
 				observer.makePeace();
 			synchronized(protectedOnes)
 			{
-				int x = protectedOnes.indexOf(msg.source().Name());
+				final int x = protectedOnes.indexOf(msg.source().Name());
 				if(x>=0)
 					protectedOnes.setElementAt(x, 2, Long.valueOf(System.currentTimeMillis()));
 				else
@@ -113,7 +113,7 @@ public class GoodExecutioner  extends StdBehavior
 					return;
 			}
 			deepBreath=0;
-			MOB observer=(MOB)affecting;
+			final MOB observer=(MOB)affecting;
 			// base 90% chance not to be executed
 			if((source.isMonster()||doPlayers)
 			&&(source!=observer)
@@ -122,9 +122,9 @@ public class GoodExecutioner  extends StdBehavior
 				String reason="EVIL";
 				if(source.baseCharStats().getCurrentClass().baseClass().equalsIgnoreCase("Thief"))
 					reason="A THIEF";
-				MOB oldFollowing=source.amFollowing();
+				final MOB oldFollowing=source.amFollowing();
 				source.setFollowing(null);
-				boolean yep=Aggressive.startFight(observer,source,true,false,source.name().toUpperCase()+" IS "+reason+", AND MUST BE DESTROYED!");
+				final boolean yep=Aggressive.startFight(observer,source,true,false,source.name().toUpperCase()+" IS "+reason+", AND MUST BE DESTROYED!");
 				if(!yep)
 				if(oldFollowing!=null)
 					source.setFollowing(oldFollowing);

@@ -75,11 +75,11 @@ public class SoundEcho extends StdAbility
 			{
 				int range=CMath.s_int(text());
 				if(range==0) range=10;
-				Room sourceRoom=msg.source().location();
+				final Room sourceRoom=msg.source().location();
 				String str=msg.othersMessage();
 				str=CMLib.coffeeFilter().fullOutFilter(null,blindMOB(),msg.source(),msg.target(),msg.tool(),str,false);
 				CMMsg echoMsg=(CMMsg)msg.copyOf();
-				Vector doneRooms=new Vector();
+				final Vector doneRooms=new Vector();
 				if(echoMsg.sourceMessage()!=null)
 					echoMsg.setSourceMessage("You hear an echo: "+CMLib.coffeeFilter().fullOutFilter(null,blindMOB(),msg.source(),msg.target(),msg.tool(),msg.sourceMessage(),false));
 				if(echoMsg.targetMessage()!=null)
@@ -88,7 +88,7 @@ public class SoundEcho extends StdAbility
 					echoMsg.setOthersMessage("You hear an echo: "+CMLib.coffeeFilter().fullOutFilter(null,blindMOB(),msg.source(),msg.target(),msg.tool(),msg.othersMessage(),false));
 				msg.addTrailerMsg(echoMsg);
 				echoMsg=CMClass.getMsg(msg.source(),msg.target(),msg.tool(),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null,msg.othersCode(),str);
-				Vector rooms=new Vector();
+				final Vector rooms=new Vector();
 				TrackingLibrary.TrackingFlags flags;
 				flags = new TrackingLibrary.TrackingFlags()
 						.plus(TrackingLibrary.TrackingFlag.OPENONLY)
@@ -103,7 +103,7 @@ public class SoundEcho extends StdAbility
 						doneRooms.add(room);
 						if(CMLib.dice().rollPercentage()<50)
 						{
-							int direction=CMLib.tracking().radiatesFromDir(room,rooms);
+							final int direction=CMLib.tracking().radiatesFromDir(room,rooms);
 							echoMsg.setOthersMessage("You hear an echo coming from "+Directions.getFromDirectionName(direction)+": "+str);
 						}
 						else
@@ -123,7 +123,7 @@ public class SoundEcho extends StdAbility
 						{
 							if(CMLib.dice().rollPercentage()<50)
 							{
-								int direction=CMLib.tracking().radiatesFromDir(room,rooms);
+								final int direction=CMLib.tracking().radiatesFromDir(room,rooms);
 								echoMsg.setOthersMessage("You hear a faint echo coming from "+Directions.getFromDirectionName(direction)+".");
 							}
 							else

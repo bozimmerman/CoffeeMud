@@ -52,7 +52,7 @@ public class ResetWhole extends StdBehavior
 		super.executeMsg(E,msg);
 		if(!msg.source().isMonster())
 		{
-			Room R=msg.source().location();
+			final Room R=msg.source().location();
 			if(R!=null)
 			{
 				if((E instanceof Area)
@@ -77,17 +77,17 @@ public class ResetWhole extends StdBehavior
 			time=Long.parseLong(getParms());
 			time=time*CMProps.getTickMillis();
 		}
-		catch(Exception e){}
+		catch(final Exception e){}
 		if((lastAccess+time)<System.currentTimeMillis())
 		{
 			if(ticking instanceof Area)
 			{
-				for(Enumeration r=((Area)ticking).getMetroMap();r.hasMoreElements();)
+				for(final Enumeration r=((Area)ticking).getMetroMap();r.hasMoreElements();)
 				{
 					Room R=(Room)r.nextElement();
-					for(Enumeration<Behavior> e=R.behaviors();e.hasMoreElements();)
+					for(final Enumeration<Behavior> e=R.behaviors();e.hasMoreElements();)
 					{
-						Behavior B=e.nextElement();
+						final Behavior B=e.nextElement();
 						if((B!=null)&&(B.ID().equals(ID())))
 						{ R=null; break;}
 					}
@@ -100,7 +100,7 @@ public class ResetWhole extends StdBehavior
 				CMLib.map().resetRoom((Room)ticking, true);
 			else
 			{
-				Room room=super.getBehaversRoom(ticking);
+				final Room room=super.getBehaversRoom(ticking);
 				if(room!=null)
 					CMLib.map().resetRoom(room, true);
 			}

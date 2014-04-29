@@ -49,10 +49,10 @@ public class Skill_MountedCombat extends StdSkill
 		super.affectPhyStats(affected,affectableStats);
 		if(affected instanceof MOB)
 		{
-			MOB mob=(MOB)affected;
+			final MOB mob=(MOB)affected;
 			if((mob.isInCombat())&&(mob.rangeToTarget()==0)&&(mob.riding()!=null)&&(mob.riding().amRiding(mob)))
 			{
-				int xlvl=super.getXLEVELLevel(invoker());
+				final int xlvl=super.getXLEVELLevel(invoker());
 				affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+((1+(xlvl/3))*mob.basePhyStats().attackAdjustment()));
 				affectableStats.setDamage(affectableStats.damage()+((1+(xlvl/3))*mob.basePhyStats().damage()));
 			}

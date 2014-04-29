@@ -31,7 +31,7 @@ public class CMParms
 	{
 		final StringBuilder combined=new StringBuilder("");
 		if(commands!=null)
-		for(Object o : commands)
+		for(final Object o : commands)
 			combined.append(o.toString()+" ");
 		return combined.toString().trim();
 	}
@@ -171,8 +171,8 @@ public class CMParms
 	{
 		final StringBuffer combined=new StringBuffer("");
 		if(flags!=null)
-		for(Iterator<?> i=flags.iterator();i.hasNext();)
-			combined.append(i.next().toString()+" ");
+			for (final Object name : flags)
+				combined.append(name.toString()+" ");
 		return combined.toString().trim();
 	}
 
@@ -223,7 +223,7 @@ public class CMParms
 		final StringBuilder s=new StringBuilder();
 		final char[] cs=str.toCharArray();
 		int state=0;
-		for(char c : cs)
+		for(final char c : cs)
 			switch(state)
 			{
 			case 0:
@@ -280,7 +280,7 @@ public class CMParms
 		final List<String> V=parseCommas(s,true);
 		final Vector<String> finalV=new Vector<String>(V.size());
 		int index;
-		for(String flag : V)
+		for(final String flag : V)
 		{
 			index=CMParms.indexOfIgnoreCase(flags, flag);
 			if(index>=0)
@@ -309,7 +309,7 @@ public class CMParms
 			if((s.charAt(i)==firstChar)
 			&&(s.substring(i,i+delimeter.length()).equals(delimeter)))
 			{
-				String sub=s.substring(last,i).trim();
+				final String sub=s.substring(last,i).trim();
 				last=i+delimeter.length();
 				i+=delimeter.length()-1;
 				if(!ignoreNulls||(sub.length()>0))
@@ -338,7 +338,7 @@ public class CMParms
 			if((tests.charAt(i)==firstChar)
 			&&(tests.substring(i,i+upDelimeter.length()).equals(upDelimeter)))
 			{
-				String sub=s.substring(last,i).trim();
+				final String sub=s.substring(last,i).trim();
 				last=i+upDelimeter.length();
 				i+=upDelimeter.length()-1;
 				if(!ignoreNulls||(sub.length()>0))
@@ -568,7 +568,7 @@ public class CMParms
 
 	private static int[] makeIntArray(final int x, final int y)
 	{
-		int[] xy=new int[2];
+		final int[] xy=new int[2];
 		xy[0]=x;
 		xy[1]=y;
 		return xy;
@@ -602,7 +602,7 @@ public class CMParms
 							x=0;
 							while((x<text.length())&&(Character.isDigit(text.charAt(x))))
 								x++;
-							int found=CMath.s_int(text.substring(0,x));
+							final int found=CMath.s_int(text.substring(0,x));
 							if(andEqual&&(found==value))
 								return makeIntArray(comp,(comp=='!')?-1:1);
 							switch(comp)
@@ -661,7 +661,7 @@ public class CMParms
 		case '<':
 		{
 			if(lastIndex<0) return lastIndex;
-			int newIndex=strIndex(V,str,0);
+			final int newIndex=strIndex(V,str,0);
 			if(newIndex<lastIndex) return newIndex;
 			return -1;
 		}
@@ -706,7 +706,7 @@ public class CMParms
 				{
 					lastIndex=stringContains(V,combiner,buf,lastIndex);
 					index[0]=i+1;
-					int newIndex=stringContains(V,str,index,depth+1);
+					final int newIndex=stringContains(V,str,index,depth+1);
 					i=index[0];
 					switch(combiner)
 					{
@@ -767,13 +767,13 @@ public class CMParms
 			c=Character.toUpperCase(str.charAt(x));
 			if(Character.isLetter(c))
 			{
-				for(int p=0;p<parmList.length;p++)
+				for (final String element : parmList)
 				{
-					if((Character.toUpperCase(parmList[p].charAt(0)) == c)
-					&&((str.length()-x) >= parmList[p].length())
-					&&(str.substring(x,x+parmList[p].length()).equalsIgnoreCase(parmList[p])))
+					if((Character.toUpperCase(element.charAt(0)) == c)
+					&&((str.length()-x) >= element.length())
+					&&(str.substring(x,x+element.length()).equalsIgnoreCase(element)))
 					{
-						int chkX=x+parmList[p].length();
+						int chkX=x+element.length();
 						while((chkX<str.length())&&(Character.isWhitespace(str.charAt(chkX))))
 							chkX++;
 						if((chkX<str.length())&&(str.charAt(chkX)=='='))
@@ -786,7 +786,7 @@ public class CMParms
 									val=val.substring(1,val.length()-1).trim();
 								h.put(lastParm,val);
 							}
-							lastParm=parmList[p];
+							lastParm=element;
 							x=chkX;
 							lastEQ=chkX;
 						}
@@ -815,7 +815,7 @@ public class CMParms
 		final StringBuffer str=new StringBuffer(parms);
 		for(int x=0;x<=str.length();x++)
 		{
-			char c=(x==str.length())?'\n':str.charAt(x);
+			final char c=(x==str.length())?'\n':str.charAt(x);
 			switch(state)
 			{
 			case 0:
@@ -876,7 +876,7 @@ public class CMParms
 				else
 				if(c=='=')
 				{
-					String value=str.substring(start,x).trim();
+					final String value=str.substring(start,x).trim();
 					if(value.length()==0)
 						state=2;
 					else
@@ -911,7 +911,7 @@ public class CMParms
 	public final static Map<String,String> parseEQParms(final List<String> parms, final int start, final int end)
 	{
 		final Map<String,String> h=new Hashtable<String,String>();
-		for(Object O : parms)
+		for(final Object O : parms)
 			h.putAll(parseEQParms((String)O));
 		return h;
 	}
@@ -1009,7 +1009,7 @@ public class CMParms
 				}
 				if(x<text.length())
 				{
-					char pm=text.charAt(x);
+					final char pm=text.charAt(x);
 					while((x<text.length())&&(!Character.isDigit(text.charAt(x))))
 						x++;
 					if(x<text.length())
@@ -1046,7 +1046,7 @@ public class CMParms
 				}
 				if(x<text.length())
 				{
-					char pm=text.charAt(x);
+					final char pm=text.charAt(x);
 					while((x<text.length())
 					&&(!Character.isDigit(text.charAt(x)))
 					&&(text.charAt(x)!='.'))
@@ -1173,7 +1173,7 @@ public class CMParms
 	{
 		if((V==null)||(V.size()==0))
 		{
-			String[] s=new String[0];
+			final String[] s=new String[0];
 			return s;
 		}
 		final String[] s=new String[V.size()];
@@ -1206,7 +1206,7 @@ public class CMParms
 	{
 		if((V==null)||(V.size()==0))
 		{
-			long[] s=new long[0];
+			final long[] s=new long[0];
 			return s;
 		}
 		final long[] s=new long[V.size()];
@@ -1219,7 +1219,7 @@ public class CMParms
 	{
 		if((V==null)||(V.size()==0))
 		{
-			double[] s=new double[0];
+			final double[] s=new double[0];
 			return s;
 		}
 		final double[] s=new double[V.size()];
@@ -1232,7 +1232,7 @@ public class CMParms
 	{
 		if((V==null)||(V.size()==0))
 		{
-			int[] s=new int[0];
+			final int[] s=new int[0];
 			return s;
 		}
 		final int[] s=new int[V.size()];
@@ -1354,13 +1354,13 @@ public class CMParms
 	{
 		if((V==null)||(V.size()==0))
 		{
-			String[] s=new String[0];
+			final String[] s=new String[0];
 			return s;
 		}
 		final String[] s=new String[V.size()];
 		int v=0;
-		for(Iterator<?> i=V.iterator();i.hasNext();)
-			s[v++]=(i.next()).toString();
+		for (final Object name : V)
+			s[v++]=(name).toString();
 		return s;
 	}
 
@@ -1369,8 +1369,8 @@ public class CMParms
 		final Vector<String> s=new Vector<String>();
 		if((V==null)||(V.size()==0))
 			return s;
-		for(Iterator<? extends Environmental> i=V.iterator();i.hasNext();)
-			s.add(i.next().name());
+		for (final Environmental environmental : V)
+			s.add(environmental.name());
 		return s;
 	}
 
@@ -1421,7 +1421,7 @@ public class CMParms
 	public final static String toStringList(final Enumeration<?> e)
 	{
 		if(!e.hasMoreElements()) return "";
-		Object o=e.nextElement();
+		final Object o=e.nextElement();
 		final StringBuilder s=new StringBuilder(""+o);
 		for(;e.hasMoreElements();)
 			s.append(", "+e.nextElement());
@@ -1431,7 +1431,7 @@ public class CMParms
 	public final static String toEnvironmentalStringList(final Enumeration<? extends Environmental> e)
 	{
 		if(!e.hasMoreElements()) return "";
-		Environmental o=e.nextElement();
+		final Environmental o=e.nextElement();
 		final StringBuilder s=new StringBuilder(o.name());
 		for(;e.hasMoreElements();)
 			s.append(", "+e.nextElement().name());
@@ -1441,7 +1441,7 @@ public class CMParms
 	public final static String toCMObjectStringList(final Enumeration<? extends CMObject> e)
 	{
 		if(!e.hasMoreElements()) return "";
-		CMObject o=e.nextElement();
+		final CMObject o=e.nextElement();
 		final StringBuilder s=new StringBuilder(o.ID());
 		for(;e.hasMoreElements();)
 			s.append(", "+e.nextElement().ID());
@@ -1451,7 +1451,7 @@ public class CMParms
 	public final static String toCMObjectStringList(final Iterator<? extends CMObject> e)
 	{
 		if(!e.hasNext()) return "";
-		CMObject o=e.next();
+		final CMObject o=e.next();
 		final StringBuilder s=new StringBuilder(o.ID());
 		for(;e.hasNext();)
 			s.append(", "+e.next().ID());
@@ -1561,7 +1561,7 @@ public class CMParms
 		{
 			return "";
 		}
-		Iterator<?> i=V.iterator();
+		final Iterator<?> i=V.iterator();
 		final StringBuilder s=new StringBuilder(i.next().toString());
 		for(;i.hasNext();)
 			s.append(", "+i.next().toString());
@@ -1671,7 +1671,7 @@ public class CMParms
 		{
 			return "";
 		}
-		Iterator<?> i=V.iterator();
+		final Iterator<?> i=V.iterator();
 		final StringBuilder s=new StringBuilder(i.next().toString());
 		for(;i.hasNext();)
 			s.append(',').append(i.next().toString());
@@ -1685,7 +1685,7 @@ public class CMParms
 			return "";
 		}
 		final StringBuffer s=new StringBuffer("");
-		for(String KEY : V.keySet())
+		for(final String KEY : V.keySet())
 			s.append(KEY+"="+(V.get(KEY).toString())+"/");
 		return s.toString();
 	}
@@ -1703,11 +1703,11 @@ public class CMParms
 
 	public final static Map<String,String> parseEQStringList(final String s)
 	{
-		Hashtable<String,String> h=new Hashtable<String,String>();
-		String[] allWords = s.split("/");
+		final Hashtable<String,String> h=new Hashtable<String,String>();
+		final String[] allWords = s.split("/");
 		for(final String word : allWords)
 		{
-			String[] set=word.split("=");
+			final String[] set=word.split("=");
 			if(set.length==2)
 				h.put(set[0].toUpperCase().trim(), set[1]);
 		}
@@ -1721,7 +1721,7 @@ public class CMParms
 			return "";
 		}
 		final StringBuffer s=new StringBuffer("");
-		for(String KEY : V.keySet())
+		for(final String KEY : V.keySet())
 		{
 			String val = V.get(KEY).toString();
 			if(val.indexOf(' ')>0)
@@ -1737,7 +1737,7 @@ public class CMParms
 		final Vector<Object> V2=new Vector<Object>();
 		for(int v=0;v<V.size();v++)
 		{
-			Object h=V.get(v);
+			final Object h=V.get(v);
 			if(h instanceof List<?>)
 				V2.addElement(copyFlattenVector((List<?>)h));
 			else
@@ -1861,7 +1861,7 @@ public class CMParms
 
 	public final static boolean contains(final char[] supported, final char c)
 	{
-		for(char c2 : supported)
+		for(final char c2 : supported)
 			if(c2==c)
 				return true;
 		return false;
@@ -1869,7 +1869,7 @@ public class CMParms
 
 	public final static boolean contains(final byte[] supported, final byte b)
 	{
-		for(byte b2 : supported)
+		for(final byte b2 : supported)
 			if(b2==b)
 				return true;
 		return false;

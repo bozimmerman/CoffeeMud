@@ -48,7 +48,7 @@ public class Paladin_CraftHolyAvenger extends EnhancedCraftingSkill
 	{
 		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Tickable.TICKID_MOB))
 		{
-			MOB mob=(MOB)affected;
+			final MOB mob=(MOB)affected;
 			if((buildingI==null)
 			||(getRequiredFire(mob,0)==null))
 			{
@@ -66,7 +66,7 @@ public class Paladin_CraftHolyAvenger extends EnhancedCraftingSkill
 		{
 			if((affected!=null)&&(affected instanceof MOB))
 			{
-				MOB mob=(MOB)affected;
+				final MOB mob=(MOB)affected;
 				if((buildingI!=null)&&(!aborted))
 				{
 					if(messedUp)
@@ -85,14 +85,14 @@ public class Paladin_CraftHolyAvenger extends EnhancedCraftingSkill
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		int completion=16;
-		Item fire=getRequiredFire(mob,0);
+		final Item fire=getRequiredFire(mob,0);
 		if(fire==null) return false;
-		PairVector<Integer,Integer> enhancedTypes=enhancedTypes(mob,commands);
+		final PairVector<Integer,Integer> enhancedTypes=enhancedTypes(mob,commands);
 		buildingI=null;
 		messedUp=false;
 		int woodRequired=50;
-		int[] pm={RawMaterial.MATERIAL_METAL,RawMaterial.MATERIAL_MITHRIL};
-		int[][] data=fetchFoundResourceData(mob,
+		final int[] pm={RawMaterial.MATERIAL_METAL,RawMaterial.MATERIAL_MITHRIL};
+		final int[][] data=fetchFoundResourceData(mob,
 											woodRequired,"metal",pm,
 											0,null,null,
 											false,
@@ -107,9 +107,9 @@ public class Paladin_CraftHolyAvenger extends EnhancedCraftingSkill
 			CMLib.materials().destroyResourcesValue(mob.location(),woodRequired,data[0][FOUND_CODE],0,null);
 		buildingI=CMClass.getWeapon("GenWeapon");
 		completion=50-CMLib.ableMapper().qualifyingClassLevel(mob,this);
-		String itemName="the Holy Avenger";
+		final String itemName="the Holy Avenger";
 		buildingI.setName(itemName);
-		String startStr="<S-NAME> start(s) crafting "+buildingI.name()+".";
+		final String startStr="<S-NAME> start(s) crafting "+buildingI.name()+".";
 		displayText="You are crafting "+buildingI.name();
 		verb="crafting "+buildingI.name();
 		buildingI.setDisplayText(itemName+" lies here");
@@ -119,7 +119,7 @@ public class Paladin_CraftHolyAvenger extends EnhancedCraftingSkill
 		buildingI.setMaterial(data[0][FOUND_CODE]);
 		buildingI.basePhyStats().setLevel(mob.phyStats().level());
 		buildingI.basePhyStats().setAbility(5);
-		Weapon w=(Weapon)buildingI;
+		final Weapon w=(Weapon)buildingI;
 		w.setWeaponClassification(Weapon.CLASS_SWORD);
 		w.setWeaponType(Weapon.TYPE_SLASHING);
 		w.setRanges(w.minRange(),1);
@@ -137,7 +137,7 @@ public class Paladin_CraftHolyAvenger extends EnhancedCraftingSkill
 
 		messedUp=!proficiencyCheck(mob,0,auto);
 		if(completion<6) completion=6;
-		CMMsg msg=CMClass.getMsg(mob,null,CMMsg.MSG_NOISYMOVEMENT,startStr);
+		final CMMsg msg=CMClass.getMsg(mob,null,CMMsg.MSG_NOISYMOVEMENT,startStr);
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

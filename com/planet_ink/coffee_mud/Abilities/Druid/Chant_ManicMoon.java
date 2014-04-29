@@ -62,13 +62,13 @@ public class Chant_ManicMoon extends Chant
 		if(affected==null) return false;
 		if(affected instanceof Room)
 		{
-			Room room=(Room)affected;
+			final Room room=(Room)affected;
 			if(!room.getArea().getClimateObj().canSeeTheMoon(room,this))
 				unInvoke();
 			else
 			for(int i=0;i<room.numInhabitants();i++)
 			{
-				MOB M=room.fetchInhabitant(i);
+				final MOB M=room.fetchInhabitant(i);
 				if((M!=null)&&(M!=invoker))
 				{
 					if(M.isInCombat())
@@ -77,19 +77,19 @@ public class Chant_ManicMoon extends Chant
 							M.setVictim(null);
 						else
 						{
-							MOB newvictim=M.location().fetchRandomInhabitant();
+							final MOB newvictim=M.location().fetchRandomInhabitant();
 							if(newvictim!=M) M.setVictim(newvictim);
 						}
 					}
 					else
 					if(CMLib.dice().rollPercentage()<20)
 					{
-						MOB newvictim=M.location().fetchRandomInhabitant();
+						final MOB newvictim=M.location().fetchRandomInhabitant();
 						if(newvictim!=M) M.setVictim(newvictim);
 					}
 				}
 			}
-			MOB M=room.fetchRandomInhabitant();
+			final MOB M=room.fetchRandomInhabitant();
 			if((CMLib.dice().rollPercentage()<50)&&(M!=null)&&(M!=invoker))
 				switch(CMLib.dice().roll(1,5,0))
 				{
@@ -123,7 +123,7 @@ public class Chant_ManicMoon extends Chant
 				if(mob.location().numInhabitants()<2)
 					return Ability.QUALITY_INDIFFERENT;
 			}
-			Room R=mob.location();
+			final Room R=mob.location();
 			if(R!=null)
 			{
 				if(!R.getArea().getClimateObj().canSeeTheMoon(R,null))
@@ -144,7 +144,7 @@ public class Chant_ManicMoon extends Chant
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		Room target=mob.location();
+		final Room target=mob.location();
 		if(target==null) return false;
 		if(!target.getArea().getClimateObj().canSeeTheMoon(target,null))
 		{
@@ -174,7 +174,7 @@ public class Chant_ManicMoon extends Chant
 		// and added as String objects to a vector.
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
@@ -183,7 +183,7 @@ public class Chant_ManicMoon extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> chant(s) to the sky.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> chant(s) to the sky.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

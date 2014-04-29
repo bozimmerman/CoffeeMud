@@ -54,7 +54,7 @@ public class Fighter_CatchProjectile extends FighterSkill
 		if(!(affected instanceof MOB))
 			return true;
 
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		if(msg.amITarget(mob)
 		&&(!doneThisRound)
 		&&(CMLib.flags().aliveAwakeMobileUnbound(mob,true))
@@ -86,14 +86,14 @@ public class Fighter_CatchProjectile extends FighterSkill
 				if(ammo.length()==0) return true;
 				if(ammo.endsWith("s"))
 					ammo=ammo.substring(0,ammo.length()-1);
-				Item neww=CMLib.coffeeMaker().makeAmmunition(ammo,1);
+				final Item neww=CMLib.coffeeMaker().makeAmmunition(ammo,1);
 				neww.setMaterial(w.material());
 				w=neww;
 				mob.location().addItem(neww,ItemPossessor.Expire.Player_Drop);
 			}
 			if(mob.location().isContent(w))
 			{
-				CMMsg msg2=CMClass.getMsg(mob,w,msg.source(),CMMsg.MSG_GET,"<S-NAME> catch(es) the <T-NAME> shot by <O-NAME>!");
+				final CMMsg msg2=CMClass.getMsg(mob,w,msg.source(),CMMsg.MSG_GET,"<S-NAME> catch(es) the <T-NAME> shot by <O-NAME>!");
 				if(mob.location().okMessage(mob,msg2))
 				{
 					mob.location().send(mob,msg2);

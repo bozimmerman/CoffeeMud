@@ -15,6 +15,7 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /*
@@ -39,7 +40,7 @@ public class INIModify extends StdWebMacro
 
 	public void updateINIFile(List<String> page)
 	{
-		StringBuffer buf=new StringBuffer("");
+		final StringBuffer buf=new StringBuffer("");
 		for(int p=0;p<page.size();p++)
 			buf.append((page.get(p))+"\r\n");
 		new CMFile(CMProps.getVar(CMProps.Str.INIPATH),null,CMFile.FLAG_FORCEALLOW).saveText(buf);
@@ -48,9 +49,9 @@ public class INIModify extends StdWebMacro
 	public boolean modified(Set<String> H, String s)
 	{
 		if(s.endsWith("*"))
-			for(Iterator<String> i=H.iterator();i.hasNext();)
+			for (final String string : H)
 			{
-				if(i.next().startsWith(s.substring(0,s.length()-1)))
+				if(string.startsWith(s.substring(0,s.length()-1)))
 					return true;
 			}
 		return H.contains(s);
@@ -59,18 +60,18 @@ public class INIModify extends StdWebMacro
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
-		MOB authM=Authenticate.getAuthenticatedMob(httpReq);
+		final MOB authM=Authenticate.getAuthenticatedMob(httpReq);
 		if((authM==null)||(!CMSecurity.isASysOp(authM)))
 			return " @break@ ";
-		java.util.Map<String,String> parms=parseParms(parm);
+		final java.util.Map<String,String> parms=parseParms(parm);
 		if(parms==null) return "";
-		List<String> page=CMProps.loadEnumerablePage(CMProps.getVar(CMProps.Str.INIPATH));
+		final List<String> page=CMProps.loadEnumerablePage(CMProps.getVar(CMProps.Str.INIPATH));
 		if(parms.containsKey("ADDKEY"))
 		{
 			String key=parms.get("KEY");
 			if((key==null)||(key.trim().length()==0)) return "";
 			key=key.trim().toUpperCase();
-			CMProps ipage=CMProps.loadPropPage(CMProps.getVar(CMProps.Str.INIPATH));
+			final CMProps ipage=CMProps.loadPropPage(CMProps.getVar(CMProps.Str.INIPATH));
 			if((ipage==null)||(!ipage.isLoaded())) return "";
 			if(ipage.containsKey(key)) return "";
 			int where=0;
@@ -81,8 +82,8 @@ public class INIModify extends StdWebMacro
 				if(near.endsWith("*")) near=near.substring(0,near.length()-1);
 				for(int p=0;p<page.size();p++)
 				{
-					String s=page.get(p).trim();
-					int x=s.indexOf(near);
+					final String s=page.get(p).trim();
+					final int x=s.indexOf(near);
 					if(x==0)
 						found=true;
 					else
@@ -108,12 +109,12 @@ public class INIModify extends StdWebMacro
 			key=key.trim().toUpperCase();
 			for(int p=0;p<page.size();p++)
 			{
-				String s=page.get(p).trim();
+				final String s=page.get(p).trim();
 				if(s.startsWith("!")||s.startsWith("#")) continue;
 				int x=s.indexOf('=');
 				if(x<0) x=s.indexOf(':');
 				if(x<0) continue;
-				String thisKey=s.substring(0,x).trim().toUpperCase();
+				final String thisKey=s.substring(0,x).trim().toUpperCase();
 				if(thisKey.equals(key))
 				{
 					page.remove(p);
@@ -127,26 +128,26 @@ public class INIModify extends StdWebMacro
 		else
 		if(parms.containsKey("UPDATEFACTIONPRELOAD"))
 		{
-			String factionID=parms.get("FACTION");
+			final String factionID=parms.get("FACTION");
 			if((factionID!=null)&&(factionID.length()>0))
 			{
-				CMProps ipage=CMProps.loadPropPage(CMProps.getVar(CMProps.Str.INIPATH));
+				final CMProps ipage=CMProps.loadPropPage(CMProps.getVar(CMProps.Str.INIPATH));
 				if((ipage==null)||(!ipage.isLoaded())) return "";
 				for(int p=0;p<page.size();p++)
 				{
-					String s=page.get(p).trim();
+					final String s=page.get(p).trim();
 					if(s.startsWith("!")||s.startsWith("#")) continue;
 					int x=s.indexOf('=');
 					if(x<0) x=s.indexOf(':');
 					if(x<0) continue;
-					String thisKey=s.substring(0,x).trim().toUpperCase();
+					final String thisKey=s.substring(0,x).trim().toUpperCase();
 					if(thisKey.equals("FACTIONS"))
 					{
-						StringBuilder newVal=new StringBuilder("");
+						final StringBuilder newVal=new StringBuilder("");
 						final String oldVal=CMProps.getVar(CMProps.Str.PREFACTIONS);
-						List<String> oldList=CMParms.parseSemicolons(oldVal,true);
+						final List<String> oldList=CMParms.parseSemicolons(oldVal,true);
 						boolean done=false;
-						for(String facID : oldList)
+						for(final String facID : oldList)
 						{
 							if(facID.equalsIgnoreCase(factionID))
 							{
@@ -181,8 +182,8 @@ public class INIModify extends StdWebMacro
 		else
 		if(parms.containsKey("UPDATE"))
 		{
-			Set<String> modified=new HashSet<String>();
-			List<String> iniBuildVars=CMParms.parseCommas(CMStrings.s_uppercase(httpReq.getUrlParameter("INIBUILDVARS")), true);
+			final Set<String> modified=new HashSet<String>();
+			final List<String> iniBuildVars=CMParms.parseCommas(CMStrings.s_uppercase(httpReq.getUrlParameter("INIBUILDVARS")), true);
 			if(iniBuildVars.contains("CHANNELS"))
 				httpReq.addFakeUrlParameter("CHANNELS", buildChannelsVar(httpReq));
 			if(iniBuildVars.contains("COMMANDJOURNALS"))
@@ -199,12 +200,12 @@ public class INIModify extends StdWebMacro
 			if((ipage==null)||(!ipage.isLoaded())) return "";
 			for(int p=0;p<page.size();p++)
 			{
-				String s=page.get(p).trim();
+				final String s=page.get(p).trim();
 				if(s.startsWith("!")||s.startsWith("#")) continue;
 				int x=s.indexOf('=');
 				if(x<0) x=s.indexOf(':');
 				if(x<0) continue;
-				String thisKey=s.substring(0,x).trim().toUpperCase();
+				final String thisKey=s.substring(0,x).trim().toUpperCase();
 
 				if(httpReq.isUrlParameter(thisKey)
 				&&(ipage.containsKey(thisKey))
@@ -267,8 +268,8 @@ public class INIModify extends StdWebMacro
 			String flagid="";
 			for(int i=0;httpReq.isUrlParameter("CHANNEL_"+index+"_FLAG_"+flagid);flagid=""+(++i))
 			{
-				String flagName=httpReq.getUrlParameter("CHANNEL_"+index+"_FLAG_"+flagid);
-				ChannelsLibrary.ChannelFlag flag=(ChannelsLibrary.ChannelFlag)CMath.s_valueOf(ChannelsLibrary.ChannelFlag.values(), flagName);
+				final String flagName=httpReq.getUrlParameter("CHANNEL_"+index+"_FLAG_"+flagid);
+				final ChannelsLibrary.ChannelFlag flag=(ChannelsLibrary.ChannelFlag)CMath.s_valueOf(ChannelsLibrary.ChannelFlag.values(), flagName);
 				if(flag != null)
 					str.append(flag.name()).append(" ");
 			}
@@ -363,9 +364,9 @@ public class INIModify extends StdWebMacro
 			if(str.length()>0)
 				str.append(", ");
 			str.append(name.trim().replace(',',' ').toUpperCase()).append(" ");
-			for(JournalsLibrary.CommandJournalFlags flag : JournalsLibrary.CommandJournalFlags.values())
+			for(final JournalsLibrary.CommandJournalFlags flag : JournalsLibrary.CommandJournalFlags.values())
 			{
-				String val=httpReq.getUrlParameter("COMMANDJOURNAL_"+index+"_FLAG_"+flag.name());
+				final String val=httpReq.getUrlParameter("COMMANDJOURNAL_"+index+"_FLAG_"+flag.name());
 				if((val!=null)&&(val.trim().length()>0))
 					str.append(flag.name()).append("=").append(val.replace(',', ' ')).append(" ");
 			}
@@ -394,9 +395,9 @@ public class INIModify extends StdWebMacro
 				str.append(", ");
 			str.append(name.trim().replace(',',' ')).append(" ");
 
-			for(JournalsLibrary.ForumJournalFlags flag : JournalsLibrary.ForumJournalFlags.values())
+			for(final JournalsLibrary.ForumJournalFlags flag : JournalsLibrary.ForumJournalFlags.values())
 			{
-				String val=httpReq.getUrlParameter("FORUMJOURNAL_"+index+"_"+flag.name());
+				final String val=httpReq.getUrlParameter("FORUMJOURNAL_"+index+"_"+flag.name());
 				if((val!=null)&&(val.trim().length()>0))
 					str.append(flag.name()).append("=").append(val.trim().replace(',',' ')).append(" ");
 			}

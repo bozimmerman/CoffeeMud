@@ -40,8 +40,8 @@ public class ResourceMgr extends StdWebMacro
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
-		java.util.Map<String,String> parms=parseParms(parm);
-		String last=httpReq.getUrlParameter("RESOURCE");
+		final java.util.Map<String,String> parms=parseParms(parm);
+		final String last=httpReq.getUrlParameter("RESOURCE");
 		if(parms.containsKey("RESET"))
 		{
 			if(last!=null) httpReq.removeUrlParameter("RESOURCE");
@@ -51,9 +51,9 @@ public class ResourceMgr extends StdWebMacro
 		if(parms.containsKey("NEXT"))
 		{
 			String lastID="";
-			for(Iterator<String> k=Resources.findResourceKeys("");k.hasNext();)
+			for(final Iterator<String> k=Resources.findResourceKeys("");k.hasNext();)
 			{
-				String key=k.next();
+				final String key=k.next();
 				if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!key.equals(lastID))))
 				{
 					httpReq.addFakeUrlParameter("RESOURCE",key);
@@ -69,7 +69,7 @@ public class ResourceMgr extends StdWebMacro
 		else
 		if(parms.containsKey("DELETE"))
 		{
-			String key=httpReq.getUrlParameter("RESOURCE");
+			final String key=httpReq.getUrlParameter("RESOURCE");
 			if((key!=null)&&(Resources.getResource(key)!=null))
 			{
 				Resources.removeResource(key);

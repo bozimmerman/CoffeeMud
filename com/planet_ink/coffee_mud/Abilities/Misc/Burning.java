@@ -77,7 +77,7 @@ public class Burning extends StdAbility
 			}
 			if(CMLib.dice().rollPercentage()<unInvokeChance)
 			{
-				Room R=((Room)(((Item)affected).owner()));
+				final Room R=((Room)(((Item)affected).owner()));
 				if(R.numInhabitants()>0)
 					R.showHappens(CMMsg.MSG_OK_ACTION,"The "+what+" puts out "+affected.name()+".");
 				unInvoke();
@@ -88,19 +88,19 @@ public class Burning extends StdAbility
 		{
 			if(affected instanceof Item)
 			{
-				Environmental E=((Item)affected).owner();
+				final Environmental E=((Item)affected).owner();
 				if(E==null)
 					((Item)affected).destroy();
 				else
 				if(E instanceof Room)
 				{
-					Room room=(Room)E;
+					final Room room=(Room)E;
 					if((affected instanceof RawMaterial)
 					&&(room.isContent((Item)affected)))
 					{
 						for(int i=0;i<room.numItems();i++)
 						{
-							Item I=room.getItem(i);
+							final Item I=room.getItem(i);
 							if(I.name().equals(affected.name())
 							&&(I!=affected)
 							&&(I instanceof RawMaterial)
@@ -108,7 +108,7 @@ public class Burning extends StdAbility
 							{
 								int durationOfBurn=CMLib.flags().burnStatus(I);
 								if(durationOfBurn<=0) durationOfBurn=5;
-								Burning B=new Burning();
+								final Burning B=new Burning();
 								B.invoke(invoker,I,true,durationOfBurn);
 								break;
 							}
@@ -140,14 +140,14 @@ public class Burning extends StdAbility
 							room.showHappens(CMMsg.MSG_OK_ACTION,affected.name()+" EXPLODES!!!");
 							for(int i=0;i<room.numInhabitants();i++)
 							{
-								MOB target=room.fetchInhabitant(i);
+								final MOB target=room.fetchInhabitant(i);
 								CMLib.combat().postDamage(invoker(),target,null,CMLib.dice().roll(affected.phyStats().level(),5,1),CMMsg.MASK_ALWAYS|CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,"The blast <DAMAGE> <T-NAME>!");
 							}
 							((Item)affected).destroy();
 						}
 						else
 						{
-							Item ash=CMClass.getItem("GenResource");
+							final Item ash=CMClass.getItem("GenResource");
 							ash.setName("some ash");
 							ash.setDisplayText("a small pile of ash is here");
 							ash.setMaterial(RawMaterial.RESOURCE_ASH);
@@ -208,8 +208,8 @@ public class Burning extends StdAbility
 
 		if(affected instanceof Item)
 		{
-			Item I=(Item)affected;
-			Environmental owner=I.owner();
+			final Item I=(Item)affected;
+			final Environmental owner=I.owner();
 			if((owner instanceof MOB)&&(((MOB)owner).location()!=null))
 			{
 				if(!ouch((MOB)owner))
@@ -223,7 +223,7 @@ public class Burning extends StdAbility
 				else
 				if(owner instanceof Room)
 				{
-					MOB M=CMLib.map().getFactoryMOB((Room)owner);
+					final MOB M=CMLib.map().getFactoryMOB((Room)owner);
 					CMLib.combat().postItemDamage(M, I, null, 1, CMMsg.TYP_FIRE, null);
 					M.destroy();
 				}
@@ -275,8 +275,8 @@ public class Burning extends StdAbility
 			if((msg.tool()==null)||(!(msg.tool() instanceof Item)))
 				return ouch(msg.source());
 			// the "oven" exception
-			Item container=(Item)affected;
-			Item target=(Item)msg.tool();
+			final Item container=(Item)affected;
+			final Item target=(Item)msg.tool();
 			if((target.owner()==container.owner())
 			&&(target.container()==container))
 				switch(container.material()&RawMaterial.MATERIAL_MASK)
@@ -308,8 +308,8 @@ public class Burning extends StdAbility
 		&&(msg.target() instanceof Container)
 		&&(msg.targetMinor()==CMMsg.TYP_PUT))
 		{
-			Item I=(Item)affected;
-			Item C=(Container)msg.target();
+			final Item I=(Item)affected;
+			final Item C=(Container)msg.target();
 			if((C instanceof Drink)
 			   &&(((Drink)C).containsDrink()))
 			{
@@ -341,7 +341,7 @@ public class Burning extends StdAbility
 				final Room room=mob.location();
 				if(room!=null)
 				{
-					CMMsg msg=CMClass.getMsg(mob,target,CMMsg.MASK_ALWAYS|CMMsg.TYP_FIRE,null);
+					final CMMsg msg=CMClass.getMsg(mob,target,CMMsg.MASK_ALWAYS|CMMsg.TYP_FIRE,null);
 					if(room.okMessage(mob,msg))
 						room.send(mob,msg);
 				}
@@ -353,7 +353,7 @@ public class Burning extends StdAbility
 			target.recoverPhyStats();
 			if(target instanceof Item)
 			{
-				ItemPossessor owner=((Item)target).owner();
+				final ItemPossessor owner=((Item)target).owner();
 				if(owner!=null)
 				{
 					owner.recoverPhyStats();

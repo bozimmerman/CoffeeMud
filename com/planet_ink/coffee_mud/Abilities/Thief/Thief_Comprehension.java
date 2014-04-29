@@ -52,7 +52,7 @@ public class Thief_Comprehension extends ThiefSkill
 		// undo the affects of this spell
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		super.unInvoke();
 
 		if(canBeUninvoked())
@@ -66,9 +66,9 @@ public class Thief_Comprehension extends ThiefSkill
 			return false;
 		if((queue.size()>0)&&(affected instanceof MOB)&&(proficiencyCheck((MOB)affected,0,false)))
 		{
-			CMMsg msg=(CMMsg)queue.firstElement();
+			final CMMsg msg=(CMMsg)queue.firstElement();
 			queue.removeElementAt(0);
-			MOB mob=(MOB)affected;
+			final MOB mob=(MOB)affected;
 			if((mob.location()!=null)&&(mob.location().okMessage(mob,msg)))
 				mob.location().send(mob,msg);
 		}
@@ -90,7 +90,7 @@ public class Thief_Comprehension extends ThiefSkill
 		&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_LANGUAGE)
 		&&(((MOB)affected).fetchEffect(msg.tool().ID())==null))
 		{
-			String str=CMStrings.getSayFromMessage(msg.sourceMessage());
+			final String str=CMStrings.getSayFromMessage(msg.sourceMessage());
 			if(str!=null)
 			{
 				if(CMath.bset(msg.sourceMajor(),CMMsg.MASK_CHANNEL))
@@ -131,7 +131,7 @@ public class Thief_Comprehension extends ThiefSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
@@ -140,7 +140,7 @@ public class Thief_Comprehension extends ThiefSkill
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,auto?"<T-NAME> feel(s) more comprehending.":"^S<S-NAME> listen(s) with intense comprehension.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,auto?"<T-NAME> feel(s) more comprehending.":"^S<S-NAME> listen(s) with intense comprehension.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

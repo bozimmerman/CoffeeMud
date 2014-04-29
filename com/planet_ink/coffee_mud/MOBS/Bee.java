@@ -59,7 +59,7 @@ public class Bee extends StdMOB
 		baseCharStats().setMyRace(CMClass.getRace("Insect"));
 		baseCharStats().getMyRace().startRacing(this,false);
 		baseState.setHitPoints(CMLib.dice().roll(basePhyStats().level(),20,basePhyStats().level()));
-		Ability A=CMClass.getAbility("Poison_BeeSting");
+		final Ability A=CMClass.getAbility("Poison_BeeSting");
 		if(A!=null)
 		{
 			A.setProficiency(100);

@@ -97,7 +97,7 @@ public class GroundWired extends StdLibrary implements TechLibrary
 		{
 			I.getFinalManufacturer();
 			I.setTechLevel(getRandomGlobalTechLevel());
-			String oldName=I.Name();
+			final String oldName=I.Name();
 			String newName=CMLib.english().startWithAorAn(I.getFinalManufacturer().name()+" "+CMLib.english().cleanArticles(oldName));
 			I.setName(newName);
 			final String[] marks=CMProps.getListFileStringList(CMProps.ListFile.TECH_LEVEL_NAMES);
@@ -116,18 +116,18 @@ public class GroundWired extends StdLibrary implements TechLibrary
 		final ItemPossessor possessor=(E==null)?null:E.owner();
 		if((E != null) && (possessor instanceof Room))
 		{
-			Room R=(Room)possessor;
+			final Room R=(Room)possessor;
 			String newKey;
 			if(R.getArea() instanceof SpaceShip)
 			{
 				newKey=R.getArea().Name();
-				String registryNum=R.getArea().getBlurbFlag("REGISTRY");
+				final String registryNum=R.getArea().getBlurbFlag("REGISTRY");
 				if(registryNum!=null)
 					newKey+=registryNum;
 			}
 			else
 			{
-				LandTitle title = CMLib.law().getLandTitle(R);
+				final LandTitle title = CMLib.law().getLandTitle(R);
 				if(title != null)
 					newKey=title.getUniqueLotID();
 				else
@@ -155,11 +155,11 @@ public class GroundWired extends StdLibrary implements TechLibrary
 	@Override
 	public synchronized List<Electronics> getMakeRegisteredElectronics(String key)
 	{
-		LinkedList<WeakReference<Electronics>> set=sets.get(key.toLowerCase());
-		LinkedList<Electronics> list=new LinkedList<Electronics>();
+		final LinkedList<WeakReference<Electronics>> set=sets.get(key.toLowerCase());
+		final LinkedList<Electronics> list=new LinkedList<Electronics>();
 		if(set==null)
 			return list;
-		for(WeakReference<Electronics> e : set)
+		for(final WeakReference<Electronics> e : set)
 			if(e.get()!=null)
 				list.add(e.get());
 		return list;
@@ -168,7 +168,7 @@ public class GroundWired extends StdLibrary implements TechLibrary
 	@Override
 	public synchronized List<String> getMakeRegisteredKeys()
 	{
-		List<String> keys=new Vector<String>(sets.size());
+		final List<String> keys=new Vector<String>(sets.size());
 		keys.addAll(sets.keySet());
 		return keys;
 	}
@@ -178,12 +178,12 @@ public class GroundWired extends StdLibrary implements TechLibrary
 	{
 		if((oldKey!=null)&&(E!=null))
 		{
-			LinkedList<WeakReference<Electronics>> oldSet=sets.get(oldKey.toLowerCase());
+			final LinkedList<WeakReference<Electronics>> oldSet=sets.get(oldKey.toLowerCase());
 			if(oldSet!=null)
 			{
-				for(Iterator<WeakReference<Electronics>> e=oldSet.iterator();e.hasNext();)
+				for(final Iterator<WeakReference<Electronics>> e=oldSet.iterator();e.hasNext();)
 				{
-					WeakReference<Electronics> w=e.next();
+					final WeakReference<Electronics> w=e.next();
 					if(w.get()==E)
 					{
 						e.remove();
@@ -201,7 +201,7 @@ public class GroundWired extends StdLibrary implements TechLibrary
 	{
 		if(oldKey!=null)
 		{
-			LinkedList<WeakReference<Electronics>> oldSet=sets.get(oldKey.toLowerCase());
+			final LinkedList<WeakReference<Electronics>> oldSet=sets.get(oldKey.toLowerCase());
 			if(oldSet!=null)
 				sets.remove(oldKey);
 		}
@@ -249,7 +249,7 @@ public class GroundWired extends StdLibrary implements TechLibrary
 	@Override
 	public synchronized Iterator<Electronics.Computer> getComputers(String key)
 	{
-		LinkedList<WeakReference<Electronics>> oldSet=sets.get(key.toLowerCase());
+		final LinkedList<WeakReference<Electronics>> oldSet=sets.get(key.toLowerCase());
 		if(oldSet==null)
 			return emptyComputerIterator;
 		return new ConvertingIterator<WeakReference<Electronics>,Electronics.Computer>(new FilteredIterator<WeakReference<Electronics>>(oldSet.iterator(), computerFilterer),computerConverter);
@@ -260,7 +260,7 @@ public class GroundWired extends StdLibrary implements TechLibrary
 	{
 		return new FilteredIterator<Room>(new ConvertingIterator<Electronics.Computer,Room>(getComputers(key),computerRoomConverter), new Filterer<Room>()
 		{
-			private Set<Room> done=new HashSet<Room>();
+			private final Set<Room> done=new HashSet<Room>();
 			@Override public boolean passesFilter(Room obj)
 			{
 				if(done.contains(obj))
@@ -275,7 +275,7 @@ public class GroundWired extends StdLibrary implements TechLibrary
 	{
 		if(powerMsg==null)
 		{
-			MOB powerMOB=CMClass.getMOB("StdMOB");
+			final MOB powerMOB=CMClass.getMOB("StdMOB");
 			powerMOB.baseCharStats().setMyRace(CMClass.getRace("ElectricalElemental"));
 			powerMOB.setSavable(false);
 			powerMOB.setLocation(CMLib.map().getRandomRoom());
@@ -299,9 +299,9 @@ public class GroundWired extends StdLibrary implements TechLibrary
 
 	public void runSpace()
 	{
-		for(Enumeration<SpaceObject> o = CMLib.map().getSpaceObjects(); o.hasMoreElements(); )
+		for(final Enumeration<SpaceObject> o = CMLib.map().getSpaceObjects(); o.hasMoreElements(); )
 		{
-			SpaceObject O=o.nextElement();
+			final SpaceObject O=o.nextElement();
 			if(!(O instanceof Area))
 			{
 				if((O instanceof SpaceShip)
@@ -314,8 +314,8 @@ public class GroundWired extends StdLibrary implements TechLibrary
 					CMLib.map().moveSpaceObject(O);
 					cube=cube.expand(O.direction(),O.speed());
 				}
-				List<SpaceObject> cOs=CMLib.map().getSpaceObjectsWithin(O, 0, SpaceObject.DISTANCE_LIGHTMINUTE);
-				for(SpaceObject cO : cOs)
+				final List<SpaceObject> cOs=CMLib.map().getSpaceObjectsWithin(O, 0, SpaceObject.DISTANCE_LIGHTMINUTE);
+				for(final SpaceObject cO : cOs)
 					if(cO != O)
 					{
 						if(cO.getBounds().intersects(cube))
@@ -382,8 +382,8 @@ public class GroundWired extends StdLibrary implements TechLibrary
 
 	protected void processElectricCurrents(final List<PowerGenerator> generators, final List<PowerSource> batteries, final List<ElecPanel> panels) throws Exception
 	{
-		CMMsg powerMsg=getPowerMsg(0);
-		for(PowerGenerator E : generators)
+		final CMMsg powerMsg=getPowerMsg(0);
+		for(final PowerGenerator E : generators)
 		{
 			powerMsg.setTarget(E);
 			powerMsg.setValue(0);
@@ -393,18 +393,18 @@ public class GroundWired extends StdLibrary implements TechLibrary
 		}
 		long remainingPowerToDistribute=0;
 		long availablePowerToDistribute=0;
-		for(PowerGenerator G : generators)
+		for(final PowerGenerator G : generators)
 			if(G.activated())
 			{
 				availablePowerToDistribute+=G.powerRemaining();
 				G.setPowerRemaining(0);
 			}
-		for(PowerSource B : batteries)
+		for(final PowerSource B : batteries)
 			if(B.activated())
 				availablePowerToDistribute+=B.powerRemaining();
 		if(availablePowerToDistribute==0)
 		{
-			for(ElecPanel E : panels)
+			for(final ElecPanel E : panels)
 			{
 				powerMsg.setTarget(E);
 				powerMsg.setValue(0);
@@ -412,7 +412,7 @@ public class GroundWired extends StdLibrary implements TechLibrary
 				if((R!=null)&&(R.okMessage(powerMsg.source(), powerMsg)))
 					R.send(powerMsg.source(), powerMsg);
 			}
-			for(PowerSource E : batteries)
+			for(final PowerSource E : batteries)
 			{
 				powerMsg.setTarget(E);
 				powerMsg.setValue(0);
@@ -425,17 +425,17 @@ public class GroundWired extends StdLibrary implements TechLibrary
 		{
 			remainingPowerToDistribute=availablePowerToDistribute;
 			double totalPowerNeeded=0.0;
-			for(ElecPanel E : panels)
+			for(final ElecPanel E : panels)
 				totalPowerNeeded+=((E.powerNeeds()<=0)?1.0:E.powerNeeds());
 			if(totalPowerNeeded>0.0)
 			{
-				for(ElecPanel E : panels)
+				for(final ElecPanel E : panels)
 				{
 					powerMsg.setTarget(E);
 					int powerToTake=0;
 					if(remainingPowerToDistribute>0)
 					{
-						double pctToTake=CMath.div(((E.powerNeeds()<=0)?1:E.powerNeeds()),totalPowerNeeded);
+						final double pctToTake=CMath.div(((E.powerNeeds()<=0)?1:E.powerNeeds()),totalPowerNeeded);
 						powerToTake=(int)Math.round(pctToTake * remainingPowerToDistribute);
 						if(powerToTake<1)
 							powerToTake=1;
@@ -448,10 +448,10 @@ public class GroundWired extends StdLibrary implements TechLibrary
 				}
 			}
 			int batteriesLeft=batteries.size();
-			for(PowerSource E : batteries)
+			for(final PowerSource E : batteries)
 			{
 				powerMsg.setTarget(E);
-				int amountToDistribute=(int)(remainingPowerToDistribute/batteriesLeft);
+				final int amountToDistribute=(int)(remainingPowerToDistribute/batteriesLeft);
 				powerMsg.setValue(amountToDistribute<0?0:amountToDistribute);
 				final Room R=CMLib.map().roomLocation(E);
 				if((R!=null)&&(R.okMessage(powerMsg.source(), powerMsg)))
@@ -461,8 +461,8 @@ public class GroundWired extends StdLibrary implements TechLibrary
 			}
 			if(generators.size()>0)
 			{
-				int amountLeftOver=(int)((availablePowerToDistribute-remainingPowerToDistribute)/generators.size());
-				for(PowerGenerator G : generators)
+				final int amountLeftOver=(int)((availablePowerToDistribute-remainingPowerToDistribute)/generators.size());
+				for(final PowerGenerator G : generators)
 					if(G.activated())
 						G.setPowerRemaining(amountLeftOver>G.powerCapacity()?G.powerCapacity():amountLeftOver);
 			}
@@ -474,13 +474,13 @@ public class GroundWired extends StdLibrary implements TechLibrary
 		Area areaLocation=null;
 		synchronized(this)
 		{
-			LinkedList<WeakReference<Electronics>> rawSet=sets.get(key.toLowerCase());
+			final LinkedList<WeakReference<Electronics>> rawSet=sets.get(key.toLowerCase());
 			if(rawSet!=null)
 			{
-				for(Iterator<WeakReference<Electronics>> w=rawSet.iterator(); w.hasNext(); )
+				for(final Iterator<WeakReference<Electronics>> w=rawSet.iterator(); w.hasNext(); )
 				{
-					WeakReference<Electronics> W=w.next();
-					Electronics E=W.get();
+					final WeakReference<Electronics> W=w.next();
+					final Electronics E=W.get();
 					if(E==null)
 						w.remove();
 					else
@@ -514,18 +514,18 @@ public class GroundWired extends StdLibrary implements TechLibrary
 		{
 			synchronized(this)
 			{
-				LinkedList<WeakReference<Electronics>> rawSet=sets.get(key.toLowerCase());
+				final LinkedList<WeakReference<Electronics>> rawSet=sets.get(key.toLowerCase());
 				if(rawSet!=null)
 				{
-					for(Iterator<WeakReference<Electronics>> w=rawSet.iterator(); w.hasNext(); )
+					for(final Iterator<WeakReference<Electronics>> w=rawSet.iterator(); w.hasNext(); )
 					{
-						WeakReference<Electronics> W=w.next();
-						Electronics E=W.get();
+						final WeakReference<Electronics> W=w.next();
+						final Electronics E=W.get();
 						if(E==null)
 							w.remove();
 						else
 						{
-							Area A=CMLib.map().areaLocation(E);
+							final Area A=CMLib.map().areaLocation(E);
 							if(A!=null) return A.getAreaState()==Area.State.ACTIVE;
 						}
 					}
@@ -534,7 +534,7 @@ public class GroundWired extends StdLibrary implements TechLibrary
 				}
 			}
 		}
-		catch(Exception e)
+		catch(final Exception e)
 		{
 			Log.errOut("GroundWired",e);
 		}
@@ -549,13 +549,13 @@ public class GroundWired extends StdLibrary implements TechLibrary
 			final List<PowerSource> batteries = new LinkedList<PowerSource>();
 			final List<ElecPanel> panels = new LinkedList<ElecPanel>();
 
-			Area A=fillCurrentLists(key,generators,batteries,panels);
+			final Area A=fillCurrentLists(key,generators,batteries,panels);
 			if((A!=null)&&(A.getAreaState()!=Area.State.ACTIVE))
 				return;
 
 			processElectricCurrents(generators, batteries, panels);
 		}
-		catch(Exception e)
+		catch(final Exception e)
 		{
 			Log.errOut("GroundWired",e);
 		}
@@ -589,12 +589,12 @@ public class GroundWired extends StdLibrary implements TechLibrary
 					{
 						synchronized(this)
 						{
-							LinkedList<WeakReference<Electronics>> rawSet=sets.get(key.toLowerCase());
+							final LinkedList<WeakReference<Electronics>> rawSet=sets.get(key.toLowerCase());
 							if((rawSet!=null) && (rawSet.size()>0) && (rawSet.getLast().get() != S))
 							{
-								for(Iterator<WeakReference<Electronics>> w=rawSet.iterator(); w.hasNext(); )
+								for(final Iterator<WeakReference<Electronics>> w=rawSet.iterator(); w.hasNext(); )
 								{
-									WeakReference<Electronics> W=w.next();
+									final WeakReference<Electronics> W=w.next();
 									if(W.get()==S)
 									{
 										w.remove();
@@ -619,7 +619,7 @@ public class GroundWired extends StdLibrary implements TechLibrary
 			processElectricCurrents(emptyGeneratorList, finalBatteries, finalPanel);
 			return true;
 		}
-		catch(Exception e)
+		catch(final Exception e)
 		{
 			Log.errOut("GroundWired",e);
 			return false;
@@ -635,7 +635,7 @@ public class GroundWired extends StdLibrary implements TechLibrary
 		{
 			keys=new XVector<String>(sets.keySet());
 		}
-		for(String key : keys)
+		for(final String key : keys)
 		{
 			runElectricCurrent(key);
 		}
@@ -662,7 +662,7 @@ public class GroundWired extends StdLibrary implements TechLibrary
 	public void delManufacturer(Manufacturer manufacturer)
 	{
 		if((manufacturer==null)||(manufacturer==defaultManufacturer)) return;
-		Manufacturer found=getManufacturer(manufacturer.name());
+		final Manufacturer found=getManufacturer(manufacturer.name());
 		if(found==manufacturer)
 			manufacturers.remove(manufacturer.name().toUpperCase().trim());
 		saveAllManufacturers();
@@ -672,10 +672,10 @@ public class GroundWired extends StdLibrary implements TechLibrary
 	public void updateManufacturer(Manufacturer manufacturer)
 	{
 		if((manufacturer==null)||(manufacturer==defaultManufacturer)) return;
-		Manufacturer found=getManufacturer(manufacturer.name());
+		final Manufacturer found=getManufacturer(manufacturer.name());
 		if((found==null)||(found!=manufacturer))
 		{
-			for(String manName : manufacturers.keySet())
+			for(final String manName : manufacturers.keySet())
 				if(manufacturers.get(manName)==manufacturer)
 				{
 					manufacturers.remove(manName);
@@ -705,13 +705,13 @@ public class GroundWired extends StdLibrary implements TechLibrary
 		{
 			if(E==null)
 				return null;
-			List<Manufacturer> subManufacturers=new ArrayList<Manufacturer>();
-			for(Manufacturer f : manufacturers.values())
+			final List<Manufacturer> subManufacturers=new ArrayList<Manufacturer>();
+			for(final Manufacturer f : manufacturers.values())
 				if(CMLib.masking().maskCheck(f.getItemMask(), E, true))
 					subManufacturers.add(f);
-			for(Iterator<Manufacturer> f =subManufacturers.iterator();f.hasNext();)
+			for(final Iterator<Manufacturer> f =subManufacturers.iterator();f.hasNext();)
 			{
-				Manufacturer M=f.next();
+				final Manufacturer M=f.next();
 				if((E.techLevel() < globalTechLevel+M.getMinTechLevelDiff())
 				||(E.techLevel() > globalTechLevel+M.getMaxTechLevelDiff()))
 					f.remove();
@@ -741,7 +741,7 @@ public class GroundWired extends StdLibrary implements TechLibrary
 		if(!xmlFile.exists())
 			xmlFile=new CMFile("::"+filename, null, CMFile.FLAG_FORCEALLOW);
 		final StringBuilder xmlStr=new StringBuilder("<MANUFACTURERS>");
-		for(Manufacturer man : manufacturers.values())
+		for(final Manufacturer man : manufacturers.values())
 			if(man != defaultManufacturer)
 				xmlStr.append("<MANUFACTURER>").append(man.getXml()).append("</MANUFACTURER>");
 		xmlStr.append("</MANUFACTURERS>");
@@ -757,17 +757,17 @@ public class GroundWired extends StdLibrary implements TechLibrary
 		manufacturers.clear();
 		if(xmlFile.exists() && xmlFile.canRead())
 		{
-			List<XMLLibrary.XMLpiece> xDoc=CMLib.xml().parseAllXML(xmlFile.text());
-			List<XMLLibrary.XMLpiece> xMans=new SLinkedList<XMLLibrary.XMLpiece>();
-			for(XMLLibrary.XMLpiece x : xDoc)
+			final List<XMLLibrary.XMLpiece> xDoc=CMLib.xml().parseAllXML(xmlFile.text());
+			final List<XMLLibrary.XMLpiece> xMans=new SLinkedList<XMLLibrary.XMLpiece>();
+			for(final XMLLibrary.XMLpiece x : xDoc)
 				if(x.tag.equalsIgnoreCase("MANUFACTURER"))
 					xMans.add(x);
 				else
 				if(x.tag.equalsIgnoreCase("MANUFACTURERS"))
 					xMans.addAll(x.contents);
-			for(XMLLibrary.XMLpiece x : xMans)
+			for(final XMLLibrary.XMLpiece x : xMans)
 			{
-				Manufacturer man =(Manufacturer)CMClass.getCommon("DefaultManufacturer");
+				final Manufacturer man =(Manufacturer)CMClass.getCommon("DefaultManufacturer");
 				man.setXml(x.value);
 				addManufacturer(man);
 			}

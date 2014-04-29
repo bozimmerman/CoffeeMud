@@ -43,8 +43,8 @@ public class Kobold extends StdRace
 	@Override public int weightVariance(){return 50;}
 	@Override public long forbiddenWornBits(){return 0;}
 	@Override public String racialCategory(){return "Reptile";}
-	private String[]culturalAbilityNames={"Draconic"};
-	private int[]culturalAbilityProficiencies={75};
+	private final String[]culturalAbilityNames={"Draconic"};
+	private final int[]culturalAbilityProficiencies={75};
 	@Override public String[] culturalAbilityNames(){return culturalAbilityNames;}
 	@Override public int[] culturalAbilityProficiencies(){return culturalAbilityProficiencies;}
 
@@ -52,7 +52,7 @@ public class Kobold extends StdRace
 	private static final int[] parts={0 ,2 ,2 ,1 ,1 ,2 ,2 ,1 ,2 ,2 ,1 ,0 ,1 ,1 ,1 ,0 };
 	@Override public int[] bodyMask(){return parts;}
 
-	private int[] agingChart={0,1,2,12,20,30,45,47,49};
+	private final int[] agingChart={0,1,2,12,20,30,45,47,49};
 	@Override public int[] getAgingChart(){return agingChart;}
 
 	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
@@ -88,7 +88,7 @@ public class Kobold extends StdRace
 	@Override
 	public String healthText(MOB viewer, MOB mob)
 	{
-		double pct=(CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));
+		final double pct=(CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));
 
 		if(pct<.10)
 			return "^r" + mob.name(viewer) + "^r is near a pitiful death!^N";
@@ -140,12 +140,12 @@ public class Kobold extends StdRace
 				("a pile of "+name().toLowerCase()+" bones",RawMaterial.RESOURCE_BONE));
 			}
 		}
-		Vector<RawMaterial> rsc=new XVector<RawMaterial>(resources);
-		Item meat=makeResource
+		final Vector<RawMaterial> rsc=new XVector<RawMaterial>(resources);
+		final Item meat=makeResource
 		("some "+name().toLowerCase()+" flesh",RawMaterial.RESOURCE_MEAT);
 		if((CMLib.dice().rollPercentage()<5)&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.AUTODISEASE)))
 		{
-			Ability A=CMClass.getAbility("Disease_Lepresy");
+			final Ability A=CMClass.getAbility("Disease_Lepresy");
 			if(A!=null)	meat.addNonUninvokableEffect(A);
 		}
 		return rsc;

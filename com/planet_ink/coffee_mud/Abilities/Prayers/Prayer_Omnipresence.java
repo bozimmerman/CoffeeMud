@@ -47,30 +47,30 @@ public class Prayer_Omnipresence extends Prayer
 	{
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 		if(!success)
 			this.beneficialVisualFizzle(mob,null,"<S-NAME> "+prayWord(mob)+", but the is unanswered.");
 		else
 		{
-			CMMsg msg=CMClass.getMsg(mob,null,null,verbalCastCode(mob,null,auto),"^S<S-NAME> "+prayWord(mob)+" for the power of omnipresence.^?");
+			final CMMsg msg=CMClass.getMsg(mob,null,null,verbalCastCode(mob,null,auto),"^S<S-NAME> "+prayWord(mob)+" for the power of omnipresence.^?");
 			int numLayers=super.getXLEVELLevel(mob) + 1;
 			if(CMLib.ableMapper().qualifyingLevel(mob, this)>1)
 				numLayers += ((super.adjustedLevel(mob, 0) / CMLib.ableMapper().qualifyingLevel(mob, this)));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				Room thatRoom=mob.location();
-				TrackingLibrary.TrackingFlags flags = new TrackingLibrary.TrackingFlags()
+				final Room thatRoom=mob.location();
+				final TrackingLibrary.TrackingFlags flags = new TrackingLibrary.TrackingFlags()
 														.plus(TrackingLibrary.TrackingFlag.NOAIR)
 														.plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS)
 														.plus(TrackingLibrary.TrackingFlag.NOWATER);
 				mob.tell("Your mind is filled with visions as your presence expands....");
-				List<Room> list = CMLib.tracking().getRadiantRooms(thatRoom, flags, numLayers);
-				for(Room R : list)
+				final List<Room> list = CMLib.tracking().getRadiantRooms(thatRoom, flags, numLayers);
+				for(final Room R : list)
 				{
 					if(CMLib.flags().canAccess(mob, R))
 					{
-						CMMsg msg2=CMClass.getMsg(mob,R,CMMsg.MSG_LOOK,null);
+						final CMMsg msg2=CMClass.getMsg(mob,R,CMMsg.MSG_LOOK,null);
 						R.executeMsg(mob,msg2);
 					}
 				}

@@ -109,7 +109,7 @@ public class GenUndead extends GenMob
 	@Override
 	public DeadBody killMeDead(boolean createBody)
 	{
-		DeadBody body=super.killMeDead(createBody);
+		final DeadBody body=super.killMeDead(createBody);
 		if((createBody)&&(charStats().getMyRace()!=undeadRace)&&(body!=null)&&(undeadRace!=null))
 		{
 			if((name().toUpperCase().indexOf("DRACULA")>=0)
@@ -119,7 +119,7 @@ public class GenUndead extends GenMob
 			if((name().toUpperCase().indexOf("GHOUL")>=0)
 			||(name().toUpperCase().indexOf("GHAST")>=0))
 				body.addNonUninvokableEffect(CMClass.getAbility("Disease_Cannibalism"));
-			Ability A=CMClass.getAbility("Prop_Smell");
+			final Ability A=CMClass.getAbility("Prop_Smell");
 			if(A!=null)
 			{
 				body.addNonUninvokableEffect(A);

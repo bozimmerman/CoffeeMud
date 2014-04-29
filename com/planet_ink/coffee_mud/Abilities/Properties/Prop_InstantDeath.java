@@ -53,7 +53,7 @@ public class Prop_InstantDeath extends Property
 	public void setMiscText(String newMiscText)
 	{
 		super.setMiscText(newMiscText);
-		String maskStr=CMParms.getParmStr(newMiscText,"mask","");
+		final String maskStr=CMParms.getParmStr(newMiscText,"mask","");
 		mask=null;
 		if((maskStr!=null)&&(maskStr.trim().length()>0))
 			mask=CMLib.masking().getPreCompiledMask(maskStr);
@@ -67,11 +67,11 @@ public class Prop_InstantDeath extends Property
 
 	public Set<MOB> getEveryoneHere(MOB spareMe, Room R)
 	{
-		Set<MOB> V=new HashSet<MOB>();
+		final Set<MOB> V=new HashSet<MOB>();
 		if(R==null) return V;
 		for(int i=0;i<R.numInhabitants();i++)
 		{
-			MOB M=R.fetchInhabitant(i);
+			final MOB M=R.fetchInhabitant(i);
 			if((spareMe!=null)&&(spareMe==M))
 				continue;
 			if((M!=null)
@@ -105,7 +105,7 @@ public class Prop_InstantDeath extends Property
 		if(ticking instanceof Room)
 			return (Room)ticking;
 
-		MOB mob=getTickersMOB(ticking);
+		final MOB mob=getTickersMOB(ticking);
 		if(mob!=null)
 			return mob.location();
 
@@ -121,19 +121,19 @@ public class Prop_InstantDeath extends Property
 	{
 		if(whoE instanceof MOB)
 		{
-			MOB mob=(MOB)whoE;
-			Room room=mob.location();
+			final MOB mob=(MOB)whoE;
+			final Room room=mob.location();
 			if(room!=null)
 				return getEveryoneHere(mob,room);
 		}
 		else
 		if(whoE instanceof Item)
 		{
-			Item item=(Item)whoE;
-			Environmental E=item.owner();
+			final Item item=(Item)whoE;
+			final Environmental E=item.owner();
 			if(E!=null)
 			{
-				Room room=getTickersRoom(whoE);
+				final Room room=getTickersRoom(whoE);
 				if(room!=null)
 				{
 					if((E instanceof MOB)&&((mask==null)||(CMLib.masking().maskCheck(mask, E, false))))
@@ -151,10 +151,10 @@ public class Prop_InstantDeath extends Property
 		else
 		if(whoE instanceof Area)
 		{
-			Set<MOB> allMobs=new HashSet<MOB>();
-			for(Enumeration r=((Area)whoE).getMetroMap();r.hasMoreElements();)
+			final Set<MOB> allMobs=new HashSet<MOB>();
+			for(final Enumeration r=((Area)whoE).getMetroMap();r.hasMoreElements();)
 			{
-				Room R=(Room)r.nextElement();
+				final Room R=(Room)r.nextElement();
 				allMobs.addAll(getEveryoneHere(null,R));
 			}
 		}
@@ -168,13 +168,13 @@ public class Prop_InstantDeath extends Property
 			return super.tick(ticking, tickID);
 		while(killTrigger[0])
 		{
-			LinkedList<MOB> killThese=new LinkedList<MOB>();
+			final LinkedList<MOB> killThese=new LinkedList<MOB>();
 			synchronized(killTrigger)
 			{
 				killThese.addAll(getDeadMOBsFrom(affected));
 				killTrigger[0]=false;
 			}
-			for(MOB M : killThese)
+			for(final MOB M : killThese)
 			{
 				CMLib.combat().postDeath(null, M, null);
 			}

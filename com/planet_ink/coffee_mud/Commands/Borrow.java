@@ -42,9 +42,9 @@ public class Borrow extends StdCommand
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		Environmental shopkeeper=CMLib.english().parseShopkeeper(mob,commands,"Borrow how much from whom?");
+		final Environmental shopkeeper=CMLib.english().parseShopkeeper(mob,commands,"Borrow how much from whom?");
 		if(shopkeeper==null) return false;
-		ShopKeeper SHOP=CMLib.coffeeShops().getShopKeeper(shopkeeper);
+		final ShopKeeper SHOP=CMLib.coffeeShops().getShopKeeper(shopkeeper);
 		if(!(SHOP instanceof Banker))
 		{
 			mob.tell("You can not borrow from "+shopkeeper.name()+".");
@@ -57,9 +57,9 @@ public class Borrow extends StdCommand
 		}
 		String str=CMParms.combine(commands,0);
 		if(str.equalsIgnoreCase("all")) str=""+Integer.MAX_VALUE;
-		long numCoins=CMLib.english().numPossibleGold(null,str);
-		String currency=CMLib.english().numPossibleGoldCurrency(shopkeeper,str);
-		double denomination=CMLib.english().numPossibleGoldDenomination(shopkeeper,currency,str);
+		final long numCoins=CMLib.english().numPossibleGold(null,str);
+		final String currency=CMLib.english().numPossibleGoldCurrency(shopkeeper,str);
+		final double denomination=CMLib.english().numPossibleGoldDenomination(shopkeeper,currency,str);
 		Item thisThang=null;
 		if((numCoins==0)||(denomination==0.0))
 		{
@@ -73,8 +73,8 @@ public class Borrow extends StdCommand
 			mob.tell("That doesn't appear to be available.  Try LIST.");
 			return false;
 		}
-		String str2="<S-NAME> borrow(s) <O-NAME> from "+shopkeeper.name()+".";
-		CMMsg newMsg=CMClass.getMsg(mob,shopkeeper,thisThang,CMMsg.MSG_BORROW,str2);
+		final String str2="<S-NAME> borrow(s) <O-NAME> from "+shopkeeper.name()+".";
+		final CMMsg newMsg=CMClass.getMsg(mob,shopkeeper,thisThang,CMMsg.MSG_BORROW,str2);
 		if(!mob.location().okMessage(mob,newMsg))
 			return false;
 		mob.location().send(mob,newMsg);

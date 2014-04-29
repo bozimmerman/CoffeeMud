@@ -126,7 +126,7 @@ public class GrinderPlayers extends GrinderMobs
 			int num=0;
 			while(httpReq.isUrlParameter("TITLE"+num))
 			{
-				String aff=httpReq.getUrlParameter("TITLE"+num);
+				final String aff=httpReq.getUrlParameter("TITLE"+num);
 				if(aff.trim().length()>0) E.playerStats().getTitles().add(aff.trim());
 				num++;
 			}
@@ -171,13 +171,13 @@ public class GrinderPlayers extends GrinderMobs
 			{
 				if(CMath.isInteger(old))
 				{
-					int a=CMath.s_int(old);
+					final int a=CMath.s_int(old);
 					if((a>=0)&&(a<Faction.Align.values().length))
 						CMLib.factions().setAlignment(M,Faction.Align.values()[a]);
 				}
 				else
 				{
-					Faction.Align A=(Faction.Align)CMath.s_valueOf(Faction.Align.class,old.toUpperCase().trim());
+					final Faction.Align A=(Faction.Align)CMath.s_valueOf(Faction.Align.class,old.toUpperCase().trim());
 					if(A!=null)
 						CMLib.factions().setAlignment(M,A);
 				}
@@ -216,7 +216,7 @@ public class GrinderPlayers extends GrinderMobs
 			case 56: M.basePhyStats().setSpeed(CMath.s_double(old)); break;
 			case 57:
 			{
-				List<String> V=CMParms.parseCommas(old.toUpperCase(),true);
+				final List<String> V=CMParms.parseCommas(old.toUpperCase(),true);
 				M.delAllExpertises();
 				for(int v=0;v<V.size();v++)
 					if(CMLib.expertises().getDefinition(V.get(v))!=null)
@@ -225,8 +225,8 @@ public class GrinderPlayers extends GrinderMobs
 			}
 			case 58:
 			{
-				List<String> V=CMParms.parseCommas(old.toUpperCase(),true);
-				for(Enumeration<MOB.Tattoo> e=M.tattoos();e.hasMoreElements();)
+				final List<String> V=CMParms.parseCommas(old.toUpperCase(),true);
+				for(final Enumeration<MOB.Tattoo> e=M.tattoos();e.hasMoreElements();)
 					M.delTattoo(e.nextElement());
 				for(int v=0;v<V.size();v++)
 					M.addTattoo(CMLib.database().parseTattoo(V.get(v)));
@@ -236,7 +236,7 @@ public class GrinderPlayers extends GrinderMobs
 			{
 				if(M.playerStats()!=null)
 				{
-					List<String> V=CMParms.parseCommas(old.toUpperCase(),true);
+					final List<String> V=CMParms.parseCommas(old.toUpperCase(),true);
 					M.playerStats().getSetSecurityFlags(CMParms.toSemicolonList(V));
 				}
 				break;
@@ -250,8 +250,8 @@ public class GrinderPlayers extends GrinderMobs
 				{
 					if(old.equalsIgnoreCase("Never"))
 					{
-						PlayerStats P=M.playerStats();
-						List<String> secFlags=CMParms.parseSemicolons(P.getSetSecurityFlags(null),true);
+						final PlayerStats P=M.playerStats();
+						final List<String> secFlags=CMParms.parseSemicolons(P.getSetSecurityFlags(null),true);
 						if(!secFlags.contains(CMSecurity.SecFlag.NOEXPIRE.name()))
 						{
 							secFlags.add(CMSecurity.SecFlag.NOEXPIRE.name());
@@ -260,8 +260,8 @@ public class GrinderPlayers extends GrinderMobs
 					}
 					else
 					{
-						PlayerStats P=M.playerStats();
-						List<String> secFlags=CMParms.parseSemicolons(P.getSetSecurityFlags(null),true);
+						final PlayerStats P=M.playerStats();
+						final List<String> secFlags=CMParms.parseSemicolons(P.getSetSecurityFlags(null),true);
 						if(secFlags.contains(CMSecurity.SecFlag.NOEXPIRE.name()))
 						{
 							secFlags.remove(CMSecurity.SecFlag.NOEXPIRE.name());
@@ -279,15 +279,15 @@ public class GrinderPlayers extends GrinderMobs
 			{
 				if(M.playerStats()!=null)
 				{
-					String oldAccountName =(M.playerStats().getAccount()!=null) ? M.playerStats().getAccount().getAccountName() : "";
+					final String oldAccountName =(M.playerStats().getAccount()!=null) ? M.playerStats().getAccount().getAccountName() : "";
 					if(!old.equals(oldAccountName))
 					{
-						PlayerAccount newAccount = CMLib.players().getLoadAccount(old);
+						final PlayerAccount newAccount = CMLib.players().getLoadAccount(old);
 						if(newAccount != null)
 						{
 							M.playerStats().setAccount(newAccount);
 							newAccount.addNewPlayer(M);
-							PlayerAccount oldAccount = (oldAccountName.length()>0)?CMLib.players().getLoadAccount(oldAccountName):null;
+							final PlayerAccount oldAccount = (oldAccountName.length()>0)?CMLib.players().getLoadAccount(oldAccountName):null;
 							if(oldAccount!=null)
 							{
 								oldAccount.delPlayer(M);
@@ -319,8 +319,8 @@ public class GrinderPlayers extends GrinderMobs
 	{
 		if(httpReq.isUrlParameter("CHARCLASS1"))
 		{
-			StringBuffer classList=new StringBuffer("");
-			StringBuffer levelsList=new StringBuffer("");
+			final StringBuffer classList=new StringBuffer("");
+			final StringBuffer levelsList=new StringBuffer("");
 			int num=1;
 			String aff=httpReq.getUrlParameter("CHARCLASS"+num);
 			int totalLevel=0;
@@ -328,7 +328,7 @@ public class GrinderPlayers extends GrinderMobs
 			{
 				if(aff.length()>0)
 				{
-					CharClass C=CMClass.getCharClass(aff);
+					final CharClass C=CMClass.getCharClass(aff);
 					if(C==null) return "Unknown class '"+aff+"'.";
 					classList.append(C.ID()+";");
 					String lvl=httpReq.getUrlParameter("CHARCLASSLVL"+num);
@@ -351,10 +351,10 @@ public class GrinderPlayers extends GrinderMobs
 		if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
 			return CMProps.getVar(CMProps.Str.MUDSTATUS);
 
-		Vector allitems=new Vector();
+		final Vector allitems=new Vector();
 		while(M.numItems()>0)
 		{
-			Item I=M.getItem(0);
+			final Item I=M.getItem(0);
 			allitems.addElement(I);
 			M.delItem(I);
 		}
@@ -371,10 +371,10 @@ public class GrinderPlayers extends GrinderMobs
 					M.setBitmap((int)CMath.unsetb(M.getBitmap(),CMath.pow(2,i)));
 			}
 		}
-		for(int i : CharStats.CODES.ALL())
+		for(final int i : CharStats.CODES.ALL())
 		{
-			CharStats C=M.charStats();
-			String stat=CharStats.CODES.NAME(i);
+			final CharStats C=M.charStats();
+			final String stat=CharStats.CODES.NAME(i);
 			if(httpReq.isUrlParameter(stat))
 			{
 				String old=httpReq.getUrlParameter(stat);
@@ -386,10 +386,10 @@ public class GrinderPlayers extends GrinderMobs
 					C.setStat(i,old.charAt(0));
 			}
 		}
-		for(int i : CharStats.CODES.ALL())
+		for(final int i : CharStats.CODES.ALL())
 		{
-			CharStats C=M.baseCharStats();
-			String stat=CharStats.CODES.NAME(i);
+			final CharStats C=M.baseCharStats();
+			final String stat=CharStats.CODES.NAME(i);
 			if(httpReq.isUrlParameter("BASE"+stat))
 			{
 				String old=httpReq.getUrlParameter("BASE"+stat);
@@ -404,22 +404,22 @@ public class GrinderPlayers extends GrinderMobs
 		GrinderPlayers.setBasics(httpReq,M);
 		if(httpReq.isUrlParameter("RACE"))
 		{
-			String old=httpReq.getUrlParameter("RACE");
+			final String old=httpReq.getUrlParameter("RACE");
 			if((old!=null)&&(CMClass.getRace(old)!=null))
 				M.baseCharStats().setMyRace(CMClass.getRace(old));
 		}
 		if(httpReq.isUrlParameter("DEITY"))
 		{
-			String old=httpReq.getUrlParameter("DEITY");
+			final String old=httpReq.getUrlParameter("DEITY");
 			if((old!=null)&&(CMLib.map().getDeity(old)!=null))
 				M.setWorshipCharID(CMLib.map().getDeity(old).Name());
 		}
 		if(httpReq.isUrlParameter("ALIGNMENT"))
 		{
-			String old=httpReq.getUrlParameter("ALIGNMENT");
-			Faction F=CMLib.factions().getFaction(CMLib.factions().AlignID());
+			final String old=httpReq.getUrlParameter("ALIGNMENT");
+			final Faction F=CMLib.factions().getFaction(CMLib.factions().AlignID());
 			if((F!=null)&&(old!=null)&&(old.length()>0))
-				for(Faction.Align v : Faction.Align.values())
+				for(final Faction.Align v : Faction.Align.values())
 					if((v!=Faction.Align.INDIFF)&&(v.toString().equalsIgnoreCase(old)))
 						CMLib.factions().setAlignment(M,v);
 		}

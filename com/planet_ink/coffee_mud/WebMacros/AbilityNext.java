@@ -14,6 +14,7 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import com.planet_ink.miniweb.interfaces.*;
+
 import java.util.*;
 
 /*
@@ -40,39 +41,39 @@ public class AbilityNext extends StdWebMacro
 	@SuppressWarnings("unchecked")
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
-		java.util.Map<String,String> parms=parseParms(parm);
-		String last=httpReq.getUrlParameter("ABILITY");
+		final java.util.Map<String,String> parms=parseParms(parm);
+		final String last=httpReq.getUrlParameter("ABILITY");
 		if(parms.containsKey("RESET"))
 		{
 			if(last!=null) httpReq.removeUrlParameter("ABILITY");
 			return "";
 		}
-		String ableType=httpReq.getUrlParameter("ABILITYTYPE");
+		final String ableType=httpReq.getUrlParameter("ABILITYTYPE");
 		if((ableType!=null)&&(ableType.length()>0))
 			parms.put(ableType,ableType);
-		String domainType=httpReq.getUrlParameter("DOMAIN");
+		final String domainType=httpReq.getUrlParameter("DOMAIN");
 		if((domainType!=null)&&(domainType.length()>0))
 			parms.put("DOMAIN",domainType);
 		long flags=0;
-		String flagString=httpReq.getUrlParameter("FLAGS");
+		final String flagString=httpReq.getUrlParameter("FLAGS");
 		if((flagString!=null)&&(flagString.length()>0))
 		{
-			List<String> V=CMParms.parseSquiggles(flagString.toUpperCase());
+			final List<String> V=CMParms.parseSquiggles(flagString.toUpperCase());
 			for(int i=0;i<Ability.FLAG_DESCS.length;i++)
 				if(V.contains(Ability.FLAG_DESCS[i]))
 					flags=flags|(CMath.pow(2,i));
 		}
 
 		String lastID="";
-		String className=httpReq.getUrlParameter("CLASS");
-		boolean genericOnly =parms.containsKey("GENERIC");
-		boolean parmsEditable=parms.containsKey("PARMSEDITABLE");
-		boolean unqualifiedOK=parms.containsKey("UNQUALIFIEDOK");
-		String levelName=httpReq.getUrlParameter("LEVEL");
-		boolean notFlag =parms.containsKey("NOT");
-		boolean allFlag =parms.containsKey("ALL");
-		boolean domainFlag=parms.containsKey("DOMAIN");
-		String domain=parms.get("DOMAIN");
+		final String className=httpReq.getUrlParameter("CLASS");
+		final boolean genericOnly =parms.containsKey("GENERIC");
+		final boolean parmsEditable=parms.containsKey("PARMSEDITABLE");
+		final boolean unqualifiedOK=parms.containsKey("UNQUALIFIEDOK");
+		final String levelName=httpReq.getUrlParameter("LEVEL");
+		final boolean notFlag =parms.containsKey("NOT");
+		final boolean allFlag =parms.containsKey("ALL");
+		final boolean domainFlag=parms.containsKey("DOMAIN");
+		final String domain=parms.get("DOMAIN");
 
 
 		final Enumeration<Ability> a;
@@ -83,10 +84,10 @@ public class AbilityNext extends StdWebMacro
 			a=((Vector)httpReq.getRequestObjects().get("ABILITIESSORTEDBYNAME")).elements();
 		else
 		{
-			Vector<Ability> fullList=new Vector<Ability>();
-			for(Enumeration<Ability> aa=CMClass.abilities();aa.hasMoreElements();)
+			final Vector<Ability> fullList=new Vector<Ability>();
+			for(final Enumeration<Ability> aa=CMClass.abilities();aa.hasMoreElements();)
 				fullList.add(aa.nextElement());
-			Ability[] aaray=fullList.toArray(new Ability[0]);
+			final Ability[] aaray=fullList.toArray(new Ability[0]);
 			Arrays.sort(aaray, new Comparator<Ability>()
 			{
 				@Override public int compare(Ability o1, Ability o2)
@@ -101,9 +102,9 @@ public class AbilityNext extends StdWebMacro
 		}
 		for(;a.hasMoreElements();)
 		{
-			Ability A=a.nextElement();
+			final Ability A=a.nextElement();
 			boolean okToShow=true;
-			int classType=A.classificationCode()&Ability.ALL_ACODES;
+			final int classType=A.classificationCode()&Ability.ALL_ACODES;
 			if(genericOnly)
 				okToShow=A.isGeneric();
 			else
@@ -116,7 +117,7 @@ public class AbilityNext extends StdWebMacro
 
 			if((className!=null)&&(className.length()>0))
 			{
-				int level=CMLib.ableMapper().getQualifyingLevel(className,true,A.ID());
+				final int level=CMLib.ableMapper().getQualifyingLevel(className,true,A.ID());
 				if((level<0)&&(!unqualifiedOK))
 					okToShow=false;
 				else
@@ -134,7 +135,7 @@ public class AbilityNext extends StdWebMacro
 			else
 			if(!allFlag)
 			{
-				int level=CMLib.ableMapper().getQualifyingLevel("Archon",true,A.ID());
+				final int level=CMLib.ableMapper().getQualifyingLevel("Archon",true,A.ID());
 				if((level<0)&&(!unqualifiedOK))
 					okToShow=false;
 				else
@@ -154,8 +155,8 @@ public class AbilityNext extends StdWebMacro
 				if((domainFlag)&&(!domain.equalsIgnoreCase(Ability.DOMAIN_DESCS[(A.classificationCode()&Ability.ALL_DOMAINS)>>5])))
 				   okToShow=false;
 				boolean containsOne=false;
-				for(int i=0;i<Ability.ACODE_DESCS.length;i++)
-					if(parms.containsKey(Ability.ACODE_DESCS[i]))
+				for (final String element : Ability.ACODE_DESCS)
+					if(parms.containsKey(element))
 					{ containsOne=true; break;}
 				if(containsOne&&(!parms.containsKey(Ability.ACODE_DESCS[classType])))
 					okToShow=false;

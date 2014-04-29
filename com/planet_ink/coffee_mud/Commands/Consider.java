@@ -45,41 +45,41 @@ public class Consider extends StdCommand
 	public int relativeLevelDiff(MOB mob1, MOB mob2)
 	{
 		if((mob1==null)||(mob2==null)) return 0;
-		int mob2Armor=CMLib.combat().adjustedArmor(mob2);
-		int mob1Armor=CMLib.combat().adjustedArmor(mob1);
-		double mob1Attack=CMLib.combat().adjustedAttackBonus(mob1,mob2);
-		double mob2Attack=CMLib.combat().adjustedAttackBonus(mob2,mob1);
-		int mob2Dmg=mob2.phyStats().damage();
-		int mob1Dmg=mob1.phyStats().damage();
-		int mob2Hp=mob2.baseState().getHitPoints();
-		int mob1Hp=mob1.baseState().getHitPoints();
+		final int mob2Armor=CMLib.combat().adjustedArmor(mob2);
+		final int mob1Armor=CMLib.combat().adjustedArmor(mob1);
+		final double mob1Attack=CMLib.combat().adjustedAttackBonus(mob1,mob2);
+		final double mob2Attack=CMLib.combat().adjustedAttackBonus(mob2,mob1);
+		final int mob2Dmg=mob2.phyStats().damage();
+		final int mob1Dmg=mob1.phyStats().damage();
+		final int mob2Hp=mob2.baseState().getHitPoints();
+		final int mob1Hp=mob1.baseState().getHitPoints();
 
-		double mob2HitRound=(((CMath.div(CMLib.dice().normalizeBy5((int)Math.round(50.0*mob2Attack/mob1Armor)),100.0))*CMath.div(mob2Dmg,2.0))+1.0)*CMath.mul(mob2.phyStats().speed(),1.0);
-		double mob1HitRound=(((CMath.div(CMLib.dice().normalizeBy5((int)Math.round(50.0*mob1Attack/mob2Armor)),100.0))*CMath.div(mob1Dmg,2.0))+1.0)*CMath.mul(mob1.phyStats().speed(),1.0);
-		double mob2SurvivalRounds=CMath.div(mob2Hp,mob1HitRound);
-		double mob1SurvivalRounds=CMath.div(mob1Hp,mob2HitRound);
+		final double mob2HitRound=(((CMath.div(CMLib.dice().normalizeBy5((int)Math.round(50.0*mob2Attack/mob1Armor)),100.0))*CMath.div(mob2Dmg,2.0))+1.0)*CMath.mul(mob2.phyStats().speed(),1.0);
+		final double mob1HitRound=(((CMath.div(CMLib.dice().normalizeBy5((int)Math.round(50.0*mob1Attack/mob2Armor)),100.0))*CMath.div(mob1Dmg,2.0))+1.0)*CMath.mul(mob1.phyStats().speed(),1.0);
+		final double mob2SurvivalRounds=CMath.div(mob2Hp,mob1HitRound);
+		final double mob1SurvivalRounds=CMath.div(mob1Hp,mob2HitRound);
 
 		//int levelDiff=(int)Math.round(CMath.div((mob1SurvivalRounds-mob2SurvivalRounds),1));
-		double levelDiff=(mob1SurvivalRounds-mob2SurvivalRounds)/2;
-		int levelDiffed=(int)Math.round(Math.sqrt(Math.abs(levelDiff)));
+		final double levelDiff=(mob1SurvivalRounds-mob2SurvivalRounds)/2;
+		final int levelDiffed=(int)Math.round(Math.sqrt(Math.abs(levelDiff)));
 
 		return levelDiffed*(levelDiff<0.0?-1:1);
 	}
 
 	public int doConsider(MOB mob, Physical target)
 	{
-		Room R=mob.location();
+		final Room R=mob.location();
 		if(R==null) return 0;
-		CMMsg msg=CMClass.getMsg(mob,target,null,CMMsg.MASK_EYES|CMMsg.TYP_OK_VISUAL,null,"<S-NAME> consider(s) <T-NAMESELF>.","<S-NAME> consider(s) <T-NAMESELF>.");
+		final CMMsg msg=CMClass.getMsg(mob,target,null,CMMsg.MASK_EYES|CMMsg.TYP_OK_VISUAL,null,"<S-NAME> consider(s) <T-NAMESELF>.","<S-NAME> consider(s) <T-NAMESELF>.");
 		if(R.okMessage(mob,msg))
 			R.send(mob,msg);
 		int lvlDiff=0;
 		if(target instanceof MOB)
 		{
-			MOB targetMOB=(MOB)target;
-			int relDiff=relativeLevelDiff(targetMOB,mob);
+			final MOB targetMOB=(MOB)target;
+			final int relDiff=relativeLevelDiff(targetMOB,mob);
 			lvlDiff=(target.phyStats().level()-mob.phyStats().level());
-			int realDiff=relDiff;//(relDiff+lvlDiff)/2;
+			final int realDiff=relDiff;//(relDiff+lvlDiff)/2;
 
 			int theDiff=2;
 			if(mob.phyStats().level()>20) theDiff=3;
@@ -99,8 +99,8 @@ public class Consider extends StdCommand
 			else
 			if(CMProps.getIntVar(CMProps.Int.EXPRATE)!=0)
 			{
-				int relLvlDiff=(lvlDiff<0)?-lvlDiff:lvlDiff;
-				double pct=CMath.div(relLvlDiff,CMProps.getIntVar(CMProps.Int.EXPRATE));
+				final int relLvlDiff=(lvlDiff<0)?-lvlDiff:lvlDiff;
+				final double pct=CMath.div(relLvlDiff,CMProps.getIntVar(CMProps.Int.EXPRATE));
 				if((lvlDiff<0)&&(pct<0.5))
 					levelMsg=targetMOB.charStats().HeShe()+" is almost your equal";
 				else
@@ -119,7 +119,7 @@ public class Consider extends StdCommand
 					levelMsg=targetMOB.charStats().HeShe()+" is superior to you";
 			}
 
-			int levelDiff=Math.abs(realDiff);
+			final int levelDiff=Math.abs(realDiff);
 			if(levelDiff<theDiff)
 			{
 				levelMsg+=(lvlDiff!=0)?" but ":" and ";
@@ -156,17 +156,17 @@ public class Consider extends StdCommand
 			}
 			mob.tell(levelMsg);
 		}
-		StringBuffer withWhat=new StringBuffer("");
-		Vector mendors=new Vector();
-		for(Enumeration<Ability> a=mob.allAbilities();a.hasMoreElements();)
+		final StringBuffer withWhat=new StringBuffer("");
+		final Vector mendors=new Vector();
+		for(final Enumeration<Ability> a=mob.allAbilities();a.hasMoreElements();)
 		{
-			Ability A=a.nextElement();
+			final Ability A=a.nextElement();
 			if((A instanceof MendingSkill)&&(((MendingSkill)A).supportsMending((target))))
 				mendors.addElement(A);
 		}
 		for(int m=0;m<mendors.size();m++)
 		{
-			Ability A=(Ability)mendors.elementAt(m);
+			final Ability A=(Ability)mendors.elementAt(m);
 			if(m==0)
 				withWhat.append("You could probably help "+target.name(mob)+" out with your "+A.name()+" skill");
 			else
@@ -195,7 +195,7 @@ public class Consider extends StdCommand
 			return false;
 		}
 		commands.removeElementAt(0);
-		String targetName=CMParms.combine(commands,0);
+		final String targetName=CMParms.combine(commands,0);
 		if(ID.equalsIgnoreCase("SELF")||ID.equalsIgnoreCase("ME"))
 			target=mob;
 		if(target==null)

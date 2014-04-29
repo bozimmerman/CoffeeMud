@@ -73,7 +73,7 @@ public class Patroller extends ActiveTicker
 	public void setParms(String newParms)
 	{
 		super.setParms(newParms);
-		String rideokString=CMParms.getParmStr(newParms,"rideok","false");
+		final String rideokString=CMParms.getParmStr(newParms,"rideok","false");
 		rideOnly=rideokString.equalsIgnoreCase("only");
 		rideOk=rideOnly||rideokString.equalsIgnoreCase("true");
 		diameter=CMParms.getParmInt(newParms,"diameter",20);
@@ -86,7 +86,7 @@ public class Patroller extends ActiveTicker
 		if(cachedSteps != null)
 			return cachedSteps;
 
-		Vector<String> V=new Vector<String>();
+		final Vector<String> V=new Vector<String>();
 		String path=getParms().trim();
 		int x=path.indexOf(';');
 		if(x<0) return V;
@@ -107,7 +107,7 @@ public class Patroller extends ActiveTicker
 			{
 				s=V.elementAt(i);
 				if(s.equalsIgnoreCase("RESTART")||s.equalsIgnoreCase("REPEAT")) break;
-				int dir=Directions.getGoodDirectionCode(s);
+				final int dir=Directions.getGoodDirectionCode(s);
 				if(dir>=0)
 					V.addElement(Directions.getDirectionName(Directions.getOpDirectionCode(dir)));
 				else
@@ -169,7 +169,7 @@ public class Patroller extends ActiveTicker
 				thisRoom=(Room)((Item)ticking).owner();
 			if(thisRoom instanceof GridLocale)
 			{
-				Room R=((GridLocale)thisRoom).getRandomGridChild();
+				final Room R=((GridLocale)thisRoom).getRandomGridChild();
 				if(R!=null)
 				{
 					if(ticking instanceof Item)
@@ -203,7 +203,7 @@ public class Patroller extends ActiveTicker
 			tickStatus=Tickable.STATUS_MISC+1;
 
 			Room thatRoom=null;
-			List<String> steps=getSteps();
+			final List<String> steps=getSteps();
 			if(steps.size()==0)
 			{
 				tickStatus=Tickable.STATUS_NOT;
@@ -241,7 +241,7 @@ public class Patroller extends ActiveTicker
 				tickStatus=Tickable.STATUS_MISC+4;
 				for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 				{
-					Room R=thisRoom.getRoomInDir(d);
+					final Room R=thisRoom.getRoomInDir(d);
 					if((R!=null)
 					&&(CMLib.map().getExtendedRoomID(R).toUpperCase().endsWith(nxt.toUpperCase())))
 					{
@@ -264,7 +264,7 @@ public class Patroller extends ActiveTicker
 					final Room myStartRoom=startRoom.get();
 					if((startRoom!=null)&&(startRoom!=thisRoom))
 					{
-						Environmental E=(Environmental)ticking;
+						final Environmental E=(Environmental)ticking;
 						if(ticking instanceof MOB)
 							myStartRoom.bringMobHere((MOB)E,true);
 						else
@@ -284,10 +284,10 @@ public class Patroller extends ActiveTicker
 				if(R==null) R=CMLib.map().getRoom(thisRoom.getArea()+"#"+nxt);
 				if(R!=null)
 				{
-					boolean airOk=(((ticking instanceof Physical)&&CMLib.flags().isFlying((Physical)ticking))
+					final boolean airOk=(((ticking instanceof Physical)&&CMLib.flags().isFlying((Physical)ticking))
 						||((ticking instanceof Rider)&&(((Rider)ticking).riding()!=null)&&(((Rider)ticking).riding().rideBasis()==Rideable.RIDEABLE_AIR))
 						||((ticking instanceof Rideable)&&(((Rideable)ticking).rideBasis()==Rideable.RIDEABLE_AIR)));
-					boolean waterOk=((ticking instanceof Physical)&&CMLib.flags().isWaterWorthy((Physical)ticking));
+					final boolean waterOk=((ticking instanceof Physical)&&CMLib.flags().isWaterWorthy((Physical)ticking));
 
 					tickStatus=Tickable.STATUS_MISC+6;
 					if(R instanceof GridLocale)
@@ -323,7 +323,7 @@ public class Patroller extends ActiveTicker
 					tickStatus=Tickable.STATUS_MISC+8;
 					if((direction<0)||(thatRoom==null))
 					{
-						TrackingLibrary.TrackingFlags flags=new TrackingLibrary.TrackingFlags();
+						final TrackingLibrary.TrackingFlags flags=new TrackingLibrary.TrackingFlags();
 						if(ticking instanceof Item)
 							flags.plus(TrackingLibrary.TrackingFlag.OPENONLY);
 						flags.plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS);
@@ -362,7 +362,7 @@ public class Patroller extends ActiveTicker
 			else
 				correction=null;
 			tickStatus=Tickable.STATUS_MISC+13;
-			Exit E=thisRoom.getExitInDir(direction);
+			final Exit E=thisRoom.getExitInDir(direction);
 			if(E==null)
 			{
 				tickStatus=Tickable.STATUS_NOT;
@@ -370,10 +370,10 @@ public class Patroller extends ActiveTicker
 			}
 
 			tickStatus=Tickable.STATUS_MISC+14;
-			Set<MOB> mobsHere=CMLib.players().getPlayersHere(thisRoom);
+			final Set<MOB> mobsHere=CMLib.players().getPlayersHere(thisRoom);
 			if(mobsHere.size()>0)
 			{
-				for(MOB inhab : mobsHere)
+				for(final MOB inhab : mobsHere)
 				{
 					if((!inhab.isMonster())
 					&&(CMSecurity.isAllowed(inhab,thisRoom,CMSecurity.SecFlag.CMDMOBS)
@@ -388,19 +388,19 @@ public class Patroller extends ActiveTicker
 			tickStatus=Tickable.STATUS_MISC+15;
 			if(ticking instanceof Item)
 			{
-				Item I=(Item)ticking;
+				final Item I=(Item)ticking;
 				if((ticking instanceof Rideable)
 				&&(thatRoom!=null)
 				&&(riders!=null))
 				{
-					Exit opExit=thatRoom.getReverseExit(direction);
+					final Exit opExit=thatRoom.getReverseExit(direction);
 					for(int i=0;i<riders.size();i++)
 					{
-						Rider R=(Rider)riders.elementAt(i);
+						final Rider R=(Rider)riders.elementAt(i);
 						if(R instanceof MOB)
 						{
 							tickStatus=Tickable.STATUS_MISC+16;
-							MOB mob=(MOB)R;
+							final MOB mob=(MOB)R;
 							mob.setRiding((Rideable)ticking);
 							// overboard check
 							if(mob.isMonster()
@@ -409,8 +409,8 @@ public class Patroller extends ActiveTicker
 							&& CMLib.flags().isInTheGame(mob,true))
 								thisRoom.bringMobHere(mob,false);
 
-							CMMsg enterMsg=CMClass.getMsg(mob,thatRoom,E,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null);
-							CMMsg leaveMsg=CMClass.getMsg(mob,thisRoom,opExit,CMMsg.MSG_LEAVE,null,CMMsg.MSG_LEAVE,null,CMMsg.MSG_LEAVE,null);
+							final CMMsg enterMsg=CMClass.getMsg(mob,thatRoom,E,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null);
+							final CMMsg leaveMsg=CMClass.getMsg(mob,thisRoom,opExit,CMMsg.MSG_LEAVE,null,CMMsg.MSG_LEAVE,null,CMMsg.MSG_LEAVE,null);
 							try
 							{
 								rideCheckCt++;
@@ -460,7 +460,7 @@ public class Patroller extends ActiveTicker
 					if(riders!=null)
 					for(int i=0;i<riders.size();i++)
 					{
-						Rider R=(Rider)riders.elementAt(i);
+						final Rider R=(Rider)riders.elementAt(i);
 						if(CMLib.map().roomLocation(R)!=thatRoom)
 							if((((Rideable)ticking).rideBasis()!=Rideable.RIDEABLE_SIT)
 							&&(((Rideable)ticking).rideBasis()!=Rideable.RIDEABLE_TABLE)
@@ -504,7 +504,7 @@ public class Patroller extends ActiveTicker
 			{
 				tickStatus=Tickable.STATUS_MISC+22;
 				// ridden things dont wander!
-				MOB mob=(MOB)ticking;
+				final MOB mob=(MOB)ticking;
 
 				// handle doors!
 				if(E.hasADoor()&&(!E.isOpen()))
@@ -532,19 +532,19 @@ public class Patroller extends ActiveTicker
 				}
 
 				tickStatus=Tickable.STATUS_MISC+23;
-				Ability A=mob.fetchAbility("Thief_Sneak");
+				final Ability A=mob.fetchAbility("Thief_Sneak");
 				if(A!=null)
 				{
-					Vector V=new Vector();
+					final Vector V=new Vector();
 					V.add(Directions.getDirectionName(direction));
 					if(A.proficiency()<50)
 					{
 						A.setProficiency(CMLib.dice().roll(1,50,A.adjustedLevel(mob,0)*15));
-						Ability A2=mob.fetchAbility("Thief_Hide");
+						final Ability A2=mob.fetchAbility("Thief_Hide");
 						if(A2!=null)
 							A2.setProficiency(CMLib.dice().roll(1,50,A.adjustedLevel(mob,0)*15));
 					}
-					CharState oldState=(CharState)mob.curState().copyOf();
+					final CharState oldState=(CharState)mob.curState().copyOf();
 					A.invoke(mob,V,null,false,0);
 					mob.curState().setMana(oldState.getMana());
 					mob.curState().setMovement(oldState.getMovement());

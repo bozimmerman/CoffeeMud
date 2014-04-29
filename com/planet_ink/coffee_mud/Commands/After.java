@@ -60,7 +60,7 @@ public class After extends StdCommand implements Tickable
 		boolean every=false;
 		commands.removeElementAt(0);
 
-		String afterErr="format: after (every) [X] [TICKS/MINUTES/SECONDS/HOURS] [COMMAND]";
+		final String afterErr="format: after (every) [X] [TICKS/MINUTES/SECONDS/HOURS] [COMMAND]";
 		if(commands.size()==0){ mob.tell(afterErr); return false;}
 		if(((String)commands.elementAt(0)).equalsIgnoreCase("stop"))
 		{
@@ -73,11 +73,11 @@ public class After extends StdCommand implements Tickable
 		{
 			//afterCmds.clear();
 			int s=0;
-			StringBuffer str=new StringBuffer("^xCurrently scheduled AFTERs: ^?^.^?\n\r");
+			final StringBuffer str=new StringBuffer("^xCurrently scheduled AFTERs: ^?^.^?\n\r");
 			str.append(CMStrings.padRight("Next run",20)+" "+CMStrings.padRight(" Interval",20)+" "+CMStrings.padRight("Who",10)+" Command\n\r");
 			while(s<afterCmds.size())
 			{
-				AfterCommand V=afterCmds.get(s);
+				final AfterCommand V=afterCmds.get(s);
 				every=V.every;
 				str.append(CMStrings.padRight(CMLib.time().date2String(V.start+V.duration),20)+" ");
 				str.append((every?"*":" ")+CMStrings.padRight(CMLib.english().returnTime(V.duration,0),20)+" ");
@@ -95,8 +95,8 @@ public class After extends StdCommand implements Tickable
 		if(time==0) { mob.tell("Time may not be 0."+afterErr); return false;}
 		commands.removeElementAt(0);
 		if(commands.size()==0){ mob.tell(afterErr); return false;}
-		String s=(String)commands.elementAt(0);
-		long multiplier=CMLib.english().getMillisMultiplierByName(s);
+		final String s=(String)commands.elementAt(0);
+		final long multiplier=CMLib.english().getMillisMultiplierByName(s);
 		if(multiplier<0)
 		{
 			mob.tell("'"+s+" Time may not be 0. "+afterErr);
@@ -106,7 +106,7 @@ public class After extends StdCommand implements Tickable
 			time=time*multiplier;
 		commands.removeElementAt(0);
 		if(commands.size()==0){ mob.tell(afterErr); return false;}
-		AfterCommand V=new AfterCommand();
+		final AfterCommand V=new AfterCommand();
 		V.start=System.currentTimeMillis();
 		V.duration=time;
 		V.every=every;
@@ -131,10 +131,10 @@ public class After extends StdCommand implements Tickable
 		int s=0;
 		while(s<afterCmds.size())
 		{
-			AfterCommand cmd=afterCmds.get(s);
+			final AfterCommand cmd=afterCmds.get(s);
 			if(System.currentTimeMillis()>(cmd.start+cmd.duration))
 			{
-				boolean every=cmd.every;
+				final boolean every=cmd.every;
 				if(every)
 				{
 					cmd.start=System.currentTimeMillis();

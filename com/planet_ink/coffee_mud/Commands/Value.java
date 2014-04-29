@@ -42,7 +42,7 @@ public class Value extends StdCommand
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		Environmental shopkeeper=CMLib.english().parseShopkeeper(mob,commands,"Value what with whom?");
+		final Environmental shopkeeper=CMLib.english().parseShopkeeper(mob,commands,"Value what with whom?");
 		if(shopkeeper==null) return false;
 		if(commands.size()==0)
 		{
@@ -59,7 +59,7 @@ public class Value extends StdCommand
 		}
 
 		String whatName=CMParms.combine(commands,0);
-		Vector V=new Vector();
+		final Vector V=new Vector();
 		boolean allFlag=((String)commands.elementAt(0)).equalsIgnoreCase("all");
 		if(whatName.toUpperCase().startsWith("ALL.")){ allFlag=true; whatName="ALL "+whatName.substring(4);}
 		if(whatName.toUpperCase().endsWith(".ALL")){ allFlag=true; whatName="ALL "+whatName.substring(0,whatName.length()-4);}
@@ -69,7 +69,7 @@ public class Value extends StdCommand
 		while(doBugFix || ((allFlag)&&(addendum<=maxToDo)))
 		{
 			doBugFix=false;
-			Item itemToDo=mob.fetchItem(null,Wearable.FILTER_UNWORNONLY,whatName+addendumStr);
+			final Item itemToDo=mob.fetchItem(null,Wearable.FILTER_UNWORNONLY,whatName+addendumStr);
 			if(itemToDo==null) break;
 			if((CMLib.flags().canBeSeenBy(itemToDo,mob))
 			&&(!V.contains(itemToDo)))
@@ -82,8 +82,8 @@ public class Value extends StdCommand
 		else
 		for(int v=0;v<V.size();v++)
 		{
-			Item thisThang=(Item)V.elementAt(v);
-			CMMsg newMsg=CMClass.getMsg(mob,shopkeeper,thisThang,CMMsg.MSG_VALUE,null);
+			final Item thisThang=(Item)V.elementAt(v);
+			final CMMsg newMsg=CMClass.getMsg(mob,shopkeeper,thisThang,CMMsg.MSG_VALUE,null);
 			if(mob.location().okMessage(mob,newMsg))
 				mob.location().send(mob,newMsg);
 		}

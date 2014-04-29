@@ -37,8 +37,8 @@ public class ResourceOverride extends ActiveTicker
 	@Override public String ID(){return "ResourceOverride";}
 	@Override protected int canImproveCode(){return Behavior.CAN_ROOMS|Behavior.CAN_AREAS;}
 
-	private List<Integer>	rscs		= new Vector<Integer>();
-	private Set<Integer>	roomTypes	= new TreeSet<Integer>();
+	private final List<Integer>	rscs		= new Vector<Integer>();
+	private final Set<Integer>	roomTypes	= new TreeSet<Integer>();
 
 	@Override
 	public String accountForYourself()
@@ -53,26 +53,26 @@ public class ResourceOverride extends ActiveTicker
 		super.tickDown=1;
 		rscs.clear();
 		roomTypes.clear();
-		Vector<String> V=CMParms.parse(getParms());
+		final Vector<String> V=CMParms.parse(getParms());
 		if(V.size()==0) return;
 		for(int v=0;v<V.size();v++)
 		{
 			// first try for a real one
 			int code=-1;
-			String which=V.elementAt(v).toUpperCase().trim();
+			final String which=V.elementAt(v).toUpperCase().trim();
 			if(CMath.isInteger(which))
 				code=CMath.s_int(which);
 			if(code<0) code = RawMaterial.CODES.FIND_IgnoreCase(which);
 			if(code<0)
 			{
-				RawMaterial.Material m=RawMaterial.Material.findIgnoreCase(which);
+				final RawMaterial.Material m=RawMaterial.Material.findIgnoreCase(which);
 				if(m!=null)
 					code=RawMaterial.CODES.COMPOSE_RESOURCES(m.mask()).get(0).intValue();
 			}
 			if(code<0) code = RawMaterial.CODES.FIND_StartsWith(which);
 			if(code<0)
 			{
-				RawMaterial.Material m=RawMaterial.Material.startsWith(which);
+				final RawMaterial.Material m=RawMaterial.Material.startsWith(which);
 				if(m!=null)
 					code=RawMaterial.CODES.COMPOSE_RESOURCES(m.mask()).get(0).intValue();
 			}
@@ -107,7 +107,7 @@ public class ResourceOverride extends ActiveTicker
 			case Tickable.TICKID_ROOM_BEHAVIOR:
 				if(ticking instanceof Room)
 				{
-					Room R=(Room)ticking;
+					final Room R=(Room)ticking;
 					if(!rscs.contains(Integer.valueOf(R.myResource())))
 						R.setResource(rscs.get(CMLib.dice().roll(1,rscs.size(),-1)).intValue());
 				}
@@ -115,9 +115,9 @@ public class ResourceOverride extends ActiveTicker
 			case Tickable.TICKID_AREA:
 				if(ticking instanceof Area)
 				{
-					Area A=(Area)ticking;
+					final Area A=(Area)ticking;
 					Room R=null;
-					for(Enumeration<Room> e=A.getMetroMap();e.hasMoreElements();)
+					for(final Enumeration<Room> e=A.getMetroMap();e.hasMoreElements();)
 					{
 						R=e.nextElement();
 						if((R!=null)

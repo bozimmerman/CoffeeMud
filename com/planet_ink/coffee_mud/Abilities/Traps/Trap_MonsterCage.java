@@ -49,10 +49,10 @@ public class Trap_MonsterCage extends StdTrap
 		if(mob.location()==null) return null;
 		for(int i=0;i<mob.location().numItems();i++)
 		{
-			Item I=mob.location().getItem(i);
+			final Item I=mob.location().getItem(i);
 			if(I instanceof CagedAnimal)
 			{
-				MOB M=((CagedAnimal)I).unCageMe();
+				final MOB M=((CagedAnimal)I).unCageMe();
 				if(M!=null) return I;
 			}
 		}
@@ -63,7 +63,7 @@ public class Trap_MonsterCage extends StdTrap
 	public Trap setTrap(MOB mob, Physical P, int trapBonus, int qualifyingClassLevel, boolean perm)
 	{
 		if(P==null) return null;
-		Item I=getCagedAnimal(mob);
+		final Item I=getCagedAnimal(mob);
 		if(I!=null)
 		{
 			setMiscText(((CagedAnimal)I).cageText());
@@ -98,8 +98,8 @@ public class Trap_MonsterCage extends StdTrap
 	@Override
 	public List<Item> getTrapComponents()
 	{
-		Vector V=new Vector();
-		Item I=CMClass.getItem("GenCaged");
+		final Vector V=new Vector();
+		final Item I=CMClass.getItem("GenCaged");
 		((CagedAnimal)I).setCageText(text());
 		I.recoverPhyStats();
 		I.text();
@@ -132,7 +132,7 @@ public class Trap_MonsterCage extends StdTrap
 			if(target.location().show(target,target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,"<S-NAME> trip(s) open a caged monster!"))
 			{
 				super.spring(target);
-				Item I=CMClass.getItem("GenCaged");
+				final Item I=CMClass.getItem("GenCaged");
 				((CagedAnimal)I).setCageText(text());
 				monster=((CagedAnimal)I).unCageMe();
 				if(monster!=null)

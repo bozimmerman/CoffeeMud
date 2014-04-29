@@ -44,7 +44,7 @@ public class UnLink extends StdCommand
 	{
 		commands.setElementAt("DESTROY",0);
 		commands.insertElementAt("ROOM",1);
-		Command C=CMClass.getCommand("Destroy");
+		final Command C=CMClass.getCommand("Destroy");
 		C.execute(mob,commands,metaFlags);
 		return false;
 	}

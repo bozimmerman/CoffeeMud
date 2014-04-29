@@ -48,7 +48,7 @@ public class Chant_SummonMount extends Chant
 	@Override
 	public void unInvoke()
 	{
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		super.unInvoke();
 		if((canBeUninvoked())&&(mob!=null))
 		{
@@ -79,7 +79,7 @@ public class Chant_SummonMount extends Chant
 		{
 			if((affected!=null)&&(affected instanceof MOB)&&(invoker!=null))
 			{
-				MOB mob=(MOB)affected;
+				final MOB mob=(MOB)affected;
 				if(((mob.amFollowing()==null)
 				||(mob.amDead())
 				||((invoker!=null)&&(mob.location()!=invoker.location())&&(invoker.riding()!=affected))))
@@ -103,13 +103,13 @@ public class Chant_SummonMount extends Chant
 			mob.tell("You must be outdoors for this chant to work.");
 			return false;
 		}
-		Vector choices=new Vector();
+		final Vector choices=new Vector();
 		int fromDir=-1;
 		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 		{
-			Room room=mob.location().getRoomInDir(d);
-			Exit exit=mob.location().getExitInDir(d);
-			Exit opExit=mob.location().getReverseExit(d);
+			final Room room=mob.location().getRoomInDir(d);
+			final Exit exit=mob.location().getExitInDir(d);
+			final Exit opExit=mob.location().getReverseExit(d);
 			if((room!=null)
 			&&((room.domainType()&Room.INDOORS)==0)
 			&&(room.domainType()!=Room.DOMAIN_OUTDOORS_AIR)
@@ -123,21 +123,21 @@ public class Chant_SummonMount extends Chant
 			return false;
 		}
 		fromDir=((Integer)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1))).intValue();
-		Room newRoom=mob.location().getRoomInDir(fromDir);
-		int opDir=Directions.getOpDirectionCode(fromDir);
+		final Room newRoom=mob.location().getRoomInDir(fromDir);
+		final int opDir=Directions.getOpDirectionCode(fromDir);
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if((success)&&(newRoom!=null))
 		{
 			invoker=mob;
-			CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":"^S<S-NAME> chant(s) humbly for a mount.^?");
+			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":"^S<S-NAME> chant(s) humbly for a mount.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				MOB target = determineMonster(mob, adjustedLevel(mob,asLevel));
+				final MOB target = determineMonster(mob, adjustedLevel(mob,asLevel));
 				target.bringToLife(newRoom,true);
 				CMLib.beanCounter().clearZeroMoney(target,null);
 				target.location().showOthers(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> appears!");
@@ -165,8 +165,8 @@ public class Chant_SummonMount extends Chant
 	public MOB determineMonster(MOB caster, int level)
 	{
 
-		MOB newMOB=CMClass.getMOB("GenRideable");
-		Rideable ride=(Rideable)newMOB;
+		final MOB newMOB=CMClass.getMOB("GenRideable");
+		final Rideable ride=(Rideable)newMOB;
 		newMOB.basePhyStats().setAbility(11);
 		newMOB.basePhyStats().setLevel(level);
 		newMOB.basePhyStats().setWeight(500);

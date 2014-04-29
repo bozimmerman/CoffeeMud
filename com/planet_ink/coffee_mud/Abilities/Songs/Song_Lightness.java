@@ -52,7 +52,7 @@ public class Song_Lightness extends Song
 		int weight=mob.basePhyStats().weight();
 		for(int i=0;i<mob.numItems();i++)
 		{
-			Item I=mob.getItem(i);
+			final Item I=mob.getItem(i);
 			if((I!=null)&&(!I.amWearingAt(Wearable.WORN_FLOATING_NEARBY)))
 				weight+=I.phyStats().weight();
 		}
@@ -69,7 +69,7 @@ public class Song_Lightness extends Song
 		&&(msg.target() instanceof Item)
 		&&(((msg.tool()==null)||(msg.tool() instanceof MOB))))
 		{
-			MOB mob=msg.source();
+			final MOB mob=msg.source();
 			if((((Item)msg.target()).phyStats().weight()>(mob.maxCarry()-mobWeight(mob)))
 			&&(!mob.isMine(msg.target())))
 			{
@@ -86,7 +86,7 @@ public class Song_Lightness extends Song
 		// undo the affects of this spell
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		super.unInvoke();
 
 		if(canBeUninvoked())

@@ -59,9 +59,9 @@ public class Polls extends StdLibrary implements PollManager
 		if(pollCache==null)
 		{
 			pollCache=new SVector<Poll>();
-			List<DatabaseEngine.PollData> list=CMLib.database().DBReadPollList();
+			final List<DatabaseEngine.PollData> list=CMLib.database().DBReadPollList();
 			Poll P=null;
-			for(DatabaseEngine.PollData data : list)
+			for(final DatabaseEngine.PollData data : list)
 			{
 				P=loadPollByName(data.name);
 				if(P!=null)
@@ -73,16 +73,16 @@ public class Polls extends StdLibrary implements PollManager
 	@Override
 	public Poll getPoll(String named)
 	{
-		List<Poll> V=getCache();
+		final List<Poll> V=getCache();
 		if(V!=null)
 		{
-			for(Poll P : V)
+			for(final Poll P : V)
 				if(P.getName().equalsIgnoreCase(named))
 					return P;
 		}
 		else
 		{
-			Poll P=loadPollByName(named);
+			final Poll P=loadPollByName(named);
 			return P;
 		}
 		return null;
@@ -91,7 +91,7 @@ public class Polls extends StdLibrary implements PollManager
 	@Override
 	public Poll getPoll(int x)
 	{
-		Iterator<Poll> p=getPollList();
+		final Iterator<Poll> p=getPollList();
 		Poll P=null;
 		for(int i=0;i<=x;i++)
 		{
@@ -106,13 +106,13 @@ public class Polls extends StdLibrary implements PollManager
 	@SuppressWarnings("unchecked")
 	public List<Poll>[] getMyPollTypes(MOB mob, boolean login)
 	{
-		Iterator<Poll> i=getPollList();
-		List<Poll> list[]=new List[3];
+		final Iterator<Poll> i=getPollList();
+		final List<Poll> list[]=new List[3];
 		for(int l=0;l<3;l++)
 			list[l]=new Vector<Poll>();
 		for(;i.hasNext();)
 		{
-			Poll P = i.next();
+			final Poll P = i.next();
 			if(loadPollIfNecessary(P))
 			{
 				if((P.mayIVote(mob))&&(login)&&(CMath.bset(P.getFlags(),Poll.FLAG_NOTATLOGIN)))
@@ -131,13 +131,13 @@ public class Polls extends StdLibrary implements PollManager
 	@Override
 	public Iterator<Poll> getPollList()
 	{
-		List<Poll> L=getCache();
+		final List<Poll> L=getCache();
 		if(L!=null) return L.iterator();
-		List<DatabaseEngine.PollData> V=CMLib.database().DBReadPollList();
-		List<Poll> list=new Vector<Poll>();
-		for(DatabaseEngine.PollData data : V)
+		final List<DatabaseEngine.PollData> V=CMLib.database().DBReadPollList();
+		final List<Poll> list=new Vector<Poll>();
+		for(final DatabaseEngine.PollData data : V)
 		{
-			Poll P=(Poll)CMClass.getCommon("DefaultPoll");
+			final Poll P=(Poll)CMClass.getCommon("DefaultPoll");
 			P.setName(data.name);
 			P.setFlags(data.flag);
 			P.setQualZapper(data.qual);
@@ -157,7 +157,7 @@ public class Polls extends StdLibrary implements PollManager
 		{
 			if(!loadPollIfNecessary(P))
 				return;
-			StringBuffer present=new StringBuffer("");
+			final StringBuffer present=new StringBuffer("");
 			present.append("^O"+P.getDescription()+"^N\n\r\n\r");
 			if(P.getOptions().size()==0)
 			{
@@ -178,13 +178,13 @@ public class Polls extends StdLibrary implements PollManager
 			while((choice<0)&&(mob.session()!=null)&&(!mob.session().isStopped()))
 			{
 
-				String s=mob.session().prompt("Please make your selection (1-"+P.getOptions().size()+"): ");
+				final String s=mob.session().prompt("Please make your selection (1-"+P.getOptions().size()+"): ");
 				if((s.length()==0)&&(CMath.bset(P.getFlags(),Poll.FLAG_ABSTAIN)))
 					break;
 				if(CMath.isInteger(s)&&(CMath.s_int(s)>=1)&&(CMath.s_int(s)<=P.getOptions().size()))
 					choice=CMath.s_int(s);
 			}
-			Poll.PollResult R=new Poll.PollResult(mob.Name(),"",""+choice);
+			final Poll.PollResult R=new Poll.PollResult(mob.Name(),"",""+choice);
 			if(CMath.bset(P.getFlags(),Poll.FLAG_VOTEBYIP))
 			{
 				R.ip=mob.session().getAddress();
@@ -193,7 +193,7 @@ public class Polls extends StdLibrary implements PollManager
 			}
 			P.addVoteResult(R);
 		}
-		catch(java.io.IOException x)
+		catch(final java.io.IOException x)
 		{
 			if(Log.isMaskedErrMsg(x.getMessage()))
 				Log.errOut("Polls",x.getMessage());
@@ -211,7 +211,7 @@ public class Polls extends StdLibrary implements PollManager
 		int showFlag=-1;
 		if(CMProps.getIntVar(CMProps.Int.EDITORTYPE)>0)
 			showFlag=-999;
-		String oldName=P.getName();
+		final String oldName=P.getName();
 		while(!ok)
 		{
 			int showNumber=0;
@@ -243,12 +243,12 @@ public class Polls extends StdLibrary implements PollManager
 			if((expirationDate.trim().length()==0)||(expirationDate.equalsIgnoreCase("NA")))
 				P.setExpiration(0);
 			else
-			{ try{P.setExpiration(CMLib.time().string2Millis(expirationDate.trim()));}catch(Exception e){}}
+			{ try{P.setExpiration(CMLib.time().string2Millis(expirationDate.trim()));}catch(final Exception e){}}
 
-			Vector<Poll.PollOption> del=new Vector<Poll.PollOption>();
+			final Vector<Poll.PollOption> del=new Vector<Poll.PollOption>();
 			for(int i=0;i<P.getOptions().size();i++)
 			{
-				Poll.PollOption PO=P.getOptions().get(i);
+				final Poll.PollOption PO=P.getOptions().get(i);
 				PO.text=CMLib.genEd().prompt(mob,PO.text,++showNumber,showFlag,"Vote Option",true);
 				if(PO.text.length()==0) del.addElement(PO);
 			}
@@ -284,7 +284,7 @@ public class Polls extends StdLibrary implements PollManager
 			return;
 		if(!loadPollIfNecessary(P))
 			return;
-		StringBuffer present=new StringBuffer("");
+		final StringBuffer present=new StringBuffer("");
 		present.append("^O"+P.getSubject()+"^N\n\r\n\r");
 		if(P.getOptions().size()==0)
 		{
@@ -292,7 +292,7 @@ public class Polls extends StdLibrary implements PollManager
 			return;
 		}
 		int total=0;
-		int[] votes=new int[P.getOptions().size()+(CMath.bset(P.getFlags(),Poll.FLAG_ABSTAIN)?1:0)];
+		final int[] votes=new int[P.getOptions().size()+(CMath.bset(P.getFlags(),Poll.FLAG_ABSTAIN)?1:0)];
 		Poll.PollResult R=null;
 		int choice=0;
 		for(int r=0;r<P.getResults().size();r++)
@@ -372,42 +372,42 @@ public class Polls extends StdLibrary implements PollManager
 	public boolean loadPollIfNecessary(Poll P)
 	{
 		if(P.loaded()) return true;
-		DatabaseEngine.PollData data =CMLib.database().DBReadPoll(P.getName());
+		final DatabaseEngine.PollData data =CMLib.database().DBReadPoll(P.getName());
 		if(data==null) return false;
 		P.setName(data.name);
 		P.setAuthor(data.byName);
 		P.setSubject(data.subject);
 		P.setDescription(data.description);
-		Vector<Poll.PollOption> options=new Vector<Poll.PollOption>();
+		final Vector<Poll.PollOption> options=new Vector<Poll.PollOption>();
 		P.setOptions(options);
-		String optionsXML=data.options;
+		final String optionsXML=data.options;
 		List<XMLLibrary.XMLpiece> V2=CMLib.xml().parseAllXML(optionsXML);
 		XMLLibrary.XMLpiece OXV=CMLib.xml().getPieceFromPieces(V2,"OPTIONS");
 		if((OXV!=null)&&(OXV.contents!=null)&&(OXV.contents.size()>0))
 		for(int v2=0;v2<OXV.contents.size();v2++)
 		{
-			XMLLibrary.XMLpiece XP=OXV.contents.get(v2);
+			final XMLLibrary.XMLpiece XP=OXV.contents.get(v2);
 			if(!XP.tag.equalsIgnoreCase("option"))
 				continue;
-			Poll.PollOption PO=new Poll.PollOption(
+			final Poll.PollOption PO=new Poll.PollOption(
 					CMLib.xml().restoreAngleBrackets(CMLib.xml().getValFromPieces(XP.contents,"TEXT"))
 			);
 			options.addElement(PO);
 		}
 		P.setFlags(data.flag);
 		P.setQualZapper(data.qual);
-		Vector<Poll.PollResult> results=new Vector<Poll.PollResult>();
+		final Vector<Poll.PollResult> results=new Vector<Poll.PollResult>();
 		P.setResults(results);
-		String resultsXML=data.results;
+		final String resultsXML=data.results;
 		V2=CMLib.xml().parseAllXML(resultsXML);
 		OXV=CMLib.xml().getPieceFromPieces(V2,"RESULTS");
 		if((OXV!=null)&&(OXV.contents!=null)&&(OXV.contents.size()>0))
 		for(int v2=0;v2<OXV.contents.size();v2++)
 		{
-			XMLLibrary.XMLpiece XP=OXV.contents.get(v2);
+			final XMLLibrary.XMLpiece XP=OXV.contents.get(v2);
 			if(!XP.tag.equalsIgnoreCase("result"))
 				continue;
-			Poll.PollResult PR=new Poll.PollResult(
+			final Poll.PollResult PR=new Poll.PollResult(
 					CMLib.xml().getValFromPieces(XP.contents,"USER"),
 					CMLib.xml().getValFromPieces(XP.contents,"IP"),
 					CMLib.xml().getValFromPieces(XP.contents,"ANS"));
@@ -422,7 +422,7 @@ public class Polls extends StdLibrary implements PollManager
 	@Override
 	public Poll loadPollByName(String name)
 	{
-		Poll P=(Poll)CMClass.getCommon("DefaultPoll");
+		final Poll P=(Poll)CMClass.getCommon("DefaultPoll");
 		P.setLoaded(false);
 		P.setName(name);
 		return loadPollIfNecessary(P)?P:null;

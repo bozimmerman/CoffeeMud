@@ -46,7 +46,7 @@ public class Deviations extends StdCommand
 
 	protected String mobHeader(Faction useFaction)
 	{
-		StringBuffer str=new StringBuffer();
+		final StringBuffer str=new StringBuffer();
 		str.append("\n\r");
 		str.append(CMStrings.padRight("Name",20)+" ");
 		str.append(CMStrings.padRight("Lvl",4)+" ");
@@ -63,7 +63,7 @@ public class Deviations extends StdCommand
 	}
 	protected String itemHeader()
 	{
-		StringBuffer str=new StringBuffer();
+		final StringBuffer str=new StringBuffer();
 		str.append("\n\r");
 		str.append(CMStrings.padRight("Name",20)+" ");
 		str.append(CMStrings.padRight("Type",10)+" ");
@@ -93,7 +93,7 @@ public class Deviations extends StdCommand
 		{
 			for(int m=0;m<R.numInhabitants();m++)
 			{
-				MOB M=R.fetchInhabitant(m);
+				final MOB M=R.fetchInhabitant(m);
 				if((M!=null)&&(M.isSavable())&&(!alreadyDone(M,check)))
 					check.addElement(M);
 			}
@@ -102,7 +102,7 @@ public class Deviations extends StdCommand
 		{
 			for(int i=0;i<R.numItems();i++)
 			{
-				Item I=R.getItem(i);
+				final Item I=R.getItem(i);
 				if((I!=null)
 				&&((I instanceof Armor)||(I instanceof Weapon))
 				&&(!alreadyDone(I,check)))
@@ -110,26 +110,26 @@ public class Deviations extends StdCommand
 			}
 			for(int m=0;m<R.numInhabitants();m++)
 			{
-				MOB M=R.fetchInhabitant(m);
+				final MOB M=R.fetchInhabitant(m);
 				if(M!=null)
 				{
 					for(int i=0;i<M.numItems();i++)
 					{
-						Item I=M.getItem(i);
+						final Item I=M.getItem(i);
 						if((I!=null)
 						&&((I instanceof Armor)||(I instanceof Weapon))
 						&&(!alreadyDone(I,check)))
 							check.addElement(I);
 					}
-					ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(M);
+					final ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(M);
 					if(SK!=null)
 					{
-						for(Iterator<Environmental> i=SK.getShop().getStoreInventory();i.hasNext();)
+						for(final Iterator<Environmental> i=SK.getShop().getStoreInventory();i.hasNext();)
 						{
-							Environmental E2=i.next();
+							final Environmental E2=i.next();
 							if(E2 instanceof Item)
 							{
-								Item I=(Item)E2;
+								final Item I=(Item)E2;
 								if(((I instanceof Armor)||(I instanceof Weapon))
 								&&(!alreadyDone(I,check)))
 									check.addElement(I);
@@ -145,59 +145,59 @@ public class Deviations extends StdCommand
 	{
 		if(!vals.containsKey(key))
 			return " - ";
-		int val2=CMath.s_int(vals.get(key));
+		final int val2=CMath.s_int(vals.get(key));
 		return getDeviation(val,val2);
 	}
 	protected String getDeviation(int val, int val2)
 	{
 
 		if(val==val2) return "0%";
-		int oval=val2-val;
-		int pval=(int)Math.round(CMath.div((oval<0)?(oval*-1):oval,val2==0?1:val2)*100.0);
+		final int oval=val2-val;
+		final int pval=(int)Math.round(CMath.div((oval<0)?(oval*-1):oval,val2==0?1:val2)*100.0);
 		if(oval>0) return "-"+pval+"%";
 		return "+"+pval+"%";
 	}
 
 	public StringBuffer deviations(MOB mob, String rest)
 	{
-		Vector<String> V=CMParms.parse(rest);
+		final Vector<String> V=CMParms.parse(rest);
 		if((V.size()==0)
 		||((!V.firstElement().equalsIgnoreCase("mobs"))
 		   &&(!V.firstElement().equalsIgnoreCase("items"))
 		   &&(!V.firstElement().equalsIgnoreCase("both"))))
 			return new StringBuffer("You must specify whether you want deviations on MOBS, ITEMS, or BOTH.");
 
-		String type=V.firstElement().toLowerCase();
+		final String type=V.firstElement().toLowerCase();
 		if(V.size()==1)
 			return new StringBuffer("You must also specify a mob or item name, or the word room, or the word area.");
 
 		Faction useFaction=null;
-		for(Enumeration<Faction> e=CMLib.factions().factions();e.hasMoreElements();)
+		for(final Enumeration<Faction> e=CMLib.factions().factions();e.hasMoreElements();)
 		{
-			Faction F=e.nextElement();
+			final Faction F=e.nextElement();
 			if(F.showInSpecialReported()) useFaction=F;
 
 		}
-		String where=V.elementAt(1).toLowerCase();
-		Environmental E=mob.location().fetchFromMOBRoomFavorsItems(mob,null,where,Wearable.FILTER_ANY);
-		Vector check=new Vector();
+		final String where=V.elementAt(1).toLowerCase();
+		final Environmental E=mob.location().fetchFromMOBRoomFavorsItems(mob,null,where,Wearable.FILTER_ANY);
+		final Vector check=new Vector();
 		if(where.equalsIgnoreCase("room"))
 			fillCheckDeviations(mob.location(),type,check);
 		else
 		if(where.equalsIgnoreCase("area"))
 		{
-			for(Enumeration r=mob.location().getArea().getCompleteMap();r.hasMoreElements();)
+			for(final Enumeration r=mob.location().getArea().getCompleteMap();r.hasMoreElements();)
 			{
-				Room R=(Room)r.nextElement();
+				final Room R=(Room)r.nextElement();
 				fillCheckDeviations(R,type,check);
 			}
 		}
 		else
 		if(where.equalsIgnoreCase("world"))
 		{
-			for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
+			for(final Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 			{
-				Room R=(Room)r.nextElement();
+				final Room R=(Room)r.nextElement();
 				fillCheckDeviations(R,type,check);
 			}
 		}
@@ -220,19 +220,19 @@ public class Deviations extends StdCommand
 			return new StringBuffer("'"+where+"' is not a MOB, or Weapon, or Item.");
 		else
 			check.addElement(E);
-		StringBuffer str=new StringBuffer("");
+		final StringBuffer str=new StringBuffer("");
 		str.append("Deviations Report:\n\r");
-		StringBuffer itemResults = new StringBuffer();
-		StringBuffer mobResults = new StringBuffer();
+		final StringBuffer itemResults = new StringBuffer();
+		final StringBuffer mobResults = new StringBuffer();
 		for(int c=0;c<check.size();c++)
 		{
 			if(check.elementAt(c) instanceof Item)
 			{
-				Item I=(Item)check.elementAt(c);
+				final Item I=(Item)check.elementAt(c);
 				Weapon W=null;
 				if(I instanceof Weapon)
 					W=(Weapon)I;
-				Map<String,String> vals=CMLib.itemBuilder().timsItemAdjustments(
+				final Map<String,String> vals=CMLib.itemBuilder().timsItemAdjustments(
 										I,I.phyStats().level(),I.material(),
 										I.rawLogicalAnd()?2:1,
 										(W==null)?0:W.weaponClassification(),
@@ -268,7 +268,7 @@ public class Deviations extends StdCommand
 			}
 			else
 			{
-				MOB M=(MOB)check.elementAt(c);
+				final MOB M=(MOB)check.elementAt(c);
 				mobResults.append(CMStrings.padRight(M.name(),20)+" ");
 				mobResults.append(CMStrings.padRight(""+M.phyStats().level(),4)+" ");
 				mobResults.append(CMStrings.padRight(""+getDeviation(
@@ -289,7 +289,7 @@ public class Deviations extends StdCommand
 				int reallyWornCount = 0;
 				for(int j=0;j<M.numItems();j++)
 				{
-					Item Iw=M.getItem(j);
+					final Item Iw=M.getItem(j);
 					if(!(Iw.amWearingAt(Wearable.IN_INVENTORY)))
 						reallyWornCount++;
 				}

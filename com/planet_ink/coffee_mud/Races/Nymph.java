@@ -44,14 +44,14 @@ public class Nymph extends StdRace
 	@Override public int weightVariance(){return 90;}
 	@Override public long forbiddenWornBits(){return 0;}
 	@Override public String racialCategory(){return "Fairy-kin";}
-	private String[]culturalAbilityNames={"Fey"};
-	private int[]culturalAbilityProficiencies={50};
+	private final String[]culturalAbilityNames={"Fey"};
+	private final int[]culturalAbilityProficiencies={50};
 	@Override public String[] culturalAbilityNames(){return culturalAbilityNames;}
 	@Override public int[] culturalAbilityProficiencies(){return culturalAbilityProficiencies;}
-	private String[]racialAbilityNames={"Spell_Charm"};
-	private int[]racialAbilityLevels={1};
-	private int[]racialAbilityProficiencies={100};
-	private boolean[]racialAbilityQuals={false};
+	private final String[]racialAbilityNames={"Spell_Charm"};
+	private final int[]racialAbilityLevels={1};
+	private final int[]racialAbilityProficiencies={100};
+	private final boolean[]racialAbilityQuals={false};
 	@Override protected String[] racialAbilityNames(){return racialAbilityNames;}
 	@Override protected int[] racialAbilityLevels(){return racialAbilityLevels;}
 	@Override protected int[] racialAbilityProficiencies(){return racialAbilityProficiencies;}
@@ -61,7 +61,7 @@ public class Nymph extends StdRace
 	private static final int[] parts={0 ,2 ,2 ,1 ,1 ,2 ,2 ,1 ,2 ,2 ,1 ,0 ,1 ,1 ,0 ,0 };
 	@Override public int[] bodyMask(){return parts;}
 
-	private int[] agingChart={0,2,20,110,175,263,350,390,430};
+	private final int[] agingChart={0,2,20,110,175,263,350,390,430};
 	@Override public int[] getAgingChart(){return agingChart;}
 
 	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
@@ -88,28 +88,28 @@ public class Nymph extends StdRace
 		{
 			outfitChoices=new Vector();
 			// Have to, since it requires use of special constructor
-			Armor s1=CMClass.getArmor("GenShirt");
+			final Armor s1=CMClass.getArmor("GenShirt");
 			s1.setName("a delicate green shawl");
 			s1.setDisplayText("a delicate green shawl sits gracefully here.");
 			s1.setDescription("Obviously fine craftmenship, with delicate folds and intricate designs.");
 			s1.text();
 			outfitChoices.add(s1);
 
-			Armor s2=CMClass.getArmor("GenShoes");
+			final Armor s2=CMClass.getArmor("GenShoes");
 			s2.setName("a pair of sandals");
 			s2.setDisplayText("a pair of sandals lie here.");
 			s2.setDescription("Obviously fine craftmenship, these light leather sandals have tiny woodland drawings in them.");
 			s2.text();
 			outfitChoices.add(s2);
 
-			Armor p1=CMClass.getArmor("GenPants");
+			final Armor p1=CMClass.getArmor("GenPants");
 			p1.setName("a delicate skirt");
 			p1.setDisplayText("a short thin skirt sits here.");
 			p1.setDescription("Obviously fine craftmenship, with delicate folds and intricate designs.  It looks very alluring!");
 			p1.text();
 			outfitChoices.add(p1);
 
-			Armor s3=CMClass.getArmor("GenBelt");
+			final Armor s3=CMClass.getArmor("GenBelt");
 			outfitChoices.add(s3);
 		}
 		return outfitChoices;
@@ -121,7 +121,7 @@ public class Nymph extends StdRace
 	@Override
 	public String healthText(MOB viewer, MOB mob)
 	{
-		double pct=(CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));
+		final double pct=(CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));
 
 		if(pct<.10)
 			return "^r" + mob.name(viewer) + "^r is mortally wounded and will soon die.^N";

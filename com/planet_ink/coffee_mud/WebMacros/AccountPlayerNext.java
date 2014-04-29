@@ -42,25 +42,25 @@ public class AccountPlayerNext extends StdWebMacro
 		if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
 			return CMProps.getVar(CMProps.Str.MUDSTATUS);
 
-		java.util.Map<String,String> parms=parseParms(parm);
-		String last=httpReq.getUrlParameter("PLAYER");
+		final java.util.Map<String,String> parms=parseParms(parm);
+		final String last=httpReq.getUrlParameter("PLAYER");
 		if(parms.containsKey("RESET"))
 		{
 			if(last!=null) httpReq.removeUrlParameter("PLAYER");
 			return "";
 		}
-		String accountName=httpReq.getUrlParameter("ACCOUNT");
+		final String accountName=httpReq.getUrlParameter("ACCOUNT");
 		if(accountName==null) return " @break@";
-		PlayerAccount account=CMLib.players().getLoadAccount(accountName);
+		final PlayerAccount account=CMLib.players().getLoadAccount(accountName);
 		if(account==null) return "";
 
 		String lastID="";
 		String sort=httpReq.getUrlParameter("SORTBY");
 		if(sort==null) sort="";
-		Enumeration pe=account.getThinPlayers();
+		final Enumeration pe=account.getThinPlayers();
 		for(;pe.hasMoreElements();)
 		{
-			PlayerLibrary.ThinPlayer user=(PlayerLibrary.ThinPlayer)pe.nextElement();
+			final PlayerLibrary.ThinPlayer user=(PlayerLibrary.ThinPlayer)pe.nextElement();
 			if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!user.name.equals(lastID))))
 			{
 				httpReq.addFakeUrlParameter("PLAYER",user.name);

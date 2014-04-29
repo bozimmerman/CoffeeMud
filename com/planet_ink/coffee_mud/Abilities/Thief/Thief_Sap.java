@@ -14,8 +14,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
-
 import java.util.*;
 
 /*
@@ -59,7 +57,7 @@ public class Thief_Sap extends ThiefSkill implements HealthCondition
 		if(!(affected instanceof MOB))
 			return true;
 
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		// when this spell is on a MOBs Affected list,
 		// it should consistantly prevent the mob
@@ -96,7 +94,7 @@ public class Thief_Sap extends ThiefSkill implements HealthCondition
 		// undo the affects of this spell
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		super.unInvoke();
 
@@ -132,7 +130,7 @@ public class Thief_Sap extends ThiefSkill implements HealthCondition
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		MOB target=this.getTarget(mob,commands,givenTarget);
+		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
 		if(!auto)
@@ -169,7 +167,7 @@ public class Thief_Sap extends ThiefSkill implements HealthCondition
 		else
 			levelDiff=0;
 		// now see if it worked
-		boolean hit=(auto)||CMLib.combat().rollToHit(mob,target);
+		final boolean hit=(auto)||CMLib.combat().rollToHit(mob,target);
 		boolean success=proficiencyCheck(mob,(-levelDiff)+(-((target.charStats().getStat(CharStats.STAT_STRENGTH)-mob.charStats().getStat(CharStats.STAT_STRENGTH)))),auto)&&(hit);
 		if(success)
 		{
@@ -178,7 +176,7 @@ public class Thief_Sap extends ThiefSkill implements HealthCondition
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_THIEF_ACT|CMMsg.MASK_SOUND|CMMsg.MSK_MALICIOUS_MOVE|(auto?CMMsg.MASK_ALWAYS:0),auto?"":"^F^<FIGHT^><S-NAME> sneak(s) up behind <T-NAMESELF> and whack(s) <T-HIM-HER> on the head!^</FIGHT^>^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_THIEF_ACT|CMMsg.MASK_SOUND|CMMsg.MSK_MALICIOUS_MOVE|(auto?CMMsg.MASK_ALWAYS:0),auto?"":"^F^<FIGHT^><S-NAME> sneak(s) up behind <T-NAMESELF> and whack(s) <T-HIM-HER> on the head!^</FIGHT^>^?");
 			CMLib.color().fixSourceFightColor(msg);
 			if(mob.location().okMessage(mob,msg))
 			{
@@ -187,12 +185,12 @@ public class Thief_Sap extends ThiefSkill implements HealthCondition
 				{
 					target.location().show(target,null, CMMsg.MSG_OK_ACTION,"<S-NAME> hit(s) the floor!");
 					success=maliciousAffect(mob,target,asLevel,3,-1);
-					Set<MOB> H=mob.getGroupMembers(new HashSet<MOB>());
+					final Set<MOB> H=mob.getGroupMembers(new HashSet<MOB>());
 					MOB M=null;
 					mob.makePeace();
-					for(Iterator i=H.iterator();i.hasNext();)
+					for (final Object element : H)
 					{
-						M=(MOB)i.next();
+						M=(MOB)element;
 						if(M.getVictim()==target) M.setVictim(null);
 					}
 				}

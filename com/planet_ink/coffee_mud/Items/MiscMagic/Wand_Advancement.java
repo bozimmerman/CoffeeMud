@@ -67,7 +67,7 @@ public class Wand_Advancement extends StdWand implements ArchonOnly
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
-		MOB mob=msg.source();
+		final MOB mob=msg.source();
 		switch(msg.sourceMinor())
 		{
 		case CMMsg.TYP_WAND_USE:
@@ -76,8 +76,8 @@ public class Wand_Advancement extends StdWand implements ArchonOnly
 			   &&(msg.target() instanceof MOB)
 			   &&(mob.location().isInhabitant((MOB)msg.target())))
 			{
-				MOB target=(MOB)msg.target();
-				int x=msg.targetMessage().toUpperCase().indexOf("LEVEL UP");
+				final MOB target=(MOB)msg.target();
+				final int x=msg.targetMessage().toUpperCase().indexOf("LEVEL UP");
 				if((!mob.isMonster())
 				&&(x>=0)
 				&&(mob.session().getPreviousCMD()!=null)
@@ -89,7 +89,7 @@ public class Wand_Advancement extends StdWand implements ArchonOnly
 					if((usesRemaining()>0)&&(useTheWand(CMClass.getAbility("Falling"),mob,0)))
 					{
 						this.setUsesRemaining(this.usesRemaining()-1);
-						CMMsg msg2=CMClass.getMsg(mob,msg.target(),null,CMMsg.MSG_HANDS,CMMsg.MSG_OK_ACTION,CMMsg.MSG_OK_ACTION,"<S-NAME> point(s) "+this.name()+" at <T-NAMESELF>, who begins to glow softly.");
+						final CMMsg msg2=CMClass.getMsg(mob,msg.target(),null,CMMsg.MSG_HANDS,CMMsg.MSG_OK_ACTION,CMMsg.MSG_OK_ACTION,"<S-NAME> point(s) "+this.name()+" at <T-NAMESELF>, who begins to glow softly.");
 						if(mob.location().okMessage(mob,msg2))
 						{
 							mob.location().send(mob,msg2);

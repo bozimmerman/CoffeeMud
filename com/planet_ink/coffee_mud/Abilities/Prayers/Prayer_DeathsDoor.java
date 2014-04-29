@@ -65,7 +65,7 @@ public class Prayer_DeathsDoor extends Prayer
 				unInvoke();
 				for(int a=mob.numEffects()-1;a>=0;a--) // personal effects
 				{
-					Ability A=mob.fetchEffect(a);
+					final Ability A=mob.fetchEffect(a);
 					if(A!=null) A.unInvoke();
 				}
 				if((oldRoom!=startRoom) && oldRoom.isInhabitant(mob) && startRoom.isInhabitant(mob))
@@ -82,7 +82,7 @@ public class Prayer_DeathsDoor extends Prayer
 		// undo the affects of this spell
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		super.unInvoke();
 
@@ -93,13 +93,13 @@ public class Prayer_DeathsDoor extends Prayer
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		MOB target=getTarget(mob,commands,givenTarget);
+		final MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
@@ -107,7 +107,7 @@ public class Prayer_DeathsDoor extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> become(s) guarded at deaths door!":"^S<S-NAME> "+prayWord(mob)+" for <T-NAME> to be guarded at deaths door!^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> become(s) guarded at deaths door!":"^S<S-NAME> "+prayWord(mob)+" for <T-NAME> to be guarded at deaths door!^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

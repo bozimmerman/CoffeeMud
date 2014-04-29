@@ -50,7 +50,7 @@ public class Chant_Shamblermorph extends Chant
 		if(treeForm==null) treeForm=CMClass.getRace("Shambler");
 		if(treeForm!=null)
 		{
-			int oldCat=affected.baseCharStats().ageCategory();
+			final int oldCat=affected.baseCharStats().ageCategory();
 			affectableStats.setMyRace(treeForm);
 			if(affected.baseCharStats().getStat(CharStats.STAT_AGE)>0)
 				affectableStats.setStat(CharStats.STAT_AGE,treeForm.getAgingChart()[oldCat]);
@@ -72,7 +72,7 @@ public class Chant_Shamblermorph extends Chant
 				affectableStats.setName("a shambling mound called "+affected.name());
 			else
 				affectableStats.setName(affected.name()+" the shambling mound");
-			int oldAdd=affectableStats.weight()-affected.basePhyStats().weight();
+			final int oldAdd=affectableStats.weight()-affected.basePhyStats().weight();
 			treeForm.setHeightWeight(affectableStats,'M');
 			if(oldAdd>0) affectableStats.setWeight(affectableStats.weight()+oldAdd);
 		}
@@ -84,7 +84,7 @@ public class Chant_Shamblermorph extends Chant
 		// undo the affects of this spell
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		super.unInvoke();
 		if(canBeUninvoked())
@@ -98,7 +98,7 @@ public class Chant_Shamblermorph extends Chant
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		MOB target=this.getTarget(mob,commands,givenTarget);
+		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
 		// the invoke method for spells receives as
@@ -111,8 +111,8 @@ public class Chant_Shamblermorph extends Chant
 
 		int levelDiff=target.phyStats().level()-(mob.phyStats().level()+(2*super.getXLEVELLevel(mob)));
 		if(levelDiff<0) levelDiff=0;
-		boolean success=proficiencyCheck(mob,-(levelDiff*10),auto);
-		boolean malicious=!target.getGroupMembers(new HashSet<MOB>()).contains(mob);
+		final boolean success=proficiencyCheck(mob,-(levelDiff*10),auto);
+		final boolean malicious=!target.getGroupMembers(new HashSet<MOB>()).contains(mob);
 		if(success)
 		{
 			// it worked, so build a copy of this ability,
@@ -120,7 +120,7 @@ public class Chant_Shamblermorph extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			CMMsg msg=CMClass.getMsg(mob,target,this,(malicious?CMMsg.MASK_MALICIOUS:0)|verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> chant(s) at <T-NAMESELF>.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,(malicious?CMMsg.MASK_MALICIOUS:0)|verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> chant(s) at <T-NAMESELF>.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

@@ -63,11 +63,11 @@ public class DefaultCoffeeShop implements CoffeeShop
 	{
 		try
 		{
-			Object O=this.clone();
+			final Object O=this.clone();
 			((DefaultCoffeeShop)O).cloneFix(this);
 			return (CMObject)O;
 		}
-		catch(CloneNotSupportedException e)
+		catch(final CloneNotSupportedException e)
 		{
 			return new DefaultCoffeeShop();
 		}
@@ -81,28 +81,28 @@ public class DefaultCoffeeShop implements CoffeeShop
 	}
 
 	@Override public ShopKeeper shopKeeper(){ return (shopKeeper==null)?null:shopKeeper.get();}
-	@Override public boolean isSold(int code){ShopKeeper SK=shopKeeper(); return (SK==null)?false:SK.isSold(code);}
+	@Override public boolean isSold(int code){final ShopKeeper SK=shopKeeper(); return (SK==null)?false:SK.isSold(code);}
 	protected Room startRoom() { return CMLib.map().getStartRoom(shopKeeper());}
 
-	@Override public CMObject newInstance(){try{return getClass().newInstance();}catch(Exception e){return new DefaultCoffeeShop();}}
+	@Override public CMObject newInstance(){try{return getClass().newInstance();}catch(final Exception e){return new DefaultCoffeeShop();}}
 	@Override public void initializeClass(){}
 
 	public void cloneFix(DefaultCoffeeShop E)
 	{
 		storeInventory=new SVector<ShelfProduct>();
 		enumerableInventory=new SVector<Environmental>();
-		Hashtable<Environmental,Environmental> copyFix=new Hashtable<Environmental,Environmental>();
-		for(ShelfProduct SP: storeInventory)
+		final Hashtable<Environmental,Environmental> copyFix=new Hashtable<Environmental,Environmental>();
+		for(final ShelfProduct SP: storeInventory)
 			if(SP.product!=null)
 			{
-				Environmental I3=(Environmental)SP.product.copyOf();
+				final Environmental I3=(Environmental)SP.product.copyOf();
 				copyFix.put(SP.product,I3);
 				stopTicking(I3);
 				storeInventory.add(new ShelfProduct(I3,SP.number,SP.price));
 			}
 		for(int i=0;i<E.enumerableInventory.size();i++)
 		{
-			Environmental I2=E.enumerableInventory.elementAt(i);
+			final Environmental I2=E.enumerableInventory.elementAt(i);
 			if(I2!=null)
 			{
 				Environmental I3=copyFix.get(I2);
@@ -125,9 +125,9 @@ public class DefaultCoffeeShop implements CoffeeShop
 	@Override
 	public void destroyStoreInventory()
 	{
-		for(Environmental E : enumerableInventory)
+		for(final Environmental E : enumerableInventory)
 			E.destroy();
-		for(ShelfProduct SP : storeInventory)
+		for(final ShelfProduct SP : storeInventory)
 			SP.product.destroy();
 		enumerableInventory.clear();
 		storeInventory.clear();
@@ -156,7 +156,7 @@ public class DefaultCoffeeShop implements CoffeeShop
 	{
 		for(int x=0;x<enumerableInventory.size();x++)
 		{
-			Environmental E=enumerableInventory.elementAt(x);
+			final Environmental E=enumerableInventory.elementAt(x);
 			if(shopCompare(E,thisThang)) return true;
 		}
 		return false;
@@ -188,7 +188,7 @@ public class DefaultCoffeeShop implements CoffeeShop
 	@Override
 	public Iterator<Environmental> getStoreInventory(String srchStr)
 	{
-		List<Environmental> storeInv=new ConvertingList<ShelfProduct,Environmental>(storeInventory,converter);
+		final List<Environmental> storeInv=new ConvertingList<ShelfProduct,Environmental>(storeInventory,converter);
 		List<Environmental> V=CMLib.english().fetchEnvironmentals(storeInv, srchStr, true);
 		if((V!=null)&&(V.size()>0)) return V.iterator();
 		V=CMLib.english().fetchEnvironmentals(storeInv, srchStr, false);
@@ -203,7 +203,7 @@ public class DefaultCoffeeShop implements CoffeeShop
 
 	protected Environmental preSaleCopyFix(Environmental thisThang)
 	{
-		Environmental E=(Environmental)thisThang.copyOf();
+		final Environmental E=(Environmental)thisThang.copyOf();
 		stopTicking(E);
 		if(E instanceof Electronics)
 			CMLib.tech().fixItemTechLevel((Electronics)E);
@@ -216,13 +216,13 @@ public class DefaultCoffeeShop implements CoffeeShop
 		if(number<0) number=1;
 		if((isSold(ShopKeeper.DEAL_INVENTORYONLY))&&(!inEnumerableInventory(thisThang)))
 		{
-			Environmental E=preSaleCopyFix(thisThang);
+			final Environmental E=preSaleCopyFix(thisThang);
 			if(!E.amDestroyed())
 			{
 				enumerableInventory.addElement(E);
 			}
 		}
-		Environmental originalUncopiedThang=thisThang;
+		final Environmental originalUncopiedThang=thisThang;
 		if(thisThang instanceof InnKey)
 		{
 			Environmental copy=null;
@@ -242,7 +242,7 @@ public class DefaultCoffeeShop implements CoffeeShop
 			thisThang=preSaleCopyFix(thisThang);
 			if(!thisThang.amDestroyed())
 			{
-				for(ShelfProduct SP : storeInventory)
+				for(final ShelfProduct SP : storeInventory)
 				{
 					copy=SP.product;
 					if(copy.Name().equals(thisThang.Name()))
@@ -264,7 +264,7 @@ public class DefaultCoffeeShop implements CoffeeShop
 	public int totalStockWeight()
 	{
 		int weight=0;
-		for(ShelfProduct SP : storeInventory)
+		for(final ShelfProduct SP : storeInventory)
 			if(SP.product instanceof Physical)
 				if(SP.number<=1)
 					weight+=((Physical)SP.product).phyStats().weight();
@@ -276,7 +276,7 @@ public class DefaultCoffeeShop implements CoffeeShop
 	public int totalStockSizeIncludingDuplicates()
 	{
 		int num=0;
-		for(ShelfProduct SP : storeInventory)
+		for(final ShelfProduct SP : storeInventory)
 			if(SP.number<=1)
 				num++;
 			else
@@ -291,7 +291,7 @@ public class DefaultCoffeeShop implements CoffeeShop
 		{
 			for(int v=enumerableInventory.size()-1;v>=0;v--)
 			{
-				Environmental E=enumerableInventory.elementAt(v);
+				final Environmental E=enumerableInventory.elementAt(v);
 				if(shopCompare(E,thisThang))
 				{
 					enumerableInventory.removeElement(E);
@@ -299,7 +299,7 @@ public class DefaultCoffeeShop implements CoffeeShop
 				}
 			}
 		}
-		for(ShelfProduct SP : storeInventory)
+		for(final ShelfProduct SP : storeInventory)
 			if(shopCompare(SP.product,thisThang))
 			{
 				storeInventory.remove(SP);
@@ -310,7 +310,7 @@ public class DefaultCoffeeShop implements CoffeeShop
 	@Override
 	public boolean doIHaveThisInStock(String name, MOB mob)
 	{
-		List<Environmental> storeInv=new ConvertingList<ShelfProduct,Environmental>(storeInventory,converter);
+		final List<Environmental> storeInv=new ConvertingList<ShelfProduct,Environmental>(storeInventory,converter);
 		Environmental item=CMLib.english().fetchEnvironmental(storeInv,name,true);
 		if(item==null)
 			item=CMLib.english().fetchEnvironmental(storeInv,name,false);
@@ -319,7 +319,7 @@ public class DefaultCoffeeShop implements CoffeeShop
 		   &&((isSold(ShopKeeper.DEAL_LANDSELLER))||(isSold(ShopKeeper.DEAL_CLANDSELLER))
 			  ||(isSold(ShopKeeper.DEAL_SHIPSELLER))||(isSold(ShopKeeper.DEAL_CSHIPSELLER))))
 		{
-			List<Environmental> titles=CMLib.coffeeShops().addRealEstateTitles(new Vector<Environmental>(),mob,this,startRoom());
+			final List<Environmental> titles=CMLib.coffeeShops().addRealEstateTitles(new Vector<Environmental>(),mob,this,startRoom());
 			item=CMLib.english().fetchEnvironmental(titles,name,true);
 			if(item==null)
 				item=CMLib.english().fetchEnvironmental(titles,name,false);
@@ -332,7 +332,7 @@ public class DefaultCoffeeShop implements CoffeeShop
 	@Override
 	public int stockPrice(Environmental likeThis)
 	{
-		for(ShelfProduct SP : storeInventory)
+		for(final ShelfProduct SP : storeInventory)
 			if(shopCompare(SP.product,likeThis))
 				return SP.price;
 		return -1;
@@ -341,7 +341,7 @@ public class DefaultCoffeeShop implements CoffeeShop
 	public int numberInStock(Environmental likeThis)
 	{
 		int num=0;
-		for(ShelfProduct SP : storeInventory)
+		for(final ShelfProduct SP : storeInventory)
 			if(shopCompare(SP.product,likeThis))
 				num+=SP.number;
 		return num;
@@ -350,7 +350,7 @@ public class DefaultCoffeeShop implements CoffeeShop
 	@Override
 	public Environmental getStock(String name, MOB mob)
 	{
-		List<Environmental> storeInv=new ConvertingList<ShelfProduct,Environmental>(storeInventory,converter);
+		final List<Environmental> storeInv=new ConvertingList<ShelfProduct,Environmental>(storeInventory,converter);
 		Environmental item=CMLib.english().fetchEnvironmental(storeInv,name,true);
 		if(item==null)
 			item=CMLib.english().fetchEnvironmental(storeInv,name,false);
@@ -359,7 +359,7 @@ public class DefaultCoffeeShop implements CoffeeShop
 		   ||(isSold(ShopKeeper.DEAL_SHIPSELLER))||(isSold(ShopKeeper.DEAL_CSHIPSELLER)))
 		&&(mob!=null))
 		{
-			List<Environmental> titles=CMLib.coffeeShops().addRealEstateTitles(new Vector<Environmental>(),mob,this,startRoom());
+			final List<Environmental> titles=CMLib.coffeeShops().addRealEstateTitles(new Vector<Environmental>(),mob,this,startRoom());
 			item=CMLib.english().fetchEnvironmental(titles,name,true);
 			if(item==null)
 				item=CMLib.english().fetchEnvironmental(titles,name,false);
@@ -376,10 +376,10 @@ public class DefaultCoffeeShop implements CoffeeShop
 			return item;
 		if(item instanceof Physical)
 		{
-			for(ShelfProduct SP : storeInventory)
+			for(final ShelfProduct SP : storeInventory)
 				if(SP.product==item)
 				{
-					Environmental copyItem=(Environmental)item.copyOf();
+					final Environmental copyItem=(Environmental)item.copyOf();
 					if(SP.number>1)
 						SP.number--;
 					else
@@ -398,11 +398,11 @@ public class DefaultCoffeeShop implements CoffeeShop
 	@Override
 	public void resubmitInventory(List<Environmental> shopItems)
 	{
-		DVector addBacks=new DVector(3);
-		for(Environmental shopItem : shopItems)
+		final DVector addBacks=new DVector(3);
+		for(final Environmental shopItem : shopItems)
 		{
-			int num=numberInStock(shopItem);
-			int price=stockPrice(shopItem);
+			final int num=numberInStock(shopItem);
+			final int price=stockPrice(shopItem);
 			addBacks.addElement(shopItem,Integer.valueOf(num),Integer.valueOf(price));
 		}
 		emptyAllShelves();
@@ -411,7 +411,7 @@ public class DefaultCoffeeShop implements CoffeeShop
 					(Environmental)addBacks.elementAt(a,1),
 					((Integer)addBacks.elementAt(a,2)).intValue(),
 					((Integer)addBacks.elementAt(a,3)).intValue());
-		for(Environmental shopItem : shopItems)
+		for(final Environmental shopItem : shopItems)
 			shopItem.destroy();
 	}
 
@@ -424,17 +424,17 @@ public class DefaultCoffeeShop implements CoffeeShop
 	@Override
 	public List<Environmental> removeSellableProduct(String named, MOB mob)
 	{
-		Vector<Environmental> V=new Vector<Environmental>();
-		Environmental product=removeStock(named,mob);
+		final Vector<Environmental> V=new Vector<Environmental>();
+		final Environmental product=removeStock(named,mob);
 		if(product==null) return V;
 		V.addElement(product);
 		if(product instanceof Container)
 		{
 			DoorKey foundKey=null;
-			Container C=((Container)product);
-			for(ShelfProduct SP : storeInventory)
+			final Container C=((Container)product);
+			for(final ShelfProduct SP : storeInventory)
 			{
-				Environmental I=SP.product;
+				final Environmental I=SP.product;
 				if((I instanceof Item)&&(((Item)I).container()==product))
 				{
 					if((I instanceof DoorKey)&&(((DoorKey)I).getKey().equals(C.keyName())))
@@ -447,10 +447,10 @@ public class DefaultCoffeeShop implements CoffeeShop
 			}
 			if((C.isLocked())&&(foundKey==null))
 			{
-				String keyName=Double.toString(Math.random());
+				final String keyName=Double.toString(Math.random());
 				C.setKeyName(keyName);
 				C.setLidsNLocks(C.hasALid(),true,C.hasALock(),false);
-				DoorKey key=(DoorKey)CMClass.getItem("StdKey");
+				final DoorKey key=(DoorKey)CMClass.getItem("StdKey");
 				key.setKey(keyName);
 				key.setContainer(C);
 				V.addElement(key);
@@ -462,7 +462,7 @@ public class DefaultCoffeeShop implements CoffeeShop
 	@Override
 	public String makeXML()
 	{
-		StringBuffer itemstr=new StringBuffer("");
+		final StringBuffer itemstr=new StringBuffer("");
 		itemstr.append(CMLib.xml().convertXMLtoTag("ISELL",shopKeeper().getWhatIsSoldMask()));
 		itemstr.append(CMLib.xml().convertXMLtoTag("IPREJ",shopKeeper().prejudiceFactors()));
 		itemstr.append(CMLib.xml().convertXMLtoTag("IBUDJ",shopKeeper().budget()));
@@ -470,9 +470,9 @@ public class DefaultCoffeeShop implements CoffeeShop
 		itemstr.append(CMLib.xml().convertXMLtoTag("IGNOR",shopKeeper().ignoreMask()));
 		itemstr.append(CMLib.xml().convertXMLtoTag("PRICM",CMParms.toStringList(shopKeeper().itemPricingAdjustments())));
 		itemstr.append("<INVS>");
-		for(Iterator<Environmental> i=getStoreInventory();i.hasNext();)
+		for(final Iterator<Environmental> i=getStoreInventory();i.hasNext();)
 		{
-			Environmental E=i.next();
+			final Environmental E=i.next();
 			itemstr.append("<INV>");
 			itemstr.append(CMLib.xml().convertXMLtoTag("ICLASS",CMClass.classID(E)));
 			itemstr.append(CMLib.xml().convertXMLtoTag("INUM",""+numberInStock(E)));
@@ -486,13 +486,13 @@ public class DefaultCoffeeShop implements CoffeeShop
 	@Override
 	public void buildShopFromXML(String text)
 	{
-		Vector<Environmental> V=new Vector<Environmental>();
+		final Vector<Environmental> V=new Vector<Environmental>();
 		destroyStoreInventory();
 		storeInventory=new SVector<ShelfProduct>();
 		enumerableInventory=new SVector<Environmental>();
 
 		if(text.length()==0) return;
-		ShopKeeper shop=shopKeeper();
+		final ShopKeeper shop=shopKeeper();
 		if(shop==null)
 		{
 			Log.errOut("DefaultCoffeeShop","Error getting base shopKeeper obj host from "+text);
@@ -521,7 +521,7 @@ public class DefaultCoffeeShop implements CoffeeShop
 			return;
 		}
 
-		List<XMLLibrary.XMLpiece> xmlV=CMLib.xml().parseAllXML(text);
+		final List<XMLLibrary.XMLpiece> xmlV=CMLib.xml().parseAllXML(text);
 		if(xmlV==null)
 		{
 			Log.errOut("DefaultCoffeeShop","Error parsing data.");
@@ -539,7 +539,7 @@ public class DefaultCoffeeShop implements CoffeeShop
 		parm=CMLib.xml().getValFromPieces(xmlV,"IGNOR");
 		if(parm!=null) shop.setIgnoreMask(parm);
 
-		List<XMLLibrary.XMLpiece> iV=CMLib.xml().getContentsFromPieces(xmlV,"INVS");
+		final List<XMLLibrary.XMLpiece> iV=CMLib.xml().getContentsFromPieces(xmlV,"INVS");
 		if(iV==null)
 		{
 			Log.errOut("DefaultCoffeeShop","Error parsing 'INVS'.");
@@ -547,25 +547,25 @@ public class DefaultCoffeeShop implements CoffeeShop
 		}
 		for(int i=0;i<iV.size();i++)
 		{
-			XMLLibrary.XMLpiece iblk=iV.get(i);
+			final XMLLibrary.XMLpiece iblk=iV.get(i);
 			if((!iblk.tag.equalsIgnoreCase("INV"))||(iblk.contents==null))
 			{
 				Log.errOut("DefaultCoffeeShop","Error parsing 'INVS' data.");
 				return;
 			}
-			String itemi=CMLib.xml().getValFromPieces(iblk.contents,"ICLASS");
-			int itemnum=CMLib.xml().getIntFromPieces(iblk.contents,"INUM");
-			int val=CMLib.xml().getIntFromPieces(iblk.contents,"IVAL");
+			final String itemi=CMLib.xml().getValFromPieces(iblk.contents,"ICLASS");
+			final int itemnum=CMLib.xml().getIntFromPieces(iblk.contents,"INUM");
+			final int val=CMLib.xml().getIntFromPieces(iblk.contents,"IVAL");
 			PhysicalAgent newOne=CMClass.getItem(itemi);
 			if(newOne==null) newOne=CMClass.getMOB(itemi);
-			List<XMLLibrary.XMLpiece> idat=CMLib.xml().getContentsFromPieces(iblk.contents,"IDATA");
+			final List<XMLLibrary.XMLpiece> idat=CMLib.xml().getContentsFromPieces(iblk.contents,"IDATA");
 			if((idat==null)||(newOne==null)||(!(newOne instanceof Item)))
 			{
 				Log.errOut("DefaultCoffeeShop","Error parsing 'INV' data.");
 				return;
 			}
 			CMLib.coffeeMaker().setPropertiesStr(newOne,idat,true);
-			PhysicalAgent P=newOne;
+			final PhysicalAgent P=newOne;
 			P.recoverPhyStats();
 			V.addElement(P);
 			addStoreInventory(P,itemnum,val);

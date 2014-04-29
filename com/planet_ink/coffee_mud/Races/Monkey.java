@@ -48,7 +48,7 @@ public class Monkey extends StdRace
 	private static final int[] parts={0 ,2 ,2 ,1 ,1 ,2 ,2 ,1 ,2 ,2 ,1 ,0 ,1 ,1 ,1 ,0 };
 	@Override public int[] bodyMask(){return parts;}
 
-	private int[] agingChart={0,1,2,4,7,15,20,21,22};
+	private final int[] agingChart={0,1,2,4,7,15,20,21,22};
 	@Override public int[] getAgingChart(){return agingChart;}
 
 	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
@@ -68,7 +68,7 @@ public class Monkey extends StdRace
 	@Override
 	public String healthText(MOB viewer, MOB mob)
 	{
-		double pct=(CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));
+		final double pct=(CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));
 
 		if(pct<.10)
 			return "^r" + mob.name(viewer) + "^r is hovering on deaths door!^N";
@@ -110,7 +110,7 @@ public class Monkey extends StdRace
 		// the sex rules
 		if(!(myHost instanceof MOB)) return;
 
-		MOB myChar=(MOB)myHost;
+		final MOB myChar=(MOB)myHost;
 		if((msg.amITarget(myChar))
 		&&(CMLib.dice().rollPercentage()<10)
 		&&(msg.tool() instanceof Social)
@@ -118,7 +118,7 @@ public class Monkey extends StdRace
 			||msg.tool().Name().equals("SEX <T-NAME>"))
 		&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.AUTODISEASE)))
 		{
-			Ability A=CMClass.getAbility("Disease_Aids");
+			final Ability A=CMClass.getAbility("Disease_Aids");
 			if(A!=null)
 				A.invoke(msg.source(),myChar,true,0);
 		}

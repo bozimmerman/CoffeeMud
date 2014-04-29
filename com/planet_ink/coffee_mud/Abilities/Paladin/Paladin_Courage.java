@@ -65,12 +65,12 @@ public class Paladin_Courage extends PaladinSkill
 			&&(msg.tool() instanceof Ability)
 			&&((invoker==null)||(invoker.fetchAbility(ID())==null)||proficiencyCheck(null,0,false)))
 			{
-				String str1=msg.tool().ID().toUpperCase();
+				final String str1=msg.tool().ID().toUpperCase();
 				if((str1.indexOf("SPOOK")>=0)
 				||(str1.indexOf("NIGHTMARE")>=0)
 				||(str1.indexOf("FEAR")>=0))
 				{
-					MOB mob=(MOB)msg.target();
+					final MOB mob=(MOB)msg.target();
 					mob.location().showSource(mob,null,CMMsg.MSG_OK_VISUAL,"Your courage protects you from the "+msg.tool().name()+" attack.");
 					mob.location().showOthers(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME>'s courage protects <S-HIM-HER> from the "+msg.tool().name()+" attack.");
 					return false;

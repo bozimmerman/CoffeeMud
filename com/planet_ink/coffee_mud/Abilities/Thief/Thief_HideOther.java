@@ -58,7 +58,7 @@ public class Thief_HideOther extends ThiefSkill
 		if(!(affected instanceof MOB))
 			return;
 
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		if(msg.amISource(mob))
 		{
@@ -133,7 +133,7 @@ public class Thief_HideOther extends ThiefSkill
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		MOB target=super.getTarget(mob,commands,givenTarget,false,false);
+		final MOB target=super.getTarget(mob,commands,givenTarget,false,false);
 		if(target==null) return false;
 		if((target==mob)&&(!auto)&&(givenTarget!=mob))
 		{
@@ -145,7 +145,7 @@ public class Thief_HideOther extends ThiefSkill
 			mob.tell("Not while in combat!");
 			return false;
 		}
-		Set<MOB> H=mob.getGroupMembers(new HashSet<MOB>());
+		final Set<MOB> H=mob.getGroupMembers(new HashSet<MOB>());
 		if(!H.contains(target))
 		{
 			mob.tell("You can only hide a group member.");
@@ -155,10 +155,10 @@ public class Thief_HideOther extends ThiefSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		MOB highestMOB=getHighestLevelMOB(mob,new XVector(target));
-		int levelDiff=(mob.phyStats().level()+(2*super.getXLEVELLevel(mob)))-getMOBLevel(highestMOB);
+		final MOB highestMOB=getHighestLevelMOB(mob,new XVector(target));
+		final int levelDiff=(mob.phyStats().level()+(2*super.getXLEVELLevel(mob)))-getMOBLevel(highestMOB);
 
-		String str="You carefully hide <T-NAMESELF> and direct <T-HIM-HER> to hold still.";
+		final String str="You carefully hide <T-NAMESELF> and direct <T-HIM-HER> to hold still.";
 
 		boolean success=proficiencyCheck(mob,levelDiff*10,auto);
 
@@ -171,12 +171,12 @@ public class Thief_HideOther extends ThiefSkill
 		}
 		else
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,auto?CMMsg.MSG_OK_ACTION:(CMMsg.MSG_DELICATE_HANDS_ACT|CMMsg.MASK_MOVE),str,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);
+			final CMMsg msg=CMClass.getMsg(mob,target,this,auto?CMMsg.MSG_OK_ACTION:(CMMsg.MSG_DELICATE_HANDS_ACT|CMMsg.MASK_MOVE),str,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				super.beneficialAffect(mob,target,asLevel,Ability.TICKS_ALMOST_FOREVER);
-				Thief_HideOther newOne=(Thief_HideOther)target.fetchEffect(ID());
+				final Thief_HideOther newOne=(Thief_HideOther)target.fetchEffect(ID());
 				if(newOne!=null)
 				{
 					newOne.bonus=getXLEVELLevel(mob)*2;

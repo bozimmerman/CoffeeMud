@@ -57,8 +57,8 @@ public class Chant_Moonbeam extends Chant
 		// undo the affects of this spell
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
-		Room room=((MOB)affected).location();
+		final MOB mob=(MOB)affected;
+		final Room room=((MOB)affected).location();
 		if(canBeUninvoked())
 			room.show(mob,null,CMMsg.MSG_OK_VISUAL,"The moonbeam shining down from above <S-NAME> dims.");
 		super.unInvoke();
@@ -93,13 +93,13 @@ public class Chant_Moonbeam extends Chant
 			return false;
 
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 		if(!success)
 		{
 			return beneficialWordsFizzle(mob,mob.location(),"<S-NAME> chant(s) for a moonbeam, but fail(s).");
 		}
 
-		CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"A moonbeam begin(s) to follow <T-NAME> around!":"^S<S-NAME> chant(s), causing a moonbeam to follow <S-HIM-HER> around!^?");
+		final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"A moonbeam begin(s) to follow <T-NAME> around!":"^S<S-NAME> chant(s), causing a moonbeam to follow <S-HIM-HER> around!^?");
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

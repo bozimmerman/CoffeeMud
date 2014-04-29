@@ -40,7 +40,7 @@ public class Sessions extends StdLibrary implements SessionsList
 		public boolean passesFilter(Session obj) {
 			if((obj!=null) && (!obj.isStopped()) && (((obj.getStatus())==Session.SessionStatus.MAINLOOP)))
 			{
-				MOB M=obj.mob();
+				final MOB M=obj.mob();
 				return ((M!=null)&&M.amActive()&&(CMLib.flags().isInTheGame(M,true)));
 			}
 			return false;
@@ -135,9 +135,9 @@ public class Sessions extends StdLibrary implements SessionsList
 	protected void sessionCheck()
 	{
 		setThreadStatus(serviceClient,"checking player sessions.");
-		for(Session S : all)
+		for(final Session S : all)
 		{
-			long time=System.currentTimeMillis()-S.getInputLoopTime();
+			final long time=System.currentTimeMillis()-S.getInputLoopTime();
 			if(time>0)
 			{
 				if((S.mob()!=null)||((S.getStatus())==Session.SessionStatus.ACCOUNT_MENU)||((S.getStatus())==Session.SessionStatus.CHARCREATE))
@@ -160,7 +160,7 @@ public class Sessions extends StdLibrary implements SessionsList
 
 					if(time>(check*10))
 					{
-						String roomID=S.mob()!=null?CMLib.map().getExtendedRoomID(S.mob().location()):"";
+						final String roomID=S.mob()!=null?CMLib.map().getExtendedRoomID(S.mob().location()):"";
 						if((S.getPreviousCMD()==null)||(S.getPreviousCMD().size()==0)
 						||((S.getStatus())==Session.SessionStatus.LOGIN)
 						||((S.getStatus())==Session.SessionStatus.ACCOUNT_MENU)
@@ -185,7 +185,7 @@ public class Sessions extends StdLibrary implements SessionsList
 						else
 						if((S.getPreviousCMD()!=null)&&(S.getPreviousCMD().size()>0))
 						{
-							String roomID=S.mob()!=null?CMLib.map().getExtendedRoomID(S.mob().location()):"";
+							final String roomID=S.mob()!=null?CMLib.map().getExtendedRoomID(S.mob().location()):"";
 							if((S.isLockedUpWriting())
 							&&(CMLib.flags().isInTheGame(S.mob(),true)))
 							{
@@ -205,7 +205,7 @@ public class Sessions extends StdLibrary implements SessionsList
 				else
 				if(time>(300000))
 				{
-					String roomID=S.mob()!=null?CMLib.map().getExtendedRoomID(S.mob().location()):"";
+					final String roomID=S.mob()!=null?CMLib.map().getExtendedRoomID(S.mob().location()):"";
 					if((S.getStatus())==Session.SessionStatus.LOGIN)
 						Log.sysOut(serviceClient.getName(),"Kicking out login session after "+CMLib.time().date2EllapsedTime(time, TimeUnit.MILLISECONDS, true)+".");
 					else
@@ -286,7 +286,7 @@ public class Sessions extends StdLibrary implements SessionsList
 	@Override
 	public MOB findPlayerOnline(String srchStr, boolean exactOnly)
 	{
-		Session S=findPlayerSessionOnline(srchStr, exactOnly);
+		final Session S=findPlayerSessionOnline(srchStr, exactOnly);
 		if(S==null) return null;
 		return S.mob();
 	}
@@ -295,19 +295,19 @@ public class Sessions extends StdLibrary implements SessionsList
 	public Session findPlayerSessionOnline(String srchStr, boolean exactOnly)
 	{
 		// then look for players
-		for(Session S : localOnlineIterable())
+		for(final Session S : localOnlineIterable())
 			if(S.mob().Name().equalsIgnoreCase(srchStr))
 				return S;
-		for(Session S : localOnlineIterable())
+		for(final Session S : localOnlineIterable())
 			if(S.mob().name().equalsIgnoreCase(srchStr))
 				return S;
 		// keep looking for players
 		if(!exactOnly)
 		{
-			for(Session S : localOnlineIterable())
+			for(final Session S : localOnlineIterable())
 				if(CMLib.english().containsString(S.mob().Name(),srchStr))
 					return S;
-			for(Session S : localOnlineIterable())
+			for(final Session S : localOnlineIterable())
 				if(CMLib.english().containsString(S.mob().name(),srchStr))
 					return S;
 		}

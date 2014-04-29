@@ -43,7 +43,7 @@ public class AHelp extends StdCommand
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		String helpStr=CMParms.combine(commands,1);
+		final String helpStr=CMParms.combine(commands,1);
 		if(CMLib.help().getArcHelpFile().size()==0)
 		{
 			mob.tell("No archon help is available.");
@@ -58,12 +58,12 @@ public class AHelp extends StdCommand
 				StringBuffer theRest=(StringBuffer)Resources.getResource("arc_help.therest");
 				if(theRest==null)
 				{
-					Vector V=new Vector();
+					final Vector V=new Vector();
 					theRest=new StringBuffer("");
 
-					for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
+					for(final Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 					{
-						Ability A=a.nextElement();
+						final Ability A=a.nextElement();
 						if((A!=null)&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PROPERTY))
 							V.addElement(A.ID());
 					}
@@ -74,9 +74,9 @@ public class AHelp extends StdCommand
 					}
 
 					V.clear();
-					for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
+					for(final Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 					{
-						Ability A=a.nextElement();
+						final Ability A=a.nextElement();
 						if((A!=null)&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_DISEASE))
 							V.addElement(A.ID());
 					}
@@ -87,9 +87,9 @@ public class AHelp extends StdCommand
 					}
 
 					V.clear();
-					for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
+					for(final Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 					{
-						Ability A=a.nextElement();
+						final Ability A=a.nextElement();
 						if((A!=null)&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_POISON))
 							V.addElement(A.ID());
 					}
@@ -100,9 +100,9 @@ public class AHelp extends StdCommand
 					}
 
 					V.clear();
-					for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
+					for(final Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 					{
-						Ability A=a.nextElement();
+						final Ability A=a.nextElement();
 						if((A!=null)&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SUPERPOWER))
 							V.addElement(A.ID());
 					}
@@ -113,9 +113,9 @@ public class AHelp extends StdCommand
 					}
 
 					V.clear();
-					for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
+					for(final Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 					{
-						Ability A=a.nextElement();
+						final Ability A=a.nextElement();
 						if((A!=null)&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_TECH))
 							V.addElement(A.ID());
 					}
@@ -126,9 +126,9 @@ public class AHelp extends StdCommand
 					}
 
 					V.clear();
-					for(Enumeration b=CMClass.behaviors();b.hasMoreElements();)
+					for(final Enumeration b=CMClass.behaviors();b.hasMoreElements();)
 					{
-						Behavior B=(Behavior)b.nextElement();
+						final Behavior B=(Behavior)b.nextElement();
 						if(B!=null) V.addElement(B.ID());
 					}
 					if(V.size()>0)
@@ -144,7 +144,7 @@ public class AHelp extends StdCommand
 		}
 		else
 		{
-			StringBuilder text = CMLib.help().getHelpText(helpStr,CMLib.help().getArcHelpFile(),mob);
+			final StringBuilder text = CMLib.help().getHelpText(helpStr,CMLib.help().getArcHelpFile(),mob);
 			if(text != null)
 				thisTag=new StringBuffer(text.toString());
 		}

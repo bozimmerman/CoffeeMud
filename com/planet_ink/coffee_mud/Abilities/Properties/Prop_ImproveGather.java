@@ -51,13 +51,13 @@ public class Prop_ImproveGather extends Property
 	{
 		super.setMiscText(newText);
 		this.improvement=CMParms.getParmInt(newText, "AMT", improvement);
-		String maskStr=CMParms.getParmStr(newText, "MASK", "");
+		final String maskStr=CMParms.getParmStr(newText, "MASK", "");
 		if((maskStr==null)||(maskStr.length()==0))
 			mask=null;
 		else
 			mask=CMLib.masking().maskCompile(maskStr);
-		String skillStr=CMParms.getParmStr(newText, "SKILLS", "ALL");
-		List<String> skills=CMParms.parseCommas(skillStr.toUpperCase().trim(), true);
+		final String skillStr=CMParms.getParmStr(newText, "SKILLS", "ALL");
+		final List<String> skills=CMParms.parseCommas(skillStr.toUpperCase().trim(), true);
 		improves=skills.toArray(new String[0]);
 	}
 

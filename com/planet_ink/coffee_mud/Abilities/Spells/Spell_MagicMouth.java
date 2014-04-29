@@ -120,7 +120,7 @@ public class Spell_MagicMouth extends Spell
 			mob.tell("You must specify:\n\r 1. What object you want the spell cast on.\n\r 2. Whether it is triggered by TOUCH, HOLD, WIELD, WEAR, or someone ENTERing the same room. \n\r 3. The message you wish the object to impart. ");
 			return false;
 		}
-		Physical target=mob.location().fetchFromMOBRoomFavorsItems(mob,null,((String)commands.elementAt(0)),Wearable.FILTER_UNWORNONLY);
+		final Physical target=mob.location().fetchFromMOBRoomFavorsItems(mob,null,((String)commands.elementAt(0)),Wearable.FILTER_UNWORNONLY);
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
 			mob.tell("You don't see '"+((String)commands.elementAt(0))+"' here.");
@@ -132,7 +132,7 @@ public class Spell_MagicMouth extends Spell
 			return false;
 		}
 
-		String triggerStr=((String)commands.elementAt(1)).trim().toUpperCase();
+		final String triggerStr=((String)commands.elementAt(1)).trim().toUpperCase();
 
 		if(triggerStr.startsWith("HOLD"))
 			myTrigger=CMMsg.TYP_HOLD;
@@ -158,11 +158,11 @@ public class Spell_MagicMouth extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),"^S<S-NAME> invoke(s) a spell upon <T-NAMESELF>.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),"^S<S-NAME> invoke(s) a spell upon <T-NAMESELF>.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

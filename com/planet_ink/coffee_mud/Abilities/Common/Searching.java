@@ -63,12 +63,12 @@ public class Searching extends CommonSkill
 	{
 		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Tickable.TICKID_MOB))
 		{
-			MOB mob=(MOB)affected;
+			final MOB mob=(MOB)affected;
 			if(tickUp==1)
 			{
 				if(success==false)
 				{
-					StringBuffer str=new StringBuffer("You get distracted from your search.\n\r");
+					final StringBuffer str=new StringBuffer("You get distracted from your search.\n\r");
 					commonTell(mob,str.toString());
 					unInvoke();
 					return super.tick(ticking,tickID);
@@ -110,8 +110,8 @@ public class Searching extends CommonSkill
 			return false;
 		if(proficiencyCheck(mob,0,auto))
 			success=true;
-		int duration=3+getXLEVELLevel(mob);
-		CMMsg msg=CMClass.getMsg(mob,null,this,getActivityMessageType(),(auto?"":"<S-NAME> start(s) searching."));
+		final int duration=3+getXLEVELLevel(mob);
+		final CMMsg msg=CMClass.getMsg(mob,null,this,getActivityMessageType(),(auto?"":"<S-NAME> start(s) searching."));
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

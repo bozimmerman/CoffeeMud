@@ -55,7 +55,7 @@ public class Beacon extends StdCommand
 		}
 		else
 		{
-			String name=CMParms.combine(commands,0);
+			final String name=CMParms.combine(commands,0);
 			MOB M=CMLib.sessions().findPlayerOnline(name,true);
 			if(M==null) M=CMLib.sessions().findPlayerOnline(name,false);
 			if(M==null)

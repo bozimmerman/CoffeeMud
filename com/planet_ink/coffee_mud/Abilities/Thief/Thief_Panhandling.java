@@ -56,7 +56,7 @@ public class Thief_Panhandling extends ThiefSkill
 		super.executeMsg(oking,msg);
 		if(affected instanceof MOB)
 		{
-			MOB mob=(MOB)affected;
+			final MOB mob=(MOB)affected;
 			if((msg.source()==mob)
 			&&(msg.target()==mob.location())
 			&&(msg.targetMinor()==CMMsg.TYP_LEAVE))
@@ -81,10 +81,10 @@ public class Thief_Panhandling extends ThiefSkill
 			tickTock++;
 			if(tickTock<2) return true;
 			tickTock=0;
-			MOB mob=(MOB)affected;
+			final MOB mob=(MOB)affected;
 			for(int i=0;i<mob.location().numInhabitants();i++)
 			{
-				MOB mob2=mob.location().fetchInhabitant(i);
+				final MOB mob2=mob.location().fetchInhabitant(i);
 				if((mob2!=null)
 				&&(CMLib.flags().canBeSeenBy(mob2,mob))
 				&&(mob2!=mob)
@@ -131,7 +131,7 @@ public class Thief_Panhandling extends ThiefSkill
 						{
 							total=total/(20.0-getXLEVELLevel(mob));
 							if(total<1.0) total=1.0;
-							Coins C=CMLib.beanCounter().makeBestCurrency(mob2,total);
+							final Coins C=CMLib.beanCounter().makeBestCurrency(mob2,total);
 							if(C!=null)
 							{
 								CMLib.beanCounter().subtractMoney(mob2,total);
@@ -158,7 +158,7 @@ public class Thief_Panhandling extends ThiefSkill
 		// undo the affects of this spell
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		super.unInvoke();
 
 		if((canBeUninvoked())&&(mob.location()!=null))
@@ -192,9 +192,9 @@ public class Thief_Panhandling extends ThiefSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
-		CMMsg msg=CMClass.getMsg(mob,null,this,auto?CMMsg.MASK_ALWAYS:CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,auto?"":"<S-NAME> start(s) panhandling.");
+		final CMMsg msg=CMClass.getMsg(mob,null,this,auto?CMMsg.MASK_ALWAYS:CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,auto?"":"<S-NAME> start(s) panhandling.");
 		if(!success)
 			return beneficialVisualFizzle(mob,null,auto?"":"<S-NAME> can't seem to get <S-HIS-HER> panhandling act started.");
 		else

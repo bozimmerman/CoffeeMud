@@ -53,12 +53,12 @@ public class Thief_SlipperyMind extends ThiefSkill
 		{
 			if(!super.tick(ticking,tickID))
 				return false;
-			MOB mob=(MOB)affected;
+			final MOB mob=(MOB)affected;
 			Faction F=null;
 			if(oldFactions==null)
 			{
 				oldFactions=new LinkedList<Pair<Faction,Integer>>();
-				for(Enumeration e=mob.fetchFactions();e.hasMoreElements();)
+				for(final Enumeration e=mob.fetchFactions();e.hasMoreElements();)
 				{
 					F=CMLib.factions().getFaction((String)e.nextElement());
 					if(F!=null)
@@ -69,7 +69,7 @@ public class Thief_SlipperyMind extends ThiefSkill
 				}
 			}
 			else
-			for(Pair<Faction,Integer> p : oldFactions)
+			for(final Pair<Faction,Integer> p : oldFactions)
 			{
 				F=p.first;
 				if(mob.fetchFaction(F.factionID())!=F.middle())
@@ -112,13 +112,13 @@ public class Thief_SlipperyMind extends ThiefSkill
 	@Override
 	public void unInvoke()
 	{
-		Environmental E=affected;
+		final Environmental E=affected;
 		super.unInvoke();
 		if((E instanceof MOB)&&(oldFactions!=null))
 		{
 			if(!((MOB)E).amDead())
 				((MOB)E).tell("You've lost your slippery mind concentration.");
-			for(Pair<Faction,Integer> p : oldFactions)
+			for(final Pair<Faction,Integer> p : oldFactions)
 				((MOB)E).addFaction(p.first.factionID(),p.second.intValue());
 			oldFactions=null;
 		}
@@ -140,9 +140,9 @@ public class Thief_SlipperyMind extends ThiefSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
-		CMMsg msg=CMClass.getMsg(mob,target,this,auto?CMMsg.MASK_ALWAYS:CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,auto?"<T-NAME> gain(s) a slippery mind.":"<S-NAME> wink(s) and nod(s).");
+		final CMMsg msg=CMClass.getMsg(mob,target,this,auto?CMMsg.MASK_ALWAYS:CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,auto?"<T-NAME> gain(s) a slippery mind.":"<S-NAME> wink(s) and nod(s).");
 		if(!success)
 			return beneficialVisualFizzle(mob,null,auto?"":"<S-NAME> wink(s) and nod(s), but <S-IS-ARE>n't fooling anyone.");
 		else
@@ -151,7 +151,7 @@ public class Thief_SlipperyMind extends ThiefSkill
 			mob.location().send(mob,msg);
 			oldFactions=null;
 			beneficialAffect(mob,target,asLevel,0);
-			Ability A=target.fetchEffect(ID());
+			final Ability A=target.fetchEffect(ID());
 			if(A!=null)
 				A.tick(target,Tickable.TICKID_MOB);
 		}

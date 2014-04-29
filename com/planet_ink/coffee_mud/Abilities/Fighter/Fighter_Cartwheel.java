@@ -47,7 +47,7 @@ public class Fighter_Cartwheel extends FighterSkill
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		MOB victim=mob.getVictim();
+		final MOB victim=mob.getVictim();
 		if(victim==null)
 		{
 			mob.tell("You can only do this in combat!");
@@ -73,7 +73,7 @@ public class Fighter_Cartwheel extends FighterSkill
 			return false;
 
 		// now see if it worked
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
 			// it worked, so build a copy of this ability,

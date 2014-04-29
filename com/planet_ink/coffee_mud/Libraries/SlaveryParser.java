@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.io.IOException;
 import java.util.*;
 
@@ -44,7 +43,7 @@ public class SlaveryParser extends StdLibrary implements SlaveryLibrary
 	@Override
 	public List<Map<String,String>> findMatch(MOB mob, List<String> prereq)
 	{
-		List<Map<String,String>> possibilities=new Vector<Map<String,String>>();
+		final List<Map<String,String>> possibilities=new Vector<Map<String,String>>();
 		Map<String,String> map=new Hashtable<String,String>();
 		if(fpmap==null)
 		{
@@ -53,11 +52,11 @@ public class SlaveryParser extends StdLibrary implements SlaveryLibrary
 				fpmap[p]=CMParms.toStringArray(CMParms.parse(pmap[p][0]));
 		}
 		String[] chk=null;
-		String[] req=CMParms.toStringArray(prereq);
+		final String[] req=CMParms.toStringArray(prereq);
 		boolean reject=false;
 		int ci=0,ri=0;
-		CMObject[] commands=new CMObject[req.length];
-		Social[] socials=new Social[req.length];
+		final CMObject[] commands=new CMObject[req.length];
+		final Social[] socials=new Social[req.length];
 		for(int i=0;i<req.length;i++)
 		{
 			socials[i]=CMLib.socials().fetchSocial(req[i],true);
@@ -107,8 +106,8 @@ public class SlaveryParser extends StdLibrary implements SlaveryLibrary
 					case '*':
 					case 'r':
 					case 'i':
-						String code=chk[ci];
-						int remain=chk.length-ci;
+						final String code=chk[ci];
+						final int remain=chk.length-ci;
 						String str=req[ri];
 						ri++;
 						ci++;
@@ -167,7 +166,7 @@ public class SlaveryParser extends StdLibrary implements SlaveryLibrary
 	@Override
 	public String cleanWord(String s)
 	{
-		String chars=".,;!?'";
+		final String chars=".,;!?'";
 		for(int x=0;x<chars.length();x++)
 			for(int i=0;i<chars.length();i++)
 			{
@@ -194,8 +193,8 @@ public class SlaveryParser extends StdLibrary implements SlaveryLibrary
 			while(doneSomething)
 			{
 				doneSomething=false;
-				for(int i=0;i<universalStarters.length;i++)
-					if(req.startsWith(universalStarters[i]))
+				for (final String universalStarter : universalStarters)
+					if(req.startsWith(universalStarter))
 					{
 						doneSomething=true;
 						didAnything=true;
@@ -210,10 +209,10 @@ public class SlaveryParser extends StdLibrary implements SlaveryLibrary
 		}
 		if(CMSecurity.isDebugging(CMSecurity.DbgFlag.GEAS))
 			Log.debugOut("GEAS","POSSTOTAL-"+poss.size());
-		geasSteps geasSteps=new geasSteps(you,me);
+		final geasSteps geasSteps=new geasSteps(you,me);
 		if(poss.size()==0)
 		{
-			geasStep g=new geasStep(geasSteps);
+			final geasStep g=new geasStep(geasSteps);
 			g.que.add(CMParms.parse("wanderquery "+req));
 			geasSteps.addElement(g);
 		}
@@ -221,9 +220,9 @@ public class SlaveryParser extends StdLibrary implements SlaveryLibrary
 		{
 			for(int i=0;i<poss.size();i++)
 			{
-				geasStep g=new geasStep(geasSteps);
-				Map<String,String> map=poss.get(i);
-				List<String> all=CMParms.parseSemicolons(map.get("INSTR"),true);
+				final geasStep g=new geasStep(geasSteps);
+				final Map<String,String> map=poss.get(i);
+				final List<String> all=CMParms.parseSemicolons(map.get("INSTR"),true);
 				if(CMSecurity.isDebugging(CMSecurity.DbgFlag.GEAS))
 					Log.debugOut("GEAS",CMParms.toStringList(all));
 				g.que=new Vector<List<String>>();
@@ -233,10 +232,10 @@ public class SlaveryParser extends StdLibrary implements SlaveryLibrary
 				map.put("%n",me.name());
 				for(int q=0;q<g.que.size();q++)
 				{
-					List<String> V=g.que.get(q);
+					final List<String> V=g.que.get(q);
 					for(int v=0;v<V.size();v++)
 					{
-						String s=V.get(v);
+						final String s=V.get(v);
 						if(s.startsWith("%"))
 							V.set(v,CMLib.english().cleanArticles(map.get(s.trim())));
 					}

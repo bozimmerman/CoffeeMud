@@ -64,7 +64,7 @@ public class I3Cmd extends StdCommand
 			i3Error(mob);
 			return false;
 		}
-		String str=(String)commands.firstElement();
+		final String str=(String)commands.firstElement();
 		if((!CMLib.intermud().i3online())&&(!str.equalsIgnoreCase("restart")))
 			mob.tell("I3 is unavailable.");
 		else
@@ -119,7 +119,7 @@ public class I3Cmd extends StdCommand
 			try
 			{
 				mob.tell(CMLib.hosts().get(0).executeCommand("START I3"));
-			}catch(Exception e){ Log.errOut("I3Cmd",e);}
+			}catch(final Exception e){ Log.errOut("I3Cmd",e);}
 		}
 		else
 		if(str.equalsIgnoreCase("locate"))

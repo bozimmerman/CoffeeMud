@@ -16,6 +16,7 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 import java.util.regex.Pattern;
 
@@ -43,12 +44,12 @@ public class RandomAreaTemplates extends StdWebMacro
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
-		java.util.Map<String,String> parms=parseParms(parm);
-		MOB M = Authenticate.getAuthenticatedMob(httpReq);
+		final java.util.Map<String,String> parms=parseParms(parm);
+		final MOB M = Authenticate.getAuthenticatedMob(httpReq);
 		if(M==null) return "[authentication error]";
 		try
 		{
-			String last=httpReq.getUrlParameter("RTEMPLATE");
+			final String last=httpReq.getUrlParameter("RTEMPLATE");
 			if(parms.containsKey("NEXT"))
 			{
 				if(parms.containsKey("RESET"))
@@ -61,13 +62,13 @@ public class RandomAreaTemplates extends StdWebMacro
 				if(fileList==null)
 				{
 					fileList=new ArrayList<String>();
-					List<String> templateDirs=new LinkedList<String>();
+					final List<String> templateDirs=new LinkedList<String>();
 					templateDirs.add("");
 					while(templateDirs.size()>0)
 					{
-						String templateDirPath=templateDirs.remove(0);
-						CMFile templateDir=new CMFile(Resources.buildResourcePath("randareas/"+templateDirPath),M);
-						for(CMFile file : templateDir.listFiles())
+						final String templateDirPath=templateDirs.remove(0);
+						final CMFile templateDir=new CMFile(Resources.buildResourcePath("randareas/"+templateDirPath),M);
+						for(final CMFile file : templateDir.listFiles())
 						{
 							if(file.isDirectory() && file.canRead())
 								templateDirs.add(templateDirPath+file.getName()+"/");
@@ -78,9 +79,8 @@ public class RandomAreaTemplates extends StdWebMacro
 					httpReq.getRequestObjects().put("RANDOMAREATEMPLATESLIST", fileList);
 				}
 				String lastID="";
-				for(Iterator<String> r=fileList.iterator();r.hasNext();)
+				for (final String RC : fileList)
 				{
-					String RC=r.next();
 					if((last.length()>0)&&(last.equals(lastID))&&(!RC.equals(lastID)))
 					{
 						httpReq.addFakeUrlParameter("RTEMPLATE",RC);
@@ -94,7 +94,7 @@ public class RandomAreaTemplates extends StdWebMacro
 				return " @break@";
 			}
 		}
-		catch(Exception e)
+		catch(final Exception e)
 		{
 			return "[an error occurred performing the last operation]";
 		}

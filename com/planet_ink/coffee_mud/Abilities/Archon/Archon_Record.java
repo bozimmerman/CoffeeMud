@@ -57,7 +57,7 @@ public class Archon_Record extends ArchonSkill
 	{
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		super.unInvoke();
 
@@ -91,7 +91,7 @@ public class Archon_Record extends ArchonSkill
 		if(target==null) target=getTargetAnywhere(mob,commands,givenTarget,false,true,false);
 		if(target==null) return false;
 
-		Archon_Record A=(Archon_Record)target.fetchEffect(ID());
+		final Archon_Record A=(Archon_Record)target.fetchEffect(ID());
 		if(A!=null)
 		{
 			target.delEffect(A);
@@ -103,17 +103,17 @@ public class Archon_Record extends ArchonSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),"^F<S-NAME> begin(s) recording <T-NAMESELF>.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),"^F<S-NAME> begin(s) recording <T-NAMESELF>.^?");
 			CMLib.color().fixSourceFightColor(msg);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				String filename="/"+target.Name()+System.currentTimeMillis()+".log";
-				CMFile file=new CMFile(filename,null,CMFile.FLAG_LOGERRORS);
+				final String filename="/"+target.Name()+System.currentTimeMillis()+".log";
+				final CMFile file=new CMFile(filename,null,CMFile.FLAG_LOGERRORS);
 				if(!file.canWrite())
 				{
 					if(!CMSecurity.isASysOp(mob)||(CMSecurity.isASysOp(target)))
@@ -123,8 +123,8 @@ public class Archon_Record extends ArchonSkill
 				{
 					if(!CMSecurity.isASysOp(mob)||(CMSecurity.isASysOp(target)))
 						Log.sysOut("Record",mob.Name()+" started recording "+target.name()+" to /"+filename+".");
-					Archon_Record A2=(Archon_Record)copyOf();
-					Session F=(Session)CMClass.getCommon("FakeSession");
+					final Archon_Record A2=(Archon_Record)copyOf();
+					final Session F=(Session)CMClass.getCommon("FakeSession");
 					F.initializeSession(null,Thread.currentThread().getThreadGroup().getName(),filename);
 					if(target.session()==null)
 						target.setSession(F);

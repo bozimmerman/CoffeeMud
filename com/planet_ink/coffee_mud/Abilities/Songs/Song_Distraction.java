@@ -46,7 +46,7 @@ public class Song_Distraction extends Song
 			return true;
 		if(affected==invoker) return true;
 
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		// when this spell is on a MOBs Affected list,
 		// it should consistantly prevent the mob

@@ -39,11 +39,11 @@ public class GrinderAccounts
 
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
-		String last=httpReq.getUrlParameter("ACCOUNT");
+		final String last=httpReq.getUrlParameter("ACCOUNT");
 		if(last==null) return " @break@";
 		if(last.length()>0)
 		{
-			PlayerAccount A=CMLib.players().getLoadAccount(last);
+			final PlayerAccount A=CMLib.players().getLoadAccount(last);
 			if(A!=null)
 			{
 				String newName=A.getAccountName();
@@ -73,12 +73,12 @@ public class GrinderAccounts
 					else
 					{
 						A.setFlag(PlayerAccount.FLAG_NOEXPIRE, false);
-						Calendar C=CMLib.time().string2Date(str);
+						final Calendar C=CMLib.time().string2Date(str);
 						A.setAccountExpiration(C.getTimeInMillis());
 					}
 				}
 				String id="";
-				StringBuffer flags=new StringBuffer("");
+				final StringBuffer flags=new StringBuffer("");
 				for(int i=0;httpReq.isUrlParameter("FLAG"+id);id=""+(++i))
 					flags.append(httpReq.getUrlParameter("FLAG"+id)+",");
 				A.setStat("FLAGS",flags.toString());
@@ -87,18 +87,18 @@ public class GrinderAccounts
 				else
 				if(!newName.equalsIgnoreCase(A.getAccountName()))
 				{
-					Vector<MOB> V=new Vector<MOB>();
-					for(Enumeration<String> es=A.getPlayers();es.hasMoreElements();)
+					final Vector<MOB> V=new Vector<MOB>();
+					for(final Enumeration<String> es=A.getPlayers();es.hasMoreElements();)
 					{
-						String playerName=es.nextElement();
-						MOB playerM=CMLib.players().getLoadPlayer(playerName);
+						final String playerName=es.nextElement();
+						final MOB playerM=CMLib.players().getLoadPlayer(playerName);
 						if((playerM!=null)&&(!CMLib.flags().isInTheGame(playerM,true)))
 							V.addElement(playerM);
 					}
 					CMLib.database().DBDeleteAccount(A);
 					A.setAccountName(newName);
 					CMLib.database().DBCreateAccount(A);
-					for(MOB playerM : V)
+					for(final MOB playerM : V)
 						CMLib.database().DBUpdatePlayerPlayerStats(playerM);
 					httpReq.addFakeUrlParameter("ACCOUNT", newName);
 				}

@@ -40,7 +40,7 @@ public class Healer extends Cleric
 	@Override public String baseClass(){return "Cleric";}
 	@Override public int getAttackAttribute(){return CharStats.STAT_WISDOM;}
 	@Override public int allowedWeaponLevel(){return CharClass.WEAPONS_GOODCLERIC;}
-	private HashSet disallowedWeapons=buildDisallowedWeaponClasses();
+	private final HashSet disallowedWeapons=buildDisallowedWeaponClasses();
 	@Override protected HashSet disallowedWeaponClasses(MOB mob){return disallowedWeapons;}
 	@Override protected int alwaysFlunksThisQuality(){return 0;}
 	protected volatile long auraCheckTime = System.currentTimeMillis();
@@ -161,7 +161,7 @@ public class Healer extends Cleric
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!(ticking instanceof MOB)) return super.tick(ticking,tickID);
-		MOB myChar=(MOB)ticking;
+		final MOB myChar=(MOB)ticking;
 		if(tickID!=Tickable.TICKID_MOB) return super.tick(ticking, tickID);
 		if((System.currentTimeMillis() - auraCheckTime) > 2 * 60 * 1000)
 		{
@@ -216,7 +216,7 @@ public class Healer extends Cleric
 	{
 		super.executeMsg(myHost,msg);
 		if(!(myHost instanceof MOB)) return;
-		MOB myChar=(MOB)myHost;
+		final MOB myChar=(MOB)myHost;
 		if(msg.amISource(myChar))
 		{
 			if(msg.sourceMinor()==CMMsg.TYP_LIFE)
@@ -238,7 +238,7 @@ public class Healer extends Cleric
 		if(outfitChoices==null)
 		{
 			outfitChoices=new Vector();
-			Weapon w=CMClass.getWeapon("SmallMace");
+			final Weapon w=CMClass.getWeapon("SmallMace");
 			outfitChoices.add(w);
 		}
 		return outfitChoices;

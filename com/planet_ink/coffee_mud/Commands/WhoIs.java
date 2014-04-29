@@ -51,7 +51,7 @@ public class WhoIs extends Who
 			return false;
 		}
 
-		int x=mobName.indexOf("@");
+		final int x=mobName.indexOf("@");
 		if(x>=0)
 		{
 			if((!(CMLib.intermud().i3online()))
@@ -78,11 +78,11 @@ public class WhoIs extends Who
 			return false;
 		}
 
-		int[] colWidths=getShortColWidths(mob);
-		StringBuffer msg=new StringBuffer("");
-		for(Session S : CMLib.sessions().localOnlineIterable())
+		final int[] colWidths=getShortColWidths(mob);
+		final StringBuffer msg=new StringBuffer("");
+		for(final Session S : CMLib.sessions().localOnlineIterable())
 		{
-			MOB mob2=S.mob();
+			final MOB mob2=S.mob();
 			if((mob2!=null)
 			&&(((mob2.phyStats().disposition()&PhyStats.IS_CLOAKED)==0)
 				||((CMSecurity.isAllowedAnywhere(mob,CMSecurity.SecFlag.CLOAK)||CMSecurity.isAllowedAnywhere(mob,CMSecurity.SecFlag.WIZINV))

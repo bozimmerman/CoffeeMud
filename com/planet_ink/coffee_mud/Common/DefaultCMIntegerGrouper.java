@@ -39,7 +39,7 @@ public class DefaultCMIntegerGrouper implements CMIntegerGrouper
 	@Override public String name() { return ID();}
 	@Override public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 	@Override public void initializeClass(){}
-	@Override public CMObject newInstance(){try{return getClass().newInstance();}catch(Exception e){return new DefaultCMIntegerGrouper();}}
+	@Override public CMObject newInstance(){try{return getClass().newInstance();}catch(final Exception e){return new DefaultCMIntegerGrouper();}}
 
 	public int[] xs=new int[0];
 	public long[] ys=new long[0];
@@ -52,7 +52,7 @@ public class DefaultCMIntegerGrouper implements CMIntegerGrouper
 	@Override
 	public CMObject copyOf()
 	{
-		DefaultCMIntegerGrouper R=new DefaultCMIntegerGrouper();
+		final DefaultCMIntegerGrouper R=new DefaultCMIntegerGrouper();
 		R.xs=xs.clone();
 		R.ys=ys.clone();
 		return R;
@@ -68,12 +68,12 @@ public class DefaultCMIntegerGrouper implements CMIntegerGrouper
 		if(txt.length()==0) return null;
 		if((!txt.startsWith("{"))&&(!txt.endsWith("}")))
 			return null;
-		int x=txt.indexOf("},{");
+		final int x=txt.indexOf("},{");
 		if(x<0) return null;
-		String Xstr=txt.substring(1,x);
-		String Ystr=txt.substring(x+3,txt.length()-1);
-		List<String> XV=CMParms.parseCommas(Xstr,true);
-		List<String> YV=CMParms.parseCommas(Ystr,true);
+		final String Xstr=txt.substring(1,x);
+		final String Ystr=txt.substring(x+3,txt.length()-1);
+		final List<String> XV=CMParms.parseCommas(Xstr,true);
+		final List<String> YV=CMParms.parseCommas(Ystr,true);
 		xs=new int[XV.size()];
 		for(int v=0;v<XV.size();v++)
 			xs[v]=CMath.s_int(XV.get(v));
@@ -165,7 +165,7 @@ public class DefaultCMIntegerGrouper implements CMIntegerGrouper
 			}
 			else
 				count++;
-		int[] nums=new int[count];
+		final int[] nums=new int[count];
 		int dex=0;
 		for(int i=0;i<xs.length;i++)
 		{
@@ -184,7 +184,7 @@ public class DefaultCMIntegerGrouper implements CMIntegerGrouper
 	@Override
 	public long[] allRoomNums()
 	{
-		long[] nums=new long[roomCount()];
+		final long[] nums=new long[roomCount()];
 		int dex=0;
 		for(int i=0;i<xs.length;i++)
 		{
@@ -235,9 +235,9 @@ public class DefaultCMIntegerGrouper implements CMIntegerGrouper
 	@Override
 	public long random()
 	{
-		int roomCount=roomCount();
+		final int roomCount=roomCount();
 		if(roomCount<=0) return -1;
-		int which=CMLib.dice().roll(1,roomCount,-1);
+		final int which=CMLib.dice().roll(1,roomCount,-1);
 		long count=0;
 		for(int i=0;i<xs.length;i++)
 		{
@@ -271,7 +271,7 @@ public class DefaultCMIntegerGrouper implements CMIntegerGrouper
 
 	public void growarrayx(int here, int amount)
 	{
-		int[] newis=new int[xs.length+amount];
+		final int[] newis=new int[xs.length+amount];
 		for(int i=0;i<here;i++)
 			newis[i]=xs[i];
 		for(int i=here;i<xs.length;i++)
@@ -281,7 +281,7 @@ public class DefaultCMIntegerGrouper implements CMIntegerGrouper
 
 	public void growarrayy(int here, int amount)
 	{
-		long[] newis=new long[ys.length+amount];
+		final long[] newis=new long[ys.length+amount];
 		for(int i=0;i<here;i++)
 			newis[i]=ys[i];
 		for(int i=here;i<ys.length;i++)
@@ -302,14 +302,14 @@ public class DefaultCMIntegerGrouper implements CMIntegerGrouper
 	@Override
 	public synchronized CMIntegerGrouper remove(CMIntegerGrouper grp)
 	{
-		long[] dely=grp.allRoomNums();
-		for(int i=0;i<dely.length;i++)
-			remove(dely[i]);
+		final long[] dely=grp.allRoomNums();
+		for (final long element : dely)
+			remove(element);
 		return this;
 	}
 	public void shrinkarrayx(int here, int amount)
 	{
-		int[] newis=new int[xs.length-amount];
+		final int[] newis=new int[xs.length-amount];
 		for(int i=0;i<here;i++)
 			newis[i]=xs[i];
 		for(int i=here;i<newis.length;i++)
@@ -319,7 +319,7 @@ public class DefaultCMIntegerGrouper implements CMIntegerGrouper
 
 	public void shrinkarrayy(int here, int amount)
 	{
-		long[] newis=new long[ys.length-amount];
+		final long[] newis=new long[ys.length-amount];
 		for(int i=0;i<here;i++)
 			newis[i]=ys[i];
 		for(int i=here;i<newis.length;i++)
@@ -387,9 +387,9 @@ public class DefaultCMIntegerGrouper implements CMIntegerGrouper
 	public CMIntegerGrouper add(CMIntegerGrouper grp)
 	{
 		if(grp==null) return this;
-		long[] all=grp.allRoomNums();
-		for(int l=0;l<all.length;l++)
-			add(all[l]);
+		final long[] all=grp.allRoomNums();
+		for (final long element : all)
+			add(element);
 		return this;
 	}
 

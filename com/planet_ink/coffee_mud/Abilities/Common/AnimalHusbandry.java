@@ -58,13 +58,13 @@ public class AnimalHusbandry extends CommonSkill
 		&&(affected instanceof MOB)
 		&&(tickID==Tickable.TICKID_MOB))
 		{
-			MOB mob=(MOB)affected;
+			final MOB mob=(MOB)affected;
 			if((husbanding==null)||(mob.location()==null))
 			{
 				messedUp=true;
 				unInvoke();
 			}
-			for(MOB husbandM : husbanding)
+			for(final MOB husbandM : husbanding)
 			{
 				if((husbandM==null)||(mob.location()==null))
 				{
@@ -88,11 +88,11 @@ public class AnimalHusbandry extends CommonSkill
 		{
 			if((affected!=null)&&(affected instanceof MOB))
 			{
-				MOB mob=(MOB)affected;
+				final MOB mob=(MOB)affected;
 				if((husbanding!=null)&&(!aborted))
 				{
-					MOB husbandM=husbanding[0];
-					MOB wifeM=husbanding[1];
+					final MOB husbandM=husbanding[0];
+					final MOB wifeM=husbanding[1];
 					if((husbandM==null)||(wifeM==null))
 						commonTell(mob,"You've failed to husband properly...");
 					else
@@ -100,7 +100,7 @@ public class AnimalHusbandry extends CommonSkill
 						commonTell(mob,wifeM.name()+" is already pregnant.");
 					else
 					{
-						Social S=CMLib.socials().fetchSocial("MATE", wifeM, true);
+						final Social S=CMLib.socials().fetchSocial("MATE", wifeM, true);
 						if(S!=null)
 						{
 							if(husbanding[0].charStats().getMyRace().canBreedWith(husbanding[1].charStats().getMyRace()))
@@ -116,7 +116,7 @@ public class AnimalHusbandry extends CommonSkill
 						{
 							if(proficiencyCheck(mob, 0, false))
 							{
-								Ability A=CMClass.getAbility("Pregnancy");
+								final Ability A=CMClass.getAbility("Pregnancy");
 								if((A!=null)
 								&&(wifeM.fetchAbility(A.ID())==null)
 								&&(wifeM.fetchEffect(A.ID())==null))
@@ -126,7 +126,7 @@ public class AnimalHusbandry extends CommonSkill
 							}
 						}
 						mob.location().show(mob,husbandM,wifeM,getActivityMessageType(),"<S-NAME> manage(s) to coax <T-NAME> into doing <T-HIS-HER> duty towards <O-NAME>.");
-						Ability A=wifeM.fetchEffect("Pregnancy");
+						final Ability A=wifeM.fetchEffect("Pregnancy");
 						if(A!=null)
 						{
 							A.makeNonUninvokable();
@@ -159,11 +159,11 @@ public class AnimalHusbandry extends CommonSkill
 			commonTell(mob,"Which animals should I husband here?");
 			return false;
 		}
-		String[] names=new String[]{(String)commands.get(0),CMParms.combine(commands,1)};
+		final String[] names=new String[]{(String)commands.get(0),CMParms.combine(commands,1)};
 		int highestLevel=0;
-		for(String name : names)
+		for(final String name : names)
 		{
-			MOB M=mob.location().fetchInhabitant(name);
+			final MOB M=mob.location().fetchInhabitant(name);
 			if(M==null)
 			{
 				commonTell(mob,"You don't see anyone called '"+name+"' here.");
@@ -233,9 +233,9 @@ public class AnimalHusbandry extends CommonSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 		messedUp=!proficiencyCheck(mob,-highestLevel+(2*getXLEVELLevel(mob)),auto);
-		int duration=getDuration(55,mob,highestLevel,20);
+		final int duration=getDuration(55,mob,highestLevel,20);
 		verb="husbanding "+husbanding[0].name()+" to "+husbanding[1].name();
-		CMMsg msg=CMClass.getMsg(mob,null,this,getActivityMessageType(),"<S-NAME> start(s) "+verb+".");
+		final CMMsg msg=CMClass.getMsg(mob,null,this,getActivityMessageType(),"<S-NAME> start(s) "+verb+".");
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

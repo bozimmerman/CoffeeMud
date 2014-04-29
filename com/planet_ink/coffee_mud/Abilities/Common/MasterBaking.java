@@ -63,10 +63,10 @@ public class MasterBaking extends Baking
 			int num=1;
 			while(mob.fetchEffect("MasterBaking"+cookingID)!=null)
 				cookingID=Integer.toString(++num);
-			List<String> noUninvokes=new Vector<String>(1);
+			final List<String> noUninvokes=new Vector<String>(1);
 			for(int i=0;i<mob.numEffects();i++)
 			{
-				Ability A=mob.fetchEffect(i);
+				final Ability A=mob.fetchEffect(i);
 				if(((A instanceof MasterBaking)||A.ID().equals("Baking"))
 				&&(noUninvokes.size()<5))
 					noUninvokes.add(A.ID());

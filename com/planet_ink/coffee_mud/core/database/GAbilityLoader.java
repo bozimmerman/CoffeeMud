@@ -46,15 +46,15 @@ public class GAbilityLoader
 	public List<DatabaseEngine.AckRecord> DBReadAbilities()
 	{
 		DBConnection D=null;
-		Vector<DatabaseEngine.AckRecord> rows=new Vector<DatabaseEngine.AckRecord>();
+		final Vector<DatabaseEngine.AckRecord> rows=new Vector<DatabaseEngine.AckRecord>();
 		try
 		{
 			D=DB.DBFetch();
-			ResultSet R=D.query("SELECT * FROM CMGAAC");
+			final ResultSet R=D.query("SELECT * FROM CMGAAC");
 			while(R.next())
 				rows.addElement(new DatabaseEngine.AckRecord(DBConnections.getRes(R,"CMGAID"), DBConnections.getRes(R,"CMGAAT"), DBConnections.getRes(R,"CMGACL")));
 		}
-		catch(Exception sqle)
+		catch(final Exception sqle)
 		{
 			Log.errOut("DataLoader",sqle);
 		}

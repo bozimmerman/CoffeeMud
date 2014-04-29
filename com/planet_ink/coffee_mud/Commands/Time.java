@@ -45,21 +45,21 @@ public class Time extends StdCommand
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		Room room=mob.location();
+		final Room room=mob.location();
 		if(room==null) return false;
 		mob.tell(room.getArea().getTimeObj().timeDescription(mob,room));
 		if((mob.playerStats()!=null)&&(mob.playerStats().getBirthday()!=null))
 		{
-			TimeClock C=CMLib.time().globalClock();
-			int day=C.getDayOfMonth();
-			int month=C.getMonth();
+			final TimeClock C=CMLib.time().globalClock();
+			final int day=C.getDayOfMonth();
+			final int month=C.getMonth();
 			int year=C.getYear();
-			int bday=mob.playerStats().getBirthday()[0];
-			int bmonth=mob.playerStats().getBirthday()[1];
+			final int bday=mob.playerStats().getBirthday()[0];
+			final int bmonth=mob.playerStats().getBirthday()[1];
 			if((month>bmonth)||((month==bmonth)&&(day>bday)))
 				year++;
 
-			StringBuffer timeDesc=new StringBuffer("");
+			final StringBuffer timeDesc=new StringBuffer("");
 			if(C.getDaysInWeek()>0)
 			{
 				long x=((long)year)*((long)C.getMonthsInYear())*C.getDaysInMonth();

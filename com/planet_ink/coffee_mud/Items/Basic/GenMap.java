@@ -67,8 +67,8 @@ public class GenMap extends StdMap
 	@Override
 	public void setReadableText(String newReadableText)
 	{
-		String oldName=Name();
-		String oldDesc=description();
+		final String oldName=Name();
+		final String oldDesc=description();
 		readableText=newReadableText;
 		doMapArea();
 		setName(oldName);

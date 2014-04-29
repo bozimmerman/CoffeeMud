@@ -64,10 +64,10 @@ public class StdClanDonationList extends StdClanItem
 		&&(msg.target()==this)
 		&&(owner() instanceof Room))
 		{
-			Clan C=CMLib.clans().getClan(clanID());
+			final Clan C=CMLib.clans().getClan(clanID());
 			if((C!=null)&&(C.getDonation().length()>0))
 			{
-				Room R=CMLib.map().getRoom(C.getDonation());
+				final Room R=CMLib.map().getRoom(C.getDonation());
 				if(R==owner())
 				{
 					CMLib.flags().setGettable(this,false);
@@ -86,12 +86,12 @@ public class StdClanDonationList extends StdClanItem
 			if((msg.target()==this)
 			&&(msg.targetMinor()==CMMsg.TYP_READ))
 			{
-				MOB mob=msg.source();
+				final MOB mob=msg.source();
 				if(CMLib.flags().canBeSeenBy(this,mob))
 				{
-					StringBuffer text=new StringBuffer("");
-					List<PlayerData> V=CMLib.database().DBReadData(clanID(),"DONATIONS");
-					Vector sorted=new Vector();
+					final StringBuffer text=new StringBuffer("");
+					final List<PlayerData> V=CMLib.database().DBReadData(clanID(),"DONATIONS");
+					final Vector sorted=new Vector();
 					String key=null;
 					int x=0;
 					long val=0;
@@ -109,14 +109,14 @@ public class StdClanDonationList extends StdClanItem
 								if(((Long)((Object[])sorted.elementAt(i))[0]).longValue()>val)
 								{
 									did=true;
-									Object[] O=new Object[2];
+									final Object[] O=new Object[2];
 									O[0]=Long.valueOf(val);
 									O[1]=set.xml;
 									sorted.insertElementAt(O,i);
 								}
 							if(!did)
 							{
-								Object[] O=new Object[2];
+								final Object[] O=new Object[2];
 								O[0]=Long.valueOf(val);
 								O[1]=set.xml;
 								sorted.addElement(O);

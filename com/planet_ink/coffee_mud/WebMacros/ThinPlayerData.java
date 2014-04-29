@@ -43,19 +43,19 @@ public class ThinPlayerData extends StdWebMacro {
 		if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
 			return CMProps.getVar(CMProps.Str.MUDSTATUS);
 
-		java.util.Map<String,String> parms=parseParms(parm);
-		String last=httpReq.getUrlParameter("PLAYER");
+		final java.util.Map<String,String> parms=parseParms(parm);
+		final String last=httpReq.getUrlParameter("PLAYER");
 		if(last==null) return " @break@";
-		StringBuffer str=new StringBuffer("");
+		final StringBuffer str=new StringBuffer("");
 		if(last.length()>0)
 		{
 			String sort=httpReq.getUrlParameter("SORTBY");
 			if(sort==null) sort="";
 			PlayerLibrary.ThinPlayer player = null;
-			Enumeration pe=CMLib.players().thinPlayers(sort, httpReq.getRequestObjects());
+			final Enumeration pe=CMLib.players().thinPlayers(sort, httpReq.getRequestObjects());
 			for(;pe.hasMoreElements();)
 			{
-				PlayerLibrary.ThinPlayer TP=(PlayerLibrary.ThinPlayer)pe.nextElement();
+				final PlayerLibrary.ThinPlayer TP=(PlayerLibrary.ThinPlayer)pe.nextElement();
 				if(TP.name.equalsIgnoreCase(last))
 				{
 					player = TP;
@@ -63,9 +63,9 @@ public class ThinPlayerData extends StdWebMacro {
 				}
 			}
 			if(player == null) return " @break@";
-			for(String key : parms.keySet())
+			for(final String key : parms.keySet())
 			{
-				int x=CMLib.players().getCharThinSortCode(key.toUpperCase().trim(),false);
+				final int x=CMLib.players().getCharThinSortCode(key.toUpperCase().trim(),false);
 				if(x>=0)
 				{
 					String value = CMLib.players().getThinSortValue(player, x);

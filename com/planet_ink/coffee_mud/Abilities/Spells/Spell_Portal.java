@@ -92,13 +92,13 @@ public class Spell_Portal extends Spell
 			mob.tell("A portal cannot be created here.");
 			return false;
 		}
-		String areaName=CMParms.combine(commands,0).trim().toUpperCase();
+		final String areaName=CMParms.combine(commands,0).trim().toUpperCase();
 		oldRoom=null;
 		newRoom=null;
 		int tries=0;
 		while(((++tries)<10000))
 		{
-			Room room=CMLib.map().getRandomRoom();
+			final Room room=CMLib.map().getRandomRoom();
 			if((CMLib.flags().canAccess(mob,room))
 			&&(CMLib.english().containsString(room.displayText(mob),areaName)))
 			{
@@ -110,10 +110,10 @@ public class Spell_Portal extends Spell
 		{
 			try
 			{
-				List<Room> rooms=CMLib.map().findRooms(CMLib.map().rooms(), mob, areaName, true, 10);
+				final List<Room> rooms=CMLib.map().findRooms(CMLib.map().rooms(), mob, areaName, true, 10);
 				if(rooms.size()>0)
 					newRoom=rooms.get(CMLib.dice().roll(1,rooms.size(),-1));
-			}catch(NoSuchElementException nse){}
+			}catch(final NoSuchElementException nse){}
 		}
 
 		if(newRoom==null)
@@ -125,7 +125,7 @@ public class Spell_Portal extends Spell
 		int profNeg=0;
 		for(int i=0;i<newRoom.numInhabitants();i++)
 		{
-			MOB t=newRoom.fetchInhabitant(i);
+			final MOB t=newRoom.fetchInhabitant(i);
 			if(t!=null)
 			{
 				int adjustment=t.phyStats().level()-(mob.phyStats().level()+(2*getXLEVELLevel(mob)));
@@ -138,32 +138,32 @@ public class Spell_Portal extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,-profNeg,auto);
+		final boolean success=proficiencyCheck(mob,-profNeg,auto);
 
 		if((success)
 		&&((newRoom.getRoomInDir(Directions.GATE)==null)
 		&&(newRoom.getExitInDir(Directions.GATE)==null)))
 		{
-			CMMsg msg=CMClass.getMsg(mob,mob.location(),this,verbalCastCode(mob,mob.location(),auto),"^S<S-NAME> evoke(s) a blinding, swirling portal here.^?");
-			CMMsg msg2=CMClass.getMsg(mob,newRoom,this,verbalCastCode(mob,newRoom,auto),"A blinding, swirling portal appears here.");
+			final CMMsg msg=CMClass.getMsg(mob,mob.location(),this,verbalCastCode(mob,mob.location(),auto),"^S<S-NAME> evoke(s) a blinding, swirling portal here.^?");
+			final CMMsg msg2=CMClass.getMsg(mob,newRoom,this,verbalCastCode(mob,newRoom,auto),"A blinding, swirling portal appears here.");
 			if((mob.location().okMessage(mob,msg))&&(newRoom.okMessage(mob,msg2)))
 			{
 				mob.location().send(mob,msg);
 				newRoom.send(mob,msg2);
-				Exit e=CMClass.getExit("GenExit");
+				final Exit e=CMClass.getExit("GenExit");
 				e.setDescription("A swirling portal to somewhere");
 				e.setDisplayText("A swirling portal to somewhere");
 				e.setDoorsNLocks(false,true,false,false,false,false);
 				e.setExitParams("portal","close","open","closed.");
 				e.setName("a swirling portal");
-				Ability A1=CMClass.getAbility("Prop_RoomView");
+				final Ability A1=CMClass.getAbility("Prop_RoomView");
 				if(A1!=null)
 				{
 					A1.setMiscText(CMLib.map().getExtendedRoomID(newRoom));
 					e.addNonUninvokableEffect(A1);
 				}
-				Exit e2=(Exit)e.copyOf();
-				Ability A2=CMClass.getAbility("Prop_RoomView");
+				final Exit e2=(Exit)e.copyOf();
+				final Ability A2=CMClass.getAbility("Prop_RoomView");
 				if(A2!=null)
 				{
 					A2.setMiscText(CMLib.map().getExtendedRoomID(mob.location()));

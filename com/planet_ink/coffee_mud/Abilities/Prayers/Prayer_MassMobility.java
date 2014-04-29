@@ -50,7 +50,7 @@ public class Prayer_MassMobility extends Prayer
 		if(!(affected instanceof MOB))
 			return true;
 
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		if((msg.amITarget(mob))
 		&&(CMath.bset(msg.targetMajor(),CMMsg.MASK_MALICIOUS))
 		&&(msg.targetMinor()==CMMsg.TYP_CAST_SPELL)
@@ -58,9 +58,9 @@ public class Prayer_MassMobility extends Prayer
 		&&(msg.tool() instanceof Ability)
 		&&(!mob.amDead()))
 		{
-			Ability A=(Ability)msg.tool();
-			MOB newMOB=CMClass.getFactoryMOB();
-			CMMsg msg2=CMClass.getMsg(newMOB,null,null,CMMsg.MSG_SIT,null);
+			final Ability A=(Ability)msg.tool();
+			final MOB newMOB=CMClass.getFactoryMOB();
+			final CMMsg msg2=CMClass.getMsg(newMOB,null,null,CMMsg.MSG_SIT,null);
 			newMOB.recoverPhyStats();
 			try
 			{
@@ -74,7 +74,7 @@ public class Prayer_MassMobility extends Prayer
 					return false;
 				}
 			}
-			catch(Exception e)
+			catch(final Exception e)
 			{}
 			newMOB.destroy();
 		}
@@ -96,7 +96,7 @@ public class Prayer_MassMobility extends Prayer
 		// undo the affects of this spell
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		super.unInvoke();
 
@@ -111,9 +111,9 @@ public class Prayer_MassMobility extends Prayer
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
-		Room room=mob.location();
+		final Room room=mob.location();
 		int affectType=CMMsg.MSG_CAST_VERBAL_SPELL;
 		if(auto) affectType=affectType|CMMsg.MASK_ALWAYS;
 		if((success)&&(room!=null))
@@ -124,7 +124,7 @@ public class Prayer_MassMobility extends Prayer
 				mob.location().send(mob,msg);
 				for(int i=0;i<room.numInhabitants();i++)
 				{
-					MOB target=room.fetchInhabitant(i);
+					final MOB target=room.fetchInhabitant(i);
 					if(target==null) break;
 
 					// it worked, so build a copy of this ability,

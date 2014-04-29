@@ -66,7 +66,7 @@ public class FlamingSword extends Longsword
 		&&(msg.source()==owner()))
 		{
 			final Room room=msg.source().location();
-			CMMsg msg2=CMClass.getMsg(msg.source(),msg.target(),this,
+			final CMMsg msg2=CMClass.getMsg(msg.source(),msg.target(),this,
 					CMMsg.MSG_OK_ACTION,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_FIRE,CMMsg.MSG_NOISYMOVEMENT,null);
 			if((room!=null) && (room.okMessage(msg.source(),msg2)))
 			{

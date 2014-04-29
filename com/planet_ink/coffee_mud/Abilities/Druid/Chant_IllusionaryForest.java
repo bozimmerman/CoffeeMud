@@ -53,7 +53,7 @@ public class Chant_IllusionaryForest extends Chant
 			return;
 		if(!(affected instanceof Room))
 			return;
-		Room room=(Room)affected;
+		final Room room=(Room)affected;
 		if(canBeUninvoked())
 			room.showHappens(CMMsg.MSG_OK_VISUAL, "The appearance of this place changes...");
 		super.unInvoke();
@@ -79,7 +79,7 @@ public class Chant_IllusionaryForest extends Chant
 		&&(newRoom().fetchEffect(ID())==null)
 		&&((msg.targetMinor()==CMMsg.TYP_LOOK)||(msg.targetMinor()==CMMsg.TYP_EXAMINE)))
 		{
-			CMMsg msg2=CMClass.getMsg(msg.source(),newRoom(),msg.tool(),
+			final CMMsg msg2=CMClass.getMsg(msg.source(),newRoom(),msg.tool(),
 						  msg.sourceCode(),msg.sourceMessage(),
 						  msg.targetCode(),msg.targetMessage(),
 						  msg.othersCode(),msg.othersMessage());
@@ -152,8 +152,8 @@ public class Chant_IllusionaryForest extends Chant
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		Physical target = mob.location();
-		boolean success=proficiencyCheck(mob,0,auto);
+		final Physical target = mob.location();
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
@@ -162,7 +162,7 @@ public class Chant_IllusionaryForest extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			newRoom();
-			CMMsg msg = CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto), auto?"":"^S<S-NAME> chant(s) dramatically!^?");
+			final CMMsg msg = CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto), auto?"":"^S<S-NAME> chant(s) dramatically!^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

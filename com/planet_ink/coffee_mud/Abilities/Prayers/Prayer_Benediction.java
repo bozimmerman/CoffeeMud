@@ -51,16 +51,16 @@ public class Prayer_Benediction extends Prayer
 		super.affectCharStats(affected,affectableStats);
 		if(invoker==null)return;
 
-		MOB mob=affected;
-		int pts=adjustedLevel(invoker(),0)/5;
-		CharStats chk=(CharStats)CMClass.getCommon("DefaultCharStats"); chk.setAllBaseValues(0);
+		final MOB mob=affected;
+		final int pts=adjustedLevel(invoker(),0)/5;
+		final CharStats chk=(CharStats)CMClass.getCommon("DefaultCharStats"); chk.setAllBaseValues(0);
 		chk.setCurrentClass(mob.charStats().getCurrentClass());
 		for(int c=0;c<mob.charStats().numClasses();c++)
 			mob.charStats().getMyClass(c).affectCharStats(mob,chk);
 		int num=0;
-		for(int i: CharStats.CODES.MAX())
+		for(final int i: CharStats.CODES.MAX())
 			if(chk.getStat(i)>0) num++;
-		for(int i: CharStats.CODES.BASE())
+		for(final int i: CharStats.CODES.BASE())
 			if(chk.getStat(CharStats.CODES.toMAXBASE(i))>0)
 				affectableStats.setStat(i,affectableStats.getStat(i)+(pts/num));
 	}
@@ -71,7 +71,7 @@ public class Prayer_Benediction extends Prayer
 		// undo the affects of this spell
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		super.unInvoke();
 
@@ -82,13 +82,13 @@ public class Prayer_Benediction extends Prayer
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		MOB target=getTarget(mob,commands,givenTarget);
+		final MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
@@ -96,7 +96,7 @@ public class Prayer_Benediction extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> become(s) filled with benediction!":"^S<S-NAME> "+prayWord(mob)+" for a benediction over <T-NAMESELF>!^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> become(s) filled with benediction!":"^S<S-NAME> "+prayWord(mob)+" for a benediction over <T-NAMESELF>!^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

@@ -51,7 +51,7 @@ public class Thief_Palm extends ThiefSkill
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 		if(!success)
 			beneficialVisualFizzle(mob,null,"<S-NAME> attempt(s) to palm something and fail(s).");
 		else
@@ -60,11 +60,11 @@ public class Thief_Palm extends ThiefSkill
 			   commands.addElement("UNOBTRUSIVELY");
 			try
 			{
-				Command C=CMClass.getCommand("Get");
+				final Command C=CMClass.getCommand("Get");
 				commands.insertElementAt("GET",0);
 				if(C!=null) C.execute(mob,commands,0);
 			}
-			catch(Exception e)
+			catch(final Exception e)
 			{}
 		}
 		return success;

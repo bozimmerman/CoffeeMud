@@ -127,8 +127,8 @@ public class GenShopkeeper extends StdShopKeeper
 	public String[] getStatCodes()
 	{
 		if(codes!=null) return codes;
-		String[] MYCODES=CMProps.getStatCodesList(GenShopkeeper.MYCODES,this);
-		String[] superCodes=GenericBuilder.GENMOBCODES;
+		final String[] MYCODES=CMProps.getStatCodesList(GenShopkeeper.MYCODES,this);
+		final String[] superCodes=GenericBuilder.GENMOBCODES;
 		codes=new String[superCodes.length+MYCODES.length];
 		int i=0;
 		for(;i<superCodes.length;i++)
@@ -141,7 +141,7 @@ public class GenShopkeeper extends StdShopKeeper
 	public boolean sameAs(Environmental E)
 	{
 		if(!(E instanceof GenShopkeeper)) return false;
-		String[] codes=getStatCodes();
+		final String[] codes=getStatCodes();
 		for(int i=0;i<codes.length;i++)
 			if(!E.getStat(codes[i]).equals(getStat(codes[i])))
 				return false;

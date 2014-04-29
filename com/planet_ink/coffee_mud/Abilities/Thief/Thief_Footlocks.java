@@ -56,7 +56,7 @@ public class Thief_Footlocks extends ThiefSkill
 		if((affected==null)||(!(affected instanceof MOB))||(invoker==null))
 			return true;
 
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		if(msg.amISource(mob)
 		&&(CMLib.dice().rollPercentage()>(mob.charStats().getStat(CharStats.STAT_DEXTERITY)-(getXLEVELLevel(mob)*3)))
 		&&((msg.sourceMinor()==CMMsg.TYP_ADVANCE)||(msg.sourceMinor()==CMMsg.TYP_RETREAT)||(msg.sourceMinor()==CMMsg.TYP_FLEE)))
@@ -72,7 +72,7 @@ public class Thief_Footlocks extends ThiefSkill
 	{
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		if(canBeUninvoked())
 		{
 			if(!mob.amDead())
@@ -98,10 +98,10 @@ public class Thief_Footlocks extends ThiefSkill
 				return Ability.QUALITY_INDIFFERENT;
 			if(!CMLib.flags().aliveAwakeMobileUnbound(mob,false))
 				return Ability.QUALITY_INDIFFERENT;
-			Item cloth=CMLib.materials().findMostOfMaterial(mob,RawMaterial.MATERIAL_CLOTH);
+			final Item cloth=CMLib.materials().findMostOfMaterial(mob,RawMaterial.MATERIAL_CLOTH);
 			if((cloth==null)||CMLib.materials().findNumberOfResource(mob,cloth.material())<1)
 				return Ability.QUALITY_INDIFFERENT;
-			Item wood=CMLib.materials().findMostOfMaterial(mob,RawMaterial.MATERIAL_WOODEN);
+			final Item wood=CMLib.materials().findMostOfMaterial(mob,RawMaterial.MATERIAL_WOODEN);
 			if((wood==null)||CMLib.materials().findNumberOfResource(mob,wood.material())<2)
 				return Ability.QUALITY_INDIFFERENT;
 		}
@@ -111,7 +111,7 @@ public class Thief_Footlocks extends ThiefSkill
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		MOB target=this.getTarget(mob,commands,givenTarget);
+		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
 		if(CMLib.flags().isSleeping(mob))
@@ -150,24 +150,24 @@ public class Thief_Footlocks extends ThiefSkill
 		if(cloth!=null) CMLib.materials().destroyResourcesValue(mob,1,cloth.material(),-1,null);
 		if(wood!=null) CMLib.materials().destroyResourcesValue(mob,2,wood.material(),-1,null);
 
-		boolean success=proficiencyCheck(mob,-levelDiff,auto);
+		final boolean success=proficiencyCheck(mob,-levelDiff,auto);
 		if(success)
 		{
-			Item foots=CMClass.getItem("GenItem");
+			final Item foots=CMClass.getItem("GenItem");
 			foots.setRawWornCode(Wearable.WORN_FEET);
 			foots.setName("a pair of footlock blocks");
 			foots.setDisplayText("whats left of some footlocks");
 			CMLib.flags().setRemovable(foots,false);
 			CMLib.flags().setDroppable(foots,false);
 			foots.setMaterial((wood!=null)?wood.material():RawMaterial.RESOURCE_WOOD);
-			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MALICIOUS|CMMsg.MSG_THIEF_ACT,auto?"<T-NAME> can't seem to move <T-HIS-HER> feet!":"<S-NAME> throw(s) a pair of roped blocks at <T-YOUPOSS> feet!");
-			CMMsg msg2=CMClass.getMsg(mob,target,foots,CMMsg.MSG_THROW,null);
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MALICIOUS|CMMsg.MSG_THIEF_ACT,auto?"<T-NAME> can't seem to move <T-HIS-HER> feet!":"<S-NAME> throw(s) a pair of roped blocks at <T-YOUPOSS> feet!");
+			final CMMsg msg2=CMClass.getMsg(mob,target,foots,CMMsg.MSG_THROW,null);
 			if((mob.location().okMessage(mob,msg))&&(mob.location().okMessage(mob,msg2)))
 			{
 				mob.location().send(mob,msg);
 				mob.location().send(mob,msg2);
 				maliciousAffect(mob,target,asLevel,20+(getXLEVELLevel(mob)*3),-1);
-				Ability A=target.fetchEffect(ID());
+				final Ability A=target.fetchEffect(ID());
 				if((A!=null)&&(msg.value()<=0))
 				{
 					target.addItem(foots);

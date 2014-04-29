@@ -72,7 +72,7 @@ public class Prop_SpellAdder extends Property implements AbilityContainer, Trigg
 
 	public String getMaskString(String newText)
 	{
-		int maskindex=newText.toUpperCase().indexOf("MASK=");
+		final int maskindex=newText.toUpperCase().indexOf("MASK=");
 		if(maskindex>0)
 			return newText.substring(maskindex+5).trim();
 		return "";
@@ -80,7 +80,7 @@ public class Prop_SpellAdder extends Property implements AbilityContainer, Trigg
 
 	public String getParmString(String newText)
 	{
-		int maskindex=newText.toUpperCase().indexOf("MASK=");
+		final int maskindex=newText.toUpperCase().indexOf("MASK=");
 		if(maskindex>0)
 			return newText.substring(0,maskindex).trim();
 		return newText;
@@ -95,7 +95,7 @@ public class Prop_SpellAdder extends Property implements AbilityContainer, Trigg
 		lastMOB=null;
 		chanceToHappen=-1;
 		maxTicks=-1;
-		String maskString=getMaskString(newText);
+		final String maskString=getMaskString(newText);
 		if(maskString.length()>0)
 			compiledMask=CMLib.masking().getPreCompiledMask(maskString);
 	}
@@ -104,8 +104,8 @@ public class Prop_SpellAdder extends Property implements AbilityContainer, Trigg
 	{
 		if(spellV!=null) return spellV;
 		spellV=new Vector();
-		String names=getParmString(text());
-		List<String> set=CMParms.parseSemicolons(names,true);
+		final String names=getParmString(text());
+		final List<String> set=CMParms.parseSemicolons(names,true);
 		String thisOne=null;
 		for(int s=0;s<set.size();s++)
 		{
@@ -127,13 +127,13 @@ public class Prop_SpellAdder extends Property implements AbilityContainer, Trigg
 				if(maxTicks!=-1)
 					continue;
 			}
-			int pctDex=thisOne.indexOf("% ");
+			final int pctDex=thisOne.indexOf("% ");
 			if((pctDex>0) && (thisOne.substring(pctDex+1).trim().length()>0))
 				thisOne=thisOne.substring(pctDex+1).trim();
 			String parm="";
 			if((thisOne!=null)&&(thisOne.endsWith(")")))
 			{
-				int x=thisOne.indexOf('(');
+				final int x=thisOne.indexOf('(');
 				if(x>0)
 				{
 					parm=thisOne.substring(x+1,thisOne.length()-1);
@@ -156,7 +156,7 @@ public class Prop_SpellAdder extends Property implements AbilityContainer, Trigg
 	{
 		if(chanceToHappen<0)
 		{
-			String parmString=getParmString(text());
+			final String parmString=getParmString(text());
 			int x=parmString.indexOf('%');
 			if(x<0)
 			{
@@ -182,7 +182,7 @@ public class Prop_SpellAdder extends Property implements AbilityContainer, Trigg
 
 	public Map<String, String> makeMySpellsH(List<Ability> V)
 	{
-		Hashtable<String, String> spellH=new Hashtable<String, String>();
+		final Hashtable<String, String> spellH=new Hashtable<String, String>();
 		for(int v=0;v<V.size();v++)
 			spellH.put(V.get(v).ID(),V.get(v).ID());
 		return spellH;
@@ -220,19 +220,19 @@ public class Prop_SpellAdder extends Property implements AbilityContainer, Trigg
 
 	public List convertToV2(List<Ability> spellsV, Physical target)
 	{
-		List VTOO=new Vector();
+		final List VTOO=new Vector();
 		for(int v=0;v<spellsV.size();v++)
 		{
 			Ability A=spellsV.get(v);
-			Ability EA=(target!=null)?target.fetchEffect(A.ID()):null;
+			final Ability EA=(target!=null)?target.fetchEffect(A.ID()):null;
 			if((EA==null)&&(didHappen()))
 			{
-				String t=A.text();
+				final String t=A.text();
 				A=(Ability)A.copyOf();
 				Vector V2=new Vector();
 				if(t.length()>0)
 				{
-					int x=t.indexOf('/');
+					final int x=t.indexOf('/');
 					if(x<0)
 					{
 						V2=CMParms.parse(t);
@@ -253,26 +253,26 @@ public class Prop_SpellAdder extends Property implements AbilityContainer, Trigg
 
 	public boolean addMeIfNeccessary(PhysicalAgent source, Physical target, boolean makeLongLasting, int asLevel, short maxTicks)
 	{
-		List<Ability> V=getMySpellsV();
+		final List<Ability> V=getMySpellsV();
 		if((target==null)
 		||(V.size()==0)
 		||((compiledMask!=null)
 			&&(!CMLib.masking().maskCheck(compiledMask,target,true))))
 				return false;
-		List VTOO=convertToV2(V,target);
+		final List VTOO=convertToV2(V,target);
 		if(VTOO.size()==0) return false;
-		MOB qualMOB=getInvokerMOB(source,target);
+		final MOB qualMOB=getInvokerMOB(source,target);
 		for(int v=0;v<VTOO.size();v+=2)
 		{
-			Ability A=(Ability)VTOO.get(v);
-			Vector V2=(Vector)VTOO.get(v+1);
+			final Ability A=(Ability)VTOO.get(v);
+			final Vector V2=(Vector)VTOO.get(v+1);
 			if(level >= 0)
 				asLevel = level;
 			else
 			if(asLevel <=0)
 				asLevel = (affected!=null)?affected.phyStats().level():0;
 			A.invoke(qualMOB,V2,target,true,asLevel);
-			Ability EA=target.fetchEffect(A.ID());
+			final Ability EA=target.fetchEffect(A.ID());
 			lastMOB=target;
 			// this needs to go here because otherwise it makes non-item-invoked spells long lasting,
 			// which means they dont go away when item is removed.
@@ -300,13 +300,13 @@ public class Prop_SpellAdder extends Property implements AbilityContainer, Trigg
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		String s=CMParms.combine(commands,0);
+		final String s=CMParms.combine(commands,0);
 		if(s.length()>0) setMiscText(s);
 		if(givenTarget!=null)
 			addMeIfNeccessary(mob,givenTarget,false,asLevel,maxTicks);
 		else
 		{
-			List<Ability> V=getMySpellsV();
+			final List<Ability> V=getMySpellsV();
 			commands.clear();
 			commands.addAll(convertToV2(V,null));
 		}
@@ -339,7 +339,7 @@ public class Prop_SpellAdder extends Property implements AbilityContainer, Trigg
 		if(P==null)return;
 
 		int x=0;
-		Vector eff=new Vector();
+		final Vector eff=new Vector();
 		Ability thisAffect=null;
 		for(x=0;x<P.numEffects();x++) // personal
 		{
@@ -349,7 +349,7 @@ public class Prop_SpellAdder extends Property implements AbilityContainer, Trigg
 		}
 		if(eff.size()>0)
 		{
-			Map<String,String> h=makeMySpellsH(getMySpellsV());
+			final Map<String,String> h=makeMySpellsH(getMySpellsV());
 			if(unrevocableSpells != null)
 			{
 				for(int v=unrevocableSpells.size()-1;v>=0;v--)
@@ -363,7 +363,7 @@ public class Prop_SpellAdder extends Property implements AbilityContainer, Trigg
 			for(x=0;x<eff.size();x++)
 			{
 				thisAffect=(Ability)eff.elementAt(x);
-				String ID=h.get(thisAffect.ID());
+				final String ID=h.get(thisAffect.ID());
 				if((ID!=null)
 				&&(thisAffect.invoker()==getInvokerMOB(P,P)))
 				{
@@ -410,11 +410,11 @@ public class Prop_SpellAdder extends Property implements AbilityContainer, Trigg
 
 	public String spellAccountingsWithMask(String pre, String post)
 	{
-		List<Ability> spellList=getMySpellsV();
+		final List<Ability> spellList=getMySpellsV();
 		String id="";
 		for(int v=0;v<spellList.size();v++)
 		{
-			Ability A=spellList.get(v);
+			final Ability A=spellList.get(v);
 			if(spellList.size()==1)
 				id+=A.name();
 			else
@@ -425,7 +425,7 @@ public class Prop_SpellAdder extends Property implements AbilityContainer, Trigg
 		}
 		if(spellList.size()>0)
 			id=pre+id+post;
-		String maskString=getMaskString(text());
+		final String maskString=getMaskString(text());
 		if(maskString.length()>0)
 			id+="  Restrictions: "+CMLib.masking().maskDesc(maskString);
 		return id;
@@ -441,7 +441,7 @@ public class Prop_SpellAdder extends Property implements AbilityContainer, Trigg
 	@Override
 	public Ability fetchAbility(int index)
 	{
-		List<Ability> spellsV=getMySpellsV();
+		final List<Ability> spellsV=getMySpellsV();
 		if(spellsV.size()==0) return null;
 		if((index<0)||(index>=spellsV.size()))
 			return null;
@@ -449,7 +449,7 @@ public class Prop_SpellAdder extends Property implements AbilityContainer, Trigg
 		{
 			return spellsV.get(index);
 		}
-		catch(Exception e)
+		catch(final Exception e)
 		{
 			return null;
 		}
@@ -457,7 +457,7 @@ public class Prop_SpellAdder extends Property implements AbilityContainer, Trigg
 	@Override
 	public Ability fetchAbility(String ID)
 	{
-		for(Enumeration<Ability> a=abilities();a.hasMoreElements();)
+		for(final Enumeration<Ability> a=abilities();a.hasMoreElements();)
 		{
 			final Ability A=a.nextElement();
 			if(A==null) continue;
@@ -469,7 +469,7 @@ public class Prop_SpellAdder extends Property implements AbilityContainer, Trigg
 	@Override
 	public Ability fetchRandomAbility()
 	{
-		List<Ability> spellsV=getMySpellsV();
+		final List<Ability> spellsV=getMySpellsV();
 		if(spellsV.size()==0) return null;
 		return spellsV.get(CMLib.dice().roll(1, spellsV.size(), -1));
 	}

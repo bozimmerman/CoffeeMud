@@ -49,16 +49,16 @@ public class StatLoader
 		try
 		{
 			D=DB.DBFetch();
-			ResultSet R=D.query("SELECT * FROM CMSTAT WHERE CMSTRT="+startTime);
+			final ResultSet R=D.query("SELECT * FROM CMSTAT WHERE CMSTRT="+startTime);
 			if(R.next())
 			{
 				T=(CoffeeTableRow)CMClass.getCommon("DefaultCoffeeTableRow");
-				long endTime=DBConnections.getLongRes(R,"CMENDT");
-				String data=DBConnections.getRes(R,"CMDATA");
+				final long endTime=DBConnections.getLongRes(R,"CMENDT");
+				final String data=DBConnections.getRes(R,"CMDATA");
 				T.populate(startTime,endTime,data);
 			}
 		}
-		catch(Exception sqle)
+		catch(final Exception sqle)
 		{
 			Log.errOut("DataLoader",sqle);
 		}
@@ -76,22 +76,22 @@ public class StatLoader
 			Log.debugOut("StatLoader","Reading content of Stats since "+CMLib.time().date2String(startTime));
 		DBConnection D=null;
 		CoffeeTableRow T=null;
-		List<CoffeeTableRow> rows=new Vector<CoffeeTableRow>();
+		final List<CoffeeTableRow> rows=new Vector<CoffeeTableRow>();
 		try
 		{
 			D=DB.DBFetch();
-			ResultSet R=D.query("SELECT * FROM CMSTAT WHERE CMSTRT>"+startTime);
+			final ResultSet R=D.query("SELECT * FROM CMSTAT WHERE CMSTRT>"+startTime);
 			while(R.next())
 			{
 				T=(CoffeeTableRow)CMClass.getCommon("DefaultCoffeeTableRow");
-				long strTime=DBConnections.getLongRes(R,"CMSTRT");
-				long endTime=DBConnections.getLongRes(R,"CMENDT");
-				String data=DBConnections.getRes(R,"CMDATA");
+				final long strTime=DBConnections.getLongRes(R,"CMSTRT");
+				final long endTime=DBConnections.getLongRes(R,"CMENDT");
+				final String data=DBConnections.getRes(R,"CMDATA");
 				T.populate(strTime,endTime,data);
 				rows.add(T);
 			}
 		}
-		catch(Exception sqle)
+		catch(final Exception sqle)
 		{
 			Log.errOut("DataLoader",sqle);
 		}
@@ -111,7 +111,7 @@ public class StatLoader
 		{
 			DB.update("DELETE FROM CMSTAT WHERE CMSTRT="+startTime);
 		}
-		catch(Exception sqle)
+		catch(final Exception sqle)
 		{
 			Log.errOut("DataLoader",sqle);
 		}
@@ -125,7 +125,7 @@ public class StatLoader
 		{
 			result=DB.updateWithClobs("UPDATE CMSTAT SET CMDATA=? WHERE CMSTRT="+startTime, data);
 		}
-		catch(Exception sqle)
+		catch(final Exception sqle)
 		{
 			Log.errOut("DataLoader",sqle);
 		}
@@ -135,7 +135,7 @@ public class StatLoader
 	{
 		if(Log.debugChannelOn()&&(CMSecurity.isDebugging(CMSecurity.DbgFlag.CMSTAT)))
 			Log.debugOut("StatLoader","Creating Stat  "+CMLib.time().date2String(startTime));
-		int result = DB.updateWithClobs(
+		final int result = DB.updateWithClobs(
 		 "INSERT INTO CMSTAT ("
 		 +"CMSTRT, "
 		 +"CMENDT, "

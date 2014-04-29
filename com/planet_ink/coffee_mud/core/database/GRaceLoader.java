@@ -62,21 +62,21 @@ public class GRaceLoader
 	public List<DatabaseEngine.AckRecord> DBReadRaces()
 	{
 		DBConnection D=null;
-		List<DatabaseEngine.AckRecord> rows=new Vector<DatabaseEngine.AckRecord>();
+		final List<DatabaseEngine.AckRecord> rows=new Vector<DatabaseEngine.AckRecord>();
 		try
 		{
 			D=DB.DBFetch();
-			ResultSet R=D.query("SELECT * FROM CMGRAC");
+			final ResultSet R=D.query("SELECT * FROM CMGRAC");
 			while(R.next())
 			{
-				DatabaseEngine.AckRecord ack=new DatabaseEngine.AckRecord(
+				final DatabaseEngine.AckRecord ack=new DatabaseEngine.AckRecord(
 						DBConnections.getRes(R,"CMRCID"),
 						DBConnections.getRes(R,"CMRDAT"),
 						"GenRace");
 				rows.add(ack);
 			}
 		}
-		catch(Exception sqle)
+		catch(final Exception sqle)
 		{
 			Log.errOut("DataLoader",sqle);
 		}

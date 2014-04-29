@@ -41,15 +41,15 @@ public class ExpertiseData extends StdWebMacro
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
-		java.util.Map<String,String> parms=parseParms(parm);
-		String last=httpReq.getUrlParameter("EXPERTISE");
+		final java.util.Map<String,String> parms=parseParms(parm);
+		final String last=httpReq.getUrlParameter("EXPERTISE");
 		if(last==null) return " @break@";
 		if(last.length()>0)
 		{
-			ExpertiseLibrary.ExpertiseDefinition E=CMLib.expertises().getDefinition(last);
+			final ExpertiseLibrary.ExpertiseDefinition E=CMLib.expertises().getDefinition(last);
 			if(E!=null)
 			{
-				StringBuffer str=new StringBuffer("");
+				final StringBuffer str=new StringBuffer("");
 				if(parms.containsKey("HELP"))
 				{
 					StringBuilder s=CMLib.help().getHelpText(E.ID,null,false);
@@ -85,9 +85,9 @@ public class ExpertiseData extends StdWebMacro
 				{
 					ExpertiseLibrary.ExpertiseDefinition def=null;
 					Ability A=null;
-					for(Iterator<String> i=CMLib.ableMapper().getAbilityAllowsList(E.ID);i.hasNext();)
+					for(final Iterator<String> i=CMLib.ableMapper().getAbilityAllowsList(E.ID);i.hasNext();)
 					{
-						String allowStr=i.next();
+						final String allowStr=i.next();
 						def=CMLib.expertises().getDefinition(allowStr);
 						if(def!=null)
 							str.append(def.name+", ");

@@ -43,7 +43,7 @@ public class TypeCmd extends Go
 		throws java.io.IOException
 	{
 		final Room R=mob.location();
-		boolean consoleMode=(mob.riding() instanceof Electronics.Computer);
+		final boolean consoleMode=(mob.riding() instanceof Electronics.Computer);
 		if((commands.size()<=1)||(R==null))
 		{
 			if(consoleMode)
@@ -60,12 +60,12 @@ public class TypeCmd extends Go
 				x++;
 			if(x<commands.size()-1)
 			{
-				String typeWhere=CMParms.combine(commands,x+1);
+				final String typeWhere=CMParms.combine(commands,x+1);
 				typeIntoThis=mob.location().fetchFromMOBRoomFavorsItems(mob,null,typeWhere,Wearable.FILTER_ANY);
 				if(typeIntoThis==null)
 					for(int i=0;i<R.numItems();i++)
 					{
-						Item I=R.getItem(i);
+						final Item I=R.getItem(i);
 						if((I instanceof Electronics.ElecPanel)
 						&&(((Electronics.ElecPanel)I).isOpen()))
 						{
@@ -86,11 +86,11 @@ public class TypeCmd extends Go
 			}
 		}
 
-		String enterWhat=CMParms.combine(commands,1);
+		final String enterWhat=CMParms.combine(commands,1);
 		if(typeIntoThis!=null)
 		{
-			String enterStr="^W<S-NAME> enter(s) '"+enterWhat+"' into <T-NAME>.^?";
-			CMMsg msg=CMClass.getMsg(mob,typeIntoThis,null,CMMsg.MSG_WRITE,enterStr,CMMsg.MSG_WRITE,enterWhat,CMMsg.MSG_WRITE,null);
+			final String enterStr="^W<S-NAME> enter(s) '"+enterWhat+"' into <T-NAME>.^?";
+			final CMMsg msg=CMClass.getMsg(mob,typeIntoThis,null,CMMsg.MSG_WRITE,enterStr,CMMsg.MSG_WRITE,enterWhat,CMMsg.MSG_WRITE,null);
 			if(mob.location().okMessage(mob,msg))
 				mob.location().send(mob,msg);
 			return true;

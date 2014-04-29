@@ -31,7 +31,7 @@ public class ReadOnlyMultiList<K> implements List<K>
 	{
 		if((esets==null)||(esets.length==0))
 			return;
-		for(List<K> I : esets)
+		for(final List<K> I : esets)
 			lists.add(I);
 	}
 
@@ -48,7 +48,7 @@ public class ReadOnlyMultiList<K> implements List<K>
 	@Override
 	public int size() {
 		int size = 0;
-		for(List<K> l : lists)
+		for(final List<K> l : lists)
 			size+=l.size();
 		return size;
 	}
@@ -61,7 +61,7 @@ public class ReadOnlyMultiList<K> implements List<K>
 	@Override
 	public boolean contains(Object o)
 	{
-		for(List<K> l : lists)
+		for(final List<K> l : lists)
 			if(l.contains(o))
 				return true;
 		return false;
@@ -74,14 +74,14 @@ public class ReadOnlyMultiList<K> implements List<K>
 	{
 		if(lists.size()>0)
 		{
-			Iterator<List<K>> iter=lists.iterator();
+			final Iterator<List<K>> iter=lists.iterator();
 			Object[] array=iter.next().toArray();
 			for(;iter.hasNext();)
 			{
-				List<K> l=iter.next();
+				final List<K> l=iter.next();
 				if(l.size()>0)
 				{
-					int oldLen=array.length;
+					final int oldLen=array.length;
 					array=Arrays.copyOf(array, oldLen+l.size());
 					System.arraycopy(l.toArray(), 0, array, oldLen, l.size());
 				}
@@ -96,14 +96,14 @@ public class ReadOnlyMultiList<K> implements List<K>
 	{
 		if(lists.size()>0)
 		{
-			Iterator<List<K>> iter=lists.iterator();
+			final Iterator<List<K>> iter=lists.iterator();
 			a=iter.next().toArray(a);
 			for(;iter.hasNext();)
 			{
-				List<K> l=iter.next();
+				final List<K> l=iter.next();
 				if(l.size()>0)
 				{
-					int oldLen=a.length;
+					final int oldLen=a.length;
 					a=Arrays.copyOf(a, oldLen+l.size());
 					System.arraycopy(l.toArray(), 0, a, oldLen, l.size());
 				}
@@ -119,7 +119,7 @@ public class ReadOnlyMultiList<K> implements List<K>
 	@Override
 	public boolean containsAll(Collection<?> c)
 	{
-		for(List<K> l : lists)
+		for(final List<K> l : lists)
 			if(l.containsAll(c))
 				return true;
 		return false;
@@ -142,7 +142,7 @@ public class ReadOnlyMultiList<K> implements List<K>
 	@Override
 	public K get(int index)
 	{
-		for(List<K> l : lists)
+		for(final List<K> l : lists)
 		{
 			if(index<l.size())
 				return l.get(index);
@@ -161,9 +161,9 @@ public class ReadOnlyMultiList<K> implements List<K>
 	public int indexOf(Object o)
 	{
 		int ct=0;
-		for(List<K> l : lists)
+		for(final List<K> l : lists)
 		{
-			int x=l.indexOf(o);
+			final int x=l.indexOf(o);
 			if(x>=0) return ct+x;
 			ct+=x;
 		}
@@ -176,9 +176,9 @@ public class ReadOnlyMultiList<K> implements List<K>
 		int ct=size();
 		for(int i=lists.size()-1;i>=0;i--)
 		{
-			List<K> l=lists.get(i);
+			final List<K> l=lists.get(i);
 			ct-=l.size();
-			int x=l.lastIndexOf(o);
+			final int x=l.lastIndexOf(o);
 			if(x>=0) return ct+x;
 		}
 		return -1;

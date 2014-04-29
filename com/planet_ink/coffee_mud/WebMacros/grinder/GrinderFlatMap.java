@@ -16,6 +16,7 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.net.*;
 import java.util.*;
 import java.net.URLEncoder;
@@ -62,13 +63,13 @@ public class GrinderFlatMap
 		Room R=null;
 		boundsXYXY=xyxy;
 
-		boolean thinArea=CMath.bset(A.flags(),Area.FLAG_THIN);
+		final boolean thinArea=CMath.bset(A.flags(),Area.FLAG_THIN);
 		if(thinArea)
 		{
-			RoomnumberSet currentSet=A.getCachedRoomnumbers();
+			final RoomnumberSet currentSet=A.getCachedRoomnumbers();
 			String roomID=null;
 			//RoomnumberSet loadRooms=(RoomnumberSet)CMClass.getCommon("DefaultRoomnumberSet");
-			for(Enumeration e=A.getProperRoomnumbers().getRoomIDs();e.hasMoreElements();)
+			for(final Enumeration e=A.getProperRoomnumbers().getRoomIDs();e.hasMoreElements();)
 			{
 				// this makes sure that, even though this is
 				// an unloaded room, it is ALSO actually needed
@@ -80,7 +81,7 @@ public class GrinderFlatMap
 					{
 						if(xyxy!=null)
 						{
-							XYVector thisXY=((GridZones)area).getRoomXY(roomID);
+							final XYVector thisXY=((GridZones)area).getRoomXY(roomID);
 							if(thisXY==null) continue;
 							if((thisXY.x<xyxy[0])
 							||(thisXY.y<xyxy[1])
@@ -88,7 +89,7 @@ public class GrinderFlatMap
 							||(thisXY.y>xyxy[3]))
 								continue;
 						}
-						GrinderRoom GR=new GrinderRoom(roomID);
+						final GrinderRoom GR=new GrinderRoom(roomID);
 						areaMap.add(GR);
 						hashRooms.put(GR.roomID,GR);
 					}
@@ -104,13 +105,13 @@ public class GrinderFlatMap
 		// left, now is the time to siphon out the ones we need.
 		if((area instanceof GridZones)&&(xyxy!=null))
 		{
-			Vector finalSet=new Vector();
+			final Vector finalSet=new Vector();
 			for(;r.hasMoreElements();)
 			{
 				R=r.nextElement();
 				if(R.roomID().length()>0)
 				{
-					XYVector thisXY=((GridZones)area).getRoomXY(R.roomID());
+					final XYVector thisXY=((GridZones)area).getRoomXY(R.roomID());
 					if(thisXY==null) continue;
 					if((thisXY.x<xyxy[0])
 					||(thisXY.y<xyxy[1])
@@ -148,7 +149,7 @@ public class GrinderFlatMap
 			R=r.nextElement();
 			if(R.roomID().length()>0)
 			{
-				GrinderRoom GR=new GrinderRoom(R);
+				final GrinderRoom GR=new GrinderRoom(R);
 				areaMap.add(GR);
 				hashRooms.put(GR.roomID,GR);
 			}
@@ -175,8 +176,8 @@ public class GrinderFlatMap
 			Ybound=(boundsXYXY[3]-boundsXYXY[1]);
 			for(int i=areaMap.size()-1;i>=0;i--)
 			{
-				GrinderRoom room=areaMap.get(i);
-				XYVector myxy=((GridZones)area).getRoomXY(room.roomID);
+				final GrinderRoom room=areaMap.get(i);
+				final XYVector myxy=((GridZones)area).getRoomXY(room.roomID);
 				if(myxy==null) continue;
 				if((myxy.x<boundsXYXY[0])||(myxy.y<boundsXYXY[1])||(myxy.x>=boundsXYXY[2])||(myxy.y>=boundsXYXY[3]))
 					areaMap.remove(room);
@@ -194,7 +195,7 @@ public class GrinderFlatMap
 		grid=new GrinderRoom[Xbound+1][Ybound+1];
 		for(int y=0;y<areaMap.size();y++)
 		{
-			GrinderRoom room=areaMap.get(y);
+			final GrinderRoom room=areaMap.get(y);
 			grid[room.xy[0]][room.xy[1]]=room;
 		}
 	}
@@ -205,20 +206,20 @@ public class GrinderFlatMap
 		if((areaMap==null)||(hashRooms==null)||(area instanceof GridZones))
 			return;
 
-		List<List<GrinderRoom>> sets=new Vector();
+		final List<List<GrinderRoom>> sets=new Vector();
 		List<GrinderRoom> bestSet=null;
-		HashSet roomsDone=new HashSet();
+		final HashSet roomsDone=new HashSet();
 		boolean didSomething=true;
 		// first, cluster the rooms WITHOUT positioning them
-		List<GrinderRoom> finalCluster=new Vector();
+		final List<GrinderRoom> finalCluster=new Vector();
 		while((roomsDone.size()<areaMap.size())&&(didSomething))
 		{
 			didSomething=false;
 			for(int i=0;i<areaMap.size();i++)
 			{
-				GrinderRoom room=areaMap.get(i);
+				final GrinderRoom room=areaMap.get(i);
 				if(roomsDone.contains(room.roomID)) continue;
-				List<GrinderRoom> V=scoreRoom(hashRooms, room, roomsDone,false);
+				final List<GrinderRoom> V=scoreRoom(hashRooms, room, roomsDone,false);
 				if(bestSet==null)
 					bestSet=V;
 				else
@@ -231,7 +232,7 @@ public class GrinderFlatMap
 					finalCluster.add(bestSet.get(0));
 				else
 				{
-					GrinderRoom winnerR=bestSet.get(0);
+					final GrinderRoom winnerR=bestSet.get(0);
 					scoreRoom(hashRooms, winnerR, roomsDone,true);
 					sets.add(bestSet);
 				}
@@ -247,8 +248,8 @@ public class GrinderFlatMap
 				finalCluster.add(areaMap.get(a));
 		if(finalCluster.size()>0)
 		{
-			boolean[][] miniGrid=new boolean[finalCluster.size()+1][finalCluster.size()+1];
-			int[] midXY=new int[2];
+			final boolean[][] miniGrid=new boolean[finalCluster.size()+1][finalCluster.size()+1];
+			final int[] midXY=new int[2];
 			midXY[0]=(int)Math.round(Math.floor((finalCluster.size()+1.0)/2.0));
 			midXY[1]=(int)Math.round(Math.floor((finalCluster.size()+1.0)/2.0));
 			finalCluster.get(0).xy=midXY.clone();
@@ -279,19 +280,19 @@ public class GrinderFlatMap
 		if((areaMap==null)||(hashRooms==null)||(area instanceof GridZones))
 			return;
 
-		List<List<GrinderRoom>> sets=new Vector();
-		Set<String> roomsDone=new HashSet<String>();
+		final List<List<GrinderRoom>> sets=new Vector();
+		final Set<String> roomsDone=new HashSet<String>();
 		boolean didSomething=true;
 		// first, cluster the rooms WITHOUT positioning them
-		List<GrinderRoom> finalCluster=new Vector();
+		final List<GrinderRoom> finalCluster=new Vector();
 		while((roomsDone.size()<areaMap.size())&&(didSomething))
 		{
 			didSomething=false;
 			for(int i=0;i<areaMap.size();i++)
 			{
-				GrinderRoom room=areaMap.get(i);
+				final GrinderRoom room=areaMap.get(i);
 				if(roomsDone.contains(room.roomID)) continue;
-				List<GrinderRoom> V=scoreRoomII(hashRooms, room, roomsDone);
+				final List<GrinderRoom> V=scoreRoomII(hashRooms, room, roomsDone);
 				if((V!=null)&&(V.size()>0))
 				{
 					if(V.size()==1)
@@ -308,8 +309,8 @@ public class GrinderFlatMap
 				finalCluster.add(areaMap.get(a));
 		if(finalCluster.size()>0)
 		{
-			boolean[][] miniGrid=new boolean[finalCluster.size()+1][finalCluster.size()+1];
-			int[] midXY=new int[2];
+			final boolean[][] miniGrid=new boolean[finalCluster.size()+1][finalCluster.size()+1];
+			final int[] midXY=new int[2];
 			midXY[0]=(int)Math.round(Math.floor((finalCluster.size()+1.0)/2.0));
 			midXY[1]=(int)Math.round(Math.floor((finalCluster.size()+1.0)/2.0));
 			finalCluster.get(0).xy=midXY.clone();
@@ -339,14 +340,14 @@ public class GrinderFlatMap
 	{
 		// figure out width height, and xy bounds
 		// store them in a vector parallel to each
-		Vector sizeInfo=new Vector(sets.size());
+		final Vector sizeInfo=new Vector(sets.size());
 		GrinderRoom R=null;
 		for(int s=0;s<sets.size();s++)
 		{
-			List<GrinderRoom> set=sets.get(s);
+			final List<GrinderRoom> set=sets.get(s);
 			R=(set.get(0));
-			int[] minXY=new int[]{R.xy[0],R.xy[1]};
-			int[] maxXY=new int[]{R.xy[0],R.xy[1]};
+			final int[] minXY=new int[]{R.xy[0],R.xy[1]};
+			final int[] maxXY=new int[]{R.xy[0],R.xy[1]};
 			for(int r=1;r<set.size();r++)
 			{
 				R=(set.get(r));
@@ -356,7 +357,7 @@ public class GrinderFlatMap
 				if(R.xy[0]>maxXY[0]) maxXY[0]=R.xy[0];
 				if(R.xy[1]>maxXY[1]) maxXY[1]=R.xy[1];
 			}
-			int[] widthHeightXY=new int[2];
+			final int[] widthHeightXY=new int[2];
 			widthHeightXY[0]=maxXY[0]-minXY[0];
 			widthHeightXY[1]=maxXY[1]-minXY[1];
 			for(int r=0;r<set.size();r++)
@@ -370,8 +371,8 @@ public class GrinderFlatMap
 
 		// now cluster them into a top-level grid.. we'll trim the grid later.
 		// yes, i know there must be a more efficient way...
-		List<GrinderRoom>[][] grid=new Vector[sets.size()+1][sets.size()+1];
-		int[] midXY=new int[2];
+		final List<GrinderRoom>[][] grid=new Vector[sets.size()+1][sets.size()+1];
+		final int[] midXY=new int[2];
 		midXY[0]=(int)Math.round(Math.floor((sets.size()+1.0)/2.0));
 		midXY[1]=(int)Math.round(Math.floor((sets.size()+1.0)/2.0));
 		grid[midXY[0]][midXY[1]]=sets.get(0);
@@ -426,9 +427,9 @@ public class GrinderFlatMap
 		int nextBottomMostY=0;
 		for(int y=mostTop;y<grid[0].length;y++)
 		{
-			for(int x=0;x<grid.length;x++)
+			for (final List<GrinderRoom>[] element : grid)
 			{
-				set=grid[x][y];
+				set=element[y];
 				if(set!=null)
 					for(int r=0;r<set.size();r++)
 					{
@@ -461,7 +462,7 @@ public class GrinderFlatMap
 		if(areaMap!=null)
 			for(int r=0;r<areaMap.size();r++)
 			{
-				GrinderRoom room=areaMap.get(r);
+				final GrinderRoom room=areaMap.get(r);
 				if(room.roomID.equalsIgnoreCase(ID))
 					return room;
 			}
@@ -472,7 +473,7 @@ public class GrinderFlatMap
 
 	public boolean anythingThatDirection(GrinderRoom room, int direction)
 	{
-		GrinderDir D=room.doors[direction];
+		final GrinderDir D=room.doors[direction];
 		if((D==null)||(D.room.length()==0))
 			return false;
 		return true;
@@ -480,11 +481,11 @@ public class GrinderFlatMap
 
 	public List<GrinderRoom> scoreRoomII(Map<String,GrinderRoom> H, GrinderRoom room, Set<String> roomsDone)
 	{
-		HashSet coordsDone=new HashSet();
+		final HashSet coordsDone=new HashSet();
 		coordsDone.add(0+"/"+0);
 		roomsDone.add(room.roomID);
 
-		List<GrinderRoom> V=new Vector();
+		final List<GrinderRoom> V=new Vector();
 		V.add(room);
 		int startHere=0;
 		room.xy=new int[2];
@@ -493,11 +494,11 @@ public class GrinderFlatMap
 		while(startHere!=V.size())
 		{
 			int s=startHere;
-			int size=V.size();
+			final int size=V.size();
 			startHere=size;
 			for(;s<size;s++)
 			{
-				GrinderRoom R=V.get(s);
+				final GrinderRoom R=V.get(s);
 				for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 					if((R.doors[d]!=null)
 					&&(R.doors[d].room!=null)
@@ -547,28 +548,28 @@ public class GrinderFlatMap
 
 	public Vector scoreRoom(Map<String,GrinderRoom> H, GrinderRoom room, HashSet roomsDone, boolean finalPosition)
 	{
-		HashSet coordsDone=new HashSet();
+		final HashSet coordsDone=new HashSet();
 		coordsDone.add(0+"/"+0);
 
-		HashSet myRoomsDone=new HashSet();
+		final HashSet myRoomsDone=new HashSet();
 		myRoomsDone.add(room.roomID);
 
-		Hashtable xys=new Hashtable();
+		final Hashtable xys=new Hashtable();
 		int[] xy=new int[2];
 		if(finalPosition) room.xy=xy;
 		xys.put(room.roomID,xy);
 
-		Vector V=new Vector();
+		final Vector V=new Vector();
 		V.addElement(room);
 		int startHere=0;
 		while(startHere!=V.size())
 		{
 			int s=startHere;
-			int size=V.size();
+			final int size=V.size();
 			startHere=size;
 			for(;s<size;s++)
 			{
-				GrinderRoom R=(GrinderRoom)V.elementAt(s);
+				final GrinderRoom R=(GrinderRoom)V.elementAt(s);
 				xy=(int[])xys.get(R.roomID);
 		 		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 		 			if((d!=Directions.UP)
@@ -579,9 +580,9 @@ public class GrinderFlatMap
 		 			&&(!myRoomsDone.contains(R.doors[d].room))
 		 			&&(!roomsDone.contains(R.doors[d].room)))
 		 			{
-		 				GrinderRoom R2=H.get(R.doors[d].room);
+		 				final GrinderRoom R2=H.get(R.doors[d].room);
 		 				if(R2==null) continue;
-		 				int[] xy2=newXY(xy,d);
+		 				final int[] xy2=newXY(xy,d);
 		 				xys.put(R2.roomID,xy2);
 		 				if(!coordsDone.contains(xy2[0]+"/"+xy2[1]))
 		 				{
@@ -598,7 +599,7 @@ public class GrinderFlatMap
 
 	public StringBuffer getHTMLTable(HTTPRequest httpReq)
 	{
-		StringBuffer buf=new StringBuffer("");
+		final StringBuffer buf=new StringBuffer("");
 		buf.append("<TABLE WIDTH="+((Xbound+1)*130)+" BORDER=0 CELLSPACING=0 CELLPADDING=0>");
 		for(int l=0;l<5;l++)
 		{
@@ -616,7 +617,7 @@ public class GrinderFlatMap
 				buf.append("<TR HEIGHT=20>");
 				for(int x=Xstart;x<=Xbound;x++)
 				{
-					GrinderRoom GR=grid[x][y];
+					final GrinderRoom GR=grid[x][y];
 					if(GR==null)
 						buf.append("<TD COLSPAN=5"+((boundsXYXY!=null)?" ID=X"+(x+boundsXYXY[0])+"_"+(y+boundsXYXY[1]):"")+"><BR></TD>");
 					else
@@ -668,7 +669,7 @@ public class GrinderFlatMap
 							{
 								buf.append("<a name=\""+URLEncoder.encode(GR.roomID,"UTF-8")+"\" href=\"javascript:RC('"+GR.roomID+"');\"><FONT SIZE=-1><B>"+roomID+"</B></FONT></a><BR>");
 							}
-							catch(java.io.UnsupportedEncodingException e)
+							catch(final java.io.UnsupportedEncodingException e)
 							{
 								Log.errOut("GrinderMap","Wrong Encoding");
 							}
@@ -787,7 +788,7 @@ public class GrinderFlatMap
 	{
 		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 		{
-			GrinderRoom possRoom=getRoomInDir(room,d);
+			final GrinderRoom possRoom=getRoomInDir(room,d);
 			if((possRoom!=null)&&(possRoom.roomID.equals(roomID)))
 				return d;
 		}
@@ -799,7 +800,7 @@ public class GrinderFlatMap
 		if((room==null)
 		||(room.doors==null)
 		||(d>=room.doors.length)) return "";
-		GrinderDir dir=room.doors[d];
+		final GrinderDir dir=room.doors[d];
 		String dirLetter=""+Directions.getDirectionChar(d);
 		GrinderRoom roomPointer=null;
 		if((dir==null)||(dir.room.length()==0))
@@ -807,17 +808,17 @@ public class GrinderFlatMap
 		else
 		if((d==Directions.UP)||(d==Directions.DOWN))
 		{
-			int actualDir=findRelGridDir(room,dir.room);
+			final int actualDir=findRelGridDir(room,dir.room);
 			if(actualDir>=0) roomPointer=getRoomInDir(room,actualDir);
 		}
 		else
 			roomPointer=getRoomInDir(room,d);
 
-		String dirName=Directions.getDirectionName(d);
+		final String dirName=Directions.getDirectionName(d);
 		if((dir.room.length()>0)&&((roomPointer==null)||(!roomPointer.roomID.equals(dir.room))))
 			dirLetter+="R";
-		String theRest=".gif\" BORDER=0 ALT=\""+dirName+" to "+dir.room+"\"></a>";
-		Exit exit=dir.exit;
+		final String theRest=".gif\" BORDER=0 ALT=\""+dirName+" to "+dir.room+"\"></a>";
+		final Exit exit=dir.exit;
 		if(exit==null)
 			return "<a href=\"javascript:CEX('"+dirName+"','"+room.roomID+"','"+dir.room+"');\"><IMG SRC=\"images/U"+dirLetter+theRest;
 		else
@@ -867,7 +868,7 @@ public class GrinderFlatMap
 	// this is much like getHTMLTable, but tiny rooms for world map viewing. No exits or ID's for now.
 	public StringBuffer getHTMLMap(HTTPRequest httpReq, int roomSize)
 	{
-		StringBuffer buf = new StringBuffer("");
+		final StringBuffer buf = new StringBuffer("");
 		buf.append("<TABLE WIDTH=" + ( (Xbound + 1) * roomSize) +
 				   " BORDER=0 CELLSPACING=0 CELLPADDING=0>");
 		buf.append("<TR HEIGHT=" + roomSize + ">");
@@ -879,8 +880,8 @@ public class GrinderFlatMap
 			buf.append("<TR HEIGHT=" + roomSize + ">");
 			for (int x = 0; x <= Xbound; x++)
 			{
-				GrinderRoom GR = grid[x][y];
-				String tdins=(boundsXYXY!=null)?" ID=X"+(x+boundsXYXY[0])+"_"+(y+boundsXYXY[1]):"";
+				final GrinderRoom GR = grid[x][y];
+				final String tdins=(boundsXYXY!=null)?" ID=X"+(x+boundsXYXY[0])+"_"+(y+boundsXYXY[1]):"";
 				if (GR == null)
 					buf.append("<TD"+tdins+"></TD>");
 				  else

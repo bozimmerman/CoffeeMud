@@ -50,7 +50,7 @@ public class Prayer_HuntGood extends Prayer_HuntEvil
 		if(room==null) return null;
 		for(int i=0;i<room.numInhabitants();i++)
 		{
-			MOB mob=room.fetchInhabitant(i);
+			final MOB mob=room.fetchInhabitant(i);
 			if(CMLib.flags().isGood(mob))
 				return mob;
 		}

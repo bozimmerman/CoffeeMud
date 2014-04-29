@@ -77,7 +77,7 @@ public class Thief_Mark extends ThiefSkill
 		super.affectPhyStats(affected,affectableStats);
 		if((affected!=null)&&(affected instanceof MOB)&&(((MOB)affected).getVictim()==mark))
 		{
-			int xlvl=super.getXLEVELLevel(invoker());
+			final int xlvl=super.getXLEVELLevel(invoker());
 			affectableStats.setDamage(affectableStats.damage()+((ticks+xlvl)/20));
 			affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+((ticks+xlvl)/2));
 		}
@@ -89,14 +89,14 @@ public class Thief_Mark extends ThiefSkill
 		if((text().length()==0)
 		||((affected==null)||(!(affected instanceof MOB))))
 		   return super.tick(me,tickID);
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		if(mob.location()!=null)
 		{
 			if(mark==null)
 			{
-				int x=text().indexOf('/');
+				final int x=text().indexOf('/');
 				if(x<0) return super.tick(me,tickID);
-				MOB M=mob.location().fetchInhabitant(text().substring(0,x));
+				final MOB M=mob.location().fetchInhabitant(text().substring(0,x));
 				if(M!=null)
 				{
 					mark=M;
@@ -136,7 +136,7 @@ public class Thief_Mark extends ThiefSkill
 			mob.tell("Who would you like to mark?");
 			return false;
 		}
-		MOB target=getTarget(mob,commands,givenTarget);
+		final MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 		if(target==mob)
 		{
@@ -156,11 +156,11 @@ public class Thief_Mark extends ThiefSkill
 		int levelDiff=target.phyStats().level()-(mob.phyStats().level()+abilityCode()+(2*super.getXLEVELLevel(mob)));
 		if(levelDiff<0) levelDiff=0;
 		levelDiff*=5;
-		boolean success=proficiencyCheck(mob,-levelDiff,auto);
+		final boolean success=proficiencyCheck(mob,-levelDiff,auto);
 
 		if(!success)
 			return beneficialVisualFizzle(mob,target,"<S-NAME> lose(s) <S-HIS-HER> concentration on <T-NAMESELF>.");
-		CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,"<S-NAME> mark(s) <T-NAMESELF>.",CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);
+		final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,"<S-NAME> mark(s) <T-NAMESELF>.",CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

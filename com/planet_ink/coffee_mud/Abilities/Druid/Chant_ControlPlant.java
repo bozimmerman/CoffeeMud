@@ -63,7 +63,7 @@ public class Chant_ControlPlant extends Chant
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		Item myPlant=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_ANY);
+		final Item myPlant=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_ANY);
 		if(myPlant==null) return false;
 
 		if(isPlant(myPlant)==null)
@@ -82,15 +82,15 @@ public class Chant_ControlPlant extends Chant
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,myPlant,this,verbalCastCode(mob,myPlant,auto),auto?"":"^S<S-NAME> chant(s) to <T-NAMESELF>!^?");
+			final CMMsg msg=CMClass.getMsg(mob,myPlant,this,verbalCastCode(mob,myPlant,auto),auto?"":"^S<S-NAME> chant(s) to <T-NAMESELF>!^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				Ability A=isPlant(myPlant);
+				final Ability A=isPlant(myPlant);
 				if(A!=null)	A.setInvoker(mob);
 				mob.tell("You wrest control of "+myPlant.name()+" from "+myPlant.secretIdentity()+".");
 				myPlant.setSecretIdentity(mob.Name());

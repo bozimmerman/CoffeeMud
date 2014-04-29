@@ -124,7 +124,7 @@ public class B64Encoder
 		{
 			__bytes = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/".getBytes( PREFERRED_ENCODING );
 		}   // end try
-		catch (java.io.UnsupportedEncodingException use)
+		catch (final java.io.UnsupportedEncodingException use)
 		{
 			__bytes = _NATIVE_ALPHABET; // Fall back to native encoding
 		}   // end catch
@@ -134,7 +134,7 @@ public class B64Encoder
 	protected static byte[] encode3to4(byte[] source, int srcOffset, int numSigBytes,
 									   byte[] destination, int destOffset )
 	{
-		int inBuff =   ( numSigBytes > 0 ? ((source[ srcOffset     ] << 24) >>>  8) : 0 )
+		final int inBuff =   ( numSigBytes > 0 ? ((source[ srcOffset	 ] << 24) >>>  8) : 0 )
 					 | ( numSigBytes > 1 ? ((source[ srcOffset + 1 ] << 24) >>> 16) : 0 )
 					 | ( numSigBytes > 2 ? ((source[ srcOffset + 2 ] << 24) >>> 24) : 0 );
 
@@ -173,13 +173,13 @@ public class B64Encoder
 
 	public static String B64encodeObject( java.io.Serializable serializableObject, int options )
 	{
-		java.io.ByteArrayOutputStream  baos  = new java.io.ByteArrayOutputStream();
+		final java.io.ByteArrayOutputStream  baos  = new java.io.ByteArrayOutputStream();
 		java.io.OutputStream		   b64os = null;
 		java.io.ObjectOutputStream     oos   = null;
 		java.util.zip.GZIPOutputStream gzos  = null;
 
-		int gzip		   = (options & GZIP);
-		int dontBreakLines = (options & DONT_BREAK_LINES);
+		final int gzip		   = (options & GZIP);
+		final int dontBreakLines = (options & DONT_BREAK_LINES);
 
 		try
 		{
@@ -195,24 +195,24 @@ public class B64Encoder
 
 			oos.writeObject( serializableObject );
 		}
-		catch( java.io.IOException e )
+		catch( final java.io.IOException e )
 		{
 			e.printStackTrace();
 			return null;
 		}
 		finally
 		{
-			try{ if(oos!=null)oos.close();   } catch( Exception e ){}
-			try{ if(gzos!=null)gzos.close();  } catch( Exception e ){}
-			try{ if(b64os!=null)b64os.close(); } catch( Exception e ){}
-			try{ baos.close();  } catch( Exception e ){}
+			try{ if(oos!=null)oos.close();   } catch( final Exception e ){}
+			try{ if(gzos!=null)gzos.close();  } catch( final Exception e ){}
+			try{ if(b64os!=null)b64os.close(); } catch( final Exception e ){}
+			try{ baos.close();  } catch( final Exception e ){}
 		}
 
 		try
 		{
 			return new String( baos.toByteArray(), PREFERRED_ENCODING );
 		}
-		catch (java.io.UnsupportedEncodingException uue)
+		catch (final java.io.UnsupportedEncodingException uue)
 		{
 			return new String( baos.toByteArray() );
 		}
@@ -236,12 +236,12 @@ public class B64Encoder
 
 	public static String B64encodeBytes( byte[] source, int off, int len, int options )
 	{
-		int dontBreakLines = ( options & DONT_BREAK_LINES );
-		int gzip		   = ( options & GZIP   );
+		final int dontBreakLines = ( options & DONT_BREAK_LINES );
+		final int gzip		   = ( options & GZIP   );
 
 		if( gzip == GZIP )
 		{
-			java.io.ByteArrayOutputStream  baos  = new java.io.ByteArrayOutputStream();
+			final java.io.ByteArrayOutputStream  baos  = new java.io.ByteArrayOutputStream();
 			java.util.zip.GZIPOutputStream gzos  = null;
 			B64OutputStream 		b64os = null;
 
@@ -254,35 +254,35 @@ public class B64Encoder
 				gzos.write( source, off, len );
 				gzos.close();
 			}
-			catch( java.io.IOException e )
+			catch( final java.io.IOException e )
 			{
 				e.printStackTrace();
 				return null;
 			}
 			finally
 			{
-				try{ if(gzos!=null)gzos.close();  } catch( Exception e ){}
-				try{ if(b64os!=null)b64os.close(); } catch( Exception e ){}
-				try{ baos.close();  } catch( Exception e ){}
+				try{ if(gzos!=null)gzos.close();  } catch( final Exception e ){}
+				try{ if(b64os!=null)b64os.close(); } catch( final Exception e ){}
+				try{ baos.close();  } catch( final Exception e ){}
 			}
 			try
 			{
 				return new String( baos.toByteArray(), PREFERRED_ENCODING );
 			}
-			catch (java.io.UnsupportedEncodingException uue)
+			catch (final java.io.UnsupportedEncodingException uue)
 			{
 				return new String( baos.toByteArray() );
 			}
 		}
-		boolean breakLines = dontBreakLines == 0;
+		final boolean breakLines = dontBreakLines == 0;
 
-		int    len43   = len * 4 / 3;
-		byte[] outBuff = new byte[   ( len43 )  					// Main 4:3
+		final int    len43   = len * 4 / 3;
+		final byte[] outBuff = new byte[   ( len43 )  					// Main 4:3
 								   + ( (len % 3) > 0 ? 4 : 0 )  	// Account for padding
 								   + (breakLines ? ( len43 / MAX_LINE_LENGTH ) : 0) ]; // New lines
 		int d = 0;
 		int e = 0;
-		int len2 = len - 2;
+		final int len2 = len - 2;
 		int lineLength = 0;
 		for( ; d < len2; d+=3, e+=4 )
 		{
@@ -306,7 +306,7 @@ public class B64Encoder
 		{
 			return new String( outBuff, 0, e, PREFERRED_ENCODING );
 		}
-		catch (java.io.UnsupportedEncodingException uue)
+		catch (final java.io.UnsupportedEncodingException uue)
 		{
 			return new String( outBuff, 0, e );
 		}
@@ -317,7 +317,7 @@ public class B64Encoder
 	{
 		if( source[ srcOffset + 2] == EQUALS_SIGN )
 		{
-			int outBuff =   ( ( DECODABET[ source[ srcOffset	] ] & 0xFF ) << 18 )
+			final int outBuff =   ( ( DECODABET[ source[ srcOffset	] ] & 0xFF ) << 18 )
 						  | ( ( DECODABET[ source[ srcOffset + 1] ] & 0xFF ) << 12 );
 
 			destination[ destOffset ] = (byte)( outBuff >>> 16 );
@@ -326,7 +326,7 @@ public class B64Encoder
 
 		else if( source[ srcOffset + 3 ] == EQUALS_SIGN )
 		{
-			int outBuff =   ( ( DECODABET[ source[ srcOffset	 ] ] & 0xFF ) << 18 )
+			final int outBuff =   ( ( DECODABET[ source[ srcOffset	 ] ] & 0xFF ) << 18 )
 						  | ( ( DECODABET[ source[ srcOffset + 1 ] ] & 0xFF ) << 12 )
 						  | ( ( DECODABET[ source[ srcOffset + 2 ] ] & 0xFF ) <<  6 );
 
@@ -339,7 +339,7 @@ public class B64Encoder
 		{
 			try
 			{
-			int outBuff =   ( ( DECODABET[ source[ srcOffset	 ] ] & 0xFF ) << 18 )
+			final int outBuff =   ( ( DECODABET[ source[ srcOffset	 ] ] & 0xFF ) << 18 )
 						  | ( ( DECODABET[ source[ srcOffset + 1 ] ] & 0xFF ) << 12 )
 						  | ( ( DECODABET[ source[ srcOffset + 2 ] ] & 0xFF ) <<  6)
 						  | ( ( DECODABET[ source[ srcOffset + 3 ] ] & 0xFF )      );
@@ -350,7 +350,7 @@ public class B64Encoder
 			destination[ destOffset + 2 ] = (byte)( outBuff 	  );
 
 			return 3;
-			}catch( Exception e)
+			}catch( final Exception e)
 			{
 				Log.errOut("CMEncoder",e);
 				return -1;
@@ -360,11 +360,11 @@ public class B64Encoder
 
 	public static byte[] B64decode( byte[] source, int off, int len )
 	{
-		int    len34   = len * 3 / 4;
-		byte[] outBuff = new byte[ len34 ]; // Upper limit on size of output
+		final int    len34   = len * 3 / 4;
+		final byte[] outBuff = new byte[ len34 ]; // Upper limit on size of output
 		int    outBuffPosn = 0;
 
-		byte[] b4   	 = new byte[4];
+		final byte[] b4   	 = new byte[4];
 		int    b4Posn    = 0;
 		int    i		 = 0;
 		byte   sbiCrop   = 0;
@@ -396,7 +396,7 @@ public class B64Encoder
 			}
 		}
 
-		byte[] out = new byte[ outBuffPosn ];
+		final byte[] out = new byte[ outBuffPosn ];
 		System.arraycopy( outBuff, 0, out, 0, outBuffPosn );
 		return out;
 	}
@@ -408,7 +408,7 @@ public class B64Encoder
 		{
 			bytes = s.getBytes( PREFERRED_ENCODING );
 		}
-		catch( java.io.UnsupportedEncodingException uee )
+		catch( final java.io.UnsupportedEncodingException uee )
 		{
 			bytes = s.getBytes();
 		}
@@ -416,13 +416,13 @@ public class B64Encoder
 		if( bytes != null && bytes.length >= 4 )
 		{
 
-			int head = (bytes[0] & 0xff) | ((bytes[1] << 8) & 0xff00);
+			final int head = (bytes[0] & 0xff) | ((bytes[1] << 8) & 0xff00);
 			if( java.util.zip.GZIPInputStream.GZIP_MAGIC == head )
 			{
 				java.io.ByteArrayInputStream  bais = null;
 				java.util.zip.GZIPInputStream gzis = null;
 				java.io.ByteArrayOutputStream baos = null;
-				byte[] buffer = new byte[2048];
+				final byte[] buffer = new byte[2048];
 				int    length = 0;
 
 				try
@@ -438,13 +438,13 @@ public class B64Encoder
 					bytes = baos.toByteArray();
 
 				}
-				catch( java.io.IOException e )
+				catch( final java.io.IOException e )
 				{}
 				finally
 				{
-					try{ if(baos!=null)baos.close(); } catch( Exception e ){}
-					try{ if(gzis!=null)gzis.close(); } catch( Exception e ){}
-					try{ if(bais!=null)bais.close(); } catch( Exception e ){}
+					try{ if(baos!=null)baos.close(); } catch( final Exception e ){}
+					try{ if(gzis!=null)gzis.close(); } catch( final Exception e ){}
+					try{ if(bais!=null)bais.close(); } catch( final Exception e ){}
 				}
 			}
 		}
@@ -454,7 +454,7 @@ public class B64Encoder
 
 	public static Object B64decodeToObject( String encodedObject )
 	{
-		byte[] objBytes = B64decode( encodedObject );
+		final byte[] objBytes = B64decode( encodedObject );
 
 		java.io.ByteArrayInputStream  bais = null;
 		java.io.ObjectInputStream     ois  = null;
@@ -467,18 +467,18 @@ public class B64Encoder
 
 			obj = ois.readObject();
 		}
-		catch( java.io.IOException e )
+		catch( final java.io.IOException e )
 		{
 			e.printStackTrace();
 		}
-		catch( java.lang.ClassNotFoundException e )
+		catch( final java.lang.ClassNotFoundException e )
 		{
 			e.printStackTrace();
 		}
 		finally
 		{
-			try{ if(bais!=null)bais.close(); } catch( Exception e ){}
-			try{ if(ois!=null)ois.close();  } catch( Exception e ){}
+			try{ if(bais!=null)bais.close(); } catch( final Exception e ){}
+			try{ if(ois!=null)ois.close();  } catch( final Exception e ){}
 		}
 
 		return obj;
@@ -495,14 +495,14 @@ public class B64Encoder
 			bos.write( dataToEncode );
 			success = true;
 		}
-		catch( java.io.IOException e )
+		catch( final java.io.IOException e )
 		{
 
 			success = false;
 		}
 		finally
 		{
-			try{ if(bos!=null)bos.close(); } catch( Exception e ){}
+			try{ if(bos!=null)bos.close(); } catch( final Exception e ){}
 		}
 
 		return success;
@@ -519,13 +519,13 @@ public class B64Encoder
 				bos.write( dataToDecode.getBytes( PREFERRED_ENCODING ) );
 				success = true;
 		}
-		catch( java.io.IOException e )
+		catch( final java.io.IOException e )
 		{
 			success = false;
 		}
 		finally
 		{
-				try{ if(bos!=null)bos.close(); } catch( Exception e ){}
+				try{ if(bos!=null)bos.close(); } catch( final Exception e ){}
 		}
 
 		return success;
@@ -537,7 +537,7 @@ public class B64Encoder
 		B64InputStream bis = null;
 		try
 		{
-			java.io.File file = new java.io.File( filename );
+			final java.io.File file = new java.io.File( filename );
 			byte[] buffer = null;
 			int length   = 0;
 			int numBytes = 0;
@@ -560,13 +560,13 @@ public class B64Encoder
 			System.arraycopy( buffer, 0, decodedData, 0, length );
 
 		}
-		catch( java.io.IOException e )
+		catch( final java.io.IOException e )
 		{
 			System.err.println( "Error decoding from file " + filename );
 		}
 		finally
 		{
-			try{ if(bis!=null)bis.close(); } catch( Exception e) {}
+			try{ if(bis!=null)bis.close(); } catch( final Exception e) {}
 		}
 
 		return decodedData;
@@ -578,8 +578,8 @@ public class B64Encoder
 		B64InputStream bis = null;
 		try
 		{
-			java.io.File file = new java.io.File( filename );
-			byte[] buffer = new byte[ (int)(file.length() * 1.4) ];
+			final java.io.File file = new java.io.File( filename );
+			final byte[] buffer = new byte[ (int)(file.length() * 1.4) ];
 			int length   = 0;
 			int numBytes = 0;
 			bis = new B64InputStream(
@@ -590,13 +590,13 @@ public class B64Encoder
 			encodedData = new String( buffer, 0, length, PREFERRED_ENCODING );
 
 		}
-		catch( java.io.IOException e )
+		catch( final java.io.IOException e )
 		{
 			System.err.println( "Error encoding from file " + filename );
 		}
 		finally
 		{
-			try{ if(bis!=null)bis.close(); } catch( Exception e) {}
+			try{ if(bis!=null)bis.close(); } catch( final Exception e) {}
 		}
 
 		return encodedData;
@@ -604,13 +604,13 @@ public class B64Encoder
 
 	private static class B64InputStream extends java.io.FilterInputStream
 	{
-		private boolean encode; 		// Encoding or decoding
+		private final boolean encode; 		// Encoding or decoding
 		private int 	position;   	// Current position in the buffer
-		private byte[]  buffer; 		// Small buffer holding converted data
-		private int 	bufferLength;   // Length of buffer (3 or 4)
+		private final byte[]  buffer; 		// Small buffer holding converted data
+		private final int 	bufferLength;   // Length of buffer (3 or 4)
 		private int 	numSigBytes;	// Number of meaningful bytes in the buffer
 		private int 	lineLength;
-		private boolean breakLines; 	// Break lines at less than 80 characters
+		private final boolean breakLines; 	// Break lines at less than 80 characters
 
 		public B64InputStream( java.io.InputStream in, int options )
 		{
@@ -630,13 +630,13 @@ public class B64Encoder
 			{
 				if( encode )
 				{
-					byte[] b3 = new byte[3];
+					final byte[] b3 = new byte[3];
 					int numBinaryBytes = 0;
 					for( int i = 0; i < 3; i++ )
 					{
 						try
 						{
-							int b = in.read();
+							final int b = in.read();
 
 							if( b >= 0 )
 							{
@@ -645,7 +645,7 @@ public class B64Encoder
 							}
 
 						}
-						catch( java.io.IOException e )
+						catch( final java.io.IOException e )
 						{
 							if( i == 0 )
 								throw e;
@@ -666,7 +666,7 @@ public class B64Encoder
 				}
 				else
 				{
-					byte[] b4 = new byte[4];
+					final byte[] b4 = new byte[4];
 					int i = 0;
 					for( i = 0; i < 4; i++ )
 					{
@@ -707,7 +707,7 @@ public class B64Encoder
 					return '\n';
 				}
 				lineLength++;
-				int b = buffer[ position++ ];
+				final int b = buffer[ position++ ];
 				if( position >= bufferLength )
 					position = -1;
 				return b & 0xFF;
@@ -737,14 +737,14 @@ public class B64Encoder
 
 	private static class B64OutputStream extends java.io.FilterOutputStream
 	{
-		private boolean encode;
+		private final boolean encode;
 		private int 	position;
 		private byte[]  buffer;
-		private int 	bufferLength;
+		private final int 	bufferLength;
 		private int 	lineLength;
-		private boolean breakLines;
-		private byte[]  b4; // Scratch used in a few places
-		private boolean suspendEncoding;
+		private final boolean breakLines;
+		private final byte[]  b4; // Scratch used in a few places
+		private final boolean suspendEncoding;
 
 		public B64OutputStream( java.io.OutputStream out, int options )
 		{
@@ -790,7 +790,7 @@ public class B64Encoder
 					buffer[ position++ ] = (byte)theByte;
 					if( position >= bufferLength )
 					{
-						int len = decode4to3( buffer, 0, b4, 0 );
+						final int len = decode4to3( buffer, 0, b4, 0 );
 						out.write( b4, 0, len );
 						position = 0;
 					}

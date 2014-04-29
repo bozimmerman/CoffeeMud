@@ -67,7 +67,7 @@ public class MWHTTPRequest implements HTTPRequest
 
 	private HTTPMethod 	 		 requestType  = null;		// request type defs to null so that method-not-allowed is generated
 	private String 	 			 requestString= null;		// full request line, including method, path, etc..
-	private Map<String,String>   headers	  = new Hashtable<String,String>(); // all the base headers received for this request
+	private final Map<String,String>   headers	  = new Hashtable<String,String>(); // all the base headers received for this request
 	private Map<String,String>   urlParameters= null;   	// holds url parameters, urlencoded variables, and form-data variables
 	private ByteBuffer	 		 buffer;	  				// acts as both the line buffer and data buffer
 	private int					 bodyLength	  = 0;			// length of the data buffer, and flag that a body was received
@@ -76,8 +76,8 @@ public class MWHTTPRequest implements HTTPRequest
 	private String				 uriPage	  = null;		// portion of the request without urlparameters
 	private boolean				 isFinished   = false;		// flag as to whether finishRequest and processing is ready
 	private List<long[]>		 byteRanges   = null;		// if this is a ranged request, this will hold the ranges requested
-	private Map<String,String>   cookies	  = new HashMap<String,String>(); // if cookies were received, they are mapped here
-	private InetAddress			 address;					// the inet address of the request incoming
+	private final Map<String,String>   cookies	  = new HashMap<String,String>(); // if cookies were received, they are mapped here
+	private final InetAddress			 address;					// the inet address of the request incoming
 	private List<MultiPartData>  parts		  = null;		// if this is multi-part request, this will have a list of the parts
 	private final boolean		 isDebugging;				// optomization for the when not debug logging
 	private final Logger		 debugLogger;
@@ -89,7 +89,7 @@ public class MWHTTPRequest implements HTTPRequest
 	private final long			 requestLineSize;
 	private final Set<DisableFlag>disableFlags;
 	private List<String>		 headerRefs  = new LinkedList<String>();
-	private List<String>		 expects	 = new LinkedList<String>();
+	private final List<String>		 expects	 = new LinkedList<String>();
 	private Map<String,Object>   objects	 = new HashMap<String,Object>();
 
 	/**
@@ -216,7 +216,7 @@ public class MWHTTPRequest implements HTTPRequest
 	{
 		if(urlParameters==null)
 			return new TreeMap<String,String>();
-		Hashtable<String,String> parms=new Hashtable<String,String>();
+		final Hashtable<String,String> parms=new Hashtable<String,String>();
 		parms.putAll(urlParameters);
 		return parms;
 	}
@@ -250,7 +250,7 @@ public class MWHTTPRequest implements HTTPRequest
 	@Override
 	public String getFullHost()
 	{
-		StringBuilder host=new StringBuilder(isHttps?"https://":"http://");
+		final StringBuilder host=new StringBuilder(isHttps?"https://":"http://");
 		host.append(headers.get(HTTPHeader.HOST.toString().toLowerCase()));
 		if(((isHttps)&&(requestPort != MiniWebConfig.DEFAULT_SSL_PORT))
 		||((!isHttps)&&(requestPort != MiniWebConfig.DEFAULT_HTP_LISTEN_PORT)))
@@ -294,7 +294,7 @@ public class MWHTTPRequest implements HTTPRequest
 	 */
 	public void setToReceiveContentBody(int contentLength)
 	{
-		ByteBuffer previousBuffer = buffer;
+		final ByteBuffer previousBuffer = buffer;
 		if(previousBuffer.remaining() > contentLength)
 		{
 			final int overflowSize=previousBuffer.remaining()-contentLength;
@@ -386,26 +386,26 @@ public class MWHTTPRequest implements HTTPRequest
 	 */
 	private Map<String,Double> parseAcceptEncodingRequest(String encDefStr) throws HTTPException
 	{
-		String[] allEncDefs = encDefStr.split(",");
-		Map<String,Double> encs = new TreeMap<String,Double>();
-		for(String encDef : allEncDefs)
+		final String[] allEncDefs = encDefStr.split(",");
+		final Map<String,Double> encs = new TreeMap<String,Double>();
+		for(final String encDef : allEncDefs)
 		{
-			String[] encDefParts = encDef.split(";",2);
+			final String[] encDefParts = encDef.split(";",2);
 			if(encDefParts.length==1)
 				encs.put(encDefParts[0].trim().toLowerCase(),Double.valueOf(1.0));
 			else
 			{
 				try
 				{
-					int eqDex=encDefParts[1].indexOf('=');
+					final int eqDex=encDefParts[1].indexOf('=');
 					if((eqDex>0) && (encDefParts[1].substring(0, eqDex).trim().equalsIgnoreCase("q")))
 					{
-						double qVal = Double.parseDouble(encDefParts[1].substring(eqDex+1).trim());
+						final double qVal = Double.parseDouble(encDefParts[1].substring(eqDex+1).trim());
 						if(qVal>0.0)
 							encs.put(encDefParts[0].trim().toLowerCase(),Double.valueOf(qVal));
 					}
 				}
-				catch(NumberFormatException e)
+				catch(final NumberFormatException e)
 				{
 					// just ignore this
 				}
@@ -428,19 +428,19 @@ public class MWHTTPRequest implements HTTPRequest
 	 */
 	private List<long[]> parseRangeRequest(String rangeDefStr) throws HTTPException
 	{
-		int descriptorIndex = rangeDefStr.indexOf('=');
+		final int descriptorIndex = rangeDefStr.indexOf('=');
 		if(descriptorIndex>0)
 		{
-			String desc = rangeDefStr.substring(0,descriptorIndex).trim();
+			final String desc = rangeDefStr.substring(0,descriptorIndex).trim();
 			if(!desc.equalsIgnoreCase("bytes"))
 				throw HTTPException.standardException(HTTPStatus.S416_REQUEST_RANGE_NOT_SATISFIED);
 			rangeDefStr=rangeDefStr.substring(descriptorIndex+1).trim();
 		}
-		String[] allRangeDefs = rangeDefStr.split(",");
-		List<long[]> ranges = new LinkedList<long[]>();
-		for(String rangeDef : allRangeDefs)
+		final String[] allRangeDefs = rangeDefStr.split(",");
+		final List<long[]> ranges = new LinkedList<long[]>();
+		for(final String rangeDef : allRangeDefs)
 		{
-			String[] rangeAZSetStrs = rangeDef.split("-");
+			final String[] rangeAZSetStrs = rangeDef.split("-");
 			try
 			{
 				long[] rangeSetAZ;
@@ -456,7 +456,7 @@ public class MWHTTPRequest implements HTTPRequest
 				rangeSetAZ[0] = Long.parseLong(rangeAZSetStrs[0]);
 				ranges.add(rangeSetAZ);
 			}
-			catch(NumberFormatException e)
+			catch(final NumberFormatException e)
 			{
 				throw HTTPException.standardException(HTTPStatus.S416_REQUEST_RANGE_NOT_SATISFIED);
 			}
@@ -559,7 +559,7 @@ public class MWHTTPRequest implements HTTPRequest
 					}
 					else
 					{
-						String[] headerParts=headerLine.split(":",2);
+						final String[] headerParts=headerLine.split(":",2);
 						if(headerParts.length==2) // non header data is, strangely, OK
 						{
 							final String headerKey=headerParts[0].toLowerCase().trim();
@@ -581,7 +581,7 @@ public class MWHTTPRequest implements HTTPRequest
 				break;
 			case BODY:
 			{
-				boolean simpleBoundry=startsWith(buf,i,boundaryBytes);
+				final boolean simpleBoundry=startsWith(buf,i,boundaryBytes);
 				boolean lastBoundry=false;
 				if(!simpleBoundry)
 					lastBoundry=startsWith(buf,i,lastBoundaryBytes);
@@ -645,7 +645,7 @@ public class MWHTTPRequest implements HTTPRequest
 					if(lastBoundry)
 					{
 						if (isDebugging) debugLogger.finest("Completed "+allParts.size()+" multiparts");
-						for(String key : urlParmsFound.keySet())
+						for(final String key : urlParmsFound.keySet())
 							addUrlParameter(key,urlParmsFound.get(key));
 						return allParts;
 					}
@@ -656,7 +656,7 @@ public class MWHTTPRequest implements HTTPRequest
 			i++;
 		}
 		index[0]=i;
-		for(String key : urlParmsFound.keySet())
+		for(final String key : urlParmsFound.keySet())
 			addUrlParameter(key,urlParmsFound.get(key));
 		return allParts;
 	}
@@ -708,7 +708,7 @@ public class MWHTTPRequest implements HTTPRequest
 		{
 			bodyStream = emptyInput;
 			if (isDebugging) debugLogger.finest("Got multipart request");
-			String boundaryDefStr=headers.get(HTTPHeader.CONTENT_TYPE.lowerCaseName());
+			final String boundaryDefStr=headers.get(HTTPHeader.CONTENT_TYPE.lowerCaseName());
 			parts = parseMultipartContent(boundaryDefStr, new int[]{0});
 			buffer=ByteBuffer.wrap(new byte[0]); // free some memory early, why don't ya
 		}
@@ -729,10 +729,10 @@ public class MWHTTPRequest implements HTTPRequest
 	 */
 	private void parseCookieData(final String cookieData)
 	{
-		String[] allCookies = cookieData.split(";");
-		for(String cookiePair : allCookies)
+		final String[] allCookies = cookieData.split(";");
+		for(final String cookiePair : allCookies)
 		{
-			String[] pairStrs = cookiePair.split("=",2);
+			final String[] pairStrs = cookiePair.split("=",2);
 			if(pairStrs.length==2)
 				cookies.put(pairStrs[0].trim(),pairStrs[1]);
 			else
@@ -751,7 +751,7 @@ public class MWHTTPRequest implements HTTPRequest
 	{
 		if(this.headerRefs!=null)
 		{
-			List<String> headerRefs=this.headerRefs;
+			final List<String> headerRefs=this.headerRefs;
 			if(clearAfter) this.headerRefs=null;
 			return headerRefs;
 		}
@@ -769,10 +769,10 @@ public class MWHTTPRequest implements HTTPRequest
 	 */
 	public String parseHeaderLine(final String headerLine) throws HTTPException
 	{
-		int x = headerLine.indexOf(':'); // first : is the right :
+		final int x = headerLine.indexOf(':'); // first : is the right :
 		if(x > 0)
 		{
-			String headerRawKey=headerLine.substring(0,x);
+			final String headerRawKey=headerLine.substring(0,x);
 			if(headerRefs != null)
 				headerRefs.add(headerRawKey);
 			final String headerKey = headerRawKey.toLowerCase().trim(); // lowercase is normalized!!!
@@ -828,9 +828,9 @@ public class MWHTTPRequest implements HTTPRequest
 	{
 		try
 		{
-			String[] urlParmArray = parts.split("&");
+			final String[] urlParmArray = parts.split("&");
 			final Map<String,String> urlParmsFound=new HashMap<String,String>();
-			for(String urlParm : urlParmArray)
+			for(final String urlParm : urlParmArray)
 			{
 				final int equalDex = urlParm.indexOf('=');
 				final String key;
@@ -857,10 +857,10 @@ public class MWHTTPRequest implements HTTPRequest
 					urlParmsFound.put(key, value);
 				}
 			}
-			for(String key : urlParmsFound.keySet())
+			for(final String key : urlParmsFound.keySet())
 				addUrlParameter(key,urlParmsFound.get(key));
 		}
-		catch(UnsupportedEncodingException ex)
+		catch(final UnsupportedEncodingException ex)
 		{
 			throw HTTPException.standardException(HTTPStatus.S400_BAD_REQUEST);
 		}
@@ -890,7 +890,7 @@ public class MWHTTPRequest implements HTTPRequest
 		{
 			this.httpVer=Float.parseFloat(parts[2].substring(HTTP_VERSION_HEADER.length()));
 		}
-		catch(NumberFormatException e)
+		catch(final NumberFormatException e)
 		{
 			throw HTTPException.standardException(HTTPStatus.S400_BAD_REQUEST);
 		}
@@ -900,7 +900,7 @@ public class MWHTTPRequest implements HTTPRequest
 		{
 			requestType = HTTPMethod.valueOf(parts[0]);
 		}
-		catch(java.lang.IllegalArgumentException ae)
+		catch(final java.lang.IllegalArgumentException ae)
 		{
 			// do nothing
 			requestType = null;
@@ -920,7 +920,7 @@ public class MWHTTPRequest implements HTTPRequest
 			if(url.startsWith(FUTURE_URL_HEADER)) // its weird, but we have to support those
 			{
 				url = url.substring(FUTURE_URL_HEADER.length());
-				int endOfUrl = url.indexOf('/');
+				final int endOfUrl = url.indexOf('/');
 				if(endOfUrl > 0)
 				{
 					headers.put(HTTPHeader.HOST.lowerCaseName(), url.substring(0, endOfUrl));
@@ -929,7 +929,7 @@ public class MWHTTPRequest implements HTTPRequest
 				else
 					throw HTTPException.standardException(HTTPStatus.S400_BAD_REQUEST);
 			}
-			int urlEncodeSeparator=url.indexOf('?');
+			final int urlEncodeSeparator=url.indexOf('?');
 			if(urlEncodeSeparator >= 0)
 			{
 				uriPage = URLDecoder.decode(url.substring(0,urlEncodeSeparator),"UTF-8");
@@ -938,7 +938,7 @@ public class MWHTTPRequest implements HTTPRequest
 			else
 				uriPage = URLDecoder.decode(url,"UTF-8");
 		}
-		catch(UnsupportedEncodingException e)
+		catch(final UnsupportedEncodingException e)
 		{
 			throw HTTPException.standardException(HTTPStatus.S400_BAD_REQUEST);
 		}

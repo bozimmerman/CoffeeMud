@@ -44,7 +44,7 @@ public class StdRace implements Race
 	protected static final int[] breatheWaterArray = new int[]{ RawMaterial.RESOURCE_FRESHWATER, RawMaterial.RESOURCE_SALTWATER };
 	protected static final int[] breatheAirWaterArray = new int[]{ RawMaterial.RESOURCE_AIR, RawMaterial.RESOURCE_FRESHWATER, RawMaterial.RESOURCE_SALTWATER };
 
-	private int[]   	   agingChart={0,1,3,15,35,53,70,74,78};
+	private final int[]   	   agingChart={0,1,3,15,35,53,70,74,78};
 	protected String	   baseStatChgDesc = null;
 	protected String	   sensesChgDesc = null;
 	protected String	   dispChgDesc = null;
@@ -104,11 +104,11 @@ public class StdRace implements Race
 	{
 		try
 		{
-			StdRace E=(StdRace)this.clone();
+			final StdRace E=(StdRace)this.clone();
 			return E;
 
 		}
-		catch(CloneNotSupportedException e)
+		catch(final CloneNotSupportedException e)
 		{
 			return this;
 		}
@@ -242,9 +242,9 @@ public class StdRace implements Race
 					break;
 				case Race.AGE_ANCIENT:
 				{
-					int[] chart=getAgingChart();
-					int diff=chart[Race.AGE_ANCIENT]-chart[Race.AGE_VENERABLE];
-					int age=baseStats.getStat(CharStats.STAT_AGE)-chart[Race.AGE_ANCIENT];
+					final int[] chart=getAgingChart();
+					final int diff=chart[Race.AGE_ANCIENT]-chart[Race.AGE_VENERABLE];
+					final int age=baseStats.getStat(CharStats.STAT_AGE)-chart[Race.AGE_ANCIENT];
 					int num=(diff>0)?(int)Math.abs(Math.floor(CMath.div(age,diff)))-1:1;
 					if(num==0) num=1;
 					if(num>16) num=16;
@@ -288,7 +288,7 @@ public class StdRace implements Race
 		// the sex rules
 		if(!(myHost instanceof MOB)) return;
 
-		MOB myChar=(MOB)myHost;
+		final MOB myChar=(MOB)myHost;
 		if((msg.tool() instanceof Social)
 		&&(msg.amITarget(myChar)||(msg.source()==myChar))
 		&&(myChar.location()==msg.source().location())
@@ -306,7 +306,7 @@ public class StdRace implements Race
 						msg.source().curState().adjFatigue(CharState.FATIGUED_MILLIS,msg.source().maxState());
 					if(myChar.maxState().getFatigue()>Long.MIN_VALUE/2)
 						myChar.curState().adjFatigue(CharState.FATIGUED_MILLIS,myChar.maxState());
-					Ability A=CMClass.getAbility("Spell_Blindness");
+					final Ability A=CMClass.getAbility("Spell_Blindness");
 					if(A!=null) A.invoke(myChar,myChar,true,myChar.phyStats().level());
 				}
 			}
@@ -314,9 +314,9 @@ public class StdRace implements Race
 			if((msg.target()==myChar)
 			&&(msg.tool().Name().endsWith("<T-NAME>")))
 			{
-				boolean srcExhausted=((msg.source().curState().getMovement()<(msg.source().maxState().getMovement()/2))
+				final boolean srcExhausted=((msg.source().curState().getMovement()<(msg.source().maxState().getMovement()/2))
 						||(msg.source().curState().getFatigue()>=CharState.FATIGUED_MILLIS));
-				boolean meExhausted=((myChar.curState().getMovement()<(myChar.maxState().getMovement()/2))
+				final boolean meExhausted=((myChar.curState().getMovement()<(myChar.maxState().getMovement()/2))
 						||(myChar.curState().getFatigue()>=CharState.FATIGUED_MILLIS));
 				if((myChar.charStats().getStat(CharStats.STAT_GENDER)==('F'))
 				&&(msg.source().charStats().getStat(CharStats.STAT_GENDER)==('M'))
@@ -348,7 +348,7 @@ public class StdRace implements Race
 					}
 					if(!srcExhausted && !meExhausted && (CMLib.dice().rollPercentage()<10))
 					{
-						Ability A=CMClass.getAbility("Pregnancy");
+						final Ability A=CMClass.getAbility("Pregnancy");
 						if((A!=null)
 						&&(myChar.fetchAbility(A.ID())==null)
 						&&(myChar.fetchEffect(A.ID())==null))
@@ -508,7 +508,7 @@ public class StdRace implements Race
 		{
 			if(weightModifier>0)
 			{
-				double variance=CMath.div(weightModifier,weightVariance());
+				final double variance=CMath.div(weightModifier,weightVariance());
 				heightModifier=(int)Math.round(CMath.mul(heightVariance(),variance));
 			}
 			else
@@ -524,7 +524,7 @@ public class StdRace implements Race
 
 	protected RawMaterial makeResource(String name, int type)
 	{
-		PhysicalAgent A = CMLib.materials().makeResource(type,ID(),true,name);
+		final PhysicalAgent A = CMLib.materials().makeResource(type,ID(),true,name);
 		if(A instanceof RawMaterial)
 			return (RawMaterial)A;
 		return null;
@@ -535,7 +535,7 @@ public class StdRace implements Race
 	{
 		if(room==null) room=mob.location();
 
-		DeadBody bodyI=(DeadBody)CMClass.getItem("Corpse");
+		final DeadBody bodyI=(DeadBody)CMClass.getItem("Corpse");
 		if((mob.amFollowing()!=null)
 		&&(mob.isMonster())
 		&&((!mob.amFollowing().isMonster())||(!mob.amUltimatelyFollowing().isMonster())))
@@ -550,7 +550,7 @@ public class StdRace implements Race
 		bodyI.setMobName(mob.Name().replace('\'','`'));
 		bodyI.setMobDescription(mob.description().replace('\'','`'));
 		bodyI.setDisplayText("the body of "+mob.Name().replace('\'','`')+" lies here.");
-		Ability ageA=mob.fetchEffect("Age");
+		final Ability ageA=mob.fetchEffect("Age");
 		if(ageA!=null) bodyI.addNonUninvokableEffect(ageA);
 		if(room!=null)
 		{
@@ -574,19 +574,19 @@ public class StdRace implements Race
 			}
 		}
 
-		Vector items=new Vector();
+		final Vector items=new Vector();
 		CMLib.beanCounter().getTotalAbsoluteNativeValue(mob); // converts mob.get-Money();
 		if(mob.getMoneyVariation()>0.0)
 			CMLib.beanCounter().addMoney(mob, Math.random()*mob.getMoneyVariation());
 		else
 		if(mob.getMoneyVariation()<0.0)
 			CMLib.beanCounter().subtractMoney(mob, -(Math.random()*mob.getMoneyVariation()));
-		Hashtable<Item,Container> containerMap=new Hashtable<Item,Container>();
-		Hashtable<Item,Container> itemMap=new Hashtable<Item,Container>();
-		LinkedList<Item> itemsToGo=new LinkedList<Item>();
+		final Hashtable<Item,Container> containerMap=new Hashtable<Item,Container>();
+		final Hashtable<Item,Container> itemMap=new Hashtable<Item,Container>();
+		final LinkedList<Item> itemsToGo=new LinkedList<Item>();
 		for(int i=0;i<mob.numItems();i++)
 		{
-			Item thisItem=mob.getItem(i);
+			final Item thisItem=mob.getItem(i);
 			if(thisItem != null)
 				itemsToGo.add(thisItem);
 		}
@@ -627,7 +627,7 @@ public class StdRace implements Race
 		}
 		itemsToGo.clear();
 
-		Item dropItem=CMLib.catalog().getDropItem(mob,false);
+		final Item dropItem=CMLib.catalog().getDropItem(mob,false);
 		if(dropItem!=null)
 		{
 			dropItem.unWear();
@@ -638,11 +638,11 @@ public class StdRace implements Race
 			items.addElement(dropItem);
 		}
 
-		for(Enumeration e=itemMap.keys();e.hasMoreElements();)
+		for(final Enumeration e=itemMap.keys();e.hasMoreElements();)
 		{
-			Item oldItem=(Item)e.nextElement();
-			Item newItem=itemMap.get(oldItem);
-			Item oldContainer=containerMap.get(oldItem);
+			final Item oldItem=(Item)e.nextElement();
+			final Item newItem=itemMap.get(oldItem);
+			final Item oldContainer=containerMap.get(oldItem);
 			if((oldContainer!=null)&&(newItem!=null))
 				newItem.setContainer(itemMap.get(oldContainer));
 		}
@@ -747,7 +747,7 @@ public class StdRace implements Race
 			&&(racialEffectNames().length>v)
 			&&(racialEffectParms().length>v))
 			{
-				Ability A=CMClass.getAbility(racialEffectNames()[v]);
+				final Ability A=CMClass.getAbility(racialEffectNames()[v]);
 				if(A!=null)
 				{
 					// mob was set to null here to make the cache map actually relevant .. see caching below
@@ -767,7 +767,7 @@ public class StdRace implements Race
 	@Override
 	public Race makeGenRace()
 	{
-		Race GR=(Race)CMClass.getRace("GenRace").copyOf();
+		final Race GR=(Race)CMClass.getRace("GenRace").copyOf();
 		GR.setRacialParms("<RACE><ID>"+ID()+"</ID><NAME>"+name()+"</NAME></RACE>");
 		GR.setStat("CAT",racialCategory());
 		GR.setStat("BWEIGHT",""+lightestWeight());
@@ -789,12 +789,12 @@ public class StdRace implements Race
 				GR.bodyMask()[i]=bodyMask()[i];
 
 		Weapon W=myNaturalWeapon();
-		Weapon NW=CMClass.getWeapon("Natural");
+		final Weapon NW=CMClass.getWeapon("Natural");
 		if((W!=null)&&(W!=NW))
 		{
 			if(!W.isGeneric())
 			{
-				Weapon W2=CMClass.getWeapon("GenWeapon");
+				final Weapon W2=CMClass.getWeapon("GenWeapon");
 				W2.setName(W.name());
 				W2.setWeaponClassification(W.weaponClassification());
 				W2.setWeaponType(W.weaponType());
@@ -809,32 +809,32 @@ public class StdRace implements Race
 		}
 		GR.setStat("WEAPONRACE",getClass().getName());
 
-		PhyStats RS=(PhyStats)CMClass.getCommon("DefaultPhyStats");
+		final PhyStats RS=(PhyStats)CMClass.getCommon("DefaultPhyStats");
 		RS.setAllValues(0);
-		MOB fakeMOB=CMClass.getFactoryMOB();
+		final MOB fakeMOB=CMClass.getFactoryMOB();
 		affectPhyStats(fakeMOB,RS);
 		RS.setRejuv(PhyStats.NO_REJUV);
 		GR.setStat("ESTATS",CMLib.coffeeMaker().getPhyStatsStr(RS));
 
-		CharStats S1=(CharStats)CMClass.getCommon("DefaultCharStats");
+		final CharStats S1=(CharStats)CMClass.getCommon("DefaultCharStats");
 		S1.setAllValues(0);
-		CharStats S2=(CharStats)CMClass.getCommon("DefaultCharStats");
+		final CharStats S2=(CharStats)CMClass.getCommon("DefaultCharStats");
 		S2.setAllValues(10);
-		CharStats S3=(CharStats)CMClass.getCommon("DefaultCharStats");
+		final CharStats S3=(CharStats)CMClass.getCommon("DefaultCharStats");
 		S3.setAllValues(11);
-		CharStats SETSTAT=(CharStats)CMClass.getCommon("DefaultCharStats");
+		final CharStats SETSTAT=(CharStats)CMClass.getCommon("DefaultCharStats");
 		SETSTAT.setAllValues(0);
-		CharStats ADJSTAT=(CharStats)CMClass.getCommon("DefaultCharStats");
+		final CharStats ADJSTAT=(CharStats)CMClass.getCommon("DefaultCharStats");
 		ADJSTAT.setAllValues(0);
 		affectCharStats(fakeMOB,S1);
 		affectCharStats(fakeMOB,S2);
 		affectCharStats(fakeMOB,S3);
-		for(int i: CharStats.CODES.ALL())
+		for(final int i: CharStats.CODES.ALL())
 			if(i!=CharStats.STAT_AGE)
 			{
 				if(CharStats.CODES.isBASE(i))
 				{
-					int max = CharStats.CODES.toMAXBASE(i);
+					final int max = CharStats.CODES.toMAXBASE(i);
 					if((S2.getStat(i)==S3.getStat(i))
 					&&(S1.getStat(max)!=0))
 					{
@@ -852,7 +852,7 @@ public class StdRace implements Race
 		GR.setStat("ASTATS",CMLib.coffeeMaker().getCharStatsStr(ADJSTAT));
 		GR.setStat("CSTATS",CMLib.coffeeMaker().getCharStatsStr(SETSTAT));
 
-		CharState CS=(CharState)CMClass.getCommon("DefaultCharState"); CS.setAllValues(0);
+		final CharState CS=(CharState)CMClass.getCommon("DefaultCharState"); CS.setAllValues(0);
 		affectCharState(fakeMOB,CS);
 		GR.setStat("ASTATE",CMLib.coffeeMaker().getCharStateStr(CS));
 
@@ -930,15 +930,15 @@ public class StdRace implements Race
 	@Override
 	public Race mixRace(Race race, String newRaceID, String newRaceName)
 	{
-		Race GR=(Race)CMClass.getRace("GenRace").copyOf();
+		final Race GR=(Race)CMClass.getRace("GenRace").copyOf();
 		Race race1=this;
 		Race race2=race;
 		GR.setRacialParms("<RACE><ID>"+newRaceID+"</ID><NAME>"+newRaceName+"</NAME></RACE>");
 		if(!race1.isGeneric()) race1=race1.makeGenRace();
 		if(!race2.isGeneric()) race2=race2.makeGenRace();
 
-		Race nonHuman=(race1.ID().equals("Human"))?race2:race1;
-		Race otherRace=(nonHuman==race1)?race2:race1;
+		final Race nonHuman=(race1.ID().equals("Human"))?race2:race1;
+		final Race otherRace=(nonHuman==race1)?race2:race1;
 		GR.setStat("CAT",nonHuman.racialCategory());
 		GR.setStat("BWEIGHT",""+((race1.lightestWeight()+race2.lightestWeight())/2));
 		GR.setStat("VWEIGHT",""+((race1.weightVariance()+race2.weightVariance())/2));
@@ -951,7 +951,7 @@ public class StdRace implements Race
 		GR.setStat("HEALTHRACE",otherRace.getStat("HEALTHRACE"));
 		GR.setStat("EVENTRACE",otherRace.getStat("EVENTRACE"));
 		GR.setStat("WEAPONRACE",otherRace.getStat("WEAPONRACE"));
-		int[] aging=race1.getAgingChart().clone();
+		final int[] aging=race1.getAgingChart().clone();
 		for(int i=0;i<aging.length;i++)
 		{
 			if((aging[i]==Race.YEARS_AGE_LIVES_FOREVER)&&(race2.getAgingChart()[i]==Race.YEARS_AGE_LIVES_FOREVER))
@@ -978,11 +978,11 @@ public class StdRace implements Race
 				aging[i]=aging[i+1];
 		}
 
-		long race1worn=CMath.s_long(otherRace.getStat("WEAR"));
-		long race2worn=CMath.s_long(nonHuman.getStat("WEAR"));
+		final long race1worn=CMath.s_long(otherRace.getStat("WEAR"));
+		final long race2worn=CMath.s_long(nonHuman.getStat("WEAR"));
 		long finalWear=0;
 		boolean toggle=false;
-		for(long wornCode : Wearable.CODES.ALL())
+		for(final long wornCode : Wearable.CODES.ALL())
 			if(wornCode != Wearable.IN_INVENTORY)
 			{
 				if((!CMath.bset(race1worn,wornCode))&&(!CMath.bset(race2worn,wornCode)))
@@ -1021,15 +1021,15 @@ public class StdRace implements Race
 			else
 				GR.bodyMask()[i]=race1.bodyMask()[i];
 
-		PhyStats RS1=(PhyStats)CMClass.getCommon("DefaultPhyStats");
+		final PhyStats RS1=(PhyStats)CMClass.getCommon("DefaultPhyStats");
 		RS1.setAllValues(0);
 		CMLib.coffeeMaker().setPhyStats(RS1,race1.getStat("ESTATS"));
 
-		PhyStats RS2=(PhyStats)CMClass.getCommon("DefaultPhyStats");
+		final PhyStats RS2=(PhyStats)CMClass.getCommon("DefaultPhyStats");
 		RS2.setAllValues(0);
 		CMLib.coffeeMaker().setPhyStats(RS2,race2.getStat("ESTATS"));
 
-		PhyStats RS=(PhyStats)CMClass.getCommon("DefaultPhyStats");
+		final PhyStats RS=(PhyStats)CMClass.getCommon("DefaultPhyStats");
 		RS.setAbility((RS1.ability()+RS2.ability())/2);
 		RS.setArmor((RS2.armor()+RS2.armor())/2);
 		RS.setAttackAdjustment((RS1.attackAdjustment()+RS2.attackAdjustment())/2);
@@ -1042,34 +1042,34 @@ public class StdRace implements Race
 		RS.setRejuv(PhyStats.NO_REJUV);
 		GR.setStat("ESTATS",CMLib.coffeeMaker().getPhyStatsStr(RS));
 
-		CharStats SETSTAT1=(CharStats)CMClass.getCommon("DefaultCharStats");
+		final CharStats SETSTAT1=(CharStats)CMClass.getCommon("DefaultCharStats");
 		SETSTAT1.setAllValues(0);
 		CMLib.coffeeMaker().setCharStats(SETSTAT1,race1.getStat("CSTATS"));
 
-		CharStats SETSTAT2=(CharStats)CMClass.getCommon("DefaultCharStats");
+		final CharStats SETSTAT2=(CharStats)CMClass.getCommon("DefaultCharStats");
 		SETSTAT2.setAllValues(0);
 		CMLib.coffeeMaker().setCharStats(SETSTAT2,race2.getStat("CSTATS"));
 
-		CharStats SETSTAT=(CharStats)CMClass.getCommon("DefaultCharStats");
+		final CharStats SETSTAT=(CharStats)CMClass.getCommon("DefaultCharStats");
 		SETSTAT.setAllValues(0);
 
-		CharStats ADJSTAT1=(CharStats)CMClass.getCommon("DefaultCharStats");
+		final CharStats ADJSTAT1=(CharStats)CMClass.getCommon("DefaultCharStats");
 		ADJSTAT1.setAllValues(0);
 		CMLib.coffeeMaker().setCharStats(ADJSTAT1,race1.getStat("ASTATS"));
 
-		CharStats ADJSTAT2=(CharStats)CMClass.getCommon("DefaultCharStats");
+		final CharStats ADJSTAT2=(CharStats)CMClass.getCommon("DefaultCharStats");
 		ADJSTAT2.setAllValues(0);
 		CMLib.coffeeMaker().setCharStats(ADJSTAT2,race2.getStat("ASTATS"));
 
-		CharStats ADJSTAT=(CharStats)CMClass.getCommon("DefaultCharStats");
+		final CharStats ADJSTAT=(CharStats)CMClass.getCommon("DefaultCharStats");
 		ADJSTAT.setAllValues(0);
 
-		for(int i: CharStats.CODES.ALL())
+		for(final int i: CharStats.CODES.ALL())
 		{
 			if(CharStats.CODES.isBASE(i))
 			{
 				SETSTAT.setStat(i,(SETSTAT1.getStat(i)+SETSTAT2.getStat(i))/2);
-				int newStat=((ADJSTAT1.getStat(i)+ADJSTAT2.getStat(i))/2);
+				final int newStat=((ADJSTAT1.getStat(i)+ADJSTAT2.getStat(i))/2);
 				if(newStat>5)
 					ADJSTAT.setStat(i,5);
 				else
@@ -1082,13 +1082,13 @@ public class StdRace implements Race
 		GR.setStat("ASTATS",CMLib.coffeeMaker().getCharStatsStr(ADJSTAT));
 		GR.setStat("CSTATS",CMLib.coffeeMaker().getCharStatsStr(SETSTAT));
 
-		CharState CS1=(CharState)CMClass.getCommon("DefaultCharState");
+		final CharState CS1=(CharState)CMClass.getCommon("DefaultCharState");
 		CS1.setAllValues(0);
 		CMLib.coffeeMaker().setCharState(CS1,race1.getStat("ASTATE"));
-		CharState CS2=(CharState)CMClass.getCommon("DefaultCharState");
+		final CharState CS2=(CharState)CMClass.getCommon("DefaultCharState");
 		CS2.setAllValues(0);
 		CMLib.coffeeMaker().setCharState(CS2,race2.getStat("ASTATE"));
-		CharState CS=(CharState)CMClass.getCommon("DefaultCharState");
+		final CharState CS=(CharState)CMClass.getCommon("DefaultCharState");
 		CS.setAllValues(0);
 
 		CS.setFatigue((CS1.getFatigue()+CS2.getFatigue())/2);
@@ -1099,15 +1099,15 @@ public class StdRace implements Race
 		CS.setThirst((CS1.getThirst()+CS2.getThirst())/2);
 		GR.setStat("ASTATE",CMLib.coffeeMaker().getCharStateStr(CS));
 
-		CharState STARTCS1=(CharState)CMClass.getCommon("DefaultCharState");
+		final CharState STARTCS1=(CharState)CMClass.getCommon("DefaultCharState");
 		STARTCS1.setAllValues(0);
 		CMLib.coffeeMaker().setCharState(STARTCS1,race1.getStat("STARTASTATE"));
 
-		CharState STARTCS2=(CharState)CMClass.getCommon("DefaultCharState");
+		final CharState STARTCS2=(CharState)CMClass.getCommon("DefaultCharState");
 		STARTCS2.setAllValues(0);
 		CMLib.coffeeMaker().setCharState(STARTCS1,race2.getStat("STARTASTATE"));
 
-		CharState STARTCS=(CharState)CMClass.getCommon("DefaultCharState");
+		final CharState STARTCS=(CharState)CMClass.getCommon("DefaultCharState");
 		STARTCS.setAllValues(0);
 
 		STARTCS.setFatigue((STARTCS1.getFatigue()+STARTCS2.getFatigue())/2);
@@ -1120,7 +1120,7 @@ public class StdRace implements Race
 
 		GR.setStat("DISFLAGS",""+(CMath.s_int(race1.getStat("DISFLAGS"))|CMath.s_int(race2.getStat("DISFLAGS"))));
 
-		List<RawMaterial> rscs=nonHuman.myResources();
+		final List<RawMaterial> rscs=nonHuman.myResources();
 		GR.setStat("NUMRSC",""+rscs.size());
 		for(int i=0;i<rscs.size();i++)
 			GR.setStat("GETRSCID"+i,((Item)rscs.get(i)).ID());
@@ -1128,8 +1128,8 @@ public class StdRace implements Race
 			GR.setStat("GETRSCPARM"+i,((Item)rscs.get(i)).text());
 
 		GR.setStat("NUMOFT","");
-		Race outfitRace=(nonHuman.outfit(null)!=null)?nonHuman:otherRace;
-		List<Item> outfit=outfitRace.outfit(null);
+		final Race outfitRace=(nonHuman.outfit(null)!=null)?nonHuman:otherRace;
+		final List<Item> outfit=outfitRace.outfit(null);
 		if((outfit!=null)&&(outfit.size()>0))
 		{
 			GR.setStat("NUMOFT",""+outfit.size());
@@ -1141,8 +1141,8 @@ public class StdRace implements Race
 
 		race1.racialAbilities(null);
 		race2.racialAbilities(null);
-		List<AbilityMapping> dvata1=CMLib.ableMapper().getUpToLevelListings(race1.ID(),Integer.MAX_VALUE,true,false);
-		List<AbilityMapping> dvata2=CMLib.ableMapper().getUpToLevelListings(race2.ID(),Integer.MAX_VALUE,true,false);
+		final List<AbilityMapping> dvata1=CMLib.ableMapper().getUpToLevelListings(race1.ID(),Integer.MAX_VALUE,true,false);
+		final List<AbilityMapping> dvata2=CMLib.ableMapper().getUpToLevelListings(race2.ID(),Integer.MAX_VALUE,true,false);
 		// kill half of them.
 		for(int i=1;i<dvata1.size();i++)
 			dvata1.remove(i);
@@ -1168,14 +1168,14 @@ public class StdRace implements Race
 			GR.setStat("GETRABLEPROF"+(i+dvata1.size()),""+CMLib.ableMapper().getDefaultProficiency(race2.ID(),false,dvata2.get(i).abilityID));
 		}
 
-		List<Ability> data=new Vector<Ability>();
+		final List<Ability> data=new Vector<Ability>();
 		boolean skip=false;
-		for(Ability A : race1.racialEffects(null))
+		for(final Ability A : race1.racialEffects(null))
 		{
 			if(!skip) data.add(A);
 			skip=!skip;
 		}
-		for(Ability A : race2.racialEffects(null))
+		for(final Ability A : race2.racialEffects(null))
 		{
 			if(!skip) data.add(A);
 			skip=!skip;
@@ -1187,7 +1187,7 @@ public class StdRace implements Race
 			GR.setStat("NUMREFF","");
 		for(int i=0;i<data.size();i++)
 		{
-			Ability A=data.get(i);
+			final Ability A=data.get(i);
 			GR.setStat("GETREFF"+i,A.ID());
 			GR.setStat("GETREFFLVL"+i,""+CMLib.ableMapper().getQualifyingLevel(race1.ID(),false,A.ID()));
 			GR.setStat("GETREFFPARM"+i,""+CMLib.ableMapper().getDefaultProficiency(race1.ID(),false,A.ID()));
@@ -1198,7 +1198,7 @@ public class StdRace implements Race
 	@Override
 	public PairVector<String,Integer> culturalAbilities()
 	{
-		PairVector<String,Integer> ables=new PairVector<String,Integer>();
+		final PairVector<String,Integer> ables=new PairVector<String,Integer>();
 		if((culturalAbilityNames()!=null)
 		&&(culturalAbilityProficiencies()!=null))
 			for(int i=0;i<culturalAbilityNames().length;i++)
@@ -1236,11 +1236,11 @@ public class StdRace implements Race
 			level=Integer.valueOf(Integer.MAX_VALUE);
 		if(racialAbilityMap.containsKey(level))
 			return racialAbilityMap.get(level);
-		List<AbilityMapper.AbilityMapping> V=CMLib.ableMapper().getUpToLevelListings(ID(),level.intValue(),true,(mob!=null));
-		CMUniqSortSVec<Ability> finalV=new CMUniqSortSVec<Ability>(V.size());
-		for(AbilityMapper.AbilityMapping able : V)
+		final List<AbilityMapper.AbilityMapping> V=CMLib.ableMapper().getUpToLevelListings(ID(),level.intValue(),true,(mob!=null));
+		final CMUniqSortSVec<Ability> finalV=new CMUniqSortSVec<Ability>(V.size());
+		for(final AbilityMapper.AbilityMapping able : V)
 		{
-			Ability A=CMClass.getAbility(able.abilityID);
+			final Ability A=CMClass.getAbility(able.abilityID);
 			if(A!=null)
 			{
 				A.setProficiency(CMLib.ableMapper().getDefaultProficiency(ID(),false,A.ID()));
@@ -1320,24 +1320,24 @@ public class StdRace implements Race
 		||(sensesChgDesc==null))
 		{
 			StringBuilder str=new StringBuilder("");
-			Session sess = (Session)CMClass.getCommon("DefaultSession");
-			MOB mob=CMClass.getMOB("StdMOB");
+			final Session sess = (Session)CMClass.getCommon("DefaultSession");
+			final MOB mob=CMClass.getMOB("StdMOB");
 			mob.setSession(sess);
 			mob.baseCharStats().setMyRace(this);
 			startRacing(mob,false);
 			mob.recoverCharStats();
 			mob.recoverPhyStats();
 			mob.recoverMaxState();
-			MOB mob2=CMClass.getMOB("StdMOB");
+			final MOB mob2=CMClass.getMOB("StdMOB");
 			mob2.setSession(sess);
 			mob2.baseCharStats().setMyRace(new StdRace());
 			mob2.recoverCharStats();
 			mob2.recoverPhyStats();
 			mob2.recoverMaxState();
-			for(int c: CharStats.CODES.ALL())
+			for(final int c: CharStats.CODES.ALL())
 			{
-				int oldStat=mob2.charStats().getStat(c);
-				int newStat=mob.charStats().getStat(c);
+				final int oldStat=mob2.charStats().getStat(c);
+				final int newStat=mob.charStats().getStat(c);
 				if(oldStat>newStat)
 					str.append(CharStats.CODES.DESC(c).toLowerCase()+"-"+(oldStat-newStat)+", ");
 				else
@@ -1351,13 +1351,13 @@ public class StdRace implements Race
 			baseStatChgDesc=str.toString();
 			if(baseStatChgDesc.endsWith(", "))
 				baseStatChgDesc=baseStatChgDesc.substring(0,baseStatChgDesc.length()-2);
-			StringBuilder astr=new StringBuilder("");
-			StringBuilder lstr=new StringBuilder("");
+			final StringBuilder astr=new StringBuilder("");
+			final StringBuilder lstr=new StringBuilder("");
 
-			List<Ability> ables=new Vector<Ability>();
+			final List<Ability> ables=new Vector<Ability>();
 			ables.addAll(racialAbilities(null));
 
-			PairVector<String,Integer> cables=culturalAbilities();
+			final PairVector<String,Integer> cables=culturalAbilities();
 			Ability A=null;
 			if(cables!=null)
 			{
@@ -1371,7 +1371,7 @@ public class StdRace implements Race
 					}
 				}
 			}
-			for(Iterator<Ability> e=ables.iterator();e.hasNext();)
+			for(final Iterator<Ability> e=ables.iterator();e.hasNext();)
 			{
 				A=e.next();
 				str = ((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_LANGUAGE)?lstr:astr;

@@ -37,7 +37,7 @@ public class PitOpen extends StdOpenDoorway
 	public PitOpen()
 	{
 		super();
-		Trap t=(Trap)CMClass.getAbility("Trap_EnterPit");
+		final Trap t=(Trap)CMClass.getAbility("Trap_EnterPit");
 		if(t!=null) CMLib.utensils().setTrapped(this,t,true);
 	}
 }

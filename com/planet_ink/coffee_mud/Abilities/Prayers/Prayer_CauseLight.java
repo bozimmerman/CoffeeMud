@@ -59,14 +59,14 @@ public class Prayer_CauseLight extends Prayer
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		MOB target=this.getTarget(mob,commands,givenTarget);
+		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
-		boolean undead=target.charStats().getMyRace().racialCategory().equals("Undead");
+		final boolean undead=target.charStats().getMyRace().racialCategory().equals("Undead");
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
@@ -74,8 +74,8 @@ public class Prayer_CauseLight extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			CMMsg msg=CMClass.getMsg(mob,target,this,(undead?0:CMMsg.MASK_MALICIOUS)|verbalCastCode(mob,target,auto),(auto?"A light painful burst assaults <T-NAME>.":"^S<S-NAME> "+prayWord(mob)+" for a light burst of pain at <T-NAMESELF>!^?")+CMLib.protocol().msp("ouch.wav",40));
-			CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_UNDEAD|(auto?CMMsg.MASK_ALWAYS:0),null);
+			final CMMsg msg=CMClass.getMsg(mob,target,this,(undead?0:CMMsg.MASK_MALICIOUS)|verbalCastCode(mob,target,auto),(auto?"A light painful burst assaults <T-NAME>.":"^S<S-NAME> "+prayWord(mob)+" for a light burst of pain at <T-NAMESELF>!^?")+CMLib.protocol().msp("ouch.wav",40));
+			final CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_UNDEAD|(auto?CMMsg.MASK_ALWAYS:0),null);
 			final Room R=target.location();
 			if((R.okMessage(mob,msg))&&((R.okMessage(mob,msg2))))
 			{
@@ -83,7 +83,7 @@ public class Prayer_CauseLight extends Prayer
 				R.send(mob,msg2);
 				if((msg.value()<=0)&&(msg2.value()<=0))
 				{
-					int harming=CMLib.dice().roll(1,adjustedLevel(mob,asLevel)+3,3);
+					final int harming=CMLib.dice().roll(1,adjustedLevel(mob,asLevel)+3,3);
 					CMLib.combat().postDamage(mob,target,this,harming,CMMsg.MASK_ALWAYS|CMMsg.TYP_UNDEAD,Weapon.TYPE_BURSTING,"The unholy spell <DAMAGE> <T-NAME>!");
 				}
 			}

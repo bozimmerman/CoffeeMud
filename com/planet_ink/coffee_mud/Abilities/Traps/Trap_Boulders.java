@@ -47,7 +47,7 @@ public class Trap_Boulders extends StdTrap
 		if(P==null) return null;
 		if(mob!=null)
 		{
-			Item I=findMostOfMaterial(mob.location(),RawMaterial.MATERIAL_ROCK);
+			final Item I=findMostOfMaterial(mob.location(),RawMaterial.MATERIAL_ROCK);
 			if(I!=null)
 				super.destroyResources(mob.location(),I.material(),50);
 		}
@@ -57,7 +57,7 @@ public class Trap_Boulders extends StdTrap
 	@Override
 	public List<Item> getTrapComponents()
 	{
-		Vector V=new Vector();
+		final Vector V=new Vector();
 		for(int i=0;i<50;i++)
 			V.addElement(CMLib.materials().makeItemResource(RawMaterial.RESOURCE_STONE));
 		return V;
@@ -68,7 +68,7 @@ public class Trap_Boulders extends StdTrap
 		if(!super.canSetTrapOn(mob,P)) return false;
 		if(mob!=null)
 		{
-			Item I=findMostOfMaterial(mob.location(),RawMaterial.MATERIAL_ROCK);
+			final Item I=findMostOfMaterial(mob.location(),RawMaterial.MATERIAL_ROCK);
 			if((I==null)
 			||(super.findNumberOfResource(mob.location(),I.material())<50))
 			{
@@ -77,7 +77,7 @@ public class Trap_Boulders extends StdTrap
 			}
 			if(P instanceof Room)
 			{
-				Room R=(Room)P;
+				final Room R=(Room)P;
 				if((R.domainType()!=Room.DOMAIN_INDOORS_CAVE)
 				   &&(R.domainType()!=Room.DOMAIN_OUTDOORS_MOUNTAINS)
 				   &&(R.domainType()!=Room.DOMAIN_OUTDOORS_ROCKS)
@@ -106,7 +106,7 @@ public class Trap_Boulders extends StdTrap
 			if(target.location().show(target,target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,"<S-NAME> trigger(s) a trap!"))
 			{
 				super.spring(target);
-				int damage=CMLib.dice().roll(trapLevel()+abilityCode(),20,1);
+				final int damage=CMLib.dice().roll(trapLevel()+abilityCode(),20,1);
 				CMLib.combat().postDamage(invoker(),target,this,damage,CMMsg.MASK_MALICIOUS|CMMsg.MASK_ALWAYS|CMMsg.TYP_JUSTICE,Weapon.TYPE_BASHING,"Dozens of boulders <DAMAGE> <T-NAME>!");
 			}
 		}

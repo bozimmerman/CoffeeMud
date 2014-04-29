@@ -50,7 +50,7 @@ public class ChannelDelete extends Packet  {
 			channel = (String)v.elementAt(6);
 			channel = Intermud.getLocalChannel(channel);
 		}
-		catch( ClassCastException e )
+		catch( final ClassCastException e )
 		{
 			throw new InvalidPacketException();
 		}
@@ -78,8 +78,8 @@ public class ChannelDelete extends Packet  {
 	@Override
 	public String toString()
 	{
-		NameServer n = Intermud.getNameServer();
-		String str=
+		final NameServer n = Intermud.getNameServer();
+		final String str=
 			 "({\"channel-remove\",5,\"" + I3Server.getMudName() + "\",\"" +
 			   sender_name + "\",\""+n.name+"\",0,\"" + channel + "\",})";
 		return str;

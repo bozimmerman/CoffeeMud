@@ -61,18 +61,18 @@ public class Spell_TimeStop extends Spell
 		{
 			if(affected instanceof Room)
 			{
-				Room room=(Room)affected;
+				final Room room=(Room)affected;
 				room.showHappens(CMMsg.MSG_OK_VISUAL, "Time starts moving again...");
 				if(invoker!=null)
 				{
-					Ability me=invoker.fetchEffect(ID());
+					final Ability me=invoker.fetchEffect(ID());
 					if(me!=null)
 						me.unInvoke();
 				}
 				CMLib.threads().resumeTicking(room,-1);
 				for(int i=0;i<fixed.size();i++)
 				{
-					MOB mob2=(MOB)fixed.elementAt(i);
+					final MOB mob2=(MOB)fixed.elementAt(i);
 					CMLib.threads().resumeTicking(mob2,-1);
 				}
 				fixed=new Vector();
@@ -80,12 +80,12 @@ public class Spell_TimeStop extends Spell
 			else
 			if(affected instanceof MOB)
 			{
-				MOB mob=(MOB)affected;
+				final MOB mob=(MOB)affected;
 				CMLib.threads().resumeTicking(mob,-1);
 				if(mob.location()!=null)
 				{
 					mob.location().show(mob, null, CMMsg.MSG_OK_VISUAL, "Time starts moving again...");
-					Ability me=mob.location().fetchEffect(ID());
+					final Ability me=mob.location().fetchEffect(ID());
 					if(me!=null)
 						me.unInvoke();
 				}
@@ -143,7 +143,7 @@ public class Spell_TimeStop extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		Physical target = mob.location();
+		final Physical target = mob.location();
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
@@ -152,7 +152,7 @@ public class Spell_TimeStop extends Spell
 		}
 
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
@@ -167,12 +167,12 @@ public class Spell_TimeStop extends Spell
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
-					Room room=mob.location();
+					final Room room=mob.location();
 					fixed=new Vector();
-					Set<MOB> grpMembers = mob.getGroupMembers(new HashSet<MOB>());
+					final Set<MOB> grpMembers = mob.getGroupMembers(new HashSet<MOB>());
 					for(int m=0;m<room.numInhabitants();m++)
 					{
-						MOB mob2=room.fetchInhabitant(m);
+						final MOB mob2=room.fetchInhabitant(m);
 						if((mob2!=mob)&&(mob.mayIFight(mob2)))
 						{
 							msg=CMClass.getMsg(mob,mob2,this,CMMsg.MASK_MALICIOUS|CMMsg.TYP_MIND,null);
@@ -192,7 +192,7 @@ public class Spell_TimeStop extends Spell
 					CMLib.threads().suspendTicking(room,-1);
 					for(int m=0;m<room.numInhabitants();m++)
 					{
-						MOB mob2=room.fetchInhabitant(m);
+						final MOB mob2=room.fetchInhabitant(m);
 						if(mob2!=mob)
 						{
 							fixed.addElement(mob2);

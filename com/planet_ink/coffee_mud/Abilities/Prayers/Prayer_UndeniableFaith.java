@@ -49,7 +49,7 @@ public class Prayer_UndeniableFaith extends Prayer
 	@Override
 	public void unInvoke()
 	{
-		MOB M=(MOB)affected;
+		final MOB M=(MOB)affected;
 		super.unInvoke();
 		if(canBeUninvoked())
 			M.tell("Your compelled faith is finally subsided.");
@@ -62,24 +62,24 @@ public class Prayer_UndeniableFaith extends Prayer
 			return false;
 		if(!(affected instanceof MOB))
 		   return true;
-		MOB M=(MOB)affected;
+		final MOB M=(MOB)affected;
 		if(M.location()!=null)
 		{
 			if((!M.getWorshipCharID().equals(godName))
 			&&(godName.length()>0))
 			{
-				Deity D=CMLib.map().getDeity(godName);
+				final Deity D=CMLib.map().getDeity(godName);
 				if(M.getWorshipCharID().length()>0)
 				{
-					Deity D2=CMLib.map().getDeity(M.getWorshipCharID());
+					final Deity D2=CMLib.map().getDeity(M.getWorshipCharID());
 					if(D2!=null)
 					{
-						CMMsg msg2=CMClass.getMsg(M,D2,this,CMMsg.MSG_REBUKE,null);
+						final CMMsg msg2=CMClass.getMsg(M,D2,this,CMMsg.MSG_REBUKE,null);
 						if(M.location().okMessage(M,msg2))
 							M.location().send(M,msg2);
 					}
 				}
-				CMMsg msg2=CMClass.getMsg(M,D,this,CMMsg.MSG_SERVE,null);
+				final CMMsg msg2=CMClass.getMsg(M,D,this,CMMsg.MSG_SERVE,null);
 				if(M.location().okMessage(M,msg2))
 				{
 					M.location().send(M,msg2);
@@ -109,7 +109,7 @@ public class Prayer_UndeniableFaith extends Prayer
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		MOB target=this.getTarget(mob,commands,givenTarget);
+		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 		if((mob.getWorshipCharID().length()==0)
 		||(CMLib.map().getDeity(mob.getWorshipCharID())==null))
@@ -117,7 +117,7 @@ public class Prayer_UndeniableFaith extends Prayer
 			if(!auto) mob.tell("You must worship a god to use this prayer.");
 			return false;
 		}
-		Deity D=CMLib.map().getDeity(mob.getWorshipCharID());
+		final Deity D=CMLib.map().getDeity(mob.getWorshipCharID());
 		if((target.getWorshipCharID().length()>0)
 		&&(CMLib.map().getDeity(target.getWorshipCharID())!=null))
 		{
@@ -133,7 +133,7 @@ public class Prayer_UndeniableFaith extends Prayer
 		{
 			if(convertStack.contains(target))
 			{
-				Long L=(Long)convertStack.elementAt(convertStack.indexOf(target),2);
+				final Long L=(Long)convertStack.elementAt(convertStack.indexOf(target),2);
 				if((System.currentTimeMillis()-L.longValue())>CMProps.getMillisPerMudHour()*5)
 					convertStack.removeElement(target);
 			}
@@ -149,7 +149,7 @@ public class Prayer_UndeniableFaith extends Prayer
 
 		int levelDiff=target.phyStats().level()-(mob.phyStats().level()+(2*super.getXLEVELLevel(mob)));
 		if(levelDiff<0) levelDiff=0;
-		boolean success=proficiencyCheck(mob,-(levelDiff*25),auto);
+		final boolean success=proficiencyCheck(mob,-(levelDiff*25),auto);
 		int type=verbalCastCode(mob,target,auto);
 		int mal=CMMsg.MASK_MALICIOUS;
 		if(auto){ type=CMath.unsetb(type,CMMsg.MASK_MALICIOUS); mal=0;}
@@ -159,9 +159,9 @@ public class Prayer_UndeniableFaith extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			CMMsg msg=CMClass.getMsg(mob,target,this,type,auto?"":"^S<S-NAME> "+prayWord(mob)+" for <T-NAMESELF> to BELIEVE!^?");
-			CMMsg msg2=CMClass.getMsg(target,D,this,CMMsg.MSG_SERVE,"<S-NAME> BELIEVE(S) !!!");
-			CMMsg msg3=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_VERBAL|mal|CMMsg.TYP_MIND|(auto?CMMsg.MASK_ALWAYS:0),null);
+			final CMMsg msg=CMClass.getMsg(mob,target,this,type,auto?"":"^S<S-NAME> "+prayWord(mob)+" for <T-NAMESELF> to BELIEVE!^?");
+			final CMMsg msg2=CMClass.getMsg(target,D,this,CMMsg.MSG_SERVE,"<S-NAME> BELIEVE(S) !!!");
+			final CMMsg msg3=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_VERBAL|mal|CMMsg.TYP_MIND|(auto?CMMsg.MASK_ALWAYS:0),null);
 			if((mob.location().okMessage(mob,msg))
 			&&(mob.location().okMessage(mob,msg3))
 			&&(mob.location().okMessage(mob,msg2)))

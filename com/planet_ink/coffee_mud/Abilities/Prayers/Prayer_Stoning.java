@@ -61,13 +61,13 @@ public class Prayer_Stoning extends Prayer
 		if(!super.tick(ticking,tickID)) return false;
 		if(!(affected instanceof MOB))
 			return super.tick(ticking,tickID);
-		MOB mob=(MOB)affected;
-		Room R=mob.location();
+		final MOB mob=(MOB)affected;
+		final Room R=mob.location();
 		if(R!=null)
 		{
 			for(int i=0;i<cits.size();i++)
 			{
-				MOB M=(MOB)cits.elementAt(i);
+				final MOB M=(MOB)cits.elementAt(i);
 				if((M.location()!=mob.location())||(mob.amDead()))
 				{
 					CMLib.tracking().wanderAway(M,true,false);
@@ -80,7 +80,7 @@ public class Prayer_Stoning extends Prayer
 					{
 						int dmg=mob.maxState().getHitPoints()/20;
 						if(dmg<1) dmg=1;
-						Item W=M.fetchWieldedItem();
+						final Item W=M.fetchWieldedItem();
 						if(W!=null)
 						{
 							W.basePhyStats().setDamage(dmg);
@@ -94,13 +94,13 @@ public class Prayer_Stoning extends Prayer
 			}
 			while(cits.size()<10)
 			{
-				MOB M=CMClass.getMOB("AngryCitizen");
+				final MOB M=CMClass.getMOB("AngryCitizen");
 				if(M==null)
 				{
 					unInvoke();
 					break;
 				}
-				Room R2=CMClass.getLocale("StdRoom");
+				final Room R2=CMClass.getLocale("StdRoom");
 				cits.addElement(M);
 				M.bringToLife(R2,true);
 				CMLib.tracking().wanderIn(M,R);
@@ -114,7 +114,7 @@ public class Prayer_Stoning extends Prayer
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		MOB target=this.getTarget(mob,commands,givenTarget);
+		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 		LegalBehavior B=null;
 		if(mob.location()!=null) B=CMLib.law().getLegalBehavior(mob.location());
@@ -136,7 +136,7 @@ public class Prayer_Stoning extends Prayer
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		int adjustment=target.phyStats().level()-((mob.phyStats().level()+super.getXLEVELLevel(mob))/2);
+		final int adjustment=target.phyStats().level()-((mob.phyStats().level()+super.getXLEVELLevel(mob))/2);
 		boolean success=proficiencyCheck(mob,-adjustment,auto);
 		if(success)
 		{
@@ -144,7 +144,7 @@ public class Prayer_Stoning extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> call(s) for the stoning of <T-NAMESELF>.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> call(s) for the stoning of <T-NAMESELF>.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -153,7 +153,7 @@ public class Prayer_Stoning extends Prayer
 					success=maliciousAffect(mob,target,asLevel,0,CMMsg.MASK_MALICIOUS|CMMsg.TYP_JUSTICE);
 					for(int i=0;i<warrants.size();i++)
 					{
-						LegalWarrant W=warrants.get(i);
+						final LegalWarrant W=warrants.get(i);
 						W.setCrime("pardoned");
 						W.setOffenses(0);
 					}

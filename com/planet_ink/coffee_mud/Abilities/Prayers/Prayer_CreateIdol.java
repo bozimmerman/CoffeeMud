@@ -50,7 +50,7 @@ public class Prayer_CreateIdol extends Prayer
 		super.affectPhyStats(aff,affectableStats);
 		if((affected instanceof Item)&&(((Item)affected).container()==null))
 		{
-			int xlvl=super.getXLEVELLevel(invoker());
+			final int xlvl=super.getXLEVELLevel(invoker());
 			affectableStats.setArmor(affectableStats.armor()+(20+(4*xlvl)));
 			affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()-10-(2*xlvl));
 		}
@@ -108,7 +108,7 @@ public class Prayer_CreateIdol extends Prayer
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 		int material=-1;
-		Room R=mob.location();
+		final Room R=mob.location();
 		if(R!=null)
 		{
 			if(((R.myResource()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_ROCK)
@@ -117,11 +117,11 @@ public class Prayer_CreateIdol extends Prayer
 				material=R.myResource();
 			else
 			{
-				List<Integer> V=R.resourceChoices();
+				final List<Integer> V=R.resourceChoices();
 				if((V!=null)&&(V.size()>0))
 				for(int v=0;v<V.size()*10;v++)
 				{
-					int rsc=V.get(CMLib.dice().roll(1,V.size(),-1)).intValue();
+					final int rsc=V.get(CMLib.dice().roll(1,V.size(),-1)).intValue();
 					if(((rsc&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_ROCK)
 						||((rsc&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_MITHRIL)
 						||((rsc&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_METAL))
@@ -134,16 +134,16 @@ public class Prayer_CreateIdol extends Prayer
 		}
 
 		// now see if it worked
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 		if((success)&&(material>0))
 		{
-			CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":"^S<S-NAME> "+prayWord(mob)+" for an idol.^?");
+			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":"^S<S-NAME> "+prayWord(mob)+" for an idol.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				Item newItem=CMClass.getBasicItem("GenItem");
+				final Item newItem=CMClass.getBasicItem("GenItem");
 				newItem.setBaseValue(1);
-				String name=CMLib.english().startWithAorAn(RawMaterial.CODES.NAME(material).toLowerCase()+" idol of "+mob.getWorshipCharID());
+				final String name=CMLib.english().startWithAorAn(RawMaterial.CODES.NAME(material).toLowerCase()+" idol of "+mob.getWorshipCharID());
 				newItem.setName(name);
 				newItem.setDisplayText(name+" sits here.");
 				newItem.basePhyStats().setDisposition(PhyStats.IS_EVIL);

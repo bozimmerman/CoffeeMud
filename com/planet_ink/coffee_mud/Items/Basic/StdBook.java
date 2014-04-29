@@ -61,8 +61,8 @@ public class StdBook extends StdItem
 		{
 		case CMMsg.TYP_WRITE:
 		{
-			String adminReq=getAdminReq().trim();
-			boolean admin=(adminReq.length()>0)&&CMLib.masking().maskCheck(adminReq,msg.source(),true);
+			final String adminReq=getAdminReq().trim();
+			final boolean admin=(adminReq.length()>0)&&CMLib.masking().maskCheck(adminReq,msg.source(),true);
 			if((!CMLib.masking().maskCheck(getWriteReq(),msg.source(),true))
 			&&(!admin)
 			&&(!(CMSecurity.isAllowed(msg.source(),msg.source().location(),CMSecurity.SecFlag.JOURNALS))))
@@ -79,7 +79,7 @@ public class StdBook extends StdItem
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
-		MOB mob=msg.source();
+		final MOB mob=msg.source();
 		if(msg.amITarget(this))
 		switch(msg.targetMinor())
 		{
@@ -90,9 +90,9 @@ public class StdBook extends StdItem
 			if((!mob.isMonster())
 			&&(mob.playerStats()!=null))
 			{
-				String adminReq=getAdminReq().trim();
-				boolean admin=(adminReq.length()>0)&&CMLib.masking().maskCheck(adminReq,mob,true);
-				long lastTime=mob.playerStats().getLastDateTime();
+				final String adminReq=getAdminReq().trim();
+				final boolean admin=(adminReq.length()>0)&&CMLib.masking().maskCheck(adminReq,mob,true);
+				final long lastTime=mob.playerStats().getLastDateTime();
 				if((admin)&&(!CMLib.masking().maskCheck(getReadReq(),mob,true)))
 				{
 					mob.tell("You are not allowed to read "+name()+".");
@@ -101,10 +101,10 @@ public class StdBook extends StdItem
 				int which=-1;
 				boolean newOnly=false;
 				boolean all=false;
-				Vector parse=CMParms.parse(msg.targetMessage());
+				final Vector parse=CMParms.parse(msg.targetMessage());
 				for(int v=0;v<parse.size();v++)
 				{
-					String s=(String)parse.elementAt(v);
+					final String s=(String)parse.elementAt(v);
 					if(CMath.s_long(s)>0)
 						which=CMath.s_int(msg.targetMessage());
 					else
@@ -114,12 +114,12 @@ public class StdBook extends StdItem
 					if(s.equalsIgnoreCase("ALL")||s.equalsIgnoreCase("OLD"))
 						all=true;
 				}
-				Vector read=DBRead(mob,Name(),which-1,lastTime, newOnly, all);
+				final Vector read=DBRead(mob,Name(),which-1,lastTime, newOnly, all);
 				boolean megaRepeat=true;
 				while(megaRepeat)
 				{
 					megaRepeat=false;
-					StringBuffer entry=(StringBuffer)read.lastElement();
+					final StringBuffer entry=(StringBuffer)read.lastElement();
 					if(entry.charAt(0)=='#')
 					{
 						which=-1;
@@ -150,26 +150,26 @@ public class StdBook extends StdItem
 		case CMMsg.TYP_WRITE:
 			try
 			{
-				String adminReq=getAdminReq().trim();
-				boolean admin=(adminReq.length()>0)&&CMLib.masking().maskCheck(adminReq,mob,true);
+				final String adminReq=getAdminReq().trim();
+				final boolean admin=(adminReq.length()>0)&&CMLib.masking().maskCheck(adminReq,mob,true);
 				if(!mob.isMonster())
 				{
-					String to="ALL";
-					String subject=mob.session().prompt("Enter the name of the chapter (Chapter 1: Start of book),etc : ");
+					final String to="ALL";
+					final String subject=mob.session().prompt("Enter the name of the chapter (Chapter 1: Start of book),etc : ");
 					if(subject.trim().length()==0)
 					{
 						mob.tell("Aborted.");
 						return;
 					}
-					String messageTitle="The contents of this chapter";
+					final String messageTitle="The contents of this chapter";
 					mob.session().println("\n\rEnter the contents of this chapter:");
-					List<String> vbuf=new Vector<String>();
+					final List<String> vbuf=new Vector<String>();
 					if(CMLib.journals().makeMessage(mob, messageTitle, vbuf, true)==JournalsLibrary.MsgMkrResolution.CANCELFILE)
 					{
 						mob.tell("Aborted.");
 						return;
 					}
-					String message=CMParms.combineWith(vbuf, "\\n");
+					final String message=CMParms.combineWith(vbuf, "\\n");
 					if(message.startsWith("<cmvp>")
 					&&(!admin)
 					&&(!(CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.JOURNALS))))
@@ -183,7 +183,7 @@ public class StdBook extends StdItem
 				}
 				return;
 			}
-			catch(IOException e)
+			catch(final IOException e)
 			{
 				Log.errOut("JournalItem",e.getMessage());
 			}
@@ -194,9 +194,9 @@ public class StdBook extends StdItem
 
 	public Vector DBRead(MOB readerMOB, String Journal, int which, long lastTimeDate, boolean newOnly, boolean all)
 	{
-		StringBuffer buf=new StringBuffer("");
-		Vector reply=new Vector();
-		List<JournalsLibrary.JournalEntry> journal=CMLib.database().DBReadJournalMsgs(Journal);
+		final StringBuffer buf=new StringBuffer("");
+		final Vector reply=new Vector();
+		final List<JournalsLibrary.JournalEntry> journal=CMLib.database().DBReadJournalMsgs(Journal);
 		if((which<0)||(journal==null)||(which>=journal.size()))
 		{
 			buf.append("\n\rTable of Contents\n\r");
@@ -217,14 +217,14 @@ public class StdBook extends StdItem
 				reply.addElement(journal.get(0).from);
 				reply.addElement(journal.get(0).subj);
 			}
-			Vector selections=new Vector();
+			final Vector selections=new Vector();
 			for(int j=0;j<journal.size();j++)
 			{
-				JournalsLibrary.JournalEntry entry=journal.get(j);
-				String from=entry.from;
-				String to=entry.to;
-				String subject=entry.subj;
-				StringBuffer selection=new StringBuffer("");
+				final JournalsLibrary.JournalEntry entry=journal.get(j);
+				final String from=entry.from;
+				final String to=entry.to;
+				final String subject=entry.subj;
+				final StringBuffer selection=new StringBuffer("");
 				if(to.equals("ALL")
 				||to.equalsIgnoreCase(readerMOB.Name())
 				||from.equalsIgnoreCase(readerMOB.Name())
@@ -246,7 +246,7 @@ public class StdBook extends StdItem
 			for(int v=selections.size()-1;v>=0;v--)
 			{
 				if(numToAdd==0){ selections.setElementAt("",v); continue;}
-				StringBuffer str=(StringBuffer)selections.elementAt(v);
+				final StringBuffer str=(StringBuffer)selections.elementAt(v);
 				if((newOnly)&&(str.charAt(0)!='*'))
 				{ selections.setElementAt("",v); continue;}
 				numToAdd--;
@@ -266,17 +266,17 @@ public class StdBook extends StdItem
 		}
 		else
 		{
-			JournalsLibrary.JournalEntry entry=journal.get(which);
-			String from=entry.from;
-			String to=entry.to;
-			String subject=entry.subj;
+			final JournalsLibrary.JournalEntry entry=journal.get(which);
+			final String from=entry.from;
+			final String to=entry.to;
+			final String subject=entry.subj;
 			String message=entry.msg;
 
 			reply.addElement(entry.from);
 			reply.addElement(entry.subj);
 
 			//String compdate=(String)entry.elementAt(6);
-			boolean mineAble=to.equalsIgnoreCase(readerMOB.Name())
+			final boolean mineAble=to.equalsIgnoreCase(readerMOB.Name())
 							||(to.toUpperCase().trim().startsWith("MASK=")&&(CMLib.masking().maskCheck(to.trim().substring(5),readerMOB,true)))
 							||from.equalsIgnoreCase(readerMOB.Name());
 			if(mineAble)
@@ -288,7 +288,7 @@ public class StdBook extends StdItem
 				if(message.startsWith("<cmvp>"))
 					message=new String(CMLib.webMacroFilter().virtualPageFilter(message.substring(6).getBytes()));
 			}
-			catch(HTTPRedirectException e){}
+			catch(final HTTPRedirectException e){}
 
 			if(to.equals("ALL")||mineAble)
 				buf.append("\n\r"+subject
@@ -303,7 +303,7 @@ public class StdBook extends StdItem
 	private String getParm(String parmName)
 	{
 		if(readableText().length()==0) return "";
-		Map<String,String> h=CMParms.parseEQParms(readableText().toUpperCase(), new String[]{"READ","WRITE","REPLY","ADMIN"});
+		final Map<String,String> h=CMParms.parseEQParms(readableText().toUpperCase(), new String[]{"READ","WRITE","REPLY","ADMIN"});
 		String req=h.get(parmName.toUpperCase().trim());
 		if(req==null) req="";
 		return req;

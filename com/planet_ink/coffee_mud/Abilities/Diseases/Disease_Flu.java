@@ -57,19 +57,19 @@ public class Disease_Flu extends Disease
 		if(affected==null) return false;
 		if(!(affected instanceof MOB)) return true;
 
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		MOB diseaser=invoker;
 		if(diseaser==null) diseaser=mob;
 		if((!mob.amDead())&&((--diseaseTick)<=0))
 		{
 			diseaseTick=DISEASE_DELAY();
 			mob.location().show(mob,null,CMMsg.MSG_NOISE,DISEASE_AFFECT());
-			int damage=CMLib.dice().roll(2,mob.phyStats().level()+1,1);
+			final int damage=CMLib.dice().roll(2,mob.phyStats().level()+1,1);
 			CMLib.combat().postDamage(diseaser,mob,this,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_DISEASE,-1,null);
 			catchIt(mob);
 			if(CMLib.dice().rollPercentage()==1)
 			{
-				Ability A=CMClass.getAbility("Disease_Fever");
+				final Ability A=CMClass.getAbility("Disease_Fever");
 				if(A!=null) A.invoke(diseaser,mob,true,0);
 			}
 			return true;

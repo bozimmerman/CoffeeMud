@@ -50,7 +50,7 @@ public class Prayer_Tithe extends Prayer
 		// undo the affects of this spell
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		super.unInvoke();
 
@@ -73,12 +73,12 @@ public class Prayer_Tithe extends Prayer
 		&&(msg.source()==affected)
 		&&(msg.target() instanceof Coins))
 		{
-			long num=((Coins)msg.target()).getNumberOfCoins();
+			final long num=((Coins)msg.target()).getNumberOfCoins();
 			((Coins)msg.target()).setNumberOfCoins(num-(num/10));
 			if((invoker()!=msg.source())&&((num/10)>0))
 			{
 				invoker().tell(msg.source(),null,null,"<S-NAME> tithes.");
-				String currency=((Coins)msg.target()).getCurrency();
+				final String currency=((Coins)msg.target()).getCurrency();
 				CMLib.beanCounter().addMoney(invoker(),currency,CMath.mul(((Coins)msg.target()).getDenomination(),(num/10)));
 			}
 		}
@@ -86,10 +86,10 @@ public class Prayer_Tithe extends Prayer
 		&&(msg.amITarget(affected))
 		&&(msg.tool()!=null))
 		{
-			ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(affected);
+			final ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(affected);
 			if(SK.getShop().doIHaveThisInStock("$"+msg.tool().Name()+"$",msg.source()))
 			{
-				ShopKeeper.ShopPrice price=CMLib.coffeeShops().sellingPrice((MOB)affected,msg.source(),msg.tool(),SK,true);
+				final ShopKeeper.ShopPrice price=CMLib.coffeeShops().sellingPrice((MOB)affected,msg.source(),msg.tool(),SK,true);
 				if((price.absoluteGoldPrice>0.0)&&(price.absoluteGoldPrice<=CMLib.beanCounter().getTotalAbsoluteShopKeepersValue(msg.source(),invoker())))
 					if(invoker()!=msg.target())
 					{
@@ -118,13 +118,13 @@ public class Prayer_Tithe extends Prayer
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		MOB target=getTarget(mob,commands,givenTarget);
+		final MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
@@ -132,8 +132,8 @@ public class Prayer_Tithe extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> become(s) filled with a need to tithe!":"^S<S-NAME> "+prayWord(mob)+" for <T-YOUPOSS> need to tithe!^?");
-			CMMsg msg3=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_MIND|(auto?CMMsg.MASK_ALWAYS:0),null);
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> become(s) filled with a need to tithe!":"^S<S-NAME> "+prayWord(mob)+" for <T-YOUPOSS> need to tithe!^?");
+			final CMMsg msg3=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_MIND|(auto?CMMsg.MASK_ALWAYS:0),null);
 			if((mob.location().okMessage(mob,msg))&&(mob.location().okMessage(mob,msg3)))
 			{
 				mob.location().send(mob,msg);

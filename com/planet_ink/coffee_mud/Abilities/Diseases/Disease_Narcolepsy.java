@@ -59,7 +59,7 @@ public class Disease_Narcolepsy extends Disease
 		if(affected==null) return false;
 		if(!(affected instanceof MOB)) return true;
 
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		if((!mob.amDead())&&((--diseaseTick)<=0))
 		{
 			diseaseTick=DISEASE_DELAY();
@@ -68,8 +68,8 @@ public class Disease_Narcolepsy extends Disease
 			mob.location().show(mob,null,CMMsg.MSG_NOISE,DISEASE_AFFECT());
 			if(!CMLib.flags().isSleeping(mob))
 			{
-				Command C=CMClass.getCommand("Sleep");
-				try{if(C!=null) C.execute(mob,CMParms.parse("Sleep"),Command.METAFLAG_FORCED);}catch(Exception e){}
+				final Command C=CMClass.getCommand("Sleep");
+				try{if(C!=null) C.execute(mob,CMParms.parse("Sleep"),Command.METAFLAG_FORCED);}catch(final Exception e){}
 			}
 			return true;
 		}

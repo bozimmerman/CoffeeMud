@@ -65,7 +65,7 @@ public class Painting extends CommonSkill
 		{
 			if((affected!=null)&&(affected instanceof MOB))
 			{
-				MOB mob=(MOB)affected;
+				final MOB mob=(MOB)affected;
 				if((building!=null)&&(!aborted))
 				{
 					if(messedUp)
@@ -94,7 +94,7 @@ public class Painting extends CommonSkill
 		String paintingDesc=null;
 		while((commands.size()>1)&&(commands.lastElement() instanceof String))
 		{
-			String last=((String)commands.lastElement());
+			final String last=((String)commands.lastElement());
 			if(last.startsWith("PAINTINGKEYWORDS="))
 			{
 				paintingKeyWords=last.substring(17).trim();
@@ -116,7 +116,7 @@ public class Painting extends CommonSkill
 				break;
 		}
 
-		String str=CMParms.combine(commands,0);
+		final String str=CMParms.combine(commands,0);
 		building=null;
 		messedUp=false;
 		Session S=mob.session();
@@ -178,13 +178,13 @@ public class Painting extends CommonSkill
 					{
 						final String name=input.trim();
 						if(name.length()==0) return;
-						Vector<String> V=CMParms.parse(name.toUpperCase());
+						final Vector<String> V=CMParms.parse(name.toUpperCase());
 						for(int v=0;v<V.size();v++)
 						{
-							String vstr=" "+(V.elementAt(v))+" ";
+							final String vstr=" "+(V.elementAt(v))+" ";
 							for(int i=0;i<mob.location().numItems();i++)
 							{
-								Item I=mob.location().getItem(i);
+								final Item I=mob.location().getItem(i);
 								if((I!=null)
 								&&(I.displayText().length()==0)
 								&&(!CMLib.flags().isGettable(I))
@@ -226,6 +226,7 @@ public class Painting extends CommonSkill
 										if(this.input.equals("Y"))
 										{
 											@SuppressWarnings("unchecked")
+											final
 											Vector<String> newCommands=(Vector<String>)originalCommands.clone();
 											newCommands.add("PAINTINGKEYWORDS="+name);
 											newCommands.add("PAINTINGDESC="+desc);
@@ -277,6 +278,7 @@ public class Painting extends CommonSkill
 								if(desc.length()==0)
 									return;
 								@SuppressWarnings("unchecked")
+								final
 								Vector<String> newCommands=(Vector<String>)originalCommands.clone();
 								newCommands.add("PAINTINGKEYWORDS="+name);
 								newCommands.add("PAINTINGDESC="+desc);
@@ -296,7 +298,7 @@ public class Painting extends CommonSkill
 			return false;
 		}
 
-		String startStr="<S-NAME> start(s) painting "+building.name()+".";
+		final String startStr="<S-NAME> start(s) painting "+building.name()+".";
 		displayText="You are painting "+building.name();
 		verb="painting "+building.name();
 		building.recoverPhyStats();
@@ -306,7 +308,7 @@ public class Painting extends CommonSkill
 		messedUp=!proficiencyCheck(mob,0,auto);
 		duration=getDuration(25,mob,1,2);
 
-		CMMsg msg=CMClass.getMsg(mob,building,this,getActivityMessageType(),startStr);
+		final CMMsg msg=CMClass.getMsg(mob,building,this,getActivityMessageType(),startStr);
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

@@ -48,7 +48,7 @@ public class Harpy extends GreatBird
 	private static final int[] parts={0 ,2 ,2 ,1 ,1 ,0 ,0 ,1 ,2 ,2 ,1 ,0 ,1 ,1 ,1 ,2 };
 	@Override public int[] bodyMask(){return parts;}
 
-	private int[] agingChart={0,1,4,20,50,75,100,110,120};
+	private final int[] agingChart={0,1,4,20,50,75,100,110,120};
 	@Override public int[] getAgingChart(){return agingChart;}
 
 	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();

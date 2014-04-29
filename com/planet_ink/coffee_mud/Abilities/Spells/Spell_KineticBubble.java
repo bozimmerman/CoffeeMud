@@ -49,7 +49,7 @@ public class Spell_KineticBubble extends Spell
 		// undo the affects of this spell
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-YOUPOSS> Kinetic Bubble pops.");
@@ -63,10 +63,10 @@ public class Spell_KineticBubble extends Spell
 		super.executeMsg(myHost,msg);
 		if(affected==null) return;
 		if(!(affected instanceof MOB)) return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		if(msg.target()==null) return;
 		if(msg.source()==null) return;
-		MOB source=msg.source();
+		final MOB source=msg.source();
 		if(source.location()==null) return;
 
 		if(msg.amITarget(mob))
@@ -77,14 +77,14 @@ public class Spell_KineticBubble extends Spell
 			&&(msg.tool()!=null)
 			&&(msg.tool() instanceof Weapon))
 			{
-				CMMsg msg2=CMClass.getMsg(mob,source,this,verbalCastCode(mob,source,true),null);
+				final CMMsg msg2=CMClass.getMsg(mob,source,this,verbalCastCode(mob,source,true),null);
 				if(source.location().okMessage(mob,msg2))
 				{
 					source.location().send(mob,msg2);
 					if(invoker==null) invoker=source;
 					if((msg2.value()<=0)&&(msg.value()>3))
 					{
-						int damage = CMLib.dice().roll( 1, (getXLEVELLevel(mob) + msg.value()) / 3 , 0 );
+						final int damage = CMLib.dice().roll( 1, (getXLEVELLevel(mob) + msg.value()) / 3 , 0 );
 						CMLib.combat().postDamage(mob,source,this,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,Weapon.TYPE_BURSTING,"The bubble around <S-NAME> <DAMAGES> <T-NAME>!");
 					}
 				}
@@ -97,16 +97,16 @@ public class Spell_KineticBubble extends Spell
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		MOB target=getTarget(mob,commands,givenTarget);
+		final MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,somanticCastCode(mob,target,auto),auto?"<T-NAME> <T-IS-ARE> surrounded by a Kinetic Bubble!":"^S<S-NAME> invoke(s) a Kinetic Bubble around <T-NAMESELF>!^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,somanticCastCode(mob,target,auto),auto?"<T-NAME> <T-IS-ARE> surrounded by a Kinetic Bubble!":"^S<S-NAME> invoke(s) a Kinetic Bubble around <T-NAMESELF>!^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

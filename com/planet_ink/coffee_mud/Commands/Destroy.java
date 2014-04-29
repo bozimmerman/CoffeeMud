@@ -99,9 +99,9 @@ public class Destroy extends StdCommand
 			return;
 		}
 
-		String manufacturerID=CMParms.combine(commands,2);
+		final String manufacturerID=CMParms.combine(commands,2);
 
-		Manufacturer manufacturer=CMLib.tech().getManufacturer(manufacturerID);
+		final Manufacturer manufacturer=CMLib.tech().getManufacturer(manufacturerID);
 		if((manufacturer==null)||(manufacturer==CMLib.tech().getDefaultManufacturer()))
 		{
 			mob.tell("There's no manufacturer called '"+manufacturerID+"' Try LIST MANUFACTURERS.\n\r");
@@ -127,20 +127,20 @@ public class Destroy extends StdCommand
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
 			return;
 		}
-		String accountName=CMStrings.capitalizeAndLower(CMParms.combine(commands, 2));
-		PlayerAccount theAccount = CMLib.players().getLoadAccount(accountName);
+		final String accountName=CMStrings.capitalizeAndLower(CMParms.combine(commands, 2));
+		final PlayerAccount theAccount = CMLib.players().getLoadAccount(accountName);
 		if(theAccount==null)
 		{
 			mob.tell("There is no account called '"+accountName+"'!\n\r");
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
 			return;
 		}
-		String playerList = CMParms.toStringList(theAccount.getPlayers());
+		final String playerList = CMParms.toStringList(theAccount.getPlayers());
 		if(mob.session().confirm("This will complete OBLITERATE the account '"+theAccount.getAccountName()+"' and players '"+playerList+"' forever.  Are you SURE?! (y/N)?","N"))
 		{
-			for(Enumeration<String> p=theAccount.getPlayers();p.hasMoreElements();)
+			for(final Enumeration<String> p=theAccount.getPlayers();p.hasMoreElements();)
 			{
-				MOB deadMOB=CMLib.players().getLoadPlayer(p.nextElement());
+				final MOB deadMOB=CMLib.players().getLoadPlayer(p.nextElement());
 				CMLib.players().obliteratePlayer(deadMOB,true,false);
 				mob.tell("The user '"+CMParms.combine(commands,2)+"' is no more!\n\r");
 				Log.sysOut("Mobs",mob.Name()+" destroyed user "+deadMOB.Name()+".");
@@ -163,8 +163,8 @@ public class Destroy extends StdCommand
 		}
 
 
-		String name=CMStrings.capitalizeAndLower(CMParms.combine(commands,2));
-		boolean found=CMLib.players().playerExists(name);
+		final String name=CMStrings.capitalizeAndLower(CMParms.combine(commands,2));
+		final boolean found=CMLib.players().playerExists(name);
 
 		if(!found)
 		{
@@ -175,7 +175,7 @@ public class Destroy extends StdCommand
 
 		if(mob.session().confirm("This will complete OBLITERATE the user '"+name+"' forever.  Are you SURE?! (y/N)?","N"))
 		{
-			MOB deadMOB=CMLib.players().getLoadPlayer(name);
+			final MOB deadMOB=CMLib.players().getLoadPlayer(name);
 			CMLib.players().obliteratePlayer(deadMOB,true,false);
 			mob.tell("The user '"+CMParms.combine(commands,2)+"' is no more!\n\r");
 			Log.sysOut("Mobs",mob.Name()+" destroyed user "+deadMOB.Name()+".");
@@ -188,10 +188,10 @@ public class Destroy extends StdCommand
 
 	public Thread findThreadGroup(String threadName,ThreadGroup tGroup)
 	{
-		int ac = tGroup.activeCount();
-		int agc = tGroup.activeGroupCount();
-		Thread tArray[] = new Thread [ac+1];
-		ThreadGroup tgArray[] = new ThreadGroup [agc+1];
+		final int ac = tGroup.activeCount();
+		final int agc = tGroup.activeGroupCount();
+		final Thread tArray[] = new Thread [ac+1];
+		final ThreadGroup tgArray[] = new ThreadGroup [agc+1];
 
 		tGroup.enumerate(tArray,false);
 		tGroup.enumerate(tgArray,false);
@@ -220,7 +220,7 @@ public class Destroy extends StdCommand
 			{
 				if (tgArray[i] != null)
 				{
-					Thread t=findThreadGroup(threadName,tgArray[i]);
+					final Thread t=findThreadGroup(threadName,tgArray[i]);
 					if(t!=null) return t;
 				}
 			}
@@ -241,7 +241,7 @@ public class Destroy extends StdCommand
 				t=findThreadGroup(threadName,topTG);
 
 		}
-		catch (Exception e)
+		catch (final Exception e)
 		{
 		}
 		return t;
@@ -251,7 +251,7 @@ public class Destroy extends StdCommand
 	public void rooms(MOB mob, Vector commands)
 		throws IOException
 	{
-		String thecmd=((String)commands.elementAt(0)).toLowerCase();
+		final String thecmd=((String)commands.elementAt(0)).toLowerCase();
 		if(commands.size()<3)
 		{
 			if(thecmd.equalsIgnoreCase("UNLINK"))
@@ -270,8 +270,8 @@ public class Destroy extends StdCommand
 				confirmed=true;
 			}
 		}
-		String roomdir=CMParms.combine(commands,2);
-		int direction=Directions.getGoodDirectionCode(roomdir);
+		final String roomdir=CMParms.combine(commands,2);
+		final int direction=Directions.getGoodDirectionCode(roomdir);
 		Room deadRoom=null;
 		if(!thecmd.equalsIgnoreCase("UNLINK"))
 			deadRoom=CMLib.map().getRoom(roomdir);
@@ -328,12 +328,12 @@ public class Destroy extends StdCommand
 			if((mob.location().getGridParent()!=null)
 			&&(!(mob.location() instanceof GridLocale)))
 			{
-				GridLocale GL=mob.location().getGridParent();
-				int myX=GL.getGridChildX(mob.location());
-				int myY=GL.getGridChildY(mob.location());
-				for(Iterator<WorldMap.CrossExit> i=GL.outerExits();i.hasNext();)
+				final GridLocale GL=mob.location().getGridParent();
+				final int myX=GL.getGridChildX(mob.location());
+				final int myY=GL.getGridChildY(mob.location());
+				for(final Iterator<WorldMap.CrossExit> i=GL.outerExits();i.hasNext();)
 				{
-					WorldMap.CrossExit CE=i.next();
+					final WorldMap.CrossExit CE=i.next();
 					if((CE.out)
 					&&(CE.x==myX)
 					&&(CE.y==myY)
@@ -352,10 +352,10 @@ public class Destroy extends StdCommand
 			}
 			if(unRoom instanceof GridLocale)
 			{
-				GridLocale GL=(GridLocale)unRoom;
-				for(Iterator<WorldMap.CrossExit> i=GL.outerExits();i.hasNext();)
+				final GridLocale GL=(GridLocale)unRoom;
+				for(final Iterator<WorldMap.CrossExit> i=GL.outerExits();i.hasNext();)
 				{
-					WorldMap.CrossExit CE=i.next();
+					final WorldMap.CrossExit CE=i.next();
 					if((!CE.out)
 					&&(CE.dir==direction)
 					&&(CE.destRoomID.equalsIgnoreCase(CMLib.map().getExtendedRoomID(mob.location()))))
@@ -387,7 +387,7 @@ public class Destroy extends StdCommand
 			return;
 		}
 
-		int direction=Directions.getGoodDirectionCode(((String)commands.elementAt(2)));
+		final int direction=Directions.getGoodDirectionCode(((String)commands.elementAt(2)));
 		if(direction<0)
 		{
 			mob.tell("You have failed to specify a direction.  Try "+Directions.LETTERS()+".\n\r");
@@ -424,20 +424,20 @@ public class Destroy extends StdCommand
 		MOB srchMob=mob;
 		Item srchContainer=null;
 		Room srchRoom=mob.location();
-		int x=itemID.indexOf('@');
+		final int x=itemID.indexOf('@');
 		if(x>0)
 		{
-			String rest=itemID.substring(x+1).trim();
+			final String rest=itemID.substring(x+1).trim();
 			itemID=itemID.substring(0,x).trim();
 			if(rest.equalsIgnoreCase("room"))
 				srchMob=null;
 			else
 			if(rest.length()>0)
 			{
-				MOB M=srchRoom.fetchInhabitant(rest);
+				final MOB M=srchRoom.fetchInhabitant(rest);
 				if(M==null)
 				{
-					Item I = srchRoom.findItem(null, rest);
+					final Item I = srchRoom.findItem(null, rest);
 					if(I instanceof Container)
 						srchContainer=I;
 					else
@@ -508,14 +508,14 @@ public class Destroy extends StdCommand
 				confirmed=true;
 			}
 		}
-		List<String> areaNames=new LinkedList<String>();
+		final List<String> areaNames=new LinkedList<String>();
 		areaNames.add(CMParms.combine(commands,2));
 		if((commands.size()>4))
 		{
 			if(((String)commands.get(2)).equalsIgnoreCase("all"))
 			{
 				areaNames.clear();
-				for(Enumeration<Area> a=CMLib.map().areas();a.hasMoreElements();)
+				for(final Enumeration<Area> a=CMLib.map().areas();a.hasMoreElements();)
 					areaNames.add(a.nextElement().Name());
 				if(((String)commands.get(3)).equalsIgnoreCase("except"))
 				{
@@ -534,7 +534,7 @@ public class Destroy extends StdCommand
 			}
 		}
 
-		for(String areaName : areaNames)
+		for(final String areaName : areaNames)
 		{
 			if(CMLib.map().getArea(areaName)==null)
 			{
@@ -542,8 +542,8 @@ public class Destroy extends StdCommand
 				mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a thunderous spell.");
 				return;
 			}
-			Area A=CMLib.map().getArea(areaName);
-			Room R=A.getRandomProperRoom();
+			final Area A=CMLib.map().getArea(areaName);
+			final Room R=A.getRandomProperRoom();
 			if((R!=null)&&(!CMSecurity.isAllowed(mob,R,CMSecurity.SecFlag.CMDAREAS)))
 			{
 				errorOut(mob);
@@ -579,8 +579,8 @@ public class Destroy extends StdCommand
 			return false;
 		}
 
-		String raceID=CMParms.combine(commands,2);
-		Race R=CMClass.getRace(raceID);
+		final String raceID=CMParms.combine(commands,2);
+		final Race R=CMClass.getRace(raceID);
 		if(R==null)
 		{
 			mob.tell("'"+raceID+"' is an invalid race id.");
@@ -593,7 +593,7 @@ public class Destroy extends StdCommand
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 			return false;
 		}
-		String oldRID=R.ID();
+		final String oldRID=R.ID();
 		CMClass.delRace(R);
 		CMLib.database().DBDeleteRace(R.ID());
 		CMClass.loadClass(CMObjectType.RACE,"com/planet_ink/coffee_mud/Races/"+oldRID+".class",true);
@@ -616,7 +616,7 @@ public class Destroy extends StdCommand
 			return false;
 		}
 
-		String classID=CMParms.combine(commands,2);
+		final String classID=CMParms.combine(commands,2);
 		if(CMLib.ableMapper().getAbilityComponentMap().get(classID.toUpperCase())==null)
 		{
 			mob.tell("'"+classID+"' does not exist, try LIST COMPONENTS.");
@@ -638,9 +638,9 @@ public class Destroy extends StdCommand
 			return false;
 		}
 
-		String classID=CMParms.combine(commands,2);
-		CMFile F=new CMFile(Resources.makeFileResourceName("skills/expertises.txt"),null,CMFile.FLAG_LOGERRORS);
-		boolean removed=Resources.findRemoveProperty(F, classID);
+		final String classID=CMParms.combine(commands,2);
+		final CMFile F=new CMFile(Resources.makeFileResourceName("skills/expertises.txt"),null,CMFile.FLAG_LOGERRORS);
+		final boolean removed=Resources.findRemoveProperty(F, classID);
 		if(removed)
 		{
 			Resources.removeResource("skills/expertises.txt");
@@ -662,7 +662,7 @@ public class Destroy extends StdCommand
 			return false;
 		}
 
-		String classID=CMParms.combine(commands,2);
+		final String classID=CMParms.combine(commands,2);
 		if(!CMLib.titles().isExistingAutoTitle(classID))
 		{
 			mob.tell("'"+classID+"' is not an existing auto-title, try LIST TITLES.");
@@ -670,8 +670,8 @@ public class Destroy extends StdCommand
 			return false;
 		}
 		CMLib.titles().dispossesTitle(classID);
-		CMFile F=new CMFile(Resources.makeFileResourceName("titles.txt"),null,CMFile.FLAG_LOGERRORS);
-		boolean removed=Resources.findRemoveProperty(F, classID);
+		final CMFile F=new CMFile(Resources.makeFileResourceName("titles.txt"),null,CMFile.FLAG_LOGERRORS);
+		final boolean removed=Resources.findRemoveProperty(F, classID);
 		if(removed)
 		{
 			mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The prestige of players just decreased!");
@@ -690,8 +690,8 @@ public class Destroy extends StdCommand
 			return false;
 		}
 
-		String classID=CMParms.combine(commands,2);
-		CharClass C=CMClass.getCharClass(classID);
+		final String classID=CMParms.combine(commands,2);
+		final CharClass C=CMClass.getCharClass(classID);
 		if(C==null)
 		{
 			mob.tell("'"+classID+"' is an invalid class id.");
@@ -706,7 +706,7 @@ public class Destroy extends StdCommand
 		}
 		CMClass.delCharClass(C);
 		CMLib.database().DBDeleteClass(C.ID());
-		String oldCID=C.ID();
+		final String oldCID=C.ID();
 		CMClass.loadClass(CMObjectType.CHARCLASS,"com/planet_ink/coffee_mud/CharClasses/"+oldCID+".class",true);
 		CharClass oldC=CMClass.getCharClass(oldCID);
 		if(oldC==null) oldC=CMClass.getCharClass("StdCharClass");
@@ -727,8 +727,8 @@ public class Destroy extends StdCommand
 			return false;
 		}
 
-		String classID=CMParms.combine(commands,2);
-		Ability A=CMClass.getAbility(classID);
+		final String classID=CMParms.combine(commands,2);
+		final Ability A=CMClass.getAbility(classID);
 		if(A==null)
 		{
 			mob.tell("'"+classID+"' is an invalid ability id.");
@@ -741,7 +741,7 @@ public class Destroy extends StdCommand
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 			return false;
 		}
-		Object O=CMClass.getObjectOrPrototype(A.ID());
+		final Object O=CMClass.getObjectOrPrototype(A.ID());
 		if(!(O instanceof Ability))
 		{
 			mob.tell("'"+classID+"' can not be deleted, because it is also an "+CMClass.getSimpleClassName(O)+".");
@@ -766,7 +766,7 @@ public class Destroy extends StdCommand
 		else
 		if(commands.size()>3)
 		{
-			String therest=CMParms.combine(commands,3);
+			final String therest=CMParms.combine(commands,3);
 			if(!((therest.equalsIgnoreCase("<T-NAME>")
 					||therest.equalsIgnoreCase("SELF")
 					||therest.equalsIgnoreCase("ALL"))))
@@ -777,7 +777,7 @@ public class Destroy extends StdCommand
 			}
 		}
 
-		Social soc2=CMLib.socials().fetchSocial(CMParms.combine(commands,2).toUpperCase(),true);
+		final Social soc2=CMLib.socials().fetchSocial(CMParms.combine(commands,2).toUpperCase(),true);
 		if(soc2==null)
 		{
 			mob.tell("but fail to specify an EXISTING SOCIAL!\n\r");
@@ -798,7 +798,7 @@ public class Destroy extends StdCommand
 	public static boolean destroyItem(MOB mob, Environmental dropThis, boolean quiet, boolean optimize)
 	{
 		String msgstr=null;
-		int material=(dropThis instanceof Item)?((Item)dropThis).material():-1;
+		final int material=(dropThis instanceof Item)?((Item)dropThis).material():-1;
 		if(!quiet)
 		switch(material&RawMaterial.MATERIAL_MASK)
 		{
@@ -814,7 +814,7 @@ public class Destroy extends StdCommand
 		default:
 			return false;
 		}
-		CMMsg msg=CMClass.getMsg(mob,dropThis,null,CMMsg.MSG_NOISYMOVEMENT,(optimize?CMMsg.MASK_OPTIMIZE:0)|CMMsg.MASK_ALWAYS|CMMsg.MSG_DEATH,CMMsg.MSG_NOISYMOVEMENT,msgstr);
+		final CMMsg msg=CMClass.getMsg(mob,dropThis,null,CMMsg.MSG_NOISYMOVEMENT,(optimize?CMMsg.MASK_OPTIMIZE:0)|CMMsg.MASK_ALWAYS|CMMsg.MSG_DEATH,CMMsg.MSG_NOISYMOVEMENT,msgstr);
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
@@ -836,16 +836,16 @@ public class Destroy extends StdCommand
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 			return;
 		}
-		String eachOrAll=(String)commands.get(2);
+		final String eachOrAll=(String)commands.get(2);
 		if((!eachOrAll.equalsIgnoreCase("each"))&&(!eachOrAll.equalsIgnoreCase("all")))
 		{
 			mob.tell("You have failed to specify the proper fields.\n\rThe format is MODIFY ALLQUALIFY EACH/ALL [SKILL ID]\n\r");
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 			return;
 		}
-		String classD=CMParms.combine(commands,3);
-		Map<String,Map<String,AbilityMapper.AbilityMapping>> map=CMLib.ableMapper().getAllQualifiesMap(null);
-		Map<String,AbilityMapper.AbilityMapping> subMap=map.get(eachOrAll.toUpperCase().trim());
+		final String classD=CMParms.combine(commands,3);
+		final Map<String,Map<String,AbilityMapper.AbilityMapping>> map=CMLib.ableMapper().getAllQualifiesMap(null);
+		final Map<String,AbilityMapper.AbilityMapping> subMap=map.get(eachOrAll.toUpperCase().trim());
 		if(!subMap.containsKey(classD.toUpperCase().trim()))
 		{
 			mob.tell("All-Qualify entry ("+eachOrAll+") ID '"+classD+"' does not exist! Try LIST ALLQUALIFYS");
@@ -874,13 +874,13 @@ public class Destroy extends StdCommand
 			}
 			if(mob.location().fetchInhabitant(CMParms.combine(commands,0))!=null)
 			{
-				Command C=CMClass.getCommand("Kill");
+				final Command C=CMClass.getCommand("Kill");
 				commands.insertElementAt("KILL",0);
 				if(C!=null) C.execute(mob,commands,metaFlags);
 				return false;
 			}
 
-			Vector V=new Vector();
+			final Vector V=new Vector();
 			int maxToDrop=Integer.MAX_VALUE;
 
 			if((commands.size()>1)
@@ -909,7 +909,7 @@ public class Destroy extends StdCommand
 					dropThis=mob.fetchItem(null,Wearable.FILTER_WORNONLY,whatToDrop);
 					if(dropThis!=null)
 					{
-						int matType=dropThis.material()&RawMaterial.MATERIAL_MASK;
+						final int matType=dropThis.material()&RawMaterial.MATERIAL_MASK;
 						if((matType!=RawMaterial.MATERIAL_GLASS)
 						&&(matType!=RawMaterial.MATERIAL_LIQUID)
 						&&(matType!=RawMaterial.MATERIAL_PAPER))
@@ -925,7 +925,7 @@ public class Destroy extends StdCommand
 						}
 						else
 						{
-							CMMsg newMsg=CMClass.getMsg(mob,dropThis,null,CMMsg.MSG_REMOVE,null);
+							final CMMsg newMsg=CMClass.getMsg(mob,dropThis,null,CMMsg.MSG_REMOVE,null);
 							if(mob.location().okMessage(mob,newMsg))
 								mob.location().send(mob,newMsg);
 							else
@@ -970,22 +970,22 @@ public class Destroy extends StdCommand
 		{
 			commandType=((String)commands.elementAt(1)).toUpperCase();
 		}
-		for(Enumeration<JournalsLibrary.CommandJournal> e=CMLib.journals().commandJournals();e.hasMoreElements();)
+		for(final Enumeration<JournalsLibrary.CommandJournal> e=CMLib.journals().commandJournals();e.hasMoreElements();)
 		{
-			JournalsLibrary.CommandJournal CMJ=e.nextElement();
+			final JournalsLibrary.CommandJournal CMJ=e.nextElement();
 			if((CMJ.NAME().equals(commandType))
 			&&(CMSecurity.isJournalAccessAllowed(mob,CMJ.NAME())))
 			{
 				int which=-1;
 				if(commands.size()>2)
 					which=CMath.s_int((String)commands.elementAt(2));
-				List<JournalsLibrary.JournalEntry> entries = CMLib.database().DBReadJournalMsgs(CMJ.JOURNAL_NAME());
+				final List<JournalsLibrary.JournalEntry> entries = CMLib.database().DBReadJournalMsgs(CMJ.JOURNAL_NAME());
 
 				if((which<=0)||(which>entries.size()))
 					mob.tell("Please enter a valid "+CMJ.NAME().toLowerCase()+" number to delete.  Use LIST "+CMJ.NAME()+"S for more information.");
 				else
 				{
-					JournalsLibrary.JournalEntry entry = entries.get(which-1);
+					final JournalsLibrary.JournalEntry entry = entries.get(which-1);
 					CMLib.database().DBDeleteJournal(CMJ.JOURNAL_NAME(),entry.key);
 					mob.tell(CMJ.NAME().toLowerCase()+" deletion submitted.");
 
@@ -1093,7 +1093,7 @@ public class Destroy extends StdCommand
 		{
 			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.LISTADMIN))
 				return errorOut(mob);
-			String named=CMParms.combine(commands,2);
+			final String named=CMParms.combine(commands,2);
 			if(!CMSecurity.isDisabledSearch(named.toUpperCase()))
 				mob.tell("'"+named+"' is not disabled");
 			else
@@ -1108,8 +1108,8 @@ public class Destroy extends StdCommand
 		{
 			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.LISTADMIN))
 				return errorOut(mob);
-			String named=CMParms.combine(commands,2);
-			CMSecurity.DbgFlag flag = (CMSecurity.DbgFlag)CMath.s_valueOf(CMSecurity.DbgFlag.values(), named.toUpperCase().trim());
+			final String named=CMParms.combine(commands,2);
+			final CMSecurity.DbgFlag flag = (CMSecurity.DbgFlag)CMath.s_valueOf(CMSecurity.DbgFlag.values(), named.toUpperCase().trim());
 			if(flag==null)
 			{
 				mob.tell("'"+named+"' is not a valid flag.  Try: "+CMParms.toStringList(CMSecurity.DbgFlag.values()));
@@ -1135,12 +1135,12 @@ public class Destroy extends StdCommand
 				mob.tell("Please enter a valid player number to delete.  Use List nopurge for more information.");
 			else
 			{
-				StringBuffer newNoPurge=new StringBuffer("");
-				List<String> protectedOnes=Resources.getFileLineVector(Resources.getFileResource("protectedplayers.ini",false));
+				final StringBuffer newNoPurge=new StringBuffer("");
+				final List<String> protectedOnes=Resources.getFileLineVector(Resources.getFileResource("protectedplayers.ini",false));
 				if((protectedOnes!=null)&&(protectedOnes.size()>0))
 					for(int b=0;b<protectedOnes.size();b++)
 					{
-						String B=protectedOnes.get(b);
+						final String B=protectedOnes.get(b);
 						if(((b+1)!=which)&&(B.trim().length()>0))
 							newNoPurge.append(B+"\n");
 					}
@@ -1152,7 +1152,7 @@ public class Destroy extends StdCommand
 		if(commandType.equals("HOLIDAY"))
 		{
 			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDQUESTS)) return errorOut(mob);
-			String name=CMParms.combine(commands,2);
+			final String name=CMParms.combine(commands,2);
 			int num=-1;
 			if(CMath.isInteger(name))
 				num=CMath.s_int(name);
@@ -1173,7 +1173,7 @@ public class Destroy extends StdCommand
 		if(commandType.equals("TICKS"))
 		{
 			if(!CMSecurity.isASysOp(mob)) return errorOut(mob);
-			String which=CMParms.combine(commands,2);
+			final String which=CMParms.combine(commands,2);
 			List<Tickable> V=null;
 			if(which.length()>0)
 			{
@@ -1184,7 +1184,7 @@ public class Destroy extends StdCommand
 				mob.tell("Please enter a valid ticking object name to destroy.  Use List ticks for a list of groups and objects.");
 			else
 			{
-				StringBuffer list=new StringBuffer("");
+				final StringBuffer list=new StringBuffer("");
 				for(int v=0;v<V.size();v++)
 					list.append(V.get(v).name()+", ");
 				if((mob.session()!=null)&&(mob.session().confirm("Destroy the following ticking objects: "+list.substring(0,list.length()-2)+"  (y/N)? ","N")))
@@ -1214,7 +1214,7 @@ public class Destroy extends StdCommand
 		if(commandType.equals("THREAD"))
 		{
 			if(!CMSecurity.isASysOp(mob)) return errorOut(mob);
-			String which=CMParms.combine(commands,2);
+			final String which=CMParms.combine(commands,2);
 			Thread whichT=null;
 			if(which.length()>0)
 				whichT=findThread(which);
@@ -1234,7 +1234,7 @@ public class Destroy extends StdCommand
 			int which=-1;
 			if(commands.size()>2)
 				which=CMath.s_int((String)commands.elementAt(2));
-			Session S=CMLib.sessions().getAllSessionAt(which);
+			final Session S=CMLib.sessions().getAllSessionAt(which);
 			if(S==null)
 				mob.tell("Please enter a valid session number to delete.  Use SESSIONS for more information.");
 			else
@@ -1255,7 +1255,7 @@ public class Destroy extends StdCommand
 				mob.tell("Destroy which journal? Try List Journal");
 				return errorOut(mob);
 			}
-			List<String> V=CMLib.database().DBReadJournals();
+			final List<String> V=CMLib.database().DBReadJournals();
 			String name=CMParms.combine(commands,2);
 			int which=-1;
 			for(int v=0;v<V.size();v++)
@@ -1291,7 +1291,7 @@ public class Destroy extends StdCommand
 				mob.tell("Destroy which faction?  Use list factions.");
 			else
 			{
-				String name=CMParms.combine(commands,2);
+				final String name=CMParms.combine(commands,2);
 				Faction F=CMLib.factions().getFaction(name);
 				if(F==null) F=CMLib.factions().getFactionByName(name);
 				if(F==null)
@@ -1301,7 +1301,7 @@ public class Destroy extends StdCommand
 				{
 					try
 					{
-						CMFile F2=new CMFile(Resources.makeFileResourceName(CMLib.factions().makeFactionFilename(F.factionID())),null);
+						final CMFile F2=new CMFile(Resources.makeFileResourceName(CMLib.factions().makeFactionFilename(F.factionID())),null);
 						if(F2.exists())
 							F2.deleteAll();
 						else
@@ -1310,7 +1310,7 @@ public class Destroy extends StdCommand
 						Log.sysOut("CreateEdit",mob.Name()+" destroyed Faction "+F.name()+" ("+F.factionID()+").");
 						mob.tell("Faction File '"+F.factionID()+"' deleted.");
 					}
-					catch(Exception e)
+					catch(final Exception e)
 					{
 						Log.errOut("CreateEdit",e);
 						mob.tell("Faction '"+F.factionID()+"' could NOT be deleted.");
@@ -1336,7 +1336,7 @@ public class Destroy extends StdCommand
 		if(commandType.equals("POLL"))
 		{
 			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.POLLS)) return errorOut(mob);
-			String name=CMParms.combine(commands,2);
+			final String name=CMParms.combine(commands,2);
 			Poll P=null;
 			if(CMath.isInteger(name))
 				P=CMLib.polls().getPoll(CMath.s_int(name)-1);
@@ -1395,8 +1395,8 @@ public class Destroy extends StdCommand
 				mob.tell("Destroy which clan?  Use clanlist.");
 			else
 			{
-				String name=CMParms.combine(commands,2);
-				Clan C=CMLib.clans().findClan(name);
+				final String name=CMParms.combine(commands,2);
+				final Clan C=CMLib.clans().findClan(name);
 				if(C==null)
 					mob.tell("Clan '"+name+"' is unknown.  Try clanlist.");
 				else
@@ -1416,9 +1416,9 @@ public class Destroy extends StdCommand
 				mob.tell("Destroy which government?  Use list governments.");
 			else
 			{
-				String name=CMParms.combine(commands,2);
+				final String name=CMParms.combine(commands,2);
 				ClanGovernment G=null;
-				for(ClanGovernment g : CMLib.clans().getStockGovernments())
+				for(final ClanGovernment g : CMLib.clans().getStockGovernments())
 					if(g.getName().equalsIgnoreCase(name))
 						G=g;
 				if(G==null)
@@ -1436,7 +1436,7 @@ public class Destroy extends StdCommand
 		}
 		else
 		{
-			String allWord=CMParms.combine(commands,1);
+			final String allWord=CMParms.combine(commands,1);
 			Environmental thang=mob.location().fetchFromRoomFavorItems(null,allWord);
 			if(thang==null)
 				thang=mob.location().fetchFromMOBRoomFavorsItems(mob,null,allWord,Wearable.FILTER_ANY);
@@ -1459,7 +1459,7 @@ public class Destroy extends StdCommand
 				Room theRoom=null;
 				if(allWord.length()>0)
 				{
-					try{ theRoom=CMLib.map().getRoom(allWord); }catch(NoSuchElementException e){}
+					try{ theRoom=CMLib.map().getRoom(allWord); }catch(final NoSuchElementException e){}
 				}
 				if(theRoom!=null)
 				{

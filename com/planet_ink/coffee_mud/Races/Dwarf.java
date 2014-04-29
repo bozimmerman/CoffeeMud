@@ -44,8 +44,8 @@ public class Dwarf extends StdRace
 	@Override public int weightVariance(){return 100;}
 	@Override public long forbiddenWornBits(){return 0;}
 	@Override public String racialCategory(){return "Dwarf";}
-	private String[]culturalAbilityNames={"Dwarven","Mining"};
-	private int[]culturalAbilityProficiencies={100,50};
+	private final String[]culturalAbilityNames={"Dwarven","Mining"};
+	private final int[]culturalAbilityProficiencies={100,50};
 	@Override public String[] culturalAbilityNames(){return culturalAbilityNames;}
 	@Override public int[] culturalAbilityProficiencies(){return culturalAbilityProficiencies;}
 
@@ -53,7 +53,7 @@ public class Dwarf extends StdRace
 	private static final int[] parts={0 ,2 ,2 ,1 ,1 ,2 ,2 ,1 ,2 ,2 ,1 ,0 ,1 ,1 ,0 ,0 };
 	@Override public int[] bodyMask(){return parts;}
 
-	private int[] agingChart={0,1,5,40,125,188,250,270,290};
+	private final int[] agingChart={0,1,5,40,125,188,250,270,290};
 	@Override public int[] getAgingChart(){return agingChart;}
 
 	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
@@ -82,28 +82,28 @@ public class Dwarf extends StdRace
 		{
 			outfitChoices=new Vector();
 			// Have to, since it requires use of special constructor
-			Armor s1=CMClass.getArmor("GenShirt");
+			final Armor s1=CMClass.getArmor("GenShirt");
 			s1.setName("a grey work tunic");
 			s1.setDisplayText("a grey work tunic has been left here.");
 			s1.setDescription("There are lots of little loops and folks for hanging tools about it.");
 			s1.text();
 			outfitChoices.add(s1);
 
-			Armor s2=CMClass.getArmor("GenShoes");
+			final Armor s2=CMClass.getArmor("GenShoes");
 			s2.setName("a pair of hefty work boots");
 			s2.setDisplayText("some hefty work boots have been left here.");
 			s2.setDescription("Thick and well worn boots with very tough souls.");
 			s2.text();
 			outfitChoices.add(s2);
 
-			Armor p1=CMClass.getArmor("GenPants");
+			final Armor p1=CMClass.getArmor("GenPants");
 			p1.setName("some hefty work pants");
 			p1.setDisplayText("some hefty work pants have been left here.");
 			p1.setDescription("There are lots of little loops and folks for hanging tools about it.");
 			p1.text();
 			outfitChoices.add(p1);
 
-			Armor s3=CMClass.getArmor("GenBelt");
+			final Armor s3=CMClass.getArmor("GenBelt");
 			outfitChoices.add(s3);
 		}
 		return outfitChoices;
@@ -115,7 +115,7 @@ public class Dwarf extends StdRace
 	@Override
 	public String healthText(MOB viewer, MOB mob)
 	{
-		double pct=(CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));
+		final double pct=(CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));
 
 		if(pct<.10)
 			return "^r" + mob.name(viewer) + "^r is nearly dead!^N";

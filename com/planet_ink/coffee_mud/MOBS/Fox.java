@@ -37,7 +37,7 @@ public class Fox extends StdMOB
 	public Fox()
 	{
 		super();
-		Random randomizer = new Random(System.currentTimeMillis());
+		final Random randomizer = new Random(System.currentTimeMillis());
 
 		username="a fox";
 		setDescription("It`s got a red coat and a tail.  Never has there been a more majestic animal.");

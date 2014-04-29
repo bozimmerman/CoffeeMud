@@ -58,7 +58,7 @@ public class Lantern extends LightSource
 	{
 		if(msg.amITarget(this))
 		{
-			MOB mob=msg.source();
+			final MOB mob=msg.source();
 			switch(msg.targetMinor())
 			{
 				case CMMsg.TYP_FILL:
@@ -71,7 +71,7 @@ public class Lantern extends LightSource
 							mob.tell("You can only fill "+name()+" with lamp oil!");
 							return false;
 						}
-						Drink thePuddle=(Drink)msg.tool();
+						final Drink thePuddle=(Drink)msg.tool();
 						if(!thePuddle.containsDrink())
 						{
 							mob.tell(thePuddle.name()+" is empty.");
@@ -98,7 +98,7 @@ public class Lantern extends LightSource
 			case CMMsg.TYP_FILL:
 				if((msg.tool()!=null)&&(msg.tool() instanceof Drink))
 				{
-					Drink thePuddle=(Drink)msg.tool();
+					final Drink thePuddle=(Drink)msg.tool();
 					int amountToTake=1;
 					if(!thePuddle.containsDrink()) amountToTake=0;
 					thePuddle.setLiquidRemaining(thePuddle.liquidRemaining()-amountToTake);

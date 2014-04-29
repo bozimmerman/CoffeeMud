@@ -55,7 +55,7 @@ public class Display extends StdCommand
 			return false;
 		}
 
-		MOB recipient=mob.location().fetchInhabitant((String)commands.lastElement());
+		final MOB recipient=mob.location().fetchInhabitant((String)commands.lastElement());
 		if((recipient==null)||(!CMLib.flags().canBeSeenBy(recipient,mob)))
 		{
 			mob.tell("I don't see anyone called "+(String)commands.lastElement()+" here.");
@@ -65,13 +65,13 @@ public class Display extends StdCommand
 		if((commands.size()>0)&&(((String)commands.lastElement()).equalsIgnoreCase("to")))
 			commands.removeElementAt(commands.size()-1);
 
-		int maxToGive=CMLib.english().calculateMaxToGive(mob,commands,true,mob,false);
+		final int maxToGive=CMLib.english().calculateMaxToGive(mob,commands,true,mob,false);
 		if(maxToGive<0) return false;
 
 		String thingToGive=CMParms.combine(commands,0);
 		int addendum=1;
 		String addendumStr="";
-		Vector V=new Vector();
+		final Vector V=new Vector();
 		boolean allFlag=(commands.size()>0)?((String)commands.elementAt(0)).equalsIgnoreCase("all"):false;
 		if(thingToGive.toUpperCase().startsWith("ALL.")){ allFlag=true; thingToGive="ALL "+thingToGive.substring(4);}
 		if(thingToGive.toUpperCase().endsWith(".ALL")){ allFlag=true; thingToGive="ALL "+thingToGive.substring(0,thingToGive.length()-4);}
@@ -103,8 +103,8 @@ public class Display extends StdCommand
 		else
 		for(int i=0;i<V.size();i++)
 		{
-			Environmental giveThis=(Environmental)V.elementAt(i);
-			CMMsg newMsg=CMClass.getMsg(recipient,giveThis,mob,CMMsg.MSG_LOOK,"<O-NAME> show(s) <T-NAME> to <S-NAMESELF>.");
+			final Environmental giveThis=(Environmental)V.elementAt(i);
+			final CMMsg newMsg=CMClass.getMsg(recipient,giveThis,mob,CMMsg.MSG_LOOK,"<O-NAME> show(s) <T-NAME> to <S-NAMESELF>.");
 			if(mob.location().okMessage(recipient,newMsg))
 			{
 				recipient.tell(recipient,giveThis,mob,"<O-NAME> show(s) <T-NAME> to <S-NAMESELF>.");

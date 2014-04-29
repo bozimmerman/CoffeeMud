@@ -64,11 +64,11 @@ public class Prop_NarrowLedge extends Property
 			synchronized(mobsToKill)
 			{
 				CMLib.threads().deleteTick(this,Tickable.TICKID_SPELL_AFFECT);
-				List<MOB> V=new XVector<MOB>(mobsToKill);
+				final List<MOB> V=new XVector<MOB>(mobsToKill);
 				mobsToKill.clear();
 				for(int v=0;v<V.size();v++)
 				{
-					MOB mob=V.get(v);
+					final MOB mob=V.get(v);
 					if(mob.location()!=null)
 					{
 						if((affected instanceof Room)&&(mob.location()!=affected))
@@ -100,7 +100,7 @@ public class Prop_NarrowLedge extends Property
 		&&((msg.amITarget(affected))||(msg.tool()==affected))
 		&&(!CMLib.flags().isFalling(msg.source())))
 		{
-			MOB mob=msg.source();
+			final MOB mob=msg.source();
 			if((!CMLib.flags().isInFlight(mob))
 			&&(CMLib.dice().roll(1,check,-mob.charStats().getStat(CharStats.STAT_DEXTERITY))>0))
 			{
@@ -109,7 +109,7 @@ public class Prop_NarrowLedge extends Property
 					if(!mobsToKill.contains(mob))
 					{
 						mobsToKill.add(mob);
-						Ability falling=CMClass.getAbility("Falling");
+						final Ability falling=CMClass.getAbility("Falling");
 						falling.setProficiency(0);
 						falling.setAffectedOne(affected);
 						falling.invoke(null,null,mob,true,0);

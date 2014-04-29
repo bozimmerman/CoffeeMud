@@ -27,10 +27,10 @@ limitations under the License.
  */
 public class WebAddress
 {
-	private String				host;
-	private int					port;
-	private InetSocketAddress	address;
-	private String				context;
+	private final String				host;
+	private final int					port;
+	private final InetSocketAddress	address;
+	private final String				context;
 
 	public WebAddress(String host, int port, String context) throws UnknownHostException
 	{

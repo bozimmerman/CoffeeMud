@@ -103,13 +103,13 @@ public class DBConnection
 		{
 			Class.forName(DBClass);
 		}
-		catch(ClassNotFoundException ce)
+		catch(final ClassNotFoundException ce)
 		{
 			ce.printStackTrace();
 		}
 		sqlserver=true;
 		isReusable=DBReuse;
-		java.util.Properties p = new java.util.Properties();
+		final java.util.Properties p = new java.util.Properties();
 		if((DBUser!=null)&&(DBUser.length()>0))
 		{
 			p.put("user",DBUser);
@@ -128,7 +128,7 @@ public class DBConnection
 		{
 			return myConnection.getCatalog();
 		}
-		catch(Exception e){}
+		catch(final Exception e){}
 		return "";
 	}
 
@@ -136,7 +136,7 @@ public class DBConnection
 	{
 		if(isFakeDB==null)
 		{
-			String catalog = catalog();
+			final String catalog = catalog();
 			if(catalog==null)
 				isFakeDB=Boolean.FALSE;
 			else
@@ -156,17 +156,17 @@ public class DBConnection
 		{
 			if(myStatement!=null)
 				myStatement.close();
-		}catch(SQLException e){}
+		}catch(final SQLException e){}
 		try
 		{
 			if(myPreparedStatement!=null)
 				myPreparedStatement.close();
-		}catch(SQLException e){}
+		}catch(final SQLException e){}
 		try
 		{
 			if(myConnection!=null)
 				myConnection.close();
-		}catch(SQLException e){}
+		}catch(final SQLException e){}
 		myConnection=null;
 		myStatement=null;
 		myPreparedStatement=null;
@@ -191,7 +191,7 @@ public class DBConnection
 				sqlserver=true;
 				myStatement=myConnection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY);
 			}
-			catch(SQLException e)
+			catch(final SQLException e)
 			{
 				myConnection=null;
 				failuresInARow++;
@@ -209,7 +209,7 @@ public class DBConnection
 					myStatement.executeUpdate(openerSQL);
 				}
 			}
-			catch(SQLException e)
+			catch(final SQLException e)
 			{
 				return false;
 				// not a real error?!
@@ -267,7 +267,7 @@ public class DBConnection
 				myPreparedStatement=myConnection.prepareStatement(SQL);
 				sqlserver=false;
 			}
-			catch(SQLException e)
+			catch(final SQLException e)
 			{
 				sqlserver=false;
 				myConnection=null;
@@ -307,7 +307,7 @@ public class DBConnection
 				myPreparedStatement=myConnection.prepareStatement(SQL);
 				sqlserver=false;
 			}
-			catch(SQLException e)
+			catch(final SQLException e)
 			{
 				Log.errOut("DBConnection",e.getMessage());
 				sqlserver=false;
@@ -354,7 +354,7 @@ public class DBConnection
 			if(myConnection!=null)
 				myConnection.commit();
 		}
-		catch(SQLException e)
+		catch(final SQLException e)
 		{
 			// not a real error?
 		}
@@ -407,7 +407,7 @@ public class DBConnection
 					lastError="DBConnection Statement not open.";
 				sqlserver=false;
 			}
-			catch(SQLException sqle)
+			catch(final SQLException sqle)
 			{
 				sqlserver=false;
 				failuresInARow++;
@@ -479,7 +479,7 @@ public class DBConnection
 				}
 				sqlserver=false;
 			}
-			catch(SQLException sqle)
+			catch(final SQLException sqle)
 			{
 				sqlserver=false;
 				if((sqle.getMessage()==null)
@@ -555,7 +555,7 @@ public class DBConnection
 				return true;
 			return false;
 		}
-		catch(SQLException e)
+		catch(final SQLException e)
 		{
 			return true;
 		}
@@ -569,7 +569,7 @@ public class DBConnection
 	 */
 	public boolean isProbablyLockedUp()
 	{
-		long twominsAgo=System.currentTimeMillis()-(2*60*1000);
+		final long twominsAgo=System.currentTimeMillis()-(2*60*1000);
 		if((lastPutInUseTime<twominsAgo)&&inUse)
 			return true;
 		return false;

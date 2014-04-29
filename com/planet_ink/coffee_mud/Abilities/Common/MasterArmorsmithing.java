@@ -73,7 +73,7 @@ public class MasterArmorsmithing extends Armorsmithing implements ItemCraftor
 		if(super.checkStop(mob, commands))
 			return true;
 
-		CraftParms parsedVars=super.parseAutoGenerate(auto,givenTarget,commands);
+		final CraftParms parsedVars=super.parseAutoGenerate(auto,givenTarget,commands);
 
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,parsedVars.autoGenerate);
 		if(commands.size()==0)

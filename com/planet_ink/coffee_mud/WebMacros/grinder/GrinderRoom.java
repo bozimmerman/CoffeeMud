@@ -59,12 +59,12 @@ public class GrinderRoom
 	{
 		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 		{
-			GrinderDir D=new GrinderDir();
-			Room R2=R.rawDoors()[d];
+			final GrinderDir D=new GrinderDir();
+			final Room R2=R.rawDoors()[d];
 			if(R2!=null)
 			{
 				D.room=R2.roomID();
-				Exit E2=R.getRawExit(d);
+				final Exit E2=R.getRawExit(d);
 				if(E2!=null)
 					D.exit=E2;
 			}

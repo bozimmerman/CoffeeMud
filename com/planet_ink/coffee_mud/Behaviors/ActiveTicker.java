@@ -60,7 +60,7 @@ public class ActiveTicker extends StdBehavior
 
 	public String rebuildParms()
 	{
-		StringBuffer rebuilt=new StringBuffer("");
+		final StringBuffer rebuilt=new StringBuffer("");
 		rebuilt.append(" min="+minTicks);
 		rebuilt.append(" max="+maxTicks);
 		rebuilt.append(" chance="+chance);
@@ -103,7 +103,7 @@ public class ActiveTicker extends StdBehavior
 				tickReset();
 				if((ticking instanceof MOB)&&(!canActAtAll(ticking)))
 					return false;
-				int a=CMLib.dice().rollPercentage();
+				final int a=CMLib.dice().rollPercentage();
 				if(a>chance)
 					return false;
 				return true;

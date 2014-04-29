@@ -58,7 +58,7 @@ public class Prop_RoomView extends Property
 		&&(newRoom.fetchEffect(ID())==null)
 		&&((msg.targetMinor()==CMMsg.TYP_LOOK)||(msg.targetMinor()==CMMsg.TYP_EXAMINE)))
 		{
-			CMMsg msg2=CMClass.getMsg(msg.source(),newRoom,msg.tool(),
+			final CMMsg msg2=CMClass.getMsg(msg.source(),newRoom,msg.tool(),
 						  msg.sourceCode(),msg.sourceMessage(),
 						  msg.targetCode(),msg.targetMessage(),
 						  msg.othersCode(),msg.othersMessage());

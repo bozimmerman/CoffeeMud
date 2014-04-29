@@ -59,7 +59,7 @@ public class StdClanCommonItem extends StdClanItem
 	{
 		for(int i=0;i<R.numItems();i++)
 		{
-			Item I2=R.getItem(i);
+			final Item I2=R.getItem(i);
 			if((I2!=null)&&(I2.container()==null)&&(CMLib.flags().isOnFire(I2)))
 				return true;
 		}
@@ -68,10 +68,10 @@ public class StdClanCommonItem extends StdClanItem
 
 	public Vector resourceHere(Room R, int material)
 	{
-		Vector here=new Vector();
+		final Vector here=new Vector();
 		for(int i=0;i<R.numItems();i++)
 		{
-			Item I2=R.getItem(i);
+			final Item I2=R.getItem(i);
 			if((I2!=null)
 			&&(I2.container()==null)
 			&&(I2 instanceof RawMaterial)
@@ -85,10 +85,10 @@ public class StdClanCommonItem extends StdClanItem
 
 	public Vector resourceHere(MOB M, int material)
 	{
-		Vector here=new Vector();
+		final Vector here=new Vector();
 		for(int i=0;i<M.numItems();i++)
 		{
-			Item I2=M.getItem(i);
+			final Item I2=M.getItem(i);
 			if((I2!=null)
 			&&(I2.container()==null)
 			&&(I2 instanceof RawMaterial)
@@ -102,7 +102,7 @@ public class StdClanCommonItem extends StdClanItem
 
 	public List resourceHere(Room R, List materials)
 	{
-		List allMat=new Vector();
+		final List allMat=new Vector();
 		List V=null;
 		for(int m=0;m<materials.size();m++)
 		{
@@ -115,7 +115,7 @@ public class StdClanCommonItem extends StdClanItem
 	}
 	public List resourceHere(MOB M, List materials)
 	{
-		List allMat=new Vector();
+		final List allMat=new Vector();
 		List V=null;
 		for(int m=0;m<materials.size();m++)
 		{
@@ -130,10 +130,10 @@ public class StdClanCommonItem extends StdClanItem
 	public List enCode(MOB M, String req)
 	{
 		req=req.toUpperCase();
-		List V=new Vector();
-		for(RawMaterial.Material m : RawMaterial.Material.values())
+		final List V=new Vector();
+		for(final RawMaterial.Material m : RawMaterial.Material.values())
 		{
-			int x=req.indexOf(m.desc());
+			final int x=req.indexOf(m.desc());
 			if(x<0) continue;
 			if((x>0)&&Character.isLetter(req.charAt(x-1)))
 				continue;
@@ -142,11 +142,11 @@ public class StdClanCommonItem extends StdClanItem
 				continue;
 			V.add(Integer.valueOf(m.mask()));
 		}
-		RawMaterial.CODES codes = RawMaterial.CODES.instance();
+		final RawMaterial.CODES codes = RawMaterial.CODES.instance();
 		for(int s=0;s<codes.total();s++)
 		{
-			String S=codes.name(s);
-			int x=req.indexOf(S);
+			final String S=codes.name(s);
+			final int x=req.indexOf(S);
 			if(x<0) continue;
 			if((x>0)&&Character.isLetter(req.charAt(x-1)))
 				continue;
@@ -186,10 +186,10 @@ public class StdClanCommonItem extends StdClanItem
 
 	public boolean trackTo(MOB M, MOB M2)
 	{
-		Ability A=CMClass.getAbility("Skill_Track");
+		final Ability A=CMClass.getAbility("Skill_Track");
 		if(A!=null)
 		{
-			Room R=M2.location();
+			final Room R=M2.location();
 			if((R!=null)&&(CMLib.flags().isInTheGame(M2,true)))
 			{
 				A.invoke(M,CMParms.parse("\""+CMLib.map().getExtendedRoomID(R)+"\""),R,true,0);
@@ -200,7 +200,7 @@ public class StdClanCommonItem extends StdClanItem
 	}
 	public boolean trackTo(MOB M, Room R)
 	{
-		Ability A=CMClass.getAbility("Skill_Track");
+		final Ability A=CMClass.getAbility("Skill_Track");
 		if((A!=null)&&(R!=null))
 		{
 			A.invoke(M,CMParms.parse("\""+CMLib.map().getExtendedRoomID(R)+"\""),R,true,0);
@@ -225,10 +225,10 @@ public class StdClanCommonItem extends StdClanItem
 		&&(!CMLib.flags().isAnimalIntelligence((MOB)owner())))
 		{
 			workDown=CMLib.dice().roll(1,7,0);
-			MOB M=(MOB)owner();
+			final MOB M=(MOB)owner();
 			if(M.fetchEffect(readableText())==null)
 			{
-				Ability A=CMClass.getAbility(readableText());
+				final Ability A=CMClass.getAbility(readableText());
 				if((A!=null)&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_COMMON_SKILL))
 				{
 					A.setProficiency(100);
@@ -236,7 +236,7 @@ public class StdClanCommonItem extends StdClanItem
 					if(((A.classificationCode()&Ability.ALL_DOMAINS)!=Ability.DOMAIN_CRAFTINGSKILL)
 					&&(CMLib.flags().isMobile(M)))
 					{
-						DVector DV=(DVector)needChart.get(M.location().getArea());
+						final DVector DV=(DVector)needChart.get(M.location().getArea());
 						if(DV!=null)
 						{
 							List needs=null;
@@ -249,10 +249,10 @@ public class StdClanCommonItem extends StdClanItem
 								{
 									try
 									{
-										int rand=i;
+										final int rand=i;
 										needs=(List)DV.elementAt(rand,2);
 										M2=(MOB)DV.elementAt(rand,1);
-									}catch(Exception e){continue;}
+									}catch(final Exception e){continue;}
 									if((needs!=null)&&(M2!=null)
 									&&(needs.contains(Integer.valueOf(RawMaterial.MATERIAL_METAL)))
 									&&(!fireHere(M2.location()))
@@ -282,7 +282,7 @@ public class StdClanCommonItem extends StdClanItem
 							{
 								try
 								{
-									int rand=i;
+									final int rand=i;
 									needs=(List)DV.elementAt(rand,2);
 									M2=(MOB)DV.elementAt(rand,1);
 									if(!CMLib.flags().isInTheGame(M2,true))
@@ -290,7 +290,7 @@ public class StdClanCommonItem extends StdClanItem
 										DV.removeElementAt(i);
 										continue;
 									}
-								}catch(Exception e){continue;}
+								}catch(final Exception e){continue;}
 								if((needs!=null)&&(M2!=null)
 								&&(M.location()==M2.location()))
 								{
@@ -308,10 +308,10 @@ public class StdClanCommonItem extends StdClanItem
 							{
 								try
 								{
-									int rand=CMLib.dice().roll(1,DV.size(),-1);
+									final int rand=CMLib.dice().roll(1,DV.size(),-1);
 									needs=(List)DV.elementAt(rand,2);
 									M2=(MOB)DV.elementAt(rand,1);
-								}catch(Exception e){continue;}
+								}catch(final Exception e){continue;}
 								if((needs!=null)&&(M2!=null)
 								&&(M.location()!=M2.location()))
 								{
@@ -326,10 +326,10 @@ public class StdClanCommonItem extends StdClanItem
 							{
 								try
 								{
-									int rand=CMLib.dice().roll(1,DV.size(),-1);
+									final int rand=CMLib.dice().roll(1,DV.size(),-1);
 									needs=(List)DV.elementAt(rand,2);
 									M2=(MOB)DV.elementAt(rand,1);
-								}catch(Exception e){continue;}
+								}catch(final Exception e){continue;}
 								if((needs!=null)&&(M2!=null)
 								&&(M.location()!=M2.location()))
 								{
@@ -373,7 +373,7 @@ public class StdClanCommonItem extends StdClanItem
 							||(!I.amWearingAt(Wearable.IN_INVENTORY)))
 								I=null;
 						}
-						Vector V=new Vector();
+						final Vector V=new Vector();
 						if(I!=null)	V.addElement(I.name());
 						success=A.invoke(M,V,null,false,phyStats().level());
 					}
@@ -390,8 +390,8 @@ public class StdClanCommonItem extends StdClanItem
 								needChart.put(M.location().getArea(),DV);
 							}
 							DV.removeElement(M);
-							String req=A.accountForYourself();
-							int reqIndex=req.indexOf(':');
+							final String req=A.accountForYourself();
+							final int reqIndex=req.indexOf(':');
 							if(reqIndex>0)
 								DV.addElement(M,enCode(M,req.substring(reqIndex+1)));
 							else

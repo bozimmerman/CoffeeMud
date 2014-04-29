@@ -52,9 +52,9 @@ public class Link extends At
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
 			return false;
 		}
-		String dirStr=(String)commands.lastElement();
+		final String dirStr=(String)commands.lastElement();
 		commands.removeElementAt(commands.size()-1);
-		int direction=Directions.getGoodDirectionCode(dirStr);
+		final int direction=Directions.getGoodDirectionCode(dirStr);
 		if(direction<0)
 		{
 			mob.tell("You have failed to specify a direction.  Try "+Directions.LETTERS()+".\n\r");
@@ -63,7 +63,7 @@ public class Link extends At
 		}
 
 		Room thisRoom=null;
-		String RoomID=CMParms.combine(commands,1);
+		final String RoomID=CMParms.combine(commands,1);
 		thisRoom=CMLib.map().getRoom(RoomID);
 		if(thisRoom==null)
 		{
@@ -91,7 +91,7 @@ public class Link extends At
 		if((opRoom!=null)&&(opRoom.roomID().length()==0))
 			opRoom=null;
 		Room reverseRoom=null;
-		int opDir=Directions.getOpDirectionCode(direction);
+		final int opDir=Directions.getOpDirectionCode(direction);
 		if(opRoom!=null)
 			reverseRoom=opRoom.rawDoors()[opDir];
 
@@ -103,15 +103,15 @@ public class Link extends At
 			mob.location().rawDoors()[direction]=null;
 
 		WorldMap.CrossExit CE=null;
-		GridLocale hereGL=(mob.location().getGridParent()!=null)?mob.location().getGridParent():null;
-		int hereX=(hereGL!=null)?hereGL.getGridChildX(mob.location()):-1;
-		int hereY=(hereGL!=null)?hereGL.getGridChildY(mob.location()):-1;
-		GridLocale thereGL=(room.getGridParent()!=null)?room.getGridParent():null;
-		int thereX=(thereGL!=null)?thereGL.getGridChildX(room):-1;
-		int thereY=(thereGL!=null)?thereGL.getGridChildY(room):-1;
+		final GridLocale hereGL=(mob.location().getGridParent()!=null)?mob.location().getGridParent():null;
+		final int hereX=(hereGL!=null)?hereGL.getGridChildX(mob.location()):-1;
+		final int hereY=(hereGL!=null)?hereGL.getGridChildY(mob.location()):-1;
+		final GridLocale thereGL=(room.getGridParent()!=null)?room.getGridParent():null;
+		final int thereX=(thereGL!=null)?thereGL.getGridChildX(room):-1;
+		final int thereY=(thereGL!=null)?thereGL.getGridChildY(room):-1;
 		if(hereGL!=null)
 		{
-			for(Iterator<WorldMap.CrossExit> hereIter=hereGL.outerExits();hereIter.hasNext();)
+			for(final Iterator<WorldMap.CrossExit> hereIter=hereGL.outerExits();hereIter.hasNext();)
 			{
 				CE=hereIter.next();
 				if((CE.out)
@@ -136,7 +136,7 @@ public class Link extends At
 		}
 		if(thereGL!=null)
 		{
-			for(Iterator<WorldMap.CrossExit> thereIter=thereGL.outerExits();thereIter.hasNext();)
+			for(final Iterator<WorldMap.CrossExit> thereIter=thereGL.outerExits();thereIter.hasNext();)
 			{
 				CE=thereIter.next();
 				if((!CE.out)
@@ -151,7 +151,7 @@ public class Link extends At
 			||(thereGL==room.rawDoors()[opDir])
 			||(thereGL.isMyGridChild(room.rawDoors()[opDir])))
 			{
-				for(Iterator<WorldMap.CrossExit> thereIter=thereGL.outerExits();thereIter.hasNext();)
+				for(final Iterator<WorldMap.CrossExit> thereIter=thereGL.outerExits();thereIter.hasNext();)
 				{
 					CE=thereIter.next();
 					if((CE.out)
@@ -164,7 +164,7 @@ public class Link extends At
 				if(hereGL!=null)
 				{
 					room.rawDoors()[opDir]=hereGL;
-					for(Iterator<WorldMap.CrossExit> hereIter=hereGL.outerExits();hereIter.hasNext();)
+					for(final Iterator<WorldMap.CrossExit> hereIter=hereGL.outerExits();hereIter.hasNext();)
 					{
 						CE=hereIter.next();
 						if((!CE.out)
@@ -186,7 +186,7 @@ public class Link extends At
 			if(hereGL!=null)
 			{
 				room.rawDoors()[opDir]=hereGL;
-				for(Iterator<WorldMap.CrossExit> hereIter=hereGL.outerExits();hereIter.hasNext();)
+				for(final Iterator<WorldMap.CrossExit> hereIter=hereGL.outerExits();hereIter.hasNext();)
 				{
 					CE=hereIter.next();
 					if((!CE.out)

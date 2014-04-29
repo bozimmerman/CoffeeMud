@@ -73,21 +73,21 @@ public class Thief_ContractHit extends ThiefSkill
 				makeLongLasting();
 				readyToHit=true;
 			}
-			MOB mob=(MOB)affected;
+			final MOB mob=(MOB)affected;
 			if(readyToHit&&(!hitting)
 			&&(mob.location()!=null)
 			&&(mob.location().domainType()==Room.DOMAIN_OUTDOORS_CITY))
 			{
 
 				hitting=true;
-				int num=CMLib.dice().roll(1,3,3);
+				final int num=CMLib.dice().roll(1,3,3);
 				int level=mob.phyStats().level();
 				if(level>(invoker.phyStats().level()+(2*super.getXLEVELLevel(invoker)))) level=(invoker.phyStats().level()+(2*super.getXLEVELLevel(invoker)));
 				CharClass C=CMClass.getCharClass("StdCharClass");
 				if(C==null) C=mob.charStats().getCurrentClass();
 				for(int i=0;i<num;i++)
 				{
-					MOB M=CMClass.getMOB("Assassin");
+					final MOB M=CMClass.getMOB("Assassin");
 					M.basePhyStats().setLevel(level);
 					M.recoverPhyStats();
 					M.basePhyStats().setArmor(CMLib.leveler().getLevelMOBArmor(M));
@@ -97,7 +97,7 @@ public class Thief_ContractHit extends ThiefSkill
 					M.baseState().setMana(CMLib.leveler().getLevelMana(M));
 					M.baseState().setMovement(CMLib.leveler().getLevelMove(M));
 					M.baseState().setHitPoints(CMLib.dice().rollHP(level, M.basePhyStats().level()));
-					Behavior B=CMClass.getBehavior("Thiefness");
+					final Behavior B=CMClass.getBehavior("Thiefness");
 					B.setParms("Assassin");
 					M.addBehavior(B);
 					M.recoverPhyStats();
@@ -121,7 +121,7 @@ public class Thief_ContractHit extends ThiefSkill
 				boolean anyLeft=false;
 				for(int i=0;i<hitmen.size();i++)
 				{
-					MOB M=(MOB)hitmen.elementAt(i);
+					final MOB M=(MOB)hitmen.elementAt(i);
 					if((!M.amDead())
 					   &&(M.location()!=null)
 					   &&(CMLib.flags().isInTheGame(M,false))
@@ -134,7 +134,7 @@ public class Thief_ContractHit extends ThiefSkill
 						&&(M.fetchEffect("Thief_Assassinate")==null))
 						{
 							M.setVictim(null);
-							Ability A=M.fetchAbility("Thief_Assassinate");
+							final Ability A=M.fetchAbility("Thief_Assassinate");
 							A.setProficiency(100);
 							A.invoke(M,mob,false,0);
 						}
@@ -151,7 +151,7 @@ public class Thief_ContractHit extends ThiefSkill
 	public void unInvoke()
 	{
 		MOB M=invoker();
-		MOB M2=(MOB)affected;
+		final MOB M2=(MOB)affected;
 		super.unInvoke();
 		if((M!=null)&&(M2!=null)&&(((done)||(M2.amDead()))))
 		{
@@ -209,7 +209,7 @@ public class Thief_ContractHit extends ThiefSkill
 		try
 		{
 			V=CMLib.map().findInhabitants(CMLib.map().rooms(), mob,CMParms.combine(commands,0), 10);
-		}catch(NoSuchElementException nse){}
+		}catch(final NoSuchElementException nse){}
 		MOB target=null;
 		if(V.size()>0)
 			target=V.get(CMLib.dice().roll(1,V.size(),-1));
@@ -231,11 +231,11 @@ public class Thief_ContractHit extends ThiefSkill
 
 		int level=target.phyStats().level();
 		if(level>(mob.phyStats().level()+(2*super.getXLEVELLevel(mob)))) level=(mob.phyStats().level()+(2*super.getXLEVELLevel(mob)));
-		double goldRequired=100.0*level;
-		String localCurrency=CMLib.beanCounter().getCurrency(mob.location());
+		final double goldRequired=100.0*level;
+		final String localCurrency=CMLib.beanCounter().getCurrency(mob.location());
 		if(CMLib.beanCounter().getTotalAbsoluteValue(mob,localCurrency)<goldRequired)
 		{
-			String costWords=CMLib.beanCounter().nameCurrencyShort(localCurrency,goldRequired);
+			final String costWords=CMLib.beanCounter().nameCurrencyShort(localCurrency,goldRequired);
 			mob.tell("You'll need at least "+costWords+" to put a hit out on "+target.name(mob)+".");
 			return false;
 		}
@@ -246,9 +246,9 @@ public class Thief_ContractHit extends ThiefSkill
 		int levelDiff=target.phyStats().level()-(mob.phyStats().level()+(2*super.getXLEVELLevel(mob)));
 		if(levelDiff<0) levelDiff=0;
 		levelDiff*=10;
-		boolean success=proficiencyCheck(mob,-levelDiff,auto);
+		final boolean success=proficiencyCheck(mob,-levelDiff,auto);
 
-		CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_THIEF_ACT,CMMsg.MSG_THIEF_ACT,CMMsg.MSG_THIEF_ACT,"<S-NAME> whisper(s) to a dark figure stepping out of the shadows.  The person nods and slips away.");
+		final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_THIEF_ACT,CMMsg.MSG_THIEF_ACT,CMMsg.MSG_THIEF_ACT,"<S-NAME> whisper(s) to a dark figure stepping out of the shadows.  The person nods and slips away.");
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

@@ -77,7 +77,7 @@ public class Aggressive extends StdBehavior
 		super.setParms(newParms);
 		tickWait=CMParms.getParmInt(newParms,"delay",0);
 		attackMessage=CMParms.getParmStr(newParms,"MESSAGE",null);
-		Vector<String> V=CMParms.parse(newParms.toUpperCase());
+		final Vector<String> V=CMParms.parse(newParms.toUpperCase());
 		wander=V.contains("WANDER");
 		mobkill=V.contains("MOBKILL")||(V.contains("MOBKILLER"));
 		misbehave=V.contains("MISBEHAVE");
@@ -88,7 +88,7 @@ public class Aggressive extends StdBehavior
 	{
 		if((mob!=null)&&(monster!=null)&&(mob!=monster))
 		{
-			Room R=monster.location();
+			final Room R=monster.location();
 			if((R!=null)
 			&&((!mob.isMonster())||(fightMOBs))
 			&&(R.isInhabitant(mob))
@@ -104,7 +104,7 @@ public class Aggressive extends StdBehavior
 				// special backstab sneak attack!
 				if(CMLib.flags().isHidden(monster))
 				{
-					Ability A=monster.fetchAbility("Thief_BackStab");
+					final Ability A=monster.fetchAbility("Thief_BackStab");
 					if(A!=null)
 					{
 						A.setProficiency(CMLib.dice().roll(1,50,A.adjustedLevel(mob,0)*15));
@@ -123,17 +123,17 @@ public class Aggressive extends StdBehavior
 	public boolean pickAFight(MOB observer, String zapStr, boolean mobKiller, boolean misBehave, String attackMsg)
 	{
 		if(!canFreelyBehaveNormal(observer)) return false;
-		Room R=observer.location();
+		final Room R=observer.location();
 		if((R!=null)&&(R.getArea().getAreaState()==Area.State.ACTIVE))
 		{
 			if((R!=lastRoom)||(lastRoomInhabCount!=R.numInhabitants()))
 			{
 				lastRoom=R;
 				lastRoomInhabCount=R.numInhabitants();
-				Set<MOB> groupMembers=observer.getGroupMembers(new HashSet<MOB>());
+				final Set<MOB> groupMembers=observer.getGroupMembers(new HashSet<MOB>());
 				for(int i=0;i<R.numInhabitants();i++)
 				{
-					MOB mob=R.fetchInhabitant(i);
+					final MOB mob=R.fetchInhabitant(i);
 					if((mob!=null)
 					&&(mob!=observer)
 					&&((!mob.isMonster())||(mobKiller))

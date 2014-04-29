@@ -70,12 +70,12 @@ public class WaterSurface extends StdRoom implements Drink
 		&&(CMProps.getIntVar(CMProps.Int.SKYSIZE)!=0))
 		{
 			Exit dnE=null;
-			Exit upE=CMClass.getExit("StdOpenDoorway");
+			final Exit upE=CMClass.getExit("StdOpenDoorway");
 			if(CMProps.getIntVar(CMProps.Int.SKYSIZE)>0)
 				dnE=upE;
 			else
 				dnE=CMClass.getExit("UnseenWalkway");
-			GridLocale sea=(GridLocale)CMClass.getLocale(UnderWaterLocaleID());
+			final GridLocale sea=(GridLocale)CMClass.getLocale(UnderWaterLocaleID());
 			sea.setRoomID("");
 			sea.setArea(getArea());
 			rawDoors()[Directions.DOWN]=sea;
@@ -84,7 +84,7 @@ public class WaterSurface extends StdRoom implements Drink
 			sea.setRawExit(Directions.UP,upE);
 			for(int d=0;d<4;d++)
 			{
-				Room thatRoom=rawDoors()[d];
+				final Room thatRoom=rawDoors()[d];
 				Room thatSea=null;
 				if((thatRoom!=null)&&(getRawExit(d)!=null))
 				{
@@ -116,7 +116,7 @@ public class WaterSurface extends StdRoom implements Drink
 	{
 		if(!skyedYet) return;
 		super.clearSky();
-		Room room=rawDoors()[Directions.DOWN];
+		final Room room=rawDoors()[Directions.DOWN];
 		if(room==null) return;
 		if((room.roomID().length()==0)
 		&&(IsUnderWaterFatClass(room)))
@@ -158,11 +158,11 @@ public class WaterSurface extends StdRoom implements Drink
 		&&(!CMLib.flags().isInFlight(msg.source()))
 		&&(!CMLib.flags().isWaterWorthy(msg.source())))
 		{
-			MOB mob=msg.source();
+			final MOB mob=msg.source();
 			boolean hasBoat=false;
 			for(int i=0;i<mob.numItems();i++)
 			{
-				Item I=mob.getItem(i);
+				final Item I=mob.getItem(i);
 				if((I!=null)&&(I instanceof Rideable)&&(((Rideable)I).rideBasis()==Rideable.RIDEABLE_WATER))
 				{	hasBoat=true; break;}
 			}

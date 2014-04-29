@@ -37,7 +37,7 @@ public class Panther extends StdMOB
 	public Panther()
 	{
 		super();
-		Random randomizer = new Random(System.currentTimeMillis());
+		final Random randomizer = new Random(System.currentTimeMillis());
 
 		username="a panther";
 		setDescription("A powerful cat with a deep chest and muscular limbs, covered in midnight black fur.");

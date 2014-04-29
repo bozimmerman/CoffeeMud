@@ -50,7 +50,7 @@ public class StdFactoryMOB extends StdMOB
 		{
 			return this.getClass().newInstance();
 		}
-		catch(Exception e)
+		catch(final Exception e)
 		{
 			Log.errOut(ID(),e);
 		}
@@ -81,7 +81,7 @@ public class StdFactoryMOB extends StdMOB
 			PhyStats savedPStats=phyStats;
 			if(phyStats==basePhyStats)
 				savedPStats=(PhyStats)CMClass.getCommon("DefaultPhyStats");
-			CharState savedCState=curState;
+			final CharState savedCState=curState;
 			if((curState==baseState)||(curState==maxState))
 				curState=(CharState)CMClass.getCommon("DefaultCharState");
 			super.destroy();
@@ -98,7 +98,7 @@ public class StdFactoryMOB extends StdMOB
 			charStats.reset();
 			finalize();
 		}
-		catch(Throwable t)
+		catch(final Throwable t)
 		{
 			Log.errOut(ID(),t);
 		}

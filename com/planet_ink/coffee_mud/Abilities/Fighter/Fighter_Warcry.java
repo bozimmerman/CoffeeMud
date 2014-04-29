@@ -52,7 +52,7 @@ public class Fighter_Warcry extends FighterSkill
 	{
 		super.affectPhyStats(affected,affectableStats);
 		if(invoker==null) return;
-		float f=(float)CMath.mul(0.1,(float)getXLEVELLevel(invoker()));
+		final float f=(float)CMath.mul(0.1,(float)getXLEVELLevel(invoker()));
 		affectableStats.setDamage(affectableStats.damage()+1+(int)Math.round(CMath.div(affectableStats.damage(),4.0-f)));
 	}
 
@@ -74,7 +74,7 @@ public class Fighter_Warcry extends FighterSkill
 		// undo the affects of this spell
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		super.unInvoke();
 
@@ -88,18 +88,18 @@ public class Fighter_Warcry extends FighterSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_SPEAK,auto?"":"^S<S-NAME> scream(s) a mighty WAR CRY!!^?");
+			final CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_SPEAK,auto?"":"^S<S-NAME> scream(s) a mighty WAR CRY!!^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				Set<MOB> h=properTargets(mob,givenTarget,auto);
+				final Set<MOB> h=properTargets(mob,givenTarget,auto);
 				if(h==null) return false;
-				for(Iterator e=h.iterator();e.hasNext();)
+				for (final Object element : h)
 				{
-					MOB target=(MOB)e.next();
+					final MOB target=(MOB)element;
 					target.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> get(s) enraged!");
 					timesTicking=0;
 					beneficialAffect(mob,target,asLevel,0);

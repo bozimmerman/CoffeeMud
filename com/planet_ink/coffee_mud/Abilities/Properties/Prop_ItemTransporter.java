@@ -79,15 +79,15 @@ public class Prop_ItemTransporter extends Property
 			nextDestination=null;
 			try
 			{
-				for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
+				for(final Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 				{
-					Room room=(Room)r.nextElement();
+					final Room room=(Room)r.nextElement();
 					Ability A=room.fetchEffect("Prop_ItemTransReceiver");
 					if((A!=null)&&(A.text().equalsIgnoreCase(text())))
 						possibilities.add(room);
 					for(int i=0;i<room.numItems();i++)
 					{
-						Item item=room.getItem(i);
+						final Item item=room.getItem(i);
 						if((item!=null)&&(item!=affected))
 						{
 							A=item.fetchEffect("Prop_ItemTransReceiver");
@@ -97,7 +97,7 @@ public class Prop_ItemTransporter extends Property
 					}
 					for(int m=0;m<room.numInhabitants();m++)
 					{
-						MOB mob=room.fetchInhabitant(m);
+						final MOB mob=room.fetchInhabitant(m);
 						if((mob!=null)&&(mob!=affected))
 						{
 							A=mob.fetchEffect("Prop_ItemTransReceiver");
@@ -105,7 +105,7 @@ public class Prop_ItemTransporter extends Property
 								possibilities.add(mob);
 							for(int i=0;i<mob.numItems();i++)
 							{
-								Item item=mob.getItem(i);
+								final Item item=mob.getItem(i);
 								if((item!=null)&&(item!=affected))
 								{
 									A=item.fetchEffect("Prop_ItemTransReceiver");
@@ -116,11 +116,11 @@ public class Prop_ItemTransporter extends Property
 						}
 					}
 				}
-			}catch(NoSuchElementException e){}
+			}catch(final NoSuchElementException e){}
 		}
 		if(possibilities.size()>0)
 		{
-			PhysicalAgent P=possibilities.get(CMLib.dice().roll(1,possibilities.size(),-1));
+			final PhysicalAgent P=possibilities.get(CMLib.dice().roll(1,possibilities.size(),-1));
 			nextDestination=null;
 			if(P instanceof Room)
 				roomDestination=(Room)P;
@@ -146,7 +146,7 @@ public class Prop_ItemTransporter extends Property
 			if(P instanceof Item)
 			{
 				nextDestination=null;
-				Item I = (Item)P;
+				final Item I = (Item)P;
 				if(I.owner()!=null)
 				{
 					if(I.owner() instanceof Room)
@@ -198,8 +198,8 @@ public class Prop_ItemTransporter extends Property
 	{
 		if((mobDestination!=null)||(roomDestination!=null))
 		{
-			Room room=roomDestination;
-			MOB mob=mobDestination;
+			final Room room=roomDestination;
+			final MOB mob=mobDestination;
 			Room roomMover=null;
 			MOB mobMover=null;
 			Item container=null;
@@ -219,12 +219,12 @@ public class Prop_ItemTransporter extends Property
 				if((container.owner()!=null)&&(container.owner() instanceof MOB))
 					mobMover=(MOB)container.owner();
 			}
-			Vector itemsToMove=new Vector();
+			final Vector itemsToMove=new Vector();
 			if(roomMover!=null)
 			{
 				for(int i=0;i<roomMover.numItems();i++)
 				{
-					Item item=roomMover.getItem(i);
+					final Item item=roomMover.getItem(i);
 					if((item!=null)
 					   &&(item!=container)
 					   &&(item.amWearingAt(Wearable.IN_INVENTORY))
@@ -237,10 +237,10 @@ public class Prop_ItemTransporter extends Property
 			else
 			if(mobMover!=null)
 			{
-				int oldNum=itemsToMove.size();
+				final int oldNum=itemsToMove.size();
 				for(int i=0;i<mobMover.numItems();i++)
 				{
-					Item item=mobMover.getItem(i);
+					final Item item=mobMover.getItem(i);
 					if((item!=null)
 					   &&(item!=container)
 					   &&(item.amWearingAt(Wearable.IN_INVENTORY))
@@ -257,7 +257,7 @@ public class Prop_ItemTransporter extends Property
 				if(room!=null)
 					for(int i=0;i<itemsToMove.size();i++)
 					{
-						Item item=(Item)itemsToMove.elementAt(i);
+						final Item item=(Item)itemsToMove.elementAt(i);
 						if((item.container()==null)||(item.container()==container))
 							item.setContainer(nextDestination);
 						room.addItem(item,ItemPossessor.Expire.Player_Drop);
@@ -265,7 +265,7 @@ public class Prop_ItemTransporter extends Property
 				if(mob!=null)
 					for(int i=0;i<itemsToMove.size();i++)
 					{
-						Item item=(Item)itemsToMove.elementAt(i);
+						final Item item=(Item)itemsToMove.elementAt(i);
 						if((item.container()==null)||(item.container()==container))
 							item.setContainer(nextDestination);
 						if(mob instanceof ShopKeeper)

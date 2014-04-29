@@ -42,13 +42,13 @@ public class Prop_UseSpellCast extends Prop_SpellAdder
 
 	public boolean addMeIfNeccessary(PhysicalAgent source, Physical target, int asLevel, short maxTicks)
 	{
-		List<Ability> V=getMySpellsV();
+		final List<Ability> V=getMySpellsV();
 		if((target==null)
 		||(V.size()==0)
 		||((compiledMask!=null)&&(!CMLib.masking().maskCheck(compiledMask,target,true))))
 			return false;
 
-		MOB qualMOB=getInvokerMOB(source,target);
+		final MOB qualMOB=getInvokerMOB(source,target);
 
 		for(int v=0;v<V.size();v++)
 		{
@@ -56,12 +56,12 @@ public class Prop_UseSpellCast extends Prop_SpellAdder
 			Ability EA=target.fetchEffect(A.ID());
 			if((EA==null)&&(didHappen()))
 			{
-				String t=A.text();
+				final String t=A.text();
 				A=(Ability)A.copyOf();
 				Vector V2=new Vector();
 				if(t.length()>0)
 				{
-					int x=t.indexOf('/');
+					final int x=t.indexOf('/');
 					if(x<0)
 					{
 						V2=CMParms.parse(t);
@@ -115,7 +115,7 @@ public class Prop_UseSpellCast extends Prop_SpellAdder
 		processing=true;
 
 		if(affected==null) return;
-		Item myItem=(Item)affected;
+		final Item myItem=(Item)affected;
 		if(myItem.owner()==null) return;
 		if(!(myItem.owner() instanceof MOB)) return;
 		if(msg.amISource((MOB)myItem.owner()))

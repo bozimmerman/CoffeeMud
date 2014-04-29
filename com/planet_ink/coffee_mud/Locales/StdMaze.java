@@ -43,7 +43,7 @@ public class StdMaze extends StdGrid
 	@Override
 	protected Room getGridRoom(int x, int y)
 	{
-		Room R=super.getGridRoom(x,y);
+		final Room R=super.getGridRoom(x,y);
 		if((R!=null)&&(!CMath.bset(R.phyStats().sensesMask(),PhyStats.SENSE_ROOMUNEXPLORABLE)))
 		{
 			R.basePhyStats().setSensesMask(R.basePhyStats().sensesMask()|PhyStats.SENSE_ROOMUNEXPLORABLE);
@@ -54,13 +54,13 @@ public class StdMaze extends StdGrid
 	@Override
 	protected Room findCenterRoom(int dirCode)
 	{
-		Room dirRoom=rawDoors()[dirCode];
+		final Room dirRoom=rawDoors()[dirCode];
 		if(dirRoom!=null)
 		{
-			Room altR=super.findCenterRoom(dirCode);
+			final Room altR=super.findCenterRoom(dirCode);
 			if(altR!=null)
 			{
-				Exit ox=CMClass.getExit("Open");
+				final Exit ox=CMClass.getExit("Open");
 				linkRoom(altR,dirRoom,dirCode,ox,ox);
 				return altR;
 			}
@@ -113,9 +113,9 @@ public class StdMaze extends StdGrid
 	{
 
 		if(visited.get(subMap[x][y])!=null) return;
-		Room room=subMap[x][y];
+		final Room room=subMap[x][y];
 		visited.put(room,room);
-		Exit ox=CMClass.getExit("Open");
+		final Exit ox=CMClass.getExit("Open");
 
 		boolean okRoom=true;
 		while(okRoom)
@@ -124,7 +124,7 @@ public class StdMaze extends StdGrid
 			for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 			{
 				if(d==Directions.GATE) continue;
-				Room possRoom=roomDir(x,y,d);
+				final Room possRoom=roomDir(x,y,d);
 				if(possRoom!=null)
 					if(visited.get(possRoom)==null)
 					{
@@ -138,8 +138,8 @@ public class StdMaze extends StdGrid
 				int dirCode=-1;
 				while(goRoom==null)
 				{
-					int d=CMLib.dice().roll(1,Directions.NUM_DIRECTIONS(),0)-1;
-					Room possRoom=roomDir(x,y,d);
+					final int d=CMLib.dice().roll(1,Directions.NUM_DIRECTIONS(),0)-1;
+					final Room possRoom=roomDir(x,y,d);
 					if(possRoom!=null)
 						if(visited.get(possRoom)==null)
 						{
@@ -155,9 +155,9 @@ public class StdMaze extends StdGrid
 
 	protected void buildMaze()
 	{
-		Hashtable visited=new Hashtable();
-		int x=xsize/2;
-		int y=ysize/2;
+		final Hashtable visited=new Hashtable();
+		final int x=xsize/2;
+		final int y=ysize/2;
 		mazify(visited,x,y);
 	}
 
@@ -171,14 +171,14 @@ public class StdMaze extends StdGrid
 			for(int x=0;x<subMap.length;x++)
 				for(int y=0;y<subMap[x].length;y++)
 				{
-					Room newRoom=getGridRoom(x,y);
+					final Room newRoom=getGridRoom(x,y);
 					if(newRoom!=null)
 						subMap[x][y]=newRoom;
 				}
 			buildMaze();
 			buildFinalLinks();
 		}
-		catch(Exception e)
+		catch(final Exception e)
 		{
 			clearGrid(null);
 		}

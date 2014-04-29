@@ -60,13 +60,13 @@ public class Prop_HaveResister extends Property implements TriggeredAffect
 		adjCharStats=(CharStats)CMClass.getCommon("DefaultCharStats");
 		ignoreCharStats=true;
 		parmString=newText;
-		int maskindex=newText.toUpperCase().indexOf("MASK=");
+		final int maskindex=newText.toUpperCase().indexOf("MASK=");
 		if(maskindex>0)
 		{
 			maskString=newText.substring(maskindex+5).trim();
 			parmString=newText.substring(0,maskindex).trim();
 		}
-		for(int i : CharStats.CODES.SAVING_THROWS())
+		for(final int i : CharStats.CODES.SAVING_THROWS())
 		{
 			if(parmString.toUpperCase().indexOf(CharStats.CODES.NAME(i))>=0)
 				adjCharStats.setStat(i,getProtection(CharStats.CODES.NAME(i)));
@@ -90,7 +90,7 @@ public class Prop_HaveResister extends Property implements TriggeredAffect
 		if((!ignoreCharStats)
 		&&(canResist(affectedMOB))
 		&&((maskString.length()==0)||(CMLib.masking().maskCheck(maskString,affectedMOB,false))))
-			for(int i : CharStats.CODES.SAVING_THROWS())
+			for(final int i : CharStats.CODES.SAVING_THROWS())
 				affectedStats.setStat(i,affectedStats.getStat(i)+adjCharStats.getStat(i));
 		super.affectCharStats(affectedMOB,affectedStats);
 	}
@@ -100,8 +100,8 @@ public class Prop_HaveResister extends Property implements TriggeredAffect
 
 	public int getProtection(String protType)
 	{
-		String nonMask=parmString.toUpperCase();
-		int z=nonMask.indexOf(protType.toUpperCase());
+		final String nonMask=parmString.toUpperCase();
+		final int z=nonMask.indexOf(protType.toUpperCase());
 		if(z<0)
 			return 0;
 		int x=nonMask.indexOf('%',z+protType.length());
@@ -153,7 +153,7 @@ public class Prop_HaveResister extends Property implements TriggeredAffect
 			}
 			else
 			{
-				Weapon W=(Weapon)msg.tool();
+				final Weapon W=(Weapon)msg.tool();
 				if((W.weaponType()==Weapon.TYPE_BASHING)
 				&&(checkProtection("blunt"))
 				&&((maskString.length()==0)||(CMLib.masking().maskCheck(maskString,mob,false))))
@@ -181,7 +181,7 @@ public class Prop_HaveResister extends Property implements TriggeredAffect
 		{
 			if(msg.tool() instanceof Ability)
 			{
-				Ability A=(Ability)msg.tool();
+				final Ability A=(Ability)msg.tool();
 				if(CMath.bset(A.flags(),Ability.FLAG_TRANSPORTING))
 				{
 					if((checkProtection("teleport"))

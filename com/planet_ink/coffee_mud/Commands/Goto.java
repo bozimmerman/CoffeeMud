@@ -49,7 +49,7 @@ public class Goto extends At
 			return false;
 		}
 		commands.removeElementAt(0);
-		StringBuffer cmd = new StringBuffer(CMParms.combine(commands,0));
+		final StringBuffer cmd = new StringBuffer(CMParms.combine(commands,0));
 		List<String> stack=(List<String>)Resources.getResource("GOTOS_FOR_"+mob.Name().toUpperCase());
 		if(stack==null)
 		{
@@ -59,7 +59,7 @@ public class Goto extends At
 		else
 		if(stack.size()>10)
 			stack.remove(0);
-		Room curRoom=mob.location();
+		final Room curRoom=mob.location();
 		if("PREVIOUS".startsWith(cmd.toString().toUpperCase()))
 		{
 			if(stack.size()==0)

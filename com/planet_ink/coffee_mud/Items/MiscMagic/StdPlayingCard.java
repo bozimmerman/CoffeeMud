@@ -192,8 +192,8 @@ public class StdPlayingCard extends StdItem implements MiscMagic, PlayingCard
 		if(oldAbility!=phyStats.ability())
 		{
 			oldAbility=phyStats().ability();
-			String suitStr=getSuitDescription(phyStats().ability());
-			String cardStr=getCardValueShortDescription(phyStats().ability());
+			final String suitStr=getSuitDescription(phyStats().ability());
+			final String cardStr=getCardValueShortDescription(phyStats().ability());
 			if((suitStr.length()==0)||(cardStr.length()==0))
 			{
 				name="A mangled card";

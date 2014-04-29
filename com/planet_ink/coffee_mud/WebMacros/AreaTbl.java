@@ -48,15 +48,15 @@ public class AreaTbl extends StdWebMacro
 			return "<TR><TD colspan=\"" + AT_MAX_COL + "\" class=\"cmAreaTblEntry\"><I>Game is not running - unable to get area list!</I></TD></TR>";
 		}
 
-		Vector areasVec=new Vector();
+		final Vector areasVec=new Vector();
 
-		for(Enumeration a=CMLib.map().areas();a.hasMoreElements();)
+		for(final Enumeration a=CMLib.map().areas();a.hasMoreElements();)
 		{
-			Area A=(Area)a.nextElement();
+			final Area A=(Area)a.nextElement();
 			if((!CMLib.flags().isHidden(A))&&(!CMath.bset(A.flags(),Area.FLAG_INSTANCE_CHILD)))
 				areasVec.addElement(A.name());
 		}
-		StringBuffer msg=new StringBuffer("\n\r");
+		final StringBuffer msg=new StringBuffer("\n\r");
 		int col=0;
 		int percent = 100/AT_MAX_COL;
 		for(int i=0;i<areasVec.size();i++)

@@ -49,7 +49,7 @@ public class ItemRefitter extends StdBehavior
 	{
 		if(costFormula != null)
 		{
-			double[] vars = {item.phyStats().level(), item.value(), item.usesRemaining(), CMLib.flags().isABonusItems(item)?1.0:0.0,item.basePhyStats().level(), item.baseGoldValue(),0,0,0,0,0};
+			final double[] vars = {item.phyStats().level(), item.value(), item.usesRemaining(), CMLib.flags().isABonusItems(item)?1.0:0.0,item.basePhyStats().level(), item.baseGoldValue(),0,0,0,0,0};
 			return CMath.parseMathExpression(costFormula, vars, 0.0);
 		}
 		else
@@ -65,7 +65,7 @@ public class ItemRefitter extends StdBehavior
 	public void setParms(String parms)
 	{
 		super.setParms(parms);
-		String formulaString = CMParms.getParmStr(parms,"COST","(@x1*100)+(@x4*@x1*100)");
+		final String formulaString = CMParms.getParmStr(parms,"COST","(@x1*100)+(@x4*@x1*100)");
 		costFormula = null;
 		if(formulaString.trim().length()>0)
 		{
@@ -73,7 +73,7 @@ public class ItemRefitter extends StdBehavior
 			{
 				costFormula = CMath.compileMathExpression(formulaString);
 			}
-			catch(Exception e)
+			catch(final Exception e)
 			{
 				Log.errOut(ID(),"Error compiling formula: " + formulaString);
 			}
@@ -84,10 +84,10 @@ public class ItemRefitter extends StdBehavior
 	{
 		if(!super.okMessage(affecting,msg))
 			return false;
-		MOB source=msg.source();
+		final MOB source=msg.source();
 		if(!canFreelyBehaveNormal(affecting))
 			return true;
-		MOB observer=(MOB)affecting;
+		final MOB observer=(MOB)affecting;
 		if((source!=observer)
 		&&(msg.amITarget(observer))
 		&&(msg.targetMinor()==CMMsg.TYP_GIVE)
@@ -96,8 +96,8 @@ public class ItemRefitter extends StdBehavior
 		&&(!(msg.tool() instanceof Coins))
 		&&(msg.tool() instanceof Item))
 		{
-			Item tool=(Item)msg.tool();
-			double cost=cost(tool);
+			final Item tool=(Item)msg.tool();
+			final double cost=cost(tool);
 			if(!(tool instanceof Armor))
 			{
 				CMLib.commands().postSay(observer,source,"I'm sorry, I can't refit that.",true,false);
@@ -111,7 +111,7 @@ public class ItemRefitter extends StdBehavior
 			}
 			if(CMLib.beanCounter().getTotalAbsoluteShopKeepersValue(msg.source(),observer)<(cost))
 			{
-				String costStr=CMLib.beanCounter().nameCurrencyShort(observer,cost);
+				final String costStr=CMLib.beanCounter().nameCurrencyShort(observer,cost);
 				CMLib.commands().postSay(observer,source,"You'll need "+costStr+" for me to refit that.",true,false);
 				return false;
 			}
@@ -124,10 +124,10 @@ public class ItemRefitter extends StdBehavior
 	public void executeMsg(Environmental affecting, CMMsg msg)
 	{
 		super.executeMsg(affecting,msg);
-		MOB source=msg.source();
+		final MOB source=msg.source();
 		if(!canFreelyBehaveNormal(affecting))
 			return;
-		MOB observer=(MOB)affecting;
+		final MOB observer=(MOB)affecting;
 
 		if((source!=observer)
 		&&(msg.amITarget(observer))
@@ -137,9 +137,9 @@ public class ItemRefitter extends StdBehavior
 		&&(!(msg.tool() instanceof Coins))
 		&&(msg.tool() instanceof Armor))
 		{
-			double cost=cost((Item)msg.tool());
+			final double cost=cost((Item)msg.tool());
 			CMLib.beanCounter().subtractMoney(source,CMLib.beanCounter().getCurrency(observer),cost);
-			String costStr=CMLib.beanCounter().nameCurrencyLong(observer,cost);
+			final String costStr=CMLib.beanCounter().nameCurrencyLong(observer,cost);
 			source.recoverPhyStats();
 			((Item)msg.tool()).basePhyStats().setHeight(0);
 			((Item)msg.tool()).recoverPhyStats();

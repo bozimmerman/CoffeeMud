@@ -42,14 +42,14 @@ public class Weather extends StdCommand
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		Room room=mob.location();
+		final Room room=mob.location();
 		if(room==null) return false;
 		if((commands.size()>1)&&((room.domainType()&Room.INDOORS)==0)&&(((String)commands.elementAt(1)).equalsIgnoreCase("WORLD")))
 		{
-			StringBuffer tellMe=new StringBuffer("");
-			for(Enumeration a=CMLib.map().areas();a.hasMoreElements();)
+			final StringBuffer tellMe=new StringBuffer("");
+			for(final Enumeration a=CMLib.map().areas();a.hasMoreElements();)
 			{
-				Area A=(Area)a.nextElement();
+				final Area A=(Area)a.nextElement();
 				if((CMLib.flags().canAccess(mob,A))
 				&&(!CMath.bset(A.flags(),Area.FLAG_INSTANCE_CHILD)))
 					tellMe.append(CMStrings.padRight(A.name(),20)+": "+A.getClimateObj().weatherDescription(room)+"\n\r");

@@ -37,7 +37,7 @@ public class LargeBat extends StdMOB
 	public LargeBat()
 	{
 		super();
-		Random randomizer = new Random(System.currentTimeMillis());
+		final Random randomizer = new Random(System.currentTimeMillis());
 
 		username="a large bat";
 		setDescription("It looks like a bat, just larger.");

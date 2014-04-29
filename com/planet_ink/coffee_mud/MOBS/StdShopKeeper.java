@@ -156,7 +156,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 							shoptext=CMLib.coffeeMaker().getGenMOBTextUnpacked(this,CMLib.encoder().decompressString((byte[])miscText));
 						else
 							shoptext=CMLib.coffeeMaker().getGenMOBTextUnpacked(this,CMStrings.bytesToStr(miscText));
-						List<XMLLibrary.XMLpiece> xml=CMLib.xml().parseAllXML(shoptext);
+						final List<XMLLibrary.XMLpiece> xml=CMLib.xml().parseAllXML(shoptext);
 						if(xml!=null)
 						{
 							CMLib.coffeeMaker().populateShops(this,xml);
@@ -171,7 +171,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 				budgetTickDown=100;
 				budgetRemaining=Long.MAX_VALUE/2;
 				String s=finalBudget();
-				Vector<String> V=CMParms.parse(s.trim().toUpperCase());
+				final Vector<String> V=CMParms.parse(s.trim().toUpperCase());
 				if(V.size()>0)
 				{
 					if(V.firstElement().equals("0"))
@@ -258,7 +258,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 	{
 		if(msg.amITarget(this))
 		{
-			MOB mob=msg.source();
+			final MOB mob=msg.source();
 			switch(msg.targetMinor())
 			{
 			case CMMsg.TYP_GIVE:
@@ -291,7 +291,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 				super.executeMsg(myHost,msg);
 				if(CMLib.flags().aliveAwakeMobileUnbound(mob,true))
 				{
-					double paid=CMLib.coffeeShops().transactPawn(this,msg.source(),this,msg.tool());
+					final double paid=CMLib.coffeeShops().transactPawn(this,msg.source(),this,msg.tool());
 					if(paid>Double.MIN_VALUE)
 					{
 						budgetRemaining=budgetRemaining-Math.round(paid);
@@ -319,17 +319,17 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 				super.executeMsg(myHost,msg);
 				if(CMLib.flags().aliveAwakeMobileUnbound(mob,true))
 				{
-					MOB mobFor=CMLib.coffeeShops().parseBuyingFor(msg.source(),msg.targetMessage());
+					final MOB mobFor=CMLib.coffeeShops().parseBuyingFor(msg.source(),msg.targetMessage());
 					if((msg.tool()!=null)
 					&&(getShop().doIHaveThisInStock("$"+msg.tool().Name()+"$",mobFor))
 					&&(location()!=null))
 					{
-						Environmental item=getShop().getStock("$"+msg.tool().Name()+"$",mobFor);
+						final Environmental item=getShop().getStock("$"+msg.tool().Name()+"$",mobFor);
 						if(item!=null) CMLib.coffeeShops().transactMoneyOnly(this,msg.source(),this,item,!isMonster());
 
-						List<Environmental> products=getShop().removeSellableProduct("$"+msg.tool().Name()+"$",mobFor);
+						final List<Environmental> products=getShop().removeSellableProduct("$"+msg.tool().Name()+"$",mobFor);
 						if(products.size()==0) break;
-						Environmental product=products.get(0);
+						final Environmental product=products.get(0);
 
 						if(product instanceof Item)
 						{
@@ -362,11 +362,11 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 				super.executeMsg(myHost,msg);
 				if(CMLib.flags().aliveAwakeMobileUnbound(mob,true))
 				{
-					String forMask=CMLib.coffeeShops().getListForMask(msg.targetMessage());
+					final String forMask=CMLib.coffeeShops().getListForMask(msg.targetMessage());
 					List<Environmental> inventory=new XVector(getShop().getStoreInventory());
 					inventory=CMLib.coffeeShops().addRealEstateTitles(inventory,mob,getShop(),getStartRoom());
-					int limit=CMParms.getParmInt(finalPrejudiceFactors(),"LIMIT",0);
-					String s=CMLib.coffeeShops().getListInventory(this,mob,inventory,limit,this,forMask);
+					final int limit=CMParms.getParmInt(finalPrejudiceFactors(),"LIMIT",0);
+					final String s=CMLib.coffeeShops().getListInventory(this,mob,inventory,limit,this,forMask);
 					if(s.length()>0)
 						mob.tell(s);
 				}

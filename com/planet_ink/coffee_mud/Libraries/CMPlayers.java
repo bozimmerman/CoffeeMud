@@ -107,15 +107,15 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 	@Override
 	public MOB getLoadPlayerByEmail(String email)
 	{
-		for(Enumeration<MOB> e=players();e.hasMoreElements();)
+		for(final Enumeration<MOB> e=players();e.hasMoreElements();)
 		{
-			MOB M=e.nextElement();
+			final MOB M=e.nextElement();
 			if((M!=null)&&(M.playerStats()!=null)&&(M.playerStats().getEmail().equalsIgnoreCase(email)))
 				return M;
 		}
-		for(Enumeration<ThinPlayer> e=thinPlayers("",null);e.hasMoreElements();)
+		for(final Enumeration<ThinPlayer> e=thinPlayers("",null);e.hasMoreElements();)
 		{
-			ThinPlayer P=e.nextElement();
+			final ThinPlayer P=e.nextElement();
 			if(P.email.equalsIgnoreCase(email))
 				return getLoadPlayer(P.name);
 		}
@@ -125,7 +125,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 	@Override
 	public PlayerAccount getLoadAccount(String calledThis)
 	{
-		PlayerAccount A = getAccount(calledThis);
+		final PlayerAccount A = getAccount(calledThis);
 		if(A!=null) return A;
 		if(allAccountsLoaded)
 			return null;
@@ -137,7 +137,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 	{
 		if(acct==null) return;
 		if(accountsList.contains(acct)) return;
-		for(PlayerAccount A : accountsList) // dont consolodate this.
+		for(final PlayerAccount A : accountsList) // dont consolodate this.
 			if(A.getAccountName().equals(acct.getAccountName()))
 				return;
 		accountsList.add(acct);
@@ -148,14 +148,14 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 	{
 		if(CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)<=1)
 			return null;
-		for(Enumeration<PlayerAccount> e=accounts();e.hasMoreElements();)
+		for(final Enumeration<PlayerAccount> e=accounts();e.hasMoreElements();)
 		{
-			PlayerAccount P=e.nextElement();
+			final PlayerAccount P=e.nextElement();
 			if(P.getEmail().equalsIgnoreCase(email)) return P;
 		}
-		for(Enumeration<PlayerAccount> e=accounts("",null);e.hasMoreElements();)
+		for(final Enumeration<PlayerAccount> e=accounts("",null);e.hasMoreElements();)
 		{
-			PlayerAccount P=e.nextElement();
+			final PlayerAccount P=e.nextElement();
 			if(P.getEmail().equalsIgnoreCase(email)) return P;
 		}
 		return null;
@@ -165,11 +165,11 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 	public PlayerAccount getAccount(String calledThis)
 	{
 		calledThis=CMStrings.capitalizeAndLower(calledThis);
-		for(PlayerAccount A : accountsList)
+		for(final PlayerAccount A : accountsList)
 			if(A.getAccountName().equals(calledThis))
 				return A;
 
-		for (MOB M : playersList)
+		for (final MOB M : playersList)
 			if((M.playerStats()!=null)
 			&&(M.playerStats().getAccount()!=null)
 			&&(M.playerStats().getAccount().getAccountName().equals(calledThis)))
@@ -184,7 +184,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 	public MOB getPlayer(String calledThis)
 	{
 		calledThis=CMStrings.capitalizeAndLower(calledThis);
-		for (MOB M : playersList)
+		for (final MOB M : playersList)
 			if (M.Name().equals(calledThis))
 				return M;
 		return null;
@@ -230,7 +230,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 	{
 		if(name==null) return false;
 		name=CMStrings.capitalizeAndLower(name);
-		for(MOB M: playersList)
+		for(final MOB M: playersList)
 			if(M.Name().equals(name))
 				return true;
 		return CMLib.database().DBUserSearch(name)!=null;
@@ -300,9 +300,9 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 	protected void adjustTopPrideStats(final List<Pair<String,Integer>>[][] topWhat, final String name, final AccountStats.PrideStat stat, final AccountStats astats)
 	{
 		final long now=System.currentTimeMillis();
-		for(TimeClock.TimePeriod period : TimeClock.TimePeriod.values())
+		for(final TimeClock.TimePeriod period : TimeClock.TimePeriod.values())
 		{
-			List<Pair<String,Integer>> top=topWhat[period.ordinal()][stat.ordinal()];
+			final List<Pair<String,Integer>> top=topWhat[period.ordinal()][stat.ordinal()];
 			if(top == null)
 				continue;
 			synchronized(top)
@@ -311,7 +311,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 				{
 					topPrideExpiration[period.ordinal()] = period.nextPeriod();
 					top.clear();
-					List<Pair<String,Integer>> topA=(topWhat==topPlayers)?topAccounts[period.ordinal()][stat.ordinal()]:topPlayers[period.ordinal()][stat.ordinal()];
+					final List<Pair<String,Integer>> topA=(topWhat==topPlayers)?topAccounts[period.ordinal()][stat.ordinal()]:topPlayers[period.ordinal()][stat.ordinal()];
 					if(topA!=null)
 					{
 						topA.clear();
@@ -350,11 +350,11 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 	@Override
 	public void renamePlayer(MOB mob, String oldName)
 	{
-		String newName = mob.Name();
+		final String newName = mob.Name();
 		CMLib.database().DBPlayerNameChange(oldName, newName);
-		for(Enumeration<MOB> p=CMLib.players().players();p.hasMoreElements();)
+		for(final Enumeration<MOB> p=CMLib.players().players();p.hasMoreElements();)
 		{
-			MOB playerM=p.nextElement();
+			final MOB playerM=p.nextElement();
 			if(playerM.getWorshipCharID().equalsIgnoreCase(oldName))
 				playerM.setWorshipCharID(newName);
 			if(playerM.getLiegeID().equalsIgnoreCase(oldName))
@@ -362,17 +362,17 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 		}
 		for(int q=0;q<CMLib.quests().numQuests();q++)
 		{
-			Quest Q=CMLib.quests().fetchQuest(q);
+			final Quest Q=CMLib.quests().fetchQuest(q);
 			if(Q.wasWinner(oldName))
 			{
 				Q.declareWinner("-"+oldName);
 				Q.declareWinner(newName);
 			}
 		}
-		PlayerStats pstats = mob.playerStats();
+		final PlayerStats pstats = mob.playerStats();
 		if(pstats!=null)
 		{
-			PlayerAccount account = pstats.getAccount();
+			final PlayerAccount account = pstats.getAccount();
 			if(account != null)
 			{
 				account.delPlayer(oldName);
@@ -380,16 +380,16 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 				CMLib.database().DBUpdateAccount(account);
 				account.setLastUpdated(System.currentTimeMillis());
 			}
-			for(Enumeration<Item> e=pstats.getExtItems().items(); e.hasMoreElements();)
+			for(final Enumeration<Item> e=pstats.getExtItems().items(); e.hasMoreElements();)
 			{
-				Item I=e.nextElement();
+				final Item I=e.nextElement();
 				if(I instanceof PrivateProperty)
 					if(((PrivateProperty)I).getOwnerName().equalsIgnoreCase(oldName))
 						((PrivateProperty)I).setOwnerName(newName);
 			}
 		}
 
-		for(Enumeration<Room> r=CMLib.map().roomsFilled();r.hasMoreElements();)
+		for(final Enumeration<Room> r=CMLib.map().roomsFilled();r.hasMoreElements();)
 		{
 			Room R=r.nextElement();
 			if((R!=null)&&(R.roomID().length()>0))
@@ -398,9 +398,9 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 				{
 					R=CMLib.map().getRoom(R);
 					boolean changed=false;
-					for(Enumeration<Ability> a=R.effects();a.hasMoreElements();)
+					for(final Enumeration<Ability> a=R.effects();a.hasMoreElements();)
 					{
-						Ability A=a.nextElement();
+						final Ability A=a.nextElement();
 						if(A==null) continue;
 						if(A instanceof LandTitle)
 						{
@@ -435,26 +435,26 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 		   deadMOB=getPlayer(deadMOB.Name());
 		   delPlayer(deadMOB);
 		}
-		for(Session S : CMLib.sessions().allIterable())
+		for(final Session S : CMLib.sessions().allIterable())
 			if((!S.isStopped())&&(S.mob()!=null)&&(S.mob().Name().equals(deadMOB.Name())))
 				deadMOB=S.mob();
 		if(deadMOB.playerStats()!=null)
 		{
-			PlayerAccount A=deadMOB.playerStats().getAccount();
+			final PlayerAccount A=deadMOB.playerStats().getAccount();
 			if(A!=null)
 				A.delPlayer(deadMOB);
 		}
-		Room deadLoc=deadMOB.location();
+		final Room deadLoc=deadMOB.location();
 		if(deleteAssets)
 		{
-			CMMsg msg=CMClass.getMsg(deadMOB,null,CMMsg.MSG_RETIRE,(quiet)?null:"A horrible death cry is heard throughout the land.");
+			final CMMsg msg=CMClass.getMsg(deadMOB,null,CMMsg.MSG_RETIRE,(quiet)?null:"A horrible death cry is heard throughout the land.");
 			if(deadLoc!=null)
 				deadLoc.send(deadMOB,msg);
 			try
 			{
-				for(Enumeration<Room> r=CMLib.map().rooms();r.hasMoreElements();)
+				for(final Enumeration<Room> r=CMLib.map().rooms();r.hasMoreElements();)
 				{
-					Room R=r.nextElement();
+					final Room R=r.nextElement();
 					if((R!=null)&&(R!=deadLoc))
 					{
 						if(R.okMessage(deadMOB,msg))
@@ -466,16 +466,16 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 						}
 					}
 				}
-			}catch(NoSuchElementException e){}
+			}catch(final NoSuchElementException e){}
 		}
-		StringBuffer newNoPurge=new StringBuffer("");
-		List<String> protectedOnes=Resources.getFileLineVector(Resources.getFileResource("protectedplayers.ini",false));
+		final StringBuffer newNoPurge=new StringBuffer("");
+		final List<String> protectedOnes=Resources.getFileLineVector(Resources.getFileResource("protectedplayers.ini",false));
 		boolean somethingDone=false;
 		if((protectedOnes!=null)&&(protectedOnes.size()>0))
 		{
 			for(int b=0;b<protectedOnes.size();b++)
 			{
-				String B=protectedOnes.get(b);
+				final String B=protectedOnes.get(b);
 				if(!B.equalsIgnoreCase(deadMOB.name()))
 					newNoPurge.append(B+"\n");
 				else
@@ -499,14 +499,14 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 		if(deadAccount==null) return;
 		accountsList.remove(deadAccount);
 
-		StringBuffer newNoPurge=new StringBuffer("");
-		List<String> protectedOnes=Resources.getFileLineVector(Resources.getFileResource("protectedplayers.ini",false));
+		final StringBuffer newNoPurge=new StringBuffer("");
+		final List<String> protectedOnes=Resources.getFileLineVector(Resources.getFileResource("protectedplayers.ini",false));
 		boolean somethingDone=false;
 		if((protectedOnes!=null)&&(protectedOnes.size()>0))
 		{
 			for(int b=0;b<protectedOnes.size();b++)
 			{
-				String B=protectedOnes.get(b);
+				final String B=protectedOnes.get(b);
 				if(!B.equalsIgnoreCase(deadAccount.getAccountName()))
 					newNoPurge.append(B+"\n");
 				else
@@ -525,9 +525,9 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 	{
 		int processed=0;
 		final boolean noCachePlayers=CMProps.getBoolVar(CMProps.Bool.PLAYERSNOCACHE);
-		for(MOB mob : playersList)
+		for(final MOB mob : playersList)
 		{
-			PlayerStats pStats=mob.playerStats();
+			final PlayerStats pStats=mob.playerStats();
 			if(!mob.isMonster())
 			{
 				CMLib.factions().updatePlayerFactions(mob,mob.location());
@@ -541,7 +541,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 				CMLib.database().DBUpdatePlayerAbilities(mob);
 				setThreadStatus(serviceClient,"saving "+mob.numFollowers()+" followers of "+mob.Name());
 				CMLib.database().DBUpdateFollowers(mob);
-				PlayerAccount account = pStats.getAccount();
+				final PlayerAccount account = pStats.getAccount();
 				pStats.setLastUpdated(System.currentTimeMillis());
 				if(account!=null)
 				{
@@ -647,12 +647,12 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 		{
 			V=new Vector<PlayerLibrary.ThinPlayer>();
 			V.addAll(CMLib.database().getExtendedUserList());
-			int code=getCharThinSortCode(sort,false);
+			final int code=getCharThinSortCode(sort,false);
 			if((sort.length()>0)
 			&&(code>=0)
 			&&(V.size()>1))
 			{
-				List<PlayerLibrary.ThinPlayer> unV=V;
+				final List<PlayerLibrary.ThinPlayer> unV=V;
 				V=new Vector<PlayerLibrary.ThinPlayer>();
 				while(unV.size()>0)
 				{
@@ -662,7 +662,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 					for(int i=1;i<unV.size();i++)
 					{
 						M=unV.get(i);
-						String val=getThinSortValue(M,code);
+						final String val=getThinSortValue(M,code);
 						if((CMath.isNumber(val)&&CMath.isNumber(loweStr)))
 						{
 							if(CMath.s_long(val)<CMath.s_long(loweStr))
@@ -694,9 +694,9 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 	{
 		final long now=System.currentTimeMillis();
 		final List<Pair<Long,int[]>> finalStats=new ArrayList<Pair<Long,int[]>>(TimeClock.TimePeriod.values().length);
-		for(TimeClock.TimePeriod period : TimeClock.TimePeriod.values())
+		for(final TimeClock.TimePeriod period : TimeClock.TimePeriod.values())
 		{
-			Pair<Long,int[]> p=new Pair<Long,int[]>(Long.valueOf(0),new int[AccountStats.PrideStat.values().length]);
+			final Pair<Long,int[]> p=new Pair<Long,int[]>(Long.valueOf(0),new int[AccountStats.PrideStat.values().length]);
 			if(period==TimeClock.TimePeriod.ALLTIME)
 				p.first=Long.valueOf(Long.MAX_VALUE);
 			else
@@ -708,7 +708,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 			if((prideStats.length>period.ordinal())&&(prideStats[period.ordinal()].length()>1))
 			{
 				final String[] prides=prideStats[period.ordinal()].split(",");
-				for(AccountStats.PrideStat stat : AccountStats.PrideStat.values())
+				for(final AccountStats.PrideStat stat : AccountStats.PrideStat.values())
 					if(prides.length > stat.ordinal())
 					{
 						final String statVal=prides[stat.ordinal()];
@@ -735,8 +735,8 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 					V.addAll(CMLib.database().DBListAccounts(null));
 				else
 				{
-					List<PlayerAccount> rV=CMLib.database().DBListAccounts(null);
-					for(PlayerAccount A : rV)
+					final List<PlayerAccount> rV=CMLib.database().DBListAccounts(null);
+					for(final PlayerAccount A : rV)
 						addAccount(A);
 					allAccountsLoaded=true;
 					V.addAll(accountsList);
@@ -744,13 +744,13 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 			}
 			else
 				V.addAll(accountsList);
-			int code=getAccountThinSortCode(sort,false);
+			final int code=getAccountThinSortCode(sort,false);
 			if(code<0)
 				return V.elements();
 			else
 			if(V.size()>1)
 			{
-				Vector<PlayerAccount> unV=V;
+				final Vector<PlayerAccount> unV=V;
 				V=new Vector<PlayerAccount>();
 				while(unV.size()>0)
 				{
@@ -760,7 +760,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 					for(int i=1;i<unV.size();i++)
 					{
 						A=unV.get(i);
-						String val=getThinSortValue(A,code);
+						final String val=getThinSortValue(A,code);
 						if((CMath.isNumber(val)&&CMath.isNumber(loweStr)))
 						{
 							if(CMath.s_long(val)<CMath.s_long(loweStr))
@@ -791,7 +791,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 		boolean protectedOne=false;
 		for(int p=0;p<protectedOnes.size();p++)
 		{
-			String P=protectedOnes.get(p);
+			final String P=protectedOnes.get(p);
 			if(P.equalsIgnoreCase(name))
 			{
 				protectedOne=true;
@@ -811,11 +811,11 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 	{
 		if(CMSecurity.isDisabled(CMSecurity.DisFlag.AUTOPURGE))
 			return true;
-		String mask=CMProps.getVar(CMProps.Str.AUTOPURGE);
+		final String mask=CMProps.getVar(CMProps.Str.AUTOPURGE);
 		if(mask.hashCode() != this.autoPurgeHash)
 		{
-			int lastLevel=CMProps.getIntVar(CMProps.Int.LASTPLAYERLEVEL)+100;
-			long[][] presorted=CMLib.utensils().compileConditionalRange(CMParms.parseCommas(mask.trim(),true), 2, 0, lastLevel);
+			final int lastLevel=CMProps.getIntVar(CMProps.Int.LASTPLAYERLEVEL)+100;
+			final long[][] presorted=CMLib.utensils().compileConditionalRange(CMParms.parseCommas(mask.trim(),true), 2, 0, lastLevel);
 			autoPurgeDaysLevels=new long[lastLevel+1];
 			prePurgeLevels=new long[lastLevel+1];
 			for(int i=0;i<autoPurgeDaysLevels.length;i++) autoPurgeDaysLevels[i]=0;
@@ -828,9 +828,9 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 					Log.errOut("CMPlayers","Error in AUTOPURGE definition #"+(i+1)+" in coffeemud.ini file! Fix immediately!!");
 					continue;
 				}
-				long val=set[0];
+				final long val=set[0];
 				if(set[0]<=0) continue;
-				long prepurge=set[1];
+				final long prepurge=set[1];
 				long realVal=(val*TimeManager.MILI_DAY);
 				long purgePoint=realVal-(prepurge*TimeManager.MILI_DAY);
 				if(val <= 0)
@@ -844,15 +844,15 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 			this.autoPurgeHash=mask.hashCode();
 		}
 		setThreadStatus(serviceClient,"autopurge process");
-		List<PlayerLibrary.ThinPlayer> allUsers=CMLib.database().getExtendedUserList();
+		final List<PlayerLibrary.ThinPlayer> allUsers=CMLib.database().getExtendedUserList();
 		List<String> protectedOnes=Resources.getFileLineVector(Resources.getFileResource("protectedplayers.ini",false));
 		if(protectedOnes==null) protectedOnes=new Vector<String>();
 
-		for(ThinPlayer user : allUsers)
+		for(final ThinPlayer user : allUsers)
 		{
-			String name=user.name;
-			int level=user.level;
-			long userLastLoginDateTime=user.last;
+			final String name=user.name;
+			final int level=user.level;
+			final long userLastLoginDateTime=user.last;
 			long purgeDateTime;
 			long warnDateTime;
 			if(level>=autoPurgeDaysLevels.length)
@@ -887,17 +887,17 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 				if(isProtected(protectedOnes, name))
 					continue;
 
-				List<String> warnedOnes=Resources.getFileLineVector(Resources.getFileResource("warnedplayers.ini",false));
+				final List<String> warnedOnes=Resources.getFileLineVector(Resources.getFileResource("warnedplayers.ini",false));
 				long foundWarningDateTime=-1;
-				StringBuffer warnStr=new StringBuffer("");
+				final StringBuffer warnStr=new StringBuffer("");
 				if((warnedOnes!=null)&&(warnedOnes.size()>0))
 					for(int b=0;b<warnedOnes.size();b++)
 					{
-						String B=warnedOnes.get(b).trim();
+						final String B=warnedOnes.get(b).trim();
 						long warningDateTime=-1;
 						if(B.trim().length()>0)
 						{
-							int lastSpace=B.lastIndexOf(' ');
+							final int lastSpace=B.lastIndexOf(' ');
 							warningDateTime=CMath.s_long(B.substring(lastSpace+1).trim());
 							if((warningDateTime > 0) && (System.currentTimeMillis() < warningDateTime + (10 * TimeManager.MILI_DAY)))
 								warnStr.append(B+"\n");
@@ -908,7 +908,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 				if((foundWarningDateTime<0)
 				&&(System.currentTimeMillis()>warnDateTime))
 				{
-					MOB M=getLoadPlayer(name);
+					final MOB M=getLoadPlayer(name);
 					if((M!=null)&&(M.playerStats()!=null))
 					{
 						warnStr.append(M.name()+" "+M.playerStats().getEmail()+" "+System.currentTimeMillis()+"\n");
@@ -923,7 +923,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 				&&(foundWarningDateTime > 0)
 				&&((System.currentTimeMillis()-foundWarningDateTime)>TimeManager.MILI_DAY))
 				{
-					MOB M=getLoadPlayer(name);
+					final MOB M=getLoadPlayer(name);
 					if((M!=null)&&(!CMSecurity.isASysOp(M))&&(!CMSecurity.isAllowedAnywhere(M, CMSecurity.SecFlag.NOPURGE)))
 					{
 						obliteratePlayer(M,true, true);
@@ -938,7 +938,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 		if((!CMSecurity.isDisabled(CMSecurity.DisFlag.PURGEACCOUNTS))&&(CMProps.getIntVar(CMProps.Int.ACCOUNTPURGEDAYS)>0))
 			for(final Enumeration<PlayerAccount> pe=CMLib.players().accounts("",null); pe.hasMoreElements();)
 			{
-				PlayerAccount PA=pe.nextElement();
+				final PlayerAccount PA=pe.nextElement();
 				if((PA.numPlayers() > 0)
 				||(isProtected(protectedOnes, PA.getAccountName())))
 					continue;
@@ -967,24 +967,24 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 			return;
 
 		//  timeLeft is in millis
-		String from="AutoPurgeWarning";
-		String to=mob.Name();
-		String subj=CMProps.Str.MUDNAME+" Autopurge Warning: "+to;
+		final String from="AutoPurgeWarning";
+		final String to=mob.Name();
+		final String subj=CMProps.Str.MUDNAME+" Autopurge Warning: "+to;
 		String textTimeLeft="";
 		if(timeLeft<0)
 			timeLeft = 1000*60*60*24;
 		if(timeLeft>(1000*60*60*24*2))
 		{
-			int days=(int)CMath.div((double)timeLeft,1000*60*60*24);
+			final int days=(int)CMath.div((double)timeLeft,1000*60*60*24);
 			textTimeLeft = days + " days";
 		}
 		else
 		{
-			int hours=(int)CMath.div((double)timeLeft,1000*60*60);
+			final int hours=(int)CMath.div((double)timeLeft,1000*60*60);
 			textTimeLeft = hours + " hours";
 		}
 
-		String msg="Your character, "+to+", is going to be autopurged by the system in "+textTimeLeft+".  If you would like to keep this character active, please re-login.  This is an automated message, please do not reply.";
+		final String msg="Your character, "+to+", is going to be autopurged by the system in "+textTimeLeft+".  If you would like to keep this character active, please re-login.  This is an automated message, please do not reply.";
 
 		SMTPLibrary.SMTPClient SC=null;
 		try
@@ -994,18 +994,18 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 			else
 				SC=CMLib.smtp().getClient(mob.playerStats().getEmail());
 		}
-		catch(BadEmailAddressException be)
+		catch(final BadEmailAddressException be)
 		{
 			Log.errOut(serviceClient.getName(),"Unable to notify "+to+" of impending autopurge.  Invalid email address.");
 			return;
 		}
-		catch(java.io.IOException ioe)
+		catch(final java.io.IOException ioe)
 		{
 			return;
 		}
 
-		String replyTo="AutoPurge";
-		String domain=CMProps.getVar(CMProps.Str.MUDDOMAIN).toLowerCase();
+		final String replyTo="AutoPurge";
+		final String domain=CMProps.getVar(CMProps.Str.MUDDOMAIN).toLowerCase();
 		try
 		{
 			SC.sendMessage(from+"@"+domain,
@@ -1015,7 +1015,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 						   subj,
 						   CMLib.coffeeFilter().simpleOutFilter(msg));
 		}
-		catch(java.io.IOException ioe)
+		catch(final java.io.IOException ioe)
 		{
 			Log.errOut(serviceClient.getName(),"Unable to notify "+to+" of impending autopurge.");
 		}
@@ -1044,7 +1044,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 							for(int y=0;y<aStats[x].length;y++)
 								topAccounts[x][y]=aStats[x][y];
 					}
-					for(TimeClock.TimePeriod period : TimeClock.TimePeriod.values())
+					for(final TimeClock.TimePeriod period : TimeClock.TimePeriod.values())
 						topPrideExpiration[period.ordinal()] = period.nextPeriod();
 				}
 
@@ -1069,7 +1069,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 					&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.PLAYERTHREAD)))
 					{
 						setThreadStatus(serviceClient,"checking player titles.");
-						for(MOB M : playersList)
+						for(final MOB M : playersList)
 							if(M.playerStats()!=null)
 							{
 								if((CMLib.titles().evaluateAutoTitles(M))&&(!CMLib.flags().isInTheGame(M,true)))

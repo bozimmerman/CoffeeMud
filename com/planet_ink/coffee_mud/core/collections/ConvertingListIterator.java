@@ -17,8 +17,8 @@ limitations under the License.
 */
 public class ConvertingListIterator<K,L> implements ListIterator<L>
 {
-	private ListIterator<K> iter;
-	private Converter<K,L> converter;
+	private final ListIterator<K> iter;
+	private final Converter<K,L> converter;
 	public ConvertingListIterator(ListIterator<K> i, Converter<K,L> conv)
 	{
 		iter=i;

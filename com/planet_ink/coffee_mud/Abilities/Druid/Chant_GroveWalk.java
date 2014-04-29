@@ -14,7 +14,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -51,19 +50,19 @@ public class Chant_GroveWalk extends Chant
 			mob.tell("You must specify the name of the location of another grove where there is a druidic monument.");
 			return false;
 		}
-		String areaName=CMParms.combine(commands,0).trim().toUpperCase();
+		final String areaName=CMParms.combine(commands,0).trim().toUpperCase();
 
 
 		Room newRoom=null;
-		boolean hereok=mob.location().findItem(null,"DruidicMonument")!=null;
+		final boolean hereok=mob.location().findItem(null,"DruidicMonument")!=null;
 		try
 		{
-			List<Room> rooms=CMLib.map().findRooms(CMLib.map().rooms(), mob,areaName,true,10);
-			for(Room R : rooms)
+			final List<Room> rooms=CMLib.map().findRooms(CMLib.map().rooms(), mob,areaName,true,10);
+			for(final Room R : rooms)
 			{
 				for(int i=0;i<R.numItems();i++)
 				{
-					Item I=R.getItem(i);
+					final Item I=R.getItem(i);
 					if((I!=null)&&(I.ID().equals("DruidicMonument")))
 					{
 						newRoom=R;
@@ -72,7 +71,7 @@ public class Chant_GroveWalk extends Chant
 				}
 				if(newRoom!=null) break;
 			}
-		}catch(NoSuchElementException e){}
+		}catch(final NoSuchElementException e){}
 		if(!hereok)
 		{
 			mob.tell("There is no druidic monument here.  You can only use this chant in a druidic grove.");
@@ -87,23 +86,23 @@ public class Chant_GroveWalk extends Chant
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,newRoom,this,verbalCastCode(mob,newRoom,auto),auto?"":"^S<S-NAME> chant(s) and walk(s) around.^?");
+			final CMMsg msg=CMClass.getMsg(mob,newRoom,this,verbalCastCode(mob,newRoom,auto),auto?"":"^S<S-NAME> chant(s) and walk(s) around.^?");
 			if((mob.location().okMessage(mob,msg))&&(newRoom.okMessage(mob,msg)))
 			{
 				mob.location().send(mob,msg);
-				Set<MOB> h=properTargets(mob,givenTarget,false);
+				final Set<MOB> h=properTargets(mob,givenTarget,false);
 				if(h==null) return false;
 
-				Room thisRoom=mob.location();
-				for(Iterator f=h.iterator();f.hasNext();)
+				final Room thisRoom=mob.location();
+				for (final Object element : h)
 				{
-					MOB follower=(MOB)f.next();
-					CMMsg enterMsg=CMClass.getMsg(follower,newRoom,this,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,"<S-NAME> emerge(s) from around the stones.");
-					CMMsg leaveMsg=CMClass.getMsg(follower,thisRoom,this,CMMsg.MSG_LEAVE|CMMsg.MASK_MAGIC,"<S-NAME> disappear(s) around the stones.");
+					final MOB follower=(MOB)element;
+					final CMMsg enterMsg=CMClass.getMsg(follower,newRoom,this,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,"<S-NAME> emerge(s) from around the stones.");
+					final CMMsg leaveMsg=CMClass.getMsg(follower,thisRoom,this,CMMsg.MSG_LEAVE|CMMsg.MASK_MAGIC,"<S-NAME> disappear(s) around the stones.");
 					if(thisRoom.okMessage(follower,leaveMsg)&&newRoom.okMessage(follower,enterMsg))
 					{
 						if(follower.isInCombat())

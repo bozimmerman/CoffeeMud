@@ -47,7 +47,7 @@ public class Spell_ClanDonate extends Spell
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		Item target=getTarget(mob,null,givenTarget,null,commands,Wearable.FILTER_UNWORNONLY);
+		final Item target=getTarget(mob,null,givenTarget,null,commands,Wearable.FILTER_UNWORNONLY);
 		if(target==null) return false;
 		if(!mob.isMine(target))
 		{
@@ -60,13 +60,13 @@ public class Spell_ClanDonate extends Spell
 			mob.tell("You aren't even a member of a clan.");
 			return false;
 		}
-		Pair<Clan,Integer> clanPair=CMLib.clans().findPrivilegedClan(mob, Clan.Function.CLAN_BENEFITS);
+		final Pair<Clan,Integer> clanPair=CMLib.clans().findPrivilegedClan(mob, Clan.Function.CLAN_BENEFITS);
 		if(clanPair==null)
 		{
 			mob.tell("You are not authorized to draw from the power of your clan.");
 			return false;
 		}
-		Clan C=clanPair.first;
+		final Clan C=clanPair.first;
 		Room clanDonateRoom=null;
 		clanDonateRoom=CMLib.map().getRoom(C.getDonation());
 		if(clanDonateRoom==null)
@@ -83,18 +83,18 @@ public class Spell_ClanDonate extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
 			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),"^S<S-NAME> invoke(s) a donation spell upon <T-NAMESELF>.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
-				MOB victim=mob.getVictim();
+				final MOB victim=mob.getVictim();
 				boolean proceed=(target instanceof Coins);
 				if(!proceed)
 				{
-					Room prevRoom=mob.location();
+					final Room prevRoom=mob.location();
 					clanDonateRoom.bringMobHere(mob,false);
 					proceed=CMLib.commands().postDrop(mob,target,true,false,false);
 					prevRoom.bringMobHere(mob,false);

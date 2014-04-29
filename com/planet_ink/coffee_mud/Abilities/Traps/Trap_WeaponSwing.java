@@ -47,7 +47,7 @@ public class Trap_WeaponSwing extends StdTrap
 		if(mob.location()==null) return null;
 		for(int i=0;i<mob.location().numItems();i++)
 		{
-			Item I=mob.location().getItem(i);
+			final Item I=mob.location().getItem(i);
 			if((I!=null)
 			&&(I instanceof Weapon)
 			&&(((Weapon)I).weaponClassification()!=Weapon.CLASS_RANGED))
@@ -58,7 +58,7 @@ public class Trap_WeaponSwing extends StdTrap
 	@Override
 	public List<Item> getTrapComponents()
 	{
-		Vector V=new Vector();
+		final Vector V=new Vector();
 		V.addElement(CMClass.getWeapon("Sword"));
 		return V;
 	}
@@ -67,7 +67,7 @@ public class Trap_WeaponSwing extends StdTrap
 	public Trap setTrap(MOB mob, Physical P, int trapBonus, int qualifyingClassLevel, boolean perm)
 	{
 		if(P==null) return null;
-		Item I=getPoison(mob);
+		final Item I=getPoison(mob);
 		setMiscText("3/a club");
 		if(I!=null)
 		{
@@ -83,7 +83,7 @@ public class Trap_WeaponSwing extends StdTrap
 		if(!super.canSetTrapOn(mob,P)) return false;
 		if(mob!=null)
 		{
-			Item I=getPoison(mob);
+			final Item I=getPoison(mob);
 			if(I==null)
 			{
 				mob.tell("You'll need to set down a melee weapon first.");
@@ -98,7 +98,7 @@ public class Trap_WeaponSwing extends StdTrap
 		if((target!=invoker())
 		   &&(target.location()!=null))
 		{
-			int x=text().indexOf('/');
+			final int x=text().indexOf('/');
 			int dam=3;
 			String name="a club";
 			if(x>=0)
@@ -116,7 +116,7 @@ public class Trap_WeaponSwing extends StdTrap
 			if(target.location().show(target,target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,"<S-NAME> <S-IS-ARE> struck by "+name+" trap!"))
 			{
 				super.spring(target);
-				int damage=CMLib.dice().roll(trapLevel()+abilityCode(),dam,1);
+				final int damage=CMLib.dice().roll(trapLevel()+abilityCode(),dam,1);
 				CMLib.combat().postDamage(invoker(),target,this,damage,CMMsg.NO_EFFECT,-1,null);
 				if((canBeUninvoked())&&(affected instanceof Item))
 					disable();

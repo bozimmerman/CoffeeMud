@@ -95,7 +95,7 @@ public class Disease_Lycanthropy extends Disease
 		if(mob==null) return null;
 		for(int i=0;i<room.numInhabitants();i++)
 		{
-			MOB M=room.fetchInhabitant(i);
+			final MOB M=room.fetchInhabitant(i);
 			if((M!=null)
 			&&(M!=mob)
 			&&(!CMLib.flags().isEvil(M))
@@ -117,8 +117,8 @@ public class Disease_Lycanthropy extends Disease
 		}
 		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 		{
-			Room R=room.getRoomInDir(d);
-			Exit E=room.getExitInDir(d);
+			final Room R=room.getRoomInDir(d);
+			final Exit E=room.getExitInDir(d);
 			if((R!=null)&&(E!=null)&&(E.isOpen()))
 			{
 				if(findVictim(mob,R,rooms,depth+1))
@@ -141,7 +141,7 @@ public class Disease_Lycanthropy extends Disease
 		&&((mob.location().domainType()&Room.INDOORS)>0))
 			mob.location().show(mob,null,CMMsg.MSG_NOISE,"<S-NAME> howl(s) at the moon! ARROOOOOOOO!!!!");
 		// time to tick lycanthropically
-		MOB M=victimHere(mob.location(),mob);
+		final MOB M=victimHere(mob.location(),mob);
 		if(M!=null)
 		{
 			deathTrail=null;
@@ -152,7 +152,7 @@ public class Disease_Lycanthropy extends Disease
 		   deathTrail=null;
 		if(deathTrail==null)
 		{
-			Vector rooms=new Vector();
+			final Vector rooms=new Vector();
 			if((findVictim(mob,mob.location(),rooms,0))&&(rooms.size()>0))
 			{
 				TrackingLibrary.TrackingFlags flags;
@@ -169,14 +169,14 @@ public class Disease_Lycanthropy extends Disease
 		}
 		if(deathTrail!=null)
 		{
-			int nextDirection=CMLib.tracking().trackNextDirectionFromHere(deathTrail,mob.location(),true);
+			final int nextDirection=CMLib.tracking().trackNextDirectionFromHere(deathTrail,mob.location(),true);
 			if((nextDirection==999)
 			||(nextDirection==-1))
 				deathTrail=null;
 			else
 			if(nextDirection>=0)
 			{
-				Room nextRoom=mob.location().getRoomInDir(nextDirection);
+				final Room nextRoom=mob.location().getRoomInDir(nextDirection);
 				if((nextRoom!=null)
 				&&((nextRoom.getArea()==mob.location().getArea()))||(!mob.isMonster()))
 				{
@@ -200,13 +200,13 @@ public class Disease_Lycanthropy extends Disease
 		if(affected==null) return false;
 		if(!(affected instanceof MOB)) return true;
 
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		if(mob.amDead()) return true;
 
 		if(!changed)
 		{
 			if(mob.location()==null) return true;
-			Area A=mob.location().getArea();
+			final Area A=mob.location().getArea();
 			if(((A.getTimeObj().getTODCode()==TimeClock.TimeOfDay.DUSK)||(A.getTimeObj().getTODCode()==TimeClock.TimeOfDay.NIGHT))
 			&&(A.getTimeObj().getMoonPhase()==TimeClock.MoonPhase.FULL))
 			{
@@ -221,7 +221,7 @@ public class Disease_Lycanthropy extends Disease
 		else
 		{
 			if(mob.location()==null) return true;
-			Area A=mob.location().getArea();
+			final Area A=mob.location().getArea();
 			if(((A.getTimeObj().getTODCode()!=TimeClock.TimeOfDay.DUSK)&&(A.getTimeObj().getTODCode()!=TimeClock.TimeOfDay.NIGHT))
 			||(A.getTimeObj().getMoonPhase()!=TimeClock.MoonPhase.FULL))
 			{

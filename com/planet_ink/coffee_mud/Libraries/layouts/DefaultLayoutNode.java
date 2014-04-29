@@ -33,8 +33,8 @@ public class DefaultLayoutNode implements LayoutNode
 	public long[] coord;
 	public Room associatedRoom = null;
 	public Hashtable<Integer,LayoutNode> links = new Hashtable<Integer,LayoutNode>();
-	private Hashtable<LayoutTags,String> tags = new Hashtable<LayoutTags,String>();
-	private HashSet<LayoutFlags> flags = new HashSet<LayoutFlags>();
+	private final Hashtable<LayoutTags,String> tags = new Hashtable<LayoutTags,String>();
+	private final HashSet<LayoutFlags> flags = new HashSet<LayoutFlags>();
 
 	public DefaultLayoutNode(long[] coord)
 	{
@@ -66,9 +66,9 @@ public class DefaultLayoutNode implements LayoutNode
 	@Override
 	public void delLink(LayoutNode linkNode)
 	{
-		for(Enumeration<Integer> e=links.keys();e.hasMoreElements();)
+		for(final Enumeration<Integer> e=links.keys();e.hasMoreElements();)
 		{
-			Integer key=e.nextElement();
+			final Integer key=e.nextElement();
 			if(links.get(key)==linkNode)
 				links.remove(key);
 		}
@@ -79,11 +79,11 @@ public class DefaultLayoutNode implements LayoutNode
 	public boolean isStreetLike()
 	{
 		if(links.size()!=2) return false;
-		Enumeration<LayoutNode> linksE=links.elements();
-		LayoutNode n1=linksE.nextElement();
-		LayoutNode n2=linksE.nextElement();
-		int d1=AbstractLayout.getDirection(this, n1);
-		int d2=AbstractLayout.getDirection(this, n2);
+		final Enumeration<LayoutNode> linksE=links.elements();
+		final LayoutNode n1=linksE.nextElement();
+		final LayoutNode n2=linksE.nextElement();
+		final int d1=AbstractLayout.getDirection(this, n1);
+		final int d2=AbstractLayout.getDirection(this, n2);
 		switch(d1)
 		{
 		case Directions.NORTH: return d2==Directions.SOUTH;
@@ -96,10 +96,10 @@ public class DefaultLayoutNode implements LayoutNode
 	@Override
 	public void deLink()
 	{
-		for(Enumeration<Integer> e=links.keys();e.hasMoreElements();)
+		for(final Enumeration<Integer> e=links.keys();e.hasMoreElements();)
 		{
-			Integer key=e.nextElement();
-			LayoutNode linkNode=links.get(key);
+			final Integer key=e.nextElement();
+			final LayoutNode linkNode=links.get(key);
 			linkNode.delLink(this);
 		}
 		links.clear();
@@ -108,14 +108,14 @@ public class DefaultLayoutNode implements LayoutNode
 	public String toString()
 	{
 		String s= "("+coord[0]+","+coord[1]+") ->";
-		for(LayoutNode n : links.values())
+		for(final LayoutNode n : links.values())
 			s+= "("+n.coord()[0]+","+n.coord()[1]+"),  ";
 		return s;
 	}
 	@Override
 	public void flag(LayoutFlags flag)
 	{
-		String s=tags.get(LayoutTags.NODEFLAGS);
+		final String s=tags.get(LayoutTags.NODEFLAGS);
 		flags.add(flag);
 		if(s==null)
 			tags.put(LayoutTags.NODEFLAGS,","+flag.toString()+",");
@@ -132,10 +132,10 @@ public class DefaultLayoutNode implements LayoutNode
 	@Override
 	public void setExits(int[] dirs)
 	{
-		StringBuffer buf=new StringBuffer(",");
+		final StringBuffer buf=new StringBuffer(",");
 		for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
-			for(int i=0;i<dirs.length;i++)
-				if(dirs[i]==d)
+			for (final int dir : dirs)
+				if(dir==d)
 				{
 					buf.append(Directions.getDirectionChar(d).toLowerCase())
 					   .append(",");

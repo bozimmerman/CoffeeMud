@@ -257,7 +257,7 @@ public enum MIMEType
 	static
 	{
 		hashedTypes = new Hashtable<String,MIMEType>();
-		for(MIMEType type : MIMEType.values())
+		for(final MIMEType type : MIMEType.values())
 			hashedTypes.put(type.getExt(), type);
 	}
 
@@ -270,7 +270,7 @@ public enum MIMEType
 	public static MIMEType getMIMEType(final String filePath)
 	{
 		String extension;
-		int x=filePath.lastIndexOf('.');
+		final int x=filePath.lastIndexOf('.');
 		if(x>=0)
 			extension=filePath.substring(x+1).toLowerCase();
 		else
@@ -287,12 +287,12 @@ public enum MIMEType
 	 */
 	public boolean matches(String mask)
 	{
-		int x=mask.indexOf(';');
+		final int x=mask.indexOf(';');
 		if(x > 0) // eat the quality modifier -- not supported
 			mask = mask.substring(0,x).trim();
 		else
 			mask = mask.trim();
-		String[] maskParts=mask.split("/");
+		final String[] maskParts=mask.split("/");
 		if(maskParts.length != 2)
 			return false;
 		if(parts.length != 2)

@@ -73,7 +73,7 @@ public class Skill_Write extends StdSkill
 			return false;
 		}
 
-		Item item=target;
+		final Item item=target;
 		if(((item.material()!=RawMaterial.RESOURCE_PAPER)
 		   &&(item.material()!=RawMaterial.RESOURCE_SILK)
 		   &&(item.material()!=RawMaterial.RESOURCE_HIDE)
@@ -99,11 +99,11 @@ public class Skill_Write extends StdSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_WRITE,"<S-NAME> write(s) on <T-NAMESELF>.",CMMsg.MSG_WRITE,CMParms.combine(commands,1),CMMsg.MSG_WRITE,"<S-NAME> write(s) on <T-NAMESELF>.");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_WRITE,"<S-NAME> write(s) on <T-NAMESELF>.",CMMsg.MSG_WRITE,CMParms.combine(commands,1),CMMsg.MSG_WRITE,"<S-NAME> write(s) on <T-NAMESELF>.");
 			if(mob.location().okMessage(mob,msg))
 				mob.location().send(mob,msg);
 		}

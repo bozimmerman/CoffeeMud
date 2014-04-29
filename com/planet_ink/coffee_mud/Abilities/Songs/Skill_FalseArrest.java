@@ -48,7 +48,7 @@ public class Skill_FalseArrest extends BardSkill
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		MOB target=getTarget(mob,commands,givenTarget);
+		final MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 		if(mob==target)
 		{
@@ -73,9 +73,9 @@ public class Skill_FalseArrest extends BardSkill
 		}
 
 		if(B==null)
-		for(Enumeration e=CMLib.map().areas();e.hasMoreElements();)
+		for(final Enumeration e=CMLib.map().areas();e.hasMoreElements();)
 		{
-			Area A=(Area)e.nextElement();
+			final Area A=(Area)e.nextElement();
 			if(CMLib.flags().canAccess(mob,A))
 			{
 				B=CMLib.law().getLegalBehavior(A);
@@ -105,14 +105,14 @@ public class Skill_FalseArrest extends BardSkill
 		else
 			levelDiff=0;
 
-		boolean success=proficiencyCheck(mob,-levelDiff,auto);
+		final boolean success=proficiencyCheck(mob,-levelDiff,auto);
 
 		if(!success)
 		{
 			beneficialWordsFizzle(mob,target,"<S-NAME> frown(s) at <T-NAMESELF>, but lose(s) the nerve.");
 			return false;
 		}
-		CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_DELICATE_HANDS_ACT,"<S-NAME> frown(s) at <T-NAMESELF>.",CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);
+		final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_DELICATE_HANDS_ACT,"<S-NAME> frown(s) at <T-NAMESELF>.",CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

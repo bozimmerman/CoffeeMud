@@ -57,7 +57,7 @@ public class SignLanguage extends StdLanguage
 		if(wordStart<0) return true;
 		String wordsSaid=CMStrings.getSayFromMessage(msg.sourceMessage());
 		if(numToMess>0) wordsSaid=messChars(ID(),wordsSaid,numToMess);
-		String fullMsgStr = CMStrings.substituteSayInMessage(msg.sourceMessage(),wordsSaid);
+		final String fullMsgStr = CMStrings.substituteSayInMessage(msg.sourceMessage(),wordsSaid);
 		wordStart=fullMsgStr.indexOf('\'');
 		String startFullMsg=fullMsgStr.substring(0,wordStart);
 		if(startFullMsg.indexOf("YELL(S)")>0)
@@ -65,7 +65,7 @@ public class SignLanguage extends StdLanguage
 			msg.source().tell("You can't yell in sign language.");
 			return false;
 		}
-		String oldStartFullMsg = startFullMsg;
+		final String oldStartFullMsg = startFullMsg;
 		startFullMsg = CMStrings.replaceFirstWord(startFullMsg, "say(s)", "sign(s)");
 		startFullMsg = CMStrings.replaceFirstWord(startFullMsg, "ask(s)", "sign(s) askingly");
 		startFullMsg = CMStrings.replaceFirstWord(startFullMsg, "exclaim(s)", "sign(s) excitedly");
@@ -94,9 +94,9 @@ public class SignLanguage extends StdLanguage
 	@Override
 	protected boolean processNonSourceMessages(CMMsg msg, String str, int numToMess)
 	{
-		String fullOtherMsgStr=(msg.othersMessage()==null)?msg.targetMessage():msg.othersMessage();
+		final String fullOtherMsgStr=(msg.othersMessage()==null)?msg.targetMessage():msg.othersMessage();
 		if(fullOtherMsgStr==null) return true;
-		int wordStart=fullOtherMsgStr.indexOf('\'');
+		final int wordStart=fullOtherMsgStr.indexOf('\'');
 		if(wordStart<0) return true;
 		String startFullMsg=fullOtherMsgStr.substring(0,wordStart);
 		String verb = "sign(s)";
@@ -110,7 +110,7 @@ public class SignLanguage extends StdLanguage
 		case 11: case 12: verb="wave(s) <S-HIS-HER> hands"; break;
 		case 13: verb="wiggle(s) <S-HIS-HER> fingers"; break;
 		}
-		String oldStartFullMsg = startFullMsg;
+		final String oldStartFullMsg = startFullMsg;
 		startFullMsg = CMStrings.replaceFirstWord(startFullMsg, "tell(s)", verb);
 		startFullMsg = CMStrings.replaceFirstWord(startFullMsg, "say(s)", verb);
 		startFullMsg = CMStrings.replaceFirstWord(startFullMsg, "ask(s)", verb+" askingly");

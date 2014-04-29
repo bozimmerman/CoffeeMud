@@ -54,13 +54,13 @@ public class ROMGangMember extends StdBehavior
 		String vicParms="";
 		for(int i=0;i<observer.location().numInhabitants();i++)
 		{
-			MOB inhab=observer.location().fetchInhabitant(i);
+			final MOB inhab=observer.location().fetchInhabitant(i);
 			if((inhab!=null)
 			&&((inhab.isMonster())||(CMLib.clans().findCommonRivalrousClans(inhab,observer).size()==0)))
 			{
-				for(Enumeration<Behavior> e=inhab.behaviors();e.hasMoreElements();)
+				for(final Enumeration<Behavior> e=inhab.behaviors();e.hasMoreElements();)
 				{
-					Behavior B=e.nextElement();
+					final Behavior B=e.nextElement();
 					if(B.ID().equals(ID())&&(!B.getParms().equals(getParms())))
 					{
 						victim=inhab;
@@ -114,7 +114,7 @@ public class ROMGangMember extends StdBehavior
 		super.tick(ticking,tickID);
 
 		if(tickID!=Tickable.TICKID_MOB) return true;
-		MOB mob=(MOB)ticking;
+		final MOB mob=(MOB)ticking;
 		tickTock--;
 		if(tickTock<=0)
 		{

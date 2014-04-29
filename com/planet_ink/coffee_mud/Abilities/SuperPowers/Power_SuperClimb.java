@@ -53,7 +53,7 @@ public class Power_SuperClimb extends SuperPower
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		int dirCode=Directions.getDirectionCode(CMParms.combine(commands,0));
+		final int dirCode=Directions.getDirectionCode(CMParms.combine(commands,0));
 		if(dirCode<0)
 		{
 			mob.tell("Climb where?");
@@ -74,7 +74,7 @@ public class Power_SuperClimb extends SuperPower
 			return false;
 
 		boolean success=proficiencyCheck(mob,0,auto);
-		CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,null);
+		final CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,null);
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

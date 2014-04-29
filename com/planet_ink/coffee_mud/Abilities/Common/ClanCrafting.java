@@ -83,7 +83,7 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 		{
 			if((affected!=null)&&(affected instanceof MOB))
 			{
-				MOB mob=(MOB)affected;
+				final MOB mob=(MOB)affected;
 				if((buildingI!=null)&&(!aborted))
 				{
 					if(messedUp)
@@ -119,7 +119,7 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 			student.tell("You need to belong to a clan before you can learn "+name()+".");
 			return false;
 		}
-		Pair<Clan,Integer> p=CMLib.clans().findPrivilegedClan(student, Clan.Function.ENCHANT);
+		final Pair<Clan,Integer> p=CMLib.clans().findPrivilegedClan(student, Clan.Function.ENCHANT);
 		if(p==null)
 		{
 			teacher.tell(student.name()+" is not authorized to draw from the power of "+student.charStats().hisher()+" clan.");
@@ -141,7 +141,7 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 		if(super.checkStop(mob, commands))
 			return true;
 
-		CraftParms parsedVars=super.parseAutoGenerate(auto,givenTarget,commands);
+		final CraftParms parsedVars=super.parseAutoGenerate(auto,givenTarget,commands);
 		givenTarget=parsedVars.givenTarget;
 
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,parsedVars.autoGenerate);
@@ -160,7 +160,7 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 				mob.tell("You must be a member of a clan to use this skill.");
 				return false;
 			}
-			Pair<Clan,Integer> p=CMLib.clans().findPrivilegedClan(mob, Clan.Function.ENCHANT);
+			final Pair<Clan,Integer> p=CMLib.clans().findPrivilegedClan(mob, Clan.Function.ENCHANT);
 			if((p==null)
 			&&(!CMSecurity.isASysOp(mob)))
 			{
@@ -174,11 +174,11 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 				clanC=p.first;
 			}
 		}
-		List<List<String>> recipes=addRecipes(mob,loadRecipes());
-		String str=(String)commands.elementAt(0);
+		final List<List<String>> recipes=addRecipes(mob,loadRecipes());
+		final String str=(String)commands.elementAt(0);
 		String startStr=null;
 		int duration=4;
-		int[] cols={
+		final int[] cols={
 				ListingLibrary.ColFixer.fixColWidth(24,mob.session()),
 				ListingLibrary.ColFixer.fixColWidth(9,mob.session()),
 				ListingLibrary.ColFixer.fixColWidth(14,mob.session()),
@@ -195,7 +195,7 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 				allFlag=true;
 				mask="";
 			}
-			StringBuffer buf=new StringBuffer("");
+			final StringBuffer buf=new StringBuffer("");
 			buf.append(CMStrings.padRight("Item",cols[0])+" "
 					   +CMStrings.padRight("Exp",cols[1])+" "
 					   +CMStrings.padRight("Material#1",cols[2])+" "
@@ -204,12 +204,12 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 					   +CMStrings.padRight("Amt#2",cols[5])+"\n\r");
 			for(int r=0;r<recipes.size();r++)
 			{
-				List<String> V=recipes.get(r);
+				final List<String> V=recipes.get(r);
 				if(V.size()>0)
 				{
-					String item=replacePercent(V.get(RCP_FINALNAME),"");
-					int level=CMath.s_int(V.get(RCP_LEVEL));
-					int exp=CMath.s_int(V.get(RCP_EXP));
+					final String item=replacePercent(V.get(RCP_FINALNAME),"");
+					final int level=CMath.s_int(V.get(RCP_LEVEL));
+					final int exp=CMath.s_int(V.get(RCP_EXP));
 					if(((level<=xlevel(mob))||allFlag)
 					&&((mask.length()==0)||mask.equalsIgnoreCase("all")||CMLib.english().containsString(item,mask)))
 					{
@@ -217,14 +217,14 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 						String mat2=V.get(RCP_MATERIAL2);
 						String amt1="";
 						String amt2="";
-						int m1=mat1.indexOf('/');
+						final int m1=mat1.indexOf('/');
 						if(m1>=0)
 						{
 							amt1=mat1.substring(m1+1);
 							mat1=mat1.substring(0,m1).toLowerCase();
 							//amt1=""+adjustWoodRequired(CMath.s_int(amt1),mob);
 						}
-						int m2=mat2.indexOf('/');
+						final int m2=mat2.indexOf('/');
 						if(m2>=0)
 						{
 							amt2=mat2.substring(m2+1);
@@ -247,15 +247,15 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 		activity = CraftingActivity.CRAFTING;
 		buildingI=null;
 		messedUp=false;
-		String recipeName=CMParms.combine(commands,0);
+		final String recipeName=CMParms.combine(commands,0);
 		List<String> foundRecipe=null;
-		List<List<String>> matches=matchingRecipeNames(recipes,recipeName,true);
+		final List<List<String>> matches=matchingRecipeNames(recipes,recipeName,true);
 		for(int r=0;r<matches.size();r++)
 		{
-			List<String> V=matches.get(r);
+			final List<String> V=matches.get(r);
 			if(V.size()>0)
 			{
-				int level=CMath.s_int(V.get(RCP_LEVEL));
+				final int level=CMath.s_int(V.get(RCP_LEVEL));
 				if((parsedVars.autoGenerate>0)||(level<=xlevel(mob)))
 				{
 					foundRecipe=V;
@@ -273,14 +273,14 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 		int amt2=0;
 		String mat1=foundRecipe.get(RCP_MATERIAL1);
 		String mat2=foundRecipe.get(RCP_MATERIAL2);
-		int m1=mat1.indexOf('/');
+		final int m1=mat1.indexOf('/');
 		if(m1>=0)
 		{
 			amt1=CMath.s_int(mat1.substring(m1+1));
 			mat1=mat1.substring(0,m1).toLowerCase();
 			//amt1=adjustWoodRequired(amt1, mob);
 		}
-		int m2=mat2.indexOf('/');
+		final int m2=mat2.indexOf('/');
 		if(m2>=0)
 		{
 			amt2=CMath.s_int(mat2.substring(m2+1));
@@ -295,14 +295,14 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 			mob.tell("You need "+expRequired+" to do that, but your "+clanTypeName+" has only "+clanC.getExp()+" experience points.");
 			return false;
 		}
-		int[][] data=fetchFoundResourceData(mob,amt1,mat1,null,amt2,mat2,null,false,parsedVars.autoGenerate,null);
+		final int[][] data=fetchFoundResourceData(mob,amt1,mat1,null,amt2,mat2,null,false,parsedVars.autoGenerate,null);
 		if(data==null) return false;
 		amt1=data[0][FOUND_AMT];
 		amt2=data[1][FOUND_AMT];
-		String reqskill=foundRecipe.get(RCP_REQUIREDSKILL);
+		final String reqskill=foundRecipe.get(RCP_REQUIREDSKILL);
 		if((parsedVars.autoGenerate<=0)&&(reqskill.trim().length()>0))
 		{
-			Ability A=CMClass.findAbility(reqskill.trim());
+			final Ability A=CMClass.findAbility(reqskill.trim());
 			if((A!=null)&&(mob.fetchAbility(A.ID())==null))
 			{
 				commonTell(mob,"You need to know "+A.name()+" to craft this item.");
@@ -325,7 +325,7 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 		}
 
 		duration=getDuration(CMath.s_int(foundRecipe.get(RCP_TICKS)),mob,CMath.s_int(foundRecipe.get(RCP_LEVEL)),4);
-		String misctype=foundRecipe.get(RCP_MISCTYPE);
+		final String misctype=foundRecipe.get(RCP_MISCTYPE);
 		String itemName=null;
 		if(!misctype.equalsIgnoreCase("area"))
 		{
@@ -338,8 +338,8 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 		}
 		else
 		{
-			LegalBehavior B=CMLib.law().getLegalBehavior(mob.location().getArea());
-			Area A2=CMLib.law().getLegalObject(mob.location().getArea());
+			final LegalBehavior B=CMLib.law().getLegalBehavior(mob.location().getArea());
+			final Area A2=CMLib.law().getLegalObject(mob.location().getArea());
 			if((B==null)||(A2==null))
 			{
 				commonTell(mob,"This area is controlled by the Archons -- you can't build that here.");
@@ -365,14 +365,14 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 		buildingI.basePhyStats().setWeight(amt1+amt2);
 		buildingI.setBaseValue(CMath.s_int(foundRecipe.get(RCP_VALUE)));
 		buildingI.setMaterial(data[0][FOUND_CODE]);
-		int hardness=RawMaterial.CODES.HARDNESS(data[0][FOUND_CODE])-6;
+		final int hardness=RawMaterial.CODES.HARDNESS(data[0][FOUND_CODE])-6;
 		buildingI.basePhyStats().setLevel(CMath.s_int(foundRecipe.get(RCP_LEVEL))+(hardness*3));
 		if(buildingI.basePhyStats().level()<1) buildingI.basePhyStats().setLevel(1);
-		int capacity=CMath.s_int(foundRecipe.get(RCP_CAPACITY));
-		long canContain=getContainerType(foundRecipe.get(RCP_CONTAINMASK));
-		int armordmg=CMath.s_int(foundRecipe.get(RCP_ARMORDMG));
+		final int capacity=CMath.s_int(foundRecipe.get(RCP_CAPACITY));
+		final long canContain=getContainerType(foundRecipe.get(RCP_CONTAINMASK));
+		final int armordmg=CMath.s_int(foundRecipe.get(RCP_ARMORDMG));
 		buildingI.setSecretIdentity(getBrand(mob));
-		String spell=(foundRecipe.size()>RCP_SPELL)?foundRecipe.get(RCP_SPELL).trim():"";
+		final String spell=(foundRecipe.size()>RCP_SPELL)?foundRecipe.get(RCP_SPELL).trim():"";
 		if(buildingI instanceof ClanItem)
 		{
 			buildingI.basePhyStats().setSensesMask(PhyStats.SENSE_UNLOCATABLE);
@@ -422,12 +422,12 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 			return true;
 		}
 
-		CMMsg msg=CMClass.getMsg(mob,buildingI,this,getActivityMessageType(),startStr);
+		final CMMsg msg=CMClass.getMsg(mob,buildingI,this,getActivityMessageType(),startStr);
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
 			beneficialAffect(mob,mob,asLevel,duration);
-			ClanCrafting CC=(ClanCrafting)mob.fetchEffect(ID());
+			final ClanCrafting CC=(ClanCrafting)mob.fetchEffect(ID());
 			if((CC!=null)&&(clanC!=null))
 			{
 				clanC.setExp(clanC.getExp()-expRequired);

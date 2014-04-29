@@ -74,7 +74,7 @@ public class Thief_TurfWar extends ThiefSkill
 	{
 		if(!super.okMessage(host,msg))
 			return false;
-		Ability A=getSparringRoom();
+		final Ability A=getSparringRoom();
 		if(A==null) return true;
 		if(!A.okMessage(host, msg))
 			return false;
@@ -84,9 +84,9 @@ public class Thief_TurfWar extends ThiefSkill
 	public boolean isADefender(Room R, MOB M)
 	{
 		if(R==null) return false;
-		Ability A=R.fetchEffect("Thief_TagTurf");
+		final Ability A=R.fetchEffect("Thief_TagTurf");
 		if(A==null) return false;
-		Pair<Clan,Integer> clanRole=M.getClanRole(A.text());
+		final Pair<Clan,Integer> clanRole=M.getClanRole(A.text());
 		return (A.text().equals(M.Name())
 			||((clanRole!=null)&&(clanRole.second.intValue()>=clanRole.first.getGovernment().getAcceptPos())));
 	}
@@ -94,7 +94,7 @@ public class Thief_TurfWar extends ThiefSkill
 	@Override
 	public void executeMsg(Environmental host, CMMsg msg)
 	{
-		Ability A=getSparringRoom();
+		final Ability A=getSparringRoom();
 		if(A!=null) A.executeMsg(host, msg);
 		super.executeMsg(host,msg);
 	}
@@ -106,9 +106,9 @@ public class Thief_TurfWar extends ThiefSkill
 			return false;
 		if(!(affected instanceof Room))
 			return false;
-		Room R=(Room)affected;
+		final Room R=(Room)affected;
 		if(R==null) return false;
-		MOB attacker=invoker();
+		final MOB attacker=invoker();
 		if(attacker==null)
 			return false;
 		if(attacker.location()!=R)
@@ -121,7 +121,7 @@ public class Thief_TurfWar extends ThiefSkill
 		{
 			for(int m=0;m<R.numInhabitants();m++)
 			{
-				MOB M=R.fetchInhabitant(m);
+				final MOB M=R.fetchInhabitant(m);
 				if((M!=null)&&(!M.isMonster())&&(M!=attacker)&&(isADefender(R,M)))
 				{
 					defender=M;
@@ -152,7 +152,7 @@ public class Thief_TurfWar extends ThiefSkill
 	@Override
 	public void unInvoke()
 	{
-		MOB attacker=invoker();
+		final MOB attacker=invoker();
 		if(attacker!=null)
 			attacker.makePeace();
 		if(defender!=null)
@@ -164,12 +164,12 @@ public class Thief_TurfWar extends ThiefSkill
 
 		if(affected instanceof Room)
 		{
-			Room R=(Room)affected;
+			final Room R=(Room)affected;
 			if((attacker!=null)&&(attacker.location()==R)
 			&&((defender==null)||(defender.location()!=R)))
 			{
 				R.showHappens(CMMsg.MSG_OK_ACTION,attacker.Name()+" has won the turf war!");
-				Ability A=R.fetchEffect("Thief_TagTurf");
+				final Ability A=R.fetchEffect("Thief_TagTurf");
 				if(A!=null) A.unInvoke();
 			}
 			else
@@ -207,7 +207,7 @@ public class Thief_TurfWar extends ThiefSkill
 		MOB turfM=null;
 		if(A!=null)
 		{
-			Pair<Clan,Integer> clanRole=mob.getClanRole(A.text());
+			final Pair<Clan,Integer> clanRole=mob.getClanRole(A.text());
 			if(A.text().equals(mob.Name())
 				||((clanRole!=null)&&(clanRole.second.intValue()>=clanRole.first.getGovernment().getAcceptPos())))
 			{
@@ -230,10 +230,10 @@ public class Thief_TurfWar extends ThiefSkill
 			return false;
 		}
 
-		Room R=target;
-		boolean success=proficiencyCheck(mob,0,auto);
+		final Room R=target;
+		final boolean success=proficiencyCheck(mob,0,auto);
 
-		CMMsg msg=CMClass.getMsg(mob,target,this,auto?CMMsg.MASK_ALWAYS:CMMsg.MSG_DELICATE_HANDS_ACT,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,auto?"":"<S-NAME> declare(s) a turf war!");
+		final CMMsg msg=CMClass.getMsg(mob,target,this,auto?CMMsg.MASK_ALWAYS:CMMsg.MSG_DELICATE_HANDS_ACT,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,auto?"":"<S-NAME> declare(s) a turf war!");
 		if(!success)
 		{
 			return beneficialVisualFizzle(mob,target,auto?"":"<S-NAME> attempt(s) to declare a turf war, but can't get started.");
@@ -245,7 +245,7 @@ public class Thief_TurfWar extends ThiefSkill
 			beneficialAffect(mob,target,asLevel,(CMProps.getIntVar(CMProps.Int.TICKSPERMUDMONTH)));
 			if(target.fetchEffect(ID())!=null)
 			{
-				for(Session S : CMLib.sessions().localOnlineIterable())
+				for(final Session S : CMLib.sessions().localOnlineIterable())
 					if((S.mob()!=null)&&(S.mob()!=mob)&&(isADefender(R,S.mob())))
 						S.mob().tell(mob.name(mob)+" has declared a turf war at '"+R.displayText(mob)+"'.  You must immediately go and defend it to keep your tag.");
 				setTimeOfNextCast(mob);

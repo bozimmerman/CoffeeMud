@@ -58,7 +58,7 @@ public class Mobile extends ActiveTicker implements MobileBehavior
 	@Override
 	public int getTickStatus()
 	{
-		int[] o=altStatusTaker;
+		final int[] o=altStatusTaker;
 		if((o!=null)&&(o[0]!=Tickable.STATUS_NOT))
 			return o[0];
 		return tickStatus;
@@ -121,7 +121,7 @@ public class Mobile extends ActiveTicker implements MobileBehavior
 		leashHash=null;
 		restrictedLocales=null;
 		leash=CMParms.getParmInt(newParms,"LEASH",0);
-		Vector<String> V=CMParms.parse(newParms);
+		final Vector<String> V=CMParms.parse(newParms);
 		for(int v=0;v<V.size();v++)
 		{
 			String s=V.elementAt(v);
@@ -148,7 +148,7 @@ public class Mobile extends ActiveTicker implements MobileBehavior
 				}
 				else
 				{
-					char c=s.charAt(0);
+					final char c=s.charAt(0);
 					s=s.substring(1).toUpperCase().trim();
 					int code=-1;
 					for(int i=0;i<Room.indoorDomainDescs.length;i++)
@@ -189,7 +189,7 @@ public class Mobile extends ActiveTicker implements MobileBehavior
 			int dir=-1;
 			for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 			{
-				Room R=room.getRoomInDir(d);
+				final Room R=room.getRoomInDir(d);
 				if((R!=null)&&(okRoomForMe(mob,room,R)))
 				{
 					dir=d;
@@ -241,7 +241,7 @@ public class Mobile extends ActiveTicker implements MobileBehavior
 				}
 				for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 				{
-					Room R=room.getRoomInDir(d);
+					final Room R=room.getRoomInDir(d);
 					if((R!=null)&&(!okRoomForMe(mob,room,R)))
 					{
 						if(objections==null) objections=new Vector();

@@ -53,7 +53,7 @@ public class Skill_Befriend extends BardSkill
 			mob.tell("You must specify someone to befriend!");
 			return false;
 		}
-		MOB target=getTarget(mob,commands,givenTarget);
+		final MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
 		if(target==mob)
@@ -90,11 +90,11 @@ public class Skill_Befriend extends BardSkill
 			return false;
 		}
 
-		Faction F=CMLib.factions().getFaction(CMLib.factions().AlignID());
+		final Faction F=CMLib.factions().getFaction(CMLib.factions().AlignID());
 		if(F!=null)
 		{
-			int his=target.fetchFaction(F.factionID());
-			int mine=target.fetchFaction(F.factionID());
+			final int his=target.fetchFaction(F.factionID());
+			final int mine=target.fetchFaction(F.factionID());
 			if(F.fetchRange(his)!=F.fetchRange(mine))
 			{
 				mob.tell(target,null,null,"<S-NAME> is not "+F.fetchRangeName(mine)+", like yourself.");
@@ -125,10 +125,10 @@ public class Skill_Befriend extends BardSkill
 		else
 			levelDiff=(levelDiff*(-levelDiff))/(1+super.getXLEVELLevel(mob));
 
-		boolean success=proficiencyCheck(mob,levelDiff,auto);
+		final boolean success=proficiencyCheck(mob,levelDiff,auto);
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_NOISYMOVEMENT|(auto?CMMsg.MASK_ALWAYS:0),"<S-NAME> befriend(s) <T-NAME>.");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_NOISYMOVEMENT|(auto?CMMsg.MASK_ALWAYS:0),"<S-NAME> befriend(s) <T-NAME>.");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

@@ -47,7 +47,7 @@ public class Prayer_AnimateMummy extends Prayer
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		Physical target=getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_UNWORNONLY);
+		final Physical target=getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_UNWORNONLY);
 		if(target==null) return false;
 
 		if(target==mob)
@@ -61,7 +61,7 @@ public class Prayer_AnimateMummy extends Prayer
 			return false;
 		}
 
-		DeadBody body=(DeadBody)target;
+		final DeadBody body=(DeadBody)target;
 		if(body.playerCorpse()||(body.mobName().length()==0)
 		||((body.charStats()!=null)&&(body.charStats().getMyRace()!=null)&&(body.charStats().getMyRace().racialCategory().equalsIgnoreCase("Undead"))))
 		{
@@ -86,15 +86,15 @@ public class Prayer_AnimateMummy extends Prayer
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> "+prayForWord(mob)+" to animate <T-NAMESELF> as a mummy.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> "+prayForWord(mob)+" to animate <T-NAMESELF> as a mummy.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				MOB newMOB=CMClass.getMOB("GenUndead");
+				final MOB newMOB=CMClass.getMOB("GenUndead");
 				newMOB.setName(race+" mummy");
 				newMOB.setDescription(description);
 				newMOB.setDisplayText(race+" mummy is here");
@@ -102,7 +102,7 @@ public class Prayer_AnimateMummy extends Prayer
 				newMOB.baseCharStats().setStat(CharStats.STAT_GENDER,body.charStats().getStat(CharStats.STAT_GENDER));
 				newMOB.baseCharStats().setMyRace(CMClass.getRace("Undead"));
 				newMOB.baseCharStats().setBodyPartsFromStringAfterRace(body.charStats().getBodyPartsAsString());
-				Ability P=CMClass.getAbility("Prop_StatTrainer");
+				final Ability P=CMClass.getAbility("Prop_StatTrainer");
 				if(P!=null)
 				{
 					P.setMiscText("NOTEACH STR=20 INT=10 WIS=10 CON=10 DEX=20 CHA=2");
@@ -134,14 +134,14 @@ public class Prayer_AnimateMummy extends Prayer
 				int it=0;
 				while(it<newMOB.location().numItems())
 				{
-					Item item=newMOB.location().getItem(it);
+					final Item item=newMOB.location().getItem(it);
 					if((item!=null)&&(item.container()==body))
 					{
-						CMMsg msg2=CMClass.getMsg(newMOB,body,item,CMMsg.MSG_GET,null);
+						final CMMsg msg2=CMClass.getMsg(newMOB,body,item,CMMsg.MSG_GET,null);
 						newMOB.location().send(newMOB,msg2);
-						CMMsg msg4=CMClass.getMsg(newMOB,item,null,CMMsg.MSG_GET,null);
+						final CMMsg msg4=CMClass.getMsg(newMOB,item,null,CMMsg.MSG_GET,null);
 						newMOB.location().send(newMOB,msg4);
-						CMMsg msg3=CMClass.getMsg(newMOB,item,null,CMMsg.MSG_WEAR,null);
+						final CMMsg msg3=CMClass.getMsg(newMOB,item,null,CMMsg.MSG_WEAR,null);
 						newMOB.location().send(newMOB,msg3);
 						if(!newMOB.isMine(item))
 							it++;

@@ -50,7 +50,7 @@ public class Prayer_Rockskin extends Prayer
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
-		int xlvl=super.getXLEVELLevel(invoker());
+		final int xlvl=super.getXLEVELLevel(invoker());
 		affectableStats.setArmor(affectableStats.armor() - 15-(2*xlvl));
 	}
 
@@ -60,7 +60,7 @@ public class Prayer_Rockskin extends Prayer
 		// undo the affects of this spell
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		super.unInvoke();
 
 		if(canBeUninvoked())
@@ -78,7 +78,7 @@ public class Prayer_Rockskin extends Prayer
 		if(!(affected instanceof MOB))
 			return true;
 
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		if((msg.amITarget(mob))
 		   &&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
 		   &&((msg.value())>0))
@@ -99,7 +99,7 @@ public class Prayer_Rockskin extends Prayer
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		MOB target=this.getTarget(mob,commands,givenTarget);
+		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
 		// the invoke method for spells receives as
@@ -109,7 +109,7 @@ public class Prayer_Rockskin extends Prayer
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
@@ -119,7 +119,7 @@ public class Prayer_Rockskin extends Prayer
 			// what happened.
 			invoker=mob;
 
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> "+prayWord(mob)+" wave(s) <S-HIS-HER> hands around <T-NAMESELF>.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> "+prayWord(mob)+" wave(s) <S-HIS-HER> hands around <T-NAMESELF>.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

@@ -47,7 +47,7 @@ public class Trap_SpellBlast extends StdTrap
 		if(mob.location()==null) return null;
 		for(int i=0;i<mob.location().numItems();i++)
 		{
-			Item I=mob.location().getItem(i);
+			final Item I=mob.location().getItem(i);
 			if((I!=null)
 			&&(I instanceof Scroll)
 			&&(((SpellHolder)I).getSpells()!=null)
@@ -61,8 +61,8 @@ public class Trap_SpellBlast extends StdTrap
 	@Override
 	public List<Item> getTrapComponents()
 	{
-		Vector V=new Vector();
-		Scroll I=(Scroll)CMClass.getMiscMagic("StdScroll");
+		final Vector V=new Vector();
+		final Scroll I=(Scroll)CMClass.getMiscMagic("StdScroll");
 		Ability A=CMClass.getAbility(text());
 		if(A==null) A=CMClass.getAbility("Spell_Fireball");
 		I.setSpellList(A.ID());
@@ -73,10 +73,10 @@ public class Trap_SpellBlast extends StdTrap
 	public Trap setTrap(MOB mob, Physical P, int trapBonus, int qualifyingClassLevel, boolean perm)
 	{
 		if(P==null) return null;
-		Item I=getPoison(mob);
+		final Item I=getPoison(mob);
 		if((I!=null)&&(I instanceof SpellHolder))
 		{
-			List<Ability> V=((SpellHolder)I).getSpells();
+			final List<Ability> V=((SpellHolder)I).getSpells();
 			if(V.size()>0)
 				setMiscText(V.get(0).ID());
 			I.setUsesRemaining(I.usesRemaining()-1);
@@ -88,7 +88,7 @@ public class Trap_SpellBlast extends StdTrap
 	public boolean canSetTrapOn(MOB mob, Physical P)
 	{
 		if(!super.canSetTrapOn(mob,P)) return false;
-		Item I=getPoison(mob);
+		final Item I=getPoison(mob);
 		if((I==null)
 		&&(mob!=null))
 		{

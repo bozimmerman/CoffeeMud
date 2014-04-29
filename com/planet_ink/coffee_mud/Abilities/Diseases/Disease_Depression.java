@@ -61,7 +61,7 @@ public class Disease_Depression extends Disease
 				return true;
 			if(msg.source().location()==null)
 				return true;
-			MOB mob=(MOB)affected;
+			final MOB mob=(MOB)affected;
 			if(((msg.amITarget(mob))||(msg.amISource(mob)))
 			&&(msg.tool() instanceof Social)
 			&&(msg.tool().Name().equals("MATE <T-NAME>")
@@ -94,7 +94,7 @@ public class Disease_Depression extends Disease
 		if(affected==null) return false;
 		if(!(affected instanceof MOB)) return true;
 
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		if(CMLib.dice().rollPercentage()==1)
 			mob.tell("You are hungry.");
 		if(mob.isInCombat()
@@ -108,8 +108,8 @@ public class Disease_Depression extends Disease
 		&&(mob.session().getIdleMillis()>10000)
 		&&((CMLib.dice().rollPercentage()==1)||(CMLib.flags().isSitting(mob))))
 		{
-			Command C=CMClass.getCommand("Sleep");
-			try{C.execute(mob,new XVector<String>("Sleep"),Command.METAFLAG_FORCED);}catch(Exception e){}
+			final Command C=CMClass.getCommand("Sleep");
+			try{C.execute(mob,new XVector<String>("Sleep"),Command.METAFLAG_FORCED);}catch(final Exception e){}
 		}
 		if((mob.curState().getFatigue()<CharState.FATIGUED_MILLIS)
 		&&(mob.maxState().getFatigue()>Long.MIN_VALUE/2))

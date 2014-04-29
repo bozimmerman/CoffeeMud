@@ -44,10 +44,10 @@ public class Prop_RoomsForSale extends Prop_RoomForSale
 		V.add(R);
 		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 		{
-			Room R2=R.getRoomInDir(d);
+			final Room R2=R.getRoomInDir(d);
 			if((R2!=null)&&(R2.roomID().length()>0)&&(!V.contains(R2)))
 			{
-				Ability A=R2.fetchEffect(ID());
+				final Ability A=R2.fetchEffect(ID());
 				if((R2.getArea()==R.getArea())&&(A!=null))
 					fillCluster(R2,V);
 				else
@@ -62,7 +62,7 @@ public class Prop_RoomsForSale extends Prop_RoomForSale
 	@Override
 	public List<Room> getAllTitledRooms()
 	{
-		List<Room> V=new ArrayList<Room>();
+		final List<Room> V=new ArrayList<Room>();
 		Room R=null;
 		if(affected instanceof Room)
 			R=(Room)affected;
@@ -79,7 +79,7 @@ public class Prop_RoomsForSale extends Prop_RoomForSale
 			return "LAND_TITLE_FOR#"+CMLib.map().getExtendedRoomID((Room)affected);
 		else
 		{
-			Room R=CMLib.map().getRoom(landPropertyID());
+			final Room R=CMLib.map().getRoom(landPropertyID());
 			if(R!=null)
 				return "LAND_TITLE_FOR#"+CMLib.map().getExtendedRoomID(R);
 		}
@@ -90,11 +90,11 @@ public class Prop_RoomsForSale extends Prop_RoomForSale
 	@Override
 	public void updateTitle()
 	{
-		List<Room> V=getAllTitledRooms();
-		String owner=getOwnerName();
-		int price=getPrice();
-		boolean rental=rentalProperty();
-		int back=backTaxes();
+		final List<Room> V=getAllTitledRooms();
+		final String owner=getOwnerName();
+		final int price=getPrice();
+		final boolean rental=rentalProperty();
+		final int back=backTaxes();
 		String uniqueID="ROOMS_PROPERTY_"+this;
 		if(V.size()>0)
 			uniqueID="ROOMS_PROPERTY_"+CMLib.map().getExtendedRoomID(V.get(0));
@@ -104,7 +104,7 @@ public class Prop_RoomsForSale extends Prop_RoomForSale
 			synchronized(("SYNC"+R.roomID()).intern())
 			{
 				R=CMLib.map().getRoom(R);
-				LandTitle A=(LandTitle)R.fetchEffect(ID());
+				final LandTitle A=(LandTitle)R.fetchEffect(ID());
 				if((A!=null)
 				&&((!A.getOwnerName().equals(owner))
 				   ||(A.getPrice()!=price)
@@ -140,13 +140,13 @@ public class Prop_RoomsForSale extends Prop_RoomForSale
 			if((lastDayDone!=((Room)affected).getArea().getTimeObj().getDayOfMonth())
 			&&(CMProps.getBoolVar(CMProps.Bool.MUDSTARTED)))
 			{
-				Room R=(Room)affected;
+				final Room R=(Room)affected;
 				lastDayDone=R.getArea().getTimeObj().getDayOfMonth();
-				List<Room> V=getAllTitledRooms();
+				final List<Room> V=getAllTitledRooms();
 				for(int v=0;v<V.size();v++)
 				{
-					Room R2=V.get(v);
-					Prop_RoomForSale PRFS=(Prop_RoomForSale)R2.fetchEffect(ID());
+					final Room R2=V.get(v);
+					final Prop_RoomForSale PRFS=(Prop_RoomForSale)R2.fetchEffect(ID());
 					if(PRFS!=null)
 						PRFS.lastDayDone=R.getArea().getTimeObj().getDayOfMonth();
 				}

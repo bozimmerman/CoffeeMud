@@ -61,7 +61,7 @@ public class Poison_Slumberall extends Poison
 	{
 		if((affected!=null)&&(affected instanceof MOB))
 		{
-			MOB mob=(MOB)affected;
+			final MOB mob=(MOB)affected;
 			CMLib.commands().postStand(mob,true);
 		}
 		super.unInvoke();
@@ -72,7 +72,7 @@ public class Poison_Slumberall extends Poison
 		if(!(affected instanceof MOB))
 			return true;
 
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		// when this spell is on a MOBs Affected list,
 		// it should consistantly prevent the mob
@@ -101,7 +101,7 @@ public class Poison_Slumberall extends Poison
 		if(!(affected instanceof MOB))
 			return true;
 
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		if(mob==null) return false;
 		if((!fallenYet)&&(mob.location()!=null))
 		{

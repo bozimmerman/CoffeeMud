@@ -53,7 +53,7 @@ public class Thief_Distract extends ThiefSkill
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
-		float f=(float)0.05*super.getXLEVELLevel(invoker());
+		final float f=(float)0.05*super.getXLEVELLevel(invoker());
 		affectableStats.setArmor(affectableStats.armor()+super.getXLEVELLevel(invoker())+30+abilityCode());
 		affectableStats.setAttackAdjustment((affectableStats.attackAdjustment()-(int)Math.round(CMath.div(affectableStats.attackAdjustment(),2.0-f)))-abilityCode());
 	}
@@ -64,7 +64,7 @@ public class Thief_Distract extends ThiefSkill
 		if((affected==null)||(!(affected instanceof MOB))||(invoker==null))
 			return true;
 
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		if(invoker.location()!=mob.location())
 			unInvoke();
 		else
@@ -86,7 +86,7 @@ public class Thief_Distract extends ThiefSkill
 	{
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		if(canBeUninvoked())
 		{
 			if(!mob.amDead())
@@ -118,7 +118,7 @@ public class Thief_Distract extends ThiefSkill
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		MOB target=this.getTarget(mob,commands,givenTarget);
+		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
 		if((CMLib.flags().isSitting(mob)||CMLib.flags().isSleeping(mob)))
@@ -142,10 +142,10 @@ public class Thief_Distract extends ThiefSkill
 			levelDiff=levelDiff*5;
 		else
 			levelDiff=0;
-		boolean success=proficiencyCheck(mob,-levelDiff,auto);
+		final boolean success=proficiencyCheck(mob,-levelDiff,auto);
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MALICIOUS|CMMsg.MSG_THIEF_ACT,auto?"<T-NAME> seem(s) distracted!":"<S-NAME> distract(s) <T-NAMESELF>!");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MALICIOUS|CMMsg.MSG_THIEF_ACT,auto?"<T-NAME> seem(s) distracted!":"<S-NAME> distract(s) <T-NAMESELF>!");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

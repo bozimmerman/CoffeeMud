@@ -55,7 +55,7 @@ public class Prop_SafePet extends Property
 	public void setMiscText(String newMiscText)
 	{
 		super.setMiscText(newMiscText);
-		String newDisplayMsg=CMParms.getParmStr(newMiscText, "MSG", "");
+		final String newDisplayMsg=CMParms.getParmStr(newMiscText, "MSG", "");
 		if(newDisplayMsg.trim().length()>0)
 		{
 			displayMessage=newDisplayMsg.trim();

@@ -56,17 +56,17 @@ public class Archon_Wrath extends ArchonSkill
 			commands.removeElementAt(commands.size()-1);
 			announce=true;
 		}
-		MOB target=getTargetAnywhere(mob,commands,givenTarget,true);
+		final MOB target=getTargetAnywhere(mob,commands,givenTarget,true);
 		if(target==null) return false;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),
 									auto?"<T-NAME> <T-IS-ARE> knocked out of <T-HIS-HER> shoes!!!":
 										 "^F**<S-NAME> BLAST(S) <T-NAMESELF>**, knocking <T-HIM-HER> out of <T-HIS-HER> shoes!!^?");
 			CMLib.color().fixSourceFightColor(msg);
@@ -79,7 +79,7 @@ public class Archon_Wrath extends ArchonSkill
 					target.curState().setMana(target.curState().getMana()/2);
 				if(target.curState().getMovement()>2)
 					target.curState().setMovement(target.curState().getMovement()/2);
-				Item I=target.fetchFirstWornItem(Wearable.WORN_FEET);
+				final Item I=target.fetchFirstWornItem(Wearable.WORN_FEET);
 				if(I!=null)
 				{
 					I.unWear();
@@ -89,11 +89,11 @@ public class Archon_Wrath extends ArchonSkill
 				Log.sysOut("Banish",mob.Name()+" wrathed "+target.name()+".");
 				if(announce)
 				{
-					Command C=CMClass.getCommand("Announce");
+					final Command C=CMClass.getCommand("Announce");
 					try
 					{
 						C.execute(mob,new XVector("ANNOUNCE",target.name()+" is knocked out of "+target.charStats().hisher()+" shoes!!!"),Command.METAFLAG_FORCED);
-					}catch(Exception e){}
+					}catch(final Exception e){}
 				}
 			}
 		}

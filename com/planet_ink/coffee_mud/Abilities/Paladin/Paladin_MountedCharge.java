@@ -72,7 +72,7 @@ public class Paladin_MountedCharge extends StdAbility
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
-		int xlvl=adjustedLevel(invoker(),0);
+		final int xlvl=adjustedLevel(invoker(),0);
 		affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+(4*xlvl));
 		affectableStats.setArmor(affectableStats.armor()+(4*xlvl));
 		affectableStats.setDamage(affectableStats.damage()+xlvl);
@@ -94,8 +94,8 @@ public class Paladin_MountedCharge extends StdAbility
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		boolean notInCombat=!mob.isInCombat();
-		MOB target=this.getTarget(mob,commands,givenTarget);
+		final boolean notInCombat=!mob.isInCombat();
+		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
 		if((mob.isInCombat())
@@ -119,14 +119,14 @@ public class Paladin_MountedCharge extends StdAbility
 			return false;
 
 		// now see if it worked
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
 			// it worked, so build a copy of this ability,
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MALICIOUS|CMMsg.MSG_ADVANCE,"<S-NAME> ride(s) hard at <T-NAMESELF>!");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MALICIOUS|CMMsg.MSG_ADVANCE,"<S-NAME> ride(s) hard at <T-NAMESELF>!");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

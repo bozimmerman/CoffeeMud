@@ -58,7 +58,7 @@ public class AreaScriptNext extends StdWebMacro
 	public AreaScriptInstance addScript(TreeMap<String,ArrayList<AreaScriptInstance>> list,
 			ArrayList<String> prefix, String scriptKey, String immediateHost, String key, String file)
 	{
-		ArrayList<String> next=(ArrayList<String>)prefix.clone();
+		final ArrayList<String> next=(ArrayList<String>)prefix.clone();
 		if(immediateHost!=null)
 			next.add(immediateHost);
 		ArrayList<AreaScriptInstance> subList =list.get(key);
@@ -67,7 +67,7 @@ public class AreaScriptNext extends StdWebMacro
 			subList = new ArrayList<AreaScriptInstance>();
 			list.put(key,subList);
 		}
-		AreaScriptInstance inst = new AreaScriptInstance(scriptKey, next, key, file);
+		final AreaScriptInstance inst = new AreaScriptInstance(scriptKey, next, key, file);
 		subList.add(inst);
 		return inst;
 	}
@@ -75,37 +75,37 @@ public class AreaScriptNext extends StdWebMacro
 	public void addScripts(TreeMap<String,ArrayList<AreaScriptInstance>> list, ArrayList<String> prefix, PhysicalAgent E)
 	{
 		if(E==null) return;
-		for(Enumeration<Behavior> e=E.behaviors();e.hasMoreElements();)
+		for(final Enumeration<Behavior> e=E.behaviors();e.hasMoreElements();)
 		{
-			Behavior B=e.nextElement();
+			final Behavior B=e.nextElement();
 			if(B instanceof ScriptingEngine)
 			{
 				if(!B.isSavable()) continue;
-				ScriptingEngine SE=(ScriptingEngine)B;
-				List<String> files=B.externalFiles();
+				final ScriptingEngine SE=(ScriptingEngine)B;
+				final List<String> files=B.externalFiles();
 				if(files!=null)
 				for(int f=0;f<files.size();f++)
 					addScript(list, prefix, SE.getScriptResourceKey(),B.ID(),files.get(f).toLowerCase(), files.get(f));
-				String nonFiles=((ScriptingEngine)B).getVar("*","COFFEEMUD_SYSTEM_INTERNAL_NONFILENAME_SCRIPT");
+				final String nonFiles=((ScriptingEngine)B).getVar("*","COFFEEMUD_SYSTEM_INTERNAL_NONFILENAME_SCRIPT");
 				if((nonFiles!=null)&&(nonFiles.trim().length()>0))
 				{
-					AreaScriptInstance inst =
+					final AreaScriptInstance inst =
 						addScript(list, prefix, SE.getScriptResourceKey(), B.ID(),"Custom",nonFiles);
 					inst.customScript = nonFiles.trim();
 				}
 			}
 		}
-		for(Enumeration<ScriptingEngine> e=E.scripts();e.hasMoreElements();)
+		for(final Enumeration<ScriptingEngine> e=E.scripts();e.hasMoreElements();)
 		{
-			ScriptingEngine SE=e.nextElement();
+			final ScriptingEngine SE=e.nextElement();
 			if(!SE.isSavable()) continue;
-			List<String> files=SE.externalFiles();
+			final List<String> files=SE.externalFiles();
 			for(int f=0;f<files.size();f++)
 				addScript(list, prefix, SE.getScriptResourceKey(),null,files.get(f).toLowerCase(), files.get(f));
-			String nonFiles=SE.getVar("*","COFFEEMUD_SYSTEM_INTERNAL_NONFILENAME_SCRIPT");
+			final String nonFiles=SE.getVar("*","COFFEEMUD_SYSTEM_INTERNAL_NONFILENAME_SCRIPT");
 			if(nonFiles.trim().length()>0)
 			{
-				AreaScriptInstance inst =
+				final AreaScriptInstance inst =
 					addScript(list, prefix, SE.getScriptResourceKey(), null,"Custom",nonFiles);
 				inst.customScript = nonFiles.trim();
 			}
@@ -115,13 +115,13 @@ public class AreaScriptNext extends StdWebMacro
 	public void addShopScripts(TreeMap<String,ArrayList<AreaScriptInstance>> list, ArrayList<String> prefix, PhysicalAgent E)
 	{
 		if(E==null) return;
-		ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(E);
+		final ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(E);
 		if(SK!=null)
 		{
-			for(Iterator<Environmental> i=SK.getShop().getStoreInventory();i.hasNext();)
+			for(final Iterator<Environmental> i=SK.getShop().getStoreInventory();i.hasNext();)
 			{
-				Environmental E2=i.next();
-				ArrayList<String> newPrefix=(ArrayList<String>)prefix.clone();
+				final Environmental E2=i.next();
+				final ArrayList<String> newPrefix=(ArrayList<String>)prefix.clone();
 				newPrefix.add(E2.name());
 				if(E2 instanceof PhysicalAgent)
 					addScripts(list,newPrefix,(PhysicalAgent)E2);
@@ -143,7 +143,7 @@ public class AreaScriptNext extends StdWebMacro
 			WorldMap.LocatedPair LP=null;
 			PhysicalAgent AE=null;
 			ArrayList<String> prefix = new ArrayList<String>();
-			for(Enumeration<WorldMap.LocatedPair> ae=CMLib.map().scriptHosts(A);ae.hasMoreElements();)
+			for(final Enumeration<WorldMap.LocatedPair> ae=CMLib.map().scriptHosts(A);ae.hasMoreElements();)
 			{
 				LP=ae.nextElement(); if(LP==null) continue;
 				AE=LP.obj(); if(AE==null) continue;
@@ -165,7 +165,7 @@ public class AreaScriptNext extends StdWebMacro
 						prefix.add(CMLib.map().getExtendedRoomID(R));
 					if(AE instanceof Item)
 					{
-						ItemPossessor IP=((Item)AE).owner();
+						final ItemPossessor IP=((Item)AE).owner();
 						if(IP instanceof MOB)
 							prefix.add(IP.Name());
 					}
@@ -183,8 +183,8 @@ public class AreaScriptNext extends StdWebMacro
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
-		java.util.Map<String,String> parms=parseParms(parm);
-		String area=httpReq.getUrlParameter("AREA");
+		final java.util.Map<String,String> parms=parseParms(parm);
+		final String area=httpReq.getUrlParameter("AREA");
 		if((area==null)||(area.length()==0)) return "@break@";
 		String last=httpReq.getUrlParameter("AREASCRIPT");
 		if(parms.containsKey("RESET"))
@@ -193,8 +193,8 @@ public class AreaScriptNext extends StdWebMacro
 			return "";
 		}
 		String lastID="";
-		TreeMap<String,ArrayList<AreaScriptInstance>> list = getAreaScripts(httpReq,area);
-		for(String scriptName : list.keySet())
+		final TreeMap<String,ArrayList<AreaScriptInstance>> list = getAreaScripts(httpReq,area);
+		for(final String scriptName : list.keySet())
 		{
 			if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!scriptName.equals(lastID))))
 			{

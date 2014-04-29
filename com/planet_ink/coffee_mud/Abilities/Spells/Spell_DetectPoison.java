@@ -45,7 +45,7 @@ public class Spell_DetectPoison extends Spell
 
 	public List<Ability> returnOffensiveAffects(Physical fromMe)
 	{
-		Vector offenders=new Vector();
+		final Vector offenders=new Vector();
 
 		for(final Enumeration<Ability> a=fromMe.effects();a.hasMoreElements();)
 		{
@@ -55,10 +55,10 @@ public class Spell_DetectPoison extends Spell
 		}
 		if(fromMe instanceof MOB)
 		{
-			MOB mob=(MOB)fromMe;
-			for(Enumeration<Ability> a=mob.allAbilities();a.hasMoreElements();)
+			final MOB mob=(MOB)fromMe;
+			for(final Enumeration<Ability> a=mob.allAbilities();a.hasMoreElements();)
 			{
-				Ability A=a.nextElement();
+				final Ability A=a.nextElement();
 				if((A!=null)&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_POISON))
 					offenders.addElement(A);
 			}
@@ -83,14 +83,14 @@ public class Spell_DetectPoison extends Spell
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		Physical target=getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_UNWORNONLY);
+		final Physical target=getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_UNWORNONLY);
 		if(target==null) return false;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
-		List<Ability> offensiveAffects=returnOffensiveAffects(target);
+		final boolean success=proficiencyCheck(mob,0,auto);
+		final List<Ability> offensiveAffects=returnOffensiveAffects(target);
 
 		if((success)&&((offensiveAffects.size()>0)
 					   ||((target instanceof Drink)&&(((Drink)target).liquidType()==RawMaterial.RESOURCE_POISON))))
@@ -99,11 +99,11 @@ public class Spell_DetectPoison extends Spell
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> incant(s) over <T-NAME>.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> incant(s) over <T-NAME>.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				StringBuffer buf=new StringBuffer(target.name(mob)+" contains: ");
+				final StringBuffer buf=new StringBuffer(target.name(mob)+" contains: ");
 				if(offensiveAffects.size()==0)
 					buf.append("weak impurities, ");
 				else

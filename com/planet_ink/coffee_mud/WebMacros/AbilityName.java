@@ -38,11 +38,11 @@ public class AbilityName extends StdWebMacro
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
-		String last=httpReq.getUrlParameter("ABILITY");
+		final String last=httpReq.getUrlParameter("ABILITY");
 		if(last==null) return " @break@";
 		if(last.length()>0)
 		{
-			Ability A=CMClass.getAbility(last);
+			final Ability A=CMClass.getAbility(last);
 			if(A!=null)
 				return clearWebMacros(A.Name());
 		}

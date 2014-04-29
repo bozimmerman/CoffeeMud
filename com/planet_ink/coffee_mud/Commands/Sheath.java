@@ -42,11 +42,11 @@ public class Sheath extends StdCommand
 
 	public static Vector getSheaths(MOB mob)
 	{
-		Vector sheaths=new Vector();
+		final Vector sheaths=new Vector();
 		if(mob!=null)
 		for(int i=0;i<mob.numItems();i++)
 		{
-			Item I=mob.getItem(i);
+			final Item I=mob.getItem(i);
 			if((I!=null)
 			&&(!I.amWearingAt(Wearable.IN_INVENTORY))
 			&&(I instanceof Container)
@@ -83,7 +83,7 @@ public class Sheath extends StdCommand
 		{
 			for(int i=0;i<mob.numItems();i++)
 			{
-				Item I=mob.getItem(i);
+				final Item I=mob.getItem(i);
 				if((I!=null)
 				&&(I instanceof Weapon)
 				&&(!I.amWearingAt(Wearable.IN_INVENTORY)))
@@ -98,16 +98,16 @@ public class Sheath extends StdCommand
 			if((noerrors)&&(item1==null)&&(item2==null))
 				return false;
 		}
-		Vector sheaths=getSheaths(mob);
-		Vector items=new Vector();
-		Vector containers=new Vector();
+		final Vector sheaths=getSheaths(mob);
+		final Vector items=new Vector();
+		final Vector containers=new Vector();
 		Item sheathable=null;
 		if(commands.size()==0)
 		{
 			if(item2==item1) item2=null;
 			for(int i=0;i<sheaths.size();i++)
 			{
-				Container sheath=(Container)sheaths.elementAt(i);
+				final Container sheath=(Container)sheaths.elementAt(i);
 				if((item1!=null)
 				&&(!items.contains(item1))
 				&&(sheath.canContain(item1)))
@@ -127,7 +127,7 @@ public class Sheath extends StdCommand
 			if(item2!=null)
 			for(int i=0;i<sheaths.size();i++)
 			{
-				Container sheath=(Container)sheaths.elementAt(i);
+				final Container sheath=(Container)sheaths.elementAt(i);
 				if((sheath.canContain(item2))
 				&&(!items.contains(item2)))
 				{
@@ -142,7 +142,7 @@ public class Sheath extends StdCommand
 		else
 		{
 			commands.insertElementAt("all",0);
-			Container container=(Container)CMLib.english().possibleContainer(mob,commands,false,Wearable.FILTER_WORNONLY);
+			final Container container=(Container)CMLib.english().possibleContainer(mob,commands,false,Wearable.FILTER_WORNONLY);
 			String thingToPut=CMParms.combine(commands,0);
 			int addendum=1;
 			String addendumStr="";
@@ -153,7 +153,7 @@ public class Sheath extends StdCommand
 			while(doBugFix || allFlag)
 			{
 				doBugFix=false;
-				Item putThis=mob.fetchItem(null,Wearable.FILTER_WORNONLY,thingToPut+addendumStr);
+				final Item putThis=mob.fetchItem(null,Wearable.FILTER_WORNONLY,thingToPut+addendumStr);
 				if(putThis==null) break;
 				if(((putThis.amWearingAt(Wearable.WORN_WIELD))
 				   ||(putThis.amWearingAt(Wearable.WORN_HELD)))
@@ -170,7 +170,7 @@ public class Sheath extends StdCommand
 							Container tempContainer=null;
 							for(int i=0;i<sheaths.size();i++)
 							{
-								Container sheath=(Container)sheaths.elementAt(i);
+								final Container sheath=(Container)sheaths.elementAt(i);
 								if(sheath.canContain(putThis))
 								{tempContainer=sheath; break;}
 							}
@@ -202,11 +202,11 @@ public class Sheath extends StdCommand
 		else
 		for(int i=0;i<items.size();i++)
 		{
-			Item putThis=(Item)items.elementAt(i);
-			Container container=(Container)containers.elementAt(i);
+			final Item putThis=(Item)items.elementAt(i);
+			final Container container=(Container)containers.elementAt(i);
 			if(CMLib.commands().postRemove(mob,putThis,true))
 			{
-				CMMsg putMsg=CMClass.getMsg(mob,container,putThis,CMMsg.MSG_PUT,((quiet?null:"<S-NAME> sheath(s) <O-NAME> in <T-NAME>.")));
+				final CMMsg putMsg=CMClass.getMsg(mob,container,putThis,CMMsg.MSG_PUT,((quiet?null:"<S-NAME> sheath(s) <O-NAME> in <T-NAME>.")));
 				if(mob.location().okMessage(mob,putMsg))
 					mob.location().send(mob,putMsg);
 			}

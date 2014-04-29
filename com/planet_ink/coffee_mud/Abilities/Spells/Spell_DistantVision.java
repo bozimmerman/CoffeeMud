@@ -49,14 +49,14 @@ public class Spell_DistantVision extends Spell
 			mob.tell("Divine a vision of where?");
 			return false;
 		}
-		String areaName=CMParms.combine(commands,0).trim().toUpperCase();
+		final String areaName=CMParms.combine(commands,0).trim().toUpperCase();
 		Room thisRoom=null;
 		try
 		{
-			List<Room> rooms=CMLib.map().findRooms(CMLib.map().rooms(), mob, areaName, true, 10);
+			final List<Room> rooms=CMLib.map().findRooms(CMLib.map().rooms(), mob, areaName, true, 10);
 			if(rooms.size()>0)
 				thisRoom=rooms.get(CMLib.dice().roll(1,rooms.size(),-1));
-		}catch(NoSuchElementException nse){}
+		}catch(final NoSuchElementException nse){}
 
 		if(thisRoom==null)
 		{
@@ -67,16 +67,16 @@ public class Spell_DistantVision extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,thisRoom,auto),auto?"":"^S<S-NAME> close(s) <S-HIS-HER> eyes, and invoke(s) a vision.^?");
+			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,thisRoom,auto),auto?"":"^S<S-NAME> close(s) <S-HIS-HER> eyes, and invoke(s) a vision.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				mob.tell("\n\r\n\r");
-				CMMsg msg2=CMClass.getMsg(mob,thisRoom,CMMsg.MSG_LOOK,null);
+				final CMMsg msg2=CMClass.getMsg(mob,thisRoom,CMMsg.MSG_LOOK,null);
 				thisRoom.executeMsg(mob,msg2);
 			}
 

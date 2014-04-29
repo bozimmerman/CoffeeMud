@@ -91,7 +91,7 @@ public class Corpse extends GenContainer implements DeadBody
 		if(newIdentity.indexOf('/')>0)
 		{
 			playerCorpse=false;
-			int x=newIdentity.indexOf('/');
+			final int x=newIdentity.indexOf('/');
 			if(x>=0)
 			{
 				mobName=newIdentity.substring(0,x);
@@ -185,7 +185,7 @@ public class Corpse extends GenContainer implements DeadBody
 				if(CMSecurity.isAllowed(msg.source(),msg.source().location(),CMSecurity.SecFlag.CMDITEMS))
 					return true;
 
-				MOB ultimateFollowing=msg.source().amUltimatelyFollowing();
+				final MOB ultimateFollowing=msg.source().amUltimatelyFollowing();
 				if((msg.source().isMonster())
 				&&((ultimateFollowing==null)||(ultimateFollowing.isMonster())))
 					return true;

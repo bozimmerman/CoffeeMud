@@ -63,7 +63,7 @@ public class Emote extends StdCommand
 			if(y<0) y=combinedCommands.length();
 			String rest=combinedCommands.substring(x+1,y);
 			Pronoun P=Pronoun.NAME;
-			for(Pronoun p : Pronoun.values())
+			for(final Pronoun p : Pronoun.values())
 			{
 				if((p.emoteSuffix!=null)&&(rest.endsWith(p.emoteSuffix)))
 				{
@@ -74,7 +74,7 @@ public class Emote extends StdCommand
 			}
 			if(rest.length()>0)
 			{
-				Environmental E=mob.location().fetchFromRoomFavorMOBs(null, rest);
+				final Environmental E=mob.location().fetchFromRoomFavorMOBs(null, rest);
 				if((E!=null)&&(CMLib.flags().canBeSeenBy(E, mob)))
 				{
 					target=E;
@@ -83,8 +83,8 @@ public class Emote extends StdCommand
 			}
 			x=combinedCommands.indexOf('/',x+1);
 		}
-		String emote="^E<S-NAME>"+combinedCommands+" ^?";
-		CMMsg msg=CMClass.getMsg(mob,target,null,CMMsg.MSG_EMOTE,emote);
+		final String emote="^E<S-NAME>"+combinedCommands+" ^?";
+		final CMMsg msg=CMClass.getMsg(mob,target,null,CMMsg.MSG_EMOTE,emote);
 		if(mob.location().okMessage(mob,msg))
 			mob.location().send(mob,msg);
 		return false;

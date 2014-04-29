@@ -50,7 +50,7 @@ public class Chant_VampireVine extends Chant_SummonVine
 		if(!super.okMessage(myHost,msg)) return false;
 		if(affected instanceof MOB)
 		{
-			MOB mob=(MOB)affected;
+			final MOB mob=(MOB)affected;
 			if(msg.amISource(mob)&&(msg.targetMinor()==CMMsg.TYP_DAMAGE))
 			{
 				int amount=msg.value();
@@ -70,19 +70,19 @@ public class Chant_VampireVine extends Chant_SummonVine
 	@Override
 	public MOB determineMonster(MOB caster, int material)
 	{
-		MOB victim=caster.getVictim();
-		MOB newMOB=CMClass.getMOB("GenMOB");
+		final MOB victim=caster.getVictim();
+		final MOB newMOB=CMClass.getMOB("GenMOB");
 		int level=adjustedLevel(caster,0);
 		if(level<1) level=1;
 		newMOB.basePhyStats().setLevel(level);
 		newMOB.basePhyStats().setAbility(19);
 		newMOB.baseCharStats().setMyRace(CMClass.getRace("Vine"));
-		String name="a vampire vine";
+		final String name="a vampire vine";
 		newMOB.setName(name);
 		newMOB.setDisplayText(name+" looks enraged!");
 		newMOB.setDescription("");
 		CMLib.factions().setAlignment(newMOB,Faction.Align.NEUTRAL);
-		Ability A=CMClass.getAbility("Fighter_Rescue");
+		final Ability A=CMClass.getAbility("Fighter_Rescue");
 		A.setProficiency(100);
 		newMOB.addAbility(A);
 		newMOB.setVictim(victim);

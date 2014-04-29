@@ -59,8 +59,8 @@ public class Spell_SpiderClimb extends Spell
 		// undo the affects of this spell
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
-		Room room=((MOB)affected).location();
+		final MOB mob=(MOB)affected;
+		final Room room=((MOB)affected).location();
 		if((canBeUninvoked())&&(!mob.amDead())&&(room!=null))
 			room.show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> no longer <S-HAS-HAVE> a spidery gait.");
 		super.unInvoke();
@@ -82,10 +82,10 @@ public class Spell_SpiderClimb extends Spell
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"^S<S-NAME> attains a climbers stance!":"^S<S-NAME> invoke(s) a spidery spell upon <S-HIM-HERSELF>!^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"^S<S-NAME> attains a climbers stance!":"^S<S-NAME> invoke(s) a spidery spell upon <S-HIM-HERSELF>!^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

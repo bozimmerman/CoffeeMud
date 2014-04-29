@@ -30,15 +30,15 @@ public class BoxCitySquareLayout extends BoxCityLayout
 	protected void drawABox(LayoutSet lSet, int width, int height)
 	{
 		lSet.drawABox(width, height);
-		int x = 0 + ((width - 0)/2);
-		int y = -(0 + ((height - 0)/2));
+		final int x = 0 + ((width - 0)/2);
+		final int y = -(0 + ((height - 0)/2));
 		LayoutNode center = lSet.getNode(x,y);
 		if(center == null)
 		{
 			center = new DefaultLayoutNode(x,y);
 			lSet.use(center,LayoutTypes.square);
 		}
-		Vector<long[]> square = new Vector<long[]>();
+		final Vector<long[]> square = new Vector<long[]>();
 		square.add(new long[]{x-1,y-1});
 		square.add(new long[]{x,y-1});
 		square.add(new long[]{x+1,y-1});
@@ -50,7 +50,7 @@ public class BoxCitySquareLayout extends BoxCityLayout
 		square.add(new long[]{x-1,y-1});
 		LayoutNode n;
 		LayoutNode lastNode = center;
-		for(long[] sq : square)
+		for(final long[] sq : square)
 		{
 			n = lSet.getNode(sq);
 			if(n==null)
@@ -80,7 +80,7 @@ public class BoxCitySquareLayout extends BoxCityLayout
 		if(n != null) center.crossLink(n);
 		n2 = lSet.getNextNode( n, Directions.WEST);
 		if((n2 != null)&&(n!=null)) n.crossLink(n2);
-		for(long[] sq : square)
+		for(final long[] sq : square)
 		{
 			n = lSet.getNode(sq);
 			for(int d=0;d<4;d++)
@@ -90,9 +90,9 @@ public class BoxCitySquareLayout extends BoxCityLayout
 				{
 					if(n.getLink(d)==n2) continue;
 					if(!n2.isStreetLike()) continue;
-					Enumeration<LayoutNode> nodes=n2.links().elements();
-					LayoutNode p_1=nodes.nextElement();
-					LayoutNode p_2=nodes.nextElement();
+					final Enumeration<LayoutNode> nodes=n2.links().elements();
+					final LayoutNode p_1=nodes.nextElement();
+					final LayoutNode p_2=nodes.nextElement();
 					n2.deLink();
 					p_1.crossLink(p_2);
 					lSet.unUse(n2);

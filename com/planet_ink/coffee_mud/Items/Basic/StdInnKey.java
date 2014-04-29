@@ -78,9 +78,9 @@ public class StdInnKey extends StdKey implements InnKey
 		{
 			myShopkeeper=SK;
 			int y=0;
-			for(Iterator<Environmental> i=SK.getShop().getStoreInventory();i.hasNext();)
+			for(final Iterator<Environmental> i=SK.getShop().getStoreInventory();i.hasNext();)
 			{
-				Environmental E=i.next();
+				final Environmental E=i.next();
 				if(E instanceof InnKey)
 					y++;
 			}
@@ -135,7 +135,7 @@ public class StdInnKey extends StdKey implements InnKey
 		&&(((Room)msg.target()).getArea()!=msg.source().location().getArea())
 		&&(super.miscText!=null))
 		{
-			Area shopArea=CMLib.map().areaLocation(myShopkeeper);
+			final Area shopArea=CMLib.map().areaLocation(myShopkeeper);
 			if((shopArea==((Room)msg.target()).getArea())||(shopArea==null))
 			{
 				if(super.miscText.startsWith("-"))

@@ -78,7 +78,7 @@ public class StdPersonalShield extends StdElecItem implements Armor
 		{
 			if(msg.tool() instanceof Weapon)
 			{
-				String s="^F"+((Weapon)msg.tool()).hitString(0)+"^N";
+				final String s="^F"+((Weapon)msg.tool()).hitString(0)+"^N";
 				if(s.indexOf("<DAMAGE> <T-HIM-HER>")>0)
 					mob.location().show(msg.source(),msg.target(),msg.tool(),CMMsg.MSG_OK_VISUAL,CMStrings.replaceAll(s, "<DAMAGE>", "it reflects off the shield around"));
 				else
@@ -120,7 +120,7 @@ public class StdPersonalShield extends StdElecItem implements Armor
 			return false;
 		if(msg.amITarget(owner()) && (owner() instanceof MOB))
 		{
-			MOB mob=(MOB)owner();
+			final MOB mob=(MOB)owner();
 			switch(msg.targetMinor())
 			{
 			case CMMsg.TYP_REMOVE:
@@ -137,12 +137,12 @@ public class StdPersonalShield extends StdElecItem implements Armor
 					int weaponTech=CMLib.tech().getGlobalTechLevel();
 					if(msg.tool() instanceof Electronics)
 						weaponTech=((Electronics)msg.tool()).techLevel();
-					int myTech=techLevel();
-					int techDiff=Math.max(Math.min(myTech-weaponTech,10),-10);
+					final int myTech=techLevel();
+					final int techDiff=Math.max(Math.min(myTech-weaponTech,10),-10);
 					if(techDiff!= 0) successFactor+=(0.05)*techDiff;
 					if(doesShield(mob, msg, successFactor))
 					{
-						long powerConsumed=Math.round(msg.value()*m.getEfficiencyPct());
+						final long powerConsumed=Math.round(msg.value()*m.getEfficiencyPct());
 						if(powerRemaining()>=powerConsumed)
 						{
 							setPowerRemaining(powerRemaining()-powerConsumed);
@@ -155,7 +155,7 @@ public class StdPersonalShield extends StdElecItem implements Armor
 					if(powerRemaining()<=0)
 					{
 						setPowerRemaining(0);
-						CMMsg msg2=CMClass.getMsg(mob, this, null,CMMsg.MSG_OK_VISUAL,CMMsg.TYP_DEACTIVATE|CMMsg.MASK_ALWAYS,CMMsg.MSG_OK_VISUAL,fieldDeadStr(msg.source()));
+						final CMMsg msg2=CMClass.getMsg(mob, this, null,CMMsg.MSG_OK_VISUAL,CMMsg.TYP_DEACTIVATE|CMMsg.MASK_ALWAYS,CMMsg.MSG_OK_VISUAL,fieldDeadStr(msg.source()));
 						if(mob.location()!=null)
 							mob.location().send(mob, msg2);
 					}
@@ -186,7 +186,7 @@ public class StdPersonalShield extends StdElecItem implements Armor
 				if((msg.source().location()!=null)&&(!CMath.bset(msg.targetMajor(), CMMsg.MASK_CNTRLMSG)))
 					msg.source().location().show(msg.source(), this, owner(), CMMsg.MSG_OK_VISUAL, fieldOnStr(null));
 				this.activate(true);
-				Physical P=owner();
+				final Physical P=owner();
 				if(P!=null)
 				{
 					P.recoverPhyStats();
@@ -203,7 +203,7 @@ public class StdPersonalShield extends StdElecItem implements Armor
 				if((msg.source().location()!=null)&&(!CMath.bset(msg.targetMajor(), CMMsg.MASK_CNTRLMSG)))
 					msg.source().location().show(msg.source(), this, owner(), CMMsg.MSG_OK_VISUAL, fieldDeadStr(null));
 				this.activate(false);
-				Physical P=owner();
+				final Physical P=owner();
 				if(P!=null)
 				{
 					P.recoverPhyStats();

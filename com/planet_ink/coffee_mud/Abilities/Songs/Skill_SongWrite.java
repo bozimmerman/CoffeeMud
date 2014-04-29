@@ -53,7 +53,7 @@ public class Skill_SongWrite extends BardSkill
 			mob.tell("Write which song onto what?");
 			return false;
 		}
-		Environmental target=mob.location().fetchFromMOBRoomFavorsItems(mob,null,(String)commands.lastElement(),Wearable.FILTER_UNWORNONLY);
+		final Environmental target=mob.location().fetchFromMOBRoomFavorsItems(mob,null,(String)commands.lastElement(),Wearable.FILTER_UNWORNONLY);
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
 			mob.tell("You don't see '"+((String)commands.lastElement())+"' here.");
@@ -71,13 +71,13 @@ public class Skill_SongWrite extends BardSkill
 		}
 
 		commands.removeElementAt(commands.size()-1);
-		Scroll scroll=(Scroll)target;
+		final Scroll scroll=(Scroll)target;
 
-		String spellName=CMParms.combine(commands,0).trim();
+		final String spellName=CMParms.combine(commands,0).trim();
 		Song scrollThis=null;
 		for(int a=0;a<mob.numAbilities();a++)
 		{
-			Ability A=mob.fetchAbility(a);
+			final Ability A=mob.fetchAbility(a);
 			if((A!=null)
 			&&(A instanceof Song)
 			&&(A.name().toUpperCase().startsWith(spellName.toUpperCase()))
@@ -97,8 +97,8 @@ public class Skill_SongWrite extends BardSkill
 			return false;
 		}
 
-		List<Ability> spells=scroll.getSpells();
-		for(Ability spell: spells)
+		final List<Ability> spells=scroll.getSpells();
+		for(final Ability spell: spells)
 			if(spell.ID().equals(scrollThis.ID()))
 			{
 				mob.tell("That spell is already written on "+scroll.name()+".");
@@ -116,12 +116,12 @@ public class Skill_SongWrite extends BardSkill
 		CMLib.leveler().postExperience(mob,null,null,-experienceToLose,false);
 		mob.tell("You lose "+experienceToLose+" experience points for the effort.");
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
 			setMiscText(scrollThis.ID());
-			CMMsg msg=CMClass.getMsg(mob,target,this,(auto?CMMsg.MASK_ALWAYS:0)|CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,"^S<S-NAME> write(s) music onto <T-NAMESELF>, singing softly.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,(auto?CMMsg.MASK_ALWAYS:0)|CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,"^S<S-NAME> write(s) music onto <T-NAMESELF>, singing softly.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

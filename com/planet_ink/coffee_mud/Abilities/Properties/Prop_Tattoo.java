@@ -57,12 +57,12 @@ public class Prop_Tattoo extends Property
 	{
 		if(affected instanceof MOB)
 		{
-			MOB M=(MOB)affected;
-			List<String> V=CMParms.parseSemicolons(text,true);
+			final MOB M=(MOB)affected;
+			final List<String> V=CMParms.parseSemicolons(text,true);
 			for(int v=0;v<V.size();v++)
 			{
-				String s=V.get(v);
-				int x=s.indexOf(' ');
+				final String s=V.get(v);
+				final int x=s.indexOf(' ');
 				if((x>0)&&(CMath.isNumber(s.substring(0,x))))
 					M.addTattoo(new MOB.Tattoo(s.substring(x+1).trim(),CMath.s_int(s.substring(0,x))));
 				else

@@ -40,7 +40,7 @@ public class LPCData {
 	}
 
 	static public Object getLPCData(String str, boolean flag) throws I3Exception {
-		Vector data = new Vector(2);
+		final Vector data = new Vector(2);
 
 		data.addElement(null);
 		data.addElement("");
@@ -65,7 +65,7 @@ public class LPCData {
 		{
 			try
 			{
-				int x = Integer.parseInt(str);
+				final int x = Integer.parseInt(str);
 
 				if( !flag )
 				{
@@ -74,7 +74,7 @@ public class LPCData {
 				data.setElementAt(Integer.valueOf(x), 0);
 				return data;
 			}
-			catch( NumberFormatException e )
+			catch( final NumberFormatException e )
 			{
 				throw new I3Exception("Invalid LPC Data in string: " + str);
 			}
@@ -85,12 +85,12 @@ public class LPCData {
 			{
 				case '{':
 				{
-					Vector v = new Vector();
+					final Vector v = new Vector();
 
 					str = str.substring(2, str.length());
 					while( str.charAt(0) != '}' )
 					{
-						Vector tmp = (Vector)getLPCData(str, true);
+						final Vector tmp = (Vector)getLPCData(str, true);
 
 						v.addElement(tmp.elementAt(0));
 						str = ((String)tmp.elementAt(1)).trim();
@@ -125,7 +125,7 @@ public class LPCData {
 
 				case '[':
 				{
-					Hashtable h = new Hashtable();
+					final Hashtable h = new Hashtable();
 
 					str = str.substring(2, str.length());
 					while( str.charAt(0) != ']' )
@@ -181,7 +181,7 @@ public class LPCData {
 		else if( str.charAt(0) == '"' )
 		{
 			int x=1;
-			StringBuffer in=new StringBuffer("");
+			final StringBuffer in=new StringBuffer("");
 			char c='\0';
 			while(x<str.length())
 			{
@@ -249,7 +249,7 @@ public class LPCData {
 			{
 				x = Integer.parseInt(tmp);
 			}
-			catch( NumberFormatException e )
+			catch( final NumberFormatException e )
 			{
 				throw new I3Exception("Invalid number format: " + tmp);
 			}

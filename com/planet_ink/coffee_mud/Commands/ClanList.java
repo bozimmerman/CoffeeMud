@@ -43,8 +43,8 @@ public class ClanList extends StdCommand
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		boolean trophySystemActive=CMLib.clans().trophySystemActive();
-		StringBuffer head=new StringBuffer("");
+		final boolean trophySystemActive=CMLib.clans().trophySystemActive();
+		final StringBuffer head=new StringBuffer("");
 		head.append("^x[");
 		head.append(CMStrings.padRight("Clan Name",30)+"| ");
 		head.append(CMStrings.padRight("Type",10)+"| ");
@@ -53,16 +53,16 @@ public class ClanList extends StdCommand
 		if(trophySystemActive)
 			head.append(" | "+CMStrings.padRight("Trophies",8));
 		head.append("]^.^? \n\r");
-		StringBuffer msg=new StringBuffer("");
-		for(Enumeration e=CMLib.clans().clans();e.hasMoreElements();)
+		final StringBuffer msg=new StringBuffer("");
+		for(final Enumeration e=CMLib.clans().clans();e.hasMoreElements();)
 		{
-			Clan thisClan=(Clan)e.nextElement();
+			final Clan thisClan=(Clan)e.nextElement();
 			if(!thisClan.isPubliclyListedFor(mob))
 				continue;
 
-			StringBuffer trophySet = new StringBuffer("");
+			final StringBuffer trophySet = new StringBuffer("");
 			if(trophySystemActive)
-				for(Trophy t : Trophy.values())
+				for(final Trophy t : Trophy.values())
 					if(CMath.bset(thisClan.getTrophies(),t.flagNum()))
 						trophySet.append(t.codeString.charAt(0));
 
@@ -70,9 +70,9 @@ public class ClanList extends StdCommand
 			msg.append("^<CLAN^>"+CMStrings.padRight(CMStrings.removeColors(thisClan.clanID()),30)+"^</CLAN^>  ");
 			msg.append(CMStrings.padRight(thisClan.getGovernmentName(),10)+"  ");
 			boolean war=false;
-			for(Enumeration e2=CMLib.clans().clans();e2.hasMoreElements();)
+			for(final Enumeration e2=CMLib.clans().clans();e2.hasMoreElements();)
 			{
-				Clan C=(Clan)e2.nextElement();
+				final Clan C=(Clan)e2.nextElement();
 				if((C!=thisClan)
 				&&((thisClan.getClanRelations(C.clanID())==Clan.REL_WAR)
 					||(C.getClanRelations(thisClan.clanID())==Clan.REL_WAR)))

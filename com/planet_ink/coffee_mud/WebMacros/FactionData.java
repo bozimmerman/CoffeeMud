@@ -11,11 +11,13 @@ import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.Command;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /*
@@ -41,15 +43,15 @@ public class FactionData extends StdWebMacro
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
-		java.util.Map<String,String> parms=parseParms(parm);
-		String replaceCommand=httpReq.getUrlParameter("REPLACE");
+		final java.util.Map<String,String> parms=parseParms(parm);
+		final String replaceCommand=httpReq.getUrlParameter("REPLACE");
 		if((replaceCommand != null)
 		&& (replaceCommand.length()>0)
 		&& (replaceCommand.indexOf('=')>0))
 		{
-			int eq=replaceCommand.indexOf('=');
-			String field=replaceCommand.substring(0,eq);
-			String value=replaceCommand.substring(eq+1);
+			final int eq=replaceCommand.indexOf('=');
+			final String field=replaceCommand.substring(0,eq);
+			final String value=replaceCommand.substring(eq+1);
 			httpReq.addFakeUrlParameter(field, value);
 			httpReq.addFakeUrlParameter("REPLACE","");
 		}
@@ -59,7 +61,7 @@ public class FactionData extends StdWebMacro
 		if(last==null) return " @break@";
 		if(last.length()>0)
 		{
-			String newFactionID=httpReq.getUrlParameter("NEWFACTION");
+			final String newFactionID=httpReq.getUrlParameter("NEWFACTION");
 			Faction F=(Faction)httpReq.getRequestObjects().get("FACTION-"+last);
 			if((F==null)
 			&&(newFactionID!=null)
@@ -77,7 +79,7 @@ public class FactionData extends StdWebMacro
 				return ""+(CMLib.factions().getFaction(last)==null);
 			if(F!=null)
 			{
-				StringBuffer str=new StringBuffer("");
+				final StringBuffer str=new StringBuffer("");
 				if(parms.containsKey("NAME"))
 				{
 					String old=httpReq.getUrlParameter("NAME");
@@ -128,9 +130,9 @@ public class FactionData extends StdWebMacro
 					if(oldName==null)
 					{
 						int v=0;
-						for(Enumeration e=F.ranges();e.hasMoreElements();)
+						for(final Enumeration e=F.ranges();e.hasMoreElements();)
 						{
-							Faction.FRange FR=(Faction.FRange)e.nextElement();
+							final Faction.FRange FR=(Faction.FRange)e.nextElement();
 							httpReq.addFakeUrlParameter("RANGENAME"+v,FR.name());
 							httpReq.addFakeUrlParameter("RANGELOW"+v,""+FR.low());
 							httpReq.addFakeUrlParameter("RANGEHIGH"+v,""+FR.high());
@@ -163,7 +165,7 @@ public class FactionData extends StdWebMacro
 							str.append("<INPUT TYPE=TEXT NAME=RANGECODE"+showNum+" SIZE=10 VALUE=\""+code+"\">");
 							str.append("</TD><TD>");
 							str.append("<SELECT NAME=RANGEFLAG"+showNum+">");
-							for(Faction.Align i : Faction.Align.values())
+							for(final Faction.Align i : Faction.Align.values())
 							{
 								str.append("<OPTION VALUE=\""+i.toString()+"\"");
 								if(i.toString().equalsIgnoreCase(align))
@@ -187,7 +189,7 @@ public class FactionData extends StdWebMacro
 					str.append("<INPUT TYPE=TEXT NAME=RANGECODE"+showNum+" SIZE=10 VALUE=\"\">");
 					str.append("</TD><TD>");
 					str.append("<SELECT NAME=RANGEFLAG"+showNum+">");
-					for(Faction.Align i : Faction.Align.values())
+					for(final Faction.Align i : Faction.Align.values())
 						str.append("<OPTION VALUE=\""+i.toString()+"\">"+CMStrings.capitalizeAndLower(i.toString()));
 					str.append("</SELECT>");
 					str.append("</TD></TR>");
@@ -287,28 +289,27 @@ public class FactionData extends StdWebMacro
 					if(trigger==null)
 					{
 						int v=0;
-						for(Enumeration e=F.changeEventKeys();e.hasMoreElements();)
+						for(final Enumeration e=F.changeEventKeys();e.hasMoreElements();)
 						{
-							String def=(String)e.nextElement();
-							Faction.FactionChangeEvent[] Es=F.getChangeEvents(def);
+							final String def=(String)e.nextElement();
+							final Faction.FactionChangeEvent[] Es=F.getChangeEvents(def);
 							if(Es!=null)
-							for(int e1=0;e1<Es.length;e1++)
-							{
-								Faction.FactionChangeEvent E=Es[e1];
-								httpReq.addFakeUrlParameter("CHANGESTRIGGER"+v,def);
-								httpReq.addFakeUrlParameter("CHANGESDIR"+v,""+E.direction());
-								httpReq.addFakeUrlParameter("CHANGESFACTOR"+v,CMath.toPct(E.factor()));
-								httpReq.addFakeUrlParameter("CHANGESTPARM"+v,E.triggerParameters());
-								String id="";
-								Vector flags=CMParms.parse(E.flagCache());
-								for(int f=0;f<flags.size();f++)
+								for (final FactionChangeEvent E : Es)
 								{
-									httpReq.addFakeUrlParameter("CHANGESFLAGS"+v+"_"+id,""+((String)flags.elementAt(f)));
-									id=""+(f+1);
+									httpReq.addFakeUrlParameter("CHANGESTRIGGER"+v,def);
+									httpReq.addFakeUrlParameter("CHANGESDIR"+v,""+E.direction());
+									httpReq.addFakeUrlParameter("CHANGESFACTOR"+v,CMath.toPct(E.factor()));
+									httpReq.addFakeUrlParameter("CHANGESTPARM"+v,E.triggerParameters());
+									String id="";
+									final Vector flags=CMParms.parse(E.flagCache());
+									for(int f=0;f<flags.size();f++)
+									{
+										httpReq.addFakeUrlParameter("CHANGESFLAGS"+v+"_"+id,""+((String)flags.elementAt(f)));
+										id=""+(f+1);
+									}
+									httpReq.addFakeUrlParameter("CHANGESMASK"+v,E.targetZapper());
+									v++;
 								}
-								httpReq.addFakeUrlParameter("CHANGESMASK"+v,E.targetZapper());
-								v++;
-							}
 						}
 					}
 
@@ -344,18 +345,18 @@ public class FactionData extends StdWebMacro
 							val=CMath.toPct(httpReq.getUrlParameter("CHANGESFACTOR"+num));
 							str.append("<INPUT TYPE=TEXT NAME=CHANGESFACTOR"+showNum+" SIZE=4 VALUE=\""+val+"\">");
 							str.append("</TD><TD>");
-							Vector flags=new Vector();
+							final Vector flags=new Vector();
 							String id="";
 							int x=0;
 							for(;httpReq.isUrlParameter("CHANGESFLAGS"+num+"_"+id);id=""+(++x))
 								flags.addElement(httpReq.getUrlParameter("CHANGESFLAGS"+num+"_"+id).toUpperCase());
 							str.append("<SELECT NAME=CHANGESFLAGS"+showNum+"_ MULTIPLE>");
-							for(int f=0;f<Faction.FactionChangeEvent.FLAG_DESCS.length;f++)
+							for (final String element : Faction.FactionChangeEvent.FLAG_DESCS)
 							{
-								str.append("<OPTION VALUE=\""+Faction.FactionChangeEvent.FLAG_DESCS[f]+"\"");
-								if(flags.contains(Faction.FactionChangeEvent.FLAG_DESCS[f]))
+								str.append("<OPTION VALUE=\""+element+"\"");
+								if(flags.contains(element))
 									str.append(" SELECTED");
-								str.append(">"+CMStrings.capitalizeAndLower(Faction.FactionChangeEvent.FLAG_DESCS[f]));
+								str.append(">"+CMStrings.capitalizeAndLower(element));
 							}
 							str.append("</SELECT>");
 							str.append("</TD><TD>");
@@ -369,17 +370,17 @@ public class FactionData extends StdWebMacro
 					str.append("<TR><TD>");
 					str.append("<SELECT NAME=CHANGESTRIGGER"+showNum+" ONCHANGE=\"AddItem(this);\">");
 					str.append("<OPTION VALUE=\"\">Select a trigger");
-					for(int i=0;i<Faction.FactionChangeEvent.MISC_TRIGGERS.length;i++)
-						str.append("<OPTION VALUE=\""+Faction.FactionChangeEvent.MISC_TRIGGERS[i]+"\">"+CMStrings.capitalizeAndLower(Faction.FactionChangeEvent.MISC_TRIGGERS[i]));
-					for(int i=0;i<Ability.ACODE_DESCS.length;i++)
-						str.append("<OPTION VALUE=\""+Ability.ACODE_DESCS[i]+"\">"+CMStrings.capitalizeAndLower(Ability.ACODE_DESCS[i]));
-					for(int i=0;i<Ability.DOMAIN_DESCS.length;i++)
-						str.append("<OPTION VALUE=\""+Ability.DOMAIN_DESCS[i]+"\">"+CMStrings.capitalizeAndLower(Ability.DOMAIN_DESCS[i]));
-					for(int i=0;i<Ability.FLAG_DESCS.length;i++)
-						str.append("<OPTION VALUE=\""+Ability.FLAG_DESCS[i]+"\">"+CMStrings.capitalizeAndLower(Ability.FLAG_DESCS[i]));
-					for(Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
+					for (final String element : Faction.FactionChangeEvent.MISC_TRIGGERS)
+						str.append("<OPTION VALUE=\""+element+"\">"+CMStrings.capitalizeAndLower(element));
+					for (final String element : Ability.ACODE_DESCS)
+						str.append("<OPTION VALUE=\""+element+"\">"+CMStrings.capitalizeAndLower(element));
+					for (final String element : Ability.DOMAIN_DESCS)
+						str.append("<OPTION VALUE=\""+element+"\">"+CMStrings.capitalizeAndLower(element));
+					for (final String element : Ability.FLAG_DESCS)
+						str.append("<OPTION VALUE=\""+element+"\">"+CMStrings.capitalizeAndLower(element));
+					for(final Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
 					{
-						Ability A=e.nextElement();
+						final Ability A=e.nextElement();
 						str.append("<OPTION VALUE=\""+A.ID()+"\">"+A.ID());
 					}
 					str.append("</SELECT>");
@@ -394,8 +395,8 @@ public class FactionData extends StdWebMacro
 					str.append("<INPUT TYPE=TEXT NAME=CHANGESFACTOR"+showNum+" SIZE=4 VALUE=\"\">");
 					str.append("</TD><TD>");
 					str.append("<SELECT NAME=CHANGESFLAGS"+showNum+"_ MULTIPLE>");
-					for(int f=0;f<Faction.FactionChangeEvent.FLAG_DESCS.length;f++)
-						str.append("<OPTION VALUE=\""+Faction.FactionChangeEvent.FLAG_DESCS[f]+"\">"+CMStrings.capitalizeAndLower(Faction.FactionChangeEvent.FLAG_DESCS[f]));
+					for (final String element : Faction.FactionChangeEvent.FLAG_DESCS)
+						str.append("<OPTION VALUE=\""+element+"\">"+CMStrings.capitalizeAndLower(element));
 					str.append("</SELECT>");
 					str.append("</TD><TD>");
 					str.append("<INPUT TYPE=TEXT NAME=CHANGESMASK"+showNum+" SIZE=20 MAXLENGTH=255 VALUE=\"\">");
@@ -409,9 +410,9 @@ public class FactionData extends StdWebMacro
 					if((mask==null)&&(F.factors()!=null))
 					{
 						int v=0;
-						for(Enumeration<Faction.FZapFactor> e=F.factors();e.hasMoreElements();)
+						for(final Enumeration<Faction.FZapFactor> e=F.factors();e.hasMoreElements();)
 						{
-							Faction.FZapFactor factor=e.nextElement();
+							final Faction.FZapFactor factor=e.nextElement();
 							httpReq.addFakeUrlParameter("ADJFACTOR"+v,factor.MOBMask());
 							httpReq.addFakeUrlParameter("ADJFACTORGAIN"+v,CMath.toPct(factor.gainFactor()));
 							httpReq.addFakeUrlParameter("ADJFACTORLOSS"+v,CMath.toPct(factor.gainFactor()));
@@ -453,10 +454,10 @@ public class FactionData extends StdWebMacro
 					String faction=httpReq.getUrlParameter("RELATIONS0");
 					int x=0;
 					if(faction==null)
-						for(Enumeration e=F.relationFactions();e.hasMoreElements();x++)
+						for(final Enumeration e=F.relationFactions();e.hasMoreElements();x++)
 						{
-							String def=(String)e.nextElement();
-							double pctD=F.getRelation(def);
+							final String def=(String)e.nextElement();
+							final double pctD=F.getRelation(def);
 							httpReq.addFakeUrlParameter("RELATIONS"+x,""+def);
 							httpReq.addFakeUrlParameter("RELATIONSAMT"+x,CMath.toPct(pctD));
 						}
@@ -469,11 +470,11 @@ public class FactionData extends StdWebMacro
 						if(faction.length()>0)
 						{
 							++showNum;
-							String pct=CMath.toPct(httpReq.getUrlParameter("RELATIONSAMT"+num));
+							final String pct=CMath.toPct(httpReq.getUrlParameter("RELATIONSAMT"+num));
 							str.append("<TR><TD>");
 							str.append("<SELECT NAME=RELATIONS"+showNum+" ONCHANGE=\"DelItem(this);\">");
 							str.append("<OPTION VALUE=\"\">Delete");
-							Faction F2=CMLib.factions().getFaction(faction);
+							final Faction F2=CMLib.factions().getFaction(faction);
 							if(F2!=null)
 								str.append("<OPTION VALUE=\""+F2.factionID()+"\" SELECTED>"+F2.name());
 							else
@@ -488,9 +489,9 @@ public class FactionData extends StdWebMacro
 					str.append("<TR><TD>");
 					str.append("<SELECT NAME=RELATIONS"+showNum+" ONCHANGE=\"AddItem(this);\">");
 					str.append("<OPTION VALUE=\"\">Select a faction");
-					for(Enumeration<Faction> e=CMLib.factions().factions();e.hasMoreElements();)
+					for(final Enumeration<Faction> e=CMLib.factions().factions();e.hasMoreElements();)
 					{
-						Faction F2=e.nextElement();
+						final Faction F2=e.nextElement();
 						str.append("<OPTION VALUE=\""+F2.factionID()+"\">"+F2.name());
 					}
 					str.append("</SELECT></TD><TD>");
@@ -504,15 +505,15 @@ public class FactionData extends StdWebMacro
 					if((abilityID==null)&&(F.abilityUsages()!=null))
 					{
 						int v=0;
-						for(Enumeration e=F.abilityUsages();e.hasMoreElements();v++)
+						for(final Enumeration e=F.abilityUsages();e.hasMoreElements();v++)
 						{
-							Faction.FAbilityUsage E=(Faction.FAbilityUsage)e.nextElement();
+							final Faction.FAbilityUsage E=(Faction.FAbilityUsage)e.nextElement();
 							if(!E.possibleAbilityID()||CMClass.getAbility(E.abilityFlags())==null)
 							{
-								Vector<String> V=CMParms.parse(E.abilityFlags());
+								final Vector<String> V=CMParms.parse(E.abilityFlags());
 								String id="";
 								int x=-1;
-								for(Enumeration e2=V.elements();e2.hasMoreElements();id="_"+(++x))
+								for(final Enumeration e2=V.elements();e2.hasMoreElements();id="_"+(++x))
 									httpReq.addFakeUrlParameter("ABILITYUSE"+v+id,(String)e2.nextElement());
 							}
 							else
@@ -522,8 +523,8 @@ public class FactionData extends StdWebMacro
 						}
 					}
 
-					String sfont=(parms.containsKey("FONT"))?("<FONT "+(parms.get("FONT"))+">"):"";
-					String efont=(parms.containsKey("FONT"))?"</FONT>":"";
+					final String sfont=(parms.containsKey("FONT"))?("<FONT "+(parms.get("FONT"))+">"):"";
+					final String efont=(parms.containsKey("FONT"))?"</FONT>":"";
 					int num=0;
 					int showNum=-1;
 					while(httpReq.getUrlParameter("ABILITYUSE"+num)!=null)
@@ -534,7 +535,7 @@ public class FactionData extends StdWebMacro
 							showNum++;
 							String val=abilityID;
 							str.append("<TR><TD>");
-							int usedType=CMLib.factions().getAbilityFlagType(val);
+							final int usedType=CMLib.factions().getAbilityFlagType(val);
 							str.append("<SELECT NAME=ABILITYUSE"+showNum+" ONCHANGE=\"DelItem(this);\">");
 							str.append("<OPTION VALUE=\"\">Delete This Row");
 							str.append("<OPTION VALUE=\""+val+"\" SELECTED>"+CMStrings.capitalizeAndLower(val));
@@ -543,7 +544,7 @@ public class FactionData extends StdWebMacro
 							{
 								int x=-1;
 								int sx=-1;
-								HashSet doneSet=new HashSet();
+								final HashSet doneSet=new HashSet();
 								addDoneAbilityUsage(doneSet,val);
 								while(httpReq.isUrlParameter("ABILITYUSE"+num+"_"+(++x)))
 								{
@@ -591,17 +592,17 @@ public class FactionData extends StdWebMacro
 					str.append("<TR><TD>");
 					str.append("<SELECT NAME=ABILITYUSE"+showNum+" ONCHANGE=\"AddItem(this);\">");
 					str.append("<OPTION VALUE=\"\" SELECTED>Select an option");
-					for(int i=0;i<Ability.ACODE_DESCS.length;i++)
-						str.append("<OPTION VALUE=\""+Ability.ACODE_DESCS[i]+"\">"+CMStrings.capitalizeAndLower(Ability.ACODE_DESCS[i]));
-					for(int i=0;i<Ability.DOMAIN_DESCS.length;i++)
-						str.append("<OPTION VALUE=\""+Ability.DOMAIN_DESCS[i]+"\">"+CMStrings.capitalizeAndLower(Ability.DOMAIN_DESCS[i]));
-					for(int i=0;i<Ability.FLAG_DESCS.length;i++)
-						str.append("<OPTION VALUE=\""+Ability.FLAG_DESCS[i]+"\">"+CMStrings.capitalizeAndLower(Ability.FLAG_DESCS[i]));
-					for(int i=0;i<Ability.FLAG_DESCS.length;i++)
-						str.append("<OPTION VALUE=\"!"+Ability.FLAG_DESCS[i]+"\">Not "+CMStrings.capitalizeAndLower(Ability.FLAG_DESCS[i]));
-					for(Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
+					for (final String element : Ability.ACODE_DESCS)
+						str.append("<OPTION VALUE=\""+element+"\">"+CMStrings.capitalizeAndLower(element));
+					for (final String element : Ability.DOMAIN_DESCS)
+						str.append("<OPTION VALUE=\""+element+"\">"+CMStrings.capitalizeAndLower(element));
+					for (final String element : Ability.FLAG_DESCS)
+						str.append("<OPTION VALUE=\""+element+"\">"+CMStrings.capitalizeAndLower(element));
+					for (final String element : Ability.FLAG_DESCS)
+						str.append("<OPTION VALUE=\"!"+element+"\">Not "+CMStrings.capitalizeAndLower(element));
+					for(final Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
 					{
-						Ability A=e.nextElement();
+						final Ability A=e.nextElement();
 						str.append("<OPTION VALUE=\""+A.ID()+"\">"+A.ID());
 					}
 					str.append("</SELECT>");
@@ -618,11 +619,11 @@ public class FactionData extends StdWebMacro
 					if((abilityID==null)&&(F.affectsBehavs()!=null))
 					{
 						int v=0;
-						for(Enumeration e=F.affectsBehavs();e.hasMoreElements();v++)
+						for(final Enumeration e=F.affectsBehavs();e.hasMoreElements();v++)
 						{
-							String ID=(String)e.nextElement();
+							final String ID=(String)e.nextElement();
 							httpReq.addFakeUrlParameter("AFFBEHAV"+v,ID);
-							String[] affBehavParms=F.getAffectBehav(ID);
+							final String[] affBehavParms=F.getAffectBehav(ID);
 							httpReq.addFakeUrlParameter("AFFBEHAVPARM"+v,affBehavParms[0]);
 							httpReq.addFakeUrlParameter("AFFBEHAVMASK"+v,affBehavParms[1]);
 						}
@@ -640,7 +641,7 @@ public class FactionData extends StdWebMacro
 							str.append("<TR><TD>");
 							str.append("<SELECT NAME=AFFBEHAV"+showNum+" ONCHANGE=\"DelItem(this);\">");
 							str.append("<OPTION VALUE=\"\">Delete This Row");
-							String name=getAbleBehavCmdName(val,false);
+							final String name=getAbleBehavCmdName(val,false);
 							if(name!=null)
 							{
 								str.append("<OPTION VALUE=\""+val+"\" SELECTED>"+name);
@@ -660,14 +661,14 @@ public class FactionData extends StdWebMacro
 					str.append("<TR><TD>");
 					str.append("<SELECT NAME=AFFBEHAV"+showNum+" ONCHANGE=\"AddItem(this);\">");
 					str.append("<OPTION VALUE=\"\" SELECTED>Select an ability/behavior");
-					for(Enumeration e=CMClass.behaviors();e.hasMoreElements();)
+					for(final Enumeration e=CMClass.behaviors();e.hasMoreElements();)
 					{
-						Behavior B=(Behavior)e.nextElement();
+						final Behavior B=(Behavior)e.nextElement();
 						str.append("<OPTION VALUE=\""+B.ID()+"\">"+B.name());
 					}
-					for(Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
+					for(final Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
 					{
-						Ability A=e.nextElement();
+						final Ability A=e.nextElement();
 						str.append("<OPTION VALUE=\""+A.ID()+"\">"+A.name());
 					}
 					str.append("</SELECT>");
@@ -692,9 +693,9 @@ public class FactionData extends StdWebMacro
 					if((rangeCode==null)&&(F.reactions().hasMoreElements()))
 					{
 						int v=0;
-						for(Enumeration e=F.reactions();e.hasMoreElements();v++)
+						for(final Enumeration e=F.reactions();e.hasMoreElements();v++)
 						{
-							Faction.FReactionItem item=(Faction.FReactionItem)e.nextElement();
+							final Faction.FReactionItem item=(Faction.FReactionItem)e.nextElement();
 							httpReq.addFakeUrlParameter("REACTIONRANGE"+v,item.rangeCodeName());
 							httpReq.addFakeUrlParameter("REACTIONABC"+v,item.reactionObjectID());
 							httpReq.addFakeUrlParameter("REACTIONPARM"+v,item.parameters());
@@ -702,7 +703,7 @@ public class FactionData extends StdWebMacro
 						}
 					}
 
-					PairVector<String,String> rangeCodes = getRangeCodesNames(F,httpReq);
+					final PairVector<String,String> rangeCodes = getRangeCodesNames(F,httpReq);
 
 					int num=0;
 					int showNum=-1;
@@ -716,7 +717,7 @@ public class FactionData extends StdWebMacro
 							str.append("<TR><TD>");
 							str.append("<SELECT NAME=REACTIONRANGE"+showNum+" ONCHANGE=\"DelItem(this);\">");
 							str.append("<OPTION VALUE=\"\">Delete This Row");
-							int x=rangeCodes.indexOfFirst(val);
+							final int x=rangeCodes.indexOfFirst(val);
 							String name="Unknown!";
 							if(x>=0) name=rangeCodes.getSecond(x);
 							str.append("<OPTION VALUE=\""+val+"\" SELECTED>"+name);
@@ -730,19 +731,19 @@ public class FactionData extends StdWebMacro
 							name=getAbleBehavCmdName(val,true);
 							if(name==null) name="";
 							str.append("<OPTION VALUE=\""+val+"\" SELECTED>"+name);
-							for(Enumeration e=CMClass.behaviors();e.hasMoreElements();)
+							for(final Enumeration e=CMClass.behaviors();e.hasMoreElements();)
 							{
-								Behavior B=(Behavior)e.nextElement();
+								final Behavior B=(Behavior)e.nextElement();
 								str.append("<OPTION VALUE=\""+B.ID()+"\">"+CMStrings.limit(B.name(),20));
 							}
-							for(Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
+							for(final Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
 							{
-								Ability A=e.nextElement();
+								final Ability A=e.nextElement();
 								str.append("<OPTION VALUE=\""+A.ID()+"\">"+CMStrings.limit(A.name(),20));
 							}
-							for(Enumeration e=CMClass.commands();e.hasMoreElements();)
+							for(final Enumeration e=CMClass.commands();e.hasMoreElements();)
 							{
-								Command C=(Command)e.nextElement();
+								final Command C=(Command)e.nextElement();
 								if((C.getAccessWords()!=null)&&(C.getAccessWords().length>0))
 									str.append("<OPTION VALUE=\""+C.ID()+"\">"+CMStrings.capitalizeAndLower(C.getAccessWords()[0]));
 								else
@@ -769,19 +770,19 @@ public class FactionData extends StdWebMacro
 					str.append("</TD><TD VALIGN=TOP>");
 					str.append("<SELECT NAME=REACTIONABC"+showNum+">");
 					str.append("<OPTION VALUE=\"\" SELECTED>Select an able/behav/cmd");
-					for(Enumeration e=CMClass.behaviors();e.hasMoreElements();)
+					for(final Enumeration e=CMClass.behaviors();e.hasMoreElements();)
 					{
-						Behavior B=(Behavior)e.nextElement();
+						final Behavior B=(Behavior)e.nextElement();
 						str.append("<OPTION VALUE=\""+B.ID()+"\">"+CMStrings.limit(B.name(),20));
 					}
-					for(Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
+					for(final Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
 					{
-						Ability A=e.nextElement();
+						final Ability A=e.nextElement();
 						str.append("<OPTION VALUE=\""+A.ID()+"\">"+CMStrings.limit(A.name(),20));
 					}
-					for(Enumeration e=CMClass.commands();e.hasMoreElements();)
+					for(final Enumeration e=CMClass.commands();e.hasMoreElements();)
 					{
-						Command C=(Command)e.nextElement();
+						final Command C=(Command)e.nextElement();
 						if((C.getAccessWords()!=null)&&(C.getAccessWords().length>0))
 							str.append("<OPTION VALUE=\""+C.ID()+"\">"+CMStrings.capitalizeAndLower(C.getAccessWords()[0]));
 						else
@@ -846,12 +847,12 @@ public class FactionData extends StdWebMacro
 
 	public String getAbleBehavCmdName(String val, boolean includeCmd)
 	{
-		Behavior B=CMClass.getBehavior(val);
+		final Behavior B=CMClass.getBehavior(val);
 		if(B!=null) return CMStrings.limit(B.name(),20);
-		Ability A=CMClass.getAbility(val);
+		final Ability A=CMClass.getAbility(val);
 		if(A!=null) return CMStrings.limit(A.name(),20);
 		if(!includeCmd) return null;
-		Command C=CMClass.getCommand(val);
+		final Command C=CMClass.getCommand(val);
 		if(C==null) return null;
 		if((C.getAccessWords()!=null)&&(C.getAccessWords().length>0))
 			return CMStrings.capitalizeAndLower(C.getAccessWords()[0]);
@@ -862,12 +863,12 @@ public class FactionData extends StdWebMacro
 	{
 		String oldName=httpReq.getUrlParameter("RANGENAME0");
 		String code=null;
-		PairVector<String,String> codes=new PairVector<String,String>();
+		final PairVector<String,String> codes=new PairVector<String,String>();
 		int num=0;
 		if(oldName==null)
-			for(Enumeration e=F.ranges();e.hasMoreElements();)
+			for(final Enumeration e=F.ranges();e.hasMoreElements();)
 			{
-				Faction.FRange FR=(Faction.FRange)e.nextElement();
+				final Faction.FRange FR=(Faction.FRange)e.nextElement();
 				codes.addElement(FR.codeName(),FR.name());
 			}
 		else

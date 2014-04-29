@@ -77,7 +77,7 @@ public class Prop_StayAboard extends Property
 
 	public void stayAboard(Rider R)
 	{
-		Room rideR=CMLib.map().roomLocation(rideable);
+		final Room rideR=CMLib.map().roomLocation(rideable);
 		if((rideR!=null)
 		&&((CMLib.map().roomLocation(R)!=rideR)
 			||(R.riding()!=rideable)))

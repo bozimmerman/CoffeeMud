@@ -91,22 +91,22 @@ public class Prayer_Regrowth extends Prayer implements MendingSkill
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		MOB target=getTarget(mob,commands,givenTarget);
+		final MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null)return false;
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> become(s) surrounded by a bright light.":"^S<S-NAME> "+prayWord(mob)+" over <T-NAMESELF> for restorative healing.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> become(s) surrounded by a bright light.":"^S<S-NAME> "+prayWord(mob)+" over <T-NAMESELF> for restorative healing.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				Ability A=target.fetchEffect("Amputation");
+				final Ability A=target.fetchEffect("Amputation");
 				if(A!=null)
 				{
-					Amputator Amp=(Amputator)A;
-					List<String> missing = Amp.missingLimbNameSet();
+					final Amputator Amp=(Amputator)A;
+					final List<String> missing = Amp.missingLimbNameSet();
 					String LookingFor = null;
 					boolean found = false;
 					String missLimb=null;

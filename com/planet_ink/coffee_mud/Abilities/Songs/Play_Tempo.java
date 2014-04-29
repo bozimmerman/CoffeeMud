@@ -58,7 +58,7 @@ public class Play_Tempo extends Play
 			return false;
 		if((affected!=null)&&(affected instanceof MOB))
 		{
-			MOB mob=(MOB)affected;
+			final MOB mob=(MOB)affected;
 			for(final Enumeration<Ability> a=mob.effects();a.hasMoreElements();)
 			{
 				final Ability A=a.nextElement();

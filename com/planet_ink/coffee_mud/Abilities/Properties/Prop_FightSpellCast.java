@@ -59,7 +59,7 @@ public class Prop_FightSpellCast extends Prop_SpellAdder
 		if(!(affected instanceof Item)) return;
 		processing=true;
 
-		Item myItem=(Item)affected;
+		final Item myItem=(Item)affected;
 
 		if((myItem!=null)
 		&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
@@ -68,7 +68,7 @@ public class Prop_FightSpellCast extends Prop_SpellAdder
 		&&(myItem.owner() instanceof MOB)
 		&&(msg.target() instanceof MOB))
 		{
-			MOB mob=(MOB)myItem.owner();
+			final MOB mob=(MOB)myItem.owner();
 			if((mob.isInCombat())
 			&&(mob.location()!=null)
 			&&(!mob.amDead()))

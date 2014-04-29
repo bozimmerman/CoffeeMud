@@ -55,7 +55,7 @@ public class Chant_BrownMold extends Chant
 			&&(affected instanceof MOB)
 			&&(invoker!=null))
 			{
-				MOB mob=(MOB)affected;
+				final MOB mob=(MOB)affected;
 				if(((mob.amFollowing()==null)
 				||(mob.amDead())
 				||(!mob.isInCombat())
@@ -85,7 +85,7 @@ public class Chant_BrownMold extends Chant
 	@Override
 	public void unInvoke()
 	{
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		super.unInvoke();
 		if((canBeUninvoked())&&(mob!=null))
 		{
@@ -130,21 +130,21 @@ public class Chant_BrownMold extends Chant
 			mob.tell("Only the anger of combat can summon the brown mold.");
 			return false;
 		}
-		int material=RawMaterial.RESOURCE_HEMP;
+		final int material=RawMaterial.RESOURCE_HEMP;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
 			invoker=mob;
-			CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":"^S<S-NAME> chant(s) and summon(s) a brown mold!^?");
+			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":"^S<S-NAME> chant(s) and summon(s) a brown mold!^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				MOB target = determineMonster(mob, material);
+				final MOB target = determineMonster(mob, material);
 				beneficialAffect(mob,target,asLevel,0);
 			}
 		}
@@ -156,18 +156,18 @@ public class Chant_BrownMold extends Chant
 	}
 	public MOB determineMonster(MOB caster, int material)
 	{
-		MOB victim=caster.getVictim();
-		MOB newMOB=CMClass.getMOB("GenMOB");
-		int level=20;
+		final MOB victim=caster.getVictim();
+		final MOB newMOB=CMClass.getMOB("GenMOB");
+		final int level=20;
 		newMOB.basePhyStats().setLevel(level);
 		newMOB.basePhyStats().setAbility(25);
 		newMOB.baseCharStats().setMyRace(CMClass.getRace("Mold"));
-		String name="a brown mold";
+		final String name="a brown mold";
 		newMOB.setName(name);
 		newMOB.setDisplayText(name+" looks scary!");
 		newMOB.setDescription("");
 		CMLib.factions().setAlignment(newMOB,Faction.Align.NEUTRAL);
-		Ability A=CMClass.getAbility("Fighter_Rescue");
+		final Ability A=CMClass.getAbility("Fighter_Rescue");
 		A.setProficiency(100);
 		newMOB.addAbility(A);
 		newMOB.setVictim(victim);

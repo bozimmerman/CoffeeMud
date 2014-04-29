@@ -260,7 +260,7 @@ public class StdArmor extends StdContainer implements Armor
 					break;
 				}
 			}
-			int oldUses=usesRemaining();
+			final int oldUses=usesRemaining();
 			if(weaponType>=0)
 			{
 				switch(material()&RawMaterial.MATERIAL_MASK)
@@ -397,7 +397,7 @@ public class StdArmor extends StdContainer implements Armor
 						&&((msg.value())>10)
 						&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.AUTODISEASE)))
 						{
-							Ability A=CMClass.getAbility("Disease_Tinnitus");
+							final Ability A=CMClass.getAbility("Disease_Tinnitus");
 							if((A!=null)&&(owner().fetchEffect(A.ID())==null))
 								A.invoke((MOB)owner(),owner(),true,0);
 						}
@@ -549,7 +549,7 @@ public class StdArmor extends StdContainer implements Armor
 			&&(owner()!=null)
 			&&(owner() instanceof MOB))
 			{
-				MOB owner=(MOB)owner();
+				final MOB owner=(MOB)owner();
 				setUsesRemaining(100);
 				msg.addTrailerMsg(CMClass.getMsg(((MOB)owner()),null,null,CMMsg.MSG_OK_VISUAL,"^I"+name()+" is destroyed!!^?",CMMsg.NO_EFFECT,null,CMMsg.MSG_OK_VISUAL,"^I"+name()+" being worn by <S-NAME> is destroyed!^?"));
 				unWear();

@@ -64,7 +64,7 @@ public class DBInterface implements DatabaseEngine
 	{
 		this.DB=DB;
 		DBConnector oldBaseDB=DB;
-		DatabaseEngine baseEngine=(DatabaseEngine)CMLib.library(MudHost.MAIN_HOST,CMLib.Library.DATABASE);
+		final DatabaseEngine baseEngine=(DatabaseEngine)CMLib.library(MudHost.MAIN_HOST,CMLib.Library.DATABASE);
 		if((privacyV!=null)&&(baseEngine!=null)&&(baseEngine.getConnector()!=DB)&&(baseEngine.isConnected()))
 			oldBaseDB=baseEngine.getConnector();
 		this.GAbilityLoader=new GAbilityLoader((privacyV==null)||privacyV.contains(DatabaseTables.DBABILITY.toString())?DB:oldBaseDB);
@@ -86,7 +86,7 @@ public class DBInterface implements DatabaseEngine
 		return new DBInterface(DB, CMProps.getPrivateSubSet("DB.*"));
 	}
 	@Override public void initializeClass(){}
-	@Override public CMObject copyOf(){try{return (CMObject)this.clone();}catch(Exception e){return newInstance();}}
+	@Override public CMObject copyOf(){try{return (CMObject)this.clone();}catch(final Exception e){return newInstance();}}
 	@Override public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 	@Override public String _(final String str, final String ... xs) { return CMLib.lang().fullSessionTranslation(str, xs); }
 	@Override public DBConnector getConnector(){ return DB;}
@@ -663,7 +663,7 @@ public class DBInterface implements DatabaseEngine
 			DBToUse=DB.DBFetch();
 			return DBToUse.update(sql,0);
 		}
-		catch(Exception e)
+		catch(final Exception e)
 		{
 			throw new CMException((e.getMessage()==null)?"Unknown error":e.getMessage());
 		}
@@ -678,41 +678,41 @@ public class DBInterface implements DatabaseEngine
 	public List<String[]> DBRawQuery(String sql) throws CMException
 	{
 		DBConnection DBToUse=null;
-		List<String[]> results=new LinkedList<String[]>();
+		final List<String[]> results=new LinkedList<String[]>();
 		try
 		{
 			DBToUse=DB.DBFetch();
-			ResultSet R=DBToUse.query(sql);
-			ResultSetMetaData metaData=R.getMetaData();
+			final ResultSet R=DBToUse.query(sql);
+			final ResultSetMetaData metaData=R.getMetaData();
 			if(metaData!=null)
 			{
-				List<String> header=new LinkedList<String>();
+				final List<String> header=new LinkedList<String>();
 				for(int c=1;c<=metaData.getColumnCount();c++)
 					header.add(CMStrings.padRight(metaData.getColumnName(c), metaData.getColumnDisplaySize(c)));
 				results.add(header.toArray(new String[0]));
 			}
 			while(R.next())
 			{
-				List<String> row=new LinkedList<String>();
+				final List<String> row=new LinkedList<String>();
 				try
 				{
 					for(int i=1;;i++)
 					{
-						Object o=R.getObject(i);
+						final Object o=R.getObject(i);
 						if(o==null)
 							row.add("null");
 						else
 							row.add(o.toString());
 					}
 				}
-				catch(Exception e)
+				catch(final Exception e)
 				{
 
 				}
 				results.add(row.toArray(new String[0]));
 			}
 		}
-		catch(Exception e)
+		catch(final Exception e)
 		{
 			throw new CMException((e.getMessage()==null)?"Unknown error":e.getMessage());
 		}

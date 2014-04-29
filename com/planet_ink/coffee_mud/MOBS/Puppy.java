@@ -37,7 +37,7 @@ public class Puppy extends StdMOB
 	public Puppy()
 	{
 		super();
-		Random randomizer = new Random(System.currentTimeMillis());
+		final Random randomizer = new Random(System.currentTimeMillis());
 
 		username="a puppy";
 		setDescription("It\\`s small, cute, and furry with four legs, just like a puppy ought to be.");

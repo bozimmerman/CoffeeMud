@@ -72,7 +72,7 @@ public class Pull extends Go
 			if(dirCode>=0)
 				openThis=mob.location().getExitInDir(dirCode);
 		}
-		String itemName=CMParms.combine(commands,1);
+		final String itemName=CMParms.combine(commands,1);
 		if(openThis==null)
 			openThis=mob.location().fetchFromRoomFavorItems(null,itemName);
 		if(openThis==null)
@@ -82,13 +82,13 @@ public class Pull extends Go
 			mob.tell("You don't see '"+itemName+"' here.");
 			return false;
 		}
-		CMMsg msg=CMClass.getMsg(mob,openThis,E,CMMsg.MSG_PULL,"<S-NAME> pull(s) <T-NAME>"+dir+".");
+		final CMMsg msg=CMClass.getMsg(mob,openThis,E,CMMsg.MSG_PULL,"<S-NAME> pull(s) <T-NAME>"+dir+".");
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
 			if((dir.length()>0)&&(msg.tool() instanceof Room))
 			{
-				Room R=(Room)msg.tool();
+				final Room R=(Room)msg.tool();
 				dirCode=CMLib.tracking().findRoomDir(mob,R);
 				if((dirCode>=0)&&(CMLib.tracking().walk(mob,dirCode,false,false,false,false)))
 				{

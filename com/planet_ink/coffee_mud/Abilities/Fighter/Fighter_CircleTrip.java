@@ -14,7 +14,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -62,7 +61,7 @@ public class Fighter_CircleTrip extends FighterSkill
 		if(!(affected instanceof MOB))
 			return true;
 
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		if((doneTicking)&&(msg.amISource(mob)))
 			unInvoke();
 		else
@@ -76,7 +75,7 @@ public class Fighter_CircleTrip extends FighterSkill
 	{
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		if(canBeUninvoked())
 			doneTicking=true;
 		super.unInvoke();
@@ -84,7 +83,7 @@ public class Fighter_CircleTrip extends FighterSkill
 		{
 			if((mob.location()!=null)&&(!mob.amDead()))
 			{
-				CMMsg msg=CMClass.getMsg(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> regain(s) <S-HIS-HER> feet.");
+				final CMMsg msg=CMClass.getMsg(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> regain(s) <S-HIS-HER> feet.");
 				if(mob.location().okMessage(mob,msg))
 				{
 					mob.location().send(mob,msg);
@@ -138,7 +137,7 @@ public class Fighter_CircleTrip extends FighterSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		Set<MOB> h=properTargets(mob,givenTarget,auto);
+		final Set<MOB> h=properTargets(mob,givenTarget,auto);
 		if(h==null)
 		{
 			mob.tell("There doesn't appear to be anyone here worth tripping.");
@@ -151,9 +150,9 @@ public class Fighter_CircleTrip extends FighterSkill
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
-			for(Iterator e=h.iterator();e.hasNext();)
+			for (final Object element : h)
 			{
-				MOB target=(MOB)e.next();
+				final MOB target=(MOB)element;
 
 				if((CMLib.flags().isSitting(target)||CMLib.flags().isSleeping(target)))
 				{
@@ -177,7 +176,7 @@ public class Fighter_CircleTrip extends FighterSkill
 					levelDiff=levelDiff*5;
 				else
 					levelDiff=0;
-				int adjustment = ( -levelDiff ) +
+				final int adjustment = ( -levelDiff ) +
 								 ( -( 35 + ((int)Math.round( ( (target.charStats().getStat( CharStats.STAT_DEXTERITY ) ) - 9.0 ) * 3.0 ) ) ) );
 				success=proficiencyCheck(mob,adjustment,auto);
 				success=success&&(target.charStats().getBodyPart(Race.BODY_LEG)>0);

@@ -41,7 +41,7 @@ public class Purist extends Cleric
 	@Override public String baseClass(){return "Cleric";}
 	@Override public int getAttackAttribute(){return CharStats.STAT_WISDOM;}
 	@Override public int allowedWeaponLevel(){return CharClass.WEAPONS_GOODCLERIC;}
-	private HashSet disallowedWeapons=buildDisallowedWeaponClasses();
+	private final HashSet disallowedWeapons=buildDisallowedWeaponClasses();
 	@Override protected HashSet disallowedWeaponClasses(MOB mob){return disallowedWeapons;}
 	@Override protected int alwaysFlunksThisQuality(){return 0;}
 
@@ -175,7 +175,7 @@ public class Purist extends Cleric
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!(myHost instanceof MOB)) return super.okMessage(myHost,msg);
-		MOB myChar=(MOB)myHost;
+		final MOB myChar=(MOB)myHost;
 		if(!super.okMessage(myChar, msg))
 			return false;
 
@@ -187,14 +187,14 @@ public class Purist extends Cleric
 		&&(myChar.isMine(msg.tool()))
 		&&(isQualifyingAuthority(myChar,(Ability)msg.tool())))
 		{
-			int alignment = myChar.fetchFaction(CMLib.factions().AlignID());
-			int pct = CMLib.factions().getPercent(CMLib.factions().AlignID(), alignment);
+			final int alignment = myChar.fetchFaction(CMLib.factions().AlignID());
+			final int pct = CMLib.factions().getPercent(CMLib.factions().AlignID(), alignment);
 			if(pct < 50)
 			{
 				myChar.tell("Your impurity disrupts the prayer.");
 				return false;
 			}
-			int hq=holyQuality((Ability)msg.tool());
+			final int hq=holyQuality((Ability)msg.tool());
 			if(hq==0)
 			{
 				myChar.tell("You most certainly should not be casting that.");
@@ -207,7 +207,7 @@ public class Purist extends Cleric
 		&&((msg.sourceMinor()==CMMsg.TYP_COLD)
 			||(msg.sourceMinor()==CMMsg.TYP_WATER)))
 		{
-			int recovery=myChar.charStats().getClassLevel(this);
+			final int recovery=myChar.charStats().getClassLevel(this);
 			msg.setValue(msg.value()-recovery);
 		}
 		else
@@ -215,7 +215,7 @@ public class Purist extends Cleric
 		&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
 		&&(msg.sourceMinor()==CMMsg.TYP_FIRE))
 		{
-			int recovery=msg.value();
+			final int recovery=msg.value();
 			msg.setValue(msg.value()+recovery);
 		}
 		else
@@ -237,7 +237,7 @@ public class Purist extends Cleric
 		if(outfitChoices==null)
 		{
 			outfitChoices=new Vector();
-			Weapon w=CMClass.getWeapon("SmallMace");
+			final Weapon w=CMClass.getWeapon("SmallMace");
 			outfitChoices.add(w);
 		}
 		return outfitChoices;

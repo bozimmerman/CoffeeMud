@@ -46,7 +46,7 @@ public class STreeMap<K,V> implements Serializable, Map<K,V>, NavigableMap<K,V>,
 	{
 		T=new TreeMap<K,V>();
 		if(E!=null)
-			for(K o : E.keySet())
+			for(final K o : E.keySet())
 				put(o,E.get(o));
 	}
 
@@ -57,11 +57,11 @@ public class STreeMap<K,V> implements Serializable, Map<K,V>, NavigableMap<K,V>,
 	}
 	public synchronized Vector<String> toStringVector(String divider)
 	{
-		Vector<String> V=new Vector<String>(size());
-		for(Object S : navigableKeySet())
+		final Vector<String> V=new Vector<String>(size());
+		for(final Object S : navigableKeySet())
 			if(S!=null)
 			{
-				Object O = get(S);
+				final Object O = get(S);
 				if(O==null)
 					V.add(S.toString() + divider);
 				else
@@ -92,7 +92,7 @@ public class STreeMap<K,V> implements Serializable, Map<K,V>, NavigableMap<K,V>,
 	@SuppressWarnings("unchecked")
 	public synchronized STreeMap<K,V> copyOf()
 	{
-		STreeMap<K,V> SH=new STreeMap<K,V>();
+		final STreeMap<K,V> SH=new STreeMap<K,V>();
 		SH.T=(TreeMap<K,V>)T.clone();
 		return SH;
 	}

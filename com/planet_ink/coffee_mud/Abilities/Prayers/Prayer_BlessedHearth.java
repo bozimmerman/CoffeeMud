@@ -14,8 +14,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
-
 import java.util.*;
 
 /*
@@ -53,14 +51,14 @@ public class Prayer_BlessedHearth extends Prayer
 		if((affected==null)||(!(affected instanceof Room)))
 			return super.okMessage(myHost,msg);
 
-		Room R=(Room)affected;
+		final Room R=(Room)affected;
 		if(((msg.sourceMinor()==CMMsg.TYP_UNDEAD)||(msg.targetMinor()==CMMsg.TYP_UNDEAD))
 		&&(msg.target() instanceof MOB))
 		{
-			Set<MOB> H=((MOB)msg.target()).getGroupMembers(new HashSet<MOB>());
-			for(Iterator e=H.iterator();e.hasNext();)
+			final Set<MOB> H=((MOB)msg.target()).getGroupMembers(new HashSet<MOB>());
+			for (final Object element : H)
 			{
-				MOB M=(MOB)e.next();
+				final MOB M=(MOB)element;
 				if((CMLib.law().doesHavePriviledgesHere(M,R))
 				||((text().length()>0)
 					&&((M.Name().equals(text()))
@@ -75,10 +73,10 @@ public class Prayer_BlessedHearth extends Prayer
 		if((msg.targetMinor()==CMMsg.TYP_DAMAGE)
 		&&(msg.target() instanceof MOB))
 		{
-			Set<MOB> H=((MOB)msg.target()).getGroupMembers(new HashSet<MOB>());
-			for(Iterator e=H.iterator();e.hasNext();)
+			final Set<MOB> H=((MOB)msg.target()).getGroupMembers(new HashSet<MOB>());
+			for (final Object element : H)
 			{
-				MOB M=(MOB)e.next();
+				final MOB M=(MOB)element;
 				if((CMLib.law().doesHavePriviledgesHere(M,R))
 				||((text().length()>0)
 					&&((M.Name().equals(text()))
@@ -96,7 +94,7 @@ public class Prayer_BlessedHearth extends Prayer
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		Physical target=mob.location();
+		final Physical target=mob.location();
 		if(target==null) return false;
 		if(target.fetchEffect(ID())!=null)
 		{
@@ -107,10 +105,10 @@ public class Prayer_BlessedHearth extends Prayer
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> "+prayForWord(mob)+" to fill this place with blessedness.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> "+prayForWord(mob)+" to fill this place with blessedness.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -118,7 +116,7 @@ public class Prayer_BlessedHearth extends Prayer
 				if((target instanceof Room)
 				&&(CMLib.law().doesOwnThisProperty(mob,((Room)target))))
 				{
-					String landOwnerName=CMLib.law().getLandOwnerName((Room)target);
+					final String landOwnerName=CMLib.law().getLandOwnerName((Room)target);
 					if(CMLib.clans().getClan(landOwnerName)!=null)
 						setMiscText(landOwnerName);
 					target.addNonUninvokableEffect((Ability)this.copyOf());

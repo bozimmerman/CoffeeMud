@@ -46,9 +46,9 @@ public class StatRejuvCharts extends StdWebMacro
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
-		StringBuffer buf=new StringBuffer("");
-		String which=httpReq.getUrlParameter("WHICH");
-		MOB mob=CMClass.getMOB("StdMOB");
+		final StringBuffer buf=new StringBuffer("");
+		final String which=httpReq.getUrlParameter("WHICH");
+		final MOB mob=CMClass.getMOB("StdMOB");
 		mob.baseState().setMana(100);
 		mob.baseState().setMovement(100);
 		mob.baseState().setHitPoints(100);
@@ -79,9 +79,9 @@ public class StatRejuvCharts extends StdWebMacro
 		{ disposition=PhyStats.IS_SWIMMING; buf.append("Swimming ");}
 		if((getReq(httpReq,"RIDING").length()>0))
 		{ mob.setRiding((Rideable)CMClass.getMOB("GenRideable")); buf.append("Riding ");}
-		boolean hungry=(httpReq.getUrlParameter("HUNGRY")!=null)&&(httpReq.getUrlParameter("HUNGRY").length()>0);
+		final boolean hungry=(httpReq.getUrlParameter("HUNGRY")!=null)&&(httpReq.getUrlParameter("HUNGRY").length()>0);
 		if(hungry){ buf.append("Hungry ");		mob.curState().setHunger(0);}
-		boolean thirsty=(httpReq.getUrlParameter("THIRSTY")!=null)&&(httpReq.getUrlParameter("THIRSTY").length()>0);
+		final boolean thirsty=(httpReq.getUrlParameter("THIRSTY")!=null)&&(httpReq.getUrlParameter("THIRSTY").length()>0);
 		if(thirsty){ buf.append("Thirsty ");		mob.curState().setThirst(0);}
 		mob.basePhyStats().setDisposition(disposition);
 		mob.recoverPhyStats();
@@ -97,7 +97,7 @@ public class StatRejuvCharts extends StdWebMacro
 			buf.append("<TD><B>LVL "+level+"</B></TD>");
 			for(int stats=4;stats<=25;stats++)
 			{
-				for(int c: CharStats.CODES.BASE())
+				for(final int c: CharStats.CODES.BASE())
 					mob.baseCharStats().setStat(c,stats);
 				mob.recoverCharStats();
 				mob.basePhyStats().setLevel(level);
@@ -124,8 +124,8 @@ public class StatRejuvCharts extends StdWebMacro
 				if(mob.curState().getFatigue()>CharState.FATIGUED_MILLIS)
 					man=man*.5;
 
-				double lvl=mob.phyStats().level();
-				double lvlby1p5=CMath.div(lvl,1.5);
+				final double lvl=mob.phyStats().level();
+				final double lvlby1p5=CMath.div(lvl,1.5);
 				//double lvlby2=CMath.div(lvl,2.0);
 				//double lvlby3=CMath.div(lvl,3.0);
 

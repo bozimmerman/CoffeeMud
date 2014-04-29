@@ -52,7 +52,7 @@ public class Skill_Songcraft extends BardSkill
 		super.executeMsg(myHost,msg);
 		if(!(affected instanceof MOB))
 		   return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		if((msg.sourceMinor()==CMMsg.TYP_CAST_SPELL)
 		&&(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_ALWAYS))
 		&&(!msg.amISource(mob))
@@ -67,15 +67,15 @@ public class Skill_Songcraft extends BardSkill
 		&&(CMLib.flags().canBeSeenBy(msg.source(),mob))
 		&&(msg.source().fetchAbility(msg.tool().ID())!=null))
 		{
-			boolean hasAble=(mob.fetchAbility(ID())!=null);
-			int lowestLevel=CMLib.ableMapper().lowestQualifyingLevel(msg.tool().ID());
+			final boolean hasAble=(mob.fetchAbility(ID())!=null);
+			final int lowestLevel=CMLib.ableMapper().lowestQualifyingLevel(msg.tool().ID());
 			int myLevel=0;
 			if(hasAble) myLevel=adjustedLevel(mob,0)-lowestLevel+1;
-			int lvl=(mob.phyStats().level()/3)+getXLEVELLevel(mob);
+			final int lvl=(mob.phyStats().level()/3)+getXLEVELLevel(mob);
 			if(myLevel<lvl) myLevel=lvl;
 			if(((!hasAble)||proficiencyCheck(mob,0,false))&&(lowestLevel<=myLevel))
 			{
-				Ability A=(Ability)copyOf();
+				final Ability A=(Ability)copyOf();
 				A.setMiscText(msg.tool().ID());
 				lastID=msg.tool().ID();
 				msg.addTrailerMsg(CMClass.getMsg(mob,msg.source(),A,CMMsg.MSG_OK_VISUAL,"<T-NAME> casts '"+msg.tool().name()+"'.",CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));

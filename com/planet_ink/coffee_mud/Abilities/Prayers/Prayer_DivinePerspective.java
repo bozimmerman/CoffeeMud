@@ -50,7 +50,7 @@ public class Prayer_DivinePerspective extends Prayer
 		// undo the affects of this spell
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		if(canBeUninvoked())
 			if(invoker!=null)
 				invoker.tell("The perspective of '"+mob.name(invoker)+"' fades from your mind.");
@@ -72,7 +72,7 @@ public class Prayer_DivinePerspective extends Prayer
 		&&((invoker.location()!=((MOB)affected).location())||(!(msg.target() instanceof Room))))
 		{
 			noRecurse=true;
-			CMMsg newAffect=CMClass.getMsg(invoker,msg.target(),msg.sourceMinor(),null);
+			final CMMsg newAffect=CMClass.getMsg(invoker,msg.target(),msg.sourceMinor(),null);
 			msg.target().executeMsg(msg.target(),newAffect);
 		}
 		else
@@ -98,19 +98,19 @@ public class Prayer_DivinePerspective extends Prayer
 			mob.tell("You must worship a god to use this prayer.");
 			return false;
 		}
-		Deity target=CMLib.map().getDeity(mob.getWorshipCharID());
-		Room newRoom=target.location();
+		final Deity target=CMLib.map().getDeity(mob.getWorshipCharID());
+		final Room newRoom=target.location();
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
 			mobName=target.Name();
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> invoke(s) the holy perspective of '"+mobName+"'.^?");
-			CMMsg msg2=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),null);
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> invoke(s) the holy perspective of '"+mobName+"'.^?");
+			final CMMsg msg2=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),null);
 			if((mob.location().okMessage(mob,msg))&&((newRoom==mob.location())||(newRoom.okMessage(mob,msg2))))
 			{
 				mob.location().send(mob,msg);

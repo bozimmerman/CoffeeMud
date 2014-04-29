@@ -55,7 +55,7 @@ public class Song_Rebirth extends Song
 			return false;
 		}
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 		unsingAllByThis(mob,mob);
 		if(success)
 		{
@@ -68,20 +68,20 @@ public class Song_Rebirth extends Song
 
 			for(int v=0;v<commonRoomSet.size();v++)
 			{
-				Room R=(Room)commonRoomSet.elementAt(v);
-				String msgStr=getCorrectMsgString(R,str,v);
-				CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),msgStr);
+				final Room R=(Room)commonRoomSet.elementAt(v);
+				final String msgStr=getCorrectMsgString(R,str,v);
+				final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),msgStr);
 				if(R.okMessage(mob,msg))
 				{
 					if(R==originRoom)
 						R.send(mob,msg);
 					else
 						R.sendOthers(mob, msg);
-					boolean foundOne=false;
+					final boolean foundOne=false;
 					int i=0;
 					while(i<R.numItems())
 					{
-						Item body=R.getItem(i);
+						final Item body=R.getItem(i);
 						if((body!=null)
 						&&(body instanceof DeadBody)
 						&&(((DeadBody)body).playerCorpse())

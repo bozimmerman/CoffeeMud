@@ -56,7 +56,7 @@ public class Chant_SummonDustdevil extends Chant
 			&&(affected instanceof MOB)
 			&&(invoker!=null))
 			{
-				MOB mob=(MOB)affected;
+				final MOB mob=(MOB)affected;
 				if(((mob.amFollowing()==null)
 				||(mob.amDead())
 				||(mob.location()!=invoker.location())))
@@ -66,14 +66,14 @@ public class Chant_SummonDustdevil extends Chant
 					Vector V=new Vector();
 					for(int i=0;i<mob.location().numItems();i++)
 					{
-						Item I=mob.location().getItem(i);
+						final Item I=mob.location().getItem(i);
 						if((I!=null)&&(I.container()==null))
 							V.addElement(I);
 					}
 					boolean giveUp=false;
 					for(int i=0;i<V.size();i++)
 					{
-						Item I=(Item)V.elementAt(i);
+						final Item I=(Item)V.elementAt(i);
 						if((mob.maxCarry()>=mob.phyStats().weight()+I.phyStats().weight())
 						&&(mob.maxItems()>=(mob.numItems()+I.numberOfItems())))
 							CMLib.commands().postGet(mob,null,I,false);
@@ -85,13 +85,13 @@ public class Chant_SummonDustdevil extends Chant
 						V=new Vector();
 						for(int i=0;i<mob.numItems();i++)
 						{
-							Item I=mob.getItem(i);
+							final Item I=mob.getItem(i);
 							if((I!=null)&&(I.container()==null))
 								V.addElement(I);
 						}
 						for(int i=0;i<V.size();i++)
 						{
-							CMMsg msg=CMClass.getMsg(mob,invoker,(Item)V.elementAt(i),CMMsg.MSG_GIVE,"<S-NAME> whirl(s) <O-NAME> to <T-NAMESELF>.");
+							final CMMsg msg=CMClass.getMsg(mob,invoker,(Item)V.elementAt(i),CMMsg.MSG_GIVE,"<S-NAME> whirl(s) <O-NAME> to <T-NAMESELF>.");
 							if(mob.location().okMessage(mob,msg))
 								mob.location().send(mob,msg);
 							else
@@ -129,17 +129,17 @@ public class Chant_SummonDustdevil extends Chant
 	@Override
 	public void unInvoke()
 	{
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		if((canBeUninvoked())&&(mob!=null))
 		if(mob.location()!=null)
 		{
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> dissipate(s).");
-			Vector V=new Vector();
+			final Vector V=new Vector();
 			for(int i=0;i<mob.numItems();i++)
 				V.addElement(mob.getItem(i));
 			for(int i=0;i<V.size();i++)
 			{
-				Item I=(Item)V.elementAt(i);
+				final Item I=(Item)V.elementAt(i);
 				mob.delItem(I);
 				mob.location().addItem(I,ItemPossessor.Expire.Monster_EQ);
 			}
@@ -171,7 +171,7 @@ public class Chant_SummonDustdevil extends Chant
 	{
 		if(mob!=null)
 		{
-			Room R=mob.location();
+			final Room R=mob.location();
 			if(R!=null)
 			{
 				if((R.domainType()&Room.INDOORS)>0)
@@ -202,21 +202,21 @@ public class Chant_SummonDustdevil extends Chant
 			return false;
 		}
 
-		int material=RawMaterial.RESOURCE_ASH;
+		final int material=RawMaterial.RESOURCE_ASH;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
 			invoker=mob;
-			CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":"^S<S-NAME> chant(s) and summon(s) help from the air.^?");
+			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":"^S<S-NAME> chant(s) and summon(s) help from the air.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				MOB target = determineMonster(mob, material);
+				final MOB target = determineMonster(mob, material);
 				if(target!=null)
 				{
 					if(target.isInCombat()) target.makePeace();
@@ -235,11 +235,11 @@ public class Chant_SummonDustdevil extends Chant
 	}
 	public MOB determineMonster(MOB caster, int material)
 	{
-		MOB newMOB=CMClass.getMOB("GenMOB");
-		int level=3;
+		final MOB newMOB=CMClass.getMOB("GenMOB");
+		final int level=3;
 		newMOB.basePhyStats().setLevel(level);
 		newMOB.baseCharStats().setMyRace(CMClass.getRace("AirElemental"));
-		String name="a dustdevil";
+		final String name="a dustdevil";
 		newMOB.setName(name);
 		newMOB.setDisplayText(name+" whirls around here");
 		newMOB.setDescription("");

@@ -60,14 +60,14 @@ public class Engraving extends CommonSkill
 		{
 			if((affected!=null)&&(affected instanceof MOB)&&(!aborted)&&(!helping))
 			{
-				MOB mob=(MOB)affected;
+				final MOB mob=(MOB)affected;
 				if(writing.length()==0)
 					commonTell(mob,"You mess up your engraving.");
 				else
 				{
 					String desc=found.description();
-					int x=desc.indexOf(" Engraved on it are the words `");
-					int y=desc.lastIndexOf('`');
+					final int x=desc.indexOf(" Engraved on it are the words `");
+					final int y=desc.lastIndexOf('`');
 					if((x>=0)&&(y>x))
 						desc=desc.substring(0,x);
 					found.setDescription(desc+" Engraved on it are the words `"+writing+"`.");
@@ -93,9 +93,9 @@ public class Engraving extends CommonSkill
 			target=mob.location().findItem(null, (String)commands.firstElement());
 			if((target!=null)&&(CMLib.flags().canBeSeenBy(target,mob)))
 			{
-				Set<MOB> followers=mob.getGroupMembers(new TreeSet<MOB>());
+				final Set<MOB> followers=mob.getGroupMembers(new TreeSet<MOB>());
 				boolean ok=false;
-				for(MOB M : followers)
+				for(final MOB M : followers)
 				{
 					if(target.secretIdentity().indexOf(getBrand(M))>=0)
 						ok=true;
@@ -114,7 +114,7 @@ public class Engraving extends CommonSkill
 		}
 		commands.remove(commands.firstElement());
 
-		Ability write=mob.fetchAbility("Skill_Write");
+		final Ability write=mob.fetchAbility("Skill_Write");
 		if(write==null)
 		{
 			commonTell(mob,"You must know how to write to engrave.");
@@ -141,8 +141,8 @@ public class Engraving extends CommonSkill
 		found=target;
 		if((!proficiencyCheck(mob,0,auto))||(!write.proficiencyCheck(mob,0,auto)))
 			writing="";
-		int duration=getDuration(30,mob,1,3);
-		CMMsg msg=CMClass.getMsg(mob,target,this,getActivityMessageType(),"<S-NAME> start(s) engraving on <T-NAME>.");
+		final int duration=getDuration(30,mob,1,3);
+		final CMMsg msg=CMClass.getMsg(mob,target,this,getActivityMessageType(),"<S-NAME> start(s) engraving on <T-NAME>.");
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

@@ -46,7 +46,7 @@ public class Thief_Graffiti extends ThiefSkill
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		String str=CMParms.combine(commands,0);
+		final String str=CMParms.combine(commands,0);
 		if(str.length()==0)
 		{
 			mob.tell("What would you like to write here?");
@@ -70,14 +70,14 @@ public class Thief_Graffiti extends ThiefSkill
 		int levelDiff=target.phyStats().level()-(mob.phyStats().level()+abilityCode()+(2*super.getXLEVELLevel(mob)));
 		if(levelDiff<0) levelDiff=0;
 		levelDiff*=5;
-		boolean success=proficiencyCheck(mob,-levelDiff,auto);
+		final boolean success=proficiencyCheck(mob,-levelDiff,auto);
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,"<S-NAME> write(s) graffiti here.");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,"<S-NAME> write(s) graffiti here.");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				Item I=CMClass.getItem("GenWallpaper");
+				final Item I=CMClass.getItem("GenWallpaper");
 				I.setName("Graffiti");
 				CMLib.flags().setReadable(I,true);
 				I.recoverPhyStats();

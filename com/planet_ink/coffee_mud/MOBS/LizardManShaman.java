@@ -70,22 +70,22 @@ public class LizardManShaman extends LizardMan
 
 	public void addNaturalAbilities()
 	{
-		Ability p1 =CMClass.getAbility("Prayer_ProtGood");
+		final Ability p1 =CMClass.getAbility("Prayer_ProtGood");
 		p1.setProficiency(CMLib.dice().roll(5, 10, 50));
 		p1.setSavable(false);
 		this.addAbility(p1);
 
-		Ability p2 =CMClass.getAbility("Prayer_CauseLight");
+		final Ability p2 =CMClass.getAbility("Prayer_CauseLight");
 		p2.setProficiency(CMLib.dice().roll(5, 10, 50));
 		p2.setSavable(false);
 		this.addAbility(p2);
 
-		Ability p3 =CMClass.getAbility("Prayer_Curse");
+		final Ability p3 =CMClass.getAbility("Prayer_Curse");
 		p3.setProficiency(CMLib.dice().roll(5, 10, 50));
 		p3.setSavable(false);
 		this.addAbility(p3);
 
-		Ability p4 =CMClass.getAbility("Prayer_Paralyze");
+		final Ability p4 =CMClass.getAbility("Prayer_Paralyze");
 		p4.setProficiency(CMLib.dice().roll(5, 10, 50));
 		p4.setSavable(false);
 		this.addAbility(p4);

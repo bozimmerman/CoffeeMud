@@ -76,7 +76,7 @@ public class Prayer_AuraStrife extends Prayer
 		// undo the affects of this spell
 		if(!(affected instanceof MOB))
 			return;
-		MOB M=(MOB)affected;
+		final MOB M=(MOB)affected;
 
 		super.unInvoke();
 
@@ -93,8 +93,8 @@ public class Prayer_AuraStrife extends Prayer
 		&&(affected!=null)
 		&&(affected instanceof MOB))
 		{
-			MOB mob=(MOB)affected;
-			Set<MOB> invokerGroup=invoker().getGroupMembers(new HashSet<MOB>());
+			final MOB mob=(MOB)affected;
+			final Set<MOB> invokerGroup=invoker().getGroupMembers(new HashSet<MOB>());
 			if(mob!=invoker())
 			{
 				if(mob.location()!=invoker().location())
@@ -110,7 +110,7 @@ public class Prayer_AuraStrife extends Prayer
 						if(levels<0) levels=invoker().phyStats().level();
 						if(CMLib.dice().rollPercentage()>=levels)
 						{
-							MOB newvictim=mob.location().fetchRandomInhabitant();
+							final MOB newvictim=mob.location().fetchRandomInhabitant();
 							if(newvictim!=mob) mob.setVictim(newvictim);
 						}
 					}
@@ -120,7 +120,7 @@ public class Prayer_AuraStrife extends Prayer
 			if((mob.location()!=null)&&(CMLib.flags().isEvil(invoker())))
 			for(int m=0;m<mob.location().numInhabitants();m++)
 			{
-				MOB M=mob.location().fetchInhabitant(m);
+				final MOB M=mob.location().fetchInhabitant(m);
 				if((M!=null)&&(M!=invoker())&&(!invokerGroup.contains(M))&&(!M.Name().equals(mob.getLiegeID())))
 					beneficialAffect(invoker,M,0,Ability.TICKS_FOREVER);
 			}
@@ -131,15 +131,15 @@ public class Prayer_AuraStrife extends Prayer
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		MOB target=getTarget(mob,commands,givenTarget);
+		final MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
-		Room targetRoom=target.location();
+		final Room targetRoom=target.location();
 		if(targetRoom==null) return false;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{

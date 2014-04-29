@@ -50,7 +50,7 @@ public class Spell_KnowBliss extends Spell
 		// undo the affects of this spell
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		super.unInvoke();
 		if(canBeUninvoked())
 		{
@@ -69,7 +69,7 @@ public class Spell_KnowBliss extends Spell
 		// undo the affects of this spell
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		if(msg.amITarget(mob)
 		&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
 		&&((msg.value())>0))
@@ -84,7 +84,7 @@ public class Spell_KnowBliss extends Spell
 			// undo the affects of this spell
 			if(!(affected instanceof MOB))
 				return super.tick(ticking,tickID);
-			MOB mob=(MOB)affected;
+			final MOB mob=(MOB)affected;
 			CMLib.tracking().wanderAway(mob,false,true);
 		}
 		return super.tick(ticking,tickID);
@@ -96,7 +96,7 @@ public class Spell_KnowBliss extends Spell
 		// undo the affects of this spell
 		if(!(affected instanceof MOB))
 			return super.okMessage(myHost,msg);
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		if(msg.amISource(mob)
 		&&(msg.targetMajor()&CMMsg.MASK_MALICIOUS)>0)
 		{
@@ -110,7 +110,7 @@ public class Spell_KnowBliss extends Spell
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		MOB target=this.getTarget(mob,commands,givenTarget);
+		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
 		// the invoke method for spells receives as
@@ -120,7 +120,7 @@ public class Spell_KnowBliss extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
@@ -129,7 +129,7 @@ public class Spell_KnowBliss extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> incant(s) happily at <T-NAMESELF>!^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> incant(s) happily at <T-NAMESELF>!^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -142,7 +142,7 @@ public class Spell_KnowBliss extends Spell
 						mob.makePeace();
 					for(int m=0;m<target.location().numInhabitants();m++)
 					{
-						MOB M=target.location().fetchInhabitant(m);
+						final MOB M=target.location().fetchInhabitant(m);
 						if((M!=null)&&(M.getVictim()==target))
 							M.makePeace();
 					}

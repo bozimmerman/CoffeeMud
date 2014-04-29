@@ -68,7 +68,7 @@ public class Wand_Fire extends StdWand
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
-		MOB mob=msg.source();
+		final MOB mob=msg.source();
 		switch(msg.sourceMinor())
 		{
 		case CMMsg.TYP_WAND_USE:
@@ -77,11 +77,11 @@ public class Wand_Fire extends StdWand
 			   &&(msg.target() instanceof MOB)
 			   &&(mob.location().isInhabitant((MOB)msg.target())))
 			{
-				MOB target=(MOB)msg.target();
+				final MOB target=(MOB)msg.target();
 				int x=msg.targetMessage().toUpperCase().indexOf("BLAZE");
 				if(x>=0)
 				{
-					Ability spell = CMClass.getAbility("Spell_BurningHands");
+					final Ability spell = CMClass.getAbility("Spell_BurningHands");
 					if((usesRemaining()>0)&&(spell!=null)&&(useTheWand(spell,mob,0)))
 					{
 						this.setUsesRemaining(this.usesRemaining()-1);
@@ -92,7 +92,7 @@ public class Wand_Fire extends StdWand
 				x=msg.targetMessage().toUpperCase().indexOf("BURN");
 				if(x>=0)
 				{
-					Ability spell = CMClass.getAbility("Spell_Fireball");
+					final Ability spell = CMClass.getAbility("Spell_Fireball");
 					if((usesRemaining()>4)&&(spell!=null)&&(useTheWand(spell,mob,0)))
 					{
 						this.setUsesRemaining(this.usesRemaining()-5);

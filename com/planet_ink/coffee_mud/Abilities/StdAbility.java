@@ -67,7 +67,7 @@ public class StdAbility implements Ability
 		{
 			return this.getClass().newInstance();
 		}
-		catch(Exception e)
+		catch(final Exception e)
 		{
 			Log.errOut(ID(),e);
 		}
@@ -194,7 +194,7 @@ public class StdAbility implements Ability
 	{
 		if(mob!=null)
 		{
-			Integer[] O=CMLib.ableMapper().getCostOverrides(mob,ID());
+			final Integer[] O=CMLib.ableMapper().getCostOverrides(mob,ID());
 			if((O!=null)&&(O[AbilityMapper.AbilityMapping.COST_PRACPRAC]!=null))
 				return O[AbilityMapper.AbilityMapping.COST_PRACPRAC].intValue();
 		}
@@ -319,7 +319,7 @@ public class StdAbility implements Ability
 
 	protected int getXPCOSTAdjustment(MOB mob, int xpLoss)
 	{
-		int xLevel=getXPCOSTLevel(mob);
+		final int xLevel=getXPCOSTLevel(mob);
 		if(xLevel<=0) return xpLoss;
 		return xpLoss-(int)Math.round(CMath.mul(xpLoss,CMath.mul(.05,xLevel)));
 	}
@@ -327,7 +327,7 @@ public class StdAbility implements Ability
 	public int adjustedMaxInvokerRange(int max)
 	{
 		if(invoker==null) return max;
-		int level=getXMAXRANGELevel(invoker);
+		final int level=getXMAXRANGELevel(invoker);
 		if(level<=0) return  max;
 		return max+(int)Math.round(Math.ceil(CMath.mul(max,CMath.mul(level,0.2))));
 	}
@@ -486,7 +486,7 @@ public class StdAbility implements Ability
 				tickTime=invoker().charStats().getMyClass(c).classDurationModifier(invoker(),this,tickTime);
 		if(affected instanceof MOB)
 		{
-			MOB mob=(MOB)affected;
+			final MOB mob=(MOB)affected;
 			final Room room=mob.location();
 			if(room==null) return;
 			if(affected.fetchEffect(ID())==null)
@@ -521,11 +521,11 @@ public class StdAbility implements Ability
 	public int adjustedLevel(MOB caster, int asLevel)
 	{
 		if(caster==null) return 1;
-		int lowestQualifyingLevel=CMLib.ableMapper().lowestQualifyingLevel(this.ID());
+		final int lowestQualifyingLevel=CMLib.ableMapper().lowestQualifyingLevel(this.ID());
 		int adjLevel=lowestQualifyingLevel;
 		if(asLevel<=0)
 		{
-			int qualifyingLevel=CMLib.ableMapper().qualifyingLevel(caster,this);
+			final int qualifyingLevel=CMLib.ableMapper().qualifyingLevel(caster,this);
 			if((caster.isMonster())||(qualifyingLevel>=0))
 				adjLevel+=(CMLib.ableMapper().qualifyingClassLevel(caster,this)-qualifyingLevel);
 			else
@@ -547,11 +547,11 @@ public class StdAbility implements Ability
 	{
 		if(caster==null) return 1;
 		int adjLevel=1;
-		int qualifyingLevel=CMLib.ableMapper().qualifyingLevel(caster,this);
-		int lowestQualifyingLevel=CMLib.ableMapper().lowestQualifyingLevel(this.ID());
+		final int qualifyingLevel=CMLib.ableMapper().qualifyingLevel(caster,this);
+		final int lowestQualifyingLevel=CMLib.ableMapper().lowestQualifyingLevel(this.ID());
 		if(qualifyingLevel>=0)
 		{
-			int qualClassLevel=CMLib.ableMapper().qualifyingClassLevel(caster,this);
+			final int qualClassLevel=CMLib.ableMapper().qualifyingClassLevel(caster,this);
 			if(qualClassLevel>=qualifyingLevel)
 				adjLevel=(qualClassLevel-qualifyingLevel)+1;
 			else
@@ -635,7 +635,7 @@ public class StdAbility implements Ability
 			target=mob.location().fetchInhabitant(targetName);
 			if(target==null)
 			{
-				Environmental t=mob.location().fetchFromRoomFavorItems(null,targetName);
+				final Environmental t=mob.location().fetchFromRoomFavorItems(null,targetName);
 				if((t!=null)&&(!(t instanceof MOB)))
 				{
 					if(!quiet)
@@ -688,7 +688,7 @@ public class StdAbility implements Ability
 
 	public Physical getAnyTarget(MOB mob, Vector commands, Physical givenTarget, Filterer<Environmental> filter, boolean checkOthersInventory, boolean alreadyAffOk)
 	{
-		Room R=mob.location();
+		final Room R=mob.location();
 		String targetName=CMParms.combine(commands,0);
 		Physical target=null;
 		if(givenTarget != null)
@@ -716,7 +716,7 @@ public class StdAbility implements Ability
 			if((target==null)&&(checkOthersInventory))
 				for(int i=0;i<R.numInhabitants();i++)
 				{
-					MOB M=R.fetchInhabitant(i);
+					final MOB M=R.fetchInhabitant(i);
 					target=M.fetchItem(null,filter,targetName);
 					if(target!=null)
 						break;
@@ -757,8 +757,8 @@ public class StdAbility implements Ability
 		if((commands==null)||(commands.size()<2))
 			return null;
 
-		String possibleContainerID=(String)commands.lastElement();
-		Environmental thisThang=mob.location().fetchFromMOBRoomFavorsItems(mob,null,possibleContainerID,filter);
+		final String possibleContainerID=(String)commands.lastElement();
+		final Environmental thisThang=mob.location().fetchFromMOBRoomFavorsItems(mob,null,possibleContainerID,filter);
 		if((thisThang!=null)
 		&&(thisThang instanceof Item)
 		&&(((Item)thisThang) instanceof Container)
@@ -831,13 +831,13 @@ public class StdAbility implements Ability
 	{
 		try
 		{
-			StdAbility E=(StdAbility)this.clone();
+			final StdAbility E=(StdAbility)this.clone();
 			//CMClass.bumpCounter(E,CMClass.CMObjectType.ABILITY);//removed for mem & perf
 			E.cloneFix(this);
 			return E;
 
 		}
-		catch(CloneNotSupportedException e)
+		catch(final CloneNotSupportedException e)
 		{
 			return this.newInstance();
 		}
@@ -887,7 +887,7 @@ public class StdAbility implements Ability
 		unInvoked=true;
 
 		if(affected==null) return;
-		Physical being=affected;
+		final Physical being=affected;
 
 		if(canBeUninvoked())
 		{
@@ -943,7 +943,7 @@ public class StdAbility implements Ability
 
 	protected int[] buildCostArray(MOB mob, int consumed, int minimum)
 	{
-		int[] usageCosts=new int[3];
+		final int[] usageCosts=new int[3];
 		int costDown=0;
 		if(consumed>2)
 		{
@@ -953,9 +953,9 @@ public class StdAbility implements Ability
 			minimum=(minimum-costDown);
 			if(minimum<5) minimum=5;
 		}
-		boolean useMana=CMath.bset(usageType(),Ability.USAGE_MANA);
-		boolean useMoves=CMath.bset(usageType(),Ability.USAGE_MOVEMENT);
-		boolean useHits=CMath.bset(usageType(),Ability.USAGE_HITPOINTS);
+		final boolean useMana=CMath.bset(usageType(),Ability.USAGE_MANA);
+		final boolean useMoves=CMath.bset(usageType(),Ability.USAGE_MOVEMENT);
+		final boolean useHits=CMath.bset(usageType(),Ability.USAGE_HITPOINTS);
 		int divider=1;
 		if((useMana)&&(useMoves)&&(useHits)) divider=3;
 		else
@@ -1021,7 +1021,7 @@ public class StdAbility implements Ability
 			final Map<String,int[]> overrideCache=CMLib.ableMapper().getHardOverrideManaCache();
 			if(!overrideCache.containsKey(ID()))
 			{
-				int[] usage=new int[3];
+				final int[] usage=new int[3];
 				Arrays.fill(usage,overrideMana());
 				overrideCache.put(ID(), usage);
 			}
@@ -1030,7 +1030,7 @@ public class StdAbility implements Ability
 		if(usageType()==Ability.USAGE_NADA) return STATIC_USAGE_NADA;
 
 
-		int[][] abilityUsageCache=mob.getAbilityUsageCache(ID());
+		final int[][] abilityUsageCache=mob.getAbilityUsageCache(ID());
 		final int myCacheIndex=ignoreClassOverride?Ability.CACHEINDEX_CLASSLESS:Ability.CACHEINDEX_NORMAL;
 		final int[] myCache=abilityUsageCache[myCacheIndex];
 		final boolean rebuildCache=(myCache==null);
@@ -1049,9 +1049,9 @@ public class StdAbility implements Ability
 			int lowest=Integer.MAX_VALUE;
 			for(int c=0;c<mob.charStats().numClasses();c++)
 			{
-				CharClass C=mob.charStats().getMyClass(c);
-				int qualifyingLevel=CMLib.ableMapper().getQualifyingLevel(C.ID(),true,ID());
-				int classLevel=mob.charStats().getClassLevel(C.ID());
+				final CharClass C=mob.charStats().getMyClass(c);
+				final int qualifyingLevel=CMLib.ableMapper().getQualifyingLevel(C.ID(),true,ID());
+				final int classLevel=mob.charStats().getClassLevel(C.ID());
 				if((qualifyingLevel>=0)&&(classLevel>=qualifyingLevel))
 				{
 					diff+=(classLevel-qualifyingLevel);
@@ -1099,7 +1099,7 @@ public class StdAbility implements Ability
 	public void helpProficiency(MOB mob, int adjustment)
 	{
 		if(mob==null) return;
-		Ability A=mob.fetchAbility(ID());
+		final Ability A=mob.fetchAbility(ID());
 		if((A==null)||(!A.isSavable())) return;
 
 		if(!mob.isMonster()) CMLib.coffeeTables().bump(this,CoffeeTableRow.STAT_SKILLUSE);
@@ -1110,20 +1110,20 @@ public class StdAbility implements Ability
 		if(!A.appropriateToMyFactions(mob))
 			return;
 
-		int maxProficiency = CMLib.ableMapper().getMaxProficiency(mob,true,ID());
+		final int maxProficiency = CMLib.ableMapper().getMaxProficiency(mob,true,ID());
 		if(A.proficiency()< maxProficiency)
 		{
 			final int currentProficiency=A.proficiency()+adjustment;
 			if(((int)Math.round(Math.sqrt((mob.charStats().getStat(CharStats.STAT_INTELLIGENCE)))*34.0*Math.random()))>=currentProficiency)
 			{
-				int qualLevel=CMLib.ableMapper().qualifyingLevel(mob,A);
+				final int qualLevel=CMLib.ableMapper().qualifyingLevel(mob,A);
 				if((qualLevel<0)||(qualLevel>30)||(CMLib.dice().rollPercentage()<(int)Math.round(100.0*CMath.div(31-qualLevel,30+qualLevel))))
 				{
 					// very important, since these can be autoinvoked affects (copies)!
 					A.setProficiency(A.proficiency()+1);
 					if((this!=A)&&(proficiency()<maxProficiency))
 						setProficiency(A.proficiency());
-					Ability effA=mob.fetchEffect(ID());
+					final Ability effA=mob.fetchEffect(ID());
 					if((effA!=null) && (effA!=A) && (effA!=this)
 					&&(effA.invoker()==mob)
 					&&(effA.proficiency()<maxProficiency))
@@ -1147,7 +1147,7 @@ public class StdAbility implements Ability
 	@Override
 	public boolean invoke(MOB mob, Physical target, boolean auto, int asLevel)
 	{
-		Vector V=new Vector(1);
+		final Vector V=new Vector(1);
 		if(target!=null)
 			V.addElement(target.name());
 		return invoke(mob,V,target,auto,asLevel);
@@ -1173,7 +1173,7 @@ public class StdAbility implements Ability
 			&&(System.currentTimeMillis()<getTimeOfNextCast())
 			&&(room!=null)&&(room.getArea()!=null))
 			{
-				TimeClock C=room.getArea().getTimeObj();
+				final TimeClock C=room.getArea().getTimeObj();
 				if(C!=null)
 					mob.tell("You must wait "+C.deriveEllapsedTimeString(getTimeOfNextCast()-System.currentTimeMillis())+" before you can do that again.");
 				return false;
@@ -1186,7 +1186,7 @@ public class StdAbility implements Ability
 				return false;
 			}
 
-			int[] consumed=usageCost(mob,false);
+			final int[] consumed=usageCost(mob,false);
 			if(mob.curState().getMana()<consumed[Ability.USAGEINDEX_MANA])
 			{
 				if(mob.maxState().getMana()==consumed[Ability.USAGEINDEX_MANA])
@@ -1232,7 +1232,7 @@ public class StdAbility implements Ability
 			mob.curState().adjMovement(-consumed[1],mob.maxState());
 			mob.curState().adjHitPoints(-consumed[2],mob.maxState());
 			helpProficiency(mob, 0);
-			CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_PREINVOKE, null);
+			final CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_PREINVOKE, null);
 			if(!mob.okMessage(mob, msg))
 				return false;
 			mob.executeMsg(mob, msg);
@@ -1249,10 +1249,10 @@ public class StdAbility implements Ability
 		&&(mob.soulMate()==null)
 		&&(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.COMPONENTS)))
 		{
-			Vector<AbilityComponent> componentsRequirements=(Vector<AbilityComponent>)CMLib.ableMapper().getAbilityComponentMap().get(ID().toUpperCase());
+			final Vector<AbilityComponent> componentsRequirements=(Vector<AbilityComponent>)CMLib.ableMapper().getAbilityComponentMap().get(ID().toUpperCase());
 			if(componentsRequirements!=null)
 			{
-				List<Object> components=CMLib.ableMapper().componentCheck(mob,componentsRequirements);
+				final List<Object> components=CMLib.ableMapper().componentCheck(mob,componentsRequirements);
 				if(components==null)
 				{
 					mob.tell("You lack the necessary materials to use this "
@@ -1306,7 +1306,7 @@ public class StdAbility implements Ability
 		if(room==null) return false;
 		if(additionAffectCheckCode>=0)
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.NO_EFFECT,additionAffectCheckCode,CMMsg.NO_EFFECT,null);
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.NO_EFFECT,additionAffectCheckCode,CMMsg.NO_EFFECT,null);
 			if(room.okMessage(mob,msg))
 			{
 				room.send(mob,msg);
@@ -1318,7 +1318,7 @@ public class StdAbility implements Ability
 		if(ok)
 		{
 			invoker=mob;
-			Ability newOne=(Ability)copyOf();
+			final Ability newOne=(Ability)copyOf();
 			((StdAbility)newOne).canBeUninvoked=true;
 			tickAdjustmentFromStandard=getMaliciousTickdownTime(mob,target,tickAdjustmentFromStandard,asLevel);
 			newOne.startTickDown(invoker,target,tickAdjustmentFromStandard);
@@ -1329,7 +1329,7 @@ public class StdAbility implements Ability
 	public boolean beneficialWordsFizzle(MOB mob, Environmental target, String message)
 	{
 		// it didn't work, but tell everyone you tried.
-		CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_SPEAK,"^T"+message+"^?");
+		final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_SPEAK,"^T"+message+"^?");
 		final Room room=mob.location();
 		if(room==null) return false;
 		if(room.okMessage(mob,msg))
@@ -1340,7 +1340,7 @@ public class StdAbility implements Ability
 	public boolean beneficialVisualFizzle(MOB mob, Environmental target, String message)
 	{
 		// it didn't work, but tell everyone you tried.
-		CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_OK_VISUAL,message);
+		final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_OK_VISUAL,message);
 		final Room room=mob.location();
 		if(room==null) return false;
 		if(room.okMessage(mob,msg))
@@ -1352,7 +1352,7 @@ public class StdAbility implements Ability
 	public boolean maliciousFizzle(MOB mob, Environmental target, String message)
 	{
 		// it didn't work, but tell everyone you tried.
-		CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_OK_VISUAL|CMMsg.MASK_MALICIOUS,message);
+		final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_OK_VISUAL|CMMsg.MASK_MALICIOUS,message);
 		final Room room=mob.location();
 		if(room==null) return false;
 		CMLib.color().fixSourceFightColor(msg);
@@ -1378,11 +1378,11 @@ public class StdAbility implements Ability
 
 	public boolean beneficialAffect(MOB mob, Physical target, int asLevel, int tickAdjustmentFromStandard)
 	{
-		boolean ok=true;
+		final boolean ok=true;
 		if(ok)
 		{
 			invoker=mob;
-			Ability newOne=(Ability)this.copyOf();
+			final Ability newOne=(Ability)this.copyOf();
 			((StdAbility)newOne).canBeUninvoked=true;
 			tickAdjustmentFromStandard=getBeneficialTickdownTime(mob,target,tickAdjustmentFromStandard,asLevel);
 			newOne.startTickDown(invoker,target,tickAdjustmentFromStandard);
@@ -1411,9 +1411,9 @@ public class StdAbility implements Ability
 	{
 		if(isAutoInvoked())
 		{
-			Ability thisAbility=mob.fetchEffect(ID());
+			final Ability thisAbility=mob.fetchEffect(ID());
 			if(thisAbility!=null) return false;
-			Ability thatAbility=(Ability)copyOf();
+			final Ability thatAbility=(Ability)copyOf();
 			((StdAbility)thatAbility).canBeUninvoked=true;
 			thatAbility.setSavable(false);
 			thatAbility.setInvoker(mob);
@@ -1474,10 +1474,10 @@ public class StdAbility implements Ability
 			teacher.tell("Not while you are fighting!");
 			return false;
 		}
-		Ability yourAbility=teacher.fetchAbility(ID());
+		final Ability yourAbility=teacher.fetchAbility(ID());
 		if(yourAbility!=null)
 		{
-			int prof25=(int)Math.round(CMath.mul(CMLib.ableMapper().getMaxProficiency(student,true,yourAbility.ID()), .25));
+			final int prof25=(int)Math.round(CMath.mul(CMLib.ableMapper().getMaxProficiency(student,true,yourAbility.ID()), .25));
 			if(yourAbility.proficiency()<prof25)
 			{
 				teacher.tell("You are not proficient enough to teach '"+name()+"'");
@@ -1516,7 +1516,7 @@ public class StdAbility implements Ability
 			student.tell("You are refusing training at this time.");
 			return false;
 		}
-		int qLevel=CMLib.ableMapper().qualifyingLevel(student,this);
+		final int qLevel=CMLib.ableMapper().qualifyingLevel(student,this);
 		if(qLevel<0)
 		{
 			teacher.tell(student.name()+" is not the right class to learn '"+name()+"'.");
@@ -1543,8 +1543,8 @@ public class StdAbility implements Ability
 			student.tell("You are not of high enough intelligence to learn '"+name()+"'.");
 			return false;
 		}
-		Ability yourAbility=student.fetchAbility(ID());
-		Ability teacherAbility=teacher.fetchAbility(ID());
+		final Ability yourAbility=student.fetchAbility(ID());
+		final Ability teacherAbility=teacher.fetchAbility(ID());
 		if(yourAbility!=null)
 		{
 			teacher.tell(student.name()+" already knows '"+name()+"'.");
@@ -1554,7 +1554,7 @@ public class StdAbility implements Ability
 
 		if(teacherAbility!=null)
 		{
-			int prof25=(int)Math.round(CMath.mul(CMLib.ableMapper().getMaxProficiency(student,true,teacherAbility.ID()), .25));
+			final int prof25=(int)Math.round(CMath.mul(CMLib.ableMapper().getMaxProficiency(student,true,teacherAbility.ID()), .25));
 			if(teacherAbility.proficiency()<prof25)
 			{
 				teacher.tell("You aren't proficient enough to teach '"+name()+"'.");
@@ -1582,19 +1582,19 @@ public class StdAbility implements Ability
 			return false;
 		}
 
-		String extraMask=CMLib.ableMapper().getApplicableMask(student,this);
+		final String extraMask=CMLib.ableMapper().getApplicableMask(student,this);
 		if((extraMask.length()>0)&&(!CMLib.masking().maskCheck(extraMask,student,true)))
 		{
-			String reason="requirements: "+CMLib.masking().maskDesc(extraMask);
+			final String reason="requirements: "+CMLib.masking().maskDesc(extraMask);
 			student.tell("You may not learn '"+name()+"' at this time due to the "+reason+".");
 			teacher.tell(student.name()+" does not fit the '"+name()+"' "+reason+".");
 			return false;
 		}
 
-		DVector prereqs=CMLib.ableMapper().getUnmetPreRequisites(student,this);
+		final DVector prereqs=CMLib.ableMapper().getUnmetPreRequisites(student,this);
 		if((prereqs!=null)&&(prereqs.size()>0))
 		{
-			String names=CMLib.ableMapper().formatPreRequisites(prereqs);
+			final String names=CMLib.ableMapper().formatPreRequisites(prereqs);
 			student.tell("You must learn "+names+" before you can gain "+name()+".");
 			teacher.tell(student.name()+" has net learned the pre-requisites to "+name()+" yet.");
 			return false;
@@ -1655,8 +1655,8 @@ public class StdAbility implements Ability
 			return false;
 		}
 
-		Ability yourAbility=student.fetchAbility(ID());
-		Ability teacherAbility=teacher.fetchAbility(ID());
+		final Ability yourAbility=student.fetchAbility(ID());
+		final Ability teacherAbility=teacher.fetchAbility(ID());
 		if(yourAbility==null)
 		{
 			teacher.tell(student.name()+" has not gained '"+name()+"' yet.");
@@ -1671,7 +1671,7 @@ public class StdAbility implements Ability
 			return false;
 		}
 
-		int prof75=(int)Math.round(CMath.mul(CMLib.ableMapper().getMaxProficiency(student,true,yourAbility.ID()), .75));
+		final int prof75=(int)Math.round(CMath.mul(CMLib.ableMapper().getMaxProficiency(student,true,yourAbility.ID()), .75));
 		if(yourAbility.proficiency()>teacherAbility.proficiency())
 		{
 			teacher.tell("You aren't proficient enough to teach any more about '"+name()+"'.");
@@ -1686,7 +1686,7 @@ public class StdAbility implements Ability
 			return false;
 		}
 
-		int prof25=(int)Math.round(CMath.mul(CMLib.ableMapper().getMaxProficiency(student,true,teacherAbility.ID()), .25));
+		final int prof25=(int)Math.round(CMath.mul(CMLib.ableMapper().getMaxProficiency(student,true,teacherAbility.ID()), .25));
 		if(teacherAbility.proficiency()<prof25)
 		{
 			teacher.tell("You aren't proficient enough to teach '"+name()+"'.");
@@ -1718,12 +1718,12 @@ public class StdAbility implements Ability
 			if(!cost.doesMeetCostRequirements(student))
 				return;
 			cost.spendSkillCost(student);
-			Ability newAbility=(Ability)newInstance();
-			int prof75=(int)Math.round(CMath.mul(CMLib.ableMapper().getMaxProficiency(student,true,newAbility.ID()), .75));
+			final Ability newAbility=(Ability)newInstance();
+			final int prof75=(int)Math.round(CMath.mul(CMLib.ableMapper().getMaxProficiency(student,true,newAbility.ID()), .75));
 			newAbility.setProficiency((int)Math.round(CMath.mul(proficiency(),((CMath.div(teacher.charStats().getStat(CharStats.STAT_WISDOM)+student.charStats().getStat(CharStats.STAT_INTELLIGENCE),100.0))))));
 			if(newAbility.proficiency()>prof75)
 				newAbility.setProficiency(prof75);
-			int defProficiency=CMLib.ableMapper().getDefaultProficiency(student.charStats().getCurrentClass().ID(),true,ID());
+			final int defProficiency=CMLib.ableMapper().getDefaultProficiency(student.charStats().getCurrentClass().ID(),true,ID());
 			if((defProficiency>0)&&(defProficiency>newAbility.proficiency()))
 				newAbility.setProficiency(defProficiency);
 			student.addAbility(newAbility);
@@ -1740,17 +1740,17 @@ public class StdAbility implements Ability
 		if(student.getPractices()<practicesToPractice(student))
 			return;
 
-		Ability yourAbility=student.fetchAbility(ID());
+		final Ability yourAbility=student.fetchAbility(ID());
 		if(yourAbility!=null)
 		{
-			int prof75=(int)Math.round(CMath.mul(CMLib.ableMapper().getMaxProficiency(student,true,yourAbility.ID()), .75));
+			final int prof75=(int)Math.round(CMath.mul(CMLib.ableMapper().getMaxProficiency(student,true,yourAbility.ID()), .75));
 			if(yourAbility.proficiency()<prof75)
 			{
 				student.setPractices(student.getPractices()-practicesToPractice(student));
 				int newProf = yourAbility.proficiency()+(int)Math.round(25.0*(CMath.div(teacher.charStats().getStat(CharStats.STAT_WISDOM)+student.charStats().getStat(CharStats.STAT_INTELLIGENCE),36.0)));
 				if(newProf > prof75) newProf=prof75;
 				yourAbility.setProficiency(newProf);
-				Ability yourEffect=student.fetchEffect(ID());
+				final Ability yourEffect=student.fetchEffect(ID());
 				if((yourEffect!=null)&&(yourEffect.invoker()==student))
 					yourEffect.setProficiency(yourAbility.proficiency());
 			}
@@ -1800,10 +1800,10 @@ public class StdAbility implements Ability
 	@Override
 	public boolean appropriateToMyFactions(MOB mob)
 	{
-		for(Enumeration e=mob.fetchFactions();e.hasMoreElements();)
+		for(final Enumeration e=mob.fetchFactions();e.hasMoreElements();)
 		{
-			String factionID=(String)e.nextElement();
-			Faction F=CMLib.factions().getFaction(factionID);
+			final String factionID=(String)e.nextElement();
+			final Faction F=CMLib.factions().getFaction(factionID);
 			if((F!=null)&&F.hasUsage(this))
 				return F.canUse(mob,this);
 		}
@@ -1851,7 +1851,7 @@ public class StdAbility implements Ability
 	public boolean sameAs(Environmental E)
 	{
 		if(!(E instanceof StdAbility)) return false;
-		String[] codes=getStatCodes();
+		final String[] codes=getStatCodes();
 		for(int i=0;i<codes.length;i++)
 			if(!E.getStat(codes[i]).equals(getStat(codes[i])))
 				return false;

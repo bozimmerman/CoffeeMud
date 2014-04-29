@@ -56,8 +56,8 @@ public class Gem extends StdItem
 		super();
 
 
-		Random randomizer = new Random(System.currentTimeMillis());
-		int ringType = Math.abs(randomizer.nextInt() % 12);
+		final Random randomizer = new Random(System.currentTimeMillis());
+		final int ringType = Math.abs(randomizer.nextInt() % 12);
 		basePhyStats.setLevel(ringType);
 		recoverPhyStats();
 	}

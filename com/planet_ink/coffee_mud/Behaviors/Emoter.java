@@ -132,12 +132,12 @@ public class Emoter extends ActiveTicker
 		if(x<0){ c='/'; x=newParms.indexOf(c);}
 		if(x>0)
 		{
-			String oldParms=newParms.substring(0,x);
+			final String oldParms=newParms.substring(0,x);
 			setEmoteTypes(CMParms.parse(oldParms),false);
 			newParms=newParms.substring(x+1);
 		}
-		EMOTE_TYPE defaultType=emoteType;
-		boolean defaultBroadcast=broadcast;
+		final EMOTE_TYPE defaultType=emoteType;
+		final boolean defaultBroadcast=broadcast;
 		while(newParms.length()>0)
 		{
 			String thisEmote=newParms;
@@ -151,7 +151,7 @@ public class Emoter extends ActiveTicker
 			}
 			if(thisEmote.trim().length()>0)
 			{
-				Vector<String> V=CMParms.parse(thisEmote);
+				final Vector<String> V=CMParms.parse(thisEmote);
 				emoteType=defaultType;
 				broadcast=defaultBroadcast;
 				setEmoteTypes(V,true);
@@ -179,7 +179,7 @@ public class Emoter extends ActiveTicker
 		&&(CMLib.flags().canSmell(msg.source()))
 		&&(smells!=null))
 		{
-			EmoteObj emote=smells.get(CMLib.dice().roll(1,smells.size(),-1));
+			final EmoteObj emote=smells.get(CMLib.dice().roll(1,smells.size(),-1));
 			MOB emoter=null;
 			if(myHost instanceof Room)
 			{
@@ -188,7 +188,7 @@ public class Emoter extends ActiveTicker
 				emoter.destroy();
 				return;
 			}
-			Room room=getBehaversRoom(myHost);
+			final Room room=getBehaversRoom(myHost);
 			if(room!=null)
 			{
 				if(myHost instanceof MOB)
@@ -214,10 +214,10 @@ public class Emoter extends ActiveTicker
 	{
 		if(inroomIDs.size()>0)
 		{
-			String ID=CMLib.map().getExtendedRoomID(room).toUpperCase();
+			final String ID=CMLib.map().getExtendedRoomID(room).toUpperCase();
 			if(ID.length()==0) return false;
 			if(inroomIDs.contains(ID)) return true;
-			for(String roomID : inroomIDs)
+			for(final String roomID : inroomIDs)
 				if(ID.endsWith(roomID))
 					return true;
 			return false;
@@ -234,7 +234,7 @@ public class Emoter extends ActiveTicker
 		if(room==null) return;
 		if(!inRoom(room)) return;
 		CMMsg msg;
-		Room oldLoc=emoter.location();
+		final Room oldLoc=emoter.location();
 		String str=emote.msg;
 		if(emoter.location()!=room) emoter.setLocation(room);
 		if(emote.type==EMOTE_TYPE.EMOTE_SOCIAL)
@@ -257,7 +257,7 @@ public class Emoter extends ActiveTicker
 		if(room.okMessage(emoter,msg))
 			for(int i=0;i<room.numInhabitants();i++)
 			{
-				MOB M=room.fetchInhabitant(i);
+				final MOB M=room.fetchInhabitant(i);
 				if((M!=null)&&(!M.isMonster()))
 					switch(emote.type)
 					{
@@ -293,14 +293,14 @@ public class Emoter extends ActiveTicker
 					((PhysicalAgent)ticking).delBehavior(this);
 				return false;
 			}
-			EmoteObj emote=emotes.get(CMLib.dice().roll(1,emotes.size(),-1));
+			final EmoteObj emote=emotes.get(CMLib.dice().roll(1,emotes.size(),-1));
 			MOB emoter=null;
 			if(ticking instanceof Area)
 			{
 				emoter=CMClass.getFactoryMOB();
-				for(Enumeration r=((Area)ticking).getMetroMap();r.hasMoreElements();)
+				for(final Enumeration r=((Area)ticking).getMetroMap();r.hasMoreElements();)
 				{
-					Room R=(Room)r.nextElement();
+					final Room R=(Room)r.nextElement();
 					emoteHere(R,emoter,emote,null,false);
 				}
 				emoter.destroy();
@@ -314,7 +314,7 @@ public class Emoter extends ActiveTicker
 				return true;
 			}
 
-			Room room=getBehaversRoom(ticking);
+			final Room room=getBehaversRoom(ticking);
 			if(room==null) return true;
 			boolean killEmoter=false;
 			if(ticking instanceof MOB)
@@ -329,7 +329,7 @@ public class Emoter extends ActiveTicker
 
 				emoter=CMClass.getFactoryMOB();
 				killEmoter=true;
-				MOB mob=getBehaversMOB(ticking);
+				final MOB mob=getBehaversMOB(ticking);
 				String name=ticking.name();
 				if(ticking instanceof Environmental)
 					name=((Environmental)ticking).name();
@@ -355,8 +355,8 @@ public class Emoter extends ActiveTicker
 				}
 				for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 				{
-					Room R=room.getRoomInDir(d);
-					Exit E=room.getExitInDir(d);
+					final Room R=room.getRoomInDir(d);
+					final Exit E=room.getExitInDir(d);
 					if((R!=null)&&(E!=null)&&(E.isOpen()))
 					{
 						final String inDir=((R instanceof SpaceShip)||(R.getArea() instanceof SpaceShip))?

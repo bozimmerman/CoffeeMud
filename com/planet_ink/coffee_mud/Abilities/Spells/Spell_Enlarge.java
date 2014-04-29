@@ -57,12 +57,12 @@ public class Spell_Enlarge extends Spell
 		// undo the affects of this spell
 		if((canBeUninvoked())&&(affected instanceof Item)&&(CMLib.flags().isInTheGame((Item)affected,true)))
 		{
-			Item I=(Item)affected;
+			final Item I=(Item)affected;
 			if(I.owner() instanceof MOB)
 				((MOB)I.owner()).tell(I.name((MOB)I.owner())+" in your inventory shrinks back to size.");
 			else
 			{
-				Room R=CMLib.map().roomLocation(I);
+				final Room R=CMLib.map().roomLocation(I);
 				if(R!=null)
 					R.showHappens(CMMsg.MSG_OK_VISUAL,I.name()+" shrinks back to normal size.");
 			}
@@ -73,7 +73,7 @@ public class Spell_Enlarge extends Spell
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		Item target=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_UNWORNONLY);
+		final Item target=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_UNWORNONLY);
 		if(target==null) return false;
 
 		if(mob.isMine(target))
@@ -90,15 +90,15 @@ public class Spell_Enlarge extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAMESELF>, incanting.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAMESELF>, incanting.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				Ability A=target.fetchEffect("Spell_Shrink");
+				final Ability A=target.fetchEffect("Spell_Shrink");
 				if((A!=null)&&(A.canBeUninvoked()))
 					A.unInvoke();
 				else

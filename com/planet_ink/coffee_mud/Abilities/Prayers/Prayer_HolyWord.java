@@ -59,10 +59,10 @@ public class Prayer_HolyWord extends Prayer implements MendingSkill
 		super.affectPhyStats(affected,affectableStats);
 		if(affected==null) return;
 		if(!(affected instanceof MOB)) return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		if(mob==invoker) return;
-		int xlvl=super.getXLEVELLevel(invoker());
+		final int xlvl=super.getXLEVELLevel(invoker());
 		if(CMLib.flags().isGood(mob))
 		{
 			affectableStats.setArmor(affectableStats.armor()-15-(6*xlvl));
@@ -84,7 +84,7 @@ public class Prayer_HolyWord extends Prayer implements MendingSkill
 		// undo the affects of this spell
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		super.unInvoke();
 
@@ -99,15 +99,15 @@ public class Prayer_HolyWord extends Prayer implements MendingSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		String str=(auto?"The holy word is spoken.":"^S<S-NAME> speak(s) the holy word"+ofDiety(mob)+" to <T-NAMESELF>.^?")+CMLib.protocol().msp("bless.wav",10);
 		String missStr="<S-NAME> speak(s) the holy word"+ofDiety(mob)+", but nothing happens.";
-		Room room=mob.location();
+		final Room room=mob.location();
 		if(room!=null)
 		for(int i=0;i<room.numInhabitants();i++)
 		{
-			MOB target=room.fetchInhabitant(i);
+			final MOB target=room.fetchInhabitant(i);
 			if(target==null) break;
 
 			int affectType=CMMsg.MSG_CAST_VERBAL_SPELL;
@@ -121,7 +121,7 @@ public class Prayer_HolyWord extends Prayer implements MendingSkill
 				// and add it to the affects list of the
 				// affected MOB.  Then tell everyone else
 				// what happened.
-				CMMsg msg=CMClass.getMsg(mob,target,this,affectType,str);
+				final CMMsg msg=CMClass.getMsg(mob,target,this,affectType,str);
 				if(mob.location().okMessage(mob,msg))
 				{
 					mob.location().send(mob,msg);
@@ -131,11 +131,11 @@ public class Prayer_HolyWord extends Prayer implements MendingSkill
 						{
 							str=null;
 							Item I=Prayer_Bless.getSomething(target,true);
-							HashSet<Item> alreadyDone=new HashSet<Item>();
+							final HashSet<Item> alreadyDone=new HashSet<Item>();
 							while((I!=null)&&(!alreadyDone.contains(I)))
 							{
 								alreadyDone.add(I);
-								CMMsg msg2=CMClass.getMsg(target,I,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_DROP,"<S-NAME> release(s) <T-NAME>.");
+								final CMMsg msg2=CMClass.getMsg(target,I,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_DROP,"<S-NAME> release(s) <T-NAME>.");
 								target.location().send(target,msg2);
 								Prayer_Bless.endLowerCurses(I,CMLib.ableMapper().lowestQualifyingLevel(ID()));
 								I.recoverPhyStats();

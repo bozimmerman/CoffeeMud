@@ -49,17 +49,17 @@ public class SMTPserver extends Thread implements Tickable
 
 	@Override public String ID(){return "SMTPserver";}
 	@Override public String name(){return "SMTPserver";}
-	@Override public CMObject newInstance(){try{return getClass().newInstance();}catch(Exception e){return new SMTPserver(mud);}}
+	@Override public CMObject newInstance(){try{return getClass().newInstance();}catch(final Exception e){return new SMTPserver(mud);}}
 	@Override
 	public void initializeClass()
 	{
 	}
-	@Override public CMObject copyOf(){try{return (SMTPserver)this.clone();}catch(Exception e){return newInstance();}}
+	@Override public CMObject copyOf(){try{return (SMTPserver)this.clone();}catch(final Exception e){return newInstance();}}
 	@Override public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 
 	public int	 		tickStatus=STATUS_NOT;
 	public boolean 		isOK = false;
-	private MudHost 	mud;
+	private final MudHost 	mud;
 	public CMProps 		page=null;
 	public ServerSocket servsock=null;
 	public CMProps 		iniPage=null;
@@ -67,8 +67,8 @@ public class SMTPserver extends Thread implements Tickable
 	private String 		domain="coffeemud";
 	private int			maxThreads = 3;
 	private int			threadTimeoutMins = 10;
-	private HashSet<String> 		 oldEmailComplaints=new HashSet<String>();
-	private CMThreadPoolExecutor  	 threadPool;
+	private final HashSet<String> 		 oldEmailComplaints=new HashSet<String>();
+	private final CMThreadPoolExecutor  	 threadPool;
 
 	public SMTPserver()
 	{
@@ -144,7 +144,7 @@ public class SMTPserver extends Thread implements Tickable
 		if((CMProps.getListVar(CMProps.StrList.SUBSCRIPTION_STRS)==null)
 		||(CMProps.getListVar(CMProps.StrList.SUBSCRIPTION_STRS).length==0))
 		{
-			String[] msgs = new String[]{
+			final String[] msgs = new String[]{
 					page.getStr("SUBSCRIBEDTITLE"),
 					page.getStr("SUBSCRIBEDMSG"),
 					page.getStr("UNSUBSCRIBEDTITLE"),
@@ -169,30 +169,30 @@ public class SMTPserver extends Thread implements Tickable
 
 	public TreeMap<String, JournalsLibrary.SMTPJournal> parseJournalList(String journalStr)
 	{
-		TreeMap<String, JournalsLibrary.SMTPJournal> set=new TreeMap<String, JournalsLibrary.SMTPJournal>();
+		final TreeMap<String, JournalsLibrary.SMTPJournal> set=new TreeMap<String, JournalsLibrary.SMTPJournal>();
 		if((journalStr==null)||(journalStr.length()>0))
 		{
-			List<String> V=CMParms.parseCommas(journalStr,true);
+			final List<String> V=CMParms.parseCommas(journalStr,true);
 			if(V.size()>0)
 			{
 				for(int v=0;v<V.size();v++)
 				{
 					String s=V.get(v).trim();
 					String parm="";
-					int x=s.indexOf('(');
+					final int x=s.indexOf('(');
 					if((x>0)&&(s.endsWith(")")))
 					{
 						parm=s.substring(x+1,s.length()-1).trim();
 						s=s.substring(0,x).trim();
 					}
-					List<String> PV=CMParms.parseSpaces(parm,true);
-					StringBuffer crit=new StringBuffer("");
+					final List<String> PV=CMParms.parseSpaces(parm,true);
+					final StringBuffer crit=new StringBuffer("");
 					boolean forward=false;
 					boolean subscribeOnly=false;
 					boolean keepAll=false;
 					for(int pv=0;pv<PV.size();pv++)
 					{
-						String ps=PV.get(pv);
+						final String ps=PV.get(pv);
 						if(ps.equalsIgnoreCase("forward"))
 							forward=true;
 						else
@@ -234,7 +234,7 @@ public class SMTPserver extends Thread implements Tickable
 
 	public JournalsLibrary.SMTPJournal getAJournal(String journal)
 	{
-		TreeMap<String, JournalsLibrary.SMTPJournal> set=getJournalSets();
+		final TreeMap<String, JournalsLibrary.SMTPJournal> set=getJournalSets();
 		if(set==null) return null;
 		return set.get(journal.toUpperCase().trim());
 	}
@@ -263,7 +263,7 @@ public class SMTPserver extends Thread implements Tickable
 	{
 		if (page==null || !page.isLoaded())
 		{
-			String fn = "web/email.ini";
+			final String fn = "web/email.ini";
 			page=new CMProps (getCommonPropPage(), fn);
 			if(!page.isLoaded())
 			{
@@ -302,7 +302,7 @@ public class SMTPserver extends Thread implements Tickable
 			{
 				bindAddr = InetAddress.getByName(page.getStr("BIND"));
 			}
-			catch (UnknownHostException e)
+			catch (final UnknownHostException e)
 			{
 				Log.errOut(getName(),"ERROR: Could not bind to address " + page.getStr("BIND"));
 			}
@@ -341,7 +341,7 @@ public class SMTPserver extends Thread implements Tickable
 				}
 			}
 		}
-		catch(Exception e)
+		catch(final Exception e)
 		{
 			// if we've been interrupted, servsock will be null and serverOK will be true
 			if(servsock != null)
@@ -360,7 +360,7 @@ public class SMTPserver extends Thread implements Tickable
 			if(sock!=null)
 				sock.close();
 		}
-		catch(IOException e)
+		catch(final IOException e)
 		{
 		}
 	}
@@ -373,7 +373,7 @@ public class SMTPserver extends Thread implements Tickable
 		Log.sysOut(getName(),"Shutting down.");
 		if (S != null)
 			S.println( getName() + " shutting down.");
-		try{servsock.close(); Thread.sleep(100);}catch(Exception e){}
+		try{servsock.close(); Thread.sleep(100);}catch(final Exception e){}
 		threadPool.shutdown();
 		if(getTickStatus()==Tickable.STATUS_NOT)
 			tick(this,Tickable.TICKID_READYTOSTOP);
@@ -381,7 +381,7 @@ public class SMTPserver extends Thread implements Tickable
 		{
 			int att=0;
 			while((att<100)&&(getTickStatus()!=Tickable.STATUS_NOT))
-			{try{att++;Thread.sleep(100);}catch(Exception e){}}
+			{try{att++;Thread.sleep(100);}catch(final Exception e){}}
 		}
 		threadPool.shutdownNow();
 		CMLib.killThread(this,1000,30);
@@ -399,22 +399,22 @@ public class SMTPserver extends Thread implements Tickable
 		tickStatus=STATUS_START;
 		if((tickID==Tickable.TICKID_READYTOSTOP)||(tickID==Tickable.TICKID_EMAIL))
 		{
-			MassMailer massMailer = new MassMailer(page,domain,oldEmailComplaints);
+			final MassMailer massMailer = new MassMailer(page,domain,oldEmailComplaints);
 
-			TreeMap<String, JournalsLibrary.SMTPJournal> set=getJournalSets();
+			final TreeMap<String, JournalsLibrary.SMTPJournal> set=getJournalSets();
 			long lastAllProcessing=0;
 			if(Resources.isPropResource("SMTP","LASTALLPROCESING"))
 				lastAllProcessing=CMath.s_long(Resources.getPropResource("SMTP","LASTALLPROCESING"));
 			if(lastAllProcessing==0)
 				lastAllProcessing=System.currentTimeMillis()-(10*60*1000);
-			long nextAllProcessing=System.currentTimeMillis();
+			final long nextAllProcessing=System.currentTimeMillis();
 
 			// this is where it should attempt any mail forwarding
 			// remember, a 5 day old private mail message is a goner
 			// remember that new to all messages need to be parsed
 			// for subscribe/unsubscribe and deleted, or then
 			// forwarded to all members private boxes.  Lots of work to do!
-			for(JournalsLibrary.SMTPJournal smtpJournal : set.values())
+			for(final JournalsLibrary.SMTPJournal smtpJournal : set.values())
 			{
 				final String journalName=smtpJournal.name;
 				if(smtpJournal.forward)
@@ -472,13 +472,13 @@ public class SMTPserver extends Thread implements Tickable
 									else
 										jrnlMessage="<HTML><BODY>"+jrnlMessage+"</BODY></HTML>";
 								}
-								Map<String, List<String>> lists=Resources.getCachedMultiLists("mailinglists.txt",true);
-								List<String> mylist=lists.get(journalName);
+								final Map<String, List<String>> lists=Resources.getCachedMultiLists("mailinglists.txt",true);
+								final List<String> mylist=lists.get(journalName);
 								if((mylist!=null)&&(mylist.contains(msg.from)))
 								{
 									for(int i=0;i<mylist.size();i++)
 									{
-										String emailToName=mylist.get(i);
+										final String emailToName=mylist.get(i);
 										if(CMProps.getBoolVar(CMProps.Bool.EMAILFORWARDING))
 											CMLib.database().DBWriteJournalEmail(mailboxName(),journalName,msg.from,emailToName,jrnlSubj,jrnlMessage);
 									}
@@ -488,7 +488,7 @@ public class SMTPserver extends Thread implements Tickable
 								CMLib.database().DBDeleteJournal(journalName,msg.key);
 							else
 							{
-								Calendar IQE=Calendar.getInstance();
+								final Calendar IQE=Calendar.getInstance();
 								IQE.setTimeInMillis(msg.update);
 								IQE.add(Calendar.DATE,getJournalDays());
 								if(IQE.getTimeInMillis()<System.currentTimeMillis())
@@ -506,9 +506,9 @@ public class SMTPserver extends Thread implements Tickable
 			{
 				if((mailboxName()!=null)&&(mailboxName().length()>0))
 				{
-					List<JournalsLibrary.JournalEntry> emails=CMLib.database().DBReadJournalMsgs(mailboxName());
+					final List<JournalsLibrary.JournalEntry> emails=CMLib.database().DBReadJournalMsgs(mailboxName());
 					if(emails!=null)
-					for(JournalsLibrary.JournalEntry mail : emails)
+					for(final JournalsLibrary.JournalEntry mail : emails)
 					{
 						if((mail.data.length()>0)&&(isAForwardingJournal(mail.data)))
 							massMailer.addMail(mail, mailboxName(), mail.data, true);
@@ -525,7 +525,7 @@ public class SMTPserver extends Thread implements Tickable
 			new Thread(Thread.currentThread().getThreadGroup(),massMailer,"MassMailer"+Thread.currentThread().getThreadGroup().getName().charAt(0)).start();
 		}
 		System.gc();
-		try{Thread.sleep(1000);}catch(Exception ex){}
+		try{Thread.sleep(1000);}catch(final Exception ex){}
 		tickStatus=STATUS_NOT;
 		return true;
 	}
@@ -544,7 +544,7 @@ public class SMTPserver extends Thread implements Tickable
 				// (so run() can tell it was interrupted & didn't have an error)
 				servsock = null;
 			}
-			catch(IOException e)
+			catch(final IOException e)
 			{
 			}
 		}
@@ -553,25 +553,25 @@ public class SMTPserver extends Thread implements Tickable
 
 	public int getMaxMsgs()
 	{
-		String s=page.getStr("MAXMSGS");
+		final String s=page.getStr("MAXMSGS");
 		if(s==null) return Integer.MAX_VALUE;
-		int x=CMath.s_int(s);
+		final int x=CMath.s_int(s);
 		if(x==0) return Integer.MAX_VALUE;
 		return x;
 	}
 	public int getJournalDays()
 	{
-		String s=page.getStr("JOURNALDAYS");
+		final String s=page.getStr("JOURNALDAYS");
 		if(s==null) return (365*20);
-		int x=CMath.s_int(s);
+		final int x=CMath.s_int(s);
 		if(x==0) return (365*20);
 		return x;
 	}
 	public long getMaxMsgSize()
 	{
-		String s=page.getStr("MAXMSGSIZE");
+		final String s=page.getStr("MAXMSGSIZE");
 		if(s==null) return Long.MAX_VALUE;
-		long x=CMath.s_long(s);
+		final long x=CMath.s_long(s);
 		if(x==0) return Long.MAX_VALUE;
 		return x;
 	}

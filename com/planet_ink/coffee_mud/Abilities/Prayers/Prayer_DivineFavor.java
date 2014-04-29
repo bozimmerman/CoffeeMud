@@ -52,7 +52,7 @@ public class Prayer_DivineFavor extends Prayer
 		// undo the affects of this spell
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		super.unInvoke();
 
@@ -90,7 +90,7 @@ public class Prayer_DivineFavor extends Prayer
 		&&(((MOB)affected).getWorshipCharID().length()>0)
 		&&(!((MOB)affected).getVictim().getWorshipCharID().equals(((MOB)affected).getWorshipCharID())))
 		{
-			MOB deityM=CMLib.map().getDeity(((MOB)affected).getWorshipCharID());
+			final MOB deityM=CMLib.map().getDeity(((MOB)affected).getWorshipCharID());
 			if(deityM!=null)
 			{
 				struckDownToday=true;
@@ -115,7 +115,7 @@ public class Prayer_DivineFavor extends Prayer
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
@@ -123,7 +123,7 @@ public class Prayer_DivineFavor extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> become(s) divinely favored.":"^S<S-NAME> "+prayWord(mob)+" for divine favor.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> become(s) divinely favored.":"^S<S-NAME> "+prayWord(mob)+" for divine favor.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

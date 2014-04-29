@@ -60,10 +60,10 @@ public class Skill_QuickChange extends BardSkill
 
 	public List<PackedItem> getAllWornItems(MOB mob)
 	{
-		List<PackedItem> items=new LinkedList<PackedItem>();
-		for(Enumeration<Item> i= mob.items(); i.hasMoreElements();)
+		final List<PackedItem> items=new LinkedList<PackedItem>();
+		for(final Enumeration<Item> i= mob.items(); i.hasMoreElements();)
 		{
-			Item I=i.nextElement();
+			final Item I=i.nextElement();
 			if((!I.amWearingAt(Wearable.IN_INVENTORY))
 			||(!I.ultimateContainer(null).amWearingAt(Wearable.IN_INVENTORY)))
 				items.add(new PackedItem(I,I.container(),I.rawWornCode()));
@@ -73,23 +73,23 @@ public class Skill_QuickChange extends BardSkill
 
 	public List<PackedItem> getAllPackedItems(Session S)
 	{
-		List<PackedItem> items=new LinkedList<PackedItem>();
+		final List<PackedItem> items=new LinkedList<PackedItem>();
 		if(super.miscText.trim().length()>0)
 		{
-			int locStart=super.miscText.lastIndexOf(locationsDelim);
-			int contStart=super.miscText.lastIndexOf(containerDelim);
+			final int locStart=super.miscText.lastIndexOf(locationsDelim);
+			final int contStart=super.miscText.lastIndexOf(containerDelim);
 			if((locStart>0)&&(contStart>locStart))
 			{
-				List<Item> itemList=new Vector<Item>();
+				final List<Item> itemList=new Vector<Item>();
 				CMLib.coffeeMaker().addItemsFromXML(super.miscText.substring(0,locStart), itemList, S);
-				List<String> itemLocList=CMParms.parseAny(super.miscText.substring(locStart+locationsDelim.length(),contStart), ';', true);
-				List<String> itemConList=CMParms.parseAny(super.miscText.substring(contStart+containerDelim.length()), ';', true);
+				final List<String> itemLocList=CMParms.parseAny(super.miscText.substring(locStart+locationsDelim.length(),contStart), ';', true);
+				final List<String> itemConList=CMParms.parseAny(super.miscText.substring(contStart+containerDelim.length()), ';', true);
 				if((itemLocList.size()==itemList.size())&&(itemLocList.size()==itemConList.size()))
 				{
 					for(int i=0;i<itemList.size();i++)
 					{
-						long wornLoc=CMath.s_long(itemLocList.get(i));
-						int containerDex=CMath.s_int(itemConList.get(i));
+						final long wornLoc=CMath.s_long(itemLocList.get(i));
+						final int containerDex=CMath.s_int(itemConList.get(i));
 						Item containerI=null;
 						if(containerDex>=0)
 							containerI=itemList.get(containerDex);
@@ -103,7 +103,7 @@ public class Skill_QuickChange extends BardSkill
 
 	public void wearThese(MOB mob, List<PackedItem> items)
 	{
-		for(PackedItem I : items)
+		for(final PackedItem I : items)
 		{
 			if(I.containerI instanceof Container)
 				I.I.setContainer((Container)I.containerI);
@@ -114,20 +114,20 @@ public class Skill_QuickChange extends BardSkill
 
 	public void packThese(List<PackedItem> items)
 	{
-		List<Item> itemList=new Vector<Item>();
-		for(PackedItem I : items)
+		final List<Item> itemList=new Vector<Item>();
+		for(final PackedItem I : items)
 			itemList.add(I.I);
-		StringBuilder str=new StringBuilder("<ITEMS>");
+		final StringBuilder str=new StringBuilder("<ITEMS>");
 		str.append(CMLib.coffeeMaker().getItemsXML(itemList, new Hashtable(), new HashSet(), 0));
 		str.append("</ITEMS>");
 		str.append(locationsDelim);
-		for(PackedItem I : items)
+		for(final PackedItem I : items)
 			str.append(I.wornLoc).append(";");
 		str.append(containerDelim);
-		for(PackedItem I : items)
+		for(final PackedItem I : items)
 			str.append(itemList.indexOf(I.containerI)).append(";");
 		super.miscText=str.toString();
-		for(PackedItem I : items)
+		for(final PackedItem I : items)
 			I.I.destroy();
 	}
 
@@ -137,16 +137,16 @@ public class Skill_QuickChange extends BardSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_DELICATE_HANDS_ACT|(auto?CMMsg.MASK_ALWAYS:0),"<S-NAME> perform(s) a quick costume change.");
+			final CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_DELICATE_HANDS_ACT|(auto?CMMsg.MASK_ALWAYS:0),"<S-NAME> perform(s) a quick costume change.");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				List<PackedItem> myCurrentGear=getAllWornItems(mob);
-				List<PackedItem> mySavedGear=getAllPackedItems(mob.session());
+				final List<PackedItem> myCurrentGear=getAllWornItems(mob);
+				final List<PackedItem> mySavedGear=getAllPackedItems(mob.session());
 				packThese(myCurrentGear);
 				if(mySavedGear.size()==0)
 					mob.tell("That outfit is now tucked away for a quick change later on.");

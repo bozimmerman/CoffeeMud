@@ -49,7 +49,7 @@ public class Chant_SenseLife extends Chant
 		// undo the affects of this spell
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		super.unInvoke();
 		if(canBeUninvoked())
@@ -64,7 +64,7 @@ public class Chant_SenseLife extends Chant
 		if(R==null) return false;
 		for(int i=0;i<R.numInhabitants();i++)
 		{
-			MOB M=R.fetchInhabitant(i);
+			final MOB M=R.fetchInhabitant(i);
 			if((M!=null)
 			&&(!CMLib.flags().isGolem(M))
 			&&(M.charStats().getMyRace().canBreedWith(M.charStats().getMyRace()))
@@ -80,8 +80,8 @@ public class Chant_SenseLife extends Chant
 		String dirs="";
 		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 		{
-			Room R=mob.location().getRoomInDir(d);
-			Exit E=mob.location().getExitInDir(d);
+			final Room R=mob.location().getRoomInDir(d);
+			final Exit E=mob.location().getExitInDir(d);
 			if((R!=null)&&(E!=null)&&(inhabitated(mob,R)))
 			{
 				if(last.length()>0)
@@ -137,7 +137,7 @@ public class Chant_SenseLife extends Chant
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
@@ -145,7 +145,7 @@ public class Chant_SenseLife extends Chant
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> gain(s) life-senses!":"^S<S-NAME> chant(s) softly, and then stop(s) to listen.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> gain(s) life-senses!":"^S<S-NAME> chant(s) softly, and then stop(s) to listen.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

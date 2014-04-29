@@ -26,5 +26,5 @@ public class SingleEnumeration<K> implements Enumeration<K>
 		this.k=k;
 	}
 	@Override public boolean hasMoreElements(){ return k!=null;}
-	@Override public K nextElement(){ K o=k; k=null; return o; }
+	@Override public K nextElement(){ final K o=k; k=null; return o; }
 }

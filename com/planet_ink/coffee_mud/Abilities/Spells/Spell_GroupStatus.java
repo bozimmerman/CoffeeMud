@@ -53,20 +53,20 @@ public class Spell_GroupStatus extends Spell
 			return false;
 		if(ticking instanceof MOB)
 		{
-			MOB mob=(MOB)ticking;
+			final MOB mob=(MOB)ticking;
 			if(((MOB)ticking)==invoker())
 			{
 				if(groupMembers==null)
 				{
 					groupMembers=new SLinkedList<Pair<MOB,Ability>>();
-					Set<MOB> grp=mob.getGroupMembers(new TreeSet<MOB>());
-					for(MOB M : grp)
+					final Set<MOB> grp=mob.getGroupMembers(new TreeSet<MOB>());
+					for(final MOB M : grp)
 					{
-						Pair<MOB,Ability> P=new Pair<MOB,Ability>(M,null);
+						final Pair<MOB,Ability> P=new Pair<MOB,Ability>(M,null);
 						groupMembers.add(P);
 					}
 				}
-				for(Pair<MOB,Ability> P : groupMembers)
+				for(final Pair<MOB,Ability> P : groupMembers)
 				{
 					if(P.second==null)
 					{
@@ -141,7 +141,7 @@ public class Spell_GroupStatus extends Spell
 	{
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		if(canBeUninvoked())
 		{
@@ -174,11 +174,11 @@ public class Spell_GroupStatus extends Spell
 
 
 		// now see if it worked
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> point(s) at <S-HIS-HER> group members and knowingly cast(s) a spell.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> point(s) at <S-HIS-HER> group members and knowingly cast(s) a spell.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

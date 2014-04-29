@@ -66,7 +66,7 @@ public class Monitor extends Listen
 		{
 			String name;
 			String rest="";
-			int x=parameters.indexOf(' ');
+			final int x=parameters.indexOf(' ');
 			if(x>0)
 			{
 				name=parameters.substring(0,x).trim();
@@ -82,21 +82,21 @@ public class Monitor extends Listen
 				req.sendMsg("[FAIL No "+getCommandWord()+"ER name given]");
 				return;
 			}
-			List<ListenCriterium> crit=getCriterium(rest);
+			final List<ListenCriterium> crit=getCriterium(rest);
 			if(crit==null)
 				return;
 			else
 			if(crit.size()==0)
 			{
-				List<String> msgs=new LinkedList<String>();
-				for(Listener l : listeners)
+				final List<String> msgs=new LinkedList<String>();
+				for(final Listener l : listeners)
 					if(l.channelName.equalsIgnoreCase(name))
 					{
 						synchronized(l)
 						{
-							for(Iterator<String> i = l.msgs.iterator();i.hasNext();)
+							for(final Iterator<String> i = l.msgs.iterator();i.hasNext();)
 							{
-								String s=i.next();
+								final String s=i.next();
 								msgs.add(s);
 								i.remove();
 							}
@@ -107,20 +107,20 @@ public class Monitor extends Listen
 				else
 				{
 					req.sendMsg("[OK /MESSAGES:"+msgs.size()+"]");
-					for(String s : msgs)
+					for(final String s : msgs)
 						req.sendMsg("[MESSAGE "+s+"]");
 				}
 			}
 			else
 			{
-				Listener newListener = new Listener(name,crit.toArray(new ListenCriterium[0]));
+				final Listener newListener = new Listener(name,crit.toArray(new ListenCriterium[0]));
 				CMLib.commands().addGlobalMonitor(newListener);
 				req.addDependent(newListener.channelName, newListener);
 				listeners.add(newListener);
 				req.sendMsg("[OK]");
 			}
 		}
-		catch(Exception ioe)
+		catch(final Exception ioe)
 		{
 			Log.errOut(className,ioe);
 			req.close();

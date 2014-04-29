@@ -55,7 +55,7 @@ public class Song_Comprehension extends Song
 		&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_LANGUAGE)
 		&&(((MOB)affected).fetchEffect(msg.tool().ID())==null))
 		{
-			String str=CMStrings.getSayFromMessage(msg.sourceMessage());
+			final String str=CMStrings.getSayFromMessage(msg.sourceMessage());
 			if(str!=null)
 			{
 				if(CMath.bset(msg.sourceMajor(),CMMsg.MASK_CHANNEL))

@@ -15,6 +15,7 @@ import com.planet_ink.coffee_mud.Libraries.Quests;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 /*
    Copyright 2000-2014 Bo Zimmerman
@@ -164,7 +165,7 @@ public interface QuestManager extends CMLibrary
 				if(emptyOK) return "";
 				throw new CMException("You must enter a value!");
 			}
-			int x=CMParms.indexOf(choices,((String)str).toUpperCase().trim());
+			final int x=CMParms.indexOf(choices,((String)str).toUpperCase().trim());
 			if(x<0)
 				throw new CMException("That is not a valid option.  Choices include: "+CMParms.toStringList(choices));
 			return choices[x];
@@ -174,17 +175,17 @@ public interface QuestManager extends CMLibrary
 			if((choices==null)||(choices.length==0)) throw new CMException("NO choices?!");
 			if(!(str instanceof String)) throw new CMException("Bad type: "+((str==null)?"null":str.getClass().getName()));
 			StringBuffer choiceNames=new StringBuffer("");
-			for(int c=0;c<choices.length;c++)
-				choiceNames.append(((Environmental)choices[c]).Name()+", ");
+			for (final Object choice : choices)
+				choiceNames.append(((Environmental)choice).Name()+", ");
 			if(choiceNames.toString().endsWith(", ")) choiceNames=new StringBuffer(choiceNames.substring(0,choiceNames.length()-2));
 			if(((String)str).trim().length()==0)
 			{
 				if(emptyOK) return "";
 				throw new CMException("You must enter one of the following: "+choiceNames.toString());
 			}
-			Environmental[] ES=new Environmental[choices.length];
+			final Environmental[] ES=new Environmental[choices.length];
 			for(int e=0;e<choices.length;e++) ES[e]=(Environmental)choices[e];
-			Environmental E=CMLib.english().fetchEnvironmental(Arrays.asList(ES),(String)str,false);
+			final Environmental E=CMLib.english().fetchEnvironmental(Arrays.asList(ES),(String)str,false);
 			if(E==null)
 				throw new CMException("'"+str+"' was not found.  You must enter one of the following: "+choiceNames.toString());
 			return CMLib.english().getContextName(ES,E);
@@ -213,14 +214,14 @@ public interface QuestManager extends CMLibrary
 				return ((String) str).toUpperCase().trim();
 			if((((String)str).indexOf(' ')>0)&&(((String)str).indexOf('\"')<0))
 				throw new CMException("Multiple-word room names/ids must be grouped with double-quotes.  If this represents several names, put each name in double-quotes as so: \"name1\" \"name2\" \"multi word name\".");
-			Vector<String> V=CMParms.parse((String)str);
+			final Vector<String> V=CMParms.parse((String)str);
 			if(V.size()==0){ if(emptyOK) return ""; throw new CMException("You must enter an room id(s), name(s), keyword ANY, or ANY MASK=...");}
 			String s=null;
 			for(int v=0;v<V.size();v++)
 			{
 				s=V.elementAt(v);
 				boolean found=false;
-				Room R=CMLib.map().getRoom(s);
+				final Room R=CMLib.map().getRoom(s);
 				if(R!=null) found=true;
 				if(!found) found=CMLib.map().findWorldRoomLiberally(null,s,"R",50,30000)!=null;
 				if(!found) throw new CMException("'"+(V.elementAt(v))+"' is not a valid room name, id, or description.");
@@ -239,12 +240,12 @@ public interface QuestManager extends CMLibrary
 			if(((String)str).trim().toUpperCase().startsWith("ANY MASK=")) return str;
 			if((((String)str).indexOf(' ')>0)&&(((String)str).indexOf('\"')<0))
 				throw new CMException("Multiple-word area names/ids must be grouped with double-quotes.  If this represents several names, put each name in double-quotes as so: \"name1\" \"name2\" \"multi word name\".");
-			Vector<String> V=CMParms.parse((String)str);
+			final Vector<String> V=CMParms.parse((String)str);
 			if(V.size()==0){ if(emptyOK) return ""; throw new CMException("You must enter an area name(s), keyword ANY, or ANY MASK=...");}
-			StringBuffer returnStr=new StringBuffer("");
+			final StringBuffer returnStr=new StringBuffer("");
 			for(int v=0;v<V.size();v++)
 			{
-				Area A=CMLib.map().findArea(V.elementAt(v));
+				final Area A=CMLib.map().findArea(V.elementAt(v));
 				if(A==null) throw new CMException("'"+(V.elementAt(v))+"' is not a valid area name.");
 				returnStr.append("\""+A.name()+"\" ");
 			}
@@ -255,17 +256,17 @@ public interface QuestManager extends CMLibrary
 			if((choices==null)||(choices.length==0)) throw new CMException("NO choices?!");
 			if(!(str instanceof String)) throw new CMException("Bad type: "+((str==null)?"null":str.getClass().getName()));
 			StringBuffer choiceNames=new StringBuffer("");
-			for(int c=0;c<choices.length;c++)
-				choiceNames.append(((Environmental)choices[c]).Name()+", ");
+			for (final Object choice : choices)
+				choiceNames.append(((Environmental)choice).Name()+", ");
 			if(choiceNames.toString().endsWith(", ")) choiceNames=new StringBuffer(choiceNames.substring(0,choiceNames.length()-2));
 			if(((String)str).trim().length()==0)
 			{
 				if(emptyOK) return "";
 				throw new CMException("You must enter one of the following: "+choiceNames.toString());
 			}
-			Environmental[] ES=new Environmental[choices.length];
+			final Environmental[] ES=new Environmental[choices.length];
 			for(int e=0;e<choices.length;e++) ES[e]=(Environmental)choices[e];
-			Environmental E=CMLib.english().fetchEnvironmental(Arrays.asList(ES),(String)str,false);
+			final Environmental E=CMLib.english().fetchEnvironmental(Arrays.asList(ES),(String)str,false);
 			if(E==null)
 				throw new CMException("'"+str+"' was not found.  You must enter one of the following: "+choiceNames.toString());
 			return CMLib.english().getContextName(ES,E);
@@ -309,7 +310,7 @@ public interface QuestManager extends CMLibrary
 		new GenericEditor.CMEval(){ @Override
 		public Object eval(Object str, Object[] choices, boolean emptyOK) throws CMException { //zappermask
 			if(!(str instanceof String)) throw new CMException("Bad type: "+((str==null)?"null":str.getClass().getName()));
-			Vector<String> errors=new Vector<String>(1);
+			final Vector<String> errors=new Vector<String>(1);
 			if(!CMLib.masking().syntaxCheck((String)str,errors))
 				throw new CMException("Mask Error: "+CMParms.toStringList(errors));
 			return str;
@@ -317,8 +318,8 @@ public interface QuestManager extends CMLibrary
 		new GenericEditor.CMEval(){ @Override
 		public Object eval(Object str, Object[] choices, boolean emptyOK) throws CMException { //ability
 			if(!(str instanceof String)) throw new CMException("Bad type: "+((str==null)?"null":str.getClass().getName()));
-			StringBuffer list=new StringBuffer("");
-			for(Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
+			final StringBuffer list=new StringBuffer("");
+			for(final Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
 				list.append(e.nextElement().ID()+", ");
 			if(((String)str).trim().length()==0)
 			{
@@ -341,7 +342,7 @@ public interface QuestManager extends CMLibrary
 				if(emptyOK) return "";
 				throw new CMException("You must enter a quest name!");
 			}
-			Quest Q=CMLib.quests().fetchQuest(((String)str).trim());
+			final Quest Q=CMLib.quests().fetchQuest(((String)str).trim());
 			if(Q==null)
 				throw new CMException("A quest of the name '"+((String)str).trim()+"' does not exist.  Enter another.");
 			return Q.name();
@@ -358,7 +359,7 @@ public interface QuestManager extends CMLibrary
 				if(emptyOK) return "";
 				throw new CMException("You must enter a faction id!");
 			}
-			Faction F=CMLib.factions().getFaction((String)str);
+			final Faction F=CMLib.factions().getFaction((String)str);
 			if(F==null)
 				throw new CMException("A faction of the name '"+((String)str).trim()+"' does not exist.  Enter another.");
 			return F.factionID();

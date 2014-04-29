@@ -67,21 +67,21 @@ public class Prayer_RemoveDeathMark extends Prayer implements MendingSkill
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		MOB target=this.getTarget(mob,commands,givenTarget);
+		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
-		Hashtable remove=new Hashtable();
+		final boolean success=proficiencyCheck(mob,0,auto);
+		final Hashtable remove=new Hashtable();
 		Ability E=target.fetchEffect("Thief_Mark");
 		if(E!=null) remove.put(E,target);
 		E=target.fetchEffect("Thief_ContractHit");
 		if(E!=null) remove.put(E,target);
-		for(Enumeration e=CMLib.players().players();e.hasMoreElements();)
+		for(final Enumeration e=CMLib.players().players();e.hasMoreElements();)
 		{
-			MOB M=(MOB)e.nextElement();
+			final MOB M=(MOB)e.nextElement();
 			if((M!=null)&&(M!=target))
 			{
 				E=M.fetchEffect("Thief_Mark");
@@ -96,14 +96,14 @@ public class Prayer_RemoveDeathMark extends Prayer implements MendingSkill
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"^SA glow surrounds <T-NAME>.^?":"^S<S-NAME> call(s) on "+hisHerDiety(mob)+" for <T-NAME> to be released from a death mark.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"^SA glow surrounds <T-NAME>.^?":"^S<S-NAME> call(s) on "+hisHerDiety(mob)+" for <T-NAME> to be released from a death mark.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				for(Enumeration e=remove.keys();e.hasMoreElements();)
+				for(final Enumeration e=remove.keys();e.hasMoreElements();)
 				{
-					Ability A=(Ability)e.nextElement();
-					MOB M=(MOB)remove.get(A);
+					final Ability A=(Ability)e.nextElement();
+					final MOB M=(MOB)remove.get(A);
 					A.unInvoke();
 					M.delEffect(A);
 				}

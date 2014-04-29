@@ -14,7 +14,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -70,24 +69,24 @@ public class Prayer_MassHeal extends Prayer implements MendingSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
-		Set<MOB> h=properTargets(mob,givenTarget,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
+		final Set<MOB> h=properTargets(mob,givenTarget,auto);
 		if(h==null) return false;
-		for(Iterator e=h.iterator();e.hasNext();)
+		for (final Object element : h)
 		{
-			MOB target=(MOB)e.next();
-			boolean undead=target.charStats().getMyRace().racialCategory().equals("Undead");
+			final MOB target=(MOB)element;
+			final boolean undead=target.charStats().getMyRace().racialCategory().equals("Undead");
 			if(success)
 			{
 				// it worked, so build a copy of this ability,
 				// and add it to the affects list of the
 				// affected MOB.  Then tell everyone else
 				// what happened.
-				CMMsg msg=CMClass.getMsg(mob,target,this,(!undead?0:CMMsg.MASK_MALICIOUS)|verbalCastCode(mob,target,auto),auto?"<T-NAME> become(s) surrounded by a white light.":"^S<S-NAME> sweep(s) <S-HIS-HER> hands over <T-NAMESELF>.^?");
+				final CMMsg msg=CMClass.getMsg(mob,target,this,(!undead?0:CMMsg.MASK_MALICIOUS)|verbalCastCode(mob,target,auto),auto?"<T-NAME> become(s) surrounded by a white light.":"^S<S-NAME> sweep(s) <S-HIS-HER> hands over <T-NAMESELF>.^?");
 				if(mob.location().okMessage(mob,msg))
 				{
 					mob.location().send(mob,msg);
-					int healing=CMLib.dice().roll(adjustedLevel(mob,asLevel),5,adjustedLevel(mob,asLevel));
+					final int healing=CMLib.dice().roll(adjustedLevel(mob,asLevel),5,adjustedLevel(mob,asLevel));
 					CMLib.combat().postHealing(mob,target,this,CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,healing,null);
 					target.tell("You feel tons better!");
 				}

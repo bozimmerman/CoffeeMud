@@ -113,8 +113,8 @@ public class GenDeity extends StdDeity
 	public String[] getStatCodes()
 	{
 		if(codes!=null) return codes;
-		String[] MYCODES=CMProps.getStatCodesList(GenDeity.MYCODES,this);
-		String[] superCodes=GenericBuilder.GENMOBCODES;
+		final String[] MYCODES=CMProps.getStatCodesList(GenDeity.MYCODES,this);
+		final String[] superCodes=GenericBuilder.GENMOBCODES;
 		codes=new String[superCodes.length+MYCODES.length];
 		int i=0;
 		for(;i<superCodes.length;i++)
@@ -127,7 +127,7 @@ public class GenDeity extends StdDeity
 	public boolean sameAs(Environmental E)
 	{
 		if(!(E instanceof GenDeity)) return false;
-		String[] codes=getStatCodes();
+		final String[] codes=getStatCodes();
 		for(int i=0;i<codes.length;i++)
 			if(!E.getStat(codes[i]).equals(getStat(codes[i])))
 				return false;

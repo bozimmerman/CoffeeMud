@@ -83,7 +83,7 @@ public class Listen extends CM1Command
 				this.parm=(parm==null)?"":parm.toUpperCase().trim();
 				if(CMParms.indexOf(CMMsg.MASK_DESCS,this.parm)>=0)
 				{
-					Integer I=CMMsg.Desc.getMSGTYPE_DESCS().get(this.parm);
+					final Integer I=CMMsg.Desc.getMSGTYPE_DESCS().get(this.parm);
 					if(I!=null)
 						parmInt=I.intValue();
 					else
@@ -141,7 +141,7 @@ public class Listen extends CM1Command
 
 		public boolean doesMonitor(final Room room, final CMMsg msg)
 		{
-			for(ListenCriterium crit : crits)
+			for(final ListenCriterium crit : crits)
 				if(!doesMonitor(crit,room,msg))
 					return false;
 			return true;
@@ -168,7 +168,7 @@ public class Listen extends CM1Command
 					return "LOGOUT "+msg.source().Name();
 			default:
 			{
-				StringBuilder str=new StringBuilder("");
+				final StringBuilder str=new StringBuilder("");
 				str.append('\"').append(msg.source().Name()).append('\"').append(' ');
 				str.append(minorDesc(msg.sourceMinor())).append(' ');
 				if(msg.target()!=null)
@@ -196,7 +196,7 @@ public class Listen extends CM1Command
 				if(doesMonitor(room,msg))
 					sendMsg(this, messageToString(msg));
 			}
-			catch(IOException ioe)
+			catch(final IOException ioe)
 			{
 				CMLib.commands().delGlobalMonitor(this);
 				req.delDependent(channelName);
@@ -213,10 +213,10 @@ public class Listen extends CM1Command
 		{
 			if(crit.parmInt<0)
 				return false;
-			ChannelsLibrary.CMChannel chan=CMLib.channels().getChannel(crit.parmInt);
+			final ChannelsLibrary.CMChannel chan=CMLib.channels().getChannel(crit.parmInt);
 			if(!CMLib.masking().maskCheck(chan.mask,user,true))
 				return false;
-			Set<ChannelsLibrary.ChannelFlag> flags=chan.flags;
+			final Set<ChannelsLibrary.ChannelFlag> flags=chan.flags;
 			if(flags.contains(ChannelsLibrary.ChannelFlag.CLANONLY)||flags.contains(ChannelsLibrary.ChannelFlag.CLANALLYONLY))
 				return CMSecurity.isAllowedAnywhere(user, CMSecurity.SecFlag.STAT);
 			return true;
@@ -279,7 +279,7 @@ public class Listen extends CM1Command
 
 	public List<ListenCriterium> getCriterium(String rest) throws IOException
 	{
-		List<ListenCriterium> list=new Vector<ListenCriterium>();
+		final List<ListenCriterium> list=new Vector<ListenCriterium>();
 		while(rest.length()>0)
 		{
 			String codeStr;
@@ -304,7 +304,7 @@ public class Listen extends CM1Command
 			{
 				STATTYPE.valueOf(codeStr);
 			}
-			catch(Exception iox)
+			catch(final Exception iox)
 			{
 				req.sendMsg("[FAIL "+codeStr+" NOT "+CMParms.toStringList(STATTYPE.values())+"]");
 				return null;
@@ -318,7 +318,7 @@ public class Listen extends CM1Command
 				{
 					STATTYPE.valueOf(parm.toUpperCase().trim());
 					parm="";
-				}catch(java.lang.IllegalArgumentException ix)
+				}catch(final java.lang.IllegalArgumentException ix)
 				{
 					rest=rest.substring(x+1).trim();
 				}
@@ -330,7 +330,7 @@ public class Listen extends CM1Command
 				{
 					STATTYPE.valueOf(rest.toUpperCase().trim());
 					parm="";
-				}catch(java.lang.IllegalArgumentException ix)
+				}catch(final java.lang.IllegalArgumentException ix)
 				{
 					parm=rest;
 					rest="";
@@ -341,7 +341,7 @@ public class Listen extends CM1Command
 				parm="";
 				rest="";
 			}
-			ListenCriterium crit=new ListenCriterium(STATTYPE.valueOf(codeStr),req.getTarget(),parm);
+			final ListenCriterium crit=new ListenCriterium(STATTYPE.valueOf(codeStr),req.getTarget(),parm);
 			if(!parameterCheck(req.getUser(),crit))
 			{
 				req.sendMsg("[FAIL "+codeStr+" PARAMETERS]");
@@ -364,7 +364,7 @@ public class Listen extends CM1Command
 		{
 			String name;
 			String rest="";
-			int x=parameters.indexOf(' ');
+			final int x=parameters.indexOf(' ');
 			if(x>0)
 			{
 				name=parameters.substring(0,x).trim();
@@ -380,7 +380,7 @@ public class Listen extends CM1Command
 				req.sendMsg("[FAIL No "+getCommandWord()+"ER name given]");
 				return;
 			}
-			List<ListenCriterium> crit=getCriterium(rest);
+			final List<ListenCriterium> crit=getCriterium(rest);
 			if(crit==null)
 				return;
 			else
@@ -388,14 +388,14 @@ public class Listen extends CM1Command
 				req.sendMsg("[FAIL NOT "+CMParms.toStringList(STATTYPE.values())+"]");
 			else
 			{
-				Listener newListener = new Listener(name,crit.toArray(new ListenCriterium[0]));
+				final Listener newListener = new Listener(name,crit.toArray(new ListenCriterium[0]));
 				CMLib.commands().addGlobalMonitor(newListener);
 				req.addDependent(newListener.channelName, newListener);
 				listeners.add(newListener);
 				req.sendMsg("[OK]");
 			}
 		}
-		catch(Exception ioe)
+		catch(final Exception ioe)
 		{
 			Log.errOut(className,ioe);
 			req.close();

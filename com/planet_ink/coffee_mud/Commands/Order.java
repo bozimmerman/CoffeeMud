@@ -63,7 +63,7 @@ public class Order extends StdCommand
 		}
 
 		String whomToOrder=(String)commands.elementAt(0);
-		Vector V=new Vector();
+		final Vector V=new Vector();
 		boolean allFlag=whomToOrder.equalsIgnoreCase("all");
 		if(whomToOrder.toUpperCase().startsWith("ALL.")){ allFlag=true; whomToOrder="ALL "+whomToOrder.substring(4);}
 		if(whomToOrder.toUpperCase().endsWith(".ALL")){ allFlag=true; whomToOrder="ALL "+whomToOrder.substring(0,whomToOrder.length()-4);}
@@ -73,7 +73,7 @@ public class Order extends StdCommand
 		while(doBugFix || allFlag)
 		{
 			doBugFix=false;
-			MOB target=mob.location().fetchInhabitant(whomToOrder+addendumStr);
+			final MOB target=mob.location().fetchInhabitant(whomToOrder+addendumStr);
 			if(target==null) break;
 			if((CMLib.flags().canBeSeenBy(target,mob))
 			&&(target!=mob)
@@ -112,7 +112,7 @@ public class Order extends StdCommand
 		commands.removeElementAt(0);
 
 		CMObject O=CMLib.english().findCommand(mob,commands);
-		String order=CMParms.combine(commands,0);
+		final String order=CMParms.combine(commands,0);
 		if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.ORDER))
 		{
 			if((O instanceof Command)&&(!((Command)O).canBeOrdered()))
@@ -122,7 +122,7 @@ public class Order extends StdCommand
 			}
 		}
 
-		Vector doV=new Vector();
+		final Vector doV=new Vector();
 		for(int v=0;v<V.size();v++)
 		{
 			target=(MOB)V.elementAt(v);
@@ -155,7 +155,7 @@ public class Order extends StdCommand
 				mob.tell("You can't order '"+target.name(mob)+"' around.");
 			else
 			{
-				CMMsg msg=CMClass.getMsg(mob,target,null,CMMsg.MSG_SPEAK,CMMsg.MSG_ORDER,CMMsg.MSG_SPEAK,"^T<S-NAME> order(s) <T-NAMESELF> to '"+order+"'^?.");
+				final CMMsg msg=CMClass.getMsg(mob,target,null,CMMsg.MSG_SPEAK,CMMsg.MSG_ORDER,CMMsg.MSG_SPEAK,"^T<S-NAME> order(s) <T-NAMESELF> to '"+order+"'^?.");
 				if((mob.location().okMessage(mob,msg)))
 				{
 					mob.location().send(mob,msg);

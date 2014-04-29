@@ -89,7 +89,7 @@ public class MWSessionManager implements ServletSessionManager
 			final long currentTime=System.currentTimeMillis();
 			final long idleExpireTime=currentTime - config.getSessionMaxIdleMs();
 			final Date ageExpireTime=new Date(currentTime - config.getSessionMaxAgeMs());
-			for(Iterator<String> s=sessions.keySet().iterator();s.hasNext();)
+			for(final Iterator<String> s=sessions.keySet().iterator();s.hasNext();)
 			{
 				final String sessionID=s.next();
 				final SimpleServletSession session=sessions.get(sessionID);
@@ -118,11 +118,11 @@ public class MWSessionManager implements ServletSessionManager
 				Thread.sleep(1);
 				sessionID = request.getClientAddress().hashCode()+""+System.currentTimeMillis() + "" + System.nanoTime();
 			}
-		}catch(Exception e)
+		}catch(final Exception e)
 		{
 			config.getLogger().throwing("", "", e);
 		}
-		SimpleServletSession newSession = new MWServletSession(sessionID);
+		final SimpleServletSession newSession = new MWServletSession(sessionID);
 		synchronized(sessions)
 		{
 			sessions.put(sessionID, newSession);

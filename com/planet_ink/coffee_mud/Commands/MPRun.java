@@ -51,8 +51,8 @@ public class MPRun extends StdCommand
 		MOB checkMOB=mob;
 		if(commands.size()>1)
 		{
-			String firstParm=(String)commands.elementAt(1);
-			int x=firstParm.indexOf(':');
+			final String firstParm=(String)commands.elementAt(1);
+			final int x=firstParm.indexOf(':');
 			if(x>0)
 			{
 				checkMOB=CMLib.players().getLoadPlayer(firstParm.substring(0,x));
@@ -61,7 +61,7 @@ public class MPRun extends StdCommand
 					mob.addTattoo(new MOB.Tattoo("SYSTEM_MPRUNDOWN",(int)CMProps.getTicksPerMinute()));
 					return CMLib.commands().handleUnknownCommand(mob, commands);
 				}
-				String pw=firstParm.substring(x+1);
+				final String pw=firstParm.substring(x+1);
 				if(!checkMOB.playerStats().matchesPassword(pw))
 				{
 					mob.addTattoo(new MOB.Tattoo("SYSTEM_MPRUNDOWN",(int)(2 * CMProps.getTicksPerMinute())));
@@ -79,7 +79,7 @@ public class MPRun extends StdCommand
 		}
 		commands.removeElementAt(0);
 
-		String cmd = CMParms.combineWithQuotes(commands, 0);
+		final String cmd = CMParms.combineWithQuotes(commands, 0);
 		executeScript(mob, cmd);
 		mob.tell("Completed.");
 		return false;
@@ -87,11 +87,11 @@ public class MPRun extends StdCommand
 
 	private void executeScript(MOB mob, String script)
 	{
-		ScriptingEngine S=(ScriptingEngine)CMClass.getCommon("DefaultScriptingEngine");
+		final ScriptingEngine S=(ScriptingEngine)CMClass.getCommon("DefaultScriptingEngine");
 		S.setSavable(false);
 		S.setVarScope("*");
 		S.setScript(script);
-		CMMsg msg2=CMClass.getMsg(mob,mob,null,CMMsg.MSG_OK_VISUAL,null,null,"MPRUN");
+		final CMMsg msg2=CMClass.getMsg(mob,mob,null,CMMsg.MSG_OK_VISUAL,null,null,"MPRUN");
 		S.executeMsg(mob, msg2);
 		S.dequeResponses();
 		S.tick(mob,Tickable.TICKID_MOB);

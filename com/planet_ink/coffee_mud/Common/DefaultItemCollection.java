@@ -48,7 +48,7 @@ limitations under the License.
  */
 public class DefaultItemCollection implements ItemCollection, CMCommon
 {
-	private SVector<Item> contents = new SVector<Item>(0);
+	private final SVector<Item> contents = new SVector<Item>(0);
 
 	@Override public String ID() { return "DefaultItemCollection"; }
 	@Override public String name() { return ID();}
@@ -56,18 +56,18 @@ public class DefaultItemCollection implements ItemCollection, CMCommon
 	@Override
 	public CMObject copyOf()
 	{
-		DefaultItemCollection c=(DefaultItemCollection)newInstance();
+		final DefaultItemCollection c=(DefaultItemCollection)newInstance();
 		for(int i=0;i<contents.size();i++)
 		{
-			Item I=contents.get(i);
-			Item I2=(Item)I.copyOf();
+			final Item I=contents.get(i);
+			final Item I2=(Item)I.copyOf();
 			I2.setOwner(I.owner());
 			c.contents.add(I2);
 		}
 		for(int i=0;i<contents.size();i++)
 		{
-			Item I=contents.get(i);
-			Item I2=c.contents.get(i);
+			final Item I=contents.get(i);
+			final Item I2=c.contents.get(i);
 			if(I.container() != null)
 				for(int i2=0;i2<contents.size();i2++)
 					if(I.container() == contents.get(i2))
@@ -149,7 +149,7 @@ public class DefaultItemCollection implements ItemCollection, CMCommon
 		if(destroy)
 			for(int i=numItems()-1;i>=0;i--)
 			{
-				Item I=getItem(i);
+				final Item I=getItem(i);
 				if(I!=null) I.destroy();
 			}
 		contents.clear();
@@ -167,7 +167,7 @@ public class DefaultItemCollection implements ItemCollection, CMCommon
 				if(I!=null) applier.apply(I);
 			}
 		}
-		catch(ArrayIndexOutOfBoundsException e){}
+		catch(final ArrayIndexOutOfBoundsException e){}
 	}
 
 	@Override
@@ -177,7 +177,7 @@ public class DefaultItemCollection implements ItemCollection, CMCommon
 		{
 			return contents.elementAt(i);
 		}
-		catch(java.lang.ArrayIndexOutOfBoundsException x){}
+		catch(final java.lang.ArrayIndexOutOfBoundsException x){}
 		return null;
 	}
   @Override

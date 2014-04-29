@@ -70,7 +70,7 @@ public class Fighter_PointBlank extends FighterSkill
 		if((affected instanceof Weapon)
 		&&((Weapon)affected).amWearingAt(Wearable.IN_INVENTORY))
 		{
-			Weapon targetW=(Weapon)affected;
+			final Weapon targetW=(Weapon)affected;
 			qualifiedWeapons.remove(targetW);
 			targetW.delEffect(targetW.fetchEffect(ID()));
 			targetW.recoverPhyStats();
@@ -79,7 +79,7 @@ public class Fighter_PointBlank extends FighterSkill
 		if((msg.source()==affected)
 		&&(msg.target() instanceof AmmunitionWeapon))
 		{
-			AmmunitionWeapon W=(AmmunitionWeapon)msg.target();
+			final AmmunitionWeapon W=(AmmunitionWeapon)msg.target();
 			if((W.weaponClassification()==Weapon.CLASS_RANGED)
 			&&(W.ammunitionType().length()>0))
 			{
@@ -90,7 +90,7 @@ public class Fighter_PointBlank extends FighterSkill
 				&&((msg.source().fetchAbility(ID())==null)||proficiencyCheck(null,0,false)))
 				{
 					qualifiedWeapons.add(W);
-					Ability A=(Ability)this.copyOf();
+					final Ability A=(Ability)this.copyOf();
 					A.setInvoker(invoker());
 					A.setSavable(false);
 					W.addEffect(A);
@@ -124,11 +124,11 @@ public class Fighter_PointBlank extends FighterSkill
 		if(!(affected instanceof MOB))
 			return true;
 
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		if(--checkDown<=0)
 		{
 			checkDown=5;
-			Item w=mob.fetchWieldedItem();
+			final Item w=mob.fetchWieldedItem();
 			if((w!=null)
 			&&(w instanceof AmmunitionWeapon)
 			&&(((Weapon)w).weaponClassification()==Weapon.CLASS_RANGED)
@@ -141,7 +141,7 @@ public class Fighter_PointBlank extends FighterSkill
 				{
 					if(!qualifiedWeapons.contains(w))
 						qualifiedWeapons.add((Weapon)w);
-					Ability A=(Ability)this.copyOf();
+					final Ability A=(Ability)this.copyOf();
 					A.setSavable(false);
 					A.setInvoker(invoker());
 					w.addEffect(A);
@@ -150,7 +150,7 @@ public class Fighter_PointBlank extends FighterSkill
 			}
 			for(int i=qualifiedWeapons.size()-1;i>=0;i--)
 			{
-				Item I=qualifiedWeapons.get(i);
+				final Item I=qualifiedWeapons.get(i);
 				if((I.amWearingAt(Wearable.IN_INVENTORY))
 				||(I.owner()!=affected))
 				{

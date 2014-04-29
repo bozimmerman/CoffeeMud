@@ -41,14 +41,14 @@ public class HolidayNext extends StdWebMacro
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
-		java.util.Map<String,String> parms=parseParms(parm);
-		String last=httpReq.getUrlParameter("HOLIDAY");
+		final java.util.Map<String,String> parms=parseParms(parm);
+		final String last=httpReq.getUrlParameter("HOLIDAY");
 		if(parms.containsKey("RESET"))
 		{
 			if(last!=null) httpReq.removeUrlParameter("HOLIDAY");
 			return "";
 		}
-		Object resp=CMLib.quests().getHolidayFile();
+		final Object resp=CMLib.quests().getHolidayFile();
 		List<String> steps=null;
 		if(resp instanceof List)
 			steps=(List<String>)resp;
@@ -57,15 +57,15 @@ public class HolidayNext extends StdWebMacro
 			return (String)resp;
 		else
 			return "[Unknown error.]";
-		Vector holidays=new Vector();
+		final Vector holidays=new Vector();
 		List<String> line=null;
 		String var=null;
 		List<String> V=null;
 		for(int s=1;s<steps.size();s++)
 		{
-			String step=steps.get(s);
+			final String step=steps.get(s);
 			V=Resources.getFileLineVector(new StringBuffer(step));
-			List<List<String>> cmds=CMLib.quests().parseQuestCommandLines(V,"SET",0);
+			final List<List<String>> cmds=CMLib.quests().parseQuestCommandLines(V,"SET",0);
 			//Vector areaLine=null;
 			List<String> nameLine=null;
 			for(int v=0;v<cmds.size();v++)
@@ -87,14 +87,14 @@ public class HolidayNext extends StdWebMacro
 					areaName="*special*";
 				else
 					areaName=CMParms.combineWithQuotes(areaLine,2);*/
-				String name=CMParms.combine(nameLine,2);
+				final String name=CMParms.combine(nameLine,2);
 				holidays.addElement(name);
 			}
 		}
 		String lastID="";
-		for(Enumeration q=holidays.elements();q.hasMoreElements();)
+		for(final Enumeration q=holidays.elements();q.hasMoreElements();)
 		{
-			String holidayID=(String)q.nextElement();
+			final String holidayID=(String)q.nextElement();
 			if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!holidayID.equalsIgnoreCase(lastID))))
 			{
 				httpReq.addFakeUrlParameter("HOLIDAY",holidayID);

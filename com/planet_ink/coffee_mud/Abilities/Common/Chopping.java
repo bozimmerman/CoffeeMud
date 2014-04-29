@@ -63,7 +63,7 @@ public class Chopping extends GatheringSkill
 	{
 		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Tickable.TICKID_MOB))
 		{
-			MOB mob=(MOB)affected;
+			final MOB mob=(MOB)affected;
 			if(tickUp==6)
 			{
 				if(found!=null)
@@ -75,8 +75,8 @@ public class Chopping extends GatheringSkill
 				}
 				else
 				{
-					StringBuffer str=new StringBuffer("You can't seem to find any trees worth cutting around here.\n\r");
-					int d=lookingFor(RawMaterial.MATERIAL_WOODEN,mob.location());
+					final StringBuffer str=new StringBuffer("You can't seem to find any trees worth cutting around here.\n\r");
+					final int d=lookingFor(RawMaterial.MATERIAL_WOODEN,mob.location());
 					if(d<0)
 						str.append("You might try elsewhere.");
 					else
@@ -97,16 +97,16 @@ public class Chopping extends GatheringSkill
 		{
 			if((affected!=null)&&(affected instanceof MOB))
 			{
-				MOB mob=(MOB)affected;
+				final MOB mob=(MOB)affected;
 				if((found!=null)&&(!aborted))
 				{
-					int amount=CMLib.dice().roll(1,7,3)*(abilityCode());
+					final int amount=CMLib.dice().roll(1,7,3)*(abilityCode());
 					String s="s";
 					if(amount==1) s="";
 					mob.location().show(mob,null,getActivityMessageType(),"<S-NAME> manage(s) to chop up "+amount+" pound"+s+" of "+foundShortName+".");
 					for(int i=0;i<amount;i++)
 					{
-						Item newFound=(Item)found.copyOf();
+						final Item newFound=(Item)found.copyOf();
 						mob.location().addItem(newFound,ItemPossessor.Expire.Resource);
 						//CMLib.commands().postGet(mob,null,newFound,true);
 					}
@@ -143,7 +143,7 @@ public class Chopping extends GatheringSkill
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
-		int resourceType=mob.location().myResource();
+		final int resourceType=mob.location().myResource();
 		if((proficiencyCheck(mob,0,auto))
 		   &&((resourceType&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_WOODEN))
 		{
@@ -152,8 +152,8 @@ public class Chopping extends GatheringSkill
 			if(found!=null)
 				foundShortName=RawMaterial.CODES.NAME(found.material()).toLowerCase();
 		}
-		int duration=getDuration(mob,1);
-		CMMsg msg=CMClass.getMsg(mob,found,this,getActivityMessageType(),"<S-NAME> start(s) looking for a good tree to chop.");
+		final int duration=getDuration(mob,1);
+		final CMMsg msg=CMClass.getMsg(mob,found,this,getActivityMessageType(),"<S-NAME> start(s) looking for a good tree to chop.");
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

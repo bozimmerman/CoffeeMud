@@ -42,9 +42,9 @@ public class Score extends Affect
 	public StringBuilder getScore(MOB mob){return getScore(mob,"");}
 	public StringBuilder getScore(MOB mob, String parm)
 	{
-		StringBuilder msg=new StringBuilder("^N");
+		final StringBuilder msg=new StringBuilder("^N");
 
-		int classLevel=mob.charStats().getClassLevel(mob.charStats().getCurrentClass());
+		final int classLevel=mob.charStats().getClassLevel(mob.charStats().getCurrentClass());
 		if((!CMSecurity.isDisabled(CMSecurity.DisFlag.CLASSES))
 		&&(!mob.charStats().getMyRace().classless())
 		&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.LEVELS))
@@ -81,10 +81,10 @@ public class Score extends Affect
 		&&(classLevel<mob.phyStats().level()))
 		{
 			msg.append("You also have levels in: ");
-			StringBuilder classList=new StringBuilder("");
+			final StringBuilder classList=new StringBuilder("");
 			for(int c=0;c<mob.charStats().numClasses()-1;c++)
 			{
-				CharClass C=mob.charStats().getMyClass(c);
+				final CharClass C=mob.charStats().getMyClass(c);
 				if(C!=mob.charStats().getCurrentClass())
 				{
 					if(classList.length()>0)
@@ -127,10 +127,10 @@ public class Score extends Affect
 		if(mob.clans().iterator().hasNext())
 		{
 			msg.append("You are ");
-			for(Iterator<Pair<Clan,Integer>> c = mob.clans().iterator();c.hasNext();)
+			for(final Iterator<Pair<Clan,Integer>> c = mob.clans().iterator();c.hasNext();)
 			{
-				Pair<Clan,Integer> p=c.next();
-				Clan C=p.first;
+				final Pair<Clan,Integer> p=c.next();
+				final Clan C=p.first;
 				String role=C.getRoleName(p.second.intValue(),true,false);
 				role=CMLib.english().startWithAorAn(role);
 				msg.append(role+" of ^H"+C.getName()+"^?^.");
@@ -147,7 +147,7 @@ public class Score extends Affect
 			CharStats CT=mob.charStats();
 			if(parm.equalsIgnoreCase("BASE")) CT=mob.baseCharStats();
 			msg.append("^N^!");
-			for(int i : CharStats.CODES.BASE())
+			for(final int i : CharStats.CODES.BASE())
 				msg.append(CMStrings.padRight("^<HELP^>" + CMStrings.capitalizeAndLower(CharStats.CODES.NAME(i))+"^</HELP^>",15)
 						+": "
 						+CMStrings.padRight(Integer.toString(CT.getStat(i)),2)
@@ -187,14 +187,14 @@ public class Score extends Affect
 				msg.append("You have scored ^!"+mob.getExperience()+"^? ^<HELP^>experience points^</HELP^>.\n\r");
 		}
 		msg.append("You have been online for ^!"+Math.round(CMath.div(mob.getAgeMinutes(),60.0))+"^? hours.\n\r");
-		for(Enumeration e=mob.fetchFactions();e.hasMoreElements();)
+		for(final Enumeration e=mob.fetchFactions();e.hasMoreElements();)
 		{
-			String factionID=(String)e.nextElement();
-			Faction F=CMLib.factions().getFaction(factionID);
+			final String factionID=(String)e.nextElement();
+			final Faction F=CMLib.factions().getFaction(factionID);
 			if(F!=null)
 			{
-				int factionAmt=mob.fetchFaction(factionID);
-				Faction.FRange FR=CMLib.factions().getRange(factionID,factionAmt);
+				final int factionAmt=mob.fetchFaction(factionID);
+				final Faction.FRange FR=CMLib.factions().getRange(factionID,factionAmt);
 				if((FR!=null)&&(F.showInScore()))
 					msg.append("Your "+CMStrings.padRight("^<HELP^>"+F.name()+"^</HELP^> is",18)+": ^H"+FR.name()+" ^.("+factionAmt+").\n\r");
 			}
@@ -217,7 +217,7 @@ public class Score extends Affect
 		String parm="";
 		if(commands.size()>1)
 			parm=CMParms.combine(commands,1);
-		StringBuilder msg=getScore(mob,parm);
+		final StringBuilder msg=getScore(mob,parm);
 		if(commands.size()==0)
 		{
 			commands.addElement(msg);

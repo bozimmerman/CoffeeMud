@@ -56,7 +56,7 @@ public class Chant_Brittle extends Chant
 					oldCondition=((Item)E).usesRemaining();
 				if(((Item)E).usesRemaining()<oldCondition)
 				{
-					Room R=CMLib.map().roomLocation(E);
+					final Room R=CMLib.map().roomLocation(E);
 					if(R!=null)
 						R.showHappens(CMMsg.MSG_OK_ACTION,E.name()+" is destroyed!");
 					((Item)E).destroy();
@@ -82,11 +82,11 @@ public class Chant_Brittle extends Chant
 
 	private Item getItem(MOB mobTarget)
 	{
-		Vector goodPossibilities=new Vector();
-		Vector possibilities=new Vector();
+		final Vector goodPossibilities=new Vector();
+		final Vector possibilities=new Vector();
 		for(int i=0;i<mobTarget.numItems();i++)
 		{
-			Item item=mobTarget.getItem(i);
+			final Item item=mobTarget.getItem(i);
 			if((item!=null)
 			   &&(item.subjectToWearAndTear()))
 			{
@@ -110,7 +110,7 @@ public class Chant_Brittle extends Chant
 		if(!(target instanceof MOB)) return Ability.QUALITY_INDIFFERENT;
 		if((mob!=null)&&(mob!=target))
 		{
-			Item I=getItem((MOB)target);
+			final Item I=getItem((MOB)target);
 			if(I==null)
 				return Ability.QUALITY_INDIFFERENT;
 		}
@@ -120,7 +120,7 @@ public class Chant_Brittle extends Chant
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		MOB mobTarget=getTarget(mob,commands,givenTarget,true,false);
+		final MOB mobTarget=getTarget(mob,commands,givenTarget,true,false);
 		Item target=null;
 		if(mobTarget!=null)
 		{
@@ -137,7 +137,7 @@ public class Chant_Brittle extends Chant
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 		oldCondition=-1;
 		if(success)
 		{
@@ -145,8 +145,8 @@ public class Chant_Brittle extends Chant
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> becomes brittle!":"^S<S-NAME> chant(s), causing <T-NAMESELF> to grow brittle!^?");
-			CMMsg msg2=CMClass.getMsg(mob,mobTarget,this,verbalCastCode(mob,mobTarget,auto),null);
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> becomes brittle!":"^S<S-NAME> chant(s), causing <T-NAMESELF> to grow brittle!^?");
+			final CMMsg msg2=CMClass.getMsg(mob,mobTarget,this,verbalCastCode(mob,mobTarget,auto),null);
 			if((mob.location().okMessage(mob,msg))&&((mobTarget==null)||(mob.location().okMessage(mob,msg2))))
 			{
 				mob.location().send(mob,msg);

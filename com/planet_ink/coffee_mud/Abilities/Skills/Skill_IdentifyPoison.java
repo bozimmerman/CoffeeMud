@@ -46,7 +46,7 @@ public class Skill_IdentifyPoison extends StdSkill
 
 	public List<Ability> returnOffensiveAffects(Physical fromMe)
 	{
-		Vector offenders=new Vector();
+		final Vector offenders=new Vector();
 
 		for(final Enumeration<Ability> a=fromMe.effects();a.hasMoreElements();)
 		{
@@ -60,14 +60,14 @@ public class Skill_IdentifyPoison extends StdSkill
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		Item target=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_UNWORNONLY);
+		final Item target=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_UNWORNONLY);
 		if(target==null) return false;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
-		List<Ability> offensiveAffects=returnOffensiveAffects(target);
+		final boolean success=proficiencyCheck(mob,0,auto);
+		final List<Ability> offensiveAffects=returnOffensiveAffects(target);
 
 		if((success)&&((offensiveAffects.size()>0)
 					   ||((target instanceof Drink)&&(((Drink)target).liquidType()==RawMaterial.RESOURCE_POISON))))
@@ -76,11 +76,11 @@ public class Skill_IdentifyPoison extends StdSkill
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT|(auto?CMMsg.MASK_ALWAYS:0),auto?"":"^S<S-NAME> carefully sniff(s) and taste(s) <T-NAME>.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT|(auto?CMMsg.MASK_ALWAYS:0),auto?"":"^S<S-NAME> carefully sniff(s) and taste(s) <T-NAME>.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				StringBuffer buf=new StringBuffer(target.name(mob)+" contains: ");
+				final StringBuffer buf=new StringBuffer(target.name(mob)+" contains: ");
 				if(offensiveAffects.size()==0)
 					buf.append("weak impurities, ");
 				else

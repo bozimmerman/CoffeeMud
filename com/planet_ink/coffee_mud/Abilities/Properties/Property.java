@@ -145,7 +145,7 @@ public class Property implements Ability
 		{
 			return this.getClass().newInstance();
 		}
-		catch(Exception e)
+		catch(final Exception e)
 		{
 			Log.errOut(ID(),e);
 		}
@@ -202,13 +202,13 @@ public class Property implements Ability
 	{
 		try
 		{
-			Property E=(Property)this.clone();
+			final Property E=(Property)this.clone();
 			//CMClass.bumpCounter(E,CMClass.CMObjectType.ABILITY);//removed for mem & perf
 			E.cloneFix(this);
 			return E;
 
 		}
-		catch(CloneNotSupportedException e)
+		catch(final CloneNotSupportedException e)
 		{
 			return this.newInstance();
 		}

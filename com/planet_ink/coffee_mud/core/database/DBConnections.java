@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.io.*;
 import java.net.*;
 import java.util.*;
@@ -112,14 +111,14 @@ public class DBConnections
 		try
 		{
 			DBToUse=DBFetch();
-			for(int i=0;i<updateStrings.length;i++)
+			for (final String updateString2 : updateStrings)
 			{
-				updateString=updateStrings[i];
+				updateString=updateString2;
 				try
 				{
 					Result=DBToUse.update(updateString,0);
 				}
-				catch(Exception sqle)
+				catch(final Exception sqle)
 				{
 					if(sqle instanceof java.io.EOFException)
 					{
@@ -138,7 +137,7 @@ public class DBConnections
 				}
 			}
 		}
-		catch(Exception e)
+		catch(final Exception e)
 		{
 			enQueueError(updateString,""+e,""+0);
 			reportError();
@@ -176,14 +175,14 @@ public class DBConnections
 					else
 					{
 						DBToUse.rePrepare(entry.sql);
-						for(int ii=0;ii<entry.clobs.length;ii++)
+						for (final String[] clob : entry.clobs)
 						{
-							DBToUse.setPreparedClobs(entry.clobs[ii]);
+							DBToUse.setPreparedClobs(clob);
 							Result=DBToUse.update("",0);
 						}
 					}
 				}
-				catch(Exception sqle)
+				catch(final Exception sqle)
 				{
 					if(sqle instanceof java.io.EOFException)
 					{
@@ -202,7 +201,7 @@ public class DBConnections
 				}
 			}
 		}
-		catch(Exception e)
+		catch(final Exception e)
 		{
 			reportError();
 			Log.errOut("DBConnections",""+e);
@@ -254,7 +253,7 @@ public class DBConnections
 	public int numInUse()
 	{
 		int num=0;
-		for(DBConnection conn : connections)
+		for(final DBConnection conn : connections)
 			if(conn.inUse())
 				num++;
 		return num;
@@ -263,7 +262,7 @@ public class DBConnections
 	public int numAvailable()
 	{
 		int num=0;
-		for(DBConnection conn : connections)
+		for(final DBConnection conn : connections)
 			if(!conn.inUse())
 				num++;
 		return num;
@@ -279,7 +278,7 @@ public class DBConnections
 		int numPinged=0;
 		while(numAvailable()>0)
 		{
-			DBConnection DB=DBFetch();
+			final DBConnection DB=DBFetch();
 			if(DB!=null)
 			{
 				fetched.add(DB);
@@ -290,14 +289,14 @@ public class DBConnections
 						DB.query(querySql);
 						numPinged++;
 					}
-					catch (SQLException e)
+					catch (final SQLException e)
 					{
 						Log.errOut("DBConnections",e.getMessage());
 					}
 				}
 			}
 		}
-		for(DBConnection DB : fetched)
+		for(final DBConnection DB : fetched)
 			DBDone(DB);
 		return numPinged;
 	}
@@ -333,8 +332,8 @@ public class DBConnections
 			if(shutdown)
 			{
 				// can't throw without declaring, so this is the only way.
-				int x=1;
-				int y=x-1;
+				final int x=1;
+				final int y=x-1;
 				System.out.println(x/y);
 				// this should create a division by zero error.
 			}
@@ -344,7 +343,7 @@ public class DBConnections
 				{
 					ThisDB=new DBConnection(this,dbClass,dbService,dbUser,dbPass,reuse);
 					connections.addElement(ThisDB);
-				}catch(Exception e)
+				}catch(final Exception e)
 				{
 					final String errMsg = e.getMessage();
 					if(errMsg!=null)
@@ -366,7 +365,7 @@ public class DBConnections
 			{
 				try
 				{
-					for(DBConnection conn : connections)
+					for(final DBConnection conn : connections)
 					{
 						if(type==DBConnection.FetchType.PREPAREDSTATEMENT)
 						{
@@ -394,12 +393,12 @@ public class DBConnections
 							}
 						}
 					}
-				}catch(Exception e){}
+				}catch(final Exception e){}
 			}
 			if((ThisDB!=null)&&(ThisDB.isProbablyDead()||ThisDB.isProbablyLockedUp()||(!ThisDB.ready())))
 			{
 				Log.errOut("DBConnections","Failed to connect to database.");
-				try{ThisDB.close();}catch(Exception e){}
+				try{ThisDB.close();}catch(final Exception e){}
 				ThisDB=null;
 			}
 			if(ThisDB==null)
@@ -418,13 +417,13 @@ public class DBConnections
 				if(connections.size()>=maxConnections)
 				{
 					int inuse=0;
-					for(DBConnection conn : connections)
+					for(final DBConnection conn : connections)
 						if(conn.inUse())
 							inuse++;
 					if(consecutiveFailures==180)
 					{
 						Log.errOut("DBConnections","Serious failure obtaining DBConnection ("+inuse+"/"+connections.size()+" in use).");
-						for(DBConnection conn : connections)
+						for(final DBConnection conn : connections)
 							if(conn.inUse())
 								Log.errOut("DBConnections","Last SQL was: "+conn.lastSQL);
 						if(inuse==0)
@@ -440,7 +439,7 @@ public class DBConnections
 					{
 						Thread.sleep(Math.round(Math.random()*500));
 					}
-					catch(InterruptedException i)
+					catch(final InterruptedException i)
 					{
 					}
 				}
@@ -472,7 +471,7 @@ public class DBConnections
 	{
 		if(isFakeDB==null)
 		{
-			DBConnection c = DBFetchAny("",DBConnection.FetchType.EMPTY);
+			final DBConnection c = DBFetchAny("",DBConnection.FetchType.EMPTY);
 			if(c!=null)
 			{
 				if(isFakeDB==null)
@@ -528,12 +527,12 @@ public class DBConnections
 	{
 		try
 		{
-			String TVal=Results.getString(Field);
+			final String TVal=Results.getString(Field);
 			if(TVal==null)
 				return "";
 			return TVal.trim();
 		}
-		catch(SQLException sqle)
+		catch(final SQLException sqle)
 		{
 			Log.errOut("DBConnections",""+sqle);
 			return "";
@@ -554,7 +553,7 @@ public class DBConnections
 	{
 		try
 		{
-			String Val=Results.getString(Field);
+			final String Val=Results.getString(Field);
 			if(Val!=null)
 			{
 				if(Val.indexOf('.')>=0)
@@ -563,12 +562,12 @@ public class DBConnections
 			}
 			return 0;
 		}
-		catch(SQLException sqle)
+		catch(final SQLException sqle)
 		{
 			Log.errOut("DBConnections",""+sqle);
 			return 0;
 		}
-		catch(java.lang.NumberFormatException nfe){ return 0;}
+		catch(final java.lang.NumberFormatException nfe){ return 0;}
 	}
 
 	/**
@@ -585,12 +584,12 @@ public class DBConnections
 	{
 		try
 		{
-			String TVal=Results.getString(One);
+			final String TVal=Results.getString(One);
 			if(TVal==null)
 				return "";
 			return TVal.trim();
 		}
-		catch(SQLException sqle)
+		catch(final SQLException sqle)
 		{
 			Log.errOut("DBConnections",""+sqle);
 			return "";
@@ -601,12 +600,12 @@ public class DBConnections
 	{
 		try
 		{
-			String TVal=Results.getString(Field);
+			final String TVal=Results.getString(Field);
 			if(TVal==null)
 				return "";
 			return TVal.trim();
 		}
-		catch(SQLException sqle)
+		catch(final SQLException sqle)
 		{
 			return "";
 		}
@@ -619,7 +618,7 @@ public class DBConnections
 			shutdown=true;
 			return true;
 		}
-		catch(Exception ce)
+		catch(final Exception ce)
 		{
 		}
 		return false;
@@ -643,19 +642,19 @@ public class DBConnections
 	{
 		synchronized(connections)
 		{
-			for(DBConnection conn : connections)
+			for(final DBConnection conn : connections)
 				conn.close();
 			connections.removeAllElements();
 		}
 		try
 		{
-			java.util.Properties p = new java.util.Properties();
+			final java.util.Properties p = new java.util.Properties();
 			p.put("user",dbUser);
 			p.put("password",dbPass);
 			p.put("shutdown", "true");
 			//DriverManager.getConnection(DBService,p);
 		}
-		catch(Exception e){}
+		catch(final Exception e){}
 
 	}
 
@@ -692,7 +691,7 @@ public class DBConnections
 			{
 				out=new PrintWriter(new FileOutputStream("SQLErrors.que",true),true);
 			}
-			catch(FileNotFoundException fnfe)
+			catch(final FileNotFoundException fnfe)
 			{
 				Log.errOut("DBConnections","Could not open queue?!?!");
 				Log.errOut("DBConnections",SQLString+"\t"+SQLError);
@@ -715,7 +714,7 @@ public class DBConnections
 	 */
 	public void retryQueuedErrors()
 	{
-		Vector<String> Queue=new Vector<String>();
+		final Vector<String> Queue=new Vector<String>();
 
 		if((lockedUp)||(disconnected))
 		{
@@ -731,7 +730,7 @@ public class DBConnections
 
 		synchronized("SQLErrors.que")
 		{
-			File myFile=new File("SQLErrors.que");
+			final File myFile=new File("SQLErrors.que");
 			if(myFile.canRead())
 			{
 				// open a reader for the file
@@ -740,7 +739,7 @@ public class DBConnections
 				{
 					in = new BufferedReader(new FileReader(myFile));
 				}
-				catch(FileNotFoundException f){}
+				catch(final FileNotFoundException f){}
 
 				if(in!=null)
 				{
@@ -749,20 +748,20 @@ public class DBConnections
 					{
 						while(in.ready())
 						{
-							String queueLine=in.readLine();
+							final String queueLine=in.readLine();
 							if(queueLine==null)
 								break;
 							Queue.addElement(queueLine);
 						}
 					}
-					catch(IOException e){}
+					catch(final IOException e){}
 
 					// close the channel.. done?
 					try
 					{
 						  in.close();
 					}
-					catch(IOException e){}
+					catch(final IOException e){}
 				}
 			}
 			myFile.delete();
@@ -779,18 +778,18 @@ public class DBConnections
 			int unsuccesses=0;
 			while(Queue.size()>0)
 			{
-				String queueLine=Queue.elementAt(0);
+				final String queueLine=Queue.elementAt(0);
 				Queue.removeElementAt(0);
 
-				int firstTab=queueLine.indexOf("\t!|!\t");
+				final int firstTab=queueLine.indexOf("\t!|!\t");
 				int secondTab=-1;
 				if(firstTab>0)
 					secondTab=queueLine.indexOf("\t!|!\t",firstTab+5);
 				if((firstTab>0)&&(secondTab>firstTab))
 				{
 					DBConnection DB=null;
-					String retrySQL=queueLine.substring(0,firstTab);
-					int oldAttempts=CMath.s_int(queueLine.substring(secondTab+5));
+					final String retrySQL=queueLine.substring(0,firstTab);
+					final int oldAttempts=CMath.s_int(queueLine.substring(secondTab+5));
 					if(oldAttempts>20)
 					{
 						Log.errOut("DBConnections","Giving up on :"+retrySQL);
@@ -807,7 +806,7 @@ public class DBConnections
 								successes++;
 								//Log.sysOut("DBConnections","Successful retry: "+queueLine);
 							}
-							catch(SQLException sqle)
+							catch(final SQLException sqle)
 							{
 								unsuccesses++;
 								//Log.errOut("DBConnections","Unsuccessfull retry: "+queueLine);
@@ -815,7 +814,7 @@ public class DBConnections
 								//enQueueError(retrySQL,""+sqle,oldDate);
 							}
 						}
-						catch(Exception e)
+						catch(final Exception e)
 						{
 							unsuccesses++;
 							enQueueError(retrySQL,e.getMessage(),""+(oldAttempts+1));
@@ -824,7 +823,7 @@ public class DBConnections
 						{
 							DB.clearFailures();
 							DBDone(DB);
-							try{Thread.sleep(1000);}catch(Exception e){}
+							try{Thread.sleep(1000);}catch(final Exception e){}
 						}
 					}
 				}
@@ -854,14 +853,14 @@ public class DBConnections
 			DBToUse=DBFetch();
 			try
 			{
-				ResultSet R=DBToUse.query(queryString);
+				final ResultSet R=DBToUse.query(queryString);
 				if(R==null)
 					Result=0;
 				else
 				while(R.next())
 					Result++;
 			}
-			catch(Exception sqle)
+			catch(final Exception sqle)
 			{
 				if(sqle instanceof java.io.EOFException)
 				{
@@ -875,7 +874,7 @@ public class DBConnections
 				}
 			}
 		}
-		catch(Exception e)
+		catch(final Exception e)
 		{
 			Log.errOut("DBConnections",""+e);
 		}
@@ -897,7 +896,7 @@ public class DBConnections
 			out.println("** Database is reporting a down status! **");
 
 		int p=1;
-		for(DBConnection conn : connections)
+		for(final DBConnection conn : connections)
 		{
 			String OKString="OK";
 			if((conn.isProbablyDead())&&(conn.isProbablyLockedUp()))
@@ -921,8 +920,8 @@ public class DBConnections
 	public void reportError()
 	{
 		consecutiveErrors++;
-		double size=connections.size();
-		double down=consecutiveErrors;
+		final double size=connections.size();
+		final double down=consecutiveErrors;
 		if((down/size)>.25)
 		{
 			disconnected=true;
@@ -943,13 +942,13 @@ public class DBConnections
 	 */
 	public StringBuffer errorStatus()
 	{
-		StringBuffer status=new StringBuffer("");
+		final StringBuffer status=new StringBuffer("");
 		if(lockedUp)
 			status.append("#100 DBCONNECTIONS REPORTING A LOCKED STATE\n");
 		if(disconnected)
 			status.append("#101 DBCONNECTIONS REPORTING A DISCONNECTED STATE\n");
 		if((lockedUp)||(disconnected))
-			for(DBConnection conn : connections)
+			for(final DBConnection conn : connections)
 				DBDone(conn);
 		return status;
 	}

@@ -17,7 +17,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -90,7 +89,7 @@ public class Construction extends CraftingSkill
 
 	public Exit generify(Exit X)
 	{
-		Exit E2=CMClass.getExit("GenExit");
+		final Exit E2=CMClass.getExit("GenExit");
 		E2.setName(X.name());
 		E2.setDisplayText(X.displayText());
 		E2.setDescription(X.description());
@@ -108,20 +107,20 @@ public class Construction extends CraftingSkill
 
 	protected void demolishRoom(MOB mob, Room room)
 	{
-		LandTitle title=CMLib.law().getLandTitle(room);
+		final LandTitle title=CMLib.law().getLandTitle(room);
 		if(title==null) return;
 		Room returnToRoom=null;
 		Room backupToRoom1=null;
 		Room backupToRoom2=null;
 		for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
 		{
-			Room R=room.getRoomInDir(d);
+			final Room R=room.getRoomInDir(d);
 			if(CMLib.law().doesOwnThisProperty(mob, R))
 			{
 				returnToRoom=R;
 				break;
 			}
-			LandTitle adjacentTitle=CMLib.law().getLandTitle(R);
+			final LandTitle adjacentTitle=CMLib.law().getLandTitle(R);
 			if((adjacentTitle==null)||(adjacentTitle.getOwnerName().length()>0))
 				backupToRoom1=R;
 			else
@@ -165,16 +164,16 @@ public class Construction extends CraftingSkill
 
 	protected Room convertToPlains(Room room)
 	{
-		Room R=CMClass.getLocale("Plains");
+		final Room R=CMClass.getLocale("Plains");
 		R.setRoomID(room.roomID());
 		R.setDisplayText(room.displayText());
 		R.setDescription(room.description());
-		Area area=room.getArea();
+		final Area area=room.getArea();
 		if(area!=null) area.delProperRoom(room);
 		R.setArea(room.getArea());
 		for(int a=room.numEffects()-1;a>=0;a--)
 		{
-			Ability A=room.fetchEffect(a);
+			final Ability A=room.fetchEffect(a);
 			if(A!=null)
 			{
 				room.delEffect(A);
@@ -183,7 +182,7 @@ public class Construction extends CraftingSkill
 		}
 		for(int i=room.numItems()-1;i>=0;i--)
 		{
-			Item I=room.getItem(i);
+			final Item I=room.getItem(i);
 			if(I!=null)
 			{
 				room.delItem(I);
@@ -192,7 +191,7 @@ public class Construction extends CraftingSkill
 		}
 		for(int m=room.numInhabitants()-1;m>=0;m--)
 		{
-			MOB M=room.fetchInhabitant(m);
+			final MOB M=room.fetchInhabitant(m);
 			if(M!=null)
 			{
 				room.delInhabitant(M);
@@ -208,9 +207,9 @@ public class Construction extends CraftingSkill
 		R.startItemRejuv();
 		try
 		{
-			for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
+			for(final Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 			{
-				Room R2=(Room)r.nextElement();
+				final Room R2=(Room)r.nextElement();
 				for(int d=0;d<R2.rawDoors().length;d++)
 					if(R2.rawDoors()[d]==room)
 					{
@@ -219,7 +218,7 @@ public class Construction extends CraftingSkill
 							((GridLocale)R2).buildGrid();
 					}
 			}
-		}catch(NoSuchElementException e){}
+		}catch(final NoSuchElementException e){}
 		R.getArea().fillInAreaRoom(R);
 		CMLib.database().DBUpdateRoom(R);
 		CMLib.database().DBUpdateExits(R);
@@ -234,7 +233,7 @@ public class Construction extends CraftingSkill
 		{
 			if((affected!=null)&&(affected instanceof MOB)&&(!helping))
 			{
-				MOB mob=(MOB)affected;
+				final MOB mob=(MOB)affected;
 				if(!aborted)
 				{
 					if((messedUp)&&(room!=null))
@@ -286,18 +285,18 @@ public class Construction extends CraftingSkill
 						synchronized(("SYNC"+room.roomID()).intern())
 						{
 							room=CMLib.map().getRoom(room);
-							Room R=CMClass.getLocale("WoodRoom");
+							final Room R=CMClass.getLocale("WoodRoom");
 							R.setRoomID(room.roomID());
 							R.setDisplayText(room.displayText());
 							R.setDescription(room.description());
 							if(R.image().equalsIgnoreCase(CMLib.protocol().getDefaultMXPImage(room))) R.setImage(null);
 
-							Area area=room.getArea();
+							final Area area=room.getArea();
 							if(area!=null) area.delProperRoom(room);
 							R.setArea(area);
 							for(int a=room.numEffects()-1;a>=0;a--)
 							{
-								Ability A=room.fetchEffect(a);
+								final Ability A=room.fetchEffect(a);
 								if(A!=null)
 								{
 									room.delEffect(A);
@@ -306,7 +305,7 @@ public class Construction extends CraftingSkill
 							}
 							for(int i=room.numItems()-1;i>=0;i--)
 							{
-								Item I=room.getItem(i);
+								final Item I=room.getItem(i);
 								if(I!=null)
 								{
 									room.delItem(I);
@@ -315,7 +314,7 @@ public class Construction extends CraftingSkill
 							}
 							for(int m=room.numInhabitants()-1;m>=0;m--)
 							{
-								MOB M=room.fetchInhabitant(m);
+								final MOB M=room.fetchInhabitant(m);
 								if(M!=null)
 								{
 									room.delInhabitant(M);
@@ -341,9 +340,9 @@ public class Construction extends CraftingSkill
 							try
 							{
 								boolean rebuild=false;
-								for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
+								for(final Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 								{
-									Room R2=(Room)r.nextElement();
+									final Room R2=(Room)r.nextElement();
 									rebuild=false;
 									for(int d=0;d<R2.rawDoors().length;d++)
 									{
@@ -356,19 +355,19 @@ public class Construction extends CraftingSkill
 									if((rebuild)&&(R2 instanceof GridLocale))
 										((GridLocale)R2).buildGrid();
 								}
-							}catch(NoSuchElementException e){}
+							}catch(final NoSuchElementException e){}
 							try
 							{
-								for(Enumeration e=CMLib.players().players();e.hasMoreElements();)
+								for(final Enumeration e=CMLib.players().players();e.hasMoreElements();)
 								{
-									MOB M=(MOB)e.nextElement();
+									final MOB M=(MOB)e.nextElement();
 									if(M.getStartRoom()==room)
 										M.setStartRoom(R);
 									else
 									if(M.location()==room)
 										M.setLocation(R);
 								}
-							}catch(NoSuchElementException e){}
+							}catch(final NoSuchElementException e){}
 							R.getArea().fillInAreaRoom(R);
 							if(CMSecurity.isDebugging(CMSecurity.DbgFlag.PROPERTY))
 								Log.debugOut("Construction",R.roomID()+" updated.");
@@ -408,11 +407,11 @@ public class Construction extends CraftingSkill
 								upRoom.addNonUninvokableEffect((Ability)newTitle);
 							}
 							room.rawDoors()[Directions.UP]=upRoom;
-							Exit upExit=CMClass.getExit("OpenDescriptable");
+							final Exit upExit=CMClass.getExit("OpenDescriptable");
 							upExit.setMiscText("Upstairs to the "+(floor+1)+CMath.numAppendage(floor+1)+" floor.");
 							room.setRawExit(Directions.UP,upExit);
 
-							Exit downExit=CMClass.getExit("OpenDescriptable");
+							final Exit downExit=CMClass.getExit("OpenDescriptable");
 							downExit.setMiscText("Downstairs to the "+(floor)+CMath.numAppendage(floor)+" floor.");
 							upRoom.rawDoors()[Directions.DOWN]=room;
 							upRoom.setRawExit(Directions.DOWN,downExit);
@@ -433,7 +432,7 @@ public class Construction extends CraftingSkill
 						synchronized(("SYNC"+room.roomID()).intern())
 						{
 							room=CMLib.map().getRoom(room);
-							Exit X=CMClass.getExit("GenExit");
+							final Exit X=CMClass.getExit("GenExit");
 							if(doingCode==BUILD_SECRETDOOR)
 								X.basePhyStats().setDisposition(PhyStats.IS_HIDDEN);
 							X.setName("a door");
@@ -447,7 +446,7 @@ public class Construction extends CraftingSkill
 							room.setRawExit(dir,X);
 							if(room.rawDoors()[dir]!=null)
 							{
-								Exit X2=(Exit)X.copyOf();
+								final Exit X2=(Exit)X.copyOf();
 								if(doingCode==BUILD_SECRETDOOR)
 									X2.basePhyStats().setDisposition(PhyStats.IS_HIDDEN);
 								X2.recoverPhyStats();
@@ -464,7 +463,7 @@ public class Construction extends CraftingSkill
 						synchronized(("SYNC"+room.roomID()).intern())
 						{
 							room=CMLib.map().getRoom(room);
-							Exit X=CMClass.getExit("GenExit");
+							final Exit X=CMClass.getExit("GenExit");
 							X.setName("a wooden gate");
 							X.setDescription("");
 							X.setDisplayText("");
@@ -475,7 +474,7 @@ public class Construction extends CraftingSkill
 							room.setRawExit(dir,X);
 							if(room.rawDoors()[dir]!=null)
 							{
-								Exit X2=(Exit)X.copyOf();
+								final Exit X2=(Exit)X.copyOf();
 								room.rawDoors()[dir].setRawExit(Directions.getOpDirectionCode(dir),X2);
 								CMLib.database().DBUpdateExits(room.rawDoors()[dir]);
 							}
@@ -496,7 +495,7 @@ public class Construction extends CraftingSkill
 								CMLib.database().DBUpdateExits(room.rawDoors()[dir]);
 							}
 							CMLib.database().DBUpdateExits(room);
-							LandTitle title=CMLib.law().getLandTitle(room);
+							final LandTitle title=CMLib.law().getLandTitle(room);
 							if(title != null) title.updateLot(null);
 						}
 						break;
@@ -548,7 +547,7 @@ public class Construction extends CraftingSkill
 									E=generify(E);
 									room.setRawExit(workingOn,E);
 								}
-								Ability A=CMClass.getAbility("Prop_Crawlspace");
+								final Ability A=CMClass.getAbility("Prop_Crawlspace");
 								if(A!=null) E.addNonUninvokableEffect(A);
 								CMLib.database().DBUpdateExits(room);
 							}
@@ -568,10 +567,10 @@ public class Construction extends CraftingSkill
 									E=generify(E);
 									room.setRawExit(workingOn,E);
 								}
-								Room R2=room.getRoomInDir(workingOn);
+								final Room R2=room.getRoomInDir(workingOn);
 								if(R2!=null)
 								{
-									Ability A=CMClass.getAbility("Prop_RoomView");
+									final Ability A=CMClass.getAbility("Prop_RoomView");
 									if(A!=null)
 									{
 										A.setMiscText(CMLib.map().getExtendedRoomID(R2));
@@ -626,7 +625,7 @@ public class Construction extends CraftingSkill
 
 	public boolean isHomePeerTitledRoom(Room R)
 	{
-		LandTitle title = ifHomePeerLandTitle(R);
+		final LandTitle title = ifHomePeerLandTitle(R);
 		if(title == null) return false;
 		return title.getOwnerName().length()>0;
 	}
@@ -650,18 +649,18 @@ public class Construction extends CraftingSkill
 			commonTell(mob,"Construct what, where? Try Construct list.");
 			return false;
 		}
-		String str=(String)commands.elementAt(0);
-		int colWidth=ListingLibrary.ColFixer.fixColWidth(20,mob.session());
+		final String str=(String)commands.elementAt(0);
+		final int colWidth=ListingLibrary.ColFixer.fixColWidth(20,mob.session());
 		if(("LIST").startsWith(str.toUpperCase()))
 		{
-			String mask=CMParms.combine(commands,1);
-			StringBuffer buf=new StringBuffer(CMStrings.padRight("Item",colWidth)+" Wood required\n\r");
+			final String mask=CMParms.combine(commands,1);
+			final StringBuffer buf=new StringBuffer(CMStrings.padRight("Item",colWidth)+" Wood required\n\r");
 			for(int r=0;r<data.length;r++)
 			{
 				if(((r!=BUILD_SECRETDOOR)||(mob.charStats().getCurrentClass().baseClass().equals("Thief")))
 				&&((mask==null)||(mask.length()==0)||mask.equalsIgnoreCase("all")||CMLib.english().containsString(CMStrings.padRight(data[r][DAT_NAME],colWidth),mask)))
 				{
-					int woodRequired=adjustWoodRequired(CMath.s_int(data[r][DAT_WOOD]),mob);
+					final int woodRequired=adjustWoodRequired(CMath.s_int(data[r][DAT_WOOD]),mob);
 					buf.append(CMStrings.padRight(data[r][DAT_NAME],colWidth)+" "+woodRequired+"\n\r");
 				}
 			}
@@ -686,7 +685,7 @@ public class Construction extends CraftingSkill
 			messedUp=!proficiencyCheck(mob,0,auto);
 			duration=25;
 			commands.removeElementAt(0);
-			MOB targetMOB=getTarget(mob,commands,givenTarget,false,true);
+			final MOB targetMOB=getTarget(mob,commands,givenTarget,false,true);
 			if(targetMOB==null) return false;
 			if(targetMOB==mob)
 			{
@@ -707,7 +706,7 @@ public class Construction extends CraftingSkill
 			helping=true;
 			verb="helping "+targetMOB.name()+" with "+helpingAbility.name();
 			startStr="<S-NAME> start(s) "+verb;
-			CMMsg msg=CMClass.getMsg(mob,null,this,getActivityMessageType(),startStr+".");
+			final CMMsg msg=CMClass.getMsg(mob,null,this,getActivityMessageType(),startStr+".");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -717,7 +716,7 @@ public class Construction extends CraftingSkill
 		}
 
 		boolean canBuild=CMLib.law().doesOwnThisProperty(mob,mob.location());
-		String firstWord=(String)commands.firstElement();
+		final String firstWord=(String)commands.firstElement();
 		for(int r=0;r<data.length;r++)
 		{
 			if((data[r][0].toUpperCase().startsWith(firstWord.toUpperCase()))
@@ -729,11 +728,11 @@ public class Construction extends CraftingSkill
 			commonTell(mob,"'"+firstWord+"' is not a valid construction project.  Try LIST.");
 			return false;
 		}
-		String dirName=(String)commands.lastElement();
+		final String dirName=(String)commands.lastElement();
 		dir=Directions.getGoodDirectionCode(dirName);
 		if((doingCode==BUILD_DEMOLISH)&&(dirName.equalsIgnoreCase("roof"))||(dirName.equalsIgnoreCase("ceiling")))
 		{
-			Room upRoom=mob.location().getRoomInDir(Directions.UP);
+			final Room upRoom=mob.location().getRoomInDir(Directions.UP);
 			if(isHomePeerRoom(upRoom))
 			{
 				commonTell(mob,"You need to demolish the upstairs rooms first.");
@@ -759,7 +758,7 @@ public class Construction extends CraftingSkill
 		else
 		if((doingCode==BUILD_DEMOLISH)&&(dirName.equalsIgnoreCase("room")))
 		{
-			LandTitle title=CMLib.law().getLandTitle(mob.location());
+			final LandTitle title=CMLib.law().getLandTitle(mob.location());
 			if((!CMLib.law().doesOwnThisProperty(mob, mob.location()))
 			&&(title!=null)
 			&&(title.getOwnerName().length()>0))
@@ -780,7 +779,7 @@ public class Construction extends CraftingSkill
 			int numAdjacentProperties=0;
 			for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
 			{
-				Room adjacentRoom=mob.location().getRoomInDir(d);
+				final Room adjacentRoom=mob.location().getRoomInDir(d);
 				if(isHomePeerTitledRoom(adjacentRoom))
 				{
 					numAdjacentProperties++;
@@ -827,7 +826,7 @@ public class Construction extends CraftingSkill
 
 		if(doingCode==BUILD_STAIRS)
 		{
-			LandTitle title=CMLib.law().getLandTitle(mob.location());
+			final LandTitle title=CMLib.law().getLandTitle(mob.location());
 			if((title==null)||(!title.allowsExpansionConstruction()))
 			{
 				commonTell(mob,"You are not permitted to build stairs here.");
@@ -847,7 +846,7 @@ public class Construction extends CraftingSkill
 
 		if(doingCode==BUILD_WALL)
 		{
-			Room nextRoom=mob.location().getRoomInDir(dir);
+			final Room nextRoom=mob.location().getRoomInDir(dir);
 			if((nextRoom!=null)&&(CMLib.law().getLandTitle(nextRoom)==null))
 			{
 				commonTell(mob,"You can not build a wall blocking off the main entrance!");
@@ -862,17 +861,17 @@ public class Construction extends CraftingSkill
 
 		if(doingCode==BUILD_TITLE)
 		{
-			String title=CMParms.combine(commands,1);
+			final String title=CMParms.combine(commands,1);
 			if(title.length()==0)
 			{
 				commonTell(mob,"A title must be specified.");
 				return false;
 			}
-			TrackingLibrary.TrackingFlags flags=new TrackingLibrary.TrackingFlags();
-			List<Room> checkSet=CMLib.tracking().getRadiantRooms(mob.location(),flags,20);
-			for(Iterator<Room> r=checkSet.iterator();r.hasNext();)
+			final TrackingLibrary.TrackingFlags flags=new TrackingLibrary.TrackingFlags();
+			final List<Room> checkSet=CMLib.tracking().getRadiantRooms(mob.location(),flags,20);
+			for (final Room room2 : checkSet)
 			{
-				Room R=CMLib.map().getRoom(r.next());
+				final Room R=CMLib.map().getRoom(room2);
 				if(R.displayText(mob).equalsIgnoreCase(title))
 				{
 					commonTell(mob,"That title has already been taken.  Choose another.");
@@ -909,7 +908,7 @@ public class Construction extends CraftingSkill
 			else
 				commands.removeElementAt(1);
 
-			String title=CMParms.combine(commands,1);
+			final String title=CMParms.combine(commands,1);
 			if(title.length()==0)
 			{
 				commonTell(mob,"A description must be specified.");
@@ -921,8 +920,8 @@ public class Construction extends CraftingSkill
 		if((doingCode==BUILD_WINDOW)||(doingCode==BUILD_CRAWLWAY))
 			workingOn=dir;
 
-		int[] pm={RawMaterial.MATERIAL_WOODEN};
-		int[][] idata=fetchFoundResourceData(mob,
+		final int[] pm={RawMaterial.MATERIAL_WOODEN};
+		final int[][] idata=fetchFoundResourceData(mob,
 											woodRequired,"wood",pm,
 											0,null,null,
 											false,
@@ -936,7 +935,7 @@ public class Construction extends CraftingSkill
 			if((dir>=0)
 			&&((data[doingCode][DAT_REQDIR].equals("1")||(workingOn==dir))))
 			{
-				Room R=mob.location().getRoomInDir(dir);
+				final Room R=mob.location().getRoomInDir(dir);
 				if((R!=null)&&(CMLib.law().doesOwnThisProperty(mob,R)))
 					canBuild=true;
 			}
@@ -1024,7 +1023,7 @@ public class Construction extends CraftingSkill
 		playSound="hammer.wav";
 		if(duration<25) duration=25;
 
-		CMMsg msg=CMClass.getMsg(mob,null,this,getActivityMessageType(),startStr+".");
+		final CMMsg msg=CMClass.getMsg(mob,null,this,getActivityMessageType(),startStr+".");
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

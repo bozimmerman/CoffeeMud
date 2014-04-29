@@ -50,7 +50,7 @@ public class Chant_WarningWinds extends Chant
 	{
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		if(canBeUninvoked())
 			lastRoom=null;
 		super.unInvoke();
@@ -71,7 +71,7 @@ public class Chant_WarningWinds extends Chant
 		&&(((MOB)affected).location().domainType()!=Room.DOMAIN_OUTDOORS_UNDERWATER))
 		{
 			lastRoom=((MOB)affected).location();
-			Vector V=new Vector();
+			final Vector V=new Vector();
 			TrackingLibrary.TrackingFlags flags;
 			flags = new TrackingLibrary.TrackingFlags()
 					.plus(TrackingLibrary.TrackingFlag.OPENONLY);
@@ -80,14 +80,14 @@ public class Chant_WarningWinds extends Chant
 			boolean enemy=false;
 			for(int r=0;r<V.size();r++)
 			{
-				Room R=(Room)V.elementAt(r);
+				final Room R=(Room)V.elementAt(r);
 				fighting=false;
 				enemy=false;
 				if(R!=lastRoom)
 				{
 					for(int i=0;i<R.numInhabitants();i++)
 					{
-						MOB M=R.fetchInhabitant(i);
+						final MOB M=R.fetchInhabitant(i);
 						if((M!=null)&&(M!=affected))
 						{
 							if(M.isInCombat())
@@ -95,9 +95,9 @@ public class Chant_WarningWinds extends Chant
 								fighting=true;
 								break;
 							}
-							for(Enumeration<Behavior> e=M.behaviors();e.hasMoreElements();)
+							for(final Enumeration<Behavior> e=M.behaviors();e.hasMoreElements();)
 							{
-								Behavior B=e.nextElement();
+								final Behavior B=e.nextElement();
 								if((B!=null)&&(B.grantsAggressivenessTo((MOB)affected)))
 									enemy=true;
 							}
@@ -149,11 +149,11 @@ public class Chant_WarningWinds extends Chant
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> gain(s) a sense of the winds!":"^S<S-NAME> chant(s) for a sense of the winds!^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> gain(s) a sense of the winds!":"^S<S-NAME> chant(s) for a sense of the winds!^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				lastRoom=null;

@@ -51,7 +51,7 @@ public class Areas extends StdCommand
 
 		for(int i=1;i<commands.size();i++)
 		{
-			String s=(String)commands.elementAt(i);
+			final String s=(String)commands.elementAt(i);
 			if(s.toUpperCase().startsWith("SORT=NA"))
 			{
 				append = " (sorted by name)";
@@ -61,7 +61,7 @@ public class Areas extends StdCommand
 			else
 			if(s.toUpperCase().startsWith("SORT=REV"))
 			{
-				TreeSet<Area> levelSorted=new TreeSet<Area>(new Comparator<Area>()
+				final TreeSet<Area> levelSorted=new TreeSet<Area>(new Comparator<Area>()
 				{
 					@Override
 					public int compare(Area arg0, Area arg1)
@@ -78,13 +78,13 @@ public class Areas extends StdCommand
 			else
 			if(s.toUpperCase().startsWith("SORT=LEV"))
 			{
-				TreeSet<Area> levelSorted=new TreeSet<Area>(new Comparator<Area>()
+				final TreeSet<Area> levelSorted=new TreeSet<Area>(new Comparator<Area>()
 				{
 					@Override
 					public int compare(Area arg0, Area arg1)
 					{
-						int lvl1=arg0.getAreaIStats()[Stats.MED_LEVEL.ordinal()];
-						int lvl2=arg1.getAreaIStats()[Stats.MED_LEVEL.ordinal()];
+						final int lvl1=arg0.getAreaIStats()[Stats.MED_LEVEL.ordinal()];
+						final int lvl2=arg1.getAreaIStats()[Stats.MED_LEVEL.ordinal()];
 						if(lvl1==lvl2) return 1;
 						return Integer.valueOf(lvl1).compareTo(Integer.valueOf(lvl2));
 					}
@@ -109,13 +109,13 @@ public class Areas extends StdCommand
 					return false;
 				}
 				final int sortStat=statVal;
-				TreeSet<Area> levelSorted=new TreeSet<Area>(new Comparator<Area>()
+				final TreeSet<Area> levelSorted=new TreeSet<Area>(new Comparator<Area>()
 				{
 					@Override
 					public int compare(Area arg0, Area arg1)
 					{
-						int lvl1=arg0.getAreaIStats()[sortStat];
-						int lvl2=arg1.getAreaIStats()[sortStat];
+						final int lvl1=arg0.getAreaIStats()[sortStat];
+						final int lvl2=arg1.getAreaIStats()[sortStat];
 						if(lvl1==lvl2) return 1;
 						return Integer.valueOf(lvl1).compareTo(Integer.valueOf(lvl2));
 					}
@@ -135,12 +135,12 @@ public class Areas extends StdCommand
 			expression=CMParms.combineWithQuotes(commands,1);
 			msg=new StringBuffer("^HFiltered areas list"+append+":^?^N\n\r");
 		}
-		Vector areasVec=new Vector();
-		boolean sysop=(mob!=null)&&CMSecurity.isASysOp(mob);
+		final Vector areasVec=new Vector();
+		final boolean sysop=(mob!=null)&&CMSecurity.isASysOp(mob);
 		final int colWidth=ListingLibrary.ColFixer.fixColWidth(22.0,mob);
 		for(;a.hasMoreElements();)
 		{
-			Area A=a.nextElement();
+			final Area A=a.nextElement();
 			if(CMLib.flags().canAccess(mob,A)&&(!CMath.bset(A.flags(),Area.FLAG_INSTANCE_CHILD))&&(!(A instanceof SpaceObject)))
 			{
 				final String levelStr = (addStat>=0?(Integer.toString(A.getAreaIStats()[addStat])+":"):"");
@@ -155,17 +155,17 @@ public class Areas extends StdCommand
 				}
 				if(expression!=null)
 				{
-					int[] stats=A.getAreaIStats();
+					final int[] stats=A.getAreaIStats();
 					if(stats!=null)
 					{
-						Hashtable H=new Hashtable();
+						final Hashtable H=new Hashtable();
 						for(int i=0;i<stats.length;i++)
 							H.put(Area.Stats.values()[i].name(),Integer.toString(stats[i]));
 						try
 						{
 							if(!CMStrings.parseStringExpression(expression, H,false))
 								continue;
-						}catch(Exception e)
+						}catch(final Exception e)
 						{
 							if(mob!=null)
 								mob.tell("There was an error in your AREA qualifier parameters. See help on AREA for more information. The error was: "+e.getMessage());

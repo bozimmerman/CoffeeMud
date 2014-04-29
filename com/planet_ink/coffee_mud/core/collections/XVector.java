@@ -48,7 +48,7 @@ public class XVector<T> extends Vector<T>
 	{
 		super();
 		if(E!=null)
-			for(T o : E)
+			for(final T o : E)
 				add(o);
 	}
 
@@ -84,7 +84,7 @@ public class XVector<T> extends Vector<T>
 	{
 		super();
 		if(E!=null)
-			for(T o : E)
+			for(final T o : E)
 				add(o);
 	}
 
@@ -114,7 +114,7 @@ public class XVector<T> extends Vector<T>
 	public synchronized void addAll(T[] E)
 	{
 		if(E!=null)
-			for(T e : E)
+			for(final T e : E)
 				add(e);
 	}
 
@@ -142,13 +142,13 @@ public class XVector<T> extends Vector<T>
 	public synchronized void removeAll(List<T> E)
 	{
 		if(E!=null)
-			for(T o : E)
+			for(final T o : E)
 				remove(o);
 	}
 
 	public synchronized void sort()
 	{
-		Vector<T> V2=new Vector<T>(new TreeSet<T>(this));
+		final Vector<T> V2=new Vector<T>(new TreeSet<T>(this));
 		clear();
 		addAll(V2);
 	}

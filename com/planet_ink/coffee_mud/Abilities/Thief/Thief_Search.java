@@ -94,11 +94,11 @@ public class Thief_Search extends ThiefSkill
 			if(mob.fetchEffect(this.ID())!=null)
 				return Ability.QUALITY_INDIFFERENT;
 
-			Room R=mob.location();
+			final Room R=mob.location();
 			if(R!=null)
 				for(int r=0;r<R.numInhabitants();r++)
 				{
-					MOB M=R.fetchInhabitant(r);
+					final MOB M=R.fetchInhabitant(r);
 					if((M!=null)&&(M!=mob)&&(CMLib.flags().isHidden(M)))
 						return super.castingQuality(mob, target,Ability.QUALITY_BENEFICIAL_SELF);
 				}
@@ -121,9 +121,9 @@ public class Thief_Search extends ThiefSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
-		CMMsg msg=CMClass.getMsg(mob,target,this,auto?CMMsg.MASK_ALWAYS:CMMsg.MSG_DELICATE_HANDS_ACT,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,auto?"<T-NAME> become(s) very observant.":"<S-NAME> examine(s) <S-HIS-HER> surroundings carefully.");
+		final CMMsg msg=CMClass.getMsg(mob,target,this,auto?CMMsg.MASK_ALWAYS:CMMsg.MSG_DELICATE_HANDS_ACT,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,auto?"<T-NAME> become(s) very observant.":"<S-NAME> examine(s) <S-HIS-HER> surroundings carefully.");
 		if(!success)
 			return beneficialVisualFizzle(mob,null,auto?"":"<S-NAME> look(s) around carefully, but become(s) distracted.");
 		else

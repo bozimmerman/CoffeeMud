@@ -14,7 +14,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -64,12 +63,12 @@ public class Thief_Ambush extends ThiefSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		Set<MOB> H=mob.getGroupMembers(new HashSet<MOB>());
+		final Set<MOB> H=mob.getGroupMembers(new HashSet<MOB>());
 		if(!H.contains(mob)) H.add(mob);
 		int numBesidesMe=0;
-		for(Iterator e=H.iterator();e.hasNext();)
+		for (final Object element : H)
 		{
-			MOB M=(MOB)e.next();
+			final MOB M=(MOB)element;
 			if((M!=mob)&&(mob.location().isInhabitant(M)))
 				numBesidesMe++;
 		}
@@ -80,7 +79,7 @@ public class Thief_Ambush extends ThiefSkill
 		}
 		for(int i=0;i<mob.location().numInhabitants();i++)
 		{
-			MOB M=mob.location().fetchInhabitant(i);
+			final MOB M=mob.location().fetchInhabitant(i);
 			if((M!=null)&&(M!=mob)&&(!H.contains(M))&&(CMLib.flags().canSee(M)))
 			{
 				mob.tell(M,null,null,"<S-NAME> is watching you too closely.");
@@ -93,15 +92,15 @@ public class Thief_Ambush extends ThiefSkill
 			beneficialVisualFizzle(mob,null,"<S-NAME> attempt(s) to set up an ambush, but fail(s).");
 		else
 		{
-			CMMsg msg=CMClass.getMsg(mob,null,this,auto?CMMsg.MSG_OK_ACTION:(CMMsg.MSG_DELICATE_HANDS_ACT|CMMsg.MASK_MOVE),"<S-NAME> set(s) up an ambush, directing everyone to hiding places.");
+			final CMMsg msg=CMClass.getMsg(mob,null,this,auto?CMMsg.MSG_OK_ACTION:(CMMsg.MSG_DELICATE_HANDS_ACT|CMMsg.MASK_MOVE),"<S-NAME> set(s) up an ambush, directing everyone to hiding places.");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				invoker=mob;
-				Ability hide=CMClass.getAbility("Thief_Hide");
-				for(Iterator e=H.iterator();e.hasNext();)
+				final Ability hide=CMClass.getAbility("Thief_Hide");
+				for (final Object element : H)
 				{
-					MOB M=(MOB)e.next();
+					final MOB M=(MOB)element;
 					hide.invoke(M,M,true,adjustedLevel(mob,asLevel));
 				}
 			}

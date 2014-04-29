@@ -51,7 +51,7 @@ public class Prayer_ProtectHealth extends Prayer
 		// undo the affects of this spell
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		super.unInvoke();
 
@@ -107,7 +107,7 @@ public class Prayer_ProtectHealth extends Prayer
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
@@ -115,7 +115,7 @@ public class Prayer_ProtectHealth extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> attain(s) a healthy mind and body.":"^S<S-NAME> "+prayWord(mob)+" for a healthy mind and body.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> attain(s) a healthy mind and body.":"^S<S-NAME> "+prayWord(mob)+" for a healthy mind and body.^?");
 			if(R.okMessage(mob,msg))
 			{
 				R.send(mob,msg);

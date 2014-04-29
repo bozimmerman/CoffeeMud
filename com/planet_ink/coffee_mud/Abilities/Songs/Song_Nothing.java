@@ -53,7 +53,7 @@ public class Song_Nothing extends Song
 		boolean foundOne=false;
 		for(int a=0;a<mob.numEffects();a++)
 		{
-			Ability A=mob.fetchEffect(a);
+			final Ability A=mob.fetchEffect(a);
 			if((A!=null)&&(A instanceof Song))
 				foundOne=true;
 		}

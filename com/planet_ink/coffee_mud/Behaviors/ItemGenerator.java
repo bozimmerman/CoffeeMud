@@ -71,7 +71,7 @@ public class ItemGenerator extends ActiveTicker
 		String parms=newParms;
 		if(parms.indexOf(';')>=0)
 			parms=parms.substring(0,parms.indexOf(';'));
-		Vector<String> V=CMParms.parse(parms);
+		final Vector<String> V=CMParms.parse(parms);
 		for(int v=0;v<V.size();v++)
 		{
 			String s=V.elementAt(v);
@@ -95,7 +95,7 @@ public class ItemGenerator extends ActiveTicker
 				}
 				else
 				{
-					char c=s.charAt(0);
+					final char c=s.charAt(0);
 					s=s.substring(1).toUpperCase().trim();
 					int code=-1;
 					for(int i=0;i<Room.indoorDomainDescs.length;i++)
@@ -156,7 +156,7 @@ public class ItemGenerator extends ActiveTicker
 		if(SK!=null) return SK.getShop().doIHaveThisInStock(I.Name(),null);
 		if(thang instanceof Area)
 		{
-			Room R=CMLib.map().roomLocation(I);
+			final Room R=CMLib.map().roomLocation(I);
 			if(R==null) return false;
 			return ((Area)thang).inMyMetroArea(R.getArea());
 		}
@@ -181,7 +181,7 @@ public class ItemGenerator extends ActiveTicker
 		@Override public void initializeClass(){}
 		@Override public CMObject copyOf(){return this;}
 		@Override public int compareTo(CMObject o){return (o==this)?1:0;}
-		private int tickStatus=0;
+		private final int tickStatus=0;
 		@Override public int getTickStatus(){return tickStatus;}
 		@Override
 		public boolean tick(Tickable host, int tickID)
@@ -190,19 +190,19 @@ public class ItemGenerator extends ActiveTicker
 			if(allItems!=null) return false;
 			allItems=new Vector<Item>();
 
-			List<ItemCraftor> skills=new Vector<ItemCraftor>();
-			for(Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
+			final List<ItemCraftor> skills=new Vector<ItemCraftor>();
+			for(final Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
 			{
-				Ability A=e.nextElement();
+				final Ability A=e.nextElement();
 				if(A instanceof ItemCraftor)
 					skills.add((ItemCraftor)A.copyOf());
 			}
 			List<ItemCraftor.ItemKeyPair> skillSet=null;
-			for(ItemCraftor skill : skills)
+			for(final ItemCraftor skill : skills)
 			{
 				skillSet=skill.craftAllItemSets(false);
 				if(skillSet!=null)
-				for(ItemCraftor.ItemKeyPair materialSet: skillSet)
+				for(final ItemCraftor.ItemKeyPair materialSet: skillSet)
 					allItems.add(materialSet.item);
 			}
 			Resources.submitResource("ITEMGENERATOR-ALLITEMS",allItems);
@@ -236,7 +236,7 @@ public class ItemGenerator extends ActiveTicker
 			}
 			items=new GeneratedItemSet();
   			Item I=null;
-  			MaskingLibrary.CompiledZapperMask compiled=CMLib.masking().maskCompile(mask);
+  			final MaskingLibrary.CompiledZapperMask compiled=CMLib.masking().maskCompile(mask);
 			double totalValue=0;
 			int maxValue=-1;
 			for(int a=0;a<allItems.size();a++)
@@ -274,8 +274,8 @@ public class ItemGenerator extends ActiveTicker
 		||(CMSecurity.isDisabled(CMSecurity.DisFlag.RANDOMITEMS)))
 			return true;
 		Item I=null;
-		Environmental E=(Environmental)ticking;
-		ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(E);
+		final Environmental E=(Environmental)ticking;
+		final ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(E);
 		for(int i=maintained.size()-1;i>=0;i--)
 		{
 			try
@@ -284,13 +284,13 @@ public class ItemGenerator extends ActiveTicker
 				if(!isStillMaintained(E,SK,I))
 					maintained.removeElement(I);
 			}
-			catch(Exception e){	}
+			catch(final Exception e){	}
 		}
 		if(maintained.size()>=maxItems)
 			return true;
 		if((canAct(ticking,tickID))||(maintained.size()<minItems))
 		{
-			GeneratedItemSet items=getItems(ticking,getParms());
+			final GeneratedItemSet items=getItems(ticking,getParms());
 			if(items==null) return true;
 			if((ticking instanceof Environmental)&&(((Environmental)ticking).amDestroyed()))
 				return false;
@@ -298,8 +298,8 @@ public class ItemGenerator extends ActiveTicker
 			if((maintained.size()<avgItems)
 			&&(items.size()>1))
 			{
-				double totalValue=items.totalValue;
-				int maxValue=items.maxValue;
+				final double totalValue=items.totalValue;
+				final int maxValue=items.maxValue;
 				double pickedTotal=Math.random()*totalValue;
 				double value=-1;
 				for(int i=2;i<items.size();i++)
@@ -395,16 +395,16 @@ public class ItemGenerator extends ActiveTicker
 						{
 							if(CMLib.flags().isGettable(I)&&(!(I instanceof Rideable)))
 							{
-								Vector inhabs=new Vector();
+								final Vector inhabs=new Vector();
 								for(int m=0;m<room.numInhabitants();m++)
 								{
-									MOB M=room.fetchInhabitant(m);
+									final MOB M=room.fetchInhabitant(m);
 									if((M.isSavable())&&(M.getStartRoom().getArea().inMyMetroArea(room.getArea())))
 										inhabs.addElement(M);
 								}
 								if(inhabs.size()>0)
 								{
-									MOB M=(MOB)inhabs.elementAt(CMLib.dice().roll(1,inhabs.size(),-1));
+									final MOB M=(MOB)inhabs.elementAt(CMLib.dice().roll(1,inhabs.size(),-1));
 									M.addItem(CMLib.itemBuilder().enchant(I,enchantPct));
 									I.wearIfPossible(M);
 									maintained.addElement(I);

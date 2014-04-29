@@ -51,14 +51,14 @@ public class Login extends CM1Command
 	{
 		try
 		{
-			int x=parameters.indexOf(' ');
+			final int x=parameters.indexOf(' ');
 			if(x<0)
 				req.sendMsg("[FAIL "+getHelp(req.getUser(), null, null)+"]");
 			else
 			{
-				String user=parameters.substring(0,x);
-				String pass=parameters.substring(x+1);
-				MOB M=CMLib.players().getLoadPlayer(user);
+				final String user=parameters.substring(0,x);
+				final String pass=parameters.substring(x+1);
+				final MOB M=CMLib.players().getLoadPlayer(user);
 				if((M==null) || (M.playerStats()==null) || (!M.playerStats().matchesPassword(pass)))
 				{
 					Thread.sleep(5000);
@@ -71,7 +71,7 @@ public class Login extends CM1Command
 				}
 			}
 		}
-		catch(Exception ioe)
+		catch(final Exception ioe)
 		{
 			Log.errOut(className,ioe);
 			req.close();

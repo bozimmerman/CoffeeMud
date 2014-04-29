@@ -50,7 +50,7 @@ public class Spell_Ventriloquate extends Spell
 			mob.tell("You must specify who or what to cast this on, and what you want said.");
 			return false;
 		}
-		Physical target=mob.location().fetchFromRoomFavorItems(null,(String)commands.elementAt(0));
+		final Physical target=mob.location().fetchFromRoomFavorItems(null,(String)commands.elementAt(0));
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
 			mob.tell("You don't see '"+((String)commands.elementAt(0))+"' here.");
@@ -61,11 +61,11 @@ public class Spell_Ventriloquate extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),null);
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),null);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

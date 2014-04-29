@@ -70,7 +70,7 @@ public class StdCoins extends StdItem implements Coins
 			setMaterial(RawMaterial.RESOURCE_PAPER);
 		else
 		{
-			RawMaterial.CODES codes = RawMaterial.CODES.instance();
+			final RawMaterial.CODES codes = RawMaterial.CODES.instance();
 			for(int s=0;s<codes.total();s++)
 				if(CMLib.english().containsString(name(),codes.name(s)))
 				{
@@ -110,7 +110,7 @@ public class StdCoins extends StdItem implements Coins
 	public void setMiscText(String text)
 	{
 		super.setMiscText(text);
-		int x=text.indexOf('/');
+		final int x=text.indexOf('/');
 		if(x>=0)
 		{
 			currency=text.substring(0,x);
@@ -146,10 +146,10 @@ public class StdCoins extends StdItem implements Coins
 		Coins alternative=null;
 		if(owner() instanceof Room)
 		{
-			Room R=(Room)owner();
+			final Room R=(Room)owner();
 			for(int i=0;i<R.numItems();i++)
 			{
-				Item I=R.getItem(i);
+				final Item I=R.getItem(i);
 				if((I!=null)
 				&&(I!=this)
 				&&(I instanceof Coins)
@@ -166,10 +166,10 @@ public class StdCoins extends StdItem implements Coins
 		else
 		if(owner() instanceof MOB)
 		{
-			MOB M=(MOB)owner();
+			final MOB M=(MOB)owner();
 			for(int i=0;i<M.numItems();i++)
 			{
-				Item I=M.getItem(i);
+				final Item I=M.getItem(i);
 				if((I!=null)
 				&&(I!=this)
 				&&(I instanceof Coins)

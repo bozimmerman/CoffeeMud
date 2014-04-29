@@ -57,10 +57,10 @@ public class Song_Lullibye extends Song
 		if(!super.tick(ticking,tickID))
 			return false;
 
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		if(mob==null) return true;
 		if(mob==invoker) return true;
-		boolean oldasleep=asleep;
+		final boolean oldasleep=asleep;
 		if(CMLib.dice().rollPercentage()>(50-(2*getXLEVELLevel(invoker()))))
 			asleep=true;
 		else

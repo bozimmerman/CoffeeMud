@@ -51,7 +51,7 @@ public class Disease_Cannibalism extends Disease
 	  String desiredMeat = "";
 	  if(affected instanceof MOB)
 	  {
-		 MOB mob = (MOB) affected;
+		 final MOB mob = (MOB) affected;
 		 desiredMeat = mob.charStats().raceName();
 	  }
 	  else
@@ -66,7 +66,7 @@ public class Disease_Cannibalism extends Disease
 	  String desiredMeat = "";
 	  if(affected instanceof MOB)
 	  {
-		 MOB mob = (MOB) affected;
+		 final MOB mob = (MOB) affected;
 		 desiredMeat = mob.charStats().raceName();
 	  }
 	  else
@@ -85,7 +85,7 @@ public class Disease_Cannibalism extends Disease
 			return;
 		if(affected instanceof MOB)
 		{
-			MOB mob=(MOB)affected;
+			final MOB mob=(MOB)affected;
 
 			super.unInvoke();
 			if(canBeUninvoked())
@@ -100,17 +100,17 @@ public class Disease_Cannibalism extends Disease
 	{
 		if((affected!=null)&&(affected instanceof MOB))
 		{
-		 MOB source=msg.source();
+		 final MOB source=msg.source();
 		 if(source == null)
 			return false;
-			MOB mob=(MOB)affected;
+			final MOB mob=(MOB)affected;
 		 if(msg.targetMinor() == CMMsg.TYP_EAT)
 		 {
-			Environmental food = msg.target();
+			final Environmental food = msg.target();
 			if((food!=null)
 			&&(food.name().toLowerCase().indexOf(mob.charStats().raceName()) < 0))
 			{
-				CMMsg newMessage=CMClass.getMsg(mob,null,this,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> attempt(s) to eat "+ food.Name() +", but can't stomach it....^?");
+				final CMMsg newMessage=CMClass.getMsg(mob,null,this,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> attempt(s) to eat "+ food.Name() +", but can't stomach it....^?");
 				if(mob.location().okMessage(mob,newMessage))
 					mob.location().send(mob,newMessage);
 				return false;
@@ -119,7 +119,7 @@ public class Disease_Cannibalism extends Disease
 	  }
 		if((affected!=null)&&(affected instanceof MOB))
 		{
-			MOB mob=(MOB)affected;
+			final MOB mob=(MOB)affected;
 			if(msg.amITarget(mob)
 			&&(msg.tool()!=null)
 			&&(msg.tool().ID().equals("Spell_Hungerless")))

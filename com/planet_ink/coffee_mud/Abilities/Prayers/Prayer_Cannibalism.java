@@ -51,7 +51,7 @@ public class Prayer_Cannibalism extends Prayer
 		// undo the affects of this spell
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		super.unInvoke();
 
@@ -87,12 +87,12 @@ public class Prayer_Cannibalism extends Prayer
 
 	public boolean raceWithBlood(Race R)
 	{
-		List<RawMaterial> V=R.myResources();
+		final List<RawMaterial> V=R.myResources();
 		if(V!=null)
 		{
 			for(int i2=0;i2<V.size();i2++)
 			{
-				Item I2=V.get(i2);
+				final Item I2=V.get(i2);
 				if((I2.material()==RawMaterial.RESOURCE_BLOOD)
 				&&(I2 instanceof Drink))
 					return true;
@@ -108,7 +108,7 @@ public class Prayer_Cannibalism extends Prayer
 			return false;
 		if(!(affected instanceof MOB))
 		   return true;
-		MOB M=(MOB)affected;
+		final MOB M=(MOB)affected;
 		if((M.location()!=null)&&(!CMLib.flags().isSleeping(M)))
 		{
 			M.curState().adjThirst(-(M.location().thirstPerRound(M)*2),M.maxState().maxThirst(M.baseWeight()));
@@ -122,7 +122,7 @@ public class Prayer_Cannibalism extends Prayer
 				Food F=null;
 				for(int i=0;i<M.location().numItems();i++)
 				{
-					Item I=M.location().getItem(i);
+					final Item I=M.location().getItem(i);
 					if((I!=null)
 					&&(I instanceof DeadBody)
 					&&(I.container()==null)
@@ -152,13 +152,13 @@ public class Prayer_Cannibalism extends Prayer
 				else
 				if(B!=null)
 				{
-					Ability A=CMClass.getAbility("Butchering");
+					final Ability A=CMClass.getAbility("Butchering");
 					if(A!=null) A.invoke(M,CMParms.parse(B.Name()),B,true,0);
 				}
 				else
 				if(CMLib.dice().rollPercentage()<10)
 				{
-					MOB M2=M.location().fetchRandomInhabitant();
+					final MOB M2=M.location().fetchRandomInhabitant();
 					if((M2!=null)&&(M2!=M)&&(M.charStats().getMyRace()==M2.charStats().getMyRace()))
 						M.setVictim(M2);
 				}
@@ -171,7 +171,7 @@ public class Prayer_Cannibalism extends Prayer
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		MOB target=this.getTarget(mob,commands,givenTarget);
+		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -179,14 +179,14 @@ public class Prayer_Cannibalism extends Prayer
 
 
 
-		boolean success=proficiencyCheck(mob,-((target.charStats().getStat(CharStats.STAT_WISDOM)*2)),auto);
+		final boolean success=proficiencyCheck(mob,-((target.charStats().getStat(CharStats.STAT_WISDOM)*2)),auto);
 		if(success)
 		{
 			// it worked, so build a copy of this ability,
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto)|CMMsg.MASK_MALICIOUS,auto?"":"^S<S-NAME> invoke(s) a cannibalistic hunger upon <T-NAMESELF>.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto)|CMMsg.MASK_MALICIOUS,auto?"":"^S<S-NAME> invoke(s) a cannibalistic hunger upon <T-NAMESELF>.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

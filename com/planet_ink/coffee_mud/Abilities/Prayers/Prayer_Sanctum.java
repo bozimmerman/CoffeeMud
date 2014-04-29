@@ -58,7 +58,7 @@ public class Prayer_Sanctum extends Prayer
 		if(affected==null)
 			return super.okMessage(myHost,msg);
 
-		Room R=(Room)affected;
+		final Room R=(Room)affected;
 		if((msg.targetMinor()==CMMsg.TYP_ENTER)
 		&&(msg.target()==R)
 		&&(!msg.source().Name().equals(text()))
@@ -82,14 +82,14 @@ public class Prayer_Sanctum extends Prayer
 			{
 				if(affected instanceof MOB)
 				{
-					MOB mob=(MOB)affected;
+					final MOB mob=(MOB)affected;
 					if((CMLib.flags().aliveAwakeMobile(mob,true))
 					&&(!mob.isInCombat()))
 					{
 						String t="No fighting!";
 						if(text().indexOf(';')>0)
 						{
-							List<String> V=CMParms.parseSemicolons(text(),true);
+							final List<String> V=CMParms.parseSemicolons(text(),true);
 							t=V.get(CMLib.dice().roll(1,V.size(),-1));
 						}
 						CMLib.commands().postSay(mob,msg.source(),t,false,false);
@@ -102,12 +102,12 @@ public class Prayer_Sanctum extends Prayer
 					String t="You feel too peaceful here.";
 					if(text().indexOf(';')>0)
 					{
-						List<String> V=CMParms.parseSemicolons(text(),true);
+						final List<String> V=CMParms.parseSemicolons(text(),true);
 						t=V.get(CMLib.dice().roll(1,V.size(),-1));
 					}
 					msg.source().tell(t);
 				}
-				MOB victim=msg.source().getVictim();
+				final MOB victim=msg.source().getVictim();
 				if(victim!=null) victim.makePeace();
 				msg.source().makePeace();
 				msg.modify(msg.source(),msg.target(),msg.tool(),CMMsg.NO_EFFECT,"",CMMsg.NO_EFFECT,"",CMMsg.NO_EFFECT,"");
@@ -121,7 +121,7 @@ public class Prayer_Sanctum extends Prayer
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		Physical target=mob.location();
+		final Physical target=mob.location();
 		if(target==null) return false;
 		if(target.fetchEffect(ID())!=null)
 		{
@@ -132,10 +132,10 @@ public class Prayer_Sanctum extends Prayer
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> "+prayForWord(mob)+" to make this place a sanctum.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> "+prayForWord(mob)+" to make this place a sanctum.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -144,7 +144,7 @@ public class Prayer_Sanctum extends Prayer
 				if((target instanceof Room)
 				&&(CMLib.law().doesOwnThisProperty(mob,((Room)target))))
 				{
-					String landOwnerName=CMLib.law().getLandOwnerName((Room)target);
+					final String landOwnerName=CMLib.law().getLandOwnerName((Room)target);
 					if(CMLib.clans().getClan(landOwnerName)!=null)
 					{
 						setMiscText(landOwnerName);

@@ -54,7 +54,7 @@ public class Prop_Artifact extends Property
 	{
 		if(itemID==null)
 		{
-			int x=miscText.indexOf(';');
+			final int x=miscText.indexOf(';');
 			if(x>=0)
 				itemID=miscText.substring(x+1);
 			else
@@ -85,7 +85,7 @@ public class Prop_Artifact extends Property
 			waitToReload=System.currentTimeMillis()+5000;
 			return;
 		}
-		int x=text.indexOf(';');
+		final int x=text.indexOf(';');
 		if(x>=0)
 		{
 			itemID=text.substring(x+1);
@@ -115,12 +115,12 @@ public class Prop_Artifact extends Property
 		{
 			try
 			{
-				java.io.ByteArrayOutputStream o=new java.io.ByteArrayOutputStream();
+				final java.io.ByteArrayOutputStream o=new java.io.ByteArrayOutputStream();
 				new Exception().printStackTrace(new java.io.PrintStream(o));
 				o.close();
 				if(o.toString().indexOf("Commands.Destroy.execute")>=0)
 					CMLib.database().DBDeleteData(getItemID(),"ARTIFACTS","ARTIFACTS/"+getItemID());
-			}catch(Exception e){}
+			}catch(final Exception e){}
 		}
 	}
 
@@ -184,14 +184,14 @@ public class Prop_Artifact extends Property
 		&&(msg.source()==((Item)affected).owner()))
 		{
 			msg.source().tell("^HYou lose your hold over "+affected.name()+"^?");
-			Room R=CMLib.map().roomLocation(msg.source());
+			final Room R=CMLib.map().roomLocation(msg.source());
 			R.moveItemTo((Item)affected);
 			if(autoreset)
 			{
 				waitToReload=System.currentTimeMillis()+60000;
 				if(!CMLib.threads().isTicking(this,Tickable.TICKID_ITEM_BOUNCEBACK))
 					CMLib.threads().startTickDown(this, Tickable.TICKID_ITEM_BOUNCEBACK,4);
-				Physical P = affected;
+				final Physical P = affected;
 				P.delEffect(this);
 				P.destroy();
 			}
@@ -208,8 +208,8 @@ public class Prop_Artifact extends Property
 			||(msg.sourceMinor()==CMMsg.TYP_ROOMRESET))
 		&&(getItemID()!=null))
 		{
-			Item I=(Item)affected;
-			Room R=CMLib.map().roomLocation(I);
+			final Item I=(Item)affected;
+			final Room R=CMLib.map().roomLocation(I);
 			if(msg.sourceMinor()==CMMsg.TYP_SHUTDOWN)
 			{
 				waitToReload=0;
@@ -231,18 +231,18 @@ public class Prop_Artifact extends Property
 			{
 				if(autoreset)
 				{
-					List<PlayerData> itemSet=CMLib.database().DBReadData(getItemID(),"ARTIFACTS","ARTIFACTS/"+getItemID());
+					final List<PlayerData> itemSet=CMLib.database().DBReadData(getItemID(),"ARTIFACTS","ARTIFACTS/"+getItemID());
 					if((itemSet!=null)&&(itemSet.size()>0))
 						return;
 				}
-				StringBuffer data=new StringBuffer("");
+				final StringBuffer data=new StringBuffer("");
 				data.append("<ARTITEM>");
 				if(I.owner() instanceof Room)
 					data.append(CMLib.xml().convertXMLtoTag("ROOMID",CMLib.map().getExtendedRoomID(R)));
 				else
 				if(I.owner() instanceof MOB)
 				{
-					MOB M=(MOB)I.owner();
+					final MOB M=(MOB)I.owner();
 					if(M.getStartRoom()!=null)
 					{
 						data.append(CMLib.xml().convertXMLtoTag("ROOMID",CMLib.map().getExtendedRoomID(M.getStartRoom())));
@@ -281,28 +281,28 @@ public class Prop_Artifact extends Property
 				&&(CMLib.flags().isInTheGame((Item)affected,true)))
 					return false;
 
-				List<PlayerData> itemSet=CMLib.database().DBReadData(getItemID(),"ARTIFACTS","ARTIFACTS/"+getItemID());
+				final List<PlayerData> itemSet=CMLib.database().DBReadData(getItemID(),"ARTIFACTS","ARTIFACTS/"+getItemID());
 				if((itemSet!=null)&&(itemSet.size()>0))
 				{
 					// does it already exist?
 					if(registeredArtifacts.containsKey(getItemID())) registeredArtifacts.remove(getItemID());
-					String data=itemSet.get(0).xml;
-					List<XMLLibrary.XMLpiece> xml=CMLib.xml().parseAllXML(data);
+					final String data=itemSet.get(0).xml;
+					final List<XMLLibrary.XMLpiece> xml=CMLib.xml().parseAllXML(data);
 					if(xml!=null)
 						for(int c=0;c<xml.size();c++)
 						{
-							XMLLibrary.XMLpiece iblk=xml.get(c);
+							final XMLLibrary.XMLpiece iblk=xml.get(c);
 							if((iblk.tag.equalsIgnoreCase("ARTITEM"))&&(iblk.contents!=null))
 							{
-								List<XMLLibrary.XMLpiece> roomData=iblk.contents;
-								String roomID=CMLib.xml().getValFromPieces(roomData,"ROOMID");
-								String MOBname=CMLib.xml().getValFromPieces(roomData,"MOB");
-								Room R=CMLib.map().getRoom(roomID);
+								final List<XMLLibrary.XMLpiece> roomData=iblk.contents;
+								final String roomID=CMLib.xml().getValFromPieces(roomData,"ROOMID");
+								final String MOBname=CMLib.xml().getValFromPieces(roomData,"MOB");
+								final Room R=CMLib.map().getRoom(roomID);
 								if(R!=null)
 								{
-									String iClass=CMLib.xml().getValFromPieces(roomData,"ICLAS");
-									Item newItem=CMClass.getItem(iClass);
-									HashSet doneMOBs=new HashSet();
+									final String iClass=CMLib.xml().getValFromPieces(roomData,"ICLAS");
+									final Item newItem=CMClass.getItem(iClass);
+									final HashSet doneMOBs=new HashSet();
 									if(newItem!=null)
 									{
 										newItem.basePhyStats().setLevel(CMLib.xml().getIntFromPieces(roomData,"ILEVL"));
@@ -319,7 +319,7 @@ public class Prop_Artifact extends Property
 										if(MOBname.length()>0)
 											for(int i=0;i<R.numInhabitants();i++)
 											{
-												MOB M=R.fetchInhabitant(i);
+												final MOB M=R.fetchInhabitant(i);
 												if((M!=null)
 												&&(M.isMonster())
 												&&(M.name().equals(MOBname))
@@ -327,14 +327,14 @@ public class Prop_Artifact extends Property
 												&&(!doneMOBs.contains(M)))
 												{ foundMOB=M; break;}
 											}
-										Area A=R.getArea();
+										final Area A=R.getArea();
 										if((foundMOB==null)&&(MOBname.length()>0))
-											for(Enumeration e=A.getMetroMap();e.hasMoreElements();)
+											for(final Enumeration e=A.getMetroMap();e.hasMoreElements();)
 											{
-												Room R2=(Room)e.nextElement();
+												final Room R2=(Room)e.nextElement();
 												for(int i=0;i<R2.numInhabitants();i++)
 												{
-													MOB M=R2.fetchInhabitant(i);
+													final MOB M=R2.fetchInhabitant(i);
 													if((M!=null)
 													&&(M.isMonster())
 													&&(M.name().equals(MOBname))
@@ -343,7 +343,7 @@ public class Prop_Artifact extends Property
 													{ foundMOB=M; break;}
 												}
 											}
-										Item newItemMinusArtifact=(Item)newItem.copyOf();
+										final Item newItemMinusArtifact=(Item)newItem.copyOf();
 										Ability A2=newItemMinusArtifact.fetchEffect(ID());
 										if(A2!=null) newItemMinusArtifact.delEffect(A2);
 										Item I=null;

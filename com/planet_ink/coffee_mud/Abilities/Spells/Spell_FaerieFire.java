@@ -48,7 +48,7 @@ public class Spell_FaerieFire extends Spell
 	{
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		if(canBeUninvoked())
 			mob.location().show(mob, null, CMMsg.MSG_OK_VISUAL, "The faerie fire around <S-NAME> fades.");
 		super.unInvoke();
@@ -83,7 +83,7 @@ public class Spell_FaerieFire extends Spell
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		MOB target = getTarget(mob,commands,givenTarget);
+		final MOB target = getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 		Room R=CMLib.map().roomLocation(target);
 		if(R==null) R=mob.location();
@@ -96,7 +96,7 @@ public class Spell_FaerieFire extends Spell
 			return false;
 
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
@@ -105,7 +105,7 @@ public class Spell_FaerieFire extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 
-			CMMsg msg = CMClass.getMsg(mob, target, this, verbalCastCode(mob,target,auto),(auto?"A ":"^S<S-NAME> speak(s) and gesture(s) and a ")+"twinkling fire envelopes <T-NAME>.^?");
+			final CMMsg msg = CMClass.getMsg(mob, target, this, verbalCastCode(mob,target,auto),(auto?"A ":"^S<S-NAME> speak(s) and gesture(s) and a ")+"twinkling fire envelopes <T-NAME>.^?");
 			if(R.okMessage(mob,msg))
 			{
 				R.send(mob,msg);

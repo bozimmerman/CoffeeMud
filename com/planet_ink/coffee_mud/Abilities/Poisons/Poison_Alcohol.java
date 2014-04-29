@@ -81,10 +81,10 @@ public class Poison_Alcohol extends Poison
 	{
 		if((affected!=null)&&(affected instanceof MOB))
 		{
-			MOB mob=(MOB)affected;
+			final MOB mob=(MOB)affected;
 			if((CMLib.dice().rollPercentage()==1)&&(!((MOB)affected).isMonster()))
 			{
-				Ability A=CMClass.getAbility("Disease_Migraines");
+				final Ability A=CMClass.getAbility("Disease_Migraines");
 				if((A!=null)&&(mob.fetchEffect(A.ID())==null))
 					A.invoke(mob,mob,true,0);
 			}
@@ -96,14 +96,14 @@ public class Poison_Alcohol extends Poison
 	@Override
 	protected boolean catchIt(MOB mob, Physical target)
 	{
-		boolean caughtIt=super.catchIt(mob,target);
+		final boolean caughtIt=super.catchIt(mob,target);
 		if(!(affected instanceof Drink))
 			return caughtIt;
 		if(CMLib.dice().roll(1,1000,0)>(alchoholContribution()*alchoholContribution()*alchoholContribution()))
 			return caughtIt;
 		if((target!=null)&&(target instanceof MOB)&&(target.fetchEffect(ID())==null))
 		{
-			MOB targetMOB=(MOB)target;
+			final MOB targetMOB=(MOB)target;
 			Ability A=targetMOB.fetchEffect("Addictions");
 			if(A==null)
 			{
@@ -124,10 +124,10 @@ public class Poison_Alcohol extends Poison
 
 		if(disableHappiness){disableHappiness=false; return true;}
 
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		if(mob==null) return true;
 
-		Room room=mob.location();
+		final Room room=mob.location();
 		if((CMLib.dice().rollPercentage()<(4*drunkness))&&(CMLib.flags().aliveAwakeMobile(mob,true))&&(room!=null))
 		{
 			if(CMLib.flags().isEvil(mob))
@@ -249,7 +249,7 @@ public class Poison_Alcohol extends Poison
 			   ||(msg.sourceMinor()==CMMsg.TYP_TELL)
 			   ||(CMath.bset(msg.sourceMajor(),CMMsg.MASK_CHANNEL))))
 			{
-				Ability A=CMClass.getAbility("Drunken");
+				final Ability A=CMClass.getAbility("Drunken");
 				if(A!=null)
 				{
 					A.setProficiency(100);
@@ -265,7 +265,7 @@ public class Poison_Alcohol extends Poison
 			&&(msg.targetMajor()>0))
 			{
 
-				Room room=msg.source().location();
+				final Room room=msg.source().location();
 				if((msg.target() !=null)&&(msg.target() instanceof MOB)&&(room!=null))
 				{
 					Environmental target=msg.target();
@@ -292,8 +292,8 @@ public class Poison_Alcohol extends Poison
 		int largest=alchoholContribution();
 		if((givenTarget instanceof MOB)&&(auto))
 		{
-			Vector found=new Vector();
-			Vector remove=new Vector();
+			final Vector found=new Vector();
+			final Vector remove=new Vector();
 			largest=0;
 			for(final Enumeration<Ability> a=givenTarget.effects();a.hasMoreElements();)
 			{
@@ -310,8 +310,8 @@ public class Poison_Alcohol extends Poison
 			largest+=alchoholContribution();
 			if(found.size()>0)
 			{
-				CMMsg msg=CMClass.getMsg(mob,givenTarget,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_POISON|CMMsg.MASK_ALWAYS,POISON_CAST());
-				Room R=(((MOB)givenTarget).location()!=null)?((MOB)givenTarget).location():mob.location();
+				final CMMsg msg=CMClass.getMsg(mob,givenTarget,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_POISON|CMMsg.MASK_ALWAYS,POISON_CAST());
+				final Room R=(((MOB)givenTarget).location()!=null)?((MOB)givenTarget).location():mob.location();
 				if(R.okMessage(mob,msg))
 				{
 					R.send(mob,msg);
@@ -333,16 +333,16 @@ public class Poison_Alcohol extends Poison
 			for(int i=0;i<remove.size();i++)
 				givenTarget.delEffect((Ability)remove.elementAt(i));
 		}
-		boolean success=super.invoke(mob,commands,givenTarget,auto,asLevel);
+		final boolean success=super.invoke(mob,commands,givenTarget,auto,asLevel);
 		if(success&&(givenTarget instanceof MOB)&&(auto))
 		{
-			Ability A=givenTarget.fetchEffect(ID());
+			final Ability A=givenTarget.fetchEffect(ID());
 			if(A!=null)
 			{
 				((Poison_Alcohol)A).drunkness=largest;
 				((Poison_Alcohol)A).tickDown=POISON_TICKS();
 			}
-			Room R=(((MOB)givenTarget).location()!=null)?((MOB)givenTarget).location():mob.location();
+			final Room R=(((MOB)givenTarget).location()!=null)?((MOB)givenTarget).location():mob.location();
 			R.recoverRoomStats();
 		}
 		return success;

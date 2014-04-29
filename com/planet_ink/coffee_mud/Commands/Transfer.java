@@ -50,8 +50,8 @@ public class Transfer extends At
 		}
 		commands.removeElementAt(0);
 		String mobname=(String)commands.elementAt(0);
-		Room curRoom=mob.location();
-		Vector V=new Vector();
+		final Room curRoom=mob.location();
+		final Vector V=new Vector();
 		boolean allFlag=false;
 		if(mobname.equalsIgnoreCase("ALL"))
 		{
@@ -84,7 +84,7 @@ public class Transfer extends At
 			else
 			for(int i=0;i<curRoom.numInhabitants();i++)
 			{
-				MOB M=curRoom.fetchInhabitant(i);
+				final MOB M=curRoom.fetchInhabitant(i);
 				if(M!=null)
 					V.addElement(M);
 			}
@@ -94,7 +94,7 @@ public class Transfer extends At
 		{
 			if(!allFlag)
 			{
-				Environmental E=curRoom.fetchFromMOBRoomFavorsItems(mob,null,mobname,Wearable.FILTER_UNWORNONLY);
+				final Environmental E=curRoom.fetchFromMOBRoomFavorsItems(mob,null,mobname,Wearable.FILTER_UNWORNONLY);
 				if(E instanceof Item) V.addElement(E);
 			}
 			else
@@ -102,7 +102,7 @@ public class Transfer extends At
 			{
 				for(int i=0;i<curRoom.numItems();i++)
 				{
-					Item I=curRoom.getItem(i);
+					final Item I=curRoom.getItem(i);
 					if((I!=null)&&(CMLib.english().containsString(I.name(),mobname)))
 						V.addElement(I);
 				}
@@ -112,13 +112,13 @@ public class Transfer extends At
 		{
 			if(!allFlag)
 			{
-				MOB M=CMLib.sessions().findPlayerOnline(mobname,true);
+				final MOB M=CMLib.sessions().findPlayerOnline(mobname,true);
 				if(M!=null) V.add(M);
 			}
 			if(V.size()==0)
-				for(Enumeration<Room> r=mob.location().getArea().getProperMap();r.hasMoreElements();)
+				for(final Enumeration<Room> r=mob.location().getArea().getProperMap();r.hasMoreElements();)
 				{
-					Room R=r.nextElement();
+					final Room R=r.nextElement();
 					MOB M=null;
 					int num=1;
 					while((num<=1)||(M!=null))
@@ -135,9 +135,9 @@ public class Transfer extends At
 			{
 				try
 				{
-					for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
+					for(final Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 					{
-						Room R=(Room)r.nextElement();
+						final Room R=(Room)r.nextElement();
 						MOB M=null;
 						int num=1;
 						while((num<=1)||(M!=null))
@@ -150,7 +150,7 @@ public class Transfer extends At
 						}
 						if((!allFlag)&&(V.size()>0)) break;
 					}
-				}catch(NoSuchElementException nse){}
+				}catch(final NoSuchElementException nse){}
 			}
 		}
 
@@ -160,7 +160,7 @@ public class Transfer extends At
 			return false;
 		}
 
-		StringBuffer cmd = new StringBuffer(CMParms.combine(commands,1));
+		final StringBuffer cmd = new StringBuffer(CMParms.combine(commands,1));
 		if(cmd.toString().equalsIgnoreCase("here")||cmd.toString().equalsIgnoreCase("."))
 			room=mob.location();
 		else
@@ -177,8 +177,8 @@ public class Transfer extends At
 		for(int i=0;i<V.size();i++)
 		if(V.elementAt(i) instanceof Item)
 		{
-			Item I=(Item)V.elementAt(i);
-			Room itemRoom=CMLib.map().roomLocation(I);
+			final Item I=(Item)V.elementAt(i);
+			final Room itemRoom=CMLib.map().roomLocation(I);
 			if((itemRoom!=null)
 			&&(!room.isContent(I))
 			&&(CMSecurity.isAllowed(mob, itemRoom, CMSecurity.SecFlag.TRANSFER))
@@ -188,8 +188,8 @@ public class Transfer extends At
 		else
 		if(V.elementAt(i) instanceof MOB)
 		{
-			MOB M=(MOB)V.elementAt(i);
-			Room mobRoom=CMLib.map().roomLocation(M);
+			final MOB M=(MOB)V.elementAt(i);
+			final Room mobRoom=CMLib.map().roomLocation(M);
 			if((mobRoom!=null)
 			&&(!room.isInhabitant(M))
 			&&(CMSecurity.isAllowed(mob, mobRoom, CMSecurity.SecFlag.TRANSFER))

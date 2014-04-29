@@ -61,7 +61,7 @@ public class Chant_Farsight extends Chant
 			this.beneficialVisualFizzle(mob,null,"<S-NAME> chant(s) for a far off vision, but the magic fades.");
 		else
 		{
-			CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),"^S<S-NAME> chant(s) for a far off vision.^?");
+			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),"^S<S-NAME> chant(s) for a far off vision.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -96,8 +96,8 @@ public class Chant_Farsight extends Chant
 				else
 				while(commands.size()>0)
 				{
-					String whatToOpen=(String)commands.elementAt(0);
-					int dirCode=Directions.getGoodDirectionCode(whatToOpen);
+					final String whatToOpen=(String)commands.elementAt(0);
+					final int dirCode=Directions.getGoodDirectionCode(whatToOpen);
 					if(limit<=0)
 					{
 						mob.tell("Your sight has reached its limit.");
@@ -113,8 +113,8 @@ public class Chant_Farsight extends Chant
 					}
 					else
 					{
-						Exit exit=thatRoom.getExitInDir(dirCode);
-						Room room=thatRoom.getRoomInDir(dirCode);
+						final Exit exit=thatRoom.getExitInDir(dirCode);
+						final Room room=thatRoom.getRoomInDir(dirCode);
 
 						if((exit==null)||(room==null)||(!CMLib.flags().canBeSeenBy(exit,mob))||(!exit.isOpen()))
 						{
@@ -128,7 +128,7 @@ public class Chant_Farsight extends Chant
 							thatRoom=room;
 							limit--;
 							mob.tell("\n\r");
-							CMMsg msg2=CMClass.getMsg(mob,thatRoom,CMMsg.MSG_LOOK,null);
+							final CMMsg msg2=CMClass.getMsg(mob,thatRoom,CMMsg.MSG_LOOK,null);
 							thatRoom.executeMsg(mob,msg2);
 						}
 					}

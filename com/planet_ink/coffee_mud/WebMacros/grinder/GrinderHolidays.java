@@ -43,8 +43,8 @@ public class GrinderHolidays {
 	{
 		if(newVAL==null) newVAL="";
 		//var=var.toUpperCase().trim();
-		int index=sets.indexOf(var);
-		String oldVal=index>=0?(String)sets.elementAt(index,2):"";
+		final int index=sets.indexOf(var);
+		final String oldVal=index>=0?(String)sets.elementAt(index,2):"";
 		if(index>=0)
 		{
 			if(!newVAL.equals(oldVal))
@@ -61,7 +61,7 @@ public class GrinderHolidays {
 		int index=CMLib.quests().getHolidayIndex(holidayName);
 		if(index<=0)
 		{
-			String err = CMLib.quests().createHoliday(holidayName,"ALL",true);
+			final String err = CMLib.quests().createHoliday(holidayName,"ALL",true);
 			if((err != null) && (err.trim().length()>0))
 				return err;
 			index=CMLib.quests().getHolidayIndex(holidayName);
@@ -70,7 +70,7 @@ public class GrinderHolidays {
 		}
 		List<String> steps=null;
 		QuestManager.RawHolidayData encodedData = null;
-		Object resp=CMLib.quests().getHolidayFile();
+		final Object resp=CMLib.quests().getHolidayFile();
 		if(resp instanceof List)
 			steps=(List<String>)resp;
 		else
@@ -80,32 +80,32 @@ public class GrinderHolidays {
 			encodedData=CMLib.quests().getEncodedHolidayData(steps.get(index));
 		if((encodedData==null)||(steps==null))
 			return "Error reading holiday data (code: "+((resp instanceof List)?"T":"F")+":"+((steps==null)?"F":"T")+":"+((encodedData==null)?"F":"T")+")";
-		DVector settings=encodedData.settings;
-		DVector behaviors=encodedData.behaviors;
-		DVector properties=encodedData.properties;
-		DVector stats=encodedData.stats;
+		final DVector settings=encodedData.settings;
+		final DVector behaviors=encodedData.behaviors;
+		final DVector properties=encodedData.properties;
+		final DVector stats=encodedData.stats;
 		//List stepV=(List)encodedData.elementAt(4);
 		//int pricingMobIndex=((Integer)encodedData.elementAt(5)).intValue();
 
-		String name=setText(settings,"NAME",httpReq.getUrlParameter("NAME"));
+		final String name=setText(settings,"NAME",httpReq.getUrlParameter("NAME"));
 		if((name==null)||(name.trim().length()==0)) return "A name is required.";
 
-		String duration=setText(settings,"DURATION",httpReq.getUrlParameter("DURATION"));
+		final String duration=setText(settings,"DURATION",httpReq.getUrlParameter("DURATION"));
 		if((duration==null)||(!CMath.isMathExpression(duration))) return "Duration is mal-formed.";
 
 		if(!httpReq.isUrlParameter("SCHEDULETYPE")) return "Schedule not found.";
-		int typeIndex=CMath.s_int(httpReq.getUrlParameter("SCHEDULETYPE"));
-		int mudDayIndex=settings.indexOf("MUDDAY");
-		int dateIndex=settings.indexOf("DATE");
-		int waitIndex=settings.indexOf("WAIT");
-		String scheduleName=new String[]{"WAIT","MUDDAY","DATE"}[typeIndex];
+		final int typeIndex=CMath.s_int(httpReq.getUrlParameter("SCHEDULETYPE"));
+		final int mudDayIndex=settings.indexOf("MUDDAY");
+		final int dateIndex=settings.indexOf("DATE");
+		final int waitIndex=settings.indexOf("WAIT");
+		final String scheduleName=new String[]{"WAIT","MUDDAY","DATE"}[typeIndex];
 		if((typeIndex!=0)&&(waitIndex>=0))
 			settings.removeElement("WAIT");
 		if((typeIndex!=1)&&(mudDayIndex>=0))
 			settings.removeElement("MUDDAY");
 		if((typeIndex!=2)&&(dateIndex>=0))
 			settings.removeElement("DATE");
-		String newWait = setText(settings,scheduleName,httpReq.getUrlParameter(scheduleName));
+		final String newWait = setText(settings,scheduleName,httpReq.getUrlParameter(scheduleName));
 		switch(typeIndex)
 		{
 		case 0: {
@@ -115,7 +115,7 @@ public class GrinderHolidays {
 			}
 		case 1:
 		case 2: {
-			int dash=newWait.indexOf('-');
+			final int dash=newWait.indexOf('-');
 			if(dash < 0) return "Given date is invalid. Use Month#-Day# format";
 			if(!CMath.isInteger(newWait.substring(0,dash).trim()))
 				return "Month value in the given date is not valid.";
@@ -125,8 +125,8 @@ public class GrinderHolidays {
 			}
 		}
 
-		StringBuffer areaGroup = new StringBuffer("");
-		HashSet areaCodes=new HashSet();
+		final StringBuffer areaGroup = new StringBuffer("");
+		final HashSet areaCodes=new HashSet();
 		String id="";
 		for(int i=0;httpReq.isUrlParameter("AREAGROUP"+id);id=Integer.toString(++i))
 			areaCodes.add(httpReq.getUrlParameter("AREAGROUP"+id));
@@ -136,7 +136,7 @@ public class GrinderHolidays {
 		{
 			int areaNum=2;
 			boolean reallyAll=true;
-			for(Enumeration e=CMLib.map().areas();e.hasMoreElements();areaNum++)
+			for(final Enumeration e=CMLib.map().areas();e.hasMoreElements();areaNum++)
 				if(areaCodes.contains("AREAGROUP"+areaNum))
 					areaGroup.append(" \"" + ((Area)e.nextElement()).Name()+"\"");
 				else
@@ -156,7 +156,7 @@ public class GrinderHolidays {
 		for(int i=1;httpReq.isUrlParameter("BEHAV"+i);i++)
 			if(httpReq.getUrlParameter("BEHAV"+i).trim().length()>0)
 				setText(behaviors,httpReq.getUrlParameter("BEHAV"+i),httpReq.getUrlParameter("BDATA"+i));
-		StringBuffer mudChats=new StringBuffer("");
+		final StringBuffer mudChats=new StringBuffer("");
 		for(int i=1;httpReq.isUrlParameter("MCWDS"+i);i++)
 		{
 			String words=httpReq.getUrlParameter("MCWDS"+i).trim();
@@ -179,13 +179,13 @@ public class GrinderHolidays {
 				setText(properties,httpReq.getUrlParameter("AFFECT"+i),httpReq.getUrlParameter("ADATA"+i));
 
 
-		Vector priceFV=new Vector();
+		final Vector priceFV=new Vector();
 		for(int i=1;httpReq.isUrlParameter("PRCFAC"+i);i++)
 			if(CMath.isPct(httpReq.getUrlParameter("PRCFAC"+i).trim()))
 				priceFV.add((CMath.s_pct(httpReq.getUrlParameter("PRCFAC"+i).trim())+" "+httpReq.getUrlParameter("PMASK"+i).trim()).trim());
 		setText(stats,"PRICEMASKS",CMParms.toStringList(priceFV));
 
-		String err=CMLib.quests().alterHoliday(holidayName, encodedData);
+		final String err=CMLib.quests().alterHoliday(holidayName, encodedData);
 		if(err.length()==0)
 			httpReq.addFakeUrlParameter("HOLIDAY",name);
 		return err;

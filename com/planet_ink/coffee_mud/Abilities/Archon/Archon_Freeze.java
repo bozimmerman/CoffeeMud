@@ -55,7 +55,7 @@ public class Archon_Freeze extends ArchonSkill
 		if(!(affected instanceof MOB))
 			return true;
 
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		// when this spell is on a MOBs Affected list,
 		// it should consistantly prevent the mob
@@ -80,7 +80,7 @@ public class Archon_Freeze extends ArchonSkill
 	{
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		super.unInvoke();
 
@@ -91,10 +91,10 @@ public class Archon_Freeze extends ArchonSkill
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		MOB target=getTargetAnywhere(mob,commands,givenTarget,false,true,false);
+		final MOB target=getTargetAnywhere(mob,commands,givenTarget,false,true,false);
 		if(target==null) return false;
 
-		Ability A=target.fetchEffect(ID());
+		final Ability A=target.fetchEffect(ID());
 		if(A!=null)
 		{
 			A.unInvoke();
@@ -105,11 +105,11 @@ public class Archon_Freeze extends ArchonSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),auto?"A frozen chill falls upon <T-NAME>!":"^F<S-NAME> freeze(s) <T-NAMESELF>.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),auto?"A frozen chill falls upon <T-NAME>!":"^F<S-NAME> freeze(s) <T-NAMESELF>.^?");
 			CMLib.color().fixSourceFightColor(msg);
 			if(mob.location().okMessage(mob,msg))
 			{

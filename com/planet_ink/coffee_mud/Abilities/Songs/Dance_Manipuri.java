@@ -52,7 +52,7 @@ public class Dance_Manipuri extends Dance
 			return false;
 		if(!(affected instanceof MOB))
 			return true;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		if(mob.location()!=lastRoom)
 		{
 			count=3+getXLEVELLevel(invoker());
@@ -65,14 +65,14 @@ public class Dance_Manipuri extends Dance
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		if(((msg.targetMajor()&CMMsg.MASK_MALICIOUS)>0)
 		&&(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_ALWAYS))
 		&&(mob.location()!=null)
 		&&((msg.amITarget(mob)))
 		&&((count>0)||(lastRoom==null)||(lastRoom!=mob.location())))
 		{
-			MOB target=(MOB)msg.target();
+			final MOB target=(MOB)msg.target();
 			if((!target.isInCombat())
 			&&(msg.source().getVictim()!=target))
 			{

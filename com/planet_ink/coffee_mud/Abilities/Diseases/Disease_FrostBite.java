@@ -64,8 +64,8 @@ public class Disease_FrostBite extends Disease
 	{
 		if((affected instanceof MOB)&&(tickDown<=0))
 		{
-			MOB mob=(MOB)affected;
-			Ability A=CMClass.getAbility("Amputation");
+			final MOB mob=(MOB)affected;
+			final Ability A=CMClass.getAbility("Amputation");
 			if(A!=null)
 			{
 				super.unInvoke();
@@ -88,10 +88,10 @@ public class Disease_FrostBite extends Disease
 		if(affected==null) return;
 		if(where==null)
 		{
-			Vector choices=new Vector();
-			for(int i=0;i<limbsAffectable.length;i++)
-				if(affected.charStats().getBodyPart(limbsAffectable[i])>0)
-					choices.addElement(Integer.valueOf(limbsAffectable[i]));
+			final Vector choices=new Vector();
+			for (final int element : limbsAffectable)
+				if(affected.charStats().getBodyPart(element)>0)
+					choices.addElement(Integer.valueOf(element));
 			if(choices.size()<=0)
 			{
 				where="nowhere";

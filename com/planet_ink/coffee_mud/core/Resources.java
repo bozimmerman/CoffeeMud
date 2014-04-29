@@ -160,7 +160,7 @@ public class Resources
 	public static final void updateMultiList(String filename, final Map<String, List<String>> lists)
 	{
 		final StringBuffer str=new StringBuffer("");
-		for(String ml : lists.keySet())
+		for(final String ml : lists.keySet())
 		{
 			final List<String> V=lists.get(ml);
 			str.append(ml+"\r\n");
@@ -209,7 +209,7 @@ public class Resources
 			key = "PARSED_MULTI: "+filename.substring(2).toUpperCase();
 		else
 			key = "PARSED_MULTI: "+filename.toUpperCase();
-		Map<String,List<String>> H=(Map<String,List<String>>)getResource(key);
+		final Map<String,List<String>> H=(Map<String,List<String>>)getResource(key);
 		if(H==null) return false;
 		updateMultiList(filename, H);
 		return true;
@@ -228,14 +228,14 @@ public class Resources
 				filename=filename.substring(2);
 			}
 			V=getFileLineVector(new CMFile(prefix+"resources/"+filename,null).text());
-		}catch(Exception e){}
+		}catch(final Exception e){}
 		if((V!=null)&&(V.size()>0))
 		{
 			String journal="";
 			List<String> set=new Vector<String>();
 			for(int v=0;v<V.size();v++)
 			{
-				String s=V.get(v);
+				final String s=V.get(v);
 				if(s.trim().length()==0)
 					journal="";
 				else
@@ -355,10 +355,10 @@ public class Resources
 
 	public final StringBuffer _getFileResource(final String filename, final boolean reportErrors)
 	{
-		Object rsc=_getResource(filename);
+		final Object rsc=_getResource(filename);
 		if(rsc != null)
 			return _toStringBuffer(rsc);
-		StringBuffer buf=new CMFile(makeFileResourceName(filename),null,reportErrors?CMFile.FLAG_LOGERRORS:0).text();
+		final StringBuffer buf=new CMFile(makeFileResourceName(filename),null,reportErrors?CMFile.FLAG_LOGERRORS:0).text();
 		if(!CMProps.getBoolVar(CMProps.Bool.FILERESOURCENOCACHE))
 			_submitResource(filename,buf);
 		return buf;
@@ -392,12 +392,12 @@ public class Resources
 			if(((x==0)||(!Character.isLetterOrDigit(text.charAt(x-1))))
 			&&(text.substring(x+match.length()).trim().startsWith("=")))
 			{
-				int zb1=text.lastIndexOf("\n",x);
-				int zb2=text.lastIndexOf("\r",x);
+				final int zb1=text.lastIndexOf("\n",x);
+				final int zb2=text.lastIndexOf("\r",x);
 				int zb=(zb2>zb1)?zb2:zb1;
 				if(zb<0) zb=0; else zb++;
-				int ze1=text.indexOf("\n",x);
-				int ze2=text.indexOf("\r",x);
+				final int ze1=text.indexOf("\n",x);
+				final int ze2=text.indexOf("\r",x);
 				int ze=ze2+1;
 				if((ze1>zb)&&(ze1==ze2+1)) ze=ze1+1;
 				else
@@ -424,7 +424,7 @@ public class Resources
 			{
 				if(propResources==null)
 				{
-					CMFile file=new CMFile("::/coffeemud_properties.ini",null,CMFile.FLAG_FORCEALLOW);
+					final CMFile file=new CMFile("::/coffeemud_properties.ini",null,CMFile.FLAG_FORCEALLOW);
 					propResources=new TreeMap<String,Map<String,String>>();
 					if(file.exists())
 					{
@@ -436,7 +436,7 @@ public class Resources
 							line=line.trim();
 							if(line.startsWith("[")&&(line.endsWith("]")))
 							{
-								String currentSection=line.substring(1, line.length()-1).toUpperCase().trim();
+								final String currentSection=line.substring(1, line.length()-1).toUpperCase().trim();
 								if(propResources.containsKey(currentSection))
 									currSecMap=propResources.get(currentSection);
 								else
@@ -448,7 +448,7 @@ public class Resources
 								continue;
 							else
 							{
-								int eqSepIndex=line.indexOf('=');
+								final int eqSepIndex=line.indexOf('=');
 								if(eqSepIndex<0)
 									continue;
 								try
@@ -457,7 +457,7 @@ public class Resources
 									final String value=URLDecoder.decode(line.substring(eqSepIndex+1),"UTF-8");
 									currSecMap.put(key.toUpperCase().trim(), value);
 								}
-								catch(UnsupportedEncodingException e) { }
+								catch(final UnsupportedEncodingException e) { }
 							}
 						}
 					}
@@ -519,26 +519,26 @@ public class Resources
 			{
 				if(propResources!=null)
 				{
-					StringBuilder str=new StringBuilder("");
-					for(String section : propResources.keySet())
+					final StringBuilder str=new StringBuilder("");
+					for(final String section : propResources.keySet())
 					{
-						Map<String,String> secMap=propResources.get(section);
+						final Map<String,String> secMap=propResources.get(section);
 						if(secMap.size()==0)
 							continue;
 						if(str.length()>0)
 							str.append("\n");
 						str.append("["+section+"]\n");
-						for(String key : secMap.keySet())
+						for(final String key : secMap.keySet())
 						{
 							try
 							{
-								String value=URLEncoder.encode(secMap.get(key),"UTF-8");
+								final String value=URLEncoder.encode(secMap.get(key),"UTF-8");
 								str.append(key).append("=").append(value).append("\n");
 							}
-							catch (UnsupportedEncodingException e) { }
+							catch (final UnsupportedEncodingException e) { }
 						}
 					}
-					CMFile file=new CMFile("::/coffeemud_properties.ini",null,CMFile.FLAG_FORCEALLOW);
+					final CMFile file=new CMFile("::/coffeemud_properties.ini",null,CMFile.FLAG_FORCEALLOW);
 					file.saveText(str);
 				}
 			}

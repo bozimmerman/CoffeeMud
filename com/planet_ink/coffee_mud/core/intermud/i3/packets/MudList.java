@@ -45,7 +45,7 @@ public class MudList implements Serializable
 	public static final long serialVersionUID=0;
 
 	private int id;
-	private Map<String,I3Mud> list;
+	private final Map<String,I3Mud> list;
 	private int modified;
 
 	public MudList()
@@ -79,7 +79,7 @@ public class MudList implements Serializable
 			return;
 		}
 		{ // temp hack
-			char c = mud.mud_name.charAt(0);
+			final char c = mud.mud_name.charAt(0);
 
 			if( !(c >= 'a' && c <= 'z') && !(c >= 'A' && c <= 'Z') && c != '(' )
 			{
@@ -104,7 +104,7 @@ public class MudList implements Serializable
 		{
 			return null;
 		}
-		I3Mud tmp = list.get(mud);
+		final I3Mud tmp = list.get(mud);
 
 		if( tmp.modified == Persistent.DELETED )
 		{

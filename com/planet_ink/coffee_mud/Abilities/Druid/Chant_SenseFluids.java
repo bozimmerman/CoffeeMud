@@ -44,7 +44,7 @@ public class Chant_SenseFluids extends Chant_SensePlants
 	@Override public long flags(){return Ability.FLAG_TRACKING;}
 	@Override protected String word(){return "fluids";}
 
-	private int[] myMats={RawMaterial.MATERIAL_LIQUID};
+	private final int[] myMats={RawMaterial.MATERIAL_LIQUID};
 	@Override protected int[] okMaterials(){	return myMats;}
 	@Override protected int[] okResources(){	return null;}
 }

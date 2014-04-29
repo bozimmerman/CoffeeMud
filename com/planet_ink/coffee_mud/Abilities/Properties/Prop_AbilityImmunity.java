@@ -58,7 +58,7 @@ public class Prop_AbilityImmunity extends Property implements TriggeredAffect
 		wearer = false;
 		for(int d=0;d<diseases.size();d++)
 		{
-			String s=diseases.get(d);
+			final String s=diseases.get(d);
 			if(s.equalsIgnoreCase("owner"))
 				owner=true;
 			else
@@ -66,7 +66,7 @@ public class Prop_AbilityImmunity extends Property implements TriggeredAffect
 				wearer=true;
 			else
 			{
-				int x=s.indexOf('=');
+				final int x=s.indexOf('=');
 				if(x<0)
 					messages.addElement("");
 				else
@@ -90,7 +90,7 @@ public class Prop_AbilityImmunity extends Property implements TriggeredAffect
 				||(owner && (affected instanceof Item)&&(msg.target()==((Item)affected).owner())&&(!((Item)affected).amWearingAt(Wearable.IN_INVENTORY))))
 		&& (msg.tool() instanceof Ability ))
 		{
-			Ability d = (Ability)msg.tool();
+			final Ability d = (Ability)msg.tool();
 			for(int i = 0; i < diseases.size(); i++)
 			{
 				if((CMLib.english().containsString(d.ID(),diseases.get(i)))
@@ -100,7 +100,7 @@ public class Prop_AbilityImmunity extends Property implements TriggeredAffect
 						((MOB)msg.target()).tell("You are immune to "+msg.tool().name()+".");
 					if(msg.source()!=msg.target())
 					{
-						String s=(String)messages.elementAt(i);
+						final String s=(String)messages.elementAt(i);
 						if(s.length()>0)
 							msg.source().tell(msg.source(),msg.target(),msg.tool(),s);
 						else

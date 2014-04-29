@@ -40,9 +40,9 @@ public class ComponentData extends StdWebMacro
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
-		java.util.Map<String,String> parms=parseParms(parm);
-		String last=httpReq.getUrlParameter("COMPONENT");
-		StringBuilder str=new StringBuilder("");
+		final java.util.Map<String,String> parms=parseParms(parm);
+		final String last=httpReq.getUrlParameter("COMPONENT");
+		final StringBuilder str=new StringBuilder("");
 		if(parms.containsKey("DESC"))
 		{
 			str.append(CMLib.ableMapper().getAbilityComponentDesc(null, last));

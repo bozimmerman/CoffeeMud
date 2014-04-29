@@ -99,20 +99,20 @@ public class Purge extends StdCommand
 		MOB srchMob=mob;
 		Item srchContainer=null;
 		Room srchRoom=mob.location();
-		int x=itemID.indexOf('@');
+		final int x=itemID.indexOf('@');
 		if(x>0)
 		{
-			String rest=itemID.substring(x+1).trim();
+			final String rest=itemID.substring(x+1).trim();
 			itemID=itemID.substring(0,x).trim();
 			if(rest.equalsIgnoreCase("room"))
 				srchMob=null;
 			else
 			if(rest.length()>0)
 			{
-				MOB M=srchRoom.fetchInhabitant(rest);
+				final MOB M=srchRoom.fetchInhabitant(rest);
 				if(M==null)
 				{
-					Item I = srchRoom.findItem(null, rest);
+					final Item I = srchRoom.findItem(null, rest);
 					if(I instanceof Container)
 						srchContainer=I;
 					else
@@ -181,8 +181,8 @@ public class Purge extends StdCommand
 		}
 		else
 		{
-			String allWord=CMParms.combine(commands,1);
-			Environmental thang=mob.location().fetchFromMOBRoomFavorsItems(mob,null,allWord,Wearable.FILTER_ANY);
+			final String allWord=CMParms.combine(commands,1);
+			final Environmental thang=mob.location().fetchFromMOBRoomFavorsItems(mob,null,allWord,Wearable.FILTER_ANY);
 			if((thang!=null)&&(thang instanceof Item))
 			{
 				commands.insertElementAt("ITEM",1);

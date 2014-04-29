@@ -47,7 +47,7 @@ public class Charlatan extends StdCharClass
 	@Override public String getHitPointsFormula(){return "((@x6<@x7)/3)+(2*(1?6))"; }
 	@Override public int allowedArmorLevel(){return CharClass.ARMOR_NONMETAL;}
 	@Override public int allowedWeaponLevel(){return CharClass.WEAPONS_THIEFLIKE;}
-	private HashSet disallowedWeapons=buildDisallowedWeaponClasses();
+	private final HashSet disallowedWeapons=buildDisallowedWeaponClasses();
 	@Override protected HashSet disallowedWeaponClasses(MOB mob){return disallowedWeapons;}
 	protected volatile WeakReference<Ability> invokable=new WeakReference(null);
 
@@ -167,7 +167,7 @@ public class Charlatan extends StdCharClass
 		if(outfitChoices==null)
 		{
 			outfitChoices=new Vector();
-			Weapon w=CMClass.getWeapon("Shortsword");
+			final Weapon w=CMClass.getWeapon("Shortsword");
 			outfitChoices.add(w);
 		}
 		return outfitChoices;
@@ -178,7 +178,7 @@ public class Charlatan extends StdCharClass
 	{
 		if(host instanceof MOB)
 		{
-			MOB myChar=(MOB)host;
+			final MOB myChar=(MOB)host;
 			if(msg.amISource(myChar)
 			&&(msg.tool() instanceof Ability)
 			&&(!myChar.isMonster())
@@ -196,7 +196,7 @@ public class Charlatan extends StdCharClass
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!(myHost instanceof MOB)) return super.okMessage(myHost,msg);
-		MOB myChar=(MOB)myHost;
+		final MOB myChar=(MOB)myHost;
 		if(msg.tool() instanceof Ability)
 		{
 			if(msg.amISource(myChar)
@@ -208,7 +208,7 @@ public class Charlatan extends StdCharClass
 				&&(msg.tool()==curRef.get()))
 				{
 					curRef.clear();
-					Ability A=((Ability)msg.tool());
+					final Ability A=((Ability)msg.tool());
 					final int[] usageCost=A.usageCost(myChar, false);
 					if(CMath.bset(A.usageType(),Ability.USAGE_MANA))
 						myChar.curState().adjMana(usageCost[Ability.USAGEINDEX_MANA]/4,myChar.maxState());
@@ -241,18 +241,18 @@ public class Charlatan extends StdCharClass
 		// if he already has one, don't give another!
 		if(mob.playerStats()!=null)
 		{
-			int classLevel=mob.baseCharStats().getClassLevel(this);
+			final int classLevel=mob.baseCharStats().getClassLevel(this);
 			if(classLevel<2) return;
 			if((classLevel%2)!=0) return;
 
 			int maxSkills=classLevel/2;
 
 			// now only give one, for current level, respecting alignment!
-			List<Ability> choices=new Vector<Ability>();
-			for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
+			final List<Ability> choices=new Vector<Ability>();
+			for(final Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 			{
-				Ability A=a.nextElement();
-				int lql=CMLib.ableMapper().lowestQualifyingLevel(A.ID());
+				final Ability A=a.nextElement();
+				final int lql=CMLib.ableMapper().lowestQualifyingLevel(A.ID());
 				if((CMLib.ableMapper().qualifyingLevel(mob,A)<=0)
 				&&(lql<25)
 				&&(lql>0)
@@ -267,7 +267,7 @@ public class Charlatan extends StdCharClass
 			}
 			for(int a=choices.size()-1;a>=0;a--)
 			{
-				Ability A=choices.get(a);
+				final Ability A=choices.get(a);
 				if(mob.fetchAbility(A.ID())!=null)
 					maxSkills--;
 			}
@@ -275,26 +275,26 @@ public class Charlatan extends StdCharClass
 				return;
 			for(int a=choices.size()-1;a>=0;a--)
 			{
-				Ability A=choices.get(a);
-				int lql=CMLib.ableMapper().lowestQualifyingLevel(A.ID());
+				final Ability A=choices.get(a);
+				final int lql=CMLib.ableMapper().lowestQualifyingLevel(A.ID());
 				if((mob.fetchAbility(A.ID())!=null)
 				||((lql!=classLevel)&&(lql!=classLevel-1)&&(classLevel>=25)))
 					choices.remove(a);
 			}
 			if(choices.size()==0)
 				return;
-			Ability A=choices.get(CMLib.dice().roll(1,choices.size(),-1));
+			final Ability A=choices.get(CMLib.dice().roll(1,choices.size(),-1));
 			if(A!=null)	giveMobAbility(mob,A,0,"",isBorrowedClass);
 		}
 		else
 		{
-			List<AbilityMapper.AbilityMapping> V=CMLib.ableMapper().getUpToLevelListings(ID(),
+			final List<AbilityMapper.AbilityMapping> V=CMLib.ableMapper().getUpToLevelListings(ID(),
 												mob.charStats().getClassLevel(ID()),
 												false,
 												false);
-			for(AbilityMapper.AbilityMapping able : V)
+			for(final AbilityMapper.AbilityMapping able : V)
 			{
-				Ability A=CMClass.getAbility(able.abilityID);
+				final Ability A=CMClass.getAbility(able.abilityID);
 				if((A!=null)
 				&&(!CMLib.ableMapper().getAllQualified(ID(),true,A.ID()))
 				&&(!CMLib.ableMapper().getDefaultGain(ID(),true,A.ID())))

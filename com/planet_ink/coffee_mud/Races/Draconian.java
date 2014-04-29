@@ -42,8 +42,8 @@ public class Draconian extends StdRace
 	@Override public int weightVariance(){return 100;}
 	@Override public long forbiddenWornBits(){return 0;}
 	@Override public String racialCategory(){return "Dragon";}
-	private String[]culturalAbilityNames={"Draconic","Butchering"};
-	private int[]culturalAbilityProficiencies={100,50};
+	private final String[]culturalAbilityNames={"Draconic","Butchering"};
+	private final int[]culturalAbilityProficiencies={100,50};
 	@Override public String[] culturalAbilityNames(){return culturalAbilityNames;}
 	@Override public int[] culturalAbilityProficiencies(){return culturalAbilityProficiencies;}
 
@@ -51,7 +51,7 @@ public class Draconian extends StdRace
 	private static final int[] parts={0 ,2 ,2 ,1 ,1 ,2 ,2 ,1 ,2 ,2 ,1 ,0 ,1 ,1 ,1 ,0 };
 	@Override public int[] bodyMask(){return parts;}
 
-	private int[] agingChart={0,5,20,110,325,500,850,950,1050};
+	private final int[] agingChart={0,5,20,110,325,500,850,950,1050};
 	@Override public int[] getAgingChart(){return agingChart;}
 
 	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
@@ -95,7 +95,7 @@ public class Draconian extends StdRace
 	@Override
 	public String healthText(MOB viewer, MOB mob)
 	{
-		double pct=(CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));
+		final double pct=(CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));
 
 		if(pct<.10)
 			return "^r" + mob.name(viewer) + "^r is raging in bloody pain!^N";

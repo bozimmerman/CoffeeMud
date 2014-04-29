@@ -14,7 +14,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -58,7 +57,7 @@ public class Prayer_MassBlindness extends Prayer
 		// undo the affects of this spell
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		super.unInvoke();
 
@@ -93,23 +92,23 @@ public class Prayer_MassBlindness extends Prayer
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		Set<MOB> h=properTargets(mob,givenTarget,auto);
+		final Set<MOB> h=properTargets(mob,givenTarget,auto);
 		if(h==null) return false;
 
 		boolean success=proficiencyCheck(mob,0,auto);
 		boolean nothingDone=true;
 		if(success)
 		{
-			for(Iterator e=h.iterator();e.hasNext();)
+			for (final Object element : h)
 			{
-				MOB target=(MOB)e.next();
+				final MOB target=(MOB)element;
 				if(auto||(target.charStats().getBodyPart(Race.BODY_EYE)>0))
 				{
 					// it worked, so build a copy of this ability,
 					// and add it to the affects list of the
 					// affected MOB.  Then tell everyone else
 					// what happened.
-					CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto)|CMMsg.MASK_MALICIOUS,auto?"":"^S<S-NAME> "+prayForWord(mob)+" an unholy blindness upon <T-NAMESELF>.^?");
+					final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto)|CMMsg.MASK_MALICIOUS,auto?"":"^S<S-NAME> "+prayForWord(mob)+" an unholy blindness upon <T-NAMESELF>.^?");
 					if((target!=mob)&&(mob.location().okMessage(mob,msg)))
 					{
 						mob.location().send(mob,msg);

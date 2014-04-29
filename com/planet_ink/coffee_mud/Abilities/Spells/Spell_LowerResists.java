@@ -51,7 +51,7 @@ public class Spell_LowerResists extends Spell
 		// undo the affects of this spell
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		if(canBeUninvoked())
 			mob.tell("Your cold weakness is now gone.");
 
@@ -63,14 +63,14 @@ public class Spell_LowerResists extends Spell
 	public void affectCharStats(MOB affectedMOB, CharStats affectedStats)
 	{
 		super.affectCharStats(affectedMOB,affectedStats);
-		for(int i : CharStats.CODES.SAVING_THROWS())
+		for(final int i : CharStats.CODES.SAVING_THROWS())
 			affectedStats.setStat(i,affectedStats.getStat(i)-amount);
 	}
 
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		MOB target=getTarget(mob,commands,givenTarget);
+		final MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -79,18 +79,18 @@ public class Spell_LowerResists extends Spell
 		boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"A shimmering unresistable field appears around <T-NAMESELF>.":"^S<S-NAME> invoke(s) a shimmering unresistable field around <T-NAMESELF>.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"A shimmering unresistable field appears around <T-NAMESELF>.":"^S<S-NAME> invoke(s) a shimmering unresistable field around <T-NAMESELF>.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				for(int a=0;a<target.numEffects();a++) // personal effects
 				{
-					Ability A=target.fetchEffect(a);
+					final Ability A=target.fetchEffect(a);
 					if((!A.isAutoInvoked())
 					&&(A.canBeUninvoked())
 					&&((A.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_ABJURATION))
 					{
-						int x=target.numEffects();
+						final int x=target.numEffects();
 						A.unInvoke();
 						if(x>target.numEffects())
 							a--;

@@ -80,7 +80,7 @@ public class StdLanguage extends StdAbility implements Language
 
 	protected String fixCase(String like,String make)
 	{
-		StringBuffer s=new StringBuffer(make);
+		final StringBuffer s=new StringBuffer(make);
 		char lastLike=' ';
 		for(int x=0;x<make.length();x++)
 		{
@@ -100,13 +100,13 @@ public class StdLanguage extends StdAbility implements Language
 	{
 		if(translationHash(language).containsKey(word.toUpperCase()))
 			return fixCase(word,translationHash(language).get(word.toUpperCase()));
-		MOB M=CMLib.players().getPlayer(word);
+		final MOB M=CMLib.players().getPlayer(word);
 		if(M!=null) return word;
-		List<String[]> translationVector=translationVector(language);
+		final List<String[]> translationVector=translationVector(language);
 		if(translationVector.size()>0)
 		{
 			String[] choices=null;
-			try{ choices=translationVector.get(word.length()-1);}catch(Exception e){}
+			try{ choices=translationVector.get(word.length()-1);}catch(final Exception e){}
 			if(choices==null) choices=translationVector.get(translationVector.size()-1);
 			return choices[CMath.abs(word.toLowerCase().hashCode()) % choices.length];
 		}
@@ -128,11 +128,11 @@ public class StdLanguage extends StdAbility implements Language
 	{
 		numToMess=numToMess/2;
 		if(numToMess==0) return words;
-		StringBuffer w=new StringBuffer(words);
+		final StringBuffer w=new StringBuffer(words);
 		while(numToMess>0)
 		{
-			int x=CMLib.dice().roll(1,words.length(),-1);
-			char c=words.charAt(x);
+			final int x=CMLib.dice().roll(1,words.length(),-1);
+			final char c=words.charAt(x);
 			if(Character.isLetter(c))
 			{
 				if(vowels.indexOf(c)>=0)
@@ -147,7 +147,7 @@ public class StdLanguage extends StdAbility implements Language
 
 	public String scrambleAll(String language, String str, int numToMess)
 	{
-		StringBuffer newStr=new StringBuffer("");
+		final StringBuffer newStr=new StringBuffer("");
 		int start=0;
 		int end=0;
 		int state=-1;
@@ -250,7 +250,7 @@ public class StdLanguage extends StdAbility implements Language
 	{
 		if(msg.target() instanceof Physical)
 		{
-			Physical P = (Physical)msg.target();
+			final Physical P = (Physical)msg.target();
 			for(final Enumeration<Ability> a=P.effects();a.hasMoreElements();)
 			{
 				final Ability A=a.nextElement();
@@ -280,7 +280,7 @@ public class StdLanguage extends StdAbility implements Language
 				if(str==null) str=CMStrings.getSayFromMessage(msg.targetMessage());
 				if(str!=null)
 				{
-					int numToMess=(int)Math.round(CMath.mul(numChars(str),CMath.div(100-getProficiency(ID()),100)));
+					final int numToMess=(int)Math.round(CMath.mul(numChars(str),CMath.div(100-getProficiency(ID()),100)));
 					if(!processSourceMessage(msg, str, numToMess))
 						return false;
 					if(!processNonSourceMessages(msg,str,numToMess))
@@ -320,7 +320,7 @@ public class StdLanguage extends StdAbility implements Language
 					&&(!CMSecurity.isAllowed(msg.source(),msg.source().location(),CMSecurity.SecFlag.CMDMOBS)||(!((MOB)msg.target()).isMonster()))
 					&&(!CMSecurity.isAllowed(msg.source(),msg.source().location(),CMSecurity.SecFlag.CMDROOMS)||(!((MOB)msg.target()).isMonster())))
 					{
-						Language L=getAnyTranslator(ID(),msg.source());
+						final Language L=getAnyTranslator(ID(),msg.source());
 						if((L==null)
 						||(!L.beingSpoken(ID()))
 						||((CMLib.dice().rollPercentage()*2)>(L.getProficiency(ID())+getProficiency(ID()))))
@@ -349,14 +349,14 @@ public class StdLanguage extends StdAbility implements Language
 	{
 		int numLanguages=0;
 		if(student==null) return Integer.MAX_VALUE;
-		CharClass C=student.charStats().getCurrentClass();
-		PairVector<String,Integer> culturalAbilitiesDV = student.baseCharStats().getMyRace().culturalAbilities();
-		HashSet culturalAbilities=new HashSet();
+		final CharClass C=student.charStats().getCurrentClass();
+		final PairVector<String,Integer> culturalAbilitiesDV = student.baseCharStats().getMyRace().culturalAbilities();
+		final HashSet culturalAbilities=new HashSet();
 		for(int i=0;i<culturalAbilitiesDV.size();i++)
 			culturalAbilities.add(culturalAbilitiesDV.getFirst(i).toLowerCase());
 		for(int a=0;a<student.numAbilities();a++)
 		{
-			Ability A=student.fetchAbility(a);
+			final Ability A=student.fetchAbility(a);
 			if(((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_LANGUAGE)
 			&&(!(A instanceof Common))
 			&&(!culturalAbilities.contains(A.ID())))
@@ -376,11 +376,11 @@ public class StdLanguage extends StdAbility implements Language
 		if(!super.canBeLearnedBy(teacher,student))
 			return false;
 		if(student==null) return true;
-		CharClass C=student.charStats().getCurrentClass();
+		final CharClass C=student.charStats().getCurrentClass();
 		if(C.maxLanguages()==0) return true;
 		if(CMLib.ableMapper().getQualifyingLevel(C.ID(), false, ID())>=0)
 			return true;
-		int numLanguages=numLanguagesKnown(student);
+		final int numLanguages=numLanguagesKnown(student);
 		if((C.maxLanguages()>0)&&(C.maxLanguages()<=numLanguages))
 		{
 			teacher.tell(student.name()+" can not learn any more languages.");
@@ -396,12 +396,12 @@ public class StdLanguage extends StdAbility implements Language
 		super.teach(teacher, student);
 		if((student!=null)&&(student.fetchAbility(ID())!=null))
 		{
-			CharClass C=student.charStats().getCurrentClass();
+			final CharClass C=student.charStats().getCurrentClass();
 			if(C.maxLanguages()==0) return;
 			if(CMLib.ableMapper().getQualifyingLevel(C.ID(), false, ID())>=0)
 				return;
-			int numLanguages=numLanguagesKnown(student);
-			int remaining = C.maxLanguages() - numLanguages;
+			final int numLanguages=numLanguagesKnown(student);
+			final int remaining = C.maxLanguages() - numLanguages;
 			if(remaining<=0)
 				student.tell(student.name()+" may not learn any more languages.");
 			else
@@ -489,7 +489,7 @@ public class StdLanguage extends StdAbility implements Language
 			String str=CMStrings.getSayFromMessage(msg.sourceMessage());
 			if(str!=null)
 			{
-				int numToMess=(int)Math.round(CMath.mul(numChars(str),CMath.div(100-getProficiency(ID()),100)));
+				final int numToMess=(int)Math.round(CMath.mul(numChars(str),CMath.div(100-getProficiency(ID()),100)));
 				if(numToMess>0)
 					str=messChars(ID(),str,numToMess);
 				if(!translateChannelMessage(msg,str))
@@ -507,7 +507,7 @@ public class StdLanguage extends StdAbility implements Language
 		&&(msg.targetMessage()!=null)
 		&&(msg.targetMessage().length()>0))
 		{
-			Item I = (Item)msg.target();
+			final Item I = (Item)msg.target();
 			Ability L=null;
 			for(int i=I.numEffects()-1;i>=0;i--) // reverse enumeration
 			{
@@ -543,12 +543,12 @@ public class StdLanguage extends StdAbility implements Language
 					   "CANCEL",
 					   msg.othersCode(),
 					   msg.othersMessage());
-			Language L=(Language)msg.source().fetchEffect(ID());
+			final Language L=(Language)msg.source().fetchEffect(ID());
 			String str=((Item)affected).readableText();
 			if(str.startsWith("FILE=")
 			||str.startsWith("FILE="))
 			{
-				StringBuffer buf=Resources.getFileResource(str.substring(5),true);
+				final StringBuffer buf=Resources.getFileResource(str.substring(5),true);
 				if((buf!=null)&&(buf.length()>0))
 					str=buf.toString();
 				else
@@ -561,7 +561,7 @@ public class StdLanguage extends StdAbility implements Language
 			{
 				if(L!=null)
 					numToMess=(int)Math.round(CMath.mul(numChars(str),CMath.div(100-L.getProficiency(ID()),100)));
-				String original=messChars(ID(),str,numToMess);
+				final String original=messChars(ID(),str,numToMess);
 				str=scrambleAll(ID(),str,numToMess);
 				msg.source().tell("It says '"+str+"'");
 				if((L!=null)&&(!original.equals(str)))

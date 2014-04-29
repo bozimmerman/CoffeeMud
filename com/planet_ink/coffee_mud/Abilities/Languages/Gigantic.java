@@ -46,12 +46,12 @@ public class Gigantic extends StdLanguage
 	{
 		if(wordLists==null)
 		{
-			String[] one={"o","est","e","am"};
-			String[] two={"on","dva","sa","is","id","et","bo","ja","te","me","za","ve"};
-			String[] three={"pet","set","tre","mal","maz","mat","ane","dom"};
-			String[] four={"nast","sest","osam","bedu","beda","mene","mame","maja","beli","nesi"};
-			String[] five={"sedam","devat","flanon","dvade","matke","trede","horat","jesam","taram","anaht","maram","nezme"};
-			String[] six={"jedanast","delalime","veralim","dvanast","bahone","zahedon","prasad","trenast","staronast","starde","delaja"};
+			final String[] one={"o","est","e","am"};
+			final String[] two={"on","dva","sa","is","id","et","bo","ja","te","me","za","ve"};
+			final String[] three={"pet","set","tre","mal","maz","mat","ane","dom"};
+			final String[] four={"nast","sest","osam","bedu","beda","mene","mame","maja","beli","nesi"};
+			final String[] five={"sedam","devat","flanon","dvade","matke","trede","horat","jesam","taram","anaht","maram","nezme"};
+			final String[] six={"jedanast","delalime","veralim","dvanast","bahone","zahedon","prasad","trenast","staronast","starde","delaja"};
 			wordLists=new Vector<String[]>();
 			wordLists.add(one);
 			wordLists.add(two);

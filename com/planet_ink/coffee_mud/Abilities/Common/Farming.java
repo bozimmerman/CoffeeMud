@@ -64,7 +64,7 @@ public class Farming extends GatheringSkill
 	{
 		if((affected!=null)&&(affected instanceof Room))
 		{
-			MOB mob=invoker();
+			final MOB mob=invoker();
 			if(tickUp==6)
 			{
 				if(found==null)
@@ -80,21 +80,21 @@ public class Farming extends GatheringSkill
 	@Override
 	public void unInvoke()
 	{
-		boolean isaborted=aborted;
-		Environmental aff=affected;
+		final boolean isaborted=aborted;
+		final Environmental aff=affected;
 		if(canBeUninvoked())
 		{
 			if((affected!=null)&&(affected==room))
 			{
 				if((found!=null)&&(!isaborted))
 				{
-					int amount=CMLib.dice().roll(1,7,0)*(abilityCode());
+					final int amount=CMLib.dice().roll(1,7,0)*(abilityCode());
 					String s="s";
 					if(amount==1) s="";
 					room.showHappens(CMMsg.MSG_OK_VISUAL,amount+" pound"+s+" of "+foundShortName+" have grown here.");
 					for(int i=0;i<amount;i++)
 					{
-						Item newFound=(Item)found.copyOf();
+						final Item newFound=(Item)found.copyOf();
 						room.addItem(newFound,ItemPossessor.Expire.Player_Drop);
 					}
 				}
@@ -108,7 +108,7 @@ public class Farming extends GatheringSkill
 		   &&(!isaborted)
 		   &&(room!=null))
 		{
-			Farming F=((Farming)copyOf());
+			final Farming F=((Farming)copyOf());
 			F.unInvoked=false;
 			F.tickUp=0;
 			F.tickDown=50;
@@ -188,7 +188,7 @@ public class Farming extends GatheringSkill
 			Item mine=null;
 			for(int i=0;i<mob.location().numItems();i++)
 			{
-				Item I2=mob.location().getItem(i);
+				final Item I2=mob.location().getItem(i);
 				if(plantable(mob,I2))
 				{
 					mine=I2;
@@ -199,7 +199,7 @@ public class Farming extends GatheringSkill
 			if(mine==null)
 			for(int i=0;i<mob.numItems();i++)
 			{
-				Item I2=mob.getItem(i);
+				final Item I2=mob.getItem(i);
 				if(plantable(mob,I2))
 				{
 					commands.addElement(RawMaterial.CODES.NAME(I2.material()));
@@ -222,11 +222,11 @@ public class Farming extends GatheringSkill
 			return false;
 		}
 		int code=-1;
-		String what=CMParms.combine(commands,0).toUpperCase();
-		RawMaterial.CODES codes = RawMaterial.CODES.instance();
-		for(int cd : codes.all())
+		final String what=CMParms.combine(commands,0).toUpperCase();
+		final RawMaterial.CODES codes = RawMaterial.CODES.instance();
+		for(final int cd : codes.all())
 		{
-			String str=codes.name(cd).toUpperCase();
+			final String str=codes.name(cd).toUpperCase();
 			if((str.equals(what))
 			&&(((cd&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_VEGETATION)
 			  ||(cd==RawMaterial.RESOURCE_COTTON)
@@ -239,9 +239,9 @@ public class Farming extends GatheringSkill
 			}
 		}
 		if(code<0)
-			for(int cd : codes.all())
+			for(final int cd : codes.all())
 			{
-				String str=codes.name(cd).toUpperCase();
+				final String str=codes.name(cd).toUpperCase();
 				if((str.toUpperCase().startsWith(what)||(what.startsWith(str)))
 				&&(((cd&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_VEGETATION)
 				  ||(cd==RawMaterial.RESOURCE_COTTON)
@@ -262,7 +262,7 @@ public class Farming extends GatheringSkill
 		Item mine=null;
 		for(int i=0;i<mob.location().numItems();i++)
 		{
-			Item I=mob.location().getItem(i);
+			final Item I=mob.location().getItem(i);
 			if(plantable(mob,I)&&(I.material()==code))
 			{ mine=I; break;}
 		}
@@ -271,7 +271,7 @@ public class Farming extends GatheringSkill
 			commonTell(mob,"You'll need to have some "+foundShortName+" to seed from on the ground first.");
 			return false;
 		}
-		String mineName=mine.name();
+		final String mineName=mine.name();
 		mine=(Item)CMLib.materials().unbundle(mine,-1,null);
 		if(mine==null)
 		{
@@ -303,8 +303,8 @@ public class Farming extends GatheringSkill
 		}
 
 		mine.destroy();
-		int duration=getDuration(mob,1);
-		CMMsg msg=CMClass.getMsg(mob,found,this,getActivityMessageType(),"<S-NAME> start(s) planting "+foundShortName+".");
+		final int duration=getDuration(mob,1);
+		final CMMsg msg=CMClass.getMsg(mob,found,this,getActivityMessageType(),"<S-NAME> start(s) planting "+foundShortName+".");
 		verb="planting "+foundShortName;
 		displayText="You are planting "+foundShortName;
 		room=mob.location();

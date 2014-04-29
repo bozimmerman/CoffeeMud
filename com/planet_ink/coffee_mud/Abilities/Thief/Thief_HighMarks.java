@@ -50,15 +50,15 @@ public class Thief_HighMarks extends ThiefSkill
 		if(!(affected instanceof MOB))
 			return super.okMessage(myHost,msg);
 
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		if((msg.amISource(mob))
 		&&(msg.tool()!=null)
 		&&(msg.tool().ID().equals("Thief_Mark")))
 		{
 			helpProficiency(mob, 0);
-			Ability A=mob.fetchAbility("Thief_Mark");
-			float f=getXLEVELLevel(mob);
-			int ableDiv=(int)Math.round(5.0-(f*0.2));
+			final Ability A=mob.fetchAbility("Thief_Mark");
+			final float f=getXLEVELLevel(mob);
+			final int ableDiv=(int)Math.round(5.0-(f*0.2));
 			A.setAbilityCode(proficiency()/(ableDiv));
 		}
 		return super.okMessage(myHost,msg);

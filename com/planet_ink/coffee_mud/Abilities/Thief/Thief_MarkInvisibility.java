@@ -48,14 +48,14 @@ public class Thief_MarkInvisibility extends ThiefSkill
 
 	public MOB getMark(MOB mob)
 	{
-		Thief_Mark A=(Thief_Mark)mob.fetchEffect("Thief_Mark");
+		final Thief_Mark A=(Thief_Mark)mob.fetchEffect("Thief_Mark");
 		if(A!=null)
 			return A.mark;
 		return null;
 	}
 	public int getMarkTicks(MOB mob)
 	{
-		Thief_Mark A=(Thief_Mark)mob.fetchEffect("Thief_Mark");
+		final Thief_Mark A=(Thief_Mark)mob.fetchEffect("Thief_Mark");
 		if((A!=null)&&(A.mark!=null))
 			return A.ticks;
 		return -1;
@@ -75,7 +75,7 @@ public class Thief_MarkInvisibility extends ThiefSkill
 		if(!super.tick(ticking,tickID)) return false;
 		if((affected!=null)&&(affected instanceof MOB))
 		{
-			MOB mob=(MOB)affected;
+			final MOB mob=(MOB)affected;
 			mark=getMark(mob);
 			if((mark!=null)
 			&&(mob.location()!=null)

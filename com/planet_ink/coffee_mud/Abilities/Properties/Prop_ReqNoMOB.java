@@ -14,7 +14,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -54,9 +53,9 @@ public class Prop_ReqNoMOB extends Property implements TriggeredAffect
 	{
 		noFollow=false;
 		noSneak=false;
-		Vector<String> parms=CMParms.parse(txt.toUpperCase());
+		final Vector<String> parms=CMParms.parse(txt.toUpperCase());
 		String s;
-		for(Enumeration<String> p=parms.elements();p.hasMoreElements();)
+		for(final Enumeration<String> p=parms.elements();p.hasMoreElements();)
 		{
 			s=p.nextElement();
 			if("NOFOLLOW".startsWith(s))
@@ -88,7 +87,7 @@ public class Prop_ReqNoMOB extends Property implements TriggeredAffect
 		&&((msg.amITarget(affected))||(msg.tool()==affected)||(affected instanceof Area))
 		&&(!CMLib.flags().isFalling(msg.source())))
 		{
-			HashSet<MOB> H=new HashSet<MOB>();
+			final HashSet<MOB> H=new HashSet<MOB>();
 			if(noFollow)
 				H.add(msg.source());
 			else
@@ -98,18 +97,17 @@ public class Prop_ReqNoMOB extends Property implements TriggeredAffect
 				while(hsize!=H.size())
 				{
 					hsize=H.size();
-					HashSet H2=(HashSet)H.clone();
-					for(Iterator e=H2.iterator();e.hasNext();)
+					final HashSet H2=(HashSet)H.clone();
+					for(final Iterator e=H2.iterator();e.hasNext();)
 					{
-						Object O=e.next();
+						final Object O=e.next();
 						if(O instanceof MOB)
 							((MOB)O).getRideBuddies(H);
 					}
 				}
 			}
-			for(Iterator e=H.iterator();e.hasNext();)
+			for (final Object O : H)
 			{
-				Object O=e.next();
 				if((!(O instanceof MOB))||(passesMuster((MOB)O)))
 					return super.okMessage(myHost,msg);
 			}

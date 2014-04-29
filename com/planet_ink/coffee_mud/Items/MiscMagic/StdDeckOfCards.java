@@ -88,7 +88,7 @@ public class StdDeckOfCards extends StdHandOfCards implements DeckOfCards
 	// the value.
 	protected PlayingCard makePlayingCard(int cardBitCode)
 	{
-		Item I=CMClass.getItem("StdPlayingCard");
+		final Item I=CMClass.getItem("StdPlayingCard");
 		I.basePhyStats().setAbility(cardBitCode);
 		I.recoverPhyStats();
 		I.setContainer(this);
@@ -100,10 +100,10 @@ public class StdDeckOfCards extends StdHandOfCards implements DeckOfCards
 	// and adds them to a vector which is returned.
 	private Vector makeAllCards()
 	{
-		Vector allCards=new Vector();
-		for(int i=0;i<PlayingCard.suits.length;i++)
-			for(int ii=0;ii<PlayingCard.cards.length;ii++)
-				allCards.addElement(makePlayingCard(PlayingCard.suits[i]+PlayingCard.cards[ii]));
+		final Vector allCards=new Vector();
+		for (final int suit : PlayingCard.suits)
+			for (final int card : PlayingCard.cards)
+				allCards.addElement(makePlayingCard(suit+card));
 		return allCards;
 	}
 
@@ -115,7 +115,7 @@ public class StdDeckOfCards extends StdHandOfCards implements DeckOfCards
 		alreadyFilled=true;
 		if(getContents().size()==0)
 		{
-			Vector allCards=makeAllCards();
+			final Vector allCards=makeAllCards();
 			for(int i=0;i<allCards.size();i++)
 				addCard((PlayingCard)allCards.elementAt(i));
 		}
@@ -131,7 +131,7 @@ public class StdDeckOfCards extends StdHandOfCards implements DeckOfCards
 	@Override
 	public DeckOfCards createDeck(Environmental owner)
 	{
-		StdDeckOfCards deck=new StdDeckOfCards();
+		final StdDeckOfCards deck=new StdDeckOfCards();
 		if(owner instanceof MOB)
 		{
 			if(deck.owner==null)
@@ -170,7 +170,7 @@ public class StdDeckOfCards extends StdHandOfCards implements DeckOfCards
 		// have a card, make sure its faced-down
 		for(int i=0;i<cardsCache.size();i++)
 		{
-			PlayingCard card=(PlayingCard)cardsCache.get(i);
+			final PlayingCard card=(PlayingCard)cardsCache.get(i);
 			if(card.owner()!=owner())
 				addCard(card);
 			else
@@ -190,7 +190,7 @@ public class StdDeckOfCards extends StdHandOfCards implements DeckOfCards
 			for(int i=0;i<cardsCache.size();i++)
 				cardsCache.get(i).destroy();
 			cardsCache.clear();
-			Vector allCards=makeAllCards();
+			final Vector allCards=makeAllCards();
 			for(int i=0;i<allCards.size();i++)
 				addCard((PlayingCard)allCards.elementAt(i));
 			cardsCache=getContents();
@@ -239,9 +239,9 @@ public class StdDeckOfCards extends StdHandOfCards implements DeckOfCards
 	@Override
 	public void removePlayerHand(MOB player)
 	{
-		HandOfCards cards=getPlayerHand(player);
+		final HandOfCards cards=getPlayerHand(player);
 		if(cards==null) return;
-		List<Item> cardSet=cards.getContents();
+		final List<Item> cardSet=cards.getContents();
 		for(int c=0;c<cardSet.size();c++)
 			addCard((PlayingCard)cardSet.get(c));
 		hands.removeElement(player);
@@ -289,7 +289,7 @@ public class StdDeckOfCards extends StdHandOfCards implements DeckOfCards
 				msg.source().tell("There are no cards left in the deck");
 			else
 			{
-				Room R=CMLib.map().roomLocation(this);
+				final Room R=CMLib.map().roomLocation(this);
 				if(R!=null)
 					R.show(msg.source(),null,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_QUIETMOVEMENT,
 							"<S-NAME> <S-HAS-HAVE> thoroughly shuffled <O-NAMESELF>.");

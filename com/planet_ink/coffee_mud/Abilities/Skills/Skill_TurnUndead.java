@@ -50,7 +50,7 @@ public class Skill_TurnUndead extends StdSkill
 		if((mob!=null)&&(target!=null))
 		{
 			if(!(target instanceof MOB)) return Ability.QUALITY_INDIFFERENT;
-			MOB targetM=(MOB)target;
+			final MOB targetM=(MOB)target;
 			if((targetM.baseCharStats().getMyRace()==null)
 			||(!targetM.baseCharStats().getMyRace().racialCategory().equals("Undead")))
 				return Ability.QUALITY_INDIFFERENT;
@@ -64,7 +64,7 @@ public class Skill_TurnUndead extends StdSkill
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		MOB target=this.getTarget(mob,commands,givenTarget);
+		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
 		if((target.baseCharStats().getMyRace()==null)
@@ -87,7 +87,7 @@ public class Skill_TurnUndead extends StdSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,((mob.phyStats().level()+(4*getXLEVELLevel(mob)))-target.phyStats().level())*30,auto);
+		final boolean success=proficiencyCheck(mob,((mob.phyStats().level()+(4*getXLEVELLevel(mob)))-target.phyStats().level())*30,auto);
 
 		if(success)
 		{
@@ -95,7 +95,7 @@ public class Skill_TurnUndead extends StdSkill
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_CAST_ATTACK_SOMANTIC_SPELL|(auto?CMMsg.MASK_ALWAYS:0),auto?"<T-NAME> turn(s) away.":"^S<S-NAME> turn(s) <T-NAMESELF>.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_CAST_ATTACK_SOMANTIC_SPELL|(auto?CMMsg.MASK_ALWAYS:0),auto?"<T-NAME> turn(s) away.":"^S<S-NAME> turn(s) <T-NAMESELF>.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

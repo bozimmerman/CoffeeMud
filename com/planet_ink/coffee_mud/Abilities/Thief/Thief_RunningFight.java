@@ -52,7 +52,7 @@ public class Thief_RunningFight extends ThiefSkill
 		{
 			synchronized(lastOpponent)
 			{
-				MOB mob=(MOB)affected;
+				final MOB mob=(MOB)affected;
 				if((mob.location()!=null)&&(mob.location().isInhabitant(lastOpponent)))
 				{
 					mob.setVictim(lastOpponent);
@@ -70,7 +70,7 @@ public class Thief_RunningFight extends ThiefSkill
 		if(!(affected instanceof MOB))
 			return super.okMessage(myHost,msg);
 
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		if(msg.amISource(mob)
 		&&(msg.targetMinor()==CMMsg.TYP_LEAVE)
 		&&(mob.isInCombat())
@@ -83,7 +83,7 @@ public class Thief_RunningFight extends ThiefSkill
 		&&((CMLib.dice().rollPercentage()+mob.phyStats().level()+(2*getXLEVELLevel(mob)))>mob.getVictim().charStats().getSave(CharStats.STAT_SAVE_TRAPS))
 		&&((CMLib.dice().rollPercentage()+mob.phyStats().level()+(2*getXLEVELLevel(mob)))>mob.getVictim().charStats().getSave(CharStats.STAT_SAVE_MIND)))
 		{
-			MOB M=mob.getVictim();
+			final MOB M=mob.getVictim();
 			if((M==null)||(M.getVictim()!=mob))
 			{
 				mob.tell(M,null,null,"<S-NAME> is not fighting you!");

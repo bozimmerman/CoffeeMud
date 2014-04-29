@@ -31,7 +31,7 @@ public class BoxCityLayout extends AbstractLayout
 
 	public void halfLineN(LayoutSet lSet, int startX, int endX, int height, TreeSet<Integer> xposUsed)
 	{
-		int x = startX + ((endX - startX)/2);
+		final int x = startX + ((endX - startX)/2);
 		if((x-startX)<3) return;
 		LayoutNode n = lSet.getNode(new long[]{x,0});
 		if(n!=null)
@@ -55,7 +55,7 @@ public class BoxCityLayout extends AbstractLayout
 
 	public void halfLineE(LayoutSet lSet, int startY, int endY, int width, TreeSet<Integer> yposUsed)
 	{
-		int y = startY + ((endY - startY)/2);
+		final int y = startY + ((endY - startY)/2);
 		if((startY-y)<3) return;
 		LayoutNode n = lSet.getNode(new long[]{0,y});
 		if(n!=null)
@@ -96,13 +96,13 @@ public class BoxCityLayout extends AbstractLayout
 	@Override
 	public List<LayoutNode> generate(int num, int dir)
 	{
-		Vector<LayoutNode> set = new Vector<LayoutNode>();
-		int diameter = (int)Math.round(Math.sqrt(num));
-		int plusX = (diff(diameter,diameter,num) > diff(diameter+1,diameter,num)) ? 1 : 0;
-		LayoutSet lSet = new LayoutSet(set,num);
+		final Vector<LayoutNode> set = new Vector<LayoutNode>();
+		final int diameter = (int)Math.round(Math.sqrt(num));
+		final int plusX = (diff(diameter,diameter,num) > diff(diameter+1,diameter,num)) ? 1 : 0;
+		final LayoutSet lSet = new LayoutSet(set,num);
 		drawABox(lSet,diameter+plusX,diameter);
-		TreeSet<Integer> yposUsed = new TreeSet<Integer>();
-		TreeSet<Integer> xposUsed = new TreeSet<Integer>();
+		final TreeSet<Integer> yposUsed = new TreeSet<Integer>();
+		final TreeSet<Integer> xposUsed = new TreeSet<Integer>();
 		xposUsed.add(Integer.valueOf(0));
 		halfLineN(lSet,0,diameter+plusX,diameter,xposUsed);
 		xposUsed.add(Integer.valueOf(diameter+plusX-1));
@@ -111,10 +111,10 @@ public class BoxCityLayout extends AbstractLayout
 		yposUsed.add(Integer.valueOf(-diameter+1));
 
 		int x = 0;
-		for(Integer y : yposUsed)
+		for(final Integer y : yposUsed)
 		{
 			Integer lastX = null;
-			for(Iterator<Integer> thisXE = xposUsed.iterator(); thisXE.hasNext();)
+			for(final Iterator<Integer> thisXE = xposUsed.iterator(); thisXE.hasNext();)
 			{
 				Integer thisX = thisXE.next();
 				if(lastX != null)

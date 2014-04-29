@@ -14,7 +14,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /**
@@ -69,7 +68,7 @@ public class FieryRoom
 		directDamage = CMParms.getParmInt(newParms, "damage", 10);
 		eqChance = CMParms.getParmInt(newParms, "eqchance", 0);
 		burnTicks = CMParms.getParmInt(newParms, "burnticks", 12);
-		Vector<String> V=CMParms.parse(newParms.toUpperCase());
+		final Vector<String> V=CMParms.parse(newParms.toUpperCase());
 		noStop=(V.contains("NOSTOP"));
 		noNpc=(V.contains("NONPC"));
 		noFireText=(V.contains("NOFIRETEXT"));
@@ -78,7 +77,7 @@ public class FieryRoom
 
 	private void setFireTexts()
 	{
-		String[] newFireTexts = {"The fire here crackles and burns.",
+		final String[] newFireTexts = {"The fire here crackles and burns.",
 								  "The intense heat of the fire here is "+(directDamage>0?"very painful":"very unpleasant")+".",
 								  "The flames dance around you"+(eqChance>0?", licking at your clothes.":"."),
 								  "The fire is burning out of control. You fear for your safety"+(noStop?".":" as it looks like this place is being completely consumed."),
@@ -95,7 +94,7 @@ public class FieryRoom
 		if (!(ticking instanceof Room))
 			return super.tick(ticking, tickID);
 
-		Room room = (Room) ticking;
+		final Room room = (Room) ticking;
 		if (canAct(ticking, tickID))
 		{
 			if ( (directDamage > 0) || (eqChance > 0))
@@ -103,7 +102,7 @@ public class FieryRoom
 				// for each inhab, do directDamage to them.
 				for (int i = 0; i < room.numInhabitants(); i++)
 				{
-					MOB inhab = room.fetchInhabitant(i);
+					final MOB inhab = room.fetchInhabitant(i);
 					if(inhab==null) continue;
 					if (inhab.isMonster())
 					{
@@ -111,10 +110,10 @@ public class FieryRoom
 						if (noNpc)
 						{
 							reallyAffect = false;
-							Set<MOB> group = inhab.getGroupMembers(new HashSet<MOB>());
-							for (Iterator e = group.iterator(); e.hasNext(); )
+							final Set<MOB> group = inhab.getGroupMembers(new HashSet<MOB>());
+							for (final Object element : group)
 							{
-								MOB follower = (MOB) e.next();
+								final MOB follower = (MOB) element;
 								if (! (follower.isMonster()))
 								{
 									reallyAffect = true;
@@ -146,7 +145,7 @@ public class FieryRoom
 			// The tick happened.  If NOT NoFireText, Do flame emotes
 			if(!noFireText)
 			{
-				String pickedText=FireTexts[CMLib.dice().roll(1,FireTexts.length,0)-1];
+				final String pickedText=FireTexts[CMLib.dice().roll(1,FireTexts.length,0)-1];
 				room.showHappens(CMMsg.MSG_OK_ACTION,pickedText);
 			}
 		}
@@ -168,7 +167,7 @@ public class FieryRoom
 
 	private void dealDamage(MOB mob)
 	{
-		MOB M=CMLib.map().getFactoryMOB(mob.location());
+		final MOB M=CMLib.map().getFactoryMOB(mob.location());
 		M.setName("fire");
 		CMLib.combat().postDamage(M, mob, null, directDamage, CMMsg.MASK_ALWAYS | CMMsg.MASK_MALICIOUS|CMMsg.TYP_FIRE, Weapon.TYPE_BURNING,
 							"The fire here <DAMAGE> <T-NAME>!");
@@ -177,10 +176,10 @@ public class FieryRoom
 
 	private void eqRoast(MOB mob)
 	{
-		Item target = getSomething(mob);
+		final Item target = getSomething(mob);
 		if (target != null)
 		{
-			MOB M=CMLib.map().getFactoryMOB(mob.location());
+			final MOB M=CMLib.map().getFactoryMOB(mob.location());
 			M.setName("fire");
 			switch (target.material() & RawMaterial.MATERIAL_MASK)
 			{
@@ -192,7 +191,7 @@ public class FieryRoom
 				case RawMaterial.MATERIAL_ROCK:
 				case RawMaterial.MATERIAL_UNKNOWN: {
 					// all these we'll make get hot and be dropped.
-					int damage = CMLib.dice().roll(1, 6, 1);
+					final int damage = CMLib.dice().roll(1, 6, 1);
 					CMLib.combat().postDamage(M, mob, null, damage, CMMsg.MASK_ALWAYS | CMMsg.MASK_MALICIOUS|CMMsg.TYP_FIRE, Weapon.TYPE_BURNING, target.name() + " <DAMAGE> <T-NAME>!");
 					if (CMLib.dice().rollPercentage() < mob.charStats().getStat(CharStats.STAT_STRENGTH))
 					{
@@ -201,7 +200,7 @@ public class FieryRoom
 					break;
 				}
 				default: {
-					Ability burn = CMClass.getAbility("Burning");
+					final Ability burn = CMClass.getAbility("Burning");
 					if (burn != null)
 					{
 						mob.location().showHappens(CMMsg.MSG_OK_ACTION, target.Name() + " begins to burn!");
@@ -217,12 +216,12 @@ public class FieryRoom
 
 	private static void roastRoom(Room which)
 	{
-		MOB mob=CMLib.map().getFactoryMOB(which);
+		final MOB mob=CMLib.map().getFactoryMOB(which);
 		mob.setName("fire");
 		for(int i=0;i<which.numItems();i++)
 		{
-			Item target=which.getItem(i);
-			Ability burn = CMClass.getAbility("Burning");
+			final Item target=which.getItem(i);
+			final Ability burn = CMClass.getAbility("Burning");
 			if((burn != null)&&(CMLib.dice().rollPercentage()>60))
 			{
 				which.showHappens(CMMsg.MSG_OK_ACTION, target.Name() + " begins to burn!");
@@ -235,12 +234,12 @@ public class FieryRoom
 
 	private static Item getSomething(MOB mob)
 	{
-		Vector good = new Vector();
-		Vector great = new Vector();
+		final Vector good = new Vector();
+		final Vector great = new Vector();
 		Item target = null;
 		for (int i = 0; i < mob.numItems(); i++)
 		{
-			Item I = mob.getItem(i);
+			final Item I = mob.getItem(i);
 			if (I.amWearingAt(Wearable.IN_INVENTORY))
 				good.addElement(I);
 			else

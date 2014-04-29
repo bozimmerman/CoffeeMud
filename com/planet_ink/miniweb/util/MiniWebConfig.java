@@ -84,8 +84,8 @@ public class MiniWebConfig implements Cloneable
 	private Map<String,String> 	  servlets 						= new HashMap<String,String>();
 	private Map<String,String>    fileConverts					= new HashMap<String,String>();
 
-	private Map<String,String> 	  miscFlags						= new HashMap<String,String>();
-	private Set<DisableFlag>	  disableFlags					= new HashSet<DisableFlag>();
+	private final Map<String,String> 	  miscFlags						= new HashMap<String,String>();
+	private final Set<DisableFlag>	  disableFlags					= new HashSet<DisableFlag>();
 
 	private SimpleServletManager  servletMan					= null;
 	private ServletSessionManager sessions						= null;
@@ -188,7 +188,7 @@ public class MiniWebConfig implements Cloneable
 		{
 			this.dupPolicy=DupPolicy.valueOf(dupPolicy.toUpperCase().trim());
 		}
-		catch(Exception e)
+		catch(final Exception e)
 		{
 			this.dupPolicy = DupPolicy.OVERWRITE;
 		}
@@ -482,7 +482,7 @@ public class MiniWebConfig implements Cloneable
 			KeyPairSearchTree<WebAddress> contexts=portMap.get(Integer.valueOf(port));
 			if(contexts != null)
 			{
-				Pair<String,WebAddress> pair=contexts.findLongestValue(context);
+				final Pair<String,WebAddress> pair=contexts.findLongestValue(context);
 				if(pair != null)
 					return pair;
 			}
@@ -809,7 +809,7 @@ public class MiniWebConfig implements Cloneable
 		{
 			return Integer.parseInt(getString(props,propName,""));
 		}
-		catch(Exception e)
+		catch(final Exception e)
 		{
 			return defaultVal;
 		}
@@ -828,7 +828,7 @@ public class MiniWebConfig implements Cloneable
 		{
 			return Long.parseLong(getString(props,propName,""));
 		}
-		catch(Exception e)
+		catch(final Exception e)
 		{
 			return defaultVal;
 		}
@@ -860,7 +860,7 @@ public class MiniWebConfig implements Cloneable
 		{
 			return (MiniWebConfig)clone();
 		}
-		catch(Exception e)
+		catch(final Exception e)
 		{
 			return this;
 		}
@@ -877,21 +877,21 @@ public class MiniWebConfig implements Cloneable
 	{
 		if(props.containsKey(portListPropName))
 		{
-			StringBuilder str=new StringBuilder("");
+			final StringBuilder str=new StringBuilder("");
 			for(int i=0;i<defaultPorts.length;i++)
 			{
 				if(i>0) str.append(",");
 				str.append(defaultPorts[0]);
 			}
-			String[] prop=getString(props,portListPropName,str.toString()).split(",");
+			final String[] prop=getString(props,portListPropName,str.toString()).split(",");
 			int numPorts=0;
 			defaultPorts=new int[prop.length];
-			for(int i=0;i<prop.length;i++)
+			for (final String element : prop)
 				try
 				{
-					defaultPorts[numPorts]=Integer.parseInt(prop[i].trim());
+					defaultPorts[numPorts]=Integer.parseInt(element.trim());
 					numPorts++;
-				}catch(Exception e) {}
+				}catch(final Exception e) {}
 			defaultPorts=Arrays.copyOf(defaultPorts, numPorts);
 		}
 		return defaultPorts;
@@ -907,15 +907,15 @@ public class MiniWebConfig implements Cloneable
 	private Map<String,String> getPrefixedPairs(Properties props, String prefix, char separatorChar)
 	{
 		Map<String,String> newMounts=null;
-		for(Object p : props.keySet())
+		for(final Object p : props.keySet())
 		{
 			if((p instanceof String)
 			&&((String)p).toUpperCase().startsWith(prefix+separatorChar))
 			{
 				if(newMounts==null) newMounts = new HashMap<String,String>();
-				String key=(String)p;
-				String value=props.getProperty(key);
-				String mountPoint=key.substring(prefix.length()+1);
+				final String key=(String)p;
+				final String value=props.getProperty(key);
+				final String mountPoint=key.substring(prefix.length()+1);
 				newMounts.put(mountPoint,value.trim());
 			}
 		}
@@ -932,7 +932,7 @@ public class MiniWebConfig implements Cloneable
 		int portDex=value.indexOf(':');
 		if(portDex<0)
 			return new Triad<String,Integer,String>("",ALL_PORTS,"/"+value);
-		int slashDex=value.indexOf('/');
+		final int slashDex=value.indexOf('/');
 		Integer port=ALL_PORTS;
 		final String context;
 		if(slashDex>0)
@@ -948,7 +948,7 @@ public class MiniWebConfig implements Cloneable
 		portDex=value.indexOf(':');
 		if(portDex>0)
 		{
-			String possPort=value.substring(portDex+1);
+			final String possPort=value.substring(portDex+1);
 			if(possPort.equals("*"))
 				port=ALL_PORTS;
 			else
@@ -957,7 +957,7 @@ public class MiniWebConfig implements Cloneable
 				{
 					port=Integer.valueOf(possPort);
 				}
-				catch(NumberFormatException ne)
+				catch(final NumberFormatException ne)
 				{
 					if(logger != null)
 						logger.severe("Illegal port in forward address: "+value);
@@ -981,7 +981,7 @@ public class MiniWebConfig implements Cloneable
 				port=Integer.valueOf(value);
 				value=ALL_HOSTS;
 			}
-			catch(Exception e)
+			catch(final Exception e)
 			{
 				port=ALL_PORTS;
 			}
@@ -1007,7 +1007,7 @@ public class MiniWebConfig implements Cloneable
 	public void load(Properties props)
 	{
 		miscFlags.clear();
-		for(Object propName : props.keySet())
+		for(final Object propName : props.keySet())
 			miscFlags.put(propName.toString().toUpperCase(), getString(props,propName.toString(),""));
 		sslKeystorePath=getString(props,"SSLKEYSTOREPATH",sslKeystorePath);
 		sslKeystorePassword=getString(props,"SSLKEYSTOREPASSWORD",sslKeystorePassword);
@@ -1045,7 +1045,7 @@ public class MiniWebConfig implements Cloneable
 		setDupPolicy(getString(props,"DUPPOLICY",dupPolicy.toString()));
 		setAccessLogFlag(getString(props,"ACCESSLOGS",accessLogFlag));
 
-		String[] disableStrs=getString(props,"DISABLE","").split(",");
+		final String[] disableStrs=getString(props,"DISABLE","").split(",");
 		disableFlags.clear();
 		if((disableStrs.length>0)&&(disableStrs[0].trim().length()>0))
 		for(String disable : disableStrs)
@@ -1055,26 +1055,26 @@ public class MiniWebConfig implements Cloneable
 			{
 				disableFlags.add(DisableFlag.valueOf(disable));
 			}
-			catch(Exception e)
+			catch(final Exception e)
 			{
 				getLogger().severe("Unknown DISABLE flag in mw.ini: "+disable);
 			}
 		}
 
-		Map<String,String> newServlets=getPrefixedPairs(props,"SERVLET",'/');
+		final Map<String,String> newServlets=getPrefixedPairs(props,"SERVLET",'/');
 		if(newServlets != null)
 			servlets=newServlets;
-		Map<String,String> newConverts=getPrefixedPairs(props,"MIMECONVERT",'.');
+		final Map<String,String> newConverts=getPrefixedPairs(props,"MIMECONVERT",'.');
 		if(newConverts != null)
 			fileConverts=newConverts;
-		Map<String,String> newMounts=getPrefixedPairs(props,"MOUNT",'/');
+		final Map<String,String> newMounts=getPrefixedPairs(props,"MOUNT",'/');
 		if(newMounts != null)
 		{
 			mounts=new HashMap<String,Map<Integer,KeyPairSearchTree<String>>>();
-			for(Entry<String,String> p : newMounts.entrySet())
+			for(final Entry<String,String> p : newMounts.entrySet())
 			{
-				String key=p.getKey();
-				Triad<String,Integer,String> from=findHostPortContext(key);
+				final String key=p.getKey();
+				final Triad<String,Integer,String> from=findHostPortContext(key);
 				if(from == null) continue;
 				Map<Integer,KeyPairSearchTree<String>> portMap=mounts.get(from.first);
 				if(portMap == null)
@@ -1091,17 +1091,17 @@ public class MiniWebConfig implements Cloneable
 				tree.addEntry(from.third, p.getValue());
 			}
 		}
-		Map<String,String> newForwards=getPrefixedPairs(props,"FORWARD",'/');
+		final Map<String,String> newForwards=getPrefixedPairs(props,"FORWARD",'/');
 		if(newForwards != null)
 		{
 			fwds=new HashMap<String,Map<Integer,KeyPairSearchTree<WebAddress>>>();
-			for(Entry<String,String> p : newForwards.entrySet())
+			for(final Entry<String,String> p : newForwards.entrySet())
 			{
-				String key=p.getKey();
-				Triad<String,Integer,String> from=findHostPortContext(key);
+				final String key=p.getKey();
+				final Triad<String,Integer,String> from=findHostPortContext(key);
 				if(from == null) continue;
-				String value=p.getValue();
-				Triad<String,Integer,String> to=findHostPortContext(value);
+				final String value=p.getValue();
+				final Triad<String,Integer,String> to=findHostPortContext(value);
 				if(to == null) continue;
 				if(to.second==ALL_PORTS)
 					to.second=Integer.valueOf(DEFAULT_HTP_LISTEN_PORT);
@@ -1121,7 +1121,7 @@ public class MiniWebConfig implements Cloneable
 				{
 					tree.addEntry(from.third,  new WebAddress(to.first,to.second.intValue(),to.third));
 				}
-				catch(UnknownHostException ue)
+				catch(final UnknownHostException ue)
 				{
 					getLogger().severe("Unresolved host in forward address: "+value);
 					continue;

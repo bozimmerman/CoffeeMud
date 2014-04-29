@@ -41,17 +41,17 @@ public class RaceCatNext extends StdWebMacro
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
-		java.util.Map<String,String> parms=parseParms(parm);
-		String last=httpReq.getUrlParameter("RACECAT");
+		final java.util.Map<String,String> parms=parseParms(parm);
+		final String last=httpReq.getUrlParameter("RACECAT");
 		if(parms.containsKey("RESET"))
 		{
 			if(last!=null) httpReq.removeUrlParameter("RACECAT");
 			return "";
 		}
 		Vector raceCats=new Vector();
-		for(Enumeration r=CMClass.races();r.hasMoreElements();)
+		for(final Enumeration r=CMClass.races();r.hasMoreElements();)
 		{
-			Race R=(Race)r.nextElement();
+			final Race R=(Race)r.nextElement();
 			if((!raceCats.contains(R.racialCategory()))
 			&&((CMProps.isTheme(R.availabilityCode())&&(!CMath.bset(R.availabilityCode(),Area.THEME_SKILLONLYMASK)))
 				||(parms.containsKey("ALL"))))
@@ -59,9 +59,9 @@ public class RaceCatNext extends StdWebMacro
 		}
 		raceCats=new Vector(new TreeSet(raceCats));
 		String lastID="";
-		for(Enumeration r=raceCats.elements();r.hasMoreElements();)
+		for(final Enumeration r=raceCats.elements();r.hasMoreElements();)
 		{
-			String RC=(String)r.nextElement();
+			final String RC=(String)r.nextElement();
 			if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!RC.equals(lastID))))
 			{
 				httpReq.addFakeUrlParameter("RACECAT",RC);

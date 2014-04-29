@@ -41,7 +41,7 @@ public class Goblin extends StdMOB
 	public Goblin()
 	{
 		super();
-		int goblinType = Math.abs(randomizer.nextInt() % 1000);
+		final int goblinType = Math.abs(randomizer.nextInt() % 1000);
 
 		setMOBSpecifics(goblinType);
 		baseCharStats().setMyRace(CMClass.getRace("Goblin"));

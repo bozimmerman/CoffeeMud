@@ -42,14 +42,14 @@ public class GrinderFactions {
 
 	public static String modifyFaction(HTTPRequest httpReq, java.util.Map<String,String> parms, Faction F)
 	{
-		String replaceCommand=httpReq.getUrlParameter("REPLACE");
+		final String replaceCommand=httpReq.getUrlParameter("REPLACE");
 		if((replaceCommand != null)
 		&& (replaceCommand.length()>0)
 		&& (replaceCommand.indexOf('=')>0))
 		{
-			int eq=replaceCommand.indexOf('=');
-			String field=replaceCommand.substring(0,eq);
-			String value=replaceCommand.substring(eq+1);
+			final int eq=replaceCommand.indexOf('=');
+			final String field=replaceCommand.substring(0,eq);
+			final String value=replaceCommand.substring(eq+1);
 			httpReq.addFakeUrlParameter(field, value);
 			httpReq.addFakeUrlParameter("REPLACE","");
 		}
@@ -71,7 +71,7 @@ public class GrinderFactions {
 		F.setShowInSpecialReported((old!=null)&&(old.equalsIgnoreCase("on")));
 
 		int num=0;
-		for(Enumeration e=F.ranges();e.hasMoreElements();)
+		for(final Enumeration e=F.ranges();e.hasMoreElements();)
 			F.delRange((Faction.FRange)e.nextElement());
 		while(httpReq.getUrlParameter("RANGENAME"+num)!=null)
 		{
@@ -81,10 +81,10 @@ public class GrinderFactions {
 			{
 				if(code.length()==0)
 					code=CMStrings.replaceAll(old.toUpperCase().trim()," ","_");
-				int low=CMath.s_int(httpReq.getUrlParameter("RANGELOW"+num));
+				final int low=CMath.s_int(httpReq.getUrlParameter("RANGELOW"+num));
 				int high=CMath.s_int(httpReq.getUrlParameter("RANGEHIGH"+num));
 				if(high<low) high=low;
-				String flag=httpReq.getUrlParameter("RANGEFLAG"+num);
+				final String flag=httpReq.getUrlParameter("RANGEFLAG"+num);
 				F.addRange(low+";"+high+";"+old+";"+code+";"+flag);
 			}
 			num++;
@@ -93,11 +93,11 @@ public class GrinderFactions {
 		old=httpReq.getUrlParameter("PLAYERCHOICETEXT");
 		F.setChoiceIntro(old==null?"":old);
 
-		String[] prefixes={"AUTOVALUE","DEFAULTVALUE","PLAYERCHOICE"};
+		final String[] prefixes={"AUTOVALUE","DEFAULTVALUE","PLAYERCHOICE"};
 		for(int i=0;i<prefixes.length;i++)
 		{
-			String prefix=prefixes[i];
-			Vector V=new Vector();
+			final String prefix=prefixes[i];
+			final Vector V=new Vector();
 			switch(i)
 			{
 			case 0: F.setAutoDefaults(V); break;
@@ -107,10 +107,10 @@ public class GrinderFactions {
 			num=0;
 			while(httpReq.getUrlParameter(prefix+num)!=null)
 			{
-				String value=httpReq.getUrlParameter(prefix+num);
+				final String value=httpReq.getUrlParameter(prefix+num);
 				if(value.length()>0)
 				{
-					String mask=httpReq.getUrlParameter(prefix+"MASK"+num);
+					final String mask=httpReq.getUrlParameter(prefix+"MASK"+num);
 					V.addElement((CMath.s_long(value)+" "+mask).trim());
 				}
 				num++;
@@ -124,7 +124,7 @@ public class GrinderFactions {
 			old=httpReq.getUrlParameter("CHANGESTRIGGER"+num);
 			if(old.length()>0)
 			{
-				String ctparms=httpReq.getUrlParameter("CHANGESTPARM"+num);
+				final String ctparms=httpReq.getUrlParameter("CHANGESTPARM"+num);
 				if(ctparms.trim().length()>0)
 					old+="("+ctparms.trim()+")";
 				old+=";";
@@ -143,7 +143,7 @@ public class GrinderFactions {
 			num++;
 		}
 
-		for(Enumeration<Faction.FZapFactor> e=F.factors();e.hasMoreElements();)
+		for(final Enumeration<Faction.FZapFactor> e=F.factors();e.hasMoreElements();)
 			F.delFactor(e.nextElement());
 		num=0;
 		while(httpReq.getUrlParameter("ADJFACTOR"+num)!=null)
@@ -151,15 +151,15 @@ public class GrinderFactions {
 			old=httpReq.getUrlParameter("ADJFACTOR"+num);
 			if(old.length()>0)
 			{
-				double gain=CMath.s_pct(httpReq.getUrlParameter("ADJFACTORGAIN"+num));
-				double loss=CMath.s_pct(httpReq.getUrlParameter("ADJFACTORLOSS"+num));
+				final double gain=CMath.s_pct(httpReq.getUrlParameter("ADJFACTORGAIN"+num));
+				final double loss=CMath.s_pct(httpReq.getUrlParameter("ADJFACTORLOSS"+num));
 				F.addFactor(gain,loss,old);
 			}
 			num++;
 		}
 
 		num=0;
-		for(Enumeration e=F.relationFactions();e.hasMoreElements();)
+		for(final Enumeration e=F.relationFactions();e.hasMoreElements();)
 			F.delRelation((String)e.nextElement());
 		while(httpReq.getUrlParameter("RELATIONS"+num)!=null)
 		{
@@ -170,17 +170,17 @@ public class GrinderFactions {
 		}
 
 		num=0;
-		DVector affBehav=new DVector(3);
-		HashSet affBehavKeepers=new HashSet();
+		final DVector affBehav=new DVector(3);
+		final HashSet affBehavKeepers=new HashSet();
 		// its done this strange way to minimize impact on mob recalculations.
 		while(httpReq.getUrlParameter("AFFBEHAV"+num)!=null)
 		{
 			old=httpReq.getUrlParameter("AFFBEHAV"+num);
 			if(old.length()>0)
 			{
-				String parm=""+httpReq.getUrlParameter("AFFBEHAVPARM"+num);
-				String mask=""+httpReq.getUrlParameter("AFFBEHAVMASK"+num);
-				String[] oldParms=F.getAffectBehav(old);
+				final String parm=""+httpReq.getUrlParameter("AFFBEHAVPARM"+num);
+				final String mask=""+httpReq.getUrlParameter("AFFBEHAVMASK"+num);
+				final String[] oldParms=F.getAffectBehav(old);
 				if((oldParms==null)||(!oldParms[0].equals(parm))||(!oldParms[1].equals(mask)))
 					affBehav.addElement(old.toUpperCase().trim(),parm,mask);
 				else
@@ -188,7 +188,7 @@ public class GrinderFactions {
 			}
 			num++;
 		}
-		for(Enumeration e=F.affectsBehavs();e.hasMoreElements();)
+		for(final Enumeration e=F.affectsBehavs();e.hasMoreElements();)
 		{
 			old=(String)e.nextElement();
 			if(!affBehavKeepers.contains(old.toUpperCase().trim()))
@@ -201,20 +201,20 @@ public class GrinderFactions {
 		}
 
 		num=0;
-		for(Enumeration e=F.abilityUsages();e.hasMoreElements();)
+		for(final Enumeration e=F.abilityUsages();e.hasMoreElements();)
 			F.delAbilityUsage((Faction.FAbilityUsage)e.nextElement());
 		while(httpReq.getUrlParameter("ABILITYUSE"+num)!=null)
 		{
 			old=httpReq.getUrlParameter("ABILITYUSE"+num);
 			if(old.length()>0)
 			{
-				int usedType=CMLib.factions().getAbilityFlagType(old);
+				final int usedType=CMLib.factions().getAbilityFlagType(old);
 				if(usedType>0)
 				{
 					int x=-1;
 					while(httpReq.isUrlParameter("ABILITYUSE"+num+"_"+(++x)))
 					{
-						String s=httpReq.getUrlParameter("ABILITYUSE"+num+"_"+x);
+						final String s=httpReq.getUrlParameter("ABILITYUSE"+num+"_"+x);
 						if(s.length()>0)
 						{
 							old+=" "+s.toUpperCase().trim();
@@ -230,14 +230,14 @@ public class GrinderFactions {
 
 
 		num=0;
-		for(Enumeration e=F.reactions();e.hasMoreElements();)
+		for(final Enumeration e=F.reactions();e.hasMoreElements();)
 			F.delReaction((Faction.FReactionItem)e.nextElement());
 		while(httpReq.getUrlParameter("REACTIONRANGE"+num)!=null)
 		{
 			old=httpReq.getUrlParameter("REACTIONRANGE"+num);
-			String old1=httpReq.getUrlParameter("REACTIONMASK"+num);
-			String old2=httpReq.getUrlParameter("REACTIONABC"+num);
-			String old3=httpReq.getUrlParameter("REACTIONPARM"+num);
+			final String old1=httpReq.getUrlParameter("REACTIONMASK"+num);
+			final String old2=httpReq.getUrlParameter("REACTIONABC"+num);
+			final String old3=httpReq.getUrlParameter("REACTIONPARM"+num);
 			if(old.length()>0)
 				F.addReaction(old,old1,old2,old3);
 			num++;

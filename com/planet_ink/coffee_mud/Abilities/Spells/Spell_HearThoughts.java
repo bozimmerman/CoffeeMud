@@ -48,22 +48,22 @@ public class Spell_HearThoughts extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,null,this,somanticCastCode(mob,null,auto),auto?"":"^S<S-NAME> concentrate(s) and listen(s) carefully!^?");
+			final CMMsg msg=CMClass.getMsg(mob,null,this,somanticCastCode(mob,null,auto),auto?"":"^S<S-NAME> concentrate(s) and listen(s) carefully!^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				final List<Room> rooms=CMLib.tracking().getRadiantRooms(mob.location(), new TrackingLibrary.TrackingFlags(), 50);
 				final List<MOB> mobs=new LinkedList<MOB>();
 				int numMobs= 8 + super.getXLEVELLevel(mob);
-				for(Room R : rooms)
+				for(final Room R : rooms)
 				{
-					for(Enumeration<MOB> m=R.inhabitants();m.hasMoreElements();)
+					for(final Enumeration<MOB> m=R.inhabitants();m.hasMoreElements();)
 					{
-						MOB M=m.nextElement();
+						final MOB M=m.nextElement();
 						if((numMobs>0)&&(M!=mob))
 						{
 							mobs.add(M);
@@ -74,9 +74,9 @@ public class Spell_HearThoughts extends Spell
 						break;
 				}
 				rooms.clear();
-				for(MOB target : mobs)
+				for(final MOB target : mobs)
 				{
-					Room room=target.location();
+					final Room room=target.location();
 					if(room==null) continue;
 					String adjective="";
 					if(target.charStats().getStat(CharStats.STAT_INTELLIGENCE)>=18)
@@ -96,9 +96,9 @@ public class Spell_HearThoughts extends Spell
 					if(target.charStats().getStat(CharStats.STAT_WISDOM)>=10)
 						adjective+="wise, ";
 					mob.tell("Regarding "+target.Name()+", a "+adjective+target.charStats().getMyRace().name()+" "+target.charStats().getCurrentClass().name()+" at "+room.displayText(mob)+":");
-					StringBuilder thoughts=new StringBuilder("");
-					LegalBehavior LB=CMLib.law().getLegalBehavior(target.location());
-					Area AO=CMLib.law().getLegalObject(target.location());
+					final StringBuilder thoughts=new StringBuilder("");
+					final LegalBehavior LB=CMLib.law().getLegalBehavior(target.location());
+					final Area AO=CMLib.law().getLegalObject(target.location());
 					if((LB!=null)&&(AO!=null))
 					{
 						if(LB.isJudge(AO, target))
@@ -107,7 +107,7 @@ public class Spell_HearThoughts extends Spell
 						if(LB.isAnyOfficer(AO, target))
 							thoughts.append("You detect the stern thoughts of a law officer.  ");
 					}
-					for(Enumeration<Behavior> b=target.behaviors();b.hasMoreElements();)
+					for(final Enumeration<Behavior> b=target.behaviors();b.hasMoreElements();)
 					{
 						final Behavior B=b.nextElement();
 						final String accounting=B.accountForYourself();

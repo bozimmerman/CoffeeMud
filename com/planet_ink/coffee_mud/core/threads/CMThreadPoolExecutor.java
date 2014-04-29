@@ -3,7 +3,6 @@ package com.planet_ink.coffee_mud.core.threads;
 import java.util.Collection;
 import java.util.Enumeration;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.concurrent.*;
@@ -72,7 +71,7 @@ public class CMThreadPoolExecutor extends ThreadPoolExecutor
 		{
 			@Override public void rejectedExecution(Runnable r, ThreadPoolExecutor executor)
 			{
-				try { executor.getQueue().put(r); } catch (InterruptedException e) { throw new RejectedExecutionException(e); }
+				try { executor.getQueue().put(r); } catch (final InterruptedException e) { throw new RejectedExecutionException(e); }
 			}
 		});
 	}
@@ -93,7 +92,7 @@ public class CMThreadPoolExecutor extends ThreadPoolExecutor
 	{
 		synchronized(active)
 		{
-			Thread th=active.get(r);
+			final Thread th=active.get(r);
 			if(th instanceof CMFactoryThread)
 				((CMFactoryThread)th).setRunnable(null);
 			active.remove(r);
@@ -126,12 +125,12 @@ public class CMThreadPoolExecutor extends ThreadPoolExecutor
 				rejectCount=0;
 			}
 		}
-		catch(RejectedExecutionException e)
+		catch(final RejectedExecutionException e)
 		{
 			if(r instanceof CMRunnable)
 			{
 				final Collection<CMRunnable> runsKilled = getTimeoutOutRuns(1);
-				for(CMRunnable runnable : runsKilled)
+				for(final CMRunnable runnable : runsKilled)
 				{
 					if(runnable instanceof Session)
 					{
@@ -148,7 +147,7 @@ public class CMThreadPoolExecutor extends ThreadPoolExecutor
 					else
 					if(runnable instanceof TickableGroup)
 					{
-						TickableGroup G=(TickableGroup)runnable;
+						final TickableGroup G=(TickableGroup)runnable;
 						Log.errOut("Pool_"+poolName,"Timed-Out Runnable: "+G.getName()+"-"+G.getStatus()+"\n\r");
 					}
 					else
@@ -169,9 +168,8 @@ public class CMThreadPoolExecutor extends ThreadPoolExecutor
 		{
 			try
 			{
-				for(Iterator<Runnable> e = active.keySet().iterator();e.hasNext();)
+				for (final Runnable runnable : active.keySet())
 				{
-					final Runnable runnable=e.next();
 					if(runnable instanceof CMRunnable)
 					{
 						final CMRunnable cmRunnable=(CMRunnable)runnable;
@@ -181,7 +179,7 @@ public class CMThreadPoolExecutor extends ThreadPoolExecutor
 							if(timedOut.size() >= maxToKill)
 							{
 								CMRunnable leastWorstOffender=null;
-								for(CMRunnable r : timedOut)
+								for(final CMRunnable r : timedOut)
 								{
 									if((leastWorstOffender != null)
 									&&(r.activeTimeMillis() < leastWorstOffender.activeTimeMillis()))
@@ -201,7 +199,7 @@ public class CMThreadPoolExecutor extends ThreadPoolExecutor
 					}
 				}
 			}
-			catch(Exception e)
+			catch(final Exception e)
 			{
 			}
 		}
@@ -209,12 +207,12 @@ public class CMThreadPoolExecutor extends ThreadPoolExecutor
 		{
 			while(killedOut.size()>0)
 			{
-				Thread t = killedOut.remove();
+				final Thread t = killedOut.remove();
 				active.remove(t);
 				CMLib.killThread(t,100,3);
 			}
 		}
-		catch(Exception e)
+		catch(final Exception e)
 		{
 		}
 		return timedOut;

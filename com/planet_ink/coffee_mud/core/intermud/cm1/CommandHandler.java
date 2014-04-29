@@ -43,11 +43,11 @@ public class CommandHandler implements Runnable
 {
 	private String cmd;
 	private String rest;
-	private RequestHandler req;
+	private final RequestHandler req;
 	private static final Map<String,Class<? extends CM1Command>> commandList=new Hashtable<String,Class<? extends CM1Command>>();
 	private static final void AddCommand(Class<? extends CM1Command> c) throws InstantiationException, IllegalAccessException
 	{
-		CM1Command c1 = CM1Command.newInstance(c,null,"");
+		final CM1Command c1 = CM1Command.newInstance(c,null,"");
 		commandList.put(c1.getCommandWord(),c);
 	}
 
@@ -64,7 +64,7 @@ public class CommandHandler implements Runnable
 		className = className.replace('.', '/');
 		className = className + ".class";
 
-		URL classUrl = CommandHandler.class.getClass().getResource(className);
+		final URL classUrl = CommandHandler.class.getClass().getResource(className);
 		if (classUrl != null)
 		{
 		   String temp = classUrl.getFile();
@@ -75,19 +75,19 @@ public class CommandHandler implements Runnable
 		   x=temp.lastIndexOf('/');
 		   if(x>0)
 		   {
-			   File dir=new File(temp.substring(0,x)+"/commands");
+			   final File dir=new File(temp.substring(0,x)+"/commands");
 			   if((dir.exists())&&(dir.isDirectory()))
-				   for(File F : dir.listFiles())
+				   for(final File F : dir.listFiles())
 					   if(F.getName().endsWith(".class")
 					   &&(!F.getName().equals("CM1Command.class"))
 					   &&(F.getName().indexOf('$')<0))
 					   {
-						   String name=packageName + F.getName().substring(0,F.getName().length()-6);
+						   final String name=packageName + F.getName().substring(0,F.getName().length()-6);
 						   try
 						   {
 							   AddCommand((Class<? extends CM1Command>)CMClass.instance().loadClass(name,true));
 						   }
-						   catch(Exception e)
+						   catch(final Exception e)
 						   {
 							   e.printStackTrace();
 						   }
@@ -99,7 +99,7 @@ public class CommandHandler implements Runnable
 	public CommandHandler(RequestHandler req, String command)
 	{
 		this.req=req;
-		int x=command.indexOf(' ');
+		final int x=command.indexOf(' ');
 		if(x<0)
 		{
 			cmd=command;
@@ -124,8 +124,8 @@ public class CommandHandler implements Runnable
 				{
 					if(rest.length()>0)
 					{
-						Class<? extends CM1Command> commandClass = commandList.get(rest.toUpperCase().trim());
-						CM1Command command = CM1Command.newInstance(commandClass, req, rest);
+						final Class<? extends CM1Command> commandClass = commandList.get(rest.toUpperCase().trim());
+						final CM1Command command = CM1Command.newInstance(commandClass, req, rest);
 						if((command == null) || (!command.passesSecurityCheck(req.getUser(), req.getTarget())))
 							req.sendMsg("[FAIL UNKNOWN: "+rest.toUpperCase().trim()+"]");
 						else
@@ -133,11 +133,11 @@ public class CommandHandler implements Runnable
 					}
 					else
 					{
-						StringBuilder str=new StringBuilder("[OK HELP");
-						for(String cmdWord : commandList.keySet())
+						final StringBuilder str=new StringBuilder("[OK HELP");
+						for(final String cmdWord : commandList.keySet())
 						{
-							Class<? extends CM1Command> commandClass = commandList.get(cmdWord);
-							CM1Command command = CM1Command.newInstance(commandClass, req, "");
+							final Class<? extends CM1Command> commandClass = commandList.get(cmdWord);
+							final CM1Command command = CM1Command.newInstance(commandClass, req, "");
 							if(command.passesSecurityCheck(req.getUser(), req.getTarget()))
 								str.append(" "+cmdWord);
 						}
@@ -146,14 +146,14 @@ public class CommandHandler implements Runnable
 					}
 					return;
 				}
-				Class<? extends CM1Command> commandClass = commandList.get(cmd.toUpperCase().trim());
-				CM1Command command = CM1Command.newInstance(commandClass, req, rest);
+				final Class<? extends CM1Command> commandClass = commandList.get(cmd.toUpperCase().trim());
+				final CM1Command command = CM1Command.newInstance(commandClass, req, rest);
 				if((command == null) || (!command.passesSecurityCheck(req.getUser(), req.getTarget())))
 					req.sendMsg("[FAIL UNKNOWN "+cmd.toUpperCase().trim()+"]");
 				else
 					command.run();
 			}
-			catch(java.io.IOException ioe)
+			catch(final java.io.IOException ioe)
 			{
 				req.close();
 			}

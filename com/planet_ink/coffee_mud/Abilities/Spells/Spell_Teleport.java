@@ -14,7 +14,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -69,9 +68,9 @@ public class Spell_Teleport extends Spell
 			mob.tell("Teleport to what area?");
 			return false;
 		}
-		String areaName=CMParms.combine(commands,0).trim().toUpperCase();
-		Area A=CMLib.map().findArea(areaName);
-		Vector candidates=new Vector();
+		final String areaName=CMParms.combine(commands,0).trim().toUpperCase();
+		final Area A=CMLib.map().findArea(areaName);
+		final Vector candidates=new Vector();
 		if(A!=null) candidates.addAll(new XVector(A.getProperMap()));
 		for(int c=candidates.size()-1;c>=0;c--)
 			if(!CMLib.flags().canAccess(mob,(Room)candidates.elementAt(c)))
@@ -100,8 +99,8 @@ public class Spell_Teleport extends Spell
 				newRoom=null;
 				continue;
 			}
-			CMMsg enterMsg=CMClass.getMsg(mob,newRoom,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null);
-			Session session=mob.session();
+			final CMMsg enterMsg=CMClass.getMsg(mob,newRoom,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null);
+			final Session session=mob.session();
 			mob.setSession(null);
 			if(!newRoom.okMessage(mob,enterMsg))
 				newRoom=null;
@@ -118,7 +117,7 @@ public class Spell_Teleport extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 		if(!success)
 		{
 			Room room=null;
@@ -130,19 +129,19 @@ public class Spell_Teleport extends Spell
 			newRoom=room;
 		}
 
-		CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MASK_MOVE|verbalCastCode(mob,newRoom,auto),"^S<S-NAME> invoke(s) a teleportation spell.^?");
+		final CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MASK_MOVE|verbalCastCode(mob,newRoom,auto),"^S<S-NAME> invoke(s) a teleportation spell.^?");
 		if(mob.location().okMessage(mob,msg)&&(newRoom!=null))
 		{
 			mob.location().send(mob,msg);
-			Set<MOB> h=properTargets(mob,givenTarget,false);
+			final Set<MOB> h=properTargets(mob,givenTarget,false);
 			if(h==null) return false;
 
-			Room thisRoom=mob.location();
-			for(Iterator f=h.iterator();f.hasNext();)
+			final Room thisRoom=mob.location();
+			for (final Object element : h)
 			{
-				MOB follower=(MOB)f.next();
-				CMMsg enterMsg=CMClass.getMsg(follower,newRoom,this,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,"<S-NAME> appears in a puff of smoke."+CMLib.protocol().msp("appear.wav",10));
-				CMMsg leaveMsg=CMClass.getMsg(follower,thisRoom,this,CMMsg.MSG_LEAVE|CMMsg.MASK_MAGIC,"<S-NAME> disappear(s) in a puff of smoke.");
+				final MOB follower=(MOB)element;
+				final CMMsg enterMsg=CMClass.getMsg(follower,newRoom,this,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,"<S-NAME> appears in a puff of smoke."+CMLib.protocol().msp("appear.wav",10));
+				final CMMsg leaveMsg=CMClass.getMsg(follower,thisRoom,this,CMMsg.MSG_LEAVE|CMMsg.MASK_MAGIC,"<S-NAME> disappear(s) in a puff of smoke.");
 				if(thisRoom.okMessage(follower,leaveMsg)&&newRoom.okMessage(follower,enterMsg))
 				{
 					if(follower.isInCombat())

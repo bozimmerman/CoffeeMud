@@ -47,9 +47,9 @@ public class Cleric extends StdCharClass
 	@Override public String getManaFormula(){return "((@x4<@x5)/4)+(1*(1?4))"; }
 	@Override public int allowedArmorLevel(){return CharClass.ARMOR_ANY;}
 	@Override public int allowedWeaponLevel(){return CharClass.WEAPONS_ALLCLERIC;}
-	private HashSet disallowedWeaponsG=buildDisallowedWeaponClasses(CharClass.WEAPONS_GOODCLERIC);
-	private HashSet disallowedWeaponsN=buildDisallowedWeaponClasses(CharClass.WEAPONS_NEUTRALCLERIC);
-	private HashSet disallowedWeaponsE=buildDisallowedWeaponClasses(CharClass.WEAPONS_EVILCLERIC);
+	private final HashSet disallowedWeaponsG=buildDisallowedWeaponClasses(CharClass.WEAPONS_GOODCLERIC);
+	private final HashSet disallowedWeaponsN=buildDisallowedWeaponClasses(CharClass.WEAPONS_NEUTRALCLERIC);
+	private final HashSet disallowedWeaponsE=buildDisallowedWeaponClasses(CharClass.WEAPONS_EVILCLERIC);
 	@Override
 	protected HashSet disallowedWeaponClasses(MOB mob)
 	{
@@ -200,13 +200,13 @@ public class Cleric extends StdCharClass
 
 		if(mob.playerStats()==null)
 		{
-			List<AbilityMapper.AbilityMapping> V=CMLib.ableMapper().getUpToLevelListings(ID(),
+			final List<AbilityMapper.AbilityMapping> V=CMLib.ableMapper().getUpToLevelListings(ID(),
 												mob.charStats().getClassLevel(ID()),
 												false,
 												false);
-			for(AbilityMapper.AbilityMapping able : V)
+			for(final AbilityMapper.AbilityMapping able : V)
 			{
-				Ability A=CMClass.getAbility(able.abilityID);
+				final Ability A=CMClass.getAbility(able.abilityID);
 				if((A!=null)
 				&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PRAYER)
 				&&(!CMLib.ableMapper().getDefaultGain(ID(),true,A.ID()))
@@ -220,7 +220,7 @@ public class Cleric extends StdCharClass
 
 		for(int a=0;a<mob.numAbilities();a++)
 		{
-			Ability A=mob.fetchAbility(a);
+			final Ability A=mob.fetchAbility(a);
 			if((CMLib.ableMapper().getQualifyingLevel(ID(),true,A.ID())>0)
 			&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PRAYER)
 			&&(CMLib.ableMapper().getQualifyingLevel(ID(),true,A.ID())==mob.baseCharStats().getClassLevel(this))
@@ -228,9 +228,9 @@ public class Cleric extends StdCharClass
 				return;
 		}
 		// now only give one, for current level, respecting alignment!
-		for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
+		for(final Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 		{
-			Ability A=a.nextElement();
+			final Ability A=a.nextElement();
 			if((CMLib.ableMapper().getQualifyingLevel(ID(),true,A.ID())>0)
 			&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PRAYER)
 			&&(A.appropriateToMyFactions(mob))
@@ -273,7 +273,7 @@ public class Cleric extends StdCharClass
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!(myHost instanceof MOB)) return super.okMessage(myHost,msg);
-		MOB myChar=(MOB)myHost;
+		final MOB myChar=(MOB)myHost;
 		if(!super.okMessage(myChar, msg))
 			return false;
 
@@ -286,11 +286,11 @@ public class Cleric extends StdCharClass
 		&&(myChar.isMine(msg.tool()))
 		&&(isQualifyingAuthority(myChar,(Ability)msg.tool())))
 		{
-			Ability A=(Ability)msg.tool();
+			final Ability A=(Ability)msg.tool();
 			if(A.appropriateToMyFactions(myChar))
 				return true;
 
-			int hq=holyQuality(A);
+			final int hq=holyQuality(A);
 			int basis=0;
 
 			switch(alwaysFlunksThisQuality())
@@ -355,15 +355,15 @@ public class Cleric extends StdCharClass
 	@Override
 	public List<Item> outfit(MOB myChar)
 	{
-		Vector outfitChoices=new Vector();
+		final Vector outfitChoices=new Vector();
 		if(CMLib.flags().isEvil(myChar))
 		{
-			Weapon w=CMClass.getWeapon("Shortsword");
+			final Weapon w=CMClass.getWeapon("Shortsword");
 			outfitChoices.add(w);
 		}
 		else
 		{
-			Weapon w=CMClass.getWeapon("SmallMace");
+			final Weapon w=CMClass.getWeapon("SmallMace");
 			outfitChoices.add(w);
 		}
 		return outfitChoices;

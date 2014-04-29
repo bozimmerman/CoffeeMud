@@ -48,7 +48,7 @@ public class Spell_FreeMovement extends Spell
 		// undo the affects of this spell
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		if(canBeUninvoked())
 			mob.tell("Your uninhibiting protection dissipates.");
 
@@ -63,21 +63,21 @@ public class Spell_FreeMovement extends Spell
 		if(!(affected instanceof MOB))
 			return true;
 
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		if((msg.amITarget(mob))
 		&&(CMath.bset(msg.targetMajor(),CMMsg.MASK_MALICIOUS))
 		&&(msg.tool()!=null)
 		&&(msg.tool() instanceof Ability)
 		&&(!mob.amDead()))
 		{
-			Ability A=(Ability)msg.tool();
+			final Ability A=(Ability)msg.tool();
 			if(CMath.bset(A.flags(),Ability.FLAG_PARALYZING))
 			{
 				msg.addTrailerMsg(CMClass.getMsg(mob,null,CMMsg.MSG_OK_VISUAL,"The uninhibiting barrier around <S-NAME> repels the "+A.name()+"."));
 				return false;
 			}
-			MOB newMOB=CMClass.getFactoryMOB();
-			CMMsg msg2=CMClass.getMsg(newMOB,null,null,CMMsg.MSG_SIT,null);
+			final MOB newMOB=CMClass.getFactoryMOB();
+			final CMMsg msg2=CMClass.getMsg(newMOB,null,null,CMMsg.MSG_SIT,null);
 			newMOB.recoverPhyStats();
 			try
 			{
@@ -91,7 +91,7 @@ public class Spell_FreeMovement extends Spell
 					return false;
 				}
 			}
-			catch(Exception e)
+			catch(final Exception e)
 			{}
 			newMOB.destroy();
 		}
@@ -102,17 +102,17 @@ public class Spell_FreeMovement extends Spell
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		MOB target=getTarget(mob,commands,givenTarget);
+		final MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> feel(s) freely protected.":"^S<S-NAME> invoke(s) an uninhibiting barrier of protection around <T-NAMESELF>.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> feel(s) freely protected.":"^S<S-NAME> invoke(s) an uninhibiting barrier of protection around <T-NAMESELF>.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

@@ -46,30 +46,30 @@ public class Prayer_Freedom extends Prayer implements MendingSkill
 	public boolean supportsMending(Physical item)
 	{
 		if(!(item instanceof MOB)) return false;
-		MOB caster=CMClass.getFactoryMOB();
+		final MOB caster=CMClass.getFactoryMOB();
 		caster.basePhyStats().setLevel(CMProps.getIntVar(CMProps.Int.LASTPLAYERLEVEL));
 		caster.phyStats().setLevel(CMProps.getIntVar(CMProps.Int.LASTPLAYERLEVEL));
-		boolean canMend=returnOffensiveAffects(caster,item).size()>0;
+		final boolean canMend=returnOffensiveAffects(caster,item).size()>0;
 		caster.destroy();
 		return canMend;
 	}
 
 	public List<Ability> returnOffensiveAffects(MOB caster, Physical fromMe)
 	{
-		MOB newMOB=CMClass.getFactoryMOB();
-		Vector offenders=new Vector(1);
+		final MOB newMOB=CMClass.getFactoryMOB();
+		final Vector offenders=new Vector(1);
 
-		CMMsg msg=CMClass.getMsg(newMOB,null,null,CMMsg.MSG_SIT,null);
+		final CMMsg msg=CMClass.getMsg(newMOB,null,null,CMMsg.MSG_SIT,null);
 		for(int a=0;a<fromMe.numEffects();a++) // personal
 		{
-			Ability A=fromMe.fetchEffect(a);
+			final Ability A=fromMe.fetchEffect(a);
 			if(A!=null)
 			{
 				try
 				{
 					newMOB.recoverPhyStats();
 					A.affectPhyStats(newMOB,newMOB.phyStats());
-					int clas=A.classificationCode()&Ability.ALL_ACODES;
+					final int clas=A.classificationCode()&Ability.ALL_ACODES;
 					if((!CMLib.flags().aliveAwakeMobileUnbound(newMOB,true))
 					   ||(CMath.bset(A.flags(),Ability.FLAG_BINDING))
 					   ||(!A.okMessage(newMOB,msg)))
@@ -79,7 +79,7 @@ public class Prayer_Freedom extends Prayer implements MendingSkill
 						&&(A.invoker().phyStats().level()<=(caster.phyStats().level()+1+(2*super.getXLEVELLevel(caster))))))
 						  offenders.addElement(A);
 				}
-				catch(Exception e)
+				catch(final Exception e)
 				{}
 			}
 		}
@@ -104,14 +104,14 @@ public class Prayer_Freedom extends Prayer implements MendingSkill
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		MOB target=this.getTarget(mob,commands,givenTarget);
+		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
-		List<Ability> offensiveAffects=returnOffensiveAffects(mob,target);
+		final boolean success=proficiencyCheck(mob,0,auto);
+		final List<Ability> offensiveAffects=returnOffensiveAffects(mob,target);
 
 		if((success)&&(offensiveAffects.size()>0))
 		{
@@ -119,7 +119,7 @@ public class Prayer_Freedom extends Prayer implements MendingSkill
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> feel(s) lightly touched.":"^S<S-NAME> "+prayForWord(mob)+" to deliver a light unbinding touch to <T-NAMESELF>.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> feel(s) lightly touched.":"^S<S-NAME> "+prayForWord(mob)+" to deliver a light unbinding touch to <T-NAMESELF>.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

@@ -71,7 +71,7 @@ public class Prop_WeakBridge extends Property implements TriggeredAffect
 		if((msg.targetMinor()==CMMsg.TYP_ENTER)
 		&&((msg.amITarget(affected))||(msg.tool()==affected)))
 		{
-			MOB mob=msg.source();
+			final MOB mob=msg.source();
 			if(CMLib.flags().isInFlight(mob)) return true;
 			if(!bridgeIsUp)
 			{
@@ -87,10 +87,10 @@ public class Prop_WeakBridge extends Property implements TriggeredAffect
 		int weight=0;
 		if(affected instanceof Room)
 		{
-			Room room=(Room)affected;
+			final Room room=(Room)affected;
 			for(int i=0;i<room.numInhabitants();i++)
 			{
-				MOB M=room.fetchInhabitant(i);
+				final MOB M=room.fetchInhabitant(i);
 				if((M!=null)&&(M!=mob)&&(!CMLib.flags().isInFlight(M)))
 					weight+=M.phyStats().weight();
 			}
@@ -106,7 +106,7 @@ public class Prop_WeakBridge extends Property implements TriggeredAffect
 		&&((msg.amITarget(affected))||(msg.tool()==affected))
 		&&(!CMLib.flags().isFalling(msg.source())))
 		{
-			MOB mob=msg.source();
+			final MOB mob=msg.source();
 			if(CMLib.flags().isInFlight(mob)) return;
 			if(bridgeIsUp)
 			{
@@ -120,7 +120,7 @@ public class Prop_WeakBridge extends Property implements TriggeredAffect
 							mobsToKill.add(mob);
 							if(!CMLib.flags().isFalling(mob))
 							{
-								Ability falling=CMClass.getAbility("Falling");
+								final Ability falling=CMClass.getAbility("Falling");
 								falling.setProficiency(0);
 								falling.setAffectedOne(affected);
 								falling.invoke(null,null,mob,true,0);
@@ -152,14 +152,14 @@ public class Prop_WeakBridge extends Property implements TriggeredAffect
 				synchronized(mobsToKill)
 				{
 					bridgeIsUp=false;
-					List<MOB> V=new XVector<MOB>(mobsToKill);
+					final List<MOB> V=new XVector<MOB>(mobsToKill);
 					mobsToKill.clear();
 					if(affected instanceof Room)
 					{
-						Room room=(Room)affected;
+						final Room room=(Room)affected;
 						for(int i=0;i<room.numInhabitants();i++)
 						{
-							MOB M=room.fetchInhabitant(i);
+							final MOB M=room.fetchInhabitant(i);
 							if((M!=null)
 							&&(!CMLib.flags().isInFlight(M))
 							&&(!V.contains(M)))
@@ -168,7 +168,7 @@ public class Prop_WeakBridge extends Property implements TriggeredAffect
 					}
 					for(int i=0;i<V.size();i++)
 					{
-						MOB mob=V.get(i);
+						final MOB mob=V.get(i);
 						if((mob.location()!=null)
 						&&(!CMLib.flags().isInFlight(mob)))
 						{
@@ -183,7 +183,7 @@ public class Prop_WeakBridge extends Property implements TriggeredAffect
 								if((!CMLib.flags().isFalling(mob))
 								&&(mob.location()==affected))
 								{
-									Ability falling=CMClass.getAbility("Falling");
+									final Ability falling=CMClass.getAbility("Falling");
 									falling.setProficiency(0);
 									falling.setAffectedOne(affected);
 									falling.invoke(null,null,mob,true,0);

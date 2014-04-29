@@ -56,7 +56,7 @@ public class Prayer_Contagion extends Prayer implements DiseaseAffect
 	public void unInvoke()
 	{
 		if(affected==null) return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		if(canBeUninvoked())
 		{
 			if(!mob.amDead())
@@ -76,10 +76,10 @@ public class Prayer_Contagion extends Prayer implements DiseaseAffect
 
 		if(affected==null) return false;
 		if(!(affected instanceof MOB)) return false;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		if(mob.location().numInhabitants()==1)
 			return true;
-		Vector choices=new Vector();
+		final Vector choices=new Vector();
 		for(final Enumeration<Ability> a=mob.effects();a.hasMoreElements();)
 		{
 			final Ability A=a.nextElement();
@@ -93,8 +93,8 @@ public class Prayer_Contagion extends Prayer implements DiseaseAffect
 				choices.addElement(A);
 		}
 		if(choices.size()==0) return true;
-		MOB target=mob.location().fetchRandomInhabitant();
-		Ability thisOne=(Ability)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1));
+		final MOB target=mob.location().fetchRandomInhabitant();
+		final Ability thisOne=(Ability)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1));
 		if((target==null)||(thisOne==null)||(target.fetchEffect(ID())!=null))
 			return true;
 		if(CMLib.dice().rollPercentage()>(target.charStats().getSave(CharStats.STAT_SAVE_DISEASE)))
@@ -111,7 +111,7 @@ public class Prayer_Contagion extends Prayer implements DiseaseAffect
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		MOB target=this.getTarget(mob,commands,givenTarget);
+		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -126,8 +126,8 @@ public class Prayer_Contagion extends Prayer implements DiseaseAffect
 			// affected MOB.  Then tell everyone else
 			// what happened.
 
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto)|CMMsg.MASK_MALICIOUS,auto?"<T-NAME> become(s) contagious!":"^S<S-NAME> "+prayWord(mob)+" for a contagion to inflict <T-NAMESELF>.^?");
-			CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.TYP_DISEASE|CMMsg.MASK_MALICIOUS,null);
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto)|CMMsg.MASK_MALICIOUS,auto?"<T-NAME> become(s) contagious!":"^S<S-NAME> "+prayWord(mob)+" for a contagion to inflict <T-NAMESELF>.^?");
+			final CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.TYP_DISEASE|CMMsg.MASK_MALICIOUS,null);
 			if((mob.location().okMessage(mob,msg))&&(mob.location().okMessage(mob,msg2)))
 			{
 				mob.location().send(mob,msg);

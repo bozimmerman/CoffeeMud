@@ -26,6 +26,7 @@ import java.util.*;
 
 import javax.naming.*;
 import javax.naming.directory.*;
+
 import com.planet_ink.coffee_mud.core.exceptions.*;
 
 
@@ -61,16 +62,16 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 	{
 		try
 		{
-			Hashtable<String,String> env = new Hashtable<String,String>();
+			final Hashtable<String,String> env = new Hashtable<String,String>();
 			env.put("java.naming.factory.initial",
 					"com.sun.jndi.dns.DnsContextFactory");
-			DirContext ictx = new InitialDirContext( env );
-			Attributes attrs = ictx.getAttributes( hostName, new String[] { "MX" });
-			Attribute attr = attrs.get( "MX" );
+			final DirContext ictx = new InitialDirContext( env );
+			final Attributes attrs = ictx.getAttributes( hostName, new String[] { "MX" });
+			final Attribute attr = attrs.get( "MX" );
 			if( attr == null ) return( null );
 			return( attr );
 		}
-		catch(javax.naming.NamingException x)
+		catch(final javax.naming.NamingException x)
 		{
 		}
 		return null;
@@ -104,7 +105,7 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 	public SMTPclient( String SMTPServerInfo, int port) throws UnknownHostException,IOException
 	{
 		auth = new SMTPHostAuth(SMTPServerInfo);
-		int portIndex=auth.host.lastIndexOf(':');
+		final int portIndex=auth.host.lastIndexOf(':');
 		if(portIndex>0)
 		{
 			port=CMath.s_int(auth.host.substring(portIndex+1));
@@ -114,7 +115,7 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 		reply = new BufferedReader(new InputStreamReader(sock.getInputStream()));
 		sock.setSoTimeout(DEFAULT_TIMEOUT);
 		send = new PrintWriter( sock.getOutputStream() );
-		boolean debug = CMSecurity.isDebugging(CMSecurity.DbgFlag.SMTPCLIENT);
+		final boolean debug = CMSecurity.isDebugging(CMSecurity.DbgFlag.SMTPCLIENT);
 		String rstr = reply.readLine();
 		if(debug) Log.debugOut("SMTPclient",rstr);
 		if ((rstr==null)||(!rstr.startsWith("220"))) throw new ProtocolException(rstr);
@@ -132,25 +133,24 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 		int x=this.getEmailAddressError(emailAddress);
 		if(x>=0) throw new BadEmailAddressException("Malformed email address");
 		x=emailAddress.indexOf('@');
-		String domain=emailAddress.substring(x+1).trim();
-		Vector<String> addys=new Vector<String>();
-		Attribute mx=doMXLookup(domain);
+		final String domain=emailAddress.substring(x+1).trim();
+		final Vector<String> addys=new Vector<String>();
+		final Attribute mx=doMXLookup(domain);
 		boolean connected=false;
 		try
 		{
 			if((mx!=null)&&(mx.size()>0))
-			for(NamingEnumeration<?> e=mx.getAll();e.hasMore();)
+			for(final NamingEnumeration<?> e=mx.getAll();e.hasMore();)
 				addys.addElement((String)e.next());
 		}
-		catch(javax.naming.NamingException ne)
+		catch(final javax.naming.NamingException ne)
 		{
 		}
 		if(addys.size()==0)
 			addys.addElement(domain);
-		for(Enumeration<String> e=addys.elements();e.hasMoreElements();)
+		for (String hostid : addys)
 		{
-			String hostid=e.nextElement();
-			int y=hostid.lastIndexOf(' ');
+			final int y=hostid.lastIndexOf(' ');
 			if(y>=0) hostid=hostid.substring(y+1).trim();
 			try
 			{
@@ -158,7 +158,7 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 				reply = new BufferedReader(new InputStreamReader(sock.getInputStream()));
 				sock.setSoTimeout(DEFAULT_TIMEOUT);
 				send = new PrintWriter( sock.getOutputStream() );
-				boolean debug = CMSecurity.isDebugging(CMSecurity.DbgFlag.SMTPCLIENT);
+				final boolean debug = CMSecurity.isDebugging(CMSecurity.DbgFlag.SMTPCLIENT);
 				String rstr = reply.readLine();
 				if(debug) Log.debugOut("SMTPclient",rstr);
 				if ((rstr==null)||(!rstr.startsWith("220"))) throw new ProtocolException(rstr);
@@ -171,7 +171,7 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 				connected=true;
 				break;
 			}
-			catch(Exception ex)
+			catch(final Exception ex)
 			{
 				// just try the next one.
 			}
@@ -185,7 +185,7 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 		try
 		{
 			SMTPLibrary.SMTPClient SC=null;
-			String toEmail=makeValidEmailAddress(toName);
+			final String toEmail=makeValidEmailAddress(toName);
 			if(!isValidEmailAddress(toEmail))
 			{
 				Log.errOut("SMTPClient","User/Account not found: "+toName);
@@ -196,7 +196,7 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 			else
 				SC=CMLib.smtp().getClient(toEmail);
 
-			String domain=CMProps.getVar(CMProps.Str.MUDDOMAIN).toLowerCase();
+			final String domain=CMProps.getVar(CMProps.Str.MUDDOMAIN).toLowerCase();
 			SC.sendMessage(fromName+"@"+domain,
 						   fromName+"@"+domain,
 						   toEmail,
@@ -205,7 +205,7 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 						   CMLib.coffeeFilter().simpleOutFilter(msg));
 			return true;
 		}
-		catch(Exception e)
+		catch(final Exception e)
 		{
 			Log.errOut("SMTPClient",e.getMessage());
 			return false;
@@ -236,7 +236,7 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 						   message);
 			return true;
 		}
-		catch(Exception ioe)
+		catch(final Exception ioe)
 		{
 		}
 		return false;
@@ -245,9 +245,9 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 	@Override
 	public void emailOrJournal(String SMTPServerInfo, String from, String replyTo, String to, String subject, String message)
 	{
-		String fromEmail=makeValidEmailAddress(from);
-		String toEmail=makeValidEmailAddress(to);
-		String replyToEmail=makeValidEmailAddress(replyTo);
+		final String fromEmail=makeValidEmailAddress(from);
+		final String toEmail=makeValidEmailAddress(to);
+		final String replyToEmail=makeValidEmailAddress(replyTo);
 		if(!this.emailIfPossible(SMTPServerInfo, fromEmail, replyToEmail, toEmail, subject, message))
 			CMLib.database().DBWriteJournal(CMProps.getVar(CMProps.Str.MAILBOX), from, to, subject, message);
 	}
@@ -274,15 +274,15 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 	private int getEmailAddressError(String addy)
 	{
 		if(addy==null) return 0;
-		int x=addy.indexOf('@');
+		final int x=addy.indexOf('@');
 		if(x<0) return addy.length();
-		String localPart=addy.substring(0,x).trim();
-		String network=addy.substring(x+1);
+		final String localPart=addy.substring(0,x).trim();
+		final String network=addy.substring(x+1);
 		if(localPart.length()==0) return x;
 		if(network.length()==0) return addy.length();
 		if((localPart.startsWith("\"")&&localPart.endsWith("\"")))
 		{
-			int z=localPart.substring(1,localPart.length()-1).indexOf("\"");
+			final int z=localPart.substring(1,localPart.length()-1).indexOf("\"");
 			if(z>=0) return 1+z;
 		}
 		else
@@ -354,8 +354,8 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 		}
 
 		String rstr;
-		boolean debug = CMSecurity.isDebugging(CMSecurity.DbgFlag.SMTPCLIENT);
-		StringBuffer fixMsg=new StringBuffer(message);
+		final boolean debug = CMSecurity.isDebugging(CMSecurity.DbgFlag.SMTPCLIENT);
+		final StringBuffer fixMsg=new StringBuffer(message);
 		for(int f=0;f<fixMsg.length();f++)
 		{
 			if((fixMsg.charAt(f)=='\n')
@@ -397,12 +397,12 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 		{
 		  local = InetAddress.getLocalHost();
 		}
-		catch (UnknownHostException ioe)
+		catch (final UnknownHostException ioe)
 		{
 		  System.err.println("No local IP address found - is your network up?");
 		  throw ioe;
 		}
-		String host = local.getHostName();
+		final String host = local.getHostName();
 		if((auth != null) && (auth.getAuthType().length()>0))
 			sendLine(debug,"EHLO " + host);
 		else
@@ -485,12 +485,12 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 		{
 		  local = InetAddress.getLocalHost();
 		}
-		catch (UnknownHostException ioe)
+		catch (final UnknownHostException ioe)
 		{
 		  System.err.println("No local IP address found - is your network up?");
 		  throw ioe;
 		}
-		String host = local.getHostName();
+		final String host = local.getHostName();
 		send.print("HELO " + host);
 		send.print(EOL);
 		send.flush();
@@ -509,7 +509,7 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 				sock.setSoTimeout(1000);
 			}
 		}
-		catch(java.io.InterruptedIOException x)
+		catch(final java.io.InterruptedIOException x)
 		{ // not really an error, just a control break
 		}
 		sock.setSoTimeout(DEFAULT_TIMEOUT);
@@ -531,7 +531,7 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 		send.flush();
 		sock.close();
 	  }
-	  catch (IOException ioe)
+	  catch (final IOException ioe)
 	  {
 		// As though there's anything I can dof about it now...
 	  }
@@ -552,11 +552,11 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 	{
 		public SMTPHostAuth(String unparsedServerInfo)
 		{
-			List<String> info=CMParms.parseCommas(unparsedServerInfo,false);
+			final List<String> info=CMParms.parseCommas(unparsedServerInfo,false);
 			if(info.size()==0) return;
 			host = info.remove(0);
 			if((info.size()==0)||(host.length()==0)) return;
-			String s=info.get(0);
+			final String s=info.get(0);
 			if(s.equalsIgnoreCase("plain")||s.equalsIgnoreCase("login"))
 				authType=info.remove(0).toUpperCase().trim();
 			else
@@ -575,7 +575,7 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 
 		public String getPlainLogin()
 		{
-			byte[] buffer = new byte[2 + login.length() + password.length()];
+			final byte[] buffer = new byte[2 + login.length() + password.length()];
 			int bufDex=0;
 			buffer[bufDex++]=0;
 			for(int i=0;i<login.length();i++)
@@ -588,7 +588,7 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 
 		public String getLogin()
 		{
-			byte[] buffer = new byte[login.length()];
+			final byte[] buffer = new byte[login.length()];
 			int bufDex=0;
 			for(int i=0;i<login.length();i++)
 				buffer[bufDex++]=(byte)login.charAt(i);
@@ -597,7 +597,7 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 
 		public String getPassword()
 		{
-			byte[] buffer = new byte[password.length()];
+			final byte[] buffer = new byte[password.length()];
 			int bufDex=0;
 			for(int i=0;i<password.length();i++)
 				buffer[bufDex++]=(byte)password.charAt(i);

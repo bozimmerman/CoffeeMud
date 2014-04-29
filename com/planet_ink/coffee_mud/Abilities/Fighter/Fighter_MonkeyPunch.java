@@ -54,7 +54,7 @@ public class Fighter_MonkeyPunch extends MonkSkill
 		   &&(affected!=null)
 		   &&(affected instanceof MOB))
 		{
-			MOB mob=(MOB)affected;
+			final MOB mob=(MOB)affected;
 			if((mob.isInCombat())
 			&&(CMLib.flags().aliveAwakeMobileUnbound(mob,true))
 			&&(mob.rangeToTarget()==0)
@@ -90,7 +90,7 @@ public class Fighter_MonkeyPunch extends MonkSkill
 		if(!(affected instanceof MOB))
 			return true;
 
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		if(msg.amISource(mob)
 		&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
 		&&(msg.tool() instanceof Weapon)

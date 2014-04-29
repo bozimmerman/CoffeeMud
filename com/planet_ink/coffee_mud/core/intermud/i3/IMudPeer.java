@@ -63,10 +63,10 @@ public class IMudPeer implements PersistentPeer
 		{
 			try
 			{
-				CMFile F=new CMFile("resources/ppeer."+myID,null);
+				final CMFile F=new CMFile("resources/ppeer."+myID,null);
 				if(!F.exists()) return;
 
-				ObjectInputStream in=new ObjectInputStream(new ByteArrayInputStream(F.raw()));
+				final ObjectInputStream in=new ObjectInputStream(new ByteArrayInputStream(F.raw()));
 				Object newobj;
 				newobj=in.readObject();
 				if(newobj instanceof Integer)
@@ -84,7 +84,7 @@ public class IMudPeer implements PersistentPeer
 				if(newobj instanceof List)
 				((Intermud)myobj).name_servers=(List)newobj;
 			}
-			catch(Exception e)
+			catch(final Exception e)
 			{
 				Log.errOut("IMudPeer","Unable to read /resources/ppeer."+myID);
 			}
@@ -105,8 +105,8 @@ public class IMudPeer implements PersistentPeer
 		{
 			try
 			{
-				ByteArrayOutputStream bout=new ByteArrayOutputStream();
-				ObjectOutputStream out=new ObjectOutputStream(bout);
+				final ByteArrayOutputStream bout=new ByteArrayOutputStream();
+				final ObjectOutputStream out=new ObjectOutputStream(bout);
 				out.writeObject(Integer.valueOf(((Intermud)myobj).password));
 				out.writeObject(((Intermud)myobj).banned);
 				out.writeObject(((Intermud)myobj).channels);
@@ -118,7 +118,7 @@ public class IMudPeer implements PersistentPeer
 				out.close();
 				bout.close();
 			}
-			catch(Exception e)
+			catch(final Exception e)
 			{
 				Log.errOut("IMudPeer",e.getMessage());
 			}

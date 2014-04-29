@@ -52,9 +52,9 @@ public class Thief_Con extends ThiefSkill
 		if(commands!=null) commands=new XVector<String>(commands);
 		if(!conCheck(mob,commands,givenTarget,auto,asLevel))
 			return false;
-		Vector V=new Vector();
+		final Vector V=new Vector();
 		V.addElement(commands.get(0));
-		MOB target=this.getTarget(mob,V,givenTarget);
+		final MOB target=this.getTarget(mob,V,givenTarget);
 		if(target==null) return false;
 		commands.remove(0);
 		if(secondsElapsed>0)
@@ -63,7 +63,7 @@ public class Thief_Con extends ThiefSkill
 				return mob.location().show(mob,target,CMMsg.MSG_SPEAK,"^T<S-NAME> continue(s) conning <T-NAMESELF> to '"+CMParms.combine(commands,0)+"'.^?");
 			return true;
 		}
-		CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_SPEAK,"^T<S-NAME> attempt(s) to con <T-NAMESELF> to '"+CMParms.combine(commands,0)+"'.^?");
+		final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_SPEAK,"^T<S-NAME> attempt(s) to con <T-NAMESELF> to '"+CMParms.combine(commands,0)+"'.^?");
 		if(mob.location().okMessage(mob,msg))
 			mob.location().send(mob,msg);
 		else
@@ -79,9 +79,9 @@ public class Thief_Con extends ThiefSkill
 			mob.tell("Con whom into doing what?");
 			return false;
 		}
-		Vector V=new Vector();
+		final Vector V=new Vector();
 		V.addElement(commands.get(0));
-		MOB target=this.getTarget(mob,V,givenTarget);
+		final MOB target=this.getTarget(mob,V,givenTarget);
 		if(target==null) return false;
 
 		commands.remove(0);
@@ -150,32 +150,32 @@ public class Thief_Con extends ThiefSkill
 		if(commands!=null) commands=new XVector(commands);
 		if(!conCheck(mob,commands,givenTarget,auto,asLevel))
 			return false;
-		Vector V=new Vector();
+		final Vector V=new Vector();
 		V.addElement(commands.elementAt(0));
-		MOB target=this.getTarget(mob,V,givenTarget);
+		final MOB target=this.getTarget(mob,V,givenTarget);
 		if(target==null) return false;
 		commands.removeElementAt(0);
 
-		int oldProficiency=proficiency();
+		final int oldProficiency=proficiency();
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		int levelDiff=((mob.phyStats().level()+(2*super.getXLEVELLevel(mob)))-target.phyStats().level())*10;
 		if(levelDiff>0) levelDiff=0;
-		boolean success=proficiencyCheck(mob,(mob.charStats().getStat(CharStats.STAT_CHARISMA)*2)+levelDiff,auto);
+		final boolean success=proficiencyCheck(mob,(mob.charStats().getStat(CharStats.STAT_CHARISMA)*2)+levelDiff,auto);
 
 		if(!success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_SPEAK,"^T<S-NAME> tr(ys) to con <T-NAMESELF> to '"+CMParms.combine(commands,0)+"', but <S-IS-ARE> unsuccessful.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_SPEAK,"^T<S-NAME> tr(ys) to con <T-NAMESELF> to '"+CMParms.combine(commands,0)+"', but <S-IS-ARE> unsuccessful.^?");
 			if(mob.location().okMessage(mob,msg))
 				mob.location().send(mob,msg);
 		}
 		else
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_SPEAK,"^T<S-NAME> con(s) <T-NAMESELF> to '"+CMParms.combine(commands,0)+"'.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_SPEAK,"^T<S-NAME> con(s) <T-NAMESELF> to '"+CMParms.combine(commands,0)+"'.^?");
 			mob.recoverPhyStats();
-			CMMsg omsg=CMClass.getMsg(mob,target,null,CMMsg.MSG_ORDER,null);
+			final CMMsg omsg=CMClass.getMsg(mob,target,null,CMMsg.MSG_ORDER,null);
 			if((mob.location().okMessage(mob,msg))
 			&&(mob.location().okMessage(mob, omsg)))
 			{

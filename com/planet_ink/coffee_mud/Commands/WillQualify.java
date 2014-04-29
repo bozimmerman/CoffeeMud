@@ -51,23 +51,23 @@ public class WillQualify  extends Skills
 											  String prefix,
 											  HashSet<Object> types)
 	{
-		int highestLevel = maxLevel;
-		StringBuffer msg = new StringBuffer("");
+		final int highestLevel = maxLevel;
+		final StringBuffer msg = new StringBuffer("");
 		int col = 0;
 		final int COL_LEN1=ListingLibrary.ColFixer.fixColWidth(3.0,viewerM);
 		final int COL_LEN2=ListingLibrary.ColFixer.fixColWidth(19.0,viewerM);
 		final int COL_LEN3=ListingLibrary.ColFixer.fixColWidth(12.0,viewerM);
 		final int COL_LEN4=ListingLibrary.ColFixer.fixColWidth(13.0,viewerM);
-		List<AbilityMapper.QualifyingID> DV=CMLib.ableMapper().getClassAllowsList(classID);
+		final List<AbilityMapper.QualifyingID> DV=CMLib.ableMapper().getClassAllowsList(classID);
 		for (int l = 0; l <= highestLevel; l++)
 		{
-			StringBuffer thisLine = new StringBuffer("");
-			for (Enumeration a = CMLib.ableMapper().getClassAbles(classID,true); a.hasMoreElements(); )
+			final StringBuffer thisLine = new StringBuffer("");
+			for (final Enumeration a = CMLib.ableMapper().getClassAbles(classID,true); a.hasMoreElements(); )
 			{
-				AbilityMapper.AbilityMapping cimable=(AbilityMapper.AbilityMapping)a.nextElement();
+				final AbilityMapper.AbilityMapping cimable=(AbilityMapper.AbilityMapping)a.nextElement();
 				if((cimable.qualLevel ==l)&&(!cimable.isSecret))
 				{
-					Ability A=CMClass.getAbility(cimable.abilityID);
+					final Ability A=CMClass.getAbility(cimable.abilityID);
 					if((A!=null)
 					&&((types.size()==0)
 						||(types.contains(Integer.valueOf(A.classificationCode()&Ability.ALL_ACODES)))
@@ -87,7 +87,7 @@ public class WillQualify  extends Skills
 			}
 			ExpertiseLibrary.ExpertiseDefinition E=null;
 			Integer qualLevel=null;
-			for(AbilityMapper.QualifyingID qID : DV)
+			for(final AbilityMapper.QualifyingID qID : DV)
 			{
 				qualLevel=Integer.valueOf(qID.qualifyingLevel);
 				E=CMLib.expertises().getDefinition(qID.ID);
@@ -132,11 +132,11 @@ public class WillQualify  extends Skills
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 					throws java.io.IOException
 	{
-		StringBuffer msg=new StringBuffer("");
-		String willQualErr = "Specify level, class, and or skill-type:  WILLQUALIFY ([LEVEL]) ([CLASS NAME]) ([SKILL TYPE]).";
+		final StringBuffer msg=new StringBuffer("");
+		final String willQualErr = "Specify level, class, and or skill-type:  WILLQUALIFY ([LEVEL]) ([CLASS NAME]) ([SKILL TYPE]).";
 		int level=CMProps.getIntVar(CMProps.Int.LASTPLAYERLEVEL);
 		CharClass C=mob.charStats().getCurrentClass();
-		HashSet<Object> types=new HashSet<Object>();
+		final HashSet<Object> types=new HashSet<Object>();
 		if(commands.size()>0) commands.removeElementAt(0);
 		if((commands.size()>0)&&(CMath.isNumber((String)commands.firstElement())))
 		{
@@ -150,12 +150,12 @@ public class WillQualify  extends Skills
 		}
 		if(commands.size()>0)
 		{
-			CharClass C2=CMClass.findCharClass((String)commands.firstElement());
+			final CharClass C2=CMClass.findCharClass((String)commands.firstElement());
 			if(C2!=null){ C=C2;commands.removeElementAt(0);}
 		}
 		while(commands.size()>0)
 		{
-			String str=((String)commands.firstElement()).toUpperCase().trim();
+			final String str=((String)commands.firstElement()).toUpperCase().trim();
 			int x=CMParms.indexOf(Ability.ACODE_DESCS,str);
 			if(x<0) x=CMParms.indexOf(Ability.ACODE_DESCS,str.replace(' ','_'));
 			if(x>=0)

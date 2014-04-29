@@ -54,7 +54,7 @@ public class Spell_DemonGate extends Spell
 		{
 			if((affected!=null)&&(affected instanceof MOB))
 			{
-				MOB mob=(MOB)affected;
+				final MOB mob=(MOB)affected;
 				if(myTarget==null)
 					myTarget=mob.getVictim();
 				else
@@ -82,11 +82,11 @@ public class Spell_DemonGate extends Spell
 	@Override
 	public void unInvoke()
 	{
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		super.unInvoke();
 		if((canBeUninvoked())&&(mob!=null))
 		{
-			Room R=mob.location();
+			final Room R=mob.location();
 			if(R!=null)
 			{
 				if(mob.amFollowing()!=null)
@@ -105,17 +105,17 @@ public class Spell_DemonGate extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
 			invoker=mob;
-			CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":"^S<S-NAME> open(s) the gates of the abyss, incanting angrily.^?");
+			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":"^S<S-NAME> open(s) the gates of the abyss, incanting angrily.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				MOB otherMonster=mob.location().fetchInhabitant("the great demonbeast$");
-				MOB myMonster = determineMonster(mob, mob.phyStats().level()+(getXLEVELLevel(mob)+(2*getX1Level(mob))));
+				final MOB otherMonster=mob.location().fetchInhabitant("the great demonbeast$");
+				final MOB myMonster = determineMonster(mob, mob.phyStats().level()+(getXLEVELLevel(mob)+(2*getX1Level(mob))));
 				if(otherMonster!=null)
 				{
 					myMonster.location().showOthers(myMonster,mob,CMMsg.MSG_OK_ACTION,"^F^<FIGHT^><S-NAME> wrests itself from out of <T-YOUPOSS> control!^</FIGHT^>^?");
@@ -146,8 +146,8 @@ public class Spell_DemonGate extends Spell
 	}
 	public MOB determineMonster(MOB caster, int level)
 	{
-		MOB newMOB=CMClass.getMOB("GenRideable");
-		Rideable ride=(Rideable)newMOB;
+		final MOB newMOB=CMClass.getMOB("GenRideable");
+		final Rideable ride=(Rideable)newMOB;
 		newMOB.basePhyStats().setAbility(22 + super.getXLEVELLevel(caster));
 		newMOB.basePhyStats().setLevel(level+ 2 + super.getXLEVELLevel(caster));
 		CMLib.factions().setAlignment(newMOB,Faction.Align.EVIL);

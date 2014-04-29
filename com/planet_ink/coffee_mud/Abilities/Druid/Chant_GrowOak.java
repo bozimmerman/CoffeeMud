@@ -49,14 +49,14 @@ public class Chant_GrowOak extends Chant_SummonPlants
 	@Override
 	protected Item buildMyPlant(MOB mob, Room room)
 	{
-		int material=RawMaterial.RESOURCE_OAK;
-		int code=material&RawMaterial.RESOURCE_MASK;
-		Item newItem=CMClass.getBasicItem("GenItem");
-		String name=CMLib.english().startWithAorAn(RawMaterial.CODES.NAME(code).toLowerCase()+" tree");
+		final int material=RawMaterial.RESOURCE_OAK;
+		final int code=material&RawMaterial.RESOURCE_MASK;
+		final Item newItem=CMClass.getBasicItem("GenItem");
+		final String name=CMLib.english().startWithAorAn(RawMaterial.CODES.NAME(code).toLowerCase()+" tree");
 		newItem.setName(name);
 		newItem.setDisplayText(newItem.name()+" grows here.");
 		newItem.setDescription("");
-		Chant_GrowOak newChant=new Chant_GrowOak();
+		final Chant_GrowOak newChant=new Chant_GrowOak();
 		newItem.basePhyStats().setLevel(10+newChant.getX1Level(mob));
 		newItem.basePhyStats().setWeight(10000);
 		CMLib.flags().setGettable(newItem,false);
@@ -79,8 +79,8 @@ public class Chant_GrowOak extends Chant_SummonPlants
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID)) return false;
-		Room plantsLocation = PlantsLocation;
-		MOB invoker = invoker();
+		final Room plantsLocation = PlantsLocation;
+		final MOB invoker = invoker();
 		if((plantsLocation==null)||(littlePlants==null)) return false;
 		if(invoker!=null)
 		{
@@ -102,10 +102,10 @@ public class Chant_GrowOak extends Chant_SummonPlants
 		}
 		for(int i=0;i<plantsLocation.numInhabitants();i++)
 		{
-			MOB M=plantsLocation.fetchInhabitant(i);
+			final MOB M=plantsLocation.fetchInhabitant(i);
 			if(M.fetchEffect("Chopping")!=null)
 			{
-				int dmg=CMLib.dice().roll(1,50,50);
+				final int dmg=CMLib.dice().roll(1,50,50);
 				hpRemaining-=dmg;
 				if(invoker!=null) invoker.tell("Your oak is being chopped down!");
 				CMLib.combat().postDamage(invoker,invoker,null,dmg/2,CMMsg.MASK_ALWAYS|CMMsg.TYP_UNDEAD,Weapon.TYPE_SLASHING,"The chopping on your oak <DAMAGE> you!");
@@ -124,13 +124,13 @@ public class Chant_GrowOak extends Chant_SummonPlants
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		Vector V=Druid_MyPlants.myPlantRooms(mob);
+		final Vector V=Druid_MyPlants.myPlantRooms(mob);
 		for(int v=0;v<V.size();v++)
 		{
-			Room R=(Room)V.elementAt(v);
+			final Room R=(Room)V.elementAt(v);
 			for(int i=0;i<R.numItems();i++)
 			{
-				Item I=R.getItem(i);
+				final Item I=R.getItem(i);
 				if((I!=null)
 				   &&(I.secretIdentity().equals(mob.Name()))
 				   &&(I.fetchEffect(ID())!=null))

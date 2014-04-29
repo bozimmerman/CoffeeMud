@@ -52,7 +52,7 @@ public class Pour extends StdCommand
 		}
 		commands.removeElementAt(0);
 		Environmental fillFromThis=null;
-		String thingToFillFrom=(String)commands.elementAt(0);
+		final String thingToFillFrom=(String)commands.elementAt(0);
 		fillFromThis=mob.fetchItem(null,Wearable.FILTER_UNWORNONLY,thingToFillFrom);
 		if((fillFromThis==null)||(!CMLib.flags().canBeSeenBy(fillFromThis,mob)))
 		{
@@ -84,7 +84,7 @@ public class Pour extends StdCommand
 		String msgStr;
 		if(verb==PourVerb.OUT)
 		{
-			Item out=CMClass.getItem("StdDrink");
+			final Item out=CMClass.getItem("StdDrink");
 			((Drink)out).setLiquidHeld(999999);
 			((Drink)out).setLiquidRemaining(0);
 			out.setDisplayText("");
@@ -100,7 +100,7 @@ public class Pour extends StdCommand
 				mob.tell(CMStrings.capitalizeAndLower(verb.name())+" what should I pour the "+thingToFillFrom+"?");
 				return false;
 			}
-			String thingToFill=CMParms.combine(commands,0);
+			final String thingToFill=CMParms.combine(commands,0);
 			fillThis=mob.location().fetchFromMOBRoomFavorsItems(mob,null,thingToFill,Wearable.FILTER_ANY);
 			if((fillThis==null)||(!CMLib.flags().canBeSeenBy(fillThis,mob)))
 			{
@@ -118,7 +118,7 @@ public class Pour extends StdCommand
 				msgStr="<S-NAME> pour(s) <O-NAME> into <T-NAME>.";
 		}
 
-		CMMsg fillMsg=CMClass.getMsg(mob,fillThis,fillFromThis,(verb==PourVerb.ONTO)?CMMsg.MSG_POUR:CMMsg.MSG_FILL,msgStr);
+		final CMMsg fillMsg=CMClass.getMsg(mob,fillThis,fillFromThis,(verb==PourVerb.ONTO)?CMMsg.MSG_POUR:CMMsg.MSG_FILL,msgStr);
 		if(mob.location().okMessage(mob,fillMsg))
 			mob.location().send(mob,fillMsg);
 

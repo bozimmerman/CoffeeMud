@@ -50,7 +50,7 @@ public class LocateReplyPacket extends Packet {
 			{
 			idle_time = ((Integer)v.elementAt(8)).intValue();
 			}
-			catch( ClassCastException e )
+			catch( final ClassCastException e )
 			{
 				idle_time=-1;
 			}
@@ -58,12 +58,12 @@ public class LocateReplyPacket extends Packet {
 			{
 			status = (String)v.elementAt(9);
 			}
-			catch( ClassCastException e )
+			catch( final ClassCastException e )
 			{
 				status="unknown";
 			}
 		}
-		catch( ClassCastException e )
+		catch( final ClassCastException e )
 		{
 			throw new InvalidPacketException();
 		}

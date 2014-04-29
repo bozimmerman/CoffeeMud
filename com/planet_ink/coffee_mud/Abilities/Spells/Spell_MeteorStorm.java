@@ -44,7 +44,7 @@ public class Spell_MeteorStorm extends Spell
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		Set<MOB> h=properTargets(mob,givenTarget,auto);
+		final Set<MOB> h=properTargets(mob,givenTarget,auto);
 		if(h==null)
 		{
 			mob.tell("There doesn't appear to be anyone here worth storming at.");
@@ -58,35 +58,35 @@ public class Spell_MeteorStorm extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
 
 			if(mob.location().show(mob,null,this,verbalCastCode(mob,null,auto),(auto?"A devastating meteor shower erupts!":"^S<S-NAME> conjur(s) up a devastating meteor shower!^?")+CMLib.protocol().msp("meteor.wav",40)))
-			for(Iterator f=h.iterator();f.hasNext();)
-			{
-				MOB target=(MOB)f.next();
-
-				// it worked, so build a copy of this ability,
-				// and add it to the affects list of the
-				// affected MOB.  Then tell everyone else
-				// what happened.
-				CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),null);
-				if(mob.location().okMessage(mob,msg))
+				for (final Object element : h)
 				{
-					mob.location().send(mob,msg);
-					invoker=mob;
+					final MOB target=(MOB)element;
 
-					int damage = 0;
-					int maxDie=(int)Math.round(CMath.div(adjustedLevel(mob,asLevel),3.0));
-					damage = CMLib.dice().roll(maxDie,6,maxDie);
-					if(msg.value()<=0)
-						damage = (int)Math.round(CMath.div(damage,2.0));
-					if(target.location()==mob.location())
-						CMLib.combat().postDamage(mob,target,this,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_FIRE,Weapon.TYPE_BASHING,"The meteors <DAMAGE> <T-NAME>!");
+					// it worked, so build a copy of this ability,
+					// and add it to the affects list of the
+					// affected MOB.  Then tell everyone else
+					// what happened.
+					final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),null);
+					if(mob.location().okMessage(mob,msg))
+					{
+						mob.location().send(mob,msg);
+						invoker=mob;
+
+						int damage = 0;
+						final int maxDie=(int)Math.round(CMath.div(adjustedLevel(mob,asLevel),3.0));
+						damage = CMLib.dice().roll(maxDie,6,maxDie);
+						if(msg.value()<=0)
+							damage = (int)Math.round(CMath.div(damage,2.0));
+						if(target.location()==mob.location())
+							CMLib.combat().postDamage(mob,target,this,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_FIRE,Weapon.TYPE_BASHING,"The meteors <DAMAGE> <T-NAME>!");
+					}
 				}
-			}
 		}
 		else
 			return maliciousFizzle(mob,null,"<S-NAME> attempt(s) to invoke a meteoric spell, but the spell fizzles.");

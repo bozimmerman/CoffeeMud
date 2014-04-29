@@ -39,12 +39,12 @@ public class CheckReqParm extends StdWebMacro
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
-		java.util.Map<String,String> parms=parseParms(parm);
+		final java.util.Map<String,String> parms=parseParms(parm);
 		boolean finalCondition=false;
 		for(String key : parms.keySet())
 		{
 			if(key.length()==0) continue;
-			String equals=parms.get(key);
+			final String equals=parms.get(key);
 			boolean not=false;
 			boolean thisCondition=true;
 			boolean startswith=false;
@@ -72,7 +72,7 @@ public class CheckReqParm extends StdWebMacro
 				key=key.substring(1);
 				not=true;
 			}
-			String check=httpReq.getUrlParameter(key);
+			final String check=httpReq.getUrlParameter(key);
 			if(not)
 			{
 				if((check==null)&&(equals.length()==0))

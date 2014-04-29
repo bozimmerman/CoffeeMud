@@ -44,10 +44,10 @@ public class LogDumperServlet implements SimpleServlet
 		try
 		{
 			response.setMimeType(MIMEType.html.getType());
-			File pageFile=new File("web.log");
+			final File pageFile=new File("web.log");
 			if((!pageFile.exists()) || (!pageFile.canRead()) || (pageFile.length() > Integer.MAX_VALUE))
 				throw HTTPException.standardException(HTTPStatus.S404_NOT_FOUND);
-			byte[] fileBuf = new byte[(int)pageFile.length()];
+			final byte[] fileBuf = new byte[(int)pageFile.length()];
 			BufferedInputStream bs = null;
 			try
 			{
@@ -57,13 +57,13 @@ public class LogDumperServlet implements SimpleServlet
 				response.getOutputStream().write(fileBuf);
 				response.getOutputStream().write("</pre></body></html>".getBytes());
 			}
-			catch(FileNotFoundException e)
+			catch(final FileNotFoundException e)
 			{
 				request.getLogger().throwing("", "", e);
 				// not quite sure how we could get here.
 				throw HTTPException.standardException(HTTPStatus.S404_NOT_FOUND);
 			}
-			catch (IOException e)
+			catch (final IOException e)
 			{
 				request.getLogger().throwing("", "", e);
 				throw HTTPException.standardException(HTTPStatus.S404_NOT_FOUND);
@@ -76,17 +76,17 @@ public class LogDumperServlet implements SimpleServlet
 					{
 						bs.close();
 					}
-					catch(Exception e) {} // java really needs an " i don't care " syntax for exception handling
+					catch(final Exception e) {} // java really needs an " i don't care " syntax for exception handling
 				}
 			}
 		}
-		catch (HTTPException e)
+		catch (final HTTPException e)
 		{
 			try
 			{
 				response.getOutputStream().write(e.generateOutput(request).flushToBuffer().array());
 			}
-			catch (Exception e1){}
+			catch (final Exception e1){}
 		}
 	}
 

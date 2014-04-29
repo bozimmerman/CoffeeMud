@@ -51,7 +51,7 @@ public class Prayer_BrighteningAura extends Prayer
 		// undo the affects of this spell
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		super.unInvoke();
 
@@ -64,7 +64,7 @@ public class Prayer_BrighteningAura extends Prayer
 	{
 		if(!super.okMessage(myHost, msg)) return true;
 		if(!(myHost instanceof MOB)) return true;
-		MOB myChar=(MOB)myHost;
+		final MOB myChar=(MOB)myHost;
 		if(msg.amISource(myChar)
 		&&(!myChar.isMonster())
 		&&(msg.targetMinor()==CMMsg.TYP_HEALING)
@@ -97,7 +97,7 @@ public class Prayer_BrighteningAura extends Prayer
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
@@ -105,7 +105,7 @@ public class Prayer_BrighteningAura extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<S-NAME> attain(s) a brightening aura.":"^S<S-NAME> invoke(s) a brightening aura upon <T-NAMESELF>.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<S-NAME> attain(s) a brightening aura.":"^S<S-NAME> invoke(s) a brightening aura upon <T-NAMESELF>.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

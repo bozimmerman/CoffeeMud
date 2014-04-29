@@ -75,11 +75,11 @@ public class ArchonSkill extends StdAbility
 		{
 			try
 			{
-				List<MOB> targets=CMLib.map().findInhabitants(CMLib.map().rooms(), mob, targetName, 50);
+				final List<MOB> targets=CMLib.map().findInhabitants(CMLib.map().rooms(), mob, targetName, 50);
 				if(targets.size()>0)
 					target=targets.get(CMLib.dice().roll(1,targets.size(),-1));
 			}
-			catch(NoSuchElementException e){}
+			catch(final NoSuchElementException e){}
 		}
 
 		if((target==null)||((playerOnly)&&(target.isMonster())))

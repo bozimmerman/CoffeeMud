@@ -14,7 +14,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -59,7 +58,7 @@ public class Spell_MassSleep extends Spell
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		Set<MOB> h=properTargets(mob,givenTarget,auto);
+		final Set<MOB> h=properTargets(mob,givenTarget,auto);
 		if(h==null)
 		{
 			mob.tell("There doesn't appear to be anyone here worth putting to sleep.");
@@ -78,37 +77,37 @@ public class Spell_MassSleep extends Spell
 		if(success)
 		{
 			if(mob.location().show(mob,null,this,verbalCastCode(mob,null,auto),auto?"":"^S<S-NAME> whisper(s) and wave(s) <S-HIS-HER> arms.^?"))
-			for(Iterator f=h.iterator();f.hasNext();)
-			{
-				MOB target=(MOB)f.next();
-
-				// if they can't hear the sleep spell, it
-				// won't happen
-				if(CMLib.flags().canBeHeardSpeakingBy(mob,target))
+				for (final Object element : h)
 				{
-					// it worked, so build a copy of this ability,
-					// and add it to the affects list of the
-					// affected MOB.  Then tell everyone else
-					// what happened.
-					MOB oldVictim=mob.getVictim();
-					CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),null);
-					if((mob.location().okMessage(mob,msg))&&(target.fetchEffect(this.ID())==null))
+					final MOB target=(MOB)element;
+
+					// if they can't hear the sleep spell, it
+					// won't happen
+					if(CMLib.flags().canBeHeardSpeakingBy(mob,target))
 					{
-						mob.location().send(mob,msg);
-						if(msg.value()<=0)
+						// it worked, so build a copy of this ability,
+						// and add it to the affects list of the
+						// affected MOB.  Then tell everyone else
+						// what happened.
+						final MOB oldVictim=mob.getVictim();
+						final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),null);
+						if((mob.location().okMessage(mob,msg))&&(target.fetchEffect(this.ID())==null))
 						{
-							Spell_Sleep spell=new Spell_Sleep();
-							spell.setProficiency(proficiency());
-							success=spell.maliciousAffect(mob,target,asLevel,2,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_MIND|(auto?CMMsg.MASK_ALWAYS:0));
-							if(success)
-								target.location().show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> fall(s) asleep!!");
+							mob.location().send(mob,msg);
+							if(msg.value()<=0)
+							{
+								final Spell_Sleep spell=new Spell_Sleep();
+								spell.setProficiency(proficiency());
+								success=spell.maliciousAffect(mob,target,asLevel,2,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_MIND|(auto?CMMsg.MASK_ALWAYS:0));
+								if(success)
+									target.location().show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> fall(s) asleep!!");
+							}
 						}
+						if(oldVictim==null) mob.setVictim(null);
 					}
-					if(oldVictim==null) mob.setVictim(null);
+					else
+						maliciousFizzle(mob,target,"<T-NAME> seem(s) unaffected by the Sleep spell from <S-NAME>.");
 				}
-				else
-					maliciousFizzle(mob,target,"<T-NAME> seem(s) unaffected by the Sleep spell from <S-NAME>.");
-			}
 		}
 		else
 			return maliciousFizzle(mob,null,"<S-NAME> whisper(s) a sleeping spell, but the spell fizzles.");

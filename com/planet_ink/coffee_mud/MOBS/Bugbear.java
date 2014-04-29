@@ -46,7 +46,7 @@ public class Bugbear extends StdMOB
 		basePhyStats.setWeight(300);
 		setWimpHitPoint(0);
 
-		Weapon h=CMClass.getWeapon("Halberd");
+		final Weapon h=CMClass.getWeapon("Halberd");
 		if(h!=null)
 		{
 			h.wearAt(Wearable.WORN_WIELD);

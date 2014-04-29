@@ -39,7 +39,7 @@ public class DefaultTimeClock implements TimeClock
 {
 	@Override public String ID(){return "DefaultTimeClock";}
 	@Override public String name(){return "Time Object";}
-	@Override public CMObject newInstance(){try{return getClass().newInstance();}catch(Exception e){return new DefaultTimeClock();}}
+	@Override public CMObject newInstance(){try{return getClass().newInstance();}catch(final Exception e){return new DefaultTimeClock();}}
 	@Override public void initializeClass(){}
 
 	protected int tickStatus=Tickable.STATUS_NOT;
@@ -86,7 +86,7 @@ public class DefaultTimeClock implements TimeClock
 	@Override
 	public String getShortestTimeDescription()
 	{
-		StringBuffer timeDesc=new StringBuffer("");
+		final StringBuffer timeDesc=new StringBuffer("");
 		timeDesc.append(getYear());
 		timeDesc.append("/"+getMonth());
 		timeDesc.append("/"+getDayOfMonth());
@@ -96,7 +96,7 @@ public class DefaultTimeClock implements TimeClock
 	@Override
 	public String getShortTimeDescription()
 	{
-		StringBuffer timeDesc=new StringBuffer("");
+		final StringBuffer timeDesc=new StringBuffer("");
 		timeDesc.append("hour "+getHourOfDay()+" on ");
 		if(getDaysInWeek()>0)
 		{
@@ -121,7 +121,7 @@ public class DefaultTimeClock implements TimeClock
 		if(CMath.s_int(page.getStr("DAYSINMONTH"))>0)
 			setDaysInMonth(CMath.s_int(page.getStr("DAYSINMONTH")));
 
-		String monthsInYear=page.getStr("MONTHSINYEAR");
+		final String monthsInYear=page.getStr("MONTHSINYEAR");
 		if(monthsInYear.trim().length()>0)
 			setMonthsInYear(CMParms.toStringArray(CMParms.parseCommas(monthsInYear,true)));
 
@@ -145,7 +145,7 @@ public class DefaultTimeClock implements TimeClock
 	@Override
 	public String timeDescription(MOB mob, Room room)
 	{
-		StringBuffer timeDesc=new StringBuffer("");
+		final StringBuffer timeDesc=new StringBuffer("");
 
 		if(CMLib.flags().canSee(mob))
 			timeDesc.append(getTODCode().getDesc());
@@ -203,7 +203,7 @@ public class DefaultTimeClock implements TimeClock
 	@Override
 	public Season getSeasonCode()
 	{
-		int div=(int)Math.round(Math.floor(CMath.div(getMonthsInYear(),4.0)));
+		final int div=(int)Math.round(Math.floor(CMath.div(getMonthsInYear(),4.0)));
 		if(month<div) return TimeClock.Season.WINTER;
 		if(month<(div*2)) return TimeClock.Season.SPRING;
 		if(month<(div*3)) return TimeClock.Season.SUMMER;
@@ -250,7 +250,7 @@ public class DefaultTimeClock implements TimeClock
 	@Override
 	public boolean setHourOfDay(int t)
 	{
-		TimeOfDay oldCode=getTODCode();
+		final TimeOfDay oldCode=getTODCode();
 		time=t;
 		return getTODCode()!=oldCode;
 	}
@@ -260,10 +260,10 @@ public class DefaultTimeClock implements TimeClock
 	{
 		try
 		{
-			TimeClock C=(TimeClock)this.clone();
+			final TimeClock C=(TimeClock)this.clone();
 			return C;
 		}
-		catch(CloneNotSupportedException e)
+		catch(final CloneNotSupportedException e)
 		{
 			return new DefaultTimeClock();
 		}
@@ -273,12 +273,12 @@ public class DefaultTimeClock implements TimeClock
 	{
 		try
 		{
-			TimeClock C=(TimeClock)this.clone();
-			long diff=(System.currentTimeMillis()-millis)/CMProps.getMillisPerMudHour();
+			final TimeClock C=(TimeClock)this.clone();
+			final long diff=(System.currentTimeMillis()-millis)/CMProps.getMillisPerMudHour();
 			C.tickTock((int)diff);
 			return C;
 		}
-		catch(CloneNotSupportedException e)
+		catch(final CloneNotSupportedException e)
 		{
 
 		}
@@ -307,7 +307,7 @@ public class DefaultTimeClock implements TimeClock
 			years=(int)Math.round(Math.floor(CMath.div(months,getMonthsInYear())));
 			months=months-(years*getMonthsInYear());
 		}
-		StringBuffer buf=new StringBuffer("");
+		final StringBuffer buf=new StringBuffer("");
 		if(years>0) buf.append(years+" years");
 		if(months>0)
 		{
@@ -354,19 +354,19 @@ public class DefaultTimeClock implements TimeClock
 	{
 		try
 		{
-			for(Enumeration<Area> a=CMLib.map().areas();a.hasMoreElements();)
+			for(final Enumeration<Area> a=CMLib.map().areas();a.hasMoreElements();)
 			{
-				Area A=a.nextElement();
+				final Area A=a.nextElement();
 				if(A.getTimeObj()==this)
-				for(Enumeration<Room> r=A.getProperMap();r.hasMoreElements();)
+				for(final Enumeration<Room> r=A.getProperMap();r.hasMoreElements();)
 				{
-					Room R=r.nextElement();
+					final Room R=r.nextElement();
 					if((R!=null)&&((R.numInhabitants()>0)||(R.numItems()>0)))
 					{
 						R.recoverPhyStats();
 						for(int m=0;m<R.numInhabitants();m++)
 						{
-							MOB mob=R.fetchInhabitant(m);
+							final MOB mob=R.fetchInhabitant(m);
 							if((mob!=null)
 							&&(!mob.isMonster()))
 							{
@@ -391,13 +391,13 @@ public class DefaultTimeClock implements TimeClock
 						R.recoverRoomStats();
 				}
 			}
-		}catch(java.util.NoSuchElementException x){}
+		}catch(final java.util.NoSuchElementException x){}
 	}
 
 	@Override
 	public void tickTock(int howManyHours)
 	{
-		TimeOfDay todCode=getTODCode();
+		final TimeOfDay todCode=getTODCode();
 		if(howManyHours!=0)
 		{
 			setHourOfDay(getHourOfDay()+howManyHours);
@@ -464,18 +464,18 @@ public class DefaultTimeClock implements TimeClock
 			return true;
 		synchronized(this)
 		{
-			boolean timeToTick = ((System.currentTimeMillis()-lastTicked)>CMProps.getMillisPerMudHour());
+			final boolean timeToTick = ((System.currentTimeMillis()-lastTicked)>CMProps.getMillisPerMudHour());
 			lastTicked=System.currentTimeMillis();
 			if((loadName!=null)&&(!loaded))
 			{
 				loaded=true;
-				List<PlayerData> bitV=CMLib.database().DBReadData(loadName,"TIMECLOCK");
+				final List<PlayerData> bitV=CMLib.database().DBReadData(loadName,"TIMECLOCK");
 				String timeRsc=null;
 				if((bitV==null)||(bitV.size()==0))
 					timeRsc="<TIME>-1</TIME><DAY>1</DAY><MONTH>1</MONTH><YEAR>1</YEAR>";
 				else
 					timeRsc=bitV.get(0).xml;
-				List<XMLLibrary.XMLpiece> V=CMLib.xml().parseAllXML(timeRsc);
+				final List<XMLLibrary.XMLpiece> V=CMLib.xml().parseAllXML(timeRsc);
 				setHourOfDay(CMLib.xml().getIntFromPieces(V,"TIME"));
 				setDayOfMonth(CMLib.xml().getIntFromPieces(V,"DAY"));
 				setMonth(CMLib.xml().getIntFromPieces(V,"MONTH"));

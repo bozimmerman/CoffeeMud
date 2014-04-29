@@ -65,11 +65,11 @@ public class Thief_SilentLoot extends ThiefSkill
 					item.unWear();
 					item.removeFromOwnerContainer();
 					item.setContainer(null);
-					MOB mob=(MOB)affected;
+					final MOB mob=(MOB)affected;
 					mob.location().addItem(item,ItemPossessor.Expire.Monster_EQ);
-					MOB victim=mob.getVictim();
+					final MOB victim=mob.getVictim();
 					mob.setVictim(null);
-					CMMsg msg2=CMClass.getMsg(mob,item,this,CMMsg.MSG_THIEF_ACT,"You silently autoloot <T-NAME> from the corpse of "+msg.source().name(mob),CMMsg.MSG_THIEF_ACT,null,CMMsg.NO_EFFECT,null);
+					final CMMsg msg2=CMClass.getMsg(mob,item,this,CMMsg.MSG_THIEF_ACT,"You silently autoloot <T-NAME> from the corpse of "+msg.source().name(mob),CMMsg.MSG_THIEF_ACT,null,CMMsg.NO_EFFECT,null);
 					if(mob.location().okMessage(mob,msg2))
 					{
 						mob.location().send(mob,msg2);
@@ -95,13 +95,13 @@ public class Thief_SilentLoot extends ThiefSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
 			mob.tell("You will now automatically loot items from corpses silently.");
 			beneficialAffect(mob,mob,asLevel,0);
-			Ability A=mob.fetchEffect(ID());
+			final Ability A=mob.fetchEffect(ID());
 			if(A!=null) A.makeLongLasting();
 		}
 		else

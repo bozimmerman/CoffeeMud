@@ -49,7 +49,7 @@ public class Trap_DeepPit extends Trap_RoomPit
 		{
 			target.location().show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> hit(s) the pit floor with a THUMP!");
 			int damage=CMLib.dice().roll(trapLevel()+abilityCode(),15,1);
-			int maxDamage = (int)Math.round(CMath.mul(target.baseState().getHitPoints(), .95));
+			final int maxDamage = (int)Math.round(CMath.mul(target.baseState().getHitPoints(), .95));
 			if(damage >= maxDamage) damage=maxDamage;
 			CMLib.combat().postDamage(invoker(),target,this,damage,CMMsg.MASK_MALICIOUS|CMMsg.MASK_ALWAYS|CMMsg.TYP_JUSTICE,-1,null);
 		}

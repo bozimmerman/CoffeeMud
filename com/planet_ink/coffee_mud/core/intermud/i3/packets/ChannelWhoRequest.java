@@ -49,7 +49,7 @@ public class ChannelWhoRequest extends Packet {
 			channel = (String)v.elementAt(6);
 			channel = Intermud.getLocalChannel(channel);
 		}
-		catch( ClassCastException e )
+		catch( final ClassCastException e )
 		{
 			throw new InvalidPacketException();
 		}
@@ -68,7 +68,7 @@ public class ChannelWhoRequest extends Packet {
 	@Override
 	public String toString()
 	{
-		String str="({\"chan-who-req\",5,\"" + I3Server.getMudName() +
+		final String str="({\"chan-who-req\",5,\"" + I3Server.getMudName() +
 			   "\",\"" + sender_name + "\",\"" + target_mud + "\",0,\"" + channel + "\",})";
 		return str;
 	}

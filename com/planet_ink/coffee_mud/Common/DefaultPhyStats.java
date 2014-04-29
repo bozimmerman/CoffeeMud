@@ -138,7 +138,7 @@ public class DefaultPhyStats implements PhyStats
 		return Arrays.binarySearch(ambiances, ambiance.trim(), ambiComp) >=0;
 	}
 
-	@Override public CMObject newInstance(){try{return getClass().newInstance();}catch(Exception e){return new DefaultPhyStats();}}
+	@Override public CMObject newInstance(){try{return getClass().newInstance();}catch(final Exception e){return new DefaultPhyStats();}}
 	@Override public void initializeClass(){}
 	@Override
 	public void copyInto(PhyStats intoStats)
@@ -160,11 +160,11 @@ public class DefaultPhyStats implements PhyStats
 	{
 		try
 		{
-			DefaultPhyStats E=(DefaultPhyStats)this.clone();
+			final DefaultPhyStats E=(DefaultPhyStats)this.clone();
 			E.stats=E.stats.clone();
 			return E;
 		}
-		catch(java.lang.CloneNotSupportedException e)
+		catch(final java.lang.CloneNotSupportedException e)
 		{
 			return new DefaultPhyStats();
 		}

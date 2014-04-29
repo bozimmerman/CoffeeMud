@@ -40,11 +40,11 @@ public class BaseCharClassName extends StdWebMacro
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
-		String last=httpReq.getUrlParameter("BASECLASS");
+		final String last=httpReq.getUrlParameter("BASECLASS");
 		if(last==null) return " @break@";
 		if(last.length()>0)
 		{
-			java.util.Map<String,String> parms=parseParms(parm);
+			final java.util.Map<String,String> parms=parseParms(parm);
 			CharClass C=CMClass.getCharClass(last);
 			if(C!=null)
 			{
@@ -53,7 +53,7 @@ public class BaseCharClassName extends StdWebMacro
 				else
 					return clearWebMacros(C.name());
 			}
-			for(Enumeration e=CMClass.charClasses();e.hasMoreElements();)
+			for(final Enumeration e=CMClass.charClasses();e.hasMoreElements();)
 			{
 				C=(CharClass)e.nextElement();
 				if(C.baseClass().equalsIgnoreCase(last))

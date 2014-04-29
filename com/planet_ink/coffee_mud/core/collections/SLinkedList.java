@@ -34,7 +34,7 @@ public class SLinkedList<K> implements Serializable, Cloneable, Iterable<K>, Col
 	{
 		L=new LinkedList<K>();
 		if(E!=null)
-			for(K o : E)
+			for(final K o : E)
 				L.add(o);
 	}
 
@@ -58,7 +58,7 @@ public class SLinkedList<K> implements Serializable, Cloneable, Iterable<K>, Col
 	{
 		L=new LinkedList<K>();
 		if(E!=null)
-			for(K o : E)
+			for(final K o : E)
 				add(o);
 	}
 
@@ -72,7 +72,7 @@ public class SLinkedList<K> implements Serializable, Cloneable, Iterable<K>, Col
 	public synchronized void addAll(K[] E)
 	{
 		if(E!=null)
-			for(K e : E)
+			for(final K e : E)
 				L.add(e);
 	}
 
@@ -100,7 +100,7 @@ public class SLinkedList<K> implements Serializable, Cloneable, Iterable<K>, Col
 	public synchronized void removeAll(List<K> E)
 	{
 		if(E!=null)
-			for(K o : E)
+			for(final K o : E)
 				L.remove(o);
 	}
 
@@ -111,9 +111,9 @@ public class SLinkedList<K> implements Serializable, Cloneable, Iterable<K>, Col
 	}
 	public synchronized Vector<K> toVector()
 	{
-		Vector<K> V=new Vector<K>(size());
-		for(Iterator<K> s=L.iterator();s.hasNext();)
-			V.add(s.next());
+		final Vector<K> V=new Vector<K>(size());
+		for (final K k : L)
+			V.add(k);
 		return V;
 	}
 	@SuppressWarnings("unchecked")
@@ -175,7 +175,7 @@ public class SLinkedList<K> implements Serializable, Cloneable, Iterable<K>, Col
 	@SuppressWarnings("unchecked")
 	public synchronized SLinkedList<K> copyOf()
 	{
-		SLinkedList<K> SL=new SLinkedList<K>();
+		final SLinkedList<K> SL=new SLinkedList<K>();
 		SL.L=(LinkedList<K>)L.clone();
 		return SL;
 	}

@@ -41,17 +41,17 @@ public class DefaultAbilityComponent implements AbilityComponent
 	@Override public String ID(){return "DefaultAbilityComponent";}
 	@Override public String name() { return ID();}
 	@Override public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
-	@Override public CMObject newInstance(){try{return getClass().newInstance();}catch(Exception e){return new DefaultAbilityComponent();}}
+	@Override public CMObject newInstance(){try{return getClass().newInstance();}catch(final Exception e){return new DefaultAbilityComponent();}}
 	@Override public void initializeClass(){}
 	@Override
 	public CMObject copyOf()
 	{
 		try
 		{
-			Object O=this.clone();
+			final Object O=this.clone();
 			return (CMObject)O;
 		}
-		catch(CloneNotSupportedException e)
+		catch(final CloneNotSupportedException e)
 		{
 			return new DefaultAbilityComponent();
 		}

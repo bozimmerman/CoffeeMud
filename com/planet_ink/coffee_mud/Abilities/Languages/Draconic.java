@@ -47,12 +47,12 @@ public class Draconic extends StdLanguage
 	{
 		if(wordLists==null)
 		{
-			String[] one={"y"};
-			String[] two={"ve","ov","iv","si","es","se"};
-			String[] three={"see","sev","ave","ces","ven","sod"};
-			String[] four={"nirg","avet","sav`e","choc","sess","sens","vent","vens","sven","yans","vays"};
-			String[] five={"splut","svets","fruite","dwagg","vrers","verrs","srens","swath","senys","varen"};
-			String[] six={"choccie","svenren","yorens","vyrues","whyrie","vrysenso","forin","sinnes","sessis","uroven","xorers","nosees"};
+			final String[] one={"y"};
+			final String[] two={"ve","ov","iv","si","es","se"};
+			final String[] three={"see","sev","ave","ces","ven","sod"};
+			final String[] four={"nirg","avet","sav`e","choc","sess","sens","vent","vens","sven","yans","vays"};
+			final String[] five={"splut","svets","fruite","dwagg","vrers","verrs","srens","swath","senys","varen"};
+			final String[] six={"choccie","svenren","yorens","vyrues","whyrie","vrysenso","forin","sinnes","sessis","uroven","xorers","nosees"};
 			wordLists=new Vector<String[]>();
 			wordLists.add(one);
 			wordLists.add(two);

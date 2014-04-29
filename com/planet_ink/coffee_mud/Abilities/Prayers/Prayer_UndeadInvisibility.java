@@ -51,14 +51,14 @@ public class Prayer_UndeadInvisibility extends Prayer
 		super.affectPhyStats(affected,affectableStats);
 		if(affected==null) return;
 		if(!(affected instanceof MOB)) return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		if(mob.isInCombat())
 		{
-			MOB victim=mob.getVictim();
+			final MOB victim=mob.getVictim();
 			if(victim.charStats().getMyRace().racialCategory().equalsIgnoreCase("Undead"))
 			{
-				int xlvl=super.getXLEVELLevel(invoker());
+				final int xlvl=super.getXLEVELLevel(invoker());
 				affectableStats.setArmor(affectableStats.armor()-20-(2*xlvl));
 			}
 		}
@@ -71,7 +71,7 @@ public class Prayer_UndeadInvisibility extends Prayer
 		&&(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_ALWAYS))
 		&&((msg.amITarget(affected))))
 		{
-			MOB target=(MOB)msg.target();
+			final MOB target=(MOB)msg.target();
 			if((!target.isInCombat())
 			&&(msg.source().charStats().getMyRace().racialCategory().equals("Undead"))
 			&&(msg.source().location()==target.location())
@@ -97,7 +97,7 @@ public class Prayer_UndeadInvisibility extends Prayer
 		// undo the affects of this spell
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		super.unInvoke();
 
@@ -110,7 +110,7 @@ public class Prayer_UndeadInvisibility extends Prayer
 	{
 		if(mob!=null)
 		{
-			MOB victim=mob.getVictim();
+			final MOB victim=mob.getVictim();
 			if((victim!=null)
 			&&(victim.charStats().getMyRace().racialCategory().equalsIgnoreCase("Undead")))
 				return super.castingQuality(mob, target,Ability.QUALITY_BENEFICIAL_SELF);
@@ -132,7 +132,7 @@ public class Prayer_UndeadInvisibility extends Prayer
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
@@ -140,7 +140,7 @@ public class Prayer_UndeadInvisibility extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> become(s) invisible to the undead.":"^S<S-NAME> "+prayWord(mob)+" for invisibility to the undead.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> become(s) invisible to the undead.":"^S<S-NAME> "+prayWord(mob)+" for invisibility to the undead.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

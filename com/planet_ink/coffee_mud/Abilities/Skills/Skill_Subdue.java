@@ -90,7 +90,7 @@ public class Skill_Subdue extends StdSkill
 			&&(msg.targetMinor()==CMMsg.TYP_EXAMINE)
 			&&(CMLib.flags().canBeSeenBy(whom, msg.source())))
 			{
-				double actualHitPct = CMath.div(whom.curState().getHitPoints()-whomDamage,whom.baseState().getHitPoints());
+				final double actualHitPct = CMath.div(whom.curState().getHitPoints()-whomDamage,whom.baseState().getHitPoints());
 				msg.source().tell(msg.source(),whom,null,"<T-NAME> is "+CMath.toPct(actualHitPct)+" health away from being overcome.");
 			}
 
@@ -100,7 +100,7 @@ public class Skill_Subdue extends StdSkill
 			&&(msg.target()==whom)
 			&&(whom.curState().getHitPoints() - whomDamage)<=0)
 			{
-				Ability sap=CMClass.getAbility("Skill_ArrestingSap");
+				final Ability sap=CMClass.getAbility("Skill_ArrestingSap");
 				if(sap!=null) sap.invoke(whom,new XVector(new Object[]{"SAFELY",Integer.toString(adjustedLevel(msg.source(),asLevel))}),whom,true,0);
 				whom.makePeace();
 				msg.source().makePeace();
@@ -126,26 +126,26 @@ public class Skill_Subdue extends StdSkill
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		Ability A=mob.fetchEffect(ID());
+		final Ability A=mob.fetchEffect(ID());
 		if(A!=null)
 			A.unInvoke();
-		MOB target=this.getTarget(mob,commands,givenTarget);
+		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),auto?"":"^F^<FIGHT^><S-NAME> attempt(s) to subdue <T-NAMESELF>!^</FIGHT^>^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),auto?"":"^F^<FIGHT^><S-NAME> attempt(s) to subdue <T-NAMESELF>!^</FIGHT^>^?");
 			CMLib.color().fixSourceFightColor(msg);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				beneficialAffect(mob,mob,asLevel,0);
-				Skill_Subdue SK=(Skill_Subdue)mob.fetchEffect(ID());
+				final Skill_Subdue SK=(Skill_Subdue)mob.fetchEffect(ID());
 				if(SK!=null)
 				{
 					SK.whom=target;

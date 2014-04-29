@@ -63,7 +63,7 @@ public class Spell_Grease extends Spell
 		CMMsg msg2 = null;
 		Item weapon = null;
 
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		if(msg.amISource(mob))
 		{
@@ -78,7 +78,7 @@ public class Spell_Grease extends Spell
 				{
 					if(CMLib.dice().rollPercentage()>(mob.charStats().getStat(CharStats.STAT_DEXTERITY)*4))
 					{
-						int greaseEffect = (int) Math.round(Math.random()*3);
+						final int greaseEffect = (int) Math.round(Math.random()*3);
 						if((!CMLib.flags().isFlying(mob))||(greaseEffect==FUMBLE_WEAPON))
 						switch(greaseEffect)
 						{
@@ -145,7 +145,7 @@ public class Spell_Grease extends Spell
 		// undo the affects of this spell
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		super.unInvoke();
 
 		if(canBeUninvoked())
@@ -158,7 +158,7 @@ public class Spell_Grease extends Spell
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		MOB target=this.getTarget(mob,commands,givenTarget);
+		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
 		// the invoke method for spells receives as
@@ -177,7 +177,7 @@ public class Spell_Grease extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> invoke a spell at <T-NAME>s feet..^?",CMMsg.MSG_CAST_ATTACK_VERBAL_SPELL,auto?"":"^S<S-NAME> invoke(s) a spell at your feet.^?",verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> invokes a spell at <T-NAME>s feet.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> invoke a spell at <T-NAME>s feet..^?",CMMsg.MSG_CAST_ATTACK_VERBAL_SPELL,auto?"":"^S<S-NAME> invoke(s) a spell at your feet.^?",verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> invokes a spell at <T-NAME>s feet.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

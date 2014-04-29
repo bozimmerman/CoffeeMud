@@ -63,7 +63,7 @@ public class Smelting extends CraftingSkill
 	{
 		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Tickable.TICKID_MOB))
 		{
-			MOB mob=(MOB)affected;
+			final MOB mob=(MOB)affected;
 			if((buildingI==null)
 			||(amountMaking<1)
 			||(getRequiredFire(mob,0)==null))
@@ -85,7 +85,7 @@ public class Smelting extends CraftingSkill
 		{
 			if((affected!=null)&&(affected instanceof MOB))
 			{
-				MOB mob=(MOB)affected;
+				final MOB mob=(MOB)affected;
 				if((buildingI!=null)&&(!aborted))
 				{
 					amountMaking=amountMaking*(abilityCode());
@@ -94,7 +94,7 @@ public class Smelting extends CraftingSkill
 					else
 					for(int i=0;i<amountMaking;i++)
 					{
-						Item copy=(Item)buildingI.copyOf();
+						final Item copy=(Item)buildingI.copyOf();
 						copy.setMiscText(buildingI.text());
 						copy.recoverPhyStats();
 						mob.location().addItem(copy,ItemPossessor.Expire.Player_Drop);
@@ -117,8 +117,8 @@ public class Smelting extends CraftingSkill
 			commonTell(mob,"Make what? Enter \"smelt list\" for a list, or \"smelt stop\" to cancel.");
 			return false;
 		}
-		List<List<String>> recipes=addRecipes(mob,loadRecipes());
-		String str=(String)commands.elementAt(0);
+		final List<List<String>> recipes=addRecipes(mob,loadRecipes());
+		final String str=(String)commands.elementAt(0);
 		String startStr=null;
 		int duration=4;
 		if(str.equalsIgnoreCase("list"))
@@ -130,21 +130,21 @@ public class Smelting extends CraftingSkill
 				allFlag=true;
 				mask="";
 			}
-			int[] cols={
+			final int[] cols={
 					ListingLibrary.ColFixer.fixColWidth(20,mob.session()),
 					ListingLibrary.ColFixer.fixColWidth(3,mob.session()),
 					ListingLibrary.ColFixer.fixColWidth(16,mob.session())
 				};
-			StringBuffer buf=new StringBuffer(CMStrings.padRight("Item",cols[0])+" "+CMStrings.padRight("Lvl",cols[1])+" "+CMStrings.padRight("Metal #1",cols[2])+" Metal #2\n\r");
+			final StringBuffer buf=new StringBuffer(CMStrings.padRight("Item",cols[0])+" "+CMStrings.padRight("Lvl",cols[1])+" "+CMStrings.padRight("Metal #1",cols[2])+" Metal #2\n\r");
 			for(int r=0;r<recipes.size();r++)
 			{
-				List<String> V=recipes.get(r);
+				final List<String> V=recipes.get(r);
 				if(V.size()>0)
 				{
-					String item=replacePercent(V.get(RCP_FINALNAME),"");
-					int level=CMath.s_int(V.get(RCP_LEVEL));
-					String metal1=V.get(RCP_METALONE).toLowerCase();
-					String metal2=V.get(RCP_METALTWO).toLowerCase();
+					final String item=replacePercent(V.get(RCP_FINALNAME),"");
+					final int level=CMath.s_int(V.get(RCP_LEVEL));
+					final String metal1=V.get(RCP_METALONE).toLowerCase();
+					final String metal2=V.get(RCP_METALTWO).toLowerCase();
 					if(((level<=xlevel(mob))||allFlag)
 					&&((mask.length()==0)||mask.equalsIgnoreCase("all")||CMLib.english().containsString(item,mask)))
 						buf.append(CMStrings.padRight(item,cols[0])+" "+CMStrings.padRight(""+level,cols[1])+" "+CMStrings.padRight(metal1,cols[2])+" "+metal2+"\n\r");
@@ -153,7 +153,7 @@ public class Smelting extends CraftingSkill
 			commonTell(mob,buf.toString());
 			return true;
 		}
-		Item fire=getRequiredFire(mob,0);
+		final Item fire=getRequiredFire(mob,0);
 		if(fire==null) return false;
 		activity = CraftingActivity.CRAFTING;
 		buildingI=null;
@@ -167,13 +167,13 @@ public class Smelting extends CraftingSkill
 			recipeName=CMParms.combine(commands,0);
 		}
 		List<String> foundRecipe=null;
-		List<List<String>> matches=matchingRecipeNames(recipes,recipeName,true);
+		final List<List<String>> matches=matchingRecipeNames(recipes,recipeName,true);
 		for(int r=0;r<matches.size();r++)
 		{
-			List<String> V=matches.get(r);
+			final List<String> V=matches.get(r);
 			if(V.size()>0)
 			{
-				int level=CMath.s_int(V.get(RCP_LEVEL));
+				final int level=CMath.s_int(V.get(RCP_LEVEL));
 				if(level<=xlevel(mob))
 				{
 					foundRecipe=V;
@@ -186,19 +186,19 @@ public class Smelting extends CraftingSkill
 			commonTell(mob,"You don't know how to make '"+recipeName+"'.  Try \"smelt list\" for a list.");
 			return false;
 		}
-		String doneResourceDesc=foundRecipe.get(RCP_FINALNAME);
-		String resourceDesc1=foundRecipe.get(RCP_METALONE);
-		String resourceDesc2=foundRecipe.get(RCP_METALTWO);
-		int resourceCode1=RawMaterial.CODES.FIND_IgnoreCase(resourceDesc1);
-		int resourceCode2=RawMaterial.CODES.FIND_IgnoreCase(resourceDesc2);
-		int doneResourceCode=RawMaterial.CODES.FIND_IgnoreCase(doneResourceDesc);
+		final String doneResourceDesc=foundRecipe.get(RCP_FINALNAME);
+		final String resourceDesc1=foundRecipe.get(RCP_METALONE);
+		final String resourceDesc2=foundRecipe.get(RCP_METALTWO);
+		final int resourceCode1=RawMaterial.CODES.FIND_IgnoreCase(resourceDesc1);
+		final int resourceCode2=RawMaterial.CODES.FIND_IgnoreCase(resourceDesc2);
+		final int doneResourceCode=RawMaterial.CODES.FIND_IgnoreCase(doneResourceDesc);
 		if((resourceCode1<0)||(resourceCode2<0)||(doneResourceCode<0))
 		{
 			commonTell(mob,"CoffeeMud error in this alloy.  Please let your local Archon know.");
 			return false;
 		}
-		int amountResource1=CMLib.materials().findNumberOfResource(mob.location(),RawMaterial.CODES.GET(resourceCode1));
-		int amountResource2=CMLib.materials().findNumberOfResource(mob.location(),RawMaterial.CODES.GET(resourceCode2));
+		final int amountResource1=CMLib.materials().findNumberOfResource(mob.location(),RawMaterial.CODES.GET(resourceCode1));
+		final int amountResource2=CMLib.materials().findNumberOfResource(mob.location(),RawMaterial.CODES.GET(resourceCode2));
 		if(amountResource1==0)
 		{
 			commonTell(mob,"There is no "+resourceDesc1+" here to make "+doneResourceDesc+" from.  It might need to be put down first.");
@@ -226,7 +226,7 @@ public class Smelting extends CraftingSkill
 
 		messedUp=!proficiencyCheck(mob,0,auto);
 
-		CMMsg msg=CMClass.getMsg(mob,buildingI,this,getActivityMessageType(),startStr);
+		final CMMsg msg=CMClass.getMsg(mob,buildingI,this,getActivityMessageType(),startStr);
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

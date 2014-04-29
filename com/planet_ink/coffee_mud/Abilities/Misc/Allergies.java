@@ -53,10 +53,10 @@ public class Allergies extends StdAbility implements HealthCondition
 	@Override
 	public String getHealthConditionDesc()
 	{
-		List<String> list=new ArrayList<String>();
-		for(Integer I : resourceAllergies)
+		final List<String> list=new ArrayList<String>();
+		for(final Integer I : resourceAllergies)
 			list.add(RawMaterial.CODES.NAME(I.intValue()).toLowerCase());
-		for(Race R : raceAllergies)
+		for(final Race R : raceAllergies)
 			list.add(R.name()+" dander");
 		if(list.size()==0) return "";
 		return "Suffers from allergies to "+CMLib.english().toEnglishStringList(list)+".";
@@ -69,13 +69,13 @@ public class Allergies extends StdAbility implements HealthCondition
 		super.setMiscText(newText);
 		resourceAllergies.clear();
 		raceAllergies.clear();
-		Vector<String> V=CMParms.parse(newText.toUpperCase().trim());
-		RawMaterial.CODES codes = RawMaterial.CODES.instance();
+		final Vector<String> V=CMParms.parse(newText.toUpperCase().trim());
+		final RawMaterial.CODES codes = RawMaterial.CODES.instance();
 		for(int s=0;s<codes.total();s++)
 			if(V.contains(codes.names()[s]))
 				resourceAllergies.add(Integer.valueOf(codes.get(s)));
 		Race R=null;
-		for(Enumeration r=CMClass.races();r.hasMoreElements();)
+		for(final Enumeration r=CMClass.races();r.hasMoreElements();)
 		{
 			R=(Race)r.nextElement();
 			if(V.contains(R.ID().toUpperCase()))
@@ -92,10 +92,10 @@ public class Allergies extends StdAbility implements HealthCondition
 		&&(affected instanceof MOB))
 		{
 			allergicCheckDown=0;
-			MOB mob=(MOB)affected;
+			final MOB mob=(MOB)affected;
 			if((CMLib.flags().aliveAwakeMobile(mob,true))&&(CMLib.flags().isInTheGame(mob,true)))
 			{
-				Room R=CMLib.map().roomLocation(mob);
+				final Room R=CMLib.map().roomLocation(mob);
 				if(raceAllergies.size()>0)
 				{
 					MOB M=null;
@@ -120,7 +120,7 @@ public class Allergies extends StdAbility implements HealthCondition
 					}
 					if(R.numInhabitants()>0)
 					{
-						MOB M=R.fetchRandomInhabitant();
+						final MOB M=R.fetchRandomInhabitant();
 						if(M!=null)
 						for(int i=0;i<M.numItems();i++)
 						{
@@ -149,14 +149,14 @@ public class Allergies extends StdAbility implements HealthCondition
 				&&(((msg.target() instanceof Item)&&(resourceAllergies.contains(Integer.valueOf(((Item)msg.target()).material()))))
 					||((msg.target() instanceof MOB)&&(raceAllergies.contains(((MOB)msg.target()).charStats().getMyRace())))))
 				{
-					Ability A=CMClass.getAbility("Poison_Heartstopper");
+					final Ability A=CMClass.getAbility("Poison_Heartstopper");
 					if(A!=null) A.invoke(msg.source(),msg.source(),true,0);
 				}
 				else
 				if(((msg.targetMinor()==CMMsg.TYP_GET)||(msg.targetMinor()==CMMsg.TYP_PUSH)||(msg.targetMinor()==CMMsg.TYP_PULL))
 				&&((msg.target() instanceof Item)&&(resourceAllergies.contains(Integer.valueOf(((Item)msg.target()).material())))))
 				{
-					Ability A=CMClass.getAbility("Poison_Hives");
+					final Ability A=CMClass.getAbility("Poison_Hives");
 					if(A!=null) A.invoke(msg.source(),msg.source(),true,0);
 				}
 			}
@@ -169,7 +169,7 @@ public class Allergies extends StdAbility implements HealthCondition
 			&&(((MOB)affected).location().isInhabitant(msg.source()))
 			&&((msg.tool()==null)||((!msg.tool().ID().equals("Poison_Hives"))&&(!msg.tool().ID().equals("Poison_Heartstopper")))))
 			{
-				Ability A=CMClass.getAbility("Poison_Hives");
+				final Ability A=CMClass.getAbility("Poison_Hives");
 				if(A!=null) A.invoke(msg.source(),affected,true,0);
 			}
 		}
@@ -194,18 +194,18 @@ public class Allergies extends StdAbility implements HealthCondition
 			while(commands.size()>1)
 				commands.removeElementAt(1);
 		}
-		MOB target=getTarget(mob,commands,givenTarget);
+		final MOB target=getTarget(mob,commands,givenTarget);
 
 		if(target==null) return false;
 		if(target.fetchEffect(ID())!=null) return false;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			Vector allChoices=new Vector();
-			for(int code : RawMaterial.CODES.ALL())
+			final Vector allChoices=new Vector();
+			for(final int code : RawMaterial.CODES.ALL())
 				if(((code&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_LIQUID)
 				&&((code&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_ENERGY)
 				&&((code&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_GAS)
@@ -214,7 +214,7 @@ public class Allergies extends StdAbility implements HealthCondition
 				&&(code!=RawMaterial.RESOURCE_WOOD))
 					allChoices.addElement(RawMaterial.CODES.NAME(code));
 			Race R=null;
-			for(Enumeration r=CMClass.races();r.hasMoreElements();)
+			for(final Enumeration r=CMClass.races();r.hasMoreElements();)
 			{
 				R=(Race)r.nextElement();
 				allChoices.addElement(R.ID().toUpperCase());
@@ -229,20 +229,20 @@ public class Allergies extends StdAbility implements HealthCondition
 					allergies+=" "+(String)allChoices.elementAt(i);
 			if(allergies.length()==0) return false;
 
-			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_OK_VISUAL,"");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_OK_VISUAL,"");
 			if(target.location()!=null)
 			{
 				if(target.location().okMessage(target,msg))
 				{
 					target.location().send(target,msg);
-					Ability A=(Ability)copyOf();
+					final Ability A=(Ability)copyOf();
 					A.setMiscText(allergies.trim());
 					target.addNonUninvokableEffect(A);
 				}
 			}
 			else
 			{
-				Ability A=(Ability)copyOf();
+				final Ability A=(Ability)copyOf();
 				A.setMiscText(allergies.trim());
 				target.addNonUninvokableEffect(A);
 			}

@@ -72,8 +72,8 @@ public class StdLimb extends StdItem implements FalseLimb
 		&&(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_ALWAYS))
 		&&(owner() instanceof MOB))
 		{
-			MOB mob=(MOB)owner();
-			Wearable.CODES codes = Wearable.CODES.instance();
+			final MOB mob=(MOB)owner();
+			final Wearable.CODES codes = Wearable.CODES.instance();
 			for(int w=0;w<codes.total();w++)
 				if((amWearingAt(codes.get(w)))
 				&&(codes.get(w)!=Wearable.IN_INVENTORY)
@@ -83,7 +83,7 @@ public class StdLimb extends StdItem implements FalseLimb
 						&&(codes.get(w2)!=Wearable.IN_INVENTORY)
 						&&(CMath.bset(codes.dependency_masks()[w], codes.get(w2))))
 						{
-							Item I=mob.fetchFirstWornItem(codes.get(w2));
+							final Item I=mob.fetchFirstWornItem(codes.get(w2));
 							if((I!=null)&&(I!=this))
 							{
 								msg.source().tell(mob,I,null,"You'll need to remove <T-NAMESELF> first.");
@@ -126,7 +126,7 @@ public class StdLimb extends StdItem implements FalseLimb
 	public long wearPlace()
 	{
 		if(wearplace>=0) return wearplace;
-		int num=partNum();
+		final int num=partNum();
 		if(num<0)
 			wearplace=0;
 		else
@@ -167,13 +167,13 @@ public class StdLimb extends StdItem implements FalseLimb
 		if(partNum()<0) return false;
 		if((where!=0)&&(where!=wearPlace()))
 			return false;
-		int numRacialTotal=mob.charStats().getMyRace().bodyMask()[partNum()];
+		final int numRacialTotal=mob.charStats().getMyRace().bodyMask()[partNum()];
 		int numWorkingParts=mob.charStats().getBodyPart(partNum());
 		// now add in other NON-FUNCTIONAL limb things worn
 		// FUNCTIONAL limbs are already included in numWorkingParts
 		for(int i=0;i<mob.numItems();i++)
 		{
-			Item I=mob.getItem(i);
+			final Item I=mob.getItem(i);
 			if((I instanceof StdLimb)
 			&&(((StdLimb)I).partNum()==partNum())
 			&&(I.amWearingAt(wearPlace()))

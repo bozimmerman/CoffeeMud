@@ -46,7 +46,7 @@ public class Dance_War extends Dance
 		if(!super.tick(ticking,tickID))
 			return false;
 
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		if(mob==null)
 			return false;
 		mob.curState().setMana(0);
@@ -57,7 +57,7 @@ public class Dance_War extends Dance
 	{
 		super.affectPhyStats(affected,affectableStats);
 		if(affected==null) return;
-		int bonus=adjustedLevel(invoker(),0);
+		final int bonus=adjustedLevel(invoker(),0);
 		affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+(bonus*2));
 		affectableStats.setArmor(affectableStats.armor()-(bonus*2));
 		affectableStats.setDamage(affectableStats.damage()+(bonus/3));
@@ -67,7 +67,7 @@ public class Dance_War extends Dance
 	{
 		super.affectCharStats(affected,affectableStats);
 		if(invoker==null) return;
-		for(int i : CharStats.CODES.BASE())
+		for(final int i : CharStats.CODES.BASE())
 			affectableStats.setStat(i,affectableStats.getStat(i)+2);
 	}
 }

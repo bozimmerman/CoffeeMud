@@ -51,7 +51,7 @@ public class Unbinding extends CommonSkill
 	{
 		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Tickable.TICKID_MOB))
 		{
-			MOB mob=(MOB)affected;
+			final MOB mob=(MOB)affected;
 			if(tickUp==3)
 			{
 				List<Ability> affects=null;
@@ -65,7 +65,7 @@ public class Unbinding extends CommonSkill
 				}
 				else
 				{
-					StringBuffer str=new StringBuffer("You can't seem to remove any of the bindings.\n\r");
+					final StringBuffer str=new StringBuffer("You can't seem to remove any of the bindings.\n\r");
 					commonTell(mob,str.toString());
 					unInvoke();
 				}
@@ -105,7 +105,7 @@ public class Unbinding extends CommonSkill
 		{
 			if((affected!=null)&&(affected instanceof MOB))
 			{
-				MOB mob=(MOB)affected;
+				final MOB mob=(MOB)affected;
 				if((found!=null)&&(removing!=null)&&(!aborted))
 				{
 					removing.unInvoke();
@@ -125,7 +125,7 @@ public class Unbinding extends CommonSkill
 	{
 		if(super.checkStop(mob, commands))
 			return true;
-		MOB target=getTarget(mob,commands,givenTarget);
+		final MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 		if((!auto)&&(target==mob))
 		{
@@ -137,13 +137,13 @@ public class Unbinding extends CommonSkill
 			mob.tell("Not while you are fighting!");
 			return false;
 		}
-		List<Ability> affects=CMLib.flags().flaggedAffects(target,Ability.FLAG_BINDING);
+		final List<Ability> affects=CMLib.flags().flaggedAffects(target,Ability.FLAG_BINDING);
 		if(affects.size()==0)
 		{
 			mob.tell(target.name(mob)+" does not have any bindings you can remove.");
 			return false;
 		}
-		Ability A=affects.get(0);
+		final Ability A=affects.get(0);
 
 		verb="unbinding";
 		found=null;
@@ -152,7 +152,7 @@ public class Unbinding extends CommonSkill
 
 		int duration=CMLib.ableMapper().lowestQualifyingLevel(A.ID())-(CMLib.ableMapper().qualifyingLevel(mob,A)+(2*getXLEVELLevel(mob)));
 		if(duration<5) duration=4;
-		CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_DELICATE_HANDS_ACT,"<S-NAME> begin(s) to unbind <T-NAMESELF>.");
+		final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_DELICATE_HANDS_ACT,"<S-NAME> begin(s) to unbind <T-NAMESELF>.");
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

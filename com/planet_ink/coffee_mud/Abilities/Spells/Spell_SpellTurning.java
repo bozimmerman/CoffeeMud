@@ -49,7 +49,7 @@ public class Spell_SpellTurning extends Spell
 		// undo the affects of this spell
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-YOUPOSS> reflective protection dissipates.");
@@ -65,7 +65,7 @@ public class Spell_SpellTurning extends Spell
 		if(!(affected instanceof MOB))
 			return true;
 
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		if((msg.amITarget(mob))
 		&&(!oncePerRound)
 		&&(CMath.bset(msg.targetMajor(),CMMsg.MASK_MALICIOUS))
@@ -80,7 +80,7 @@ public class Spell_SpellTurning extends Spell
 		{
 			oncePerRound=true;
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"The field around <S-NAME> reflects the spell!");
-			Ability A=(Ability)msg.tool();
+			final Ability A=(Ability)msg.tool();
 			A.invoke(mob,msg.source(),true,msg.source().phyStats().level());
 			return false;
 		}
@@ -94,7 +94,7 @@ public class Spell_SpellTurning extends Spell
 		{
 			if(target instanceof MOB)
 			{
-				MOB victim=((MOB)target).getVictim();
+				final MOB victim=((MOB)target).getVictim();
 				if((victim!=null)&&(CMLib.flags().domainAbilities(victim,Ability.ACODE_SPELL).size()==0))
 					return Ability.QUALITY_INDIFFERENT;
 			}
@@ -113,16 +113,16 @@ public class Spell_SpellTurning extends Spell
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		MOB target=getTarget(mob,commands,givenTarget);
+		final MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"A reflective barrier appears around <T-NAMESELF>.":"^S<S-NAME> invoke(s) a reflective barrier of protection around <T-NAMESELF>.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"A reflective barrier appears around <T-NAMESELF>.":"^S<S-NAME> invoke(s) a reflective barrier of protection around <T-NAMESELF>.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

@@ -43,9 +43,9 @@ public class Group extends StdCommand
 	public static StringBuffer showWhoLong(MOB seer, MOB who)
 	{
 
-		StringBuffer msg=new StringBuffer("");
+		final StringBuffer msg=new StringBuffer("");
 		msg.append("[");
-		int[] cols={
+		final int[] cols={
 				ListingLibrary.ColFixer.fixColWidth(7,seer.session()),
 				ListingLibrary.ColFixer.fixColWidth(7,seer.session()),
 				ListingLibrary.ColFixer.fixColWidth(5,seer.session()),
@@ -62,7 +62,7 @@ public class Group extends StdCommand
 		}
 
 		String levelStr=who.charStats().displayClassLevel(who,true).trim();
-		int x=levelStr.lastIndexOf(' ');
+		final int x=levelStr.lastIndexOf(' ');
 		if(x>=0) levelStr=levelStr.substring(x).trim();
 		if(!CMSecurity.isDisabled(CMSecurity.DisFlag.CLASSES))
 		{
@@ -92,11 +92,11 @@ public class Group extends StdCommand
 		throws java.io.IOException
 	{
 		mob.tell(mob.name()+"'s group:\n\r");
-		Set<MOB> group=mob.getGroupMembers(new HashSet<MOB>());
-		StringBuffer msg=new StringBuffer("");
-		for(Iterator e=group.iterator();e.hasNext();)
+		final Set<MOB> group=mob.getGroupMembers(new HashSet<MOB>());
+		final StringBuffer msg=new StringBuffer("");
+		for (final Object element : group)
 		{
-			MOB follower=(MOB)e.next();
+			final MOB follower=(MOB)element;
 			msg.append(showWhoLong(mob,follower));
 		}
 		mob.tell(msg.toString());

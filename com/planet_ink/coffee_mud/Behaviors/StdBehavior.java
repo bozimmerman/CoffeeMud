@@ -61,7 +61,7 @@ public class StdBehavior implements Behavior
 		{
 			return this.getClass().newInstance();
 		}
-		catch(Exception e)
+		catch(final Exception e)
 		{
 			Log.errOut(ID(),e);
 		}
@@ -73,12 +73,12 @@ public class StdBehavior implements Behavior
 	{
 		try
 		{
-			Behavior B=(Behavior)this.clone();
+			final Behavior B=(Behavior)this.clone();
 			//CMClass.bumpCounter(B,CMClass.CMObjectType.BEHAVIOR);//removed for perf
 			B.setParms(getParms());
 			return B;
 		}
-		catch(CloneNotSupportedException e)
+		catch(final CloneNotSupportedException e)
 		{
 			return new StdBehavior();
 		}
@@ -112,7 +112,7 @@ public class StdBehavior implements Behavior
 		if(ticking instanceof Room)
 			return (Room)ticking;
 
-		MOB mob=getBehaversMOB(ticking);
+		final MOB mob=getBehaversMOB(ticking);
 		if(mob!=null)
 			return mob.location();
 

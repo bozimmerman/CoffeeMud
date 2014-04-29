@@ -67,7 +67,7 @@ public abstract class CM1Command implements Runnable, Cloneable
 				return null;
 			return cls.getConstructor(RequestHandler.class, String.class).newInstance(req,parms);
 		}
-		catch(Exception e)
+		catch(final Exception e)
 		{
 			Log.errOut("CM1Command",e);
 			return null;
@@ -78,7 +78,7 @@ public abstract class CM1Command implements Runnable, Cloneable
 	{
 		if(parameters.equalsIgnoreCase("USER"))
 			return req.getUser();
-		int x=parameters.indexOf('@');
+		final int x=parameters.indexOf('@');
 		String who=parameters;
 		String where="";
 		PhysicalAgent P=req.getTarget();
@@ -89,7 +89,7 @@ public abstract class CM1Command implements Runnable, Cloneable
 			Room R=CMLib.map().getRoom(where);
 			if(R==null)
 			{
-				Area A=CMLib.map().getArea(where);
+				final Area A=CMLib.map().getArea(where);
 				if(A!=null) R=A.getRandomMetroRoom();
 			}
 			if(who.length()==0)
@@ -97,10 +97,10 @@ public abstract class CM1Command implements Runnable, Cloneable
 		}
 		else
 		{
-			MOB M=CMLib.players().getLoadPlayer(who);
+			final MOB M=CMLib.players().getLoadPlayer(who);
 			if(M!=null) return M;
 		}
-		Room R=CMLib.map().roomLocation(P);
+		final Room R=CMLib.map().roomLocation(P);
 		if(R==null) CMLib.map().roomLocation(req.getTarget());
 		if(R==null) return null;
 		P=R.fetchFromRoomFavorMOBs(null,who);

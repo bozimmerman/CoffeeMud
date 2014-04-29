@@ -84,14 +84,14 @@ public class Chant_VineWeave extends Chant
 			return false;
 
 		// now see if it worked
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":"^S<S-NAME> chant(s) to the plants.^?");
+			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":"^S<S-NAME> chant(s) to the plants.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				ItemCraftor A=(ItemCraftor)CMClass.getAbility("Weaving");
+				final ItemCraftor A=(ItemCraftor)CMClass.getAbility("Weaving");
 				ItemCraftor.ItemKeyPair pair=null;
 				if(A!=null) pair=A.craftAnyItem(material);
 				if(pair==null)
@@ -99,8 +99,8 @@ public class Chant_VineWeave extends Chant
 					mob.tell("The chant failed for some reason...");
 					return false;
 				}
-				Item building=pair.item;
-				Item key=pair.key;
+				final Item building=pair.item;
+				final Item key=pair.key;
 				mob.location().addItem(building,ItemPossessor.Expire.Resource);
 				if(key!=null) mob.location().addItem(key,ItemPossessor.Expire.Resource);
 				mob.location().showHappens(CMMsg.MSG_OK_ACTION,building.name()+" twists out of some vines and grows still.");

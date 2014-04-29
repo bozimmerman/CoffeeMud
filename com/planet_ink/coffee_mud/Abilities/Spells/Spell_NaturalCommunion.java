@@ -52,16 +52,16 @@ public class Spell_NaturalCommunion extends Spell
 		{
 			try
 			{
-				String desc=Room.outdoorDomainDescs[room.domainType()].toLowerCase();
+				final String desc=Room.outdoorDomainDescs[room.domainType()].toLowerCase();
 				if(!stuff.contains(desc))
 					stuff.add(desc);
 			}
-			catch(Exception t) { }
+			catch(final Exception t) { }
 		}
-		int resource=room.myResource()&RawMaterial.RESOURCE_MASK;
+		final int resource=room.myResource()&RawMaterial.RESOURCE_MASK;
 		if(RawMaterial.CODES.IS_VALID(resource))
 		{
-			Physical found=CMLib.materials().makeResource(room.myResource(),Integer.toString(room.domainType()),false,null);
+			final Physical found=CMLib.materials().makeResource(room.myResource(),Integer.toString(room.domainType()),false,null);
 			if(found!=null)
 			{
 				final String name;
@@ -88,7 +88,7 @@ public class Spell_NaturalCommunion extends Spell
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		Room targetR=mob.location();
+		final Room targetR=mob.location();
 		if(targetR==null)
 			return false;
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -97,18 +97,18 @@ public class Spell_NaturalCommunion extends Spell
 		int chance=0;
 		if((mob.location().domainType()&Room.INDOORS)>0)
 			chance-=25;
-		boolean success=proficiencyCheck(mob,chance,auto);
+		final boolean success=proficiencyCheck(mob,chance,auto);
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,targetR,this,somanticCastCode(mob,targetR,auto),auto?"":"^S<S-NAME> commune(s) with <S-HIS-HER> natural surroundings.^?");
+			final CMMsg msg=CMClass.getMsg(mob,targetR,this,somanticCastCode(mob,targetR,auto),auto?"":"^S<S-NAME> commune(s) with <S-HIS-HER> natural surroundings.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				int radius=3 + super.getXLEVELLevel(mob);
-				List<Room> rooms=CMLib.tracking().getRadiantRooms(mob.location(), new TrackingLibrary.TrackingFlags(), radius);
-				List<String> stuff=new Vector<String>();
+				final int radius=3 + super.getXLEVELLevel(mob);
+				final List<Room> rooms=CMLib.tracking().getRadiantRooms(mob.location(), new TrackingLibrary.TrackingFlags(), radius);
+				final List<String> stuff=new Vector<String>();
 				communeWithThisRoom(mob,mob.location(),stuff);
-				for(Room R : rooms)
+				for(final Room R : rooms)
 					communeWithThisRoom(mob,R,stuff);
 				mob.tell("Your surroundings show the following natural signs: "+CMLib.english().toEnglishStringList(stuff.toArray(new String[0]))+".");
 			}

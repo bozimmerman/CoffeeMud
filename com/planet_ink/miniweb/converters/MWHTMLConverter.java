@@ -35,7 +35,7 @@ public class MWHTMLConverter implements HTTPOutputConverter
 	private static Map<String,Macro> macros=new HashMap<String,Macro>();
 	static
 	{
-		for(Macro m : Macro.values())
+		for(final Macro m : Macro.values())
 			macros.put(m.toString().toLowerCase(), m);
 	}
 
@@ -57,10 +57,10 @@ public class MWHTMLConverter implements HTTPOutputConverter
 		final int oldPosition=buffer.position();
 		final ByteArrayOutputStream out=new ByteArrayOutputStream();
 		int state=-1;
-		StringBuilder macro=new StringBuilder("");
+		final StringBuilder macro=new StringBuilder("");
 		while(buffer.remaining()>0)
 		{
-			char c=(char)buffer.get();
+			final char c=(char)buffer.get();
 			if(c=='@')
 			{
 				if(state<0)
@@ -95,7 +95,7 @@ public class MWHTMLConverter implements HTTPOutputConverter
 						else
 							out.write(("@"+macro.toString()+"@").getBytes());
 					}
-					catch(Exception e){}
+					catch(final Exception e){}
 					state=-1;
 					macro.setLength(0);
 				}
@@ -106,7 +106,7 @@ public class MWHTMLConverter implements HTTPOutputConverter
 			else
 				macro.append(c);
 		}
-		ByteBuffer output=ByteBuffer.wrap(out.toByteArray());
+		final ByteBuffer output=ByteBuffer.wrap(out.toByteArray());
 		buffer.position(oldPosition);
 		return output;
 	}

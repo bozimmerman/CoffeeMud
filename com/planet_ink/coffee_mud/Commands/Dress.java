@@ -53,10 +53,10 @@ public class Dress extends StdCommand
 			return false;
 		}
 		commands.removeElementAt(0);
-		String what=(String)commands.lastElement();
+		final String what=(String)commands.lastElement();
 		commands.removeElement(what);
-		String whom=CMParms.combine(commands,0);
-		MOB target=mob.location().fetchInhabitant(whom);
+		final String whom=CMParms.combine(commands,0);
+		final MOB target=mob.location().fetchInhabitant(whom);
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
 			mob.tell("I don't see "+whom+" here.");
@@ -64,7 +64,7 @@ public class Dress extends StdCommand
 		}
 		if((target.willFollowOrdersOf(mob))||(CMLib.flags().isBoundOrHeld(target)))
 		{
-			Item item=mob.findItem(null,what);
+			final Item item=mob.findItem(null,what);
 			if((item==null)||(!CMLib.flags().canBeSeenBy(item,mob)))
 			{
 				mob.tell("I don't see "+what+" here.");
@@ -84,7 +84,7 @@ public class Dress extends StdCommand
 						item.wearAt(item.rawProperLocationBitmap());
 					else
 					{
-						for(long wornCode : Wearable.CODES.ALL())
+						for(final long wornCode : Wearable.CODES.ALL())
 							if(wornCode != Wearable.IN_INVENTORY)
 							{
 								if(item.fitsOn(wornCode)&&(wornCode!=Wearable.WORN_HELD))

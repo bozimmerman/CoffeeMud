@@ -38,7 +38,7 @@ public class Prop_StatTrainer extends Property
 	@Override public String name(){ return "Good training MOB";}
 	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected static final int[] all25=new int[CharStats.CODES.instance().total()];
-	static { for(int i : CharStats.CODES.BASE()) all25[i]=25;}
+	static { for(final int i : CharStats.CODES.BASE()) all25[i]=25;}
 	protected int[] stats=all25;
 	protected boolean noteach=false;
 
@@ -54,7 +54,7 @@ public class Prop_StatTrainer extends Property
 		if((!noteach)&&(CMath.bset(affectedMOB.getBitmap(),MOB.ATT_NOTEACH)))
 			affectedMOB.setBitmap(CMath.unsetb(affectedMOB.getBitmap(),MOB.ATT_NOTEACH));
 
-		for(int i: CharStats.CODES.BASE())
+		for(final int i: CharStats.CODES.BASE())
 			affectableStats.setStat(i,stats[i]);
 	}
 	@Override
@@ -66,7 +66,7 @@ public class Prop_StatTrainer extends Property
 			if(newMiscText.toUpperCase().indexOf("NOTEACH")>=0)
 				noteach=true;
 			stats=new int[CharStats.CODES.TOTAL()];
-			for(int i : CharStats.CODES.BASE())
+			for(final int i : CharStats.CODES.BASE())
 				stats[i]=CMParms.getParmInt(newMiscText, CMStrings.limit(CharStats.CODES.NAME(i),3), 25);
 		}
 	}

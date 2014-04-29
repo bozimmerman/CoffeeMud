@@ -58,7 +58,7 @@ public class Concierge extends StdBehavior
 			basePrice=CMath.s_double(newParm);
 			return;
 		}
-		List<String> V=CMParms.parseSemicolons(newParm,true);
+		final List<String> V=CMParms.parseSemicolons(newParm,true);
 		String s=null;
 		int x=0;
 		double price=0;
@@ -91,7 +91,7 @@ public class Concierge extends StdBehavior
 	{
 		if(E==null) return basePrice;
 		if(rates.size()==0) return basePrice;
-		int rateIndex=rates.indexOf(E);
+		final int rateIndex=rates.indexOf(E);
 		if(rateIndex<0) return basePrice;
 		return ((Double)rates.elementAt(rateIndex,2)).doubleValue();
 	}
@@ -104,7 +104,7 @@ public class Concierge extends StdBehavior
 		for(int r=rates.size()-1;r>=0;r--)
 			if(rates.elementAt(r,1) instanceof String)
 			{
-				String place=(String)rates.elementAt(r,1);
+				final String place=(String)rates.elementAt(r,1);
 				if((observer!=null)&&(observer.location()!=null))
 				{
 					if(stringsToDo==null) stringsToDo=new DVector(2);
@@ -117,7 +117,7 @@ public class Concierge extends StdBehavior
 			TrackingLibrary.TrackingFlags flags;
 			flags = new TrackingLibrary.TrackingFlags()
 					.plus(TrackingLibrary.TrackingFlag.AREAONLY);
-			List<Room> roomsInRange=
+			final List<Room> roomsInRange=
 				CMLib.tracking().getRadiantRooms(observer.location(),flags,50);
 			Room R=null;
 			String place=null;
@@ -140,10 +140,10 @@ public class Concierge extends StdBehavior
 	{
 		if(!super.okMessage(affecting,msg))
 			return false;
-		MOB source=msg.source();
+		final MOB source=msg.source();
 		if(!canFreelyBehaveNormal(affecting))
 			return true;
-		MOB observer=(MOB)affecting;
+		final MOB observer=(MOB)affecting;
 		if((source!=observer)
 		&&(msg.amITarget(observer))
 		&&(msg.targetMinor()==CMMsg.TYP_GIVE)
@@ -151,7 +151,7 @@ public class Concierge extends StdBehavior
 		&&(!CMSecurity.isAllowed(source,source.location(),CMSecurity.SecFlag.CMDMOBS))
 		&&(msg.tool()!=null))
 		{
-			int destIndex=destinations.indexOf(source);
+			final int destIndex=destinations.indexOf(source);
 			if(destIndex<0)
 			{
 				CMLib.commands().postSay(observer,source,"What's this for?  Please tell me where you'd like to go first.",true,false);
@@ -169,9 +169,9 @@ public class Concierge extends StdBehavior
 				CMLib.commands().postSay(observer,source,"I'm sorry, I don't accept that kind of currency.",true,false);
 				return false;
 			}
-			Environmental destination=(Environmental)destinations.elementAt(destIndex,2);
-			Double paid=(Double)destinations.elementAt(destinations.indexOf(source),3);
-			double owed=getPrice(destination)-paid.doubleValue();
+			final Environmental destination=(Environmental)destinations.elementAt(destIndex,2);
+			final Double paid=(Double)destinations.elementAt(destinations.indexOf(source),3);
+			final double owed=getPrice(destination)-paid.doubleValue();
 			if(owed<=0.0)
 			{
 				CMLib.commands().postSay(observer,source,"Hey, you've already paid me!",true,false);
@@ -189,13 +189,13 @@ public class Concierge extends StdBehavior
 		&&(thingsToSay.size()>0)
 		&&(canFreelyBehaveNormal(ticking)))
 		{
-			MOB observer=(MOB)ticking;
+			final MOB observer=(MOB)ticking;
 			synchronized(thingsToSay)
 			{
 				while(thingsToSay.size()>0)
 				{
-					MOB source=(MOB)thingsToSay.elementAt(0,1);
-					String msg=(String)thingsToSay.elementAt(0,2);
+					final MOB source=(MOB)thingsToSay.elementAt(0,1);
+					final String msg=(String)thingsToSay.elementAt(0,2);
 					thingsToSay.removeElementAt(0);
 					CMLib.commands().postSay(observer,source,msg,true,false);
 				}
@@ -206,13 +206,13 @@ public class Concierge extends StdBehavior
 
 	public String getDestination(MOB from, Environmental to)
 	{
-		Command C=CMClass.getCommand("TrailTo");
+		final Command C=CMClass.getCommand("TrailTo");
 		if(C==null) return "Umm.. I'm stupid.";
 		String name=to.Name();
 		if(to instanceof Room) name=CMLib.map().getExtendedRoomID((Room)to);
-		TrackingLibrary.TrackingFlags flags = new TrackingLibrary.TrackingFlags().plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS);
-		Vector<Room> set=new Vector<Room>();
-		int radius=100;
+		final TrackingLibrary.TrackingFlags flags = new TrackingLibrary.TrackingFlags().plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS);
+		final Vector<Room> set=new Vector<Room>();
+		final int radius=100;
 		CMLib.tracking().getRadiantRooms(from.location(),set,flags,null,radius,null);
 		return CMLib.tracking().getTrailToDescription(from.location(),set,name,false,false,radius,null,1);
 	}
@@ -223,20 +223,20 @@ public class Concierge extends StdBehavior
 		super.executeMsg(affecting,msg);
 		if(!canFreelyBehaveNormal(affecting)) return;
 
-		MOB source=msg.source();
-		MOB observer=(MOB)affecting;
+		final MOB source=msg.source();
+		final MOB observer=(MOB)affecting;
 		if((source!=observer)
 		&&(msg.targetMinor()==CMMsg.TYP_GIVE)
 		&&(msg.amITarget(observer))
 		&&(msg.tool() instanceof Coins))
 		{
-			int destIndex=destinations.indexOf(source);
+			final int destIndex=destinations.indexOf(source);
 			if((CMLib.flags().canBeSeenBy(source,observer))
 			&&(CMLib.flags().canBeSeenBy(observer,source))
 			&&(destIndex>=0))
 			{
-				Environmental destination=(Environmental)destinations.elementAt(destIndex,2);
-				Double paid=(Double)destinations.elementAt(destIndex,3);
+				final Environmental destination=(Environmental)destinations.elementAt(destIndex,2);
+				final Double paid=(Double)destinations.elementAt(destIndex,3);
 				double owed=getPrice(destination)-paid.doubleValue();
 				owed-=((Coins)msg.tool()).getTotalValue();
 				if(owed>0.0)
@@ -248,16 +248,16 @@ public class Concierge extends StdBehavior
 				else
 				if(owed<0.0)
 				{
-					double change=-owed;
-					Coins C=CMLib.beanCounter().makeBestCurrency(observer,change);
+					final double change=-owed;
+					final Coins C=CMLib.beanCounter().makeBestCurrency(observer,change);
 					if((change>0.0)&&(C!=null))
 					{
 						// this message will actually end up triggering the hand-over.
-						CMMsg newMsg=CMClass.getMsg(observer,source,C,CMMsg.MSG_SPEAK,"^T<S-NAME> say(s) 'Heres your change.' to <T-NAMESELF>.^?");
+						final CMMsg newMsg=CMClass.getMsg(observer,source,C,CMMsg.MSG_SPEAK,"^T<S-NAME> say(s) 'Heres your change.' to <T-NAMESELF>.^?");
 						C.setOwner(observer);
-						long num=C.getNumberOfCoins();
-						String curr=C.getCurrency();
-						double denom=C.getDenomination();
+						final long num=C.getNumberOfCoins();
+						final String curr=C.getCurrency();
+						final double denom=C.getDenomination();
 						C.destroy();
 						C.setNumberOfCoins(num);
 						C.setCurrency(curr);
@@ -291,20 +291,20 @@ public class Concierge extends StdBehavior
 		&&((msg.target()==observer)||(observer.location().numPCInhabitants()==1))
 		&&(msg.sourceMessage()!=null))
 		{
-			String say=CMStrings.getSayFromMessage(msg.sourceMessage());
+			final String say=CMStrings.getSayFromMessage(msg.sourceMessage());
 			if((say!=null)&&(say.length()>0))
 			{
-				Environmental E=findDestination(observer,msg.source(),say);
+				final Environmental E=findDestination(observer,msg.source(),say);
 				if(E==null)
 					synchronized(thingsToSay)
 					{
 						thingsToSay.addElement(msg.source(),"I'm sorry, I don't know where '"+say+"' is.");
 						return;
 					}
-				int index=destinations.indexOf(msg.source());
-				Double paid=(index>=0)?(Double)destinations.elementAt(index,3):Double.valueOf(0.0);
+				final int index=destinations.indexOf(msg.source());
+				final Double paid=(index>=0)?(Double)destinations.elementAt(index,3):Double.valueOf(0.0);
 				destinations.removeElement(msg.source());
-				double rate=getPrice(E);
+				final double rate=getPrice(E);
 				if(rate<=0.0)
 					thingsToSay.addElement(msg.source(),"Yes, the way to "+E.name()+" from here is: "+this.getDestination(observer,E));
 				else

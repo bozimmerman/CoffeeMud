@@ -56,12 +56,12 @@ public class Song_Seeing extends Song
 				return super.castingQuality(mob, target,Ability.QUALITY_BENEFICIAL_OTHERS);
 			if(target instanceof MOB)
 			{
-				Room R=((MOB)target).location();
+				final Room R=((MOB)target).location();
 				boolean found=false;
 				if(R!=null)
 					for(int r=0;r<R.numInhabitants();r++)
 					{
-						MOB M=R.fetchInhabitant(r);
+						final MOB M=R.fetchInhabitant(r);
 						if((M!=null)&&(M!=mob)&&(M!=target)
 						&&(CMLib.flags().isHidden(M)))
 						{ found=true; break;}

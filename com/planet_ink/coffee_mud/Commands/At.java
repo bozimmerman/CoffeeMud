@@ -49,9 +49,9 @@ public class At extends StdCommand
 			mob.tell("At where do what?");
 			return false;
 		}
-		String cmd=(String)commands.firstElement();
+		final String cmd=(String)commands.firstElement();
 		commands.removeElementAt(0);
-		Room room=CMLib.map().findWorldRoomLiberally(mob,cmd,"APMIR",100,120000);
+		final Room room=CMLib.map().findWorldRoomLiberally(mob,cmd,"APMIR",100,120000);
 		if(room==null)
 		{
 			if(CMSecurity.isAllowedAnywhere(mob,CMSecurity.SecFlag.AT))
@@ -65,7 +65,7 @@ public class At extends StdCommand
 			mob.tell("You aren't powerful enough to do that there.");
 			return false;
 		}
-		Room R=mob.location();
+		final Room R=mob.location();
 		if(R!=room)	room.bringMobHere(mob,false);
 		mob.doCommand(commands,metaFlags);
 		if(mob.location()!=R) R.bringMobHere(mob,false);

@@ -76,7 +76,7 @@ public class ReadOnlyListSet<K> implements Set<K>
 			{
 				if(hasNext())
 				{
-					K o=(K)array[d];
+					final K o=(K)array[d];
 					d++;
 					return o;
 				}

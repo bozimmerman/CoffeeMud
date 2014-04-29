@@ -42,7 +42,7 @@ public class View extends StdCommand
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		Environmental shopkeeper=CMLib.english().parseShopkeeper(mob,commands,"View what merchandise from whom?");
+		final Environmental shopkeeper=CMLib.english().parseShopkeeper(mob,commands,"View what merchandise from whom?");
 		if(shopkeeper==null) return false;
 		if(commands.size()==0)
 		{
@@ -65,7 +65,7 @@ public class View extends StdCommand
 		}
 
 		String whatName=CMParms.combine(commands,0);
-		Vector V=new Vector();
+		final Vector V=new Vector();
 		boolean allFlag=((String)commands.elementAt(0)).equalsIgnoreCase("all");
 		if(whatName.toUpperCase().startsWith("ALL.")){ allFlag=true; whatName="ALL "+whatName.substring(4);}
 		if(whatName.toUpperCase().endsWith(".ALL")){ allFlag=true; whatName="ALL "+whatName.substring(0,whatName.length()-4);}
@@ -74,8 +74,8 @@ public class View extends StdCommand
 		while(doBugFix || ((allFlag)&&(addendum<=maxToDo)))
 		{
 			doBugFix=false;
-			ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(shopkeeper);
-			Environmental itemToDo=SK.getShop().getStock(whatName,mob);
+			final ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(shopkeeper);
+			final Environmental itemToDo=SK.getShop().getStock(whatName,mob);
 			if(itemToDo==null) break;
 			if(CMLib.flags().canBeSeenBy(itemToDo,mob))
 				V.addElement(itemToDo);
@@ -89,8 +89,8 @@ public class View extends StdCommand
 		else
 		for(int v=0;v<V.size();v++)
 		{
-			Environmental thisThang=(Environmental)V.elementAt(v);
-			CMMsg newMsg=CMClass.getMsg(mob,shopkeeper,thisThang,CMMsg.MSG_VIEW,null);
+			final Environmental thisThang=(Environmental)V.elementAt(v);
+			final CMMsg newMsg=CMClass.getMsg(mob,shopkeeper,thisThang,CMMsg.MSG_VIEW,null);
 			if(mob.location().okMessage(mob,newMsg))
 				mob.location().send(mob,newMsg);
 		}

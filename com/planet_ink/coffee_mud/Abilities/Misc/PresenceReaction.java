@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -68,36 +67,36 @@ public class PresenceReaction extends StdAbility
 
 	public void addAffectOrBehavior(String substr)
 	{
-		int x=substr.indexOf('=');
+		final int x=substr.indexOf('=');
 		if(x>=0)
 		{
-			String nam=substr.substring(0,x);
+			final String nam=substr.substring(0,x);
 			if(nam.trim().length()==0)
 			{
 				reactToName=substr.substring(1);
 				return;
 			}
-			Behavior B=CMClass.getBehavior(nam);
+			final Behavior B=CMClass.getBehavior(nam);
 			if(B!=null)
 			{
 				B.setSavable(false);
-				Object[] SET=new Object[]{B,substr.substring(x+1)};
+				final Object[] SET=new Object[]{B,substr.substring(x+1)};
 				unmanagedYet.add(SET);
 				return;
 			}
-			Ability A=CMClass.getAbility(nam);
+			final Ability A=CMClass.getAbility(nam);
 			if(A!=null)
 			{
 				A.setSavable(false);
 				A.makeNonUninvokable();
-				Object[] SET=new Object[]{A,substr.substring(x+1)};
+				final Object[] SET=new Object[]{A,substr.substring(x+1)};
 				unmanagedYet.add(SET);
 				return;
 			}
-			Command C=CMClass.getCommand(nam);
+			final Command C=CMClass.getCommand(nam);
 			if(C!=null)
 			{
-				Object[] SET=new Object[]{C,substr.substring(x+1)};
+				final Object[] SET=new Object[]{C,substr.substring(x+1)};
 				unmanagedYet.add(SET);
 			}
 		}
@@ -110,16 +109,16 @@ public class PresenceReaction extends StdAbility
 			addAffectOrBehavior(parms.substring(1));
 		else
 		{
-			List<String> parsed=CMParms.parseAny(parms,"~~",true);
-			for(Iterator<String> e=parsed.iterator();e.hasNext();)
-				addAffectOrBehavior(e.next());
+			final List<String> parsed=CMParms.parseAny(parms,"~~",true);
+			for (final String string : parsed)
+				addAffectOrBehavior(string);
 		}
 	}
 
 	@Override
 	public boolean okMessage(Environmental affecting, CMMsg msg)
 	{
-		for(CMObject O : managed)
+		for(final CMObject O : managed)
 			if(O instanceof MsgListener)
 				if(!((MsgListener)O).okMessage(affecting, msg))
 					return false;
@@ -129,7 +128,7 @@ public class PresenceReaction extends StdAbility
 	@Override
 	public void executeMsg(Environmental affecting, CMMsg msg)
 	{
-		for(CMObject O : managed)
+		for(final CMObject O : managed)
 			if(O instanceof MsgListener)
 				((MsgListener)O).executeMsg(affecting, msg);
 		super.executeMsg(affecting,msg);
@@ -138,31 +137,31 @@ public class PresenceReaction extends StdAbility
 	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		for(CMObject O : managed)
+		for(final CMObject O : managed)
 			if(O instanceof StatsAffecting)
 				((StatsAffecting)O).affectPhyStats(affected, affectableStats);
 	}
 	@Override
 	public void affectCharStats(MOB affectedMob, CharStats affectableStats)
 	{
-		for(CMObject O : managed)
+		for(final CMObject O : managed)
 			if(O instanceof StatsAffecting)
 				((StatsAffecting)O).affectCharStats(affectedMob, affectableStats);
 	}
 	@Override
 	public void affectCharState(MOB affectedMob, CharState affectableMaxState)
 	{
-		for(CMObject O : managed)
+		for(final CMObject O : managed)
 			if(O instanceof StatsAffecting)
 				((StatsAffecting)O).affectCharState(affectedMob, affectableMaxState);
 	}
 	protected synchronized boolean shutdownPresence(MOB affected)
 	{
-		Room R=affected.location();
+		final Room R=affected.location();
 		if(((R==null)||(reactToM==null)||(!R.isInhabitant(reactToM))))
 		{
-			MOB M=(MOB)super.affected;
-			for(CMObject O : managed)
+			final MOB M=(MOB)super.affected;
+			for(final CMObject O : managed)
 			{
 				if((O!=null)&&(O.ID().equals("Mood")))
 				{
@@ -170,11 +169,11 @@ public class PresenceReaction extends StdAbility
 					{
 						try
 						{
-							Command C=CMClass.getCommand("Mood");
+							final Command C=CMClass.getCommand("Mood");
 							if(C!=null)
 								C.execute(M,CMParms.parse("MOOD "+previousMood),0);
 						}
-						catch(Exception e){}
+						catch(final Exception e){}
 					}
 				}
 				else
@@ -193,21 +192,21 @@ public class PresenceReaction extends StdAbility
 		if(unmanagedYet.size()==0)
 			return false;
 		boolean didAnything=false;
-		SLinkedList<Object[]> commands = new SLinkedList<Object[]>();
+		final SLinkedList<Object[]> commands = new SLinkedList<Object[]>();
 		while(unmanagedYet.size()>0)
 		{
-			Object[] thing=unmanagedYet.removeFirst();
+			final Object[] thing=unmanagedYet.removeFirst();
 			if(thing[0] instanceof Ability)
 			{
 				if(((Ability)thing[0]).ID().equalsIgnoreCase("Mood"))
 				{
 					previousMood="";
-					Ability A=affected.fetchEffect("Mood");
+					final Ability A=affected.fetchEffect("Mood");
 					if(A!=null) previousMood=A.text();
 					if(previousMood.trim().length()==0)
 						previousMood="NORMAL";
 				}
-				Ability A=(Ability)thing[0];
+				final Ability A=(Ability)thing[0];
 				A.setAffectedOne(affected);
 				A.setMiscText((String)thing[1]);
 				managed.add(A);
@@ -216,7 +215,7 @@ public class PresenceReaction extends StdAbility
 			}
 			if(thing[0] instanceof Behavior)
 			{
-				Behavior B=(Behavior)thing[0];
+				final Behavior B=(Behavior)thing[0];
 				B.startBehavior(affected);
 				B.setParms((String)thing[1]);
 				managed.add(B);
@@ -245,16 +244,16 @@ public class PresenceReaction extends StdAbility
 		initializeManagedObjects(affected);
 		while(unmanagedYet.size()>0)
 		{
-			Object[] thing=unmanagedYet.removeFirst();
+			final Object[] thing=unmanagedYet.removeFirst();
 			if(thing[0] instanceof Command)
 			{
-				Command C=(Command)thing[0];
+				final Command C=(Command)thing[0];
 				try
 				{
-					String cmdparms=C.getAccessWords()[0]+" "+CMStrings.replaceAll((String)thing[1],"<TARGET>",reactToM.Name());
+					final String cmdparms=C.getAccessWords()[0]+" "+CMStrings.replaceAll((String)thing[1],"<TARGET>",reactToM.Name());
 					affected.enqueCommand(CMParms.parse(cmdparms),Command.METAFLAG_FORCED, 0);
 				}
-				catch(Exception e){}
+				catch(final Exception e){}
 				managed.add(C);
 				continue;
 			}
@@ -277,7 +276,7 @@ public class PresenceReaction extends StdAbility
 		else
 		if(this.affected instanceof MOB)
 		{
-			MOB affected=(MOB)this.affected;
+			final MOB affected=(MOB)this.affected;
 			if((affected.location()!=reactToM.location())
 				||(affected.amDead())
 				||(reactToM.amDead())
@@ -287,7 +286,7 @@ public class PresenceReaction extends StdAbility
 				||(!CMLib.flags().isInTheGame(reactToM, true)))
 					return shutdownPresence(affected);
 			initializeAllManaged(affected);
-			for(CMObject O : managed)
+			for(final CMObject O : managed)
 				if(O instanceof Tickable)
 					((Tickable)O).tick(ticking, tickID);
 		}
@@ -299,7 +298,7 @@ public class PresenceReaction extends StdAbility
 	{
 		if(target==null)
 		{
-			PresenceReaction A=(PresenceReaction)mob.fetchEffect(ID());
+			final PresenceReaction A=(PresenceReaction)mob.fetchEffect(ID());
 			if(A!=null)
 				A.shutdownPresence(mob);
 			if(affected==mob)
@@ -307,9 +306,9 @@ public class PresenceReaction extends StdAbility
 			return A!=null;
 		}
 		if(!(target instanceof MOB)) return false;
-		PresenceReaction A=(PresenceReaction)this.copyOf();
+		final PresenceReaction A=(PresenceReaction)this.copyOf();
 		A.reactToM=(MOB)target;
-		for(Object O : commands)
+		for(final Object O : commands)
 			A.addAffectOrBehavior((String)O);
 		commands.clear();
 		commands.addElement(A);

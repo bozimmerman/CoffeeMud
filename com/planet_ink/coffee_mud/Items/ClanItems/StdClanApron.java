@@ -71,11 +71,11 @@ public class StdClanApron extends StdClanItem
 				&&(msg.source()!=owner())
 				&&(msg.source().getClanRole(clanID())==null))
 				{
-					Clan C=CMLib.clans().getClan(clanID());
+					final Clan C=CMLib.clans().getClan(clanID());
 					if(C!=null)
 					{
 						int state=Clan.REL_NEUTRAL;
-						for(Pair<Clan,Integer> p : CMLib.clans().findRivalrousClans(msg.source()))
+						for(final Pair<Clan,Integer> p : CMLib.clans().findRivalrousClans(msg.source()))
 						{
 							state=C.getClanRelations(p.first.clanID());
 							if((state!=Clan.REL_NEUTRAL)
@@ -100,7 +100,7 @@ public class StdClanApron extends StdClanItem
 			return false;
 		if(fetchEffect("Merchant")==null)
 		{
-			Ability A=CMClass.getAbility("Merchant");
+			final Ability A=CMClass.getAbility("Merchant");
 			if(A!=null) addNonUninvokableEffect(A);
 		}
 		return true;

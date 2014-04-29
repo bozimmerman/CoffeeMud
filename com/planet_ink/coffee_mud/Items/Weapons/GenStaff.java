@@ -91,7 +91,7 @@ public class GenStaff extends GenWeapon implements Wand
 	public String secretIdentity()
 	{
 		String id=super.secretIdentity();
-		Ability A=getSpell();
+		final Ability A=getSpell();
 		if(A!=null)
 			id="'A staff of "+A.name()+"' Charges: "+usesRemaining()+"\n\r"+id;
 		return id+"\n\rSay the magic word :`"+secretWord+"` to the target.";
@@ -124,7 +124,7 @@ public class GenStaff extends GenWeapon implements Wand
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
-		MOB mob=msg.source();
+		final MOB mob=msg.source();
 		switch(msg.targetMinor())
 		{
 		case CMMsg.TYP_WAND_USE:
@@ -137,7 +137,7 @@ public class GenStaff extends GenWeapon implements Wand
 				boolean alreadyWanding=false;
 				final List<CMMsg> trailers =msg.trailerMsgs();
 				if(trailers!=null)
-					for(CMMsg msg2 : trailers)
+					for(final CMMsg msg2 : trailers)
 						if(msg2.targetMinor()==CMMsg.TYP_WAND_USE)
 							alreadyWanding=true;
 				final String said=CMStrings.getSayFromMessage(msg.sourceMessage());

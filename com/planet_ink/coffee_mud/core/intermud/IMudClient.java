@@ -46,9 +46,9 @@ public class IMudClient implements I3Interface
 {
 	@Override public String ID(){return "IMudClient";}
 	@Override public String name() { return ID();}
-	@Override public CMObject newInstance(){try{return getClass().newInstance();}catch(Exception e){return new IMudClient();}}
+	@Override public CMObject newInstance(){try{return getClass().newInstance();}catch(final Exception e){return new IMudClient();}}
 	@Override public void initializeClass(){}
-	@Override public CMObject copyOf(){try{return (CMObject)this.clone();}catch(Exception e){return newInstance();}}
+	@Override public CMObject copyOf(){try{return (CMObject)this.clone();}catch(final Exception e){return newInstance();}}
 	@Override public String _(final String str, final String ... xs) { return CMLib.lang().fullSessionTranslation(str, xs); }
 	@Override public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 	@Override public boolean activate(){ return true;}
@@ -82,7 +82,7 @@ public class IMudClient implements I3Interface
 				mob.tell(mudName+" is not available.");
 				return;
 			}
-			WhoPacket wk=new WhoPacket();
+			final WhoPacket wk=new WhoPacket();
 			wk.type=Packet.WHO_REQUEST;
 			wk.sender_name=mob.Name();
 			wk.target_mud=mudName;
@@ -90,7 +90,7 @@ public class IMudClient implements I3Interface
 			try
 			{
 			wk.send();
-			}catch(Exception e){Log.errOut("IMudClient",e);}
+			}catch(final Exception e){Log.errOut("IMudClient",e);}
 		}
 		else
 		if(imc2online()&&(imc2.getIMC2Mud(mudName)!=null))
@@ -152,14 +152,14 @@ public class IMudClient implements I3Interface
 			mob.tell(mudName+" is not available.");
 			return;
 		}
-		ChannelWhoRequest ck=new ChannelWhoRequest();
+		final ChannelWhoRequest ck=new ChannelWhoRequest();
 		ck.sender_name=mob.Name();
 		ck.target_mud=mudName;
 		ck.channel=channel;
 		try
 		{
 		ck.send();
-		}catch(Exception e){Log.errOut("IMudClient",e);}
+		}catch(final Exception e){Log.errOut("IMudClient",e);}
 	}
 
 	@Override
@@ -172,13 +172,13 @@ public class IMudClient implements I3Interface
 			return;
 		}
 
-		ChannelAdd ck=new ChannelAdd();
+		final ChannelAdd ck=new ChannelAdd();
 		ck.sender_name=mob.Name();
 		ck.channel=channel;
 		try
 		{
 		ck.send();
-		}catch(Exception e){Log.errOut("IMudClient",e);}
+		}catch(final Exception e){Log.errOut("IMudClient",e);}
 	}
 
 	@Override
@@ -197,14 +197,14 @@ public class IMudClient implements I3Interface
 			else
 				mob.tell("Channel listen failed.");
 		}
-		ChannelListen ck=new ChannelListen();
+		final ChannelListen ck=new ChannelListen();
 		ck.sender_name=mob.Name();
 		ck.channel=channel;
 		ck.onoff="1";
 		try
 		{
 		ck.send();
-		}catch(Exception e){Log.errOut("IMudClient",e);}
+		}catch(final Exception e){Log.errOut("IMudClient",e);}
 	}
 
 	@Override
@@ -221,14 +221,14 @@ public class IMudClient implements I3Interface
 		if(Intermud.removeFakeChannel(channel).length()>0)
 			mob.tell("Unofficial channel closed.");
 
-		ChannelListen ck=new ChannelListen();
+		final ChannelListen ck=new ChannelListen();
 		ck.sender_name=mob.Name();
 		ck.channel=channel;
 		ck.onoff="0";
 		try
 		{
 		ck.send();
-		}catch(Exception e){Log.errOut("IMudClient",e);}
+		}catch(final Exception e){Log.errOut("IMudClient",e);}
 	}
 
 	@Override
@@ -240,13 +240,13 @@ public class IMudClient implements I3Interface
 			mob.tell("You must specify a valid InterMud 3 channel name.");
 			return;
 		}
-		ChannelDelete ck=new ChannelDelete();
+		final ChannelDelete ck=new ChannelDelete();
 		ck.sender_name=mob.Name();
 		ck.channel=channel;
 		try
 		{
 		ck.send();
-		}catch(Exception e){Log.errOut("IMudClient",e);}
+		}catch(final Exception e){Log.errOut("IMudClient",e);}
 	}
 
 	@Override
@@ -278,7 +278,7 @@ public class IMudClient implements I3Interface
 				return;
 			}
 			mob.tell("You tell "+tellName+" '"+message+"'");
-			TellPacket tk=new TellPacket();
+			final TellPacket tk=new TellPacket();
 			tk.sender_name=mob.Name();
 			tk.sender_visible_name=mob.Name();
 			tk.target_mud=mudName;
@@ -289,7 +289,7 @@ public class IMudClient implements I3Interface
 			try
 			{
 			tk.send();
-			}catch(Exception e){Log.errOut("IMudClient",e);}
+			}catch(final Exception e){Log.errOut("IMudClient",e);}
 		}
 		else
 		if(imc2online()&&(imc2.getIMC2Mud(mudName)!=null))
@@ -310,7 +310,7 @@ public class IMudClient implements I3Interface
 	public void destroymob(MOB mob)
 	{
 		if(mob==null) return;
-		Room R=mob.location();
+		final Room R=mob.location();
 		mob.destroy();
 		if(R!=null) R.destroy();
 	}
@@ -332,14 +332,14 @@ public class IMudClient implements I3Interface
 		}
 		if(i3online()&&Intermud.getRemoteChannel(channelName).length()>0)
 		{
-			ChannelPacket ck=new ChannelPacket();
+			final ChannelPacket ck=new ChannelPacket();
 			ck.channel=channelName; // ck will translate it for us
 			ck.sender_name=mob.Name();
 			ck.sender_visible_name=mob.Name();
 			if((message.startsWith(":")||message.startsWith(","))&&(message.trim().length()>1))
 			{
 				String msgstr=message.substring(1);
-				Vector<String> V=CMParms.parse(msgstr);
+				final Vector<String> V=CMParms.parse(msgstr);
 				Social S=CMLib.socials().fetchSocial(V,true,false);
 				if(S==null) S=CMLib.socials().fetchSocial(V,false,false);
 				CMMsg msg=null;
@@ -348,9 +348,9 @@ public class IMudClient implements I3Interface
 					msg=S.makeChannelMsg(mob,0,channelName,V,true);
 					if((msg.target()!=null)&&(msg.target().name().indexOf('@')>=0))
 					{
-						int x=msg.target().name().indexOf('@');
+						final int x=msg.target().name().indexOf('@');
 						String mudName=msg.target().name().substring(x+1);
-						String tellName=msg.target().name().substring(0,x);
+						final String tellName=msg.target().name().substring(0,x);
 						if((mudName==null)||(mudName.length()==0))
 						{
 							mob.tell("You must specify a mud name.");
@@ -407,7 +407,7 @@ public class IMudClient implements I3Interface
 			try
 			{
 				ck.send();
-			}catch(Exception e){Log.errOut("IMudClient",e);}
+			}catch(final Exception e){Log.errOut("IMudClient",e);}
 		}
 		else
 		if(imc2online()&&(imc2.getAnIMC2Channel(channelName)!=null))
@@ -416,10 +416,10 @@ public class IMudClient implements I3Interface
 			if((message.startsWith(":")||message.startsWith(","))&&(message.trim().length()>1))
 			{
 				message=message.substring(1);
-				MOB mob2=CMClass.getFactoryMOB();
+				final MOB mob2=CMClass.getFactoryMOB();
 				mob2.setName(mob.Name()+"@"+imc2.imc_name);
 				mob2.setLocation(CMClass.getLocale("StdRoom"));
-				Vector<String> V=CMParms.parse(message);
+				final Vector<String> V=CMParms.parse(message);
 				Social S=CMLib.socials().fetchSocial(V,true,false);
 				if(S==null) S=CMLib.socials().fetchSocial(V,false,false);
 				CMMsg msg=null;
@@ -428,9 +428,9 @@ public class IMudClient implements I3Interface
 					msg=S.makeChannelMsg(mob,0,channelName,V,true);
 					if((msg.target()!=null)&&(msg.target().name().indexOf('@')>=0))
 					{
-						int x=msg.target().name().indexOf('@');
-						String mudName=msg.target().name().substring(x+1);
-						String tellName=msg.target().name().substring(0,x);
+						final int x=msg.target().name().indexOf('@');
+						final String mudName=msg.target().name().substring(x+1);
+						final String tellName=msg.target().name().substring(0,x);
 						if((mudName==null)||(mudName.length()==0))
 						{
 							mob.tell("You must specify a mud name.");
@@ -462,7 +462,7 @@ public class IMudClient implements I3Interface
 				emote=1;
 				destroymob(mob2);
 			}
-			IMC_CHANNEL c=imc2.getAnIMC2Channel(channelName);
+			final IMC_CHANNEL c=imc2.getAnIMC2Channel(channelName);
 			imc2.imc_send_chat(mob.name(),c.name,message,c.level,emote);
 		}
 		else
@@ -486,13 +486,13 @@ public class IMudClient implements I3Interface
 
 		if(i3online())
 		{
-			LocateQueryPacket ck=new LocateQueryPacket();
+			final LocateQueryPacket ck=new LocateQueryPacket();
 			ck.sender_name=mob.Name();
 			ck.user_name=mobName;
 			try
 			{
 			ck.send();
-			}catch(Exception e){Log.errOut("IMudClient",e);}
+			}catch(final Exception e){Log.errOut("IMudClient",e);}
 		}
 		if(imc2online())
 			imc2.imc_send_whois(mob.Name(),mobName,mob.phyStats().level());
@@ -505,11 +505,11 @@ public class IMudClient implements I3Interface
 		if((!i3online())&&(!imc2online())) return;
 		if(i3online())
 		{
-			PingPacket ck=new PingPacket(I3Server.getMudName());
+			final PingPacket ck=new PingPacket(I3Server.getMudName());
 			try
 			{
 			ck.send();
-			}catch(Exception e){Log.errOut("IMudClient",e);}
+			}catch(final Exception e){Log.errOut("IMudClient",e);}
 		}
 	}
 
@@ -527,14 +527,14 @@ public class IMudClient implements I3Interface
 
 		if(i3online())
 		{
-			FingerRequest ck=new FingerRequest();
+			final FingerRequest ck=new FingerRequest();
 			ck.sender_name=mob.Name();
 			ck.target_name=mobName;
 			ck.target_mud=mudName;
 			try
 			{
 			ck.send();
-			}catch(Exception e){Log.errOut("IMudClient",e);}
+			}catch(final Exception e){Log.errOut("IMudClient",e);}
 		}
 		if(imc2online())
 			imc2.imc_send_whois(mob.Name(),mobName,mob.phyStats().level());
@@ -542,7 +542,7 @@ public class IMudClient implements I3Interface
 
 	public String getMudInfo(I3Mud mudToShow)
 	{
-		StringBuilder buf=new StringBuilder("");
+		final StringBuilder buf=new StringBuilder("");
 		buf.append(CMStrings.padRight("Name",10)+": "+mudToShow.mud_name+"\n\r");
 		buf.append(CMStrings.padRight("Address",10)+": "+mudToShow.address+"\n\r");
 		buf.append(CMStrings.padRight("Port",10)+": "+mudToShow.player_port+"\n\r");
@@ -557,23 +557,23 @@ public class IMudClient implements I3Interface
 
 	public List<I3Mud> mudFinder(String parms)
 	{
-		MudList list=Intermud.getAllMudsList();
+		final MudList list=Intermud.getAllMudsList();
 		if(list==null) return null;
-		Map<String,I3Mud> l=list.getMuds();
-		for(I3Mud m : l.values())
+		final Map<String,I3Mud> l=list.getMuds();
+		for(final I3Mud m : l.values())
 		{
 			if(m.mud_name.equals(parms))
 				return new XVector<I3Mud>(m);
 		}
-		for(I3Mud m : l.values())
+		for(final I3Mud m : l.values())
 		{
 			if(m.mud_name.equalsIgnoreCase(parms))
 				return new XVector<I3Mud>(m);
 		}
 		if(parms.startsWith("*")&&(!parms.endsWith("*")))
 		{
-			List<I3Mud> muds=new XVector<I3Mud>();
-			for(I3Mud m : l.values())
+			final List<I3Mud> muds=new XVector<I3Mud>();
+			for(final I3Mud m : l.values())
 			{
 				if(m.mud_name.toLowerCase().endsWith(parms.toLowerCase()))
 					muds.add(m);
@@ -582,8 +582,8 @@ public class IMudClient implements I3Interface
 		}
 		if(parms.endsWith("*")&&(!parms.startsWith("*")))
 		{
-			List<I3Mud> muds=new XVector<I3Mud>();
-			for(I3Mud m : l.values())
+			final List<I3Mud> muds=new XVector<I3Mud>();
+			for(final I3Mud m : l.values())
 			{
 				if(m.mud_name.toLowerCase().startsWith(parms.toLowerCase()))
 					muds.add(m);
@@ -592,16 +592,16 @@ public class IMudClient implements I3Interface
 		}
 		if(parms.endsWith("*")&&(parms.startsWith("*")))
 		{
-			List<I3Mud> muds=new XVector<I3Mud>();
-			for(I3Mud m : l.values())
+			final List<I3Mud> muds=new XVector<I3Mud>();
+			for(final I3Mud m : l.values())
 			{
 				if(m.mud_name.toLowerCase().indexOf(parms.toLowerCase())>=0)
 					muds.add(m);
 			}
 			return muds;
 		}
-		List<I3Mud> muds=new XVector<I3Mud>();
-		for(I3Mud m : l.values())
+		final List<I3Mud> muds=new XVector<I3Mud>();
+		for(final I3Mud m : l.values())
 		{
 			if((m.state<0)&&(CMLib.english().containsString(m.mud_name,parms)))
 				muds.add(m);
@@ -614,12 +614,12 @@ public class IMudClient implements I3Interface
 	{
 		if((mob==null)||(!i3online())) return;
 		if(mob.isMonster()) return;
-		StringBuffer buf=new StringBuffer("\n\r");
-		List<I3Mud> muds=this.mudFinder(parms);
+		final StringBuffer buf=new StringBuffer("\n\r");
+		final List<I3Mud> muds=this.mudFinder(parms);
 		if(muds.size()==0)
 			buf.append("Not found!");
 		else
-		for(I3Mud mudToShow : muds)
+		for(final I3Mud mudToShow : muds)
 		{
 			buf.append(CMStrings.padRight("Name",10)+": "+mudToShow.mud_name+"\n\r");
 			buf.append(CMStrings.padRight("Address",10)+": "+mudToShow.address+"\n\r");
@@ -639,15 +639,15 @@ public class IMudClient implements I3Interface
 	{
 		if((mob==null)||(!imc2online())) return;
 		if(mob.isMonster()) return;
-		Hashtable l=imc2.query_muds();
-		Vector V=new Vector();
-		for(Enumeration e=l.elements();e.hasMoreElements();)
+		final Hashtable l=imc2.query_muds();
+		final Vector V=new Vector();
+		for(final Enumeration e=l.elements();e.hasMoreElements();)
 		{
-			REMOTEINFO m=(REMOTEINFO)e.nextElement();
+			final REMOTEINFO m=(REMOTEINFO)e.nextElement();
 			boolean done=false;
 			for(int v=0;v<V.size();v++)
 			{
-				REMOTEINFO m2=(REMOTEINFO)V.elementAt(v);
+				final REMOTEINFO m2=(REMOTEINFO)V.elementAt(v);
 				if(m2.name.toUpperCase().compareTo(m.name.toUpperCase())>0)
 				{
 					V.insertElementAt(m,v);
@@ -657,10 +657,10 @@ public class IMudClient implements I3Interface
 			}
 			if(!done) V.addElement(m);
 		}
-		StringBuffer buf=new StringBuffer("\n\rIMC2 Mud List:\n\r");
+		final StringBuffer buf=new StringBuffer("\n\rIMC2 Mud List:\n\r");
 		for(int v=0;v<V.size();v++)
 		{
-			REMOTEINFO m=(REMOTEINFO)V.elementAt(v);
+			final REMOTEINFO m=(REMOTEINFO)V.elementAt(v);
 			buf.append("["+CMStrings.padRight(m.name,15)+"]["+CMStrings.padRight(m.version,30)+"] "+CMStrings.padRight(m.network,13)+" ("+CMStrings.padRight(m.hub,10)+")\n\r");
 		}
 		mob.session().wraplessPrintln(buf.toString());
@@ -671,19 +671,19 @@ public class IMudClient implements I3Interface
 	{
 		if((mob==null)||(!i3online())) return;
 		if(mob.isMonster()) return;
-		StringBuffer buf=new StringBuffer("\n\rI3 Mud List:\n\r");
-		MudList list=Intermud.getAllMudsList();
-		Vector V=new Vector();
+		final StringBuffer buf=new StringBuffer("\n\rI3 Mud List:\n\r");
+		final MudList list=Intermud.getAllMudsList();
+		final Vector V=new Vector();
 		if(list!=null)
 		{
-			for(I3Mud m : list.getMuds().values())
+			for(final I3Mud m : list.getMuds().values())
 			{
 				if(m.state<0)
 				{
 					boolean done=false;
 					for(int v=0;v<V.size();v++)
 					{
-						I3Mud m2=(I3Mud)V.elementAt(v);
+						final I3Mud m2=(I3Mud)V.elementAt(v);
 						if(m2.mud_name.toUpperCase().compareTo(m.mud_name.toUpperCase())>0)
 						{
 							V.insertElementAt(m,v);
@@ -696,7 +696,7 @@ public class IMudClient implements I3Interface
 			}
 			for(int v=0;v<V.size();v++)
 			{
-				I3Mud m=(I3Mud)V.elementAt(v);
+				final I3Mud m=(I3Mud)V.elementAt(v);
 				buf.append("["+CMStrings.padRight(m.mud_name,20)+"]["+CMStrings.padRight(m.base_mudlib,20)+"] "+m.address+" ("+m.player_port+")\n\r");
 			}
 		}
@@ -708,14 +708,14 @@ public class IMudClient implements I3Interface
 	{
 		if((mob==null)||(!i3online())) return;
 		if(mob.isMonster()) return;
-		StringBuffer buf=new StringBuffer("\n\rI3 Channels List:\n\r");
-		ChannelList list=Intermud.getAllChannelList();
+		final StringBuffer buf=new StringBuffer("\n\rI3 Channels List:\n\r");
+		final ChannelList list=Intermud.getAllChannelList();
 		if(list!=null)
 		{
-			Hashtable l=list.getChannels();
-			for(Enumeration e=l.elements();e.hasMoreElements();)
+			final Hashtable l=list.getChannels();
+			for(final Enumeration e=l.elements();e.hasMoreElements();)
 			{
-				Channel c=(Channel)e.nextElement();
+				final Channel c=(Channel)e.nextElement();
 				if(c.type==0)
 					buf.append("["+CMStrings.padRight(c.channel,20)+"] "+c.owner+"\n\r");
 			}
@@ -728,14 +728,14 @@ public class IMudClient implements I3Interface
 	{
 		if((mob==null)||(!imc2online())) return;
 		if(mob.isMonster()) return;
-		StringBuffer buf=new StringBuffer("\n\rIMC2 Channels List:\n\r");
-		Hashtable channels=imc2.query_channels();
+		final StringBuffer buf=new StringBuffer("\n\rIMC2 Channels List:\n\r");
+		final Hashtable channels=imc2.query_channels();
 		buf.append(CMStrings.padRight("Name", 22)+CMStrings.padRight("Policy",25)+CMStrings.padRight("Owner",20)+"\n\r");
-		Enumeration e = channels.keys();
+		final Enumeration e = channels.keys();
 		while (e.hasMoreElements())
 		{
-			String key = (String) e.nextElement();
-			IMC_CHANNEL r = (IMC_CHANNEL) channels.get(key);
+			final String key = (String) e.nextElement();
+			final IMC_CHANNEL r = (IMC_CHANNEL) channels.get(key);
 			if (r != null)
 			{
 				String policy = "final public";
@@ -760,7 +760,7 @@ public class IMudClient implements I3Interface
 	public boolean isIMC2channel(String channelName)
 	{
 		if(!imc2online()) return false;
-		Object remote=imc2.getAnIMC2Channel(channelName);
+		final Object remote=imc2.getAnIMC2Channel(channelName);
 		if(remote==null)
 			return false;
 		return true;
@@ -770,7 +770,7 @@ public class IMudClient implements I3Interface
 	public boolean isI3channel(String channelName)
 	{
 		if(!i3online()) return false;
-		String remote=Intermud.getRemoteChannel(channelName);
+		final String remote=Intermud.getRemoteChannel(channelName);
 		if(remote.length()==0) return false;
 		return true;
 	}

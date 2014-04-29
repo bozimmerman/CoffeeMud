@@ -40,17 +40,17 @@ public class ComponentPieceNext extends StdWebMacro
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
-		java.util.Map<String,String> parms=parseParms(parm);
-		String compID=httpReq.getUrlParameter("COMPONENT");
+		final java.util.Map<String,String> parms=parseParms(parm);
+		final String compID=httpReq.getUrlParameter("COMPONENT");
 		if(compID==null) return " @break@";
-		String fixedCompID=compID.replace(' ','_').toUpperCase();
+		final String fixedCompID=compID.replace(' ','_').toUpperCase();
 		if(!httpReq.isUrlParameter(fixedCompID+"_PIECE_CONNECTOR_1"))
 		{
-			List<AbilityComponent> set=CMLib.ableMapper().getAbilityComponentDVector(compID);
+			final List<AbilityComponent> set=CMLib.ableMapper().getAbilityComponentDVector(compID);
 			if(set!=null)
 			{
 				int index=1;
-				for(AbilityComponent A : set)
+				for(final AbilityComponent A : set)
 				{
 					httpReq.addFakeUrlParameter(fixedCompID+"_PIECE_MASK_"+index, A.getMaskStr());
 					if(A.getType()==AbilityComponent.CompType.STRING)
@@ -82,7 +82,7 @@ public class ComponentPieceNext extends StdWebMacro
 			int newIndex=1;
 			while(httpReq.isUrlParameter(fixedCompID+"_PIECE_CONNECTOR_"+oldIndex))
 			{
-				String type=httpReq.getUrlParameter(fixedCompID+"_PIECE_CONNECTOR_"+oldIndex);
+				final String type=httpReq.getUrlParameter(fixedCompID+"_PIECE_CONNECTOR_"+oldIndex);
 				if((type.length()>0)&&(!type.equalsIgnoreCase("DELETE")))
 				{
 					if(newIndex != oldIndex)
@@ -107,7 +107,7 @@ public class ComponentPieceNext extends StdWebMacro
 			httpReq.removeUrlParameter(fixedCompID+"_PIECE_TYPE_"+newIndex);
 			httpReq.removeUrlParameter(fixedCompID+"_PIECE_CONSUMED_"+newIndex);
 		}
-		String last=httpReq.getUrlParameter("COMPONENTPIECE");
+		final String last=httpReq.getUrlParameter("COMPONENTPIECE");
 		if(parms.containsKey("RESET"))
 		{
 			if(last!=null) httpReq.removeUrlParameter("COMPONENTPIECE");
@@ -116,7 +116,7 @@ public class ComponentPieceNext extends StdWebMacro
 		String lastID="";
 		for(int index=1;httpReq.isUrlParameter(fixedCompID+"_PIECE_CONNECTOR_"+index);index++)
 		{
-			String id=Integer.toString(index);
+			final String id=Integer.toString(index);
 			if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!id.equalsIgnoreCase(lastID))))
 			{
 				httpReq.addFakeUrlParameter("COMPONENTPIECE",id);

@@ -65,7 +65,7 @@ public class TemporaryImmunity extends StdAbility
 			makeLongLasting();
 			for(int s=set.size()-1;s>=0;s--)
 			{
-				Long L=set.elementAt(s).second;
+				final Long L=set.elementAt(s).second;
 				if((System.currentTimeMillis()-L.longValue())>IMMUNITY_TIME)
 					set.removeElementAt(s);
 			}
@@ -79,7 +79,7 @@ public class TemporaryImmunity extends StdAbility
 	public String text()
 	{
 		if(set.size()==0) return "";
-		StringBuffer str=new StringBuffer("");
+		final StringBuffer str=new StringBuffer("");
 		for(int s=0;s<set.size();s++)
 			str.append(set.elementAt(s).first+"/"+set.elementAt(s).second.longValue()+";");
 		return str.toString();
@@ -99,11 +99,11 @@ public class TemporaryImmunity extends StdAbility
 		else
 		{
 			set.clear();
-			List<String> V=CMParms.parseSemicolons(str,true);
+			final List<String> V=CMParms.parseSemicolons(str,true);
 			for(int v=0;v<V.size();v++)
 			{
-				String s=V.get(v);
-				int x=s.indexOf('/');
+				final String s=V.get(v);
+				final int x=s.indexOf('/');
 				if(x>0)
 					set.addElement(s.substring(0,x),Long.valueOf(CMath.s_long(s.substring(x+1))));
 			}
@@ -116,7 +116,7 @@ public class TemporaryImmunity extends StdAbility
 		if(!(affected instanceof MOB))
 			return true;
 
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		if((msg.amITarget(mob))
 		&&(!mob.amDead())
 		&&(msg.tool() instanceof Ability)

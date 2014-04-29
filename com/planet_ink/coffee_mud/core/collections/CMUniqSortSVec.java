@@ -99,7 +99,7 @@ public class CMUniqSortSVec<T extends CMObject> extends SVector<T> implements Se
 	@Override
 	public boolean containsAll(Collection<?> arg0)
 	{
-		for(Object o : arg0)
+		for(final Object o : arg0)
 			if(!contains(o))
 				return false;
 		return true;
@@ -122,8 +122,8 @@ public class CMUniqSortSVec<T extends CMObject> extends SVector<T> implements Se
 		{
 			while(start<=end)
 			{
-				int mid=(end+start)/2;
-				int comp=compareTo(super.get(mid),(CMObject)arg0);
+				final int mid=(end+start)/2;
+				final int comp=compareTo(super.get(mid),(CMObject)arg0);
 				if(comp==0)
 					return mid;
 				else
@@ -139,8 +139,8 @@ public class CMUniqSortSVec<T extends CMObject> extends SVector<T> implements Se
 		{
 			while(start<=end)
 			{
-				int mid=(end+start)/2;
-				int comp=compareTo(super.get(mid),(String)arg0);
+				final int mid=(end+start)/2;
+				final int comp=compareTo(super.get(mid),(String)arg0);
 				if(comp==0)
 					return mid;
 				else
@@ -163,8 +163,8 @@ public class CMUniqSortSVec<T extends CMObject> extends SVector<T> implements Se
 		int end=size()-1;
 		while(start<=end)
 		{
-			int mid=(end+start)/2;
-			int comp=compareTo(super.get(mid),arg0);
+			final int mid=(end+start)/2;
+			final int comp=compareTo(super.get(mid),arg0);
 			if(comp==0)
 				return super.get(mid);
 			else
@@ -185,8 +185,8 @@ public class CMUniqSortSVec<T extends CMObject> extends SVector<T> implements Se
 		int end=size()-1;
 		while(start<=end)
 		{
-			int mid=(end+start)/2;
-			int comp=compareTo(super.get(mid),arg0);
+			final int mid=(end+start)/2;
+			final int comp=compareTo(super.get(mid),arg0);
 			if(comp==0)
 				return super.get(mid);
 			else

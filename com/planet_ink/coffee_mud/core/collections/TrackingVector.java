@@ -75,13 +75,13 @@ public class TrackingVector<T> extends Vector<T>
 		{
 			if(tracker.containsKey(e))
 			{
-				List<WeakReference<TrackingVector<T>>> l=tracker.get(e);
+				final List<WeakReference<TrackingVector<T>>> l=tracker.get(e);
 				if(!l.contains(myRef))
 					l.add(myRef);
 			}
 			else
 			{
-				List<WeakReference<TrackingVector<T>>> l=new Vector<WeakReference<TrackingVector<T>>>();
+				final List<WeakReference<TrackingVector<T>>> l=new Vector<WeakReference<TrackingVector<T>>>();
 				l.add(myRef);
 				tracker.put(e, l);
 			}
@@ -94,7 +94,7 @@ public class TrackingVector<T> extends Vector<T>
 		{
 			if(tracker.containsKey(e))
 			{
-				List<WeakReference<TrackingVector<T>>> l=tracker.get(e);
+				final List<WeakReference<TrackingVector<T>>> l=tracker.get(e);
 				l.remove(myRef);
 			}
 		}
@@ -106,8 +106,8 @@ public class TrackingVector<T> extends Vector<T>
 		{
 			if(tracker.containsKey(e))
 			{
-				List<WeakReference<TrackingVector<T>>> l=tracker.get(e);
-				for(WeakReference<TrackingVector<T>> ref : l)
+				final List<WeakReference<TrackingVector<T>>> l=tracker.get(e);
+				for(final WeakReference<TrackingVector<T>> ref : l)
 					if(ref.get()!=null)
 						ref.get().removeOnlyFromMe(e);
 				tracker.remove(e);
@@ -141,7 +141,7 @@ public class TrackingVector<T> extends Vector<T>
 	@Override
 	public synchronized boolean addAll(Collection<? extends T> arg0)
 	{
-		for(T o : arg0)
+		for(final T o : arg0)
 			addTrackedEntry(o);
 		return super.addAll(arg0);
 	}
@@ -149,7 +149,7 @@ public class TrackingVector<T> extends Vector<T>
 	@Override
 	public synchronized boolean addAll(int arg0, Collection<? extends T> arg1)
 	{
-		for(T o : arg1)
+		for(final T o : arg1)
 			addTrackedEntry(o);
 		return super.addAll(arg0, arg1);
 	}
@@ -157,7 +157,7 @@ public class TrackingVector<T> extends Vector<T>
 	@Override
 	public void clear()
 	{
-		for(T e : this)
+		for(final T e : this)
 			removeTrackedEntry(e);
 		super.clear();
 	}
@@ -177,7 +177,7 @@ public class TrackingVector<T> extends Vector<T>
 	@SuppressWarnings("unchecked")
 	public boolean removeOnlyFromMe(Object arg0)
 	{
-		boolean success=super.remove(arg0);
+		final boolean success=super.remove(arg0);
 		if((trackBackRef!=null)&&(trackBackRef.get()!=null))
 			trackBackRef.get().removed((T)arg0);
 		return success;
@@ -186,7 +186,7 @@ public class TrackingVector<T> extends Vector<T>
 	@Override
 	public synchronized T remove(int arg0)
 	{
-		T x=super.remove(arg0);
+		final T x=super.remove(arg0);
 		if(x!=null)
 		{
 			removeTrackedEntry(x);
@@ -199,7 +199,7 @@ public class TrackingVector<T> extends Vector<T>
 	@Override
 	public synchronized boolean removeAll(Collection<?> arg0)
 	{
-		for(Object e : arg0)
+		for(final Object e : arg0)
 			removeTrackedEntry(e);
 		return super.removeAll(arg0);
 	}

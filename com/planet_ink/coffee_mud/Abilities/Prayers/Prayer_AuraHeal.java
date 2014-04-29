@@ -59,7 +59,7 @@ public class Prayer_AuraHeal extends Prayer
 		// undo the affects of this spell
 		if((affected==null)||(!(affected instanceof Room)))
 			return;
-		Room R=(Room)affected;
+		final Room R=(Room)affected;
 
 		super.unInvoke();
 
@@ -82,25 +82,25 @@ public class Prayer_AuraHeal extends Prayer
 			H=new HashSet();
 			invoker().getGroupMembers(H);
 		}
-		Room R=(Room)affected;
+		final Room R=(Room)affected;
 		for(int i=0;i<R.numInhabitants();i++)
 		{
-			MOB M=R.fetchInhabitant(i);
+			final MOB M=R.fetchInhabitant(i);
 			if((M!=null)
 			   &&(M.curState().getHitPoints()<M.maxState().getHitPoints())
 			   &&((H==null)
 				||(M.getVictim()==null)
 				||(!H.contains(M.getVictim()))))
 			{
-				int oldHP=M.curState().getHitPoints();
+				final int oldHP=M.curState().getHitPoints();
 				if(invoker()!=null)
 				{
-					int healing=CMLib.dice().roll(2,adjustedLevel(invoker(),0),4);
+					final int healing=CMLib.dice().roll(2,adjustedLevel(invoker(),0),4);
 					CMLib.combat().postHealing(invoker(),M,this,CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,healing,null);
 				}
 				else
 				{
-					int healing=CMLib.dice().roll(2,CMLib.ableMapper().lowestQualifyingLevel(ID()),4);
+					final int healing=CMLib.dice().roll(2,CMLib.ableMapper().lowestQualifyingLevel(ID()),4);
 					CMLib.combat().postHealing(M,M,this,CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,healing,null);
 				}
 				if(M.curState().getHitPoints()>oldHP)
@@ -133,7 +133,7 @@ public class Prayer_AuraHeal extends Prayer
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		Room target=mob.location();
+		final Room target=mob.location();
 		if(target==null) return false;
 		if(target.fetchEffect(ID())!=null)
 		{
@@ -149,7 +149,7 @@ public class Prayer_AuraHeal extends Prayer
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
@@ -157,7 +157,7 @@ public class Prayer_AuraHeal extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> "+prayWord(mob)+" for all to feel better.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> "+prayWord(mob)+" for all to feel better.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

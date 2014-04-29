@@ -80,7 +80,7 @@ public class Falling extends StdAbility
 		if((fromHere==null)||(direction<0)||(direction>=Directions.NUM_DIRECTIONS()))
 			return false;
 
-		Room toHere=fromHere.getRoomInDir(direction);
+		final Room toHere=fromHere.getRoomInDir(direction);
 		if((toHere==null)
 		||(fromHere.getExitInDir(direction)==null)
 		||(!fromHere.getExitInDir(direction).isOpen()))
@@ -144,7 +144,7 @@ public class Falling extends StdAbility
 		}
 		if(affected instanceof MOB)
 		{
-			MOB mob=(MOB)affected;
+			final MOB mob=(MOB)affected;
 			if(mob==null) return false;
 			if(mob.location()==null) return false;
 
@@ -166,7 +166,7 @@ public class Falling extends StdAbility
 				else
 				{
 					mob.tell("\n\r\n\rYOU ARE FALLING "+addStr.toUpperCase()+"!!\n\r\n\r");
-					int damage = CMLib.dice().roll(1,(int)Math.round(CMath.mul(CMath.mul(mob.maxState().getHitPoints(),0.1),CMath.div(mob.baseWeight(),150.0))),0);
+					final int damage = CMLib.dice().roll(1,(int)Math.round(CMath.mul(CMath.mul(mob.maxState().getHitPoints(),0.1),CMath.div(mob.baseWeight(),150.0))),0);
 					damageToTake=reversed()?damage:(damageToTake+damage);
 				}
 				temporarilyDisable=true;
@@ -180,7 +180,7 @@ public class Falling extends StdAbility
 		else
 		if(affected instanceof Item)
 		{
-			Item item=(Item)affected;
+			final Item item=(Item)affected;
 			if((room==null)
 			&&(item.owner()!=null)
 			&&(item.owner() instanceof Room))
@@ -202,7 +202,7 @@ public class Falling extends StdAbility
 				if((--fallTickDown)>0)
 					return true;
 			}
-			Room nextRoom=room.getRoomInDir(direction);
+			final Room nextRoom=room.getRoomInDir(direction);
 			if(canFallFrom(room,direction))
 			{
 				room.show(invoker,null,item,CMMsg.MSG_OK_ACTION,"<O-NAME> falls "+addStr+".");
@@ -228,7 +228,7 @@ public class Falling extends StdAbility
 
 		if(temporarilyDisable)
 			return true;
-		MOB mob=msg.source();
+		final MOB mob=msg.source();
 		if((affected!=null)&&(affected instanceof MOB))
 			if(msg.amISource((MOB)affected))
 			{
@@ -287,12 +287,12 @@ public class Falling extends StdAbility
 	public boolean invoke(MOB mob, Vector commands, Physical target, boolean auto, int asLevel)
 	{
 		if(!auto) return false;
-		Physical P=target;
+		final Physical P=target;
 		if(P==null) return false;
 		if((P instanceof Item)&&(room==null)) return false;
 		if(P.fetchEffect("Falling")==null)
 		{
-			Falling F=new Falling();
+			final Falling F=new Falling();
 			F.setProficiency(proficiency());
 			F.invoker=null;
 			if(P instanceof MOB)

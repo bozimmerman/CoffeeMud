@@ -36,7 +36,7 @@ public class NeedleDoor extends StdClosedDoorway
 	public NeedleDoor()
 	{
 		super();
-		Trap t=(Trap)CMClass.getAbility("Trap_OpenNeedle");
+		final Trap t=(Trap)CMClass.getAbility("Trap_OpenNeedle");
 		if(t!=null) CMLib.utensils().setTrapped(this,t,true);
 	}
 }

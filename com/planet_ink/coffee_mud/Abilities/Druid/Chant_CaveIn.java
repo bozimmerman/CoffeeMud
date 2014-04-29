@@ -60,7 +60,7 @@ public class Chant_CaveIn extends Chant
 		if((affected instanceof MOB)
 		&&(msg.amISource((MOB)affected)))
 		{
-			MOB mob=(MOB)affected;
+			final MOB mob=(MOB)affected;
 			if(msg.sourceMinor()==CMMsg.TYP_STAND)
 				return false;
 			if((!msg.sourceMajor(CMMsg.MASK_ALWAYS))
@@ -111,7 +111,7 @@ public class Chant_CaveIn extends Chant
 		else
 		if((commands.size()>0)&&(givenTarget==null))
 		{
-			int dir=Directions.getGoodDirectionCode(CMParms.combine(commands,0));
+			final int dir=Directions.getGoodDirectionCode(CMParms.combine(commands,0));
 			if((dir>=0)&&(dir!=Directions.UP)&&(mob.location().getExitInDir(dir)!=null))
 				target=mob.location().getExitInDir(dir);
 		}
@@ -140,7 +140,7 @@ public class Chant_CaveIn extends Chant
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto)|CMMsg.MASK_MALICIOUS,auto?"":"^S<S-NAME> chant(s) at <T-NAMESELF>!^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto)|CMMsg.MASK_MALICIOUS,auto?"":"^S<S-NAME> chant(s) at <T-NAMESELF>!^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -151,7 +151,7 @@ public class Chant_CaveIn extends Chant
 				if(target instanceof MOB)
 				{
 					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,"A cave-in drops rocks on <T-NAME>!");
-					int maxDie =  (adjustedLevel( mob, asLevel )+(2*super.getX1Level(mob))) / 2;
+					final int maxDie =  (adjustedLevel( mob, asLevel )+(2*super.getX1Level(mob))) / 2;
 					int damage = CMLib.dice().roll(maxDie,3,maxDie);
 					if(msg.value()>0)
 						damage = (int)Math.round(CMath.div(damage,1.5));

@@ -66,11 +66,11 @@ public class Prop_AstralSpirit extends Property
 
 	public void peaceAt(MOB mob)
 	{
-		Room room=mob.location();
+		final Room room=mob.location();
 		if(room==null) return;
 		for(int m=0;m<room.numInhabitants();m++)
 		{
-			MOB inhab=room.fetchInhabitant(m);
+			final MOB inhab=room.fetchInhabitant(m);
 			if((inhab!=null)&&(inhab.getVictim()==mob))
 				inhab.setVictim(null);
 		}
@@ -80,7 +80,7 @@ public class Prop_AstralSpirit extends Property
 	{
 		if(!(affected instanceof MOB))
 			return true;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		if((msg.amISource(mob))&&(!msg.sourceMajor(CMMsg.MASK_ALWAYS)))
 		{
@@ -97,7 +97,7 @@ public class Prop_AstralSpirit extends Property
 			else
 			if((msg.targetMinor()==CMMsg.TYP_SIT)&&(msg.target() instanceof DeadBody))
 			{
-				Vector<String> V=CMParms.parse(text().toUpperCase());
+				final Vector<String> V=CMParms.parse(text().toUpperCase());
 				if(!V.contains("SELF-RES"))
 				{
 					mob.tell("You lack that power");

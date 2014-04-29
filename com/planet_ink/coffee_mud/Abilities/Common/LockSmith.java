@@ -57,7 +57,7 @@ public class LockSmith extends CraftingSkill
 		{
 			if((affected!=null)&&(affected instanceof MOB))
 			{
-				MOB mob=(MOB)affected;
+				final MOB mob=(MOB)affected;
 				if((buildingI!=null)&&(!aborted))
 				{
 					if(messedUp)
@@ -74,7 +74,7 @@ public class LockSmith extends CraftingSkill
 
 	public Item getBuilding(Environmental target)
 	{
-		Item newbuilding=CMClass.getItem("GenKey");
+		final Item newbuilding=CMClass.getItem("GenKey");
 		if((workingOn instanceof Exit)
 		&&((Exit)workingOn).hasALock()
 		&&(((Exit)workingOn).keyName().length()>0))
@@ -92,7 +92,7 @@ public class LockSmith extends CraftingSkill
 	{
 		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Tickable.TICKID_MOB))
 		{
-			MOB mob=(MOB)affected;
+			final MOB mob=(MOB)affected;
 			if((workingOn instanceof Container) && (mob.location()!=CMLib.map().roomLocation(workingOn)))
 			{
 				commonTell(mob,"You've stopped "+verb+".");
@@ -110,7 +110,7 @@ public class LockSmith extends CraftingSkill
 						if((delock)||(!((Exit)workingOn).hasALock()))
 						{
 							int dir=-1;
-							for(int d : Directions.CODES())
+							for(final int d : Directions.CODES())
 								if(mob.location().getExitInDir(d)==workingOn)
 								{
 									dir=d;
@@ -127,8 +127,8 @@ public class LockSmith extends CraftingSkill
 							}
 							else
 							{
-								Exit exit2=mob.location().getPairedExit(dir);
-								Room room2=mob.location().getRoomInDir(dir);
+								final Exit exit2=mob.location().getPairedExit(dir);
+								final Room room2=mob.location().getRoomInDir(dir);
 								((Exit)workingOn).basePhyStats().setLevel(xlevel(mob));
 								((Exit)workingOn).recoverPhyStats();
 								((Exit)workingOn).setDoorsNLocks(true,false,true,!delock,!delock,!delock);
@@ -218,8 +218,8 @@ public class LockSmith extends CraftingSkill
 			ldelock=true;
 			commands.removeElementAt(0);
 		}
-		String recipeName=CMParms.combine(commands,0);
-		int dir=Directions.getGoodDirectionCode(recipeName);
+		final String recipeName=CMParms.combine(commands,0);
+		final int dir=Directions.getGoodDirectionCode(recipeName);
 		if(dir<0)
 			workingOn=mob.location().fetchFromMOBRoomFavorsItems(mob,null,recipeName,Wearable.FILTER_UNWORNONLY);
 		else
@@ -250,7 +250,7 @@ public class LockSmith extends CraftingSkill
 					woodRequired=5;
 			}
 
-			Room otherRoom=(dir>=0)?mob.location().getRoomInDir(dir):null;
+			final Room otherRoom=(dir>=0)?mob.location().getRoomInDir(dir):null;
 			if((!CMLib.law().doesOwnThisProperty(mob,mob.location()))
 			&&((otherRoom==null)
 				||(!CMLib.law().doesOwnThisProperty(mob,otherRoom))))
@@ -304,8 +304,8 @@ public class LockSmith extends CraftingSkill
 		}
 		else
 		{
-			int[] pm={RawMaterial.MATERIAL_METAL,RawMaterial.MATERIAL_MITHRIL};
-			int[][] data=fetchFoundResourceData(mob,
+			final int[] pm={RawMaterial.MATERIAL_METAL,RawMaterial.MATERIAL_MITHRIL};
+			final int[][] data=fetchFoundResourceData(mob,
 												woodRequired,"metal",pm,
 												0,null,null,
 												false,
@@ -349,7 +349,7 @@ public class LockSmith extends CraftingSkill
 			proficiencyAddition=workingOn.phyStats().level()-xlevel(mob);
 		messedUp=!proficiencyCheck(mob,proficiencyAddition*5,auto);
 
-		CMMsg msg=CMClass.getMsg(mob,null,this,getActivityMessageType(),startStr);
+		final CMMsg msg=CMClass.getMsg(mob,null,this,getActivityMessageType(),startStr);
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

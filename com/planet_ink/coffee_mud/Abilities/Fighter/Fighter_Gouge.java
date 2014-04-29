@@ -63,7 +63,7 @@ public class Fighter_Gouge extends MonkSkill
 		if(!(affected instanceof MOB))
 			return true;
 
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		if((doneTicking)&&(msg.amISource(mob)))
 			unInvoke();
@@ -75,7 +75,7 @@ public class Fighter_Gouge extends MonkSkill
 	{
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		super.unInvoke();
 
@@ -109,7 +109,7 @@ public class Fighter_Gouge extends MonkSkill
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		MOB target=this.getTarget(mob,commands,givenTarget);
+		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
 		if((!auto)
@@ -136,11 +136,11 @@ public class Fighter_Gouge extends MonkSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
-		boolean hit=(auto)||CMLib.combat().rollToHit(mob,target);
+		final boolean success=proficiencyCheck(mob,0,auto);
+		final boolean hit=(auto)||CMLib.combat().rollToHit(mob,target);
 		if((success)&&(hit))
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),auto?"":"^F^<FIGHT^><S-NAME> gouge(s) at <T-YOUPOSS> eyes!^</FIGHT^>^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),auto?"":"^F^<FIGHT^><S-NAME> gouge(s) at <T-YOUPOSS> eyes!^</FIGHT^>^?");
 			CMLib.color().fixSourceFightColor(msg);
 			if(mob.location().okMessage(mob,msg))
 			{
@@ -149,7 +149,7 @@ public class Fighter_Gouge extends MonkSkill
 				maliciousAffect(mob,target,asLevel,5,-1);
 				Amputator A=(Amputator)target.fetchEffect("Amputation");
 				if(A==null) A=(Amputator)CMClass.getAbility("Amputation");
-				List<String> remainingLimbList=A.remainingLimbNameSet(target);
+				final List<String> remainingLimbList=A.remainingLimbNameSet(target);
 				String gone=null;
 				for(int i=0;i<remainingLimbList.size();i++)
 					if(remainingLimbList.get(i).toUpperCase().endsWith("EYE"))
@@ -163,7 +163,7 @@ public class Fighter_Gouge extends MonkSkill
 					if(A2!=null)
 					{
 						A2.setMiscText(mob.Name()+"/"+gone);
-						CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSG_DAMAGE,"<DAMAGE> <T-NAME>.");
+						final CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSG_DAMAGE,"<DAMAGE> <T-NAME>.");
 						msg2.setValue(target.maxState().getHitPoints()/(20-getXLEVELLevel(mob)));
 						if(!A2.invoke(mob,new XVector(msg2),target,true,0))
 						{

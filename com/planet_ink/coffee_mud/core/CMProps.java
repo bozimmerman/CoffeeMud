@@ -371,7 +371,7 @@ public class CMProps extends Properties
 			this.load(in);
 			loaded=true;
 		}
-		catch(IOException e)
+		catch(final IOException e)
 		{
 			loaded=false;
 		}
@@ -392,7 +392,7 @@ public class CMProps extends Properties
 			else
 				loaded=false;
 		}
-		catch(IOException e)
+		catch(final IOException e)
 		{
 			loaded=false;
 		}
@@ -405,7 +405,7 @@ public class CMProps extends Properties
 			this.load(new ByteArrayInputStream(new CMFile(filename,null).raw()));
 			loaded=true;
 		}
-		catch(IOException e)
+		catch(final IOException e)
 		{
 			loaded=false;
 		}
@@ -423,7 +423,7 @@ public class CMProps extends Properties
 			this.load(new ByteArrayInputStream(new CMFile(filename,null).raw()));
 			loaded=true;
 		}
-		catch(IOException e)
+		catch(final IOException e)
 		{
 			loaded=false;
 		}
@@ -431,7 +431,7 @@ public class CMProps extends Properties
 
 	public static final CMProps loadPropPage(final String iniFile)
 	{
-		CMProps page=new CMProps(iniFile);
+		final CMProps page=new CMProps(iniFile);
 		if(!page.loaded)
 			return null;
 		return page;
@@ -506,12 +506,12 @@ public class CMProps extends Properties
 	{
 		final DVector strBag = new DVector(2);
 		tagStartersToGet = tagStartersToGet.toUpperCase();
-		for(Enumeration<?> e=propertyNames(); e.hasMoreElements();)
+		for(final Enumeration<?> e=propertyNames(); e.hasMoreElements();)
 		{
 			final String propName = (String)e.nextElement();
 			if(propName.toUpperCase().startsWith(tagStartersToGet))
 			{
-				String subPropName = propName.substring(tagStartersToGet.length()).toUpperCase();
+				final String subPropName = propName.substring(tagStartersToGet.length()).toUpperCase();
 				String thisTag=this.getProperty(propName);
 				if((thisTag==null)&&(props[MudHost.MAIN_HOST]!=null)&&(props[MudHost.MAIN_HOST]!=this))
 					thisTag = props[MudHost.MAIN_HOST].getStr(propName);
@@ -554,7 +554,7 @@ public class CMProps extends Properties
 		{
 			return Double.parseDouble(getStr(tagToGet));
 		}
-		catch(Exception e)
+		catch(final Exception e)
 		{
 			return 0.0;
 		}
@@ -572,7 +572,7 @@ public class CMProps extends Properties
 		{
 			return Integer.parseInt(getStr(tagToGet));
 		}
-		catch(Exception t)
+		catch(final Exception t)
 		{
 			return 0;
 		}
@@ -590,7 +590,7 @@ public class CMProps extends Properties
 		{
 			return Long.parseLong(getStr(tagToGet));
 		}
-		catch(Exception t)
+		catch(final Exception t)
 		{
 			return 0;
 		}
@@ -657,25 +657,25 @@ public class CMProps extends Properties
 	public static final String getVar(final Str varNum)
 	{
 		try { return p().sysVars[varNum.ordinal()];}
-		catch(Exception t) { return ""; }
+		catch(final Exception t) { return ""; }
 	}
 
 	public static final int getIntVar(final Int varNum)
 	{
 		try { return p().sysInts[varNum.ordinal()].intValue(); }
-		catch(Exception t) { return -1; }
+		catch(final Exception t) { return -1; }
 	}
 
 	public static final String[] getListVar(final StrList varType)
 	{
 		try { return p().sysLists[varType.ordinal()]; }
-		catch(Exception t) { return new String[0]; }
+		catch(final Exception t) { return new String[0]; }
 	}
 
 	public static final boolean getBoolVar(final Bool varNum)
 	{
 		try { return p().sysBools[varNum.ordinal()].booleanValue(); }
-		catch(Exception t) { return false; }
+		catch(final Exception t) { return false; }
 	}
 
 	public static final void setBoolVar(final Bool varNum, final boolean val)
@@ -687,7 +687,7 @@ public class CMProps extends Properties
 	public static final void setBoolAllVar(final Bool varNum, final boolean val)
 	{
 		if(varNum==null) return;
-		for(CMProps p : CMProps.props)
+		for(final CMProps p : CMProps.props)
 			if(p!=null)
 				p.sysBools[varNum.ordinal()]=Boolean.valueOf(val);
 	}
@@ -723,10 +723,10 @@ public class CMProps extends Properties
 	{
 		if(varType==null) return ;
 		if(var==null) return;
-		CMProps prop=p();
+		final CMProps prop=p();
 		if(prop.sysLists[varType.ordinal()]==null)
 			setListVar(varType, new String[0]);
-		String[] list=prop.sysLists[varType.ordinal()];
+		final String[] list=prop.sysLists[varType.ordinal()];
 		prop.sysLists[varType.ordinal()]=Arrays.copyOf(list, list.length+1);
 		list[list.length-1]=var;
 	}
@@ -763,9 +763,9 @@ public class CMProps extends Properties
 
 	public static final void setUpAllLowVar(final Str varNum, final String val)
 	{
-		for(int p=0;p<props.length;p++)
-			if(props[p]!=null)
-			   setUpLowVar(props[p],varNum,val);
+		for (final CMProps prop : props)
+			if(prop!=null)
+			   setUpLowVar(prop,varNum,val);
 	}
 
 	public static final void setWhitelist(final CMProps props, final int listNum, final String list)
@@ -777,7 +777,7 @@ public class CMProps extends Properties
 		if((list==null)||(list.trim().length()==0))
 			return;
 		final List<String> parts=CMParms.parseCommas(list.trim(),true);
-		for(String part : parts)
+		for(final String part : parts)
 		{
 			if(part.trim().length()==0)
 				continue;
@@ -830,7 +830,7 @@ public class CMProps extends Properties
 			}
 			final String type=field.substring(typeIndex+1).toUpperCase().trim();
 			String formula=field.substring(0,typeIndex).trim();
-			ExpertiseLibrary.CostType costType=(ExpertiseLibrary.CostType)CMath.s_valueOf(ExpertiseLibrary.CostType.values(), type);
+			final ExpertiseLibrary.CostType costType=(ExpertiseLibrary.CostType)CMath.s_valueOf(ExpertiseLibrary.CostType.values(), type);
 			if(costType==null)
 			{
 				Log.errOut("CMProps","Error parsing coffeemud.ini field '"+fieldName+"', invalid type: "+type);
@@ -942,7 +942,7 @@ public class CMProps extends Properties
 		{
 			s=V.get(v);
 			if(CMath.isNumber(s)){ endVal=CMath.s_double(s); continue;}
-			int x=s.indexOf(' ');
+			final int x=s.indexOf(' ');
 			if(CMath.isDouble(s.substring(x+1).trim()))
 				set.put(s.substring(0,x).trim().toUpperCase(),Double.valueOf(CMath.s_double(s.substring(x+1).trim())));
 		}
@@ -969,7 +969,7 @@ public class CMProps extends Properties
 						{
 							rawListData.load(new InputStreamReader(new ByteArrayInputStream(F.raw()), CMProps.getVar(Str.CHARSETINPUT)));
 						}
-						catch(IOException e){}
+						catch(final IOException e){}
 					}
 					Resources.submitResource(rscKey, rawListData);
 					final Object[] set=p().sysLstFileLists;
@@ -1035,11 +1035,11 @@ public class CMProps extends Properties
 		if(var==null) return new String[0][0][];
 		if(p().sysLstFileLists[var.ordinal()]==null)
 		{
-			List<String> V=CMParms.parseSemicolons(getRawListFileEntry(var.getKey()),true);
-			Object[][] subSet=new Object[V.size()][];
+			final List<String> V=CMParms.parseSemicolons(getRawListFileEntry(var.getKey()),true);
+			final Object[][] subSet=new Object[V.size()][];
 			for(int v=0;v<V.size();v++)
 				subSet[v]=CMParms.toStringArray(CMParms.parseCommas(V.get(v),false));
-			Object[][][] finalSet=new Object[subSet.length][][];
+			final Object[][][] finalSet=new Object[subSet.length][][];
 			for(int s=0;s<subSet.length;s++)
 			{
 				finalSet[s]=new Object[subSet[s].length][];
@@ -1086,8 +1086,8 @@ public class CMProps extends Properties
 
 	public static Set<String> getPrivateSubSet(final String mask)
 	{
-		Set<String> newSet=new HashSet<String>();
-		for(String s : p().privateSet.keySet())
+		final Set<String> newSet=new HashSet<String>();
+		for(final String s : p().privateSet.keySet())
 			if(Pattern.matches(mask, s))
 				newSet.add(s);
 		return newSet;
@@ -1096,7 +1096,7 @@ public class CMProps extends Properties
 	public static ThreadGroup getPrivateOwner(final String s)
 	{
 		final String tag=s.toUpperCase().trim();
-		for(CMProps p : CMProps.props)
+		for(final CMProps p : CMProps.props)
 			if((p!=null)&&p.privateSet.containsKey(tag))
 				return p.privateSet.get(tag);
 		return null;
@@ -1117,9 +1117,9 @@ public class CMProps extends Properties
 		if(MILLIS_PER_MUDHOUR < TIME_TICK)
 			MILLIS_PER_MUDHOUR = 600000;
 
-		List<String> privateList=CMParms.parseCommas(getStr("PRIVATERESOURCES").toUpperCase(),true);
+		final List<String> privateList=CMParms.parseCommas(getStr("PRIVATERESOURCES").toUpperCase(),true);
 		privateSet.clear();
-		for(String s : privateList)
+		for(final String s : privateList)
 			privateSet.put(s.trim(),Thread.currentThread().getThreadGroup());
 
 		setVar(Str.BADNAMES,getStr("BADNAMES"));
@@ -1166,7 +1166,7 @@ public class CMProps extends Properties
 		setVar(Str.INVRESETRATE,getStr("INVRESETRATE"));
 		setVar(Str.AUCTIONRATES,getStr("AUCTIONRATES","0,10,0.1%,10%,5%,1,168"));
 		setUpLowVar(Str.DEFAULTPROMPT,getStr("DEFAULTPROMPT"));
-		for(ListFile lfVar : ListFile.values())
+		for(final ListFile lfVar : ListFile.values())
 			sysLstFileLists[lfVar.ordinal()]=null;
 		setVar(Str.EMOTEFILTER,getStr("EMOTEFILTER"));
 		p().emoteFilter.clear();
@@ -1209,7 +1209,7 @@ public class CMProps extends Properties
 		setWhitelist(CMProps.SYSTEMWL_LOGINS,getStr("WHITELISTLOGINS"));
 		setWhitelist(CMProps.SYSTEMWL_NEWPLAYERS,getStr("WHITELISTIPSNEWPLAYERS"));
 
-		for(StrList strListVar : StrList.values())
+		for(final StrList strListVar : StrList.values())
 		{
 			final String list=getStr(strListVar.toString().toUpperCase().trim());
 			if((list!=null)&&(list.trim().length()>0))
@@ -1324,12 +1324,12 @@ public class CMProps extends Properties
 		setIntVar(Int.DUELTICKDOWN,getStr("DUELTICKDOWN"),5);
 		V=CMParms.parseCommas(getStr("MAXCLANCATS"), true);
 		p().maxClanCatsMap.clear();
-		for(String cat : V)
+		for(final String cat : V)
 			if(CMath.isInteger(cat.trim()))
 				p().maxClanCatsMap.put("", Integer.valueOf(CMath.s_int(cat.trim())));
 			else
 			{
-				int x=cat.lastIndexOf(' ');
+				final int x=cat.lastIndexOf(' ');
 				if((x>0)&&CMath.isInteger(cat.substring(x+1).trim()))
 					p().maxClanCatsMap.put(cat.substring(0,x).trim().toUpperCase(), Integer.valueOf(CMath.s_int(cat.substring(x+1).trim())));
 			}
@@ -1338,7 +1338,7 @@ public class CMProps extends Properties
 
 		p().publicClanCats.clear();
 		V=CMParms.parseCommas(getStr("PUBLICCLANCATS"), true);
-		for(String cat : V)
+		for(final String cat : V)
 			p().publicClanCats.add(cat.trim().toUpperCase());
 		p().publicClanCats.add("");
 
@@ -1500,14 +1500,14 @@ public class CMProps extends Properties
 	{
 		if((clanCategory==null)||(clanCategory.trim().length()==0))
 			return true;
-		String upperClanCategory=clanCategory.toUpperCase().trim();
+		final String upperClanCategory=clanCategory.toUpperCase().trim();
 		return p().publicClanCats.contains(upperClanCategory);
 	}
 	public static final int getMaxClansThisCategory(final String clanCategory)
 	{
 		if(clanCategory==null)
 			return p().maxClanCatsMap.get("").intValue();
-		String upperClanCategory=clanCategory.toUpperCase().trim();
+		final String upperClanCategory=clanCategory.toUpperCase().trim();
 		if(p().maxClanCatsMap.containsKey(upperClanCategory))
 			return p().maxClanCatsMap.get(upperClanCategory).intValue();
 		return p().maxClanCatsMap.get("").intValue();
@@ -1594,7 +1594,7 @@ public class CMProps extends Properties
 		for(;C!=null;C=C.getSuperclass())
 		{
 			myClassName=C.getName();
-			int x=myClassName.lastIndexOf('.');
+			final int x=myClassName.lastIndexOf('.');
 			if(x>=0)
 				V.add(myClassName.substring(x+1).toUpperCase());
 			else
@@ -1605,9 +1605,9 @@ public class CMProps extends Properties
 		for(final Iterator<String> v=V.iterator();v.hasNext();)
 		{
 			myClassName = v.next();
-			for(int i=0;i<statCodeExtensions.length;i++)
-				if(statCodeExtensions[i][0].equals(myClassName))
-					return CMParms.parseCommas(statCodeExtensions[i][1],true);
+			for (final String[] statCodeExtension : statCodeExtensions)
+				if(statCodeExtension[0].equals(myClassName))
+					return CMParms.parseCommas(statCodeExtension[1],true);
 		}
 		return null;
 	}
@@ -1618,7 +1618,7 @@ public class CMProps extends Properties
 		try
 		{
 			name = O.ID();
-		}catch (NullPointerException e)
+		}catch (final NullPointerException e)
 		{
 			name = O.getClass().getSimpleName();
 		}

@@ -62,21 +62,21 @@ public class GrinderRooms
 	{
 		if(R==null) return "Old Room not defined!";
 		boolean redoAllMyDamnRooms=false;
-		Room oldR=R;
+		final Room oldR=R;
 
 		// class!
-		String className=httpReq.getUrlParameter("CLASSES");
+		final String className=httpReq.getUrlParameter("CLASSES");
 		if((className==null)||(className.length()==0))
 			return "Please select a class type for this room.";
 		synchronized(("SYNC"+R.roomID()).intern())
 		{
 			R=CMLib.map().getRoom(R);
 
-			boolean singleMobMode=CMath.s_bool(httpReq.getUrlParameter("SINGLEMOB"));
-			String delMOB=singleMobMode?httpReq.getUrlParameter("DELMOB"):null;
+			final boolean singleMobMode=CMath.s_bool(httpReq.getUrlParameter("SINGLEMOB"));
+			final String delMOB=singleMobMode?httpReq.getUrlParameter("DELMOB"):null;
 
 			CMLib.map().resetRoom(R);
-			Room copyRoom=(Room)R.copyOf();
+			final Room copyRoom=(Room)R.copyOf();
 			boolean skipImage=false;
 
 			if(!className.equalsIgnoreCase(CMClass.classID(R)))
@@ -87,14 +87,14 @@ public class GrinderRooms
 				oldR.delAllEffects(true);
 				CMLib.threads().deleteTick(oldR,-1);
 				R.setRoomID(oldR.roomID());
-				Area area=oldR.getArea();
+				final Area area=oldR.getArea();
 				if(area!=null) area.delProperRoom(oldR);
 				R.setArea(area);
 				for(int d=0;d<R.rawDoors().length;d++)
 					R.rawDoors()[d]=oldR.rawDoors()[d];
 				for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 				{
-					Exit E=oldR.getRawExit(d);
+					final Exit E=oldR.getRawExit(d);
 					if(E!=null)
 						R.setRawExit(d,(Exit)E.copyOf());
 				}
@@ -107,7 +107,7 @@ public class GrinderRooms
 			}
 
 			// name
-			String name=httpReq.getUrlParameter("NAME");
+			final String name=httpReq.getUrlParameter("NAME");
 			if((name==null)||(name.length()==0))
 				return "Please enter a name for this room.";
 			R.setDisplayText(name);
@@ -172,11 +172,11 @@ public class GrinderRooms
 			if(error.length()>0) return error;
 
 			// here's where you resolve items and mobs
-			Vector allmobs=new Vector();
+			final Vector allmobs=new Vector();
 			int skip=0;
 			while(oldR.numInhabitants()>(skip))
 			{
-				MOB M=oldR.fetchInhabitant(skip);
+				final MOB M=oldR.fetchInhabitant(skip);
 				if(M.isSavable())
 				{
 					if(!allmobs.contains(M))
@@ -192,10 +192,10 @@ public class GrinderRooms
 				else
 					skip++;
 			}
-			Vector allitems=new Vector();
+			final Vector allitems=new Vector();
 			while(oldR.numItems()>0)
 			{
-				Item I=oldR.getItem(0);
+				final Item I=oldR.getItem(0);
 				if(!allitems.contains(I))
 					allitems.addElement(I);
 				oldR.delItem(I);
@@ -205,13 +205,13 @@ public class GrinderRooms
 			{
 				for(int i=1;;i++)
 				{
-					String MATCHING=httpReq.getUrlParameter("MOB"+i);
+					final String MATCHING=httpReq.getUrlParameter("MOB"+i);
 					if(MATCHING==null)
 						break;
 					else
 					if(RoomData.isAllNum(MATCHING))
 					{
-						MOB M=RoomData.getMOBFromCode(allmobs,MATCHING);
+						final MOB M=RoomData.getMOBFromCode(allmobs,MATCHING);
 						if(M!=null)
 						{
 							if(MATCHING.equalsIgnoreCase(delMOB))
@@ -220,23 +220,22 @@ public class GrinderRooms
 						}
 						else
 						{
-							StringBuffer str=new StringBuffer("!!!No MOB?!!!!");
+							final StringBuffer str=new StringBuffer("!!!No MOB?!!!!");
 							str.append(" Got: "+MATCHING);
 						}
 					}
 					else
 					if(MATCHING.startsWith("CATALOG-"))
 					{
-						MOB M=RoomData.getMOBFromCatalog(MATCHING);
+						final MOB M=RoomData.getMOBFromCatalog(MATCHING);
 						if(M!=null)
 							happilyAddMob((MOB)M.copyOf(),R);
 					}
 					else
 					if(MATCHING.indexOf('@')>0)
 					{
-						for(Iterator<MOB> m=RoomData.getMOBCache().iterator(); m.hasNext();)
+						for (final MOB M2 : RoomData.getMOBCache())
 						{
-							MOB M2=m.next();
 							if(MATCHING.equals(""+M2))
 							{
 								happilyAddMob((MOB)M2.copyOf(),R);
@@ -245,9 +244,9 @@ public class GrinderRooms
 						}
 					}
 					else
-					for(Enumeration m=CMClass.mobTypes();m.hasMoreElements();)
+					for(final Enumeration m=CMClass.mobTypes();m.hasMoreElements();)
 					{
-						MOB M2=(MOB)m.nextElement();
+						final MOB M2=(MOB)m.nextElement();
 						if((CMClass.classID(M2).equals(MATCHING)))
 						{
 							happilyAddMob((MOB)M2.copyOf(),R);
@@ -262,11 +261,11 @@ public class GrinderRooms
 
 			if(httpReq.isUrlParameter("ITEM1"))
 			{
-				Vector items=new Vector();
-				Vector cstrings=new Vector();
+				final Vector items=new Vector();
+				final Vector cstrings=new Vector();
 				for(int i=1;;i++)
 				{
-					String MATCHING=httpReq.getUrlParameter("ITEM"+i);
+					final String MATCHING=httpReq.getUrlParameter("ITEM"+i);
 					if(MATCHING==null) break;
 					Item I2=RoomData.getItemFromAnywhere(allitems,MATCHING);
 					if(I2!=null)
@@ -280,17 +279,17 @@ public class GrinderRooms
 							happilyAddItem(I2,R);
 							items.addElement(I2);
 							I2.setContainer(null);
-							String CONTAINER=httpReq.getUrlParameter("ITEMCONT"+i);
+							final String CONTAINER=httpReq.getUrlParameter("ITEMCONT"+i);
 							cstrings.addElement((CONTAINER==null)?"":CONTAINER);
 						}
 					}
 				}
 				for(int i=0;i<cstrings.size();i++)
 				{
-					String CONTAINER=(String)cstrings.elementAt(i);
+					final String CONTAINER=(String)cstrings.elementAt(i);
 					if(CONTAINER.length()==0) continue;
-					Item I2=(Item)items.elementAt(i);
-					Item C2=(Item)CMLib.english().fetchEnvironmental(items,CONTAINER,true);
+					final Item I2=(Item)items.elementAt(i);
+					final Item C2=(Item)CMLib.english().fetchEnvironmental(items,CONTAINER,true);
 					if(C2 instanceof Container)
 						I2.setContainer((Container)C2);
 				}
@@ -301,19 +300,19 @@ public class GrinderRooms
 
 			for(int i=0;i<allitems.size();i++)
 			{
-				Item I=(Item)allitems.elementAt(i);
+				final Item I=(Item)allitems.elementAt(i);
 				if(!R.isContent(I))
 					I.destroy();
 			}
 			for(int i=0;i<R.numItems();i++)
 			{
-				Item I=R.getItem(i);
+				final Item I=R.getItem(i);
 				if((I.container()!=null)&&(!R.isContent(I.container())))
 					I.setContainer(null);
 			}
 			for(int m=0;m<allmobs.size();m++)
 			{
-				MOB M=(MOB)allmobs.elementAt(m);
+				final MOB M=(MOB)allmobs.elementAt(m);
 				if(!R.isInhabitant(M))
 					M.destroy();
 			}
@@ -322,9 +321,9 @@ public class GrinderRooms
 			{
 				try
 				{
-					for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
+					for(final Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 					{
-						Room R2=(Room)r.nextElement();
+						final Room R2=(Room)r.nextElement();
 						for(int d=0;d<R2.rawDoors().length;d++)
 							if(R2.rawDoors()[d]==oldR)
 							{
@@ -333,19 +332,19 @@ public class GrinderRooms
 									((GridLocale)R2).buildGrid();
 							}
 					}
-				}catch(NoSuchElementException e){}
+				}catch(final NoSuchElementException e){}
 				try
 				{
-					for(Enumeration e=CMLib.players().players();e.hasMoreElements();)
+					for(final Enumeration e=CMLib.players().players();e.hasMoreElements();)
 					{
-						MOB M=(MOB)e.nextElement();
+						final MOB M=(MOB)e.nextElement();
 						if(M.getStartRoom()==oldR)
 							M.setStartRoom(R);
 						else
 						if(M.location()==oldR)
 							M.setLocation(R);
 					}
-				}catch(NoSuchElementException e){}
+				}catch(final NoSuchElementException e){}
 			}
 			R.getArea().fillInAreaRoom(R);
 			CMLib.database().DBUpdateRoom(R);
@@ -375,7 +374,7 @@ public class GrinderRooms
 	public static Room createLonelyRoom(Area A, Room linkTo, int dir, boolean copyThisOne)
 	{
 		Room newRoom=null;
-		String newRoomID=A.getNewRoomID(linkTo,dir);
+		final String newRoomID=A.getNewRoomID(linkTo,dir);
 		if(newRoomID.length()==0) return null;
 		if((copyThisOne)&&(linkTo!=null))
 		{
@@ -415,7 +414,7 @@ public class GrinderRooms
 		R.clearSky();
 		if(R instanceof GridLocale)
 			((GridLocale)R).clearGrid(null);
-		Room newRoom=createLonelyRoom(R.getArea(),R,dir,copyThisOne);
+		final Room newRoom=createLonelyRoom(R.getArea(),R,dir,copyThisOne);
 		R.rawDoors()[dir]=newRoom;
 		if(R.getRawExit(dir)==null)
 			R.setRawExit(dir,CMClass.getExit("StdOpenDoorway"));
@@ -447,8 +446,8 @@ public class GrinderRooms
 		R.getArea().fillInAreaRoom(R);
 		if((autoLink)&&(R.getArea() instanceof GridZones))
 		{
-			GridZones GZ=(GridZones)R.getArea();
-			GridZones.XYVector Rxy=GZ.getRoomXY(R);
+			final GridZones GZ=(GridZones)R.getArea();
+			final GridZones.XYVector Rxy=GZ.getRoomXY(R);
 			boolean resaveMyExits=false;
 			if((Rxy.x>=0)&&(Rxy.y>=0))
 			{
@@ -456,11 +455,11 @@ public class GrinderRooms
 
 				for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 				{
-					int[] xy=Directions.adjustXYByDirections(Rxy.x,Rxy.y,d);
+					final int[] xy=Directions.adjustXYByDirections(Rxy.x,Rxy.y,d);
 					R2=GZ.getGridChild(xy[0],xy[1]);
 					if((R2!=null)&&(R!=R2))
 					{
-						int opD=Directions.getOpDirectionCode(d);
+						final int opD=Directions.getOpDirectionCode(d);
 						if(R2.rawDoors()[opD]==null)
 						{
 							R2.rawDoors()[opD]=R;

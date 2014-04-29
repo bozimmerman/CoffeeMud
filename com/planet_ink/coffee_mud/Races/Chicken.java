@@ -49,7 +49,7 @@ public class Chicken extends StdRace
 	private static final int[] parts={0 ,2 ,0 ,1 ,1 ,0 ,0 ,1 ,2 ,2 ,0 ,0 ,1 ,1 ,0 ,2 };
 	@Override public int[] bodyMask(){return parts;}
 
-	private int[] agingChart={0,1,2,4,7,15,20,21,22};
+	private final int[] agingChart={0,1,2,4,7,15,20,21,22};
 	@Override public int[] getAgingChart(){return agingChart;}
 
 	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
@@ -127,7 +127,7 @@ public class Chicken extends StdRace
 	@Override
 	public String healthText(MOB viewer, MOB mob)
 	{
-		double pct=(CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));
+		final double pct=(CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));
 
 		if(pct<.10)
 			return "^r" + mob.name(viewer) + "^r is hovering on deaths door!^N";
@@ -171,7 +171,7 @@ public class Chicken extends StdRace
 		{
 			if((CMLib.dice().rollPercentage()>99)&&(((MOB)ticking).numItems()<9))
 			{
-				Item I=CMClass.getItem("GenFoodResource");
+				final Item I=CMClass.getItem("GenFoodResource");
 				I.setName("an egg");
 				I.setDisplayText("an egg has been left here.");
 				I.setMaterial(RawMaterial.RESOURCE_EGGS);
@@ -184,7 +184,7 @@ public class Chicken extends StdRace
 			&&(((MOB)ticking).location()!=null)
 			&&(((MOB)ticking).location().findItem(null,"an egg")==null))
 			{
-				Item I=((MOB)ticking).findItem("an egg");
+				final Item I=((MOB)ticking).findItem("an egg");
 				if(I!=null)
 				{
 					((MOB)ticking).location().show(((MOB)ticking),null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> lay(s) an egg.");

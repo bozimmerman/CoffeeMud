@@ -50,7 +50,7 @@ public class Thief_Listen extends ThiefSkill
 
 	protected MOB getInvisibleMOB()
 	{
-		MOB mrInvisible=CMClass.getFactoryMOB();
+		final MOB mrInvisible=CMClass.getFactoryMOB();
 		mrInvisible.setName("Someone");
 		mrInvisible.basePhyStats().setDisposition(mrInvisible.basePhyStats().disposition()|PhyStats.IS_NOT_SEEN);
 		mrInvisible.phyStats().setDisposition(mrInvisible.phyStats().disposition()|PhyStats.IS_NOT_SEEN);
@@ -59,7 +59,7 @@ public class Thief_Listen extends ThiefSkill
 
 	protected Item getInvisibleItem()
 	{
-		Item mrInvisible=CMClass.getItem("StdItem");
+		final Item mrInvisible=CMClass.getItem("StdItem");
 		mrInvisible.setName("Something");
 		mrInvisible.basePhyStats().setDisposition(mrInvisible.basePhyStats().disposition()|PhyStats.IS_NOT_SEEN);
 		mrInvisible.phyStats().setDisposition(mrInvisible.phyStats().disposition()|PhyStats.IS_NOT_SEEN);
@@ -68,7 +68,7 @@ public class Thief_Listen extends ThiefSkill
 
 	protected Environmental[] makeTalkers(MOB s, Environmental p, Environmental t)
 	{
-		Environmental[] Ms=new Environmental[]{s,p,t};
+		final Environmental[] Ms=new Environmental[]{s,p,t};
 		Ms[0]=getInvisibleMOB();
 		if(p instanceof MOB)
 		{
@@ -102,7 +102,7 @@ public class Thief_Listen extends ThiefSkill
 
 	public void cleanTalkers(Environmental[] Ps)
 	{
-		for(Environmental P : Ps)
+		for(final Environmental P : Ps)
 			if(P!=null)
 				P.destroy();
 	}
@@ -145,7 +145,7 @@ public class Thief_Listen extends ThiefSkill
 				lastSaid=msg.sourceMessage();
 				if((invoker().phyStats().level()+(getXLEVELLevel(invoker())*10))>msg.source().phyStats().level())
 				{
-					Environmental[] Ps=makeTalkers(msg.source(),msg.target(),msg.tool());
+					final Environmental[] Ps=makeTalkers(msg.source(),msg.target(),msg.tool());
 					invoker().tell((MOB)Ps[0],Ps[1],Ps[2],msg.othersMessage());
 					this.cleanTalkers(Ps);
 				}
@@ -161,7 +161,7 @@ public class Thief_Listen extends ThiefSkill
 	@Override
 	public void unInvoke()
 	{
-		MOB M=invoker();
+		final MOB M=invoker();
 		super.unInvoke();
 		if((M!=null)&&(!M.amDead()))
 			M.tell("You stop listening.");
@@ -170,8 +170,8 @@ public class Thief_Listen extends ThiefSkill
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		String whom=CMParms.combine(commands,0);
-		int dirCode=Directions.getGoodDirectionCode(whom);
+		final String whom=CMParms.combine(commands,0);
+		final int dirCode=Directions.getGoodDirectionCode(whom);
 		if(!CMLib.flags().canHear(mob))
 		{
 			mob.tell("You don't hear anything.");
@@ -207,7 +207,7 @@ public class Thief_Listen extends ThiefSkill
 			return false;
 
 		boolean success=false;
-		CMMsg msg=CMClass.getMsg(mob,null,this,auto?CMMsg.MSG_OK_ACTION:(CMMsg.MSG_DELICATE_SMALL_HANDS_ACT),CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,"<S-NAME> listen(s)"+((dirCode<0)?"":" "+Directions.getDirectionName(dirCode))+".");
+		final CMMsg msg=CMClass.getMsg(mob,null,this,auto?CMMsg.MSG_OK_ACTION:(CMMsg.MSG_DELICATE_SMALL_HANDS_ACT),CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,"<S-NAME> listen(s)"+((dirCode<0)?"":" "+Directions.getDirectionName(dirCode))+".");
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
@@ -216,7 +216,7 @@ public class Thief_Listen extends ThiefSkill
 			int levelsHeard=0;
 			for(int i=0;i<room.numInhabitants();i++)
 			{
-				MOB inhab=room.fetchInhabitant(i);
+				final MOB inhab=room.fetchInhabitant(i);
 				if((inhab!=null)&&(!CMLib.flags().isSneaking(inhab))&&(!CMLib.flags().isHidden(inhab))&&(inhab!=mob))
 				{
 					numberHeard++;

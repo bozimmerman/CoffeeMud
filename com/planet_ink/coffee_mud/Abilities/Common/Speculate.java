@@ -54,12 +54,12 @@ public class Speculate extends CommonSkill
 	{
 		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Tickable.TICKID_MOB))
 		{
-			MOB mob=(MOB)affected;
+			final MOB mob=(MOB)affected;
 			if(tickUp==6)
 			{
 				if(success==false)
 				{
-					StringBuffer str=new StringBuffer("Your speculate attempt failed.\n\r");
+					final StringBuffer str=new StringBuffer("Your speculate attempt failed.\n\r");
 					commonTell(mob,str.toString());
 					unInvoke();
 				}
@@ -76,19 +76,19 @@ public class Speculate extends CommonSkill
 		{
 			if((affected!=null)&&(affected instanceof MOB))
 			{
-				MOB mob=(MOB)affected;
-				Room room=mob.location();
+				final MOB mob=(MOB)affected;
+				final Room room=mob.location();
 				if((success)&&(!aborted)&&(room!=null))
 				{
 					int resource=room.myResource()&RawMaterial.RESOURCE_MASK;
 					if(RawMaterial.CODES.IS_VALID(resource))
 					{
-						StringBuffer str=new StringBuffer("");
+						final StringBuffer str=new StringBuffer("");
 						String resourceStr=RawMaterial.CODES.NAME(resource);
 						str.append("You think this spot would be good for "+resourceStr.toLowerCase()+".\n\r");
 						for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 						{
-							Room room2=room.getRoomInDir(d);
+							final Room room2=room.getRoomInDir(d);
 							if((room2!=null)
 							&&(room.getExitInDir(d)!=null)
 							&&(room.getExitInDir(d).isOpen()))
@@ -123,8 +123,8 @@ public class Speculate extends CommonSkill
 			return false;
 		if(proficiencyCheck(mob,0,auto))
 			success=true;
-		int duration=getDuration(45,mob,1,10);
-		CMMsg msg=CMClass.getMsg(mob,null,this,getActivityMessageType(),"<S-NAME> start(s) speculating on this area.");
+		final int duration=getDuration(45,mob,1,10);
+		final CMMsg msg=CMClass.getMsg(mob,null,this,getActivityMessageType(),"<S-NAME> start(s) speculating on this area.");
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

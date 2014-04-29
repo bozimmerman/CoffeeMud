@@ -71,27 +71,26 @@ public class Learn extends StdCommand
 				teacherName="";
 		}
 
-		String what=CMParms.combine(commands,0);
-		Vector V=Train.getAllPossibleThingsToTrainFor();
+		final String what=CMParms.combine(commands,0);
+		final Vector V=Train.getAllPossibleThingsToTrainFor();
 		if(V.contains(what.toUpperCase().trim()))
 		{
-			Vector CC=CMParms.parse(sayTo+" "+teacherName+"I would like to be trained in "+what);
+			final Vector CC=CMParms.parse(sayTo+" "+teacherName+"I would like to be trained in "+what);
 			mob.doCommand(CC,metaFlags);
-			Command C=CMClass.getCommand("TRAIN");
+			final Command C=CMClass.getCommand("TRAIN");
 			if(C!=null) C.execute(mob, commands,metaFlags);
 			return true;
 		}
 		if(CMClass.findAbility(what, mob)!=null)
 		{
-			Vector CC=CMParms.parse(sayTo+" "+teacherName+"I would like you to teach me "+what);
+			final Vector CC=CMParms.parse(sayTo+" "+teacherName+"I would like you to teach me "+what);
 			mob.doCommand(CC,metaFlags);
 			return true;
 		}
 		ExpertiseLibrary.ExpertiseDefinition theExpertise=null;
-		List<ExpertiseDefinition> V2=CMLib.expertises().myListableExpertises(mob);
-		for(Iterator<ExpertiseDefinition> i=V2.iterator();i.hasNext();)
+		final List<ExpertiseDefinition> V2=CMLib.expertises().myListableExpertises(mob);
+		for (final ExpertiseDefinition def : V2)
 		{
-			ExpertiseLibrary.ExpertiseDefinition def=i.next();
 			if((def.name.equalsIgnoreCase(what)
 			||def.name.equalsIgnoreCase(what))
 			||(def.name.toLowerCase().startsWith((what).toLowerCase())
@@ -100,15 +99,15 @@ public class Learn extends StdCommand
 			{ theExpertise=def; break;}
 		}
 		if(theExpertise==null)
-		for(Enumeration<ExpertiseDefinition> e=CMLib.expertises().definitions();e.hasMoreElements();)
+		for(final Enumeration<ExpertiseDefinition> e=CMLib.expertises().definitions();e.hasMoreElements();)
 		{
-			ExpertiseLibrary.ExpertiseDefinition def=e.nextElement();
+			final ExpertiseLibrary.ExpertiseDefinition def=e.nextElement();
 			if(def.name.equalsIgnoreCase(what))
 			{ theExpertise=def; break;}
 		}
 		if(theExpertise!=null)
 		{
-			Vector CC=new XVector("SAY","I would like you to teach me "+theExpertise.name);
+			final Vector CC=new XVector("SAY","I would like you to teach me "+theExpertise.name);
 			mob.doCommand(CC,metaFlags);
 			return true;
 		}
@@ -116,14 +115,14 @@ public class Learn extends StdCommand
 		for(int v=0;v<V.size();v++)
 			if(((String)V.elementAt(v)).startsWith(what.toUpperCase().trim()))
 			{
-				Vector CC=CMParms.parse(sayTo+" "+teacherName+"I would like to be trained in "+what);
+				final Vector CC=CMParms.parse(sayTo+" "+teacherName+"I would like to be trained in "+what);
 				mob.doCommand(CC,metaFlags);
-				Command C=CMClass.getCommand("TRAIN");
+				final Command C=CMClass.getCommand("TRAIN");
 				if(C!=null) C.execute(mob, commands,metaFlags);
 				return true;
 
 			}
-		Vector CC=CMParms.parse(sayTo+" "+teacherName+"I would like you to teach me "+what);
+		final Vector CC=CMParms.parse(sayTo+" "+teacherName+"I would like you to teach me "+what);
 		mob.doCommand(CC,metaFlags);
 		return false;
 	}

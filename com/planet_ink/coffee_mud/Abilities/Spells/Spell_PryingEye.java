@@ -46,8 +46,8 @@ public class Spell_PryingEye extends Spell
 	@Override
 	public void unInvoke()
 	{
-		MOB mob=(MOB)affected;
-		MOB invoker=invoker();
+		final MOB mob=(MOB)affected;
+		final MOB invoker=invoker();
 		if(invoker!=null)
 			invoker.delEffect(this);
 		super.unInvoke();
@@ -84,7 +84,7 @@ public class Spell_PryingEye extends Spell
 			return false;
 		if(ticking instanceof MOB)
 		{
-			MOB mob=(MOB)ticking;
+			final MOB mob=(MOB)ticking;
 			if(mob != invoker())
 			{
 				if((invoker()!=null)&&(!CMLib.flags().isInTheGame(invoker(), true)))
@@ -94,7 +94,7 @@ public class Spell_PryingEye extends Spell
 				}
 				if(dirs.size()>0)
 				{
-					int dir=dirs.remove(0).intValue();
+					final int dir=dirs.remove(0).intValue();
 					CMLib.tracking().walk(mob, dir, false, false);
 					if(dirs.size()==0)
 					{
@@ -118,10 +118,10 @@ public class Spell_PryingEye extends Spell
 			return false;
 		}
 
-		List<Integer> directions=new LinkedList<Integer>();
-		for(Object o : commands)
+		final List<Integer> directions=new LinkedList<Integer>();
+		for(final Object o : commands)
 		{
-			int dir=Directions.getDirectionCode(o.toString());
+			final int dir=Directions.getDirectionCode(o.toString());
 			if(dir<0)
 			{
 				mob.tell("'"+o.toString()+"' is not a valid direction.");
@@ -133,23 +133,23 @@ public class Spell_PryingEye extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		Ability otherA=mob.fetchEffect(ID());
+		final Ability otherA=mob.fetchEffect(ID());
 		if(otherA!=null)
 		{
 			otherA.unInvoke();
 			mob.delEffect(otherA);
 		}
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,null,this,somanticCastCode(mob,null,auto),auto?"A floating eye appears and begins moving around.":"^S<S-NAME> invoke(s) a floating eye and begin(s) chanting directions!^?");
+			final CMMsg msg=CMClass.getMsg(mob,null,this,somanticCastCode(mob,null,auto),auto?"A floating eye appears and begins moving around.":"^S<S-NAME> invoke(s) a floating eye and begin(s) chanting directions!^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				Room R=mob.location();
-				MOB eyeM=CMClass.getMOB("StdMOB");
+				final Room R=mob.location();
+				final MOB eyeM=CMClass.getMOB("StdMOB");
 				eyeM.basePhyStats().setLevel(1);
 				eyeM.basePhyStats().setDisposition(eyeM.basePhyStats().disposition() | PhyStats.IS_FLYING);
 				eyeM.basePhyStats().setSensesMask(eyeM.basePhyStats().sensesMask() | PhyStats.CAN_NOT_HEAR);
@@ -181,7 +181,7 @@ public class Spell_PryingEye extends Spell
 					return false;
 				eyeM.setSession(mob.session());
 				beneficialAffect(mob,eyeM,asLevel,Ability.TICKS_ALMOST_FOREVER);
-				Spell_PryingEye A=(Spell_PryingEye)eyeM.fetchEffect(ID());
+				final Spell_PryingEye A=(Spell_PryingEye)eyeM.fetchEffect(ID());
 				if(A==null)
 					eyeM.destroy();
 				else

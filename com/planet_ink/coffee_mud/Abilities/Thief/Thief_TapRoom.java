@@ -57,7 +57,7 @@ public class Thief_TapRoom extends ThiefSkill
 			&&(A.text().startsWith("DST;")||A.text().startsWith("SRC;"))
 			&&(!text().startsWith(A.text().substring(0,4))))
 			{
-				List<String> p2=A.getParsedText();
+				final List<String> p2=A.getParsedText();
 				if((p2.size()==myParsedTextV.size())
 				&&((myParsedTextV.get(myParsedTextV.size()-1)).equals(p2.get(p2.size()-1))))
 					return true;
@@ -68,7 +68,7 @@ public class Thief_TapRoom extends ThiefSkill
 
 	public Item getMyPair()
 	{
-		List<String> p=getParsedText();
+		final List<String> p=getParsedText();
 		Room R=null;
 		if(p.size()>=2)  R=CMLib.map().getRoom(p.get(1));
 		if(R==null) return null;
@@ -99,11 +99,11 @@ public class Thief_TapRoom extends ThiefSkill
 	{
 		if(canBeUninvoked)
 		{
-			Item I=getMyPair();
+			final Item I=getMyPair();
 			super.unInvoke();
 			if((I!=null)&&(unInvoked))
 			{
-				Thief_TapRoom A=(Thief_TapRoom)I.fetchEffect(ID());
+				final Thief_TapRoom A=(Thief_TapRoom)I.fetchEffect(ID());
 				if((A!=null)&&(!A.unInvoked))
 				{
 					A.canBeUninvoked=true;
@@ -134,7 +134,7 @@ public class Thief_TapRoom extends ThiefSkill
 					return false;
 				}
 				int roomsLeft=0;
-				List<String> V=getParsedText();
+				final List<String> V=getParsedText();
 				if(V.size()>3)
 					roomsLeft=CMath.s_int(V.get(3));
 				if(roomsLeft<=0)
@@ -167,8 +167,8 @@ public class Thief_TapRoom extends ThiefSkill
 				&&(msg.source()==((Item)affected).owner())
 				&&(text().startsWith("DST;")))
 				{
-					Room newRoom=(Room)msg.target();
-					List<String> p=getParsedText();
+					final Room newRoom=(Room)msg.target();
+					final List<String> p=getParsedText();
 					if(p.size()<2)
 					{
 						canBeUninvoked=true;
@@ -176,7 +176,7 @@ public class Thief_TapRoom extends ThiefSkill
 					}
 					else
 					{
-						Item pairI=getMyPair();
+						final Item pairI=getMyPair();
 						Room lastRoom=null;
 						Thief_TapRoom pairA=null;
 						if(pairI!=null)
@@ -189,7 +189,7 @@ public class Thief_TapRoom extends ThiefSkill
 						for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 							if(newRoom.getRoomInDir(d)==lastRoom)
 								ok=true;
-						List<RawMaterial> lineV=getAvailableLine(msg.source());
+						final List<RawMaterial> lineV=getAvailableLine(msg.source());
 						if((!ok)||(lineV.size()==0)||(lastRoom==null)||(pairA==null)||(pairA.getParsedText().size()<2))
 						{
 							canBeUninvoked=true;
@@ -198,7 +198,7 @@ public class Thief_TapRoom extends ThiefSkill
 						}
 						else
 						{
-							RawMaterial I=lineV.get(0);
+							final RawMaterial I=lineV.get(0);
 							CMLib.materials().destroyResourcesValue(msg.source(),1,I.material(),0,null);
 							msg.addTrailerMsg(CMClass.getMsg(msg.source(),I,this,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,"You stretch out another length of tap-line here using some of <T-NAME>",null,"<S-NAME> do(es) something in the corner with <T-NAME>"));
 							int roomsLeft=0;
@@ -206,7 +206,7 @@ public class Thief_TapRoom extends ThiefSkill
 								roomsLeft=CMath.s_int(p.get(3));
 							p.set(3,(""+(roomsLeft-1)));
 							super.miscText=CMParms.toSemicolonList(p);
-							List<String> p2=pairA.getParsedText();
+							final List<String> p2=pairA.getParsedText();
 							p2.set(1,CMLib.map().getExtendedRoomID(newRoom));
 							pairA.miscText=CMParms.toSemicolonList(p2);
 						}
@@ -226,10 +226,10 @@ public class Thief_TapRoom extends ThiefSkill
 				&&(msg.othersMessage()!=null)
 				&&(text().startsWith("SRC;")))
 				{
-					String str=CMStrings.getSayFromMessage(msg.othersMessage());
+					final String str=CMStrings.getSayFromMessage(msg.othersMessage());
 					if((str!=null)&&(str.length()>0))
 					{
-						Item I=getMyPair();
+						final Item I=getMyPair();
 						if(I==null)
 						{
 							canBeUninvoked=true;
@@ -237,10 +237,10 @@ public class Thief_TapRoom extends ThiefSkill
 						}
 						else
 						{
-							List<String> p=getParsedText();
+							final List<String> p=getParsedText();
 							Room R=null;
 							if(p.size()>=2)  R=CMLib.map().getRoom(p.get(1));
-							CMMsg msg2=(CMMsg)msg.copyOf();
+							final CMMsg msg2=(CMMsg)msg.copyOf();
 							msg2.setOthersMessage("^TFrom "+I.name()+" "+msg2.othersMessage());
 							if((R!=null)&&(R.okMessage(msg.source(),msg2)))
 								R.sendOthers(msg.source(),msg2);
@@ -255,7 +255,7 @@ public class Thief_TapRoom extends ThiefSkill
 	public Item[] getCups(MOB mob)
 	{
 		Item I=null;
-		Item[] returnI=new Item[2];
+		final Item[] returnI=new Item[2];
 		for(int i=0;i<mob.numItems();i++)
 		{
 			I=mob.getItem(i);
@@ -289,7 +289,7 @@ public class Thief_TapRoom extends ThiefSkill
 	public List<RawMaterial> getAvailableLine(MOB mob)
 	{
 		Item I=null;
-		List<RawMaterial> available=new Vector();
+		final List<RawMaterial> available=new Vector();
 		for(int i=0;i<mob.numItems();i++)
 		{
 			I=mob.getItem(i);
@@ -331,13 +331,13 @@ public class Thief_TapRoom extends ThiefSkill
 		}
 
 		boolean abort=false;
-		Item[] cups=getCups(mob);
+		final Item[] cups=getCups(mob);
 		if((!auto)&&(cups==null))
 		{
 			mob.tell("You'll need 2 unused glass cups, emptied of liquid, to start tapping a room.");
 			abort=true;
 		}
-		List<RawMaterial> line=getAvailableLine(mob);
+		final List<RawMaterial> line=getAvailableLine(mob);
 		if((!auto)&&(line.size()==0))
 		{
 			mob.tell("You'll need several pounds of raw cloth material (like cotton or wool) to start tapping a room.");
@@ -348,16 +348,16 @@ public class Thief_TapRoom extends ThiefSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
-		CMMsg msg=CMClass.getMsg(mob,target,this,auto?CMMsg.MASK_ALWAYS:CMMsg.MSG_DELICATE_HANDS_ACT,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,auto?"":"<S-NAME> lay(s) down "+(cups!=null?cups[0].name():"")+" and <S-IS-ARE> ready to lay down a tap line.");
+		final boolean success=proficiencyCheck(mob,0,auto);
+		final CMMsg msg=CMClass.getMsg(mob,target,this,auto?CMMsg.MASK_ALWAYS:CMMsg.MSG_DELICATE_HANDS_ACT,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,auto?"":"<S-NAME> lay(s) down "+(cups!=null?cups[0].name():"")+" and <S-IS-ARE> ready to lay down a tap line.");
 		if((success)&&(mob.location().okMessage(mob,msg))&&((cups==null)||CMLib.commands().postDrop(mob,cups[0],true,false,false)))
 		{
 			mob.location().send(mob,msg);
 			beneficialAffect(mob,target,asLevel,0);
 
-			String code=""+System.currentTimeMillis()+Math.random();
+			final String code=""+System.currentTimeMillis()+Math.random();
 			Thief_TapRoom TR=(Thief_TapRoom)copyOf();
-			int level=1+(adjustedLevel(mob,asLevel)/5)+(getXLEVELLevel(mob)*5);
+			final int level=1+(adjustedLevel(mob,asLevel)/5)+(getXLEVELLevel(mob)*5);
 			TR.setInvoker(mob);
 			TR.setMiscText("SRC;"+CMLib.map().getExtendedRoomID(target)+";"+mob.Name()+";"+level+";"+code);
 			if(cups!=null)

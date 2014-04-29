@@ -51,20 +51,20 @@ public class Thief_PowerGrab extends ThiefSkill
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		Item possibleContainer=possibleContainer(mob,commands,true,Wearable.FILTER_UNWORNONLY);
-		Item target=super.getTarget(mob, mob.location(), givenTarget, possibleContainer, commands, Wearable.FILTER_UNWORNONLY);
+		final Item possibleContainer=possibleContainer(mob,commands,true,Wearable.FILTER_UNWORNONLY);
+		final Item target=super.getTarget(mob, mob.location(), givenTarget, possibleContainer, commands, Wearable.FILTER_UNWORNONLY);
 		if(target==null) return false;
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 		if(!success)
 			beneficialVisualFizzle(mob,null,"<S-NAME> attempt(s) to power grab something and fail(s).");
 		else
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT|CMMsg.MASK_MAGIC,auto?"":"^S<S-NAME> carefully attempt(s) to acquire <T-NAME>^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT|CMMsg.MASK_MAGIC,auto?"":"^S<S-NAME> carefully attempt(s) to acquire <T-NAME>^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				int level=target.basePhyStats().level();
-				int level2=target.phyStats().level();
+				final int level=target.basePhyStats().level();
+				final int level2=target.phyStats().level();
 				target.basePhyStats().setLevel(1);
 				target.phyStats().setLevel(1);
 				CMLib.commands().postGet(mob, possibleContainer, target, false);

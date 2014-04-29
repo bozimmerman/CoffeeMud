@@ -18,8 +18,8 @@ limitations under the License.
 */
 public class ReadOnlyFilteredList<K> implements List<K>
 {
-	private List<K> 	list;
-	private Filterer<K> filterer;
+	private final List<K> 	list;
+	private final Filterer<K> filterer;
 
 	public ReadOnlyFilteredList(List<K> l, Filterer<K> fill)
 	{
@@ -69,7 +69,7 @@ public class ReadOnlyFilteredList<K> implements List<K>
 	@Override
 	public boolean containsAll(Collection<?> arg0)
 	{
-		for(Object o : arg0)
+		for(final Object o : arg0)
 			if(!contains(o))
 				return false;
 		return true;
@@ -169,8 +169,8 @@ public class ReadOnlyFilteredList<K> implements List<K>
 	public Object[] toArray()
 	{
 		final List<K> set=new ArrayList<K>(size());
-		for(final Iterator<K> i=iterator();i.hasNext();)
-			set.add(i.next());
+		for (final K k : this)
+			set.add(k);
 		return set.toArray();
 	}
 
@@ -178,8 +178,8 @@ public class ReadOnlyFilteredList<K> implements List<K>
 	public <T> T[] toArray(T[] arg0)
 	{
 		final List<K> set=new ArrayList<K>(size());
-		for(final Iterator<K> i=iterator();i.hasNext();)
-			set.add(i.next());
+		for (final K k : this)
+			set.add(k);
 		return set.toArray(arg0);
 	}
 

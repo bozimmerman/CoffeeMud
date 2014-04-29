@@ -52,7 +52,7 @@ public class Spell_Farsight extends Spell
 			this.beneficialVisualFizzle(mob,null,"<S-NAME> get(s) a far off look, but the spell fizzles.");
 		else
 		{
-			CMMsg msg=CMClass.getMsg(mob,null,null,verbalCastCode(mob,null,auto),"^S<S-NAME> get(s) a far off look in <S-HIS-HER> eyes.^?");
+			final CMMsg msg=CMClass.getMsg(mob,null,null,verbalCastCode(mob,null,auto),"^S<S-NAME> get(s) a far off look in <S-HIS-HER> eyes.^?");
 			int limit=mob.phyStats().level()/5;
 			if(limit<0) limit=1;
 			if(mob.location().okMessage(mob,msg))
@@ -87,8 +87,8 @@ public class Spell_Farsight extends Spell
 				else
 				while(commands.size()>0)
 				{
-					String whatToOpen=(String)commands.elementAt(0);
-					int dirCode=Directions.getGoodDirectionCode(whatToOpen);
+					final String whatToOpen=(String)commands.elementAt(0);
+					final int dirCode=Directions.getGoodDirectionCode(whatToOpen);
 					if(limit<=0)
 					{
 						mob.tell("Your sight has reached its limit.");
@@ -104,8 +104,8 @@ public class Spell_Farsight extends Spell
 					}
 					else
 					{
-						Exit exit=thatRoom.getExitInDir(dirCode);
-						Room room=thatRoom.getRoomInDir(dirCode);
+						final Exit exit=thatRoom.getExitInDir(dirCode);
+						final Room room=thatRoom.getRoomInDir(dirCode);
 
 						if((exit==null)||(room==null)||(!CMLib.flags().canBeSeenBy(exit,mob))||(!exit.isOpen()))
 						{
@@ -119,7 +119,7 @@ public class Spell_Farsight extends Spell
 							thatRoom=room;
 							limit--;
 							mob.tell("\n\r");
-							CMMsg msg2=CMClass.getMsg(mob,thatRoom,CMMsg.MSG_LOOK,null);
+							final CMMsg msg2=CMClass.getMsg(mob,thatRoom,CMMsg.MSG_LOOK,null);
 							thatRoom.executeMsg(mob,msg2);
 						}
 					}

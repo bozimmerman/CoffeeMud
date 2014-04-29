@@ -50,23 +50,23 @@ public class Prayer_BirdsEye extends Prayer
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
 			CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":"^S<S-NAME> "+prayWord(mob)+" for a birds eye view.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				Item I=CMClass.getItem("BardMap");
+				final Item I=CMClass.getItem("BardMap");
 				if(I!=null)
 				{
-					Vector set=new Vector();
+					final Vector set=new Vector();
 					TrackingLibrary.TrackingFlags flags;
 					flags = new TrackingLibrary.TrackingFlags()
 							.plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS)
 							.plus(TrackingLibrary.TrackingFlag.NOAIR);
 					CMLib.tracking().getRadiantRooms(mob.location(),set,flags,null,2,null);
-					StringBuffer str=new StringBuffer("");
+					final StringBuffer str=new StringBuffer("");
 					for(int i=0;i<set.size();i++)
 						str.append(CMLib.map().getExtendedRoomID((Room)set.elementAt(i))+";");
 					I.setReadableText(str.toString());

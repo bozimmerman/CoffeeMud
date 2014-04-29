@@ -55,7 +55,7 @@ public class Thief_Alertness extends ThiefSkill
 		if((affected!=null)&&(affected instanceof MOB))
 		{
 
-			MOB mob=(MOB)affected;
+			final MOB mob=(MOB)affected;
 			if(!CMLib.flags().aliveAwakeMobile(mob,true))
 			{ unInvoke(); return false;}
 			if(mob.location()!=room)
@@ -64,7 +64,7 @@ public class Thief_Alertness extends ThiefSkill
 				Vector choices=null;
 				for(int i=0;i<room.numItems();i++)
 				{
-					Item I=room.getItem(i);
+					final Item I=room.getItem(i);
 					if((I!=null)
 					&&(CMLib.flags().canBeSeenBy(I,mob))
 					&&(I.displayText().length()==0))
@@ -79,7 +79,7 @@ public class Thief_Alertness extends ThiefSkill
 					if(alert<=0)alert=1;
 					while((alert>0)&&(choices.size()>0))
 					{
-						Item I=(Item)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1));
+						final Item I=(Item)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1));
 						choices.removeElement(I);
 						mob.tell(I.name(mob)+": "+I.description());
 						alert--;
@@ -93,7 +93,7 @@ public class Thief_Alertness extends ThiefSkill
 	@Override
 	public void unInvoke()
 	{
-		MOB M=(MOB)affected;
+		final MOB M=(MOB)affected;
 		super.unInvoke();
 		if((M!=null)&&(!M.amDead()))
 			M.tell("You don't feel quite so alert any more.");
@@ -115,9 +115,9 @@ public class Thief_Alertness extends ThiefSkill
 			return false;
 
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
-		CMMsg msg=CMClass.getMsg(mob,target,this,auto?CMMsg.MSG_OK_ACTION:(CMMsg.MSG_DELICATE_HANDS_ACT|CMMsg.MASK_EYES),auto?"<T-NAME> become(s) alert.":"<S-NAME> become(s) suddenly alert.");
+		final CMMsg msg=CMClass.getMsg(mob,target,this,auto?CMMsg.MSG_OK_ACTION:(CMMsg.MSG_DELICATE_HANDS_ACT|CMMsg.MASK_EYES),auto?"<T-NAME> become(s) alert.":"<S-NAME> become(s) suddenly alert.");
 		if(!success)
 			return beneficialVisualFizzle(mob,null,"<S-NAME> attempt(s) to look alert, but become(s) distracted.");
 		else

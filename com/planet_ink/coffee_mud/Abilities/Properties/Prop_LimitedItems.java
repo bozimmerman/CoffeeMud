@@ -127,10 +127,10 @@ public class Prop_LimitedItems extends Property
 			{
 				playersLoaded[0]=true;
 				Log.sysOut("Prop_LimitedItems","Checking player inventories");
-				List<String> V=CMLib.database().getUserList();
-				for(String name : V)
+				final List<String> V=CMLib.database().getUserList();
+				for(final String name : V)
 				{
-					MOB M=CMLib.players().getLoadPlayer(name);
+					final MOB M=CMLib.players().getLoadPlayer(name);
 					if((M!=null)&&(M.location()!=null)&&(M.location().isInhabitant(M)))
 						Log.sysOut("Prop_LimitedItems",M.name()+" is in the Game!!!");
 				}

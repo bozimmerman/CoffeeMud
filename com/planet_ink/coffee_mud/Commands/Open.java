@@ -45,10 +45,10 @@ public class Open extends StdCommand
 	{
 		final String openWord=(!(openThis instanceof Exit))?"open":((Exit)openThis).openWord();
 		final String openMsg=quietly?null:("<S-NAME> "+openWord+"(s) <T-NAMESELF>.")+CMLib.protocol().msp("dooropen.wav",10);
-		CMMsg msg=CMClass.getMsg(mob,openThis,null,CMMsg.MSG_OPEN,openMsg,openableWord,openMsg);
+		final CMMsg msg=CMClass.getMsg(mob,openThis,null,CMMsg.MSG_OPEN,openMsg,openableWord,openMsg);
 		if(openThis instanceof Exit)
 		{
-			boolean open=((Exit)openThis).isOpen();
+			final boolean open=((Exit)openThis).isOpen();
 			if((mob.location().okMessage(msg.source(),msg))
 			&&(!open))
 			{
@@ -60,14 +60,14 @@ public class Open extends StdCommand
 					{dirCode=d; break;}
 				if((dirCode>=0)&&(mob.location().getRoomInDir(dirCode)!=null))
 				{
-					Room opR=mob.location().getRoomInDir(dirCode);
-					Exit opE=mob.location().getPairedExit(dirCode);
+					final Room opR=mob.location().getRoomInDir(dirCode);
+					final Exit opE=mob.location().getPairedExit(dirCode);
 					if(opE!=null)
 					{
-						CMMsg altMsg=CMClass.getMsg(msg.source(),opE,msg.tool(),msg.sourceCode(),null,msg.targetCode(),null,msg.othersCode(),null);
+						final CMMsg altMsg=CMClass.getMsg(msg.source(),opE,msg.tool(),msg.sourceCode(),null,msg.targetCode(),null,msg.othersCode(),null);
 						opE.executeMsg(msg.source(),altMsg);
 					}
-					int opCode=Directions.getOpDirectionCode(dirCode);
+					final int opCode=Directions.getOpDirectionCode(dirCode);
 					if((opE!=null)&&(opE.isOpen())&&(((Exit)openThis).isOpen()))
 					{
 						final boolean useShipDirs=(opR instanceof SpaceShip)||(opR.getArea() instanceof SpaceShip);
@@ -91,14 +91,14 @@ public class Open extends StdCommand
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		String whatToOpen=CMParms.combine(commands,1);
+		final String whatToOpen=CMParms.combine(commands,1);
 		if(whatToOpen.length()==0)
 		{
 			mob.tell("Open what?");
 			return false;
 		}
 		Environmental openThis=null;
-		int dirCode=Directions.getGoodDirectionCode(whatToOpen);
+		final int dirCode=Directions.getGoodDirectionCode(whatToOpen);
 		if(dirCode>=0)
 			openThis=mob.location().getExitInDir(dirCode);
 		if(openThis==null)

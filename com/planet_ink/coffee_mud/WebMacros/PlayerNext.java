@@ -45,8 +45,8 @@ public class PlayerNext extends StdWebMacro
 		if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
 			return CMProps.getVar(CMProps.Str.MUDSTATUS);
 
-		java.util.Map<String,String> parms=parseParms(parm);
-		String last=httpReq.getUrlParameter("PLAYER");
+		final java.util.Map<String,String> parms=parseParms(parm);
+		final String last=httpReq.getUrlParameter("PLAYER");
 		if(parms.containsKey("RESET"))
 		{
 			if(last!=null) httpReq.removeUrlParameter("PLAYER");
@@ -55,10 +55,10 @@ public class PlayerNext extends StdWebMacro
 		String lastID="";
 		String sort=httpReq.getUrlParameter("SORTBY");
 		if(sort==null) sort="";
-		Enumeration pe=CMLib.players().thinPlayers(sort,httpReq.getRequestObjects());
+		final Enumeration pe=CMLib.players().thinPlayers(sort,httpReq.getRequestObjects());
 		for(;pe.hasMoreElements();)
 		{
-			PlayerLibrary.ThinPlayer user=(PlayerLibrary.ThinPlayer)pe.nextElement();
+			final PlayerLibrary.ThinPlayer user=(PlayerLibrary.ThinPlayer)pe.nextElement();
 			if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!user.name.equals(lastID))))
 			{
 				httpReq.addFakeUrlParameter("PLAYER",user.name);

@@ -51,7 +51,7 @@ public class Fighter_CoverDefence extends FighterSkill
 		if(!(affected instanceof MOB))
 			return true;
 
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		if(msg.amITarget(mob)
 		   &&(msg.targetMinor()==CMMsg.TYP_WEAPONATTACK)
@@ -65,7 +65,7 @@ public class Fighter_CoverDefence extends FighterSkill
 		   &&(proficiencyCheck(null,mob.charStats().getStat(CharStats.STAT_DEXTERITY)-90+(2*getXLEVELLevel(mob)),false))
 		   &&(msg.source().getVictim()==mob))
 		{
-			CMMsg msg2=CMClass.getMsg(msg.source(),mob,null,CMMsg.MSG_QUIETMOVEMENT,"<T-NAME> take(s) cover from <S-YOUPOSS> attack!");
+			final CMMsg msg2=CMClass.getMsg(msg.source(),mob,null,CMMsg.MSG_QUIETMOVEMENT,"<T-NAME> take(s) cover from <S-YOUPOSS> attack!");
 			if(mob.location().okMessage(mob,msg2))
 			{
 				mob.location().send(mob,msg2);

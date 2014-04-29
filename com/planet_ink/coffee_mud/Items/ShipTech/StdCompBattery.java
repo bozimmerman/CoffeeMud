@@ -88,11 +88,11 @@ public class StdCompBattery extends StdElecCompItem implements Electronics.Power
 					||((subjectToWearAndTear())&&(usesRemaining()<=100)&&(Math.random()>CMath.div(usesRemaining(), 100))))
 				&& (Math.random() > 0.9))
 				{
-					Room R=CMLib.map().roomLocation(this);
+					final Room R=CMLib.map().roomLocation(this);
 					if(R!=null)
 					{
 						// malfunction!
-						CMMsg msg2=CMClass.getMsg(msg.source(), this, null, CMMsg.NO_EFFECT, null, CMMsg.MSG_DEACTIVATE|CMMsg.MASK_CNTRLMSG, "", CMMsg.NO_EFFECT,null);
+						final CMMsg msg2=CMClass.getMsg(msg.source(), this, null, CMMsg.NO_EFFECT, null, CMMsg.MSG_DEACTIVATE|CMMsg.MASK_CNTRLMSG, "", CMMsg.NO_EFFECT,null);
 						if(R.okMessage(msg.source(), msg2))
 							R.send(msg.source(), msg2);
 					}

@@ -51,8 +51,8 @@ public class SpellCraftingSkill extends CraftingSkill
 			spellName=CMParms.combine(commands,0);
 		else
 		{
-			List<List<String>> recipes=loadRecipes();
-			List<String> V=recipes.get(CMLib.dice().roll(1,recipes.size(),-1));
+			final List<List<String>> recipes=loadRecipes();
+			final List<String> V=recipes.get(CMLib.dice().roll(1,recipes.size(),-1));
 			spellName=V.get(RCP_FINALNAME);
 		}
 		return spellName;
@@ -61,16 +61,16 @@ public class SpellCraftingSkill extends CraftingSkill
 	protected List<String> getCraftableSpellRow(String spellName)
 	{
 		List<String> spellFound=null;
-		List<List<String>> recipes=loadRecipes();
-		for(List<String> V : recipes)
+		final List<List<String>> recipes=loadRecipes();
+		for(final List<String> V : recipes)
 			if(V.get(RCP_FINALNAME).equalsIgnoreCase(spellName))
 			{ spellFound=V; break;}
 		if(spellFound==null)
-			for(List<String> V : recipes)
+			for(final List<String> V : recipes)
 				if(CMLib.english().containsString(V.get(RCP_FINALNAME),spellName))
 				{ spellFound=V; break;}
 		if(spellFound==null)
-			for(List<String> V : recipes)
+			for(final List<String> V : recipes)
 				if(V.get(RCP_FINALNAME).toLowerCase().indexOf(spellName.toLowerCase())>=0)
 				{ spellFound=V; break;}
 		return spellFound;
@@ -79,13 +79,13 @@ public class SpellCraftingSkill extends CraftingSkill
 	protected Ability getCraftableSpellRecipeSpell(Vector commands)
 	{
 		Ability theSpell=null;
-		String spellName=getCraftableSpellName(commands);
+		final String spellName=getCraftableSpellName(commands);
 		if(spellName!=null)
 		{
 			theSpell=CMClass.getAbility((String)commands.firstElement());
 			if(theSpell==null)
 			{
-				List<String> spellFound=getCraftableSpellRow(spellName);
+				final List<String> spellFound=getCraftableSpellRow(spellName);
 				if(spellFound!=null)
 					theSpell=CMClass.getAbility(spellFound.get(RCP_FINALNAME));
 			}
@@ -96,10 +96,10 @@ public class SpellCraftingSkill extends CraftingSkill
 	protected int getCraftableSpellLevel(Vector commands)
 	{
 		Ability theSpell=null;
-		String spellName=getCraftableSpellName(commands);
+		final String spellName=getCraftableSpellName(commands);
 		if(spellName!=null)
 		{
-			List<String> spellFound=getCraftableSpellRow(spellName);
+			final List<String> spellFound=getCraftableSpellRow(spellName);
 			if(spellFound!=null)
 				return CMath.s_int(spellFound.get(RCP_LEVEL));
 			theSpell=CMClass.getAbility((String)commands.firstElement());

@@ -50,7 +50,7 @@ public class Chant_FodderSignal extends Chant
 		// undo the affects of this spell
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		if(canBeUninvoked())
 			mob.tell("The fodder signal stops flashing.");
 
@@ -74,13 +74,13 @@ public class Chant_FodderSignal extends Chant
 		if(tickID!=Tickable.TICKID_MOB) return false;
 		if((affecting()!=null)&&(affecting() instanceof MOB))
 		{
-			MOB dummy=(MOB)affecting();
-			Room room=dummy.location();
+			final MOB dummy=(MOB)affecting();
+			final Room room=dummy.location();
 			if(room!=null)
 			{
 				for(int i=0;i<room.numInhabitants();i++)
 				{
-					MOB M=room.fetchInhabitant(i);
+					final MOB M=room.fetchInhabitant(i);
 					if((M!=null)
 					&&(M!=dummy)
 					&&(M.isMonster())
@@ -101,7 +101,7 @@ public class Chant_FodderSignal extends Chant
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		MOB target=this.getTarget(mob,commands,givenTarget);
+		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
 		// the invoke method for spells receives as
@@ -110,7 +110,7 @@ public class Chant_FodderSignal extends Chant
 		// and added as String objects to a vector.
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
@@ -119,7 +119,7 @@ public class Chant_FodderSignal extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> chant(s) at <T-NAMESELF>.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> chant(s) at <T-NAMESELF>.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

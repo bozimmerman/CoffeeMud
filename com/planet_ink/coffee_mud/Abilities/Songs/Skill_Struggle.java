@@ -81,11 +81,11 @@ public class Skill_Struggle extends BardSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> attempt(s) to struggle with <S-HIS-HER> bonds.");
+			final CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> attempt(s) to struggle with <S-HIS-HER> bonds.");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.addEffect(this);

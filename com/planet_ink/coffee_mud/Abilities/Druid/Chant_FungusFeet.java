@@ -63,7 +63,7 @@ public class Chant_FungusFeet extends Chant implements DiseaseAffect
 			return false;
 		if((--plagueDown)<=0)
 		{
-			MOB mob=(MOB)affected;
+			final MOB mob=(MOB)affected;
 			plagueDown=10;
 			if(invoker==null) invoker=mob;
 			drawups+=.1;
@@ -72,7 +72,7 @@ public class Chant_FungusFeet extends Chant implements DiseaseAffect
 				if((mob.location()!=null)&&(CMLib.flags().isInTheGame(mob,false)))
 				{
 					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-YOU-POSS> feet rot off!");
-					Ability A=CMClass.getAbility("Amputation");
+					final Ability A=CMClass.getAbility("Amputation");
 					if(A!=null)
 					{
 						int x=100;
@@ -104,7 +104,7 @@ public class Chant_FungusFeet extends Chant implements DiseaseAffect
 		// undo the affects of this spell
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		super.unInvoke();
 
@@ -133,7 +133,7 @@ public class Chant_FungusFeet extends Chant implements DiseaseAffect
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		MOB target=this.getTarget(mob,commands,givenTarget);
+		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
 		if(target.charStats().getBodyPart(Race.BODY_FOOT)==0)
@@ -145,15 +145,15 @@ public class Chant_FungusFeet extends Chant implements DiseaseAffect
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
 			// it worked, so build a copy of this ability,
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto)|CMMsg.MASK_MALICIOUS,auto?"":"^S<S-NAME> chant(s) at <T-YOUPOSS> feet!^?");
-			CMMsg msg2=CMClass.getMsg(mob,target,this,verbalCastMask(mob,target,auto)|CMMsg.TYP_DISEASE,null);
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto)|CMMsg.MASK_MALICIOUS,auto?"":"^S<S-NAME> chant(s) at <T-YOUPOSS> feet!^?");
+			final CMMsg msg2=CMClass.getMsg(mob,target,this,verbalCastMask(mob,target,auto)|CMMsg.TYP_DISEASE,null);
 			if((mob.location().okMessage(mob,msg))&&(mob.location().okMessage(mob,msg2)))
 			{
 				mob.location().send(mob,msg);

@@ -85,9 +85,9 @@ public class Merge extends StdCommand
 									  boolean noisy)
 	{
 		boolean didAnything=false;
-		List<String> efields=new Vector();
+		final List<String> efields=new Vector();
 		List<String> allMyFields=new Vector();
-		String[] EFIELDS=E.getStatCodes();
+		final String[] EFIELDS=E.getStatCodes();
 		for(int i=0;i<EFIELDS.length;i++)
 			if(!efields.contains(EFIELDS[i]))
 				efields.add(EFIELDS[i]);
@@ -103,7 +103,7 @@ public class Merge extends StdCommand
 		if(noisy) mergedebugtell(mob,"efields-"+CMParms.toStringList(efields));
 		for(int t=0;t<things.size();t++)
 		{
-			Environmental E2=(Environmental)things.get(t);
+			final Environmental E2=(Environmental)things.get(t);
 			if(noisy) mergedebugtell(mob,E.name()+"/"+E2.name()+"/"+CMClass.classID(E)+"/"+CMClass.classID(E2));
 			if(CMClass.classID(E).equals(CMClass.classID(E2)))
 			{
@@ -123,7 +123,7 @@ public class Merge extends StdCommand
 				if(checkedOut)
 				for(int i=0;i<fieldsToCheck.size();i++)
 				{
-					String field=(String)fieldsToCheck.elementAt(i);
+					final String field=(String)fieldsToCheck.elementAt(i);
 					if(noisy) mergedebugtell(mob,field+"/"+getStat(E,field)+"/"+getStat(E2,field)+"/"+getStat(E,field).equals(getStat(E2,field)));
 					if(!getStat(E,field).equals(getStat(E2,field)))
 					{ checkedOut=false; break;}
@@ -143,7 +143,7 @@ public class Merge extends StdCommand
 					if(noisy) mergedebugtell(mob,"fieldsToChange-"+CMParms.toStringList(fieldsToChange));
 					for(int i=0;i<fieldsToChange.size();i++)
 					{
-						String field=fieldsToChange.get(i);
+						final String field=fieldsToChange.get(i);
 						if(noisy) mergedebugtell(mob,E.name()+" wants to change "+field+" value "+getStat(E,field)+" to "+getStat(E2,field)+"/"+(!getStat(E,field).equals(getStat(E2,field))));
 						if(!getStat(E,field).equals(getStat(E2,field)))
 						{
@@ -173,8 +173,8 @@ public class Merge extends StdCommand
 	{
 		for(;e.hasMoreElements();)
 		{
-			Environmental E=(Environmental)e.nextElement();
-			String[] fields=E.getStatCodes();
+			final Environmental E=(Environmental)e.nextElement();
+			final String[] fields=E.getStatCodes();
 			for(int x=0;x<fields.length;x++)
 				if(!allKnownFields.contains(fields[x]))
 				{
@@ -188,7 +188,7 @@ public class Merge extends StdCommand
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		boolean noisy=CMSecurity.isDebugging(CMSecurity.DbgFlag.MERGE);
+		final boolean noisy=CMSecurity.isDebugging(CMSecurity.DbgFlag.MERGE);
 		Vector placesToDo=new Vector();
 		commands.removeElementAt(0);
 		if(commands.size()==0)
@@ -208,8 +208,8 @@ public class Merge extends StdCommand
 		if((commands.size()>0)&&
 		   ((String)commands.elementAt(0)).equalsIgnoreCase("?"))
 		{
-			StringBuffer allFieldsMsg=new StringBuffer("");
-			Vector allKnownFields=new Vector();
+			final StringBuffer allFieldsMsg=new StringBuffer("");
+			final Vector allKnownFields=new Vector();
 			sortEnumeratedList(CMClass.mobTypes(),allKnownFields,allFieldsMsg);
 			sortEnumeratedList(CMClass.basicItems(),allKnownFields,allFieldsMsg);
 			sortEnumeratedList(CMClass.weapons(),allKnownFields,allFieldsMsg);
@@ -274,27 +274,27 @@ public class Merge extends StdCommand
 			firstWord=(String)commands.firstElement();
 			return doArchonDBCompare(mob, scope, firstWord, commands);
 		}
-		String filename=(String)commands.lastElement();
+		final String filename=(String)commands.lastElement();
 		commands.remove(filename);
-		StringBuffer buf=new CMFile(filename,mob,CMFile.FLAG_LOGERRORS).text();
+		final StringBuffer buf=new CMFile(filename,mob,CMFile.FLAG_LOGERRORS).text();
 		if((buf==null)||(buf.length()==0))
 		{
 			mob.tell("File not found at: '"+filename+"'!");
 			return false;
 		}
 
-		List<String> changes=new Vector();
-		List<String> onfields=new Vector();
-		List<String> ignore=new Vector();
+		final List<String> changes=new Vector();
+		final List<String> onfields=new Vector();
+		final List<String> ignore=new Vector();
 		List<String> use=null;
-		List<String> allKnownFields=new Vector();
-		List things=new Vector();
+		final List<String> allKnownFields=new Vector();
+		final List things=new Vector();
 		boolean aremobs=false;
 		if((buf.length()>20)&&(buf.substring(0,20).indexOf("<MOBS>")>=0))
 		{
 			if(mob.session()!=null)
 				mob.session().rawPrint("Unpacking mobs from file: '"+filename+"'...");
-			String error=CMLib.coffeeMaker().addMOBsFromXML(buf.toString(),things,mob.session());
+			final String error=CMLib.coffeeMaker().addMOBsFromXML(buf.toString(),things,mob.session());
 			if(mob.session()!=null)    mob.session().rawPrintln("!");
 			if(error.length()>0)
 			{
@@ -309,7 +309,7 @@ public class Merge extends StdCommand
 		{
 			if(mob.session()!=null)
 				mob.session().rawPrint("Unpacking items from file: '"+filename+"'...");
-			String error=CMLib.coffeeMaker().addItemsFromXML(buf.toString(),things,mob.session());
+			final String error=CMLib.coffeeMaker().addItemsFromXML(buf.toString(),things,mob.session());
 			if(mob.session()!=null)    mob.session().rawPrintln("!");
 			if(error.length()>0)
 			{
@@ -328,7 +328,7 @@ public class Merge extends StdCommand
 			mob.tell("Nothing was found in the file to merge!");
 			return false;
 		}
-		StringBuffer allFieldsMsg=new StringBuffer("");
+		final StringBuffer allFieldsMsg=new StringBuffer("");
 		if(aremobs)
 			sortEnumeratedList(CMClass.mobTypes(),allKnownFields,allFieldsMsg);
 		else
@@ -365,7 +365,7 @@ public class Merge extends StdCommand
 			int x=str.indexOf(',');
 			while(x>=0)
 			{
-				String s=str.substring(0,x).trim();
+				final String s=str.substring(0,x).trim();
 				if(s.length()>0)
 				{
 					if(use==null)
@@ -406,9 +406,9 @@ public class Merge extends StdCommand
 			return false;
 		}
 		if(placesToDo.size()==0)
-		for(Enumeration a=CMLib.map().areas();a.hasMoreElements();)
+		for(final Enumeration a=CMLib.map().areas();a.hasMoreElements();)
 		{
-			Area A=(Area)a.nextElement();
+			final Area A=(Area)a.nextElement();
 			if(A.getCompleteMap().hasMoreElements()
 			&&CMSecurity.isAllowed(mob,(A.getCompleteMap().nextElement()),CMSecurity.SecFlag.MERGE))
 				placesToDo.addElement(A);
@@ -422,11 +422,11 @@ public class Merge extends StdCommand
 		{
 			if(placesToDo.elementAt(i) instanceof Area)
 			{
-				Area A=(Area)placesToDo.elementAt(i);
+				final Area A=(Area)placesToDo.elementAt(i);
 				placesToDo.removeElement(A);
-				for(Enumeration r=A.getCompleteMap();r.hasMoreElements();)
+				for(final Enumeration r=A.getCompleteMap();r.hasMoreElements();)
 				{
-					Room R=(Room)r.nextElement();
+					final Room R=(Room)r.nextElement();
 					if(CMSecurity.isAllowed(mob,R,CMSecurity.SecFlag.MERGE))
 						placesToDo.addElement(R);
 				}
@@ -455,7 +455,7 @@ public class Merge extends StdCommand
 			synchronized(("SYNC"+R.roomID()).intern())
 			{
 				R=CMLib.map().getRoom(R);
-				Area.State oldFlags=R.getArea().getAreaState();
+				final Area.State oldFlags=R.getArea().getAreaState();
 				R.getArea().setAreaState(Area.State.FROZEN);
 				CMLib.map().resetRoom(R);
 				boolean savemobs=false;
@@ -464,7 +464,7 @@ public class Merge extends StdCommand
 				{
 					for(int m=0;m<R.numInhabitants();m++)
 					{
-						MOB M=R.fetchInhabitant(m);
+						final MOB M=R.fetchInhabitant(m);
 						if((M!=null)&&(M.isSavable()))
 							if(tryMerge(mob,R,M,things,changes,onfields,ignore,noisy))
 								savemobs=true;
@@ -474,30 +474,30 @@ public class Merge extends StdCommand
 				{
 					for(int i=0;i<R.numItems();i++)
 					{
-						Item I=R.getItem(i);
+						final Item I=R.getItem(i);
 						if((I!=null)&&(tryMerge(mob,R,I,things,changes,onfields,ignore,noisy)))
 							saveitems=true;
 					}
 					for(int m=0;m<R.numInhabitants();m++)
 					{
-						MOB M=R.fetchInhabitant(m);
+						final MOB M=R.fetchInhabitant(m);
 						if((M!=null)&&(M.isSavable()))
 						{
 							for(int i=0;i<M.numItems();i++)
 							{
-								Item I=M.getItem(i);
+								final Item I=M.getItem(i);
 								if((I!=null)&&(tryMerge(mob,R,I,things,changes,onfields,ignore,noisy)))
 									savemobs=true;
 							}
-							ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(M);
+							final ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(M);
 							if(SK!=null)
 							{
-								for(Iterator<Environmental> i=SK.getShop().getStoreInventory();i.hasNext();)
+								for(final Iterator<Environmental> i=SK.getShop().getStoreInventory();i.hasNext();)
 								{
-									Environmental E=i.next();
+									final Environmental E=i.next();
 									if(E instanceof Item)
 									{
-										Item I=(Item)E;
+										final Item I=(Item)E;
 										if(tryMerge(mob,R,I,things,changes,onfields,ignore,noisy))
 											savemobs=true;
 									}
@@ -561,8 +561,8 @@ public class Merge extends StdCommand
 	{
 		if((M instanceof Physical) && (dbM instanceof Physical))
 		{
-			Physical PM=(Physical)M;
-			Physical dbPM=(Physical)dbM;
+			final Physical PM=(Physical)M;
+			final Physical dbPM=(Physical)dbM;
 			if(CMLib.flags().isCataloged(PM))
 			{
 				mob.tell("^H**Warning: Changes will remove this object from the catalog.");
@@ -574,7 +574,7 @@ public class Merge extends StdCommand
 			dbPM.image();
 		}
 
-		String[] statCodes = dbM.getStatCodes();
+		final String[] statCodes = dbM.getStatCodes();
 		int showFlag=-1;
 		if(CMProps.getIntVar(CMProps.Int.EDITORTYPE)>0)
 			showFlag=-999;
@@ -586,19 +586,19 @@ public class Merge extends StdCommand
 			mob.tell(name);
 			for(int i=0;i<statCodes.length;i++)
 			{
-				String statCode = M.getStatCodes()[i];
+				final String statCode = M.getStatCodes()[i];
 				if(ignores.contains(statCode)||((M instanceof MOB)&&statCode.equalsIgnoreCase("INVENTORY")))
 					continue;
-				String promptStr = CMStrings.capitalizeAndLower(M.getStatCodes()[i]);
-				String dbVal = dbM.getStat(statCode);
-				String loVal = M.getStat(statCode);
+				final String promptStr = CMStrings.capitalizeAndLower(M.getStatCodes()[i]);
+				final String dbVal = dbM.getStat(statCode);
+				final String loVal = M.getStat(statCode);
 				if(dbVal.equals(loVal))
 					continue;
 				++showNumber;
 				if((showFlag>0)&&(showFlag!=showNumber)) continue;
 				mob.tell("^H"+showNumber+". "+promptStr+"\n\rValue: ^W'"+loVal+"'\n\r^HDBVal: ^N'"+dbVal+"'");
 				if((showFlag!=showNumber)&&(showFlag>-999)) continue;
-				String res=mob.session().choose("D)atabase Value, E)dit Value, or N)o Change, or Q)uit All: ","DENQ", "N");
+				final String res=mob.session().choose("D)atabase Value, E)dit Value, or N)o Change, or Q)uit All: ","DENQ", "N");
 				if(res.trim().equalsIgnoreCase("N")) continue;
 				if(res.trim().equalsIgnoreCase("Q")) throw new CMException("Cancelled by user.");
 				didSomething=true;
@@ -631,19 +631,19 @@ public class Merge extends StdCommand
 		else
 			doType=CMClass.CMObjectType.LOCALE;
 
-		String theRest = CMParms.combineWithQuotes(commands, 0);
+		final String theRest = CMParms.combineWithQuotes(commands, 0);
 		DBConnector dbConnector=null;
-		String dbClass=CMParms.getParmStr(theRest,"DBCLASS","");
-		String dbService=CMParms.getParmStr(theRest,"DBSERVICE","");
-		String dbUser=CMParms.getParmStr(theRest,"DBUSER","");
-		String dbPass=CMParms.getParmStr(theRest,"DBPASS","");
-		int dbConns=CMParms.getParmInt(theRest,"DBCONNECTIONS",3);
-		int dbPingIntMins=CMParms.getParmInt(theRest,"DBPINGINTERVALMINS",30);
-		boolean dbReuse=CMParms.getParmBool(theRest,"DBREUSE",true);
-		String ignore=CMParms.getParmStr(theRest,"IGNORE","");
-		String maskStr=CMParms.getParmStr(theRest,"MASK","");
-		Set<String> ignores=new SHashSet(CMParms.parseCommas(ignore.toUpperCase(),true));
-		MaskingLibrary.CompiledZapperMask mask=CMLib.masking().maskCompile(maskStr);
+		final String dbClass=CMParms.getParmStr(theRest,"DBCLASS","");
+		final String dbService=CMParms.getParmStr(theRest,"DBSERVICE","");
+		final String dbUser=CMParms.getParmStr(theRest,"DBUSER","");
+		final String dbPass=CMParms.getParmStr(theRest,"DBPASS","");
+		final int dbConns=CMParms.getParmInt(theRest,"DBCONNECTIONS",3);
+		final int dbPingIntMins=CMParms.getParmInt(theRest,"DBPINGINTERVALMINS",30);
+		final boolean dbReuse=CMParms.getParmBool(theRest,"DBREUSE",true);
+		final String ignore=CMParms.getParmStr(theRest,"IGNORE","");
+		final String maskStr=CMParms.getParmStr(theRest,"MASK","");
+		final Set<String> ignores=new SHashSet(CMParms.parseCommas(ignore.toUpperCase(),true));
+		final MaskingLibrary.CompiledZapperMask mask=CMLib.masking().maskCompile(maskStr);
 		if(dbClass.length()==0)
 		{
 			mob.tell("This command requires DBCLASS= to be set.");
@@ -667,12 +667,12 @@ public class Merge extends StdCommand
 
 		dbConnector=new DBConnector(dbClass,dbService,dbUser,dbPass,dbConns,dbPingIntMins,dbReuse,false,false);
 		dbConnector.reconnect();
-		DBInterface dbInterface = new DBInterface(dbConnector,null);
+		final DBInterface dbInterface = new DBInterface(dbConnector,null);
 
-		DBConnection DBTEST=dbConnector.DBFetch();
+		final DBConnection DBTEST=dbConnector.DBFetch();
 		if(DBTEST!=null) dbConnector.DBDone(DBTEST);
 		mob.tell("Loading database rooms...");
-		List<Room> rooms = new LinkedList<Room>();
+		final List<Room> rooms = new LinkedList<Room>();
 		if((!dbConnector.amIOk())||(!dbInterface.isConnected()))
 		{
 			mob.tell("Failed to connect to database.");
@@ -683,42 +683,42 @@ public class Merge extends StdCommand
 		else
 		if(scope.equalsIgnoreCase("ROOM"))
 		{
-			Room R=dbInterface.DBReadRoomObject(mob.location().roomID(), false);
+			final Room R=dbInterface.DBReadRoomObject(mob.location().roomID(), false);
 			if(R!=null)
 				rooms.add(R);
 		}
 		else
-		for(Enumeration<Area> e=CMLib.map().areas();e.hasMoreElements();)
+		for(final Enumeration<Area> e=CMLib.map().areas();e.hasMoreElements();)
 			rooms.addAll(Arrays.asList(dbInterface.DBReadRoomObjects(e.nextElement().Name(), false)));
 		if(rooms.size()==0)
 		{
 			mob.tell("No rooms found.");
 			return false;
 		}
-		for(Room R : rooms)
+		for(final Room R : rooms)
 			dbInterface.DBReadContent(R.roomID(),R,false);
 		mob.tell("Data loaded, starting scan.");
-		Comparator<MOB> convM=new Comparator<MOB>()
+		final Comparator<MOB> convM=new Comparator<MOB>()
 		{
 			@Override
 			public int compare(MOB arg0, MOB arg1)
 			{
-				int x=arg0.ID().compareTo(arg1.ID());
+				final int x=arg0.ID().compareTo(arg1.ID());
 				return(x!=0)?x:arg0.Name().compareTo(arg1.Name());
 			}
 		};
-		Comparator<Item> convI=new Comparator<Item>()
+		final Comparator<Item> convI=new Comparator<Item>()
 		{
 			@Override
 			public int compare(Item arg0, Item arg1)
 			{
-				int x=arg0.ID().compareTo(arg1.ID());
+				final int x=arg0.ID().compareTo(arg1.ID());
 				return(x!=0)?x:arg0.Name().compareTo(arg1.Name());
 			}
 		};
 		try
 		{
-		for(Room dbR : rooms)
+		for(final Room dbR : rooms)
 		{
 			Room R=CMLib.map().getRoom(dbR.roomID());
 			if(R==null)
@@ -730,34 +730,34 @@ public class Merge extends StdCommand
 			}
 			synchronized(("SYNC"+dbR.roomID()).intern())
 			{
-				Area.State oldFlags=R.getArea().getAreaState();
+				final Area.State oldFlags=R.getArea().getAreaState();
 				R.getArea().setAreaState(Area.State.FROZEN);
 
 				boolean updateMobs=false;
 				boolean updateItems=false;
-				boolean updateRoom=false;
+				final boolean updateRoom=false;
 				R=CMLib.map().getRoom(R);
 				CMLib.map().resetRoom(R);
-				List<MOB> mobSetL=new Vector<MOB>();
-				for(Enumeration<MOB> e=dbR.inhabitants();e.hasMoreElements();)
+				final List<MOB> mobSetL=new Vector<MOB>();
+				for(final Enumeration<MOB> e=dbR.inhabitants();e.hasMoreElements();)
 					mobSetL.add(e.nextElement());
-				MOB[] mobSet=mobSetL.toArray(new MOB[0]);
+				final MOB[] mobSet=mobSetL.toArray(new MOB[0]);
 				Arrays.sort(mobSet, convM);
 				String lastName="";
 				int ct=1;
-				HashSet<MOB> doneM=new HashSet<MOB>();
-				for(MOB dbM : mobSet)
+				final HashSet<MOB> doneM=new HashSet<MOB>();
+				for(final MOB dbM : mobSet)
 				{
 					if(!lastName.equals(dbM.Name()))
 						ct=1;
 					else
 						ct++;
-					String rName=dbM.Name()+"."+ct;
+					final String rName=dbM.Name()+"."+ct;
 					MOB M=null;
 					int ctr=ct;
-					for(Enumeration<MOB> m = R.inhabitants();m.hasMoreElements();)
+					for(final Enumeration<MOB> m = R.inhabitants();m.hasMoreElements();)
 					{
-						MOB M1=m.nextElement();
+						final MOB M1=m.nextElement();
 						if(M1.Name().equalsIgnoreCase(dbM.Name())&&((--ctr)<=0))
 						{ M=M1; break;}
 					}
@@ -782,7 +782,7 @@ public class Merge extends StdCommand
 						{
 							if(!dbM.sameAs(M))
 							{
-								MOB oldM=(MOB)M.copyOf();
+								final MOB oldM=(MOB)M.copyOf();
 								if((dbMerge(mob,"^MMOB "+dbR.roomID()+"."+rName+"^N",dbM,M, ignores))
 								&&(!oldM.sameAs(M)))
 								{
@@ -791,26 +791,26 @@ public class Merge extends StdCommand
 								}
 							}
 						}
-						STreeSet<Item> itemSetL=new STreeSet<Item>(convI);
-						for(Enumeration<Item> e=dbM.items();e.hasMoreElements();)
+						final STreeSet<Item> itemSetL=new STreeSet<Item>(convI);
+						for(final Enumeration<Item> e=dbM.items();e.hasMoreElements();)
 							itemSetL.add(e.nextElement());
-						Item[] itemSet=itemSetL.toArray(new Item[0]);
+						final Item[] itemSet=itemSetL.toArray(new Item[0]);
 						Arrays.sort(itemSet, convI);
 						String lastIName="";
 						int ict=1;
-						HashSet<Item> doneI=new HashSet<Item>();
-						for(Item dbI : itemSet)
+						final HashSet<Item> doneI=new HashSet<Item>();
+						for(final Item dbI : itemSet)
 						{
 							if(!lastIName.equals(dbI.Name()))
 								ict=1;
 							else
 								ict++;
-							String rIName=dbI.Name()+"."+ict;
+							final String rIName=dbI.Name()+"."+ict;
 							Item I=null;
 							ctr=ict;
-							for(Enumeration<Item> i = M.items();i.hasMoreElements();)
+							for(final Enumeration<Item> i = M.items();i.hasMoreElements();)
 							{
-								Item I1=i.nextElement();
+								final Item I1=i.nextElement();
 								if(I1.Name().equalsIgnoreCase(dbI.Name())&&((--ctr)<=0))
 								{ I=I1; break;}
 							}
@@ -823,7 +823,7 @@ public class Merge extends StdCommand
 										I=(Item)dbI.copyOf();
 										M.addItem(I);
 										doneI.add(I);
-										Item cI=(dbI.container()==null)?null:M.findItem(dbI.container().Name());
+										final Item cI=(dbI.container()==null)?null:M.findItem(dbI.container().Name());
 										if(cI instanceof Container)
 											I.setContainer((Container)cI);
 										updateMobs=true;
@@ -837,7 +837,7 @@ public class Merge extends StdCommand
 								doneI.add(I);
 								if(!dbI.sameAs(I))
 								{
-									Item oldI=(Item)I.copyOf();
+									final Item oldI=(Item)I.copyOf();
 									if((dbMerge(mob,"^IITEM ^M"+dbR.roomID()+"."+dbM.Name()+"."+rIName+"^N",dbI,I, ignores))
 									&&(!oldI.sameAs(I)))
 									{
@@ -848,9 +848,9 @@ public class Merge extends StdCommand
 							}
 							lastIName=dbI.Name();
 						}
-						for(Enumeration<Item> i=M.items();i.hasMoreElements();)
+						for(final Enumeration<Item> i=M.items();i.hasMoreElements();)
 						{
-							Item I=i.nextElement();
+							final Item I=i.nextElement();
 							if(amMerging(doType,mask,I)&&(!doneI.contains(I))&&(!ignore.contains("EXTRA")))
 							{
 								if(mob.session().confirm("Item: "+R.roomID()+"."+M.Name()+"."+I.Name()+" not in database.\n\rWould you like to delete it (y/N)?", "N"))
@@ -864,9 +864,9 @@ public class Merge extends StdCommand
 					}
 					lastName=dbM.Name();
 				}
-				for(Enumeration<MOB> r=R.inhabitants();r.hasMoreElements();)
+				for(final Enumeration<MOB> r=R.inhabitants();r.hasMoreElements();)
 				{
-					MOB M=r.nextElement();
+					final MOB M=r.nextElement();
 					if(amMerging(doType,mask,M)&&(!doneM.contains(M))&&(M.isMonster())&&(!ignore.contains("EXTRA")))
 					{
 						if(mob.session().confirm("MOB: "+R.roomID()+"."+M.Name()+" not in database.\n\rWould you like to delete it (y/N)?", "N"))
@@ -878,26 +878,26 @@ public class Merge extends StdCommand
 					}
 				}
 
-				STreeSet<Item> itemSetL=new STreeSet<Item>(convI);
-				for(Enumeration<Item> e=dbR.items();e.hasMoreElements();)
+				final STreeSet<Item> itemSetL=new STreeSet<Item>(convI);
+				for(final Enumeration<Item> e=dbR.items();e.hasMoreElements();)
 					itemSetL.add(e.nextElement());
-				Item[] itemSet=itemSetL.toArray(new Item[0]);
+				final Item[] itemSet=itemSetL.toArray(new Item[0]);
 				Arrays.sort(itemSet, convI);
 				lastName="";
 				ct=1;
-				HashSet<Item> doneI=new HashSet<Item>();
-				for(Item dbI : itemSet)
+				final HashSet<Item> doneI=new HashSet<Item>();
+				for(final Item dbI : itemSet)
 				{
 					if(!lastName.equals(dbI.Name()))
 						ct=1;
 					else
 						ct++;
-					String rName=dbI.Name()+"."+ct;
+					final String rName=dbI.Name()+"."+ct;
 					Item I=null;
 					int ctr=ct;
-					for(Enumeration<Item> i = R.items();i.hasMoreElements();)
+					for(final Enumeration<Item> i = R.items();i.hasMoreElements();)
 					{
-						Item I1=i.nextElement();
+						final Item I1=i.nextElement();
 						if(I1.Name().equalsIgnoreCase(dbI.Name())&&((--ctr)<=0))
 						{ I=I1; break;}
 					}
@@ -910,7 +910,7 @@ public class Merge extends StdCommand
 								I=(Item)dbI.copyOf();
 								R.addItem(I);
 								doneI.add(I);
-								Item cI=(dbI.container()==null)?null:R.findItem(dbI.container().Name());
+								final Item cI=(dbI.container()==null)?null:R.findItem(dbI.container().Name());
 								if(cI instanceof Container)
 									I.setContainer((Container)cI);
 								updateItems=true;
@@ -924,7 +924,7 @@ public class Merge extends StdCommand
 						doneI.add(I);
 						if(!dbI.sameAs(I))
 						{
-							Item oldI=(Item)I.copyOf();
+							final Item oldI=(Item)I.copyOf();
 							if((dbMerge(mob,"^IITEM "+dbR.roomID()+"."+rName+"^N",dbI,I, ignores))
 							&&(!oldI.sameAs(I)))
 							{
@@ -935,9 +935,9 @@ public class Merge extends StdCommand
 					}
 					lastName=dbI.Name();
 				}
-				for(Enumeration<Item> i=R.items();i.hasMoreElements();)
+				for(final Enumeration<Item> i=R.items();i.hasMoreElements();)
 				{
-					Item I=i.nextElement();
+					final Item I=i.nextElement();
 					if(amMerging(doType,mask,I)&&(!doneI.contains(I))&&(!ignore.contains("EXTRA")))
 					{
 						if(mob.session().confirm("Item: "+R.roomID()+"."+I.Name()+" not in database.\n\rWould you like to delete it (y/N)?", "N"))
@@ -957,7 +957,7 @@ public class Merge extends StdCommand
 			dbR.destroy();
 		}
 		mob.tell("Done");
-		}catch(CMException cme)
+		}catch(final CMException cme)
 		{
 			mob.tell("Cancelled.");
 		}

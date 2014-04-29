@@ -96,10 +96,10 @@ public class Thief_TagTurf extends ThiefSkill
 		Room target=mob.location();
 		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof Room))
 			target=(Room)givenTarget;
-		Ability A=target.fetchEffect(ID());
+		final Ability A=target.fetchEffect(ID());
 		if(A!=null)
 		{
-			Pair<Clan,Integer> clanRole=mob.getClanRole(A.text());
+			final Pair<Clan,Integer> clanRole=mob.getClanRole(A.text());
 			if((A.text().equals(mob.Name())
 				||((clanRole!=null)&&(clanRole.second.intValue()>=clanRole.first.getGovernment().getAcceptPos())))
 			&&(CMParms.combine(commands,0).equalsIgnoreCase("UNTAG")))
@@ -129,16 +129,16 @@ public class Thief_TagTurf extends ThiefSkill
 
 
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
-		CMMsg msg=CMClass.getMsg(mob,null,this,auto?CMMsg.MASK_ALWAYS:CMMsg.MSG_DELICATE_HANDS_ACT,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,auto?"":"<S-NAME> tag(s) this place as <S-HIS-HER> turf.");
+		final CMMsg msg=CMClass.getMsg(mob,null,this,auto?CMMsg.MASK_ALWAYS:CMMsg.MSG_DELICATE_HANDS_ACT,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,auto?"":"<S-NAME> tag(s) this place as <S-HIS-HER> turf.");
 		if(!success)
 			return beneficialVisualFizzle(mob,null,auto?"":"<S-NAME> attempt(s) to tag this place, but can't get into it.");
 		else
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
-			Clan C=CMLib.clans().findRivalrousClan(mob);
+			final Clan C=CMLib.clans().findRivalrousClan(mob);
 			if(C!=null)
 				setMiscText(C.clanID());
 			else

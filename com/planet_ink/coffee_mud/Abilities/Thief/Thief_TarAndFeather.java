@@ -54,7 +54,7 @@ public class Thief_TarAndFeather extends ThiefSkill
 			return;
 		if((((Item)affected).amWearingAt(Wearable.IN_INVENTORY))||(((Item)affected).amDestroyed()))
 		{
-			Item I=(Item)affected;
+			final Item I=(Item)affected;
 			affected.delEffect(this);
 			setAffectedOne(null);
 			I.destroy();
@@ -86,7 +86,7 @@ public class Thief_TarAndFeather extends ThiefSkill
 			mob.tell("Not while in combat!");
 			return false;
 		}
-		MOB target=getTarget(mob,commands,givenTarget);
+		final MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
 		if(CMLib.flags().isSitting(mob))
@@ -103,7 +103,7 @@ public class Thief_TarAndFeather extends ThiefSkill
 		}
 		for(int i=0;i<target.numItems();i++)
 		{
-			Item I=target.getItem(i);
+			final Item I=target.getItem(i);
 			if((I!=null)&&(!I.amWearingAt(Wearable.IN_INVENTORY))&&(!I.amWearingAt(Wearable.WORN_FLOATING_NEARBY)))
 			{
 				mob.tell(target.name(mob)+" must be undressed first.");
@@ -113,22 +113,22 @@ public class Thief_TarAndFeather extends ThiefSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MALICIOUS|CMMsg.MSG_THIEF_ACT,"<S-NAME> tar(s) and feather(s) <T-NAMESELF>!");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MALICIOUS|CMMsg.MSG_THIEF_ACT,"<S-NAME> tar(s) and feather(s) <T-NAMESELF>!");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				Item I=CMClass.getArmor("GenArmor");
+				final Item I=CMClass.getArmor("GenArmor");
 				if(I!=null)
 				{
 					target.addItem(I);
 					long wearCode=0;
-					Wearable.CODES codes = Wearable.CODES.instance();
+					final Wearable.CODES codes = Wearable.CODES.instance();
 					for(int i=0;i<codes.all_ordered().length;i++)
 					{
-						long code = codes.all_ordered()[i];
+						final long code = codes.all_ordered()[i];
 						if((!CMath.bset(target.charStats().getWearableRestrictionsBitmap(),code))
 						&&(code!=Wearable.WORN_FLOATING_NEARBY)
 						&&(code!=Wearable.WORN_EYES)
@@ -149,8 +149,8 @@ public class Thief_TarAndFeather extends ThiefSkill
 					I.phyStats().setSensesMask(PhyStats.SENSE_ITEMNOREMOVE);
 					I.setRawLogicalAnd(true);
 					I.addNonUninvokableEffect((Ability)this.copyOf());
-					Behavior B=CMClass.getBehavior("Decay");
-					long thetime=(long)CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY)*3;
+					final Behavior B=CMClass.getBehavior("Decay");
+					final long thetime=(long)CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY)*3;
 					B.setParms("notrigger=1 answer=dissolves! min="+thetime+" max="+thetime+" chance=100");
 					I.addBehavior(B);
 				}

@@ -40,17 +40,17 @@ public class BehaviorNext extends StdWebMacro
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
-		java.util.Map<String,String> parms=parseParms(parm);
-		String last=httpReq.getUrlParameter("BEHAVIOR");
+		final java.util.Map<String,String> parms=parseParms(parm);
+		final String last=httpReq.getUrlParameter("BEHAVIOR");
 		if(parms.containsKey("RESET"))
 		{
 			if(last!=null) httpReq.removeUrlParameter("BEHAVIOR");
 			return "";
 		}
 		String lastID="";
-		for(Enumeration b=CMClass.behaviors();b.hasMoreElements();)
+		for(final Enumeration b=CMClass.behaviors();b.hasMoreElements();)
 		{
-			Behavior B=(Behavior)b.nextElement();
+			final Behavior B=(Behavior)b.nextElement();
 			if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!B.ID().equals(lastID))))
 			{
 				httpReq.addFakeUrlParameter("BEHAVIOR",B.ID());

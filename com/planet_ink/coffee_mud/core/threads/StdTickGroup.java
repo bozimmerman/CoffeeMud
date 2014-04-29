@@ -95,12 +95,12 @@ public class StdTickGroup implements TickableGroup, Cloneable
 	{
 		try
 		{
-			StdTickGroup T=(StdTickGroup)this.clone();
+			final StdTickGroup T=(StdTickGroup)this.clone();
 			T.tickers.clear();
 			T.tickers.addAll(tickers);
 			return T;
 		}
-		catch(Exception e){}
+		catch(final Exception e){}
 		return this;
 	}
 
@@ -147,9 +147,8 @@ public class StdTickGroup implements TickableGroup, Cloneable
 	public Iterator<TickClient> getLocalItems(int itemTypes, Room R)
 	{
 		LinkedList<TickClient> localItems=null;
-		for(final Iterator<TickClient> e=tickers.iterator();e.hasNext();)
+		for (TickClient C : tickers)
 		{
-			final TickClient C=e.next();
 			switch(itemTypes)
 			{
 			case 0:
@@ -272,7 +271,7 @@ public class StdTickGroup implements TickableGroup, Cloneable
 			if((CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
 			&&(!allSuspended))
 			{
-				for(Iterator<TickClient> i=tickers();i.hasNext();)
+				for(final Iterator<TickClient> i=tickers();i.hasNext();)
 				{
 					final TickClient client=i.next();
 					lastClient=client;

@@ -44,14 +44,14 @@ public class ClanPremise extends StdCommand
 	public boolean execute(final MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		String clanName=(commands.size()>1)?CMParms.combine(commands,1,commands.size()):"";
+		final String clanName=(commands.size()>1)?CMParms.combine(commands,1,commands.size()):"";
 
 		Clan chkC=null;
 		final boolean skipChecks=mob.getClanRole(mob.Name())!=null;
 		if(skipChecks) chkC=mob.getClanRole(mob.Name()).first;
 
 		if(chkC==null)
-		for(Pair<Clan,Integer> c : mob.clans())
+		for(final Pair<Clan,Integer> c : mob.clans())
 			if((clanName.length()==0)||(CMLib.english().containsString(c.first.getName(), clanName))
 			&&(c.first.getAuthority(c.second.intValue(), Clan.Function.PREMISE)!=Authority.CAN_NOT_DO))
 			{	chkC=c.first; break; }
@@ -91,7 +91,7 @@ public class ClanPremise extends StdCommand
 				{
 					return;
 				}
-				Vector cmds=new Vector();
+				final Vector cmds=new Vector();
 				cmds.addElement(getAccessWords()[0]);
 				cmds.addElement(premise);
 				if(skipChecks||CMLib.clans().goForward(mob,C,cmds,Clan.Function.PREMISE,true))

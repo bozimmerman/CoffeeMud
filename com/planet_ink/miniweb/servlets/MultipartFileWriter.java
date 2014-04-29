@@ -48,12 +48,12 @@ public class MultipartFileWriter implements SimpleServlet
 	{
 		if(parts != null)
 		{
-			for(MultiPartData part : parts)
+			for(final MultiPartData part : parts)
 			{
-				String filename = part.getVariables().get("filename");
+				final String filename = part.getVariables().get("filename");
 				if(filename != null)
 				{
-					File f = new File(filename);
+					final File f = new File(filename);
 					FileOutputStream fout=null;
 					try
 					{
@@ -77,12 +77,12 @@ public class MultipartFileWriter implements SimpleServlet
 	{
 		try
 		{
-			StringBuilder filesList=new StringBuilder("");
+			final StringBuilder filesList=new StringBuilder("");
 			response.setMimeType(MIMEType.html.getType());
 			writeFilesFromParts(request.getMultiParts(), filesList);
 			response.getOutputStream().write(("<html><body><h1>Done</h1><br>"+filesList.toString()+"</body></html>").getBytes());
 		}
-		catch (IOException e)
+		catch (final IOException e)
 		{
 			response.setStatusCode(500);
 		}

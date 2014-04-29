@@ -99,13 +99,13 @@ public class StdHandOfCards extends StdContainer implements MiscMagic, HandOfCar
 	@Override
 	public boolean shuffleDeck()
 	{
-		List<Item> V=getContents();
-		Environmental own=owner();
+		final List<Item> V=getContents();
+		final Environmental own=owner();
 		if(V.size()==0)
 			return false;
 		for(int i=0;i<V.size()*5;i++)
 		{
-			Item I=V.get(CMLib.dice().roll(1,V.size(),-1));
+			final Item I=V.get(CMLib.dice().roll(1,V.size(),-1));
 			I.setContainer(this);
 			if(own instanceof MOB)
 			{
@@ -132,9 +132,9 @@ public class StdHandOfCards extends StdContainer implements MiscMagic, HandOfCar
 	@Override
 	public PlayingCard getTopCardFromDeck()
 	{
-		List<Item> deckContents=getContents();
+		final List<Item> deckContents=getContents();
 		if(deckContents.size()==0) return null;
-		PlayingCard card=(PlayingCard)deckContents.get(0);
+		final PlayingCard card=(PlayingCard)deckContents.get(0);
 		if(card.container() instanceof HandOfCards)
 			((HandOfCards)card.container()).removeCard(card);
 		return card;
@@ -203,7 +203,7 @@ public class StdHandOfCards extends StdContainer implements MiscMagic, HandOfCar
 	@Override
 	public boolean removeCard(PlayingCard card)
 	{
-		List<Item> handContents=getContents();
+		final List<Item> handContents=getContents();
 		if(handContents.contains(card))
 		{
 			if((card.owner() instanceof MOB)
@@ -225,7 +225,7 @@ public class StdHandOfCards extends StdContainer implements MiscMagic, HandOfCar
 	@Override
 	public boolean removeAllCards()
 	{
-		List<Item> handContents=getContents();
+		final List<Item> handContents=getContents();
 		if(handContents.size()==0) return false;
 		for(int i=0;i<handContents.size();i++)
 			removeCard((PlayingCard)handContents.get(i));
@@ -240,11 +240,11 @@ public class StdHandOfCards extends StdContainer implements MiscMagic, HandOfCar
 	@Override
 	public String[] getContentsEncoded()
 	{
-		List<Item> contents=getContents();
-		String[] encodedDeck=new String[contents.size()];
+		final List<Item> contents=getContents();
+		final String[] encodedDeck=new String[contents.size()];
 		for(int i=0;i<contents.size();i++)
 		{
-			PlayingCard card=(PlayingCard)contents.get(i);
+			final PlayingCard card=(PlayingCard)contents.get(i);
 			encodedDeck[i]=card.getStringEncodedSuit()+card.getStringEncodedValue();
 		}
 		return encodedDeck;
@@ -256,7 +256,7 @@ public class StdHandOfCards extends StdContainer implements MiscMagic, HandOfCar
 	@Override
 	public void sortByValueAceHigh()
 	{
-		List<Item> unsorted=new Vector<Item>();
+		final List<Item> unsorted=new Vector<Item>();
 		unsorted.addAll(getContents());
 		if(unsorted.size()==0) return;
 		// first step is to get them out of the deck and
@@ -271,8 +271,8 @@ public class StdHandOfCards extends StdContainer implements MiscMagic, HandOfCar
 			int cardBitEncodedValue=card.getBitEncodedValue();
 			for(int u=1;u<unsorted.size();u++)
 			{
-				PlayingCard card2=(PlayingCard)unsorted.get(u);
-				int card2BitEncodedValue=card2.getBitEncodedValue();
+				final PlayingCard card2=(PlayingCard)unsorted.get(u);
+				final int card2BitEncodedValue=card2.getBitEncodedValue();
 				if((card2BitEncodedValue<cardBitEncodedValue)
 				||((card2BitEncodedValue==cardBitEncodedValue)
 					&&(card2.getBitEncodedSuit()<card.getBitEncodedSuit())))
@@ -293,7 +293,7 @@ public class StdHandOfCards extends StdContainer implements MiscMagic, HandOfCar
 	@Override
 	public void sortByValueAceLow()
 	{
-		List<Item> unsorted=new Vector<Item>();
+		final List<Item> unsorted=new Vector<Item>();
 		unsorted.addAll(getContents());
 		if(unsorted.size()==0) return;
 		// first step is to get them out of the deck and
@@ -309,7 +309,7 @@ public class StdHandOfCards extends StdContainer implements MiscMagic, HandOfCar
 			if(cardBitEncodedValue==14) cardBitEncodedValue=1;
 			for(int u=1;u<unsorted.size();u++)
 			{
-				PlayingCard card2=(PlayingCard)unsorted.get(u);
+				final PlayingCard card2=(PlayingCard)unsorted.get(u);
 				int card2BitEncodedValue=card2.getBitEncodedValue();
 				if(card2BitEncodedValue==14) card2BitEncodedValue=1;
 				if((card2BitEncodedValue<cardBitEncodedValue)
@@ -340,7 +340,7 @@ public class StdHandOfCards extends StdContainer implements MiscMagic, HandOfCar
 		// the other methods should automatically create and
 		// destroy the hands as cards are dealt and returned
 		// to the deck respectively!
-		HandOfCards hand=(HandOfCards)CMClass.getMiscMagic("StdHandOfCards");
+		final HandOfCards hand=(HandOfCards)CMClass.getMiscMagic("StdHandOfCards");
 		if(player instanceof MOB)
 		{
 			if(hand.owner()==null)
@@ -385,12 +385,12 @@ public class StdHandOfCards extends StdContainer implements MiscMagic, HandOfCar
 	@Override
 	public PlayingCard getCard(String cardStringCode)
 	{
-		List<Item> handContents=getContents();
+		final List<Item> handContents=getContents();
 		if(handContents.size()==0) return null;
 		if(cardStringCode.length()<2) return null;
 		for(int i=0;i<handContents.size();i++)
 		{
-			PlayingCard card=(PlayingCard)handContents.get(i);
+			final PlayingCard card=(PlayingCard)handContents.get(i);
 			if((card.getStringEncodedSuit().charAt(0)==cardStringCode.charAt(0))
 			&&card.getStringEncodedValue().equalsIgnoreCase(cardStringCode.substring(1)))
 				return card;
@@ -407,13 +407,13 @@ public class StdHandOfCards extends StdContainer implements MiscMagic, HandOfCar
 	@Override
 	public PlayingCard getFirstCardOfValue(String cardStringCode)
 	{
-		List<Item> handContents=getContents();
+		final List<Item> handContents=getContents();
 		if(handContents.size()==0) return null;
 		if(cardStringCode.length()==0) return null;
 		if(cardStringCode.length()==1) cardStringCode=" "+cardStringCode;
 		for(int i=0;i<handContents.size();i++)
 		{
-			PlayingCard card=(PlayingCard)handContents.get(i);
+			final PlayingCard card=(PlayingCard)handContents.get(i);
 			if(card.getStringEncodedValue().equalsIgnoreCase(cardStringCode.substring(1)))
 				return card;
 		}
@@ -445,12 +445,12 @@ public class StdHandOfCards extends StdContainer implements MiscMagic, HandOfCar
 	@Override
 	public PlayingCard getFirstCardOfSuit(String cardStringCode)
 	{
-		List<Item> handContents=getContents();
+		final List<Item> handContents=getContents();
 		if(handContents.size()==0) return null;
 		if(cardStringCode.length()==0) return null;
 		for(int i=0;i<handContents.size();i++)
 		{
-			PlayingCard card=(PlayingCard)handContents.get(i);
+			final PlayingCard card=(PlayingCard)handContents.get(i);
 			if(card.getStringEncodedSuit().charAt(0)==cardStringCode.charAt(0))
 				return card;
 		}
@@ -475,11 +475,11 @@ public class StdHandOfCards extends StdContainer implements MiscMagic, HandOfCar
 	{
 		if((cardBitCode&(1+2+4+8))==1)
 			cardBitCode=(cardBitCode&(16+32))+14;
-		List<Item> handContents=getContents();
+		final List<Item> handContents=getContents();
 		if(handContents.size()==0) return null;
 		for(int i=0;i<handContents.size();i++)
 		{
-			PlayingCard card=(PlayingCard)handContents.get(i);
+			final PlayingCard card=(PlayingCard)handContents.get(i);
 			if(card.phyStats().ability()==cardBitCode)
 				return card;
 		}
@@ -494,13 +494,13 @@ public class StdHandOfCards extends StdContainer implements MiscMagic, HandOfCar
 	@Override
 	public PlayingCard getFirstCardOfValue(int cardBitCode)
 	{
-		List<Item> handContents=getContents();
+		final List<Item> handContents=getContents();
 		if(handContents.size()==0) return null;
 		cardBitCode=cardBitCode&(1+2+4+8);
 		if(cardBitCode==1) cardBitCode=14;
 		for(int i=0;i<handContents.size();i++)
 		{
-			PlayingCard card=(PlayingCard)handContents.get(i);
+			final PlayingCard card=(PlayingCard)handContents.get(i);
 			if(card.getBitEncodedValue()==cardBitCode)
 				return card;
 		}
@@ -531,12 +531,12 @@ public class StdHandOfCards extends StdContainer implements MiscMagic, HandOfCar
 	@Override
 	public PlayingCard getFirstCardOfSuit(int cardBitCode)
 	{
-		List<Item> handContents=getContents();
+		final List<Item> handContents=getContents();
 		if(handContents.size()==0) return null;
 		cardBitCode=cardBitCode&(16+32);
 		for(int i=0;i<handContents.size();i++)
 		{
-			PlayingCard card=(PlayingCard)handContents.get(i);
+			final PlayingCard card=(PlayingCard)handContents.get(i);
 			if(card.getBitEncodedSuit()==cardBitCode)
 				return card;
 		}
@@ -574,11 +574,11 @@ public class StdHandOfCards extends StdContainer implements MiscMagic, HandOfCar
 			{
 				// now we build a string list of the cards which
 				// are marked as FACE-UP
-				StringBuffer str=new StringBuffer("");
-				List<Item> cards=getContents();
+				final StringBuffer str=new StringBuffer("");
+				final List<Item> cards=getContents();
 				for(int c=0;c<cards.size();c++)
 				{
-					PlayingCard card=(PlayingCard)cards.get(c);
+					final PlayingCard card=(PlayingCard)cards.get(c);
 					if(card.isFaceUp())
 						str.append(card.name()+", ");
 				}

@@ -48,7 +48,7 @@ public class Spell_PrayerShield extends Spell
 		// undo the affects of this spell
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		if(canBeUninvoked())
 			mob.tell("Your shield against prayers fades.");
 
@@ -64,7 +64,7 @@ public class Spell_PrayerShield extends Spell
 		{
 			if(target instanceof MOB)
 			{
-				MOB victim=((MOB)target).getVictim();
+				final MOB victim=((MOB)target).getVictim();
 				if((victim!=null)&&(CMLib.flags().domainAbilities(victim,Ability.ACODE_PRAYER).size()==0))
 					return Ability.QUALITY_INDIFFERENT;
 			}
@@ -78,7 +78,7 @@ public class Spell_PrayerShield extends Spell
 		if(!(affected instanceof MOB))
 			return super.okMessage(myHost,msg);
 
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		if((msg.amITarget(mob))
 		&&(CMath.bset(msg.targetMajor(),CMMsg.MASK_MALICIOUS))
 		&&(msg.targetMinor()==CMMsg.TYP_CAST_SPELL)
@@ -99,16 +99,16 @@ public class Spell_PrayerShield extends Spell
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		MOB target=getTarget(mob,commands,givenTarget);
+		final MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> look(s) protected from prayers.":"^S<S-NAME> invoke(s) an anti-prayer shield around <T-NAMESELF>.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> look(s) protected from prayers.":"^S<S-NAME> invoke(s) an anti-prayer shield around <T-NAMESELF>.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

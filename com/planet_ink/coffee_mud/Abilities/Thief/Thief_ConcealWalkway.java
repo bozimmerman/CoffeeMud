@@ -81,7 +81,7 @@ public class Thief_ConcealWalkway extends ThiefSkill
 			}
 			else
 			{
-				Set<MOB> grp=invoker().getGroupMembers(new HashSet<MOB>());
+				final Set<MOB> grp=invoker().getGroupMembers(new HashSet<MOB>());
 				if(!grp.contains(msg.source()))
 				{
 					unInvoke();
@@ -104,7 +104,7 @@ public class Thief_ConcealWalkway extends ThiefSkill
 			return false;
 		}
 		Environmental chkE=null;
-		String typed=CMParms.combine(commands,0);
+		final String typed=CMParms.combine(commands,0);
 		if(Directions.getGoodDirectionCode(typed)<0)
 			chkE=mob.location().fetchFromMOBRoomItemExit(mob,null,typed,Wearable.FILTER_WORNONLY);
 		else
@@ -118,7 +118,7 @@ public class Thief_ConcealWalkway extends ThiefSkill
 			mob.tell("You don't see any directions called '"+typed+"' here.");
 			return false;
 		}
-		Room R2=mob.location().getRoomInDir(direction);
+		final Room R2=mob.location().getRoomInDir(direction);
 		if((!CMath.bset(mob.location().domainType(),Room.INDOORS))
 		&&(R2!=null)
 		&&(!CMath.bset(R2.domainType(),Room.INDOORS)))
@@ -126,7 +126,7 @@ public class Thief_ConcealWalkway extends ThiefSkill
 			mob.tell("This only works on walkways into or within buildings.");
 			return false;
 		}
-		Exit X=(Exit)chkE;
+		final Exit X=(Exit)chkE;
 		if((!auto)&&(X.phyStats().level()>(adjustedLevel(mob,asLevel)*2)))
 		{
 			mob.tell("You aren't good enough to conceal that direction.");
@@ -136,18 +136,18 @@ public class Thief_ConcealWalkway extends ThiefSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,X,this,CMMsg.MSG_THIEF_ACT,"<S-NAME> conceal(s) <T-NAME>.",CMMsg.MSG_THIEF_ACT,null,CMMsg.MSG_THIEF_ACT,null);
+			final CMMsg msg=CMClass.getMsg(mob,X,this,CMMsg.MSG_THIEF_ACT,"<S-NAME> conceal(s) <T-NAME>.",CMMsg.MSG_THIEF_ACT,null,CMMsg.MSG_THIEF_ACT,null);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				Ability A=(Ability)super.copyOf();
+				final Ability A=(Ability)super.copyOf();
 				A.setInvoker(mob);
 				A.setAbilityCode((adjustedLevel(mob,asLevel)*2)-X.phyStats().level());
-				Room R=mob.location();
+				final Room R=mob.location();
 				if((CMLib.law().doesOwnThisProperty(mob,R))
 				||((R2!=null)&&(CMLib.law().doesOwnThisProperty(mob,R2))))
 				{

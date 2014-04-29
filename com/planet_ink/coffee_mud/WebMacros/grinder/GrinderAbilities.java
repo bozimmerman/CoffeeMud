@@ -40,14 +40,14 @@ public class GrinderAbilities {
 
 	public static String modifyAbility(HTTPRequest httpReq, java.util.Map<String,String> parms, Ability oldA, Ability A)
 	{
-		String replaceCommand=httpReq.getUrlParameter("REPLACE");
+		final String replaceCommand=httpReq.getUrlParameter("REPLACE");
 		if((replaceCommand != null)
 		&& (replaceCommand.length()>0)
 		&& (replaceCommand.indexOf('=')>0))
 		{
-			int eq=replaceCommand.indexOf('=');
-			String field=replaceCommand.substring(0,eq);
-			String value=replaceCommand.substring(eq+1);
+			final int eq=replaceCommand.indexOf('=');
+			final String field=replaceCommand.substring(0,eq);
+			final String value=replaceCommand.substring(eq+1);
 			httpReq.addFakeUrlParameter(field, value);
 			httpReq.addFakeUrlParameter("REPLACE","");
 		}
@@ -55,7 +55,7 @@ public class GrinderAbilities {
 		old=httpReq.getUrlParameter("NAME");
 		A.setStat("NAME",(old==null)?"NAME":old);
 		int x1=CMath.s_int(httpReq.getUrlParameter("CLASSIFICATION_ACODE"));
-		int x2=CMath.s_int(httpReq.getUrlParameter("CLASSIFICATION_DOMAIN"));
+		final int x2=CMath.s_int(httpReq.getUrlParameter("CLASSIFICATION_DOMAIN"));
 		A.setStat("CLASSIFICATION",""+((x2<<5)+x1));
 		old=httpReq.getUrlParameter("TRIGSTR");
 		A.setStat("TRIGSTR",(old==null)?"TRIGSTR":old.toUpperCase().trim());
@@ -73,7 +73,7 @@ public class GrinderAbilities {
 		A.setStat("TICKAFFECTS",(old==null)?"":""+old.equalsIgnoreCase("on"));
 		old=httpReq.getUrlParameter("AUTOINVOKE");
 		A.setStat("AUTOINVOKE",(old==null)?"":""+old.equalsIgnoreCase("on"));
-		Vector V=new Vector();
+		final Vector V=new Vector();
 		if(httpReq.isUrlParameter("ABILITY_FLAGS"))
 		{
 			String id="";
@@ -203,8 +203,8 @@ public class GrinderAbilities {
 				int x=1;
 				while(httpReq.isUrlParameter("HASHWORD"+x))
 				{
-					String word=httpReq.getUrlParameter("HASHWORD"+x).toUpperCase().trim();
-					String def=httpReq.getUrlParameter("HASHWORDDEF"+x);
+					final String word=httpReq.getUrlParameter("HASHWORD"+x).toUpperCase().trim();
+					final String def=httpReq.getUrlParameter("HASHWORDDEF"+x);
 					if((def!=null)&&(def.length()>0)&&(word.length()>0))
 						((Language)A).translationHash(A.ID()).put(word,def);
 					x++;

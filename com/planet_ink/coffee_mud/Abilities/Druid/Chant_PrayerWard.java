@@ -49,7 +49,7 @@ public class Chant_PrayerWard extends Chant
 		// undo the affects of this spell
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		if(canBeUninvoked())
 			mob.tell("Your ward against prayers fades.");
 
@@ -64,7 +64,7 @@ public class Chant_PrayerWard extends Chant
 		{
 			if(target instanceof MOB)
 			{
-				MOB victim=((MOB)target).getVictim();
+				final MOB victim=((MOB)target).getVictim();
 				if((victim!=null)&&(CMLib.flags().domainAbilities(victim,Ability.ACODE_PRAYER).size()==0))
 					return Ability.QUALITY_INDIFFERENT;
 			}
@@ -78,7 +78,7 @@ public class Chant_PrayerWard extends Chant
 		if(!(affected instanceof MOB))
 			return super.okMessage(myHost,msg);
 
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		if((msg.amITarget(mob))
 		&&(CMath.bset(msg.targetMajor(),CMMsg.MASK_MALICIOUS))
 		&&(msg.targetMinor()==CMMsg.TYP_CAST_SPELL)
@@ -112,10 +112,10 @@ public class Chant_PrayerWard extends Chant
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> <T-IS-ARE> protected from prayers.":"^S<S-NAME> chant(s) for a ward against prayers around <T-NAMESELF>.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> <T-IS-ARE> protected from prayers.":"^S<S-NAME> chant(s) for a ward against prayers around <T-NAMESELF>.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

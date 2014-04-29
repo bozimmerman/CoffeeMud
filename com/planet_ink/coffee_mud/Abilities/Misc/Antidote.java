@@ -48,11 +48,11 @@ public class Antidote extends StdAbility
 
 	public List<Ability> returnOffensiveAffects(Physical fromMe)
 	{
-		Vector offenders=new Vector();
+		final Vector offenders=new Vector();
 
 		for(int a=0;a<fromMe.numEffects();a++) // personal
 		{
-			Ability A=fromMe.fetchEffect(a);
+			final Ability A=fromMe.fetchEffect(a);
 			if((A!=null)
 			&&((A.classificationCode()&ALL_ACODES)==Ability.ACODE_POISON)
 			&&((text().length()==0)||(A.name().toUpperCase().indexOf(text().toUpperCase())>=0)||(A.ID().toUpperCase().indexOf(text().toUpperCase())>=0)))
@@ -69,7 +69,7 @@ public class Antidote extends StdAbility
 		{
 			if(!processing)
 			{
-				Item myItem=(Item)affected;
+				final Item myItem=(Item)affected;
 				if(myItem.owner()==null) return;
 				processing=true;
 				if(msg.amITarget(myItem))
@@ -106,14 +106,14 @@ public class Antidote extends StdAbility
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		MOB target=this.getTarget(mob,commands,givenTarget);
+		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
-		List<Ability> offensiveAffects=returnOffensiveAffects(target);
+		final boolean success=proficiencyCheck(mob,0,auto);
+		final List<Ability> offensiveAffects=returnOffensiveAffects(target);
 
 		if((success)&&(offensiveAffects.size()>0))
 		{
@@ -121,7 +121,7 @@ public class Antidote extends StdAbility
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_OK_VISUAL,null);
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_OK_VISUAL,null);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

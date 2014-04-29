@@ -53,7 +53,7 @@ public class Prayer_BoneMoon extends Prayer
 		if(affected==null) return;
 		if(canBeUninvoked())
 		{
-			Room R=CMLib.map().roomLocation(affected);
+			final Room R=CMLib.map().roomLocation(affected);
 			if((R!=null)&&(CMLib.flags().isInTheGame(affected,true)))
 				R.showHappens(CMMsg.MSG_OK_VISUAL,"The bone moon fades.");
 		}
@@ -65,11 +65,11 @@ public class Prayer_BoneMoon extends Prayer
 	{
 		if((affected!=null)&&(affected instanceof Room))
 		{
-			Room R=(Room)affected;
+			final Room R=(Room)affected;
 			DeadBody B=null;
 			for(int i=0;i<R.numItems();i++)
 			{
-				Item I=R.getItem(i);
+				final Item I=R.getItem(i);
 				if((I!=null)
 				&&(I instanceof DeadBody)
 				&&(I.container()==null)
@@ -97,7 +97,7 @@ public int castingQuality(MOB mob, Physical target)
 		{
 			if((mob.isMonster())&&(mob.isInCombat()))
 				return Ability.QUALITY_INDIFFERENT;
-			Room R=mob.location();
+			final Room R=mob.location();
 			if(R!=null)
 			{
 				for(final Enumeration<Ability> a=R.effects();a.hasMoreElements();)
@@ -115,7 +115,7 @@ public int castingQuality(MOB mob, Physical target)
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		Room target=mob.location();
+		final Room target=mob.location();
 		if(target==null) return false;
 		if(target.fetchEffect(ID())!=null)
 		{
@@ -136,7 +136,7 @@ public int castingQuality(MOB mob, Physical target)
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
@@ -144,7 +144,7 @@ public int castingQuality(MOB mob, Physical target)
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> "+prayWord(mob)+".^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> "+prayWord(mob)+".^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

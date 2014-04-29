@@ -62,7 +62,7 @@ public class CMClass extends ClassLoader
 	public CMClass()
 	{
 		super();
-		char c=Thread.currentThread().getThreadGroup().getName().charAt(0);
+		final char c=Thread.currentThread().getThreadGroup().getName().charAt(0);
 		if(clss==null) clss=new CMClass[256];
 		if(clss[c]==null) clss[c]=this;
 	}
@@ -251,7 +251,7 @@ public class CMClass extends ClassLoader
 			Class.forName (className);
 			return true;
 		}
-		catch (ClassNotFoundException exception)
+		catch (final ClassNotFoundException exception)
 		{
 			return false;
 		}
@@ -395,7 +395,7 @@ public class CMClass extends ClassLoader
 		{
 			return CMClass.CMObjectType.valueOf(s);
 		}
-		catch(Exception e)
+		catch(final Exception e)
 		{
 			return (CMClass.CMObjectType)CMath.s_valueOf(CMClass.CMObjectType.values(), s.toUpperCase().trim());
 		}
@@ -675,8 +675,8 @@ public class CMClass extends ClassLoader
 	public static final int numPrototypes(final CMObjectType[] types)
 	{
 		int total=0;
-		for(int i=0;i<types.length;i++)
-			total+=numPrototypes(types[i]);
+		for (final CMObjectType type : types)
+			total+=numPrototypes(type);
 		return total;
 	}
 
@@ -704,7 +704,7 @@ public class CMClass extends ClassLoader
 		final Vector<String> V=new Vector<String>();
 		for(;i.hasMoreElements();)
 		{
-			Item I=i.nextElement();
+			final Item I=i.nextElement();
 			if(((!NonArchon)||(!(I instanceof ArchonOnly)))
 			&&((!NonStandard)||(I.isGeneric()))
 			&&((!NonGeneric)||(!I.isGeneric())))
@@ -795,12 +795,12 @@ public class CMClass extends ClassLoader
 	public static final Command findCommandByTrigger(final String word, final boolean exactOnly)
 	{
 		final CMClass myC=c();
-		Command C=myC.commandWords.get(word.trim().toUpperCase());
+		final Command C=myC.commandWords.get(word.trim().toUpperCase());
 		if((exactOnly)||(C!=null))
 			return C;
-		String upword=word.toUpperCase();
+		final String upword=word.toUpperCase();
 		String key;
-		for(Enumeration<String> e=myC.commandWords.keys();e.hasMoreElements();)
+		for(final Enumeration<String> e=myC.commandWords.keys();e.hasMoreElements();)
 		{
 			key=e.nextElement();
 			if(key.toUpperCase().startsWith(upword))
@@ -897,18 +897,18 @@ public class CMClass extends ClassLoader
 	 */
 	public final static CMObjectType findObjectType(final String name)
 	{
-		for(CMObjectType o : CMObjectType.values())
+		for(final CMObjectType o : CMObjectType.values())
 		{
 			if(o.toString().equalsIgnoreCase(name))
 				return o;
 		}
 		final String upperName=name.toUpperCase();
-		for(CMObjectType o : CMObjectType.values())
+		for(final CMObjectType o : CMObjectType.values())
 		{
 			if(o.toString().toUpperCase().startsWith(upperName))
 				return o;
 		}
-		for(CMObjectType o : CMObjectType.values())
+		for(final CMObjectType o : CMObjectType.values())
 		{
 			if(upperName.startsWith(o.toString().toUpperCase()))
 				return o;
@@ -925,7 +925,7 @@ public class CMClass extends ClassLoader
 	 */
 	public final static String findTypeAncestor(final String code)
 	{
-		CMObjectType typ=findObjectType(code);
+		final CMObjectType typ=findObjectType(code);
 		if(typ!=null)
 			return typ.ancestorName;
 		return "";
@@ -939,14 +939,14 @@ public class CMClass extends ClassLoader
 	 */
 	public final static CMObjectType getObjectType(final Object O)
 	{
-		for(CMObjectType o : CMObjectType.values())
+		for(final CMObjectType o : CMObjectType.values())
 		{
 			try
 			{
-				Class<?> ancestorCl = instance().loadClass(o.ancestorName);
+				final Class<?> ancestorCl = instance().loadClass(o.ancestorName);
 				if(CMClass.checkAncestry(O.getClass(),ancestorCl))
 					return o;
-			}catch(Exception e){}
+			}catch(final Exception e){}
 		}
 		return null;
 	}
@@ -1022,7 +1022,7 @@ public class CMClass extends ClassLoader
 			final String pathLess=makeDotClassPath(path);
 			if(classes.containsKey(pathLess))
 				return (classes.get(pathLess)).newInstance();
-		}catch(Exception e){}
+		}catch(final Exception e){}
 		final Vector<Object> V=new Vector<Object>(1);
 		if(!loadListToObj(V,makeFilePath(path),classType.ancestorName,quiet))
 			return null;
@@ -1033,7 +1033,7 @@ public class CMClass extends ClassLoader
 		{
 			return o.getClass().newInstance();
 		}
-		catch(Exception e)
+		catch(final Exception e)
 		{
 			return o;
 		}
@@ -1055,7 +1055,7 @@ public class CMClass extends ClassLoader
 			final String pathLess=makeDotClassPath(path);
 			if(classes.containsKey(pathLess))
 				return true;
-		}catch(Exception e){}
+		}catch(final Exception e){}
 		final Vector<Object> V=new Vector<Object>(1);
 		if(!loadListToObj(V,makeFilePath(path),classType.ancestorName,true))
 			return false;
@@ -1072,7 +1072,7 @@ public class CMClass extends ClassLoader
 	 */
 	public static final CMObject getPrototypeByID(final CMObjectType type, final String calledThis)
 	{
-		Object set=getClassSet(type);
+		final Object set=getClassSet(type);
 		if(set==null) return null;
 		CMObject thisItem;
 		if(set instanceof List)
@@ -1101,9 +1101,9 @@ public class CMClass extends ClassLoader
 			shortThis=shortThis.substring(x+1);
 			try{
 				return classes.get(calledThis).newInstance();
-			}catch(Exception e){}
+			}catch(final Exception e){}
 		}
-		for(CMObjectType o : CMObjectType.values())
+		for(final CMObjectType o : CMObjectType.values())
 		{
 			final Object thisItem=getPrototypeByID(o,shortThis);
 			if(thisItem!=null) return thisItem;
@@ -1201,8 +1201,8 @@ public class CMClass extends ClassLoader
 		int end=list.size()-1;
 		while(start<=end)
 		{
-			int mid=(end+start)/2;
-			int comp=classID(list.get(mid)).compareToIgnoreCase(ID);
+			final int mid=(end+start)/2;
+			final int comp=classID(list.get(mid)).compareToIgnoreCase(ID);
 			if(comp==0)
 				return list.get(mid);
 			else
@@ -1242,7 +1242,7 @@ public class CMClass extends ClassLoader
 		if((ofClassDomain>=0)||(ofFlags>=0))
 		{
 			ableV = new Vector();
-			for(Enumeration<Ability> e=c().abilities.elements();e.hasMoreElements();)
+			for(final Enumeration<Ability> e=c().abilities.elements();e.hasMoreElements();)
 			{
 				A=e.nextElement();
 				if((ofClassDomain<0)
@@ -1292,14 +1292,14 @@ public class CMClass extends ClassLoader
 	{
 		if(calledThis==null) return null;
 		Behavior B=null;
-		for(Enumeration<Behavior> e=behaviors();e.hasMoreElements();)
+		for(final Enumeration<Behavior> e=behaviors();e.hasMoreElements();)
 		{
 			B=e.nextElement();
 			if(B.name().equalsIgnoreCase(calledThis))
 				return (Behavior)B.copyOf();
 		}
 		if(exact) return null;
-		for(Enumeration<Behavior> e=behaviors();e.hasMoreElements();)
+		for(final Enumeration<Behavior> e=behaviors();e.hasMoreElements();)
 		{
 			B=e.nextElement();
 			if(CMLib.english().containsString(B.name(),calledThis))
@@ -1319,14 +1319,14 @@ public class CMClass extends ClassLoader
 	{
 		if(calledThis==null) return null;
 		Ability A=null;
-		for(Enumeration<Ability> e=abilities();e.hasMoreElements();)
+		for(final Enumeration<Ability> e=abilities();e.hasMoreElements();)
 		{
 			A=e.nextElement();
 			if(A.name().equalsIgnoreCase(calledThis))
 				return A;
 		}
 		if(exact) return null;
-		for(Enumeration<Ability> e=abilities();e.hasMoreElements();)
+		for(final Enumeration<Ability> e=abilities();e.hasMoreElements();)
 		{
 			A=e.nextElement();
 			if(CMLib.english().containsString(A.name(),calledThis))
@@ -1348,12 +1348,12 @@ public class CMClass extends ClassLoader
 	{
 		Ability A=null;
 		final List<Ability> As=new LinkedList<Ability>();
-		for(Enumeration<Ability> e=abilities();e.hasMoreElements();)
+		for(final Enumeration<Ability> e=abilities();e.hasMoreElements();)
 		{
 			A=e.nextElement();
 			for(int c=0;c<charStats.numClasses();c++)
 			{
-				CharClass C=charStats.getMyClass(c);
+				final CharClass C=charStats.getMyClass(c);
 				if(CMLib.ableMapper().getQualifyingLevel(C.ID(),true,A.ID())>=0)
 				{    As.add(A); break;}
 			}
@@ -1378,7 +1378,7 @@ public class CMClass extends ClassLoader
 	{
 		final List<Ability> As=new LinkedList<Ability>();
 		Ability A=null;
-		for(Enumeration<Ability> a=mob.allAbilities();a.hasMoreElements();)
+		for(final Enumeration<Ability> a=mob.allAbilities();a.hasMoreElements();)
 		{
 			A=a.nextElement();
 			if(A!=null) As.add(A);
@@ -1421,7 +1421,7 @@ public class CMClass extends ClassLoader
 		CMObject o=list.get(ID);
 		if(o==null)
 		{
-			for(String s : list.keySet())
+			for(final String s : list.keySet())
 			{
 				o=list.get(s);
 				if(classID(o).equalsIgnoreCase(ID))
@@ -1462,7 +1462,7 @@ public class CMClass extends ClassLoader
 	{
 		for(int i=0;i<c().charClasses.size();i++)
 		{
-			CharClass C=c().charClasses.elementAt(i);
+			final CharClass C=c().charClasses.elementAt(i);
 			if(C.ID().compareToIgnoreCase(CR.ID())>=0)
 			{
 				if(C.ID().compareToIgnoreCase(CR.ID())==0)
@@ -1559,7 +1559,7 @@ public class CMClass extends ClassLoader
 	 */
 	private final void initializeClassGroup(final Map<String,? extends CMObject> H)
 	{
-		for(Object o : H.keySet())
+		for(final Object o : H.keySet())
 			((CMObject)H.get(o)).initializeClass();
 	}
 
@@ -1569,10 +1569,10 @@ public class CMClass extends ClassLoader
 	public final void intializeClasses()
 	{
 		final char tCode=Thread.currentThread().getThreadGroup().getName().charAt(0);
-		for(CMObjectType o : CMObjectType.values())
+		for(final CMObjectType o : CMObjectType.values())
 			if((tCode==MudHost.MAIN_HOST)||(CMProps.isPrivateToMe(o.toString())))
 			{
-				Object set = CMClass.getClassSet(o);
+				final Object set = CMClass.getClassSet(o);
 				if(set instanceof List)
 					initializeClassGroup((List)set);
 				else
@@ -1709,7 +1709,7 @@ public class CMClass extends ClassLoader
 			{
 				ancestorCl = loader.loadClass(ancestor);
 			}
-			catch (ClassNotFoundException e)
+			catch (final ClassNotFoundException e)
 			{
 				if(!quiet)
 					Log.sysOut("CMClass","WARNING: Couldn't load ancestor class: "+ancestor);
@@ -1739,12 +1739,12 @@ public class CMClass extends ClassLoader
 			if(file.isDirectory())
 			{
 				final CMFile[] list=file.listFiles();
-				for(int l=0;l<list.length;l++)
-					if((list[l].getName().indexOf('$')<0)&&(list[l].getName().toUpperCase().endsWith(".CLASS")))
-						fileList.addElement(list[l].getVFSPathAndName());
-				for(int l=0;l<list.length;l++)
-					if(list[l].getName().toUpperCase().endsWith(".JS"))
-						fileList.addElement(list[l].getVFSPathAndName());
+				for (final CMFile element : list)
+					if((element.getName().indexOf('$')<0)&&(element.getName().toUpperCase().endsWith(".CLASS")))
+						fileList.addElement(element.getVFSPathAndName());
+				for (final CMFile element : list)
+					if(element.getName().toUpperCase().endsWith(".JS"))
+						fileList.addElement(element.getVFSPathAndName());
 			}
 			else
 			{
@@ -1815,7 +1815,7 @@ public class CMClass extends ClassLoader
 					if(collection instanceof Collection)
 					{
 						final Collection V=(Collection)collection;
-						for(Object o : V)
+						for(final Object o : V)
 							if(getSimpleClassName(o).equals(itemName))
 							{
 								V.remove(o);
@@ -1825,7 +1825,7 @@ public class CMClass extends ClassLoader
 					}
 				}
 			}
-			catch(Exception e)
+			catch(final Exception e)
 			{
 				if(!quiet)
 					Log.errOut("CMClass",e);
@@ -1845,7 +1845,7 @@ public class CMClass extends ClassLoader
 	public static final String getObjInstanceStr(Environmental E)
 	{
 		if(E==null) return "NULL";
-		int x=E.toString().indexOf('@');
+		final int x=E.toString().indexOf('@');
 		if(x<0) return E.Name()+E.toString();
 		return E.Name()+E.toString().substring(x);
 	}
@@ -1993,21 +1993,21 @@ public class CMClass extends ClassLoader
 		Class<?> result=null;
 		if(overPackage!=null)
 		{
-			int x=className.lastIndexOf('.');
+			final int x=className.lastIndexOf('.');
 			if(x>=0)
 				className=overPackage+className.substring(x);
 			else
 				className=overPackage+"."+className;
 		}
 		try{result=defineClass(className, classData, 0, classData.length);}
-		catch(NoClassDefFoundError e)
+		catch(final NoClassDefFoundError e)
 		{
 			if(e.getMessage().toLowerCase().indexOf("(wrong name:")>=0)
 			{
-				int x=className.lastIndexOf('.');
+				final int x=className.lastIndexOf('.');
 				if(x>=0)
 				{
-					String notherName=className.substring(x+1);
+					final String notherName=className.substring(x+1);
 					result=defineClass(notherName, classData, 0, classData.length);
 				}
 				else
@@ -2069,7 +2069,7 @@ public class CMClass extends ClassLoader
 					return result;
 				}
 			}
-			catch(Exception t){}
+			catch(final Exception t){}
 		}
 		/* Try to load it from our repository */
 		final CMFile CF=new CMFile(pathName,null);
@@ -2092,9 +2092,9 @@ public class CMClass extends ClassLoader
 			{
 				if((extendsClass==null)&&V.get(v).trim().toUpperCase().startsWith("//EXTENDS "))
 				{
-					String extendName=V.get(v).trim().substring(10).trim();
+					final String extendName=V.get(v).trim().substring(10).trim();
 					try{extendsClass=loadClass(extendName);}
-					catch(ClassNotFoundException e)
+					catch(final ClassNotFoundException e)
 					{
 						Log.errOut("CMClass","Could not load "+CF.getName()+" from "+className+" because "+extendName+" is an invalid extension.");
 						throw e;
@@ -2104,9 +2104,9 @@ public class CMClass extends ClassLoader
 					overPackage=V.get(v).trim().substring(10).trim();
 				if(V.get(v).toUpperCase().startsWith("//IMPLEMENTS "))
 				{
-					String extendName=V.get(v).substring(13).trim();
+					final String extendName=V.get(v).substring(13).trim();
 					Class<?> C=null;
-					try{C=loadClass(extendName);}catch(ClassNotFoundException e){continue;}
+					try{C=loadClass(extendName);}catch(final ClassNotFoundException e){continue;}
 					implementsClasses.addElement(C);
 				}
 			}
@@ -2124,14 +2124,14 @@ public class CMClass extends ClassLoader
 			Class<?> mainClass=null;
 			if(implementsClasses.size()>0)
 			{
-				Class[] CS=new Class[implementsClasses.size()];
+				final Class[] CS=new Class[implementsClasses.size()];
 				for(int i=0;i<implementsClasses.size();i++) CS[i]=(Class)implementsClasses.elementAt(i);
 				cc.setTargetImplements(CS);
 			}
 			final Object[] objs = cc.compileToClassFiles(str.toString(), "script", 1, name);
 			for (int i=0;i<objs.length;i+=2)
 			{
-				Class<?> C=finishDefineClass((String)objs[i],(byte[])objs[i+1],overPackage,resolveIt);
+				final Class<?> C=finishDefineClass((String)objs[i],(byte[])objs[i+1],overPackage,resolveIt);
 				if(mainClass==null) mainClass=C;
 			}
 			Context.exit();
@@ -2157,8 +2157,8 @@ public class CMClass extends ClassLoader
 			C=c().commands.elementAt(c);
 			wordList=C.getAccessWords();
 			if(wordList!=null)
-				for(int w=0;w<wordList.length;w++)
-					c().commandWords.put(wordList[w].trim().toUpperCase(),C);
+				for (final String element : wordList)
+					c().commandWords.put(element.trim().toUpperCase(),C);
 		}
 	}
 
@@ -2177,7 +2177,7 @@ public class CMClass extends ClassLoader
 		final char tCode=Thread.currentThread().getThreadGroup().getName().charAt(0);
 		// wait for baseC
 		while((tCode!=MudHost.MAIN_HOST)&&(!classLoaderSync[0]))
-		{try{Thread.sleep(500);}catch(Exception e){ break;}}
+		{try{Thread.sleep(500);}catch(final Exception e){ break;}}
 
 		try
 		{
@@ -2207,9 +2207,9 @@ public class CMClass extends ClassLoader
 			{
 				c.webMacros=CMClass.loadHashListToObj(prefix+"WebMacros/", "%DEFAULT%",CMObjectType.WEBMACRO.ancestorName);
 				Log.sysOut(Thread.currentThread().getName(),"WebMacros loaded  : "+c.webMacros.size());
-				for(Enumeration e=c.webMacros.keys();e.hasMoreElements();)
+				for(final Enumeration e=c.webMacros.keys();e.hasMoreElements();)
 				{
-					String key=(String)e.nextElement();
+					final String key=(String)e.nextElement();
 					if(key.length()>longestWebMacro)
 						longestWebMacro=key.length();
 				}
@@ -2375,12 +2375,12 @@ public class CMClass extends ClassLoader
 					if(genAbilities.size()>0)
 					{
 						int loaded=0;
-						for(DatabaseEngine.AckRecord rec : genAbilities)
+						for(final DatabaseEngine.AckRecord rec : genAbilities)
 						{
 							String type=rec.typeClass;
 							if((type==null)||(type.trim().length()==0))
 								type="GenAbility";
-							Ability A=(Ability)(CMClass.getAbility(type).copyOf());
+							final Ability A=(Ability)(CMClass.getAbility(type).copyOf());
 							A.setStat("ALLXML",rec.data);
 							if((!A.ID().equals("GenAbility"))&&(!A.ID().equals(type)))
 							{
@@ -2477,7 +2477,7 @@ public class CMClass extends ClassLoader
 			}
 			if(c.commands.size()==0) return false;
 		}
-		catch(Exception t)
+		catch(final Exception t)
 		{
 			t.printStackTrace();
 			return false;
@@ -2489,14 +2489,14 @@ public class CMClass extends ClassLoader
 		if((tCode==MudHost.MAIN_HOST)||(CMProps.isPrivateToMe("CHARCLASS")))
 			for(int i=0;i<c.charClasses.size();i++)
 			{
-				CharClass C=c.charClasses.elementAt(i);
+				final CharClass C=c.charClasses.elementAt(i);
 				C.copyOf();
 			}
 		if((tCode==MudHost.MAIN_HOST)||(CMProps.isPrivateToMe("RACE")))
 		{
 			for(int r=0;r<c.races.size();r++)
 			{
-				Race R=c.races.elementAt(r);
+				final Race R=c.races.elementAt(r);
 				R.copyOf();
 			}
 			CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"Booting: reading genRaces");
@@ -2506,7 +2506,7 @@ public class CMClass extends ClassLoader
 				int loaded=0;
 				for(int r=0;r<genRaces.size();r++)
 				{
-					Race GR=(Race)getRace("GenRace").copyOf();
+					final Race GR=(Race)getRace("GenRace").copyOf();
 					GR.setRacialParms(genRaces.get(r).data);
 					if(!GR.ID().equals("GenRace"))
 					{
@@ -2527,7 +2527,7 @@ public class CMClass extends ClassLoader
 				int loaded=0;
 				for(int r=0;r<genClasses.size();r++)
 				{
-					CharClass CR=(CharClass)(CMClass.getCharClass("GenCharClass").copyOf());
+					final CharClass CR=(CharClass)(CMClass.getCharClass("GenCharClass").copyOf());
 					CR.setClassParms(genClasses.get(r).data);
 					if(!CR.ID().equals("GenCharClass"))
 					{
@@ -2608,7 +2608,7 @@ public class CMClass extends ClassLoader
 				return MSGS_CACHE.removeFirst();
 			}
 		}
-		catch(Exception e)
+		catch(final Exception e)
 		{
 			return (CMMsg)getCommon("DefaultMessage");
 		}
@@ -2733,7 +2733,7 @@ public class CMClass extends ClassLoader
 				return MOB_CACHE.removeFirst();
 			}
 		}
-		catch(Exception e)
+		catch(final Exception e)
 		{
 			return getMOB("StdFactoryMOB");
 		}
@@ -2745,9 +2745,9 @@ public class CMClass extends ClassLoader
 	 */
 	public static final void shutdown()
 	{
-		for(int c=0;c<clss.length;c++)
-			if(clss[c]!=null)
-				clss[c].unload();
+		for (final CMClass cls : clss)
+			if(cls!=null)
+				cls.unload();
 		classLoaderSync[0]=false;
 	}
 

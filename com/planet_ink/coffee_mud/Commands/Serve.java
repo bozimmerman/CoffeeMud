@@ -48,7 +48,7 @@ public class Serve extends StdCommand
 			return false;
 		}
 		commands.removeElementAt(0);
-		MOB recipient=mob.location().fetchInhabitant(CMParms.combine(commands,0));
+		final MOB recipient=mob.location().fetchInhabitant(CMParms.combine(commands,0));
 		if((recipient!=null)&&(recipient.isMonster())&&(!(recipient instanceof Deity)))
 		{
 			mob.tell("You may not serve "+recipient.name()+".");
@@ -59,7 +59,7 @@ public class Serve extends StdCommand
 			mob.tell("I don't see "+CMParms.combine(commands,0)+" here.");
 			return false;
 		}
-		CMMsg msg=CMClass.getMsg(mob,recipient,null,CMMsg.MSG_SERVE,"<S-NAME> swear(s) fealty to <T-NAMESELF>.");
+		final CMMsg msg=CMClass.getMsg(mob,recipient,null,CMMsg.MSG_SERVE,"<S-NAME> swear(s) fealty to <T-NAMESELF>.");
 		if(mob.location().okMessage(mob,msg))
 			mob.location().send(mob,msg);
 		return false;

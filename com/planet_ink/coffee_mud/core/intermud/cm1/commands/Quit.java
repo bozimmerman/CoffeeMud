@@ -54,7 +54,7 @@ public class Quit extends CM1Command
 			req.sendMsg("[OK]");
 			req.close();
 		}
-		catch(java.io.IOException ioe)
+		catch(final java.io.IOException ioe)
 		{
 			Log.errOut(className,ioe);
 			req.close();

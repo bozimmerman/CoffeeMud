@@ -54,7 +54,7 @@ public class Spell_WallOfDarkness extends Spell
 		if((affected==null)||(!(affected instanceof Item)))
 			return true;
 
-		MOB mob=msg.source();
+		final MOB mob=msg.source();
 
 		if((invoker!=null)
 		&&(mob.isInCombat())
@@ -96,7 +96,7 @@ public class Spell_WallOfDarkness extends Spell
 			&&(((Room)theWall.owner()).isContent(theWall)))
 			{
 				((Room)theWall.owner()).showHappens(CMMsg.MSG_OK_VISUAL,"The wall of darkness fades.");
-				Item wall=theWall;
+				final Item wall=theWall;
 				theWall=null;
 				wall.destroy();
 			}
@@ -127,7 +127,7 @@ public class Spell_WallOfDarkness extends Spell
 		}
 		for(int i=0;i<mob.location().numItems();i++)
 		{
-			Item I=mob.location().getItem(i);
+			final Item I=mob.location().getItem(i);
 			if((I!=null)&&(I.fetchEffect(ID())!=null))
 			{
 				mob.tell("There is already a wall of darkness here.");
@@ -142,10 +142,10 @@ public class Spell_WallOfDarkness extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		Physical target = mob.location();
+		final Physical target = mob.location();
 
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
@@ -154,11 +154,11 @@ public class Spell_WallOfDarkness extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 
-			CMMsg msg = CMClass.getMsg(mob, target, this,verbalCastCode(mob,target,auto),auto?"An eerie wall of darkness appears!":"^S<S-NAME> conjur(s) up a eerie wall of darkness!^?");
+			final CMMsg msg = CMClass.getMsg(mob, target, this,verbalCastCode(mob,target,auto),auto?"An eerie wall of darkness appears!":"^S<S-NAME> conjur(s) up a eerie wall of darkness!^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				Item I=CMClass.getItem("GenItem");
+				final Item I=CMClass.getItem("GenItem");
 				I.setName("a wall of darkness");
 				I.setDisplayText("an eerie wall of darkness lingers here");
 				I.setDescription("It`s black.");

@@ -40,8 +40,8 @@ public class SocialNext extends StdWebMacro
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
-		java.util.Map<String,String> parms=parseParms(parm);
-		String last=httpReq.getUrlParameter("SOCIAL");
+		final java.util.Map<String,String> parms=parseParms(parm);
+		final String last=httpReq.getUrlParameter("SOCIAL");
 		if(parms.containsKey("RESET"))
 		{
 			if(last!=null) httpReq.removeUrlParameter("SOCIAL");
@@ -50,7 +50,7 @@ public class SocialNext extends StdWebMacro
 		String lastID="";
 		for(int s=0;s<CMLib.socials().getSocialsList().size();s++)
 		{
-			String name=CMLib.socials().getSocialsList().get(s);
+			final String name=CMLib.socials().getSocialsList().get(s);
 			if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!name.equalsIgnoreCase(lastID))))
 			{
 				httpReq.addFakeUrlParameter("SOCIAL",name);

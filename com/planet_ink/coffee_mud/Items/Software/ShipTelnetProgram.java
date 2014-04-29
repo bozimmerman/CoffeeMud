@@ -118,13 +118,13 @@ public class ShipTelnetProgram extends GenShipProgram implements ArchonOnly
 					if(writer!=null)
 						writer.close();
 				}
-				catch(Exception e) {}
+				catch(final Exception e) {}
 				finally
 				{
 					sock.close();
 				}
 			}
-			catch(Exception e) {}
+			catch(final Exception e) {}
 			finally
 			{
 				sock=null;
@@ -137,7 +137,7 @@ public class ShipTelnetProgram extends GenShipProgram implements ArchonOnly
 	@Override
 	public boolean checkActivate(MOB mob, String message)
 	{
-		List<String> parsed=CMParms.parse(message);
+		final List<String> parsed=CMParms.parse(message);
 		if(parsed.size()!=3)
 		{
 			mob.tell("Incorrect usage, try: TELNET [HOST] [PORT]");
@@ -157,7 +157,7 @@ public class ShipTelnetProgram extends GenShipProgram implements ArchonOnly
 			fillWithData();
 			return true;
 		}
-		catch(Exception e)
+		catch(final Exception e)
 		{
 			mob.tell("Telnet software failure: "+e.getMessage());
 			return false;
@@ -200,10 +200,10 @@ public class ShipTelnetProgram extends GenShipProgram implements ArchonOnly
 			{
 				if(reader!=null)
 				{
-					ByteArrayOutputStream bout=new ByteArrayOutputStream();
+					final ByteArrayOutputStream bout=new ByteArrayOutputStream();
 					while(reader.available()>0)
 					{
-						int c=reader.read();
+						final int c=reader.read();
 						if(c==-1)
 							throw new IOException("Received EOF");
 						if(c!=0)
@@ -215,11 +215,11 @@ public class ShipTelnetProgram extends GenShipProgram implements ArchonOnly
 				}
 			}
 		}
-		catch(java.net.SocketTimeoutException se)
+		catch(final java.net.SocketTimeoutException se)
 		{
 
 		}
-		catch(Exception e)
+		catch(final Exception e)
 		{
 			super.addScreenMessage("*** Telnet disconnected: "+e.getMessage()+" ***");
 			super.forceNewMessageScan();
@@ -241,7 +241,7 @@ public class ShipTelnetProgram extends GenShipProgram implements ArchonOnly
 					writer.write(message+"\n\r");
 					writer.flush();
 				}
-				catch (IOException e)
+				catch (final IOException e)
 				{
 					super.addScreenMessage("*** Telnet disconnected: "+e.getMessage()+" ***");
 					super.forceNewMessageScan();

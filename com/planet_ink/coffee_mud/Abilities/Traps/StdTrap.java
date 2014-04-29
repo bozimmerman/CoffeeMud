@@ -99,7 +99,7 @@ public class StdTrap extends StdAbility implements Trap
 	public boolean isLocalExempt(MOB target)
 	{
 		if(target==null) return false;
-		Room R=target.location();
+		final Room R=target.location();
 		if((!canBeUninvoked())
 		&&(!isABomb())
 		&&(R!=null))
@@ -164,7 +164,7 @@ public class StdTrap extends StdAbility implements Trap
 	{
 		if(text.startsWith("`"))
 		{
-			int x=text.indexOf("` ",1);
+			final int x=text.indexOf("` ",1);
 			if(x>=0)
 			{
 				invokerName=text.substring(1,x);
@@ -173,8 +173,8 @@ public class StdTrap extends StdAbility implements Trap
 		}
 		if(text.trim().startsWith(":"))
 		{
-			int x=text.indexOf(':');
-			int y=text.indexOf(':',x+1);
+			final int x=text.indexOf(':');
+			final int y=text.indexOf(':',x+1);
 			if((x>=0)&&(y>x)&&(CMath.isInteger(text.substring(x+1,y).trim())))
 			{
 				setAbilityCode(CMath.s_int(text.substring(x+1,y).trim()));
@@ -199,7 +199,7 @@ public class StdTrap extends StdAbility implements Trap
 	@Override
 	public CMObject copyOf()
 	{
-		StdTrap obj=(StdTrap)super.copyOf();
+		final StdTrap obj=(StdTrap)super.copyOf();
 		obj.safeDirs=null;
 		return obj;
 	}
@@ -236,9 +236,9 @@ public class StdTrap extends StdAbility implements Trap
 					final PairVector<MOB,Integer> safeDirs=getSafeDirs();
 					synchronized(safeDirs)
 					{
-						for(Iterator<Pair<MOB,Integer>> i=safeDirs.iterator();i.hasNext();)
+						for(final Iterator<Pair<MOB,Integer>> i=safeDirs.iterator();i.hasNext();)
 						{
-							Pair<MOB,Integer> p=i.next();
+							final Pair<MOB,Integer> p=i.next();
 							if(p.first == msg.source())
 							{
 								i.remove();
@@ -330,14 +330,14 @@ public class StdTrap extends StdAbility implements Trap
 				if ((affected instanceof Room)
 				&& (msg.tool() instanceof Exit))
 				{
-					Room room=(Room)affected;
+					final Room room=(Room)affected;
 					final int movingInDir=CMLib.map().getExitDir(room, (Exit)msg.tool());
 					if((movingInDir!=Directions.DOWN)&&(movingInDir!=Directions.UP))
 					{
 						final PairVector<MOB,Integer> safeDirs=getSafeDirs();
 						synchronized(safeDirs)
 						{
-							int dex=safeDirs.indexOf(msg.source());
+							final int dex=safeDirs.indexOf(msg.source());
 							if(dex>=0)
 								safeDirs.remove(dex);
 							while(safeDirs.size()>room.numInhabitants()+1)
@@ -415,8 +415,8 @@ public class StdTrap extends StdAbility implements Trap
 	public Trap setTrap(MOB mob, Physical P, int trapBonus, int qualifyingClassLevel, boolean perm)
 	{
 		if(P==null) return null;
-		int rejuv=baseRejuvTime(qualifyingClassLevel+trapBonus);
-		Trap T=(Trap)copyOf();
+		final int rejuv=baseRejuvTime(qualifyingClassLevel+trapBonus);
+		final Trap T=(Trap)copyOf();
 		T.setReset(rejuv);
 		T.setInvoker(mob);
 		T.setSavable(false);
@@ -463,16 +463,16 @@ public class StdTrap extends StdAbility implements Trap
 				&&(affected instanceof Item)
 				&&(((Item)affected).owner()!=null))
 				{
-					Item I=(Item)affected;
+					final Item I=(Item)affected;
 					if(I.owner() instanceof MOB)
 						spring((MOB)I.owner());
 					else
 					if(I.owner() instanceof Room)
 					{
-						Room R=(Room)I.owner();
+						final Room R=(Room)I.owner();
 						for(int i=R.numInhabitants()-1;i>=0;i--)
 						{
-							MOB M=R.fetchInhabitant(i);
+							final MOB M=R.fetchInhabitant(i);
 							if(M!=null)
 								spring(M);
 						}

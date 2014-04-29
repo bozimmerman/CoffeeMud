@@ -52,7 +52,7 @@ public class Chant_SummonFungus extends Chant_SummonPlants
 		&&((msg.targetMinor()==CMMsg.TYP_GET)||(msg.targetMinor()==CMMsg.TYP_PUSH)||(msg.targetMinor()==CMMsg.TYP_PULL)))
 		{
 			processing=true;
-			Ability A=littlePlants.fetchEffect(ID());
+			final Ability A=littlePlants.fetchEffect(ID());
 			if(A!=null)
 			{
 				CMLib.threads().deleteTick(A,-1);
@@ -61,7 +61,7 @@ public class Chant_SummonFungus extends Chant_SummonPlants
 			}
 			if(littlePlants.fetchBehavior("Decay")==null)
 			{
-				Behavior B=CMClass.getBehavior("Decay");
+				final Behavior B=CMClass.getBehavior("Decay");
 				B.setParms("min="+CMProps.getIntVar(CMProps.Int.TICKSPERMUDMONTH)+" max="+CMProps.getIntVar(CMProps.Int.TICKSPERMUDMONTH)+" chance=100");
 				littlePlants.addBehavior(B);
 				B.executeMsg(myHost,msg);
@@ -83,7 +83,7 @@ public class Chant_SummonFungus extends Chant_SummonPlants
 
 	public static Item buildFungus(MOB mob, Room room)
 	{
-		Item newItem=CMClass.getItem("GenFoodResource");
+		final Item newItem=CMClass.getItem("GenFoodResource");
 		newItem.setMaterial(RawMaterial.RESOURCE_MUSHROOMS);
 		switch(CMLib.dice().roll(1,6,0))
 		{
@@ -121,7 +121,7 @@ public class Chant_SummonFungus extends Chant_SummonPlants
 		newItem.setSecretIdentity(mob.Name());
 		newItem.setMiscText(newItem.text());
 		room.addItem(newItem);
-		Chant_SummonFungus newChant=new Chant_SummonFungus();
+		final Chant_SummonFungus newChant=new Chant_SummonFungus();
 		newItem.basePhyStats().setLevel(10+newChant.getX1Level(mob));
 		newItem.basePhyStats().setWeight(1);
 		newItem.setExpirationDate(0);

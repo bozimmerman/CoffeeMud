@@ -74,7 +74,7 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 
 	protected String filterString(String str)
 	{
-		StringBuffer buf=new StringBuffer(str);
+		final StringBuffer buf=new StringBuffer(str);
 		for(int i=0;i<buf.length();i++)
 			switch(buf.charAt(i))
 			{
@@ -107,7 +107,7 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 
 	protected String unFilterString(String str)
 	{
-		StringBuffer buf=new StringBuffer(str);
+		final StringBuffer buf=new StringBuffer(str);
 		for(int i=0;i<buf.length()-1;i++)
 		if(buf.charAt(i)=='\\')
 			switch(buf.charAt(i+1))
@@ -136,19 +136,19 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 
 	protected Hashtable<String,DVector> loadFileSections(String filename)
 	{
-		Hashtable<String,DVector> parserSections=new Hashtable<String,DVector>();
-		CMFile F=new CMFile(filename,null,CMFile.FLAG_FORCEALLOW);
+		final Hashtable<String,DVector> parserSections=new Hashtable<String,DVector>();
+		final CMFile F=new CMFile(filename,null,CMFile.FLAG_FORCEALLOW);
 		if(!F.exists()){ Log.errOut("Language file "+filename+" not found! This mud is in deep doo-doo!"); return null;}
-		StringBuffer alldata=F.text();
-		List<String> V=Resources.getFileLineVector(alldata);
+		final StringBuffer alldata=F.text();
+		final List<String> V=Resources.getFileLineVector(alldata);
 		String s=null;
 		DVector currentSection=null;
-		DVector globalDefinitions=new DVector(2);
-		DVector localDefinitions=new DVector(2);
+		final DVector globalDefinitions=new DVector(2);
+		final DVector localDefinitions=new DVector(2);
 		Hashtable<String,String> currentSectionReplaceStrs=new Hashtable<String,String>();
 		HashSet<String> currentSectionIgnoreStrs=new HashSet<String>();
-		DVector sectionIndexes=new DVector(2);
-		DVector wholeFile=new DVector(2);
+		final DVector sectionIndexes=new DVector(2);
+		final DVector wholeFile=new DVector(2);
 		for(int v=0;v<V.size();v++)
 		{
 			wholeFile.addElement(filename,V.get(v));
@@ -156,7 +156,7 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 			if((s.startsWith("#"))||(s.trim().length()==0)) continue;
 			if(s.startsWith("["))
 			{
-				int x=s.lastIndexOf(']');
+				final int x=s.lastIndexOf(']');
 				if((currentSectionReplaceStrs.size()>0)
 				&&(currentSection!=null))
 					currentSection.addElement("REPLACEWHOLE",currentSectionReplaceStrs,currentSectionReplaceStrs);
@@ -173,9 +173,9 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 			else
 			if(s.toUpperCase().startsWith("AUTOIGNORE"))
 			{
-				int x=s.indexOf(' ');
+				final int x=s.indexOf(' ');
 				if(x<0){ Log.errOut("Scripts","Syntax error in '"+filename+"', line "+(v+1)); continue;}
-				Integer I=Integer.valueOf(CMath.s_int(s.substring(x+1).trim()));
+				final Integer I=Integer.valueOf(CMath.s_int(s.substring(x+1).trim()));
 				if(currentSection!=null)
 					currentSection.addElement("AUTOIGNORE",I,s.substring(x+1).trim());
 			}
@@ -188,7 +188,7 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 				while((regend>regstart)&&(s.charAt(regend-1)=='\\'))
 					regend=s.indexOf('"',regend+1);
 				if(regend<0){ Log.errOut("Scripts","Syntax error in '"+filename+"', line "+(v+1)); continue;}
-				String variable=s.substring(regstart+1,regend).toUpperCase();
+				final String variable=s.substring(regstart+1,regend).toUpperCase();
 				s=s.substring(regend+1).trim();
 				if(!s.toUpperCase().startsWith("AS")){ Log.errOut("Scripts","Syntax error in '"+filename+"', line "+(v+1)); continue;}
 				regstart=s.indexOf('"');
@@ -213,13 +213,13 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 			else
 			if(s.toUpperCase().startsWith("IGNOREWHOLE"))
 			{
-				int regstart=s.indexOf('"');
+				final int regstart=s.indexOf('"');
 				if(regstart<0){ Log.errOut("Scripts","Syntax error in '"+filename+"', line "+(v+1)); continue;}
 				int regend=s.indexOf('"',regstart+1);
 				while((regend>regstart)&&(s.charAt(regend-1)=='\\'))
 					regend=s.indexOf('"',regend+1);
 				if(regend<0){ Log.errOut("Scripts","Syntax error in '"+filename+"', line "+(v+1)); continue;}
-				String expression=unFilterString(s.substring(regstart+1,regend));
+				final String expression=unFilterString(s.substring(regstart+1,regend));
 				currentSectionIgnoreStrs.add(expression.toLowerCase());
 			}
 			else
@@ -231,7 +231,7 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 				while((regend>regstart)&&(s.charAt(regend-1)=='\\'))
 					regend=s.indexOf('"',regend+1);
 				if(regend<0){ Log.errOut("Scripts","Syntax error in '"+filename+"', line "+(v+1)); continue;}
-				String expression=unFilterString(s.substring(regstart+1,regend));
+				final String expression=unFilterString(s.substring(regstart+1,regend));
 				s=s.substring(regend+1).trim();
 				if(!s.toUpperCase().startsWith("WITH")){ Log.errOut("Scripts","Syntax error in '"+filename+"', line "+(v+1)); continue;}
 				regstart=s.indexOf('"');
@@ -240,20 +240,20 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 				while((regend>regstart)&&(s.charAt(regend-1)=='\\'))
 					regend=s.indexOf('"',regend+1);
 				if(regend<0){ Log.errOut("Scripts","Syntax error in '"+filename+"', line "+(v+1)); continue;}
-				String replacement=unFilterString(s.substring(regstart+1,regend));
+				final String replacement=unFilterString(s.substring(regstart+1,regend));
 				currentSectionReplaceStrs.put(expression.toLowerCase(),replacement);
 			}
 			else
 			if(s.toUpperCase().startsWith("REPLACEALL"))
 			{
-				String cmd="REPLACEALL";
+				final String cmd="REPLACEALL";
 				int regstart=s.indexOf('"');
 				if(regstart<0){ Log.errOut("Scripts","Syntax error in '"+filename+"', line "+(v+1)); continue;}
 				int regend=s.indexOf('"',regstart+1);
 				while((regend>regstart)&&(s.charAt(regend-1)=='\\'))
 					regend=s.indexOf('"',regend+1);
 				if(regend<0){ Log.errOut("Scripts","Syntax error in '"+filename+"', line "+(v+1)); continue;}
-				String expression=unFilterString(s.substring(regstart+1,regend));
+				final String expression=unFilterString(s.substring(regstart+1,regend));
 				s=s.substring(regend+1).trim();
 				if(!s.toUpperCase().startsWith("WITH")){ Log.errOut("Scripts","Syntax error in '"+filename+"', line "+(v+1)); continue;}
 				regstart=s.indexOf('"');
@@ -262,7 +262,7 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 				while((regend>regstart)&&(s.charAt(regend-1)=='\\'))
 					regend=s.indexOf('"',regend+1);
 				if(regend<0){ Log.errOut("Scripts","Syntax error in '"+filename+"', line "+(v+1)); continue;}
-				String replacement=unFilterString(s.substring(regstart+1,regend));
+				final String replacement=unFilterString(s.substring(regstart+1,regend));
 				if(currentSection!=null)
 					currentSection.addElement(cmd,expression.toLowerCase(),replacement);
 				currentSectionReplaceStrs.put(expression.toLowerCase(),replacement);
@@ -270,7 +270,7 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 			else
 			if(s.toUpperCase().startsWith("REPLACE")||s.toUpperCase().startsWith("IGNORE"))
 			{
-				String cmd=s.toUpperCase().startsWith("REPLACE")?"REPLACE":"IGNORE";
+				final String cmd=s.toUpperCase().startsWith("REPLACE")?"REPLACE":"IGNORE";
 				int regstart=s.indexOf('"');
 				if(regstart<0){ Log.errOut("Scripts","Syntax error in '"+filename+"', line "+(v+1)); continue;}
 				int regend=s.indexOf('"',regstart+1);
@@ -295,11 +295,11 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 				}
 				try
 				{
-					Pattern expPattern=Pattern.compile(expression, Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE);
+					final Pattern expPattern=Pattern.compile(expression, Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE);
 					if(currentSection!=null)
 						currentSection.addElement(cmd,expPattern,replacement);
 				}
-				catch(Exception e)
+				catch(final Exception e)
 				{
 					Log.errOut("Scripts",e);
 				}
@@ -372,11 +372,11 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 
 	public boolean insertExpansion(List<String> MORE_CMDS, String str, int m, int strLen, boolean nothingDone)
 	{
-		List<String> expansion=CMParms.parseAny(CMStrings.replaceAll(str,"\\t","\t"),'\n',false);
+		final List<String> expansion=CMParms.parseAny(CMStrings.replaceAll(str,"\\t","\t"),'\n',false);
 		MORE_CMDS.set(m,expansion.get(0));
 		String expStr=expansion.get(0);
 		if(expStr.length()<=strLen) nothingDone=false;
-		boolean insert=m<MORE_CMDS.size()-1;
+		final boolean insert=m<MORE_CMDS.size()-1;
 		for(int e=1;e<expansion.size();e++)
 		{
 			expStr=expansion.get(e);
@@ -393,10 +393,10 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 	@SuppressWarnings("unchecked")
 	public List<List<String>> preCommandParser(List<String> CMDS)
 	{
-		List<String> MORE_CMDS=new Vector<String>();
-		String combinedWithTabs=CMParms.combineWithTabs(CMDS,0);
+		final List<String> MORE_CMDS=new Vector<String>();
+		final String combinedWithTabs=CMParms.combineWithTabs(CMDS,0);
 		MORE_CMDS.add(combinedWithTabs);
-		DVector parser=CMLib.lang().getLanguageParser("COMMAND-PRE-PROCESSOR");
+		final DVector parser=CMLib.lang().getLanguageParser("COMMAND-PRE-PROCESSOR");
 		if((parser==null)||(CMDS==null)){ return new XVector<List<String>>(CMDS);}
 		Pattern pattern=null;
 		Matcher matcher=null;
@@ -500,12 +500,12 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 					parser.addElement("IGNOREWHOLE",ignoreSet,ignoreSet);
 				}
 				ignoreSet.add(combinedWithTabs.toLowerCase());
-				DVector fileData=getLanguageParser("WHOLEFILE");
-				DVector fileIndexes=getLanguageParser("INDEXES");
+				final DVector fileData=getLanguageParser("WHOLEFILE");
+				final DVector fileIndexes=getLanguageParser("INDEXES");
 				addAutoIgnoredString(combinedWithTabs,fileData,fileIndexes,"COMMAND-PRE-PROCESSOR");
 			}
 		}
-		List<List<String>> FINAL_CMDS=new Vector<List<String>>();
+		final List<List<String>> FINAL_CMDS=new Vector<List<String>>();
 		for(int m=0;m<MORE_CMDS.size();m++)
 			FINAL_CMDS.add(CMParms.parseTabs(MORE_CMDS.get(m),false));
 		return FINAL_CMDS;
@@ -515,11 +515,11 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 	protected String basicParser(String str, String section, boolean nullIfLonger, boolean isParser)
 	{
 		if(str==null) return null;
-		DVector parser=isParser?getLanguageParser(section):getLanguageTranslator(section);
+		final DVector parser=isParser?getLanguageParser(section):getLanguageTranslator(section);
 		if(parser==null) return null;
 		Pattern pattern=null;
 		Matcher matcher=null;
-		String oldStr=str;
+		final String oldStr=str;
 		int autoIgnoreLen=0;
 		Integer I=null;
 		HashSet<String> ignoreSet=null;
@@ -614,7 +614,7 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 	public void addAutoIgnoredString(String str, DVector fileData, DVector fileIndexes, String sectionName)
 	{
 		if((fileData==null)||(str==null)||(fileData.size()<1)) return;
-		String filename=(String)fileData.elementAt(0,1);
+		final String filename=(String)fileData.elementAt(0,1);
 		if(fileIndexes==null) return;
 		int index=fileIndexes.indexOf(sectionName.toUpperCase().trim());
 		if(index<0) return;
@@ -623,15 +623,15 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 			if(((Integer)fileIndexes.elementAt(f,2)).intValue()>index)
 				fileIndexes.setElementAt(f,2,Integer.valueOf(((Integer)fileIndexes.elementAt(f,2)).intValue()+1));
 		str=filterString(str);
-		String newStr="IGNOREWHOLE \""+str+"\"";
+		final String newStr="IGNOREWHOLE \""+str+"\"";
 		if(index==fileData.size()-1)
 			fileData.addElement(filename,newStr);
 		else
 			fileData.insertElementAt(index+1,filename,newStr);
-		StringBuffer buf=new StringBuffer("");
+		final StringBuffer buf=new StringBuffer("");
 		for(int f=0;f<fileData.size();f++)
 			buf.append(((String)fileData.elementAt(f,2))+"\n\r");
-		CMFile F=new CMFile(filename,null,CMFile.FLAG_FORCEALLOW);
+		final CMFile F=new CMFile(filename,null,CMFile.FLAG_FORCEALLOW);
 		if((F.exists())&&(F.canWrite()))
 			F.saveText(buf);
 	}

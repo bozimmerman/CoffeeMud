@@ -68,7 +68,7 @@ public class Poison_Hives extends Poison
 		if(affected==null) return false;
 		if(!(affected instanceof MOB)) return true;
 
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		if((!mob.amDead())&&((--poisonTick)<=0))
 		{
 			poisonTick=POISON_DELAY();

@@ -58,7 +58,7 @@ public class Thief_Peek extends ThiefSkill
 			mob.tell("Peek at whom?");
 			return false;
 		}
-		MOB target=this.getTarget(mob,commands,givenTarget);
+		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
 		if(target==mob)
@@ -70,9 +70,9 @@ public class Thief_Peek extends ThiefSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		int levelDiff=target.phyStats().level()-(mob.phyStats().level()+abilityCode()+(getXLEVELLevel(mob)*2));
+		final int levelDiff=target.phyStats().level()-(mob.phyStats().level()+abilityCode()+(getXLEVELLevel(mob)*2));
 
-		boolean success=proficiencyCheck(mob,-(levelDiff*(!CMLib.flags().canBeSeenBy(mob,target)?0:10)),auto);
+		final boolean success=proficiencyCheck(mob,-(levelDiff*(!CMLib.flags().canBeSeenBy(mob,target)?0:10)),auto);
 		int discoverChance=(int)Math.round(CMath.div(target.charStats().getStat(CharStats.STAT_WISDOM),30.0))
 							+(levelDiff*5)
 							-(getX1Level(mob)*5);
@@ -86,7 +86,7 @@ public class Thief_Peek extends ThiefSkill
 		{
 			if(CMLib.dice().rollPercentage()<discoverChance)
 			{
-				CMMsg msg=CMClass.getMsg(mob,target,null,CMMsg.MSG_OK_VISUAL,auto?"":"Your peek attempt fails; <T-NAME> spots you!",CMMsg.MSG_OK_VISUAL,auto?"":"<S-NAME> tries to peek at your inventory and fails!",CMMsg.NO_EFFECT,null);
+				final CMMsg msg=CMClass.getMsg(mob,target,null,CMMsg.MSG_OK_VISUAL,auto?"":"Your peek attempt fails; <T-NAME> spots you!",CMMsg.MSG_OK_VISUAL,auto?"":"<S-NAME> tries to peek at your inventory and fails!",CMMsg.NO_EFFECT,null);
 				if(mob.location().okMessage(mob,msg))
 					mob.location().send(mob,msg);
 			}
@@ -107,7 +107,7 @@ public class Thief_Peek extends ThiefSkill
 			{
 				msg=CMClass.getMsg(mob,target,null,CMMsg.MSG_OK_VISUAL,auto?"":"<S-NAME> peek(s) at <T-NAME>s inventory.",CMMsg.MSG_OK_VISUAL,str,(str==null)?CMMsg.NO_EFFECT:CMMsg.MSG_OK_VISUAL,str);
 				mob.location().send(mob,msg);
-				StringBuilder msg2=CMLib.commands().getInventory(mob,target);
+				final StringBuilder msg2=CMLib.commands().getInventory(mob,target);
 				if(msg2.length()==0)
 					mob.tell(target.charStats().HeShe()+" is carrying:\n\rNothing!\n\r");
 				else

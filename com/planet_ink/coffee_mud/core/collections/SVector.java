@@ -49,7 +49,7 @@ public class SVector<T> extends CopyOnWriteArrayList<T> implements Serializable,
 	{
 		super();
 		if(E!=null)
-			for(T o : E)
+			for(final T o : E)
 				add(o);
 	}
 
@@ -73,7 +73,7 @@ public class SVector<T> extends CopyOnWriteArrayList<T> implements Serializable,
 	{
 		super();
 		if(E!=null)
-			for(T o : E)
+			for(final T o : E)
 				add(o);
 	}
 
@@ -87,7 +87,7 @@ public class SVector<T> extends CopyOnWriteArrayList<T> implements Serializable,
 	public synchronized void addAll(T[] E)
 	{
 		if(E!=null)
-			for(T e : E)
+			for(final T e : E)
 				add(e);
 	}
 
@@ -115,7 +115,7 @@ public class SVector<T> extends CopyOnWriteArrayList<T> implements Serializable,
 	public synchronized void removeAll(List<T> E)
 	{
 		if(E!=null)
-			for(T o : E)
+			for(final T o : E)
 				remove(o);
 	}
 
@@ -136,7 +136,7 @@ public class SVector<T> extends CopyOnWriteArrayList<T> implements Serializable,
 		{
 			return (SVector<T>)clone();
 		}
-		catch(Exception e)
+		catch(final Exception e)
 		{
 			return new SVector<T>(this);
 		}

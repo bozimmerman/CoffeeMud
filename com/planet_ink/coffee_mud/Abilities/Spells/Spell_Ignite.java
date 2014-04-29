@@ -73,7 +73,7 @@ public class Spell_Ignite extends Spell
 			break;
 		}
 		mob.location().showHappens(CMMsg.MSG_OK_VISUAL,I.name()+" ignites!");
-		Ability B=CMClass.getAbility("Burning");
+		final Ability B=CMClass.getAbility("Burning");
 		if(B!=null)
 			B.invoke(mob,I,true,durationOfBurn);
 	}
@@ -81,7 +81,7 @@ public class Spell_Ignite extends Spell
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		Physical target=getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_UNWORNONLY);
+		final Physical target=getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_UNWORNONLY);
 		if(target==null) return false;
 		if((!(target instanceof MOB))
 		&&(!(target instanceof Item)))
@@ -98,7 +98,7 @@ public class Spell_Ignite extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
@@ -107,7 +107,7 @@ public class Spell_Ignite extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> flares up!":"^S<S-NAME> evoke(s) a spell upon <T-NAMESELF>.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> flares up!":"^S<S-NAME> evoke(s) a spell upon <T-NAMESELF>.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -118,10 +118,10 @@ public class Spell_Ignite extends Spell
 					else
 					if(target instanceof MOB)
 					{
-						MOB mob2=(MOB)target;
+						final MOB mob2=(MOB)target;
 						for(int i=0;i<mob2.numItems();i++)
 						{
-							Item I=mob2.getItem(i);
+							final Item I=mob2.getItem(i);
 							if((I!=null)&&(I.container()==null))
 								ignite(mob2,I);
 						}

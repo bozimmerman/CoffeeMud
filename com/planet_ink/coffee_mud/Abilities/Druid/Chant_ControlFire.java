@@ -50,14 +50,14 @@ public class Chant_ControlFire extends Chant
 	{
 		for(int i=0;i<target.numItems();i++)
 		{
-			Item I=target.getItem(i);
+			final Item I=target.getItem(i);
 			if((CMLib.flags().isOnFire(I))&&(I.container()==null))
 				return I;
 		}
 
 		for(int i=0;i<target.location().numItems();i++)
 		{
-			Item I=target.location().getItem(i);
+			final Item I=target.location().getItem(i);
 			if((CMLib.flags().isOnFire(I))&&(I.container()==null))
 				return I;
 		}
@@ -81,7 +81,7 @@ public class Chant_ControlFire extends Chant
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		MOB target=this.getTarget(mob,commands,givenTarget);
+		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
 		// the invoke method for spells receives as
@@ -92,9 +92,9 @@ public class Chant_ControlFire extends Chant
 			return false;
 
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
-		Item fireSource=getFireSource(target);
+		final Item fireSource=getFireSource(target);
 
 		if((success)&&(fireSource!=null))
 		{
@@ -102,13 +102,13 @@ public class Chant_ControlFire extends Chant
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),(auto?"Suddenly "+fireSource.name()+" flares up and attacks <T-HIM-HER>!^?":"^S<S-NAME> chant(s) to <T-NAMESELF>.  Suddenly "+fireSource.name()+" flares up and attacks <T-HIM-HER>!^?")+CMLib.protocol().msp("fireball.wav",40));
-			CMMsg msg2=CMClass.getMsg(mob,target,this,verbalCastMask(mob,target,auto)|CMMsg.TYP_FIRE,null);
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),(auto?"Suddenly "+fireSource.name()+" flares up and attacks <T-HIM-HER>!^?":"^S<S-NAME> chant(s) to <T-NAMESELF>.  Suddenly "+fireSource.name()+" flares up and attacks <T-HIM-HER>!^?")+CMLib.protocol().msp("fireball.wav",40));
+			final CMMsg msg2=CMClass.getMsg(mob,target,this,verbalCastMask(mob,target,auto)|CMMsg.TYP_FIRE,null);
 			if((mob.location().okMessage(mob,msg))&&((mob.location().okMessage(mob,msg2))))
 			{
 				mob.location().send(mob,msg);
 				mob.location().send(mob,msg2);
-				int numDice = (int)Math.round(CMath.div(adjustedLevel(mob,asLevel)+(2*super.getX1Level(mob)),2.0))+1;
+				final int numDice = (int)Math.round(CMath.div(adjustedLevel(mob,asLevel)+(2*super.getX1Level(mob)),2.0))+1;
 				int damage = CMLib.dice().roll(numDice, 6, 20);
 				if((msg.value()>0)||(msg2.value()>0))
 					damage = (int)Math.round(CMath.div(damage,2.0));

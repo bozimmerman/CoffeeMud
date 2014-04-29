@@ -45,8 +45,8 @@ public class MSDP
 		else
 		if(o instanceof Map)
 		{
-			Map<String,Object> newO=new HashMap<String,Object>();
-			for(Object key : ((Map)o).keySet())
+			final Map<String,Object> newO=new HashMap<String,Object>();
+			for(final Object key : ((Map)o).keySet())
 				if(key instanceof StringBuilder)
 					newO.put(((StringBuilder)key).toString().toUpperCase(), msdpStringify(((Map)o).get(key)));
 			return newO;
@@ -54,8 +54,8 @@ public class MSDP
 		else
 		if(o instanceof List)
 		{
-			List<Object> newO=new LinkedList<Object>();
-			for(Object subO : (List)o)
+			final List<Object> newO=new LinkedList<Object>();
+			for(final Object subO : (List)o)
 				newO.add(msdpStringify(subO));
 			return newO;
 		}
@@ -65,7 +65,7 @@ public class MSDP
 
 	protected Map<String,Object> buildMsdpMap(byte[] data, int dataSize)
 	{
-		Stack<Object> stack=new Stack<Object>();
+		final Stack<Object> stack=new Stack<Object>();
 		stack.push(new HashMap<StringBuilder,Object>());
 		StringBuilder str=null;
 		StringBuilder var=null;
@@ -92,7 +92,7 @@ public class MSDP
 			}
 			case Session.MSDP_TABLE_OPEN: // open a table
 			{
-				Map<StringBuilder,Object> M=new HashMap<StringBuilder,Object>();
+				final Map<StringBuilder,Object> M=new HashMap<StringBuilder,Object>();
 				if((stack.peek() instanceof Map)&&(valVar!=null))
 					((Map)stack.peek()).put(valVar, M);
 				else if(stack.peek() instanceof List)
@@ -107,7 +107,7 @@ public class MSDP
 				break;
 			case Session.MSDP_ARRAY_OPEN: // open an array
 			{
-				List<Object> M=new LinkedList<Object>();
+				final List<Object> M=new LinkedList<Object>();
 				if((stack.peek() instanceof Map)&&(valVar!=null))
 					((Map)stack.peek()).put(valVar, M);
 				else if(stack.peek() instanceof List)
@@ -136,14 +136,14 @@ public class MSDP
 
 	public String msdpOutput(Object o, int indentions)
 	{
-		String spaces=new String(new char[indentions*2]).replace('\0', ' ');
+		final String spaces=new String(new char[indentions*2]).replace('\0', ' ');
 		if(o instanceof String)
 			return "\""+o.toString()+"\"";
 		else
 		if(o instanceof List)
 		{
-			StringBuilder json=new StringBuilder("[\n");
-			for(Object o2 : ((List)o))
+			final StringBuilder json=new StringBuilder("[\n");
+			for(final Object o2 : ((List)o))
 				json.append(msdpOutput(o2,indentions+1)).append(", ");
 			json.append("\n").append(spaces).append("]");
 			return json.toString();
@@ -151,8 +151,8 @@ public class MSDP
 		else
 		if(o instanceof Map)
 		{
-			StringBuilder json=new StringBuilder("{\n");
-			for(Entry<String,Object> e : ((Map<String,Object>)o).entrySet())
+			final StringBuilder json=new StringBuilder("{\n");
+			for(final Entry<String,Object> e : ((Map<String,Object>)o).entrySet())
 			{
 				json.append(spaces).append("\"").append(e.getKey()).append("\": ");
 				json.append(msdpOutput(e.getValue(),indentions+1)).append(", \n");
@@ -165,16 +165,16 @@ public class MSDP
 
 	public String msdpReceive(byte[] buffer)
 	{
-		Map<String,Object> map=buildMsdpMap(buffer,buffer.length);
+		final Map<String,Object> map=buildMsdpMap(buffer,buffer.length);
 		return msdpOutput(map,0);
 	}
 
 	private byte[] getMsdpFromJsonObject(JSONObject obj) throws IOException
 	{
-		ByteArrayOutputStream bout=new ByteArrayOutputStream();
-		for(String key : obj.keySet())
+		final ByteArrayOutputStream bout=new ByteArrayOutputStream();
+		for(final String key : obj.keySet())
 		{
-			Object o=obj.get(key);
+			final Object o=obj.get(key);
 			bout.write((byte)1); // var
 			bout.write(key.getBytes(Charset.forName("US-ASCII")));
 			bout.write((byte)2); // val
@@ -185,8 +185,8 @@ public class MSDP
 
 	private byte[] getMsdpFromJsonArray(Object[] obj) throws IOException
 	{
-		ByteArrayOutputStream bout=new ByteArrayOutputStream();
-		for(Object o : obj)
+		final ByteArrayOutputStream bout=new ByteArrayOutputStream();
+		for(final Object o : obj)
 		{
 			bout.write((byte)2); // val
 			bout.write(getMsdpFromJsonSomething(o));
@@ -196,7 +196,7 @@ public class MSDP
 
 	private byte[] getMsdpFromJsonSomething(Object obj) throws IOException
 	{
-		ByteArrayOutputStream bout=new ByteArrayOutputStream();
+		final ByteArrayOutputStream bout=new ByteArrayOutputStream();
 		if(obj instanceof String)
 			bout.write(((String)obj).getBytes(Charset.forName("US-ASCII")));
 		else
@@ -221,18 +221,18 @@ public class MSDP
 	{
 		try
 		{
-			ByteArrayOutputStream bout=new ByteArrayOutputStream();
+			final ByteArrayOutputStream bout=new ByteArrayOutputStream();
 			bout.write(TelnetFilter.IAC_);
 			bout.write(TelnetFilter.IAC_SB);
 			bout.write(TelnetFilter.IAC_MSDP);
-			MiniJSON jsonParser=new MiniJSON();
-			JSONObject obj=jsonParser.parseObject(data);
+			final MiniJSON jsonParser=new MiniJSON();
+			final JSONObject obj=jsonParser.parseObject(data);
 			bout.write(getMsdpFromJsonObject(obj));
 			bout.write(TelnetFilter.IAC_);
 			bout.write(TelnetFilter.IAC_SE);
 			return bout.toByteArray();
 		}
-		catch (IOException e)
+		catch (final IOException e)
 		{
 			return new byte[0];
 		}

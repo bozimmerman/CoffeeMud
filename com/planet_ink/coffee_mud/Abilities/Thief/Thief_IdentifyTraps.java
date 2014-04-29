@@ -48,8 +48,8 @@ public class Thief_IdentifyTraps extends ThiefSkill
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		Vector savedCommands=new XVector(commands);
-		String whatTounlock=CMParms.combine(commands,0);
+		final Vector savedCommands=new XVector(commands);
+		final String whatTounlock=CMParms.combine(commands,0);
 		Physical unlockThis=givenTarget;
 		Room nextRoom=null;
 		int dirCode=-1;
@@ -83,12 +83,12 @@ public class Thief_IdentifyTraps extends ThiefSkill
 			}
 		}
 
-		int oldProficiency=proficiency();
+		final int oldProficiency=proficiency();
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		CharState savedState=(CharState)mob.curState().copyOf();
-		boolean detected=detect.invoke(mob,savedCommands,givenTarget,auto,asLevel);
+		final CharState savedState=(CharState)mob.curState().copyOf();
+		final boolean detected=detect.invoke(mob,savedCommands,givenTarget,auto,asLevel);
 		mob.curState().setHitPoints(savedState.getHitPoints());
 		mob.curState().setMana(savedState.getMana());
 		mob.curState().setMovement(savedState.getMovement());
@@ -104,7 +104,7 @@ public class Thief_IdentifyTraps extends ThiefSkill
 				if(mob.location().getExitInDir(d)==unlockThis){ dirCode=d; break;}
 			if(dirCode>=0)
 			{
-				Exit exit=mob.location().getReverseExit(dirCode);
+				final Exit exit=mob.location().getReverseExit(dirCode);
 				Trap opTrap=null;
 				Trap roomTrap=null;
 				if(nextRoom!=null) roomTrap=CMLib.utensils().fetchMyTrap(nextRoom);
@@ -126,7 +126,7 @@ public class Thief_IdentifyTraps extends ThiefSkill
 			}
 		}
 
-		CMMsg msg=CMClass.getMsg(mob,unlockThis,this,auto?CMMsg.MSG_OK_ACTION:CMMsg.MSG_DELICATE_HANDS_ACT,null);
+		final CMMsg msg=CMClass.getMsg(mob,unlockThis,this,auto?CMMsg.MSG_OK_ACTION:CMMsg.MSG_DELICATE_HANDS_ACT,null);
 		if(mob.location().okMessage(mob,msg)&&(unlockThis!=null))
 		{
 			mob.location().send(mob,msg);

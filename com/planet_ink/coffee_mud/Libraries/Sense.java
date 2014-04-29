@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
@@ -201,7 +200,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	{
 		for(int a=0;a<F.numEffects();a++) // personal affects
 		{
-			Ability A=F.fetchEffect(a);
+			final Ability A=F.fetchEffect(a);
 			if((A!=null)&&(A.canBeUninvoked())&&(!A.isAutoInvoked())&&(!A.isSavable())
 			&&(((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SPELL)
 			   ||((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PRAYER)
@@ -279,7 +278,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	public boolean isHidden(Physical P)
 	{
 		if(P==null) return false;
-		boolean isInHide=((P.phyStats().disposition()&PhyStats.IS_HIDDEN)==PhyStats.IS_HIDDEN);
+		final boolean isInHide=((P.phyStats().disposition()&PhyStats.IS_HIDDEN)==PhyStats.IS_HIDDEN);
 		if((P instanceof MOB)
 		&&(isInHide)
 		&&(((MOB)P).isInCombat()))
@@ -310,7 +309,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 		{
 			Faction F=null;
 			Faction.FRange FR=null;
-			for(Enumeration<String> e=((MOB)P).fetchFactions();e.hasMoreElements();)
+			for(final Enumeration<String> e=((MOB)P).fetchFactions();e.hasMoreElements();)
 			{
 				F=CMLib.factions().getFaction(e.nextElement());
 				if(F!=null)
@@ -357,7 +356,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 		{
 			Faction F=null;
 			Faction.FRange FR=null;
-			for(Enumeration<String> e=((MOB)P).fetchFactions();e.hasMoreElements();)
+			for(final Enumeration<String> e=((MOB)P).fetchFactions();e.hasMoreElements();)
 			{
 				F=CMLib.factions().getFaction(e.nextElement());
 				if(F!=null)
@@ -374,7 +373,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	@Override
 	public String getAge(MOB M)
 	{
-		Ability A=M.fetchEffect("Age");
+		final Ability A=M.fetchEffect("Age");
 		if((A==null)||(A.displayText().length()==0))
 		{
 			if(M.baseCharStats().getStat(CharStats.STAT_AGE)==0)
@@ -422,14 +421,14 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 			return true;
 		for(final Enumeration<Ability> a=P.effects();a.hasMoreElements();)
 		{
-			Ability A=a.nextElement();
+			final Ability A=a.nextElement();
 			if((A instanceof AbilityContainer)
 			&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PROPERTY))
 			{
-				AbilityContainer U=(AbilityContainer)A;
+				final AbilityContainer U=(AbilityContainer)A;
 				for(final Enumeration<Ability> e=U.allAbilities();e.hasMoreElements();)
 				{
-					Ability uA=e.nextElement();
+					final Ability uA=e.nextElement();
 					if((uA!=null)&&(uA.abstractQuality()==Ability.QUALITY_MALICIOUS))
 						return true;
 				}
@@ -442,7 +441,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	public boolean isPossiblyAggressive(MOB M)
 	{
 		if(M==null) return false;
-		List<Behavior> V=CMLib.flags().flaggedBehaviors(M,Behavior.FLAG_POTENTIALLYAGGRESSIVE);
+		final List<Behavior> V=CMLib.flags().flaggedBehaviors(M,Behavior.FLAG_POTENTIALLYAGGRESSIVE);
 		return ((V==null)||(V.size()==0))? false:true;
 	}
 
@@ -450,9 +449,9 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	public boolean isAggressiveTo(MOB M, MOB toM)
 	{
 		if((M==null)||(toM==null)) return false;
-		List<Behavior> V=CMLib.flags().flaggedBehaviors(M,Behavior.FLAG_POTENTIALLYAGGRESSIVE);
+		final List<Behavior> V=CMLib.flags().flaggedBehaviors(M,Behavior.FLAG_POTENTIALLYAGGRESSIVE);
 		if((V==null)||(V.size()==0)) return false;
-		for(Behavior B : V)
+		for(final Behavior B : V)
 			if(B.grantsAggressivenessTo(toM))
 				return true;
 		return false;
@@ -473,7 +472,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 		{
 			Faction F=null;
 			Faction.FRange FR=null;
-			for(Enumeration<String> e=((MOB)E).fetchFactions();e.hasMoreElements();)
+			for(final Enumeration<String> e=((MOB)E).fetchFactions();e.hasMoreElements();)
 			{
 				F=CMLib.factions().getFaction(e.nextElement());
 				if(F!=null)
@@ -498,7 +497,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 		{
 			Faction F=null;
 			Faction.FRange FR=null;
-			for(Enumeration<String> e=((MOB)P).fetchFactions();e.hasMoreElements();)
+			for(final Enumeration<String> e=((MOB)P).fetchFactions();e.hasMoreElements();)
 			{
 				F=CMLib.factions().getFaction(e.nextElement());
 				if(F!=null)
@@ -562,7 +561,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	public boolean isSwimmingInWater(Physical P)
 	{
 		if(!isSwimming(P)) return false;
-		Room R=CMLib.map().roomLocation(P);
+		final Room R=CMLib.map().roomLocation(P);
 		if(R==null) return false;
 		switch(R.domainType())
 		{
@@ -703,7 +702,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 			return true;
 		if(!(seen instanceof Light))
 			return false;
-		Light light=(Light)seen;
+		final Light light=(Light)seen;
 		if(light.goesOutInTheRain()
 		   &&light.isLit())
 			return true;
@@ -764,7 +763,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 		if(!canSee(seer)) return false;
 		if(!(seen instanceof Physical))
 			return true;
-		Physical seenP=(Physical)seen;
+		final Physical seenP=(Physical)seen;
 
 		if((!isSeen(seenP))&&(seer!=null))
 		{
@@ -787,7 +786,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 
 		if((seer!=null)&&(!(seenP instanceof Room)))
 		{
-			Room R=seer.location();
+			final Room R=seer.location();
 			if((R!=null)&&(isInDark(R)))
 			{
 				if((isGlowing(seenP))||(isLightSource(seer)))
@@ -835,7 +834,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 		if(!canBeSeenBy(seen,seer))
 		if((seer!=null)&&(!(seen instanceof Room)))
 		{
-			Room R=seer.location();
+			final Room R=seer.location();
 			if((R!=null)&&(isInDark(R)))
 			{
 				if(R.getArea().getClimateObj().canSeeTheMoon(R,null))
@@ -934,7 +933,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 					{
 						if(ambiances[i].startsWith("(?)"))
 						{
-							int x=ambiances[i].indexOf(':');
+							final int x=ambiances[i].indexOf(':');
 							if(canBeHeardSpeakingBy(seen, seer))
 								say.append(" ("+ambiances[i].substring(3,(x>3)?x:ambiances[i].length())+")");
 							else
@@ -1077,22 +1076,22 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 			return true;
 		if(P instanceof Item)
 		{
-			List<Item> V=new Vector<Item>();
+			final List<Item> V=new Vector<Item>();
 			if(P instanceof Container)
 				V.addAll(((Container)P).getContents());
 			if(!V.contains(P)) V.add((Item)P);
 			long totalWeight=0;
 			long totalFloatilla=0;
-			RawMaterial.CODES codes = RawMaterial.CODES.instance();
+			final RawMaterial.CODES codes = RawMaterial.CODES.instance();
 			for(int v=0;v<V.size();v++)
 			{
-				Item I=V.get(v);
+				final Item I=V.get(v);
 				totalWeight+=I.basePhyStats().weight();
 				totalFloatilla+=totalWeight*codes.bouancy(I.material());
 			}
 			if(P instanceof Container)
 			{
-				long cap=((Container)P).capacity();
+				final long cap=((Container)P).capacity();
 				if(totalWeight<cap)
 				{
 					totalFloatilla+=(cap-totalWeight);
@@ -1133,9 +1132,9 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	public boolean isMobile(PhysicalAgent P)
 	{
 		if(P!=null)
-			for(Enumeration<Behavior> e=P.behaviors();e.hasMoreElements();)
+			for(final Enumeration<Behavior> e=P.behaviors();e.hasMoreElements();)
 			{
-				Behavior B=e.nextElement();
+				final Behavior B=e.nextElement();
 				if((B!=null)&&(CMath.bset(B.flags(),Behavior.FLAG_MOBILITY)))
 					return true;
 			}
@@ -1145,11 +1144,11 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	@Override
 	public List<Behavior> flaggedBehaviors(final PhysicalAgent P, final long flag)
 	{
-		Vector<Behavior> V=new Vector<Behavior>();
+		final Vector<Behavior> V=new Vector<Behavior>();
 		if(P!=null)
-			for(Enumeration<Behavior> e=P.behaviors();e.hasMoreElements();)
+			for(final Enumeration<Behavior> e=P.behaviors();e.hasMoreElements();)
 			{
-				Behavior B=e.nextElement();
+				final Behavior B=e.nextElement();
 				if((B!=null)&&(CMath.bset(B.flags(),flag)))
 				{ V.addElement(B);}
 			}
@@ -1195,11 +1194,11 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	@Override
 	public List<Ability> domainAbilities(final MOB M, final int domain)
 	{
-		Vector<Ability> V=new Vector<Ability>(1);
+		final Vector<Ability> V=new Vector<Ability>(1);
 		if(M!=null)
 			if(domain>Ability.ALL_ACODES)
 			{
-				for(Enumeration<Ability> a=M.allAbilities();a.hasMoreElements();)
+				for(final Enumeration<Ability> a=M.allAbilities();a.hasMoreElements();)
 				{
 					final Ability A=a.nextElement();
 					if((A!=null)&&((A.classificationCode()&Ability.ALL_DOMAINS)==domain))
@@ -1207,7 +1206,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 				}
 			}
 			else
-			for(Enumeration<Ability> a=M.allAbilities();a.hasMoreElements();)
+			for(final Enumeration<Ability> a=M.allAbilities();a.hasMoreElements();)
 			{
 				final Ability A=a.nextElement();
 				if((A!=null)&&((A.classificationCode()&Ability.ALL_ACODES)==domain))
@@ -1240,11 +1239,11 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	@Override
 	public List<Ability> flaggedAbilities(MOB M, long flag)
 	{
-		Vector<Ability> V=new Vector<Ability>();
+		final Vector<Ability> V=new Vector<Ability>();
 		if(M!=null)
-			for(Enumeration<Ability> a=M.allAbilities();a.hasMoreElements();)
+			for(final Enumeration<Ability> a=M.allAbilities();a.hasMoreElements();)
 			{
-				Ability A=a.nextElement();
+				final Ability A=a.nextElement();
 				if((A!=null)&&(CMath.bset(A.flags(),flag)))
 				{ V.addElement(A);}
 			}
@@ -1294,7 +1293,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	{
 		if(E instanceof Item)
 		{
-			Item lighting=(Item)E;
+			final Item lighting=(Item)E;
 			switch(lighting.material())
 			{
 			case RawMaterial.RESOURCE_COAL:
@@ -1384,7 +1383,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 		// neither is disease, or standard properties.
 		for(int i=0;i<I.numEffects();i++)
 		{
-			Ability A=I.fetchEffect(i);
+			final Ability A=I.fetchEffect(i);
 			if((A!=null)
 			&&((A.classificationCode()&Ability.ALL_ACODES)!=Ability.ACODE_PROPERTY)
 			&&((A.classificationCode()&Ability.ALL_ACODES)!=Ability.ACODE_DISEASE)
@@ -1397,7 +1396,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	public boolean isAgingThing(Physical P)
 	{
 		if(P==null) return false;
-		Ability A=P.fetchEffect("Age");
+		final Ability A=P.fetchEffect("Age");
 		if((A!=null)&&(CMath.isInteger(A.text())&&(CMath.s_long(A.text())>Short.MAX_VALUE)))
 			return true;
 		return false;
@@ -1426,7 +1425,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	@Override
 	public String dispositionList(int disposition, boolean useVerbs)
 	{
-		StringBuffer buf=new StringBuffer("");
+		final StringBuffer buf=new StringBuffer("");
 		if(useVerbs)
 		{
 			for(int i=0;i<PhyStats.IS_VERBS.length;i++)
@@ -1445,7 +1444,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	@Override
 	public String sensesList(int disposition, boolean useVerbs)
 	{
-		StringBuffer buf=new StringBuffer("");
+		final StringBuffer buf=new StringBuffer("");
 		if(useVerbs)
 		{
 			for(int i=0;i<PhyStats.CAN_SEE_VERBS.length;i++)
@@ -1528,14 +1527,14 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	public boolean hasAControlledFollower(MOB invoker, Ability A)
 	{
 		if(invoker==null) return false;
-		Room R = invoker.location();
+		final Room R = invoker.location();
 		if(R==null) return false;
 		for(int r=0;r<R.numInhabitants();r++)
 			if(isAControlledFollower(invoker, R.fetchInhabitant(r), A))
 				return true;
-		Set<MOB> H = invoker.getGroupMembers(new HashSet<MOB>());
-		for(Iterator<MOB> i=H.iterator();i.hasNext();)
-			if(isAControlledFollower(invoker, i.next(), A))
+		final Set<MOB> H = invoker.getGroupMembers(new HashSet<MOB>());
+		for (final MOB mob : H)
+			if(isAControlledFollower(invoker, mob, A))
 				return true;
 		return false;
 	}
@@ -1543,7 +1542,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	@Override
 	public String describeDisposition(MOB mob)
 	{
-		StringBuilder str=new StringBuilder("");
+		final StringBuilder str=new StringBuilder("");
 		if(CMLib.flags().isClimbing(mob))
 			str.append("climbing, ");
 		if((mob.phyStats().disposition()&PhyStats.IS_EVIL)>0)
@@ -1584,7 +1583,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	@Override
 	public String describeSenses(MOB mob)
 	{
-		StringBuilder str=new StringBuilder("");
+		final StringBuilder str=new StringBuilder("");
 		if(!CMLib.flags().canHear(mob))
 			str.append("deaf, ");
 		if(!CMLib.flags().canSee(mob))

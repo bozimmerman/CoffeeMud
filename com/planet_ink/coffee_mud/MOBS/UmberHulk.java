@@ -87,7 +87,7 @@ public class UmberHulk extends StdMOB
 	}
 	public void addNaturalAbilities()
 	{
-		Ability confuse=CMClass.getAbility("Spell_Confusion");
+		final Ability confuse=CMClass.getAbility("Spell_Confusion");
 		if(confuse==null) return;
 
 	}

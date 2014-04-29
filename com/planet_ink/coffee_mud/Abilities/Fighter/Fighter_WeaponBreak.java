@@ -52,14 +52,14 @@ public class Fighter_WeaponBreak extends FighterSkill
 	{
 		if((mob!=null)&&(target!=null))
 		{
-			MOB victim=mob.getVictim();
+			final MOB victim=mob.getVictim();
 			if((!mob.isInCombat())||(victim==null))
 				return Ability.QUALITY_INDIFFERENT;
 			if(mob.isInCombat()&&(mob.rangeToTarget()>0))
 				return Ability.QUALITY_INDIFFERENT;
 			if(mob.fetchWieldedItem()==null)
 				return Ability.QUALITY_INDIFFERENT;
-			Item item=victim.fetchWieldedItem();
+			final Item item=victim.fetchWieldedItem();
 			if((item==null)
 			||(!(item instanceof Weapon))
 			||(((Weapon)item).weaponClassification()==Weapon.CLASS_NATURAL))
@@ -71,7 +71,7 @@ public class Fighter_WeaponBreak extends FighterSkill
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		MOB victim=mob.getVictim();
+		final MOB victim=mob.getVictim();
 		if((!mob.isInCombat())||(victim==null))
 		{
 			mob.tell("You must be in combat to do this!");
@@ -87,7 +87,7 @@ public class Fighter_WeaponBreak extends FighterSkill
 			mob.tell("You need a weapon to break someone elses!");
 			return false;
 		}
-		Item item=victim.fetchWieldedItem();
+		final Item item=victim.fetchWieldedItem();
 		if((item==null)
 		||(!(item instanceof Weapon))
 		||(((Weapon)item).weaponClassification()==Weapon.CLASS_NATURAL))
@@ -104,10 +104,10 @@ public class Fighter_WeaponBreak extends FighterSkill
 			levelDiff=levelDiff*5;
 		else
 			levelDiff=0;
-		Item hisWeapon=victim.fetchWieldedItem();
-		int chance=(-levelDiff)+(-(victim.charStats().getStat(CharStats.STAT_DEXTERITY)*2));
-		boolean hit=(auto)||CMLib.combat().rollToHit(mob,victim);
-		boolean success=proficiencyCheck(mob,chance,auto)&&(hit);
+		final Item hisWeapon=victim.fetchWieldedItem();
+		final int chance=(-levelDiff)+(-(victim.charStats().getStat(CharStats.STAT_DEXTERITY)*2));
+		final boolean hit=(auto)||CMLib.combat().rollToHit(mob,victim);
+		final boolean success=proficiencyCheck(mob,chance,auto)&&(hit);
 		if((success)
 		   &&(hisWeapon!=null)
 		   &&(hisWeapon.phyStats().ability()==0)
@@ -115,10 +115,10 @@ public class Fighter_WeaponBreak extends FighterSkill
 		&&((hisWeapon.rawProperLocationBitmap()==Wearable.WORN_WIELD)
 		   ||(hisWeapon.rawProperLocationBitmap()==Wearable.WORN_WIELD+Wearable.WORN_HELD)))
 		{
-			String str=auto?hisWeapon.name()+" break(s) in <T-HIS-HER> hands!":"<S-NAME> attack(s) <T-NAMESELF> and destroy(s) "+hisWeapon.name()+"!";
+			final String str=auto?hisWeapon.name()+" break(s) in <T-HIS-HER> hands!":"<S-NAME> attack(s) <T-NAMESELF> and destroy(s) "+hisWeapon.name()+"!";
 			hisWeapon.unWear();
-			CMMsg msg=CMClass.getMsg(mob,victim,this,CMMsg.MSG_NOISYMOVEMENT,str);
-			CMMsg msg2=CMClass.getMsg(mob,hisWeapon,this,CMMsg.MASK_ALWAYS|CMMsg.MASK_MALICIOUS|CMMsg.TYP_CAST_SPELL,null);
+			final CMMsg msg=CMClass.getMsg(mob,victim,this,CMMsg.MSG_NOISYMOVEMENT,str);
+			final CMMsg msg2=CMClass.getMsg(mob,hisWeapon,this,CMMsg.MASK_ALWAYS|CMMsg.MASK_MALICIOUS|CMMsg.TYP_CAST_SPELL,null);
 			if(mob.location().okMessage(mob,msg)&&mob.location().okMessage(mob,msg2))
 			{
 				mob.location().send(mob,msg);

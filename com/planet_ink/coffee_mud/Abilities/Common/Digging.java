@@ -63,7 +63,7 @@ public class Digging extends GatheringSkill
 	{
 		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Tickable.TICKID_MOB))
 		{
-			MOB mob=(MOB)affected;
+			final MOB mob=(MOB)affected;
 			if(tickUp==3)
 			{
 				if(found!=null)
@@ -76,7 +76,7 @@ public class Digging extends GatheringSkill
 				}
 				else
 				{
-					StringBuffer str=new StringBuffer("You can't seem to find anything worth digging up here.\n\r");
+					final StringBuffer str=new StringBuffer("You can't seem to find anything worth digging up here.\n\r");
 					commonTell(mob,str.toString());
 					unInvoke();
 				}
@@ -93,7 +93,7 @@ public class Digging extends GatheringSkill
 		{
 			if((affected!=null)&&(affected instanceof MOB))
 			{
-				MOB mob=(MOB)affected;
+				final MOB mob=(MOB)affected;
 				if((found!=null)&&(!aborted))
 				{
 					int amount=1;
@@ -107,7 +107,7 @@ public class Digging extends GatheringSkill
 					mob.location().show(mob,null,getActivityMessageType(),"<S-NAME> manage(s) to dig out "+amount+" "+foundShortName+s+".");
 					for(int i=0;i<amount;i++)
 					{
-						Item newFound=(Item)found.copyOf();
+						final Item newFound=(Item)found.copyOf();
 						mob.location().addItem(newFound,ItemPossessor.Expire.Resource);
 						//CMLib.commands().postGet(mob,null,newFound,true);
 					}
@@ -147,7 +147,7 @@ public class Digging extends GatheringSkill
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
-		int resourceType=mob.location().myResource();
+		final int resourceType=mob.location().myResource();
 		if((proficiencyCheck(mob,0,auto))
 		   &&(((resourceType&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_PRECIOUS)
 		   ||((resourceType&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_GLASS)
@@ -160,8 +160,8 @@ public class Digging extends GatheringSkill
 				foundShortName=RawMaterial.CODES.NAME(found.material()).toLowerCase();
 		}
 
-		int duration=getDuration(mob,1);
-		CMMsg msg=CMClass.getMsg(mob,found,this,getActivityMessageType(),"<S-NAME> start(s) digging for gems.");
+		final int duration=getDuration(mob,1);
+		final CMMsg msg=CMClass.getMsg(mob,found,this,getActivityMessageType(),"<S-NAME> start(s) digging for gems.");
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

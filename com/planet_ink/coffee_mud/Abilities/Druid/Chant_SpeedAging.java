@@ -50,7 +50,7 @@ public class Chant_SpeedAging extends Chant
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		Physical target=getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_ANY,true);
+		final Physical target=getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_ANY,true);
 		if(target==null) return false;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -61,7 +61,7 @@ public class Chant_SpeedAging extends Chant
 		&&(CMath.bset(type,CMMsg.MASK_MALICIOUS))
 		&&(((MOB)target).charStats().getStat(CharStats.STAT_AGE)>0))
 		{
-			MOB mobt=(MOB)target;
+			final MOB mobt=(MOB)target;
 			if(mobt.charStats().ageCategory()<=Race.AGE_CHILD)
 				type=CMath.unsetb(type,CMMsg.MASK_MALICIOUS);
 			else
@@ -89,11 +89,11 @@ public class Chant_SpeedAging extends Chant
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			CMMsg msg=CMClass.getMsg(mob,target,this,type,auto?"":"^S<S-NAME> chant(s) to <T-NAMESELF>.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,type,auto?"":"^S<S-NAME> chant(s) to <T-NAMESELF>.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				Ability A=target.fetchEffect("Age");
+				final Ability A=target.fetchEffect("Age");
 				if((!(target instanceof MOB))
 				&&(!(target instanceof CagedAnimal))
 				&&(A==null))
@@ -134,16 +134,16 @@ public class Chant_SpeedAging extends Chant
 				if((target instanceof MOB)
 				&&((A==null)||(A.displayText().length()==0)))
 				{
-					MOB M=(MOB)target;
+					final MOB M=(MOB)target;
 					mob.location().show(M,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> age(s) a bit.");
 					if(M.baseCharStats().getStat(CharStats.STAT_AGE)<=0)
 						M.setAgeMinutes(M.getAgeMinutes()+(M.getAgeMinutes()/10));
 					else
 					if((M.playerStats()!=null) && (M.playerStats().getBirthday()!=null))
 					{
-						double aging=CMath.mul(M.baseCharStats().getStat(CharStats.STAT_AGE),.10);
+						final double aging=CMath.mul(M.baseCharStats().getStat(CharStats.STAT_AGE),.10);
 						int years=(int)Math.round(Math.floor(aging));
-						int monthsInYear=CMLib.time().globalClock().getMonthsInYear();
+						final int monthsInYear=CMLib.time().globalClock().getMonthsInYear();
 						int months=(int)Math.round(CMath.mul(aging-Math.floor(aging),monthsInYear));
 						if((years<=0)&&(months==0))
 							months++;
@@ -163,13 +163,13 @@ public class Chant_SpeedAging extends Chant
 				else
 				if(A!=null)
 				{
-					long start=CMath.s_long(A.text());
+					final long start=CMath.s_long(A.text());
 					long age=System.currentTimeMillis()-start;
-					long millisPerMudday=CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY)*CMProps.getTickMillis();
+					final long millisPerMudday=CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY)*CMProps.getTickMillis();
 					if(age<millisPerMudday)
 						age=millisPerMudday;
-					long millisPerMonth=CMLib.time().globalClock().getDaysInMonth() * millisPerMudday;
-					long millisPerYear=CMLib.time().globalClock().getMonthsInYear() * millisPerMonth;
+					final long millisPerMonth=CMLib.time().globalClock().getDaysInMonth() * millisPerMudday;
+					final long millisPerYear=CMLib.time().globalClock().getMonthsInYear() * millisPerMonth;
 					long ageBy=age/10;
 					if(ageBy<millisPerMonth)
 						ageBy=millisPerMonth+1;

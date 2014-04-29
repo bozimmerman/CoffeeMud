@@ -50,9 +50,9 @@ public class CommandJournal extends StdCommand
 
 			access=new String[CMLib.journals().getNumCommandJournals()];
 			int x=0;
-			for(Enumeration<JournalsLibrary.CommandJournal> e=CMLib.journals().commandJournals();e.hasMoreElements();)
+			for(final Enumeration<JournalsLibrary.CommandJournal> e=CMLib.journals().commandJournals();e.hasMoreElements();)
 			{
-				JournalsLibrary.CommandJournal CMJ=e.nextElement();
+				final JournalsLibrary.CommandJournal CMJ=e.nextElement();
 				access[x]=CMJ.NAME();
 				x++;
 			}
@@ -66,9 +66,9 @@ public class CommandJournal extends StdCommand
 							Vector commands,
 							String security)
 	{
-		String first=(String)commands.elementAt(1);
-		String second=(commands.size()>2)?(String)commands.elementAt(2):"";
-		String rest=(commands.size()>3)?CMParms.combine(commands,3):"";
+		final String first=(String)commands.elementAt(1);
+		final String second=(commands.size()>2)?(String)commands.elementAt(2):"";
+		final String rest=(commands.size()>3)?CMParms.combine(commands,3):"";
 		if(!("TRANSFER".startsWith(first.toUpperCase().trim())))
 		   return false;
 		if(!CMSecurity.isJournalAccessAllowed(mob,security))
@@ -81,8 +81,8 @@ public class CommandJournal extends StdCommand
 			mob.tell(second+" is not a number");
 			return true;
 		}
-		int count=CMath.s_int(second);
-		List<JournalsLibrary.JournalEntry> journal=CMLib.database().DBReadJournalMsgs(journalID);
+		final int count=CMath.s_int(second);
+		final List<JournalsLibrary.JournalEntry> journal=CMLib.database().DBReadJournalMsgs(journalID);
 		int size=0;
 		if(journal!=null) size=journal.size();
 		if(size<=0)
@@ -96,9 +96,9 @@ public class CommandJournal extends StdCommand
 			return true;
 		}
 		String realName=null;
-		for(Enumeration<JournalsLibrary.CommandJournal> e=CMLib.journals().commandJournals();e.hasMoreElements();)
+		for(final Enumeration<JournalsLibrary.CommandJournal> e=CMLib.journals().commandJournals();e.hasMoreElements();)
 		{
-			JournalsLibrary.CommandJournal CMJ=e.nextElement();
+			final JournalsLibrary.CommandJournal CMJ=e.nextElement();
 			if(rest.equalsIgnoreCase(CMJ.NAME())
 			||rest.equalsIgnoreCase(CMJ.NAME()+"s"))
 			{
@@ -115,12 +115,12 @@ public class CommandJournal extends StdCommand
 			mob.tell(rest+" is not a journal");
 			return true;
 		}
-		List<JournalsLibrary.JournalEntry> journal2=CMLib.database().DBReadJournalMsgs(journalID);
-		JournalsLibrary.JournalEntry entry2=journal2.get(count-1);
-		String from2=entry2.from;
-		String to=entry2.to;
-		String subject=entry2.subj;
-		String message=entry2.msg;
+		final List<JournalsLibrary.JournalEntry> journal2=CMLib.database().DBReadJournalMsgs(journalID);
+		final JournalsLibrary.JournalEntry entry2=journal2.get(count-1);
+		final String from2=entry2.from;
+		final String to=entry2.to;
+		final String subject=entry2.subj;
+		final String message=entry2.msg;
 		CMLib.database().DBDeleteJournal(journalID,entry2.key);
 		CMLib.database().DBWriteJournal(realName,
 										  from2,
@@ -137,8 +137,8 @@ public class CommandJournal extends StdCommand
 						  Vector commands,
 						  String security)
 	{
-		String first=(String)commands.elementAt(1);
-		String second=(commands.size()>2)?CMParms.combine(commands,2):"";
+		final String first=(String)commands.elementAt(1);
+		final String second=(commands.size()>2)?CMParms.combine(commands,2):"";
 		if(!("REVIEW".startsWith(first.toUpperCase().trim())))
 		   return false;
 		if(!CMSecurity.isJournalAccessAllowed(mob,security))
@@ -147,12 +147,12 @@ public class CommandJournal extends StdCommand
 			return false;
 		int count=CMath.s_int(second);
 
-		Item journalItem=CMClass.getItem("StdJournal");
+		final Item journalItem=CMClass.getItem("StdJournal");
 		if(journalItem==null)
 			mob.tell("This feature has been disabled.");
 		else
 		{
-			List<JournalsLibrary.JournalEntry> journal=CMLib.database().DBReadJournalMsgs(journalID);
+			final List<JournalsLibrary.JournalEntry> journal=CMLib.database().DBReadJournalMsgs(journalID);
 			int size=0;
 			if(journal!=null) size=journal.size();
 			if(size<=0)
@@ -165,7 +165,7 @@ public class CommandJournal extends StdCommand
 				else
 				while(count<=size)
 				{
-					CMMsg msg=CMClass.getMsg(mob,journalItem,null,CMMsg.MSG_READ,null,CMMsg.MSG_READ,""+count,CMMsg.MSG_READ,null);
+					final CMMsg msg=CMClass.getMsg(mob,journalItem,null,CMMsg.MSG_READ,null,CMMsg.MSG_READ,""+count,CMMsg.MSG_READ,null);
 					msg.setValue(1);
 					journalItem.executeMsg(mob,msg);
 					if(msg.value()==0)
@@ -191,9 +191,9 @@ public class CommandJournal extends StdCommand
 			return false;
 		}
 		JournalsLibrary.CommandJournal journal=null;
-		for(Enumeration<JournalsLibrary.CommandJournal> e=CMLib.journals().commandJournals();e.hasMoreElements();)
+		for(final Enumeration<JournalsLibrary.CommandJournal> e=CMLib.journals().commandJournals();e.hasMoreElements();)
 		{
-			JournalsLibrary.CommandJournal CMJ=e.nextElement();
+			final JournalsLibrary.CommandJournal CMJ=e.nextElement();
 			if(CMJ.NAME().equals(((String)commands.firstElement()).toUpperCase().trim()))
 			{
 				journal=CMJ;
@@ -201,9 +201,9 @@ public class CommandJournal extends StdCommand
 			}
 		}
 		if(journal==null)
-		for(Enumeration<JournalsLibrary.CommandJournal> e=CMLib.journals().commandJournals();e.hasMoreElements();)
+		for(final Enumeration<JournalsLibrary.CommandJournal> e=CMLib.journals().commandJournals();e.hasMoreElements();)
 		{
-			JournalsLibrary.CommandJournal CMJ=e.nextElement();
+			final JournalsLibrary.CommandJournal CMJ=e.nextElement();
 			if(CMJ.NAME().startsWith(((String)commands.firstElement()).toUpperCase().trim()))
 			{
 				journal=CMJ;

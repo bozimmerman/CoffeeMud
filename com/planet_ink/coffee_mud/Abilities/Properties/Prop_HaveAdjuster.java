@@ -57,7 +57,7 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 
 	public boolean addIfPlussed(String newText, String parm, int parmCode, Vector addTo)
 	{
-		int val=CMParms.getParmPlus(newText,parm);
+		final int val=CMParms.getParmPlus(newText,parm);
 		if(val==0) return false;
 		addTo.addElement(Integer.valueOf(parmCode));
 		addTo.addElement(Integer.valueOf(val));
@@ -68,7 +68,7 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 	{
 		if(V==null) return null;
 		if(V.size()==0) return null;
-		Object[] O=new Object[V.size()];
+		final Object[] O=new Object[V.size()];
 		for(int i=0;i<V.size();i++)
 			O[i]=V.elementAt(i);
 		return O;
@@ -86,7 +86,7 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 			mask=MaskingLibrary.CompiledZapperMask.EMPTY();
 		else
 			mask=CMLib.masking().getPreCompiledMask(parameters[1]);
-		Vector phyStatsV=new Vector();
+		final Vector phyStatsV=new Vector();
 		addIfPlussed(parameters[0],"abi",PhyStats.STAT_ABILITY,phyStatsV);
 		addIfPlussed(parameters[0],"arm",PhyStats.STAT_ARMOR,phyStatsV);
 		addIfPlussed(parameters[0],"att",PhyStats.STAT_ATTACK,phyStatsV);
@@ -95,7 +95,7 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 		addIfPlussed(parameters[0],"lev",PhyStats.STAT_LEVEL,phyStatsV);
 		addIfPlussed(parameters[0],"rej",PhyStats.STAT_REJUV,phyStatsV);
 		addIfPlussed(parameters[0],"sen",PhyStats.STAT_SENSES,phyStatsV);
-		double dval=CMParms.getParmDoublePlus(parameters[0],"spe");
+		final double dval=CMParms.getParmDoublePlus(parameters[0],"spe");
 		if(dval!=0)
 		{
 			phyStatsV.addElement(Integer.valueOf(PhyStats.NUM_STATS));
@@ -104,7 +104,7 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 		addIfPlussed(parameters[0],"wei",PhyStats.STAT_WEIGHT,phyStatsV);
 		addIfPlussed(parameters[0],"hei",PhyStats.STAT_HEIGHT,phyStatsV);
 
-		Vector charStatsV=new Vector();
+		final Vector charStatsV=new Vector();
 		String val=CMParms.getParmStr(parameters[0],"gen","").toUpperCase();
 		if((val.length()>0)&&((val.charAt(0)=='M')||(val.charAt(0)=='F')||(val.charAt(0)=='N')))
 		{
@@ -114,7 +114,7 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 		val=CMParms.getParmStr(parameters[0],"cla","").toUpperCase();
 		if(val.length()>0)
 		{
-			CharClass C=CMClass.findCharClass(val);
+			final CharClass C=CMClass.findCharClass(val);
 			if((C!=null)&&(C.availabilityCode()!=0))
 			{
 				charStatsV.addElement(new Character('C'));
@@ -127,18 +127,18 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 			charStatsV.addElement(new Character('R'));
 			charStatsV.addElement(CMClass.getRace(val));
 		}
-		for(int i : CharStats.CODES.BASE())
+		for(final int i : CharStats.CODES.BASE())
 		{
-			String name = CMStrings.limit(CharStats.CODES.NAME(i).toLowerCase(),3);
+			final String name = CMStrings.limit(CharStats.CODES.NAME(i).toLowerCase(),3);
 			addIfPlussed(parameters[0],name,i,charStatsV);
 			addIfPlussed(parameters[0],"max"+name,CharStats.CODES.toMAXBASE(i),charStatsV);
 		}
-		int[] CMMSGMAP=CharStats.CODES.CMMSGMAP();
-		for(int c : CharStats.CODES.SAVING_THROWS())
+		final int[] CMMSGMAP=CharStats.CODES.CMMSGMAP();
+		for(final int c : CharStats.CODES.SAVING_THROWS())
 			if(CMMSGMAP[c]!=-1)
 				addIfPlussed(parameters[0],"save"+CMStrings.limit(CharStats.CODES.NAME(c).toLowerCase(),3),c,charStatsV);
 
-		Vector charStateV=new Vector();
+		final Vector charStateV=new Vector();
 		addIfPlussed(parameters[0],"hit",CharState.STAT_HITPOINTS,charStateV);
 		addIfPlussed(parameters[0],"hun",CharState.STAT_HUNGER,charStateV);
 		addIfPlussed(parameters[0],"man",CharState.STAT_MANA,charStateV);
@@ -255,7 +255,7 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 	public static final String fixAccoutingsWithMask(String parameters, final String mask)
 	{
 		int x=parameters.toUpperCase().indexOf("ARM");
-		for(StringBuffer ID=new StringBuffer(parameters);((x>0)&&(x<parameters.length()));x++)
+		for(final StringBuffer ID=new StringBuffer(parameters);((x>0)&&(x<parameters.length()));x++)
 			if(parameters.charAt(x)=='-')
 			{
 				ID.setCharAt(x,'+');
@@ -275,11 +275,11 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 		x=parameters.toUpperCase().indexOf("DIS");
 		if(x>=0)
 		{
-			long val=CMParms.getParmPlus(parameters,"dis");
-			int y=parameters.indexOf(""+val,x);
+			final long val=CMParms.getParmPlus(parameters,"dis");
+			final int y=parameters.indexOf(""+val,x);
 			if((val!=0)&&(y>x))
 			{
-				StringBuffer middle=new StringBuffer("");
+				final StringBuffer middle=new StringBuffer("");
 				for(int num=0;num<PhyStats.IS_VERBS.length;num++)
 					if(CMath.bset(val,CMath.pow(2,num)))
 						middle.append(PhyStats.IS_VERBS[num]+" ");
@@ -289,11 +289,11 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 		x=parameters.toUpperCase().indexOf("SEN");
 		if(x>=0)
 		{
-			long val=CMParms.getParmPlus(parameters,"sen");
-			int y=parameters.indexOf(""+val,x);
+			final long val=CMParms.getParmPlus(parameters,"sen");
+			final int y=parameters.indexOf(""+val,x);
 			if((val!=0)&&(y>x))
 			{
-				StringBuffer middle=new StringBuffer("");
+				final StringBuffer middle=new StringBuffer("");
 				for(int num=0;num<PhyStats.CAN_SEE_VERBS.length;num++)
 					if(CMath.bset(val,CMath.pow(2,num)))
 						middle.append(PhyStats.CAN_SEE_VERBS[num]+" ");

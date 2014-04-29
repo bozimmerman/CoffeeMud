@@ -59,7 +59,7 @@ public class Logout extends CM1Command
 				req.logout();
 			}
 		}
-		catch(Exception ioe)
+		catch(final Exception ioe)
 		{
 			Log.errOut(className,ioe);
 			req.close();

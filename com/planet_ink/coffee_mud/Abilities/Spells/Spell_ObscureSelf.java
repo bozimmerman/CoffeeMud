@@ -14,7 +14,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -59,7 +58,7 @@ public class Spell_ObscureSelf extends Spell
 		if(!(affected instanceof MOB))
 			return true;
 
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		String othersMessage=msg.othersMessage();
 		String sourceMessage=msg.sourceMessage();
@@ -78,27 +77,27 @@ public class Spell_ObscureSelf extends Spell
 
 			if(othersMessage!=null)
 			{
-				for(int i=0;i<stuff.length;i++)
+				for (final String[] element : stuff)
 				{
-					x=othersMessage.indexOf(stuff[i][1]);
+					x=othersMessage.indexOf(element[1]);
 					while(x>=0)
 					{
 						somethingsChanged=true;
-						othersMessage=othersMessage.substring(0,x)+stuff[i][2]+othersMessage.substring(x+(stuff[i][1]).length());
-						x=othersMessage.indexOf(stuff[i][1]);
+						othersMessage=othersMessage.substring(0,x)+element[2]+othersMessage.substring(x+(element[1]).length());
+						x=othersMessage.indexOf(element[1]);
 					}
 				}
 			}
 			if((!msg.amISource(mob))&&(sourceMessage!=null))
 			{
-				for(int i=0;i<stuff.length;i++)
+				for (final String[] element : stuff)
 				{
-					x=sourceMessage.indexOf(stuff[i][1]);
+					x=sourceMessage.indexOf(element[1]);
 					while(x>=0)
 					{
 						somethingsChanged=true;
-						sourceMessage=sourceMessage.substring(0,x)+stuff[i][2]+sourceMessage.substring(x+(stuff[i][1]).length());
-						x=sourceMessage.indexOf(stuff[i][1]);
+						sourceMessage=sourceMessage.substring(0,x)+element[2]+sourceMessage.substring(x+(element[1]).length());
+						x=sourceMessage.indexOf(element[1]);
 					}
 				}
 			}
@@ -107,27 +106,27 @@ public class Spell_ObscureSelf extends Spell
 		{
 			if(othersMessage!=null)
 			{
-				for(int i=0;i<stuff.length;i++)
+				for (final String[] element : stuff)
 				{
-					x=othersMessage.indexOf(stuff[i][0]);
+					x=othersMessage.indexOf(element[0]);
 					while(x>=0)
 					{
 						somethingsChanged=true;
-						othersMessage=othersMessage.substring(0,x)+stuff[i][2]+othersMessage.substring(x+(stuff[i][0]).length());
-						x=othersMessage.indexOf(stuff[i][0]);
+						othersMessage=othersMessage.substring(0,x)+element[2]+othersMessage.substring(x+(element[0]).length());
+						x=othersMessage.indexOf(element[0]);
 					}
 				}
 			}
 			if((!msg.amITarget(mob))&&(targetMessage!=null))
 			{
-				for(int i=0;i<stuff.length;i++)
+				for (final String[] element : stuff)
 				{
-					x=targetMessage.indexOf(stuff[i][0]);
+					x=targetMessage.indexOf(element[0]);
 					while(x>=0)
 					{
 						somethingsChanged=true;
-						targetMessage=targetMessage.substring(0,x)+stuff[i][2]+targetMessage.substring(x+(stuff[i][0]).length());
-						x=targetMessage.indexOf(stuff[i][0]);
+						targetMessage=targetMessage.substring(0,x)+element[2]+targetMessage.substring(x+(element[0]).length());
+						x=targetMessage.indexOf(element[0]);
 					}
 				}
 			}
@@ -143,7 +142,7 @@ public class Spell_ObscureSelf extends Spell
 		// undo the affects of this spell
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		super.unInvoke();
 
 		if(canBeUninvoked())
@@ -171,7 +170,7 @@ public class Spell_ObscureSelf extends Spell
 		// and added as String objects to a vector.
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
@@ -180,7 +179,7 @@ public class Spell_ObscureSelf extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"^S<T-NAME> become(s) obscure!":"^S<S-NAME> whisper(s) to <S-HIM-HERSELF>.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"^S<T-NAME> become(s) obscure!":"^S<S-NAME> whisper(s) to <S-HIM-HERSELF>.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

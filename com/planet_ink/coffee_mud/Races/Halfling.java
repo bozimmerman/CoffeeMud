@@ -44,8 +44,8 @@ public class Halfling extends StdRace
 	@Override public int weightVariance(){return 50;}
 	@Override public long forbiddenWornBits(){return 0;}
 	@Override public String racialCategory(){return "Halfling";}
-	private String[]culturalAbilityNames={"Elvish","Cooking"};
-	private int[]culturalAbilityProficiencies={25,75};
+	private final String[]culturalAbilityNames={"Elvish","Cooking"};
+	private final int[]culturalAbilityProficiencies={25,75};
 	@Override public String[] culturalAbilityNames(){return culturalAbilityNames;}
 	@Override public int[] culturalAbilityProficiencies(){return culturalAbilityProficiencies;}
 
@@ -53,7 +53,7 @@ public class Halfling extends StdRace
 	private static final int[] parts={0 ,2 ,2 ,1 ,1 ,2 ,2 ,1 ,2 ,2 ,1 ,0 ,1 ,1 ,0 ,0 };
 	@Override public int[] bodyMask(){return parts;}
 
-	private int[] agingChart={0,1,4,20,50,75,100,110,120};
+	private final int[] agingChart={0,1,4,20,50,75,100,110,120};
 	@Override public int[] getAgingChart(){return agingChart;}
 
 	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
@@ -84,19 +84,19 @@ public class Halfling extends StdRace
 		{
 			outfitChoices=new Vector();
 			// Have to, since it requires use of special constructor
-			Armor s1=CMClass.getArmor("GenShirt");
+			final Armor s1=CMClass.getArmor("GenShirt");
 			s1.setName("a small tunic");
 			s1.setDisplayText("a small tunic is folded neatly here.");
 			s1.setDescription("It is a small but nicely made button-up tunic.");
 			s1.text();
 			outfitChoices.add(s1);
-			Armor p1=CMClass.getArmor("GenPants");
+			final Armor p1=CMClass.getArmor("GenPants");
 			p1.setName("some small pants");
 			p1.setDisplayText("some small pants lie here.");
 			p1.setDescription("They appear to be for a dimunitive person, and extend barely past the knee at that.");
 			p1.text();
 			outfitChoices.add(p1);
-			Armor s3=CMClass.getArmor("GenBelt");
+			final Armor s3=CMClass.getArmor("GenBelt");
 			outfitChoices.add(s3);
 		}
 		return outfitChoices;
@@ -109,7 +109,7 @@ public class Halfling extends StdRace
 	@Override
 	public String healthText(MOB viewer, MOB mob)
 	{
-		double pct=(CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));
+		final double pct=(CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));
 
 		if(pct<.10)
 			return "^r" + mob.name(viewer) + "^r has very little life left.^N";

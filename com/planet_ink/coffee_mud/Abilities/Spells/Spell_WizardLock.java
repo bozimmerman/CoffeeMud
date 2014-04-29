@@ -52,7 +52,7 @@ public class Spell_WizardLock extends Spell
 		if(!super.okMessage(myHost,msg))
 			return false;
 
-		MOB mob=msg.source();
+		final MOB mob=msg.source();
 		if(((!msg.amITarget(affected))&&(msg.tool()!=affected))
 		||(msg.source()==invoker())
 		||(CMLib.law().doesHavePriviledgesHere(mob,msg.source().location())
@@ -90,14 +90,14 @@ public class Spell_WizardLock extends Spell
 		{
 			if(affected instanceof Exit)
 			{
-				Exit exit=(Exit)affected;
+				final Exit exit=(Exit)affected;
 				exit.setDoorsNLocks(exit.hasADoor(),!exit.hasADoor(),exit.defaultsClosed(),
 									exit.hasALock(),exit.hasALock(),exit.defaultsLocked());
 			}
 			else
 			if(affected instanceof Container)
 			{
-				Container container=(Container)affected;
+				final Container container=(Container)affected;
 				container.setLidsNLocks(container.hasALid(),!container.hasALid(),container.hasALock(),container.hasALock());
 			}
 		}
@@ -112,10 +112,10 @@ public class Spell_WizardLock extends Spell
 			mob.tell("Wizard Lock what?.");
 			return false;
 		}
-		String targetName=CMParms.combine(commands,0);
+		final String targetName=CMParms.combine(commands,0);
 
 		Physical target=null;
-		int dirCode=Directions.getGoodDirectionCode(targetName);
+		final int dirCode=Directions.getGoodDirectionCode(targetName);
 		if(dirCode>=0)
 			target=mob.location().getExitInDir(dirCode);
 		if(target==null)
@@ -130,7 +130,7 @@ public class Spell_WizardLock extends Spell
 
 		if(target instanceof Container)
 		{
-			Container container=(Container)target;
+			final Container container=(Container)target;
 			if((!container.hasALid())||(!container.hasALock()))
 			{
 				mob.tell("You can't lock that!");
@@ -140,7 +140,7 @@ public class Spell_WizardLock extends Spell
 		else
 		if(target instanceof Exit)
 		{
-			Exit exit=(Exit)target;
+			final Exit exit=(Exit)target;
 			if(!exit.hasADoor())
 			{
 				mob.tell("You can't lock that!");
@@ -157,20 +157,20 @@ public class Spell_WizardLock extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> point(s) <S-HIS-HER> finger at <T-NAMESELF>, incanting.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> point(s) <S-HIS-HER> finger at <T-NAMESELF>, incanting.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(target instanceof Exit)
 				{
-					Exit exit=(Exit)target;
+					final Exit exit=(Exit)target;
 					exit.setDoorsNLocks(exit.hasADoor(),false,exit.defaultsClosed(),
 										exit.hasALock(),true,exit.defaultsLocked());
-					Room R=mob.location();
+					final Room R=mob.location();
 					Room R2=null;
 					for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 						if(R.getExitInDir(d)==target)
@@ -189,17 +189,17 @@ public class Spell_WizardLock extends Spell
 				if(target instanceof Container)
 				{
 					beneficialAffect(mob,target,asLevel,Ability.TICKS_ALMOST_FOREVER);
-					Container container=(Container)target;
+					final Container container=(Container)target;
 					container.setLidsNLocks(container.hasALid(),false,container.hasALock(),true);
 					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,"<T-NAME> look(s) shut tight!");
 				}
-				Ability lock=target.fetchEffect(ID());
+				final Ability lock=target.fetchEffect(ID());
 				if(lock != null)
 				{
 					lock.setMiscText(Integer.toString(mob.phyStats().level()));
 					if(target instanceof Exit)
 					{
-						Room R=mob.location();
+						final Room R=mob.location();
 						if(!CMLib.law().doesHavePriviledgesHere(mob,R))
 							for(final Enumeration<Ability> a=R.effects();a.hasMoreElements();)
 							{

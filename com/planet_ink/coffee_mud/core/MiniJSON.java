@@ -44,8 +44,8 @@ public class MiniJSON
 
 	public static String toJSONString(final String str)
 	{
-		StringBuilder strBldr=new StringBuilder("");
-		for(char c : str.toCharArray())
+		final StringBuilder strBldr=new StringBuilder("");
+		for(final char c : str.toCharArray())
 		{
 			switch(c)
 			{
@@ -155,7 +155,7 @@ public class MiniJSON
 			if(obj instanceof Object[])
 			{
 				str.append("[");
-				Object[] array=(Object[])obj;
+				final Object[] array=(Object[])obj;
 				for(int i=0; i<array.length; i++)
 				{
 					if(i>0)
@@ -174,9 +174,9 @@ public class MiniJSON
 		@Override
 		public String toString()
 		{
-			StringBuilder str = new StringBuilder("");
+			final StringBuilder str = new StringBuilder("");
 			str.append("{");
-			for(Iterator<String> k = keySet().iterator(); k.hasNext();)
+			for(final Iterator<String> k = keySet().iterator(); k.hasNext();)
 			{
 				final String keyVar = k.next();
 				str.append("\"").append(toJSONString(keyVar)).append("\":");
@@ -308,7 +308,7 @@ public class MiniJSON
 
 	private String parseString(char[] doc, int[] index) throws MJSONException
 	{
-		StringBuilder str=new StringBuilder("");
+		final StringBuilder str=new StringBuilder("");
 		if(doc[index[0]]!='\"')
 		{
 			throw new MJSONException("Expectged quote at: "+doc[index[0]]);
@@ -341,7 +341,7 @@ public class MiniJSON
 				{
 					if(index[0] >= doc.length-5)
 						throw new MJSONException("Unfinished unicode escape at "+index[0]);
-					byte[] hexBuf=new byte[4];
+					final byte[] hexBuf=new byte[4];
 					hexBuf[0] = getByteFromHex(doc,++index[0]);
 					hexBuf[1] = getByteFromHex(doc,++index[0]);
 					hexBuf[2] = getByteFromHex(doc,++index[0]);
@@ -350,7 +350,7 @@ public class MiniJSON
 					{
 						str.append(new String(hexBuf, "Cp1251"));
 					}
-					catch (UnsupportedEncodingException e)
+					catch (final UnsupportedEncodingException e)
 					{
 						throw new MJSONException("Illegal character at"+index[0],e);
 					}
@@ -370,7 +370,7 @@ public class MiniJSON
 	private Object[] parseArray(char[] doc, int[] index) throws MJSONException
 	{
 		ArrayParseState state=ArrayParseState.INITIAL;
-		List<Object> finalSet=new ArrayList<Object>();
+		final List<Object> finalSet=new ArrayList<Object>();
 		while(index[0] < doc.length)
 		{
 			final char c=doc[index[0]];
@@ -454,7 +454,7 @@ public class MiniJSON
 
 	private JSONObject parseObject(char[] doc, int[] index) throws MJSONException
 	{
-		JSONObject map = new JSONObject();
+		final JSONObject map = new JSONObject();
 		String key = null;
 		ObjectParseState state = ObjectParseState.INITIAL;
 		while(index[0] < doc.length)
@@ -514,11 +514,11 @@ public class MiniJSON
 		{
 			return parseObject(doc.toCharArray(), new int[]{0});
 		}
-		catch (MJSONException e)
+		catch (final MJSONException e)
 		{
 			throw e;
 		}
-		catch (Exception e)
+		catch (final Exception e)
 		{
 			throw new MJSONException("Internal error",e);
 		}

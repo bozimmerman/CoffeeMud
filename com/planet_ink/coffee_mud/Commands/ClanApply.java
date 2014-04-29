@@ -44,12 +44,12 @@ public class ClanApply extends StdCommand
 		throws java.io.IOException
 	{
 		commands.setElementAt(getAccessWords()[0],0);
-		String clanName=CMParms.combine(commands,1);
+		final String clanName=CMParms.combine(commands,1);
 		if(mob.isMonster()) return false;
-		StringBuffer msg=new StringBuffer("");
+		final StringBuffer msg=new StringBuffer("");
 		if(clanName.length()>0)
 		{
-			Clan C=CMLib.clans().findClan(clanName);
+			final Clan C=CMLib.clans().findClan(clanName);
 			if(C!=null)
 			{
 				if(C.isOnlyFamilyApplicants()
@@ -59,12 +59,12 @@ public class ClanApply extends StdCommand
 					return false;
 				}
 
-				List<Pair<Clan,Integer>> oldList=CMLib.clans().getClansByCategory(mob, C.getCategory());
+				final List<Pair<Clan,Integer>> oldList=CMLib.clans().getClansByCategory(mob, C.getCategory());
 				if(oldList.size()>=CMProps.getMaxClansThisCategory(C.getCategory()))
 				{
 					if(oldList.size()>0)
 					{
-						Pair<Clan,Integer> p=oldList.get(0);
+						final Pair<Clan,Integer> p=oldList.get(0);
 						mob.tell("You are already a member of "+p.first.getName()+". You need to resign before you can apply to another.");
 					}
 					else
@@ -78,23 +78,23 @@ public class ClanApply extends StdCommand
 					return false;
 				}
 
-				CharClass CC = CMClass.getCharClass(C.getClanClass());
+				final CharClass CC = CMClass.getCharClass(C.getClanClass());
 				if((CC!=null) && (mob.charStats().getClassLevel(CC)<0) && (!CC.qualifiesForThisClass(mob, false)))
 					return false;
 
 				if(CMLib.masking().maskCheck(C.getAcceptanceSettings(),mob,true))
 				{
-					List<Clan.MemberRecord> members=C.getMemberList();
+					final List<Clan.MemberRecord> members=C.getMemberList();
 					if((CMLib.masking().maskCheck("-<"+CMProps.getIntVar(CMProps.Int.MINCLANLEVEL),mob,true))
 					||(CMLib.clans().isFamilyOfMembership(mob,members)))
 					{
-						int maxMembers=CMProps.getIntVar(CMProps.Int.MAXCLANMEMBERS);
-						int numMembers=members.size();
+						final int maxMembers=CMProps.getIntVar(CMProps.Int.MAXCLANMEMBERS);
+						final int numMembers=members.size();
 						if((maxMembers<=0)||(numMembers<maxMembers))
 						{
-							int role=C.getAutoPosition();
+							final int role=C.getAutoPosition();
 							C.addMember(mob,role);
-							Pair<Clan,Integer> newRole=mob.getClanRole(C.clanID());
+							final Pair<Clan,Integer> newRole=mob.getClanRole(C.clanID());
 							if((newRole.second.intValue()!=C.getGovernment().getAcceptPos())
 							&&(newRole.second.intValue()==C.getGovernment().getAutoRole()))
 							{
@@ -105,11 +105,11 @@ public class ClanApply extends StdCommand
 							{
 								if(C.getGovernment().getEntryScript().trim().length()>0)
 								{
-									ScriptingEngine S=(ScriptingEngine)CMClass.getCommon("DefaultScriptingEngine");
+									final ScriptingEngine S=(ScriptingEngine)CMClass.getCommon("DefaultScriptingEngine");
 									S.setSavable(false);
 									S.setVarScope("*");
 									S.setScript(C.getGovernment().getEntryScript());
-									CMMsg msg2=CMClass.getMsg(mob,mob,null,CMMsg.MSG_OK_VISUAL,null,null,"CLANENTRY");
+									final CMMsg msg2=CMClass.getMsg(mob,mob,null,CMMsg.MSG_OK_VISUAL,null,null,"CLANENTRY");
 									S.executeMsg(mob, msg2);
 									S.dequeResponses();
 									S.tick(mob,Tickable.TICKID_MOB);

@@ -75,7 +75,7 @@ public class StdClanItem extends StdItem implements ClanItem
 				if((CMLib.clans().getClan(clanID())==null)
 				||((ciType()!=ClanItem.CI_PROPAGANDA)&&(((MOB)owner()).getClanRole(clanID())==null)))
 				{
-					Room R=CMLib.map().roomLocation(this);
+					final Room R=CMLib.map().roomLocation(this);
 					setRightfulOwner(null);
 					unWear();
 					removeFromOwnerContainer();
@@ -127,10 +127,10 @@ public class StdClanItem extends StdItem implements ClanItem
 		||(((ClanItem)ticking).clanID().length()==0)
 		||(((Item)ticking).amDestroyed()))
 			return true;
-		ClanItem CI=(ClanItem)ticking;
+		final ClanItem CI=(ClanItem)ticking;
 		if(CI.owner() instanceof MOB)
 		{
-			MOB M=((MOB)((Item)ticking).owner());
+			final MOB M=((MOB)((Item)ticking).owner());
 			if((CI.ciType()!=ClanItem.CI_PROPAGANDA)&&(M.getClanRole(CI.clanID())==null))
 			{
 				if(M.location()!=null)
@@ -160,7 +160,7 @@ public class StdClanItem extends StdItem implements ClanItem
 		{
 			if(CI.container() instanceof DeadBody)
 				CI.setContainer(null);
-			MOB M=(MOB)CI.rightfulOwner();
+			final MOB M=(MOB)CI.rightfulOwner();
 			if(M.amDestroyed())
 				CI.setRightfulOwner(null);
 			else
@@ -172,7 +172,7 @@ public class StdClanItem extends StdItem implements ClanItem
 
 	protected static List<List<String>> loadList(StringBuffer str)
 	{
-		List<List<String>> V=new Vector();
+		final List<List<String>> V=new Vector();
 		if(str==null) return V;
 		List<String> V2=new Vector();
 		boolean oneComma=false;
@@ -221,7 +221,7 @@ public class StdClanItem extends StdItem implements ClanItem
 		List<List<String>> V=(List<List<String>>)Resources.getResource("PARSED: clancraft.txt");
 		if(V==null)
 		{
-			StringBuffer str=new CMFile(Resources.buildResourcePath("skills")+"clancraft.txt",null,CMFile.FLAG_LOGERRORS).text();
+			final StringBuffer str=new CMFile(Resources.buildResourcePath("skills")+"clancraft.txt",null,CMFile.FLAG_LOGERRORS).text();
 			V=loadList(str);
 			if(V.size()==0)
 				Log.errOut("StdClanItem","Recipes not found!");
@@ -237,7 +237,7 @@ public class StdClanItem extends StdItem implements ClanItem
 			Item alreadyHasOne=null;
 			for(int i=0;i<targetMOB.numItems();i++)
 			{
-				Item I=targetMOB.getItem(i);
+				final Item I=targetMOB.getItem(i);
 				if((I!=null)
 				&&(I instanceof ClanItem)
 				&&((((ClanItem)myHost).ciType()!=ClanItem.CI_PROPAGANDA)||(((ClanItem)I).ciType()==ClanItem.CI_PROPAGANDA)))
@@ -260,13 +260,13 @@ public class StdClanItem extends StdItem implements ClanItem
 					targetMOB.location().show(targetMOB,null,myHost,CMMsg.MSG_OK_VISUAL,"<S-NAME> do(es)n't seem mobile enough to take <O-NAME>.");
 				return false;
 			}
-			Room startRoom=targetMOB.getStartRoom();
+			final Room startRoom=targetMOB.getStartRoom();
 			if((startRoom!=null)
 			&&(startRoom.getArea()!=null)
 			&&(targetMOB.location()!=null)
 			&&(startRoom.getArea()!=targetMOB.location().getArea()))
 			{
-				LegalBehavior theLaw=CMLib.law().getLegalBehavior(startRoom.getArea());
+				final LegalBehavior theLaw=CMLib.law().getLegalBehavior(startRoom.getArea());
 				if((theLaw!=null)
 				&&(theLaw.rulingOrganization()!=null)
 				&&(targetMOB.getClanRole(theLaw.rulingOrganization())!=null))
@@ -291,7 +291,7 @@ public class StdClanItem extends StdItem implements ClanItem
 		&&(myHost instanceof ClanItem)
 		&&(((ClanItem)myHost).clanID().length()>0))
 		{
-			MOB targetMOB=(MOB)msg.target();
+			final MOB targetMOB=(MOB)msg.target();
 			if((targetMOB.getClanRole(((ClanItem)myHost).clanID())==null)
 			&&(((ClanItem)myHost).ciType()!=ClanItem.CI_PROPAGANDA))
 			{
@@ -318,7 +318,7 @@ public class StdClanItem extends StdItem implements ClanItem
 				}
 				else
 				{
-					Clan itemC=CMLib.clans().getClan(((ClanItem)myHost).clanID());
+					final Clan itemC=CMLib.clans().getClan(((ClanItem)myHost).clanID());
 					if(itemC==null)
 					{
 						msg.source().tell("This ancient relic from a lost clan fades out of existence.");
@@ -333,7 +333,7 @@ public class StdClanItem extends StdItem implements ClanItem
 					&&(((ClanItem)myHost).ciType()!=ClanItem.CI_PROPAGANDA))
 					{
 						int relation=-1;
-						for(Pair<Clan,Integer> p : CMLib.clans().findRivalrousClans(msg.source()))
+						for(final Pair<Clan,Integer> p : CMLib.clans().findRivalrousClans(msg.source()))
 						{
 							relation=itemC.getClanRelations(p.first.clanID());
 							if(relation==Clan.REL_WAR)
@@ -344,10 +344,10 @@ public class StdClanItem extends StdItem implements ClanItem
 							msg.source().tell("You must be at war with this clan to take one of their items.");
 							return false;
 						}
-						Room room=msg.source().location();
+						final Room room=msg.source().location();
 						if((room!=null)&&(room.getArea()!=null))
 						{
-							LegalBehavior theLaw=CMLib.law().getLegalBehavior(room.getArea());
+							final LegalBehavior theLaw=CMLib.law().getLegalBehavior(room.getArea());
 							if((theLaw!=null)&&(theLaw.rulingOrganization()!=null)&&(theLaw.rulingOrganization().equals(itemC.clanID())))
 							{
 								msg.source().tell("You'll need to conquer this area to do that.");
@@ -373,7 +373,7 @@ public class StdClanItem extends StdItem implements ClanItem
 		&&(((ClanItem)myHost).clanID().length()>0)
 		&&(((ClanItem)myHost).ciType()!=ClanItem.CI_PROPAGANDA))
 		{
-			MOB M=msg.source();
+			final MOB M=msg.source();
 			if(M.getClanRole(((ClanItem)myHost).clanID())!=null)
 			{
 				if(M.isMonster())
@@ -385,16 +385,16 @@ public class StdClanItem extends StdItem implements ClanItem
 			{
 				if(M.location()!=null)
 					M.location().show(M,myHost,CMMsg.MSG_OK_ACTION,"<T-NAME> is destroyed by <S-YOUPOSS> touch!");
-				for(Pair<Clan,Integer> clanP : CMLib.clans().findRivalrousClans(M))
+				for(final Pair<Clan,Integer> clanP : CMLib.clans().findRivalrousClans(M))
 				{
-					Clan C=clanP.first;
-					List<List<String>> recipes=loadRecipes();
+					final Clan C=clanP.first;
+					final List<List<String>> recipes=loadRecipes();
 					for(int v=0;v<recipes.size();v++)
 					{
-						List<String> V=recipes.get(v);
+						final List<String> V=recipes.get(v);
 						if((V.size()>3)&&(CMath.s_int(V.get(3))==((ClanItem)myHost).ciType()))
 						{
-							int exp=CMath.s_int(V.get(6))/2;
+							final int exp=CMath.s_int(V.get(6))/2;
 							if(exp>0)
 							{
 								C.setExp(C.getExp()+exp);

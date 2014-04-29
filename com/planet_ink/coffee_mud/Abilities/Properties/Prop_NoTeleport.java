@@ -49,14 +49,14 @@ public class Prop_NoTeleport extends Property
 		&&(msg.source().location()!=null)
 		&&(msg.sourceMinor()!=CMMsg.TYP_LEAVE))
 		{
-			boolean summon=CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_SUMMONING);
-			boolean teleport=CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_TRANSPORTING);
-			boolean shere=(msg.source().location()==affected)
+			final boolean summon=CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_SUMMONING);
+			final boolean teleport=CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_TRANSPORTING);
+			final boolean shere=(msg.source().location()==affected)
 						||((affected instanceof Area)&&(((Area)affected).inMyMetroArea(msg.source().location().getArea())));
 			if(((!shere)&&(!summon)&&(teleport))
 			   ||((shere)&&(summon)))
 			{
-				Ability A=(Ability)msg.tool();
+				final Ability A=(Ability)msg.tool();
 				if(((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_CHANT)
 				||((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SPELL)
 				||((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PRAYER)

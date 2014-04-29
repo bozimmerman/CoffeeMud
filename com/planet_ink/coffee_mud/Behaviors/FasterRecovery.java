@@ -101,8 +101,8 @@ public class FasterRecovery extends StdBehavior
 			CMLib.combat().recoverTick(M);
 		if(hits!=0)
 		{
-			int oldMana=M.curState().getMana();
-			int oldMove=M.curState().getMovement();
+			final int oldMana=M.curState().getMana();
+			final int oldMove=M.curState().getMovement();
 			for(int i2=0;i2<hits;i2++)
 				CMLib.combat().recoverTick(M);
 			M.curState().setMana(oldMana);
@@ -110,8 +110,8 @@ public class FasterRecovery extends StdBehavior
 		}
 		if(mana!=0)
 		{
-			int oldHP=M.curState().getHitPoints();
-			int oldMove=M.curState().getMovement();
+			final int oldHP=M.curState().getHitPoints();
+			final int oldMove=M.curState().getMovement();
 			for(int i2=0;i2<mana;i2++)
 				CMLib.combat().recoverTick(M);
 			M.curState().setHitPoints(oldHP);
@@ -119,8 +119,8 @@ public class FasterRecovery extends StdBehavior
 		}
 		if(move!=0)
 		{
-			int oldMana=M.curState().getMana();
-			int oldHP=M.curState().getHitPoints();
+			final int oldMana=M.curState().getMana();
+			final int oldHP=M.curState().getHitPoints();
 			for(int i2=0;i2<mana;i2++)
 				CMLib.combat().recoverTick(M);
 			M.curState().setMana(oldMana);
@@ -132,7 +132,7 @@ public class FasterRecovery extends StdBehavior
 		if(room==null) return;
 		for(int i=0;i<room.numInhabitants();i++)
 		{
-			MOB M=room.fetchInhabitant(i);
+			final MOB M=room.fetchInhabitant(i);
 			if(M!=null)
 				doBe(M,burst,health,hits,mana,move);
 		}
@@ -140,9 +140,9 @@ public class FasterRecovery extends StdBehavior
 	public void doBe(Area area, int burst, int health, int hits, int mana, int move)
 	{
 		if(area==null) return;
-		for(Enumeration r=area.getMetroMap();r.hasMoreElements();)
+		for(final Enumeration r=area.getMetroMap();r.hasMoreElements();)
 		{
-			Room R=(Room)r.nextElement();
+			final Room R=(Room)r.nextElement();
 			doBe(R,burst,health,hits,mana,move);
 		}
 	}

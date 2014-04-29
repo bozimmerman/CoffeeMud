@@ -58,7 +58,7 @@ public class Specialization_Armor extends StdAbility
 		{
 			for(int i=0;i<mob.numItems();i++)
 			{
-				Item I=mob.getItem(i);
+				final Item I=mob.getItem(i);
 				if((I!=null)
 				&&(I.basePhyStats().armor()>0)
 				&&(!I.amWearingAt(Wearable.IN_INVENTORY))

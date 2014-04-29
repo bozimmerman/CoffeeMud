@@ -14,7 +14,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -57,12 +56,12 @@ public class Chant_SummonTornado extends Chant
 	{
 		 if(mob!=null)
 		 {
-			 Room R=mob.location();
+			 final Room R=mob.location();
 			 if(R!=null)
 			 {
 				 if((R.domainType()&Room.INDOORS)>0)
 					 return Ability.QUALITY_INDIFFERENT;
-				 Area A=R.getArea();
+				 final Area A=R.getArea();
 				 if((A.getClimateObj().weatherType(mob.location())!=Climate.WEATHER_THUNDERSTORM)
 				 &&(A.getClimateObj().weatherType(mob.location())!=Climate.WEATHER_BLIZZARD)
 				 &&(A.getClimateObj().weatherType(mob.location())!=Climate.WEATHER_WINDY))
@@ -91,7 +90,7 @@ public class Chant_SummonTornado extends Chant
 			return false;
 		}
 
-		Physical target = mob.location();
+		final Physical target = mob.location();
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
@@ -107,7 +106,7 @@ public class Chant_SummonTornado extends Chant
 			return false;
 
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
@@ -120,23 +119,23 @@ public class Chant_SummonTornado extends Chant
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				Vector stuff=new Vector();
+				final Vector stuff=new Vector();
 				for(int i=0;i<mob.location().numItems();i++)
 				{
-					Item I=mob.location().getItem(i);
+					final Item I=mob.location().getItem(i);
 					if((I!=null)&&(I.container()==null)&&(CMLib.flags().isGettable(I)))
 						stuff.addElement(I);
 				}
-				Set<MOB> H=properTargets(mob,givenTarget,true);
+				final Set<MOB> H=properTargets(mob,givenTarget,true);
 				if(H!=null)
-				for(Iterator e=H.iterator();e.hasNext();)
-					stuff.addElement(e.next());
-				Vector availableRooms=new Vector();
+					for (final Object element : H)
+						stuff.addElement(element);
+				final Vector availableRooms=new Vector();
 				availableRooms.addElement(mob.location());
 				for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 				{
-					Room R=mob.location().getRoomInDir(d);
-					Exit E=mob.location().getExitInDir(d);
+					final Room R=mob.location().getRoomInDir(d);
+					final Exit E=mob.location().getExitInDir(d);
 					if((R!=null)&&(E!=null)&&(E.isOpen())
 					&&((R.domainType()&Room.INDOORS)==0))
 						availableRooms.addElement(R);
@@ -146,12 +145,12 @@ public class Chant_SummonTornado extends Chant
 				else
 				while(stuff.size()>0)
 				{
-					Object O=stuff.elementAt(CMLib.dice().roll(1,stuff.size(),-1));
+					final Object O=stuff.elementAt(CMLib.dice().roll(1,stuff.size(),-1));
 					stuff.removeElement(O);
-					Room R=(Room)availableRooms.elementAt(CMLib.dice().roll(1,availableRooms.size(),-1));
+					final Room R=(Room)availableRooms.elementAt(CMLib.dice().roll(1,availableRooms.size(),-1));
 					if(O instanceof Item)
 					{
-						Item I=(Item)O;
+						final Item I=(Item)O;
 						if(R==mob.location())
 							mob.location().show(mob,null,I,CMMsg.MSG_OK_ACTION,"The tornado picks up <O-NAME> and whisks it around.");
 						else
@@ -199,10 +198,10 @@ public class Chant_SummonTornado extends Chant
 					else
 					if(O instanceof MOB)
 					{
-						MOB M=(MOB)O;
+						final MOB M=(MOB)O;
 						msg=CMClass.getMsg(M,mob.location(),null,CMMsg.MSG_LEAVE|CMMsg.MASK_ALWAYS,CMMsg.MSG_LEAVE,CMMsg.NO_EFFECT,null);
-						CMMsg msg2=CMClass.getMsg(mob,M,this,verbalCastCode(mob,M,auto),null);
-						CMMsg msg3=CMClass.getMsg(mob,M,this,verbalCastMask(mob,M,auto)|CMMsg.TYP_JUSTICE,null);
+						final CMMsg msg2=CMClass.getMsg(mob,M,this,verbalCastCode(mob,M,auto),null);
+						final CMMsg msg3=CMClass.getMsg(mob,M,this,verbalCastMask(mob,M,auto)|CMMsg.TYP_JUSTICE,null);
 						if((mob.location().okMessage(M,msg))
 						&&(mob.location().okMessage(mob,msg2))
 						&&(mob.location().okMessage(mob,msg3)))
@@ -216,7 +215,7 @@ public class Chant_SummonTornado extends Chant
 								mob.location().show(M,null,null,CMMsg.MSG_OK_ACTION,"The tornado picks <S-NAME> up and whisks <S-HIM-HER> away.");
 								R.bringMobHere(M,false);
 							}
-							int maxDie=(int)Math.round(CMath.div(adjustedLevel(mob,asLevel),2.0));
+							final int maxDie=(int)Math.round(CMath.div(adjustedLevel(mob,asLevel),2.0));
 							int damage = CMLib.dice().roll(maxDie,7,1);
 							if((msg.value()>0)||(msg2.value()>0))
 								damage = (int)Math.round(CMath.div(damage,2.0));

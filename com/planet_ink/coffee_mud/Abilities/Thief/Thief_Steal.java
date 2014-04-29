@@ -56,8 +56,8 @@ public class Thief_Steal extends ThiefSkill
 		int times=0;
 		for(int x=0;x<lastOnes.size();x++)
 		{
-			MOB M=lastOnes.getFirst(x);
-			Integer I=lastOnes.getSecond(x);
+			final MOB M=lastOnes.getFirst(x);
+			final Integer I=lastOnes.getSecond(x);
 			if(M==target)
 			{
 				times=I.intValue();
@@ -133,7 +133,7 @@ public class Thief_Steal extends ThiefSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		Item stolen=target.fetchItem(null,Wearable.FILTER_UNWORNONLY,itemToSteal);
+		final Item stolen=target.fetchItem(null,Wearable.FILTER_UNWORNONLY,itemToSteal);
 		if(stolen instanceof Coins)
 		{
 			mob.tell("You'll need to try and SWIPE that.");
@@ -143,7 +143,7 @@ public class Thief_Steal extends ThiefSkill
 		int discoverChance=(target.charStats().getStat(CharStats.STAT_WISDOM)*5)
 							-(levelDiff*5)
 							+(getX1Level(mob)*5);
-		int times=timesPicked(target);
+		final int times=timesPicked(target);
 		if(times>5) discoverChance-=(20*(times-5));
 		if(!CMLib.flags().canBeSeenBy(mob,target))
 			discoverChance+=50;
@@ -156,14 +156,14 @@ public class Thief_Steal extends ThiefSkill
 			levelDiff=-(levelDiff*((!CMLib.flags().canBeSeenBy(mob,target))?1:2));
 		if(!CMLib.flags().aliveAwakeMobile(target,true)){levelDiff=100;discoverChance=0;}
 
-		boolean success=proficiencyCheck(mob,levelDiff,auto);
+		final boolean success=proficiencyCheck(mob,levelDiff,auto);
 
 		if(!success)
 		{
 			if(CMLib.dice().rollPercentage()>discoverChance)
 			{
 				if((target.isMonster())&&(mob.getVictim()==null)) mob.setVictim(target);
-				CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_NOISYMOVEMENT,auto?"":"You fumble the attempt to steal; <T-NAME> spots you!",CMMsg.MSG_NOISYMOVEMENT,auto?"":"<S-NAME> tries to steal from you and fails!",CMMsg.MSG_NOISYMOVEMENT,auto?"":"<S-NAME> tries to steal from <T-NAME> and fails!");
+				final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_NOISYMOVEMENT,auto?"":"You fumble the attempt to steal; <T-NAME> spots you!",CMMsg.MSG_NOISYMOVEMENT,auto?"":"<S-NAME> tries to steal from you and fails!",CMMsg.MSG_NOISYMOVEMENT,auto?"":"<S-NAME> tries to steal from <T-NAME> and fails!");
 				if(mob.location().okMessage(mob,msg))
 					mob.location().send(mob,msg);
 			}
@@ -183,7 +183,7 @@ public class Thief_Steal extends ThiefSkill
 					str="<S-NAME> attempt(s) to steal from <T-HIM-HER>, but it doesn't appear "+target.charStats().heshe()+" has that in <T-HIS-HER> inventory!";
 				}
 
-			boolean alreadyFighting=(mob.getVictim()==target)||(target.getVictim()==mob);
+			final boolean alreadyFighting=(mob.getVictim()==target)||(target.getVictim()==mob);
 			String hisStr=str;
 			int hisCode=CMMsg.MSG_THIEF_ACT;
 			if(CMLib.dice().rollPercentage()<discoverChance)

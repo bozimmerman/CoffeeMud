@@ -102,7 +102,7 @@ public class CommonSkill extends StdAbility
 	{
 		if((affected instanceof MOB)&&(tickID==Tickable.TICKID_MOB))
 		{
-			MOB mob=(MOB)affected;
+			final MOB mob=(MOB)affected;
 			if((mob.isInCombat())
 			||(mob.location()!=activityRoom)
 			||(!CMLib.flags().aliveAwakeMobileUnbound(mob,true)))
@@ -111,14 +111,14 @@ public class CommonSkill extends StdAbility
 				unInvoke();
 				return false;
 			}
-			String sound=(playSound!=null)?CMLib.protocol().msp(playSound,10):"";
+			final String sound=(playSound!=null)?CMLib.protocol().msp(playSound,10):"";
 			if(tickDown==4)
 				mob.location().show(mob,null,getActivityMessageType(),"<S-NAME> <S-IS-ARE> almost done "+verb+"."+sound);
 			else
 			if((tickUp%4)==0)
 			{
-				int total=tickUp+tickDown;
-				int pct=(int)Math.round(CMath.div(tickUp,total)*100.0);
+				final int total=tickUp+tickDown;
+				final int pct=(int)Math.round(CMath.div(tickUp,total)*100.0);
 				mob.location().show(mob,null,this,getActivityMessageType(),"<S-NAME> continue(s) "+verb+" ("+pct+"% completed)."+sound,null,"<S-NAME> continue(s) "+verb+"."+sound);
 			}
 			if((helping)
@@ -130,7 +130,7 @@ public class CommonSkill extends StdAbility
 				mob.playerStats().adjHygiene(PlayerStats.HYGIENE_COMMONDIRTY);
 		}
 
-		int preTickDown=tickDown;
+		final int preTickDown=tickDown;
 		if(!super.tick(ticking,tickID))
 			return false;
 		tickUp+=(preTickDown-tickDown);
@@ -146,7 +146,7 @@ public class CommonSkill extends StdAbility
 			&&(affected instanceof MOB)
 			&&(((MOB)affected).location()!=null))
 			{
-				MOB mob=(MOB)affected;
+				final MOB mob=(MOB)affected;
 				if(aborted)
 					mob.location().show(mob,null,getActivityMessageType(),"<S-NAME> stop(s) "+verb+".");
 				else
@@ -161,11 +161,11 @@ public class CommonSkill extends StdAbility
 	protected int getDuration(int baseTicks, MOB mob, int itemLevel, int minDuration)
 	{
 		int ticks=baseTicks;
-		int level=mob.phyStats().level() - itemLevel;
-		double pct=CMath.div(level,CMProps.getIntVar(CMProps.Int.LASTPLAYERLEVEL))*.5;
+		final int level=mob.phyStats().level() - itemLevel;
+		final double pct=CMath.div(level,CMProps.getIntVar(CMProps.Int.LASTPLAYERLEVEL))*.5;
 		ticks-=(int)Math.round(CMath.mul(ticks, pct));
 
-		double quickPct = getXTIMELevel(mob) * 0.05;
+		final double quickPct = getXTIMELevel(mob) * 0.05;
 		ticks-=(int)Math.round(CMath.mul(ticks, quickPct));
 		if(ticks<minDuration) ticks=minDuration;
 		return ticks;
@@ -220,21 +220,21 @@ public class CommonSkill extends StdAbility
 
 	protected int lookingFor(int material, Room fromHere)
 	{
-		Vector V=new Vector();
+		final Vector V=new Vector();
 		V.addElement(Integer.valueOf(material));
 		return lookingFor(V,fromHere);
 	}
 
 	protected int lookingFor(Vector materials, Room fromHere)
 	{
-		Vector possibilities=new Vector();
+		final Vector possibilities=new Vector();
 		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 		{
-			Room room=fromHere.getRoomInDir(d);
-			Exit exit=fromHere.getExitInDir(d);
+			final Room room=fromHere.getRoomInDir(d);
+			final Exit exit=fromHere.getExitInDir(d);
 			if((room!=null)&&(exit!=null)&&(exit.isOpen()))
 			{
-				int material=room.myResource();
+				final int material=room.myResource();
 				if(materials.contains(Integer.valueOf(material&RawMaterial.MATERIAL_MASK)))
 				{possibilities.addElement(Integer.valueOf(d));}
 			}
@@ -260,7 +260,7 @@ public class CommonSkill extends StdAbility
 		Item fire=null;
 		for(int i=0;i<mob.location().numItems();i++)
 		{
-			Item I2=mob.location().getItem(i);
+			final Item I2=mob.location().getItem(i);
 			if((I2!=null)&&(I2.container()==null)&&(CMLib.flags().isOnFire(I2)))
 			{
 				fire=I2;
@@ -299,7 +299,7 @@ public class CommonSkill extends StdAbility
 		else
 		{
 			consumed=25;
-			int diff=CMLib.ableMapper().qualifyingClassLevel(mob,this)+super.getXLOWCOSTLevel(mob)-CMLib.ableMapper().qualifyingLevel(mob,this);
+			final int diff=CMLib.ableMapper().qualifyingClassLevel(mob,this)+super.getXLOWCOSTLevel(mob)-CMLib.ableMapper().qualifyingLevel(mob,this);
 			Integer[] costOverrides=null;
 			if(!ignoreClassOverride)
 				costOverrides=CMLib.ableMapper().getCostOverrides(mob,ID());
@@ -321,7 +321,7 @@ public class CommonSkill extends StdAbility
 				if((consumed<minimum)&&(consumed>=0)) minimum=consumed;
 			}
 		}
-		int[] usageCost=buildCostArray(mob,consumed,minimum);
+		final int[] usageCost=buildCostArray(mob,consumed,minimum);
 		if(rebuildCache)
 		{
 			if(consumed > COST_PCT-1)
@@ -340,13 +340,13 @@ public class CommonSkill extends StdAbility
 	public boolean confirmPossibleMaterialLocation(int resource, Room room)
 	{
 		if(room==null) return false;
-		Integer I=Integer.valueOf(resource);
-		boolean isMaterial=(resource&RawMaterial.RESOURCE_MASK)==0;
-		int roomResourceType=room.myResource();
+		final Integer I=Integer.valueOf(resource);
+		final boolean isMaterial=(resource&RawMaterial.RESOURCE_MASK)==0;
+		final int roomResourceType=room.myResource();
 		if(((isMaterial&&(resource==(roomResourceType&RawMaterial.MATERIAL_MASK))))
 		||(I.intValue()==roomResourceType))
 			return true;
-		List<Integer> resources=room.resourceChoices();
+		final List<Integer> resources=room.resourceChoices();
 		if(resources!=null)
 		for(int i=0;i<resources.size();i++)
 			if(isMaterial&&(resource==(resources.get(i).intValue()&RawMaterial.MATERIAL_MASK)))
@@ -359,7 +359,7 @@ public class CommonSkill extends StdAbility
 
 	public Integer[] supportedResourcesMap()
 	{
-		String rscs=supportedResourceString().toUpperCase();
+		final String rscs=supportedResourceString().toUpperCase();
 		if(resourcesMap.containsKey(rscs))
 		{
 			return resourcesMap.get(rscs);
@@ -376,23 +376,23 @@ public class CommonSkill extends StdAbility
 					x=RawMaterial.CODES.FIND_IgnoreCase(setMat.substring(1));
 				else
 				{
-					int y=setMat.indexOf('-');
+					final int y=setMat.indexOf('-');
 					List<String> restV=null;
 					if(y>0)
 					{
 						restV=CMParms.parseAny(setMat.substring(y+1),"-", true);
 						setMat=setMat.substring(0, y);
 					}
-					RawMaterial.Material m=RawMaterial.Material.findIgnoreCase(setMat);
+					final RawMaterial.Material m=RawMaterial.Material.findIgnoreCase(setMat);
 					if(m!=null)
 					{
 						x=m.mask();
 						if((restV!=null)&&(restV.size()>0))
 						{
-							List<Integer> rscsV=new XVector<Integer>(RawMaterial.CODES.COMPOSE_RESOURCES(x));
-							for(String sv : restV)
+							final List<Integer> rscsV=new XVector<Integer>(RawMaterial.CODES.COMPOSE_RESOURCES(x));
+							for(final String sv : restV)
 							{
-								int code = RawMaterial.CODES.FIND_CaseSensitive(sv);
+								final int code = RawMaterial.CODES.FIND_CaseSensitive(sv);
 								if(code >=0)
 									rscsV.remove(Integer.valueOf(code));
 							}
@@ -416,7 +416,7 @@ public class CommonSkill extends StdAbility
 	public boolean isMadeOfSupportedResource(Item I)
 	{
 		if(I==null) return false;
-		for(Integer R : supportedResourcesMap())
+		for(final Integer R : supportedResourcesMap())
 		{
 			if((R.intValue() & RawMaterial.MATERIAL_MASK)==0)
 			{
@@ -436,11 +436,11 @@ public class CommonSkill extends StdAbility
 		if(!super.canBeLearnedBy(teacherM,studentM))
 			return false;
 		if(studentM==null) return true;
-		CharClass C=studentM.charStats().getCurrentClass();
+		final CharClass C=studentM.charStats().getCurrentClass();
 		if(CMLib.ableMapper().getQualifyingLevel(C.ID(), false, ID())>=0)
 			return true;
-		boolean crafting = ((classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_CRAFTINGSKILL);
-		AbilityMapper.AbilityLimits remainders = CMLib.ableMapper().getCommonSkillRemainder(studentM, this);
+		final boolean crafting = ((classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_CRAFTINGSKILL);
+		final AbilityMapper.AbilityLimits remainders = CMLib.ableMapper().getCommonSkillRemainder(studentM, this);
 		if(remainders.commonSkills<=0)
 		{
 			teacherM.tell(studentM.name(teacherM)+" can not learn any more common skills.");
@@ -463,11 +463,11 @@ public class CommonSkill extends StdAbility
 		super.teach(teacher, student);
 		if((student!=null)&&(student.fetchAbility(ID())!=null))
 		{
-			CharClass C=student.charStats().getCurrentClass();
+			final CharClass C=student.charStats().getCurrentClass();
 			if(CMLib.ableMapper().getQualifyingLevel(C.ID(), false, ID())>=0)
 				return;
-			boolean crafting = ((classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_CRAFTINGSKILL);
-			AbilityMapper.AbilityLimits remainders = CMLib.ableMapper().getCommonSkillRemainder(student, this);
+			final boolean crafting = ((classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_CRAFTINGSKILL);
+			final AbilityMapper.AbilityLimits remainders = CMLib.ableMapper().getCommonSkillRemainder(student, this);
 			if(remainders.commonSkills<=0)
 				student.tell(student.name()+" may not learn any more common skills.");
 			else
@@ -500,7 +500,7 @@ public class CommonSkill extends StdAbility
 		&&(commands.get(0) instanceof String)
 		&&(((String)commands.get(0)).equalsIgnoreCase("stop")))
 		{
-			Ability A=mob.fetchEffect(ID());
+			final Ability A=mob.fetchEffect(ID());
 			if((A!=null)&&(!A.isNowAnAutoEffect())&&(A.canBeUninvoked()))
 			{
 				if(A instanceof CommonSkill)
@@ -555,7 +555,7 @@ public class CommonSkill extends StdAbility
 		// if you can't move, you can't do anything!
 		if(!CMLib.flags().aliveAwakeMobileUnbound(mob,false))
 			return false;
-		int[] consumed=usageCost(mob,false);
+		final int[] consumed=usageCost(mob,false);
 		if(mob.curState().getMana()<consumed[Ability.USAGEINDEX_MANA])
 		{
 			if(mob.maxState().getMana()==consumed[Ability.USAGEINDEX_MANA])

@@ -53,7 +53,7 @@ public class Fighter_ShieldBlock extends FighterSkill
 		if(!(affected instanceof MOB))
 			return true;
 
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		if(msg.amITarget(mob)
 		&&(amountOfShieldArmor>0)
@@ -64,7 +64,7 @@ public class Fighter_ShieldBlock extends FighterSkill
 		&&(proficiencyCheck(null,mob.charStats().getStat(CharStats.STAT_DEXTERITY)-90+(2*getXLEVELLevel(mob)),false))
 		&&(msg.source().getVictim()==mob))
 		{
-			CMMsg msg2=CMClass.getMsg(msg.source(),mob,mob.fetchHeldItem(),CMMsg.MSG_QUIETMOVEMENT,"<T-NAME> block(s) <S-YOUPOSS> attack with <O-NAME>!");
+			final CMMsg msg2=CMClass.getMsg(msg.source(),mob,mob.fetchHeldItem(),CMMsg.MSG_QUIETMOVEMENT,"<T-NAME> block(s) <S-YOUPOSS> attack with <O-NAME>!");
 			if(mob.location().okMessage(mob,msg2))
 			{
 				mob.location().send(mob,msg2);
@@ -83,7 +83,7 @@ public class Fighter_ShieldBlock extends FighterSkill
 		if(!(affected instanceof MOB))
 			return;
 
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		if(msg.amISource(mob)&&(msg.target() instanceof Shield))
 			amountOfShieldArmor=-1;
@@ -97,7 +97,7 @@ public class Fighter_ShieldBlock extends FighterSkill
 		if((amountOfShieldArmor<0)&&(tickID==Tickable.TICKID_MOB)&&(ticking instanceof MOB))
 		{
 			amountOfShieldArmor=0;
-			for(Enumeration<Item> i=((MOB)ticking).items(); i.hasMoreElements(); )
+			for(final Enumeration<Item> i=((MOB)ticking).items(); i.hasMoreElements(); )
 			{
 				final Item I=i.nextElement();
 				if((I instanceof Shield)

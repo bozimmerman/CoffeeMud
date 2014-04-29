@@ -132,7 +132,7 @@ public class StdPortal extends StdContainer implements Rideable, Exit
 	protected Room getDestinationRoom()
 	{
 		Room R=null;
-		List<String> V=CMParms.parseSemicolons(readableText(),true);
+		final List<String> V=CMParms.parseSemicolons(readableText(),true);
 		if(V.size()>0)
 			R=CMLib.map().getRoom(V.get(CMLib.dice().roll(1,V.size(),-1)));
 		return R;
@@ -153,19 +153,19 @@ public class StdPortal extends StdContainer implements Rideable, Exit
 			{
 				if(msg.sourceMessage().indexOf(mountString(CMMsg.TYP_SIT,msg.source()))>0)
 				{
-					Room thisRoom=msg.source().location();
+					final Room thisRoom=msg.source().location();
 					Room R=getDestinationRoom();
 					if(R==null) R=thisRoom;
-					Exit E=CMClass.getExit("OpenNameable");
+					final Exit E=CMClass.getExit("OpenNameable");
 					E.setMiscText(name());
 					synchronized(("GATE_"+CMLib.map().getExtendedTwinRoomIDs(thisRoom,R)).intern())
 					{
-						Exit oldE=thisRoom.getRawExit(Directions.GATE);
-						Room oldR=thisRoom.rawDoors()[Directions.GATE];
-						Exit oldE2=R.getRawExit(Directions.GATE);
+						final Exit oldE=thisRoom.getRawExit(Directions.GATE);
+						final Room oldR=thisRoom.rawDoors()[Directions.GATE];
+						final Exit oldE2=R.getRawExit(Directions.GATE);
 						thisRoom.rawDoors()[Directions.GATE]=R;
 						thisRoom.setRawExit(Directions.GATE,E);
-						Exit E2=CMClass.getExit("OpenNameable");
+						final Exit E2=CMClass.getExit("OpenNameable");
 						E2.basePhyStats().setDisposition(PhyStats.IS_NOT_SEEN);
 						R.setRawExit(Directions.GATE,E2);
 						CMLib.tracking().walk(msg.source(),Directions.GATE,false,false,false);
@@ -207,12 +207,12 @@ public class StdPortal extends StdContainer implements Rideable, Exit
 	@Override
 	public StringBuilder viewableText(MOB mob, Room myRoom)
 	{
-		List<String> V=CMParms.parseSemicolons(readableText(),true);
+		final List<String> V=CMParms.parseSemicolons(readableText(),true);
 		Room room=myRoom;
 		if(V.size()>0)
 			room=CMLib.map().getRoom(V.get(CMLib.dice().roll(1,V.size(),-1)));
 		if(room==null) return empty;
-		StringBuilder Say=new StringBuilder("");
+		final StringBuilder Say=new StringBuilder("");
 		if(CMath.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS))
 		{
 			Say.append("^H("+CMLib.map().getExtendedRoomID(room)+")^? "+room.displayText(mob)+CMLib.flags().colorCodes(room,mob)+" ");

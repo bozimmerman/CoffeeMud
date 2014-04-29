@@ -50,7 +50,7 @@ public class Thief_Sneak extends ThiefSkill
 	{
 		String dir=CMParms.combine(commands,0);
 		if(commands.size()>0) dir=(String)commands.lastElement();
-		int dirCode=Directions.getGoodDirectionCode(dir);
+		final int dirCode=Directions.getGoodDirectionCode(dir);
 		if(dirCode<0)
 		{
 			mob.tell("Sneak where?");
@@ -63,14 +63,14 @@ public class Thief_Sneak extends ThiefSkill
 			return false;
 		}
 
-		MOB highestMOB=getHighestLevelMOB(mob,null);
+		final MOB highestMOB=getHighestLevelMOB(mob,null);
 		int levelDiff=(mob.phyStats().level()+(super.getXLEVELLevel(mob)*2))-getMOBLevel(highestMOB);
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=false;
-		CMMsg msg=CMClass.getMsg(mob,null,this,auto?CMMsg.MSG_OK_VISUAL:CMMsg.MSG_DELICATE_HANDS_ACT,"You quietly sneak "+Directions.getDirectionName(dirCode)+".",CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);
+		final CMMsg msg=CMClass.getMsg(mob,null,this,auto?CMMsg.MSG_OK_VISUAL:CMMsg.MSG_DELICATE_HANDS_ACT,"You quietly sneak "+Directions.getDirectionName(dirCode)+".",CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
@@ -88,7 +88,7 @@ public class Thief_Sneak extends ThiefSkill
 			if(success)
 			{
 
-				int disposition=mob.basePhyStats().disposition();
+				final int disposition=mob.basePhyStats().disposition();
 				if((disposition&PhyStats.IS_SNEAKING)>0)
 				{
 					mob.basePhyStats().setDisposition(disposition-PhyStats.IS_SNEAKING);

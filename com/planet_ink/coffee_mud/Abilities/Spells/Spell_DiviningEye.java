@@ -52,16 +52,16 @@ public class Spell_DiviningEye extends Spell
 			return false;
 		}
 
-		Ability pryingEyeA=mob.fetchEffect("Spell_PryingEye");
+		final Ability pryingEyeA=mob.fetchEffect("Spell_PryingEye");
 		if(pryingEyeA==null)
 		{
 			mob.tell("This spell requires an active prying eye.");
 			return false;
 		}
 
-		String commandStr=CMParms.combine(commands);
+		final String commandStr=CMParms.combine(commands);
 		commands.insertElementAt("CAST",0);
-		Ability A=CMLib.english().getToEvoke(mob, commands);
+		final Ability A=CMLib.english().getToEvoke(mob, commands);
 		if(A==null)
 		{
 			mob.tell("'"+commandStr+"' does not refer to any diviner spell you know.");
@@ -77,11 +77,11 @@ public class Spell_DiviningEye extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,null,this,somanticCastCode(mob,null,auto),auto?"":"^S<S-NAME> invoke(s) a remote divination!^?");
+			final CMMsg msg=CMClass.getMsg(mob,null,this,somanticCastCode(mob,null,auto),auto?"":"^S<S-NAME> invoke(s) a remote divination!^?");
 			final Room room=mob.location();
 			if(room.okMessage(mob,msg))
 			{

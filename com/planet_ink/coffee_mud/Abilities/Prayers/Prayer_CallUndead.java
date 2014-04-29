@@ -14,8 +14,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
-
 import java.util.*;
 
 /*
@@ -48,7 +46,7 @@ public class Prayer_CallUndead extends Prayer
 	{
 		Room oldRoom=null;
 		MOB target=null;
-		Set<MOB> H=mob.getGroupMembers(new HashSet<MOB>());
+		final Set<MOB> H=mob.getGroupMembers(new HashSet<MOB>());
 		if((H.size()==0)||((H.size()==1)&&(H.contains(mob))))
 		{
 			mob.tell("You don't have any controlled undead!");
@@ -56,9 +54,9 @@ public class Prayer_CallUndead extends Prayer
 		}
 
 		boolean allHere=true;
-		for(Iterator i=H.iterator();i.hasNext();)
+		for (final Object element : H)
 		{
-			MOB M=(MOB)i.next();
+			final MOB M=(MOB)element;
 			if((M!=mob)&&(M.location()!=mob.location())&&(M.location()!=null))
 			{
 				allHere=false;
@@ -86,19 +84,19 @@ public class Prayer_CallUndead extends Prayer
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		int adjustment=(target.phyStats().level()-(mob.phyStats().level()+(2*getXLEVELLevel(mob))))*3;
-		boolean success=proficiencyCheck(mob,-adjustment,auto);
+		final int adjustment=(target.phyStats().level()-(mob.phyStats().level()+(2*getXLEVELLevel(mob))))*3;
+		final boolean success=proficiencyCheck(mob,-adjustment,auto);
 
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> call(s) <S-HIS-HER> undead to come to <S-HIM-HER>!^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> call(s) <S-HIS-HER> undead to come to <S-HIM-HER>!^?");
 			if((mob.location().okMessage(mob,msg))&&(oldRoom != null)&&(oldRoom.okMessage(mob,msg)))
 			{
 				mob.location().send(mob,msg);
 				oldRoom.sendOthers(mob,msg);
-				MOB follower=target;
-				Room newRoom=mob.location();
-				Ability A=CMClass.getAbility("Skill_Track");
+				final MOB follower=target;
+				final Room newRoom=mob.location();
+				final Ability A=CMClass.getAbility("Skill_Track");
 				if(A!=null)
 				{
 					A.invoke(follower,CMParms.parse("\""+CMLib.map().getExtendedRoomID(newRoom)+"\""),newRoom,true,0);

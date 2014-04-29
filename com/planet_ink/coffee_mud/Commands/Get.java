@@ -47,7 +47,7 @@ public class Get extends StdCommand
 
 	public static boolean get(MOB mob, Item container, Item getThis, boolean quiet, String getWord, boolean optimize)
 	{
-		Room R=mob.location();
+		final Room R=mob.location();
 		String theWhat="<T-NAME>";
 		Item target=getThis;
 		Item tool=null;
@@ -59,19 +59,19 @@ public class Get extends StdCommand
 		}
 		if(!getThis.amWearingAt(Wearable.IN_INVENTORY))
 		{
-			CMMsg msg=CMClass.getMsg(mob,getThis,null,(optimize?CMMsg.MASK_OPTIMIZE:0)|CMMsg.MSG_REMOVE,null);
+			final CMMsg msg=CMClass.getMsg(mob,getThis,null,(optimize?CMMsg.MASK_OPTIMIZE:0)|CMMsg.MSG_REMOVE,null);
 			if(!R.okMessage(mob,msg))
 				return false;
 			R.send(mob,msg);
 		}
-		CMMsg msg=CMClass.getMsg(mob,target,tool,(optimize?CMMsg.MASK_OPTIMIZE:0)|CMMsg.MSG_GET,quiet?null:"<S-NAME> "+getWord+"(s) "+theWhat+".");
+		final CMMsg msg=CMClass.getMsg(mob,target,tool,(optimize?CMMsg.MASK_OPTIMIZE:0)|CMMsg.MSG_GET,quiet?null:"<S-NAME> "+getWord+"(s) "+theWhat+".");
 		if(!R.okMessage(mob,msg))
 			return false;
 		// we do this next step because, when a container is involved,
 		// the item deserves to be the target of the GET.
 		if((!mob.isMine(target))&&(target!=getThis))
 		{
-			CMMsg msg2=CMClass.getMsg(mob,getThis,null,(optimize?CMMsg.MASK_OPTIMIZE:0)|CMMsg.MSG_GET,null);
+			final CMMsg msg2=CMClass.getMsg(mob,getThis,null,(optimize?CMMsg.MASK_OPTIMIZE:0)|CMMsg.MSG_GET,null);
 			if(!R.okMessage(mob,msg2))
 				return false;
 			R.send(mob,msg);
@@ -88,10 +88,10 @@ public class Get extends StdCommand
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		Room R=mob.location();
+		final Room R=mob.location();
 		if((commands.size()>1)&&(commands.firstElement() instanceof Item))
 		{
-			Item item=(Item)commands.firstElement();
+			final Item item=(Item)commands.firstElement();
 			Item container=null;
 			boolean quiet=false;
 			if(commands.elementAt(1) instanceof Item)
@@ -103,7 +103,7 @@ public class Get extends StdCommand
 			else
 			if(commands.elementAt(1) instanceof Boolean)
 				quiet=((Boolean)commands.elementAt(1)).booleanValue();
-			boolean success=get(mob,container,item,quiet);
+			final boolean success=get(mob,container,item,quiet);
 			if(item instanceof Coins)
 				((Coins)item).putCoinsBack();
 			if(item instanceof RawMaterial)
@@ -127,22 +127,22 @@ public class Get extends StdCommand
 		String containerName="";
 		if(commands.size()>0)
 			containerName=(String)commands.lastElement();
-		Vector containerCommands=new XVector(commands);
-		java.util.List<Container> containers=CMLib.english().possibleContainers(mob,commands,Wearable.FILTER_ANY,true);
+		final Vector containerCommands=new XVector(commands);
+		final java.util.List<Container> containers=CMLib.english().possibleContainers(mob,commands,Wearable.FILTER_ANY,true);
 		int c=0;
 
 		int maxToGet=CMLib.english().calculateMaxToGive(mob,commands,containers.size()==0,R,true);
 		if(maxToGet<0) return false;
 
 		String whatToGet=CMParms.combine(commands,0);
-		String unmodifiedWhatToGet=whatToGet;
+		final String unmodifiedWhatToGet=whatToGet;
 		boolean allFlag=(commands.size()>0)?((String)commands.elementAt(0)).equalsIgnoreCase("all"):false;
 		if(whatToGet.toUpperCase().startsWith("ALL.")){ allFlag=true; whatToGet="ALL "+whatToGet.substring(4);}
 		if(whatToGet.toUpperCase().endsWith(".ALL")){ allFlag=true; whatToGet="ALL "+whatToGet.substring(0,whatToGet.length()-4);}
 		boolean doneSomething=false;
 		while((c<containers.size())||(containers.size()==0))
 		{
-			Vector V=new Vector();
+			final Vector V=new Vector();
 			Container container=null;
 			if(containers.size()>0)
 				container=containers.get(c++);
@@ -167,7 +167,7 @@ public class Get extends StdCommand
 				if((maxToGet>1)&&(getThis instanceof RawMaterial)&&(container!=null)
 				&&(((RawMaterial)getThis).container()==container))
 				{
-					int weight=((RawMaterial)getThis).phyStats().weight();
+					final int weight=((RawMaterial)getThis).phyStats().weight();
 					if((weight>1) &&(weight>=maxToGet) &&(CMStrings.containsWordIgnoreCase(((RawMaterial)getThis).name(), "bundle")))
 					{
 						if(weight>maxToGet)
@@ -187,7 +187,7 @@ public class Get extends StdCommand
 
 			for(int i=0;i<V.size();i++)
 			{
-				Item getThis=(Item)V.elementAt(i);
+				final Item getThis=(Item)V.elementAt(i);
 				get(mob,container,getThis,quiet,"get",true);
 				if(getThis instanceof Coins)
 					((Coins)getThis).putCoinsBack();
@@ -204,7 +204,7 @@ public class Get extends StdCommand
 		{
 			if(containers.size()>0)
 			{
-				Container container=containers.get(0);
+				final Container container=containers.get(0);
 				if(container.isOpen())
 					mob.tell(mob,container,null,"You don't see '"+unmodifiedWhatToGet+"' in <T-NAME>.");
 				else
@@ -215,7 +215,7 @@ public class Get extends StdCommand
 				mob.tell("You don't see anything here.");
 			else
 			{
-				java.util.List<Container> V=CMLib.english().possibleContainers(mob,containerCommands,Wearable.FILTER_ANY,false);
+				final java.util.List<Container> V=CMLib.english().possibleContainers(mob,containerCommands,Wearable.FILTER_ANY,false);
 				if(V.size()==0)
 					mob.tell("You don't see '"+containerName+"' here.");
 				else

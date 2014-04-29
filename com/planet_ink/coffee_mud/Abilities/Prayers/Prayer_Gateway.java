@@ -83,15 +83,15 @@ public class Prayer_Gateway extends Prayer
 			mob.tell("A gateway cannot be created here.");
 			return false;
 		}
-		String areaName=CMParms.combine(commands,0).trim().toUpperCase();
+		final String areaName=CMParms.combine(commands,0).trim().toUpperCase();
 		oldRoom=null;
 		newRoom=null;
 		try
 		{
-			List<Room> rooms=CMLib.map().findRooms(CMLib.map().rooms(), mob, areaName,true,10);
+			final List<Room> rooms=CMLib.map().findRooms(CMLib.map().rooms(), mob, areaName,true,10);
 			if(rooms.size()>0)
 				newRoom=rooms.get(CMLib.dice().roll(1,rooms.size(),-1));
-		}catch(NoSuchElementException e){}
+		}catch(final NoSuchElementException e){}
 
 		if(newRoom==null)
 		{
@@ -102,7 +102,7 @@ public class Prayer_Gateway extends Prayer
 		int profNeg=0;
 		for(int i=0;i<newRoom.numInhabitants();i++)
 		{
-			MOB t=newRoom.fetchInhabitant(i);
+			final MOB t=newRoom.fetchInhabitant(i);
 			if(t!=null)
 			{
 				int adjustment=t.phyStats().level()-(mob.phyStats().level()+(2*super.getXLEVELLevel(mob)));
@@ -115,19 +115,19 @@ public class Prayer_Gateway extends Prayer
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,-profNeg,auto);
+		final boolean success=proficiencyCheck(mob,-profNeg,auto);
 
 		if((success)
 		&&((newRoom.getRoomInDir(Directions.GATE)==null)
 		&&(newRoom.getExitInDir(Directions.GATE)==null)))
 		{
-			CMMsg msg=CMClass.getMsg(mob,mob.location(),this,verbalCastCode(mob,mob.location(),auto),"^S<S-NAME> "+prayWord(mob)+" for a blinding, divine gateway here.^?");
-			CMMsg msg2=CMClass.getMsg(mob,newRoom,this,verbalCastCode(mob,newRoom,auto),"A blinding, divine gateway appears here.");
+			final CMMsg msg=CMClass.getMsg(mob,mob.location(),this,verbalCastCode(mob,mob.location(),auto),"^S<S-NAME> "+prayWord(mob)+" for a blinding, divine gateway here.^?");
+			final CMMsg msg2=CMClass.getMsg(mob,newRoom,this,verbalCastCode(mob,newRoom,auto),"A blinding, divine gateway appears here.");
 			if((mob.location().okMessage(mob,msg))&&(newRoom.okMessage(mob,msg2)))
 			{
 				mob.location().send(mob,msg);
 				newRoom.send(mob,msg2);
-				Exit e=CMClass.getExit("GenExit");
+				final Exit e=CMClass.getExit("GenExit");
 				e.setDescription("A divine gateway to somewhere");
 				e.setDisplayText("A divine gateway to somewhere");
 				e.setDoorsNLocks(false,true,false,false,false,false);

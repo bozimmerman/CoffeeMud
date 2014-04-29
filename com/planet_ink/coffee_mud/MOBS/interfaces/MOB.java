@@ -265,7 +265,7 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 		public Tattoo(String name) { tattooName = name.toUpperCase().trim(); }
 		public Tattoo(String name, int down) { tattooName = name.toUpperCase().trim(); tickDown=down;}
 		@Override public String toString() { return ((tickDown>0)?(tickDown+" "):"")+tattooName; }
-		@Override public Tattoo copyOf(){ try{ return (Tattoo)this.clone(); } catch(Exception e){ return this; }}
+		@Override public Tattoo copyOf(){ try{ return (Tattoo)this.clone(); } catch(final Exception e){ return this; }}
 		@Override
 		public int compareTo(CMObject o)
 		{

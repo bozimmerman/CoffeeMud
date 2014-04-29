@@ -42,11 +42,11 @@ public class Follow extends StdCommand
 	public boolean nofollow(MOB mob, boolean errorsOk, boolean quiet)
 	{
 		if(mob==null) return false;
-		Room R=mob.location();
+		final Room R=mob.location();
 		if(R==null) return false;
 		if(mob.amFollowing()!=null)
 		{
-			CMMsg msg=CMClass.getMsg(mob,mob.amFollowing(),null,CMMsg.MSG_NOFOLLOW,quiet?null:"<S-NAME> stop(s) following <T-NAMESELF>.");
+			final CMMsg msg=CMClass.getMsg(mob,mob.amFollowing(),null,CMMsg.MSG_NOFOLLOW,quiet?null:"<S-NAME> stop(s) following <T-NAMESELF>.");
 			// no room OKaffects, since the damn leader may not be here.
 			if(mob.okMessage(mob,msg))
 				R.send(mob,msg);
@@ -62,15 +62,15 @@ public class Follow extends StdCommand
 	public void unfollow(MOB mob, boolean quiet)
 	{
 		nofollow(mob,false,quiet);
-		Vector V=new Vector();
+		final Vector V=new Vector();
 		for(int f=0;f<mob.numFollowers();f++)
 		{
-			MOB F=mob.fetchFollower(f);
+			final MOB F=mob.fetchFollower(f);
 			if(F!=null) V.addElement(F);
 		}
 		for(int v=0;v<V.size();v++)
 		{
-			MOB F=(MOB)V.elementAt(v);
+			final MOB F=(MOB)V.elementAt(v);
 			nofollow(F,false,quiet);
 		}
 	}
@@ -79,7 +79,7 @@ public class Follow extends StdCommand
 	public boolean processFollow(MOB mob, MOB tofollow, boolean quiet)
 	{
 		if(mob==null) return false;
-		Room R=mob.location();
+		final Room R=mob.location();
 		if(R==null) return false;
 		if(tofollow!=null)
 		{
@@ -95,7 +95,7 @@ public class Follow extends StdCommand
 			}
 			if(nofollow(mob,false,false))
 			{
-				CMMsg msg=CMClass.getMsg(mob,tofollow,null,CMMsg.MSG_FOLLOW,quiet?null:"<S-NAME> follow(s) <T-NAMESELF>.");
+				final CMMsg msg=CMClass.getMsg(mob,tofollow,null,CMMsg.MSG_FOLLOW,quiet?null:"<S-NAME> follow(s) <T-NAMESELF>.");
 				if(R.okMessage(mob,msg))
 					R.send(mob,msg);
 				else
@@ -116,7 +116,7 @@ public class Follow extends StdCommand
 		boolean quiet=false;
 
 		if(mob==null) return false;
-		Room R=mob.location();
+		final Room R=mob.location();
 		if(R==null) return false;
 		if((commands.size()>2)
 		&&(commands.lastElement() instanceof String)
@@ -134,14 +134,14 @@ public class Follow extends StdCommand
 			return false;
 		}
 
-		String whomToFollow=CMParms.combine(commands,1);
+		final String whomToFollow=CMParms.combine(commands,1);
 		if((whomToFollow.equalsIgnoreCase("self")||whomToFollow.equalsIgnoreCase("me"))
 		   ||(mob.name().toUpperCase().startsWith(whomToFollow)))
 		{
 			nofollow(mob,true,quiet);
 			return false;
 		}
-		MOB target=R.fetchInhabitant(whomToFollow);
+		final MOB target=R.fetchInhabitant(whomToFollow);
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
 			mob.tell("I don't see them here.");
@@ -157,7 +157,7 @@ public class Follow extends StdCommand
 			mob.tell(target.name(mob)+" is not accepting followers.");
 			return false;
 		}
-		MOB ultiTarget=target.amUltimatelyFollowing();
+		final MOB ultiTarget=target.amUltimatelyFollowing();
 		if((ultiTarget!=null)&&(CMath.bset(ultiTarget.getBitmap(),MOB.ATT_NOFOLLOW)))
 		{
 			mob.tell(ultiTarget.name()+" is not accepting followers.");

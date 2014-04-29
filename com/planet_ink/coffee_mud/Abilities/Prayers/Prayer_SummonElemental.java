@@ -52,7 +52,7 @@ public class Prayer_SummonElemental extends Prayer
 		{
 			if((affected!=null)&&(affected instanceof MOB))
 			{
-				MOB mob=(MOB)affected;
+				final MOB mob=(MOB)affected;
 				if(mob.amFollowing()!=invoker())
 					unInvoke();
 			}
@@ -77,7 +77,7 @@ public class Prayer_SummonElemental extends Prayer
 	@Override
 	public void unInvoke()
 	{
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		super.unInvoke();
 		if((canBeUninvoked())&&(mob!=null))
 		{
@@ -108,16 +108,16 @@ public class Prayer_SummonElemental extends Prayer
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
 			invoker=mob;
-			CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":"^S<S-NAME> "+prayWord(mob)+" for elemental assistance.^?");
+			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":"^S<S-NAME> "+prayWord(mob)+" for elemental assistance.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				MOB myMonster = determineMonster(mob, mob.phyStats().level()+(2*super.getXLEVELLevel(mob)));
+				final MOB myMonster = determineMonster(mob, mob.phyStats().level()+(2*super.getXLEVELLevel(mob)));
 				invoker=mob;
 				beneficialAffect(mob,myMonster,asLevel,0);
 			}
@@ -133,8 +133,8 @@ public class Prayer_SummonElemental extends Prayer
 
 	public MOB determineMonster(MOB caster, int level)
 	{
-		MOB newMOB=CMClass.getMOB("GenRideable");
-		Rideable ride=(Rideable)newMOB;
+		final MOB newMOB=CMClass.getMOB("GenRideable");
+		final Rideable ride=(Rideable)newMOB;
 		newMOB.basePhyStats().setAbility(13);
 		if(level>5)
 			newMOB.basePhyStats().setLevel(level-5);
@@ -199,7 +199,7 @@ public class Prayer_SummonElemental extends Prayer
 		CMLib.beanCounter().clearZeroMoney(newMOB,null);
 		newMOB.location().showOthers(newMOB,null,CMMsg.MSG_OK_ACTION,"<S-NAME> appears!");
 		caster.location().recoverRoomStats();
-		MOB victim=caster.getVictim();
+		final MOB victim=caster.getVictim();
 		newMOB.setStartRoom(null); // this must be before postFollow due to the effects on conquest.
 		CMLib.commands().postFollow(newMOB,caster,true);
 		if(newMOB.amFollowing()!=caster)

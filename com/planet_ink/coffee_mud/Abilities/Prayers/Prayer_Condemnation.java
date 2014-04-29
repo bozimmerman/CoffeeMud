@@ -51,7 +51,7 @@ public class Prayer_Condemnation extends Prayer
 		LegalBehavior B=null;
 		if(mob.location()!=null) B=CMLib.law().getLegalBehavior(mob.location());
 
-		MOB target=getTarget(mob,commands,givenTarget);
+		final MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 		List<LegalWarrant> warrants=new Vector();
 		if(B!=null)
@@ -60,18 +60,18 @@ public class Prayer_Condemnation extends Prayer
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if((success)&&(warrants.size()>0))
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> "+prayForWord(mob)+" to condemn <T-NAMESELF>.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> "+prayForWord(mob)+" to condemn <T-NAMESELF>.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				for(int i=0;i<warrants.size();i++)
 				{
-					LegalWarrant W=warrants.get(i);
+					final LegalWarrant W=warrants.get(i);
 					if(W.punishment()<Law.PUNISHMENT_HIGHEST)
 						W.setPunishment(W.punishment()+1);
 				}

@@ -28,7 +28,7 @@ public class Driver implements java.sql.Driver
 	  {
 		 java.sql.DriverManager.registerDriver(new Driver());
 	  }
-	  catch (java.sql.SQLException E)
+	  catch (final java.sql.SQLException E)
 	  {
 		 E.printStackTrace();
 	  }
@@ -41,7 +41,7 @@ public class Driver implements java.sql.Driver
    @Override
 public synchronized java.sql.Connection connect(String url, Properties info) throws java.sql.SQLException
    {
-	  Properties p=parseUrl(url,info);
+	  final Properties p=parseUrl(url,info);
 	  if (p==null) return null;
 	  return new Connection(p.getProperty("PATH"));
    }
@@ -90,7 +90,7 @@ public boolean jdbcCompliant()
 	  if ((path.length()>0)&&(!path.endsWith(java.io.File.separator)))
 		 path=path+java.io.File.separator;
 
-	  Properties result=new Properties(defaults);
+	  final Properties result=new Properties(defaults);
 	  result.put("PATH",path.replace('/',java.io.File.separatorChar));
 
 	  return result;

@@ -40,7 +40,7 @@ public class DefaultCharState implements CharState
 
 	public DefaultCharState(){}
 
-	@Override public CMObject newInstance(){try{return getClass().newInstance();}catch(Exception e){return new DefaultCharState();}}
+	@Override public CMObject newInstance(){try{return getClass().newInstance();}catch(final Exception e){return new DefaultCharState();}}
 
 	@Override public void initializeClass(){}
 
@@ -352,11 +352,11 @@ public class DefaultCharState implements CharState
 	{
 		try
 		{
-			DefaultCharState E=(DefaultCharState)this.clone();
+			final DefaultCharState E=(DefaultCharState)this.clone();
 			E.states=E.states.clone();
 			return E;
 		}
-		catch(CloneNotSupportedException e)
+		catch(final CloneNotSupportedException e)
 		{
 			return new DefaultCharState();
 		}

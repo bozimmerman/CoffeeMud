@@ -50,7 +50,7 @@ public class Affect extends StdCommand
 				mob.playerStats().setHygiene(0);
 			else
 			{
-				int x=(int)(mob.playerStats().getHygiene()/PlayerStats.HYGIENE_DELIMIT);
+				final int x=(int)(mob.playerStats().getHygiene()/PlayerStats.HYGIENE_DELIMIT);
 				if(x<=1) msg.append("^!You could use a bath.^?\n\r");
 				else
 				if(x<=3) msg.append("^!You could really use a bath.^?\n\r");
@@ -116,7 +116,7 @@ public class Affect extends StdCommand
 		final int NUM_COLS=2;
 		final int COL_LEN=ListingLibrary.ColFixer.fixColWidth(36.0,S);
 		int colnum=NUM_COLS;
-		MOB mob=(S!=null)?S.mob():null;
+		final MOB mob=(S!=null)?S.mob():null;
 		for(final Enumeration<Ability> a=P.effects();a.hasMoreElements();)
 		{
 			final Ability A=a.nextElement();
@@ -140,15 +140,15 @@ public class Affect extends StdCommand
 				{
 					String s=CMLib.coffeeFilter().fullOutFilter(S,mob,null,null,null,disp,true);
 					s=CMStrings.replaceAll(s,"\r","");
-					List<String> V=CMParms.parseAny(s,'\n',true);
+					final List<String> V=CMParms.parseAny(s,'\n',true);
 					disps=new String[V.size()];
 					for(int d=0;d<V.size();d++)
 						disps[d]=V.get(d);
 					colnum=NUM_COLS;
 				}
-				for(int d=0;d<disps.length;d++)
+				for (final String disp2 : disps)
 				{
-					disp=disps[d];
+					disp=disp2;
 					if(((++colnum)>=NUM_COLS)||(CMStrings.lengthMinusColors(disp)>COL_LEN))
 					{
 						msg.append("\n\r");
@@ -167,12 +167,12 @@ public class Affect extends StdCommand
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		Session S=mob.session();
+		final Session S=mob.session();
 		if(S!=null)
 		{
 			if(CMSecurity.isAllowed(mob, mob.location(),CMSecurity.SecFlag.CMDMOBS))
 			{
-				String name=CMParms.combine(commands,1);
+				final String name=CMParms.combine(commands,1);
 				if(name.length()>0)
 				{
 					Physical P=null;
@@ -189,7 +189,7 @@ public class Affect extends StdCommand
 					{
 						if(S==mob.session())
 							S.colorOnlyPrint(" \n\r^!"+P.name()+" is affected by: ^?");
-						String msg=getAffects(S,P,true,CMath.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS));
+						final String msg=getAffects(S,P,true,CMath.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS));
 						if(msg.length()<5)
 							S.colorOnlyPrintln("Nothing!\n\r^N");
 						else
@@ -203,7 +203,7 @@ public class Affect extends StdCommand
 				S.colorOnlyPrintln("\n\r"+getMOBState(mob)+"\n\r");
 			if(S==mob.session())
 				S.colorOnlyPrint("^!You are affected by: ^?");
-			String msg=getAffects(S,mob,CMath.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS),CMath.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS));
+			final String msg=getAffects(S,mob,CMath.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS),CMath.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS));
 			if(msg.length()<5)
 				S.colorOnlyPrintln("Nothing!\n\r^N");
 			else
@@ -221,7 +221,7 @@ public class Affect extends StdCommand
 
 		Physical target=mob;
 		Session S=(mob!=null)?mob.session():null;
-		for(Object o : args)
+		for(final Object o : args)
 		{
 			if(o instanceof Physical)
 			{

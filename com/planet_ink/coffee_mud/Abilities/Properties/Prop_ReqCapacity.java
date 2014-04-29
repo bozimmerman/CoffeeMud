@@ -128,7 +128,7 @@ public class Prop_ReqCapacity extends Property implements TriggeredAffect
 			&&(msg.source().location()!=null)
 			&&((!msg.targetMajor(CMMsg.MASK_INTERMSG))||(!containersOk))) // intermsgs are PUTs on the ground
 			{
-				Item targetI=(Item)msg.target();
+				final Item targetI=(Item)msg.target();
 				Room R=null;
 				if(affected instanceof Room)
 					R=(Room)affected;
@@ -145,7 +145,7 @@ public class Prop_ReqCapacity extends Property implements TriggeredAffect
 						int rawResources=0;
 						for(int i=0;i<R.numItems();i++)
 						{
-							Item I=R.getItem(i);
+							final Item I=R.getItem(i);
 							if(I instanceof RawMaterial)
 								rawResources++;
 							if((I!=null)&&(I.container()==null))
@@ -163,7 +163,7 @@ public class Prop_ReqCapacity extends Property implements TriggeredAffect
 					{
 						int soFar=0;
 						for(int i=0;i<R.numItems();i++)
-						{Item I=R.getItem(i); if(I!=null) soFar+=I.phyStats().weight();}
+						{final Item I=R.getItem(i); if(I!=null) soFar+=I.phyStats().weight();}
 						if((soFar+targetI.phyStats().weight())>=maxWeight)
 						{
 							msg.source().tell("There is no room in here to put "+targetI.Name()+".");

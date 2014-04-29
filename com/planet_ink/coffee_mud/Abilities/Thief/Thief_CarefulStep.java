@@ -54,7 +54,7 @@ public class Thief_CarefulStep extends ThiefSkill
 		{
 			String dir=CMParms.combine(commands,0);
 			if(commands.size()>0) dir=commands.get(commands.size()-1);
-			int dirCode=Directions.getGoodDirectionCode(dir);
+			final int dirCode=Directions.getGoodDirectionCode(dir);
 			if(dirCode<0)
 			{
 				mob.tell("Step where?");
@@ -71,7 +71,7 @@ public class Thief_CarefulStep extends ThiefSkill
 				mob.tell("Step where?");
 				return false;
 			}
-			CMMsg msg=CMClass.getMsg(mob,null,this,auto?CMMsg.MSG_OK_VISUAL:CMMsg.MSG_DELICATE_HANDS_ACT,"<S-NAME> start(s) walking carefully "+Directions.getDirectionName(dirCode)+".");
+			final CMMsg msg=CMClass.getMsg(mob,null,this,auto?CMMsg.MSG_OK_VISUAL:CMMsg.MSG_DELICATE_HANDS_ACT,"<S-NAME> start(s) walking carefully "+Directions.getDirectionName(dirCode)+".");
 			if(mob.location().okMessage(mob,msg))
 				mob.location().send(mob,msg);
 			else
@@ -84,18 +84,18 @@ public class Thief_CarefulStep extends ThiefSkill
 	{
 		String dir=CMParms.combine(commands,0);
 		if(commands.size()>0) dir=(String)commands.lastElement();
-		int dirCode=Directions.getGoodDirectionCode(dir);
+		final int dirCode=Directions.getGoodDirectionCode(dir);
 		if(!preInvoke(mob,commands,givenTarget,auto,asLevel,0,0.0))
 			return false;
 
-		MOB highestMOB=getHighestLevelMOB(mob,null);
+		final MOB highestMOB=getHighestLevelMOB(mob,null);
 		int levelDiff=mob.phyStats().level()+(2*super.getXLEVELLevel(mob))-getMOBLevel(highestMOB);
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=false;
-		CMMsg msg=CMClass.getMsg(mob,null,this,auto?CMMsg.MSG_OK_VISUAL:CMMsg.MSG_DELICATE_HANDS_ACT,"<S-NAME> walk(s) carefully "+Directions.getDirectionName(dirCode)+".");
+		final CMMsg msg=CMClass.getMsg(mob,null,this,auto?CMMsg.MSG_OK_VISUAL:CMMsg.MSG_DELICATE_HANDS_ACT,"<S-NAME> walk(s) carefully "+Directions.getDirectionName(dirCode)+".");
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
@@ -104,7 +104,7 @@ public class Thief_CarefulStep extends ThiefSkill
 			else
 				levelDiff=levelDiff*10;
 			success=proficiencyCheck(mob,levelDiff,auto);
-			int oldDex=mob.baseCharStats().getStat(CharStats.STAT_DEXTERITY);
+			final int oldDex=mob.baseCharStats().getStat(CharStats.STAT_DEXTERITY);
 			if(success)
 				mob.baseCharStats().setStat(CharStats.STAT_DEXTERITY,oldDex+100);
 			mob.recoverCharStats();

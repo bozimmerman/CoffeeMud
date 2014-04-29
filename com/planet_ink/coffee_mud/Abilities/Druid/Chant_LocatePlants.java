@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 
@@ -63,7 +62,7 @@ public class Chant_LocatePlants extends Chant
 			||(!(affected instanceof MOB)))
 				return false;
 
-			MOB mob=(MOB)affected;
+			final MOB mob=(MOB)affected;
 
 			if(nextDirection==999)
 			{
@@ -98,7 +97,7 @@ public class Chant_LocatePlants extends Chant
 		if(!(affected instanceof MOB))
 			return;
 
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		if((msg.amISource(mob))
 		&&(msg.amITarget(mob.location()))
 		&&(CMLib.flags().canBeSeenBy(mob.location(),mob))
@@ -108,9 +107,9 @@ public class Chant_LocatePlants extends Chant
 
 	public String plantsHere(MOB mob, Room R)
 	{
-		StringBuffer msg=new StringBuffer("");
+		final StringBuffer msg=new StringBuffer("");
 		if(R==null) return msg.toString();
-		Room room=R;
+		final Room room=R;
 		if((room.domainType()==Room.DOMAIN_OUTDOORS_WOODS)
 		||(room.domainType()==Room.DOMAIN_OUTDOORS_PLAINS)
 		||(room.domainType()==Room.DOMAIN_OUTDOORS_HILLS)
@@ -141,30 +140,29 @@ public class Chant_LocatePlants extends Chant
 			mob.tell(target,null,null,"<S-NAME> <S-IS-ARE> already trying to find plant life.");
 			return false;
 		}
-		List<Ability> V=CMLib.flags().flaggedAffects(mob,Ability.FLAG_TRACKING);
-		for(Ability A : V) A.unInvoke();
+		final List<Ability> V=CMLib.flags().flaggedAffects(mob,Ability.FLAG_TRACKING);
+		for(final Ability A : V) A.unInvoke();
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		String here=plantsHere(target,target.location());
+		final String here=plantsHere(target,target.location());
 		if(here.length()>0)
 		{
 			target.tell(here);
 			return true;
 		}
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		TrackingLibrary.TrackingFlags flags;
 		flags = new TrackingLibrary.TrackingFlags()
 				.plus(TrackingLibrary.TrackingFlag.NOAIR)
 				.plus(TrackingLibrary.TrackingFlag.NOWATER);
-		Vector rooms=new Vector();
-		List<Room> checkSet=CMLib.tracking().getRadiantRooms(mob.location(),flags,50);
-		for(Iterator<Room> r=checkSet.iterator();r.hasNext();)
+		final Vector rooms=new Vector();
+		final List<Room> checkSet=CMLib.tracking().getRadiantRooms(mob.location(),flags,50);
+		for (final Room R : checkSet)
 		{
-			Room R=r.next();
 			if(plantsHere(mob,R).length()>0)
 				rooms.addElement(R);
 		}
@@ -180,11 +178,11 @@ public class Chant_LocatePlants extends Chant
 
 		if((success)&&(theTrail!=null))
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> begin(s) to sense plant life!":"^S<S-NAME> chant(s) for a route to plant life.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> begin(s) to sense plant life!":"^S<S-NAME> chant(s) for a route to plant life.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				Chant_LocatePlants newOne=(Chant_LocatePlants)this.copyOf();
+				final Chant_LocatePlants newOne=(Chant_LocatePlants)this.copyOf();
 				if(target.fetchEffect(newOne.ID())==null)
 					target.addEffect(newOne);
 				target.recoverPhyStats();

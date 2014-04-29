@@ -64,11 +64,11 @@ public class Chant_RustCurse extends Chant
 		if(affected instanceof MOB)
 		{
 			boolean goodChoices=false;
-			Vector choices=new Vector();
-			MOB mob=(MOB)affected;
+			final Vector choices=new Vector();
+			final MOB mob=(MOB)affected;
 			for(int i=0;i<mob.numItems();i++)
 			{
-				Item I=mob.getItem(i);
+				final Item I=mob.getItem(i);
 				if((I!=null)&&(I.subjectToWearAndTear())
 				   &&(((I.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_METAL)
 					  ||((I.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_MITHRIL)))
@@ -89,7 +89,7 @@ public class Chant_RustCurse extends Chant
 					choices.removeElementAt(i);
 			if(choices.size()>0)
 			{
-				Item I=(Item)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1));
+				final Item I=(Item)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1));
 				if(((I.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_MITHRIL)
 				||(CMLib.dice().rollPercentage()<10))
 					CMLib.combat().postItemDamage(mob, I, null, 1, CMMsg.TYP_ACID, "<T-NAME> rusts!");
@@ -102,7 +102,7 @@ public class Chant_RustCurse extends Chant
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		MOB target=getTarget(mob,commands,givenTarget);
+		final MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
 		// the invoke method for spells receives as
@@ -112,7 +112,7 @@ public class Chant_RustCurse extends Chant
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
 			// it worked, so build a copy of this ability,
@@ -120,7 +120,7 @@ public class Chant_RustCurse extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 
-			CMMsg msg = CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> chant(s) at <T-NAME> rustily!^?");
+			final CMMsg msg = CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> chant(s) at <T-NAME> rustily!^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

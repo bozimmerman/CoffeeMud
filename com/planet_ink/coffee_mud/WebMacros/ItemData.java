@@ -16,6 +16,7 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /*
@@ -72,17 +73,17 @@ public class ItemData extends StdWebMacro
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
-		java.util.Map<String,String> parms=parseParms(parm);
-		String player=httpReq.getUrlParameter("PLAYER");
-		String last=httpReq.getUrlParameter("ROOM");
+		final java.util.Map<String,String> parms=parseParms(parm);
+		final String player=httpReq.getUrlParameter("PLAYER");
+		final String last=httpReq.getUrlParameter("ROOM");
 		if((last==null)&&(player==null)) return " @break@";
-		String itemCode=httpReq.getUrlParameter("ITEM");
+		final String itemCode=httpReq.getUrlParameter("ITEM");
 		if(itemCode==null) return "@break@";
 
 		if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
 			return CMProps.getVar(CMProps.Str.MUDSTATUS);
 
-		String mobNum=httpReq.getUrlParameter("MOB");
+		final String mobNum=httpReq.getUrlParameter("MOB");
 		MOB playerM=null;
 		Room R=null;
 		if(player!=null)
@@ -102,7 +103,7 @@ public class ItemData extends StdWebMacro
 		}
 		Item I=null;
 		MOB M=null;
-		String sync=("SYNC"+((R!=null)?R.roomID():player));
+		final String sync=("SYNC"+((R!=null)?R.roomID():player));
 		synchronized(sync.intern())
 		{
 			if(R!=null) R=CMLib.map().getRoom(R);
@@ -136,13 +137,13 @@ public class ItemData extends StdWebMacro
 						M=RoomData.getMOBFromCode(RoomData.getMOBCache(),mobNum);
 					if(M==null)
 					{
-						StringBuffer str=new StringBuffer("No MOB?!");
+						final StringBuffer str=new StringBuffer("No MOB?!");
 						str.append(" Got: "+mobNum);
 						str.append(", Includes: ");
 						if(R!=null)
 						for(int m=0;m<R.numInhabitants();m++)
 						{
-							MOB M2=R.fetchInhabitant(m);
+							final MOB M2=R.fetchInhabitant(m);
 							if((M2!=null)&&(M2.isSavable()))
 							   str.append(M2.Name()+"="+RoomData.getMOBCode(R,M2));
 						}
@@ -213,7 +214,7 @@ public class ItemData extends StdWebMacro
 
 		if(I==null)
 		{
-			StringBuffer str=new StringBuffer("No Item?!");
+			final StringBuffer str=new StringBuffer("No Item?!");
 			str.append(" Got: "+itemCode);
 			str.append(", Includes: ");
 			if(M==null)
@@ -221,22 +222,22 @@ public class ItemData extends StdWebMacro
 				if(R!=null)
 				for(int i=0;i<R.numItems();i++)
 				{
-					Item I2=R.getItem(i);
+					final Item I2=R.getItem(i);
 					if(I2!=null) str.append(I2.Name()+"="+RoomData.getItemCode(R,I2));
 				}
 			}
 			else
 				for(int i=0;i<M.numItems();i++)
 				{
-					Item I2=M.getItem(i);
+					final Item I2=M.getItem(i);
 					if(I2!=null) str.append(RoomData.getItemCode(M,I2));
 				}
 			return clearWebMacros(str);
 		}
 
-		Item oldI=I;
+		final Item oldI=I;
 		// important generic<->non generic swap!
-		String newClassID=httpReq.getUrlParameter("CLASSES");
+		final String newClassID=httpReq.getUrlParameter("CLASSES");
 		if((newClassID!=null)
 		&&(!newClassID.equals(CMClass.classID(I)))
 		&&(CMClass.getItem(newClassID)!=null))
@@ -245,23 +246,23 @@ public class ItemData extends StdWebMacro
 			if(I instanceof ArchonOnly) I=oldI;
 		}
 
-		boolean changedClass=((httpReq.isUrlParameter("CHANGEDCLASS")
+		final boolean changedClass=((httpReq.isUrlParameter("CHANGEDCLASS")
 							 &&httpReq.getUrlParameter("CHANGEDCLASS").equals("true"))
 							 &&(itemCode.equals("NEW")||itemCode.startsWith("CATALOG-")||itemCode.startsWith("NEWCATA-")));
-		boolean changedLevel=(httpReq.isUrlParameter("CHANGEDLEVEL"))
+		final boolean changedLevel=(httpReq.isUrlParameter("CHANGEDLEVEL"))
 							 &&(httpReq.getUrlParameter("CHANGEDLEVEL")).equals("true");
 		if((changedLevel)&&(I.isGeneric()))
 		{
-			int level=CMath.s_int(httpReq.getUrlParameter("LEVEL"));
-			int material=CMath.s_int(httpReq.getUrlParameter("MATERIALS"));
+			final int level=CMath.s_int(httpReq.getUrlParameter("LEVEL"));
+			final int material=CMath.s_int(httpReq.getUrlParameter("MATERIALS"));
 			int hands=1;
 			if(httpReq.isUrlParameter("ISTWOHANDED")&&(httpReq.getUrlParameter("ISTWOHANDED").equalsIgnoreCase("on")))
 			   hands=2;
 			Map<String,String> vals=null;
 			if(I instanceof Weapon)
 			{
-				int wclass=CMath.s_int(httpReq.getUrlParameter("WEAPONCLASS"));
-				int reach=CMath.s_int(httpReq.getUrlParameter("MINRANGE"));
+				final int wclass=CMath.s_int(httpReq.getUrlParameter("WEAPONCLASS"));
+				final int reach=CMath.s_int(httpReq.getUrlParameter("MINRANGE"));
 
 				vals=CMLib.itemBuilder().timsItemAdjustments(I,
 															 level,
@@ -291,19 +292,19 @@ public class ItemData extends StdWebMacro
 															 0,
 															 worndata);
 			}
-			for(String key : vals.keySet())
+			for(final String key : vals.keySet())
 			{
-				String val=vals.get(key);
+				final String val=vals.get(key);
 				httpReq.addFakeUrlParameter(key,val);
 			}
 		}
-		boolean firstTime=(!httpReq.isUrlParameter("ACTION"))
+		final boolean firstTime=(!httpReq.isUrlParameter("ACTION"))
 				||(!(httpReq.getUrlParameter("ACTION")).equals("MODIFYITEM"))
 				||changedClass;
 
 		if(I!=null)
 		{
-			StringBuffer str=new StringBuffer("");
+			final StringBuffer str=new StringBuffer("");
 			for(int o=0;o<okparms.length;o++)
 			if(parms.containsKey(okparms[o]))
 			{
@@ -328,7 +329,7 @@ public class ItemData extends StdWebMacro
 						Object[] sorted=(Object[])Resources.getResource("MUDGRINDER-ITEMS2:"+parms.containsKey("GENERICONLY"));
 						if(sorted==null)
 						{
-							Vector sortMe=new Vector();
+							final Vector sortMe=new Vector();
 							CMClass.addAllItemClassNames(sortMe,true,false,parms.containsKey("GENERICONLY"));
 							sorted=(new TreeSet(sortMe)).toArray();
 							Resources.submitResource("MUDGRINDER-ITEMS2:"+parms.containsKey("GENERICONLY"),sorted);
@@ -336,14 +337,14 @@ public class ItemData extends StdWebMacro
 						if(parms.containsKey("CLASSESID"))
 							str.append(old);
 						else
-						for(int r=0;r<sorted.length;r++)
-						{
-							String cnam=(String)sorted[r];
-							str.append("<OPTION VALUE=\""+cnam+"\"");
-							if(old.equals(cnam))
-								str.append(" SELECTED");
-							str.append(">"+cnam);
-						}
+							for (final Object element : sorted)
+							{
+								final String cnam=(String)element;
+								str.append("<OPTION VALUE=\""+cnam+"\"");
+								if(old.equals(cnam))
+									str.append(" SELECTED");
+								str.append(">"+cnam);
+							}
 					}
 					break;
 				case 2: // displaytext
@@ -375,7 +376,7 @@ public class ItemData extends StdWebMacro
 					break;
 				case 8: // materials
 					if(firstTime) old=""+I.material();
-					for(int r : RawMaterial.CODES.ALL_SBN())
+					for(final int r : RawMaterial.CODES.ALL_SBN())
 					{
 						str.append("<OPTION VALUE=\""+r+"\"");
 						if(r==CMath.s_int(old))
@@ -435,11 +436,11 @@ public class ItemData extends StdWebMacro
 							else
 								break;
 					}
-					Wearable.CODES codes = Wearable.CODES.instance();
+					final Wearable.CODES codes = Wearable.CODES.instance();
 					for(int i=1;i<codes.total();i++)
 					{
-						String climstr=codes.name(i);
-						long mask=codes.get(i);
+						final String climstr=codes.name(i);
+						final long mask=codes.get(i);
 						str.append("<OPTION VALUE="+mask);
 						if((climate&mask)>0) str.append(" SELECTED");
 						str.append(">"+climstr);
@@ -564,9 +565,9 @@ public class ItemData extends StdWebMacro
 								break;
 					}
 					mask=mask.toUpperCase()+";";
-					for(Enumeration a=CMLib.map().areas();a.hasMoreElements();)
+					for(final Enumeration a=CMLib.map().areas();a.hasMoreElements();)
 					{
-						Area A2=(Area)a.nextElement();
+						final Area A2=(Area)a.nextElement();
 						if(!(A2 instanceof SpaceObject))
 						{
 							str.append("<OPTION VALUE=\""+A2.Name()+"\"");
@@ -596,8 +597,8 @@ public class ItemData extends StdWebMacro
 				case 45: // liquid types
 					if((firstTime)&&(I instanceof Drink))
 						old=""+((Drink)I).liquidType();
-					List<Integer> liquids=RawMaterial.CODES.COMPOSE_RESOURCES(RawMaterial.MATERIAL_LIQUID);
-					for(Integer liquid : liquids)
+					final List<Integer> liquids=RawMaterial.CODES.COMPOSE_RESOURCES(RawMaterial.MATERIAL_LIQUID);
+					for(final Integer liquid : liquids)
 					{
 						str.append("<OPTION VALUE=\""+liquid.intValue()+"\"");
 						if(liquid.intValue()==CMath.s_int(old))
@@ -625,9 +626,9 @@ public class ItemData extends StdWebMacro
 					{
 						if((firstTime)&&(I instanceof Wand))
 							old=""+((((Wand)I).getSpell()!=null)?((Wand)I).getSpell().ID():"");
-						for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
+						for(final Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 						{
-							String cnam=a.nextElement().ID();
+							final String cnam=a.nextElement().ID();
 							str.append("<OPTION VALUE=\""+cnam+"\"");
 							if(old.equals(cnam))
 								str.append(" SELECTED");
@@ -751,8 +752,8 @@ public class ItemData extends StdWebMacro
 						str.append(">"+Container.CONTAIN_DESCS[0]);
 						for(int i=1;i<Container.CONTAIN_DESCS.length;i++)
 						{
-							String constr=Container.CONTAIN_DESCS[i];
-							int mask=(int)CMath.pow(2,i-1);
+							final String constr=Container.CONTAIN_DESCS[i];
+							final int mask=(int)CMath.pow(2,i-1);
 							str.append("<OPTION VALUE="+mask);
 							if((contains&mask)>0) str.append(" SELECTED");
 							str.append(">"+constr);
@@ -817,7 +818,7 @@ public class ItemData extends StdWebMacro
 				{
 					if((firstTime)&&(I instanceof Coins))
 						old=""+((Coins)I).getCurrency();
-					List<String> cs=CMLib.beanCounter().getAllCurrencies();
+					final List<String> cs=CMLib.beanCounter().getAllCurrencies();
 					str.append("<OPTION VALUE=\"\"");
 					if(old.length()==0)
 						str.append(" SELECTED");
@@ -839,13 +840,13 @@ public class ItemData extends StdWebMacro
 					String currency=(I instanceof Coins)?currency=((Coins)I).getCurrency():"";
 					if((firstTime)&&(I instanceof Coins))
 						old=""+((Coins)I).getDenomination();
-					MoneyLibrary.MoneyDenomination[] DV=CMLib.beanCounter().getCurrencySet(currency);
-					for(int i=0;i<DV.length;i++)
+					final MoneyLibrary.MoneyDenomination[] DV=CMLib.beanCounter().getCurrencySet(currency);
+					for (final MoneyDenomination element : DV)
 					{
-						str.append("<OPTION VALUE=\""+DV[i].value+"\"");
-						if(DV[i].value==CMath.s_double(old))
+						str.append("<OPTION VALUE=\""+element.value+"\"");
+						if(element.value==CMath.s_double(old))
 							str.append(" SELECTED");
-						str.append(">"+DV[i].name);
+						str.append(">"+element.name);
 					}
 					break;
 				}
@@ -857,7 +858,7 @@ public class ItemData extends StdWebMacro
 					Ability A=null;
 					if((firstTime)&&(I instanceof Recipe))
 						old=""+((Recipe)I).getCommonSkillID();
-					for(Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
+					for(final Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
 					{
 					 	A=e.nextElement();
 					 	if(((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_COMMON_SKILL)
@@ -878,19 +879,19 @@ public class ItemData extends StdWebMacro
 						if(prefix==null) prefix="";
 						String postfix=parms.get("RECIPEPOSTFIX");
 						if(postfix==null) postfix="";
-						String fieldName=parms.get("RECIPEFIELDNAME");
+						final String fieldName=parms.get("RECIPEFIELDNAME");
 						if(fieldName==null)
 							str.append("!!ERROR!!");
 						else
 						{
 							String thisFieldName=CMStrings.replaceAll(fieldName,"###","0");
-							List<String> allData=new LinkedList<String>();
+							final List<String> allData=new LinkedList<String>();
 							int x=0;
 							if(httpReq.isUrlParameter(thisFieldName))
 							{
 								while(httpReq.isUrlParameter(thisFieldName))
 								{
-									String value=httpReq.getUrlParameter(thisFieldName);
+									final String value=httpReq.getUrlParameter(thisFieldName);
 									if(value.length()>0)
 										allData.add(value);
 									thisFieldName=CMStrings.replaceAll(fieldName,"###",""+(++x));
@@ -898,8 +899,8 @@ public class ItemData extends StdWebMacro
 							}
 							else
 							{
-								String[] allRecipes=((Recipe)I).getRecipeCodeLines();
-								for(String recipe : allRecipes)
+								final String[] allRecipes=((Recipe)I).getRecipeCodeLines();
+								for(final String recipe : allRecipes)
 								{
 									if(recipe.length()>0)
 										allData.add(CMStrings.replaceAll(recipe,"\t",","));
@@ -908,10 +909,10 @@ public class ItemData extends StdWebMacro
 							allData.add("");
 							for(x=0;x<allData.size();x++)
 							{
-								String recipeLine=allData.get(x);
+								final String recipeLine=allData.get(x);
 								thisFieldName=CMStrings.replaceAll(fieldName,"###",""+x);
-								String myPrefix=CMStrings.replaceAll(prefix,fieldName,thisFieldName);
-								String myPostfix=CMStrings.replaceAll(postfix,fieldName,thisFieldName);
+								final String myPrefix=CMStrings.replaceAll(prefix,fieldName,thisFieldName);
+								final String myPostfix=CMStrings.replaceAll(postfix,fieldName,thisFieldName);
 								str.append(myPrefix).append(super.htmlOutgoingFilter(recipeLine)).append(myPostfix);
 							}
 						}
@@ -944,8 +945,8 @@ public class ItemData extends StdWebMacro
 				case 88: // catarate
 					if((firstTime)&&(itemCode.startsWith("CATALOG-")||itemCode.startsWith("NEWCATA-")))
 					{
-						String name=itemCode.substring(8);
-						CatalogLibrary.CataData data=CMLib.catalog().getCatalogItemData(name);
+						final String name=itemCode.substring(8);
+						final CatalogLibrary.CataData data=CMLib.catalog().getCatalogItemData(name);
 						if(data!=null)
 							old=CMath.toPct(data.getRate());
 					}
@@ -954,8 +955,8 @@ public class ItemData extends StdWebMacro
 				case 89: // catalive
 					if((firstTime)&&(itemCode.startsWith("CATALOG-")||itemCode.startsWith("NEWCATA-")))
 					{
-						String name=itemCode.substring(8);
-						CatalogLibrary.CataData data=CMLib.catalog().getCatalogItemData(name);
+						final String name=itemCode.substring(8);
+						final CatalogLibrary.CataData data=CMLib.catalog().getCatalogItemData(name);
 						if(data!=null)
 							old=data.getWhenLive()?"on":"";
 					}
@@ -964,8 +965,8 @@ public class ItemData extends StdWebMacro
 				case 90: // catamask
 					if((firstTime)&&(itemCode.startsWith("CATALOG-")||itemCode.startsWith("NEWCATA-")))
 					{
-						String name=itemCode.substring(8);
-						CatalogLibrary.CataData data=CMLib.catalog().getCatalogItemData(name);
+						final String name=itemCode.substring(8);
+						final CatalogLibrary.CataData data=CMLib.catalog().getCatalogItemData(name);
 						if(data!=null)
 							old=""+data.getMaskStr();
 					}
@@ -987,8 +988,8 @@ public class ItemData extends StdWebMacro
 				case 95: // catacat
 					if((firstTime)&&(itemCode.startsWith("CATALOG-")||itemCode.startsWith("NEWCATA-")))
 					{
-						String name=itemCode.substring(8);
-						CatalogLibrary.CataData data=CMLib.catalog().getCatalogItemData(name);
+						final String name=itemCode.substring(8);
+						final CatalogLibrary.CataData data=CMLib.catalog().getCatalogItemData(name);
 						if(data!=null)
 							old=data.category();
 					}
@@ -1014,11 +1015,11 @@ public class ItemData extends StdWebMacro
 
 	public static StringBuffer readableSpells(SpellHolder P, HTTPRequest httpReq, java.util.Map<String,String> parms, int borderSize)
 	{
-		StringBuffer str=new StringBuffer("");
+		final StringBuffer str=new StringBuffer("");
 		if(parms.containsKey("READABLESPELLS"))
 		{
-			Vector theclasses=new Vector();
-			Vector theparms=new Vector();
+			final Vector theclasses=new Vector();
+			final Vector theparms=new Vector();
 			if(httpReq.isUrlParameter("RSPELL1"))
 			{
 				int num=1;
@@ -1040,10 +1041,10 @@ public class ItemData extends StdWebMacro
 			}
 			else
 			{
-				List<Ability> SP=P.getSpells();
+				final List<Ability> SP=P.getSpells();
 				for(int a=0;a<SP.size();a++) // readable spells
 				{
-					Ability Able=SP.get(a);
+					final Ability Able=SP.get(a);
 					if((Able!=null)&&(Able.isSavable()))
 					{
 						theclasses.addElement(CMClass.classID(Able));
@@ -1054,12 +1055,12 @@ public class ItemData extends StdWebMacro
 				}
 			}
 			str.append("<TABLE WIDTH=100% BORDER=\""+borderSize+"\" CELLSPACING=0 CELLPADDING=0>");
-			HashSet<String> alreadyHave=new HashSet<String>();
+			final HashSet<String> alreadyHave=new HashSet<String>();
 			for(int i=0;i<theclasses.size();i++)
 			{
-				String theclass=(String)theclasses.elementAt(i);
+				final String theclass=(String)theclasses.elementAt(i);
 				alreadyHave.add(theclass.toLowerCase());
-				String theparm=(String)theparms.elementAt(i);
+				final String theparm=(String)theparms.elementAt(i);
 				str.append("<TR><TD WIDTH=50%>");
 				str.append("<SELECT ONCHANGE=\"EditAffect(this);\" NAME=RSPELL"+(i+1)+">");
 				str.append("<OPTION VALUE=\"\">Delete!");
@@ -1072,9 +1073,9 @@ public class ItemData extends StdWebMacro
 			str.append("<TR><TD WIDTH=50%>");
 			str.append("<SELECT ONCHANGE=\"AddAffect(this);\" NAME=RSPELL"+(theclasses.size()+1)+">");
 			str.append("<OPTION SELECTED VALUE=\"\">Select an Effect");
-			for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
+			for(final Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 			{
-				Ability A=a.nextElement();
+				final Ability A=a.nextElement();
 				if(((!A.canAffect(P))||(alreadyHave.contains(A.ID().toLowerCase())))
 				||((A.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_ARCHON))
 					continue;

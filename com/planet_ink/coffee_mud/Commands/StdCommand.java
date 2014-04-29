@@ -42,14 +42,14 @@ public class StdCommand implements Command
 		if(ID==null)
 		{
 			ID=this.getClass().getName();
-			int x=ID.lastIndexOf('.');
+			final int x=ID.lastIndexOf('.');
 			if(x>=0) ID=ID.substring(x+1);
 		}
 		return ID;
 	}
 	@Override public String name() { return ID();}
 
-	private String[] access=null;
+	private final String[] access=null;
 	@Override public String[] getAccessWords(){return access;}
 	@Override public void initializeClass(){}
 	@Override
@@ -71,18 +71,18 @@ public class StdCommand implements Command
 	public Object executeInternal(MOB mob, int metaFlags, Object... args) throws java.io.IOException
 	{
 		// fake it!
-		Vector commands = new Vector();
+		final Vector commands = new Vector();
 		commands.add(getAccessWords()[0]);
-		for(Object o : args)
+		for(final Object o : args)
 			commands.add(o.toString());
 		return Boolean.valueOf(execute(mob,commands,metaFlags));
 	}
 
 	public boolean checkArguments(Class[][] fmt, Object... args)
 	{
-		for(int f=0;f<fmt.length;f++)
+		for (final Class[] element : fmt)
 		{
-			Class[] ff=fmt[f];
+			final Class[] ff=element;
 			if(ff.length==args.length)
 			{
 				boolean check=true;
@@ -100,16 +100,16 @@ public class StdCommand implements Command
 					return true;
 			}
 		}
-		StringBuilder str=new StringBuilder("");
+		final StringBuilder str=new StringBuilder("");
 		str.append("Illegal arguments. Sent: ");
-		for(Object o : args)
+		for(final Object o : args)
 			if(o==null)
 				str.append("null ");
 			else
 				str.append(o.getClass().getSimpleName()).append(" ");
 		str.append(". Correct: ");
-		for(int f=0;f<fmt.length;f++)
-			for(Class c : fmt[f])
+		for (final Class[] element : fmt)
+			for(final Class c : element)
 				str.append(c.getSimpleName()).append(" ");
 		Log.errOut(ID(),str.toString());
 		return false;
@@ -141,10 +141,10 @@ public class StdCommand implements Command
 	{
 		try
 		{
-			Object O=this.clone();
+			final Object O=this.clone();
 			return (CMObject)O;
 		}
-		catch(CloneNotSupportedException e)
+		catch(final CloneNotSupportedException e)
 		{
 			return this;
 		}

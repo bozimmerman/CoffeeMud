@@ -52,7 +52,7 @@ public class Prop_Trashcan extends Property
 			{
 				if((System.currentTimeMillis()-lastAddition)<((tickDelay-1)*CMProps.getTickMillis()))
 					return true;
-				for(Item I : trashables)
+				for(final Item I : trashables)
 					I.destroy();
 				lastAddition=0;
 				trashables.clear();

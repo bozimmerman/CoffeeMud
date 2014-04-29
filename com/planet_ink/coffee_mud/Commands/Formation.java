@@ -44,11 +44,11 @@ public class Formation extends StdCommand
 		throws java.io.IOException
 	{
 		commands.removeElementAt(0);
-		MOB leader=CMLib.combat().getFollowedLeader(mob);
-		List<MOB>[] done=CMLib.combat().getFormation(mob);
+		final MOB leader=CMLib.combat().getFollowedLeader(mob);
+		final List<MOB>[] done=CMLib.combat().getFormation(mob);
 		if(commands.size()==0)
 		{
-			StringBuffer str=new StringBuffer("");
+			final StringBuffer str=new StringBuffer("");
 			for(int i=0;i<done.length;i++)
 				if(done[i]!=null)
 				{
@@ -74,7 +74,7 @@ public class Formation extends StdCommand
 			if("FRONT".startsWith(row.toUpperCase()))
 				row="0";
 			commands.removeElementAt(commands.size()-1);
-			String name=CMParms.combine(commands,0);
+			final String name=CMParms.combine(commands,0);
 			MOB who=null;
 			if(CMLib.english().containsString(mob.name(),name)
 			   ||CMLib.english().containsString(mob.Name(),name))
@@ -84,7 +84,7 @@ public class Formation extends StdCommand
 			}
 			for(int f=0;f<mob.numFollowers();f++)
 			{
-				MOB M=mob.fetchFollower(f);
+				final MOB M=mob.fetchFollower(f);
 				if(M==null) continue;
 				if(CMLib.english().containsString(M.name(),name)
 				   ||CMLib.english().containsString(M.Name(),name))

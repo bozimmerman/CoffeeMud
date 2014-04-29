@@ -52,7 +52,7 @@ public class Chant_Treemorph extends Chant
 		&&(tree!=null)
 		&&(affected instanceof MOB))
 		{
-			MOB mob=(MOB)affected;
+			final MOB mob=(MOB)affected;
 			if((tree.owner()!=null)&&(tree.owner()!=mob.location()))
 			{
 				Room room=null;
@@ -74,7 +74,7 @@ public class Chant_Treemorph extends Chant
 		super.affectCharStats(affected,affectableStats);
 		if(treeForm!=null)
 		{
-			int oldCat=affected.baseCharStats().ageCategory();
+			final int oldCat=affected.baseCharStats().ageCategory();
 			affectableStats.setMyRace(treeForm);
 			if(affected.baseCharStats().getStat(CharStats.STAT_AGE)>0)
 				affectableStats.setStat(CharStats.STAT_AGE,treeForm.getAgingChart()[oldCat]);
@@ -86,12 +86,12 @@ public class Chant_Treemorph extends Chant
 	{
 		if(affected instanceof MOB)
 		{
-			MOB mob=(MOB)affected;
+			final MOB mob=(MOB)affected;
 			if(msg.source().getVictim()==mob)
 				msg.source().setVictim(null);
 			if(mob.isInCombat())
 			{
-				MOB victim=mob.getVictim();
+				final MOB victim=mob.getVictim();
 				if(victim!=null) victim.makePeace();
 				mob.makePeace();
 			}
@@ -120,7 +120,7 @@ public class Chant_Treemorph extends Chant
 
 		if(affected instanceof MOB)
 		{
-			MOB mob=(MOB)affected;
+			final MOB mob=(MOB)affected;
 			if(msg.source().getVictim()==affected)
 				msg.source().setVictim(null);
 			if((msg.target()==mob)&&(CMath.bset(msg.targetMajor(), CMMsg.MASK_MALICIOUS)))
@@ -130,7 +130,7 @@ public class Chant_Treemorph extends Chant
 			}
 			if(mob.isInCombat())
 			{
-				MOB victim=mob.getVictim();
+				final MOB victim=mob.getVictim();
 				if(victim!=null) victim.makePeace();
 				mob.makePeace();
 			}
@@ -152,7 +152,7 @@ public class Chant_Treemorph extends Chant
 				affectableStats.setName("a "+treeForm.name()+" called "+affected.name());
 			else
 				affectableStats.setName(affected.name()+" the "+treeForm.name());
-			int oldAdd=affectableStats.weight()-affected.basePhyStats().weight();
+			final int oldAdd=affectableStats.weight()-affected.basePhyStats().weight();
 			treeForm.setHeightWeight(affectableStats,'M');
 			if(oldAdd>0) affectableStats.setWeight(affectableStats.weight()+oldAdd);
 
@@ -171,7 +171,7 @@ public class Chant_Treemorph extends Chant
 		// undo the affects of this spell
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		super.unInvoke();
 		if(canBeUninvoked())
@@ -193,7 +193,7 @@ public class Chant_Treemorph extends Chant
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		MOB target=this.getTarget(mob,commands,givenTarget);
+		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
 		// the invoke method for spells receives as
@@ -215,7 +215,7 @@ public class Chant_Treemorph extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> chant(s) at <T-NAMESELF>.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> chant(s) at <T-NAMESELF>.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -224,8 +224,8 @@ public class Chant_Treemorph extends Chant
 					int a=0;
 					while(a<target.numEffects()) // personal effects
 					{
-						Ability A=target.fetchEffect(a);
-						int s=target.numEffects();
+						final Ability A=target.fetchEffect(a);
+						final int s=target.numEffects();
 						if(A!=null) A.unInvoke();
 						if(target.numEffects()==s)
 							a++;
@@ -240,7 +240,7 @@ public class Chant_Treemorph extends Chant
 					tree.basePhyStats().setWeight(5000);
 					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> turn(s) into a tree!!");
 					success=maliciousAffect(mob,target,asLevel,(mob.phyStats().level()+(2*super.getXLEVELLevel(mob)))*25,-1);
-					Ability A=target.fetchEffect(ID());
+					final Ability A=target.fetchEffect(ID());
 					if(success&&(A!=null))
 					{
 						mob.location().addItem(tree);

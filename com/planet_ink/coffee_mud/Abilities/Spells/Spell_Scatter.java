@@ -44,11 +44,11 @@ public class Spell_Scatter extends Spell
 
 	private Item getItem(MOB mobTarget)
 	{
-		Vector goodPossibilities=new Vector();
-		Vector possibilities=new Vector();
+		final Vector goodPossibilities=new Vector();
+		final Vector possibilities=new Vector();
 		for(int i=0;i<mobTarget.numItems();i++)
 		{
-			Item item=mobTarget.getItem(i);
+			final Item item=mobTarget.getItem(i);
 			if(item!=null)
 			{
 				if(item.amWearingAt(Wearable.IN_INVENTORY))
@@ -82,14 +82,14 @@ public class Spell_Scatter extends Spell
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		Vector areas=new Vector();
+		final Vector areas=new Vector();
 		if(commands.size()==0)
 			areas.addElement(mob.location().getArea());
 		else
 		if(((String)commands.lastElement()).equalsIgnoreCase("far"))
 		{
 			commands.removeElementAt(commands.size()-1);
-			for(Enumeration e=CMLib.map().areas();e.hasMoreElements();)
+			for(final Enumeration e=CMLib.map().areas();e.hasMoreElements();)
 				areas.addElement(e.nextElement());
 		}
 		else
@@ -100,7 +100,7 @@ public class Spell_Scatter extends Spell
 		}
 		else
 			areas.addElement(mob.location().getArea());
-		MOB mobTarget=getTarget(mob,commands,givenTarget,true,false);
+		final MOB mobTarget=getTarget(mob,commands,givenTarget,true,false);
 		Item target=null;
 		if(mobTarget!=null)
 		{
@@ -127,7 +127,7 @@ public class Spell_Scatter extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
@@ -161,7 +161,7 @@ public class Spell_Scatter extends Spell
 								target.unWear();
 								if(target.owner() instanceof MOB)
 								{
-									MOB owner=(MOB)target.owner();
+									final MOB owner=(MOB)target.owner();
 									mob.location().show(owner,room,target,CMMsg.MASK_ALWAYS|CMMsg.MSG_THROW,"<O-NAME> vanishes from <S-YOUPOSS> inventory!");
 									room.showOthers(owner,room,target,CMMsg.MASK_ALWAYS|CMMsg.MSG_THROW,"<O-NAME> appears from out of nowhere!");
 								}

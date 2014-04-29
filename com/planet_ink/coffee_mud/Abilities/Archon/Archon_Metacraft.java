@@ -47,10 +47,10 @@ public class Archon_Metacraft extends ArchonSkill
 	{
 		if(craftingSkills.size()==0)
 		{
-			Vector V=new Vector();
-			for(Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
+			final Vector V=new Vector();
+			for(final Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
 			{
-				Ability A=e.nextElement();
+				final Ability A=e.nextElement();
 				if(A instanceof ItemCraftor)
 					V.addElement(A.copyOf());
 			}
@@ -60,8 +60,8 @@ public class Archon_Metacraft extends ArchonSkill
 				Ability lowestA=null;
 				for(int i=0;i<V.size();i++)
 				{
-					Ability A=(Ability)V.elementAt(i);
-					int ii=CMLib.ableMapper().lowestQualifyingLevel(A.ID());
+					final Ability A=(Ability)V.elementAt(i);
+					final int ii=CMLib.ableMapper().lowestQualifyingLevel(A.ID());
 					if(ii<lowest)
 					{
 						lowest=ii;
@@ -148,14 +148,14 @@ public class Archon_Metacraft extends ArchonSkill
 			for(int i=0;i<craftingSkills.size();i++)
 			{
 				skill=(ItemCraftor)craftingSkills.get(i);
-				List<List<String>> V=skill.matchingRecipeNames(recipe,false);
+				final List<List<String>> V=skill.matchingRecipeNames(recipe,false);
 				if((V!=null)&&(V.size()>0)) skillsToUse.add(skill);
 			}
 			if(skillsToUse.size()==0)
 			for(int i=0;i<craftingSkills.size();i++)
 			{
 				skill=(ItemCraftor)craftingSkills.get(i);
-				List<List<String>> V=skill.matchingRecipeNames(recipe,true);
+				final List<List<String>> V=skill.matchingRecipeNames(recipe,true);
 				if((V!=null)&&(V.size()>0)) skillsToUse.add(skill);
 			}
 		}
@@ -164,14 +164,14 @@ public class Archon_Metacraft extends ArchonSkill
 			for(int i=0;i<craftingSkills.size();i++)
 			{
 				skill=(ItemCraftor)craftingSkills.get(i);
-				List<List<String>> V=skill.matchingRecipeNames(recipe,false);
+				final List<List<String>> V=skill.matchingRecipeNames(recipe,false);
 				if((V!=null)&&(V.size()>0)){ skillsToUse.add(skill);}
 			}
 			if(skillsToUse.size()==0)
 			for(int i=0;i<craftingSkills.size();i++)
 			{
 				skill=(ItemCraftor)craftingSkills.get(i);
-				List<List<String>> V=skill.matchingRecipeNames(recipe,true);
+				final List<List<String>> V=skill.matchingRecipeNames(recipe,true);
 				if((V!=null)&&(V.size()>0)){ skillsToUse.add(skill);}
 			}
 		}
@@ -182,12 +182,12 @@ public class Archon_Metacraft extends ArchonSkill
 		}
 
 		boolean success=false;
-		StringBuffer xml = new StringBuffer("<ITEMS>");
-		HashSet files = new HashSet();
+		final StringBuffer xml = new StringBuffer("<ITEMS>");
+		final HashSet files = new HashSet();
 		for(int s=0;s<skillsToUse.size();s++)
 		{
 			skill=(ItemCraftor)skillsToUse.get(s);
-			List<Item> items=new Vector<Item>();
+			final List<Item> items=new Vector<Item>();
 			if(everyFlag)
 			{
 				if(recipe==null)
@@ -199,7 +199,7 @@ public class Archon_Metacraft extends ArchonSkill
 						V=skill.craftAllItemSets(false);
 
 					if(V!=null)
-						for(ItemCraftor.ItemKeyPair L: V)
+						for(final ItemCraftor.ItemKeyPair L: V)
 						{
 							items.add(L.item);
 							if(L.key!=null)
@@ -209,38 +209,38 @@ public class Archon_Metacraft extends ArchonSkill
 				else
 				if(material>=0)
 				{
-					ItemCraftor.ItemKeyPair pair = skill.craftItem(recipe,material,false);
+					final ItemCraftor.ItemKeyPair pair = skill.craftItem(recipe,material,false);
 					if(pair!=null) items.addAll(pair.asList());
 				}
 				else
 				{
-					ItemCraftor.ItemKeyPair pair = skill.craftItem(recipe);
+					final ItemCraftor.ItemKeyPair pair = skill.craftItem(recipe);
 					if(pair!=null) items.addAll(pair.asList());
 				}
 			}
 			else
 			if(material>=0)
 			{
-				ItemCraftor.ItemKeyPair pair = skill.craftItem(recipe,material,false);
+				final ItemCraftor.ItemKeyPair pair = skill.craftItem(recipe,material,false);
 				if(pair!=null) items.addAll(pair.asList());
 			}
 			else
 			{
-				ItemCraftor.ItemKeyPair pair = skill.craftItem(recipe);
+				final ItemCraftor.ItemKeyPair pair = skill.craftItem(recipe);
 				if(pair!=null) items.addAll(pair.asList());
 			}
 			if(items.size()==0) continue;
 			success=true;
 			if(toWHERE.equals("SELF")||toWHERE.equals("HERE"))
-				for(Item building : items)
+				for(final Item building : items)
 				{
 					if(building instanceof ClanItem)
 					{
-						Pair<Clan,Integer> p=CMLib.clans().findPrivilegedClan(mob, Clan.Function.ENCHANT);
+						final Pair<Clan,Integer> p=CMLib.clans().findPrivilegedClan(mob, Clan.Function.ENCHANT);
 						if(p!=null)
 						{
-							Clan C=p.first;
-							String clanName=(" "+C.getGovernmentName()+" "+C.name());
+							final Clan C=p.first;
+							final String clanName=(" "+C.getGovernmentName()+" "+C.name());
 							building.setName(CMStrings.replaceFirst(building.Name(), " Clan None", clanName));
 							building.setDisplayText(CMStrings.replaceFirst(building.displayText(), " Clan None", clanName));
 							building.setDescription(CMStrings.replaceFirst(building.description(), " Clan None", clanName));
@@ -267,7 +267,7 @@ public class Archon_Metacraft extends ArchonSkill
 		&&(!toWHERE.equals("SELF"))
 		&&(!toWHERE.equals("HERE")))
 		{
-			CMFile file = new CMFile(toWHERE,mob);
+			final CMFile file = new CMFile(toWHERE,mob);
 			if(!file.canWrite())
 				mob.tell("Unable to open file '"+toWHERE+"' for writing.");
 			else
@@ -275,12 +275,12 @@ public class Archon_Metacraft extends ArchonSkill
 				xml.append("</ITEMS>");
 				if(files.size()>0)
 				{
-					StringBuffer str=new StringBuffer("<FILES>");
-					for(Iterator i=files.iterator();i.hasNext();)
+					final StringBuffer str=new StringBuffer("<FILES>");
+					for(final Iterator i=files.iterator();i.hasNext();)
 					{
-						Object O=i.next();
-						String filename=(String)O;
-						StringBuffer buf=new CMFile(Resources.makeFileResourceName(filename),null,CMFile.FLAG_LOGERRORS).text();
+						final Object O=i.next();
+						final String filename=(String)O;
+						final StringBuffer buf=new CMFile(Resources.makeFileResourceName(filename),null,CMFile.FLAG_LOGERRORS).text();
 						if((buf!=null)&&(buf.length()>0))
 						{
 							str.append("<FILE NAME=\""+filename+"\">");

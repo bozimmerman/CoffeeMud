@@ -66,21 +66,21 @@ public class StdClanPamphlet extends StdClanItem
 		&&(((MOB)owner()).location()!=null)
 		&&(((MOB)owner()).getStartRoom().getArea()==((MOB)owner()).location().getArea()))
 		{
-			Room R=((MOB)owner()).location();
+			final Room R=((MOB)owner()).location();
 			if((((MOB)owner()).getClanRole(clanID())!=null)
 			||(((--tradeTime)<=0)))
 			{
-				LegalBehavior B=CMLib.law().getLegalBehavior(R);
+				final LegalBehavior B=CMLib.law().getLegalBehavior(R);
 				if(B!=null)
 				{
-					String rulingClan=B.rulingOrganization();
+					final String rulingClan=B.rulingOrganization();
 					if((rulingClan!=null)&&(rulingClan.length()>0)
 					&&(!rulingClan.equals(clanID()))
 					&&(((MOB)owner()).getClanRole(rulingClan)!=null))
 						((MOB)owner()).setClan(rulingClan,-1);
 					if(tradeTime<=0)
 					{
-						MOB mob=(MOB)owner();
+						final MOB mob=(MOB)owner();
 						if((rulingClan!=null)
 						&&(rulingClan.length()>0)
 						&&(!rulingClan.equals(clanID()))
@@ -90,7 +90,7 @@ public class StdClanPamphlet extends StdClanItem
 						&&(CMLib.flags().aliveAwakeMobileUnbound(mob,true))
 						&&(R!=null))
 						{
-							MOB M=R.fetchRandomInhabitant();
+							final MOB M=R.fetchRandomInhabitant();
 							if((M!=null)
 							&&(M!=mob)
 							&&(M.isMonster())
@@ -100,9 +100,9 @@ public class StdClanPamphlet extends StdClanItem
 							&&(CMLib.flags().canBeHeardMovingBy(M,mob)))
 							{
 								CMLib.commands().postSay(mob,M,"Hey, take a look at this.",false,false);
-								ClanItem I=(ClanItem)copyOf();
+								final ClanItem I=(ClanItem)copyOf();
 								mob.addItem(I);
-								CMMsg newMsg=CMClass.getMsg(mob,M,I,CMMsg.MSG_GIVE,"<S-NAME> give(s) <O-NAME> to <T-NAMESELF>.");
+								final CMMsg newMsg=CMClass.getMsg(mob,M,I,CMMsg.MSG_GIVE,"<S-NAME> give(s) <O-NAME> to <T-NAMESELF>.");
 								if(mob.location().okMessage(mob,newMsg)&&(!((Item)I).amDestroyed()))
 									mob.location().send(mob,newMsg);
 								if(!M.isMine(I))

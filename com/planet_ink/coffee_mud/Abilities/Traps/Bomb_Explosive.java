@@ -42,7 +42,7 @@ public class Bomb_Explosive extends StdBomb
 	@Override
 	public List<Item> getTrapComponents()
 	{
-		Vector V=new Vector();
+		final Vector V=new Vector();
 		V.addElement(CMLib.materials().makeItemResource(RawMaterial.RESOURCE_COAL));
 		return V;
 	}

@@ -52,11 +52,11 @@ public class Prayer_ProtGood extends Prayer
 		if(invoker==null)
 			return false;
 
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		if((!CMLib.flags().isReallyEvil(mob))&&CMLib.flags().isGood(mob))
 		{
-			int damage=(int)Math.round(CMath.div(mob.phyStats().level()+(2*super.getXLEVELLevel(invoker())),3.0));
+			final int damage=(int)Math.round(CMath.div(mob.phyStats().level()+(2*super.getXLEVELLevel(invoker())),3.0));
 			CMLib.combat().postDamage(invoker,mob,this,damage,CMMsg.MASK_MALICIOUS|CMMsg.MASK_ALWAYS|CMMsg.TYP_UNDEAD,Weapon.TYPE_BURSTING,"<T-HIS-HER> protective aura <DAMAGE> <T-NAME>!");
 		}
 		return super.tick(ticking,tickID);
@@ -94,11 +94,11 @@ public class Prayer_ProtGood extends Prayer
 		super.affectPhyStats(affected,affectableStats);
 		if(affected==null) return;
 		if(!(affected instanceof MOB)) return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		if(mob.isInCombat())
 		{
-			MOB victim=mob.getVictim();
+			final MOB victim=mob.getVictim();
 			if(CMLib.flags().isGood(victim))
 				affectableStats.setArmor(affectableStats.armor()-10-(2*super.getXLEVELLevel(invoker())));
 		}
@@ -110,7 +110,7 @@ public class Prayer_ProtGood extends Prayer
 		// undo the affects of this spell
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		super.unInvoke();
 
@@ -123,7 +123,7 @@ public class Prayer_ProtGood extends Prayer
 	{
 		if(mob!=null)
 		{
-			MOB victim=mob.getVictim();
+			final MOB victim=mob.getVictim();
 			if((victim!=null)&&(CMLib.flags().isGood(victim))&&(!CMLib.flags().isGood(mob)))
 				return super.castingQuality(mob, target,Ability.QUALITY_BENEFICIAL_SELF);
 		}
@@ -144,7 +144,7 @@ public class Prayer_ProtGood extends Prayer
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
@@ -152,7 +152,7 @@ public class Prayer_ProtGood extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> become(s) protected from goodness.":"^S<S-NAME> "+prayWord(mob)+" for protection from goodness.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> become(s) protected from goodness.":"^S<S-NAME> "+prayWord(mob)+" for protection from goodness.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

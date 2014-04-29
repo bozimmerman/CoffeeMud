@@ -46,7 +46,7 @@ public class Prop_UseSpellCast2 extends Prop_UseSpellCast
 		processing=true;
 
 		if(affected==null) return;
-		Item myItem=(Item)affected;
+		final Item myItem=(Item)affected;
 		if(myItem.owner()==null) return;
 		switch(msg.sourceMinor())
 		{

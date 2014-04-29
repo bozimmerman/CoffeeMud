@@ -52,15 +52,15 @@ public class ClanAssign extends StdCommand
 			return false;
 		}
 		String memberStr=(commands.size()>2)?(String)commands.get(commands.size()-2):"";
-		String pos=(commands.size()>1)?(String)commands.get(commands.size()-1):"";
-		String clanName=(commands.size()>3)?CMParms.combine(commands,1,commands.size()-2):"";
+		final String pos=(commands.size()>1)?(String)commands.get(commands.size()-1):"";
+		final String clanName=(commands.size()>3)?CMParms.combine(commands,1,commands.size()-2):"";
 
 		Clan C=null;
-		boolean skipChecks=mob.getClanRole(mob.Name())!=null;
+		final boolean skipChecks=mob.getClanRole(mob.Name())!=null;
 		if(skipChecks) C=mob.getClanRole(mob.Name()).first;
 
 		if(C==null)
-		for(Pair<Clan,Integer> c : mob.clans())
+		for(final Pair<Clan,Integer> c : mob.clans())
 			if((clanName.length()==0)||(CMLib.english().containsString(c.first.getName(), clanName))
 			&&(c.first.getAuthority(c.second.intValue(), Clan.Function.ASSIGN)!=Authority.CAN_NOT_DO))
 			{	C=c.first; break; }
@@ -69,7 +69,7 @@ public class ClanAssign extends StdCommand
 		commands.add(getAccessWords()[0]);
 		commands.add(memberStr);
 		commands.add(pos);
-		StringBuffer msg=new StringBuffer("");
+		final StringBuffer msg=new StringBuffer("");
 		boolean found=false;
 		if(memberStr.length()>0)
 		{
@@ -80,20 +80,20 @@ public class ClanAssign extends StdCommand
 			}
 			if(skipChecks||CMLib.clans().goForward(mob,C,commands,Clan.Function.ASSIGN,false))
 			{
-				List<MemberRecord> members=C.getMemberList();
+				final List<MemberRecord> members=C.getMemberList();
 				if(members.size()<1)
 				{
 					mob.tell("There are no members in your "+C.getGovernmentName()+"");
 					return false;
 				}
-				int newPos=C.getRoleFromName(pos);
+				final int newPos=C.getRoleFromName(pos);
 				if(newPos<0)
 				{
 					mob.tell("'"+pos+"' is not a valid role.");
 					return false;
 				}
 				memberStr=CMStrings.capitalizeAndLower(memberStr);
-				for(MemberRecord member : members)
+				for(final MemberRecord member : members)
 				{
 					if(member.name.equalsIgnoreCase(memberStr))
 					{
@@ -102,8 +102,8 @@ public class ClanAssign extends StdCommand
 				}
 				if(found)
 				{
-					MOB M=CMLib.players().getLoadPlayer(memberStr);
-					Pair<Clan,Integer> oldRole=(M!=null)?M.getClanRole(C.clanID()):null;
+					final MOB M=CMLib.players().getLoadPlayer(memberStr);
+					final Pair<Clan,Integer> oldRole=(M!=null)?M.getClanRole(C.clanID()):null;
 					if((M==null)||(oldRole==null))
 					{
 						mob.tell(memberStr+" was not found.  Could not change "+C.getGovernmentName()+" role.");
@@ -116,18 +116,18 @@ public class ClanAssign extends StdCommand
 					}
 					if(skipChecks||CMLib.clans().goForward(mob,C,commands,Clan.Function.ASSIGN,true))
 					{
-						int oldPos=oldRole.second.intValue();
-						int maxInNewPos=C.getMostInRole(newPos);
-						Vector currentMembersInNewPosV=new Vector();
-						for(MemberRecord member : members)
+						final int oldPos=oldRole.second.intValue();
+						final int maxInNewPos=C.getMostInRole(newPos);
+						final Vector currentMembersInNewPosV=new Vector();
+						for(final MemberRecord member : members)
 							if(member.role==newPos)
 								currentMembersInNewPosV.addElement(member.name);
-						List<Integer> topRoleIDs=C.getTopRankedRoles(Function.ASSIGN);
+						final List<Integer> topRoleIDs=C.getTopRankedRoles(Function.ASSIGN);
 						if(topRoleIDs.contains(Integer.valueOf(oldPos)))
 						{ // If you WERE already the highest order.. you must be being demoted.
 							// so we check to see if there will be any other high officers left
 							int numMembers=0;
-							for(MemberRecord member : members)
+							for(final MemberRecord member : members)
 								if(!M.Name().equalsIgnoreCase(member.name))
 									if(topRoleIDs.contains(Integer.valueOf(member.role)))
 										numMembers++;
@@ -142,10 +142,10 @@ public class ClanAssign extends StdCommand
 							// if there are too many in the new position, demote some of them.
 							while(currentMembersInNewPosV.size()>=maxInNewPos)
 							{
-								String s=(String)currentMembersInNewPosV.elementAt(0);
+								final String s=(String)currentMembersInNewPosV.elementAt(0);
 								currentMembersInNewPosV.removeElementAt(0);
 								CMLib.clans().clanAnnounce(mob," "+s+" of the "+C.getGovernmentName()+" "+C.clanID()+" is now a "+C.getRoleName(C.getGovernment().getAcceptPos(),true,false)+".");
-								MOB M2=CMLib.players().getPlayer(s);
+								final MOB M2=CMLib.players().getPlayer(s);
 								if(M2!=null) M2.setClan(C.clanID(),C.getGovernment().getAcceptPos());
 								CMLib.database().DBUpdateClanMembership(s, C.clanID(), C.getGovernment().getAcceptPos());
 								C.updateClanPrivileges(M2);

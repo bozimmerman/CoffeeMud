@@ -36,7 +36,7 @@ public class TrappedLockedDoor extends StdLockedDoorway
 	public TrappedLockedDoor()
 	{
 		super();
-		Trap t=(Trap)CMClass.getAbility("Trap_Trap");
+		final Trap t=(Trap)CMClass.getAbility("Trap_Trap");
 		if(t!=null) CMLib.utensils().setTrapped(this,t,true);
 	}
 }

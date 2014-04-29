@@ -69,7 +69,7 @@ public class Fighter_SmokeSignals extends FighterSkill
 		Item fire=null;
 		for(int i=0;i<mob.location().numItems();i++)
 		{
-			Item I2=mob.location().getItem(i);
+			final Item I2=mob.location().getItem(i);
 			if((I2!=null)&&(I2.container()==null)&&(CMLib.flags().isOnFire(I2)))
 			{
 				fire=I2;
@@ -126,18 +126,18 @@ public class Fighter_SmokeSignals extends FighterSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,auto?"<T-NAME> begin(s) smoking uncontrollably!":"<S-NAME> puff(s) up a mighty series of smoke signals!");
+			final CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,auto?"<T-NAME> begin(s) smoking uncontrollably!":"<S-NAME> puff(s) up a mighty series of smoke signals!");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				String str=CMParms.combine(commands,0);
-				CMMsg msg2=CMClass.getMsg(mob,null,this,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,str,CMMsg.MSG_OK_VISUAL,"You see some smoke signals in the distance.");
-				TrackingLibrary.TrackingFlags flags=new TrackingLibrary.TrackingFlags();
-				List<Room> checkSet=CMLib.tracking().getRadiantRooms(mob.location(),flags,50);
-				for(Iterator<Room> r=checkSet.iterator();r.hasNext();)
+				final String str=CMParms.combine(commands,0);
+				final CMMsg msg2=CMClass.getMsg(mob,null,this,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,str,CMMsg.MSG_OK_VISUAL,"You see some smoke signals in the distance.");
+				final TrackingLibrary.TrackingFlags flags=new TrackingLibrary.TrackingFlags();
+				final List<Room> checkSet=CMLib.tracking().getRadiantRooms(mob.location(),flags,50);
+				for(final Iterator<Room> r=checkSet.iterator();r.hasNext();)
 				{
 					R=r.next();
 					weather=R.getArea().getClimateObj().weatherType(R);

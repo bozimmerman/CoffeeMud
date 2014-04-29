@@ -51,7 +51,7 @@ public class Prop_WeaponImmunity extends Property implements TriggeredAffect
 	@Override
 	public String accountForYourself()
 	{
-		String id="Weapon Immunities for the wearer: "+text();
+		final String id="Weapon Immunities for the wearer: "+text();
 		return id;
 	}
 	@Override
@@ -59,7 +59,7 @@ public class Prop_WeaponImmunity extends Property implements TriggeredAffect
 	{
 		super.setMiscText(newValue);
 		flags=new Hashtable();
-		Vector<String> V=CMParms.parse(newValue.toUpperCase());
+		final Vector<String> V=CMParms.parse(newValue.toUpperCase());
 		Object c=null;
 		String s=null;
 		for(int v=0;v<V.size();v++)
@@ -103,7 +103,7 @@ public class Prop_WeaponImmunity extends Property implements TriggeredAffect
 
 			boolean immune=flags.containsKey("ALL")&&(((Character)flags.get("ALL")).charValue()=='+');
 			Character foundPlusMinus=null;
-			for(int i : CharStats.CODES.SAVING_THROWS())
+			for(final int i : CharStats.CODES.SAVING_THROWS())
 				if((CharStats.CODES.CMMSGMAP(i)==msg.sourceMinor())
 				&&(i!=CharStats.STAT_SAVE_MAGIC))
 				{
@@ -121,7 +121,7 @@ public class Prop_WeaponImmunity extends Property implements TriggeredAffect
 
 			if((foundPlusMinus==null)&&(msg.tool() instanceof Weapon))
 			{
-				Weapon W=(Weapon)msg.tool();
+				final Weapon W=(Weapon)msg.tool();
 				foundPlusMinus=(Character)flags.get(Weapon.TYPE_DESCS[W.weaponType()]);
 				foundPlusMinus=(Character)flags.get(Weapon.CLASS_DESCS[W.weaponClassification()]);
 				foundPlusMinus=(Character)flags.get((CMLib.flags().isABonusItems(W))?"MAGIC":"NONMAGIC");
@@ -136,7 +136,7 @@ public class Prop_WeaponImmunity extends Property implements TriggeredAffect
 				}
 				else
 				{
-					Object O=flags.get("LEVEL");
+					final Object O=flags.get("LEVEL");
 					if((O!=null)&&(O instanceof String)&&(((String)O).length()>3))
 					{
 						String lvl=(String)O;
@@ -159,7 +159,7 @@ public class Prop_WeaponImmunity extends Property implements TriggeredAffect
 
 			if((foundPlusMinus==null)&&(msg.tool() instanceof Ability))
 			{
-				int classType=((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES;
+				final int classType=((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES;
 				switch(classType)
 				{
 				case Ability.ACODE_SPELL:

@@ -52,7 +52,7 @@ public class Chant_Tether extends Chant
 	{
 		if((affected!=null)&&(affected instanceof MOB))
 		{
-			MOB mob=(MOB)affected;
+			final MOB mob=(MOB)affected;
 			if((lastRoom!=mob.location())
 			&&(lastRoom!=null))
 				tetheredTo=lastRoom;
@@ -79,7 +79,7 @@ public class Chant_Tether extends Chant
 		// undo the affects of this spell
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		super.unInvoke();
 
@@ -92,7 +92,7 @@ public class Chant_Tether extends Chant
 	{
 		if((affected!=null)&&(affected instanceof MOB))
 		{
-			MOB mob=(MOB)affected;
+			final MOB mob=(MOB)affected;
 			if((lastRoom!=mob.location())
 			&&(lastRoom!=null))
 				tetheredTo=lastRoom;
@@ -121,7 +121,7 @@ public class Chant_Tether extends Chant
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
@@ -129,7 +129,7 @@ public class Chant_Tether extends Chant
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> become(s) magically tethered!":"^S<S-NAME> chant(s) about a magical tether!^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> become(s) magically tethered!":"^S<S-NAME> chant(s) about a magical tether!^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

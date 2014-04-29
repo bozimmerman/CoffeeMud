@@ -52,7 +52,7 @@ public class Fighter_CircleParry extends MonkSkill
 		if(!(affected instanceof MOB))
 			return true;
 
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		if(msg.amITarget(mob)
 		   &&(CMLib.flags().aliveAwakeMobileUnbound(mob,true))
@@ -61,7 +61,7 @@ public class Fighter_CircleParry extends MonkSkill
 		{
 			if((msg.tool()!=null)&&(msg.tool() instanceof Item))
 			{
-				Item attackerWeapon=(Item)msg.tool();
+				final Item attackerWeapon=(Item)msg.tool();
 				if((!anyWeapons(mob))
 				&&(attackerWeapon!=null)
 				&&(attackerWeapon instanceof Weapon)
@@ -72,7 +72,7 @@ public class Fighter_CircleParry extends MonkSkill
 				&&(((Weapon)attackerWeapon).weaponClassification()!=Weapon.CLASS_RANGED)
 				&&(((Weapon)attackerWeapon).weaponClassification()!=Weapon.CLASS_THROWN))
 				{
-					CMMsg msg2=CMClass.getMsg(mob,msg.source(),this,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> circle-parr(ys) "+attackerWeapon.name()+" attack from <T-NAME>!");
+					final CMMsg msg2=CMClass.getMsg(mob,msg.source(),this,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> circle-parr(ys) "+attackerWeapon.name()+" attack from <T-NAME>!");
 					if((proficiencyCheck(null,mob.charStats().getStat(CharStats.STAT_DEXTERITY)-90+(2*getXLEVELLevel(mob)),false))
 					&&(!lastTime)
 					&&(mob.location().okMessage(mob,msg2)))

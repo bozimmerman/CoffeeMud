@@ -49,7 +49,7 @@ public class Chant_Stonewalking extends Chant
 		super.executeMsg(myHost,msg);
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		if(msg.amISource(mob)
 		&&((CMath.bset(msg.sourceMajor(),CMMsg.MASK_MALICIOUS))
@@ -68,7 +68,7 @@ public class Chant_Stonewalking extends Chant
 		// can get them out of it.
 		if((affected instanceof MOB)&&(((MOB)affected).location()!=null))
 		{
-			Room R=((MOB)affected).location();
+			final Room R=((MOB)affected).location();
 			if((R.domainType()==Room.DOMAIN_INDOORS_CAVE)
 			   ||(R.domainType()==Room.DOMAIN_INDOORS_STONE)
 			   ||(R.domainType()==Room.DOMAIN_OUTDOORS_MOUNTAINS)
@@ -89,13 +89,13 @@ public class Chant_Stonewalking extends Chant
 		// undo the affects of this spell
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		super.unInvoke();
 
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
 			{
-				Room R=mob.location();
+				final Room R=mob.location();
 				if((R.domainType()==Room.DOMAIN_INDOORS_CAVE)||(R.domainType()==Room.DOMAIN_INDOORS_STONE))
 					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> <S-IS-ARE> drawn out of the walls.");
 				else
@@ -111,7 +111,7 @@ public class Chant_Stonewalking extends Chant
 	{
 		if(mob!=null)
 		{
-			Room R=mob.location();
+			final Room R=mob.location();
 			if(R!=null)
 			{
 				if((R.domainType()!=Room.DOMAIN_INDOORS_CAVE)
@@ -136,7 +136,7 @@ public class Chant_Stonewalking extends Chant
 			return false;
 		}
 
-		Room R=mob.location();
+		final Room R=mob.location();
 		if((R.domainType()!=Room.DOMAIN_INDOORS_CAVE)
 		   &&(R.domainType()!=Room.DOMAIN_INDOORS_STONE)
 		   &&(R.domainType()!=Room.DOMAIN_OUTDOORS_MOUNTAINS)
@@ -153,14 +153,14 @@ public class Chant_Stonewalking extends Chant
 			return false;
 
 		// now see if it worked
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
 			// it worked, so build a copy of this ability,
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> chant(s) quietly to <T-NAMESELF>.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> chant(s) quietly to <T-NAMESELF>.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

@@ -46,7 +46,7 @@ public class Play_Charge extends Play
 	@Override
 	protected void inpersistantAffect(MOB mob)
 	{
-		Ability A=CMClass.getAbility("Fighter_Charge");
+		final Ability A=CMClass.getAbility("Fighter_Charge");
 		if(A!=null)
 		{
 			A.setAbilityCode(4*getXLEVELLevel(invoker()));
@@ -59,7 +59,7 @@ public class Play_Charge extends Play
 	{
 		if(mob!=null)
 		{
-			Ability A=CMClass.getAbility("Fighter_Charge");
+			final Ability A=CMClass.getAbility("Fighter_Charge");
 			if(A!=null) return A.castingQuality(mob, target);
 		}
 		return super.castingQuality(mob,target);

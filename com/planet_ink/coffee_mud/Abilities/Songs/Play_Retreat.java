@@ -78,11 +78,11 @@ public class Play_Retreat extends Play
 		{
 			if(where.length()==0)
 			{
-				Vector directions=new Vector();
+				final Vector directions=new Vector();
 				for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 				{
-					Exit thisExit=mob.location().getExitInDir(d);
-					Room thisRoom=mob.location().getRoomInDir(d);
+					final Exit thisExit=mob.location().getExitInDir(d);
+					final Room thisRoom=mob.location().getRoomInDir(d);
 					if((thisRoom!=null)&&(thisExit!=null)&&(thisExit.isOpen()))
 						directions.addElement(Integer.valueOf(d));
 				}

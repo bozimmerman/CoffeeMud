@@ -64,7 +64,7 @@ public class Thief_Spying extends ThiefSkill
 		&&(CMLib.flags().isInTheGame(invoker(),true))
 		&&(CMLib.flags().canBeSeenBy(msg.source(),invoker())))
 		{
-			CMMsg msg2=(CMMsg)msg.copyOf();
+			final CMMsg msg2=(CMMsg)msg.copyOf();
 			msg2.modify(invoker(),msg.target(),msg.tool(),msg.sourceCode(),msg.sourceMessage(),msg.targetCode(),msg.targetMessage(),CMMsg.NO_EFFECT,null);
 			msg.target().executeMsg(invoker(),msg2);
 		}
@@ -89,14 +89,14 @@ public class Thief_Spying extends ThiefSkill
 			mob.tell("Spy on whom?");
 			return false;
 		}
-		MOB target=this.getTarget(mob,commands,givenTarget);
+		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 		if(target==mob)
 		{
 			mob.tell("You cannot spy on yourself?!");
 			return false;
 		}
-		Ability A=target.fetchEffect(ID());
+		final Ability A=target.fetchEffect(ID());
 		if(A!=null)
 		{
 			if(A.invoker()==mob)
@@ -120,19 +120,19 @@ public class Thief_Spying extends ThiefSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		int levelDiff=target.phyStats().level()-(mob.phyStats().level()+abilityCode()+(super.getXLEVELLevel(mob)*2));
+		final int levelDiff=target.phyStats().level()-(mob.phyStats().level()+abilityCode()+(super.getXLEVELLevel(mob)*2));
 
-		boolean success=proficiencyCheck(mob,-(levelDiff*10),auto);
+		final boolean success=proficiencyCheck(mob,-(levelDiff*10),auto);
 
 		if(!success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,null,CMMsg.MSG_OK_VISUAL,auto?"":"Your attempt to spy on <T-NAMESELF> fails; <T-NAME> spots you!",CMMsg.MSG_OK_VISUAL,auto?"":"You spot <S-NAME> trying to spy on you.",CMMsg.NO_EFFECT,null);
+			final CMMsg msg=CMClass.getMsg(mob,target,null,CMMsg.MSG_OK_VISUAL,auto?"":"Your attempt to spy on <T-NAMESELF> fails; <T-NAME> spots you!",CMMsg.MSG_OK_VISUAL,auto?"":"You spot <S-NAME> trying to spy on you.",CMMsg.NO_EFFECT,null);
 			if(mob.location().okMessage(mob,msg))
 				mob.location().send(mob,msg);
 		}
 		else
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,auto?CMMsg.MSG_OK_VISUAL:CMMsg.MSG_THIEF_ACT,"You are now spying on <T-NAME>.  Enter 'spy <targetname>' again to disengage.",CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);
+			final CMMsg msg=CMClass.getMsg(mob,target,this,auto?CMMsg.MSG_OK_VISUAL:CMMsg.MSG_THIEF_ACT,"You are now spying on <T-NAME>.  Enter 'spy <targetname>' again to disengage.",CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

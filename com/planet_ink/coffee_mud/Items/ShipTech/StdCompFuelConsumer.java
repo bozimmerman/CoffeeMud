@@ -74,7 +74,7 @@ public class StdCompFuelConsumer extends StdElecCompContainer implements Electro
 	public int getFuelRemaining()
 	{
 		int amt=0;
-		for(Item I : getFuel())
+		for(final Item I : getFuel())
 			if(I instanceof RawMaterial)
 				amt+=I.phyStats().weight();
 		return amt;
@@ -96,9 +96,9 @@ public class StdCompFuelConsumer extends StdElecCompContainer implements Electro
 
 	protected void engineShutdown()
 	{
-		MOB deity=CMLib.map().deity();
-		CMMsg msg=CMClass.getMsg(CMLib.map().deity(), CMMsg.MSG_DEACTIVATE, "<T-NAME> sputters and shuts itself down.");
-		Room R=CMLib.map().roomLocation(this);
+		final MOB deity=CMLib.map().deity();
+		final CMMsg msg=CMClass.getMsg(CMLib.map().deity(), CMMsg.MSG_DEACTIVATE, "<T-NAME> sputters and shuts itself down.");
+		final Room R=CMLib.map().roomLocation(this);
 		if((R!=null)&&(R.okMessage(deity, msg)))
 			R.send(deity, msg);
 	}
@@ -120,8 +120,8 @@ public class StdCompFuelConsumer extends StdElecCompContainer implements Electro
 	@Override
 	public boolean consumeFuel(int amount)
 	{
-		List<Item> fuel=getFuel();
-		for(Item I : fuel)
+		final List<Item> fuel=getFuel();
+		for(final Item I : fuel)
 		{
 			if((I instanceof RawMaterial)
 			&&(!I.amDestroyed())

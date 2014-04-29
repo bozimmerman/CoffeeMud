@@ -46,7 +46,7 @@ public class Chant_Dehydrate extends Chant
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		Physical target=getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_ANY);
+		final Physical target=getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_ANY);
 		if(target==null) return false;
 
 		// the invoke method for spells receives as
@@ -55,7 +55,7 @@ public class Chant_Dehydrate extends Chant
 		// and added as String objects to a vector.
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
@@ -64,7 +64,7 @@ public class Chant_Dehydrate extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> chant(s) to <T-NAMESELF>.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> chant(s) to <T-NAMESELF>.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -80,10 +80,10 @@ public class Chant_Dehydrate extends Chant
 					{
 						if(target instanceof Container)
 						{
-							List<Item> V=((Container)target).getContents();
+							final List<Item> V=((Container)target).getContents();
 							for(int i=0;i<V.size();i++)
 							{
-								Item I=V.get(i);
+								final Item I=V.get(i);
 								if(I instanceof Drink)
 								{
 									if(((Drink)I).liquidRemaining()<10000)

@@ -56,7 +56,7 @@ public class PracticePoint extends StdItem implements MiscMagic
 	{
 		if(msg.amITarget(this))
 		{
-			MOB mob=msg.source();
+			final MOB mob=msg.source();
 			switch(msg.targetMinor())
 			{
 			case CMMsg.TYP_GET:

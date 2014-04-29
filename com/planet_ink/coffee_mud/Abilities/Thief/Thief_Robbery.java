@@ -46,7 +46,7 @@ public class Thief_Robbery extends ThiefSkill
 	private static final String[] triggerStrings = {"ROBBERY","ROB"};
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	public List<MOB> mobs=new Vector<MOB>();
-	private PairVector<MOB,Integer> lastOnes=new PairVector<MOB,Integer>();
+	private final PairVector<MOB,Integer> lastOnes=new PairVector<MOB,Integer>();
 	@Override public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
 
 	protected int timesPicked(MOB target)
@@ -54,8 +54,8 @@ public class Thief_Robbery extends ThiefSkill
 		int times=0;
 		for(int x=0;x<lastOnes.size();x++)
 		{
-			MOB M=lastOnes.getFirst(x);
-			Integer I=lastOnes.getSecond(x);
+			final MOB M=lastOnes.getFirst(x);
+			final Integer I=lastOnes.getSecond(x);
 			if(M==target)
 			{
 				times=I.intValue();
@@ -120,7 +120,7 @@ public class Thief_Robbery extends ThiefSkill
 			return false;
 		}
 
-		String itemToSteal=(String)commands.elementAt(0);
+		final String itemToSteal=(String)commands.elementAt(0);
 
 		MOB target=null;
 		if((givenTarget!=null)&&(givenTarget instanceof MOB))
@@ -132,7 +132,7 @@ public class Thief_Robbery extends ThiefSkill
 			mob.tell("You don't see '"+CMParms.combine(commands,1)+"' here.");
 			return false;
 		}
-		int levelDiff=target.phyStats().level()-(mob.phyStats().level()+(getXLEVELLevel(mob)*2));
+		final int levelDiff=target.phyStats().level()-(mob.phyStats().level()+(getXLEVELLevel(mob)*2));
 
 		if((!target.mayIFight(mob))||(CMLib.coffeeShops().getShopKeeper(target)==null))
 		{
@@ -147,12 +147,12 @@ public class Thief_Robbery extends ThiefSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		ShopKeeper shop=CMLib.coffeeShops().getShopKeeper(target);
-		Environmental stock=shop.getShop().getStock(itemToSteal,mob);
+		final ShopKeeper shop=CMLib.coffeeShops().getShopKeeper(target);
+		final Environmental stock=shop.getShop().getStock(itemToSteal,mob);
 		Physical stolen=(stock instanceof Physical)?(Physical)stock:null;
 		if(stolen!=null)
 		{
-			ShopKeeper.ShopPrice price=CMLib.coffeeShops().sellingPrice(target,mob,stolen,shop,false);
+			final ShopKeeper.ShopPrice price=CMLib.coffeeShops().sellingPrice(target,mob,stolen,shop,false);
 			if((stolen instanceof Ability)
 			||(stolen instanceof MOB)
 			||(stolen instanceof Room)
@@ -168,22 +168,22 @@ public class Thief_Robbery extends ThiefSkill
 
 		int discoverChance=(mob.charStats().getStat(CharStats.STAT_CHARISMA)-(target.charStats().getStat(CharStats.STAT_WISDOM))*5)
 						+(getX1Level(mob)*5);
-		int times=timesPicked(target);
+		final int times=timesPicked(target);
 		if(times>5) discoverChance-=(20*(times-5));
 		if(!CMLib.flags().canBeSeenBy(mob,target))
 			discoverChance+=50;
 		if(discoverChance>95) discoverChance=95;
 		if(discoverChance<5) discoverChance=5;
-		boolean success=proficiencyCheck(mob,-(levelDiff),auto);
+		final boolean success=proficiencyCheck(mob,-(levelDiff),auto);
 
 		if(!success)
 		{
 			if(CMLib.dice().rollPercentage()>discoverChance)
 			{
-				CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_NOISYMOVEMENT,auto?"":"You fumble the attempt to rob <T-NAMESELF>; <T-NAME> spots you!",CMMsg.MSG_NOISYMOVEMENT,auto?"":"<S-NAME> tries to rob you and fails!",CMMsg.MSG_NOISYMOVEMENT,auto?"":"<S-NAME> tries to rob <T-NAME> and fails!");
+				final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_NOISYMOVEMENT,auto?"":"You fumble the attempt to rob <T-NAMESELF>; <T-NAME> spots you!",CMMsg.MSG_NOISYMOVEMENT,auto?"":"<S-NAME> tries to rob you and fails!",CMMsg.MSG_NOISYMOVEMENT,auto?"":"<S-NAME> tries to rob <T-NAME> and fails!");
 				if(mob.location().okMessage(mob,msg))
 					mob.location().send(mob,msg);
-				Thief_Robbery A=(Thief_Robbery)target.fetchEffect(ID());
+				final Thief_Robbery A=(Thief_Robbery)target.fetchEffect(ID());
 				if(A==null)
 				{
 					mobs.clear();
@@ -209,7 +209,7 @@ public class Thief_Robbery extends ThiefSkill
 					code=CMMsg.MSG_QUIETMOVEMENT;
 				}
 
-			boolean alreadyFighting=(mob.getVictim()==target)||(target.getVictim()==mob);
+			final boolean alreadyFighting=(mob.getVictim()==target)||(target.getVictim()==mob);
 			String hisStr=str;
 			int hisCode=CMMsg.MSG_THIEF_ACT;
 			if(CMLib.dice().rollPercentage()<discoverChance)
@@ -248,7 +248,7 @@ public class Thief_Robbery extends ThiefSkill
 				}
 				if(stolen!=null)
 				{
-					List<Environmental> products=shop.getShop().removeSellableProduct(stolen.Name(),mob);
+					final List<Environmental> products=shop.getShop().removeSellableProduct(stolen.Name(),mob);
 					if(products.get(0) instanceof Item)
 					{
 						stolen=(Item)products.get(0);

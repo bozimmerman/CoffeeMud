@@ -671,9 +671,9 @@ public interface Area extends Economics, PhysicalAgent, Places
 		@Override
 		public Room nextElement()
 		{
-			String roomID=roomIDEnumerator.nextElement();
+			final String roomID=roomIDEnumerator.nextElement();
 			if(roomID==null) return null;
-			Room R=area.getRoom(roomID);
+			final Room R=area.getRoom(roomID);
 			if(R==null) return nextElement();
 			if(R.expirationDate()!=0)
 				R.setExpirationDate(R.expirationDate()+(1000*60*10));
@@ -703,7 +703,7 @@ public interface Area extends Economics, PhysicalAgent, Places
 		@Override
 		public Room nextElement()
 		{
-			Room room=roomEnumerators.nextElement();
+			final Room room=roomEnumerators.nextElement();
 			if(room instanceof GridLocale)
 				roomEnumerators.addEnumeration(new IteratorEnumeration<Room>(((GridLocale) room).getAllRooms().iterator()));
 			if((room == null) && (hasMoreElements()))

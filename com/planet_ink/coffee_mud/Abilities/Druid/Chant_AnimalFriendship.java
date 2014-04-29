@@ -51,7 +51,7 @@ public class Chant_AnimalFriendship extends Chant
 		&&((msg.amITarget(affected)))
 		&&(CMLib.flags().isAnimalIntelligence(msg.source())))
 		{
-			MOB target=(MOB)msg.target();
+			final MOB target=(MOB)msg.target();
 			if((!target.isInCombat())
 			&&(msg.source().location()==target.location())
 			&&(msg.source().getVictim()!=target))
@@ -74,7 +74,7 @@ public class Chant_AnimalFriendship extends Chant
 		// undo the affects of this spell
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		super.unInvoke();
 
 		if(canBeUninvoked())
@@ -103,7 +103,7 @@ public class Chant_AnimalFriendship extends Chant
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
@@ -112,7 +112,7 @@ public class Chant_AnimalFriendship extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> become(s) animal friendly!":"^S<S-NAME> chant(s) for animal friendship.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> become(s) animal friendly!":"^S<S-NAME> chant(s) for animal friendship.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

@@ -37,7 +37,7 @@ public class Centaur extends StdMOB
 	public Centaur()
 	{
 		super();
-		Random randomizer = new Random(System.currentTimeMillis());
+		final Random randomizer = new Random(System.currentTimeMillis());
 
 		username="a centaur";
 		setDescription("A creature whose upper body is that of a man, and lower body that of a horse.");

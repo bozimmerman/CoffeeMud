@@ -58,7 +58,7 @@ public class Prayer_Avatar extends Prayer
 		// undo the affects of this spell
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		super.unInvoke();
 
@@ -77,13 +77,13 @@ public class Prayer_Avatar extends Prayer
 	public void affectPhyStats(Physical affected, PhyStats affectedStats)
 	{
 		super.affectPhyStats(affected,affectedStats);
-		int xlvl=2+(int)Math.round(CMath.div(adjustedLevel(invoker(),0),1.5));
+		final int xlvl=2+(int)Math.round(CMath.div(adjustedLevel(invoker(),0),1.5));
 		affectedStats.setArmor(affectedStats.armor()-(xlvl));
 		affectedStats.setSpeed(affectedStats.speed()+1.0+CMath.mul(0.33,super.getXLEVELLevel(invoker())));
 		affectedStats.setAttackAdjustment(affectedStats.attackAdjustment()+(xlvl*2));
 		if(affected instanceof MOB)
 		{
-			MOB mob=(MOB)affected;
+			final MOB mob=(MOB)affected;
 			if(mob.getMyDeity()!=null)
 				affectedStats.setName(mob.name()+", the Avatar of "+mob.getMyDeity().name());
 			else
@@ -99,32 +99,32 @@ public class Prayer_Avatar extends Prayer
 
 		if(!super.tick(ticking,tickID))
 			return false;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		if(mob.location()!=null)
 		{
 			if(mob.isInCombat())
 			{
-				MOB newvictim=mob.location().fetchRandomInhabitant();
+				final MOB newvictim=mob.location().fetchRandomInhabitant();
 				if(newvictim!=mob) mob.setVictim(newvictim);
 			}
 			else
 			{
 				MOB attack=null;
-				Room R=mob.location();
+				final Room R=mob.location();
 				for(int m=0;m<R.numInhabitants();m++)
 				{
-					MOB M=R.fetchInhabitant(m);
+					final MOB M=R.fetchInhabitant(m);
 					if((M!=null)&&(M!=mob)&&(mob.mayPhysicallyAttack(M)))
 					{ attack=M; break;}
 				}
 				if(attack==null)
 				{
 					int dir=-1;
-					Vector<Integer> dirs=new Vector<Integer>();
+					final Vector<Integer> dirs=new Vector<Integer>();
 
 					for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 					{
-						Room R2=R.getRoomInDir(d);
+						final Room R2=R.getRoomInDir(d);
 						if((R2!=null)
 						&&(R.getExitInDir(d)!=null)
 						&&(R.getExitInDir(d).isOpen()))
@@ -132,15 +132,15 @@ public class Prayer_Avatar extends Prayer
 					}
 					while(dirs.size()>0)
 					{
-						int d=dirs.remove(CMLib.dice().roll(1, dirs.size(), -1)).intValue();
-						Room R2=R.getRoomInDir(d);
+						final int d=dirs.remove(CMLib.dice().roll(1, dirs.size(), -1)).intValue();
+						final Room R2=R.getRoomInDir(d);
 						if(R2!=null)
 						{
 							if((dir<0)||(dir==Directions.UP))
 								dir=d;
 							for(int m=0;m<R2.numInhabitants();m++)
 							{
-								MOB M=R2.fetchInhabitant(m);
+								final MOB M=R2.fetchInhabitant(m);
 								if((M!=null)&&(M!=mob)&&(mob.mayPhysicallyAttack(M)))
 								{ attack=M; break;}
 							}
@@ -148,7 +148,7 @@ public class Prayer_Avatar extends Prayer
 					}
 					if(dir>=0)
 					{
-						String godName=mob.getWorshipCharID().length()==0?"Your god":mob.getWorshipCharID();
+						final String godName=mob.getWorshipCharID().length()==0?"Your god":mob.getWorshipCharID();
 						mob.tell(godName+" directs you "+Directions.getInDirectionName(dir)+".");
 						CMLib.tracking().walk(mob,dir,false,false);
 					}
@@ -190,7 +190,7 @@ public class Prayer_Avatar extends Prayer
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
@@ -198,7 +198,7 @@ public class Prayer_Avatar extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> "+prayWord(mob)+".^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> "+prayWord(mob)+".^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

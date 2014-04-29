@@ -54,14 +54,14 @@ public class Prop_PeaceMaker extends Property
 			{
 				if(affected instanceof MOB)
 				{
-					MOB mob=(MOB)affected;
+					final MOB mob=(MOB)affected;
 					if((CMLib.flags().aliveAwakeMobileUnbound(mob,true))
 					&&(!mob.isInCombat()))
 					{
 						String t="No fighting!";
 						if(text().length()>0)
 						{
-							List<String> V=CMParms.parseSemicolons(text(),true);
+							final List<String> V=CMParms.parseSemicolons(text(),true);
 							t=V.get(CMLib.dice().roll(1,V.size(),-1));
 						}
 						CMLib.commands().postSay(mob,msg.source(),t,false,false);
@@ -74,12 +74,12 @@ public class Prop_PeaceMaker extends Property
 					String t="You feel too peaceful here.";
 					if(text().length()>0)
 					{
-						List<String> V=CMParms.parseSemicolons(text(),true);
+						final List<String> V=CMParms.parseSemicolons(text(),true);
 						t=V.get(CMLib.dice().roll(1,V.size(),-1));
 					}
 					msg.source().tell(t);
 				}
-				MOB victim=msg.source().getVictim();
+				final MOB victim=msg.source().getVictim();
 				if(victim!=null) victim.makePeace();
 				msg.source().makePeace();
 				msg.modify(msg.source(),msg.target(),msg.tool(),CMMsg.NO_EFFECT,"",CMMsg.NO_EFFECT,"",CMMsg.NO_EFFECT,"");

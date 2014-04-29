@@ -44,7 +44,7 @@ public class Skeleton extends Undead
 	{
 		if(myHost instanceof MOB)
 		{
-			MOB mob=(MOB)myHost;
+			final MOB mob=(MOB)myHost;
 			if((msg.amITarget(mob))
 			&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
 			&&(msg.tool()!=null)
@@ -53,7 +53,7 @@ public class Skeleton extends Undead
 				||(((Weapon)msg.tool()).weaponType()==Weapon.TYPE_SLASHING))
 			&&(!mob.amDead()))
 			{
-				int recovery=(int)Math.round(CMath.div((msg.value()),2.0));
+				final int recovery=(int)Math.round(CMath.div((msg.value()),2.0));
 				msg.setValue(recovery);
 			}
 		}

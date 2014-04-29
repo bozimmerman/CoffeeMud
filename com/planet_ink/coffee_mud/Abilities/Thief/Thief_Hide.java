@@ -58,7 +58,7 @@ public class Thief_Hide extends ThiefSkill
 		if(!(affected instanceof MOB))
 			return;
 
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		if(msg.amISource(mob))
 		{
@@ -149,10 +149,10 @@ public class Thief_Hide extends ThiefSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		MOB highestMOB=getHighestLevelMOB(mob,null);
-		int levelDiff=(mob.phyStats().level()+(2*super.getXLEVELLevel(mob)))-getMOBLevel(highestMOB);
+		final MOB highestMOB=getHighestLevelMOB(mob,null);
+		final int levelDiff=(mob.phyStats().level()+(2*super.getXLEVELLevel(mob)))-getMOBLevel(highestMOB);
 
-		String str="You creep into a shadow and remain completely still.";
+		final String str="You creep into a shadow and remain completely still.";
 
 		boolean success=(highestMOB==null)||proficiencyCheck(mob,levelDiff*10,auto);
 
@@ -165,12 +165,12 @@ public class Thief_Hide extends ThiefSkill
 		}
 		else
 		{
-			CMMsg msg=CMClass.getMsg(mob,null,this,auto?CMMsg.MSG_OK_ACTION:(CMMsg.MSG_DELICATE_HANDS_ACT|CMMsg.MASK_MOVE),str,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);
+			final CMMsg msg=CMClass.getMsg(mob,null,this,auto?CMMsg.MSG_OK_ACTION:(CMMsg.MSG_DELICATE_HANDS_ACT|CMMsg.MASK_MOVE),str,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);
 			if(room.okMessage(mob,msg))
 			{
 				room.send(mob,msg);
 				invoker=mob;
-				Ability newOne=(Ability)this.copyOf();
+				final Ability newOne=(Ability)this.copyOf();
 				((Thief_Hide)newOne).bonus=getXLEVELLevel(mob)*2;
 				if(mob.fetchEffect(newOne.ID())==null)
 					mob.addEffect(newOne);

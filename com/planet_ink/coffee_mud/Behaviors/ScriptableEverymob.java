@@ -56,7 +56,7 @@ public class ScriptableEverymob extends StdBehavior implements ScriptingEngine
 		||(!metroA.inMyMetroArea(M.getStartRoom().getArea()))
 		||(M.fetchBehavior("Scriptable")!=null))
 			return;
-		Scriptable S=new Scriptable();
+		final Scriptable S=new Scriptable();
 		S.setParms(getParms());
 		S.setSavable(false);
 		M.addBehavior(S);
@@ -90,8 +90,8 @@ public class ScriptableEverymob extends StdBehavior implements ScriptingEngine
 		&&(!started))
 		{
 			started = true;
-			Enumeration rooms=determineRooms(forMe);
-			Area A=determineArea(forMe);
+			final Enumeration rooms=determineRooms(forMe);
+			final Area A=determineArea(forMe);
 			if((A!=null)&&(rooms!=null))
 			{
 				Room R=null;

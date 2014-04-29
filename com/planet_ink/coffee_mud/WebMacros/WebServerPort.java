@@ -41,12 +41,12 @@ public class WebServerPort extends StdWebMacro
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
-		java.util.Map<String,String> parms=parseParms(parm);
+		final java.util.Map<String,String> parms=parseParms(parm);
 		if(parms.containsKey("CURRENT"))
 			return Integer.toString(httpReq.getClientPort());
 		if(Thread.currentThread() instanceof MWThread)
 		{
-			MiniWebConfig config=((MWThread)Thread.currentThread()).getConfig();
+			final MiniWebConfig config=((MWThread)Thread.currentThread()).getConfig();
 			return CMParms.toStringList(config.getHttpListenPorts());
 		}
 		return Integer.toString(httpReq.getClientPort());

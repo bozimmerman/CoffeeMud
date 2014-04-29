@@ -72,13 +72,13 @@ public class Shearing extends CommonSkill
 
 	public Vector getMyWool(MOB M)
 	{
-		Vector wool=new Vector();
+		final Vector wool=new Vector();
 		if((M!=null)
 		&&(M.charStats().getMyRace()!=null)
 		&&(M.charStats().getMyRace().myResources()!=null)
 		&&(M.charStats().getMyRace().myResources().size()>0))
 		{
-			List<RawMaterial> V=M.charStats().getMyRace().myResources();
+			final List<RawMaterial> V=M.charStats().getMyRace().myResources();
 			for(int v=0;v<V.size();v++)
 				if((V.get(v) != null)
 				&&(V.get(v).material()==RawMaterial.RESOURCE_WOOL))
@@ -94,7 +94,7 @@ public class Shearing extends CommonSkill
 		{
 			if((affected!=null)&&(affected instanceof MOB))
 			{
-				MOB mob=(MOB)affected;
+				final MOB mob=(MOB)affected;
 				if((sheep!=null)&&(!aborted))
 				{
 					if((failed)||(!mob.location().isInhabitant(sheep)))
@@ -103,10 +103,10 @@ public class Shearing extends CommonSkill
 					{
 						mob.location().show(mob,null,sheep,getActivityMessageType(),"<S-NAME> manage(s) to shear <O-NAME>.");
 						spreadImmunity(sheep);
-						int yield=abilityCode()<=0?1:abilityCode();
+						final int yield=abilityCode()<=0?1:abilityCode();
 						for(int i=0;i<yield;i++)
 						{
-							Vector V=getMyWool(sheep);
+							final Vector V=getMyWool(sheep);
 							for(int v=0;v<V.size();v++)
 							{
 								RawMaterial I=(RawMaterial)V.elementAt(v);
@@ -128,7 +128,7 @@ public class Shearing extends CommonSkill
 		if(super.checkStop(mob, commands))
 			return true;
 		MOB target=null;
-		Room R=mob.location();
+		final Room R=mob.location();
 		if(R==null) return false;
 		sheep=null;
 		if((mob.isMonster()
@@ -137,7 +137,7 @@ public class Shearing extends CommonSkill
 		{
 			for(int i=0;i<R.numInhabitants();i++)
 			{
-				MOB M=R.fetchInhabitant(i);
+				final MOB M=R.fetchInhabitant(i);
 				if((M!=mob)&&(CMLib.flags().canBeSeenBy(M,mob))&&(getMyWool(M).size()>0))
 				{
 					target=M;
@@ -161,14 +161,14 @@ public class Shearing extends CommonSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 		failed=!proficiencyCheck(mob,0,auto);
-		CMMsg msg=CMClass.getMsg(mob,target,this,getActivityMessageType(),getActivityMessageType(),getActivityMessageType(),"<S-NAME> start(s) shearing <T-NAME>.");
+		final CMMsg msg=CMClass.getMsg(mob,target,this,getActivityMessageType(),getActivityMessageType(),getActivityMessageType(),"<S-NAME> start(s) shearing <T-NAME>.");
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
 			sheep=target;
 			verb="shearing "+target.name();
 			playSound="scissor.wav";
-			int duration=getDuration(mob,target.phyStats().weight());
+			final int duration=getDuration(mob,target.phyStats().weight());
 			beneficialAffect(mob,mob,asLevel,duration);
 		}
 		return true;

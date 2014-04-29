@@ -65,7 +65,7 @@ public class GenMultiPotion extends GenDrink implements Potion
 		else
 		{
 			String list="";
-			List<Ability> theSpells=getSpells();
+			final List<Ability> theSpells=getSpells();
 			for(int v=0;v<theSpells.size();v++)
 				list+=theSpells.get(v).ID()+";";
 			setSpellList(list);
@@ -105,21 +105,21 @@ public class GenMultiPotion extends GenDrink implements Potion
 	@Override
 	public void drinkIfAble(MOB owner, Physical drinkerTarget)
 	{
-		List<Ability> spells=getSpells();
+		final List<Ability> spells=getSpells();
 		if(owner.isMine(this))
 		{
 			if((!isDrunk())&&(spells.size()>0))
 			{
-				MOB caster=CMLib.map().getFactoryMOB(owner.location());
-				MOB finalCaster=(owner!=drinkerTarget)?owner:caster;
+				final MOB caster=CMLib.map().getFactoryMOB(owner.location());
+				final MOB finalCaster=(owner!=drinkerTarget)?owner:caster;
 				for(int i=0;i<spells.size();i++)
 				{
-					Ability thisOne=(Ability)spells.get(i).copyOf();
+					final Ability thisOne=(Ability)spells.get(i).copyOf();
 					if((drinkerTarget instanceof Item)
 					&&((!thisOne.canTarget(drinkerTarget))&&(!thisOne.canAffect(drinkerTarget))))
 						continue;
 					int level=phyStats().level();
-					int lowest=CMLib.ableMapper().lowestQualifyingLevel(thisOne.ID());
+					final int lowest=CMLib.ableMapper().lowestQualifyingLevel(thisOne.ID());
 					if(level<lowest)
 						level=lowest;
 					caster.basePhyStats().setLevel(level);
@@ -155,7 +155,7 @@ public class GenMultiPotion extends GenDrink implements Potion
 	{
 		if(msg.amITarget(this))
 		{
-			MOB mob=msg.source();
+			final MOB mob=msg.source();
 			switch(msg.targetMinor())
 			{
 			case CMMsg.TYP_DRINK:

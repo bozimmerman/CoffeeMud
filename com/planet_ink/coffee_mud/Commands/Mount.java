@@ -49,23 +49,23 @@ public class Mount extends StdCommand
 		}
 		commands.removeElementAt(0);
 		Environmental recipient=null;
-		Vector possRecipients=new Vector();
+		final Vector possRecipients=new Vector();
 		for(int m=0;m<mob.location().numInhabitants();m++)
 		{
-			MOB M=mob.location().fetchInhabitant(m);
+			final MOB M=mob.location().fetchInhabitant(m);
 			if((M!=null)&&(M instanceof Rideable))
 				possRecipients.addElement(M);
 		}
 		for(int i=0;i<mob.location().numItems();i++)
 		{
-			Item I=mob.location().getItem(i);
+			final Item I=mob.location().getItem(i);
 			if((I!=null)&&(I instanceof Rideable))
 				possRecipients.addElement(I);
 		}
 		Rider RI=null;
 		if(commands.size()>1)
 		{
-			Item I=mob.location().findItem(null,(String)commands.firstElement());
+			final Item I=mob.location().findItem(null,(String)commands.firstElement());
 			if(I!=null)
 			{
 				commands.removeElementAt(0);
@@ -74,7 +74,7 @@ public class Mount extends StdCommand
 			}
 			if(RI==null)
 			{
-				MOB M=mob.location().fetchInhabitant((String)commands.firstElement());
+				final MOB M=mob.location().fetchInhabitant((String)commands.firstElement());
 				if(M!=null)
 				{
 					if(!CMLib.flags().canBeSeenBy(M,mob))
@@ -118,7 +118,7 @@ public class Mount extends StdCommand
 			else
 				mountStr="<S-NAME> mount(s) <T-NAMESELF>.";
 		}
-		CMMsg msg=CMClass.getMsg(mob,recipient,RI,CMMsg.MSG_MOUNT,mountStr);
+		final CMMsg msg=CMClass.getMsg(mob,recipient,RI,CMMsg.MSG_MOUNT,mountStr);
 		if(mob.location().okMessage(mob,msg))
 			mob.location().send(mob,msg);
 		return false;

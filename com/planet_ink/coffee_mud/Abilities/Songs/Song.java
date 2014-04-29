@@ -61,8 +61,8 @@ public class Song extends StdAbility
 	@Override
 	public int adjustedLevel(MOB mob, int asLevel)
 	{
-		int level=super.adjustedLevel(mob,asLevel);
-		int charisma=(invoker().charStats().getStat(CharStats.STAT_CHARISMA)-10);
+		final int level=super.adjustedLevel(mob,asLevel);
+		final int charisma=(invoker().charStats().getStat(CharStats.STAT_CHARISMA)-10);
 		if(charisma>10)
 			return level+(charisma/3);
 		return level;
@@ -129,10 +129,10 @@ public class Song extends StdAbility
 		if(skipSimpleStandardSongTickToo())
 			return true;
 
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		if((affected==invoker())&&(invoker()!=null)&&(invoker().location()!=originRoom))
 		{
-			Vector V=getInvokerScopeRoomSet(null);
+			final Vector V=getInvokerScopeRoomSet(null);
 			commonRoomSet.clear();
 			commonRoomSet.addAll(V);
 			originRoom=invoker().location();
@@ -151,7 +151,7 @@ public class Song extends StdAbility
 			if((mob.location()!=originRoom)
 			&&(CMLib.flags().isMobile(mob)))
 			{
-				int dir=this.getCorrectDirToOriginRoom(mob.location(),commonRoomSet.indexOf(mob.location()));
+				final int dir=this.getCorrectDirToOriginRoom(mob.location(),commonRoomSet.indexOf(mob.location()));
 				if(dir>=0)
 					CMLib.tracking().walk(mob,dir,false,false);
 			}
@@ -182,7 +182,7 @@ public class Song extends StdAbility
 		if(mob!=null)
 			for(int a=mob.numEffects()-1;a>=0;a--)
 			{
-				Ability A=mob.fetchEffect(a);
+				final Ability A=mob.fetchEffect(a);
 				if((A instanceof Song)
 				&&((invoker==null)||(A.invoker()==null)||(A.invoker()==invoker)))
 					((Song)A).unsingMe(mob,invoker);
@@ -194,7 +194,7 @@ public class Song extends StdAbility
 		if(mob!=null)
 			for(int a=mob.numEffects()-1;a>=0;a--)
 			{
-				Ability A=mob.fetchEffect(a);
+				final Ability A=mob.fetchEffect(a);
 				if((A instanceof Song)
 				&&(!A.ID().equals(ID()))
 				&&((invoker==null)||(A.invoker()==null)||(A.invoker()==invoker)))
@@ -205,11 +205,11 @@ public class Song extends StdAbility
 	protected boolean unsingMe(MOB mob, MOB invoker)
 	{
 		if(mob==null) return false;
-		Ability A=mob.fetchEffect(ID());
+		final Ability A=mob.fetchEffect(ID());
 		if((A instanceof Song)
 		&&((invoker==null)||(A.invoker()==null)||(A.invoker()==invoker)))
 		{
-			Song S=(Song)A;
+			final Song S=(Song)A;
 			if(S.timeOut==0)
 				S.timeOut = System.currentTimeMillis()
 						  + (CMProps.getTickMillis() * (((invoker()!=null)&&(invoker()!=mob))?super.getXTIMELevel(invoker()):0));
@@ -231,9 +231,9 @@ public class Song extends StdAbility
 				 return new XVector(backupMob.location());
 			return new Vector();
 		}
-		int depth=getXMAXRANGELevel(invoker());
+		final int depth=getXMAXRANGELevel(invoker());
 		if(depth==0) return new XVector(invoker().location());
-		Vector rooms=new Vector();
+		final Vector rooms=new Vector();
 		// needs to be area-only, because of the aggro-tracking rule
 		TrackingLibrary.TrackingFlags flags;
 		flags = new TrackingLibrary.TrackingFlags()
@@ -259,7 +259,7 @@ public class Song extends StdAbility
 			E2=R.getExitInDir(d);
 			if((R2!=null)&&(E2!=null)&&(E2.isOpen()))
 			{
-				int dx=commonRoomSet.indexOf(R2);
+				final int dx=commonRoomSet.indexOf(R2);
 				if((dx>=0)&&(dx<lowest))
 				{
 					lowest=dx;
@@ -277,7 +277,7 @@ public class Song extends StdAbility
 			msgStr=str;
 		else
 		{
-			int dir=this.getCorrectDirToOriginRoom(R,v);
+			final int dir=this.getCorrectDirToOriginRoom(R,v);
 			if(dir>=0)
 				msgStr="^SYou hear the "+songOf()+" being sung "+Directions.getInDirectionName(dir)+"!^?";
 			else
@@ -294,7 +294,7 @@ public class Song extends StdAbility
 			R.sendOthers(mob,msg);
 		if(R!=originRoom)
 			mob.setLocation(R);
-		Set<MOB> h=properTargets(mob,givenTarget,auto);
+		final Set<MOB> h=properTargets(mob,givenTarget,auto);
 		if(R!=originRoom)
 		{
 			R.delInhabitant(mob);
@@ -339,7 +339,7 @@ public class Song extends StdAbility
 			return false;
 		}
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 		unsingAllByThis(mob,mob);
 		if(success)
 		{
@@ -351,18 +351,18 @@ public class Song extends StdAbility
 				str="^S<S-NAME> start(s) the "+songOf()+" over again.^?";
 			for(int v=0;v<commonRoomSet.size();v++)
 			{
-				Room R=(Room)commonRoomSet.elementAt(v);
-				String msgStr=getCorrectMsgString(R,str,v);
-				CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),msgStr);
+				final Room R=(Room)commonRoomSet.elementAt(v);
+				final String msgStr=getCorrectMsgString(R,str,v);
+				final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),msgStr);
 				if(R.okMessage(mob,msg))
 				{
-					Set<MOB> h=this.sendMsgAndGetTargets(mob, R, msg, givenTarget, auto);
+					final Set<MOB> h=this.sendMsgAndGetTargets(mob, R, msg, givenTarget, auto);
 					if(h==null) continue;
-					Song newOne=(Song)this.copyOf();
-					for(Iterator f=h.iterator();f.hasNext();)
+					final Song newOne=(Song)this.copyOf();
+					for (final Object element : h)
 					{
-						MOB follower=(MOB)f.next();
-						Room R2=follower.location();
+						final MOB follower=(MOB)element;
+						final Room R2=follower.location();
 
 						// malicious songs must not affect the invoker!
 						int affectType=CMMsg.MSG_CAST_VERBAL_SPELL;
@@ -373,7 +373,7 @@ public class Song extends StdAbility
 						if((CMLib.flags().canBeHeardSpeakingBy(invoker,follower)&&(follower.fetchEffect(this.ID())==null)))
 						{
 							CMMsg msg2=CMClass.getMsg(mob,follower,this,affectType,null);
-							CMMsg msg3=msg2;
+							final CMMsg msg3=msg2;
 							if((mindAttack())&&(follower!=mob))
 								msg2=CMClass.getMsg(mob,follower,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_MIND|(auto?CMMsg.MASK_ALWAYS:0),null);
 							if((R.okMessage(mob,msg2))&&(R.okMessage(mob,msg3)))

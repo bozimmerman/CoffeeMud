@@ -49,7 +49,7 @@ public class Skill_Meditation extends StdSkill
 	{
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		super.unInvoke();
 		if(canBeUninvoked())
 		{
@@ -69,7 +69,7 @@ public class Skill_Meditation extends StdSkill
 		super.executeMsg(myHost,msg);
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		if((msg.amISource(mob))
 		&&(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_CHANNEL))
@@ -92,7 +92,7 @@ public class Skill_Meditation extends StdSkill
 		if(!(affected instanceof MOB))
 			return super.tick(ticking,tickID);
 
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		if(tickID!=Tickable.TICKID_MOB) return true;
 		if(!proficiencyCheck(null,0,false)) return true;
@@ -111,7 +111,7 @@ public class Skill_Meditation extends StdSkill
 		if((!mob.isInCombat())
 		&&(CMLib.flags().isSitting(mob)))
 		{
-			double man=((mob.charStats().getStat(CharStats.STAT_INTELLIGENCE)
+			final double man=((mob.charStats().getStat(CharStats.STAT_INTELLIGENCE)
 							+(2*getXLEVELLevel(mob))
 							+mob.charStats().getStat(CharStats.STAT_WISDOM)));
 			mob.curState().adjMana( (int)Math.round( ( man * .1 ) + ( ( mob.phyStats().level() + ( 2.0 * getXLEVELLevel( mob ) ) ) / 2.0 ) ),
@@ -128,7 +128,7 @@ public class Skill_Meditation extends StdSkill
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		MOB target=mob;
+		final MOB target=mob;
 		if(mob.isInCombat())
 		{
 			mob.tell("You can't meditate while in combat!");
@@ -145,7 +145,7 @@ public class Skill_Meditation extends StdSkill
 			return false;
 		}
 		// now see if it worked
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
 			// it worked, so build a copy of this ability,
@@ -153,7 +153,7 @@ public class Skill_Meditation extends StdSkill
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_OK_VISUAL|(auto?CMMsg.MASK_ALWAYS:0),auto?"":"<S-NAME> begin(s) to meditate...");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_OK_VISUAL|(auto?CMMsg.MASK_ALWAYS:0),auto?"":"<S-NAME> begin(s) to meditate...");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

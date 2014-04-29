@@ -59,8 +59,8 @@ public class DumpFile extends StdCommand
 			commands.removeElementAt(0);
 		}
 
-		String targetName = (String)commands.elementAt(0);
-		boolean allFlag=(targetName.equalsIgnoreCase("all"));
+		final String targetName = (String)commands.elementAt(0);
+		final boolean allFlag=(targetName.equalsIgnoreCase("all"));
 
 		commands.removeElementAt(0);
 
@@ -71,16 +71,16 @@ public class DumpFile extends StdCommand
 			commands.removeElementAt(0);
 		}
 
-		StringBuffer fileText = new StringBuffer("");
+		final StringBuffer fileText = new StringBuffer("");
 		while (commands.size() > 0)
 		{
 			boolean wipeAfter = true;
-			String fn = (String)commands.elementAt(0);
+			final String fn = (String)commands.elementAt(0);
 
 			if (Resources.getResource(fn) != null)
 				wipeAfter = false;
 
-			StringBuffer ft = new CMFile(fn,mob,CMFile.FLAG_LOGERRORS).text();
+			final StringBuffer ft = new CMFile(fn,mob,CMFile.FLAG_LOGERRORS).text();
 			if (ft != null && ft.length() > 0)
 			{
 				fileText.append("\n\r");
@@ -95,7 +95,7 @@ public class DumpFile extends StdCommand
 		}
 		if (fileText.length() > 0)
 		{
-			for(Session S : CMLib.sessions().localOnlineIterable())
+			for(final Session S : CMLib.sessions().localOnlineIterable())
 			{
 				if(!CMSecurity.isAllowed(mob,S.mob().location(),CMSecurity.SecFlag.DUMPFILE))
 					continue;

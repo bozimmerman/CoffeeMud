@@ -47,11 +47,11 @@ public class Chant_MeteorStrike extends Chant
 	{
 		if(mob!=null)
 		{
-			Set<MOB> h=properTargets(mob,target,false);
+			final Set<MOB> h=properTargets(mob,target,false);
 			if(h==null)
 				return Ability.QUALITY_INDIFFERENT;
 
-			Room R=mob.location();
+			final Room R=mob.location();
 			if(R!=null)
 			{
 				if((R.domainType()&Room.INDOORS)>0)
@@ -64,7 +64,7 @@ public class Chant_MeteorStrike extends Chant
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		Set<MOB> h=properTargets(mob,givenTarget,auto);
+		final Set<MOB> h=properTargets(mob,givenTarget,auto);
 		if(h==null)
 		{
 			mob.tell("There doesn't appear to be anyone here worth striking at.");
@@ -83,35 +83,35 @@ public class Chant_MeteorStrike extends Chant
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
 
 			if(mob.location().show(mob,null,this,verbalCastCode(mob,null,auto),(auto?"A devastating meteor shower erupts!":"^S<S-NAME> chant(s) for a devastating meteor shower!^?")+CMLib.protocol().msp("meteor.wav",40)))
-			for(Iterator f=h.iterator();f.hasNext();)
-			{
-				MOB target=(MOB)f.next();
-
-				// it worked, so build a copy of this ability,
-				// and add it to the affects list of the
-				// affected MOB.  Then tell everyone else
-				// what happened.
-				CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),null);
-				if(mob.location().okMessage(mob,msg))
+				for (final Object element : h)
 				{
-					mob.location().send(mob,msg);
-					invoker=mob;
+					final MOB target=(MOB)element;
 
-					int damage = 0;
-					int maxDie =  (adjustedLevel( mob, asLevel )+(2*super.getX1Level(mob))) / 2;
-					damage = CMLib.dice().roll(maxDie,6,30);
-					if(msg.value()>0)
-						damage = (int)Math.round(CMath.div(damage,2.0));
-					if(target.location()==mob.location())
-						CMLib.combat().postDamage(mob,target,this,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_FIRE,Weapon.TYPE_BASHING,"The meteors <DAMAGE> <T-NAME>!");
+					// it worked, so build a copy of this ability,
+					// and add it to the affects list of the
+					// affected MOB.  Then tell everyone else
+					// what happened.
+					final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),null);
+					if(mob.location().okMessage(mob,msg))
+					{
+						mob.location().send(mob,msg);
+						invoker=mob;
+
+						int damage = 0;
+						final int maxDie =  (adjustedLevel( mob, asLevel )+(2*super.getX1Level(mob))) / 2;
+						damage = CMLib.dice().roll(maxDie,6,30);
+						if(msg.value()>0)
+							damage = (int)Math.round(CMath.div(damage,2.0));
+						if(target.location()==mob.location())
+							CMLib.combat().postDamage(mob,target,this,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_FIRE,Weapon.TYPE_BASHING,"The meteors <DAMAGE> <T-NAME>!");
+					}
 				}
-			}
 		}
 		else
 			return maliciousFizzle(mob,null,"<S-NAME> chant(s) to the sky, but nothing happens.");

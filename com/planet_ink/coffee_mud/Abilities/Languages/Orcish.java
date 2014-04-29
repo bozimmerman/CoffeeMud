@@ -46,12 +46,12 @@ public class Orcish extends StdLanguage
 	{
 		if(wordLists==null)
 		{
-			String[] one={"a"};
-			String[] two={"uk","ik","og","eg","ak","ag"};
-			String[] three={"uko","ugg","ick","ehk","akh","oog"};
-			String[] four={"blec","mugo","guck","gook","kill","dead","twak","kwat","klug"};
-			String[] five={"bleko","thwak","klarg","gluck","kulgo","mucka","splat","kwath","garth","blark"};
-			String[] six={"kalarg","murder","bleeke","kwargh","guttle","thungo"};
+			final String[] one={"a"};
+			final String[] two={"uk","ik","og","eg","ak","ag"};
+			final String[] three={"uko","ugg","ick","ehk","akh","oog"};
+			final String[] four={"blec","mugo","guck","gook","kill","dead","twak","kwat","klug"};
+			final String[] five={"bleko","thwak","klarg","gluck","kulgo","mucka","splat","kwath","garth","blark"};
+			final String[] six={"kalarg","murder","bleeke","kwargh","guttle","thungo"};
 			wordLists=new Vector<String[]>();
 			wordLists.add(one);
 			wordLists.add(two);

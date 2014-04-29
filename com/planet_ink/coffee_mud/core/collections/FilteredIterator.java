@@ -69,7 +69,7 @@ public class FilteredIterator<K> implements Iterator<K>
 	{
 		if(!hasNext())
 			throw new NoSuchElementException();
-		K element = nextElement;
+		final K element = nextElement;
 		stageNextElement();
 		return element;
 	}

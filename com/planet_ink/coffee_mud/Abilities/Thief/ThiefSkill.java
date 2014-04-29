@@ -71,15 +71,15 @@ public class ThiefSkill extends StdAbility
 	public MOB getHighestLevelMOB(MOB meMOB, Vector not)
 	{
 		if(meMOB==null) return null;
-		Room R=meMOB.location();
+		final Room R=meMOB.location();
 		if(R==null) return null;
 		int highestLevel=0;
 		MOB highestMOB=null;
-		Set<MOB> H=meMOB.getGroupMembers(new HashSet<MOB>());
+		final Set<MOB> H=meMOB.getGroupMembers(new HashSet<MOB>());
 		if(not!=null) H.addAll(not);
 		for(int i=0;i<R.numInhabitants();i++)
 		{
-			MOB M=R.fetchInhabitant(i);
+			final MOB M=R.fetchInhabitant(i);
 			if((M!=null)
 			&&(M!=meMOB)
 			&&(!CMLib.flags().isSleeping(M))
@@ -97,7 +97,7 @@ public class ThiefSkill extends StdAbility
 	public Physical getOpenable(MOB mob, Room room, Physical givenTarget, Vector commands, int[] dirCode, boolean failOnOpen)
 	{
 		if((room==null)||(mob==null)) return null;
-		String whatToOpen=CMParms.combine(commands,0);
+		final String whatToOpen=CMParms.combine(commands,0);
 		Physical unlockThis=null;
 		dirCode[0]=Directions.getGoodDirectionCode(whatToOpen);
 		if(dirCode[0]>=0)

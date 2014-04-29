@@ -33,10 +33,10 @@ public class Alligator extends GreatLizard
 {
 	@Override public String ID(){	return "Alligator"; }
 	@Override public String name(){ return "Alligator"; }
-	private String[]racialAbilityNames={"Skill_Swim"};
-	private int[]racialAbilityLevels={1};
-	private int[]racialAbilityProficiencies={100};
-	private boolean[]racialAbilityQuals={false};
+	private final String[]racialAbilityNames={"Skill_Swim"};
+	private final int[]racialAbilityLevels={1};
+	private final int[]racialAbilityProficiencies={100};
+	private final boolean[]racialAbilityQuals={false};
 	@Override protected String[] racialAbilityNames(){return racialAbilityNames;}
 	@Override protected int[] racialAbilityLevels(){return racialAbilityLevels;}
 	@Override protected int[] racialAbilityProficiencies(){return racialAbilityProficiencies;}

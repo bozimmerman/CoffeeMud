@@ -70,7 +70,7 @@ public class Thief_AutoDetectTraps extends ThiefSkill
 			return false;
 		if((roomToCheck!=null)&&(affected instanceof MOB))
 		{
-			Room R=roomToCheck;
+			final Room R=roomToCheck;
 			Room R2=null;
 			dropem((MOB)affected,R);
 			Exit E=null;
@@ -105,7 +105,7 @@ public class Thief_AutoDetectTraps extends ThiefSkill
 			A=CMClass.getAbility("Thief_DetectTraps");
 			A.setProficiency(100);
 		}
-		CharState savedState=(CharState)mob.curState().copyOf();
+		final CharState savedState=(CharState)mob.curState().copyOf();
 		A.invoke(mob,P,false,0);
 		mob.curState().setMana(savedState.getMana());
 		mob.curState().setHitPoints(savedState.getHitPoints());
@@ -115,7 +115,7 @@ public class Thief_AutoDetectTraps extends ThiefSkill
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		MOB target=(givenTarget instanceof MOB)?(MOB)givenTarget:mob;
+		final MOB target=(givenTarget instanceof MOB)?(MOB)givenTarget:mob;
 		if(target.fetchEffect(ID())!=null)
 		{
 			target.tell("You are no longer automatically detecting traps.");
@@ -130,13 +130,13 @@ public class Thief_AutoDetectTraps extends ThiefSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
 			target.tell("You will now automatically detect traps when you enter a room.");
 			beneficialAffect(mob,target,asLevel,0);
-			Ability A=mob.fetchEffect(ID());
+			final Ability A=mob.fetchEffect(ID());
 			if(A!=null) A.makeLongLasting();
 			dropem(target,target.location());
 		}

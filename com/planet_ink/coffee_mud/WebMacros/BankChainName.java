@@ -39,7 +39,7 @@ public class BankChainName extends StdWebMacro
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
-		String last=httpReq.getUrlParameter("BANKCHAIN");
+		final String last=httpReq.getUrlParameter("BANKCHAIN");
 		if(last==null) return " @break@";
 		return clearWebMacros(last);
 	}

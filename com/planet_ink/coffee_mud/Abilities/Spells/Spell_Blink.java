@@ -48,7 +48,7 @@ public class Spell_Blink extends Spell
 		// undo the affects of this spell
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		super.unInvoke();
 
 		if(canBeUninvoked())
@@ -61,8 +61,8 @@ public class Spell_Blink extends Spell
 	{
 		if((tickID==Tickable.TICKID_MOB)&&(affected!=null)&&(affected instanceof MOB))
 		{
-			MOB mob=(MOB)affected;
-			int roll=CMLib.dice().roll(1,8,0);
+			final MOB mob=(MOB)affected;
+			final int roll=CMLib.dice().roll(1,8,0);
 			if(mob.isInCombat())
 			{
 				int move=0;
@@ -121,7 +121,7 @@ public class Spell_Blink extends Spell
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		MOB target=this.getTarget(mob,commands,givenTarget);
+		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
 		// the invoke method for spells receives as
@@ -140,7 +140,7 @@ public class Spell_Blink extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> begin(s) to blink!":"^S<S-NAME> cast(s) a spell at <T-NAMESELF>.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> begin(s) to blink!":"^S<S-NAME> cast(s) a spell at <T-NAMESELF>.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

@@ -48,7 +48,7 @@ public class ManScorpion extends StdRace
 	private static final int[] parts={0 ,2 ,2 ,1 ,1 ,2 ,2 ,1 ,4 ,4 ,1 ,0 ,1 ,1 ,1 ,0 };
 	@Override public int[] bodyMask(){return parts;}
 
-	private int[] agingChart={0,1,3,15,35,53,70,74,78};
+	private final int[] agingChart={0,1,3,15,35,53,70,74,78};
 	@Override public int[] getAgingChart(){return agingChart;}
 
 	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();

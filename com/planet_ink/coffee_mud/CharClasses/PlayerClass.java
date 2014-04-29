@@ -48,7 +48,7 @@ public class PlayerClass extends StdCharClass
 	public PlayerClass()
 	{
 		super();
-		for(int i: CharStats.CODES.BASE())
+		for(final int i: CharStats.CODES.BASE())
 			maxStatAdj[i]=7;
 	}
 
@@ -88,29 +88,29 @@ public class PlayerClass extends StdCharClass
 
 	private List<String> makeRequirements(LinkedList<List<String>> prevSets, Ability A)
 	{
-		for(Iterator<List<String>> i=prevSets.descendingIterator();i.hasNext();)
+		for(final Iterator<List<String>> i=prevSets.descendingIterator();i.hasNext();)
 		{
-			List<String> prevSet=i.next();
-			List<String> reqSet=new Vector<String>();
-			for(String prevID : prevSet)
+			final List<String> prevSet=i.next();
+			final List<String> reqSet=new Vector<String>();
+			for(final String prevID : prevSet)
 			{
-				Ability pA=CMClass.getAbility(prevID);
+				final Ability pA=CMClass.getAbility(prevID);
 				if(A.classificationCode()==pA.classificationCode())
 					reqSet.add(pA.ID());
 			}
 			if(reqSet.size()==0)
-				for(String prevID : prevSet)
+				for(final String prevID : prevSet)
 				{
-					Ability pA=CMClass.getAbility(prevID);
+					final Ability pA=CMClass.getAbility(prevID);
 					if((A.classificationCode()&Ability.ALL_ACODES)==(pA.classificationCode()&Ability.ALL_ACODES))
 						reqSet.add(pA.ID());
 				}
 			if(reqSet.size()==0)
 			{
-				boolean aIsSkill=isSkill(A.classificationCode());
-				for(String prevID : prevSet)
+				final boolean aIsSkill=isSkill(A.classificationCode());
+				for(final String prevID : prevSet)
 				{
-					Ability pA=CMClass.getAbility(prevID);
+					final Ability pA=CMClass.getAbility(prevID);
 					if(aIsSkill==isSkill(pA.classificationCode()))
 						reqSet.add(pA.ID());
 				}
@@ -127,42 +127,42 @@ public class PlayerClass extends StdCharClass
 		if(!loaded())
 		{
 			setLoaded(true);
-			LinkedList<CharClass> charClassesOrder=new LinkedList<CharClass>();
-			HashSet<String> names=new HashSet<String>();
-			for(Enumeration<CharClass> c=CMClass.charClasses();c.hasMoreElements();)
+			final LinkedList<CharClass> charClassesOrder=new LinkedList<CharClass>();
+			final HashSet<String> names=new HashSet<String>();
+			for(final Enumeration<CharClass> c=CMClass.charClasses();c.hasMoreElements();)
 			{
-				CharClass C=c.nextElement();
+				final CharClass C=c.nextElement();
 				if(C.baseClass().equals(C.ID()) && (!C.baseClass().equalsIgnoreCase("Archon"))&& (!C.baseClass().equalsIgnoreCase("PlayerClass"))&& (!C.baseClass().equalsIgnoreCase("Qualifier"))&& (!C.baseClass().equalsIgnoreCase("StdCharClass")))
 				{
 					names.add(C.ID());
 					charClassesOrder.add(C);
 				}
 			}
-			for(Enumeration<CharClass> c=CMClass.charClasses();c.hasMoreElements();)
+			for(final Enumeration<CharClass> c=CMClass.charClasses();c.hasMoreElements();)
 			{
-				CharClass C=c.nextElement();
+				final CharClass C=c.nextElement();
 				if(!names.contains(C.ID()) && names.contains(C.baseClass()))
 					charClassesOrder.add(C);
 			}
-			for(Enumeration<CharClass> c=CMClass.charClasses();c.hasMoreElements();)
+			for(final Enumeration<CharClass> c=CMClass.charClasses();c.hasMoreElements();)
 			{
-				CharClass C=c.nextElement();
+				final CharClass C=c.nextElement();
 				if(C.baseClass().equals("Commoner") && (!names.contains(C.ID())))
 					charClassesOrder.add(C);
 			}
 
-			for(CharClass C : charClassesOrder)
+			for(final CharClass C : charClassesOrder)
 			{
-				LinkedList<List<String>> prevSets=new LinkedList<List<String>>();
+				final LinkedList<List<String>> prevSets=new LinkedList<List<String>>();
 				for(int lvl=1;lvl<CMProps.getIntVar(CMProps.Int.LASTPLAYERLEVEL);lvl++)
 				{
-					List<String> curSet=CMLib.ableMapper().getLevelListings(C.ID(), false, lvl);
-					for(String ID : curSet)
+					final List<String> curSet=CMLib.ableMapper().getLevelListings(C.ID(), false, lvl);
+					for(final String ID : curSet)
 					{
-						String defaultParam=CMLib.ableMapper().getDefaultParm(C.ID(), true, ID);
+						final String defaultParam=CMLib.ableMapper().getDefaultParm(C.ID(), true, ID);
 						if(CMLib.ableMapper().getQualifyingLevel(ID(), false, ID)<0)
 						{
-							Ability A=CMClass.getAbility(ID);
+							final Ability A=CMClass.getAbility(ID);
 							if(A==null)
 							{
 								Log.errOut("Unknonwn class: "+ID);
@@ -192,13 +192,13 @@ public class PlayerClass extends StdCharClass
 		super.grantAbilities(mob,isBorrowedClass);
 		if(mob.playerStats()==null)
 		{
-			List<AbilityMapper.AbilityMapping> V=CMLib.ableMapper().getUpToLevelListings(ID(),
+			final List<AbilityMapper.AbilityMapping> V=CMLib.ableMapper().getUpToLevelListings(ID(),
 												mob.charStats().getClassLevel(ID()),
 												false,
 												false);
-			for(AbilityMapper.AbilityMapping able : V)
+			for(final AbilityMapper.AbilityMapping able : V)
 			{
-				Ability A=CMClass.getAbility(able.abilityID);
+				final Ability A=CMClass.getAbility(able.abilityID);
 				if((A!=null)
 				&&(!CMLib.ableMapper().getAllQualified(ID(),true,A.ID()))
 				&&(!CMLib.ableMapper().getDefaultGain(ID(),true,A.ID())))

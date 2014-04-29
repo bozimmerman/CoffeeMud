@@ -55,21 +55,21 @@ public class Spell_ElementalStorm extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
-		int[] types={CMMsg.TYP_FIRE,
+		final int[] types={CMMsg.TYP_FIRE,
 					 CMMsg.TYP_COLD,
 					 CMMsg.TYP_ACID,
 					 CMMsg.TYP_WATER,
 					 CMMsg.TYP_ELECTRIC,
 					 CMMsg.TYP_GAS};
-		int[] dames={Weapon.TYPE_BURNING,
+		final int[] dames={Weapon.TYPE_BURNING,
 					 Weapon.TYPE_FROSTING,
 					 Weapon.TYPE_MELTING,
 					 Weapon.TYPE_BURSTING,
 					 Weapon.TYPE_STRIKING,
 					 Weapon.TYPE_GASSING};
-		String[] ds={"A flame",
+		final String[] ds={"A flame",
 					 "Some frost",
 					 "Drops of acid",
 					 "Stream of water",
@@ -77,11 +77,11 @@ public class Spell_ElementalStorm extends Spell
 					 "A puff of gas"};
 		if(success)
 		{
-			int numMissiles=types.length;
-			Room R=target.location();
+			final int numMissiles=types.length;
+			final Room R=target.location();
 			for(int i=0;(i<numMissiles) && (target.location()==R);i++)
 			{
-				CMMsg msg=CMClass.getMsg(mob,target,this,somanticCastCode(mob,target,auto),(i==0)?((auto?"An elemental storm assaults <T-NAME>!":"^S<S-NAME> point(s) at <T-NAMESELF>, evoking an elemental storm!^?")+CMLib.protocol().msp("spelldam1.wav",40)):null);
+				final CMMsg msg=CMClass.getMsg(mob,target,this,somanticCastCode(mob,target,auto),(i==0)?((auto?"An elemental storm assaults <T-NAME>!":"^S<S-NAME> point(s) at <T-NAMESELF>, evoking an elemental storm!^?")+CMLib.protocol().msp("spelldam1.wav",40)):null);
 				if(mob.location().okMessage(mob,msg))
 				{
 					mob.location().send(mob,msg);

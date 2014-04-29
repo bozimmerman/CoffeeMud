@@ -39,14 +39,14 @@ public class GrinderClanGovernments
 
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
-		String last=httpReq.getUrlParameter("GOVERNMENT");
+		final String last=httpReq.getUrlParameter("GOVERNMENT");
 		if(last==null) return " @break@";
 		if(last.length()>0)
 		{
 			ClanGovernment G=null;
 			if(CMath.isInteger(last))
 			{
-				int lastID=CMath.s_int(last);
+				final int lastID=CMath.s_int(last);
 				G=CMLib.clans().getStockGovernment(lastID);
 			}
 			else
@@ -54,8 +54,8 @@ public class GrinderClanGovernments
 				return " @break@";
 			else
 			{
-				Set<Integer> usedTypeIDs=new HashSet<Integer>();
-				for(ClanGovernment G2 : CMLib.clans().getStockGovernments())
+				final Set<Integer> usedTypeIDs=new HashSet<Integer>();
+				for(final ClanGovernment G2 : CMLib.clans().getStockGovernments())
 					usedTypeIDs.add(Integer.valueOf(G2.getID()));
 				G=CMLib.clans().createGovernment(httpReq.getUrlParameter("NAME"));
 				for(int i=0;i<CMLib.clans().getStockGovernments().length;i++)
@@ -108,8 +108,8 @@ public class GrinderClanGovernments
 			if(str!=null) G.setAutoPromoteBy((Clan.AutoPromoteFlag)CMath.s_valueOf(Clan.AutoPromoteFlag.values(), str));
 			str=httpReq.getUrlParameter("LONGDESC");
 			if(str!=null) G.setLongDesc(str);
-			String old=httpReq.getUrlParameter("VOTEFUNCS");
-			Set<String> voteFuncs=new HashSet<String>();
+			final String old=httpReq.getUrlParameter("VOTEFUNCS");
+			final Set<String> voteFuncs=new HashSet<String>();
 			if((old!=null)&&(old.length()>0))
 			{
 				voteFuncs.add(old);
@@ -121,38 +121,38 @@ public class GrinderClanGovernments
 				}
 			}
 
-			List<ClanPosition> posList=new Vector<ClanPosition>();
+			final List<ClanPosition> posList=new Vector<ClanPosition>();
 			String posDexStr="0";
 			int posDex=0;
 			while(httpReq.isUrlParameter("GPOSID_"+posDexStr) && httpReq.getUrlParameter("GPOSID_"+posDexStr).trim().length()>0)
 			{
-				String oldID=httpReq.getUrlParameter("GPOSID_"+posDexStr);
-				String oldName=httpReq.getUrlParameter("GPOSNAME_"+posDexStr);
-				String oldPluralName=httpReq.getUrlParameter("GPOSPLURALNAME_"+posDexStr);
-				int oldRoleID=CMath.s_int(httpReq.getUrlParameter("GPOSROLEID_"+posDexStr));
-				int oldRank=CMath.s_int(httpReq.getUrlParameter("GPOSRANK_"+posDexStr));
-				int oldMax=CMath.s_int(httpReq.getUrlParameter("GPOSMAX_"+posDexStr));
-				String oldMask=httpReq.getUrlParameter("GPOSINNERMASK_"+posDexStr);
-				String oldIsPublicStr=httpReq.getUrlParameter("GPOSISPUBLIC_"+posDexStr);
-				boolean oldIsPublic=oldIsPublicStr==null?false:oldIsPublicStr.equalsIgnoreCase("on");
-				Clan.Authority powerFuncs[]=new Clan.Authority[Clan.Function.values().length];
+				final String oldID=httpReq.getUrlParameter("GPOSID_"+posDexStr);
+				final String oldName=httpReq.getUrlParameter("GPOSNAME_"+posDexStr);
+				final String oldPluralName=httpReq.getUrlParameter("GPOSPLURALNAME_"+posDexStr);
+				final int oldRoleID=CMath.s_int(httpReq.getUrlParameter("GPOSROLEID_"+posDexStr));
+				final int oldRank=CMath.s_int(httpReq.getUrlParameter("GPOSRANK_"+posDexStr));
+				final int oldMax=CMath.s_int(httpReq.getUrlParameter("GPOSMAX_"+posDexStr));
+				final String oldMask=httpReq.getUrlParameter("GPOSINNERMASK_"+posDexStr);
+				final String oldIsPublicStr=httpReq.getUrlParameter("GPOSISPUBLIC_"+posDexStr);
+				final boolean oldIsPublic=oldIsPublicStr==null?false:oldIsPublicStr.equalsIgnoreCase("on");
+				final Clan.Authority powerFuncs[]=new Clan.Authority[Clan.Function.values().length];
 				for(int f=0;f<Clan.Function.values().length;f++)
 					powerFuncs[f]=Clan.Authority.CAN_NOT_DO;
 				String authDexStr="";
 				int authDex=0;
 				while(httpReq.getUrlParameter("GPOSPOWER_"+posDexStr+"_"+authDexStr)!=null)
 				{
-					Clan.Function auth = (Clan.Function)CMath.s_valueOf(Clan.Function.values(),httpReq.getUrlParameter("GPOSPOWER_"+posDexStr+"_"+authDexStr));
+					final Clan.Function auth = (Clan.Function)CMath.s_valueOf(Clan.Function.values(),httpReq.getUrlParameter("GPOSPOWER_"+posDexStr+"_"+authDexStr));
 					powerFuncs[auth.ordinal()]=Clan.Authority.CAN_DO;
 					authDex++;
 					authDexStr=Integer.toString(authDex);
 				}
-				for(String s : voteFuncs)
+				for(final String s : voteFuncs)
 				{
-					Clan.Function auth = (Clan.Function)CMath.s_valueOf(Clan.Function.values(),s);
+					final Clan.Function auth = (Clan.Function)CMath.s_valueOf(Clan.Function.values(),s);
 					powerFuncs[auth.ordinal()]=Clan.Authority.MUST_VOTE_ON;
 				}
-				ClanPosition P=(ClanPosition)CMClass.getCommon("DefaultClanPosition");
+				final ClanPosition P=(ClanPosition)CMClass.getCommon("DefaultClanPosition");
 				P.setID(oldID);
 				P.setRoleID(oldRoleID);
 				P.setRank(oldRank);

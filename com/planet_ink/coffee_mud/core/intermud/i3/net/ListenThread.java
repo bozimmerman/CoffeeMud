@@ -37,8 +37,8 @@ import java.util.Vector;
  */
 @SuppressWarnings({"unchecked","rawtypes"})
 public class ListenThread extends Thread {
-	private ServerSocket listen;
-	private Vector clients;
+	private final ServerSocket listen;
+	private final Vector clients;
 
 	public ListenThread(int port) throws java.io.IOException {
 		super("I3Listener@"+port);
@@ -73,7 +73,7 @@ public class ListenThread extends Thread {
 				if(clients.size()>100)
 					Log.errOut("Excessive I3 connections: "+client.getRemoteSocketAddress());
 			}
-			catch( java.io.IOException e )
+			catch( final java.io.IOException e )
 			{
 			}
 		}
@@ -87,7 +87,7 @@ public class ListenThread extends Thread {
 			clients.clear();
 			this.interrupt();
 		}
-		catch(Exception e){}
+		catch(final Exception e){}
 	}
 
 	public Socket nextSocket()

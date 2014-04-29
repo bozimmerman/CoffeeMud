@@ -49,7 +49,7 @@ public class Chant_PredictWeather extends Chant
 	{
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		if(canBeUninvoked())
 			lastPrediction="";
 		super.unInvoke();
@@ -67,7 +67,7 @@ public class Chant_PredictWeather extends Chant
 		   &&(((MOB)affected).location()!=null)
 		   &&((((MOB)affected).location().domainType()&Room.INDOORS)==0))
 		{
-		   String prediction=(((MOB)affected).location().getArea().getClimateObj().nextWeatherDescription(((MOB)affected).location()));
+		   final String prediction=(((MOB)affected).location().getArea().getClimateObj().nextWeatherDescription(((MOB)affected).location()));
 		   if(!prediction.equals(lastPrediction))
 		   {
 			   lastPrediction=prediction;
@@ -100,11 +100,11 @@ public class Chant_PredictWeather extends Chant
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> gain(s) sensitivity to the weather!":"^S<S-NAME> chant(s) for weather sensitivity!^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> gain(s) sensitivity to the weather!":"^S<S-NAME> chant(s) for weather sensitivity!^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				lastPrediction="";

@@ -52,7 +52,7 @@ public class Spell_IceSheet extends Spell
 			return;
 		if(!(affected instanceof Room))
 			return;
-		Room room=(Room)affected;
+		final Room room=(Room)affected;
 		if(canBeUninvoked())
 			room.showHappens(CMMsg.MSG_OK_VISUAL, "The ice sheet melts.");
 		super.unInvoke();
@@ -63,10 +63,10 @@ public class Spell_IceSheet extends Spell
 	{
 		if((affected==null)||(!(affected instanceof Room)))
 		   return false;
-		Room room=(Room)affected;
+		final Room room=(Room)affected;
 		if(msg.source().location()==room)
 		{
-			MOB mob=msg.source();
+			final MOB mob=msg.source();
 			if(!msg.sourceMajor(CMMsg.MASK_ALWAYS))
 			{
 				if((room.domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)
@@ -103,8 +103,8 @@ public class Spell_IceSheet extends Spell
 		if((msg.target()==affected)
 		&&((msg.targetMinor()==CMMsg.TYP_LOOK)||(msg.targetMinor()==CMMsg.TYP_EXAMINE)))
 		{
-			MOB mob=msg.source();
-			Room room=(Room)affected;
+			final MOB mob=msg.source();
+			final Room room=(Room)affected;
 			msg.addTrailerMsg(CMClass.getMsg(mob,room,null,CMMsg.MSG_OK_VISUAL,"\n\r<T-NAME> is covered in ice.",null,null));
 		}
 	}
@@ -128,7 +128,7 @@ public class Spell_IceSheet extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		Physical target = mob.location();
+		final Physical target = mob.location();
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
@@ -137,7 +137,7 @@ public class Spell_IceSheet extends Spell
 		}
 
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
@@ -153,7 +153,7 @@ public class Spell_IceSheet extends Spell
 			||(mob.location().domainType()==Room.DOMAIN_INDOORS_WATERSURFACE))
 				msgStr="the water freezes over!";
 			if(auto)msgStr=Character.toUpperCase(msgStr.charAt(0))+msgStr.substring(1);
-			CMMsg msg = CMClass.getMsg(mob, target, this, verbalCastCode(mob,target,auto),(auto?"":"^S<S-NAME> speak(s) and gesture(s) and ")+msgStr+"^?");
+			final CMMsg msg = CMClass.getMsg(mob, target, this, verbalCastCode(mob,target,auto),(auto?"":"^S<S-NAME> speak(s) and gesture(s) and ")+msgStr+"^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

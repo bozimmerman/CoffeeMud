@@ -63,9 +63,9 @@ public class Prayer_FreezeMetal extends Prayer
 		if((msg.target()==null)
 		   ||(!(msg.target() instanceof Item)))
 			return true;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		if(!mob.isMine(msg.target())) return true;
-		Item I=(Item)msg.target();
+		final Item I=(Item)msg.target();
 		if(msg.targetMinor()==CMMsg.TYP_REMOVE)
 		{
 			if(I.amWearingAt(Wearable.IN_INVENTORY))
@@ -88,18 +88,18 @@ public class Prayer_FreezeMetal extends Prayer
 		if(invoker==null)
 			return true;
 
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		for(int i=0;i<mob.numItems();i++)
 		{
-			Item item=mob.getItem(i);
+			final Item item=mob.getItem(i);
 			if((item!=null)
 			   &&(!item.amWearingAt(Wearable.IN_INVENTORY))
 			   &&(CMLib.flags().isMetal(item))
 			   &&(item.container()==null)
 			   &&(!mob.amDead()))
 			{
-				int damage=CMLib.dice().roll(1,3+super.getXLEVELLevel(invoker())+(2*super.getX1Level(invoker())),1);
+				final int damage=CMLib.dice().roll(1,3+super.getXLEVELLevel(invoker())+(2*super.getX1Level(invoker())),1);
 				CMLib.combat().postItemDamage(mob, item, this, 1, CMMsg.TYP_COLD, null);
 				CMLib.combat().postDamage(invoker,mob,this,damage,CMMsg.MASK_MALICIOUS|CMMsg.MASK_ALWAYS|CMMsg.TYP_COLD,Weapon.TYPE_BURSTING,item.name()+" <DAMAGE> <T-NAME>!");
 			}
@@ -125,7 +125,7 @@ public class Prayer_FreezeMetal extends Prayer
 		{
 			for(int i=0;i<affectedItems.size();i++)
 			{
-				Item I=(Item)affectedItems.elementAt(i);
+				final Item I=(Item)affectedItems.elementAt(i);
 				Ability A=I.fetchEffect(this.ID());
 				while(A!=null)
 				{
@@ -141,7 +141,7 @@ public class Prayer_FreezeMetal extends Prayer
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		MOB target=this.getTarget(mob,commands,givenTarget);
+		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
 		// the invoke method for spells receives as
@@ -160,7 +160,7 @@ public class Prayer_FreezeMetal extends Prayer
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> point(s) at <T-NAMESELF> and "+prayWord(mob)+".^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> point(s) at <T-NAMESELF> and "+prayWord(mob)+".^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

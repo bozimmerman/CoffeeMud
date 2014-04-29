@@ -36,7 +36,7 @@ public class SHashSet<K> implements Serializable, Iterable<K>, Collection<K>, Se
 	{
 		T=new HashSet<K>();
 		if(V!=null)
-			for(K o : V)
+			for(final K o : V)
 				T.add(o);
 	}
 
@@ -44,7 +44,7 @@ public class SHashSet<K> implements Serializable, Iterable<K>, Collection<K>, Se
 	{
 		T=new HashSet<K>();
 		if(V!=null)
-			for(K o : V)
+			for(final K o : V)
 				T.add(o);
 	}
 
@@ -68,7 +68,7 @@ public class SHashSet<K> implements Serializable, Iterable<K>, Collection<K>, Se
 	{
 		T=new HashSet<K>();
 		if(E!=null)
-			for(K o : E)
+			for(final K o : E)
 				T.add(o);
 	}
 
@@ -103,7 +103,7 @@ public class SHashSet<K> implements Serializable, Iterable<K>, Collection<K>, Se
 	public synchronized void removeAll(List<K> E)
 	{
 		if(E!=null)
-			for(K o : E)
+			for(final K o : E)
 				T.remove(o);
 	}
 
@@ -114,9 +114,9 @@ public class SHashSet<K> implements Serializable, Iterable<K>, Collection<K>, Se
 	}
 	public synchronized Vector<K> toVector()
 	{
-		Vector<K> V=new Vector<K>(size());
-		for(Iterator<K> s=T.iterator();s.hasNext();)
-			V.add(s.next());
+		final Vector<K> V=new Vector<K>(size());
+		for (final K k : T)
+			V.add(k);
 		return V;
 	}
 	@SuppressWarnings("unchecked")
@@ -147,7 +147,7 @@ public class SHashSet<K> implements Serializable, Iterable<K>, Collection<K>, Se
 	@SuppressWarnings("unchecked")
 	public synchronized SHashSet<K> copyOf()
 	{
-		SHashSet<K> TS=new SHashSet<K>();
+		final SHashSet<K> TS=new SHashSet<K>();
 		TS.T=(HashSet<K>)T.clone();
 		return TS;
 	}

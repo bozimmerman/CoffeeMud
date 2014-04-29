@@ -85,7 +85,7 @@ public class StdFood extends StdItem implements Food
 			return false;
 		if(msg.amITarget(this))
 		{
-			MOB mob=msg.source();
+			final MOB mob=msg.source();
 			switch(msg.targetMinor())
 			{
 			case CMMsg.TYP_EAT:
@@ -112,11 +112,11 @@ public class StdFood extends StdItem implements Food
 		super.executeMsg(myHost,msg);
 		if(msg.amITarget(this))
 		{
-			MOB mob=msg.source();
+			final MOB mob=msg.source();
 			switch(msg.targetMinor())
 			{
 			case CMMsg.TYP_EAT:
-				boolean hungry=mob.curState().getHunger()<=0;
+				final boolean hungry=mob.curState().getHunger()<=0;
 				if((!hungry)
 				&&(mob.curState().getHunger()>=mob.maxState().maxHunger(mob.baseWeight()))
 				&&(CMLib.dice().roll(1,100,0)==1)
@@ -124,14 +124,14 @@ public class StdFood extends StdItem implements Food
 				&&(msg.source().fetchEffect("Disease_Obesity")==null)
 				&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.AUTODISEASE)))
 				{
-					Ability A=CMClass.getAbility("Disease_Obesity");
+					final Ability A=CMClass.getAbility("Disease_Obesity");
 					if(A!=null){A.invoke(mob,mob,true,0);}
 				}
 				int amountEaten=nourishmentPerBite;
 				if((amountEaten<1)||(amountEaten>amountOfNourishment))
 					amountEaten=amountOfNourishment;
 				amountOfNourishment-=amountEaten;
-				boolean full=!mob.curState().adjHunger(amountEaten,mob.maxState().maxHunger(mob.baseWeight()));
+				final boolean full=!mob.curState().adjHunger(amountEaten,mob.maxState().maxHunger(mob.baseWeight()));
 				if((hungry)&&(mob.curState().getHunger()>0))
 					mob.tell("You are no longer hungry.");
 				else

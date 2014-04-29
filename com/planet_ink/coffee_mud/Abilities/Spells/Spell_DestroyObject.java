@@ -44,13 +44,13 @@ public class Spell_DestroyObject extends Spell
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		Item target=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_ANY);
+		final Item target=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_ANY);
 		if(target==null) return false;
 
-		List<DeadBody> DBs=CMLib.utensils().getDeadBodies(target);
+		final List<DeadBody> DBs=CMLib.utensils().getDeadBodies(target);
 		for(int v=0;v<DBs.size();v++)
 		{
-			DeadBody DB=DBs.get(v);
+			final DeadBody DB=DBs.get(v);
 			if(DB.playerCorpse()
 			&&(!DB.mobName().equals(mob.Name())))
 			{
@@ -70,7 +70,7 @@ public class Spell_DestroyObject extends Spell
 
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),
 									(auto?"<T-NAME> begins to glow!"
 										 :"^S<S-NAME> incant(s) at <T-NAMESELF>!^?"));
 			if(mob.location().okMessage(mob,msg))

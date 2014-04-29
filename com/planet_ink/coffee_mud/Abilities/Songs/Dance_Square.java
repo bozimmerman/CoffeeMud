@@ -63,11 +63,11 @@ public class Dance_Square extends Dance
 		&&(msg.sourceMessage()!=null)
 		&&(msg.sourceMessage().length()>0))
 		{
-			String cmd=CMStrings.getSayFromMessage(msg.sourceMessage());
+			final String cmd=CMStrings.getSayFromMessage(msg.sourceMessage());
 			if(cmd!=null)
 			{
-				MOB M=(MOB)affected;
-				CMMsg omsg=CMClass.getMsg(invoker(),affected,null,CMMsg.MSG_ORDER,null);
+				final MOB M=(MOB)affected;
+				final CMMsg omsg=CMClass.getMsg(invoker(),affected,null,CMMsg.MSG_ORDER,null);
 				if(CMLib.flags().canBeHeardMovingBy(invoker(),M)
 				&&CMLib.flags().canBeSeenBy(invoker(),M)
 				&&(M.location()==invoker().location())
@@ -76,7 +76,7 @@ public class Dance_Square extends Dance
 					M.location().send(M, omsg);
 					if(omsg.sourceMinor()==CMMsg.TYP_ORDER)
 					{
-						CMObject O=CMLib.english().findCommand(M,CMParms.parse(cmd));
+						final CMObject O=CMLib.english().findCommand(M,CMParms.parse(cmd));
 						if((O!=null)&&((!(O instanceof Command))||(((Command)O).canBeOrdered())))
 							M.enqueCommand(CMParms.parse(cmd),Command.METAFLAG_FORCED|Command.METAFLAG_ORDER,0);
 					}
@@ -97,7 +97,7 @@ public class Dance_Square extends Dance
 		if((!auto)&&(!CMLib.flags().aliveAwakeMobile(mob,false)))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 		undanceAll(mob,null);
 		if(success)
 		{
@@ -108,23 +108,23 @@ public class Dance_Square extends Dance
 			if((!auto)&&(mob.fetchEffect(this.ID())!=null))
 				str="^S<S-NAME> start(s) the "+danceOf()+" over again.^?";
 
-			Set<MOB> friends=mob.getGroupMembers(new HashSet<MOB>());
+			final Set<MOB> friends=mob.getGroupMembers(new HashSet<MOB>());
 			for(int v=0;v<commonRoomSet.size();v++)
 			{
-				Room R=(Room)commonRoomSet.elementAt(v);
-				String msgStr=getCorrectMsgString(R,str,v);
-				CMMsg msg=CMClass.getMsg(mob,null,this,somanticCastCode(mob,null,auto),msgStr);
+				final Room R=(Room)commonRoomSet.elementAt(v);
+				final String msgStr=getCorrectMsgString(R,str,v);
+				final CMMsg msg=CMClass.getMsg(mob,null,this,somanticCastCode(mob,null,auto),msgStr);
 				if(R.okMessage(mob,msg))
 				{
 					R.send(mob,msg);
 					invoker=mob;
-					Dance newOne=(Dance)this.copyOf();
+					final Dance newOne=(Dance)this.copyOf();
 					newOne.invokerManaCost=-1;
 
 					for(int i=0;i<R.numInhabitants();i++)
 					{
-						MOB follower=R.fetchInhabitant(i);
-						Room R2=follower.location();
+						final MOB follower=R.fetchInhabitant(i);
+						final Room R2=follower.location();
 
 						// malicious dances must not affect the invoker!
 						int affectType=CMMsg.MSG_CAST_SOMANTIC_SPELL;
@@ -136,7 +136,7 @@ public class Dance_Square extends Dance
 							&&(follower.fetchEffect(this.ID())==null)))
 						{
 							CMMsg msg2=CMClass.getMsg(mob,follower,this,affectType,null);
-							CMMsg msg3=msg2;
+							final CMMsg msg3=msg2;
 							if((!friends.contains(follower))&&(follower!=mob))
 								msg2=CMClass.getMsg(mob,follower,this,CMMsg.MSK_CAST_MALICIOUS_SOMANTIC|CMMsg.TYP_MIND|(auto?CMMsg.MASK_ALWAYS:0),null);
 							if((R.okMessage(mob,msg2))&&(R.okMessage(mob,msg3)))

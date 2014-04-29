@@ -56,7 +56,7 @@ public class Chant_LoveMoon extends Chant
 			return;
 		}
 
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		if(canBeUninvoked())
 			mob.tell("You are no longer under the love moon.");
 
@@ -71,15 +71,15 @@ public class Chant_LoveMoon extends Chant
 		if(affected==null) return false;
 		if(affected instanceof MOB)
 		{
-			MOB mob=(MOB)affected;
+			final MOB mob=(MOB)affected;
 			if(mob.location().fetchEffect(ID())==null)
 				unInvoke();
 			else
 			{
-				Vector choices=new Vector();
+				final Vector choices=new Vector();
 				for(int i=0;i<mob.location().numInhabitants();i++)
 				{
-					MOB M=mob.location().fetchInhabitant(i);
+					final MOB M=mob.location().fetchInhabitant(i);
 					if((M!=null)
 					&&(M!=mob)
 					&&(CMLib.flags().canBeSeenBy(M,mob))
@@ -90,7 +90,7 @@ public class Chant_LoveMoon extends Chant
 				}
 				if(choices.size()>0)
 				{
-					MOB M=(MOB)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1));
+					final MOB M=(MOB)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1));
 					if(CMLib.dice().rollPercentage()==1)
 					{
 						Item I=mob.fetchFirstWornItem(Wearable.WORN_WAIST);
@@ -125,16 +125,16 @@ public class Chant_LoveMoon extends Chant
 		else
 		if(affected instanceof Room)
 		{
-			Room room=(Room)affected;
+			final Room room=(Room)affected;
 			if(!room.getArea().getClimateObj().canSeeTheMoon(room,this))
 				unInvoke();
 			else
 			for(int i=0;i<room.numInhabitants();i++)
 			{
-				MOB M=room.fetchInhabitant(i);
+				final MOB M=room.fetchInhabitant(i);
 				if((M!=null)&&(M.fetchEffect(ID())==null))
 				{
-					Ability A=(Ability)copyOf();
+					final Ability A=(Ability)copyOf();
 					M.addEffect(A);
 					M.recoverCharStats();
 				}
@@ -153,7 +153,7 @@ public class Chant_LoveMoon extends Chant
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		Room target=mob.location();
+		final Room target=mob.location();
 		if(target==null) return false;
 		if(!target.getArea().getClimateObj().canSeeTheMoon(target,null))
 		{
@@ -183,7 +183,7 @@ public class Chant_LoveMoon extends Chant
 		// and added as String objects to a vector.
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
@@ -192,7 +192,7 @@ public class Chant_LoveMoon extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> chant(s) to the sky.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> chant(s) to the sky.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

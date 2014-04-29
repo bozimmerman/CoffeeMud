@@ -61,7 +61,7 @@ public class Chant_TapGrapevine extends Chant
 	@Override
 	public CMObject copyOf()
 	{
-		Chant_TapGrapevine obj=(Chant_TapGrapevine)super.copyOf();
+		final Chant_TapGrapevine obj=(Chant_TapGrapevine)super.copyOf();
 		obj.myChants=new Vector<Ability>();
 		obj.myChants.addAll(myChants);
 		return obj;
@@ -72,16 +72,16 @@ public class Chant_TapGrapevine extends Chant
 	{
 		if((affected instanceof MOB)&&(myChants!=null))
 		{
-			List<Ability> V=myChants;
+			final List<Ability> V=myChants;
 			myChants=null;
 			for(int i=0;i<V.size();i++)
 			{
-				Ability A=V.get(i);
+				final Ability A=V.get(i);
 				if((A.affecting()!=null)
 				   &&(A.ID().equals(ID()))
 				   &&(A.affecting() instanceof Item))
 				{
-					Item I=(Item)A.affecting();
+					final Item I=(Item)A.affecting();
 					I.delEffect(A);
 				}
 			}
@@ -116,16 +116,16 @@ public class Chant_TapGrapevine extends Chant
 		MOB tapped=null;
 		for(int i=0;i<mob.location().numItems();i++)
 		{
-			Item I=mob.location().getItem(i);
+			final Item I=mob.location().getItem(i);
 			if((I!=null)&&(isPlant(I)!=null))
 			{
-				Ability A=isPlant(I);
+				final Ability A=isPlant(I);
 				if((A!=null)&&(A.invoker()!=mob))
 					tapped=A.invoker();
 			}
 		}
 
-		Vector myRooms=(tapped==null)?null:Druid_MyPlants.myPlantRooms(tapped);
+		final Vector myRooms=(tapped==null)?null:Druid_MyPlants.myPlantRooms(tapped);
 		if((myRooms==null)||(myRooms.size()==0))
 		{
 			mob.tell("There doesn't appear to be any plants around here to listen through.");
@@ -141,21 +141,21 @@ public class Chant_TapGrapevine extends Chant
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,myPlant,this,verbalCastCode(mob,myPlant,auto),auto?"":"^S<S-NAME> chant(s) to <T-NAMESELF> and listen(s) carefully to <T-HIM-HER>!^?");
+			final CMMsg msg=CMClass.getMsg(mob,myPlant,this,verbalCastCode(mob,myPlant,auto),auto?"":"^S<S-NAME> chant(s) to <T-NAMESELF> and listen(s) carefully to <T-HIM-HER>!^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				myChants=new Vector();
 				beneficialAffect(mob,mob,asLevel,0);
-				Chant_TapGrapevine C=(Chant_TapGrapevine)mob.fetchEffect(ID());
+				final Chant_TapGrapevine C=(Chant_TapGrapevine)mob.fetchEffect(ID());
 				if(C==null) return false;
 				for(int i=0;i<myRooms.size();i++)
 				{
-					Room R=(Room)myRooms.elementAt(i);
+					final Room R=(Room)myRooms.elementAt(i);
 					int ii=0;
 					myPlant=Druid_MyPlants.myPlant(R,tapped,ii);
 					while(myPlant!=null)

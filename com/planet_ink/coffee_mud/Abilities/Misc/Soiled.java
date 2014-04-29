@@ -60,16 +60,16 @@ public class Soiled extends StdAbility
 	public void unInvoke()
 	{
 		// undo the affects of this spell
-		Environmental E=affected;
+		final Environmental E=affected;
 		if(E==null) return;
 		super.unInvoke();
 		if(canBeUninvoked())
 		{
 			if(E instanceof MOB)
 			{
-				MOB mob=(MOB)E;
+				final MOB mob=(MOB)E;
 				mob.tell("You are no longer soiled.");
-				MOB following=((MOB)E).amFollowing();
+				final MOB following=((MOB)E).amFollowing();
 				if((following!=null)
 				&&(following.location()==mob.location())
 				&&(CMLib.flags().isInTheGame(mob,true))
@@ -133,8 +133,8 @@ public class Soiled extends StdAbility
 		if(affected!=null)
 		if(CMLib.dice().rollPercentage()==1)
 		{
-			Environmental E=affected;
-			Room R=CMLib.map().roomLocation(E);
+			final Environmental E=affected;
+			final Room R=CMLib.map().roomLocation(E);
 			if(R!=null)
 			{
 				MOB M=(E instanceof MOB)?(MOB)E:null;
@@ -167,11 +167,11 @@ public class Soiled extends StdAbility
 				if((smell!=null)
 				&&(CMLib.flags().isInTheGame(M,true)))
 				{
-					CMMsg msg=CMClass.getMsg(M,null,null,CMMsg.TYP_EMOTE|CMMsg.MASK_ALWAYS,smell);
+					final CMMsg msg=CMClass.getMsg(M,null,null,CMMsg.TYP_EMOTE|CMMsg.MASK_ALWAYS,smell);
 					if(R.okMessage(M,msg))
 					for(int m=0;m<R.numInhabitants();m++)
 					{
-						MOB mob=R.fetchInhabitant(m);
+						final MOB mob=R.fetchInhabitant(m);
 						if(CMLib.flags().canSmell(mob))
 							mob.executeMsg(M,msg);
 					}
@@ -185,7 +185,7 @@ public class Soiled extends StdAbility
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		Physical target=getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_ANY);
+		final Physical target=getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_ANY);
 		if((target==null)||(target.fetchEffect(ID())!=null))
 			return false;
 
@@ -203,7 +203,7 @@ public class Soiled extends StdAbility
 		mob.location().show(mob,msgTarget,CMMsg.MSG_OK_VISUAL,"<T-NAME> has soiled <T-HIM-HERSELF>!");
 		if(target instanceof MOB)
 		{
-			Item pants=((MOB)target).fetchFirstWornItem(Wearable.WORN_WAIST);
+			final Item pants=((MOB)target).fetchFirstWornItem(Wearable.WORN_WAIST);
 			if((pants!=null)&&(pants.fetchEffect(ID())==null))
 			{
 				A=(Ability)copyOf();

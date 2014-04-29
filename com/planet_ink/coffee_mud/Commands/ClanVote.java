@@ -57,7 +57,7 @@ public class ClanVote extends StdCommand
 
 		Clan C=null;
 		Integer clanRole=null;
-		for(Pair<Clan,Integer> c : mob.clans())
+		for(final Pair<Clan,Integer> c : mob.clans())
 			if((clanName.length()==0)||(CMLib.english().containsString(c.first.getName(), clanName)))
 			{	C=c.first; clanRole=c.second; break; }
 
@@ -69,10 +69,10 @@ public class ClanVote extends StdCommand
 		else
 		if(!mob.isMonster())
 		{
-			Vector votesForYou=new Vector();
-			for(Enumeration e=C.votes();e.hasMoreElements();)
+			final Vector votesForYou=new Vector();
+			for(final Enumeration e=C.votes();e.hasMoreElements();)
 			{
-				Clan.ClanVote CV=(Clan.ClanVote)e.nextElement();
+				final Clan.ClanVote CV=(Clan.ClanVote)e.nextElement();
 				if(((CV.function==Clan.Function.ASSIGN.ordinal())
 					&&(C.getAuthority(clanRole.intValue(),Clan.Function.VOTE_ASSIGN)!=Clan.Authority.CAN_NOT_DO))
 				||((CV.function!=Clan.Function.ASSIGN.ordinal())
@@ -90,9 +90,9 @@ public class ClanVote extends StdCommand
 							   +"Command to execute\n\r");
 					for(int v=0;v<votesForYou.size();v++)
 					{
-						Clan.ClanVote CV=(Clan.ClanVote)votesForYou.elementAt(v);
-						boolean ivoted=((CV.votes!=null)&&(CV.votes.containsFirst(mob.Name())));
-						int votesCast=(CV.votes!=null)?CV.votes.size():0;
+						final Clan.ClanVote CV=(Clan.ClanVote)votesForYou.elementAt(v);
+						final boolean ivoted=((CV.votes!=null)&&(CV.votes.containsFirst(mob.Name())));
+						final int votesCast=(CV.votes!=null)?CV.votes.size():0;
 						msg.append((ivoted?"*":" ")
 								  +CMStrings.padRight(""+(v+1),3)
 								  +CMStrings.padRight(((CV.voteStatus==Clan.VSTAT_STARTED)?(votesCast+" votes cast"):(Clan.VSTAT_DESCS[CV.voteStatus])),15)
@@ -103,7 +103,7 @@ public class ClanVote extends StdCommand
 			}
 			else
 			{
-				int which=CMath.s_int(voteNumStr)-1;
+				final int which=CMath.s_int(voteNumStr)-1;
 				Clan.ClanVote CV=null;
 				if((which>=0)&&(which<votesForYou.size()))
 					CV=(Clan.ClanVote)votesForYou.elementAt(which);
@@ -150,7 +150,7 @@ public class ClanVote extends StdCommand
 					{
 						mob.tell(msg.toString());
 						msg=new StringBuffer("");
-						StringBuffer prompt=new StringBuffer("");
+						final StringBuffer prompt=new StringBuffer("");
 						String choices="";
 						if(CV.votes==null) CV.votes=new PairVector<String,Boolean>();
 						prompt.append("Y)EA N)AY ");
@@ -160,12 +160,12 @@ public class ClanVote extends StdCommand
 							prompt.append("C)ANCEL ");
 							choices+="C";
 						}
-						String enterWhat="to skip";
+						final String enterWhat="to skip";
 						//if(myVote!=null) enterWhat=("to keep ("+(myVote.booleanValue()?"Y":"N")+") "); // no revote
 						boolean updateVote=false;
 						if((prompt.length()>0)&&(mob.session()!=null))
 						{
-							String answer=mob.session().choose("Choices: "+prompt.toString()+"or ENTER "+enterWhat+": ",choices,"");
+							final String answer=mob.session().choose("Choices: "+prompt.toString()+"or ENTER "+enterWhat+": ",choices,"");
 							if(answer.length()>0)
 							switch(answer.toUpperCase().charAt(0))
 							{
@@ -193,7 +193,7 @@ public class ClanVote extends StdCommand
 								break;
 							}
 						}
-						int numVotes=C.getNumVoters(Function.values()[CV.function]);
+						final int numVotes=C.getNumVoters(Function.values()[CV.function]);
 						if(numVotes<=(yeas+nays))
 						{
 							updateVote=true;
@@ -202,7 +202,7 @@ public class ClanVote extends StdCommand
 							else
 							{
 								CV.voteStatus=Clan.VSTAT_PASSED;
-								MOB mob2=CMClass.getFactoryMOB();
+								final MOB mob2=CMClass.getFactoryMOB();
 								mob2.setName(C.clanID());
 								mob2.setClan(C.clanID(),C.getTopRankedRoles(Function.ASSIGN).get(0).intValue());
 								mob2.basePhyStats().setLevel(1000);
@@ -212,7 +212,7 @@ public class ClanVote extends StdCommand
 									if(mob2.location()==null)
 										mob2.setLocation(CMLib.map().getRandomRoom());
 								}
-								Vector<String> V=CMParms.parse(CV.matter);
+								final Vector<String> V=CMParms.parse(CV.matter);
 								mob2.doCommand(V,metaFlags|Command.METAFLAG_FORCED);
 								mob2.destroy();
 							}

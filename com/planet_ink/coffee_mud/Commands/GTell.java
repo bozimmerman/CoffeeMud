@@ -55,7 +55,7 @@ public class GTell extends StdCommand
 		&&(CMath.isNumber(CMParms.combine(commands,2))))
 		&&(mob.playerStats()!=null))
 		{
-			java.util.List<String> V=mob.playerStats().getGTellStack();
+			final java.util.List<String> V=mob.playerStats().getGTellStack();
 			if(V.size()==0)
 				mob.tell("No telling.");
 			else
@@ -76,7 +76,7 @@ public class GTell extends StdCommand
 			&&(Character.isLetter(text.charAt(1))||text.charAt(1)==' ')))
 		{
 			text=text.substring(1);
-			Vector<String> V=CMParms.parse(text);
+			final Vector<String> V=CMParms.parse(text);
 			Social S=CMLib.socials().fetchSocial(V,true,false);
 			if(S==null) S=CMLib.socials().fetchSocial(V,false,false);
 			if(S!=null)
@@ -106,17 +106,17 @@ public class GTell extends StdCommand
 			tellMsg.setOthersMessage(tellMsg.sourceMessage());
 		}
 
-		Set<MOB> group=mob.getGroupMembers(new HashSet<MOB>());
-		CMMsg msg=tellMsg;
-		for(Iterator e=group.iterator();e.hasNext();)
+		final Set<MOB> group=mob.getGroupMembers(new HashSet<MOB>());
+		final CMMsg msg=tellMsg;
+		for (final Object element : group)
 		{
-			MOB target=(MOB)e.next();
+			final MOB target=(MOB)element;
 			if((mob.location().okMessage(mob,msg))
 			&&(target.okMessage(target,msg)))
 			{
 				if(target.playerStats()!=null)
 				{
-					String tellStr=(target==mob)?msg.sourceMessage():(
+					final String tellStr=(target==mob)?msg.sourceMessage():(
 									(target==msg.target())?msg.targetMessage():msg.othersMessage()
 									);
 					target.playerStats().addGTellStack(CMLib.coffeeFilter().fullOutFilter(target.session(),target,mob,msg.target(),null,CMStrings.removeColors(tellStr),false));
@@ -124,7 +124,7 @@ public class GTell extends StdCommand
 				target.executeMsg(target,msg);
 				if(msg.trailerMsgs()!=null)
 				{
-					for(CMMsg msg2 : msg.trailerMsgs())
+					for(final CMMsg msg2 : msg.trailerMsgs())
 						if((msg2!=msg)&&(target.okMessage(target,msg2)))
 							target.executeMsg(target,msg2);
 					msg.trailerMsgs().clear();

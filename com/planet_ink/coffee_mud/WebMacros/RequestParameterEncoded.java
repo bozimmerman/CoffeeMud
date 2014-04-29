@@ -46,7 +46,7 @@ public class RequestParameterEncoded extends RequestParameter
 		{
 			str=URLEncoder.encode(str,"UTF-8");
 		}
-		catch(java.io.UnsupportedEncodingException ex)
+		catch(final java.io.UnsupportedEncodingException ex)
 		{
 			Log.errOut(name(),"Wrong Encoding");
 		}

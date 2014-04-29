@@ -47,7 +47,7 @@ public class Spell_Permanency extends Spell
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		Physical target=getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_ANY);
+		final Physical target=getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_ANY);
 		if(target==null) return false;
 
 		if(((mob.baseState().getMana()<100)||(mob.maxState().getMana()<100))||(mob.isMonster()))
@@ -59,18 +59,18 @@ public class Spell_Permanency extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> incant(s) to <T-NAMESELF>.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> incant(s) to <T-NAMESELF>.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				StdAbility theOne=null;
 				for(int a=target.numEffects()-1;a>=0;a--) // personal effects
 				{
-					Ability A=target.fetchEffect(a);
+					final Ability A=target.fetchEffect(a);
 					if((A.invoker()==mob)
 					 &&(!A.isAutoInvoked())
 					 &&(A.canBeUninvoked())
@@ -107,7 +107,7 @@ public class Spell_Permanency extends Spell
 					else
 					if(target instanceof Exit)
 					{
-						Room R=mob.location();
+						final Room R=mob.location();
 						Room R2=null;
 						for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 							if(R.getExitInDir(d)==target)

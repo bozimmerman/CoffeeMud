@@ -60,24 +60,24 @@ public class Scavenger extends ActiveTicker
 
 		if((canAct(ticking,tickID))&&(ticking instanceof MOB))
 		{
-			MOB mob=(MOB)ticking;
-			Room thisRoom=mob.location();
+			final MOB mob=(MOB)ticking;
+			final Room thisRoom=mob.location();
 			if(origItems<0) origItems=mob.numItems();
 			if((mob.phyStats().weight()>=(int)Math.round(CMath.mul(mob.maxCarry(),0.9)))
 			||(mob.numItems()>=mob.maxItems()))
 			{
 				if(CMLib.flags().isATrackingMonster(mob)) return true;
-				String trashRoomID=CMParms.getParmStr(getParms(),"TRASH","");
+				final String trashRoomID=CMParms.getParmStr(getParms(),"TRASH","");
 				if(trashRoomID.equalsIgnoreCase("NO"))
 					return true;
-				Room R=CMLib.map().getRoom(trashRoomID);
+				final Room R=CMLib.map().getRoom(trashRoomID);
 				if(mob.location()==R)
 				{
 					Container C=null;
 					int maxCapacity=0;
 					for(int i=0;i<R.numItems();i++)
 					{
-						Item I=R.getItem(i);
+						final Item I=R.getItem(i);
 						if((I instanceof Container)&&(I.container()==null)&&(!CMLib.flags().isGettable(I)))
 						{
 							if(((Container)I).capacity()>maxCapacity)
@@ -96,7 +96,7 @@ public class Scavenger extends ActiveTicker
 				else
 				if(R!=null)
 				{
-					Ability A=CMLib.flags().isTracking(mob) ? null : CMClass.getAbility("Skill_Track");
+					final Ability A=CMLib.flags().isTracking(mob) ? null : CMClass.getAbility("Skill_Track");
 					if(A!=null)
 						A.invoke(mob,CMParms.parse("\""+CMLib.map().getExtendedRoomID(R)+"\""),R,true,0);
 				}
@@ -105,7 +105,7 @@ public class Scavenger extends ActiveTicker
 				{
 					while((origItems>=0)&&(mob.numItems()>origItems))
 					{
-						Item I=mob.getItem(origItems);
+						final Item I=mob.getItem(origItems);
 						if(I==null)
 						{
 							if(origItems>0)
@@ -127,7 +127,7 @@ public class Scavenger extends ActiveTicker
 			Vector choices=new Vector(thisRoom.numItems()<1000?thisRoom.numItems():1000);
 			for(int i=0;(i<thisRoom.numItems())&&(choices.size()<1000);i++)
 			{
-				Item thisItem=thisRoom.getItem(i);
+				final Item thisItem=thisRoom.getItem(i);
 				if((thisItem!=null)
 				&&(thisItem.container()==null)
 				&&(CMLib.flags().isGettable(thisItem))
@@ -135,7 +135,7 @@ public class Scavenger extends ActiveTicker
 					choices.addElement(thisItem);
 			}
 			if(choices.size()==0) return true;
-			Item I=(Item)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1));
+			final Item I=(Item)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1));
 			if(I!=null)
 				mob.doCommand(new XVector("GET",I.Name()),Command.METAFLAG_FORCED);
 			choices.clear();

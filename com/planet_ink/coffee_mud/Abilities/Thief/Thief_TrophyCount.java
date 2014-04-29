@@ -54,10 +54,10 @@ public class Thief_TrophyCount extends ThiefSkill
 	@Override
 	public String text()
 	{
-		StringBuffer str=new StringBuffer("<MOBS>");
-		for(Enumeration e=theList.elements();e.hasMoreElements();)
+		final StringBuffer str=new StringBuffer("<MOBS>");
+		for(final Enumeration e=theList.elements();e.hasMoreElements();)
 		{
-			String[] one=(String[])e.nextElement();
+			final String[] one=(String[])e.nextElement();
 			str.append("<MOB>");
 			str.append(CMLib.xml().convertXMLtoTag("RACE",one[0]));
 			str.append(CMLib.xml().convertXMLtoTag("KILLS",one[1]));
@@ -74,7 +74,7 @@ public class Thief_TrophyCount extends ThiefSkill
 		&&(msg.tool()!=null)
 		&&(msg.tool()==affected))
 		{
-			Race R=msg.source().charStats().getMyRace();
+			final Race R=msg.source().charStats().getMyRace();
 			if(!R.ID().equalsIgnoreCase("StdRace"))
 			{
 				String[] set=(String[])theList.get(R.name());
@@ -88,7 +88,7 @@ public class Thief_TrophyCount extends ThiefSkill
 				set[1]=Integer.toString(CMath.s_int(set[1])+1);
 				if((affected!=null)&&(affected instanceof MOB))
 				{
-					Ability A=((MOB)affected).fetchAbility(ID());
+					final Ability A=((MOB)affected).fetchAbility(ID());
 					if(A!=null)	A.setMiscText(text());
 				}
 			}
@@ -102,15 +102,15 @@ public class Thief_TrophyCount extends ThiefSkill
 		theList.clear();
 		if((str.trim().length()>0)&&(str.trim().startsWith("<MOBS>")))
 		{
-			List<XMLLibrary.XMLpiece> buf=CMLib.xml().parseAllXML(str);
-			List<XMLLibrary.XMLpiece> V=CMLib.xml().getContentsFromPieces(buf,"MOBS");
+			final List<XMLLibrary.XMLpiece> buf=CMLib.xml().parseAllXML(str);
+			final List<XMLLibrary.XMLpiece> V=CMLib.xml().getContentsFromPieces(buf,"MOBS");
 			if(V!=null)
 			for(int i=0;i<V.size();i++)
 			{
-				XMLLibrary.XMLpiece ablk=V.get(i);
+				final XMLLibrary.XMLpiece ablk=V.get(i);
 				if(ablk.tag.equalsIgnoreCase("MOB"))
 				{
-					String[] one=new String[4];
+					final String[] one=new String[4];
 					one[0]=CMLib.xml().getValFromPieces(ablk.contents,"RACE");
 					one[1]=CMLib.xml().getValFromPieces(ablk.contents,"KILLS");
 					theList.put(one[0],one);
@@ -126,12 +126,12 @@ public class Thief_TrophyCount extends ThiefSkill
 			return false;
 		if(proficiencyCheck(mob,0,auto))
 		{
-			StringBuffer str=new StringBuffer("");
+			final StringBuffer str=new StringBuffer("");
 			str.append(CMStrings.padRight("Name",20)+"Kills\n\r");
-			for(Enumeration e=theList.elements();e.hasMoreElements();)
+			for(final Enumeration e=theList.elements();e.hasMoreElements();)
 			{
-				String[] one=(String[])e.nextElement();
-				int kills=CMath.s_int(one[1]);
+				final String[] one=(String[])e.nextElement();
+				final int kills=CMath.s_int(one[1]);
 				str.append(CMStrings.padRight(one[0],20)+kills+"\n\r");
 			}
 			if(mob.session()!=null)

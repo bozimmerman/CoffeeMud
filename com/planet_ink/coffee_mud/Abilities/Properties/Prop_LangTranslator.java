@@ -50,7 +50,7 @@ public class Prop_LangTranslator extends Property implements Language
 	public void setMiscText(String text)
 	{
 		super.setMiscText(text);
-		Vector<String> V=CMParms.parse(text);
+		final Vector<String> V=CMParms.parse(text);
 		langs.clear();
 		int lastpct=100;
 		for(int v=0;v<V.size();v++)
@@ -61,7 +61,7 @@ public class Prop_LangTranslator extends Property implements Language
 				lastpct=CMath.s_int(s);
 			else
 			{
-				Ability A=CMClass.getAbility(s);
+				final Ability A=CMClass.getAbility(s);
 				if(A!=null) langs.addElement(A.ID(),Integer.valueOf(lastpct));
 			}
 		}
@@ -99,9 +99,9 @@ public class Prop_LangTranslator extends Property implements Language
 		{
 			if(text().length()>0)
 			{
-				int t=langs.indexOf(msg.tool().ID());
+				final int t=langs.indexOf(msg.tool().ID());
 				if(t<0) return;
-				Integer I=(Integer)langs.elementAt(t,2);
+				final Integer I=(Integer)langs.elementAt(t,2);
 				if(CMLib.dice().rollPercentage()>I.intValue())
 					return;
 			}
@@ -118,11 +118,11 @@ public class Prop_LangTranslator extends Property implements Language
 			&&(msg.sourceMessage()!=null)
 			&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_LANGUAGE))
 			{
-				String str=CMStrings.getSayFromMessage(msg.sourceMessage());
+				final String str=CMStrings.getSayFromMessage(msg.sourceMessage());
 				if(str!=null)
 				{
 					Environmental target=null;
-					String sourceName = affected.name();
+					final String sourceName = affected.name();
 					if(msg.target() instanceof MOB)
 						target=msg.target();
 					if(CMath.bset(msg.sourceMajor(),CMMsg.MASK_CHANNEL))

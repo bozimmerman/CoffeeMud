@@ -59,7 +59,7 @@ public class Spell_Delay extends Spell
 		if(canBeUninvoked())
 		{
 			shooter = (Ability)shooter.copyOf();
-			MOB newCaster=CMClass.getMOB("StdMOB");
+			final MOB newCaster=CMClass.getMOB("StdMOB");
 			newCaster.setName("the thin air");
 			newCaster.setDescription(" ");
 			newCaster.setDisplayText(" ");
@@ -73,7 +73,7 @@ public class Spell_Delay extends Spell
 				shooter.setProficiency(100);
 				shooter.invoke(newCaster,parameters,null,false,invoker.phyStats().level()+(2*getXLEVELLevel(invoker)));
 			}
-			catch(Exception e){Log.errOut("DELAY/"+CMParms.combine(parameters,0),e);}
+			catch(final Exception e){Log.errOut("DELAY/"+CMParms.combine(parameters,0),e);}
 			newCaster.delAbility(shooter);
 			newCaster.setLocation(null);
 			newCaster.destroy();
@@ -108,7 +108,7 @@ public class Spell_Delay extends Spell
 		if(shooter.enchantQuality()==Ability.QUALITY_MALICIOUS)
 		for(int m=0;m<mob.location().numInhabitants();m++)
 		{
-			MOB M=mob.location().fetchInhabitant(m);
+			final MOB M=mob.location().fetchInhabitant(m);
 			if((M!=null)&&(M!=mob)&&(!M.mayIFight(mob)))
 			{
 				mob.tell("You cannot delay that spell here -- there are other players present!");
@@ -122,16 +122,16 @@ public class Spell_Delay extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		Physical target = mob.location();
+		final Physical target = mob.location();
 		if((target.fetchEffect(this.ID())!=null)||(givenTarget!=null))
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"A delay has already been cast here!");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"A delay has already been cast here!");
 			if(mob.location().okMessage(mob,msg))
 				mob.location().send(mob,msg);
 			return false;
 		}
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
@@ -140,7 +140,7 @@ public class Spell_Delay extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 
-			CMMsg msg = CMClass.getMsg(mob, target, this, verbalCastCode(mob,target,auto), auto?"":"^S<S-NAME> point(s) and shout(s) 'NOW!'.^?");
+			final CMMsg msg = CMClass.getMsg(mob, target, this, verbalCastCode(mob,target,auto), auto?"":"^S<S-NAME> point(s) and shout(s) 'NOW!'.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

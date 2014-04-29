@@ -41,8 +41,8 @@ public class Snoop extends StdCommand
 
 	protected List<Session> snoopingOn(Session S)
 	{
-		List<Session> V=new Vector();
-		for(Session S2 : CMLib.sessions().allIterable())
+		final List<Session> V=new Vector();
+		for(final Session S2 : CMLib.sessions().allIterable())
 			if(S2.isBeingSnoopedBy(S))
 				V.add(S2);
 		return V;
@@ -56,7 +56,7 @@ public class Snoop extends StdCommand
 		commands.removeElementAt(0);
 		if(mob.session()==null) return false;
 		boolean doneSomething=false;
-		for(Session S : CMLib.sessions().allIterable())
+		for(final Session S : CMLib.sessions().allIterable())
 			if(S.isBeingSnoopedBy(mob.session()))
 			{
 				if(S.mob()!=null)
@@ -72,9 +72,9 @@ public class Snoop extends StdCommand
 				mob.tell("Snoop on whom?");
 			return false;
 		}
-		String whom=CMParms.combine(commands,0);
+		final String whom=CMParms.combine(commands,0);
 		Session SnoopOn=null;
-		Session S=CMLib.sessions().findPlayerSessionOnline(whom,false);
+		final Session S=CMLib.sessions().findPlayerSessionOnline(whom,false);
 		if(S!=null)
 		{
 			if(S==mob.session())
@@ -96,7 +96,7 @@ public class Snoop extends StdCommand
 			mob.tell("Only another Archon can snoop on "+SnoopOn.mob().name()+".");
 		else
 		{
-			Vector snoop=new Vector();
+			final Vector snoop=new Vector();
 			snoop.addElement(SnoopOn);
 			for(int v=0;v<snoop.size();v++)
 			{
@@ -105,10 +105,10 @@ public class Snoop extends StdCommand
 					mob.tell("This would create a snoop loop!");
 					return false;
 				}
-				List<Session> V=snoopingOn((Session)snoop.elementAt(v));
+				final List<Session> V=snoopingOn((Session)snoop.elementAt(v));
 				for(int v2=0;v2<V.size();v2++)
 				{
-					Session S2=V.get(v2);
+					final Session S2=V.get(v2);
 					if(!snoop.contains(S2))
 						snoop.addElement(S2);
 				}

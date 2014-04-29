@@ -46,7 +46,7 @@ public class Chant_SenseAge extends Chant
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		Physical target=getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_ANY);
+		final Physical target=getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_ANY);
 		if(target==null) return false;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -59,11 +59,11 @@ public class Chant_SenseAge extends Chant
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> chant(s) over <T-NAMESELF>.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> chant(s) over <T-NAMESELF>.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				Ability A=target.fetchEffect("Age");
+				final Ability A=target.fetchEffect("Age");
 				if((!(target instanceof MOB))&&(A==null))
 				{
 					mob.tell("You have no way to determining the age of "+target.name(mob)+".");
@@ -72,7 +72,7 @@ public class Chant_SenseAge extends Chant
 				else
 				if((target instanceof MOB)&&((A==null)||(A.displayText().length()==0)))
 				{
-					MOB M=(MOB)target;
+					final MOB M=(MOB)target;
 					if(M.baseCharStats().getStat(CharStats.STAT_AGE)<=0)
 						mob.tell("You can't determine how old "+target.name(mob)+" is with this magic.");
 					else

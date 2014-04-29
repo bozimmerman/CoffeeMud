@@ -38,7 +38,7 @@ public class AccountID extends StdWebMacro
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
-		String last=httpReq.getUrlParameter("ACCOUNT");
+		final String last=httpReq.getUrlParameter("ACCOUNT");
 		if(last==null) return " @break@";
 		if(last.length()>0)
 			return clearWebMacros(last);

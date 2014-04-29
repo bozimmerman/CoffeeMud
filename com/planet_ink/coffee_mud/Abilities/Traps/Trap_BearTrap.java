@@ -62,7 +62,7 @@ public class Trap_BearTrap extends StdTrap
 	@Override
 	public List<Item> getTrapComponents()
 	{
-		Vector V=new Vector();
+		final Vector V=new Vector();
 		for(int i=0;i<30;i++)
 			V.addElement(CMLib.materials().makeItemResource(RawMaterial.RESOURCE_IRON));
 		return V;
@@ -135,7 +135,7 @@ public class Trap_BearTrap extends StdTrap
 			if(target.location().show(target,target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,"<S-NAME> step(s) on a bear trap!"))
 			{
 				super.spring(target);
-				int damage=CMLib.dice().roll(trapLevel()+abilityCode(),6,1);
+				final int damage=CMLib.dice().roll(trapLevel()+abilityCode(),6,1);
 				trapped=target;
 				amountRemaining=250+((trapLevel()+abilityCode())*10);
 				CMLib.combat().postDamage(invoker(),target,this,damage,CMMsg.MASK_MALICIOUS|CMMsg.MASK_ALWAYS|CMMsg.TYP_JUSTICE,Weapon.TYPE_PIERCING,"The bear trap <DAMAGE> <T-NAME>!");

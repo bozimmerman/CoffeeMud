@@ -50,14 +50,14 @@ public class Skill_WildernessLore extends StdSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 		if(!success)
 		{
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> take(s) a quick look at the terrain and feel(s) quite confused.");
 			return false;
 		}
 		final Room room=mob.location();
-		CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_HANDS,"<S-NAME> take(s) a quick look at the terrain.");
+		final CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_HANDS,"<S-NAME> take(s) a quick look at the terrain.");
 		if(room.okMessage(mob,msg))
 		{
 			room.send(mob,msg);
@@ -130,8 +130,8 @@ public class Skill_WildernessLore extends StdSkill
 			final int derivedClimate=room.getClimateType();
 			if(derivedClimate!=Places.CLIMASK_NORMAL)
 			{
-				StringBuffer str=new StringBuffer("It is unusually ");
-				List<String> conditions=new Vector<String>();
+				final StringBuffer str=new StringBuffer("It is unusually ");
+				final List<String> conditions=new Vector<String>();
 				if(CMath.bset(derivedClimate, Places.CLIMASK_WET))
 					conditions.add("wet");
 				if(CMath.bset(derivedClimate, Places.CLIMASK_HOT))

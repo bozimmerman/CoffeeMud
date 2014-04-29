@@ -46,11 +46,11 @@ public class ATopics extends StdCommand
 		{
 			topicBuffer=new StringBuffer();
 
-			Vector reverseList=new Vector();
-			for(Enumeration e=rHelpFile.keys();e.hasMoreElements();)
+			final Vector reverseList=new Vector();
+			for(final Enumeration e=rHelpFile.keys();e.hasMoreElements();)
 			{
-				String ptop = (String)e.nextElement();
-				String thisTag=rHelpFile.getProperty(ptop);
+				final String ptop = (String)e.nextElement();
+				final String thisTag=rHelpFile.getProperty(ptop);
 				if ((thisTag==null)||(thisTag.length()==0)||(thisTag.length()>=35)
 					|| (rHelpFile.getProperty(thisTag)== null) )
 						reverseList.addElement(ptop);
@@ -71,7 +71,7 @@ public class ATopics extends StdCommand
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		Properties arcHelpFile=CMLib.help().getArcHelpFile();
+		final Properties arcHelpFile=CMLib.help().getArcHelpFile();
 		if(arcHelpFile.size()==0)
 		{
 			if(mob!=null)

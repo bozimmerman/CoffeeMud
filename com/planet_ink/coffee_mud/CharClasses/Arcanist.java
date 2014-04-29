@@ -162,7 +162,7 @@ public class Arcanist extends Thief
 		||(!(myHost instanceof MOB)))
 			return super.okMessage(myHost,msg);
 
-		MOB mob=(MOB)myHost;
+		final MOB mob=(MOB)myHost;
 		if((msg.amISource(mob))
 		&&(mob.charStats().getClassLevel(this)>4))
 		{
@@ -189,10 +189,10 @@ public class Arcanist extends Thief
 	@Override
 	public void endCharacter(MOB mob)
 	{
-		Vector otherChoices=new Vector();
+		final Vector otherChoices=new Vector();
 		for(int a=0;a<mob.numAbilities();a++)
 		{
-			Ability A2=mob.fetchAbility(a);
+			final Ability A2=mob.fetchAbility(a);
 			if((A2!=null)
 			&&(!A2.isSavable())
 			&&((A2.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SPELL))
@@ -204,10 +204,10 @@ public class Arcanist extends Thief
 
 	private void addAbilityToSpellcraftList(MOB mob, Ability A)
 	{
-		Ability enabledA=mob.fetchAbility("Skill_Spellcraft");
+		final Ability enabledA=mob.fetchAbility("Skill_Spellcraft");
 		if(enabledA!=null)
 		{
-			List<String> ables=CMParms.parseCommas(enabledA.text(), true);
+			final List<String> ables=CMParms.parseCommas(enabledA.text(), true);
 			if(!ables.contains(A.ID()))
 			{
 				if(enabledA.text().length()==0)
@@ -224,10 +224,10 @@ public class Arcanist extends Thief
 
 	private void clearAbilityFromSpellcraftList(MOB mob, Ability A)
 	{
-		Ability enabledA=mob.fetchAbility("Skill_Spellcraft");
+		final Ability enabledA=mob.fetchAbility("Skill_Spellcraft");
 		if(enabledA!=null)
 		{
-			List<String> ables=CMParms.parseCommas(enabledA.text(), true);
+			final List<String> ables=CMParms.parseCommas(enabledA.text(), true);
 			if(ables.contains(A.ID()))
 			{
 				if(!CMSecurity.isAllowed(mob, mob.location(), CMSecurity.SecFlag.ALLSKILLS))
@@ -246,14 +246,14 @@ public class Arcanist extends Thief
 		super.executeMsg(myHost,msg);
 		if((myHost==null)||(!(myHost instanceof MOB)))
 		   return;
-		MOB mob=(MOB)myHost;
+		final MOB mob=(MOB)myHost;
 		if(msg.amISource(mob))
 		{
 			if(((msg.sourceMinor()==CMMsg.TYP_LOOK)||(msg.sourceMinor()==CMMsg.TYP_EXAMINE))
 			&&(msg.target() instanceof Wand)
 			&&(mob.charStats().getClassLevel(this)>=30))
 			{
-				String message="<O-NAME> has "+((Wand)msg.target()).usesRemaining()+" charges remaining.";
+				final String message="<O-NAME> has "+((Wand)msg.target()).usesRemaining()+" charges remaining.";
 				msg.addTrailerMsg(CMClass.getMsg(mob, null, msg.target(), CMMsg.MSG_OK_VISUAL, CMMsg.NO_EFFECT, CMMsg.NO_EFFECT, message));
 			}
 			else
@@ -267,7 +267,7 @@ public class Arcanist extends Thief
 					{
 						Ability A=((MOB)msg.target()).fetchAbility(msg.tool().text());
 						if(A==null) return;
-						Ability myA=mob.fetchAbility(A.ID());
+						final Ability myA=mob.fetchAbility(A.ID());
 						if(myA!=null)
 						{
 							if((!A.isSavable())
@@ -278,10 +278,10 @@ public class Arcanist extends Thief
 						else
 						if(CMLib.ableMapper().lowestQualifyingLevel(A.ID())<30)
 						{
-							Vector otherChoices=new Vector();
+							final Vector otherChoices=new Vector();
 							for(int a=0;a<mob.numAbilities();a++)
 							{
-								Ability A2=mob.fetchAbility(a);
+								final Ability A2=mob.fetchAbility(a);
 								if((A2!=null)
 								&&(!A2.isSavable())
 								&&((A2.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SPELL))
@@ -292,7 +292,7 @@ public class Arcanist extends Thief
 							A.setSavable(false);
 							if(otherChoices.size()>(mob.charStats().getClassLevel(this)/3))
 							{
-								Ability A2=(Ability)otherChoices.elementAt(CMLib.dice().roll(1,otherChoices.size(),-1));
+								final Ability A2=(Ability)otherChoices.elementAt(CMLib.dice().roll(1,otherChoices.size(),-1));
 								clearAbilityFromSpellcraftList(mob,A2);
 							}
 							addAbilityToSpellcraftList(mob,A);
@@ -306,14 +306,14 @@ public class Arcanist extends Thief
 				||msg.tool().ID().equals("Spell_StoreSpell")
 				||msg.tool().ID().equals("Spell_WardArea"))
 				{
-					Ability A=mob.fetchAbility(msg.tool().text());
+					final Ability A=mob.fetchAbility(msg.tool().text());
 					if((A!=null)&&(!A.isSavable()))
 						clearAbilityFromSpellcraftList(mob,A);
 				}
 				else
 				if(msg.tool() instanceof Ability)
 				{
-					Ability A=mob.fetchAbility(msg.tool().ID());
+					final Ability A=mob.fetchAbility(msg.tool().ID());
 					if((A!=null)&&(!A.isSavable())
 					&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SPELL))
 						clearAbilityFromSpellcraftList(mob,A);

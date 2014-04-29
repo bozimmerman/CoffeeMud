@@ -48,7 +48,7 @@ public class Qualify  extends Skills
 											  String prefix,
 											  boolean shortOnly)
 	{
-		HashSet<Integer> V=new HashSet<Integer>();
+		final HashSet<Integer> V=new HashSet<Integer>();
 		int mask=Ability.ALL_ACODES;
 		if(ofDomain>=0)
 		{
@@ -67,12 +67,12 @@ public class Qualify  extends Skills
 											  boolean shortOnly)
 	{
 		int highestLevel=0;
-		StringBuffer msg=new StringBuffer("");
-		boolean checkUnMet=ableM.charStats().getCurrentClass().showThinQualifyList();
-		for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
+		final StringBuffer msg=new StringBuffer("");
+		final boolean checkUnMet=ableM.charStats().getCurrentClass().showThinQualifyList();
+		for(final Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 		{
-			Ability A=a.nextElement();
-			int level=CMLib.ableMapper().qualifyingLevel(ableM,A);
+			final Ability A=a.nextElement();
+			final int level=CMLib.ableMapper().qualifyingLevel(ableM,A);
 			if((CMLib.ableMapper().qualifiesByLevel(ableM,A))
 			&&(!CMLib.ableMapper().getSecretSkill(ableM,A.ID()))
 			&&(level>highestLevel)
@@ -90,10 +90,10 @@ public class Qualify  extends Skills
 		final int COL_LEN4=ListingLibrary.ColFixer.fixColWidth(13.0,viewerM);
 		for(int l=0;l<=highestLevel;l++)
 		{
-			StringBuffer thisLine=new StringBuffer("");
-			for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
+			final StringBuffer thisLine=new StringBuffer("");
+			for(final Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 			{
-				Ability A=a.nextElement();
+				final Ability A=a.nextElement();
 				if((CMLib.ableMapper().qualifiesByLevel(ableM,A))
 				   &&(CMLib.ableMapper().qualifyingLevel(ableM,A)==l)
 				   &&(!CMLib.ableMapper().getSecretSkill(ableM,A.ID()))
@@ -130,10 +130,10 @@ public class Qualify  extends Skills
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		StringBuffer msg=new StringBuffer("");
-		String qual=CMParms.combine(commands,1).toUpperCase();
-		boolean shortOnly=false;
-		boolean showAll=qual.length()==0;
+		final StringBuffer msg=new StringBuffer("");
+		final String qual=CMParms.combine(commands,1).toUpperCase();
+		final boolean shortOnly=false;
+		final boolean showAll=qual.length()==0;
 		if(showAll||("SKILLS".startsWith(qual)))
 			msg.append(getQualifiedAbilities(mob,mob,Ability.ACODE_SKILL,-1,"\n\r^HGeneral Skills:^? ",shortOnly));
 		if(showAll||("COMMON SKILLS").startsWith(qual))
@@ -183,11 +183,11 @@ public class Qualify  extends Skills
 		)
 		{
 			int col=0;
-			StringBuffer msg2=new StringBuffer("");
-			for(Enumeration c=CMClass.charClasses();c.hasMoreElements();)
+			final StringBuffer msg2=new StringBuffer("");
+			for(final Enumeration c=CMClass.charClasses();c.hasMoreElements();)
 			{
-				CharClass C=(CharClass)c.nextElement();
-				StringBuffer thisLine=new StringBuffer("");
+				final CharClass C=(CharClass)c.nextElement();
+				final StringBuffer thisLine=new StringBuffer("");
 				if((mob.charStats().getCurrentClass()!=C)
 				&&(CMLib.login().canChangeToThisClass(mob, C, -1)))
 				{
@@ -216,7 +216,7 @@ public class Qualify  extends Skills
 			||(qual.equalsIgnoreCase("EXPS"))
 			||("EXPERTISES".startsWith(qual))))
 		{
-			List<ExpertiseDefinition> V=CMLib.expertises().myListableExpertises(mob);
+			final List<ExpertiseDefinition> V=CMLib.expertises().myListableExpertises(mob);
 			for(int v=V.size()-1;v>=0;v--)
 				if(mob.fetchExpertise(V.get(v).ID)!=null)
 					V.remove(v);
@@ -239,7 +239,7 @@ public class Qualify  extends Skills
 								col=0;
 							}
 							msg.append(CMStrings.padRightPreserve("^<HELP^>"+def.name+"^</HELP^>",COL_LEN));
-							int spaces=(COL_LEN*2)-def.name.length();
+							final int spaces=(COL_LEN*2)-def.name.length();
 							for(int i=0;i<spaces;i++) msg.append(" ");
 							col++;
 						}
@@ -255,7 +255,7 @@ public class Qualify  extends Skills
 				}
 				else
 				{
-					StringBuffer msg2=new StringBuffer("\n\r^HExpertises:^?\n\rName                          Requires\n\r");
+					final StringBuffer msg2=new StringBuffer("\n\r^HExpertises:^?\n\rName                          Requires\n\r");
 					ExpertiseLibrary.ExpertiseDefinition def=null;
 					String req=null;
 					String prefix=null;
@@ -270,7 +270,7 @@ public class Qualify  extends Skills
 						else
 						while(req.length()>0)
 						{
-							int x=req.indexOf(".  ");
+							final int x=req.indexOf(".  ");
 							if(x<0)
 							{
 								msg2.append(CMStrings.padRight(prefix,COL_LEN)+req+"\n\r");
@@ -299,7 +299,7 @@ public class Qualify  extends Skills
 			else
 			if(!mob.isMonster())
 			{
-				AbilityMapper.AbilityLimits limits = CMLib.ableMapper().getCommonSkillRemainders(mob);
+				final AbilityMapper.AbilityLimits limits = CMLib.ableMapper().getCommonSkillRemainders(mob);
 				if(limits.commonSkills < Integer.MAX_VALUE/2)
 					msg.append("\n\r^HYou may learn ^w"+limits.commonSkills+"^H more common skills.^N");
 				if(limits.craftingSkills < Integer.MAX_VALUE/2)

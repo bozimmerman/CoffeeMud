@@ -67,10 +67,10 @@ public class Archon_Multiwatch extends ArchonSkill
 	{
 		if((me.location()!=null)&&(me.session()!=null))
 		{
-			Room R=me.location();
+			final Room R=me.location();
 			for(int i=0;i<R.numInhabitants();i++)
 			{
-				MOB M=R.fetchInhabitant(i);
+				final MOB M=R.fetchInhabitant(i);
 				if((M==null)||(M==me)) continue;
 
 				if((M.session()!=null)&&(M.session().getAddress().equals(me.session().getAddress())))
@@ -89,7 +89,7 @@ public class Archon_Multiwatch extends ArchonSkill
 		{
 			if(!DATA.containsKey(msg.source()))
 				DATA.put(msg.source(),new int[DATA_TOTAL]);
-			int[] data=DATA.get(msg.source());
+			final int[] data=DATA.get(msg.source());
 
 			if(data==null) return;
 			if(msg.tool() instanceof Social)
@@ -142,9 +142,9 @@ public class Archon_Multiwatch extends ArchonSkill
 		if((tickID==Tickable.TICKID_MOB)
 		&&(affected instanceof MOB))
 		{
-			MOB mob=(MOB)affected;
+			final MOB mob=(MOB)affected;
 			if(!DATA.containsKey(mob))	DATA.put(mob,new int[DATA_TOTAL]);
-			int[] data=DATA.get(mob);
+			final int[] data=DATA.get(mob);
 			if((mob.session()!=null)&&(mob.session().getPreviousCMD()!=null))
 			{
 				if((lastCommand!=null)
@@ -158,12 +158,12 @@ public class Archon_Multiwatch extends ArchonSkill
 					if(V!=null)
 					for(int v=0;v<V.size();v++)
 					{
-						MOB M=V.get(v);
+						final MOB M=V.get(v);
 						if(M==mob) continue;
 						if(M.session()==null) continue;
 						if(!CMLib.flags().isInTheGame(M,true)) continue;
-						String hisLastCmd=CMParms.combine(mob.session().getPreviousCMD(),0);
-						Archon_Multiwatch A=(Archon_Multiwatch)M.fetchEffect(ID());
+						final String hisLastCmd=CMParms.combine(mob.session().getPreviousCMD(),0);
+						final Archon_Multiwatch A=(Archon_Multiwatch)M.fetchEffect(ID());
 						if(A!=null)
 						{
 							if((A.lastCommand!=null)&&(!A.lastCommand.equals(hisLastCmd)))
@@ -185,8 +185,8 @@ public class Archon_Multiwatch extends ArchonSkill
 		{
 			DATA.clear();
 			IPS.clear();
-			Hashtable<String,List<MOB>> ipes=new Hashtable<String,List<MOB>>();
-			for(Session S : CMLib.sessions().localOnlineIterable())
+			final Hashtable<String,List<MOB>> ipes=new Hashtable<String,List<MOB>>();
+			for(final Session S : CMLib.sessions().localOnlineIterable())
 			{
 				if((S.getAddress().length()>0)
 				&&(S.mob()!=null))
@@ -200,21 +200,21 @@ public class Archon_Multiwatch extends ArchonSkill
 					if(!V.contains(S.mob())) V.add(S.mob());
 				}
 			}
-			StringBuffer rpt=new StringBuffer("");
-			for(Enumeration e=ipes.keys();e.hasMoreElements();)
+			final StringBuffer rpt=new StringBuffer("");
+			for(final Enumeration e=ipes.keys();e.hasMoreElements();)
 			{
-				String addr=(String)e.nextElement();
-				List<MOB> names=ipes.get(addr);
+				final String addr=(String)e.nextElement();
+				final List<MOB> names=ipes.get(addr);
 				if(names.size()>1)
 				{
 					IPS.put(addr,names);
 					rpt.append("Watch #"+(IPS.size())+" added: ");
 					for(int n=0;n<names.size();n++)
 					{
-						MOB MN=names.get(n);
+						final MOB MN=names.get(n);
 						if(MN.fetchEffect(ID())==null)
 						{
-							Ability A=(Ability)copyOf();
+							final Ability A=(Ability)copyOf();
 							MN.addNonUninvokableEffect(A);
 							A.setSavable(false);
 						}
@@ -231,7 +231,7 @@ public class Archon_Multiwatch extends ArchonSkill
 		if(CMParms.combine(commands,0).equalsIgnoreCase("stop"))
 		{
 			boolean foundLegacy=false;
-			for(Session S : CMLib.sessions().localOnlineIterable())
+			for(final Session S : CMLib.sessions().localOnlineIterable())
 			{
 				if((S!=null)&&(S.mob()!=null)&&(S.mob().fetchEffect(ID())!=null))
 				{ foundLegacy=true; break;}
@@ -241,22 +241,22 @@ public class Archon_Multiwatch extends ArchonSkill
 				mob.tell("Multiwatch is already off.");
 				return false;
 			}
-			for(Enumeration<List<MOB>> e=IPS.elements();e.hasMoreElements();)
+			for(final Enumeration<List<MOB>> e=IPS.elements();e.hasMoreElements();)
 			{
-				List<MOB> V=e.nextElement();
+				final List<MOB> V=e.nextElement();
 				for(int v=0;v<V.size();v++)
 				{
-					MOB M=V.get(v);
-					Ability A=M.fetchEffect(ID());
+					final MOB M=V.get(v);
+					final Ability A=M.fetchEffect(ID());
 					if(A!=null) M.delEffect(A);
 				}
 			}
-			for(Session S : CMLib.sessions().localOnlineIterable())
+			for(final Session S : CMLib.sessions().localOnlineIterable())
 			{
 				if((S!=null)&&(S.mob()!=null))
 				{
-					MOB M=S.mob();
-					Ability A=M.fetchEffect(ID());
+					final MOB M=S.mob();
+					final Ability A=M.fetchEffect(ID());
 					if(A!=null) M.delEffect(A);
 				}
 			}
@@ -268,11 +268,11 @@ public class Archon_Multiwatch extends ArchonSkill
 		else
 		if((commands.size()>1)&&((String)commands.firstElement()).equalsIgnoreCase("add"))
 		{
-			Vector V=new Vector();
+			final Vector V=new Vector();
 			for(int i=1;i<commands.size();i++)
 			{
-				String name=(String)commands.elementAt(i);
-				MOB M=CMLib.players().getPlayer(name);
+				final String name=(String)commands.elementAt(i);
+				final MOB M=CMLib.players().getPlayer(name);
 				if((M.session()!=null)&&(CMLib.flags().isInTheGame(M,true)))
 					V.addElement(M);
 				else
@@ -282,10 +282,10 @@ public class Archon_Multiwatch extends ArchonSkill
 			{
 				for(int n=0;n<V.size();n++)
 				{
-					MOB MN=(MOB)V.elementAt(n);
+					final MOB MN=(MOB)V.elementAt(n);
 					if(MN.fetchEffect(ID())==null)
 					{
-						Ability A=(Ability)copyOf();
+						final Ability A=(Ability)copyOf();
 						MN.addNonUninvokableEffect(A);
 						A.setSavable(false);
 					}
@@ -298,16 +298,16 @@ public class Archon_Multiwatch extends ArchonSkill
 		else
 		if((commands.size()==0)&&(DATA.size()>0)&&(IPS.size()>0))
 		{
-			StringBuffer report=new StringBuffer("");
-			for(Enumeration<String> e=IPS.keys();e.hasMoreElements();)
+			final StringBuffer report=new StringBuffer("");
+			for(final Enumeration<String> e=IPS.keys();e.hasMoreElements();)
 			{
-				String key=e.nextElement();
+				final String key=e.nextElement();
 				int sync=0;
-				List<MOB> V=IPS.get(key);
+				final List<MOB> V=IPS.get(key);
 				for(int v=0;v<V.size();v++)
 				{
-					MOB M=V.get(v);
-					int data[]=DATA.get(M);
+					final MOB M=V.get(v);
+					final int data[]=DATA.get(M);
 					if(data!=null) sync+=data[DATA_SYNCHROFOUND];
 				}
 				report.append("^x"+key+"^?^., Syncs: "+sync+"\n\r");
@@ -319,7 +319,7 @@ public class Archon_Multiwatch extends ArchonSkill
 							  +"\n\r");
 				for(int v=0;v<V.size();v++)
 				{
-					MOB M=V.get(v);
+					final MOB M=V.get(v);
 					int data[]=DATA.get(M);
 					if(data==null) data=new int[DATA_TOTAL];
 					report.append(CMStrings.padRight(M.Name(),25));

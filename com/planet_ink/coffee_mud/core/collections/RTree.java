@@ -175,7 +175,7 @@ public class RTree<T extends BoundedObject> {
 		public void split(RTreeNode n)
 		{
 			if (n.size() <= maxSize) return;
-			boolean isleaf = n.isLeaf();
+			final boolean isleaf = n.isLeaf();
 
 			// Choose seeds. Would write a function for this, but it requires returning 2 objects
 			BoundedObject seed1 = null, seed2 = null;
@@ -186,16 +186,16 @@ public class RTree<T extends BoundedObject> {
 				list = n.children;
 
 			long maxD = Long.MIN_VALUE;
-			BoundedCube box = new BoundedCube();
+			final BoundedCube box = new BoundedCube();
 			for (int i = 0; i < list.size(); i++)
 			{
 				for (int j=0; j<list.size(); j++)
 				{
 					if (i == j) continue;
-					BoundedObject n1 = list.get(i), n2 = list.get(j);
+					final BoundedObject n1 = list.get(i), n2 = list.get(j);
 					box.set(n1.getBounds());
 					box.union(n2.getBounds());
-					long d = area(box) - area(n1.getBounds()) - area(n2.getBounds());
+					final long d = area(box) - area(n1.getBounds()) - area(n2.getBounds());
 					if (d > maxD)
 					{
 						maxD = d;
@@ -211,9 +211,9 @@ public class RTree<T extends BoundedObject> {
 			}
 
 			// Distribute
-			RTreeNode group1 = new RTreeNode(isleaf);
+			final RTreeNode group1 = new RTreeNode(isleaf);
 			group1.box = new BoundedCube(seed1.getBounds());
-			RTreeNode group2 = new RTreeNode(isleaf);
+			final RTreeNode group2 = new RTreeNode(isleaf);
 			group2.box = new BoundedCube(seed2.getBounds());
 			if (isleaf)
 				distributeLeaves(n, group1, group2);
@@ -253,10 +253,10 @@ public class RTree<T extends BoundedObject> {
 				int nmax_index = -1;
 				for (int i = 0; i < n.children.size(); i++)
 				{
-					RTreeNode node = n.children.get(i);
-					int expansion1 = expansionNeeded(node.box, g1.box);
-					int expansion2 = expansionNeeded(node.box, g2.box);
-					int dif = Math.abs(expansion1 - expansion2);
+					final RTreeNode node = n.children.get(i);
+					final int expansion1 = expansionNeeded(node.box, g1.box);
+					final int expansion2 = expansionNeeded(node.box, g2.box);
+					final int dif = Math.abs(expansion1 - expansion2);
 					if (dif > difmax)
 					{
 						difmax = dif;
@@ -266,12 +266,12 @@ public class RTree<T extends BoundedObject> {
 				assert(nmax_index != -1);
 
 				// Distribute Entry
-				RTreeNode nmax = n.children.remove(nmax_index);
+				final RTreeNode nmax = n.children.remove(nmax_index);
 				RTreeNode parent = null;
 
 				// ... to the one with the least expansion
-				int overlap1 = expansionNeeded(nmax.box, g1.box);
-				int overlap2 = expansionNeeded(nmax.box, g2.box);
+				final int overlap1 = expansionNeeded(nmax.box, g1.box);
+				final int overlap2 = expansionNeeded(nmax.box, g2.box);
 				if (overlap1 > overlap2)
 				{
 					parent = g1;
@@ -283,8 +283,8 @@ public class RTree<T extends BoundedObject> {
 				else
 				{
 					// Or the one with the lowest area
-					long area1 = area(g1.box);
-					long area2 = area(g2.box);
+					final long area1 = area(g1.box);
+					final long area2 = area(g2.box);
 					if (area1 > area2) parent = g2;
 					else if (area2 > area1) parent = g1;
 					else
@@ -327,10 +327,10 @@ public class RTree<T extends BoundedObject> {
 				int nmax_index = -1;
 				for (int i = 0; i < n.data.size(); i++)
 				{
-					T node = n.data.get(i);
-					int d1 = expansionNeeded(node.getBounds(), g1.box);
-					int d2 = expansionNeeded(node.getBounds(), g2.box);
-					int dif = Math.abs(d1 - d2);
+					final T node = n.data.get(i);
+					final int d1 = expansionNeeded(node.getBounds(), g1.box);
+					final int d2 = expansionNeeded(node.getBounds(), g2.box);
+					final int dif = Math.abs(d1 - d2);
 					if (dif > difmax)
 					{
 						difmax = dif;
@@ -340,11 +340,11 @@ public class RTree<T extends BoundedObject> {
 				assert(nmax_index != -1);
 
 				// Distribute Entry
-				T nmax = n.data.remove(nmax_index);
+				final T nmax = n.data.remove(nmax_index);
 
 				// ... to the one with the least expansion
-				int overlap1 = expansionNeeded(nmax.getBounds(), g1.box);
-				int overlap2 = expansionNeeded(nmax.getBounds(), g2.box);
+				final int overlap1 = expansionNeeded(nmax.getBounds(), g1.box);
+				final int overlap2 = expansionNeeded(nmax.getBounds(), g2.box);
 				if (overlap1 > overlap2)
 				{
 					g1.data.add(nmax);
@@ -355,8 +355,8 @@ public class RTree<T extends BoundedObject> {
 				}
 				else
 				{
-					long area1 = area(g1.box);
-					long area2 = area(g2.box);
+					final long area1 = area(g1.box);
+					final long area2 = area(g2.box);
 					if (area1 > area2)
 					{
 						g2.data.add(nmax);
@@ -432,7 +432,7 @@ public class RTree<T extends BoundedObject> {
 	 */
 	public void query(Collection<T> results)
 	{
-		BoundedCube box = new BoundedCube(Long.MIN_VALUE, Long.MAX_VALUE, Long.MIN_VALUE, Long.MAX_VALUE, Long.MIN_VALUE, Long.MAX_VALUE);
+		final BoundedCube box = new BoundedCube(Long.MIN_VALUE, Long.MAX_VALUE, Long.MIN_VALUE, Long.MAX_VALUE, Long.MIN_VALUE, Long.MAX_VALUE);
 		query(results, box, root);
 	}
 	public void query(Collection<T> results, BoundedCube box)
@@ -488,7 +488,7 @@ public class RTree<T extends BoundedObject> {
 			{
 				if (node.children.get(i).box.intersects(box))
 				{
-					T result = queryOne(box,node.children.get(i));
+					final T result = queryOne(box,node.children.get(i));
 					if (result != null) return result;
 				}
 			}
@@ -558,7 +558,7 @@ public class RTree<T extends BoundedObject> {
 			{
 				if (node.children.get(i).box.contains(px, py, pz))
 				{
-					T result = queryOne(px, py, pz, node.children.get(i));
+					final T result = queryOne(px, py, pz, node.children.get(i));
 					if (result != null) return result;
 				}
 			}
@@ -577,13 +577,13 @@ public class RTree<T extends BoundedObject> {
 		TrackingVector<T> v=null;
 		synchronized(trackMap)
 		{
-			List<WeakReference<TrackingVector<T>>> nodes = trackMap.get(o);
+			final List<WeakReference<TrackingVector<T>>> nodes = trackMap.get(o);
 			if(nodes!=null)
 			{
 				int i=0;
 				while((v==null)&&(i<nodes.size()))
 				{
-					WeakReference<TrackingVector<T>> r  = nodes.get(i++);
+					final WeakReference<TrackingVector<T>> r  = nodes.get(i++);
 					if(r!=null)
 						v=r.get();
 				}
@@ -608,7 +608,7 @@ public class RTree<T extends BoundedObject> {
 		if (root == null)
 			root = new RTreeNode(true);
 
-		RTreeNode n = chooseLeaf(o, root);
+		final RTreeNode n = chooseLeaf(o, root);
 		assert(n.isLeaf());
 		if(!n.data.contains(o))
 		{
@@ -682,13 +682,13 @@ public class RTree<T extends BoundedObject> {
 		}
 		else
 		{
-			BoundedCube box = o.getBounds();
+			final BoundedCube box = o.getBounds();
 
 			int maxOverlap = Integer.MAX_VALUE;
 			RTreeNode maxnode = null;
 			for (int i = 0; i < n.children.size(); i++)
 			{
-				int overlap = expansionNeeded(n.children.get(i).box, box);
+				final int overlap = expansionNeeded(n.children.get(i).box, box);
 				if ((overlap < maxOverlap) || (overlap == maxOverlap)
 						&& ((maxnode!=null)&&(area(n.children.get(i).box) < area(maxnode.box))))
 						{
@@ -715,10 +715,10 @@ public class RTree<T extends BoundedObject> {
 		{
 			for (int i = 0; i < n.children.size(); i++)
 			{
-				RTreeNode n2=n.children.get(i);
+				final RTreeNode n2=n.children.get(i);
 				if(n2.isLeaf() && n2.data.contains(o))
 					return n2;
-				RTreeNode n3=firstLeafSearch(o,n2);
+				final RTreeNode n3=firstLeafSearch(o,n2);
 				if(n3!=null)
 					return n3;
 			}

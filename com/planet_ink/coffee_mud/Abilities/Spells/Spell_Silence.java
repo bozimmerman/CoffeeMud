@@ -52,7 +52,7 @@ public class Spell_Silence extends Spell
 			return;
 		if(!(affected instanceof Room))
 			return;
-		Room room=(Room)affected;
+		final Room room=(Room)affected;
 		if(canBeUninvoked())
 			room.showHappens(CMMsg.MSG_OK_ACTION, "The sounds here begin to return.");
 		super.unInvoke();
@@ -64,7 +64,7 @@ public class Spell_Silence extends Spell
 		super.affectPhyStats(affected,affectableStats);
 		if((affected instanceof MOB)||(affected instanceof Item))
 		{
-			Room R=CMLib.map().roomLocation(affected);
+			final Room R=CMLib.map().roomLocation(affected);
 			if((R!=null)&&(R==theRoom)&&(!unInvoked)&&(R.fetchEffect(ID())==this))
 			{
 				affectableStats.setSensesMask(affectableStats.sensesMask() |  PhyStats.CAN_NOT_SPEAK);
@@ -79,7 +79,7 @@ public class Spell_Silence extends Spell
 		else
 		if((affected instanceof Room)&&(!unInvoked))
 		{
-			Room R=(Room)affected;
+			final Room R=(Room)affected;
 			theRoom=R;
 			MOB M=null;
 			for(int i=0;i<R.numInhabitants();i++)
@@ -119,7 +119,7 @@ public class Spell_Silence extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		Physical target = mob.location();
+		final Physical target = mob.location();
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
@@ -128,7 +128,7 @@ public class Spell_Silence extends Spell
 		}
 
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
@@ -137,7 +137,7 @@ public class Spell_Silence extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 
-			CMMsg msg = CMClass.getMsg(mob, target, this, verbalCastCode(mob,target,auto),(auto?"S":"^S<S-NAME> whisper(s) and gesture(s) and s")+"ilence falls like a blanket.^?");
+			final CMMsg msg = CMClass.getMsg(mob, target, this, verbalCastCode(mob,target,auto),(auto?"S":"^S<S-NAME> whisper(s) and gesture(s) and s")+"ilence falls like a blanket.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

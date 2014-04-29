@@ -99,7 +99,7 @@ public class Immunities extends StdAbility
 				immunityName=msg.tool().name();
 			if(!msg.sourceMajor(CMMsg.MASK_CNTRLMSG) && !msg.targetMajor(CMMsg.MASK_CNTRLMSG))
 			{
-				Room R=CMLib.map().roomLocation(msg.target());
+				final Room R=CMLib.map().roomLocation(msg.target());
 				if(msg.target()!=msg.source())
 					R.show(msg.source(),msg.target(),CMMsg.MSG_OK_VISUAL,"<T-NAME> seem(s) immune to "+immunityName+" attacks from <S-NAME>.");
 				else
@@ -114,7 +114,7 @@ public class Immunities extends StdAbility
 	@SuppressWarnings("rawtypes")
 	public boolean invoke(MOB mob, Vector commands, Physical target, boolean auto, int asLevel)
 	{
-		StringBuilder immunes=new StringBuilder("");
+		final StringBuilder immunes=new StringBuilder("");
 		int ticksOverride=0;
 		if(commands.size()>0)
 			for(final Object o : commands)
@@ -135,7 +135,7 @@ public class Immunities extends StdAbility
 		{
 			if(!beneficialAffect(mob, mob, asLevel, ticksOverride))
 				return false;
-			Immunities A=(Immunities)mob.fetchEffect(ID());
+			final Immunities A=(Immunities)mob.fetchEffect(ID());
 			if(A==null)
 				return false;
 			A.setMiscText(immunes.toString().trim());

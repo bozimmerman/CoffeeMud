@@ -60,27 +60,27 @@ public class Prop_SparringRoom extends Property
 			MOB source=null;
 			if((msg.tool()!=null)&&(msg.tool() instanceof MOB))
 				source=(MOB)msg.tool();
-			MOB target=msg.source();
-			Room deathRoom=target.location();
+			final MOB target=msg.source();
+			final Room deathRoom=target.location();
 			deathRoom.show(source,source,CMMsg.MSG_OK_VISUAL,msg.sourceMessage());
 			if(source!=null)
 			{
-				CharClass combatCharClass=CMLib.combat().getCombatDominantClass(source,target);
-				Set<MOB> beneficiaries=CMLib.combat().getCombatBeneficiaries(source,target,combatCharClass);
-				Set<MOB> dividers=CMLib.combat().getCombatDividers(source,target,combatCharClass);
+				final CharClass combatCharClass=CMLib.combat().getCombatDominantClass(source,target);
+				final Set<MOB> beneficiaries=CMLib.combat().getCombatBeneficiaries(source,target,combatCharClass);
+				final Set<MOB> dividers=CMLib.combat().getCombatDividers(source,target,combatCharClass);
 				CMLib.combat().dispenseExperience(beneficiaries,dividers,target);
 			}
 			target.makePeace();
 			target.setRiding(null);
 			for(int a=target.numEffects()-1;a>=0;a--) // personal effects
 			{
-				Ability A=target.fetchEffect(a);
+				final Ability A=target.fetchEffect(a);
 				if(A!=null) A.unInvoke();
 			}
 			target.setLocation(null);
 			while(target.numFollowers()>0)
 			{
-				MOB follower=target.fetchFollower(0);
+				final MOB follower=target.fetchFollower(0);
 				if(follower!=null)
 				{
 					follower.setFollowing(null);

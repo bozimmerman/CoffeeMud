@@ -48,7 +48,7 @@ public class Spell_Sonar extends Spell
 	{
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		super.unInvoke();
 		if(canBeUninvoked())
@@ -62,8 +62,8 @@ public class Spell_Sonar extends Spell
 		super.affectPhyStats(affected,affectableStats);
 		if(affected instanceof MOB)
 		{
-			MOB mob=(MOB)affected;
-			MOB victim=mob.getVictim();
+			final MOB mob=(MOB)affected;
+			final MOB victim=mob.getVictim();
 			if((victim==null)||(CMLib.flags().canBeHeardMovingBy(victim,mob)))
 				affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_SEE_VICTIM);
 			if(CMLib.flags().canHear(mob))
@@ -110,11 +110,11 @@ public class Spell_Sonar extends Spell
 			return false;
 
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> gain(s) sonar capability!":"^S<S-NAME> incant(s) softly, and <S-HIS-HER> ears become capable of sonar!^?");
+			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> gain(s) sonar capability!":"^S<S-NAME> incant(s) softly, and <S-HIS-HER> ears become capable of sonar!^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

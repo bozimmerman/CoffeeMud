@@ -51,7 +51,7 @@ public class Spell_DetectGold extends Spell
 	{
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		if(canBeUninvoked())
 			lastRoom=null;
 		super.unInvoke();
@@ -75,13 +75,13 @@ public class Spell_DetectGold extends Spell
 	}
 	public String metalHere(MOB mob, Environmental E, Item container)
 	{
-		StringBuffer msg=new StringBuffer("");
+		final StringBuffer msg=new StringBuffer("");
 		if(E==null) return msg.toString();
 		if((E instanceof Room)&&(CMLib.flags().canBeSeenBy(E,mob)))
 		{
 			for(int i=0;i<((Room)E).numItems();i++)
 			{
-				Item I=((Room)E).getItem(i);
+				final Item I=((Room)E).getItem(i);
 				metalCheck(mob,I,container,msg);
 			}
 		}
@@ -97,7 +97,7 @@ public class Spell_DetectGold extends Spell
 			CMLib.beanCounter().getTotalAbsoluteNativeValue((MOB)E);
 			for(int i=0;i<((MOB)E).numItems();i++)
 			{
-				Item I=((MOB)E).getItem(i);
+				final Item I=((MOB)E).getItem(i);
 				if(!I.amWearingAt(Wearable.IN_INVENTORY))
 					metalCheck(mob,I,container,msg);
 			}
@@ -130,7 +130,7 @@ public class Spell_DetectGold extends Spell
 				else
 				for(int m=0;m<R.numInhabitants();m++)
 				{
-					MOB M=R.fetchInhabitant(m);
+					final MOB M=R.fetchInhabitant(m);
 					if((M!=null)&&(M!=mob)&&(metalHere(mob,M,null).length()>0))
 					{ metalFound=true; break;}
 				}
@@ -185,7 +185,7 @@ public class Spell_DetectGold extends Spell
 		{
 			if((msg.tool()!=null)&&(msg.tool().ID().equals(ID())))
 			{
-				String str=metalHere((MOB)affected,msg.target(),null);
+				final String str=metalHere((MOB)affected,msg.target(),null);
 				if(str.length()>0)
 					((MOB)affected).tell(str);
 			}
@@ -194,7 +194,7 @@ public class Spell_DetectGold extends Spell
 			&&(metalHere((MOB)affected,msg.target(),null).length()>0)
 			&&(msg.source()!=msg.target()))
 			{
-				CMMsg msg2=CMClass.getMsg(msg.source(),msg.target(),this,CMMsg.MSG_LOOK,CMMsg.NO_EFFECT,CMMsg.NO_EFFECT,null);
+				final CMMsg msg2=CMClass.getMsg(msg.source(),msg.target(),this,CMMsg.MSG_LOOK,CMMsg.NO_EFFECT,CMMsg.NO_EFFECT,null);
 				msg.addTrailerMsg(msg2);
 			}
 		}
@@ -230,11 +230,11 @@ public class Spell_DetectGold extends Spell
 			return false;
 
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> gain(s) golden senses!":"^S<S-NAME> incant(s) softly, and gain(s) golden senses!^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> gain(s) golden senses!":"^S<S-NAME> incant(s) softly, and gain(s) golden senses!^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

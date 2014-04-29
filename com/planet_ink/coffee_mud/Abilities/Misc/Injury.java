@@ -51,7 +51,7 @@ public class Injury extends StdAbility implements HealthCondition
 	@Override
 	public String getHealthConditionDesc()
 	{
-		StringBuffer buf=new StringBuffer("");
+		final StringBuffer buf=new StringBuffer("");
 		Object[] O=null;
 		Vector V=null;
 		try
@@ -65,7 +65,7 @@ public class Injury extends StdAbility implements HealthCondition
 					{
 						O=(Object[])V.elementAt(i2);
 						String wounds="";
-						int dmg = ((Integer)O[1]).intValue();
+						final int dmg = ((Integer)O[1]).intValue();
 						if (dmg<5)
 							wounds=("a bruised ");
 						else if (dmg<10)
@@ -88,7 +88,7 @@ public class Injury extends StdAbility implements HealthCondition
 					}
 				}
 		}
-		catch(Exception e){}
+		catch(final Exception e){}
 		if(buf.length()==0) return "";
 		return buf.substring(1);
 	}
@@ -96,7 +96,7 @@ public class Injury extends StdAbility implements HealthCondition
 	@Override
 	public String displayText()
 	{
-		String buf=getHealthConditionDesc();
+		final String buf=getHealthConditionDesc();
 		if(buf.length()==0) return "";
 		return "(Injuries:"+buf+")";
 	}
@@ -112,7 +112,7 @@ public class Injury extends StdAbility implements HealthCondition
 	@Override
 	public void unInvoke()
 	{
-		Environmental E=affected;
+		final Environmental E=affected;
 		super.unInvoke();
 		if((E instanceof MOB)&&(canBeUninvoked())&&(!((MOB)E).amDead()))
 			((MOB)E).tell("Your injuries are healed.");
@@ -123,7 +123,7 @@ public class Injury extends StdAbility implements HealthCondition
 	{
 		Vector V=null;
 		Object[] O=null;
-		StringBuffer buf=new StringBuffer("");
+		final StringBuffer buf=new StringBuffer("");
 		if(injuries!=null)
 			for(int i=0;i<Race.BODY_PARTS;i++)
 			{
@@ -145,21 +145,21 @@ public class Injury extends StdAbility implements HealthCondition
 		{
 			if(affected instanceof MOB)
 			{
-				MOB mob=(MOB)affected;
+				final MOB mob=(MOB)affected;
 				txt=txt.substring(1);
-				int x=txt.indexOf('=');
+				final int x=txt.indexOf('=');
 				if(x<0)
 					return;
-				String chosenName=txt.substring(0,x);
-				String amount=txt.substring(x+1);
+				final String chosenName=txt.substring(0,x);
+				final String amount=txt.substring(x+1);
 				Amputation A=(Amputation)mob.fetchEffect("Amputation");
 				if(A==null) A=new Amputation();
-				List<String> remains=A.remainingLimbNameSet(mob);
+				final List<String> remains=A.remainingLimbNameSet(mob);
 				if(mob.charStats().getBodyPart(Race.BODY_HEAD)>0)
 					remains.add("head");
 				if(mob.charStats().getBodyPart(Race.BODY_TORSO)>0)
 					remains.add("torso");
-				int chosenOne=remains.indexOf(chosenName);
+				final int chosenOne=remains.indexOf(chosenName);
 				if(chosenOne<0)
 					return;
 				if(injuries==null)
@@ -175,7 +175,7 @@ public class Injury extends StdAbility implements HealthCondition
 					int whichInjury=-1;
 					for(int i=0;i<bodyVec.size();i++)
 					{
-						Object[] O=(Object[])bodyVec.elementAt(i);
+						final Object[] O=(Object[])bodyVec.elementAt(i);
 						if(((String)O[0]).equalsIgnoreCase(remains.get(chosenOne)))
 						{ whichInjury=i; break;}
 					}
@@ -201,18 +201,18 @@ public class Injury extends StdAbility implements HealthCondition
 		else
 		{
 			injuries=new Vector[Race.BODY_PARTS];
-			List<String> sets=CMParms.parseSemicolons(txt,true);
+			final List<String> sets=CMParms.parseSemicolons(txt,true);
 			for(int s=0;s<sets.size();s++)
 			{
-				String set=sets.get(s);
-				List<String> V=CMParms.parseAny(set,':',false);
+				final String set=sets.get(s);
+				final List<String> V=CMParms.parseAny(set,':',false);
 				if(V.size()==3)
 				{
-					int part=CMath.s_int(V.get(0));
+					final int part=CMath.s_int(V.get(0));
 					if((part>=0)&&(part<Race.BODY_PARTS))
 					{
-						String msg=V.get(1);
-						int hurt=CMath.s_int(V.get(V.size()-1));
+						final String msg=V.get(1);
+						final int hurt=CMath.s_int(V.get(V.size()-1));
 						if(injuries[part]==null)
 							injuries[part] = new Vector();
 						injuries[part].addElement(new Object[]{msg,Integer.valueOf(hurt)});
@@ -222,7 +222,7 @@ public class Injury extends StdAbility implements HealthCondition
 		}
 		if(affected instanceof MOB)
 		{
-			MOB mob=(MOB)affected;
+			final MOB mob=(MOB)affected;
 			if(lastHP<0)
 				lastHP=mob.curState().getHitPoints();
 		}
@@ -233,7 +233,7 @@ public class Injury extends StdAbility implements HealthCondition
 	{
 		if((affected instanceof MOB)&&(tickID==Tickable.TICKID_MOB))
 		{
-			MOB mob=(MOB)affected;
+			final MOB mob=(MOB)affected;
 			if(mob.curState().getHitPoints()>=mob.maxState().getHitPoints())
 			{
 				for(int i=0;i<injuries.length;i++)
@@ -243,12 +243,12 @@ public class Injury extends StdAbility implements HealthCondition
 			else
 			if((mob.curState().getHitPoints()>lastHP)&&(lastHP>=0))
 			{
-				Vector choicesToHeal=new Vector();
+				final Vector choicesToHeal=new Vector();
 				for(int i=0;i<injuries.length;i++)
 					if(injuries[i]!=null)
 						for(int x=0;x<injuries[i].size();x++)
 						{
-							int[] choice=new int[2];
+							final int[] choice=new int[2];
 							choice[0]=i; choice[1]=x;
 							choicesToHeal.addElement(choice);
 						}
@@ -265,14 +265,14 @@ public class Injury extends StdAbility implements HealthCondition
 					int tries=100;
 					while((pct>0)&&((--tries)>0)&&(choicesToHeal.size()>0))
 					{
-						int which=CMLib.dice().roll(1,choicesToHeal.size(),-1);
-						int[] choice=(int[])choicesToHeal.elementAt(which);
+						final int which=CMLib.dice().roll(1,choicesToHeal.size(),-1);
+						final int[] choice=(int[])choicesToHeal.elementAt(which);
 						if(choice[0]<injuries.length)
 						{
-							Vector V=injuries[choice[0]];
+							final Vector V=injuries[choice[0]];
 							if((V!=null)&&(choice[1]<V.size()))
 							{
-								Object[] O=(Object[])V.elementAt(choice[1]);
+								final Object[] O=(Object[])V.elementAt(choice[1]);
 								if(pct>((Integer)O[1]).intValue())
 								{
 									V.removeElement(O);
@@ -311,7 +311,7 @@ public class Injury extends StdAbility implements HealthCondition
 		int which=-1;
 		for(int i=0;i<TRANSLATE.length;i++)
 		{
-			int y1=message.indexOf(TRANSLATE[i][0],x);
+			final int y1=message.indexOf(TRANSLATE[i][0],x);
 			if((y1>x)&&(y1<y)){ y=y1; which=i;}
 		}
 		if(which>=0)
@@ -332,17 +332,17 @@ public class Injury extends StdAbility implements HealthCondition
 		   ||((CMProps.getIntVar(CMProps.Int.INJPCTHP)>=(int)Math.round(CMath.div(((MOB)msg.target()).curState().getHitPoints(),((MOB)msg.target()).maxState().getHitPoints())*100.0))
 			&&(CMLib.dice().rollPercentage()<=CMProps.getIntVar(CMProps.Int.INJPCTCHANCE)))))
 		{
-			MOB mob=(MOB)msg.target();
+			final MOB mob=(MOB)msg.target();
 			Amputation A=(Amputation)mob.fetchEffect("Amputation");
 			if(A==null) A=new Amputation();
-			List<String> remains=A.remainingLimbNameSet(mob);
+			final List<String> remains=A.remainingLimbNameSet(mob);
 			if(mob.charStats().getBodyPart(Race.BODY_HEAD)>0)
 				remains.add("head");
 			if(mob.charStats().getBodyPart(Race.BODY_TORSO)>0)
 				remains.add("torso");
 			if(remains.size()>0)
 			{
-				int[] chances=new int[remains.size()];
+				final int[] chances=new int[remains.size()];
 				int total=0;
 				for(int x=0;x<remains.size();x++)
 				{
@@ -354,7 +354,7 @@ public class Injury extends StdAbility implements HealthCondition
 					}
 					if(bodyPart>=0)
 					{
-						int amount=INJURYCHANCE[bodyPart];
+						final int amount=INJURYCHANCE[bodyPart];
 						chances[x]+=amount;
 						total+=amount;
 					}
@@ -386,7 +386,7 @@ public class Injury extends StdAbility implements HealthCondition
 								break;
 						}
 					}
-					int BodyPct=(int)Math.round(CMath.div(msg.value(),mob.maxState().getHitPoints())*100.0);
+					final int BodyPct=(int)Math.round(CMath.div(msg.value(),mob.maxState().getHitPoints())*100.0);
 					int LimbPct=BodyPct*CMProps.getIntVar(CMProps.Int.INJMULTIPLIER);
 					if(LimbPct<1) LimbPct=1;
 					int bodyLoc=-1;
@@ -402,11 +402,11 @@ public class Injury extends StdAbility implements HealthCondition
 						int whichInjury=-1;
 						for(int i=0;i<bodyVec.size();i++)
 						{
-							Object[] O=(Object[])bodyVec.elementAt(i);
+							final Object[] O=(Object[])bodyVec.elementAt(i);
 							if(((String)O[0]).equalsIgnoreCase(remains.get(chosenOne)))
 							{ whichInjury=i; break;}
 						}
-						String newTarg=fixMessageString(msg.targetMessage(),remains.get(chosenOne).toLowerCase());
+						final String newTarg=fixMessageString(msg.targetMessage(),remains.get(chosenOne).toLowerCase());
 						if(!newTarg.equalsIgnoreCase(msg.targetMessage()))
 						{
 							msg.modify(msg.source(),msg.target(),msg.tool(),

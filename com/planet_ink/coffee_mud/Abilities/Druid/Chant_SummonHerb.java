@@ -66,16 +66,16 @@ public class Chant_SummonHerb extends Chant
 			return false;
 
 		// now see if it worked
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":"^S<S-NAME> chant(s) to the ground.^?");
+			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":"^S<S-NAME> chant(s) to the ground.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				for(int i=0;i<((adjustedLevel(mob,asLevel)/4)+1);i++)
 				{
-					Food newItem=(Food)CMClass.getBasicItem("GenFoodResource");
+					final Food newItem=(Food)CMClass.getBasicItem("GenFoodResource");
 					newItem.setName("some herbs");
 					newItem.setDisplayText("Some herbs are growing here.");
 					newItem.setDescription("");

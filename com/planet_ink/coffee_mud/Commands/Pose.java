@@ -44,7 +44,7 @@ public class Pose extends StdCommand
 	{
 		if((commands.size()>0)&&(commands.firstElement().toString().equalsIgnoreCase("NOPOSE")))
 		{
-			PlayerStats pstats = mob.playerStats();
+			final PlayerStats pstats = mob.playerStats();
 			if(pstats != null)
 			{
 				if((pstats.getSavedPose()==null)||(pstats.getSavedPose().length()==0))
@@ -72,13 +72,13 @@ public class Pose extends StdCommand
 			combinedCommands=combinedCommands.trim();
 		else
 			combinedCommands=" "+combinedCommands.trim();
-		String emote="^E<S-NAME>"+combinedCommands+" ^?";
-		CMMsg msg=CMClass.getMsg(mob,null,null,CMMsg.MSG_EMOTE | CMMsg.MASK_ALWAYS,"^E"+mob.name()+combinedCommands+" ^?",emote,emote);
+		final String emote="^E<S-NAME>"+combinedCommands+" ^?";
+		final CMMsg msg=CMClass.getMsg(mob,null,null,CMMsg.MSG_EMOTE | CMMsg.MASK_ALWAYS,"^E"+mob.name()+combinedCommands+" ^?",emote,emote);
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
 			mob.setDisplayText(mob.Name()+combinedCommands);
-			PlayerStats pstats = mob.playerStats();
+			final PlayerStats pstats = mob.playerStats();
 			if(pstats != null)
 				pstats.setSavedPose(mob.Name()+combinedCommands);
 		}

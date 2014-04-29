@@ -50,14 +50,14 @@ public class Fighter_Endurance extends FighterSkill
 		if(!(affected instanceof MOB))
 			return super.tick(ticking,tickID);
 
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		if(((CMLib.flags().isSitting(mob))||(CMLib.flags().isSleeping(mob)))
 		&&(!mob.isInCombat())
 		&&((mob.fetchAbility(ID())==null)||proficiencyCheck(null,0,false))
 		&&(tickID==Tickable.TICKID_MOB))
 		{
-			int bonus=(getXLEVELLevel(mob)/3)+1;
+			final int bonus=(getXLEVELLevel(mob)/3)+1;
 			for(int x=0;x<bonus;x++)
 				CMLib.combat().recoverTick(mob);
 			helpProficiency(mob, 0);

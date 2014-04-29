@@ -53,13 +53,13 @@ public class Prayer_Weather extends Prayer
 		int size=mob.location().getArea().numberOfProperIDedRooms();
 		size=size-((mob.phyStats().level()+(2*super.getXLEVELLevel(mob)))*20);
 		if(size<0) size=0;
-		boolean success=proficiencyCheck(mob,-size,auto);
+		final boolean success=proficiencyCheck(mob,-size,auto);
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"The sky changes color!":"^S<S-NAME> "+prayWord(mob)+" for a change in weather!^?");
+			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"The sky changes color!":"^S<S-NAME> "+prayWord(mob)+" for a change in weather!^?");
 			if(mob.location().okMessage(mob,msg))
 			{
-				int switcher=CMLib.dice().roll(1,3,0);
+				final int switcher=CMLib.dice().roll(1,3,0);
 				mob.location().send(mob,msg);
 				switch(mob.location().getArea().getClimateObj().weatherType(mob.location()))
 				{

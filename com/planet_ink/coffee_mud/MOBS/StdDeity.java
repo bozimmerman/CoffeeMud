@@ -14,6 +14,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.TrackingLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /*
@@ -191,10 +192,10 @@ public class StdDeity extends StdMOB implements Deity
 	public String getTriggerDesc(List<DeityTrigger> V)
 	{
 		if((V==null)||(V.size()==0)) return "Never";
-		StringBuffer buf=new StringBuffer("");
+		final StringBuffer buf=new StringBuffer("");
 		for(int v=0;v<V.size();v++)
 		{
-			DeityTrigger DT=V.get(v);
+			final DeityTrigger DT=V.get(v);
 			if(v>0) buf.append(", "+((DT.previousConnect==CONNECT_AND)?"and ":"or "));
 			switch(DT.triggerCode)
 			{
@@ -230,7 +231,7 @@ public class StdDeity extends StdMOB implements Deity
 					buf.append("the player should be in the deities room of infused "+DT.parm1.toLowerCase()+"-ness.");
 				else
 				{
-					Room R=CMLib.map().getRoom(DT.parm1);
+					final Room R=CMLib.map().getRoom(DT.parm1);
 					if(R==null)
 						buf.append("the player should be in some unknown place");
 					else
@@ -243,7 +244,7 @@ public class StdDeity extends StdMOB implements Deity
 				break;
 			case TRIGGER_CAST:
 				{
-				Ability A=CMClass.findAbility(DT.parm1);
+				final Ability A=CMClass.findAbility(DT.parm1);
 				if(A==null)
 					buf.append("the player should cast '"+DT.parm1+"'");
 				else
@@ -277,7 +278,7 @@ public class StdDeity extends StdMOB implements Deity
 			case TRIGGER_PUTMATERIAL:
 				{
 					String material="something";
-					int t=CMath.s_int(DT.parm1);
+					final int t=CMath.s_int(DT.parm1);
 					RawMaterial.Material m;
 					if(((t&RawMaterial.RESOURCE_MASK)==0)
 					&&((m=RawMaterial.Material.findByMask(t))!=null))
@@ -291,7 +292,7 @@ public class StdDeity extends StdMOB implements Deity
 			case TRIGGER_BURNMATERIAL:
 				{
 					String material="something";
-					int t=CMath.s_int(DT.parm1);
+					final int t=CMath.s_int(DT.parm1);
 					RawMaterial.Material m;
 					if(((t&RawMaterial.RESOURCE_MASK)==0)
 					&&((m=RawMaterial.Material.findByMask(t))!=null))
@@ -410,11 +411,11 @@ public class StdDeity extends StdMOB implements Deity
 
 	public synchronized void bestowBlessing(MOB mob, Ability Blessing)
 	{
-		Room prevRoom=location();
+		final Room prevRoom=location();
 		mob.location().bringMobHere(this,false);
 		if(Blessing!=null)
 		{
-			Vector V=new Vector();
+			final Vector V=new Vector();
 			if(Blessing.canTarget(Ability.CAN_MOBS))
 			{
 				V.addElement(mob.name()+"$");
@@ -461,11 +462,11 @@ public class StdDeity extends StdMOB implements Deity
 
 	public synchronized void bestowCurse(MOB mob, Ability Curse)
 	{
-		Room prevRoom=location();
+		final Room prevRoom=location();
 		mob.location().bringMobHere(this,false);
 		if(Curse!=null)
 		{
-			Vector V=new Vector();
+			final Vector V=new Vector();
 			if(Curse.canTarget(Ability.CAN_MOBS))
 			{
 				V.addElement(mob.location().getContextName(mob));
@@ -511,21 +512,21 @@ public class StdDeity extends StdMOB implements Deity
 				{
 					for(int b=0;b<numBlessings();b++)
 					{
-						Ability Blessing=fetchBlessing(b);
+						final Ability Blessing=fetchBlessing(b);
 						if(Blessing!=null)
 							bestowBlessing(mob,Blessing);
 					}
 				}
 				else
 				{
-					int randNum=CMLib.dice().roll(1,numBlessings(),-1);
-					Ability Blessing=fetchBlessing(randNum);
+					final int randNum=CMLib.dice().roll(1,numBlessings(),-1);
+					final Ability Blessing=fetchBlessing(randNum);
 					if((Blessing!=null)&&(!fetchBlessingCleric(randNum)))
 						bestowBlessing(mob,Blessing);
 				}
 			}
 		}
-		catch(Exception e)
+		catch(final Exception e)
 		{
 			Log.errOut("StdDeity",e);
 		}
@@ -540,12 +541,12 @@ public class StdDeity extends StdMOB implements Deity
 			if((!alreadyPowered(mob))&&(numPowers()>0))
 			{
 				mob.location().show(this,mob,CMMsg.MSG_OK_VISUAL,"You feel the power of <S-NAME> in <T-NAME>.");
-				Ability Power=fetchPower(CMLib.dice().roll(1,numPowers(),-1));
+				final Ability Power=fetchPower(CMLib.dice().roll(1,numPowers(),-1));
 				if(Power!=null)
 					bestowPower(mob,Power);
 			}
 		}
-		catch(Exception e)
+		catch(final Exception e)
 		{
 			Log.errOut("StdDeity",e);
 		}
@@ -565,21 +566,21 @@ public class StdDeity extends StdMOB implements Deity
 				{
 					for(int b=0;b<numCurses();b++)
 					{
-						Ability Curse=fetchCurse(b);
+						final Ability Curse=fetchCurse(b);
 						if(Curse!=null)
 							bestowCurse(mob,Curse);
 					}
 				}
 				else
 				{
-					int randNum=CMLib.dice().roll(1,numCurses(),-1);
-					Ability Curse=fetchCurse(randNum);
+					final int randNum=CMLib.dice().roll(1,numCurses(),-1);
+					final Ability Curse=fetchCurse(randNum);
 					if((Curse!=null)&&(!fetchBlessingCleric(randNum)))
 						bestowCurse(mob,Curse);
 				}
 			}
 		}
-		catch(Exception e)
+		catch(final Exception e)
 		{
 			Log.errOut("StdDeity",e);
 		}
@@ -593,7 +594,7 @@ public class StdDeity extends StdMOB implements Deity
 			mob.location().show(this,mob,CMMsg.MSG_OK_VISUAL,"<S-NAME> remove(s) <S-HIS-HER> blessings from <T-NAME>.");
 			for(int a=mob.numEffects()-1;a>=0;a--) // reverse, and personal
 			{
-				Ability A=mob.fetchEffect(a);
+				final Ability A=mob.fetchEffect(a);
 				if((A!=null)&&(A.invoker()==this))
 				{
 					A.unInvoke();
@@ -641,7 +642,7 @@ public class StdDeity extends StdMOB implements Deity
 		if(numPowers()>0)
 		for(int a=0;a<mob.numAbilities();a++)
 		{
-			Ability A=mob.fetchAbility(a);
+			final Ability A=mob.fetchAbility(a);
 			if((A!=null)&&(!A.isSavable()))
 				return true;
 		}
@@ -654,7 +655,7 @@ public class StdDeity extends StdMOB implements Deity
 		for(int v=0;v<V.size();v++)
 		{
 			boolean yup=false;
-			DeityTrigger DT=V.get(v);
+			final DeityTrigger DT=V.get(v);
 			if((msg.sourceMinor()==TRIG_WATCH[DT.triggerCode])
 			||(TRIG_WATCH[DT.triggerCode]==-999))
 			{
@@ -678,7 +679,7 @@ public class StdDeity extends StdMOB implements Deity
 						yup=true;
 					else
 					{
-						boolean[] checks=trigParts.get(msg.source().Name());
+						final boolean[] checks=trigParts.get(msg.source().Name());
 						if((checks!=null)&&(checks[v-1])&&(!checks[v]))
 						{
 							yup=true;
@@ -696,14 +697,14 @@ public class StdDeity extends StdMOB implements Deity
 						yup=true;
 					else
 					{
-						boolean[] checks=trigParts.get(msg.source().Name());
-						Room R=msg.source().location();
+						final boolean[] checks=trigParts.get(msg.source().Name());
+						final Room R=msg.source().location();
 						if((checks!=null)&&(checks[v-1])&&(!checks[v])&&(R!=null))
 						{
 							yup=true;
 							for(int m=0;m<R.numInhabitants();m++)
 							{
-								MOB M=R.fetchInhabitant(m);
+								final MOB M=R.fetchInhabitant(m);
 								if(M!=null)
 								{
 									norecurse=true;
@@ -722,14 +723,14 @@ public class StdDeity extends StdMOB implements Deity
 						yup=true;
 					else
 					{
-						boolean[] checks=trigParts.get(msg.source().Name());
-						Room R=msg.source().location();
+						final boolean[] checks=trigParts.get(msg.source().Name());
+						final Room R=msg.source().location();
 						if((checks!=null)&&(checks[v-1])&&(!checks[v])&&(R!=null))
 						{
 							yup=true;
 							for(int m=0;m<R.numInhabitants();m++)
 							{
-								MOB M=R.fetchInhabitant(m);
+								final MOB M=R.fetchInhabitant(m);
 								if((M!=null)&&(M!=msg.source()))
 								{
 									norecurse=true;
@@ -749,7 +750,7 @@ public class StdDeity extends StdMOB implements Deity
 						yup=true;
 					else
 					{
-						boolean[] checks=trigParts.get(msg.source().Name());
+						final boolean[] checks=trigParts.get(msg.source().Name());
 						if((checks!=null)&&(checks[v-1])&&(!checks[v])&&(trigTimes.get(msg.source().Name())!=null))
 						{
 							boolean proceed=true;
@@ -928,17 +929,17 @@ public class StdDeity extends StdMOB implements Deity
 					V=clericTriggers;
 				if((V!=null)&&(V.size()>0))
 				{
-					boolean recheck=triggerCheck(msg,V,trigBlessingParts,trigBlessingTimes);
+					final boolean recheck=triggerCheck(msg,V,trigBlessingParts,trigBlessingTimes);
 
 					if((recheck)&&(!norecurse)&&(!alreadyBlessed(msg.source())))
 					{
-						boolean[] checks=trigBlessingParts.get(msg.source().Name());
+						final boolean[] checks=trigBlessingParts.get(msg.source().Name());
 						if((checks!=null)&&(checks.length==V.size())&&(checks.length>0))
 						{
 							boolean rollingTruth=checks[0];
 							for(int v=1;v<V.size();v++)
 							{
-								DeityTrigger DT=V.get(v);
+								final DeityTrigger DT=V.get(v);
 								if(DT.previousConnect==CONNECT_AND)
 									rollingTruth=rollingTruth&&checks[v];
 								else
@@ -957,16 +958,16 @@ public class StdDeity extends StdMOB implements Deity
 					V=clericCurseTriggers;
 				if((V!=null)&&(V.size()>0))
 				{
-					boolean recheck=triggerCheck(msg,V,trigCurseParts,trigCurseTimes);
+					final boolean recheck=triggerCheck(msg,V,trigCurseParts,trigCurseTimes);
 					if((recheck)&&(!norecurse))
 					{
-						boolean[] checks=trigCurseParts.get(msg.source().Name());
+						final boolean[] checks=trigCurseParts.get(msg.source().Name());
 						if((checks!=null)&&(checks.length==V.size())&&(checks.length>0))
 						{
 							boolean rollingTruth=checks[0];
 							for(int v=1;v<V.size();v++)
 							{
-								DeityTrigger DT=V.get(v);
+								final DeityTrigger DT=V.get(v);
 								if(DT.previousConnect==CONNECT_AND)
 									rollingTruth=rollingTruth&&checks[v];
 								else
@@ -982,20 +983,20 @@ public class StdDeity extends StdMOB implements Deity
 			&&(msg.source().charStats().getCurrentClass().baseClass().equals("Cleric")
 				||(CMSecurity.isASysOp(msg.source()))))
 			{
-				List<DeityTrigger> V=clericPowerTriggers;
+				final List<DeityTrigger> V=clericPowerTriggers;
 				if((V!=null)&&(V.size()>0))
 				{
-					boolean recheck=triggerCheck(msg,V,trigPowerParts,trigPowerTimes);
+					final boolean recheck=triggerCheck(msg,V,trigPowerParts,trigPowerTimes);
 
 					if((recheck)&&(!norecurse)&&(!alreadyPowered(msg.source())))
 					{
-						boolean[] checks=trigPowerParts.get(msg.source().Name());
+						final boolean[] checks=trigPowerParts.get(msg.source().Name());
 						if((checks!=null)&&(checks.length==V.size())&&(checks.length>0))
 						{
 							boolean rollingTruth=checks[0];
 							for(int v=1;v<V.size();v++)
 							{
-								DeityTrigger DT=V.get(v);
+								final DeityTrigger DT=V.get(v);
 								if(DT.previousConnect==CONNECT_AND)
 									rollingTruth=rollingTruth&&checks[v];
 								else
@@ -1012,20 +1013,20 @@ public class StdDeity extends StdMOB implements Deity
 				||(CMSecurity.isASysOp(msg.source())))
 			&&(CMLib.law().getClericInfused(msg.source().location())==this))
 			{
-				List<DeityTrigger> V=serviceTriggers;
+				final List<DeityTrigger> V=serviceTriggers;
 				if((V!=null)&&(V.size()>0))
 				{
-					boolean recheck=triggerCheck(msg,V,trigServiceParts,trigServiceTimes);
+					final boolean recheck=triggerCheck(msg,V,trigServiceParts,trigServiceTimes);
 
 					if((recheck)&&(!norecurse)&&(!alreadyServiced(msg.source(),msg.source().location())))
 					{
-						boolean[] checks=trigServiceParts.get(msg.source().Name());
+						final boolean[] checks=trigServiceParts.get(msg.source().Name());
 						if((checks!=null)&&(checks.length==V.size())&&(checks.length>0))
 						{
 							boolean rollingTruth=checks[0];
 							for(int v=1;v<V.size();v++)
 							{
-								DeityTrigger DT=V.get(v);
+								final DeityTrigger DT=V.get(v);
 								if(rollingTruth) startServiceIfNecessary(msg.source(),msg.source().location());
 								if(DT.previousConnect==CONNECT_AND)
 									rollingTruth=rollingTruth&&checks[v];
@@ -1044,26 +1045,26 @@ public class StdDeity extends StdMOB implements Deity
 	protected void startServiceIfNecessary(MOB mob, Room room)
 	{
 		if((mob==null)||(room==null)) return;
-		Vector parishaners=new Vector();
+		final Vector parishaners=new Vector();
 		synchronized(services)
 		{
-			for(WorshipService w : services)
+			for(final WorshipService w : services)
 				if(w.room==room)
 					return;
-			WorshipService service = new WorshipService();
+			final WorshipService service = new WorshipService();
 			service.room=room;
 			service.parishaners = parishaners;
 			service.startTime = System.currentTimeMillis();
 			service.cleric = mob;
 			service.serviceCompleted = false;
 			services.add(service);
-			Ability A=CMLib.law().getClericInfusion(room);
+			final Ability A=CMLib.law().getClericInfusion(room);
 			if(A!=null) A.setAbilityCode(1);
 		}
 		Room R=null;
 		MOB M=null;
-		TrackingLibrary.TrackingFlags flags=new TrackingLibrary.TrackingFlags();
-		List<Room> V=CMLib.tracking().getRadiantRooms(room,flags,5+(mob.phyStats().level()/5));
+		final TrackingLibrary.TrackingFlags flags=new TrackingLibrary.TrackingFlags();
+		final List<Room> V=CMLib.tracking().getRadiantRooms(room,flags,5+(mob.phyStats().level()/5));
 		for(int v=0;v<V.size();v++)
 		{
 			R=V.get(v);
@@ -1079,7 +1080,7 @@ public class StdDeity extends StdMOB implements Deity
 					else
 					if(!CMLib.flags().isATrackingMonster(M))
 					{
-						Ability TRACKA=CMClass.getAbility("Skill_Track");
+						final Ability TRACKA=CMClass.getAbility("Skill_Track");
 						if(TRACKA!=null)
 						{
 							TRACKA.invoke(M,CMParms.parse("\""+CMLib.map().getExtendedRoomID(room)+"\""),room,true,0);
@@ -1112,12 +1113,12 @@ public class StdDeity extends StdMOB implements Deity
 		{
 			for(int d=services.size()-1;d>=0;d--)
 			{
-				WorshipService service = services.get(d);
+				final WorshipService service = services.get(d);
 				if(System.currentTimeMillis()-service.startTime>(1000*60*30))
 				{
 					undoService(service.parishaners);
 					services.remove(d);
-					Ability A=CMLib.law().getClericInfusion(service.room);
+					final Ability A=CMLib.law().getClericInfusion(service.room);
 					if(A!=null) A.setAbilityCode(0);
 				}
 				else
@@ -1138,11 +1139,11 @@ public class StdDeity extends StdMOB implements Deity
 		WorshipService service = null;
 		synchronized(services)
 		{
-			for(WorshipService s : services)
+			for(final WorshipService s : services)
 				if((s.room==room) && (s.cleric == mob))
 					service = s;
 			if(service == null)
-				for(WorshipService s : services)
+				for(final WorshipService s : services)
 					if(s.room==room)
 						service = s;
 		}
@@ -1159,12 +1160,12 @@ public class StdDeity extends StdMOB implements Deity
 				totalLevels+=M.phyStats().level();
 				if(!M.isMonster())
 					totalLevels+=(M.phyStats().level()*2);
-				Ability A=M.fetchEffect("Skill_Convert");
+				final Ability A=M.fetchEffect("Skill_Convert");
 				if(A!=null) A.makeLongLasting();
 			}
 		}
 		undoService(service.parishaners);
-		int exp=(int)Math.round(CMath.div(totalLevels,mob.phyStats().level())*10.0);
+		final int exp=(int)Math.round(CMath.div(totalLevels,mob.phyStats().level())*10.0);
 		CMLib.leveler().postExperience(mob,null,null,exp,false);
 		trigServiceParts.remove(mob.Name());
 		trigServiceTimes.remove(mob.Name());
@@ -1174,8 +1175,8 @@ public class StdDeity extends StdMOB implements Deity
 	public boolean cancelService(WorshipService service)
 	{
 		if(service == null) return false;
-		Room room = service.room;
-		MOB mob = service.cleric;
+		final Room room = service.room;
+		final MOB mob = service.cleric;
 		MOB M=null;
 		for(int m=0;m<room.numInhabitants();m++)
 		{
@@ -1183,7 +1184,7 @@ public class StdDeity extends StdMOB implements Deity
 			if(M==null) continue;
 			if(M.getWorshipCharID().equals(Name()))
 			{
-				Ability A=M.fetchEffect("Skill_Convert");
+				final Ability A=M.fetchEffect("Skill_Convert");
 				if(A!=null) A.unInvoke();
 			}
 		}
@@ -1194,7 +1195,7 @@ public class StdDeity extends StdMOB implements Deity
 		synchronized(services)
 		{
 			services.remove(service);
-			Ability A=CMLib.law().getClericInfusion(service.room);
+			final Ability A=CMLib.law().getClericInfusion(service.room);
 			if(A!=null) A.setAbilityCode(0);
 		}
 		trigServiceParts.remove(mob.Name());
@@ -1211,9 +1212,9 @@ public class StdDeity extends StdMOB implements Deity
 		&&((--rebukeCheckDown)<0))
 		{
 			rebukeCheckDown=10;
-			for(Enumeration p=CMLib.players().players();p.hasMoreElements();)
+			for(final Enumeration p=CMLib.players().players();p.hasMoreElements();)
 			{
-				MOB M=(MOB)p.nextElement();
+				final MOB M=(MOB)p.nextElement();
 				if((lastBlackmark>0)
 				&&(blacklist!=null)
 				&&(blacklist!=M)
@@ -1227,7 +1228,7 @@ public class StdDeity extends StdMOB implements Deity
 						{
 							if((blacklist==M)&&((++blackmarks)>30))
 							{
-								CMMsg msg=CMClass.getMsg(M,this,null,CMMsg.MSG_REBUKE,"<S-NAME> <S-HAS-HAVE> been rebuked by <T-NAME>!!");
+								final CMMsg msg=CMClass.getMsg(M,this,null,CMMsg.MSG_REBUKE,"<S-NAME> <S-HAS-HAVE> been rebuked by <T-NAME>!!");
 								if((M.location()!=null)&&(M.okMessage(M,msg)))
 									M.location().send(M,msg);
 								blackmarks=0;
@@ -1253,7 +1254,7 @@ public class StdDeity extends StdMOB implements Deity
 					{
 						if((blacklist==M)&&((++blackmarks)>30))
 						{
-							CMMsg msg=CMClass.getMsg(M,this,null,CMMsg.MSG_REBUKE,"<S-NAME> <S-HAS-HAVE> been rebuked by <T-NAME>!!");
+							final CMMsg msg=CMClass.getMsg(M,this,null,CMMsg.MSG_REBUKE,"<S-NAME> <S-HAS-HAVE> been rebuked by <T-NAME>!!");
 							if((M.location()!=null)&&(M.okMessage(M,msg)))
 								M.location().send(M,msg);
 						}
@@ -1274,9 +1275,9 @@ public class StdDeity extends StdMOB implements Deity
 				else
 					if(blacklist==M){ blackmarks=0; blacklist=null; lastBlackmark=0;}
 			}
-			long curTime=System.currentTimeMillis()-60000;
+			final long curTime=System.currentTimeMillis()-60000;
 			Long L=null;
-			for(String key : trigBlessingTimes.keySet())
+			for(final String key : trigBlessingTimes.keySet())
 			{
 				L=trigBlessingTimes.get(key);
 				if((L!=null)&&(L.longValue()<curTime))
@@ -1285,7 +1286,7 @@ public class StdDeity extends StdMOB implements Deity
 					trigBlessingParts.remove(key);
 				}
 			}
-			for(String key : trigPowerTimes.keySet())
+			for(final String key : trigPowerTimes.keySet())
 			{
 				L=trigPowerTimes.get(key);
 				if((L!=null)&&(L.longValue()<curTime))
@@ -1294,7 +1295,7 @@ public class StdDeity extends StdMOB implements Deity
 					trigPowerParts.remove(key);
 				}
 			}
-			for(String key : trigCurseTimes.keySet())
+			for(final String key : trigCurseTimes.keySet())
 			{
 				L=trigCurseTimes.get(key);
 				if((L!=null)&&(L.longValue()<curTime))
@@ -1303,7 +1304,7 @@ public class StdDeity extends StdMOB implements Deity
 					trigCurseParts.remove(key);
 				}
 			}
-			for(String key : trigServiceTimes.keySet())
+			for(final String key : trigServiceTimes.keySet())
 			{
 				L=trigServiceTimes.get(key);
 				if((L!=null)&&(L.longValue()<curTime))
@@ -1311,7 +1312,7 @@ public class StdDeity extends StdMOB implements Deity
 					LinkedList<WorshipService> delThese = null;
 					synchronized(services)
 					{
-						for(WorshipService service : services)
+						for(final WorshipService service : services)
 							if((service.cleric!=null)
 							&&(service.cleric.Name().equalsIgnoreCase(key))
 							&&(!service.serviceCompleted))
@@ -1322,20 +1323,19 @@ public class StdDeity extends StdMOB implements Deity
 							}
 					}
 					if(delThese != null)
-						for(WorshipService w : delThese)
+						for(final WorshipService w : delThese)
 							cancelService(w);
 				}
 			}
 		}
-		for(Iterator<MOB> m=waitingFor.iterator();m.hasNext();)
+		for (final MOB M : waitingFor)
 		{
 			try
 			{
-				final MOB M=m.next();
-				waitingFor.remove(M);
 				executeMsg(this,CMClass.getMsg(M,null,null,CMMsg.MSG_OK_VISUAL,null));
-			}catch(Exception e){}
+			}catch(final Exception e){}
 		}
+		waitingFor.clear();
 		return true;
 	}
 
@@ -1345,7 +1345,7 @@ public class StdDeity extends StdMOB implements Deity
 		if(to==null) return;
 		for(int a=0;a<numBlessings();a++)
 		{
-			Ability A=fetchBlessing(a);
+			final Ability A=fetchBlessing(a);
 			if((A!=null)&&(A.ID().equals(to.ID())))
 				return;
 		}
@@ -1355,7 +1355,7 @@ public class StdDeity extends StdMOB implements Deity
 	public void delBlessing(Ability to)
 	{
 		if(blessings.size()==0) return;
-		for(DeityPower P : blessings)
+		for(final DeityPower P : blessings)
 			if(P.power==to)
 				blessings.remove(P);
 	}
@@ -1371,7 +1371,7 @@ public class StdDeity extends StdMOB implements Deity
 		{
 			return blessings.get(index).power;
 		}
-		catch(java.lang.ArrayIndexOutOfBoundsException x){}
+		catch(final java.lang.ArrayIndexOutOfBoundsException x){}
 		return null;
 	}
 	@Override
@@ -1381,7 +1381,7 @@ public class StdDeity extends StdMOB implements Deity
 		{
 			return blessings.get(index).clericOnly;
 		}
-		catch(java.lang.ArrayIndexOutOfBoundsException x){}
+		catch(final java.lang.ArrayIndexOutOfBoundsException x){}
 		return false;
 	}
 	@Override
@@ -1389,7 +1389,7 @@ public class StdDeity extends StdMOB implements Deity
 	{
 		for(int a=0;a<numBlessings();a++)
 		{
-			Ability A=fetchBlessing(a);
+			final Ability A=fetchBlessing(a);
 			if((A!=null)&&((A.ID().equalsIgnoreCase(ID))||(A.Name().equalsIgnoreCase(ID))))
 				return fetchBlessingCleric(a);
 		}
@@ -1400,7 +1400,7 @@ public class StdDeity extends StdMOB implements Deity
 	{
 		for(int a=0;a<numBlessings();a++)
 		{
-			Ability A=fetchBlessing(a);
+			final Ability A=fetchBlessing(a);
 			if((A!=null)&&((A.ID().equalsIgnoreCase(ID))||(A.Name().equalsIgnoreCase(ID))))
 				return A;
 		}
@@ -1418,8 +1418,8 @@ public class StdDeity extends StdMOB implements Deity
 		if(!trigger.equals("-"))
 		while(trigger.length()>0)
 		{
-			int div1=trigger.indexOf('&');
-			int div2=trigger.indexOf('|');
+			final int div1=trigger.indexOf('&');
+			final int div2=trigger.indexOf('|');
 			int div=div1;
 
 			if((div2>=0)&&((div<0)||(div2<div)))
@@ -1437,11 +1437,11 @@ public class StdDeity extends StdMOB implements Deity
 			}
 			if(trig.length()>0)
 			{
-				Vector<String> V=CMParms.parse(trig);
+				final Vector<String> V=CMParms.parse(trig);
 				if(V.size()>1)
 				{
-					String cmd=V.firstElement();
-					DeityTrigger DT=new DeityTrigger();
+					final String cmd=V.firstElement();
+					final DeityTrigger DT=new DeityTrigger();
 					DT.previousConnect=previousConnector;
 					if(cmd.equals("SAY"))
 					{
@@ -1524,13 +1524,13 @@ public class StdDeity extends StdMOB implements Deity
 					{
 						DT.triggerCode=TRIGGER_BURNMATERIAL;
 						DT.parm1=CMParms.combine(V,1);
-						int cd = RawMaterial.CODES.FIND_StartsWith(DT.parm1);
+						final int cd = RawMaterial.CODES.FIND_StartsWith(DT.parm1);
 						boolean found=cd>=0;
 						if(found)
 							DT.parm1=""+cd;
 						else
 						{
-							RawMaterial.Material m=RawMaterial.Material.startsWith(DT.parm1);
+							final RawMaterial.Material m=RawMaterial.Material.startsWith(DT.parm1);
 							if(m!=null)
 							{
 								DT.parm1=""+m.mask();
@@ -1554,14 +1554,14 @@ public class StdDeity extends StdMOB implements Deity
 						}
 						DT.parm1=V.elementAt(1);
 						DT.parm2=CMParms.combine(V,2);
-						int cd = RawMaterial.CODES.FIND_StartsWith(DT.parm1);
+						final int cd = RawMaterial.CODES.FIND_StartsWith(DT.parm1);
 						boolean found=cd>=0;
 						if(found)
 							DT.parm1=""+cd;
 						else
 						if(!found)
 						{
-							RawMaterial.Material m=RawMaterial.Material.startsWith(DT.parm1);
+							final RawMaterial.Material m=RawMaterial.Material.startsWith(DT.parm1);
 							if(m!=null)
 							{
 								DT.parm1=""+m.mask();
@@ -1737,7 +1737,7 @@ public class StdDeity extends StdMOB implements Deity
 		if(to==null) return;
 		for(int a=0;a<numCurses();a++)
 		{
-			Ability A=fetchCurse(a);
+			final Ability A=fetchCurse(a);
 			if((A!=null)&&(A.ID().equals(to.ID())))
 				return;
 		}
@@ -1749,7 +1749,7 @@ public class StdDeity extends StdMOB implements Deity
 		if((curses.size()==0)||(to==null)) return;
 		for(int a=numCurses()-1;a>=0;a--)
 		{
-			Ability A=fetchCurse(a);
+			final Ability A=fetchCurse(a);
 			if(A==to)
 				curses.remove(a);
 		}
@@ -1766,7 +1766,7 @@ public class StdDeity extends StdMOB implements Deity
 		{
 			return curses.get(index).power;
 		}
-		catch(java.lang.ArrayIndexOutOfBoundsException x){}
+		catch(final java.lang.ArrayIndexOutOfBoundsException x){}
 		return null;
 	}
 	@Override
@@ -1774,7 +1774,7 @@ public class StdDeity extends StdMOB implements Deity
 	{
 		for(int a=0;a<numCurses();a++)
 		{
-			Ability A=fetchCurse(a);
+			final Ability A=fetchCurse(a);
 			if((A!=null)&&((A.ID().equalsIgnoreCase(ID))||(A.Name().equalsIgnoreCase(ID))))
 				return A;
 		}
@@ -1791,7 +1791,7 @@ public class StdDeity extends StdMOB implements Deity
 		{
 			return curses.get(index).clericOnly;
 		}
-		catch(java.lang.ArrayIndexOutOfBoundsException x){}
+		catch(final java.lang.ArrayIndexOutOfBoundsException x){}
 		return false;
 	}
 	@Override
@@ -1799,7 +1799,7 @@ public class StdDeity extends StdMOB implements Deity
 	{
 		for(int a=0;a<numCurses();a++)
 		{
-			Ability A=fetchCurse(a);
+			final Ability A=fetchCurse(a);
 			if((A!=null)&&((A.ID().equalsIgnoreCase(ID))||(A.Name().equalsIgnoreCase(ID))))
 				return fetchCurseCleric(a);
 		}
@@ -1853,7 +1853,7 @@ public class StdDeity extends StdMOB implements Deity
 		if(to==null) return;
 		for(int a=0;a<numPowers();a++)
 		{
-			Ability A=fetchPower(a);
+			final Ability A=fetchPower(a);
 			if((A!=null)&&(A.ID().equals(to.ID())))
 				return;
 		}
@@ -1876,7 +1876,7 @@ public class StdDeity extends StdMOB implements Deity
 		{
 			return powers.get(index);
 		}
-		catch(java.lang.ArrayIndexOutOfBoundsException x){}
+		catch(final java.lang.ArrayIndexOutOfBoundsException x){}
 		return null;
 	}
 	@Override
@@ -1884,7 +1884,7 @@ public class StdDeity extends StdMOB implements Deity
 	{
 		for(int a=0;a<numPowers();a++)
 		{
-			Ability A=fetchPower(a);
+			final Ability A=fetchPower(a);
 			if((A!=null)&&((A.ID().equalsIgnoreCase(ID))||(A.Name().equalsIgnoreCase(ID))))
 				return A;
 		}

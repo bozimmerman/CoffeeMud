@@ -55,7 +55,7 @@ public class ArchonJournal extends StdJournal implements ArchonOnly, MiscMagic
 		if(!super.okMessage(myHost,msg))
 			return false;
 
-		MOB mob=msg.source();
+		final MOB mob=msg.source();
 		if(mob.location()==null)
 			return true;
 

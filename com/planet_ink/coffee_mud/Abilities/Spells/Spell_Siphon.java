@@ -52,16 +52,16 @@ public class Spell_Siphon extends Spell
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		MOB target=getTarget(mob,commands,givenTarget);
+		final MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> feel(s) a thirst for the energy of others.":"^S<S-NAME> invoke(s) an area deprived of energy around <T-NAMESELF>.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> feel(s) a thirst for the energy of others.":"^S<S-NAME> invoke(s) an area deprived of energy around <T-NAMESELF>.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -80,7 +80,7 @@ public void unInvoke()
 		// undo the affects of this spell
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		super.unInvoke();
 
 		mob.tell("You no longer feel a thirst for the energy of others.");
@@ -92,7 +92,7 @@ public void unInvoke()
 		if(!(affected instanceof MOB))
 			return true;
 
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		if((msg.amITarget(mob))
 		&&(!msg.amISource(mob))
@@ -103,12 +103,12 @@ public void unInvoke()
 		&&(CMLib.dice().rollPercentage()>50)
 		&&(msg.source().curState().getMana()>0))
 		{
-			MOB sourceM = msg.source();
-			CMMsg msg2=CMClass.getMsg(mob,sourceM,null,CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> siphon(s) mana from <T-NAME>!");
+			final MOB sourceM = msg.source();
+			final CMMsg msg2=CMClass.getMsg(mob,sourceM,null,CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> siphon(s) mana from <T-NAME>!");
 			if(mob.location().okMessage(mob,msg2))
 			{
-				int maxManaRestore = 3;
-				int curSourceMana = sourceM.curState().getMana();
+				final int maxManaRestore = 3;
+				final int curSourceMana = sourceM.curState().getMana();
 				int manaDrain = 0;
 				if(maxManaRestore <= curSourceMana)
 				{

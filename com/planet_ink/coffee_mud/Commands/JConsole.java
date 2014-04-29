@@ -58,7 +58,7 @@ public class JConsole extends StdCommand
 		if(session==null) return false;
 
 		JScriptEvent scope=(JScriptEvent)Resources.getResource("JCONSOLE_"+mob.Name());
-		Context cx=Context.enter();
+		final Context cx=Context.enter();
 		try
 		{
 			if(scope==null)
@@ -67,11 +67,11 @@ public class JConsole extends StdCommand
 				{
 					scope = new JScriptEvent(mob);
 					cx.initStandardObjects(scope);
-					String[] names = { "mob" ,"getVar", "setVar", "toJavaString"};
+					final String[] names = { "mob" ,"getVar", "setVar", "toJavaString"};
 					scope.defineFunctionProperties(names, JScriptEvent.class, ScriptableObject.DONTENUM);
 					Resources.submitResource("JCONSOLE_"+mob.Name(), scope);
 				}
-				catch(Exception e)
+				catch(final Exception e)
 				{
 					mob.tell("Error: "+e.getMessage());
 					return false;
@@ -84,7 +84,7 @@ public class JConsole extends StdCommand
 					mob.tell(cx.evaluateString(scope, rest.toString(),"<cmd>", 1, null).toString());
 					return true;
 				}
-				catch(Exception e)
+				catch(final Exception e)
 				{
 					mob.tell("Error: "+e.getMessage());
 					return false;
@@ -121,10 +121,10 @@ public class JConsole extends StdCommand
 					{
 						try
 						{
-							Context cx=Context.enter();
+							final Context cx=Context.enter();
 							session.rawPrintln(cx.evaluateString(myScope, this.input.replace('`','\''),"<cmd>", 1, null).toString());
 						}
-						catch(Exception e)
+						catch(final Exception e)
 						{
 							session.println(e.getMessage());
 						}
@@ -176,7 +176,7 @@ public class JConsole extends StdCommand
 					{
 						if(methH.contains(name))
 						{
-							StringBuilder strb=new StringBuilder(name);
+							final StringBuilder strb=new StringBuilder(name);
 							if(args.length==1)
 								strb.append(" ").append(String.valueOf(args[0]));
 							else
@@ -192,7 +192,7 @@ public class JConsole extends StdCommand
 						}
 						if(name.endsWith("$"))
 						{
-							StringBuilder strb=new StringBuilder(name.substring(0,name.length()-1)).append("(");
+							final StringBuilder strb=new StringBuilder(name.substring(0,name.length()-1)).append("(");
 							if(args.length==1)
 								strb.append(" ").append(String.valueOf(args[0]));
 							else

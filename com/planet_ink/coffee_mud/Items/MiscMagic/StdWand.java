@@ -61,7 +61,7 @@ public class StdWand extends StdItem implements Wand
 	public static boolean useTheWand(Ability A, MOB mob, int level)
 	{
 		int manaRequired=5;
-		int q=CMLib.ableMapper().qualifyingLevel(mob,A);
+		final int q=CMLib.ableMapper().qualifyingLevel(mob,A);
 		if(q>0)
 		{
 			if(q<CMLib.ableMapper().qualifyingClassLevel(mob,A))
@@ -123,7 +123,7 @@ public class StdWand extends StdItem implements Wand
 	public String secretIdentity()
 	{
 		String id=super.secretIdentity();
-		Ability A=getSpell();
+		final Ability A=getSpell();
 		if(A!=null)
 			id="'A wand of "+A.name()+"' Charges: "+usesRemaining()+"\n\r"+id;
 		return id+"\n\rSay the magic word :`"+secretWord+"` to the target.";
@@ -153,14 +153,14 @@ public class StdWand extends StdItem implements Wand
 			Physical target=null;
 			if(mob.location()!=null)
 				target=afftarget;
-			int x=message.toUpperCase().indexOf(me.magicWord().toUpperCase());
+			final int x=message.toUpperCase().indexOf(me.magicWord().toUpperCase());
 			if(x>=0)
 			{
 				message=message.substring(x+me.magicWord().length());
-				int y=message.indexOf('\'');
+				final int y=message.indexOf('\'');
 				if(y>=0) message=message.substring(0,y);
 				message=message.trim();
-				Ability wandUse=mob.fetchAbility("Skill_WandUse");
+				final Ability wandUse=mob.fetchAbility("Skill_WandUse");
 				if((wandUse==null)||(!wandUse.proficiencyCheck(null,0,false)))
 					mob.tell(me.name()+" glows faintly for a moment, then fades.");
 				else
@@ -177,14 +177,14 @@ public class StdWand extends StdItem implements Wand
 						A=(Ability)A.newInstance();
 						if(useTheWand(A,mob,wandUse.abilityCode()))
 						{
-							Vector V=new Vector();
+							final Vector V=new Vector();
 							if(target!=null)
 								V.addElement(target.name());
 							V.addAll(CMParms.parse(message));
 							mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,me.name()+" glows brightly.");
 							me.setUsesRemaining(me.usesRemaining()-1);
 							int level=me.phyStats().level();
-							int lowest=CMLib.ableMapper().lowestQualifyingLevel(A.ID());
+							final int lowest=CMLib.ableMapper().lowestQualifyingLevel(A.ID());
 							if(level<lowest)
 								level=lowest;
 							A.invoke(mob, V, target, true, level);
@@ -200,7 +200,7 @@ public class StdWand extends StdItem implements Wand
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
-		MOB mob=msg.source();
+		final MOB mob=msg.source();
 
 		switch(msg.targetMinor())
 		{
@@ -215,7 +215,7 @@ public class StdWand extends StdItem implements Wand
 				boolean alreadyWanding=false;
 				final List<CMMsg> trailers =msg.trailerMsgs();
 				if(trailers!=null)
-					for(CMMsg msg2 : trailers)
+					for(final CMMsg msg2 : trailers)
 						if(msg2.targetMinor()==CMMsg.TYP_WAND_USE)
 							alreadyWanding=true;
 				final String said=CMStrings.getSayFromMessage(msg.sourceMessage());
@@ -268,7 +268,7 @@ public class StdWand extends StdItem implements Wand
 	public boolean sameAs(Environmental E)
 	{
 		if(!(E instanceof StdWand)) return false;
-		String[] codes=getStatCodes();
+		final String[] codes=getStatCodes();
 		for(int i=0;i<codes.length;i++)
 			if(!E.getStat(codes[i]).equals(getStat(codes[i])))
 				return false;

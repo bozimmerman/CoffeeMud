@@ -42,14 +42,13 @@ public class FactionList extends StdCommand
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		StringBuffer msg=new StringBuffer("\n\r^HFaction Standings:^?^N\n\r");
+		final StringBuffer msg=new StringBuffer("\n\r^HFaction Standings:^?^N\n\r");
 		boolean none=true;
-		XVector<String> list=new XVector<String>(mob.fetchFactions());
+		final XVector<String> list=new XVector<String>(mob.fetchFactions());
 		list.sort();
-		for(Enumeration<String> e=list.elements();e.hasMoreElements();)
+		for (final String name : list)
 		{
-			String name=e.nextElement();
-			Faction F=CMLib.factions().getFaction(name);
+			final Faction F=CMLib.factions().getFaction(name);
 			if((F!=null)&&(F.showInFactionsCommand()))
 			{
 				none=false;
@@ -66,9 +65,9 @@ public class FactionList extends StdCommand
 
 	public String formatFactionLine(String name,int faction)
 	{
-		StringBuffer line=new StringBuffer();
+		final StringBuffer line=new StringBuffer();
 		line.append("  "+CMStrings.padRight(CMStrings.capitalizeAndLower(CMLib.factions().getName(name).toLowerCase()),21)+" ");
-		Faction.FRange FR=CMLib.factions().getRange(name,faction);
+		final Faction.FRange FR=CMLib.factions().getRange(name,faction);
 		if(FR==null)
 			line.append(CMStrings.padRight(""+faction,17)+" ");
 		else
@@ -81,8 +80,8 @@ public class FactionList extends StdCommand
 
 	public String calcRangeBar(String factionID, int faction)
 	{
-		StringBuffer bar=new StringBuffer();
-		Double fill=Double.valueOf(CMath.div(CMLib.factions().getRangePercent(factionID,faction),4));
+		final StringBuffer bar=new StringBuffer();
+		final Double fill=Double.valueOf(CMath.div(CMLib.factions().getRangePercent(factionID,faction),4));
 		for(int i=0;i<fill.intValue();i++)
 		{
 			bar.append("*");

@@ -48,9 +48,9 @@ public class Chant_SummonTree extends Chant_SummonPlants
 	@Override
 	protected Item buildMyPlant(MOB mob, Room room)
 	{
-		int code=material&RawMaterial.RESOURCE_MASK;
-		Item newItem=CMClass.getBasicItem("GenItem");
-		String name=CMLib.english().startWithAorAn(RawMaterial.CODES.NAME(code).toLowerCase()+" tree");
+		final int code=material&RawMaterial.RESOURCE_MASK;
+		final Item newItem=CMClass.getBasicItem("GenItem");
+		final String name=CMLib.english().startWithAorAn(RawMaterial.CODES.NAME(code).toLowerCase()+" tree");
 		newItem.setName(name);
 		newItem.setDisplayText(newItem.name()+" grows here.");
 		newItem.setDescription("");
@@ -60,7 +60,7 @@ public class Chant_SummonTree extends Chant_SummonPlants
 		newItem.setSecretIdentity(mob.Name());
 		newItem.setMiscText(newItem.text());
 		room.addItem(newItem);
-		Chant_SummonTree newChant=new Chant_SummonTree();
+		final Chant_SummonTree newChant=new Chant_SummonTree();
 		newItem.basePhyStats().setLevel(10+newChant.getX1Level(mob));
 		newItem.setExpirationDate(0);
 		room.showHappens(CMMsg.MSG_OK_ACTION,"a tall, healthy "+RawMaterial.CODES.NAME(code).toLowerCase()+" tree sprouts up.");
@@ -91,7 +91,7 @@ public class Chant_SummonTree extends Chant_SummonPlants
 		}
 		for(int i=0;i<PlantsLocation.numInhabitants();i++)
 		{
-			MOB M=PlantsLocation.fetchInhabitant(i);
+			final MOB M=PlantsLocation.fetchInhabitant(i);
 			if(M.fetchEffect("Chopping")!=null)
 			{
 				unInvoke();
@@ -118,8 +118,8 @@ public class Chant_SummonTree extends Chant_SummonPlants
 			material=mob.location().myResource();
 		else
 		{
-			List<Integer> V=mob.location().resourceChoices();
-			Vector V2=new Vector();
+			final List<Integer> V=mob.location().resourceChoices();
+			final Vector V2=new Vector();
 			if(V!=null)
 			for(int v=0;v<V.size();v++)
 			{

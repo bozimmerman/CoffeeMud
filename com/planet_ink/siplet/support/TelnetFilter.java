@@ -95,13 +95,13 @@ public class TelnetFilter
 	protected boolean   GMCPsupport=false;
 	protected boolean   MXPsupport=false;
 	protected boolean   MCCPsupport=false;
-	private StringBuilder msdpInforms=new StringBuilder("");
-	private StringBuilder gmcpInforms=new StringBuilder("");
+	private final StringBuilder msdpInforms=new StringBuilder("");
+	private final StringBuilder gmcpInforms=new StringBuilder("");
 
-	private MSP mspModule=new MSP();
-	private MSDP msdpModule=new MSDP();
-	private GMCP gmcpModule=new GMCP();
-	private MXP mxpModule=new MXP();
+	private final MSP mspModule=new MSP();
+	private final MSDP msdpModule=new MSDP();
+	private final GMCP gmcpModule=new GMCP();
+	private final MXP mxpModule=new MXP();
 
 	private TelnetFilter(){}
 	public TelnetFilter(Siplet codebase)
@@ -154,7 +154,7 @@ public class TelnetFilter
 	private String italicsOff(){ if(italicsOn){italicsOn=false; return "</I>";}return ""; }
 	private String allOff()
 	{
-		StringBuffer off=new StringBuffer("");
+		final StringBuffer off=new StringBuffer("");
 		off.append(blinkOff());
 		off.append(underlineOff());
 		off.append(fontOff());
@@ -168,7 +168,7 @@ public class TelnetFilter
 		{
 			if(msdpInforms.length()==0)
 				return "";
-			String bah=msdpInforms.toString();
+			final String bah=msdpInforms.toString();
 			msdpInforms.setLength(0);
 			return "<BR><PRE>"+bah+"</PRE><BR>";
 		}
@@ -180,7 +180,7 @@ public class TelnetFilter
 		{
 			if(gmcpInforms.length()==0)
 				return "";
-			String bah=gmcpInforms.toString();
+			final String bah=gmcpInforms.toString();
 			gmcpInforms.setLength(0);
 			return "<BR><PRE>"+bah+"</PRE>";
 		}
@@ -199,7 +199,7 @@ public class TelnetFilter
 	}
 	public static int getRelativeColorCodeIndex(String word)
 	{
-		int x=getColorCodeIndex(word);
+		final int x=getColorCodeIndex(word);
 		if(x<40) return x-30;
 		if(x>50) return x%10;
 		return x-40;
@@ -225,8 +225,8 @@ public class TelnetFilter
 	{
 		if(escapeString.endsWith("m"))
 		{
-			Vector V=Util.parseSemicolons(escapeString.substring(0,escapeString.length()-1),true);
-			StringBuffer str=new StringBuffer("");
+			final Vector V=Util.parseSemicolons(escapeString.substring(0,escapeString.length()-1),true);
+			final StringBuffer str=new StringBuffer("");
 			String s=null;
 			int code=0;
 			String background=null;
@@ -357,14 +357,14 @@ public class TelnetFilter
 	public void TelnetRead(StringBuffer buf, InputStream rawin, BufferedReader in[])
 		throws InterruptedIOException, IOException
 	{
-		char c=(char)in[0].read();
+		final char c=(char)in[0].read();
 		if(mccppattern[patDex]==c)
 		{
 			patDex++;
 			if((patDex>=mccppattern.length)&&(!neverSupportMCCP))
 			{
 				while(rawin.available()>0) rawin.read();
-				ZInputStream zIn=new ZInputStream(rawin);
+				final ZInputStream zIn=new ZInputStream(rawin);
 				if(debugTelnetCodes) System.out.println("MCCP compression started");
 				in[0]=new BufferedReader(new InputStreamReader(zIn));
 				patDex=0;
@@ -400,14 +400,14 @@ public class TelnetFilter
 					if(i>=buf.length()-2)
 						return i;
 					if(debugTelnetCodes) System.out.println("Receiving "+(int)buf.charAt(i+1));
-					int oldI=i;
+					final int oldI=i;
 					int end=oldI+3;
 					switch(buf.charAt(++i))
 					{
 					case IAC_SB:
 					{
-						ByteArrayOutputStream subOptionData = new ByteArrayOutputStream();
-						int subOptionCode = buf.charAt(++i);
+						final ByteArrayOutputStream subOptionData = new ByteArrayOutputStream();
+						final int subOptionCode = buf.charAt(++i);
 						if(debugTelnetCodes) System.out.println("Got sub-option "+subOptionCode);
 						int last = 0;
 						while((i<(buf.length()-1))
@@ -430,7 +430,7 @@ public class TelnetFilter
 						if(subOptionCode==TELOPT_TTYPE)
 						{
 							if(debugTelnetCodes) System.out.println("Responding with termtype.");
-							byte[] data=new byte[6];
+							final byte[] data=new byte[6];
 							data[0]=(short)'s';
 							data[1]=(short)'i';
 							data[2]=(short)'p';
@@ -446,7 +446,7 @@ public class TelnetFilter
 						if(subOptionCode==TELOPT_NAWS)
 						{
 							if(debugTelnetCodes) System.out.println("Responding with screen size.");
-							byte[] data=new byte[4];
+							final byte[] data=new byte[4];
 							data[1]=80;
 							data[3]=25;
 							response.writeBytes(""+IAC_+IAC_SB+TELOPT_NAWS);
@@ -462,7 +462,7 @@ public class TelnetFilter
 						else
 						if(subOptionCode==IAC_MSDP)
 						{
-							String received=this.msdpModule.msdpReceive(subOptionData.toByteArray());
+							final String received=this.msdpModule.msdpReceive(subOptionData.toByteArray());
 							synchronized(msdpInforms)
 							{
 								msdpInforms.append(received);
@@ -472,7 +472,7 @@ public class TelnetFilter
 						else
 						if(subOptionCode==IAC_GMCP)
 						{
-							String received=this.gmcpModule.gmcpReceive(subOptionData.toByteArray());
+							final String received=this.gmcpModule.gmcpReceive(subOptionData.toByteArray());
 							synchronized(gmcpInforms)
 							{
 								gmcpInforms.append(received+"\n");
@@ -486,7 +486,7 @@ public class TelnetFilter
 						if(buf.charAt(i)==TELOPT_NAWS)
 						{
 							if(debugTelnetCodes) System.out.println("Responding with screen size to WILL NAWS.");
-							byte[] data=new byte[4];
+							final byte[] data=new byte[4];
 							data[1]=80;
 							data[3]=25;
 							response.writeBytes(""+IAC_+IAC_SB+TELOPT_NAWS);
@@ -808,7 +808,7 @@ public class TelnetFilter
 	public int HTMLFilter(StringBuffer buf)
 	{
 		int i=0;
-		boolean[] eolEater=new boolean[1];
+		final boolean[] eolEater=new boolean[1];
 		while(i<buf.length())
 		{
 			if(debugChars) System.out.println(">"+buf.charAt(i));
@@ -838,7 +838,7 @@ public class TelnetFilter
 				{
 					if(MSPsupport())
 					{
-						int endl=mspModule.process(buf,i,codeBase,neverSupportMSP==MSPStatus.External);
+						final int endl=mspModule.process(buf,i,codeBase,neverSupportMSP==MSPStatus.External);
 						if(endl==-1)
 							i--;
 						else
@@ -856,7 +856,7 @@ public class TelnetFilter
 				}
 				else
 				{
-					int x=mxpModule.processEntity(buf,i,null,true);
+					final int x=mxpModule.processEntity(buf,i,null,true);
 					if(x==Integer.MAX_VALUE) return i;
 					i+=x;
 				}
@@ -884,7 +884,7 @@ public class TelnetFilter
 					comment=true;
 				else
 				{
-					int x=mxpModule.processTag(buf,i);
+					final int x=mxpModule.processTag(buf,i);
 					if(x==Integer.MAX_VALUE) return i;
 					i+=x;
 				}
@@ -893,7 +893,7 @@ public class TelnetFilter
 			{
 				if(MXPsupport())
 				{
-					int x=mxpModule.newlineDetected(buf,i+1,eolEater);
+					final int x=mxpModule.newlineDetected(buf,i+1,eolEater);
 					if(eolEater[0])
 						buf.deleteCharAt(i);
 					else
@@ -924,7 +924,7 @@ public class TelnetFilter
 			}
 			case '\033':
 				{
-					int savedI=i;
+					final int savedI=i;
 					if(i==buf.length()-1)
 						return i;
 					if(buf.charAt(++i)!='[')
@@ -938,11 +938,11 @@ public class TelnetFilter
 								quote=!quote;
 						if(i==buf.length())
 							return savedI;
-						String oldStr=buf.substring(savedI+2,i+1);
-						String translate=escapeTranslate(oldStr);
+						final String oldStr=buf.substring(savedI+2,i+1);
+						final String translate=escapeTranslate(oldStr);
 						if(translate.equals(oldStr))
 						{
-							int x=mxpModule.escapeTranslate(oldStr,buf,savedI);
+							final int x=mxpModule.escapeTranslate(oldStr,buf,savedI);
 							if(x==Integer.MAX_VALUE) return i;
 							i=savedI+x;
 						}
@@ -969,20 +969,20 @@ public class TelnetFilter
 		{
 			if(data.startsWith("\\"))
 			{
-				int x=data.indexOf(' ');
+				final int x=data.indexOf(' ');
 				if(x<0)
 					return data.getBytes("UTF-8");
 				final String cmd=data.substring(1,x).toUpperCase().trim();
-				String rest=data.substring(x+1).trim();
+				final String rest=data.substring(x+1).trim();
 				if(cmd.equalsIgnoreCase("MSDP"))
 				{
 					try
 					{
-						byte[] newOutput=this.msdpModule.convertStringToMsdp(rest);
+						final byte[] newOutput=this.msdpModule.convertStringToMsdp(rest);
 						if(newOutput!=null)
 							return newOutput;
 					}
-					catch (MJSONException e)
+					catch (final MJSONException e)
 					{
 						if(debugTelnetCodes)
 							System.out.println("JSON Parse Error: "+e.getMessage());
@@ -994,11 +994,11 @@ public class TelnetFilter
 				{
 					try
 					{
-						byte[] newOutput=gmcpModule.convertStringToGmcp(rest);
+						final byte[] newOutput=gmcpModule.convertStringToGmcp(rest);
 						if(newOutput!=null)
 							return newOutput;
 					}
-					catch (MJSONException e)
+					catch (final MJSONException e)
 					{
 						if(debugTelnetCodes)
 							System.out.println("JSON Parse Error: "+e.getMessage());
@@ -1010,7 +1010,7 @@ public class TelnetFilter
 			}
 			return data.getBytes("UTF-8");
 		}
-		catch(UnsupportedEncodingException e)
+		catch(final UnsupportedEncodingException e)
 		{
 			return data.getBytes();
 		}

@@ -67,8 +67,8 @@ public class Prayer_SanctifyRoom extends Prayer
 		if(affected==null)
 			return super.okMessage(myHost,msg);
 
-		Room R=(Room)affected;
-		int targMinor=msg.targetMinor();
+		final Room R=(Room)affected;
+		final int targMinor=msg.targetMinor();
 		if(((targMinor==CMMsg.TYP_GET)
 			||(targMinor==CMMsg.TYP_PULL)
 			||(targMinor==CMMsg.TYP_PUSH)
@@ -99,7 +99,7 @@ public class Prayer_SanctifyRoom extends Prayer
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		Physical target=mob.location();
+		final Physical target=mob.location();
 		if(target==null) return false;
 		if(target.fetchEffect(ID())!=null)
 		{
@@ -110,10 +110,10 @@ public class Prayer_SanctifyRoom extends Prayer
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> "+prayForWord(mob)+" to sanctify this place.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> "+prayForWord(mob)+" to sanctify this place.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -122,7 +122,7 @@ public class Prayer_SanctifyRoom extends Prayer
 				if((target instanceof Room)
 				&&(CMLib.law().doesOwnThisProperty(mob,((Room)target))))
 				{
-					String landOwnerName=CMLib.law().getLandOwnerName((Room)target);
+					final String landOwnerName=CMLib.law().getLandOwnerName((Room)target);
 					if((CMLib.clans().getClan(landOwnerName)!=null)
 					&&(!CMLib.clans().getClan(landOwnerName).getMorgue().equals(CMLib.map().getExtendedRoomID((Room)target))))
 					{

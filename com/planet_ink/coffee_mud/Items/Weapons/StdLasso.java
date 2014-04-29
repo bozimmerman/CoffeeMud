@@ -82,7 +82,7 @@ public class StdLasso extends StdWeapon
 		&&(((MOB)msg.target()).isMine(this))
 		&&(msg.sourceMessage()==null))
 		{
-			Ability A=CMClass.getAbility("Thief_Bind");
+			final Ability A=CMClass.getAbility("Thief_Bind");
 			if(A!=null)
 			{
 				A.setAffectedOne(this);

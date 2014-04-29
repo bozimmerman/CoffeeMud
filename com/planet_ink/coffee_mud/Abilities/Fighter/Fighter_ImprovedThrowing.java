@@ -67,7 +67,7 @@ public class Fighter_ImprovedThrowing extends FighterSkill
 		super.affectPhyStats(affected,affectableStats);
 		if(affected instanceof MOB)
 		{
-			Item myWeapon=((MOB)affected).fetchWieldedItem();
+			final Item myWeapon=((MOB)affected).fetchWieldedItem();
 			if((myWeapon instanceof Weapon)
 			&&(((Weapon)myWeapon).weaponClassification()==Weapon.CLASS_THROWN))
 				affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+(int)Math.round((15.0+getXLEVELLevel(invoker()))*(CMath.div(proficiency(),100.0))));

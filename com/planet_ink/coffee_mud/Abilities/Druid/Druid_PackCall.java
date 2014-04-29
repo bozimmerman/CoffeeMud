@@ -58,7 +58,7 @@ public class Druid_PackCall extends StdAbility
 			&&(affected instanceof MOB)
 			&&(invoker!=null))
 			{
-				MOB mob=(MOB)affected;
+				final MOB mob=(MOB)affected;
 				if(((mob.amFollowing()==null)
 				||(mob.amDead())
 				||(!mob.isInCombat())
@@ -72,7 +72,7 @@ public class Druid_PackCall extends StdAbility
 	@Override
 	public void unInvoke()
 	{
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		super.unInvoke();
 		if((canBeUninvoked())&&(mob!=null))
 		{
@@ -102,7 +102,7 @@ public class Druid_PackCall extends StdAbility
 	{
 		if(mob!=null)
 		{
-			Room R=mob.location();
+			final Room R=mob.location();
 			if(R!=null)
 			{
 				if((R.domainType()&Room.INDOORS)>0)
@@ -164,11 +164,11 @@ public class Druid_PackCall extends StdAbility
 			return false;
 		}
 
-		Vector choices=new Vector();
+		final Vector choices=new Vector();
 		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 		{
-			Room R=mob.location().getRoomInDir(d);
-			Exit E=mob.location().getExitInDir(d);
+			final Room R=mob.location().getRoomInDir(d);
+			final Exit E=mob.location().getExitInDir(d);
 			if((R!=null)&&(E!=null)&&(E.isOpen())&&(d!=Directions.UP))
 				choices.addElement(Integer.valueOf(d));
 		}
@@ -182,20 +182,20 @@ public class Druid_PackCall extends StdAbility
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
 			invoker=mob;
-			CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_NOISE,auto?"":"^S<S-NAME> call(s) for help from <S-HIS-HER> pack!^?");
+			final CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_NOISE,auto?"":"^S<S-NAME> call(s) for help from <S-HIS-HER> pack!^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				int levelsRemaining=90+(10*getXLEVELLevel(mob));
 				while((mob.totalFollowers()<mob.maxFollowers())&&(levelsRemaining>0))
 				{
-					MOB victim=mob.getVictim();
-					MOB newMOB=CMClass.getMOB("GenMOB");
-					int MOBRaceCode=D.myRaceCode;
+					final MOB victim=mob.getVictim();
+					final MOB newMOB=CMClass.getMOB("GenMOB");
+					final int MOBRaceCode=D.myRaceCode;
 					if(D.raceName==null) D.setRaceName(mob);
 					int level=1;
 					while(!D.raceName.equals(D.getRaceName(level,MOBRaceCode)))
@@ -205,13 +205,13 @@ public class Druid_PackCall extends StdAbility
 					levelsRemaining-=level;
 					if(levelsRemaining<0) break;
 					newMOB.baseCharStats().setMyRace(D.getRace(level,MOBRaceCode));
-					String raceName=D.getRaceName(level,MOBRaceCode).toLowerCase();
-					String name=CMLib.english().startWithAorAn(raceName).toLowerCase();
+					final String raceName=D.getRaceName(level,MOBRaceCode).toLowerCase();
+					final String name=CMLib.english().startWithAorAn(raceName).toLowerCase();
 					newMOB.setName(name);
 					newMOB.setDisplayText("a loyal "+raceName+" is here");
 					newMOB.setDescription("");
 					newMOB.copyFactions(mob);
-					Ability A=CMClass.getAbility("Fighter_Rescue");
+					final Ability A=CMClass.getAbility("Fighter_Rescue");
 					A.setProficiency(100);
 					newMOB.addAbility(A);
 					newMOB.setVictim(victim);
@@ -231,7 +231,7 @@ public class Druid_PackCall extends StdAbility
 					newMOB.bringToLife(mob.location(),true);
 					CMLib.beanCounter().clearZeroMoney(newMOB,null);
 					if(victim.getVictim()!=newMOB) victim.setVictim(newMOB);
-					int dir=((Integer)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1))).intValue();
+					final int dir=((Integer)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1))).intValue();
 					if(newMOB.getVictim()!=victim) newMOB.setVictim(victim);
 					newMOB.location().showOthers(newMOB,victim,CMMsg.MSG_OK_ACTION,"<S-NAME> arrive(s) "+Directions.getFromDirectionName(dir)+" and attack(s) <T-NAMESELF>!");
 					newMOB.setStartRoom(null); // keep before postFollow for Conquest

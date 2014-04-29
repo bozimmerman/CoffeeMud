@@ -11,6 +11,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.ChannelsLibrary.ChannelMsg;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -52,20 +53,20 @@ public class Channel extends StdCommand
 	{
 		if(!super.checkArguments(internalParameters, args))
 			return Boolean.FALSE;
-		boolean systemMsg=((Boolean)args[0]).booleanValue();
-		String channelName=(String)args[1];
-		String message=(String)args[2];
+		final boolean systemMsg=((Boolean)args[0]).booleanValue();
+		final String channelName=(String)args[1];
+		final String message=(String)args[2];
 		CMLib.channels().reallyChannel(mob,channelName,message,systemMsg);
 		return Boolean.TRUE;
 	}
 
 	public boolean channel(MOB mob, Vector commands, boolean systemMsg)
 	{
-		PlayerStats pstats=mob.playerStats();
-		String channelName=((String)commands.elementAt(0)).toUpperCase().trim();
+		final PlayerStats pstats=mob.playerStats();
+		final String channelName=((String)commands.elementAt(0)).toUpperCase().trim();
 		commands.removeElementAt(0);
-		int channelInt=CMLib.channels().getChannelIndex(channelName);
-		int channelNum=CMLib.channels().getChannelCodeNumber(channelName);
+		final int channelInt=CMLib.channels().getChannelIndex(channelName);
+		final int channelNum=CMLib.channels().getChannelCodeNumber(channelName);
 
 		if((pstats!=null)&&(CMath.isSet(pstats.getChannelMask(),channelInt)))
 		{
@@ -99,18 +100,18 @@ public class Channel extends StdCommand
 
 		for(int i=0;i<commands.size();i++)
 		{
-			String s=(String)commands.elementAt(i);
+			final String s=(String)commands.elementAt(i);
 			if(s.indexOf(' ')>=0)
 				commands.setElementAt("\""+s+"\"",i);
 		}
-		ChannelsLibrary.CMChannel chan=CMLib.channels().getChannel(channelInt);
+		final ChannelsLibrary.CMChannel chan=CMLib.channels().getChannel(channelInt);
 		if(!CMLib.masking().maskCheck(chan.mask,mob,true))
 		{
 			mob.tell("This channel is not available to you.");
 			return false;
 		}
 
-		Set<ChannelsLibrary.ChannelFlag> flags=chan.flags;
+		final Set<ChannelsLibrary.ChannelFlag> flags=chan.flags;
 		if((flags.contains(ChannelsLibrary.ChannelFlag.CLANONLY)||flags.contains(ChannelsLibrary.ChannelFlag.CLANALLYONLY)))
 		{
 			if(!CMLib.clans().checkClanPrivilege(mob, Clan.Function.CHANNEL))
@@ -126,24 +127,24 @@ public class Channel extends StdCommand
 		&&(CMath.isNumber((String)commands.lastElement())))
 		{
 			int num=CMath.s_int((String)commands.lastElement());
-			List<ChannelsLibrary.ChannelMsg> que=CMLib.channels().getChannelQue(channelInt);
+			final List<ChannelsLibrary.ChannelMsg> que=CMLib.channels().getChannelQue(channelInt);
 			boolean showedAny=false;
 			if(que.size()>0)
 			{
 				if(num>que.size()) num=que.size();
-				boolean areareq=flags.contains(ChannelsLibrary.ChannelFlag.SAMEAREA);
+				final boolean areareq=flags.contains(ChannelsLibrary.ChannelFlag.SAMEAREA);
 				long elapsedTime=0;
-				long now=System.currentTimeMillis();
-				LinkedList<ChannelsLibrary.ChannelMsg> showThese=new LinkedList<ChannelsLibrary.ChannelMsg>();
-				for(Iterator<ChannelsLibrary.ChannelMsg> i=que.iterator();i.hasNext();)
+				final long now=System.currentTimeMillis();
+				final LinkedList<ChannelsLibrary.ChannelMsg> showThese=new LinkedList<ChannelsLibrary.ChannelMsg>();
+				for (final ChannelMsg channelMsg : que)
 				{
-					showThese.add(i.next());
+					showThese.add(channelMsg);
 					if(showThese.size()>num)
 						showThese.removeFirst();
 				}
-				for(ChannelsLibrary.ChannelMsg msg : showThese)
+				for(final ChannelsLibrary.ChannelMsg msg : showThese)
 				{
-					CMMsg modMsg = (CMMsg)msg.msg.copyOf();
+					final CMMsg modMsg = (CMMsg)msg.msg.copyOf();
 					elapsedTime=now-msg.ts;
 					elapsedTime=Math.round(elapsedTime/1000L)*1000L;
 					if(elapsedTime<0)

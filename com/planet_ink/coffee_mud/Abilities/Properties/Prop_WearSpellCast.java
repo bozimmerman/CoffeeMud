@@ -54,7 +54,7 @@ public class Prop_WearSpellCast extends Prop_HaveSpellCast
 	public void check(MOB mob, Armor A)
 	{
 		if(!layered){ checked=true; disabled=false;}
-		boolean oldDisabled=disabled;
+		final boolean oldDisabled=disabled;
 		if(A.amWearingAt(Wearable.IN_INVENTORY))
 		{
 			checked=false;
@@ -126,7 +126,7 @@ public class Prop_WearSpellCast extends Prop_HaveSpellCast
 		{
 			myItem=(Item)host;
 
-			boolean worn=(!myItem.amWearingAt(Wearable.IN_INVENTORY))
+			final boolean worn=(!myItem.amWearingAt(Wearable.IN_INVENTORY))
 			&&((!myItem.amWearingAt(Wearable.WORN_FLOATING_NEARBY))||(myItem.fitsOn(Wearable.WORN_FLOATING_NEARBY)));
 
 			if((lastMOB instanceof MOB)

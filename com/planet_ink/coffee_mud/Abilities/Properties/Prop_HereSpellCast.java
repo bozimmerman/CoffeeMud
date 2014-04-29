@@ -62,7 +62,7 @@ public class Prop_HereSpellCast extends Prop_HaveSpellCast
 		{
 			for(int v=lastMOBs.size()-1;v>=0;v--)
 			{
-				MOB lastMOB=(MOB)lastMOBs.elementAt(v);
+				final MOB lastMOB=(MOB)lastMOBs.elementAt(v);
 				if((lastMOB.location()!=room)
 				||((mob==lastMOB)&&(code==2)))
 				{

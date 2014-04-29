@@ -48,19 +48,19 @@ public class Spell_BigMouth extends Spell
 		if(!(affected instanceof MOB))
 			return super.okMessage(myHost,msg);
 
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		if((msg.amISource(mob))
 		&&(msg.targetMinor()==CMMsg.TYP_EAT)
 		&&(msg.target() instanceof Physical)
 		&&(Stomach()!=null))
 		{
-			CMMsg maliciousNessMsg=CMClass.getMsg(msg.source(), msg.target(), CMMsg.MSG_OK_ACTION | CMMsg.MASK_MALICIOUS, null);
-			int targetWeight = (msg.target() instanceof MOB) ? ((MOB)msg.target()).baseWeight() : ((Physical)msg.target()).phyStats().weight();
+			final CMMsg maliciousNessMsg=CMClass.getMsg(msg.source(), msg.target(), CMMsg.MSG_OK_ACTION | CMMsg.MASK_MALICIOUS, null);
+			final int targetWeight = (msg.target() instanceof MOB) ? ((MOB)msg.target()).baseWeight() : ((Physical)msg.target()).phyStats().weight();
 			if((targetWeight<(mob.phyStats().weight()/3))
 			&&(mob.location()!=null)
 			&&(mob.location().okMessage(myHost, maliciousNessMsg)))
 			{
-				int maxInhabitants=1+((mob.fetchAbility(ID())!=null)?super.getXLEVELLevel(mob):0);
+				final int maxInhabitants=1+((mob.fetchAbility(ID())!=null)?super.getXLEVELLevel(mob):0);
 				if((Stomach()!=null)&&(Stomach().numInhabitants()>maxInhabitants))
 				{
 					mob.tell("Your stomach is too full.");
@@ -69,8 +69,8 @@ public class Spell_BigMouth extends Spell
 
 				if(msg.target() instanceof MOB)
 				{
-					MOB target=(MOB)msg.target();
-					boolean isHit=CMLib.combat().rollToHit(msg.source(),target);
+					final MOB target=(MOB)msg.target();
+					final boolean isHit=CMLib.combat().rollToHit(msg.source(),target);
 					if(!isHit)
 					{
 						mob.tell("You fail to eat "+target.name(mob)+".");
@@ -118,27 +118,27 @@ public class Spell_BigMouth extends Spell
 			return;
 		}
 
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		if((msg.amISource(mob))
 		&&(msg.sourceMinor()==CMMsg.TYP_EAT)
 		&&(msg.target() instanceof Physical)
 		&&(Stomach()!=null))
 		{
-			int targetWeight = (msg.target() instanceof MOB) ? ((MOB)msg.target()).baseWeight() : ((Physical)msg.target()).phyStats().weight();
+			final int targetWeight = (msg.target() instanceof MOB) ? ((MOB)msg.target()).baseWeight() : ((Physical)msg.target()).phyStats().weight();
 			if(targetWeight<(mob.phyStats().weight()/2))
 			{
 				if(msg.target() instanceof MOB)
 				{
-					MOB TastyMorsel=(MOB)msg.target();
-					CMMsg msg2=CMClass.getMsg(mob,TastyMorsel,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE,null);
+					final MOB TastyMorsel=(MOB)msg.target();
+					final CMMsg msg2=CMClass.getMsg(mob,TastyMorsel,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE,null);
 					if(TastyMorsel.location().okMessage(mob,msg2))
 					{
 						TastyMorsel.location().send(mob,msg2);
 						if(msg2.value()<=0)
 						{
 							Stomach().bringMobHere(TastyMorsel,false);
-							CMMsg enterMsg=CMClass.getMsg(TastyMorsel,Stomach(),null,CMMsg.MSG_ENTER,"<S-NAME> <S-IS-ARE> swallowed whole by "+mob.name()+"!",CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,"<S-NAME> slide(s) down the gullet into the stomach!");
+							final CMMsg enterMsg=CMClass.getMsg(TastyMorsel,Stomach(),null,CMMsg.MSG_ENTER,"<S-NAME> <S-IS-ARE> swallowed whole by "+mob.name()+"!",CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,"<S-NAME> slide(s) down the gullet into the stomach!");
 							Stomach().send(TastyMorsel,enterMsg);
 						}
 					}
@@ -188,20 +188,20 @@ public class Spell_BigMouth extends Spell
 
 		// ===== move all inhabitants to the dragons location
 		// ===== loop through all inhabitants of the stomach
-		int morselCount = Stomach().numInhabitants();
+		final int morselCount = Stomach().numInhabitants();
 		for (int x=morselCount-1;x>=0;x--)
 		{
 			// ===== get the tasty morsels
-			MOB TastyMorsel = Stomach().fetchInhabitant(x);
+			final MOB TastyMorsel = Stomach().fetchInhabitant(x);
 			if(TastyMorsel!=null)
 				lastKnownLocation().bringMobHere(TastyMorsel,false);
 		}
 
 		// =====move the inventory of the stomach to the room
-		int itemCount = Stomach().numItems();
+		final int itemCount = Stomach().numItems();
 		for (int y=itemCount-1;y>=0;y--)
 		{
-			Item PartiallyDigestedItem = Stomach().getItem(y);
+			final Item PartiallyDigestedItem = Stomach().getItem(y);
 			if (PartiallyDigestedItem!=null)
 			{
 				lastKnownLocation().addItem(PartiallyDigestedItem,ItemPossessor.Expire.Player_Drop);
@@ -217,17 +217,17 @@ public class Spell_BigMouth extends Spell
 	{
 		if(!super.tick(ticking,tickID)) return false;
 		if(invoker()==null) return true;
-		MOB mob=invoker();
+		final MOB mob=invoker();
 		if((!mob.amDead())&&((--digestDown)<=0)&&(Stomach()!=null))
 		{
 			digestDown=2;
 			for (int x=0;x<Stomach().numInhabitants();x++)
 			{
 				// ===== get a tasty morsel
-				MOB TastyMorsel = Stomach().fetchInhabitant(x);
+				final MOB TastyMorsel = Stomach().fetchInhabitant(x);
 				if (TastyMorsel != null)
 				{
-					CMMsg DigestMsg=CMClass.getMsg(mob,
+					final CMMsg DigestMsg=CMClass.getMsg(mob,
 											   TastyMorsel,
 											   null,
 											   CMMsg.MASK_ALWAYS|CMMsg.TYP_ACID,
@@ -256,7 +256,7 @@ public class Spell_BigMouth extends Spell
 		// undo the affects of this spell
 		if(affected==null) return;
 
-		Environmental thang=affected;
+		final Environmental thang=affected;
 		super.unInvoke();
 
 		if(canBeUninvoked())
@@ -267,7 +267,7 @@ public class Spell_BigMouth extends Spell
 				if((Stomach()!=null)&&(Stomach().numInhabitants()>0))
 				{
 					unInvoked=false;
-					Spell_BigMouth A =(Spell_BigMouth)this.copyOf();
+					final Spell_BigMouth A =(Spell_BigMouth)this.copyOf();
 					A.startTickDown(invoker,Stomach(),10000);
 				}
 			}
@@ -297,7 +297,7 @@ public class Spell_BigMouth extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
@@ -306,7 +306,7 @@ public class Spell_BigMouth extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> invoke(s) a spell.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> invoke(s) a spell.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

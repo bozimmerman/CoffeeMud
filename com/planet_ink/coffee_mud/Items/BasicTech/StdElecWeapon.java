@@ -96,7 +96,7 @@ public class StdElecWeapon extends StdElecItem implements Weapon, Electronics
 	protected ModeType getState(String s)
 	{
 		s=s.toUpperCase().trim();
-		for(ModeType type : modeTypes)
+		for(final ModeType type : modeTypes)
 		{
 			if(type.toString().startsWith(s))
 				return type;
@@ -115,13 +115,13 @@ public class StdElecWeapon extends StdElecItem implements Weapon, Electronics
 		miscText=text;
 		if(CMath.isInteger(text))
 		{
-			int x=CMath.s_int(text);
+			final int x=CMath.s_int(text);
 			if((x>=0)&&(x<modeTypes.length))
 				mode=modeTypes[x];
 		}
 		else
 		{
-			ModeType t=(ModeType)CMath.s_valueOf(ModeType.class,text.toUpperCase().trim());
+			final ModeType t=(ModeType)CMath.s_valueOf(ModeType.class,text.toUpperCase().trim());
 			if((t != null)&&(CMParms.indexOf(modeTypes, t)>=0))
 				mode=t;
 		}
@@ -205,10 +205,10 @@ public class StdElecWeapon extends StdElecItem implements Weapon, Electronics
 					ModeType newState=mode;
 					if((msg.targetMessage()!=null)&&(msg.targetMessage().length()>0))
 					{
-						List<String> V=CMParms.parse(msg.targetMessage());
+						final List<String> V=CMParms.parse(msg.targetMessage());
 						if(V.size()>0)
 						{
-							String s=V.get(0).toUpperCase().trim();
+							final String s=V.get(0).toUpperCase().trim();
 							newState=this.getState(s);
 							if(newState==null) newState=mode;
 						}
@@ -238,7 +238,7 @@ public class StdElecWeapon extends StdElecItem implements Weapon, Electronics
 		if((owner() instanceof MOB) && msg.amISource((MOB)owner()) && (!amWearingAt(Wearable.IN_INVENTORY)))
 		{
 			super.executeMsg(myHost,msg);
-			MOB mob=(MOB)owner();
+			final MOB mob=(MOB)owner();
 			switch(msg.targetMinor())
 			{
 			case CMMsg.TYP_WEAPONATTACK:
@@ -253,7 +253,7 @@ public class StdElecWeapon extends StdElecItem implements Weapon, Electronics
 					case STUN: {
 						if(msg.value()>0)
 						{
-							Ability A=CMClass.getAbility("CombatSleep");
+							final Ability A=CMClass.getAbility("CombatSleep");
 							if((A!=null)&&(msg.target() instanceof Physical))
 								A.invoke(mob, (Physical)msg.target(), true, 0);
 							else
@@ -281,11 +281,11 @@ public class StdElecWeapon extends StdElecItem implements Weapon, Electronics
 					}
 					case DISINTEGRATE:
 					{
-						Environmental targ=msg.target();
+						final Environmental targ=msg.target();
 						if((msg.value()>(basePhyStats().damage()*1.5))
 						&&((!(targ instanceof MOB))||(msg.value()>=((MOB)targ).curState().getHitPoints())))
 						{
-							Room R=CMLib.map().roomLocation(targ);
+							final Room R=CMLib.map().roomLocation(targ);
 							if(R!=null)
 							{
 								if(targ instanceof MOB)
@@ -298,7 +298,7 @@ public class StdElecWeapon extends StdElecItem implements Weapon, Electronics
 										DeadBody corpseI=null;
 										for(int i=0;i<R.numItems();i++)
 										{
-											Item I=R.getItem(i);
+											final Item I=R.getItem(i);
 											if((I!=null)
 											&&(I instanceof DeadBody)
 											&&(I.container()==null)
@@ -328,7 +328,7 @@ public class StdElecWeapon extends StdElecItem implements Weapon, Electronics
 					{
 						if(msg.value()>0)
 						{
-							Ability A=CMClass.getAbility("Amputation");
+							final Ability A=CMClass.getAbility("Amputation");
 							if((A!=null)&&(msg.target() instanceof Physical))
 								A.invoke(mob, (Physical)msg.target(), true, 0);
 						}
@@ -336,11 +336,11 @@ public class StdElecWeapon extends StdElecItem implements Weapon, Electronics
 					}
 					case DISRUPT:
 					{
-						Environmental targ=msg.target();
+						final Environmental targ=msg.target();
 						if((msg.value()>(basePhyStats().damage()*1.5))
 						&&((!(targ instanceof MOB))||(msg.value()>=((MOB)targ).curState().getHitPoints())))
 						{
-							Room R=CMLib.map().roomLocation(targ);
+							final Room R=CMLib.map().roomLocation(targ);
 							if(R!=null)
 							{
 								if(targ instanceof MOB)
@@ -376,7 +376,7 @@ public class StdElecWeapon extends StdElecItem implements Weapon, Electronics
 			return false;
 		if((owner() instanceof MOB) && msg.amISource((MOB)owner()) && (!amWearingAt(Wearable.IN_INVENTORY)))
 		{
-			MOB mob=(MOB)owner();
+			final MOB mob=(MOB)owner();
 			switch(msg.targetMinor())
 			{
 			case CMMsg.TYP_ACTIVATE:
@@ -384,11 +384,11 @@ public class StdElecWeapon extends StdElecItem implements Weapon, Electronics
 				{
 					if((msg.targetMessage()!=null)&&(msg.targetMessage().length()>0))
 					{
-						List<String> V=CMParms.parse(msg.targetMessage());
+						final List<String> V=CMParms.parse(msg.targetMessage());
 						if(V.size()>0)
 						{
-							String s=V.get(0).toUpperCase().trim();
-							ModeType newState=this.getState(s);
+							final String s=V.get(0).toUpperCase().trim();
+							final ModeType newState=this.getState(s);
 							if(newState==null)
 							{
 								msg.source().tell("'"+s+"' is an unknown setting on "+name(msg.source()));
@@ -411,7 +411,7 @@ public class StdElecWeapon extends StdElecItem implements Weapon, Electronics
 							msgStr="<S-YOUPOSS> <T-NAMENOART> seems to be out of power.";
 						else
 							msgStr="<S-YOUPOSS> <T-NAMENOART> seems to be turned off.";
-						CMMsg msg2=CMClass.getMsg(mob, this, null,CMMsg.MSG_OK_VISUAL,msgStr);
+						final CMMsg msg2=CMClass.getMsg(mob, this, null,CMMsg.MSG_OK_VISUAL,msgStr);
 						if((mob.location()!=null)&&(mob.location().okMessage(myHost, msg2)))
 							mob.location().send(mob, msg2);
 						return false;
@@ -424,7 +424,7 @@ public class StdElecWeapon extends StdElecItem implements Weapon, Electronics
 					double successFactor=0.5;
 					final Manufacturer m=getFinalManufacturer();
 					successFactor=m.getReliabilityPct()*successFactor;
-					long powerConsumed=Math.round(phyStats().damage()*m.getEfficiencyPct());
+					final long powerConsumed=Math.round(phyStats().damage()*m.getEfficiencyPct());
 					if(powerRemaining()>=powerConsumed)
 					{
 						setPowerRemaining(powerRemaining()-powerConsumed);

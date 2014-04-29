@@ -47,8 +47,8 @@ public class Prop_LocationBound extends Property
 		&&((msg.source()==affected)
 			||((affected instanceof Item)&&(msg.source()==((Item)affected).owner()))))
 		{
-			Room whereTo=(Room)msg.target();
-			Room R=CMLib.map().roomLocation(affected);
+			final Room whereTo=(Room)msg.target();
+			final Room R=CMLib.map().roomLocation(affected);
 			if((whereTo==null)||(R==null))
 				return true;
 
@@ -86,7 +86,7 @@ public class Prop_LocationBound extends Property
 			}
 			else
 			{
-				Room tR=CMLib.map().getRoom(text());
+				final Room tR=CMLib.map().getRoom(text());
 				if((tR!=null)&&(whereTo!=tR))
 				{
 					if(R!=tR)
@@ -112,7 +112,7 @@ public class Prop_LocationBound extends Property
 					}
 					return false;
 				}
-				Area A=CMLib.map().getArea(text());
+				final Area A=CMLib.map().getArea(text());
 				if((A!=null)&&(!A.inMyMetroArea(whereTo.getArea())))
 				{
 					if(!A.inMyMetroArea(R.getArea()))

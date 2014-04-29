@@ -46,7 +46,7 @@ public class Title extends StdCommand
 			mob.tell("You don't have any titles to select from.");
 			return false;
 		}
-		String currTitle=mob.playerStats().getTitles().get(0);
+		final String currTitle=mob.playerStats().getTitles().get(0);
 		if(currTitle.startsWith("{")&&currTitle.endsWith("}"))
 		{
 			mob.tell("You can not change your current title.");
@@ -78,10 +78,10 @@ public class Title extends StdCommand
 			@Override public void timedOut() {}
 			@Override public void callBack()
 			{
-				int num=CMath.s_int(this.input);
+				final int num=CMath.s_int(this.input);
 				if((num>0)&&(num<=ps.getTitles().size()))
 				{
-					String which=ps.getTitles().get(num-1);
+					final String which=ps.getTitles().get(num-1);
 					ps.getTitles().remove(num-1);
 					ps.getTitles().add(0,which);
 					mob.tell("Title changed accepted.");

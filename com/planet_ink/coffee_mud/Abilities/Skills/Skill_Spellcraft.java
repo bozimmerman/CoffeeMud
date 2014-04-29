@@ -53,15 +53,15 @@ public class Skill_Spellcraft extends StdSkill
 			return false;
 		if(text().length()>0)
 		{
-			List<String> abilities=CMParms.parseCommas(text(), true);
+			final List<String> abilities=CMParms.parseCommas(text(), true);
 			setMiscText("");
-			MOB casterM=CMClass.getFactoryMOB();
-			Ability A=(Ability)copyOf();
-			for(String ID : abilities)
+			final MOB casterM=CMClass.getFactoryMOB();
+			final Ability A=(Ability)copyOf();
+			for(final String ID : abilities)
 			{
 				A.setMiscText(ID);
 				lastID=ID;
-				Ability castA=CMClass.getAbility(ID);
+				final Ability castA=CMClass.getAbility(ID);
 				if(castA!=null)
 					executeMsg(mob, CMClass.getMsg(mob,casterM,castA,CMMsg.MSG_OK_VISUAL,null,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
 			}
@@ -75,7 +75,7 @@ public class Skill_Spellcraft extends StdSkill
 		super.executeMsg(myHost,msg);
 		if(!(affected instanceof MOB))
 		   return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		if((msg.sourceMinor()==CMMsg.TYP_CAST_SPELL)
 		&&(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_ALWAYS))
 		&&(!msg.amISource(mob))
@@ -90,15 +90,15 @@ public class Skill_Spellcraft extends StdSkill
 		&&(CMLib.flags().canBeSeenBy(msg.source(),mob))
 		&&(msg.source().fetchAbility(msg.tool().ID())!=null))
 		{
-			boolean hasAble=(mob.fetchAbility(ID())!=null);
-			int lowestLevel=CMLib.ableMapper().lowestQualifyingLevel(msg.tool().ID());
+			final boolean hasAble=(mob.fetchAbility(ID())!=null);
+			final int lowestLevel=CMLib.ableMapper().lowestQualifyingLevel(msg.tool().ID());
 			int myLevel=0;
 			if(hasAble) myLevel=adjustedLevel(mob,0)-lowestLevel+1;
-			int lvl=(mob.phyStats().level()/3)+getXLEVELLevel(mob);
+			final int lvl=(mob.phyStats().level()/3)+getXLEVELLevel(mob);
 			if(myLevel<lvl) myLevel=lvl;
 			if(((!hasAble)||proficiencyCheck(mob,0,false))&&(lowestLevel<=myLevel))
 			{
-				Ability A=(Ability)copyOf();
+				final Ability A=(Ability)copyOf();
 				A.setMiscText(msg.tool().ID());
 				lastID=msg.tool().ID();
 				msg.addTrailerMsg(CMClass.getMsg(mob,msg.source(),A,CMMsg.MSG_OK_VISUAL,"<T-NAME> casts '"+msg.tool().name()+"'.",CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));

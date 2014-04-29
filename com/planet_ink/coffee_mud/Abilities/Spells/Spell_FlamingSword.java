@@ -64,14 +64,14 @@ public class Spell_FlamingSword extends Spell
 		&&(msg.source()==((Item)affected).owner()))
 		{
 			final Room room=msg.source().location();
-			CMMsg msg2=CMClass.getMsg(msg.source(),msg.target(),affected,
+			final CMMsg msg2=CMClass.getMsg(msg.source(),msg.target(),affected,
 					CMMsg.MSG_OK_ACTION,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_FIRE,CMMsg.MSG_NOISYMOVEMENT,null);
 			if((room!=null) && (room.okMessage(msg.source(),msg2)))
 			{
 				room.send(msg.source(), msg2);
 				if(msg2.value()<=0)
 				{
-					int flameDamage = CMLib.dice().roll(1, (2+affected.basePhyStats().level())/2, 1);
+					final int flameDamage = CMLib.dice().roll(1, (2+affected.basePhyStats().level())/2, 1);
 					CMLib.combat().postDamage(msg.source(),(MOB)msg.target(),null,flameDamage,
 							CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,name()+" <DAMAGE> <T-NAME>!");
 				}
@@ -85,7 +85,7 @@ public class Spell_FlamingSword extends Spell
 		// undo the affects of this spell
 		final Environmental item=affected;
 		if(item==null) return;
-		Room room=CMLib.map().roomLocation(item);
+		final Room room=CMLib.map().roomLocation(item);
 		if((canBeUninvoked())&&(room!=null))
 			room.showHappens(CMMsg.MSG_OK_VISUAL,item,"<S-YOUPOSS> flaming sword is consumed!");
 		super.unInvoke();
@@ -99,7 +99,7 @@ public class Spell_FlamingSword extends Spell
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		Physical target=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_ANY);
+		final Physical target=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_ANY);
 		if(target==null)
 		{
 			return false;
@@ -116,10 +116,10 @@ public class Spell_FlamingSword extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"^S<T-NAME> erupts into flame!":"^S<S-NAME> invoke(s) a writhing flame around <T-NAMESELF>!^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"^S<T-NAME> erupts into flame!":"^S<S-NAME> invoke(s) a writhing flame around <T-NAMESELF>!^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

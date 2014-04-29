@@ -52,7 +52,7 @@ public class Duel extends StdCommand
 			return false;
 		}
 
-		String whomToKill=CMParms.combine(commands,1);
+		final String whomToKill=CMParms.combine(commands,1);
 		target=mob.location().fetchInhabitant(whomToKill);
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
@@ -67,16 +67,16 @@ public class Duel extends StdCommand
 			mob.tell("You are not allowed to duel "+target.name(mob)+".");
 		else
 		{
-			Tattoo uiT=target.findTattoo("IDUEL");
-			Tattoo uuT=target.findTattoo("UDUEL");
-			Tattoo iiT=mob.findTattoo("IDUEL");
-			Tattoo iuT=mob.findTattoo("UDUEL");
+			final Tattoo uiT=target.findTattoo("IDUEL");
+			final Tattoo uuT=target.findTattoo("UDUEL");
+			final Tattoo iiT=mob.findTattoo("IDUEL");
+			final Tattoo iuT=mob.findTattoo("UDUEL");
 			if((uiT==null)&&(iiT==null)&&(uuT==null)&&(iuT==null))
 			{
-				int duelTicks=CMProps.getIntVar(CMProps.Int.DUELTICKDOWN);
+				final int duelTicks=CMProps.getIntVar(CMProps.Int.DUELTICKDOWN);
 				mob.addTattoo(new Tattoo("IDUEL",duelTicks));
 				target.addTattoo(new Tattoo("UDUEL",duelTicks));
-				long time = CMProps.getTickMillis() * duelTicks;
+				final long time = CMProps.getTickMillis() * duelTicks;
 				mob.location().show(mob, target, CMMsg.MSG_DUELCHALLENGE, "^X<S-NAME> <S-HAS-HAVE> challenged <T-NAME> to a duel, which <T-HE-SHE> <T-HAS-HAVE> "+(time/1000)+" seconds to consider.^.^N");
 				target.tell("^NEnter ^HDUEL "+mob.name(target)+"^N to accept this challenge and begin fighting.");
 				return true;
@@ -85,10 +85,10 @@ public class Duel extends StdCommand
 			if((uiT != null)&&(iuT != null))
 			{
 				target.tell(mob,target,null,"^X<T-NAME> <T-HAS-HAVE> ACCEPTED <T-YOUPOSS> CHALLENGE!^.^N");
-				Item weapon=mob.fetchWieldedItem();
+				final Item weapon=mob.fetchWieldedItem();
 				if(weapon==null)
 				{
-					Item possibleOtherWeapon=mob.fetchHeldItem();
+					final Item possibleOtherWeapon=mob.fetchHeldItem();
 					if((possibleOtherWeapon!=null)
 					&&(possibleOtherWeapon instanceof Weapon)
 					&&possibleOtherWeapon.fitsOn(Wearable.WORN_WIELD)
@@ -98,12 +98,12 @@ public class Duel extends StdCommand
 						CMLib.commands().postRemove(mob,possibleOtherWeapon,false);
 						if(possibleOtherWeapon.amWearingAt(Wearable.IN_INVENTORY))
 						{
-							Command C=CMClass.getCommand("Wield");
+							final Command C=CMClass.getCommand("Wield");
 							if(C!=null) C.execute(mob,new XVector("WIELD",possibleOtherWeapon),metaFlags);
 						}
 					}
 				}
-				Ability A=CMClass.getAbility("Dueler");
+				final Ability A=CMClass.getAbility("Dueler");
 				if(A!=null) A.invoke(target, mob, true, 0);
 			}
 			else
@@ -121,8 +121,8 @@ public class Duel extends StdCommand
 			else
 			if((iuT!=null)||(iiT!=null))
 			{
-				int duelTicks=CMProps.getIntVar(CMProps.Int.DUELTICKDOWN);
-				long time = CMProps.getTickMillis() * duelTicks;
+				final int duelTicks=CMProps.getIntVar(CMProps.Int.DUELTICKDOWN);
+				final long time = CMProps.getTickMillis() * duelTicks;
 				mob.tell(mob,target,null,"Your previous challenge has not yet expired.  Please wait "+(time/1000)+" seconds longer and try again.");
 				return false;
 			}

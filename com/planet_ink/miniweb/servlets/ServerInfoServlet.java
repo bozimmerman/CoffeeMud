@@ -45,7 +45,7 @@ public class ServerInfoServlet implements SimpleServlet
 			response.getOutputStream().write("<html><body>".getBytes());
 			if(Thread.currentThread() instanceof MWThread)
 			{
-				MiniWebConfig config=((MWThread)Thread.currentThread()).getConfig();
+				final MiniWebConfig config=((MWThread)Thread.currentThread()).getConfig();
 				response.getOutputStream().write("<table width=\"500\"><tr><td><b>Field</b></td><td>Value</td></tr>".getBytes());
 				response.getOutputStream().write(("<tr><td>Bind address</td><td>"+config.getBindAddress()+"</td></tr>").getBytes());
 				response.getOutputStream().write(("<tr><td>Debug flag</td><td>"+config.getDebugFlag()+"</td></tr>").getBytes());
@@ -74,7 +74,7 @@ public class ServerInfoServlet implements SimpleServlet
 			}
 			response.getOutputStream().write("</body></html>".getBytes());
 		}
-		catch (IOException e)
+		catch (final IOException e)
 		{
 			response.setStatusCode(500);
 		}

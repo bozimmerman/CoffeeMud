@@ -69,7 +69,7 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 	{
 		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Tickable.TICKID_MOB))
 		{
-			MOB mob=(MOB)affected;
+			final MOB mob=(MOB)affected;
 			if(fireRequired)
 			{
 				if((buildingI==null)
@@ -100,7 +100,7 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 		{
 			if((affected!=null)&&(affected instanceof MOB))
 			{
-				MOB mob=(MOB)affected;
+				final MOB mob=(MOB)affected;
 				if((buildingI!=null)&&(!aborted))
 				{
 					if((beingDone!=null)&&(beingDone.size()>=2))
@@ -109,7 +109,7 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 							commonEmote(mob,"<S-NAME> mess(es) up "+verb+".");
 						else
 						{
-							Item I=(Item)beingDone.elementAt(1);
+							final Item I=(Item)beingDone.elementAt(1);
 							buildingI.setBaseValue(buildingI.baseGoldValue()+(I.baseGoldValue()*2));
 							buildingI.setDescription(buildingI.description()+" "+(String)beingDone.elementAt(0));
 						}
@@ -171,8 +171,8 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 		{
 			if(I instanceof Rideable)
 			{
-				Rideable R=(Rideable)I;
-				int rideType=R.rideBasis();
+				final Rideable R=(Rideable)I;
+				final int rideType=R.rideBasis();
 				switch(rideType)
 				{
 				case Rideable.RIDEABLE_LADDER:
@@ -208,7 +208,7 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 		&&(((I.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_METAL)
 			||((I.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_MITHRIL)))
 		{
-			Armor A=(Armor)I;
+			final Armor A=(Armor)I;
 			if((CMath.bset(A.getLayerAttributes(), Armor.LAYERMASK_SEETHROUGH))
 			&&(A.basePhyStats().armor()<3))
 				return true;
@@ -258,10 +258,10 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 
 		fireRequired=true;
 
-		CraftParms parsedVars=super.parseAutoGenerate(auto,givenTarget,commands);
+		final CraftParms parsedVars=super.parseAutoGenerate(auto,givenTarget,commands);
 		givenTarget=parsedVars.givenTarget;
 
-		PairVector<Integer,Integer> enhancedTypes=enhancedTypes(mob,commands);
+		final PairVector<Integer,Integer> enhancedTypes=enhancedTypes(mob,commands);
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,parsedVars.autoGenerate);
 		if(commands.size()==0)
 		{
@@ -277,8 +277,8 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 				return super.bundle(mob,commands);
 			return false;
 		}
-		List<List<String>> recipes=addRecipes(mob,loadRecipes());
-		String str=(String)commands.elementAt(0);
+		final List<List<String>> recipes=addRecipes(mob,loadRecipes());
+		final String str=(String)commands.elementAt(0);
 		String startStr=null;
 		fireRequired=true;
 		bundling=false;
@@ -294,9 +294,9 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 				mask="";
 			}
 			int toggler=1;
-			int toggleTop=2;
-			StringBuffer buf=new StringBuffer("");
-			int[] cols={
+			final int toggleTop=2;
+			final StringBuffer buf=new StringBuffer("");
+			final int[] cols={
 					ListingLibrary.ColFixer.fixColWidth(27,mob.session()),
 					ListingLibrary.ColFixer.fixColWidth(3,mob.session()),
 					ListingLibrary.ColFixer.fixColWidth(5,mob.session())
@@ -306,12 +306,12 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 			buf.append("\n\r");
 			for(int r=0;r<recipes.size();r++)
 			{
-				List<String> V=recipes.get(r);
+				final List<String> V=recipes.get(r);
 				if(V.size()>0)
 				{
-					String item=replacePercent(V.get(RCP_FINALNAME),"");
-					int level=CMath.s_int(V.get(RCP_LEVEL));
-					String wood=getComponentDescription(mob,V,RCP_WOOD);
+					final String item=replacePercent(V.get(RCP_FINALNAME),"");
+					final int level=CMath.s_int(V.get(RCP_LEVEL));
+					final String wood=getComponentDescription(mob,V,RCP_WOOD);
 					if(wood.length()>5)
 					{
 						if(toggler>1) buf.append("\n\r");
@@ -337,13 +337,13 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 		else
 		if((str.equalsIgnoreCase("encrust"))||(str.equalsIgnoreCase("mount")))
 		{
-			String word=str.toLowerCase();
+			final String word=str.toLowerCase();
 			if(commands.size()<3)
 			{
 				commonTell(mob,CMStrings.capitalizeAndLower(word)+" what jewel onto what item?");
 				return false;
 			}
-			Item fire=getRequiredFire(mob,parsedVars.autoGenerate);
+			final Item fire=getRequiredFire(mob,parsedVars.autoGenerate);
 			buildingI=null;
 			activity = CraftingActivity.CRAFTING;
 			aborted=false;
@@ -412,7 +412,7 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 			beingDone.addElement(jewelI);
 			messedUp=!proficiencyCheck(mob,0,auto);
 			duration=10;
-			CMMsg msg=CMClass.getMsg(mob,null,this,getActivityMessageType(),startStr);
+			final CMMsg msg=CMClass.getMsg(mob,null,this,getActivityMessageType(),startStr);
 			if(mob.location().okMessage(mob,msg))
 			{
 				jewelI.destroy();
@@ -430,9 +430,9 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 			buildingI=null;
 			activity = CraftingActivity.CRAFTING;
 			messedUp=false;
-			Item fire=getRequiredFire(mob,parsedVars.autoGenerate);
+			final Item fire=getRequiredFire(mob,parsedVars.autoGenerate);
 			if(fire==null) return false;
-			Vector newCommands=CMParms.parse(CMParms.combine(commands,1));
+			final Vector newCommands=CMParms.parse(CMParms.combine(commands,1));
 			buildingI=getTarget(mob,mob.location(),givenTarget,newCommands,Wearable.FILTER_UNWORNONLY);
 			if(!canMend(mob, buildingI,false)) return false;
 			activity = CraftingActivity.MENDING;
@@ -448,9 +448,9 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 			buildingI=null;
 			activity = CraftingActivity.CRAFTING;
 			messedUp=false;
-			Item fire=getRequiredFire(mob,parsedVars.autoGenerate);
+			final Item fire=getRequiredFire(mob,parsedVars.autoGenerate);
 			if(fire==null) return false;
-			Vector newCommands=CMParms.parse(CMParms.combine(commands,1));
+			final Vector newCommands=CMParms.parse(CMParms.combine(commands,1));
 			buildingI=getTarget(mob,mob.location(),givenTarget,newCommands,Wearable.FILTER_UNWORNONLY);
 			if(buildingI==null) return false;
 			if(!mayICraft(mob,buildingI))
@@ -489,15 +489,15 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 				amount=CMath.s_int((String)commands.lastElement());
 				commands.removeElementAt(commands.size()-1);
 			}
-			String recipeName=CMParms.combine(commands,0);
+			final String recipeName=CMParms.combine(commands,0);
 			List<String> foundRecipe=null;
-			List<List<String>> matches=matchingRecipeNames(recipes,recipeName,true);
+			final List<List<String>> matches=matchingRecipeNames(recipes,recipeName,true);
 			for(int r=0;r<matches.size();r++)
 			{
-				List<String> V=matches.get(r);
+				final List<String> V=matches.get(r);
 				if(V.size()>0)
 				{
-					int level=CMath.s_int(V.get(RCP_LEVEL));
+					final int level=CMath.s_int(V.get(RCP_LEVEL));
 					if((parsedVars.autoGenerate>0)||(level<=xlevel(mob)))
 					{
 						foundRecipe=V;
@@ -514,7 +514,7 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 			bundling=misctype.equalsIgnoreCase("BUNDLE");
 			if(!bundling)
 			{
-				Item fire=getRequiredFire(mob,parsedVars.autoGenerate);
+				final Item fire=getRequiredFire(mob,parsedVars.autoGenerate);
 				if(fire==null) return false;
 			}
 			else
@@ -527,9 +527,9 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 			woodRequired=adjustWoodRequired(woodRequired,mob);
 
 			if(amount>woodRequired) woodRequired=amount;
-			String otherRequired=foundRecipe.get(RCP_EXTRAREQ);
-			int[] pm={RawMaterial.MATERIAL_MITHRIL,RawMaterial.MATERIAL_METAL};
-			int[][] data=fetchFoundResourceData(mob,
+			final String otherRequired=foundRecipe.get(RCP_EXTRAREQ);
+			final int[] pm={RawMaterial.MATERIAL_MITHRIL,RawMaterial.MATERIAL_METAL};
+			final int[][] data=fetchFoundResourceData(mob,
 												woodRequired,"metal",pm,
 												otherRequired.length()>0?1:0,otherRequired,null,
 												false,
@@ -552,10 +552,10 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 					@Override public void timedOut() {}
 					@Override public void callBack()
 					{
-						String of=this.input;
+						final String of=this.input;
 						if((of.trim().length()==0)||(of.indexOf('<')>=0))
 							return;
-						Vector newCommands=(Vector)originalCommands.clone();
+						final Vector newCommands=(Vector)originalCommands.clone();
 						newCommands.add("STATUE="+of);
 						me.invoke(mob, newCommands, target, auto, asLevel);
 					}
@@ -568,7 +568,7 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 
 
 
-			int lostValue=parsedVars.autoGenerate>0?0:
+			final int lostValue=parsedVars.autoGenerate>0?0:
 				CMLib.materials().destroyResourcesValue(mob.location(),woodRequired,data[0][FOUND_CODE],data[1][FOUND_CODE],null)
 				+CMLib.ableMapper().destroyAbilityComponents(componentsFoundList);
 			buildingI=CMClass.getItem(foundRecipe.get(RCP_CLASSTYPE));
@@ -612,8 +612,8 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 			}
 			buildingI.basePhyStats().setLevel(CMath.s_int(foundRecipe.get(RCP_LEVEL)));
 			//int capacity=CMath.s_int((String)foundRecipe.get(RCP_CAPACITY));
-			int armordmg=CMath.s_int(foundRecipe.get(RCP_ARMORDMG));
-			String spell=(foundRecipe.size()>RCP_SPELL)?foundRecipe.get(RCP_SPELL).trim():"";
+			final int armordmg=CMath.s_int(foundRecipe.get(RCP_ARMORDMG));
+			final String spell=(foundRecipe.size()>RCP_SPELL)?foundRecipe.get(RCP_SPELL).trim():"";
 			addSpells(buildingI,spell);
 			if((buildingI instanceof Armor)&&(!(buildingI instanceof FalseLimb)))
 			{
@@ -654,7 +654,7 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 			return true;
 		}
 
-		CMMsg msg=CMClass.getMsg(mob,buildingI,getActivityMessageType(),startStr);
+		final CMMsg msg=CMClass.getMsg(mob,buildingI,getActivityMessageType(),startStr);
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

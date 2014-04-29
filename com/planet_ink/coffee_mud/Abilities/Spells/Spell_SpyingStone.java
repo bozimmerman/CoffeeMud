@@ -55,11 +55,11 @@ public class Spell_SpyingStone extends Spell
 		&&(msg.target()==affected)
 		&&(msg.sourceMessage().toUpperCase().indexOf("SPEAK")>=0))
 		{
-			Room room=CMLib.map().roomLocation(affected);
+			final Room room=CMLib.map().roomLocation(affected);
 			if(room!=null)
 			{
-				StringBuilder str=new StringBuilder("");
-				for(String m : msgs)
+				final StringBuilder str=new StringBuilder("");
+				for(final String m : msgs)
 					str.append(m).append("\n\r");
 				if(str.length()==0) str.append("Nothing!");
 				room.showHappens(CMMsg.MSG_SPEAK, affected,"^S<S-NAME> grow(s) a mouth and say(s) '^N"+str.toString()+"^S'^N");
@@ -76,7 +76,7 @@ public class Spell_SpyingStone extends Spell
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		Physical target=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_ANY);
+		final Physical target=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_ANY);
 		if(target==null) return false;
 
 		if(!(target instanceof Item))
@@ -94,11 +94,11 @@ public class Spell_SpyingStone extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> point(s) <S-HIS-HER> finger at <T-NAMESELF>, incanting.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> point(s) <S-HIS-HER> finger at <T-NAMESELF>, incanting.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

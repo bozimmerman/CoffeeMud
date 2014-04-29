@@ -40,8 +40,8 @@ public class AllQualifyNext extends StdWebMacro
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
-		java.util.Map<String,String> parms=parseParms(parm);
-		String last=httpReq.getUrlParameter("ALLQUALID");
+		final java.util.Map<String,String> parms=parseParms(parm);
+		final String last=httpReq.getUrlParameter("ALLQUALID");
 		if(parms.containsKey("RESET"))
 		{
 			if(last!=null) httpReq.removeUrlParameter("ALLQUALID");
@@ -51,13 +51,13 @@ public class AllQualifyNext extends StdWebMacro
 		if(parms.containsKey("WHICH"))
 			which=parms.get("WHICH");
 		if((which==null)||(which.length()==0)) which="ALL";
-		Map<String,Map<String,AbilityMapper.AbilityMapping>> allQualMap=CMLib.ableMapper().getAllQualifiesMap(httpReq.getRequestObjects());
-		Map<String,AbilityMapper.AbilityMapping> map=allQualMap.get(which.toUpperCase().trim());
+		final Map<String,Map<String,AbilityMapper.AbilityMapping>> allQualMap=CMLib.ableMapper().getAllQualifiesMap(httpReq.getRequestObjects());
+		final Map<String,AbilityMapper.AbilityMapping> map=allQualMap.get(which.toUpperCase().trim());
 		if(map==null) return " @break@";
 
 		String lastID="";
 		String abilityID;
-		for(Iterator<String> i=map.keySet().iterator();i.hasNext();)
+		for(final Iterator<String> i=map.keySet().iterator();i.hasNext();)
 		{
 			abilityID=i.next();
 			if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!abilityID.equalsIgnoreCase(lastID))))

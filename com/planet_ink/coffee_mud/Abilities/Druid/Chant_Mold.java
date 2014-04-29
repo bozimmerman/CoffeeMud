@@ -50,7 +50,7 @@ public class Chant_Mold extends Chant
 		// undo the affects of this spell
 		if((affected==null)||(!(affected instanceof Item)))
 			return;
-		Item item=(Item)affected;
+		final Item item=(Item)affected;
 		super.unInvoke();
 
 		if(canBeUninvoked())
@@ -60,7 +60,7 @@ public class Chant_Mold extends Chant
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		Physical target=getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_UNWORNONLY);
+		final Physical target=getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_UNWORNONLY);
 		if(target==null) return false;
 		if(((target instanceof Item)&&(!(target instanceof Food)))
 		   ||(target instanceof Room)
@@ -77,7 +77,7 @@ public class Chant_Mold extends Chant
 		// and added as String objects to a vector.
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
@@ -86,7 +86,7 @@ public class Chant_Mold extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> chant(s) to <T-NAMESELF>.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> chant(s) to <T-NAMESELF>.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -94,7 +94,7 @@ public class Chant_Mold extends Chant
 				{
 					if(target instanceof Item)
 					{
-						Ability A=CMClass.getAbility("Disease_Lockjaw");
+						final Ability A=CMClass.getAbility("Disease_Lockjaw");
 						if(A!=null)
 						{
 							A.setInvoker(mob);
@@ -106,10 +106,10 @@ public class Chant_Mold extends Chant
 					if(target instanceof MOB)
 					for(int i=0;i<((MOB)target).numItems();i++)
 					{
-						Item I=((MOB)target).getItem(i);
+						final Item I=((MOB)target).getItem(i);
 						if((I!=null)&&(I instanceof Food))
 						{
-							Ability A=CMClass.getAbility("Disease_Lockjaw");
+							final Ability A=CMClass.getAbility("Disease_Lockjaw");
 							if(A!=null)
 							{
 								A.setInvoker(mob);

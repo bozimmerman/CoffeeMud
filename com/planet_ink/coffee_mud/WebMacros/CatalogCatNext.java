@@ -41,17 +41,17 @@ public class CatalogCatNext extends StdWebMacro
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
-		java.util.Map<String,String> parms=parseParms(parm);
+		final java.util.Map<String,String> parms=parseParms(parm);
 		String last=httpReq.getUrlParameter("CATACAT");
 		if(parms.containsKey("RESET"))
 		{
 			if(last!=null) httpReq.removeUrlParameter("CATACAT");
 			return "";
 		}
-		boolean mobs=parms.containsKey("MOBS")||parms.containsKey("MOB");
+		final boolean mobs=parms.containsKey("MOBS")||parms.containsKey("MOB");
 		if(!httpReq.getRequestObjects().containsKey("CATACATS"+(mobs?"M":"I")))
 			httpReq.getRequestObjects().put("CATACATS"+(mobs?"M":"I"), mobs?CMLib.catalog().getMobCatalogCatagories():CMLib.catalog().getItemCatalogCatagories());
-		String[] cats=(String[])httpReq.getRequestObjects().get("CATACATS"+(mobs?"M":"I"));
+		final String[] cats=(String[])httpReq.getRequestObjects().get("CATACATS"+(mobs?"M":"I"));
 		if(parms.containsKey("WIDTH"))
 			return ""+100/(cats.length+1);
 		String lastID=null;

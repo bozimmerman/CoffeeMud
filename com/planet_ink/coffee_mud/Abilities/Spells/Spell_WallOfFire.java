@@ -59,20 +59,20 @@ public class Spell_WallOfFire extends Spell
 			   &&(theWall!=null)
 			   &&(invoker.location()!=null))
 			{
-				Room room=invoker.location();
+				final Room room=invoker.location();
 				if(!invoker.location().isContent(theWall))
 					unInvoke();
 				else
 				for(int m=0;m<room.numInhabitants();m++)
 				{
-					MOB mob=room.fetchInhabitant(m);
+					final MOB mob=room.fetchInhabitant(m);
 					if((mob!=null)
 					&&(mob!=invoker)
 					&&(mob.isInCombat())
 					&&(mob.getVictim()==invoker)
 					&&(mob.rangeToTarget()==1))
 					{
-						int damage = CMLib.dice().roll((int)Math.round((invoker.phyStats().level()+super.getXLEVELLevel(invoker())+(2.0*super.getX1Level(invoker())))/4.0),6,1);
+						final int damage = CMLib.dice().roll((int)Math.round((invoker.phyStats().level()+super.getXLEVELLevel(invoker())+(2.0*super.getX1Level(invoker())))/4.0),6,1);
 						CMLib.combat().postDamage(invoker,mob,this,damage,CMMsg.MASK_MALICIOUS|CMMsg.MASK_ALWAYS|CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,"The wall of fire flares and <DAMAGE> <T-NAME>!");
 						if((!mob.isInCombat())&&(mob.isMonster())&&(mob!=invoker)&&(invoker!=null)&&(mob.location()==invoker.location())&&(mob.location().isInhabitant(invoker))&&(CMLib.flags().canBeSeenBy(invoker,mob)))
 							CMLib.combat().postAttack(mob,invoker,mob.fetchWieldedItem());
@@ -97,7 +97,7 @@ public class Spell_WallOfFire extends Spell
 			{
 				final MOB actorM=(invoker!=null)? invoker : CMLib.map().deity();
 				((Room)theWall.owner()).show(actorM,null,CMMsg.MSG_OK_VISUAL,deathNotice);
-				Item wall=theWall;
+				final Item wall=theWall;
 				theWall=null;
 				wall.destroy();
 			}
@@ -114,7 +114,7 @@ public class Spell_WallOfFire extends Spell
 		}
 		for(int i=0;i<mob.location().numItems();i++)
 		{
-			Item I=mob.location().getItem(i);
+			final Item I=mob.location().getItem(i);
 			if((I!=null)&&(I.fetchEffect(ID())!=null))
 			{
 				mob.tell("There is already a wall of fire here.");
@@ -129,10 +129,10 @@ public class Spell_WallOfFire extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		Physical target = mob.location();
+		final Physical target = mob.location();
 
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
@@ -141,11 +141,11 @@ public class Spell_WallOfFire extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 
-			CMMsg msg = CMClass.getMsg(mob, target, this,verbalCastCode(mob,target,auto),(auto?"A blazing wall of fire appears!":"^S<S-NAME> conjur(s) up a blazing wall of fire!^?")+CMLib.protocol().msp("fireball.wav",10));
+			final CMMsg msg = CMClass.getMsg(mob, target, this,verbalCastCode(mob,target,auto),(auto?"A blazing wall of fire appears!":"^S<S-NAME> conjur(s) up a blazing wall of fire!^?")+CMLib.protocol().msp("fireball.wav",10));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				Item I=CMClass.getItem("GenItem");
+				final Item I=CMClass.getItem("GenItem");
 				I.setName("a wall of fire");
 				I.setDisplayText("a blazing wall of fire is burning here");
 				I.setDescription("The flames are high and hot.");

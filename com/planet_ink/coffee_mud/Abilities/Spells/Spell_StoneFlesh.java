@@ -45,13 +45,13 @@ public class Spell_StoneFlesh extends Spell
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 
-		Physical target=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_UNWORNONLY);
+		final Physical target=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_UNWORNONLY);
 		if(target==null) return false;
 
 		Ability revokeThis=null;
 		for(int a=0;a<target.numEffects();a++) // personal effects
 		{
-			Ability A=target.fetchEffect(a);
+			final Ability A=target.fetchEffect(a);
 			if((A!=null)&&(A.canBeUninvoked())
 			   &&((A.ID().equalsIgnoreCase("Spell_FleshStone"))
 				  ||(A.ID().equalsIgnoreCase("Prayer_FleshRock"))))
@@ -74,10 +74,10 @@ public class Spell_StoneFlesh extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> dispel(s) "+revokeThis.name()+" from <T-NAMESELF>.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> dispel(s) "+revokeThis.name()+" from <T-NAMESELF>.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

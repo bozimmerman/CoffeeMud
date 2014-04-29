@@ -53,7 +53,7 @@ public class Connection implements java.sql.Connection
 	  {
 		 path=(new java.io.File(path)).getCanonicalPath();
 	  }
-	  catch (java.io.IOException e) {}
+	  catch (final java.io.IOException e) {}
 
 	  oldPath=path;
 	  if(!closed)
@@ -70,7 +70,7 @@ public class Connection implements java.sql.Connection
 
 	  synchronized (databases)
 	  {
-		  WeakReference ref=(WeakReference)databases.get(path);
+		  final WeakReference ref=(WeakReference)databases.get(path);
 		  Backend   	backend=null;
 		  if (ref!=null)
 			 backend=(Backend)ref.get();
@@ -106,7 +106,7 @@ public java.sql.Statement createStatement(int a, int b, int c) throws java.sql.S
    @Override
 public java.sql.PreparedStatement prepareStatement(String sql) throws java.sql.SQLException
    {
-	  PreparedStatement p = new PreparedStatement(this);
+	  final PreparedStatement p = new PreparedStatement(this);
 	  p.prepare(sql);
 	  return p;
    }
@@ -240,7 +240,7 @@ public void close() throws java.sql.SQLException
 			closed=true;
 			synchronized(references)
 			{
-				Integer conCount=(Integer)references.get(oldPath);
+				final Integer conCount=(Integer)references.get(oldPath);
 				if(conCount!=null)
 				{
 					if(conCount.intValue()==1)

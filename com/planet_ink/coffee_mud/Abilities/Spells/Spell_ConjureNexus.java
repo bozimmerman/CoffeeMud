@@ -55,17 +55,17 @@ public class Spell_ConjureNexus extends Spell
 		if(!super.tick(ticking,tickID)) return false;
 		if((affected==null)||(!(affected instanceof Room)))
 			return false;
-		Room R=(Room)affected;
+		final Room R=(Room)affected;
 		if(tickID==Tickable.TICKID_MOB)
 		for(int m=0;m<R.numInhabitants();m++)
 		{
-			MOB mob=R.fetchInhabitant(m);
+			final MOB mob=R.fetchInhabitant(m);
 			if(mob!=null)
 			{
-				int oldHP=mob.curState().getHitPoints();
-				int oldMV=mob.curState().getMovement();
-				int oldHU=mob.curState().getHunger();
-				int oldTH=mob.curState().getThirst();
+				final int oldHP=mob.curState().getHitPoints();
+				final int oldMV=mob.curState().getMovement();
+				final int oldHU=mob.curState().getHunger();
+				final int oldTH=mob.curState().getThirst();
 				CMLib.combat().recoverTick(mob);
 				mob.curState().setHitPoints(oldHP);
 				mob.curState().setMovement(oldMV);
@@ -81,9 +81,9 @@ public class Spell_ConjureNexus extends Spell
 	{
 		try
 		{
-			for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
+			for(final Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 			{
-				Room R=(Room)r.nextElement();
+				final Room R=(Room)r.nextElement();
 				if(CMLib.flags().canAccess(mob,R))
 					for(final Enumeration<Ability> a=R.effects();a.hasMoreElements();)
 					{
@@ -96,15 +96,15 @@ public class Spell_ConjureNexus extends Spell
 
 					}
 			}
-		}catch(NoSuchElementException nse){}
+		}catch(final NoSuchElementException nse){}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,mob.location(),this,verbalCastCode(mob,mob.location(),auto),auto?"":"^S<S-NAME> summon(s) the Nexus of mana!^?");
+			final CMMsg msg=CMClass.getMsg(mob,mob.location(),this,verbalCastCode(mob,mob.location(),auto),auto?"":"^S<S-NAME> summon(s) the Nexus of mana!^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

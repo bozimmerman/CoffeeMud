@@ -63,17 +63,17 @@ public class Chant_GrowFood extends Chant
 		}
 
 		int material=-1;
-		Vector choices=new Vector();
-		String s=CMParms.combine(commands,0);
+		final Vector choices=new Vector();
+		final String s=CMParms.combine(commands,0);
 
 		int col=0;
-		StringBuffer buf=new StringBuffer("Food types known:\n\r");
-		List<Integer> codes = RawMaterial.CODES.COMPOSE_RESOURCES(RawMaterial.MATERIAL_VEGETATION);
-		for(Integer code : codes)
+		final StringBuffer buf=new StringBuffer("Food types known:\n\r");
+		final List<Integer> codes = RawMaterial.CODES.COMPOSE_RESOURCES(RawMaterial.MATERIAL_VEGETATION);
+		for(final Integer code : codes)
 			if(!CMParms.contains(Chant_SummonSeed.NON_SEEDS,code))
 			{
 				choices.addElement(code);
-				String desc=RawMaterial.CODES.NAME(code.intValue());
+				final String desc=RawMaterial.CODES.NAME(code.intValue());
 				if((s.length()>0)&&(CMLib.english().containsString(desc,s)))
 					material=code.intValue();
 				if(col==4){ buf.append("\n\r"); col=0;}
@@ -100,19 +100,19 @@ public class Chant_GrowFood extends Chant
 			return false;
 
 		// now see if it worked
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":"^S<S-NAME> chant(s) to the ground.^?");
+			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":"^S<S-NAME> chant(s) to the ground.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				Food newItem=(Food)CMClass.getBasicItem("GenFoodResource");
+				final Food newItem=(Food)CMClass.getBasicItem("GenFoodResource");
 				if(material==RawMaterial.RESOURCE_HERBS)
 					newItem.setNourishment(1);
 				else
 					newItem.setNourishment(150+(10*super.getX1Level(mob)));
-				String name=RawMaterial.CODES.NAME(material).toLowerCase();
+				final String name=RawMaterial.CODES.NAME(material).toLowerCase();
 				newItem.setMaterial(material);
 				newItem.setBaseValue(1);
 				newItem.basePhyStats().setWeight(1);

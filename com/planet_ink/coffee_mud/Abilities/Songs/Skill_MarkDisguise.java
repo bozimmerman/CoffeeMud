@@ -44,14 +44,14 @@ public class Skill_MarkDisguise extends Skill_Disguise
 
 	public MOB getMark(MOB mob)
 	{
-		Thief_Mark A=(Thief_Mark)mob.fetchEffect("Thief_Mark");
+		final Thief_Mark A=(Thief_Mark)mob.fetchEffect("Thief_Mark");
 		if(A!=null)
 			return A.mark;
 		return null;
 	}
 	public int getMarkTicks(MOB mob)
 	{
-		Thief_Mark A=(Thief_Mark)mob.fetchEffect("Thief_Mark");
+		final Thief_Mark A=(Thief_Mark)mob.fetchEffect("Thief_Mark");
 		if((A!=null)&&(A.mark!=null))
 			return A.ticks;
 		return -1;
@@ -83,7 +83,7 @@ public class Skill_MarkDisguise extends Skill_Disguise
 			return false;
 		}
 
-		int ticksWaited=getMarkTicks(mob);
+		final int ticksWaited=getMarkTicks(mob);
 		if(ticksWaited<15)
 		{
 			if(target==getMark(mob))
@@ -98,11 +98,11 @@ public class Skill_MarkDisguise extends Skill_Disguise
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,mob,null,CMMsg.MSG_DELICATE_HANDS_ACT|(auto?CMMsg.MASK_ALWAYS:0),"<S-NAME> turn(s) away for a second.");
+			final CMMsg msg=CMClass.getMsg(mob,mob,null,CMMsg.MSG_DELICATE_HANDS_ACT|(auto?CMMsg.MASK_ALWAYS:0),"<S-NAME> turn(s) away for a second.");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

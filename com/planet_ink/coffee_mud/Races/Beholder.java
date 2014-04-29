@@ -43,16 +43,16 @@ public class Beholder extends StdRace
 	@Override public int weightVariance(){return 100;}
 	@Override public long forbiddenWornBits(){return 0;}
 	@Override public String racialCategory(){return "Unique";}
-	private String[]racialAbilityNames={"Spell_Sleep","Spell_FloatingDisc","Spell_Fear","Spell_Slow","Spell_Charm","Prayer_CauseCritical","Spell_DispelMagic","Spell_FleshStone","Prayer_DeathFinger","Spell_Disintegrate"};
-	private int[]racialAbilityLevels={1,1,1,5,10,10,15,20,30,30};
-	private int[]racialAbilityProficiencies={50,50,50,50,50,50,100,50,50,50};
-	private boolean[]racialAbilityQuals={false,false,false,false,false,false,false,false,false,false};
+	private final String[]racialAbilityNames={"Spell_Sleep","Spell_FloatingDisc","Spell_Fear","Spell_Slow","Spell_Charm","Prayer_CauseCritical","Spell_DispelMagic","Spell_FleshStone","Prayer_DeathFinger","Spell_Disintegrate"};
+	private final int[]racialAbilityLevels={1,1,1,5,10,10,15,20,30,30};
+	private final int[]racialAbilityProficiencies={50,50,50,50,50,50,100,50,50,50};
+	private final boolean[]racialAbilityQuals={false,false,false,false,false,false,false,false,false,false};
 	@Override public String[] racialAbilityNames(){return racialAbilityNames;}
 	@Override public int[] racialAbilityLevels(){return racialAbilityLevels;}
 	@Override public int[] racialAbilityProficiencies(){return racialAbilityProficiencies;}
 	@Override public boolean[] racialAbilityQuals(){return racialAbilityQuals;}
-	private String[]culturalAbilityNames={"Undercommon"};
-	private int[]culturalAbilityProficiencies={100};
+	private final String[]culturalAbilityNames={"Undercommon"};
+	private final int[]culturalAbilityProficiencies={100};
 	@Override public String[] culturalAbilityNames(){return culturalAbilityNames;}
 	@Override public int[] culturalAbilityProficiencies(){return culturalAbilityProficiencies;}
 
@@ -60,7 +60,7 @@ public class Beholder extends StdRace
 	private static final int[] parts={-1,10,-1,1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1};
 	@Override public int[] bodyMask(){return parts;}
 
-	private int[] agingChart={0,5,20,110,325,500,850,950,1050};
+	private final int[] agingChart={0,5,20,110,325,500,850,950,1050};
 	@Override public int[] getAgingChart(){return agingChart;}
 
 	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();

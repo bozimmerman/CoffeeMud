@@ -71,9 +71,9 @@ public class Disease_HeatExhaustion extends Disease
 		&&(msg.amITarget(msg.source().location()))
 		&&((msg.targetMinor()==CMMsg.TYP_LOOK)||(msg.targetMinor()==CMMsg.TYP_EXAMINE)))
 		{
-			Room R=room(msg.source().location());
+			final Room R=room(msg.source().location());
 			if((R==null)||(R==msg.source().location())) return true;
-			CMMsg msg2=CMClass.getMsg(msg.source(),R,msg.tool(),
+			final CMMsg msg2=CMClass.getMsg(msg.source(),R,msg.tool(),
 						  msg.sourceCode(),msg.sourceMessage(),
 						  msg.targetCode(),msg.targetMessage(),
 						  msg.othersCode(),msg.othersMessage());
@@ -94,10 +94,10 @@ public class Disease_HeatExhaustion extends Disease
 		if((affected instanceof MOB)
 		&&(canBeUninvoked()))
 		{
-			MOB M=((MOB)affected);
+			final MOB M=((MOB)affected);
 			if(M.location()!=null)
 			{
-				Area A=M.location().getArea();
+				final Area A=M.location().getArea();
 				switch(M.location().domainType())
 				{
 				case Room.DOMAIN_INDOORS_UNDERWATER:

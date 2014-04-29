@@ -24,7 +24,7 @@ public class Util
 
 	public static String toSemicolonList(byte[] bytes)
 	{
-		StringBuffer str=new StringBuffer("");
+		final StringBuffer str=new StringBuffer("");
 		for(int b=0;b<bytes.length;b++)
 			str.append(Byte.toString(bytes[b])+(b<(bytes.length-1)?";":""));
 		return str.toString();
@@ -32,7 +32,7 @@ public class Util
 
 	public static String toSemicolonList(String[] bytes)
 	{
-		StringBuffer str=new StringBuffer("");
+		final StringBuffer str=new StringBuffer("");
 		for(int b=0;b<bytes.length;b++)
 			str.append(bytes[b]+(b<(bytes.length-1)?";":""));
 		return str.toString();
@@ -40,7 +40,7 @@ public class Util
 
 	public static String toSemicolonList(Vector bytes)
 	{
-		StringBuffer str=new StringBuffer("");
+		final StringBuffer str=new StringBuffer("");
 		for(int b=0;b<bytes.size();b++)
 			str.append(bytes.elementAt(b)+(b<(bytes.size()-1)?";":""));
 		return str.toString();
@@ -48,10 +48,10 @@ public class Util
 
 	public static byte[] fromByteList(String str)
 	{
-		Vector V=parseSemicolons(str,true);
+		final Vector V=parseSemicolons(str,true);
 		if(V.size()>0)
 		{
-			byte[] bytes=new byte[V.size()];
+			final byte[] bytes=new byte[V.size()];
 			for(int b=0;b<V.size();b++)
 				bytes[b]=Byte.parseByte((String)V.elementAt(b));
 			return bytes;
@@ -61,7 +61,7 @@ public class Util
 
 	public static long absDiff(long x, long y)
 	{
-		long d=x-y;
+		final long d=x-y;
 		if(d<0) return d*-1;
 		return d;
 	}
@@ -69,7 +69,7 @@ public class Util
 	public static String repeat(String str1, int times)
 	{
 		if(times<=0) return "";
-		StringBuffer str=new StringBuffer("");
+		final StringBuffer str=new StringBuffer("");
 		for(int i=0;i<times;i++)
 			str.append(str1);
 		return str.toString();
@@ -158,7 +158,7 @@ public class Util
 				}
 				if(x<text.length())
 				{
-					char pm=text.charAt(x);
+					final char pm=text.charAt(x);
 					while((x<text.length())&&(!Character.isDigit(text.charAt(x))))
 						x++;
 					if(x<text.length())
@@ -195,7 +195,7 @@ public class Util
 				}
 				if(x<text.length())
 				{
-					char pm=text.charAt(x);
+					final char pm=text.charAt(x);
 					while((x<text.length())
 					&&(!Character.isDigit(text.charAt(x)))
 					&&(text.charAt(x)!='.'))
@@ -311,10 +311,10 @@ public class Util
 	{
 		if((V==null)||(V.size()==0))
 		{
-			String[] s=new String[0];
+			final String[] s=new String[0];
 			return s;
 		}
-		String[] s=new String[V.size()];
+		final String[] s=new String[V.size()];
 		for(int v=0;v<V.size();v++)
 			s[v]=V.elementAt(v).toString();
 		return s;
@@ -324,10 +324,10 @@ public class Util
 	{
 		if((V==null)||(V.size()==0))
 		{
-			long[] s=new long[0];
+			final long[] s=new long[0];
 			return s;
 		}
-		long[] s=new long[V.size()];
+		final long[] s=new long[V.size()];
 		for(int v=0;v<V.size();v++)
 			s[v]=Util.s_long(V.elementAt(v).toString());
 		return s;
@@ -336,10 +336,10 @@ public class Util
 	{
 		if((V==null)||(V.size()==0))
 		{
-			int[] s=new int[0];
+			final int[] s=new int[0];
 			return s;
 		}
-		int[] s=new int[V.size()];
+		final int[] s=new int[V.size()];
 		for(int v=0;v<V.size();v++)
 			s[v]=Util.s_int(V.elementAt(v).toString());
 		return s;
@@ -349,12 +349,12 @@ public class Util
 	{
 		if((V==null)||(V.size()==0))
 		{
-			String[] s=new String[0];
+			final String[] s=new String[0];
 			return s;
 		}
-		String[] s=new String[V.size()];
+		final String[] s=new String[V.size()];
 		int v=0;
-		for(Iterator i=V.iterator();i.hasNext();)
+		for(final Iterator i=V.iterator();i.hasNext();)
 			s[v++]=(i.next()).toString();
 		return s;
 	}
@@ -365,9 +365,9 @@ public class Util
 		{
 			return "";
 		}
-		StringBuffer s=new StringBuffer("");
-		for(int v=0;v<V.length;v++)
-			s.append(", "+V[v]);
+		final StringBuffer s=new StringBuffer("");
+		for (final String element : V)
+			s.append(", "+element);
 		if(s.length()==0) return "";
 		return s.toString().substring(2);
 	}
@@ -378,9 +378,9 @@ public class Util
 		{
 			return "";
 		}
-		StringBuffer s=new StringBuffer("");
-		for(int v=0;v<V.length;v++)
-			s.append(", "+V[v]);
+		final StringBuffer s=new StringBuffer("");
+		for (final long element : V)
+			s.append(", "+element);
 		if(s.length()==0) return "";
 		return s.toString().substring(2);
 	}
@@ -391,9 +391,9 @@ public class Util
 		{
 			return "";
 		}
-		StringBuffer s=new StringBuffer("");
-		for(int v=0;v<V.length;v++)
-			s.append(", "+V[v]);
+		final StringBuffer s=new StringBuffer("");
+		for (final int element : V)
+			s.append(", "+element);
 		if(s.length()==0) return "";
 		return s.toString().substring(2);
 	}
@@ -405,7 +405,7 @@ public class Util
 		{
 			return "";
 		}
-		StringBuffer s=new StringBuffer("");
+		final StringBuffer s=new StringBuffer("");
 		for(int v=0;v<V.size();v++)
 			s.append(", "+V.elementAt(v).toString());
 		if(s.length()==0) return "";
@@ -418,8 +418,8 @@ public class Util
 		{
 			return "";
 		}
-		StringBuffer s=new StringBuffer("");
-		for(Iterator i=V.iterator();i.hasNext();)
+		final StringBuffer s=new StringBuffer("");
+		for(final Iterator i=V.iterator();i.hasNext();)
 			s.append(", "+i.next().toString());
 		if(s.length()==0) return "";
 		return s.toString().substring(2);
@@ -427,45 +427,45 @@ public class Util
 
 	public static Vector makeVector(String[] O)
 	{
-		Vector V=new Vector();
+		final Vector V=new Vector();
 		if(O!=null)
-		for(int s=0;s<O.length;s++)
-			V.addElement(O[s]);
+			for (final String element : O)
+				V.addElement(element);
 		return V;
 	}
 	public static Vector makeVector()
 	{ return new Vector();}
 	public static Vector makeVector(Object O)
-	{ Vector V=new Vector(); V.addElement(O); return V;}
+	{ final Vector V=new Vector(); V.addElement(O); return V;}
 	public static Vector makeVector(Object O, Object O2)
-	{ Vector V=new Vector(); V.addElement(O); V.addElement(O2); return V;}
+	{ final Vector V=new Vector(); V.addElement(O); V.addElement(O2); return V;}
 	public static Vector makeVector(Object O, Object O2, Object O3)
-	{ Vector V=new Vector(); V.addElement(O); V.addElement(O2); V.addElement(O3); return V;}
+	{ final Vector V=new Vector(); V.addElement(O); V.addElement(O2); V.addElement(O3); return V;}
 	public static Vector makeVector(Object O, Object O2, Object O3, Object O4)
-	{ Vector V=new Vector(); V.addElement(O); V.addElement(O2); V.addElement(O3); V.addElement(O4); return V;}
+	{ final Vector V=new Vector(); V.addElement(O); V.addElement(O2); V.addElement(O3); V.addElement(O4); return V;}
 
 	public static HashSet makeHashSet(){return new HashSet();}
 	public static HashSet makeHashSet(Object O)
-	{HashSet H=new HashSet(); H.add(O); return H;}
+	{final HashSet H=new HashSet(); H.add(O); return H;}
 	public static HashSet makeHashSet(Object O, Object O2)
-	{HashSet H=new HashSet(); H.add(O); H.add(O2); return H;}
+	{final HashSet H=new HashSet(); H.add(O); H.add(O2); return H;}
 	public static HashSet makeHashSet(Object O, Object O2, Object O3)
-	{HashSet H=new HashSet(); H.add(O); H.add(O2); H.add(O3); return H;}
+	{final HashSet H=new HashSet(); H.add(O); H.add(O2); H.add(O3); return H;}
 	public static HashSet makeHashSet(Object O, Object O2, Object O3, Object O4)
-	{HashSet H=new HashSet(); H.add(O); H.add(O2); H.add(O3); H.add(O4); return H;}
+	{final HashSet H=new HashSet(); H.add(O); H.add(O2); H.add(O3); H.add(O4); return H;}
 
 	public static String[] toStringArray(Hashtable V)
 	{
 		if((V==null)||(V.size()==0))
 		{
-			String[] s=new String[0];
+			final String[] s=new String[0];
 			return s;
 		}
-		String[] s=new String[V.size()];
+		final String[] s=new String[V.size()];
 		int v=0;
-		for(Enumeration e=V.keys();e.hasMoreElements();)
+		for(final Enumeration e=V.keys();e.hasMoreElements();)
 		{
-			String KEY=(String)e.nextElement();
+			final String KEY=(String)e.nextElement();
 			s[v]=(String)V.get(KEY);
 			v++;
 		}
@@ -485,10 +485,10 @@ public class Util
 		{
 			return "";
 		}
-		StringBuffer s=new StringBuffer("");
-		for(Enumeration e=V.keys();e.hasMoreElements();)
+		final StringBuffer s=new StringBuffer("");
+		for(final Enumeration e=V.keys();e.hasMoreElements();)
 		{
-			String KEY=(String)e.nextElement();
+			final String KEY=(String)e.nextElement();
 			s.append(KEY+"="+((String)V.get(KEY))+"/");
 		}
 		return s.toString();
@@ -524,7 +524,7 @@ public class Util
 			if(Character.toUpperCase(str.charAt(i))==Character.toUpperCase(thisStr.charAt(0)))
 				if(str.substring(i).toUpperCase().startsWith(thisStr.toUpperCase()))
 				{
-					boolean isUpperCase=Character.isUpperCase(str.charAt(i));
+					final boolean isUpperCase=Character.isUpperCase(str.charAt(i));
 					if(withThisStr.length()>0)
 						withThisStr=(isUpperCase?Character.toUpperCase(withThisStr.charAt(0)):Character.toLowerCase(withThisStr.charAt(0)))+withThisStr.substring(1);
 					str=str.substring(0,i)+withThisStr+str.substring(i+thisStr.length());
@@ -616,7 +616,7 @@ public class Util
 	{
 		int sint=0;
 		try{ sint=Integer.parseInt(INT); }
-		catch(Exception e){ return 0;}
+		catch(final Exception e){ return 0;}
 		return sint;
 	}
 
@@ -633,13 +633,13 @@ public class Util
 		while((INT.length()>0)&&(INT.startsWith("0")))
 				INT=INT.substring(1);
 		try{ sint=Integer.parseInt(INT); }
-		catch(Exception e){ return 0;}
+		catch(final Exception e){ return 0;}
 		return sint;
 	}
 
 	public static String lastWordIn(String thisStr)
 	{
-		int x=thisStr.lastIndexOf(' ');
+		final int x=thisStr.lastIndexOf(' ');
 		if(x>=0)
 			return thisStr.substring(x+1);
 		return thisStr;
@@ -647,7 +647,7 @@ public class Util
 
 	public static String removeColors(String s)
 	{
-		StringBuffer str=new StringBuffer(s);
+		final StringBuffer str=new StringBuffer(s);
 		int colorStart=-1;
 		for(int i=0;i<str.length();i++)
 		{
@@ -664,8 +664,8 @@ public class Util
 			case '^':
 				if((i+1)<str.length())
 				{
-					int tagStart=i;
-					char c=str.charAt(i+1);
+					final int tagStart=i;
+					final char c=str.charAt(i+1);
 					if((c=='<')||(c=='&'))
 					{
 						i+=2;
@@ -726,7 +726,7 @@ public class Util
 		long hours=minutes/60;
 		minutes-=(hours*60);
 		if(hours<24) return hours+"h "+minutes+"m "+seconds+"s "+millis+"ms"+avg;
-		long days=hours/24;
+		final long days=hours/24;
 		hours-=(days*24);
 		return days+"d "+hours+"h "+minutes+"m "+seconds+"s "+millis+"ms"+avg;
 
@@ -734,10 +734,10 @@ public class Util
 
 	public static Vector copyVector(Vector V)
 	{
-		Vector V2=new Vector();
+		final Vector V2=new Vector();
 		for(int v=0;v<V.size();v++)
 		{
-			Object h=V.elementAt(v);
+			final Object h=V.elementAt(v);
 			if(h instanceof Vector)
 				V2.addElement(copyVector((Vector)h));
 			else
@@ -914,7 +914,7 @@ public class Util
 	{
 		long slong=0;
 		try{ slong=Long.parseLong(LONG); }
-		catch(Exception e){ return 0;}
+		catch(final Exception e){ return 0;}
 		return slong;
 	}
 
@@ -929,13 +929,13 @@ public class Util
 	{
 		double sdouble=0;
 		try{ sdouble=Double.parseDouble(DOUBLE); }
-		catch(Exception e){ return 0;}
+		catch(final Exception e){ return 0;}
 		return sdouble;
 	}
 
 	public static String combine(Vector commands, int startAt, int endAt)
 	{
-		StringBuffer Combined=new StringBuffer("");
+		final StringBuffer Combined=new StringBuffer("");
 		if(commands!=null)
 		for(int commandIndex=startAt;commandIndex<endAt;commandIndex++)
 			Combined.append((String)commands.elementAt(commandIndex)+" ");
@@ -944,7 +944,7 @@ public class Util
 
 	public static String combineWithQuotes(Vector commands, int startAt, int endAt)
 	{
-		StringBuffer Combined=new StringBuffer("");
+		final StringBuffer Combined=new StringBuffer("");
 		if(commands!=null)
 		for(int commandIndex=startAt;commandIndex<endAt;commandIndex++)
 		{
@@ -957,7 +957,7 @@ public class Util
 
 	public static String combineAfterIndexWithQuotes(Vector commands, String match)
 	{
-		StringBuffer Combined=new StringBuffer("");
+		final StringBuffer Combined=new StringBuffer("");
 		if(commands!=null)
 		for(int commandIndex=0;commandIndex<0;commandIndex++)
 		{
@@ -970,7 +970,7 @@ public class Util
 
 	public static String combineWithQuotes(Vector commands, int startAt)
 	{
-		StringBuffer Combined=new StringBuffer("");
+		final StringBuffer Combined=new StringBuffer("");
 		if(commands!=null)
 		for(int commandIndex=startAt;commandIndex<commands.size();commandIndex++)
 		{
@@ -983,7 +983,7 @@ public class Util
 
 	public static String combine(Vector commands, int startAt)
 	{
-		StringBuffer Combined=new StringBuffer("");
+		final StringBuffer Combined=new StringBuffer("");
 		if(commands!=null)
 		for(int commandIndex=startAt;commandIndex<commands.size();commandIndex++)
 			Combined.append((String)commands.elementAt(commandIndex)+" ");
@@ -996,13 +996,13 @@ public class Util
 
 	public static Vector paramParse(String str)
 	{
-		Vector commands=parse(str);
+		final Vector commands=parse(str);
 		for(int i=0;i<commands.size();i++)
 		{
-			String s=(String)commands.elementAt(i);
+			final String s=(String)commands.elementAt(i);
 			if(s.startsWith("=")&&(s.length()>1)&&(i>0))
 			{
-				String prev=(String)commands.elementAt(i-1);
+				final String prev=(String)commands.elementAt(i-1);
 				commands.setElementAt(prev+s,i-1);
 				commands.removeElementAt(i);
 				i--;
@@ -1010,15 +1010,15 @@ public class Util
 			else
 			if(s.endsWith("=")&&(s.length()>1)&&(i<(commands.size()-1)))
 			{
-				String next=(String)commands.elementAt(i+1);
+				final String next=(String)commands.elementAt(i+1);
 				commands.setElementAt(s+next,i);
 				commands.removeElementAt(i+1);
 			}
 			else
 			if(s.equals("=")&&((i>0)&&(i<(commands.size()-1))))
 			{
-				String prev=(String)commands.elementAt(i-1);
-				String next=(String)commands.elementAt(i+1);
+				final String prev=(String)commands.elementAt(i-1);
+				final String next=(String)commands.elementAt(i+1);
 				commands.setElementAt(prev+"="+next,i-1);
 				commands.removeElementAt(i);
 				commands.removeElementAt(i+1);
@@ -1030,17 +1030,17 @@ public class Util
 
 	public static Vector parse(String str, int upTo)
 	{
-		Vector commands=new Vector();
+		final Vector commands=new Vector();
 		if(str==null) return commands;
 		str=str.trim();
 		while(!str.equals(""))
 		{
-			int spaceIndex=str.indexOf(' ');
-			int strIndex=str.indexOf("\"");
+			final int spaceIndex=str.indexOf(' ');
+			final int strIndex=str.indexOf("\"");
 			String CMD="";
 			if((strIndex>=0)&&((strIndex<spaceIndex)||(spaceIndex<0)))
 			{
-				int endStrIndex=str.indexOf("\"",strIndex+1);
+				final int endStrIndex=str.indexOf("\"",strIndex+1);
 				if(endStrIndex>strIndex)
 				{
 					CMD=str.substring(strIndex+1,endStrIndex).trim();
@@ -1080,8 +1080,8 @@ public class Util
 
 	public static String stripBadHTMLTags(String s)
 	{
-		StringBuffer buf=new StringBuffer(s);
-		Vector quotes=new Vector();
+		final StringBuffer buf=new StringBuffer(s);
+		final Vector quotes=new Vector();
 		int i=-1;
 		int start=-1;
 		StringBuffer bit=null;
@@ -1105,7 +1105,7 @@ public class Util
 				&&(lastTag!=null)
 				&&(lastTag.trim().equalsIgnoreCase("FONT")))
 				{
-					int distance=(i-start)+1;
+					final int distance=(i-start)+1;
 					buf.delete(start,i+1);
 					i=i-distance;
 				}
@@ -1138,12 +1138,12 @@ public class Util
 
 	public static Vector parseCommas(String s, boolean ignoreNulls)
 	{
-		Vector V=new Vector();
+		final Vector V=new Vector();
 		if((s==null)||(s.length()==0)) return V;
 		int x=s.indexOf(',');
 		while(x>=0)
 		{
-			String s2=s.substring(0,x).trim();
+			final String s2=s.substring(0,x).trim();
 			s=s.substring(x+1).trim();
 			if((!ignoreNulls)||(s2.length()>0))
 				V.addElement(s2);
@@ -1156,12 +1156,12 @@ public class Util
 
 	public static Vector parsePipes(String s, boolean ignoreNulls)
 	{
-		Vector V=new Vector();
+		final Vector V=new Vector();
 		if((s==null)||(s.length()==0)) return V;
 		int x=s.indexOf('|');
 		while(x>=0)
 		{
-			String s2=s.substring(0,x).trim();
+			final String s2=s.substring(0,x).trim();
 			s=s.substring(x+1).trim();
 			if((!ignoreNulls)||(s2.length()>0))
 				V.addElement(s2);
@@ -1174,12 +1174,12 @@ public class Util
 
 	public static Vector parseSquiggles(String s)
 	{
-		Vector V=new Vector();
+		final Vector V=new Vector();
 		if((s==null)||(s.length()==0)) return V;
 		int x=s.indexOf('~');
 		while(x>=0)
 		{
-			String s2=s.substring(0,x).trim();
+			final String s2=s.substring(0,x).trim();
 			s=s.substring(x+1).trim();
 			V.addElement(s2);
 			x=s.indexOf('~');
@@ -1189,12 +1189,12 @@ public class Util
 
 	public static Vector parseSentences(String s)
 	{
-		Vector V=new Vector();
+		final Vector V=new Vector();
 		if((s==null)||(s.length()==0)) return V;
 		int x=s.indexOf('.');
 		while(x>=0)
 		{
-			String s2=s.substring(0,x+1);
+			final String s2=s.substring(0,x+1);
 			s=s.substring(x+1);
 			V.addElement(s2);
 			x=s.indexOf('.');
@@ -1204,12 +1204,12 @@ public class Util
 
 	public static Vector parseSquiggleDelimited(String s, boolean ignoreNulls)
 	{
-		Vector V=new Vector();
+		final Vector V=new Vector();
 		if((s==null)||(s.length()==0)) return V;
 		int x=s.indexOf('~');
 		while(x>=0)
 		{
-			String s2=s.substring(0,x).trim();
+			final String s2=s.substring(0,x).trim();
 			s=s.substring(x+1).trim();
 			if((s2.length()>0)||(!ignoreNulls))
 				V.addElement(s2);
@@ -1222,12 +1222,12 @@ public class Util
 
 	public static Vector parseSemicolons(String s, boolean ignoreNulls)
 	{
-		Vector V=new Vector();
+		final Vector V=new Vector();
 		if((s==null)||(s.length()==0)) return V;
 		int x=s.indexOf(';');
 		while(x>=0)
 		{
-			String s2=s.substring(0,x).trim();
+			final String s2=s.substring(0,x).trim();
 			s=s.substring(x+1).trim();
 			if((!ignoreNulls)||(s2.length()>0))
 				V.addElement(s2);
@@ -1252,12 +1252,12 @@ public class Util
 
 	public static Vector parseSpaces(String s, boolean ignoreNulls)
 	{
-		Vector V=new Vector();
+		final Vector V=new Vector();
 		if((s==null)||(s.length()==0)) return V;
 		int x=s.indexOf(' ');
 		while(x>=0)
 		{
-			String s2=s.substring(0,x).trim();
+			final String s2=s.substring(0,x).trim();
 			s=s.substring(x+1).trim();
 			if((!ignoreNulls)||(s2.length()>0))
 				V.addElement(s2);
@@ -1278,8 +1278,8 @@ public class Util
 				i++;
 				if((i+1)<thisStr.length())
 				{
-					int tagStart=i;
-					char c=thisStr.charAt(i);
+					final int tagStart=i;
+					final char c=thisStr.charAt(i);
 					if((c=='<')||(c=='&'))
 					while(i<(thisStr.length()-1))
 					{
@@ -1317,9 +1317,9 @@ public class Util
 	public static String convertToRoman(int i)
 	{
 		String Roman="";
-		String Hundreds[]={"C","CC","CCC","CD","D","DC","DCC","DCCC","CM","P"};
-		String Tens[]={"X","XX","XXX","XL","L","LX","LXX","LXXX","XC","C"};
-		String Ones[]={"I","II","III","IV","V","VI","VII","VIII","IX","X"};
+		final String Hundreds[]={"C","CC","CCC","CD","D","DC","DCC","DCCC","CM","P"};
+		final String Tens[]={"X","XX","XXX","XL","L","LX","LXX","LXXX","XC","C"};
+		final String Ones[]={"I","II","III","IV","V","VI","VII","VIII","IX","X"};
 		if(i>1000)
 		{
 			Roman="Y";
@@ -1327,16 +1327,16 @@ public class Util
 		}
 		if(i>=100)
 		{
-			int x=i%100;
-			int y=(i-x)/100;
+			final int x=i%100;
+			final int y=(i-x)/100;
 			if(y>0)
 				Roman+=Hundreds[y-1];
 			i=x;
 		}
 		if(i>=10)
 		{
-			int x=i%10;
-			int y=(i-x)/10;
+			final int x=i%10;
+			final int y=(i-x)/10;
 			if(y>0)
 				Roman+=Tens[y-1];
 		}
@@ -1348,58 +1348,58 @@ public class Util
 
 	public static String padLeft(String thisStr, int thisMuch)
 	{
-		int lenMinusColors=lengthMinusColors(thisStr);
+		final int lenMinusColors=lengthMinusColors(thisStr);
 		if(lenMinusColors>thisMuch)
 			return removeColors(thisStr).substring(0,thisMuch);
 		return SPACES.substring(0,thisMuch-lenMinusColors)+thisStr;
 	}
 	public static String padLeft(String thisStr, String colorPrefix, int thisMuch)
 	{
-		int lenMinusColors=lengthMinusColors(thisStr);
+		final int lenMinusColors=lengthMinusColors(thisStr);
 		if(lenMinusColors>thisMuch)
 			return colorPrefix+removeColors(thisStr).substring(0,thisMuch);
 		return SPACES.substring(0,thisMuch-lenMinusColors)+colorPrefix+thisStr;
 	}
 	public static String padRight(String thisStr, int thisMuch)
 	{
-		int lenMinusColors=lengthMinusColors(thisStr);
+		final int lenMinusColors=lengthMinusColors(thisStr);
 		if(lenMinusColors>thisMuch)
 			return removeColors(thisStr).substring(0,thisMuch);
 		return thisStr+SPACES.substring(0,thisMuch-lenMinusColors);
 	}
 	public static String limit(String thisStr, int thisMuch)
 	{
-		int lenMinusColors=lengthMinusColors(thisStr);
+		final int lenMinusColors=lengthMinusColors(thisStr);
 		if(lenMinusColors>thisMuch)
 			return removeColors(thisStr).substring(0,thisMuch);
 		return thisStr;
 	}
 	public static String padRight(String thisStr, String colorSuffix, int thisMuch)
 	{
-		int lenMinusColors=lengthMinusColors(thisStr);
+		final int lenMinusColors=lengthMinusColors(thisStr);
 		if(lenMinusColors>thisMuch)
 			return removeColors(thisStr).substring(0,thisMuch)+colorSuffix;
 		return thisStr+colorSuffix+SPACES.substring(0,thisMuch-lenMinusColors);
 	}
 	public static String padRightPreserve(String thisStr, int thisMuch)
 	{
-		int lenMinusColors=lengthMinusColors(thisStr);
+		final int lenMinusColors=lengthMinusColors(thisStr);
 		if(lenMinusColors>thisMuch)
 			return removeColors(thisStr);
 		return thisStr+SPACES.substring(0,thisMuch-lenMinusColors);
 	}
 	public static String centerPreserve(String thisStr, int thisMuch)
 	{
-		int lenMinusColors=lengthMinusColors(thisStr);
+		final int lenMinusColors=lengthMinusColors(thisStr);
 		if(lenMinusColors>thisMuch)
 			return removeColors(thisStr);
-		int left=(thisMuch-lenMinusColors)/2;
-		int right=((left+left+lenMinusColors)<thisMuch)?left+1:left;
+		final int left=(thisMuch-lenMinusColors)/2;
+		final int right=((left+left+lenMinusColors)<thisMuch)?left+1:left;
 		return SPACES.substring(0,left)+thisStr+SPACES.substring(0,right);
 	}
 	public static String padLeftPreserve(String thisStr, int thisMuch)
 	{
-		int lenMinusColors=lengthMinusColors(thisStr);
+		final int lenMinusColors=lengthMinusColors(thisStr);
 		if(lenMinusColors>thisMuch)
 			return removeColors(thisStr);
 		return SPACES.substring(0,thisMuch-lenMinusColors)+thisStr;
@@ -1559,7 +1559,7 @@ public class Util
 
 	public static Vector denumerate(Enumeration e)
 	{
-		Vector V=new Vector();
+		final Vector V=new Vector();
 		for(;e.hasMoreElements();)
 			V.addElement(e.nextElement());
 		return V;

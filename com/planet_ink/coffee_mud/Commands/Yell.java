@@ -42,7 +42,7 @@ public class Yell extends StdCommand
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		Command C=CMClass.getCommand("Say");
+		final Command C=CMClass.getCommand("Say");
 		if(C!=null) C.execute(mob,CMParms.parse(CMParms.combine(commands,0).toUpperCase()),metaFlags);
 		return false;
 	}

@@ -110,7 +110,7 @@ public class Siplet
 			Telnet=new TelnetFilter(this);
 			connected=true;
 		}
-		catch(Exception e)
+		catch(final Exception e)
 		{
 			e.printStackTrace(System.out);
 			return false;
@@ -135,7 +135,7 @@ public class Siplet
 			Telnet=new TelnetFilter(this);
 			connected=true;
 		}
-		catch(Exception e)
+		catch(final Exception e)
 		{
 			e.printStackTrace(System.out);
 			return false;
@@ -154,25 +154,25 @@ public class Siplet
 				out.flush();
 			}
 		}
-		catch(Exception e) { }
+		catch(final Exception e) { }
 		try
 		{
 			if((in!=null)&&(in[0]!=null))
 				in[0].close();
 		}
-		catch(Exception e) { }
+		catch(final Exception e) { }
 		try
 		{
 			if(out!=null)
 				out.close();
 		}
-		catch(Exception e) { }
+		catch(final Exception e) { }
 		try
 		{
 			if(sock!=null)
 				sock.close();
 		}
-		catch(Exception e) { }
+		catch(final Exception e) { }
 		in=null;
 		out=null;
 		sock=null;
@@ -191,7 +191,7 @@ public class Siplet
 					disconnectFromURL();
 				else
 				{
-					byte[] bytes=Telnet.peruseInput(data);
+					final byte[] bytes=Telnet.peruseInput(data);
 					if(bytes!=null)
 					{
 						out.write(bytes);
@@ -201,7 +201,7 @@ public class Siplet
 					}
 				}
 			}
-			catch(IOException e)
+			catch(final IOException e)
 			{
 				disconnectFromURL();
 			}
@@ -216,9 +216,9 @@ public class Siplet
 	{
 		synchronized(buf)
 		{
-			String s=Telnet.getEnquedResponses();
+			final String s=Telnet.getEnquedResponses();
 			if(s.length()>0)  sendData(s);
-			StringBuilder data=new StringBuilder("");
+			final StringBuilder data=new StringBuilder("");
 			if(Telnet.MSDPsupport())
 				data.append(Telnet.getMsdpHtml());
 			if(Telnet.GMCPsupport())
@@ -259,17 +259,17 @@ public class Siplet
 				{
 					Telnet.TelnetRead(buf,rawin,in);
 				}
-				catch(java.io.InterruptedIOException e)
+				catch(final java.io.InterruptedIOException e)
 				{
 					disconnectFromURL();
 					return;
 				}
-				catch(Exception e)
+				catch(final Exception e)
 				{
 					if(e instanceof com.jcraft.jzlib.ZStreamException)
 					{
 						disconnectFromURL();
-						try{Thread.sleep(100);}catch(Exception e2){}
+						try{Thread.sleep(100);}catch(final Exception e2){}
 						connectToURL();
 					}
 					else
@@ -289,7 +289,7 @@ public class Siplet
 				Telnet.TelenetFilter(buf,out,rawin,in);
 
 		}
-		catch(Exception e)
+		catch(final Exception e)
 		{
 			disconnectFromURL();
 			return;

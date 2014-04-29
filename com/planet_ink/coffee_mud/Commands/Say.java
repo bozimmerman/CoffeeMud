@@ -72,7 +72,7 @@ public class Say extends StdCommand
 		if(R!=null)
 		for(int i=0;i<R.numInhabitants();i++)
 		{
-			MOB M=R.fetchInhabitant(i);
+			final MOB M=R.fetchInhabitant(i);
 			if((M!=null)&&(M!=msg.source())&&(M.session()!=null)&&(M.session().getClientTelnetMode(Session.TELNET_GMCP)))
 			{
 				M.session().sendGMCPEvent("comm.channel", "{\"chan\":\""+sayName+"\",\"msg\":\""+
@@ -113,8 +113,8 @@ public class Say extends StdCommand
 		{
 			for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 			{
-				Room R2=R.getRoomInDir(d);
-				Exit E2=R.getExitInDir(d);
+				final Room R2=R.getRoomInDir(d);
+				final Exit E2=R.getExitInDir(d);
 				if((R2!=null)&&(E2!=null)&&(E2.isOpen()))
 					yellRooms.add(R2);
 			}
@@ -129,8 +129,8 @@ public class Say extends StdCommand
 		{
 			whom=((String)commands.elementAt(1)).toUpperCase();
 			if(!toFlag)
-				for(int i=0;i<impossibleTargets.length;i++)
-					if(impossibleTargets[i].startsWith(whom))
+				for (final String impossibleTarget : impossibleTargets)
+					if(impossibleTarget.startsWith(whom))
 					{ whom=""; break;}
 			if(whom.equalsIgnoreCase("self"))
 				target=mob;
@@ -163,15 +163,15 @@ public class Say extends StdCommand
 				{
 					if(theWord.toUpperCase().startsWith("YELL"))
 					{
-						int dir=Directions.getGoodCompassDirectionCode(whom);
+						final int dir=Directions.getGoodCompassDirectionCode(whom);
 						if(dir >=0)
 						{
 							commands.removeElementAt(1);
 							yellRooms=new Vector<Room>();
 							if(theWord.toUpperCase().startsWith("YELL"))
 							{
-								Room R2=R.getRoomInDir(dir);
-								Exit E2=R.getExitInDir(dir);
+								final Room R2=R.getRoomInDir(dir);
+								final Exit E2=R.getExitInDir(dir);
 								if(R2!=null)
 								{
 									theWordSuffix=" "+Directions.getDirectionName(dir);
@@ -180,8 +180,8 @@ public class Say extends StdCommand
 									{
 										for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 										{
-											Room R3=R2.getRoomInDir(d);
-											Exit E3=R2.getExitInDir(d);
+											final Room R3=R2.getRoomInDir(d);
+											final Exit E3=R2.getExitInDir(d);
 											if((R3!=null)&&(E3!=null)&&(E3.isOpen()))
 												yellRooms.add(R3);
 										}
@@ -204,7 +204,7 @@ public class Say extends StdCommand
 			{
 				for(int r=0;r<R.numInhabitants();r++)
 				{
-					MOB M=R.fetchInhabitant(r);
+					final MOB M=R.fetchInhabitant(r);
 					if(M!=mob)
 					{
 						langTarget=M;
@@ -218,14 +218,14 @@ public class Say extends StdCommand
 			// can speak, then speak it.
 			if((langTarget!=null)&&(!mob.isMonster()))
 			{
-				Language hisL=CMLib.utensils().getLanguageSpoken(langTarget);
-				Language myL=CMLib.utensils().getLanguageSpoken(mob);
+				final Language hisL=CMLib.utensils().getLanguageSpoken(langTarget);
+				final Language myL=CMLib.utensils().getLanguageSpoken(mob);
 				if((hisL==null)&&(myL!=null)&&(mob.fetchAbility("Common")!=null))
 					langSwap=new Language[]{null,myL};
 				else
 				if((hisL!=null)&&((myL==null)||(!hisL.ID().equals(myL.ID()))))
 				{
-					Language myTargetL = (Language)mob.fetchEffect(hisL.ID());
+					final Language myTargetL = (Language)mob.fetchEffect(hisL.ID());
 					if(myTargetL!=null)
 						langSwap=new Language[]{myTargetL,myL};
 				}
@@ -254,8 +254,8 @@ public class Say extends StdCommand
 			theWord+="(s) to";
 		else
 			theWord+="(s)";
-		String fromSelf="^T^<SAY \""+CMStrings.removeColors((target!=null)?target.name():mob.name())+"\"^><S-NAME> "+theWord.toLowerCase()+theWordSuffix+" <T-NAMESELF> '"+combinedCommands+"'^</SAY^>^?";
-		String toTarget="^T^<SAY \""+CMStrings.removeColors(mob.name())+"\"^><S-NAME> "+theWord.toLowerCase()+theWordSuffix+" <T-NAMESELF> '"+combinedCommands+"'^</SAY^>^?";
+		final String fromSelf="^T^<SAY \""+CMStrings.removeColors((target!=null)?target.name():mob.name())+"\"^><S-NAME> "+theWord.toLowerCase()+theWordSuffix+" <T-NAMESELF> '"+combinedCommands+"'^</SAY^>^?";
+		final String toTarget="^T^<SAY \""+CMStrings.removeColors(mob.name())+"\"^><S-NAME> "+theWord.toLowerCase()+theWordSuffix+" <T-NAMESELF> '"+combinedCommands+"'^</SAY^>^?";
 		if(target==null)
 			msg=CMClass.getMsg(mob,null,null,CMMsg.MSG_SPEAK,"^T^<SAY \""+CMStrings.removeColors(mob.name())+"\"^><S-NAME> "+theWord.toLowerCase()+theWordSuffix+" '"+combinedCommands+"'^</SAY^>^?");
 		else
@@ -278,7 +278,7 @@ public class Say extends StdCommand
 			{
 				int dirCode=-1;
 				Room R3=R;
-				for(Room R2 : yellRooms)
+				for(final Room R2 : yellRooms)
 				{
 					int newDirCode=CMLib.map().getRoomDir(R, R2);
 					if(newDirCode<0)
@@ -287,7 +287,7 @@ public class Say extends StdCommand
 						R3=R2;
 					if(newDirCode>=0)
 						dirCode=newDirCode;
-					Environmental tool=msg.tool();
+					final Environmental tool=msg.tool();
 					int opDirCode=-1;
 					if(dirCode>=0)
 						opDirCode=Directions.getOpDirectionCode(dirCode);

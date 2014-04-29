@@ -39,11 +39,11 @@ public class RaceID extends StdWebMacro
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
-		String last=httpReq.getUrlParameter("RACE");
+		final String last=httpReq.getUrlParameter("RACE");
 		if(last==null) return " @break@";
 		if(last.length()>0)
 		{
-			Race R=CMClass.getRace(last);
+			final Race R=CMClass.getRace(last);
 			if(R!=null)
 				return clearWebMacros(R.ID());
 		}

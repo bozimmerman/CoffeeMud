@@ -55,7 +55,7 @@ public class Fighter_BackHand extends MonkSkill
 		   &&(affected!=null)
 		   &&(affected instanceof MOB))
 		{
-			MOB mob=(MOB)affected;
+			final MOB mob=(MOB)affected;
 			if((mob.isInCombat())
 			&&(CMLib.flags().aliveAwakeMobileUnbound(mob,true))
 			&&(mob.rangeToTarget()==0)
@@ -68,7 +68,7 @@ public class Fighter_BackHand extends MonkSkill
 				MOB elligibleTarget=null;
 				for(int m=0;m<mob.location().numInhabitants();m++)
 				{
-					MOB M=mob.location().fetchInhabitant(m);
+					final MOB M=mob.location().fetchInhabitant(m);
 					if((M!=null)
 					&&(M.getVictim()==mob)
 					&&(mob.getVictim()!=M)
@@ -110,7 +110,7 @@ public class Fighter_BackHand extends MonkSkill
 		if(!(affected instanceof MOB))
 			return true;
 
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		if(msg.amISource(mob)
 		&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
 		&&(msg.tool() instanceof Weapon)

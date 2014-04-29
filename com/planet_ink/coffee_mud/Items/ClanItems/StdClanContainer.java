@@ -72,7 +72,7 @@ public class StdClanContainer extends StdContainer implements ClanItem
 				if((CMLib.clans().getClan(clanID())==null)
 				||((((MOB)owner()).getClanRole(clanID())==null)&&(ciType()!=ClanItem.CI_PROPAGANDA)))
 				{
-					Room R=CMLib.map().roomLocation(this);
+					final Room R=CMLib.map().roomLocation(this);
 					setRightfulOwner(null);
 					unWear();
 					removeFromOwnerContainer();

@@ -71,7 +71,7 @@ public class RandomTeleporter extends ActiveTicker
 		super.setParms(newParms);
 		nowander=false;
 		restrictedLocales=null;
-		Vector<String> V=CMParms.parse(newParms);
+		final Vector<String> V=CMParms.parse(newParms);
 		for(int v=0;v<V.size();v++)
 		{
 			String s=V.elementAt(v);
@@ -95,7 +95,7 @@ public class RandomTeleporter extends ActiveTicker
 				}
 				else
 				{
-					char c=s.charAt(0);
+					final char c=s.charAt(0);
 					s=s.substring(1).toUpperCase().trim();
 					int code=-1;
 					for(int i=0;i<Room.indoorDomainDescs.length;i++)
@@ -135,7 +135,7 @@ public class RandomTeleporter extends ActiveTicker
 		super.tick(ticking,tickID);
 		if((canAct(ticking,tickID))&&(ticking instanceof MOB))
 		{
-			MOB mob=(MOB)ticking;
+			final MOB mob=(MOB)ticking;
 			int tries=0;
 			Room R=null;
 			while(((++tries)<250)&&(R==null))
@@ -157,7 +157,7 @@ public class RandomTeleporter extends ActiveTicker
 						R=null;
 				}
 			}
-			Room oldRoom=mob.location();
+			final Room oldRoom=mob.location();
 			CMLib.tracking().wanderAway(mob,true,false);
 			if(R!=null)
 				R.bringMobHere(mob,true);

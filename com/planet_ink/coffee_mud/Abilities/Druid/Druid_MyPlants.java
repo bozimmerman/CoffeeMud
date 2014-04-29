@@ -72,7 +72,7 @@ public class Druid_MyPlants extends StdAbility
 		if(R!=null)
 		for(int i=0;i<R.numItems();i++)
 		{
-			Item I=R.getItem(i);
+			final Item I=R.getItem(i);
 			if(isMyPlant(I,mob))
 			{
 				if(plantNum==which)
@@ -85,32 +85,32 @@ public class Druid_MyPlants extends StdAbility
 
 	public static Vector myAreaPlantRooms(MOB mob, Area A)
 	{
-		Vector V=new Vector();
+		final Vector V=new Vector();
 		try
 		{
 			if(A!=null)
-			for(Enumeration r=A.getMetroMap();r.hasMoreElements();)
+			for(final Enumeration r=A.getMetroMap();r.hasMoreElements();)
 			{
-				Room R=(Room)r.nextElement();
+				final Room R=(Room)r.nextElement();
 				if((myPlant(R,mob,0)!=null)&&(!V.contains(R)))
 					V.addElement(R);
 			}
-		}catch(NoSuchElementException e){}
+		}catch(final NoSuchElementException e){}
 		return V;
 	}
 
 	public static Vector myPlantRooms(MOB mob)
 	{
-		Vector V=new Vector();
+		final Vector V=new Vector();
 		try
 		{
-			for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
+			for(final Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 			{
-				Room R=(Room)r.nextElement();
+				final Room R=(Room)r.nextElement();
 				if((myPlant(R,mob,0)!=null)&&(!V.contains(R)))
 					V.addElement(R);
 			}
-		}catch(NoSuchElementException e){}
+		}catch(final NoSuchElementException e){}
 		return V;
 	}
 
@@ -120,27 +120,27 @@ public class Druid_MyPlants extends StdAbility
 	{
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(!success)
 			mob.tell("Your plant senses fail you.");
 		else
 		{
-			CMMsg msg=CMClass.getMsg(mob,null,null,CMMsg.MSG_QUIETMOVEMENT|CMMsg.MASK_MAGIC,null);
+			final CMMsg msg=CMClass.getMsg(mob,null,null,CMMsg.MSG_QUIETMOVEMENT|CMMsg.MASK_MAGIC,null);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				StringBuffer yourPlants=new StringBuffer("");
+				final StringBuffer yourPlants=new StringBuffer("");
 				int plantNum=0;
-				int[] cols={
+				final int[] cols={
 						ListingLibrary.ColFixer.fixColWidth(3,mob.session()),
 						ListingLibrary.ColFixer.fixColWidth(20,mob.session()),
 						ListingLibrary.ColFixer.fixColWidth(40,mob.session())
 					};
-				Vector V=myPlantRooms(mob);
+				final Vector V=myPlantRooms(mob);
 				for(int v=0;v<V.size();v++)
 				{
-					Room R=(Room)V.elementAt(v);
+					final Room R=(Room)V.elementAt(v);
 					if(R!=null)
 					{
 						int i=0;

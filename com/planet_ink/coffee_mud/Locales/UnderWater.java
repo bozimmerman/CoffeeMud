@@ -74,7 +74,7 @@ public class UnderWater extends StdRoom implements Drink
 		||((P instanceof Item)&&(!CMLib.flags().isInFlight(((Item)P).ultimateContainer(null)))&&(!CMLib.flags().isWaterWorthy(((Item)P).ultimateContainer(null)))))
 			if(P.fetchEffect("Sinking")==null)
 			{
-				Ability sinking=CMClass.getAbility("Sinking");
+				final Ability sinking=CMClass.getAbility("Sinking");
 				if(sinking!=null)
 				{
 					sinking.setProficiency(avg);
@@ -90,9 +90,9 @@ public class UnderWater extends StdRoom implements Drink
 		&&(msg.targetMinor()==CMMsg.TYP_DRINK)
 		&&(room instanceof Drink))
 		{
-			MOB mob=msg.source();
-			boolean thirsty=mob.curState().getThirst()<=0;
-			boolean full=!mob.curState().adjThirst(((Drink)room).thirstQuenched(),mob.maxState().maxThirst(mob.baseWeight()));
+			final MOB mob=msg.source();
+			final boolean thirsty=mob.curState().getThirst()<=0;
+			final boolean full=!mob.curState().adjThirst(((Drink)room).thirstQuenched(),mob.maxState().maxThirst(mob.baseWeight()));
 			if(thirsty)
 				mob.tell("You are no longer thirsty.");
 			else
@@ -106,19 +106,19 @@ public class UnderWater extends StdRoom implements Drink
 			return;
 		boolean foundReversed=false;
 		boolean foundNormal=false;
-		Vector<Physical> needToSink=new Vector<Physical>();
-		Vector<Physical> mightNeedAdjusting=new Vector<Physical>();
+		final Vector<Physical> needToSink=new Vector<Physical>();
+		final Vector<Physical> mightNeedAdjusting=new Vector<Physical>();
 
 		if((room.domainType()!=Room.DOMAIN_OUTDOORS_UNDERWATER)
 		&&(room.domainType()!=Room.DOMAIN_INDOORS_UNDERWATER))
 			for(int i=0;i<room.numInhabitants();i++)
 			{
-				MOB mob=room.fetchInhabitant(i);
+				final MOB mob=room.fetchInhabitant(i);
 				if((mob!=null)
 				&&((mob.getStartRoom()==null)||(mob.getStartRoom()!=room))
 				&&(mob.riding()==null))
 				{
-					Ability A=mob.fetchEffect("Sinking");
+					final Ability A=mob.fetchEffect("Sinking");
 					if(A!=null)
 					{
 						if(A.proficiency()>=100)
@@ -137,10 +137,10 @@ public class UnderWater extends StdRoom implements Drink
 			}
 		for(int i=0;i<room.numItems();i++)
 		{
-			Item item=room.getItem(i);
+			final Item item=room.getItem(i);
 			if((item!=null)&&(item.container()==null))
 			{
-				Ability A=item.fetchEffect("Sinking");
+				final Ability A=item.fetchEffect("Sinking");
 				if(A!=null)
 				{
 					if(A.proficiency()>=100)
@@ -154,13 +154,13 @@ public class UnderWater extends StdRoom implements Drink
 					needToSink.addElement(item);
 			}
 		}
-		int avg=((foundReversed)&&(!foundNormal))?100:0;
-		for(Physical P : mightNeedAdjusting)
+		final int avg=((foundReversed)&&(!foundNormal))?100:0;
+		for(final Physical P : mightNeedAdjusting)
 		{
-			Ability A=P.fetchEffect("Sinking");
+			final Ability A=P.fetchEffect("Sinking");
 			if(A!=null) A.setProficiency(avg);
 		}
-		for(Physical P : needToSink)
+		for(final Physical P : needToSink)
 			makeSink(P,room,avg);
 	}
 
@@ -181,7 +181,7 @@ public class UnderWater extends StdRoom implements Drink
 		&&(msg.tool()!=null)
 		&&(msg.tool() instanceof Weapon))
 		{
-			Weapon w=(Weapon)msg.tool();
+			final Weapon w=(Weapon)msg.tool();
 			if((w.weaponType()==Weapon.TYPE_SLASHING)
 			||(w.weaponType()==Weapon.TYPE_BASHING))
 			{

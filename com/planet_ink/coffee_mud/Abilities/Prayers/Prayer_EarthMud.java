@@ -64,10 +64,10 @@ public class Prayer_EarthMud extends Prayer
 	{
 		if((affected!=null)&&(affected instanceof Room))
 		{
-			Room R=(Room)affected;
+			final Room R=(Room)affected;
 			for(int m=0;m<R.numInhabitants();m++)
 			{
-				MOB M=R.fetchInhabitant(m);
+				final MOB M=R.fetchInhabitant(m);
 				if((M!=null)&&(M.isInCombat()))
 				   M.curState().adjMovement(-1,M.maxState());
 			}
@@ -81,10 +81,10 @@ public class Prayer_EarthMud extends Prayer
 	{
 		if(mob!=null)
 		{
-			Room R=mob.location();
+			final Room R=mob.location();
 			if(R!=null)
 			{
-				int type=mob.location().domainType();
+				final int type=mob.location().domainType();
 				if(((type&Room.INDOORS)>0)
 					||(type==Room.DOMAIN_OUTDOORS_AIR)
 					||(type==Room.DOMAIN_OUTDOORS_CITY)
@@ -101,7 +101,7 @@ public class Prayer_EarthMud extends Prayer
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 
-		int type=mob.location().domainType();
+		final int type=mob.location().domainType();
 		if(((type&Room.INDOORS)>0)
 			||(type==Room.DOMAIN_OUTDOORS_AIR)
 			||(type==Room.DOMAIN_OUTDOORS_CITY)
@@ -115,11 +115,11 @@ public class Prayer_EarthMud extends Prayer
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,mob.location(),this,verbalCastCode(mob,mob.location(),auto),auto?"":"^S<S-NAME> "+prayWord(mob)+".^?");
+			final CMMsg msg=CMClass.getMsg(mob,mob.location(),this,verbalCastCode(mob,mob.location(),auto),auto?"":"^S<S-NAME> "+prayWord(mob)+".^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

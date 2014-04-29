@@ -80,7 +80,7 @@ public class StdDrink extends StdContainer implements Drink,Item
 	protected int totalDrinkContained()
 	{
 		int total = amountOfLiquidRemaining;
-		List<Item> V=getContents();
+		final List<Item> V=getContents();
 		for(int v=0;v<V.size();v++)
 			if((V.get(v) instanceof Drink)
 			&&((V.get(v).material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LIQUID))
@@ -99,7 +99,7 @@ public class StdDrink extends StdContainer implements Drink,Item
 			return false;
 		if(liquidRemaining()<1)
 		{
-			List<Item> V=getContents();
+			final List<Item> V=getContents();
 			for(int v=0;v<V.size();v++)
 				if((V.get(v) instanceof Drink)
 				&&((V.get(v).material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LIQUID))
@@ -116,7 +116,7 @@ public class StdDrink extends StdContainer implements Drink,Item
 			return false;
 		if(msg.amITarget(this))
 		{
-			MOB mob=msg.source();
+			final MOB mob=msg.source();
 			switch(msg.targetMinor())
 			{
 			case CMMsg.TYP_DRINK:
@@ -148,7 +148,7 @@ public class StdDrink extends StdContainer implements Drink,Item
 				&&((!(msg.tool() instanceof Drink))||((Drink)msg.tool()).liquidRemaining()<=0)
 				&&(msg.tool()!=msg.target()))
 				{
-					List<Item> V=((Container)msg.tool()).getContents();
+					final List<Item> V=((Container)msg.tool()).getContents();
 					Item I=null;
 					for(int i=0;i<V.size();i++)
 					{
@@ -171,7 +171,7 @@ public class StdDrink extends StdContainer implements Drink,Item
 				&&(msg.tool()!=msg.target())
 				&&(msg.tool() instanceof Drink))
 				{
-					Drink thePuddle=(Drink)msg.tool();
+					final Drink thePuddle=(Drink)msg.tool();
 					if(!thePuddle.containsDrink())
 					{
 						mob.tell(thePuddle.name()+" is empty.");
@@ -213,13 +213,13 @@ public class StdDrink extends StdContainer implements Drink,Item
 		super.executeMsg(myHost,msg);
 		if(msg.amITarget(this))
 		{
-			MOB mob=msg.source();
+			final MOB mob=msg.source();
 			switch(msg.targetMinor())
 			{
 			case CMMsg.TYP_DRINK:
 				amountOfLiquidRemaining-=amountOfThirstQuenched;
-				boolean thirsty=mob.curState().getThirst()<=0;
-				boolean full=!mob.curState().adjThirst(amountOfThirstQuenched,mob.maxState().maxThirst(mob.baseWeight()));
+				final boolean thirsty=mob.curState().getThirst()<=0;
+				final boolean full=!mob.curState().adjThirst(amountOfThirstQuenched,mob.maxState().maxThirst(mob.baseWeight()));
 				if(thirsty)
 					mob.tell("You are no longer thirsty.");
 				else
@@ -232,7 +232,7 @@ public class StdDrink extends StdContainer implements Drink,Item
 			case CMMsg.TYP_FILL:
 				if(msg.tool() instanceof Drink)
 				{
-					Drink thePuddle=(Drink)msg.tool();
+					final Drink thePuddle=(Drink)msg.tool();
 					int amountToTake=amountTakenToFillMe(thePuddle);
 					thePuddle.setLiquidRemaining(thePuddle.liquidRemaining()-amountToTake);
 					if(amountOfLiquidRemaining<=0)
@@ -240,9 +240,9 @@ public class StdDrink extends StdContainer implements Drink,Item
 						setLiquidType(thePuddle.liquidType());
 						if((thePuddle instanceof RawMaterial)&&(((RawMaterial)thePuddle).container()!=null))
 						{
-							List<Item> V = this.getContents();
+							final List<Item> V = this.getContents();
 							Drink addHereI = null;
-							for(Item I : V)
+							for(final Item I : V)
 								if((I instanceof Drink) && (I instanceof RawMaterial) && (I.Name().equals(thePuddle.Name())))
 									addHereI=(Drink)I;
 							if(addHereI==null)

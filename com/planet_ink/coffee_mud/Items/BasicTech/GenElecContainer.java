@@ -120,8 +120,8 @@ public class GenElecContainer extends StdElecContainer
 	public String[] getStatCodes()
 	{
 		if(codes!=null) return codes;
-		String[] MYCODES=CMProps.getStatCodesList(GenElecContainer.MYCODES,this);
-		String[] superCodes=GenericBuilder.GENITEMCODES;
+		final String[] MYCODES=CMProps.getStatCodesList(GenElecContainer.MYCODES,this);
+		final String[] superCodes=GenericBuilder.GENITEMCODES;
 		codes=new String[superCodes.length+MYCODES.length];
 		int i=0;
 		for(;i<superCodes.length;i++)
@@ -134,7 +134,7 @@ public class GenElecContainer extends StdElecContainer
 	public boolean sameAs(Environmental E)
 	{
 		if(!(E instanceof GenElecContainer)) return false;
-		String[] theCodes=getStatCodes();
+		final String[] theCodes=getStatCodes();
 		for(int i=0;i<theCodes.length;i++)
 			if(!E.getStat(theCodes[i]).equals(getStat(theCodes[i])))
 				return false;

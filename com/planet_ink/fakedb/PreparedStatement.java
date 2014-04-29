@@ -52,10 +52,10 @@ public class PreparedStatement extends Statement implements java.sql.PreparedSta
 	public void prepare(String sql) throws java.sql.SQLException
 	{
 	  lastSQL=sql;
-	  String originalSql=sql;
+	  final String originalSql=sql;
 	  try
 	  {
-		 String[] token=new String[1];
+		 final String[] token=new String[1];
 		 sql=split(sql,token);
 		 if (token[0].equalsIgnoreCase("insert"))
 		 {
@@ -79,7 +79,7 @@ public class PreparedStatement extends Statement implements java.sql.PreparedSta
 		 else
 			 throw new java.sql.SQLException("unimplemented command: "+token[0]);
 	  }
-	  catch (java.sql.SQLException e)
+	  catch (final java.sql.SQLException e)
 	  {
 		 e.printStackTrace();
 		 log("unsupported SQL in preparedStatement: "+originalSql);
@@ -184,13 +184,13 @@ public class PreparedStatement extends Statement implements java.sql.PreparedSta
 					bout.write(c);
 				}
 			}
-			catch(IOException ioe)
+			catch(final IOException ioe)
 			{
 				throw new SQLException(ioe.getMessage());
 			}
 		}
-		byte[] b = bout.toByteArray();
-		char[] cs=new char[b.length];
+		final byte[] b = bout.toByteArray();
+		final char[] cs=new char[b.length];
 		for(int i=0;i<b.length;i++)
 			cs[i]=(char)b[i];
 		setObject(parameterIndex,new String(cs));
@@ -199,16 +199,16 @@ public class PreparedStatement extends Statement implements java.sql.PreparedSta
 	@Override
 	public void setAsciiStream(int parameterIndex, InputStream x, int length)
 			throws SQLException {
-		byte[] b = new byte[length];
+		final byte[] b = new byte[length];
 		int len=length;
 		try
 		{
 			len=x.read(b, 0, length);
-		}catch(Exception e)
+		}catch(final Exception e)
 		{
 			log(e.getMessage());
 		}
-		char[] cs=new char[len];
+		final char[] cs=new char[len];
 		for(int i=0;i<len;i++)
 			cs[i]=(char)b[i];
 		setObject(parameterIndex,new String(cs));
@@ -291,7 +291,7 @@ public class PreparedStatement extends Statement implements java.sql.PreparedSta
 					bout.write(c);
 				}
 			}
-			catch(IOException ioe)
+			catch(final IOException ioe)
 			{
 				throw new SQLException(ioe.getMessage());
 			}
@@ -302,12 +302,12 @@ public class PreparedStatement extends Statement implements java.sql.PreparedSta
 	@Override
 	public void setCharacterStream(int parameterIndex, Reader reader, int length)
 			throws SQLException {
-		char[] b = new char[length];
+		final char[] b = new char[length];
 		int len=length;
 		try
 		{
 			len=reader.read(b, 0, length);
-		}catch(Exception e)
+		}catch(final Exception e)
 		{
 			log(e.getMessage());
 		}
@@ -426,7 +426,7 @@ public class PreparedStatement extends Statement implements java.sql.PreparedSta
 	{
 		if((conds != null) && (conds.size()>0))
 		{
-			for(Backend.FakeCondition cond : conds)
+			for(final Backend.FakeCondition cond : conds)
 			{
 				if(cond.unPrepared)
 				{

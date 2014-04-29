@@ -87,14 +87,14 @@ public class Bleeding extends StdAbility implements HealthCondition
 		&&(msg.tool() instanceof Exit)
 		&&(msg.targetMinor()==CMMsg.TYP_LEAVE))
 		{
-			Room R=(Room)msg.target();
+			final Room R=(Room)msg.target();
 			int dir=-1;
 			for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 				if(msg.tool()==R.getReverseExit(d))
 					dir=d;
 			if((dir>=0)&&(R.findItem(null,"a trail of blood")==null))
 			{
-				Item I=CMClass.getItem("GenFatWallpaper");
+				final Item I=CMClass.getItem("GenFatWallpaper");
 				I.setName("A trail of blood");
 				if(lastDir>=0)
 					I.setDisplayText("A faint trail of blood leads from "
@@ -116,7 +116,7 @@ public class Bleeding extends StdAbility implements HealthCondition
 			return false;
 		if((ticking instanceof MOB)&&(tickID==Tickable.TICKID_MOB))
 		{
-			MOB mob=(MOB)ticking;
+			final MOB mob=(MOB)ticking;
 			if(hpToKeep<=0)
 			{
 				hpToKeep=mob.curState().getHitPoints();
@@ -126,10 +126,10 @@ public class Bleeding extends StdAbility implements HealthCondition
 			{
 				if(mob.curState().getHitPoints()>hpToKeep)
 					mob.curState().setHitPoints(hpToKeep);
-				int maxMana=(int)Math.round(CMath.mul(mob.maxState().getMana(),healthPct(mob)));
+				final int maxMana=(int)Math.round(CMath.mul(mob.maxState().getMana(),healthPct(mob)));
 				if(mob.curState().getMana()>maxMana)
 					mob.curState().setMana(maxMana);
-				int maxMovement=(int)Math.round(CMath.mul(mob.maxState().getMovement(),healthPct(mob)));
+				final int maxMovement=(int)Math.round(CMath.mul(mob.maxState().getMovement(),healthPct(mob)));
 				if(mob.curState().getMovement()>maxMovement)
 					mob.curState().setMovement(maxMovement);
 			}

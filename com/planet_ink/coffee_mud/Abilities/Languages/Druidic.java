@@ -47,13 +47,13 @@ public class Druidic extends StdLanguage
 	{
 		if(wordLists==null)
 		{
-			String[] one={""};
-			String[] two={"hissssss","hoo","caw","arf","bow-wow","bzzzzzz","grunt","bawl"};
-			String[] three={"chirp","tweet","mooooo","oink","quack","tweet","bellooooow","cackle","hooooowwwwl","!dook!"};
-			String[] four={"ruff","meow","grrrrowl","roar","cluck","honk","gibber","hoot","snort","groooan","trill","snarl"};
-			String[] five={"croak","bark","blub-blub","cuckoo","squeak","peep","screeech!","twitter","cherp","wail"};
-			String[] six={"hummmmmm","bleat","*whistle*","yelp","neigh","whinny","growl","screeaam!!"};
-			String[] seven={"gobble-gobble","ribbit","b-a-a-a-h","n-a-a-a-y","heehaw","cock-a-doodle-doo"};
+			final String[] one={""};
+			final String[] two={"hissssss","hoo","caw","arf","bow-wow","bzzzzzz","grunt","bawl"};
+			final String[] three={"chirp","tweet","mooooo","oink","quack","tweet","bellooooow","cackle","hooooowwwwl","!dook!"};
+			final String[] four={"ruff","meow","grrrrowl","roar","cluck","honk","gibber","hoot","snort","groooan","trill","snarl"};
+			final String[] five={"croak","bark","blub-blub","cuckoo","squeak","peep","screeech!","twitter","cherp","wail"};
+			final String[] six={"hummmmmm","bleat","*whistle*","yelp","neigh","whinny","growl","screeaam!!"};
+			final String[] seven={"gobble-gobble","ribbit","b-a-a-a-h","n-a-a-a-y","heehaw","cock-a-doodle-doo"};
 			wordLists=new Vector<String[]>();
 			wordLists.add(one);
 			wordLists.add(two);

@@ -58,7 +58,7 @@ public class Thief_Shadow extends ThiefSkill
 	public boolean stillAShadower()
 	{
 		if(invoker==null) return false;
-		MOB mob=invoker;
+		final MOB mob=invoker;
 		if(mob.amDead()) return false;
 		if(mob.isInCombat()) return false;
 		if(mob.location()==null) return false;
@@ -80,7 +80,7 @@ public class Thief_Shadow extends ThiefSkill
 	{
 		if(!stillAShadower()) return false;
 		if(!stillAShadowee()) return false;
-		MOB mob=invoker;
+		final MOB mob=invoker;
 		if(CMLib.flags().canBeSeenBy(mob,shadowing)) return false;
 		if(!CMLib.flags().canBeSeenBy(shadowing,mob)) return false;
 		if(mob.location()!=shadowing.location()) return false;
@@ -109,8 +109,8 @@ public class Thief_Shadow extends ThiefSkill
 					dir=d;
 			if((dir>=0)&&(msg.source().location()!=lastRoom))
 			{
-				String directionWent=Directions.getDirectionName(dir);
-				MOB mob=invoker;
+				final String directionWent=Directions.getDirectionName(dir);
+				final MOB mob=invoker;
 				lastRoom=msg.source().location();
 				if(!mob.isMonster())
 					mob.enqueCommand(CMParms.parse(directionWent),Command.METAFLAG_FORCED,0);
@@ -129,7 +129,7 @@ public class Thief_Shadow extends ThiefSkill
 		if(lastTogether==0) return true;
 		if((shadowing!=null)&&(invoker!=null)&&(shadowing.location()==invoker.location()))
 			lastTogether=System.currentTimeMillis();
-		long secondsago=System.currentTimeMillis()-10000;
+		final long secondsago=System.currentTimeMillis()-10000;
 		if(lastTogether<secondsago)
 		{
 			if((invoker!=null)&&(shadowing!=null))
@@ -196,7 +196,7 @@ public class Thief_Shadow extends ThiefSkill
 				mob.delEffect(A);
 			else
 			{
-				Ability AA=A.shadowing.fetchEffect(ID());
+				final Ability AA=A.shadowing.fetchEffect(ID());
 				if((AA!=null)&&(AA.invoker()==mob))
 				{
 					AA.unInvoke();
@@ -210,7 +210,7 @@ public class Thief_Shadow extends ThiefSkill
 			mob.tell("Shadow whom?");
 			return false;
 		}
-		MOB target=this.getTarget(mob,commands,givenTarget);
+		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 		if(target==mob)
 		{
@@ -236,19 +236,19 @@ public class Thief_Shadow extends ThiefSkill
 			return false;
 
 		shadowing=null;
-		int levelDiff=target.phyStats().level()-(mob.phyStats().level()+abilityCode()+(super.getXLEVELLevel(mob)*2));
+		final int levelDiff=target.phyStats().level()-(mob.phyStats().level()+abilityCode()+(super.getXLEVELLevel(mob)*2));
 
-		boolean success=proficiencyCheck(mob,-(levelDiff*10),auto);
+		final boolean success=proficiencyCheck(mob,-(levelDiff*10),auto);
 
 		if(!success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,null,CMMsg.MSG_OK_VISUAL,auto?"":"Your attempt to shadow <T-NAMESELF> fails; <T-NAME> spots you!",CMMsg.MSG_OK_VISUAL,auto?"":"You spot <S-NAME> trying to shadow you.",CMMsg.NO_EFFECT,null);
+			final CMMsg msg=CMClass.getMsg(mob,target,null,CMMsg.MSG_OK_VISUAL,auto?"":"Your attempt to shadow <T-NAMESELF> fails; <T-NAME> spots you!",CMMsg.MSG_OK_VISUAL,auto?"":"You spot <S-NAME> trying to shadow you.",CMMsg.NO_EFFECT,null);
 			if(mob.location().okMessage(mob,msg))
 				mob.location().send(mob,msg);
 		}
 		else
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,auto?CMMsg.MSG_OK_VISUAL:CMMsg.MSG_THIEF_ACT,"You are now shadowing <T-NAME>.  Enter 'shadow' again to disengage.",CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);
+			final CMMsg msg=CMClass.getMsg(mob,target,this,auto?CMMsg.MSG_OK_VISUAL:CMMsg.MSG_THIEF_ACT,"You are now shadowing <T-NAME>.  Enter 'shadow' again to disengage.",CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

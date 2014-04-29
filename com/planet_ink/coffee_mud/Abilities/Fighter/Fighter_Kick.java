@@ -71,7 +71,7 @@ public class Fighter_Kick extends FighterSkill
 			mob.tell("You need legs to do this.");
 			return false;
 		}
-		MOB target=this.getTarget(mob,commands,givenTarget);
+		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
 		// the invoke method for spells receives as
@@ -82,7 +82,7 @@ public class Fighter_Kick extends FighterSkill
 			return false;
 
 		// now see if it worked
-		boolean success=proficiencyCheck(mob,(mob.charStats().getStat(CharStats.STAT_STRENGTH)-target.charStats().getStat(CharStats.STAT_STRENGTH))*2,auto);
+		final boolean success=proficiencyCheck(mob,(mob.charStats().getStat(CharStats.STAT_STRENGTH)-target.charStats().getStat(CharStats.STAT_STRENGTH))*2,auto);
 		if(success)
 		{
 			// it worked, so build a copy of this ability,
@@ -90,10 +90,10 @@ public class Fighter_Kick extends FighterSkill
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			int topDamage=(adjustedLevel(mob,asLevel)/2)+2;
+			final int topDamage=(adjustedLevel(mob,asLevel)/2)+2;
 			int damage=CMLib.dice().roll(1,topDamage,0);
-			Room R=mob.location();
-			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),null);
+			final Room R=mob.location();
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),null);
 			if((R!=null)&&(R.okMessage(mob,msg)))
 			{
 				R.send(mob,msg);

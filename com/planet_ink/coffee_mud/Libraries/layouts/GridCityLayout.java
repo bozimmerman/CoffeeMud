@@ -31,11 +31,11 @@ public class GridCityLayout extends AbstractLayout
 	@Override
 	public List<LayoutNode> generate(int num, int dir)
 	{
-		Vector<LayoutNode> set = new Vector<LayoutNode>();
-		int diameter = (int)Math.round(Math.sqrt(num));
-		int plusX = (diff(diameter,diameter,num) > diff(diameter+1,diameter,num)) ? 1 : 0;
+		final Vector<LayoutNode> set = new Vector<LayoutNode>();
+		final int diameter = (int)Math.round(Math.sqrt(num));
+		final int plusX = (diff(diameter,diameter,num) > diff(diameter+1,diameter,num)) ? 1 : 0;
 
-		LayoutSet lSet = new LayoutSet(set,num);
+		final LayoutSet lSet = new LayoutSet(set,num);
 		lSet.drawABox(diameter+plusX,diameter);
 		int middle=(diameter+plusX)/2;
 		LayoutNode firstNode=null;
@@ -61,7 +61,7 @@ public class GridCityLayout extends AbstractLayout
 					firstNode=n;
 			}
 		}
-		int endX=diameter+plusX-1;
+		final int endX=diameter+plusX-1;
 		middle=(-diameter+1)/2;
 		for(int y=-2;y>=-diameter+1;y-=2)
 		{
@@ -90,7 +90,7 @@ public class GridCityLayout extends AbstractLayout
 		{
 			for(int x=1;x<endX;x++)
 			{
-				LayoutNode n = lSet.getNode(new long[]{x,y});
+				final LayoutNode n = lSet.getNode(new long[]{x,y});
 				LayoutNode nn = lSet.getNextNode(n, Directions.NORTH);
 				if(nn==null)
 				{
@@ -114,7 +114,7 @@ public class GridCityLayout extends AbstractLayout
 		{
 			for(int x=1;x<endX;x++)
 			{
-				LayoutNode n = lSet.getNode(new long[]{x,y});
+				final LayoutNode n = lSet.getNode(new long[]{x,y});
 				LayoutNode nn = lSet.getNextNode(n, Directions.SOUTH);
 				if(nn==null)
 				{

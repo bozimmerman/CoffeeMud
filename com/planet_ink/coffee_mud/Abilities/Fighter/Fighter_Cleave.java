@@ -55,7 +55,7 @@ public class Fighter_Cleave extends FighterSkill
 		if(!(affected instanceof MOB))
 			return true;
 
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		if((thisTarget!=null)
 		&&(nextTarget!=null)
@@ -66,7 +66,7 @@ public class Fighter_Cleave extends FighterSkill
 		{
 			Item w=mob.fetchWieldedItem();
 			if(w==null) w=mob.myNaturalWeapon();
-			CMMsg msg=CMClass.getMsg(mob,nextTarget,this,CMMsg.MSG_NOISYMOVEMENT,"^F^<FIGHT^><S-NAME> CLEAVE(S) INTO <T-NAME>!!^</FIGHT^>^?");
+			final CMMsg msg=CMClass.getMsg(mob,nextTarget,this,CMMsg.MSG_NOISYMOVEMENT,"^F^<FIGHT^><S-NAME> CLEAVE(S) INTO <T-NAME>!!^</FIGHT^>^?");
 			CMLib.color().fixSourceFightColor(msg);
 			if(mob.location().okMessage(mob,msg))
 			{
@@ -88,7 +88,7 @@ public class Fighter_Cleave extends FighterSkill
 		if(!(affected instanceof MOB))
 			return true;
 
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		if((msg.amISource(mob))
 		&&(mob.getVictim()!=null)
 		&&(msg.amITarget(mob.getVictim()))
@@ -98,9 +98,9 @@ public class Fighter_Cleave extends FighterSkill
 		&&(msg.tool()!=null)
 		&&(msg.tool() instanceof Weapon))
 		{
-			MOB victim=mob.getVictim();
-			Weapon w=(Weapon)msg.tool();
-			int damAmount=msg.value();
+			final MOB victim=mob.getVictim();
+			final Weapon w=(Weapon)msg.tool();
+			final int damAmount=msg.value();
 
 			if((damAmount>victim.curState().getHitPoints())
 			&&(w.weaponType()==Weapon.TYPE_SLASHING)
@@ -112,7 +112,7 @@ public class Fighter_Cleave extends FighterSkill
 				thisTarget=null;
 				for(int i=0;i<mob.location().numInhabitants();i++)
 				{
-					MOB vic=mob.location().fetchInhabitant(i);
+					final MOB vic=mob.location().fetchInhabitant(i);
 					if((vic!=null)
 					&&(vic.getVictim()==mob)
 					&&(vic!=mob)

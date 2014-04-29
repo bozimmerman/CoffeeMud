@@ -51,7 +51,7 @@ public class Spell_FeignDeath extends Spell
 	{
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		if(canBeUninvoked())
 			mob.tell("Your death is no longer feigned.");
@@ -65,11 +65,11 @@ public class Spell_FeignDeath extends Spell
 
 	public void peaceAt(MOB mob)
 	{
-		Room room=mob.location();
+		final Room room=mob.location();
 		if(room==null) return;
 		for(int m=0;m<room.numInhabitants();m++)
 		{
-			MOB inhab=room.fetchInhabitant(m);
+			final MOB inhab=room.fetchInhabitant(m);
 			if((inhab!=null)&&(inhab.getVictim()==mob))
 				inhab.setVictim(null);
 		}
@@ -80,7 +80,7 @@ public class Spell_FeignDeath extends Spell
 	{
 		if(!(affected instanceof MOB))
 			return true;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		if((msg.amISource(mob))&&(!msg.sourceMajor(CMMsg.MASK_ALWAYS)))
 		{
@@ -128,13 +128,13 @@ public class Spell_FeignDeath extends Spell
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		MOB target=this.getTarget(mob,commands,givenTarget);
+		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 		if(!success)
 		{
 			return maliciousFizzle(mob,mob.location(),"<S-NAME> point(s) to <T-NAMESELF> and yell(s), but nothing happens.");
@@ -154,11 +154,11 @@ public class Spell_FeignDeath extends Spell
 			int tries=0;
 			while((target.numFollowers()>0)&&((++tries)<1000))
 			{
-				MOB follower=target.fetchFollower(0);
+				final MOB follower=target.fetchFollower(0);
 				if(follower!=null)
 					follower.setFollowing(null);
 			}
-			String msp=CMLib.protocol().msp("death"+CMLib.dice().roll(1,4,0)+".wav",50);
+			final String msp=CMLib.protocol().msp("death"+CMLib.dice().roll(1,4,0)+".wav",50);
 			msg=CMClass.getMsg(target,null,null,
 					CMMsg.MSG_OK_VISUAL,"^f^*^<FIGHT^>!!!!!!!!!!!!!!YOU ARE DEAD!!!!!!!!!!!!!!^</FIGHT^>^?^.\n\r"+msp,
 					CMMsg.MSG_OK_VISUAL,null,

@@ -58,7 +58,7 @@ public class Chant_CaveFishing extends Chant
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		Room target=mob.location();
+		final Room target=mob.location();
 		if(target==null) return false;
 
 		Environmental waterSrc=null;
@@ -70,7 +70,7 @@ public class Chant_CaveFishing extends Chant
 		{
 			for(int i=0;i<target.numItems();i++)
 			{
-				Item I=target.getItem(i);
+				final Item I=target.getItem(i);
 				if((I instanceof Drink)
 				&&(I.container()==null)
 				&&(((Drink)I).liquidType()==RawMaterial.RESOURCE_FRESHWATER)
@@ -96,7 +96,7 @@ public class Chant_CaveFishing extends Chant
 		// and added as String objects to a vector.
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
@@ -105,7 +105,7 @@ public class Chant_CaveFishing extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> chant(s) to <T-NAME>.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> chant(s) to <T-NAME>.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -113,7 +113,7 @@ public class Chant_CaveFishing extends Chant
 				{
 					mob.location().showHappens(CMMsg.MSG_OK_VISUAL,"Fish start swimming around in "+target.name()+"!");
 					beneficialAffect(mob, target, asLevel,0);
-					Chant_CaveFishing A=(Chant_CaveFishing)target.fetchEffect(ID());
+					final Chant_CaveFishing A=(Chant_CaveFishing)target.fetchEffect(ID());
 					if(A!=null)
 					{
 						mob.location().showHappens(CMMsg.MSG_OK_VISUAL,"Fish start swimming around in "+target.name()+"!");

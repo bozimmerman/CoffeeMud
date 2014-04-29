@@ -87,9 +87,9 @@ public class Save extends StdCommand
 				mob.tell("You are not allowed to save players.");
 				return false;
 			}
-			for(Session S : CMLib.sessions().allIterable())
+			for(final Session S : CMLib.sessions().allIterable())
 			{
-				MOB M=S.mob();
+				final MOB M=S.mob();
 				if(M!=null)
 				{
 					CMLib.database().DBUpdatePlayer(M);
@@ -110,8 +110,8 @@ public class Save extends StdCommand
 			{
 				if((mob.session()!=null)&&(mob.session().confirm("Doing this assumes every item in every room in this area is correctly placed.  Are you sure (N/y)?","N")))
 				{
-					Area A=mob.location().getArea();
-					for(Enumeration<Room> e=A.getProperMap();e.hasMoreElements();)
+					final Area A=mob.location().getArea();
+					for(final Enumeration<Room> e=A.getProperMap();e.hasMoreElements();)
 						clearSaveAndRestart(e.nextElement(),1);
 					mob.location().showHappens(CMMsg.MSG_OK_ACTION,"A feeling of permanency envelopes the area.\n\r");
 				}
@@ -137,8 +137,8 @@ public class Save extends StdCommand
 			{
 				if((mob.session()!=null)&&(mob.session().confirm("Doing this assumes every mob and item in every room in this area is correctly placed.  Are you sure (N/y)?","N")))
 				{
-					Area A=mob.location().getArea();
-					for(Enumeration e=A.getProperMap();e.hasMoreElements();)
+					final Area A=mob.location().getArea();
+					for(final Enumeration e=A.getProperMap();e.hasMoreElements();)
 						clearSaveAndRestart((Room)e.nextElement(),0);
 					mob.location().showHappens(CMMsg.MSG_OK_ACTION,"A feeling of permanency envelopes the area.\n\r");
 				}
@@ -164,8 +164,8 @@ public class Save extends StdCommand
 			{
 				if((mob.session()!=null)&&(mob.session().confirm("Doing this assumes every mob in every room in this area is correctly placed.  Are you sure (N/y)?","N")))
 				{
-					Area A=mob.location().getArea();
-					for(Enumeration e=A.getProperMap();e.hasMoreElements();)
+					final Area A=mob.location().getArea();
+					for(final Enumeration e=A.getProperMap();e.hasMoreElements();)
 						clearSaveAndRestart((Room)e.nextElement(),2);
 					mob.location().showHappens(CMMsg.MSG_OK_ACTION,"A feeling of permanency envelopes the area.\n\r");
 				}
@@ -194,7 +194,7 @@ public class Save extends StdCommand
 		else
 		if(firstCommand.equals("USER")||firstCommand.equals("PLAYER")||firstCommand.equals("CHARACTER")||firstCommand.equals("CHAR"))
 		{
-			MOB M=CMLib.players().getPlayer(lastCommand);
+			final MOB M=CMLib.players().getPlayer(lastCommand);
 			if(M==null)
 			{
 				mob.tell("No user named "+lastCommand);
@@ -208,7 +208,7 @@ public class Save extends StdCommand
 		else
 		if(CMLib.players().getPlayer(firstCommand)!=null)
 		{
-			MOB M=CMLib.players().getPlayer(firstCommand);
+			final MOB M=CMLib.players().getPlayer(firstCommand);
 			CMLib.database().DBUpdatePlayer(M);
 			if(CMLib.flags().isInTheGame(M,true))
 				CMLib.database().DBUpdateFollowers(M);
@@ -217,7 +217,7 @@ public class Save extends StdCommand
 		else
 		if(CMLib.players().getPlayer(lastCommand)!=null)
 		{
-			MOB M=CMLib.players().getPlayer(lastCommand);
+			final MOB M=CMLib.players().getPlayer(lastCommand);
 			CMLib.database().DBUpdatePlayer(M);
 			if(CMLib.flags().isInTheGame(M,true))
 				CMLib.database().DBUpdateFollowers(M);

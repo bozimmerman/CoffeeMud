@@ -56,9 +56,9 @@ public class Spell_SummonMarker extends Spell
 	{
 		try
 		{
-			for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
+			for(final Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 			{
-				Room R=(Room)r.nextElement();
+				final Room R=(Room)r.nextElement();
 				if(CMLib.flags().canAccess(mob,R))
 					for(final Enumeration<Ability> a=R.effects();a.hasMoreElements();)
 					{
@@ -72,15 +72,15 @@ public class Spell_SummonMarker extends Spell
 						}
 					}
 			}
-		}catch(NoSuchElementException nse){}
+		}catch(final NoSuchElementException nse){}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,mob.location(),this,verbalCastCode(mob,null,auto),auto?"":"^S<S-NAME> summon(s) <S-HIS-HER> marker energy to this place!^?");
+			final CMMsg msg=CMClass.getMsg(mob,mob.location(),this,verbalCastCode(mob,null,auto),auto?"":"^S<S-NAME> summon(s) <S-HIS-HER> marker energy to this place!^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

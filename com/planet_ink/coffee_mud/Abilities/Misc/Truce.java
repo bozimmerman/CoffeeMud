@@ -59,7 +59,7 @@ public class Truce extends StdAbility
 	public Pair<String,Long> getMyPair(final String name)
 	{
 		final long now=System.currentTimeMillis();
-		for(Iterator<Pair<String,Long>> i=truces.iterator();i.hasNext();)
+		for(final Iterator<Pair<String,Long>> i=truces.iterator();i.hasNext();)
 		{
 			final Pair<String,Long> p=i.next();
 			if(p!=null)
@@ -87,7 +87,7 @@ public class Truce extends StdAbility
 	{
 		if(affected instanceof MOB)
 		{
-			MOB mob=(MOB)affected;
+			final MOB mob=(MOB)affected;
 			if(truceWithAnyone
 			&&(msg.sourceMinor()==CMMsg.TYP_DEATH)
 			&&(msg.tool()==mob))
@@ -107,7 +107,7 @@ public class Truce extends StdAbility
 		if(!(affected instanceof MOB))
 			return true;
 
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		if((msg.targetMajor(CMMsg.MASK_MALICIOUS))
 		&&(((msg.source()==mob)&&(msg.target()!=null)&&(isTruceWith(msg.target().Name())))
 			||((msg.target()==mob)&&(isTruceWith(msg.source().Name()))))
@@ -125,7 +125,7 @@ public class Truce extends StdAbility
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		MOB target=this.getTarget(mob,commands,givenTarget);
+		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
 		// the invoke method for spells receives as
@@ -143,14 +143,14 @@ public class Truce extends StdAbility
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> make(s) a truce with <T-NAMESELF>.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> make(s) a truce with <T-NAMESELF>.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
 					success=beneficialAffect(mob,target,asLevel,auto?3:0);
-					Ability A=target.fetchEffect(ID());
+					final Ability A=target.fetchEffect(ID());
 					if(A!=null)A.setMiscText(target.Name());
 				}
 				target.makePeace();

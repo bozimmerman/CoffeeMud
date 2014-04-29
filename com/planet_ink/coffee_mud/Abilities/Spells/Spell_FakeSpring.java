@@ -44,11 +44,11 @@ public class Spell_FakeSpring extends Spell
 	@Override
 	public void unInvoke()
 	{
-		Item spring=(Item)affected;
+		final Item spring=(Item)affected;
 		super.unInvoke();
 		if((canBeUninvoked())&&(spring!=null))
 		{
-			Room SpringLocation=CMLib.map().roomLocation(spring);
+			final Room SpringLocation=CMLib.map().roomLocation(spring);
 			spring.destroy();
 			SpringLocation.recoverRoomStats();
 		}
@@ -85,17 +85,17 @@ public class Spell_FakeSpring extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":"^S<S-NAME> invoke(s) a spell dramatically.^?");
+			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":"^S<S-NAME> invoke(s) a spell dramatically.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				String itemID = "Spring";
+				final String itemID = "Spring";
 
-				Item newItem=CMClass.getItem(itemID);
+				final Item newItem=CMClass.getItem(itemID);
 
 				if(newItem==null)
 				{
@@ -103,7 +103,7 @@ public class Spell_FakeSpring extends Spell
 					return false;
 				}
 
-				Drink W=(Drink)CMClass.getItem("GenWater");
+				final Drink W=(Drink)CMClass.getItem("GenWater");
 				W.setName(newItem.Name());
 				W.setDisplayText(newItem.displayText());
 				W.setDescription(newItem.description());
@@ -115,7 +115,7 @@ public class Spell_FakeSpring extends Spell
 				mob.location().showHappens(CMMsg.MSG_OK_ACTION,"Suddenly, "+newItem.name()+" starts flowing here.");
 				if(CMLib.law().doesOwnThisProperty(mob,mob.location()))
 				{
-					Ability A=(Ability)copyOf();
+					final Ability A=(Ability)copyOf();
 					A.setInvoker(mob);
 					W.addNonUninvokableEffect(A);
 				}

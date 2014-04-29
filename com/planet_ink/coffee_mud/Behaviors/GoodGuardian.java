@@ -50,13 +50,13 @@ public class GoodGuardian extends StdBehavior
 		MOB victim=null;
 		for(int i=0;i<room.numInhabitants();i++)
 		{
-			MOB inhab=room.fetchInhabitant(i);
+			final MOB inhab=room.fetchInhabitant(i);
 			if((inhab!=null)&&(inhab.isInCombat()))
 			{
 				if(inhab.isMonster())
-					for(Enumeration<Behavior> e=inhab.behaviors();e.hasMoreElements();)
+					for(final Enumeration<Behavior> e=inhab.behaviors();e.hasMoreElements();)
 					{
-						Behavior B=e.nextElement();
+						final Behavior B=e.nextElement();
 						if((B!=null)&&(B.grantsAggressivenessTo(inhab.getVictim())))
 							return inhab;
 					}
@@ -91,21 +91,21 @@ public class GoodGuardian extends StdBehavior
 		}
 		else
 		{
-			Room room=observer.location();
+			final Room room=observer.location();
 			for(int i=0;i<room.numInhabitants();i++)
 			{
-				MOB inhab=room.fetchInhabitant(i);
+				final MOB inhab=room.fetchInhabitant(i);
 				if((inhab!=null)
 				&&(inhab.isInCombat())
 				&&(inhab.getVictim().isInCombat())
 				&&((observer.phyStats().level()>(inhab.phyStats().level()+5))))
 				{
-					String msg="<S-NAME> stop(s) <T-NAME> from fighting with "+inhab.getVictim().name();
-					CMMsg msgs=CMClass.getMsg(observer,inhab,CMMsg.MSG_NOISYMOVEMENT,msg);
+					final String msg="<S-NAME> stop(s) <T-NAME> from fighting with "+inhab.getVictim().name();
+					final CMMsg msgs=CMClass.getMsg(observer,inhab,CMMsg.MSG_NOISYMOVEMENT,msg);
 					if(observer.location().okMessage(observer,msgs))
 					{
 						observer.location().send(observer,msgs);
-						MOB ivictim=inhab.getVictim();
+						final MOB ivictim=inhab.getVictim();
 						if(ivictim!=null) ivictim.makePeace();
 						inhab.makePeace();
 					}
@@ -128,8 +128,8 @@ public class GoodGuardian extends StdBehavior
 		if((deepBreath==0)||(System.currentTimeMillis()-deepBreath)>6000)
 		{
 			deepBreath=0;
-			MOB mob=(MOB)ticking;
-			MOB victim=anyPeaceToMake(mob.location(),mob);
+			final MOB mob=(MOB)ticking;
+			final MOB victim=anyPeaceToMake(mob.location(),mob);
 			keepPeace(mob,victim);
 		}
 		return true;

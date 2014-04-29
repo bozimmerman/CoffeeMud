@@ -47,11 +47,11 @@ public class Chant_WarpWood extends Chant
 	{
 		if(mobTarget!=null)
 		{
-			Vector goodPossibilities=new Vector();
-			Vector possibilities=new Vector();
+			final Vector goodPossibilities=new Vector();
+			final Vector possibilities=new Vector();
 			for(int i=0;i<mobTarget.numItems();i++)
 			{
-				Item item=mobTarget.getItem(i);
+				final Item item=mobTarget.getItem(i);
 				if((item!=null)
 				   &&((item.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_WOODEN)
 				   &&(item.subjectToWearAndTear()))
@@ -78,7 +78,7 @@ public class Chant_WarpWood extends Chant
 		{
 			if(target instanceof MOB)
 			{
-				Item targetItem=getPossibility((MOB)target);
+				final Item targetItem=getPossibility((MOB)target);
 				if(targetItem==null)
 					return Ability.QUALITY_INDIFFERENT;
 			}
@@ -89,7 +89,7 @@ public class Chant_WarpWood extends Chant
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		MOB mobTarget=getTarget(mob,commands,givenTarget,true,false);
+		final MOB mobTarget=getTarget(mob,commands,givenTarget,true,false);
 		Item target=getPossibility(mobTarget);
 		if(target==null)
 			target=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_ANY);
@@ -105,7 +105,7 @@ public class Chant_WarpWood extends Chant
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
@@ -113,8 +113,8 @@ public class Chant_WarpWood extends Chant
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> starts warping!":"^S<S-NAME> chant(s) at <T-NAMESELF>.^?");
-			CMMsg msg2=CMClass.getMsg(mob,mobTarget,this,verbalCastCode(mob,mobTarget,auto),null);
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> starts warping!":"^S<S-NAME> chant(s) at <T-NAMESELF>.^?");
+			final CMMsg msg2=CMClass.getMsg(mob,mobTarget,this,verbalCastCode(mob,mobTarget,auto),null);
 			if((mob.location().okMessage(mob,msg))&&((mobTarget==null)||(mob.location().okMessage(mob,msg2))))
 			{
 				mob.location().send(mob,msg);

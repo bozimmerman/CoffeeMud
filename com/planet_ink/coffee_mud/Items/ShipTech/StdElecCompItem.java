@@ -164,7 +164,7 @@ public class StdElecCompItem extends StdElecItem implements ShipComponent
 				}
 				else
 				{
-					int repairRequired=100-usesRemaining();
+					final int repairRequired=100-usesRemaining();
 					if(repairRequired>0)
 					{
 						int repairApplied=(int)Math.round(CMath.mul(repairRequired, CMath.div(msg.value(), 100)));

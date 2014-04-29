@@ -78,11 +78,11 @@ public class Poison extends StdAbility implements HealthCondition
 		if((poisoner==null)&&(target instanceof MOB)) poisoner=(MOB)target;
 		if((target!=null)&&(target instanceof MOB)&&(target.fetchEffect(ID())==null))
 		{
-			MOB targetMOB=(MOB)target;
+			final MOB targetMOB=(MOB)target;
 			if(POISON_START_TARGETONLY().length()>0)
 				targetMOB.tell(POISON_START_TARGETONLY());
-			String startMsg=CMStrings.replaceAll(POISON_START(),"<S-","<T-");
-			CMMsg msg=CMClass.getMsg(poisoner,targetMOB,this,CMMsg.MASK_ALWAYS|CMMsg.MASK_MALICIOUS|CMMsg.TYP_POISON,startMsg);
+			final String startMsg=CMStrings.replaceAll(POISON_START(),"<S-","<T-");
+			final CMMsg msg=CMClass.getMsg(poisoner,targetMOB,this,CMMsg.MASK_ALWAYS|CMMsg.MASK_MALICIOUS|CMMsg.TYP_POISON,startMsg);
 			if((POISON_START_TARGETONLY().length()>0)
 			||((targetMOB.location()!=null)
 				&&(targetMOB.location().okMessage(targetMOB,msg))))
@@ -110,7 +110,7 @@ public class Poison extends StdAbility implements HealthCondition
 		if(!(affected instanceof MOB))
 			return true;
 
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		if(mob==null) return false;
 		if((--poisonTick)<=0)
 		{
@@ -147,7 +147,7 @@ public class Poison extends StdAbility implements HealthCondition
 		{
 			if(affected instanceof MOB)
 			{
-				MOB mob=(MOB)affected;
+				final MOB mob=(MOB)affected;
 
 				super.unInvoke();
 				if((canBeUninvoked())&&(POISON_DONE().length()>0))
@@ -167,7 +167,7 @@ public class Poison extends StdAbility implements HealthCondition
 		{
 			if(!processing)
 			{
-				Item myItem=(Item)affected;
+				final Item myItem=(Item)affected;
 				if(myItem.owner()==null) return;
 				processing=true;
 				if(msg.amITarget(myItem))
@@ -221,15 +221,15 @@ public class Poison extends StdAbility implements HealthCondition
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		Environmental target=this.getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_UNWORNONLY);
+		final Environmental target=this.getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_UNWORNONLY);
 		if(target==null) return false;
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 		boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			String str=auto?"":POISON_CAST();
-			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_POISON|(auto?CMMsg.MASK_ALWAYS:0),str);
+			final String str=auto?"":POISON_CAST();
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_POISON|(auto?CMMsg.MASK_ALWAYS:0),str);
 			CMLib.color().fixSourceFightColor(msg);
 			Room R=mob.location();
 			if((target instanceof MOB)&&(((MOB)target).location()!=null))

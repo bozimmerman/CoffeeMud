@@ -42,7 +42,7 @@ public class Bomb_Pepper extends StdBomb
 	@Override
 	public List<Item> getTrapComponents()
 	{
-		Vector V=new Vector();
+		final Vector V=new Vector();
 		V.addElement(CMLib.materials().makeItemResource(RawMaterial.RESOURCE_PEPPERS));
 		return V;
 	}
@@ -74,7 +74,7 @@ public class Bomb_Pepper extends StdBomb
 			if(target.location().show(invoker(),target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,affected.name()+" explodes water all over <T-NAME>!"))
 			{
 				super.spring(target);
-				Ability A=CMClass.getAbility("Spell_Irritation");
+				final Ability A=CMClass.getAbility("Spell_Irritation");
 				if(A!=null) A.invoke(target,target,true,invoker().phyStats().level()+abilityCode());
 			}
 		}

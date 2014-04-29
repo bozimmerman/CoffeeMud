@@ -43,7 +43,7 @@ public class NoPurge extends StdCommand
 		throws java.io.IOException
 	{
 		commands.removeElementAt(0);
-		String protectMe=CMParms.combine(commands,0);
+		final String protectMe=CMParms.combine(commands,0);
 		if(protectMe.length()==0)
 		{
 			mob.tell("Protect whom?  Enter a player name to protect from autopurge.");
@@ -54,11 +54,11 @@ public class NoPurge extends StdCommand
 			mob.tell("Protect whom?  '"+protectMe+"' is not a known player.");
 			return false;
 		}
-		List<String> protectedOnes=Resources.getFileLineVector(Resources.getFileResource("protectedplayers.ini",false));
+		final List<String> protectedOnes=Resources.getFileLineVector(Resources.getFileResource("protectedplayers.ini",false));
 		if((protectedOnes!=null)&&(protectedOnes.size()>0))
 		for(int b=0;b<protectedOnes.size();b++)
 		{
-			String B=protectedOnes.get(b);
+			final String B=protectedOnes.get(b);
 			if(B.equalsIgnoreCase(protectMe))
 			{
 				mob.tell("That player already protected.  Do LIST NOPURGE and check out #"+(b+1)+".");
@@ -66,7 +66,7 @@ public class NoPurge extends StdCommand
 			}
 		}
 		mob.tell("The player '"+protectMe+"' is now protected from autopurge.");
-		StringBuffer str=Resources.getFileResource("protectedplayers.ini",false);
+		final StringBuffer str=Resources.getFileResource("protectedplayers.ini",false);
 		if(protectMe.trim().length()>0) str.append(protectMe+"\n");
 		Resources.updateFileResource("::protectedplayers.ini",str);
 		return false;

@@ -91,8 +91,8 @@ public class GenTickerShield extends StdElecItem implements Armor
 				setPowerRemaining(0);
 				if(owner() instanceof MOB)
 				{
-					MOB mob=(MOB)owner();
-					CMMsg msg=CMClass.getMsg(mob, this, null,CMMsg.MSG_OK_VISUAL,CMMsg.TYP_DEACTIVATE|CMMsg.MASK_ALWAYS,CMMsg.MSG_OK_VISUAL,fieldDeadStr(mob));
+					final MOB mob=(MOB)owner();
+					final CMMsg msg=CMClass.getMsg(mob, this, null,CMMsg.MSG_OK_VISUAL,CMMsg.TYP_DEACTIVATE|CMMsg.MASK_ALWAYS,CMMsg.MSG_OK_VISUAL,fieldDeadStr(mob));
 					if(mob.location()!=null)
 						mob.location().send(mob, msg);
 				}
@@ -110,7 +110,7 @@ public class GenTickerShield extends StdElecItem implements Armor
 			return false;
 		if(msg.amITarget(owner()) && (owner() instanceof MOB))
 		{
-			MOB mob=(MOB)owner();
+			final MOB mob=(MOB)owner();
 			switch(msg.targetMinor())
 			{
 			case CMMsg.TYP_REMOVE:
@@ -143,7 +143,7 @@ public class GenTickerShield extends StdElecItem implements Armor
 				if((msg.source().location()!=null)&&(!CMath.bset(msg.targetMajor(), CMMsg.MASK_CNTRLMSG)))
 					msg.source().location().show(msg.source(), this, owner(), CMMsg.MSG_OK_VISUAL, fieldOnStr(null));
 				this.activate(true);
-				Physical P=owner();
+				final Physical P=owner();
 				if(P!=null)
 				{
 					P.recoverPhyStats();
@@ -160,7 +160,7 @@ public class GenTickerShield extends StdElecItem implements Armor
 				if((msg.source().location()!=null)&&(!CMath.bset(msg.targetMajor(), CMMsg.MASK_CNTRLMSG)))
 					msg.source().location().show(msg.source(), this, owner(), CMMsg.MSG_OK_VISUAL, fieldDeadStr(null));
 				this.activate(false);
-				Physical P=owner();
+				final Physical P=owner();
 				if(P!=null)
 				{
 					P.recoverPhyStats();
@@ -271,8 +271,8 @@ public class GenTickerShield extends StdElecItem implements Armor
 	public String[] getStatCodes()
 	{
 		if(codes!=null) return codes;
-		String[] MYCODES=CMProps.getStatCodesList(GenTickerShield.MYCODES,this);
-		String[] superCodes=GenericBuilder.GENITEMCODES;
+		final String[] MYCODES=CMProps.getStatCodesList(GenTickerShield.MYCODES,this);
+		final String[] superCodes=GenericBuilder.GENITEMCODES;
 		codes=new String[superCodes.length+MYCODES.length];
 		int i=0;
 		for(;i<superCodes.length;i++)
@@ -285,7 +285,7 @@ public class GenTickerShield extends StdElecItem implements Armor
 	public boolean sameAs(Environmental E)
 	{
 		if(!(E instanceof GenTickerShield)) return false;
-		String[] theCodes=getStatCodes();
+		final String[] theCodes=getStatCodes();
 		for(int i=0;i<theCodes.length;i++)
 			if(!E.getStat(theCodes[i]).equals(getStat(theCodes[i])))
 				return false;

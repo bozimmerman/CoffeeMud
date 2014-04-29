@@ -81,7 +81,7 @@ public class Thief_Racketeer extends ThiefSkill
 		{
 			return false;
 		}
-		MOB source=msg.source();
+		final MOB source=msg.source();
 		if((!msg.source().Name().equals(text()))&&((msg.source().getClanRole(text())==null))
 			&&(msg.tool() instanceof Ability)&&(msg.target()==affected)
 			&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_THIEF_SKILL))
@@ -108,7 +108,7 @@ public class Thief_Racketeer extends ThiefSkill
 				return Ability.QUALITY_INDIFFERENT;
 			if(target instanceof PhysicalAgent)
 			{
-				PhysicalAgent AE=(PhysicalAgent)target;
+				final PhysicalAgent AE=(PhysicalAgent)target;
 				if((CMLib.coffeeShops().getShopKeeper(target)==null)&&(AE.fetchBehavior("MoneyChanger")==null)
 				&&(AE.fetchBehavior("ItemMender")==null)&&(AE.fetchBehavior("ItemIdentifier")==null)
 				&&(AE.fetchBehavior("ItemRefitter")==null))
@@ -152,7 +152,7 @@ public class Thief_Racketeer extends ThiefSkill
 			mob.tell("You can't get protection money from "+target.name(mob)+".");
 			return false;
 		}
-		Ability A=target.fetchEffect(ID());
+		final Ability A=target.fetchEffect(ID());
 		if(A!=null)
 		{
 			if(A.invoker()==mob)
@@ -165,18 +165,18 @@ public class Thief_Racketeer extends ThiefSkill
 			}
 			return false;
 		}
-		int levelDiff=target.phyStats().level()-(mob.phyStats().level()+(2*super.getXLEVELLevel(mob)));
+		final int levelDiff=target.phyStats().level()-(mob.phyStats().level()+(2*super.getXLEVELLevel(mob)));
 		if(!target.mayIFight(mob))
 		{
 			mob.tell("You cannot racketeer "+target.charStats().himher()+".");
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel)) return false;
-		double amount=CMLib.dice().roll(proficiency(),target.phyStats().level(),0);
-		boolean success=proficiencyCheck(mob,-(levelDiff),auto);
+		final double amount=CMLib.dice().roll(proficiency(),target.phyStats().level(),0);
+		final boolean success=proficiencyCheck(mob,-(levelDiff),auto);
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,(auto?CMMsg.MASK_ALWAYS:0)|CMMsg.MSG_THIEF_ACT,"<S-NAME> extract(s) "
+			final CMMsg msg=CMClass.getMsg(mob,target,this,(auto?CMMsg.MASK_ALWAYS:0)|CMMsg.MSG_THIEF_ACT,"<S-NAME> extract(s) "
 					+CMLib.beanCounter().nameCurrencyShort(target,amount)+" of protection money from <T-NAME>.");
 			if(mob.location().okMessage(mob,msg))
 			{
@@ -188,7 +188,7 @@ public class Thief_Racketeer extends ThiefSkill
 										 (mob.location().getArea().getTimeObj().getHoursInDay()) *
 										 (mob.location().getArea().getTimeObj().getDaysInMonth()) ) /
 											 (CMProps.getTickMillis()) ));
-				Coins C=CMLib.beanCounter().makeBestCurrency(mob,amount);
+				final Coins C=CMLib.beanCounter().makeBestCurrency(mob,amount);
 				if(C!=null)
 				{
 					mob.location().addItem(C,ItemPossessor.Expire.Player_Drop);

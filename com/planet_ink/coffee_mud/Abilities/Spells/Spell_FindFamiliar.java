@@ -79,20 +79,20 @@ public class Spell_FindFamiliar extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		int experienceToLose=getXPCOSTAdjustment(mob,100);
+		final int experienceToLose=getXPCOSTAdjustment(mob,100);
 		CMLib.leveler().postExperience(mob,null,null,-experienceToLose,false);
 		mob.tell("The effort causes you to lose "+experienceToLose+" experience.");
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
 			invoker=mob;
-			CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":"^S<S-NAME> call(s) for a familiar.^?");
+			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":"^S<S-NAME> call(s) for a familiar.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				MOB target = determineMonster(mob, mob.phyStats().level());
+				final MOB target = determineMonster(mob, mob.phyStats().level());
 				if(target.isInCombat()) target.makePeace();
 				CMLib.commands().postFollow(target,mob,true);
 				invoker=mob;
@@ -109,12 +109,12 @@ public class Spell_FindFamiliar extends Spell
 	public MOB determineMonster(MOB caster, int level)
 	{
 
-		MOB newMOB=CMClass.getMOB("GenMOB");
+		final MOB newMOB=CMClass.getMOB("GenMOB");
 		newMOB.basePhyStats().setAbility(7);
 		newMOB.basePhyStats().setLevel(level);
 		newMOB.basePhyStats().setRejuv(PhyStats.NO_REJUV);
 		newMOB.baseCharStats().setStat(CharStats.STAT_GENDER,'M');
-		int choice=CMLib.dice().roll(1,9,-1);
+		final int choice=CMLib.dice().roll(1,9,-1);
 		switch(choice)
 		{
 		case 0:
@@ -195,7 +195,7 @@ public class Spell_FindFamiliar extends Spell
 		newMOB.recoverPhyStats();
 		newMOB.recoverMaxState();
 		newMOB.resetToMaxState();
-		Ability A=CMClass.getAbility("Prop_Familiar");
+		final Ability A=CMClass.getAbility("Prop_Familiar");
 		A.setMiscText(""+choice);
 		newMOB.addNonUninvokableEffect(A);
 		newMOB.text();

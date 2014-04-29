@@ -48,11 +48,11 @@ public class AccountCreate extends StdWebMacro
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
-		boolean emailPassword=((CMProps.getVar(CMProps.Str.EMAILREQ).toUpperCase().startsWith("PASS"))
+		final boolean emailPassword=((CMProps.getVar(CMProps.Str.EMAILREQ).toUpperCase().startsWith("PASS"))
 				 &&(CMProps.getVar(CMProps.Str.MAILBOX).length()>0));
-		boolean emailDisabled=CMProps.getVar(CMProps.Str.EMAILREQ).toUpperCase().startsWith("DISABLE");
+		final boolean emailDisabled=CMProps.getVar(CMProps.Str.EMAILREQ).toUpperCase().startsWith("DISABLE");
 
-		java.util.Map<String,String> parms=parseParms(parm);
+		final java.util.Map<String,String> parms=parseParms(parm);
 		if(parms.containsKey("SHOWPASSWORD"))
 			return Boolean.toString(!emailPassword);
 		if(parms.containsKey("SHOWEMAILADDRESS"))
@@ -74,19 +74,19 @@ public class AccountCreate extends StdWebMacro
 		{
 			password=httpReq.getUrlParameter("PASSWORD");
 			if((password==null)||(password.length()==0)) return AccountCreateErrors.NO_PASSWORD.toString();
-			String passwordagain=httpReq.getUrlParameter("PASSWORDAGAIN");
+			final String passwordagain=httpReq.getUrlParameter("PASSWORDAGAIN");
 			if((passwordagain==null)||(passwordagain.length()==0)) return AccountCreateErrors.NO_PASSWORDAGAIN.toString();
 			if(!password.equalsIgnoreCase(passwordagain))
 				return AccountCreateErrors.BAD_PASSWORDMATCH.toString();
 		}
-		String verifykey=httpReq.getUrlParameter("VERIFYKEY");
+		final String verifykey=httpReq.getUrlParameter("VERIFYKEY");
 		if((verifykey==null)||(verifykey.length()==0)) return AccountCreateErrors.NO_VERIFYKEY.toString();
-		String verify=httpReq.getUrlParameter("VERIFY");
+		final String verify=httpReq.getUrlParameter("VERIFY");
 		if((verify==null)||(verify.length()==0)) return AccountCreateErrors.NO_VERIFY.toString();
 		String emailAddress="";
 		if(!emailDisabled)
 		{
-			boolean emailReq=(!CMProps.getVar(CMProps.Str.EMAILREQ).toUpperCase().startsWith("OPTION"));
+			final boolean emailReq=(!CMProps.getVar(CMProps.Str.EMAILREQ).toUpperCase().startsWith("OPTION"));
 			emailAddress=httpReq.getUrlParameter("EMAILADDRESS");
 			if(emailReq)
 			{
@@ -96,12 +96,12 @@ public class AccountCreate extends StdWebMacro
 		}
 		synchronized(ImageVerificationImage.sync)
 		{
-			SLinkedList<ImageVerificationImage.ImgCacheEntry> cache = ImageVerificationImage.getVerifyCache();
+			final SLinkedList<ImageVerificationImage.ImgCacheEntry> cache = ImageVerificationImage.getVerifyCache();
 			boolean found=false;
 			final String hisIp=httpReq.getClientAddress().getHostAddress();
-			for(Iterator<ImageVerificationImage.ImgCacheEntry> p =cache.descendingIterator();p.hasNext();)
+			for(final Iterator<ImageVerificationImage.ImgCacheEntry> p =cache.descendingIterator();p.hasNext();)
 			{
-				ImageVerificationImage.ImgCacheEntry entry=p.next();
+				final ImageVerificationImage.ImgCacheEntry entry=p.next();
 				if((entry.key.equalsIgnoreCase(verifykey))
 				&&(entry.ip.equals(hisIp)))
 				{
@@ -114,10 +114,10 @@ public class AccountCreate extends StdWebMacro
 				return AccountCreateErrors.NO_VERIFYKEY.toString();
 		}
 		name = CMStrings.capitalizeAndLower(name);
-		CharCreationLibrary.NewCharNameCheckResult checkResult=CMLib.login().newAccountNameCheck(name, httpReq.getClientAddress().getHostAddress());
+		final CharCreationLibrary.NewCharNameCheckResult checkResult=CMLib.login().newAccountNameCheck(name, httpReq.getClientAddress().getHostAddress());
 		if(checkResult!=CharCreationLibrary.NewCharNameCheckResult.OK)
 			return checkResult.toString();
-		PlayerAccount acct = (PlayerAccount)CMClass.getCommon("DefaultPlayerAccount");
+		final PlayerAccount acct = (PlayerAccount)CMClass.getCommon("DefaultPlayerAccount");
 		acct.setFlag(PlayerAccount.FLAG_ANSI, true);
 		acct.setAccountName(name);
 		acct.setPassword(password);
@@ -144,7 +144,7 @@ public class AccountCreate extends StdWebMacro
 				{
 					httpReq.addFakeUrlParameter("AUTH", URLEncoder.encode(Authenticate.Encrypt(Authenticate.getLogin(httpReq))+"-"+Authenticate.Encrypt(Authenticate.getPassword(httpReq)),"UTF-8"));
 				}
-				catch(Exception u)
+				catch(final Exception u)
 				{
 				}
 		}

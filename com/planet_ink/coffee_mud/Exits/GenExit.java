@@ -152,7 +152,7 @@ public class GenExit extends StdExit implements Modifiable
 	{
 		if(keyName.startsWith("{#"))
 		{
-			int x=keyName.indexOf("#}");
+			final int x=keyName.indexOf("#}");
 			if(x>=0)
 				return keyName.substring(2,x);
 		}
@@ -168,7 +168,7 @@ public class GenExit extends StdExit implements Modifiable
 		}
 		if(keyName.startsWith("{#"))
 		{
-			int x=keyName.indexOf("#}");
+			final int x=keyName.indexOf("#}");
 			if(x>=0) keyName=keyName.substring(x+2);
 		}
 		if(link.length()>0)
@@ -240,11 +240,11 @@ public class GenExit extends StdExit implements Modifiable
 					else
 					{
 						basePhyStats().setDisposition(0);
-						List<String> V=CMParms.parseCommas(val,true);
-						for(Iterator<String> e=V.iterator();e.hasNext();)
+						final List<String> V=CMParms.parseCommas(val,true);
+						for(final Iterator<String> e=V.iterator();e.hasNext();)
 						{
 							val=e.next();
-							int dispIndex=CMParms.indexOfIgnoreCase(PhyStats.IS_CODES,val);
+							final int dispIndex=CMParms.indexOfIgnoreCase(PhyStats.IS_CODES,val);
 							if(dispIndex>=0)
 								basePhyStats().setDisposition(basePhyStats().disposition()|(int)CMath.pow(2,dispIndex));
 						}
@@ -263,7 +263,7 @@ public class GenExit extends StdExit implements Modifiable
 	public boolean sameAs(Environmental E)
 	{
 		if(!(E instanceof GenExit)) return false;
-		String[] codes=getStatCodes();
+		final String[] codes=getStatCodes();
 		for(int i=0;i<codes.length;i++)
 			if(!E.getStat(codes[i]).equals(getStat(codes[i])))
 				return false;

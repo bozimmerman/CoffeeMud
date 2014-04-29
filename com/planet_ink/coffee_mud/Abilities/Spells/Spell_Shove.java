@@ -79,7 +79,7 @@ public class Spell_Shove extends Spell
 			return false;
 		}
 
-		MOB target=getTarget(mob,commands,givenTarget);
+		final MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
 		// the invoke method for spells receives as
@@ -89,21 +89,21 @@ public class Spell_Shove extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> get(s) shoved back!":"<S-NAME> incant(s) and shove(s) at <T-NAMESELF>.");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> get(s) shoved back!":"<S-NAME> incant(s) and shove(s) at <T-NAMESELF>.");
 			if((mob.location().okMessage(mob,msg))&&(target.fetchEffect(this.ID())==null))
 			{
 				if((msg.value()<=0)&&(target.location()==mob.location()))
 				{
 					mob.location().send(mob,msg);
 					target.makePeace();
-					Room newRoom=mob.location().getRoomInDir(dir);
-					Room thisRoom=mob.location();
-					CMMsg enterMsg=CMClass.getMsg(target,newRoom,this,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,"<S-NAME> fly(s) in from "+Directions.getFromDirectionName(Directions.getOpDirectionCode(dir))+".");
-					CMMsg leaveMsg=CMClass.getMsg(target,thisRoom,this,CMMsg.MSG_LEAVE|CMMsg.MASK_MAGIC,"<S-NAME> <S-IS-ARE> shoved forcefully into the air and out "+Directions.getInDirectionName(dir)+".");
+					final Room newRoom=mob.location().getRoomInDir(dir);
+					final Room thisRoom=mob.location();
+					final CMMsg enterMsg=CMClass.getMsg(target,newRoom,this,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,"<S-NAME> fly(s) in from "+Directions.getFromDirectionName(Directions.getOpDirectionCode(dir))+".");
+					final CMMsg leaveMsg=CMClass.getMsg(target,thisRoom,this,CMMsg.MSG_LEAVE|CMMsg.MASK_MAGIC,"<S-NAME> <S-IS-ARE> shoved forcefully into the air and out "+Directions.getInDirectionName(dir)+".");
 					if(thisRoom.okMessage(target,leaveMsg)&&newRoom.okMessage(target,enterMsg))
 					{
 						thisRoom.send(target,leaveMsg);

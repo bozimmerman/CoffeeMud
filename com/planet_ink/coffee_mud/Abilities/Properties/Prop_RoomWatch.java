@@ -57,22 +57,22 @@ public class Prop_RoomWatch extends Property
 		super.executeMsg(myHost,msg);
 		if(newRooms==null)
 		{
-			List<String> V=CMParms.parseSemicolons(text(),true);
+			final List<String> V=CMParms.parseSemicolons(text(),true);
 			newRooms=new Vector();
 			for(int v=0;v<V.size();v++)
 			{
-				String roomID=V.get(v);
-				int x=roomID.indexOf('=');
+				final String roomID=V.get(v);
+				final int x=roomID.indexOf('=');
 				if(x>0)
 				{
-					String var=roomID.substring(0,x).trim().toLowerCase();
+					final String var=roomID.substring(0,x).trim().toLowerCase();
 					if(var.equalsIgnoreCase("prefix"))
 					{
 						prefix=CMStrings.trimQuotes(roomID.substring(x+1).trim());
 						continue;
 					}
 				}
-				Room R=CMLib.map().getRoom(roomID);
+				final Room R=CMLib.map().getRoom(roomID);
 				if(R!=null) newRooms.addElement(R);
 			}
 		}
@@ -85,17 +85,17 @@ public class Prop_RoomWatch extends Property
 			final Room thisRoom=CMLib.map().roomLocation(affected);
 			for(int r=0;r<newRooms.size();r++)
 			{
-				Room R=(Room)newRooms.elementAt(r);
+				final Room R=(Room)newRooms.elementAt(r);
 				if((R!=null)&&(R.fetchEffect(ID())==null)&&(R!=thisRoom))
 				{
-					CMMsg msg2=CMClass.getMsg(msg.source(),msg.target(),msg.tool(),
+					final CMMsg msg2=CMClass.getMsg(msg.source(),msg.target(),msg.tool(),
 								  CMMsg.NO_EFFECT,null,
 								  CMMsg.NO_EFFECT,null,
 								  CMMsg.MSG_OK_VISUAL,(prefix!=null)?(prefix+msg.othersMessage()):msg.othersMessage());
 					if(R.okMessage(msg.source(),msg2))
 					for(int i=0;i<R.numInhabitants();i++)
 					{
-						MOB M=R.fetchInhabitant(i);
+						final MOB M=R.fetchInhabitant(i);
 						if((M!=null)
 						&&(CMLib.flags().canSee(M))
 						&&(CMLib.flags().canBeSeenBy(R,M))

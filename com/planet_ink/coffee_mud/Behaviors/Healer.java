@@ -67,11 +67,11 @@ public class Healer extends ActiveTicker
 		super.tick(ticking,tickID);
 		if((canAct(ticking,tickID))&&(ticking instanceof MOB))
 		{
-			MOB mob=(MOB)ticking;
-			Room thisRoom=mob.location();
+			final MOB mob=(MOB)ticking;
+			final Room thisRoom=mob.location();
 			if(thisRoom==null) return true;
 
-			double aChance=CMath.div(mob.curState().getMana(),mob.maxState().getMana());
+			final double aChance=CMath.div(mob.curState().getMana(),mob.maxState().getMana());
 			if((Math.random()>aChance)||(mob.curState().getMana()<50))
 				return true;
 
@@ -86,7 +86,7 @@ public class Healer extends ActiveTicker
 				&&(followMOB.getVictim()!=mob)
 				&&(!followMOB.isMonster()))
 				{
-					Ability tryThisOne=healingVector.get(CMLib.dice().roll(1,healingVector.size(),-1));
+					final Ability tryThisOne=healingVector.get(CMLib.dice().roll(1,healingVector.size(),-1));
 					Ability thisOne=mob.fetchAbility(tryThisOne.ID());
 					if(thisOne==null)
 					{
@@ -95,7 +95,7 @@ public class Healer extends ActiveTicker
 						mob.addAbility(thisOne);
 					}
 					thisOne.setProficiency(100);
-					Vector V=new Vector();
+					final Vector V=new Vector();
 					if(!target.isMonster())
 						V.addElement(target.name());
 					thisOne.invoke(mob,V,target,false,0);

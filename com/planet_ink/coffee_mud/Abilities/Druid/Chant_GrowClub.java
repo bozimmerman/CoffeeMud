@@ -50,7 +50,7 @@ public class Chant_GrowClub extends Chant
 		{
 			if((mob.isInCombat())&&(mob.fetchWieldedItem()==null))
 			{
-				Room R=mob.location();
+				final Room R=mob.location();
 				if((R!=null)
 				&&(R.findItem(null,"club")==null)
 				&&((R.domainType()==Room.DOMAIN_OUTDOORS_WOODS)
@@ -77,8 +77,8 @@ public class Chant_GrowClub extends Chant
 			material=mob.location().myResource();
 		else
 		{
-			List<Integer> V=mob.location().resourceChoices();
-			Vector V2=new Vector();
+			final List<Integer> V=mob.location().resourceChoices();
+			final Vector V2=new Vector();
 			if(V!=null)
 			for(int v=0;v<V.size();v++)
 			{
@@ -93,25 +93,25 @@ public class Chant_GrowClub extends Chant
 			return false;
 
 		// now see if it worked
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":"^S<S-NAME> chant(s) to the trees.^?");
+			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":"^S<S-NAME> chant(s) to the trees.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				Weapon newItem=CMClass.getWeapon("GenWeapon");
+				final Weapon newItem=CMClass.getWeapon("GenWeapon");
 				newItem.setName(RawMaterial.CODES.NAME(material).toLowerCase()+" club");
 				newItem.setName(CMLib.english().startWithAorAn(newItem.Name()));
 				newItem.setDisplayText(newItem.name()+" sits here");
 				newItem.setDescription("It looks like the limb of a tree.");
 				newItem.setMaterial(material);
 				newItem.basePhyStats().setWeight(10);
-				int level=mob.phyStats().level();
+				final int level=mob.phyStats().level();
 				newItem.basePhyStats().setLevel(level);
 				newItem.basePhyStats().setAttackAdjustment(0);
 				int damage=6;
-				try{ damage=(((level+(2*super.getXLEVELLevel(mob)))-1)/2)+2;}catch(Exception t){}
+				try{ damage=(((level+(2*super.getXLEVELLevel(mob)))-1)/2)+2;}catch(final Exception t){}
 				if(damage<6) damage=6;
 				newItem.basePhyStats().setDamage(damage+super.getX1Level(mob));
 				newItem.recoverPhyStats();

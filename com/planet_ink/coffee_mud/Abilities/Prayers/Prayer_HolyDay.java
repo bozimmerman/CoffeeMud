@@ -54,15 +54,15 @@ public class Prayer_HolyDay extends Prayer
 		// undo the affects of this spell
 		if((affected==null)||(!(affected instanceof Area)))
 			return;
-		Area A=(Area)affected;
+		final Area A=(Area)affected;
 
 		super.unInvoke();
 
 		if(canBeUninvoked())
 		{
-			for(Enumeration e=A.getMetroMap();e.hasMoreElements();)
+			for(final Enumeration e=A.getMetroMap();e.hasMoreElements();)
 			{
-				Room R=(Room)e.nextElement();
+				final Room R=(Room)e.nextElement();
 				R.showHappens(CMMsg.MSG_OK_VISUAL,"The holy day has ended.");
 			}
 		}
@@ -135,7 +135,7 @@ public class Prayer_HolyDay extends Prayer
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		Area target=mob.location().getArea();
+		final Area target=mob.location().getArea();
 		if(target==null) return false;
 		if(target.fetchEffect(ID())!=null)
 		{
@@ -146,7 +146,7 @@ public class Prayer_HolyDay extends Prayer
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
@@ -154,13 +154,13 @@ public class Prayer_HolyDay extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> "+prayWord(mob)+" for a holy day.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> "+prayWord(mob)+" for a holy day.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				for(Enumeration e=target.getMetroMap();e.hasMoreElements();)
+				for(final Enumeration e=target.getMetroMap();e.hasMoreElements();)
 				{
-					Room R=(Room)e.nextElement();
+					final Room R=(Room)e.nextElement();
 					godName=mob.getWorshipCharID();
 					if((godName.length()==0)||(CMLib.map().getDeity(godName)==null))
 						godName="the gods";

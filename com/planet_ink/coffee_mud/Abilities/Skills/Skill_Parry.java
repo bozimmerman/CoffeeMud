@@ -59,7 +59,7 @@ public class Skill_Parry extends StdSkill
 		if(!(affected instanceof MOB))
 			return true;
 
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		if(msg.amITarget(mob)
 		   &&(CMLib.flags().aliveAwakeMobileUnbound(mob,true))
@@ -69,8 +69,8 @@ public class Skill_Parry extends StdSkill
 		{
 			if((msg.tool()!=null)&&(msg.tool() instanceof Item))
 			{
-				Item attackerWeapon=(Item)msg.tool();
-				Item myWeapon=mob.fetchWieldedItem();
+				final Item attackerWeapon=(Item)msg.tool();
+				final Item myWeapon=mob.fetchWieldedItem();
 				if((myWeapon!=null)
 				&&(attackerWeapon!=null)
 				&&(myWeapon instanceof Weapon)
@@ -85,7 +85,7 @@ public class Skill_Parry extends StdSkill
 				&&(((Weapon)attackerWeapon).weaponClassification()!=Weapon.CLASS_RANGED)
 				&&(((Weapon)attackerWeapon).weaponClassification()!=Weapon.CLASS_THROWN))
 				{
-					CMMsg msg2=CMClass.getMsg(mob,msg.source(),this,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> parr(ys) "+attackerWeapon.name()+" attack from <T-NAME>!");
+					final CMMsg msg2=CMClass.getMsg(mob,msg.source(),this,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> parr(ys) "+attackerWeapon.name()+" attack from <T-NAME>!");
 					if((proficiencyCheck(null,mob.charStats().getStat(CharStats.STAT_DEXTERITY)-90+(getXLEVELLevel(mob)),false))
 					&&(mob.location().okMessage(mob,msg2)))
 					{

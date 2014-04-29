@@ -70,9 +70,9 @@ public class ClanHelper extends StdBehavior
 	{
 		super.executeMsg(affecting,msg);
 		if((msg.target()==null)||(!(msg.target() instanceof MOB))) return;
-		MOB source=msg.source();
-		MOB observer=(MOB)affecting;
-		MOB target=(MOB)msg.target();
+		final MOB source=msg.source();
+		final MOB observer=(MOB)affecting;
+		final MOB target=(MOB)msg.target();
 
 		if((target==null)||(observer==null)) return;
 		if((source!=observer)
@@ -84,11 +84,11 @@ public class ClanHelper extends StdBehavior
 		&&(CMLib.flags().canBeSeenBy(target,observer))
 		&&(!BrotherHelper.isBrother(source,observer,false)))
 		{
-			List<Triad<Clan,Integer,Integer>> list=CMLib.clans().findCommonRivalrousClans(observer, target);
+			final List<Triad<Clan,Integer,Integer>> list=CMLib.clans().findCommonRivalrousClans(observer, target);
 			if(list.size()>0)
 			{
 				Clan C=null;
-				for(Triad<Clan,Integer,Integer> t : list)
+				for(final Triad<Clan,Integer,Integer> t : list)
 					if(source.getClanRole(t.first.clanID())==null)
 					{
 						C=t.first;

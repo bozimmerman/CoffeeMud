@@ -63,7 +63,7 @@ public class GlowingMageArmor extends StdArmor
 		&&(!amDestroyed()))
 			destroy();
 
-		MOB mob=msg.source();
+		final MOB mob=msg.source();
 		if(!msg.amITarget(this))
 			return true;
 		else

@@ -37,7 +37,7 @@ import java.io.Serializable;
 public class ChannelList implements Serializable {
 	public static final long serialVersionUID=0;
 	private int id;
-	private Hashtable list;
+	private final Hashtable list;
 
 	public ChannelList()
 	{

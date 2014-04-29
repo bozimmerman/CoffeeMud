@@ -43,9 +43,9 @@ public class PlayerDelete extends StdWebMacro
 		if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
 			return CMProps.getVar(CMProps.Str.MUDSTATUS);
 
-		String last=httpReq.getUrlParameter("PLAYER");
+		final String last=httpReq.getUrlParameter("PLAYER");
 		if(last==null) return " @break@";
-		MOB M=CMLib.players().getLoadPlayer(last);
+		final MOB M=CMLib.players().getLoadPlayer(last);
 		if(M==null) return " @break@";
 
 		CMLib.players().obliteratePlayer(M,true,true);

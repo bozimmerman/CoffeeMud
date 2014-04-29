@@ -48,7 +48,7 @@ public class Spell_Delude extends Spell
 	{
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		super.unInvoke();
 		if(canBeUninvoked())
@@ -91,7 +91,7 @@ public class Spell_Delude extends Spell
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> incant(s) and meditate(s).^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> incant(s) and meditate(s).^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -124,7 +124,7 @@ public class Spell_Delude extends Spell
 								if(e!=null)
 								for(;e.hasMoreElements();)
 								{
-									Faction.FRange R=(Faction.FRange)e.nextElement();
+									final Faction.FRange R=(Faction.FRange)e.nextElement();
 									if(R.alignEquiv()==Faction.Align.GOOD)
 									{
 										newAlign = R.random();
@@ -141,7 +141,7 @@ public class Spell_Delude extends Spell
 								if(e!=null)
 								for(;e.hasMoreElements();)
 								{
-									Faction.FRange R=(Faction.FRange)e.nextElement();
+									final Faction.FRange R=(Faction.FRange)e.nextElement();
 									if(R.alignEquiv()==Faction.Align.EVIL)
 									{
 										newAlign = R.random();

@@ -44,12 +44,12 @@ public class ClanWho extends Who
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		String clanName=CMParms.combine(commands,1).toUpperCase();
-		StringBuffer msg=new StringBuffer("");
-		List<String> clanList=new XVector<String>();
+		final String clanName=CMParms.combine(commands,1).toUpperCase();
+		final StringBuffer msg=new StringBuffer("");
+		final List<String> clanList=new XVector<String>();
 		if(clanName.trim().length()>0)
 		{
-			Clan C=CMLib.clans().findClan(clanName);
+			final Clan C=CMLib.clans().findClan(clanName);
 			if(C==null)
 				mob.tell("There's no such clan as '"+clanName+"'.");
 			else
@@ -57,7 +57,7 @@ public class ClanWho extends Who
 		}
 		else
 		{
-			for(Pair<Clan,Integer> c : mob.clans())
+			for(final Pair<Clan,Integer> c : mob.clans())
 				clanList.add(c.first.clanID());
 			if(clanList.size()==0)
 			{
@@ -65,16 +65,16 @@ public class ClanWho extends Who
 				return false;
 			}
 		}
-		Set<MOB> alreadyDone=new HashSet<MOB>();
-		int[] colWidths=getShortColWidths(mob);
-		for(String clanID : clanList)
+		final Set<MOB> alreadyDone=new HashSet<MOB>();
+		final int[] colWidths=getShortColWidths(mob);
+		for(final String clanID : clanList)
 		{
-			Clan C=CMLib.clans().getClan(clanID);
+			final Clan C=CMLib.clans().getClan(clanID);
 			if(C!=null)
 			{
 				msg.append("\n\r^x").append(C.getGovernmentName()).append(" ").append(C.getName()).append("\n\r");
 				msg.append(getHead(colWidths));
-				for(Session S : CMLib.sessions().localOnlineIterable())
+				for(final Session S : CMLib.sessions().localOnlineIterable())
 				{
 					MOB mob2=S.mob();
 					if((mob2!=null)&&(mob2.soulMate()!=null))

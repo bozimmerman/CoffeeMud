@@ -46,7 +46,7 @@ public class Chant_SummonSeaweed extends Chant_SummonPlants
 
 	public static Item buildSeaweed(MOB mob, Room room)
 	{
-		Item newItem=CMClass.getItem("GenItem");
+		final Item newItem=CMClass.getItem("GenItem");
 		newItem.setMaterial(RawMaterial.RESOURCE_SEAWEED);
 		switch(CMLib.dice().roll(1,5,0))
 		{
@@ -76,7 +76,7 @@ public class Chant_SummonSeaweed extends Chant_SummonPlants
 			newItem.setDescription("");
 			break;
 		}
-		Chant_SummonSeaweed newChant=new Chant_SummonSeaweed();
+		final Chant_SummonSeaweed newChant=new Chant_SummonSeaweed();
 		newItem.basePhyStats().setLevel(10+newChant.getX1Level(mob));
 		newItem.basePhyStats().setWeight(1);
 		newItem.setSecretIdentity(mob.Name());

@@ -58,7 +58,7 @@ public class Thief_Nondetection extends ThiefSkill
 		if(!(affected instanceof MOB))
 			return super.okMessage(myHost,msg);
 
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		if((!CMLib.flags().isHidden(mob))&&(active))
 		{
 			active=false;

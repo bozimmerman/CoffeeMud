@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 
@@ -64,7 +63,7 @@ public class Chant_LocateAnimals extends Chant
 			||(!(affected instanceof MOB)))
 				return false;
 
-			MOB mob=(MOB)affected;
+			final MOB mob=(MOB)affected;
 
 			if(nextDirection==999)
 			{
@@ -98,7 +97,7 @@ public class Chant_LocateAnimals extends Chant
 		if(!(affected instanceof MOB))
 			return;
 
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		if((msg.amISource(mob))
 		&&(msg.amITarget(mob.location()))
 		&&(CMLib.flags().canBeSeenBy(mob.location(),mob))
@@ -111,7 +110,7 @@ public class Chant_LocateAnimals extends Chant
 		if(room==null) return null;
 		for(int i=0;i<room.numInhabitants();i++)
 		{
-			MOB mob=room.fetchInhabitant(i);
+			final MOB mob=room.fetchInhabitant(i);
 			if(CMLib.flags().isAnimalIntelligence(mob))
 				return mob;
 		}
@@ -133,8 +132,8 @@ public class Chant_LocateAnimals extends Chant
 			mob.tell("You are already trying to locate animals.");
 			return false;
 		}
-		List<Ability> V=CMLib.flags().flaggedAffects(mob,Ability.FLAG_TRACKING);
-		for(Ability A : V) A.unInvoke();
+		final List<Ability> V=CMLib.flags().flaggedAffects(mob,Ability.FLAG_TRACKING);
+		for(final Ability A : V) A.unInvoke();
 
 		theTrail=null;
 		nextDirection=-2;
@@ -148,14 +147,14 @@ public class Chant_LocateAnimals extends Chant
 			return false;
 		}
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
-		Vector rooms=new Vector();
-		TrackingLibrary.TrackingFlags flags=new TrackingLibrary.TrackingFlags();
-		List<Room> checkSet=CMLib.tracking().getRadiantRooms(mob.location(),flags,20);
-		for(Iterator<Room> r=checkSet.iterator();r.hasNext();)
+		final Vector rooms=new Vector();
+		final TrackingLibrary.TrackingFlags flags=new TrackingLibrary.TrackingFlags();
+		final List<Room> checkSet=CMLib.tracking().getRadiantRooms(mob.location(),flags,20);
+		for (final Room room : checkSet)
 		{
-			Room R=CMLib.map().getRoom(r.next());
+			final Room R=CMLib.map().getRoom(room);
 			if(animalHere(R)!=null)
 				rooms.addElement(R);
 		}
@@ -177,13 +176,13 @@ public class Chant_LocateAnimals extends Chant
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),"^S<S-NAME> chant(s) for the animals.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),"^S<S-NAME> chant(s) for the animals.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				invoker=mob;
 				displayText="(seeking "+target.name()+")";
-				Chant_LocateAnimals newOne=(Chant_LocateAnimals)this.copyOf();
+				final Chant_LocateAnimals newOne=(Chant_LocateAnimals)this.copyOf();
 				if(mob.fetchEffect(newOne.ID())==null)
 					mob.addEffect(newOne);
 				mob.recoverPhyStats();

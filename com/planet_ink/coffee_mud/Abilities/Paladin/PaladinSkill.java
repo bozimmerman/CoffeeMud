@@ -58,10 +58,10 @@ public class PaladinSkill extends StdAbility
 			return false;
 		if(paladinsGroup!=null)
 		{
-			Set<MOB> H=((MOB)affected).getGroupMembers(new HashSet<MOB>());
-			for(Iterator e=H.iterator();e.hasNext();)
+			final Set<MOB> H=((MOB)affected).getGroupMembers(new HashSet<MOB>());
+			for (final Object element : H)
 			{
-				MOB mob=(MOB)e.next();
+				final MOB mob=(MOB)element;
 				if(!paladinsGroup.contains(mob))
 					paladinsGroup.addElement(mob);
 			}
@@ -69,12 +69,12 @@ public class PaladinSkill extends StdAbility
 			{
 				try
 				{
-					MOB mob=(MOB)paladinsGroup.elementAt(i);
+					final MOB mob=(MOB)paladinsGroup.elementAt(i);
 					if((!H.contains(mob))
 					||(mob.location()!=invoker.location()))
 						paladinsGroup.removeElement(mob);
 				}
-				catch(java.lang.ArrayIndexOutOfBoundsException e)
+				catch(final java.lang.ArrayIndexOutOfBoundsException e)
 				{
 				}
 			}

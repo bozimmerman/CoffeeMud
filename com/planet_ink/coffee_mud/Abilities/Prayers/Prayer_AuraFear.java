@@ -58,8 +58,8 @@ public class Prayer_AuraFear extends Prayer
 	public void unInvoke()
 	{
 		// undo the affects of this spell
-		Room R=CMLib.map().roomLocation(affected);
-		Environmental E=affected;
+		final Room R=CMLib.map().roomLocation(affected);
+		final Environmental E=affected;
 
 		super.unInvoke();
 
@@ -76,7 +76,7 @@ public class Prayer_AuraFear extends Prayer
 		if((--ratingTickDown)>=0)
 			return super.tick(ticking,tickID);
 		ratingTickDown=4;
-		Room R=CMLib.map().roomLocation(affected);
+		final Room R=CMLib.map().roomLocation(affected);
 		if(R==null)
 			return super.tick(ticking,tickID);
 
@@ -95,8 +95,8 @@ public class Prayer_AuraFear extends Prayer
 		}
 		for(int i=0;i<R.numInhabitants();i++)
 		{
-			MOB M=R.fetchInhabitant(i);
-			MOB blame=((invoker!=null)&&(invoker!=M))?invoker:M;
+			final MOB M=R.fetchInhabitant(i);
+			final MOB blame=((invoker!=null)&&(invoker!=M))?invoker:M;
 			if((M!=null)&&((H==null)||(!H.contains(M))))
 			{
 				if(CMLib.dice().rollPercentage()<M.charStats().getSave(CharStats.STAT_SAVE_MIND))
@@ -109,12 +109,12 @@ public class Prayer_AuraFear extends Prayer
 					{
 						if((!CMLib.flags().isMobile(M))||(!M.isInCombat()))
 						{
-							Command C=CMClass.getCommand("Sit");
-							try{if(C!=null) C.execute(M,new XVector("Sit"),Command.METAFLAG_FORCED);}catch(Exception e){}
+							final Command C=CMClass.getCommand("Sit");
+							try{if(C!=null) C.execute(M,new XVector("Sit"),Command.METAFLAG_FORCED);}catch(final Exception e){}
 							if(CMLib.flags().isSitting(M))
 							{
 								R.show(M,null,affected,CMMsg.MASK_EYES|CMMsg.MSG_HANDS|CMMsg.MASK_SOUND,"<S-NAME> cringe(s) in fear at the sight of <O-NAME>.");
-								Ability A=CMClass.getAbility("Spell_Fear");
+								final Ability A=CMClass.getAbility("Spell_Fear");
 								if(A!=null) A.startTickDown(blame,M,Ability.TICKS_ALMOST_FOREVER);
 							}
 						}
@@ -122,8 +122,8 @@ public class Prayer_AuraFear extends Prayer
 						if(M.isInCombat())
 						{
 							R.show(M,null,affected,CMMsg.MASK_EYES|CMMsg.MSG_NOISE,"<S-NAME> scream(s) in fear at the sight of <O-NAME>.");
-							Command C=CMClass.getCommand("Flee");
-							try{if(C!=null) C.execute(M,new XVector("Flee"),Command.METAFLAG_FORCED);}catch(Exception e){}
+							final Command C=CMClass.getCommand("Flee");
+							try{if(C!=null) C.execute(M,new XVector("Flee"),Command.METAFLAG_FORCED);}catch(final Exception e){}
 						}
 						else
 						{
@@ -136,8 +136,8 @@ public class Prayer_AuraFear extends Prayer
 						if(M.isInCombat())
 						{
 							R.show(M,null,affected,CMMsg.MASK_EYES|CMMsg.MSG_NOISE,"<S-NAME> scream(s) in fear at the sight of <O-NAME>.");
-							Command C=CMClass.getCommand("Flee");
-							try{if(C!=null) C.execute(M,new XVector("Flee"),Command.METAFLAG_FORCED);}catch(Exception e){}
+							final Command C=CMClass.getCommand("Flee");
+							try{if(C!=null) C.execute(M,new XVector("Flee"),Command.METAFLAG_FORCED);}catch(final Exception e){}
 						}
 						else
 						{
@@ -146,7 +146,7 @@ public class Prayer_AuraFear extends Prayer
 							if(M.location()==R)
 							{
 								R.show(M,null,affected,CMMsg.MASK_EYES|CMMsg.MSG_HANDS|CMMsg.MASK_SOUND,"<S-NAME> cringe(s) in fear at the sight of <O-NAME>.");
-								Ability A=CMClass.getAbility("Spell_Fear");
+								final Ability A=CMClass.getAbility("Spell_Fear");
 								if(A!=null) A.startTickDown(blame,M,Ability.TICKS_ALMOST_FOREVER);
 							}
 						}
@@ -160,7 +160,7 @@ public class Prayer_AuraFear extends Prayer
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		Physical target=getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_UNWORNONLY);
+		final Physical target=getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_UNWORNONLY);
 		if(target==null) return false;
 		if(target.fetchEffect(ID())!=null)
 		{
@@ -170,7 +170,7 @@ public class Prayer_AuraFear extends Prayer
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
@@ -181,7 +181,7 @@ public class Prayer_AuraFear extends Prayer
 			int affectType=verbalCastCode(mob,target,auto);
 			if((mob==target)&&(CMath.bset(affectType,CMMsg.MASK_MALICIOUS)))
 				affectType=CMath.unsetb(affectType,CMMsg.MASK_MALICIOUS);
-			CMMsg msg=CMClass.getMsg(mob,target,this,affectType,auto?"":"^S<S-NAME> "+prayWord(mob)+" for an aura of fear to surround <T-NAMESELF>.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,affectType,auto?"":"^S<S-NAME> "+prayWord(mob)+" for an aura of fear to surround <T-NAMESELF>.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

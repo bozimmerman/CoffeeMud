@@ -55,7 +55,7 @@ public class Undead_WeakEnergyDrain extends StdAbility
 		super.affectPhyStats(affected,affectableStats);
 		if(affected==null) return;
 		if(levelsDown<0) return;
-		int attacklevel=affectableStats.attackAdjustment()/affectableStats.level();
+		final int attacklevel=affectableStats.attackAdjustment()/affectableStats.level();
 		affectableStats.setLevel(affectableStats.level()-(levelsDown*direction));
 		if(affectableStats.level()<=0)
 		{
@@ -70,11 +70,11 @@ public class Undead_WeakEnergyDrain extends StdAbility
 	{
 		super.affectCharState(affected,affectableState);
 		if(affected==null) return;
-		int hplevel=affectableState.getHitPoints()/affected.basePhyStats().level();
+		final int hplevel=affectableState.getHitPoints()/affected.basePhyStats().level();
 		affectableState.setHitPoints(affectableState.getHitPoints()-(hplevel*(levelsDown*direction)));
-		int manalevel=affectableState.getMana()/affected.basePhyStats().level();
+		final int manalevel=affectableState.getMana()/affected.basePhyStats().level();
 		affectableState.setMana(affectableState.getMana()-(manalevel*(levelsDown*direction)));
-		int movelevel=affectableState.getMovement()/affected.basePhyStats().level();
+		final int movelevel=affectableState.getMovement()/affected.basePhyStats().level();
 		affectableState.setMovement(affectableState.getMovement()-(movelevel*(levelsDown*direction)));
 	}
 
@@ -93,7 +93,7 @@ public class Undead_WeakEnergyDrain extends StdAbility
 	{
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		super.unInvoke();
 		if((canBeUninvoked())
@@ -113,7 +113,7 @@ public class Undead_WeakEnergyDrain extends StdAbility
 				mob.tell("You are too far away to touch!");
 				return false;
 			}
-			MOB victim=mob.getVictim();
+			final MOB victim=mob.getVictim();
 				reAffect=victim.fetchEffect("Undead_WeakEnergyDrain");
 			if(reAffect==null)
 				reAffect=victim.fetchEffect("Undead_EnergyDrain");
@@ -132,7 +132,7 @@ public class Undead_WeakEnergyDrain extends StdAbility
 		if(success)
 		{
 			str=auto?"":"^S<S-NAME> extend(s) an energy draining hand to <T-NAMESELF>!^?";
-			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_UNDEAD|(auto?CMMsg.MASK_ALWAYS:0),str);
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_UNDEAD|(auto?CMMsg.MASK_ALWAYS:0),str);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

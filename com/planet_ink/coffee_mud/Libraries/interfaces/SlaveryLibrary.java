@@ -14,6 +14,7 @@ import com.planet_ink.coffee_mud.Libraries.CommonMsgs;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 /*
    Copyright 2000-2014 Bo Zimmerman
@@ -71,7 +72,7 @@ public interface SlaveryLibrary extends CMLibrary
 			if(!done)
 			for(int s=0;s<size();s++)
 			{
-				geasStep G=elementAt(s);
+				final geasStep G=elementAt(s);
 				ss=G.step();
 				if(ss.equalsIgnoreCase("DONE"))
 				{
@@ -144,7 +145,7 @@ public interface SlaveryLibrary extends CMLibrary
 		{
 			for(int s=0;s<size();s++)
 			{
-				geasStep G=elementAt(s);
+				final geasStep G=elementAt(s);
 				if(G.bothering!=null)
 					return G.sayResponse(speaker,target,response);
 			}
@@ -167,14 +168,14 @@ public interface SlaveryLibrary extends CMLibrary
 
 		public boolean botherIfAble(String msgOrQ)
 		{
-			MOB me=mySteps.me;
+			final MOB me=mySteps.me;
 			bothering=null;
 			if((me==null)||(me.location()==null))
 				return false;
 			if((msgOrQ!=null)&&(!CMLib.flags().isAnimalIntelligence(me)))
 				for(int m=0;m<me.location().numInhabitants();m++)
 				{
-					MOB M=me.location().fetchInhabitant(m);
+					final MOB M=me.location().fetchInhabitant(m);
 					if((M!=null)
 					&&(M!=me)
 					&&(!CMLib.flags().isAnimalIntelligence(M))
@@ -193,7 +194,7 @@ public interface SlaveryLibrary extends CMLibrary
 
 		public boolean sayResponse(MOB speaker, MOB target, String response)
 		{
-			MOB me=mySteps.me;
+			final MOB me=mySteps.me;
 			if((speaker!=null)
 			&&(speaker!=me)
 			&&(bothering!=null)
@@ -201,9 +202,9 @@ public interface SlaveryLibrary extends CMLibrary
 			&&(step!=STEP_EVAL)
 			&&((target==null)||(target==me)))
 			{
-				for(int s=0;s<universalRejections.length;s++)
+				for (final String universalRejection : universalRejections)
 				{
-					if(CMLib.english().containsString(response,universalRejections[s]))
+					if(CMLib.english().containsString(response,universalRejection))
 					{
 						CMLib.commands().postSay(me,speaker,"Ok, thanks anyway.",false,false);
 						return true;
@@ -211,12 +212,12 @@ public interface SlaveryLibrary extends CMLibrary
 				}
 				boolean starterFound=false;
 				response=response.toLowerCase().trim();
-				for(int s=0;s<responseStarters.length;s++)
+				for (final String responseStarter : responseStarters)
 				{
-					if(response.startsWith(responseStarters[s]))
+					if(response.startsWith(responseStarter))
 					{
 						starterFound=true;
-						response=response.substring(responseStarters[s].length()).trim();
+						response=response.substring(responseStarter.length()).trim();
 					}
 				}
 				if((!starterFound)&&(speaker.isMonster())&&(CMLib.dice().rollPercentage()<10))
@@ -233,23 +234,23 @@ public interface SlaveryLibrary extends CMLibrary
 
 		public String step()
 		{
-			MOB me=mySteps.me;
+			final MOB me=mySteps.me;
 			if(me==null) return "DONE";
-			Room R=me.location();
+			final Room R=me.location();
 			if(R==null) return "HOLD";
 			if(que.size()==0)
 			{
 				step=STEP_ALLDONE;
 				return "DONE";
 			}
-			List<String> cur=que.get(0);
+			final List<String> cur=que.get(0);
 			if(cur.size()==0)
 			{
 				step=STEP_EVAL;
 				que.remove(0);
 				return "HOLD";
 			}
-			String s=cur.get(0);
+			final String s=cur.get(0);
 			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.GEAS))
 				Log.debugOut("GEAS","STEP-"+s);
 			if(s.equalsIgnoreCase("itemfind"))
@@ -308,7 +309,7 @@ public interface SlaveryLibrary extends CMLibrary
 				// is it up for sale?
 				for(int m=0;m<R.numInhabitants();m++)
 				{
-					MOB M=R.fetchInhabitant(m);
+					final MOB M=R.fetchInhabitant(m);
 					if((M!=null)&&(M!=me)&&(CMLib.flags().canBeSeenBy(M,me)))
 					{
 						I=M.findItem(null,item);
@@ -347,10 +348,10 @@ public interface SlaveryLibrary extends CMLibrary
 								return "HOLD";
 							}
 						}
-						ShopKeeper sk=CMLib.coffeeShops().getShopKeeper(M);
+						final ShopKeeper sk=CMLib.coffeeShops().getShopKeeper(M);
 						if((!item.equals("coins"))&&(sk!=null)&&(sk.getShop().getStock(item,me)!=null))
 						{
-							Environmental E=sk.getShop().getStock(item,me);
+							final Environmental E=sk.getShop().getStock(item,me);
 							if((E!=null)&&(E instanceof Item))
 							{
 								double price=CMLib.coffeeShops().sellingPrice(M,me,E,sk,true).absoluteGoldPrice;
@@ -429,7 +430,7 @@ public interface SlaveryLibrary extends CMLibrary
 					if(name.equals("myself")) name=you.name();
 					if(name.equals("my")) name=you.name();
 				}
-				int dirCode=Directions.getGoodDirectionCode(CMParms.parse(name).firstElement());
+				final int dirCode=Directions.getGoodDirectionCode(CMParms.parse(name).firstElement());
 				if((dirCode>=0)&&(R.getRoomInDir(dirCode)!=null))
 				{
 					if(CMParms.parse(name).size()>1)
@@ -447,7 +448,7 @@ public interface SlaveryLibrary extends CMLibrary
 					que.remove(0);
 					return "HOLD";
 				}
-				MOB M=R.fetchInhabitant(name);
+				final MOB M=R.fetchInhabitant(name);
 				if((M!=null)&&(M!=me)&&(CMLib.flags().canBeSeenBy(M,me)))
 				{
 					step=STEP_EVAL;
@@ -455,7 +456,7 @@ public interface SlaveryLibrary extends CMLibrary
 					return "HOLD";
 				}
 				// is it just sitting around?
-				Item I=R.findItem(null,name);
+				final Item I=R.findItem(null,name);
 				if((I!=null)&&(CMLib.flags().canBeSeenBy(I,me)))
 				{
 					step=STEP_EVAL;

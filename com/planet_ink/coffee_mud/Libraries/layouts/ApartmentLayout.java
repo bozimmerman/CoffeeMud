@@ -41,7 +41,7 @@ public class ApartmentLayout extends AbstractLayout
 	@Override
 	public java.util.List<LayoutNode> generate(int num, int dir)
 	{
-		Vector<LayoutNode> set = new Vector<LayoutNode>();
+		final Vector<LayoutNode> set = new Vector<LayoutNode>();
 		int hallwayLength=num/3;
 		int numHallways=1;
 		while(hallwayLength > 7)
@@ -50,11 +50,11 @@ public class ApartmentLayout extends AbstractLayout
 			numHallways *= 2;
 		}
 
-		LayoutSet lSet = new LayoutSet(set,num);
+		final LayoutSet lSet = new LayoutSet(set,num);
 		LayoutNode n = null;
 		int hallwayDirection=dir;
 		int sidewayDirection=dir;
-		int fullNumHallway = numHallways;
+		final int fullNumHallway = numHallways;
 		switch(dir)
 		{
 		case Directions.NORTH: n=new DefaultLayoutNode(new long[]{0,hallwayLength}); sidewayDirection=Directions.EAST; break;
@@ -68,7 +68,7 @@ public class ApartmentLayout extends AbstractLayout
 		}
 		if(n!=null)
 		{
-			java.util.List<LayoutNode> hallways=new ArrayList<LayoutNode>();
+			final java.util.List<LayoutNode> hallways=new ArrayList<LayoutNode>();
 			hallways.add(n);
 			n.flagGateExit(dir);
 			lSet.use(n,LayoutTypes.street);
@@ -99,7 +99,7 @@ public class ApartmentLayout extends AbstractLayout
 				hallways.add(nextNode);
 				n=nextNode;
 			}
-			for(LayoutNode hallwayNode : hallways)
+			for(final LayoutNode hallwayNode : hallways)
 			{
 				LayoutNode prevNode=hallwayNode;
 				for(int h=0;h<hallwayLength;h++)

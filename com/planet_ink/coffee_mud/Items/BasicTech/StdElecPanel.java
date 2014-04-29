@@ -91,7 +91,7 @@ public class StdElecPanel extends StdElecContainer implements Electronics.ElecPa
 				{
 					if(msg.value()<=0)
 					{
-						Ability installA=msg.source().fetchAbility("AstroEngineering");
+						final Ability installA=msg.source().fetchAbility("AstroEngineering");
 						if(installA==null)
 						{
 							msg.source().tell("You don't know how to install "+((ShipComponent)msg.tool()).name(msg.source())+" into "+name(msg.source())+".");
@@ -145,8 +145,8 @@ public class StdElecPanel extends StdElecContainer implements Electronics.ElecPa
 			{
 				final Room locR=CMLib.map().roomLocation(this);
 				final MOB M=CMLib.map().getFactoryMOB(locR);
-				CMMsg deactivateMsg = CMClass.getMsg(M, null, null, CMMsg.MASK_ALWAYS|CMMsg.MASK_CNTRLMSG|CMMsg.MSG_DEACTIVATE,null);
-				for(Item I : this.getContents())
+				final CMMsg deactivateMsg = CMClass.getMsg(M, null, null, CMMsg.MASK_ALWAYS|CMMsg.MASK_CNTRLMSG|CMMsg.MSG_DEACTIVATE,null);
+				for(final Item I : this.getContents())
 					if(I instanceof Electronics)
 					{
 						deactivateMsg.setTarget(I);
@@ -164,7 +164,7 @@ public class StdElecPanel extends StdElecContainer implements Electronics.ElecPa
 				double totalPowerReq=0.0;
 				for(int i=contents.size()-1;i>=0;i--)
 				{
-					Item I=contents.get(i);
+					final Item I=contents.get(i);
 					if((I instanceof Electronics)&&(!(I instanceof Electronics.PowerSource))&&(!(I instanceof Electronics.PowerGenerator)))
 						totalPowerReq+=((((Electronics)I).powerNeeds()<=0)?1.0:((Electronics)I).powerNeeds());
 				}
@@ -172,13 +172,13 @@ public class StdElecPanel extends StdElecContainer implements Electronics.ElecPa
 				{
 					for(int i=contents.size()-1;i>=0;i--)
 					{
-						Item I=contents.get(i);
+						final Item I=contents.get(i);
 						if((I instanceof Electronics)&&(!(I instanceof Electronics.PowerSource))&&(!(I instanceof Electronics.PowerGenerator)))
 						{
 							int powerToTake=0;
 							if(powerRemaining>0)
 							{
-								double pctToTake=CMath.div(((((Electronics)I).powerNeeds()<=0)?1:((Electronics)I).powerNeeds()),totalPowerReq);
+								final double pctToTake=CMath.div(((((Electronics)I).powerNeeds()<=0)?1:((Electronics)I).powerNeeds()),totalPowerReq);
 								powerToTake=(int)Math.round(pctToTake * powerRemaining);
 								if(powerToTake<1)
 									powerToTake=1;

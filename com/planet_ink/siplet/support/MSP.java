@@ -33,14 +33,14 @@ public class MSP
 	private String defPath=null;
 	private MSPplayer musicClip = null;
 	private MSPplayer soundClip = null;
-	private StringBuffer jscriptBuffer=new StringBuffer("");
+	private final StringBuffer jscriptBuffer=new StringBuffer("");
 
 	public String getAnyJScript()
 	{
 		synchronized(jscriptBuffer)
 		{
 			if(jscriptBuffer.length()==0) return "";
-			String s=jscriptBuffer.toString();
+			final String s=jscriptBuffer.toString();
 			jscriptBuffer.setLength(0);
 			return s;
 		}
@@ -60,15 +60,15 @@ public class MSP
 
 	public int process(StringBuffer buf, int i, Siplet applet, boolean useExternal)
 	{
-		int oldI=i;
+		final int oldI=i;
 		if(i+12>=buf.length()) return -2;
-		String tag=buf.substring(i+2,i+7).toUpperCase();
+		final String tag=buf.substring(i+2,i+7).toUpperCase();
 		if((!tag.equals("SOUND"))&&(!tag.equals("MUSIC")))
 			return -2;
 		if(buf.charAt(i+7)!='(') return -2;
 		i+=7;
-		Vector parts=new Vector();
-		StringBuffer part=new StringBuffer("");
+		final Vector parts=new Vector();
+		final StringBuffer part=new StringBuffer("");
 		boolean done=false;
 		while(((++i)<buf.length())&&(!done))
 		{
@@ -136,14 +136,14 @@ public class MSP
 			}
 			return -1;
 		}
-		MSPplayer newOne=new MSPplayer(applet);
+		final MSPplayer newOne=new MSPplayer(applet);
 		newOne.key=(String)parts.firstElement();
 		newOne.url=(tag.equals("MUSIC")?defMusicPath:defSoundPath);
 		if(newOne.url==null) newOne.url=defPath;
-		String defaultUrl=newOne.url;
+		final String defaultUrl=newOne.url;
 		for(int v=1;v<parts.size();v++)
 		{
-			String s=(String)parts.elementAt(v);
+			final String s=(String)parts.elementAt(v);
 			if((s.startsWith("V="))||(s.startsWith("v=")))
 				newOne.volume=Util.s_int(trimQuotes(s.substring(2)).trim());
 			if((s.startsWith("L="))||(s.startsWith("l=")))

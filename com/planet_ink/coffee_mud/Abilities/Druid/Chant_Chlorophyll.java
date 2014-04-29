@@ -50,7 +50,7 @@ public class Chant_Chlorophyll extends Chant
 		// undo the affects of this spell
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		super.unInvoke();
 
 		if(canBeUninvoked())
@@ -67,8 +67,8 @@ public class Chant_Chlorophyll extends Chant
 			unInvoke();
 			return false;
 		}
-		MOB mob=(MOB)affected;
-		Room R=mob.location();
+		final MOB mob=(MOB)affected;
+		final Room R=mob.location();
 		if((R!=null)
 		&&((R.getArea().getTimeObj().getTODCode()==TimeClock.TimeOfDay.DAY)||(R.getArea().getTimeObj().getTODCode()==TimeClock.TimeOfDay.DAWN))
 		&&((R.domainType()&Room.INDOORS)==0)
@@ -98,7 +98,7 @@ public class Chant_Chlorophyll extends Chant
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		MOB target=super.getTarget(mob,commands,givenTarget);
+		final MOB target=super.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
 		// the invoke method for spells receives as
@@ -108,7 +108,7 @@ public class Chant_Chlorophyll extends Chant
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
@@ -117,7 +117,7 @@ public class Chant_Chlorophyll extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<S-NAME> gain(s) chlorophyll in <S-HIS-HER> skin!":"^S<S-NAME> chant(s) to <T-NAMESELF>, turning <T-HIM-HER> a light shade of chlorophyll green!^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<S-NAME> gain(s) chlorophyll in <S-HIS-HER> skin!":"^S<S-NAME> chant(s) to <T-NAMESELF>, turning <T-HIM-HER> a light shade of chlorophyll green!^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

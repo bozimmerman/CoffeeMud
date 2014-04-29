@@ -50,7 +50,7 @@ public class Ban extends StdCommand
 			return false;
 		}
 		banMe=banMe.toUpperCase().trim();
-		int b=CMSecurity.ban(banMe);
+		final int b=CMSecurity.ban(banMe);
 		if(b<0)
 			mob.tell("Logins and IPs matching "+banMe+" are now banned.");
 		else

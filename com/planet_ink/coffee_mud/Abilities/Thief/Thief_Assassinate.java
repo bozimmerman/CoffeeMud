@@ -66,19 +66,19 @@ public class Thief_Assassinate extends ThiefSkill
 			||(!(affected instanceof MOB)))
 				return false;
 
-			MOB mob=(MOB)affected;
+			final MOB mob=(MOB)affected;
 			if((mob.isInCombat())
 			&&(mob.isMonster())
 			&&(!CMLib.flags().isMobile(mob)))
 				return true;
 
-			Room room=mob.location();
+			final Room room=mob.location();
 			if(room==null) return false;
 			if(room.isInhabitant(tracking))
 			{
 				if(CMLib.flags().isHidden(mob))
 				{
-					Ability A=mob.fetchAbility("Thief_BackStab");
+					final Ability A=mob.fetchAbility("Thief_BackStab");
 					if(A!=null)
 					{
 						A.setAbilityCode(5);
@@ -95,8 +95,8 @@ public class Thief_Assassinate extends ThiefSkill
 
 			for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 			{
-				Room nextRoom=room.getRoomInDir(d);
-				Exit nextExit=room.getExitInDir(d);
+				final Room nextRoom=room.getRoomInDir(d);
+				final Exit nextExit=room.getExitInDir(d);
 				if((nextRoom!=null)
 				   &&(nextExit!=null)
 				   &&(nextExit.isOpen())
@@ -125,30 +125,30 @@ public class Thief_Assassinate extends ThiefSkill
 				mob.tell("The trail seems to continue "+Directions.getDirectionName(nextDirection)+".");
 				if(mob.isMonster())
 				{
-					Room nextRoom=room.getRoomInDir(nextDirection);
+					final Room nextRoom=room.getRoomInDir(nextDirection);
 					if((nextRoom!=null)&&(nextRoom.getArea()==room.getArea()))
 					{
 						if(!nextRoom.isInhabitant(tracking))
 						{
-							Ability A=mob.fetchAbility("Thief_Sneak");
+							final Ability A=mob.fetchAbility("Thief_Sneak");
 							if(A!=null)
 							{
-								int dir=nextDirection;
+								final int dir=nextDirection;
 								nextDirection=-2;
-								Vector V=new Vector();
+								final Vector V=new Vector();
 								V.addElement(Directions.getDirectionName(dir));
 								A.invoke(mob,V,null,false,0);
 							}
 							else
 							{
-								int dir=nextDirection;
+								final int dir=nextDirection;
 								nextDirection=-2;
 								CMLib.tracking().walk(mob,dir,false,false);
 							}
 						}
 						else
 						{
-							int dir=nextDirection;
+							final int dir=nextDirection;
 							nextDirection=-2;
 							CMLib.tracking().walk(mob,dir,false,false);
 						}
@@ -181,7 +181,7 @@ public class Thief_Assassinate extends ThiefSkill
 		if(!(affected instanceof MOB))
 			return;
 
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		if((msg.amISource(mob))
 		&&(msg.amITarget(mob.location()))
 		&&(CMLib.flags().canBeSeenBy(mob.location(),mob))
@@ -192,7 +192,7 @@ public class Thief_Assassinate extends ThiefSkill
 	@Override
 	public void unInvoke()
 	{
-		MOB mob=(affected instanceof MOB)?(MOB)affected:null;
+		final MOB mob=(affected instanceof MOB)?(MOB)affected:null;
 		super.unInvoke();
 		if((mob!=null)
 		&&(!mob.amDead())
@@ -215,8 +215,8 @@ public class Thief_Assassinate extends ThiefSkill
 			return false;
 		}
 
-		List<Ability> V=CMLib.flags().flaggedAffects(mob,Ability.FLAG_TRACKING);
-		for(Ability A : V) A.unInvoke();
+		final List<Ability> V=CMLib.flags().flaggedAffects(mob,Ability.FLAG_TRACKING);
+		for(final Ability A : V) A.unInvoke();
 		if(V.size()>0)
 		{
 			mob.tell("You stop tracking.");
@@ -230,7 +230,7 @@ public class Thief_Assassinate extends ThiefSkill
 		String mobName="";
 		if((!mob.isMonster())&&(mob.fetchEffect("Thief_Mark")!=null))
 		{
-			Thief_Mark A=(Thief_Mark)mob.fetchEffect("Thief_Mark");
+			final Thief_Mark A=(Thief_Mark)mob.fetchEffect("Thief_Mark");
 			if(A!=null) tracking=A.mark;
 			if(tracking==null)
 			{
@@ -251,7 +251,7 @@ public class Thief_Assassinate extends ThiefSkill
 				mob.tell("Assassinate whom?");
 				return false;
 			}
-			MOB M=((givenTarget instanceof MOB)&&(((MOB)givenTarget).location()==mob.location()))?
+			final MOB M=((givenTarget instanceof MOB)&&(((MOB)givenTarget).location()==mob.location()))?
 					(MOB)givenTarget:
 					mob.location().fetchInhabitant(mobName);
 			if(M!=null)
@@ -265,12 +265,12 @@ public class Thief_Assassinate extends ThiefSkill
 			return false;
 
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
-		Vector rooms=new Vector();
+		final Vector rooms=new Vector();
 		if(tracking!=null)
 		{
-			Room R=tracking.location();
+			final Room R=tracking.location();
 			if((R!=null)&&(R.isInhabitant(tracking))&&(CMLib.flags().canAccess(mob,R)))
 				rooms.addElement(R);
 		}
@@ -279,24 +279,24 @@ public class Thief_Assassinate extends ThiefSkill
 		{
 			try
 			{
-				TrackingLibrary.TrackingFlags flags=new TrackingLibrary.TrackingFlags();
+				final TrackingLibrary.TrackingFlags flags=new TrackingLibrary.TrackingFlags();
 				if(givenTarget!=null&&auto&&mob.isMonster())
 					flags.plus(TrackingLibrary.TrackingFlag.AREAONLY);
 				flags.plus(TrackingLibrary.TrackingFlag.OPENONLY)
 					 .plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS)
 					 .plus(TrackingLibrary.TrackingFlag.NOAIR)
 					 .plus(TrackingLibrary.TrackingFlag.NOWATER);
-				List<Room> checkSet=CMLib.tracking().getRadiantRooms(mob.location(),flags,50+(2*getXLEVELLevel(mob)));
-				for(Iterator<Room> r=checkSet.iterator();r.hasNext();)
+				final List<Room> checkSet=CMLib.tracking().getRadiantRooms(mob.location(),flags,50+(2*getXLEVELLevel(mob)));
+				for (final Room room : checkSet)
 				{
-					Room R=CMLib.map().getRoom(r.next());
+					final Room R=CMLib.map().getRoom(room);
 					if(R.fetchInhabitant(mobName)!=null)
 						rooms.addElement(R);
 				}
-			}catch(NoSuchElementException nse){}
+			}catch(final NoSuchElementException nse){}
 		}
 
-		TrackingLibrary.TrackingFlags flags=new TrackingLibrary.TrackingFlags();
+		final TrackingLibrary.TrackingFlags flags=new TrackingLibrary.TrackingFlags();
 		flags.plus(TrackingLibrary.TrackingFlag.OPENONLY)
 			 .plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS)
 			 .plus(TrackingLibrary.TrackingFlag.NOAIR)
@@ -317,7 +317,7 @@ public class Thief_Assassinate extends ThiefSkill
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			CMMsg msg=CMClass.getMsg(mob,tracking,this,CMMsg.MSG_THIEF_ACT,mob.isMonster()?null:"<S-NAME> begin(s) to track <T-NAMESELF> for assassination.",CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);
+			final CMMsg msg=CMClass.getMsg(mob,tracking,this,CMMsg.MSG_THIEF_ACT,mob.isMonster()?null:"<S-NAME> begin(s) to track <T-NAMESELF> for assassination.",CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);
 			if((mob.location().okMessage(mob,msg))
 			&&(tracking.okMessage(tracking,msg)))
 			{
@@ -325,7 +325,7 @@ public class Thief_Assassinate extends ThiefSkill
 				tracking.executeMsg(tracking,msg);
 				invoker=mob;
 				displayText="(tracking "+tracking.name()+")";
-				Thief_Assassinate newOne=(Thief_Assassinate)this.copyOf();
+				final Thief_Assassinate newOne=(Thief_Assassinate)this.copyOf();
 				if(mob.fetchEffect(newOne.ID())==null)
 					mob.addEffect(newOne);
 				mob.recoverPhyStats();

@@ -59,7 +59,7 @@ public class Taxidermy extends CraftingSkill
 		{
 			if((affected!=null)&&(affected instanceof MOB))
 			{
-				MOB mob=(MOB)affected;
+				final MOB mob=(MOB)affected;
 				if((buildingI!=null)&&(!aborted))
 				{
 					if(messedUp)
@@ -75,18 +75,18 @@ public class Taxidermy extends CraftingSkill
 	@Override
 	protected List<List<String>> loadRecipes()
 	{
-		String filename="taxidermy.txt";
+		final String filename="taxidermy.txt";
 		List<List<String>> V=(List<List<String>>)Resources.getResource("PARSED_RECIPE: "+filename);
 		if(V==null)
 		{
 			V=new Vector();
-			StringBuffer str=new CMFile(Resources.buildResourcePath("skills")+filename,null,CMFile.FLAG_LOGERRORS).text();
-			List<String> strV=Resources.getFileLineVector(str);
+			final StringBuffer str=new CMFile(Resources.buildResourcePath("skills")+filename,null,CMFile.FLAG_LOGERRORS).text();
+			final List<String> strV=Resources.getFileLineVector(str);
 			List<String> V2=null;
 			boolean header=true;
 			for(int v=0;v<strV.size();v++)
 			{
-				String s=strV.get(v);
+				final String s=strV.get(v);
 				if(header)
 				{
 					if((V2!=null)&&(V2.size()>0))
@@ -117,14 +117,14 @@ public class Taxidermy extends CraftingSkill
 	{
 		if(super.checkStop(mob, commands))
 			return true;
-		List<List<String>> POSES=loadRecipes();
+		final List<List<String>> POSES=loadRecipes();
 		String pose=null;
 		if(CMParms.combine(commands,0).equalsIgnoreCase("list"))
 		{
-			StringBuffer str=new StringBuffer("^xTaxidermy Poses^?^.\n");
+			final StringBuffer str=new StringBuffer("^xTaxidermy Poses^?^.\n");
 			for(int p=0;p<POSES.size();p++)
 			{
-				List<String> PP=POSES.get(p);
+				final List<String> PP=POSES.get(p);
 				if(PP.size()>1)
 					str.append((PP.get(0))+"\n");
 			}
@@ -136,7 +136,7 @@ public class Taxidermy extends CraftingSkill
 		{
 			for(int p=0;p<POSES.size();p++)
 			{
-				List<String> PP=POSES.get(p);
+				final List<String> PP=POSES.get(p);
 				if((PP.size()>1)&&(PP.get(0).equalsIgnoreCase((String)commands.firstElement())))
 				{
 					commands.removeElementAt(0);
@@ -147,8 +147,8 @@ public class Taxidermy extends CraftingSkill
 		}
 
 		verb="stuffing";
-		String str=CMParms.combine(commands,0);
-		Item I=mob.location().findItem(null,str);
+		final String str=CMParms.combine(commands,0);
+		final Item I=mob.location().findItem(null,str);
 		if((I==null)||(!CMLib.flags().canBeSeenBy(I,mob)))
 		{
 			commonTell(mob,"You don't see anything called '"+str+"' here.");
@@ -162,7 +162,7 @@ public class Taxidermy extends CraftingSkill
 		}
 		for(int i=0;i<mob.location().numItems();i++)
 		{
-			Item I2=mob.location().getItem(i);
+			final Item I2=mob.location().getItem(i);
 			if(I2.container()==I)
 			{
 				commonTell(mob,"You need to remove the contents of "+I2.name(mob)+" first.");
@@ -170,8 +170,8 @@ public class Taxidermy extends CraftingSkill
 			}
 		}
 		int woodRequired=I.basePhyStats().weight()/5;
-		int[] pm={RawMaterial.MATERIAL_CLOTH};
-		int[][] data=fetchFoundResourceData(mob,
+		final int[] pm={RawMaterial.MATERIAL_CLOTH};
+		final int[][] data=fetchFoundResourceData(mob,
 											woodRequired,"cloth stuffing",pm,
 											0,null,null,
 											false,
@@ -192,11 +192,11 @@ public class Taxidermy extends CraftingSkill
 		duration=getDuration(duration,mob,1,10);
 		buildingI=CMClass.getItem("GenItem");
 		buildingI.basePhyStats().setWeight(woodRequired);
-		String name=((DeadBody)I).mobName();
-		String desc=((DeadBody)I).mobDescription();
+		final String name=((DeadBody)I).mobName();
+		final String desc=((DeadBody)I).mobDescription();
 		I.setMaterial(data[0][FOUND_CODE]);
 		buildingI.setName("the stuffed body of "+name);
-		CharStats C=(I instanceof DeadBody)?((DeadBody)I).charStats():null;
+		final CharStats C=(I instanceof DeadBody)?((DeadBody)I).charStats():null;
 		if((pose==null)||(C==null))
 			buildingI.setDisplayText("the stuffed body of "+name+" stands here");
 		else
@@ -213,7 +213,7 @@ public class Taxidermy extends CraftingSkill
 		displayText="You are stuffing "+I.name();
 		verb="stuffing "+I.name();
 		playSound="scissor.wav";
-		CMMsg msg=CMClass.getMsg(mob,buildingI,this,getActivityMessageType(),"<S-NAME> start(s) stuffing "+I.name()+".");
+		final CMMsg msg=CMClass.getMsg(mob,buildingI,this,getActivityMessageType(),"<S-NAME> start(s) stuffing "+I.name()+".");
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

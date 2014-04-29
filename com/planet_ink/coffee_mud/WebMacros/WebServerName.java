@@ -44,8 +44,8 @@ public class WebServerName extends StdWebMacro
 	{
 		if(Thread.currentThread() instanceof MWThread)
 		{
-			String fullThreadName=((MWThread)Thread.currentThread()).getName();
-			int x=fullThreadName.lastIndexOf('#');
+			final String fullThreadName=((MWThread)Thread.currentThread()).getName();
+			final int x=fullThreadName.lastIndexOf('#');
 			if(x>0)
 				return fullThreadName.substring(0, x);
 		}

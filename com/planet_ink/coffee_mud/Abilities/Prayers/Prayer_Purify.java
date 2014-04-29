@@ -55,7 +55,7 @@ public class Prayer_Purify extends Prayer
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		Item target=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_UNWORNONLY);
+		final Item target=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_UNWORNONLY);
 		if(target==null) return false;
 
 		if((!(target instanceof Food))
@@ -68,7 +68,7 @@ public class Prayer_Purify extends Prayer
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
@@ -76,7 +76,7 @@ public class Prayer_Purify extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),
 									auto?"":"^S<S-NAME> purify <T-NAMESELF>"+inTheNameOf(mob)+".^?",
 									auto?"":"^S<S-NAME> purifies <T-NAMESELF>"+inTheNameOf(mob)+".^?",
 									auto?"":"^S<S-NAME> purifies <T-NAMESELF>"+inTheNameOf(mob)+".^?");

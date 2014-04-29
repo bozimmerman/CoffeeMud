@@ -97,7 +97,7 @@ public class Prop_ClosedSeason extends Property
 		if(affected==null) return;
 		if((affected instanceof MOB)||(affected instanceof Item))
 		{
-			Room R=CMLib.map().roomLocation(affected);
+			final Room R=CMLib.map().roomLocation(affected);
 			if((R!=null)
 			&&(closed(R.getArea()))
 			&&((!(affected instanceof MOB))||(!((MOB)affected).isInCombat())))
@@ -120,7 +120,7 @@ public class Prop_ClosedSeason extends Property
 				if(!doneToday)
 				{
 					doneToday=true;
-					Exit e=((Exit)affected);
+					final Exit e=((Exit)affected);
 					e.setDoorsNLocks(e.hasADoor(),false,e.defaultsClosed(),e.hasALock(),e.hasALock(),e.defaultsLocked());
 				}
 			}
@@ -129,7 +129,7 @@ public class Prop_ClosedSeason extends Property
 				if(doneToday)
 				{
 					doneToday=false;
-					Exit e=((Exit)affected);
+					final Exit e=((Exit)affected);
 					e.setDoorsNLocks(e.hasADoor(),!e.defaultsClosed(),e.defaultsClosed(),e.hasALock(),e.defaultsLocked(),e.defaultsLocked());
 				}
 			}

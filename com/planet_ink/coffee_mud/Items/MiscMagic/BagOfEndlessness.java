@@ -59,7 +59,7 @@ public class BagOfEndlessness extends BagOfHolding implements ArchonOnly
 			return false;
 		if(msg.amITarget(this)&&(msg.tool() instanceof Item))
 		{
-			Item newitem=(Item)msg.tool();
+			final Item newitem=(Item)msg.tool();
 			if((newitem.container()==this)&&(newitem.owner() !=null))
 			{
 				if((!CMSecurity.isAllowedAnywhere(msg.source(), CMSecurity.SecFlag.COPYITEMS))
@@ -78,19 +78,19 @@ public class BagOfEndlessness extends BagOfHolding implements ArchonOnly
 	{
 		if(msg.amITarget(this)&&(msg.tool() instanceof Item))
 		{
-			Item newitem=(Item)msg.tool();
+			final Item newitem=(Item)msg.tool();
 			if((newitem.container()==this)
 			&&(newitem.owner() !=null))
 			{
 				Item neweritem=(Item)newitem.copyOf();
-				Vector allStuff=new Vector();
+				final Vector allStuff=new Vector();
 				allStuff.addElement(neweritem);
 				if(newitem instanceof Container)
 				{
-					List<Item> V=((Container)newitem).getContents();
+					final List<Item> V=((Container)newitem).getContents();
 					for(int v=0;v<V.size();v++)
 					{
-						Item I=(Item)V.get(v).copyOf();
+						final Item I=(Item)V.get(v).copyOf();
 						I.setContainer((Container)neweritem);
 						allStuff.addElement(I);
 					}

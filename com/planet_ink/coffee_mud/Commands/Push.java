@@ -71,7 +71,7 @@ public class Push extends Go
 			if(dirCode>=0)
 				pushThis=mob.location().getExitInDir(dirCode);
 		}
-		String itemName=CMParms.combine(commands,1);
+		final String itemName=CMParms.combine(commands,1);
 		if(pushThis==null)
 			pushThis=mob.location().fetchFromRoomFavorItems(null,itemName);
 		if(pushThis==null)
@@ -82,15 +82,15 @@ public class Push extends Go
 			mob.tell("You don't see '"+itemName+"' here.");
 			return false;
 		}
-		int malmask=(pushThis instanceof MOB)?CMMsg.MASK_MALICIOUS:0;
-		String msgStr = "<S-NAME> push(es) <T-NAME>"+dir+".";
-		CMMsg msg=CMClass.getMsg(mob,pushThis,E,CMMsg.MSG_PUSH|malmask,msgStr);
+		final int malmask=(pushThis instanceof MOB)?CMMsg.MASK_MALICIOUS:0;
+		final String msgStr = "<S-NAME> push(es) <T-NAME>"+dir+".";
+		final CMMsg msg=CMClass.getMsg(mob,pushThis,E,CMMsg.MSG_PUSH|malmask,msgStr);
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
 			if((dir.length()>0)&&(msg.tool() instanceof Room))
 			{
-				Room R=(Room)msg.tool();
+				final Room R=(Room)msg.tool();
 				if(R.okMessage(mob,msg))
 				{
 					dirCode=CMLib.tracking().findRoomDir(mob,R);

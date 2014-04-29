@@ -89,11 +89,11 @@ public class MOBEater extends ActiveTicker
 
 		// ===== move all inhabitants to the dragons location
 		// ===== loop through all inhabitants of the stomach
-		Vector these=new Vector();
+		final Vector these=new Vector();
 		for (int x=0;x<Stomach.numInhabitants();x++)
 		{
 			// ===== get the tasty morsels
-			MOB TastyMorsel = Stomach.fetchInhabitant(x);
+			final MOB TastyMorsel = Stomach.fetchInhabitant(x);
 			if(TastyMorsel!=null)
 				these.addElement(TastyMorsel);
 		}
@@ -101,7 +101,7 @@ public class MOBEater extends ActiveTicker
 		// =====move the inventory of the stomach to the room
 		for (int y=0;y<Stomach.numItems();y++)
 		{
-			Item PartiallyDigestedItem = Stomach.getItem(y);
+			final Item PartiallyDigestedItem = Stomach.getItem(y);
 			if((PartiallyDigestedItem!=null)&&(PartiallyDigestedItem.container()==null))
 				these.addElement(PartiallyDigestedItem);
 		}
@@ -125,7 +125,7 @@ public class MOBEater extends ActiveTicker
 		if(ticking==null) return true;
 		if(!(ticking instanceof MOB)) return true;
 
-		MOB mob=(MOB)ticking;
+		final MOB mob=(MOB)ticking;
 		if(mob.location()!=null)
 			lastKnownLocation=mob.location();
 
@@ -157,13 +157,13 @@ public class MOBEater extends ActiveTicker
 			&&(mob.rangeToTarget()==0)
 			&&(CMLib.flags().canHear(mob)||CMLib.flags().canSee(mob)||CMLib.flags().canSmell(mob)))
 		{
-			MOB TastyMorsel = mob.getVictim();
+			final MOB TastyMorsel = mob.getVictim();
 			if(TastyMorsel==null) return true;
 			if (TastyMorsel.baseWeight()<(mob.phyStats().weight()/2))
 			{
 				// ===== The player has been eaten.
 				// ===== move the tasty morsel to the stomach
-				CMMsg EatMsg=CMClass.getMsg(mob,
+				final CMMsg EatMsg=CMClass.getMsg(mob,
 										   TastyMorsel,
 										   null,
 										   CMMsg.MSG_EAT,
@@ -176,7 +176,7 @@ public class MOBEater extends ActiveTicker
 					if(EatMsg.value()==0)
 					{
 						Stomach.bringMobHere(TastyMorsel,false);
-						CMMsg enterMsg=CMClass.getMsg(TastyMorsel,Stomach,null,CMMsg.MSG_ENTER,Stomach.description(),CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,"<S-NAME> slide(s) down the gullet into the stomach!");
+						final CMMsg enterMsg=CMClass.getMsg(TastyMorsel,Stomach,null,CMMsg.MSG_ENTER,Stomach.description(),CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,"<S-NAME> slide(s) down the gullet into the stomach!");
 						Stomach.send(TastyMorsel,enterMsg);
 					}
 				}
@@ -189,14 +189,14 @@ public class MOBEater extends ActiveTicker
 	{
 		if(Stomach==null) return true;
 		// ===== loop through all inhabitants of the stomach
-		int morselCount = Stomach.numInhabitants();
+		final int morselCount = Stomach.numInhabitants();
 		for (int x=0;x<morselCount;x++)
 		{
 			// ===== get a tasty morsel
-			MOB TastyMorsel = Stomach.fetchInhabitant(x);
+			final MOB TastyMorsel = Stomach.fetchInhabitant(x);
 			if (TastyMorsel != null)
 			{
-				CMMsg DigestMsg=CMClass.getMsg(mob,
+				final CMMsg DigestMsg=CMClass.getMsg(mob,
 										   TastyMorsel,
 										   null,
 										   CMMsg.MASK_ALWAYS|CMMsg.TYP_ACID,

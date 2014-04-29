@@ -53,7 +53,7 @@ public class Spell_DetectWeaknesses extends Spell
 	{
 		if(target instanceof MOB)
 		{
-			MOB M=(MOB)target;
+			final MOB M=(MOB)target;
 			if(!M.isInCombat())
 				return Ability.QUALITY_INDIFFERENT;
 		}
@@ -82,7 +82,7 @@ public class Spell_DetectWeaknesses extends Spell
 			return false;
 		if(ticking instanceof MOB)
 		{
-			MOB mob=(MOB)ticking;
+			final MOB mob=(MOB)ticking;
 			if(invoker()!=null)
 			{
 				if((!invoker().isInCombat())
@@ -98,7 +98,7 @@ public class Spell_DetectWeaknesses extends Spell
 					return false;
 				}
 			}
-			MOB victim=mob.getVictim();
+			final MOB victim=mob.getVictim();
 			if((victim!=null)
 			&&((victim==spottedM)||( (spottedM==null) && victim.Name().equalsIgnoreCase(text()))))
 			{
@@ -125,7 +125,7 @@ public class Spell_DetectWeaknesses extends Spell
 	{
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		super.unInvoke();
 		if(canBeUninvoked())
@@ -156,18 +156,18 @@ public class Spell_DetectWeaknesses extends Spell
 
 
 		// now see if it worked
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> knowingly cast(s) a spell concerning <T-NAMESELF>.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> knowingly cast(s) a spell concerning <T-NAMESELF>.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(beneficialAffect(mob,target,asLevel,0))
 				{
-					Spell_DetectWeaknesses A=(Spell_DetectWeaknesses)target.fetchEffect(ID());
-					MOB victim=target.getVictim();
+					final Spell_DetectWeaknesses A=(Spell_DetectWeaknesses)target.fetchEffect(ID());
+					final MOB victim=target.getVictim();
 					if(A!=null)
 					{
 						A.spottedM=victim;

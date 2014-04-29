@@ -53,7 +53,7 @@ public class Spell_MagicItem extends Spell
 			mob.tell("Enchant which spell onto what?");
 			return false;
 		}
-		Physical target=mob.location().fetchFromMOBRoomFavorsItems(mob,null,(String)commands.lastElement(),Wearable.FILTER_UNWORNONLY);
+		final Physical target=mob.location().fetchFromMOBRoomFavorsItems(mob,null,(String)commands.lastElement(),Wearable.FILTER_UNWORNONLY);
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
 			mob.tell("You don't see '"+((String)commands.lastElement())+"' here.");
@@ -66,14 +66,14 @@ public class Spell_MagicItem extends Spell
 		}
 
 		commands.removeElementAt(commands.size()-1);
-		Item wand=(Item)target;
+		final Item wand=(Item)target;
 
-		String spellName=CMParms.combine(commands,0).trim();
+		final String spellName=CMParms.combine(commands,0).trim();
 		Spell wandThis=null;
-		Vector ables=new Vector();
-		for(Enumeration<Ability> a=mob.allAbilities();a.hasMoreElements();)
+		final Vector ables=new Vector();
+		for(final Enumeration<Ability> a=mob.allAbilities();a.hasMoreElements();)
 		{
-			Ability A=a.nextElement();
+			final Ability A=a.nextElement();
 			if((A!=null)
 			&&(A instanceof Spell)
 			&&((!A.isSavable())||(CMLib.ableMapper().qualifiesByLevel(mob,A)))
@@ -123,7 +123,7 @@ public class Spell_MagicItem extends Spell
 			return false;
 
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
@@ -131,7 +131,7 @@ public class Spell_MagicItem extends Spell
 			CMLib.leveler().postExperience(mob,null,null,-experienceToLose,false);
 			mob.tell("You lose "+experienceToLose+" experience points for the effort.");
 			setMiscText(wandThis.ID());
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),"^S<S-NAME> move(s) <S-HIS-HER> fingers around <T-NAMESELF>, incanting softly.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),"^S<S-NAME> move(s) <S-HIS-HER> fingers around <T-NAMESELF>, incanting softly.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -141,14 +141,14 @@ public class Spell_MagicItem extends Spell
 				//Vector V=CMParms.parseCommas(CMLib.utensils().wornList(wand.rawProperLocationBitmap()),true);
 				if(wand instanceof Armor)
 				{
-					Ability A=CMClass.getAbility("Prop_WearSpellCast");
+					final Ability A=CMClass.getAbility("Prop_WearSpellCast");
 					A.setMiscText("LAYERED;"+wandThis.ID()+";");
 					wand.addNonUninvokableEffect(A);
 				}
 				else
 				if(wand instanceof Weapon)
 				{
-					Ability A=CMClass.getAbility("Prop_FightSpellCast");
+					final Ability A=CMClass.getAbility("Prop_FightSpellCast");
 					A.setMiscText("25%;MAXTICKS=12;"+wandThis.ID()+";");
 					wand.addNonUninvokableEffect(A);
 				}
@@ -156,20 +156,20 @@ public class Spell_MagicItem extends Spell
 				if((wand instanceof Food)
 				||(wand instanceof Drink))
 				{
-					Ability A=CMClass.getAbility("Prop_UseSpellCast2");
+					final Ability A=CMClass.getAbility("Prop_UseSpellCast2");
 					A.setMiscText(wandThis.ID()+";");
 					wand.addNonUninvokableEffect(A);
 				}
 				else
 				if(wand.fitsOn(Wearable.WORN_HELD)||wand.fitsOn(Wearable.WORN_WIELD))
 				{
-					Ability A=CMClass.getAbility("Prop_WearSpellCast");
+					final Ability A=CMClass.getAbility("Prop_WearSpellCast");
 					A.setMiscText("LAYERED;"+wandThis.ID()+";");
 					wand.addNonUninvokableEffect(A);
 				}
 				else
 				{
-					Ability A=CMClass.getAbility("Prop_WearSpellCast");
+					final Ability A=CMClass.getAbility("Prop_WearSpellCast");
 					A.setMiscText("LAYERED;"+wandThis.ID()+";");
 					wand.addNonUninvokableEffect(A);
 				}

@@ -43,7 +43,7 @@ public class Archon extends StdCharClass
 	public Archon()
 	{
 		super();
-		for(int i : CharStats.CODES.BASE())
+		for(final int i : CharStats.CODES.BASE())
 			maxStatAdj[i]=7;
 	}
 	@Override
@@ -113,7 +113,7 @@ public class Archon extends StdCharClass
 		if(outfitChoices==null)
 		{
 			outfitChoices=new Vector();
-			Weapon w=CMClass.getWeapon("ArchonStaff");
+			final Weapon w=CMClass.getWeapon("ArchonStaff");
 			outfitChoices.add(w);
 		}
 		return outfitChoices;
@@ -132,10 +132,10 @@ public class Archon extends StdCharClass
 	@Override
 	public void grantAbilities(MOB mob, boolean isBorrowedClass)
 	{
-		boolean allowed=CMSecurity.isAllowedEverywhere(mob,CMSecurity.SecFlag.ALLSKILLS);
+		final boolean allowed=CMSecurity.isAllowedEverywhere(mob,CMSecurity.SecFlag.ALLSKILLS);
 		if((!allowed)&&(mob.playerStats()!=null)&&(!mob.playerStats().getSecurityFlags().contains(CMSecurity.SecFlag.ALLSKILLS,false)))
 		{
-			List<String> oldSet=CMParms.parseSemicolons(mob.playerStats().getSetSecurityFlags(null),true);
+			final List<String> oldSet=CMParms.parseSemicolons(mob.playerStats().getSetSecurityFlags(null),true);
 			if(!oldSet.contains(CMSecurity.SecFlag.ALLSKILLS.name()))
 			{
 				oldSet.add(CMSecurity.SecFlag.ALLSKILLS.name());
@@ -145,7 +145,7 @@ public class Archon extends StdCharClass
 		super.grantAbilities(mob,isBorrowedClass);
 		if((!allowed)&&(mob.playerStats()!=null)&&(mob.playerStats().getSecurityFlags().contains(CMSecurity.SecFlag.ALLSKILLS,false)))
 		{
-			List<String> oldSet=CMParms.parseSemicolons(mob.playerStats().getSetSecurityFlags(null),true);
+			final List<String> oldSet=CMParms.parseSemicolons(mob.playerStats().getSetSecurityFlags(null),true);
 			if(oldSet.contains(CMSecurity.SecFlag.ALLSKILLS.name()))
 			{
 				oldSet.remove(CMSecurity.SecFlag.ALLSKILLS.name());

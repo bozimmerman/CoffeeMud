@@ -47,7 +47,7 @@ public class Spell_Wish extends Spell
 
 	protected Physical maybeAdd(MOB mob, Physical E, Vector foundAll, Physical foundThang)
 	{
-		Room R=CMLib.map().roomLocation(E);
+		final Room R=CMLib.map().roomLocation(E);
 		if((E!=null)
 		&&(!(E instanceof ArchonOnly))
 		&&(!(E instanceof ClanItem))
@@ -73,7 +73,7 @@ public class Spell_Wish extends Spell
 		else
 		if(target instanceof Item)
 		{
-			Item item=(Item)target;
+			final Item item=(Item)target;
 			mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,"<T-NAME> is teleported to "+here.displayText()+"!");
 			item.unWear();
 			item.setContainer(null);
@@ -105,7 +105,7 @@ public class Spell_Wish extends Spell
 
 	public void age(MOB mob)
 	{
-		Ability A=CMClass.getAbility("Chant_SpeedAging");
+		final Ability A=CMClass.getAbility("Chant_SpeedAging");
 		if(A!=null){ A.setAbilityCode(65536); A.invoke(mob,mob,true,0);}
 	}
 
@@ -136,8 +136,8 @@ public class Spell_Wish extends Spell
 			return false;
 
 		int baseLoss=25;
-		CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),"^S<S-NAME> wish(es) for '"+myWish+"'!!^?");
-		boolean success=proficiencyCheck(mob,0,auto);
+		final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),"^S<S-NAME> wish(es) for '"+myWish+"'!!^?");
+		final boolean success=proficiencyCheck(mob,0,auto);
 		if(!success)
 		{
 			baseLoss=getXPCOSTAdjustment(mob,baseLoss);
@@ -156,12 +156,12 @@ public class Spell_Wish extends Spell
 			Log.sysOut("Wish",mob.Name()+" wished for "+myWish+".");
 
 			mob.location().send(mob,msg);
-			StringBuffer wish=new StringBuffer(myWish);
+			final StringBuffer wish=new StringBuffer(myWish);
 			for(int i=0;i<wish.length();i++)
 				if(!Character.isLetterOrDigit(wish.charAt(i)))
 					wish.setCharAt(i,' ');
 			myWish=wish.toString().trim().toUpperCase();
-			Vector wishV=CMParms.parse(myWish);
+			final Vector wishV=CMParms.parse(myWish);
 			myWish=" "+myWish+" ";
 			if(wishV.size()==0)
 			{
@@ -173,8 +173,8 @@ public class Spell_Wish extends Spell
 
 			// do locate object first.. its the most likely
 			String objectWish=myWish;
-			String[] redundantStarts={"CREATE","TO CREATE","ANOTHER","THERE WAS","I HAD","I COULD HAVE","MAY I HAVE","CAN I HAVE","CAN YOU","CAN I","MAKE","TO MAKE","GIVE","ME","TO HAVE","TO GET","A NEW","SOME MORE","MY OWN","A","PLEASE","THE","I OWNED"};
-			String[] redundantEnds={"TO APPEAR","OF MY OWN","FOR ME","BE","CREATED","PLEASE","HERE"};
+			final String[] redundantStarts={"CREATE","TO CREATE","ANOTHER","THERE WAS","I HAD","I COULD HAVE","MAY I HAVE","CAN I HAVE","CAN YOU","CAN I","MAKE","TO MAKE","GIVE","ME","TO HAVE","TO GET","A NEW","SOME MORE","MY OWN","A","PLEASE","THE","I OWNED"};
+			final String[] redundantEnds={"TO APPEAR","OF MY OWN","FOR ME","BE","CREATED","PLEASE","HERE"};
 			int i=0;
 			while(i<redundantStarts.length)
 			{
@@ -190,7 +190,7 @@ public class Spell_Wish extends Spell
 			String goldWish=objectWish.toUpperCase();
 			objectWish=objectWish.toLowerCase().trim();
 
-			String[] redundantGoldStarts={"A PILE OF","A STACK OF","PILE OF","STACK OF"};
+			final String[] redundantGoldStarts={"A PILE OF","A STACK OF","PILE OF","STACK OF"};
 			i=0;
 			while(i<redundantGoldStarts.length)
 			{
@@ -198,16 +198,16 @@ public class Spell_Wish extends Spell
 				{	goldWish=goldWish.substring(1+redundantGoldStarts[i].length()); i=-1;}
 				i++;
 			}
-			Vector goldCheck=CMParms.parse(goldWish.trim().toLowerCase());
+			final Vector goldCheck=CMParms.parse(goldWish.trim().toLowerCase());
 			if((goldCheck.size()>1)
 			&&(CMath.isNumber((String)goldCheck.firstElement()))
 			&&(CMath.s_int((String)goldCheck.firstElement())>0)
 			&&(CMLib.english().matchAnyCurrencySet(CMParms.combine(goldCheck,1))!=null))
 			{
-				Coins newItem=(Coins)CMClass.getItem("StdCoins");
+				final Coins newItem=(Coins)CMClass.getItem("StdCoins");
 				newItem.setCurrency(CMLib.english().matchAnyCurrencySet(CMParms.combine(goldCheck,1)));
 				newItem.setDenomination(CMLib.english().matchAnyDenomination(newItem.getCurrency(),CMParms.combine(goldCheck,1)));
-				long goldCoins=CMath.s_long((String)goldCheck.firstElement());
+				final long goldCoins=CMath.s_long((String)goldCheck.firstElement());
 				newItem.setNumberOfCoins(goldCoins);
 				int experienceRequired=Math.max((int)Math.round(CMath.div(newItem.getTotalValue(),10.0)),0);
 				while((experienceRequired > mob.getExperience())
@@ -231,13 +231,13 @@ public class Spell_Wish extends Spell
 				return true;
 			}
 
-			Vector thangsFound=new Vector();
+			final Vector thangsFound=new Vector();
 			Physical foundThang=null;
-			Physical P=mob.location().fetchFromRoomFavorItems(null,objectWish);
+			final Physical P=mob.location().fetchFromRoomFavorItems(null,objectWish);
 			foundThang=maybeAdd(mob,P,thangsFound,foundThang);
 			try
 			{
-				List<Environmental> items=new LinkedList<Environmental>();
+				final List<Environmental> items=new LinkedList<Environmental>();
 				items.addAll(CMLib.map().findRoomItems(CMLib.map().rooms(), mob,objectWish,true,10));
 				items.addAll(CMLib.map().findInhabitants(CMLib.map().rooms(), mob,objectWish,10));
 				items.addAll(CMLib.map().findInventory(CMLib.map().rooms(), mob,objectWish,10));
@@ -245,7 +245,7 @@ public class Spell_Wish extends Spell
 				for(final Environmental O : items)
 					if(O instanceof Physical)
 						foundThang=maybeAdd(mob,((Physical)O),thangsFound,foundThang);
-			}catch(NoSuchElementException nse){}
+			}catch(final NoSuchElementException nse){}
 
 			if(foundThang instanceof PackagedItems)
 				foundThang = ((PackagedItems)foundThang).getItem();
@@ -256,9 +256,9 @@ public class Spell_Wish extends Spell
 				int experienceRequired=100*(foundThang.phyStats().level()-1);
 				if(foundThang instanceof MOB)
 				{
-					MOB foundMOB=(MOB)foundThang;
+					final MOB foundMOB=(MOB)foundThang;
 					MOB newMOB;
-					boolean isPlayer=foundMOB.playerStats()!=null;
+					final boolean isPlayer=foundMOB.playerStats()!=null;
 					if(isPlayer && (!foundMOB.isMonster()) && CMLib.flags().isInTheGame(foundMOB, true))
 					{
 						newMOB=foundMOB;
@@ -297,7 +297,7 @@ public class Spell_Wish extends Spell
 				   &&(!(foundThang instanceof ClanItem))
 				   &&(!CMath.bset(foundThang.phyStats().sensesMask(), PhyStats.SENSE_ITEMNOWISH)))
 				{
-					Item newItem=(Item)foundThang.copyOf();
+					final Item newItem=(Item)foundThang.copyOf();
 					experienceRequired+=newItem.value();
 					if(experienceRequired>mob.getExpPrevLevel())
 
@@ -434,7 +434,7 @@ public class Spell_Wish extends Spell
 
 			// a wish for movement
 			String locationWish=myWish;
-			String[] redundantStarts2={"TO GO TO",
+			final String[] redundantStarts2={"TO GO TO",
 									  "TO TELEPORT TO",
 									  "TO TRANSPORT TO",
 									  "TO TRANSFER TO",
@@ -484,7 +484,7 @@ public class Spell_Wish extends Spell
 									  "TRANSFER",
 									  "PORTAL",
 									  "TELEPORTATION"};
-			String[] redundantEnds2={"IMMEDIATELY","PLEASE","NOW","AT ONCE"};
+			final String[] redundantEnds2={"IMMEDIATELY","PLEASE","NOW","AT ONCE"};
 			boolean validStart=false;
 			i=0;
 			while(i<redundantStarts2.length)
@@ -512,17 +512,17 @@ public class Spell_Wish extends Spell
 			if(validStart)
 			{
 				Room newRoom=null;
-				int dir=Directions.getGoodDirectionCode((String)wishV.lastElement());
+				final int dir=Directions.getGoodDirectionCode((String)wishV.lastElement());
 				if(dir>=0)
 					newRoom=mob.location().getRoomInDir(dir);
 				if(newRoom==null)
 				{
 					try
 					{
-						List<Room> rooms=CMLib.map().findRooms(CMLib.map().rooms(), mob, locationWish.trim(), true, 10);
+						final List<Room> rooms=CMLib.map().findRooms(CMLib.map().rooms(), mob, locationWish.trim(), true, 10);
 						if(rooms.size()>0)
 							newRoom=rooms.get(CMLib.dice().roll(1,rooms.size(),-1));
-					}catch(NoSuchElementException nse){}
+					}catch(final NoSuchElementException nse){}
 				}
 				if(newRoom!=null)
 				{
@@ -540,7 +540,7 @@ public class Spell_Wish extends Spell
 			||(myWish.indexOf(" BIGGER ")>=0)
 			||(myWish.indexOf(" TO HAVE ")>=0)))
 			{
-				MOB tm=(MOB)target;
+				final MOB tm=(MOB)target;
 				if((myWish.indexOf("HIT POINT")>=0)&&(tm.curState().getHitPoints()<tm.maxState().getHitPoints()))
 				{
 					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,target.name()+" is healthier!");
@@ -644,7 +644,7 @@ public class Spell_Wish extends Spell
 			||(myWish.indexOf(" EXPERIENCE ")>=0)))
 			{
 				int x=myWish.indexOf(" EXP");
-				String wsh=myWish.substring(0,x).trim();
+				final String wsh=myWish.substring(0,x).trim();
 				x=wsh.lastIndexOf(' ');
 				int amount=25;
 				if((x>=0)&&(CMath.isNumber(wsh.substring(x).trim())))
@@ -674,12 +674,12 @@ public class Spell_Wish extends Spell
 				if(myWish.indexOf(" GAIN ")>=0)
 				{
 					level=1;
-					Vector<String> V=CMParms.parse(myWish);
+					final Vector<String> V=CMParms.parse(myWish);
 					for(int i2=1;i2<V.size();i2++)
 					{
 						if(V.elementAt(i2).equalsIgnoreCase("LEVELS"))
 						{
-							String s=V.elementAt(i2-1);
+							final String s=V.elementAt(i2-1);
 							if(CMath.isNumber(s)
 							&&((CMath.s_int(s)!=0)||(s.equalsIgnoreCase("0"))))
 							{
@@ -693,12 +693,12 @@ public class Spell_Wish extends Spell
 				if(myWish.indexOf(" LOSE" )>=0)
 				{
 					level=-1;
-					Vector<String> V=CMParms.parse(myWish);
+					final Vector<String> V=CMParms.parse(myWish);
 					for(int i2=1;i2<V.size();i2++)
 					{
 						if(V.elementAt(i2).equalsIgnoreCase("LEVELS"))
 						{
-							String s=V.elementAt(i2);
+							final String s=V.elementAt(i2);
 							if(CMath.isNumber(s)
 							&&((CMath.s_int(s)!=0)||(s.equalsIgnoreCase("0"))))
 							{
@@ -710,12 +710,12 @@ public class Spell_Wish extends Spell
 				}
 				else
 				{
-					Vector<String> V=CMParms.parse(myWish);
+					final Vector<String> V=CMParms.parse(myWish);
 					for(int i2=0;i2<V.size()-1;i2++)
 					{
 						if(V.elementAt(i2).equalsIgnoreCase("LEVEL"))
 						{
-							String s=V.elementAt(i2+1);
+							final String s=V.elementAt(i2+1);
 							if(CMath.isNumber(s)
 							&&((CMath.s_int(s)!=0)||(s.equalsIgnoreCase("0"))))
 							{
@@ -738,7 +738,7 @@ public class Spell_Wish extends Spell
 						if(level>0) level=levelsGained;
 						else level=-levelsGained;
 					}
-					int newLevel=target.basePhyStats().level()+level;
+					final int newLevel=target.basePhyStats().level()+level;
 					if(target instanceof MOB)
 					{
 						if(((newLevel>CMProps.getIntVar(CMProps.Int.LASTPLAYERLEVEL))
@@ -755,7 +755,7 @@ public class Spell_Wish extends Spell
 
 					if(target instanceof MOB)
 					{
-						MOB MT=(MOB)target;
+						final MOB MT=(MOB)target;
 						if(level>0)
 						{
 							for(int i2=0;i2<levelsGained;i2++)
@@ -852,7 +852,7 @@ public class Spell_Wish extends Spell
 			||(myWish.indexOf(" WAS A")>=0)
 			||(myWish.indexOf(" TRANSFORM")>=0)))
 			{
-				Race R=CMClass.findRace((String)wishV.lastElement());
+				final Race R=CMClass.findRace((String)wishV.lastElement());
 				if((R!=null)
 				&& (CMath.bset(R.availabilityCode(),Area.THEME_FANTASY))
 				&&(!R.ID().equalsIgnoreCase("StdRace"))
@@ -865,7 +865,7 @@ public class Spell_Wish extends Spell
 						mob.setExperience(CMLib.leveler().getLevelExperience(mob.basePhyStats().level()-1));
 					}
 					wishDrain(mob,baseLoss,true);
-					int oldCat=((MOB)target).baseCharStats().ageCategory();
+					final int oldCat=((MOB)target).baseCharStats().ageCategory();
 					((MOB)target).baseCharStats().setMyRace(R);
 					((MOB)target).baseCharStats().getMyRace().startRacing(((MOB)target),true);
 					((MOB)target).baseCharStats().getMyRace().setHeightWeight(((MOB)target).basePhyStats(),(char)((MOB)target).baseCharStats().getStat(CharStats.STAT_GENDER));
@@ -889,21 +889,21 @@ public class Spell_Wish extends Spell
 			||(myWish.indexOf(" WAS A")>=0)
 			||(myWish.indexOf(" TRANSFORM")>=0)))
 			{
-				CharClass C=CMClass.findCharClass((String)wishV.lastElement());
+				final CharClass C=CMClass.findCharClass((String)wishV.lastElement());
 				if((C!=null)&&(CMath.bset(C.availabilityCode(),Area.THEME_FANTASY)))
 				{
-					CharClass oldC=mob.baseCharStats().getCurrentClass();
+					final CharClass oldC=mob.baseCharStats().getCurrentClass();
 					baseLoss+=1000;
 					wishDrain(mob,baseLoss,true);
 					CMLib.leveler().unLevel(mob);
 					CMLib.leveler().unLevel(mob);
 					CMLib.leveler().unLevel(mob);
 					mob.setExperience(CMLib.leveler().getLevelExperience(mob.basePhyStats().level()-1));
-					StringBuffer str=new StringBuffer("");
-					for(int trait: CharStats.CODES.BASE())
+					final StringBuffer str=new StringBuffer("");
+					for(final int trait: CharStats.CODES.BASE())
 					{
-						int newVal=C.maxStatAdjustments()[trait];
-						int amountToLose=oldC.maxStatAdjustments()[trait]-newVal;
+						final int newVal=C.maxStatAdjustments()[trait];
+						final int amountToLose=oldC.maxStatAdjustments()[trait]-newVal;
 						if((amountToLose>0)&&(mob.baseCharStats().getStat(trait)>amountToLose))
 						{
 							mob.baseCharStats().setStat(trait,mob.baseCharStats().getStat(trait)-amountToLose);
@@ -939,7 +939,7 @@ public class Spell_Wish extends Spell
 				x=myWish.indexOf(" PRAY FOR "); if((x>=0)&&(x+9>code)) code=x+9;
 				if((code>=0)&&(code<myWish.length()))
 				{
-					MOB tm=(MOB)target;
+					final MOB tm=(MOB)target;
 					Ability A=CMClass.findAbility(myWish.substring(code).trim());
 					if((A!=null)
 					&&(CMLib.ableMapper().lowestQualifyingLevel(A.ID())>0)
@@ -972,7 +972,7 @@ public class Spell_Wish extends Spell
 						A.setProficiency(100);
 						A.autoInvocation(tm);
 						mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,target.name()+" now knows "+A.name()+"!");
-						Ability A2=tm.fetchEffect(A.ID());
+						final Ability A2=tm.fetchEffect(A.ID());
 						if(A2!=null) A2.setProficiency(100);
 						return true;
 					}
@@ -981,7 +981,7 @@ public class Spell_Wish extends Spell
 
 			// attributes will be hairy
 			int foundAttribute=-1;
-			for(int attributes : CharStats.CODES.ALL())
+			for(final int attributes : CharStats.CODES.ALL())
 			{
 				if(CMLib.english().containsString(myWish,CharStats.CODES.DESC(attributes)))
 				{	foundAttribute=attributes; break;}
@@ -1009,11 +1009,11 @@ public class Spell_Wish extends Spell
 			if((myWish.indexOf("RESIST")>=0)
 			||(myWish.indexOf("IMMUN")>=0))
 			{
-				for(int saveStat : CharStats.CODES.SAVING_THROWS())
+				for(final int saveStat : CharStats.CODES.SAVING_THROWS())
 					if(myWish.indexOf(" "+CharStats.CODES.DESC(saveStat))>=0)
 						foundAttribute=saveStat;
 				if(foundAttribute<0)
-				for(int saveStat : CharStats.CODES.SAVING_THROWS())
+				for(final int saveStat : CharStats.CODES.SAVING_THROWS())
 					if(myWish.indexOf(" "+CharStats.CODES.NAME(saveStat))>=0)
 						foundAttribute=saveStat;
 				if(myWish.indexOf(" PARALY")>=0)

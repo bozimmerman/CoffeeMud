@@ -67,31 +67,31 @@ public class Skill_Shuffle extends BardSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT|(auto?CMMsg.MASK_ALWAYS:0),"<S-NAME> shuffle(s) around, bumping into everyone.");
-			CMMsg msg2=CMClass.getMsg(mob,null,this,CMMsg.MSG_DELICATE_HANDS_ACT|(auto?CMMsg.MASK_ALWAYS:0),null);
+			final CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT|(auto?CMMsg.MASK_ALWAYS:0),"<S-NAME> shuffle(s) around, bumping into everyone.");
+			final CMMsg msg2=CMClass.getMsg(mob,null,this,CMMsg.MSG_DELICATE_HANDS_ACT|(auto?CMMsg.MASK_ALWAYS:0),null);
 			if((mob.location().okMessage(mob,msg))&&(mob.location().okMessage(mob,msg2)))
 			{
 				mob.location().send(mob,msg);
 				mob.location().send(mob,msg2);
-				Vector V=new Vector();
-				Room R=mob.location();
+				final Vector V=new Vector();
+				final Room R=mob.location();
 				for(int i=0;i<R.numInhabitants();i++)
 				{
-					MOB M=R.fetchInhabitant(i);
+					final MOB M=R.fetchInhabitant(i);
 					V.addElement(M);
 				}
 				while(R.numInhabitants()>0)
 				{
-					MOB M=R.fetchInhabitant(0);
+					final MOB M=R.fetchInhabitant(0);
 					R.delInhabitant(M);
 				}
 				while(V.size()>0)
 				{
-					MOB M=(MOB)V.elementAt(CMLib.dice().roll(1,V.size(),-1));
+					final MOB M=(MOB)V.elementAt(CMLib.dice().roll(1,V.size(),-1));
 					if(M.location()==R) R.addInhabitant(M);
 					V.removeElement(M);
 				}

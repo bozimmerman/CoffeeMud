@@ -53,11 +53,11 @@ public class Prayer_ProtUndead extends Prayer
 		if(invoker==null)
 			return false;
 
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		if(mob.charStats().getMyRace().racialCategory().equalsIgnoreCase("Undead"))
 		{
-			int damage=(int)Math.round(CMath.div(mob.phyStats().level()+(2*super.getXLEVELLevel(invoker())),3.0));
+			final int damage=(int)Math.round(CMath.div(mob.phyStats().level()+(2*super.getXLEVELLevel(invoker())),3.0));
 			CMLib.combat().postDamage(invoker,mob,this,damage,CMMsg.MASK_MALICIOUS|CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,Weapon.TYPE_BURSTING,"^S<T-HIS-HER> protective aura <DAMAGE> <T-NAME>!^?");
 		}
 		return super.tick(ticking,tickID);
@@ -69,14 +69,14 @@ public class Prayer_ProtUndead extends Prayer
 		super.affectPhyStats(affected,affectableStats);
 		if(affected==null) return;
 		if(!(affected instanceof MOB)) return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		if(mob.isInCombat())
 		{
-			MOB victim=mob.getVictim();
+			final MOB victim=mob.getVictim();
 			if(victim.charStats().getMyRace().racialCategory().equalsIgnoreCase("Undead"))
 			{
-				int xlvl=super.getXLEVELLevel(invoker());
+				final int xlvl=super.getXLEVELLevel(invoker());
 				affectableStats.setArmor(affectableStats.armor()-50-(5*xlvl));
 			}
 		}
@@ -90,7 +90,7 @@ public class Prayer_ProtUndead extends Prayer
 		// undo the affects of this spell
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		super.unInvoke();
 
@@ -103,7 +103,7 @@ public class Prayer_ProtUndead extends Prayer
 	{
 		if(mob!=null)
 		{
-			MOB victim=mob.getVictim();
+			final MOB victim=mob.getVictim();
 			if((victim!=null)
 			&&(victim.charStats().getMyRace().racialCategory().equalsIgnoreCase("Undead"))
 			&&(!mob.charStats().getMyRace().racialCategory().equalsIgnoreCase("Undead")))
@@ -126,7 +126,7 @@ public class Prayer_ProtUndead extends Prayer
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
@@ -134,7 +134,7 @@ public class Prayer_ProtUndead extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> become(s) protected from the undead.":"^S<S-NAME> "+prayWord(mob)+" for protection from the undead.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> become(s) protected from the undead.":"^S<S-NAME> "+prayWord(mob)+" for protection from the undead.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

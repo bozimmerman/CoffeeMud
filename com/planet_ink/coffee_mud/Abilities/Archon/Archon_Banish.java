@@ -80,11 +80,11 @@ public class Archon_Banish extends ArchonSkill
 			prisonRoom.setDescription("You are standing on an immense, grey stone floor that stretches as far as you can see in all directions.  Rough winds plunging from the dark, starless sky tear savagely at your fragile body.");
 			prisonRoom.setDisplayText("The Hall of Lost Souls");
 			prisonRoom.setRoomID("");
-			Ability A2=CMClass.getAbility("Prop_HereSpellCast");
+			final Ability A2=CMClass.getAbility("Prop_HereSpellCast");
 			if(A2!=null) A2.setMiscText("Spell_Hungerless;Spell_Thirstless");
 			if(A2!=null) prisonRoom.addNonUninvokableEffect(A2);
 		}
-		for(int dir : Directions.CODES())
+		for(final int dir : Directions.CODES())
 		{
 			prisonRoom.setRawExit(dir,CMClass.getExit("Open"));
 			prisonRoom.rawDoors()[dir]=prisonRoom;
@@ -96,7 +96,7 @@ public class Archon_Banish extends ArchonSkill
 	public void setMiscText(String newText)
 	{
 		super.setMiscText(newText);
-		int x=newText.indexOf("<P>");
+		final int x=newText.indexOf("<P>");
 		if(x>=0)
 			releaseTime=CMath.s_long(newText.substring(x+3));
 		prisonRoom=null;
@@ -106,7 +106,7 @@ public class Archon_Banish extends ArchonSkill
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID)) return false;
-		Room room=prison();
+		final Room room=prison();
 		if((ticking instanceof MOB)&&(!room.isInhabitant((MOB)ticking)))
 			room.bringMobHere((MOB)ticking,false);
 		if(releaseTime<=0) return true;
@@ -128,9 +128,9 @@ public class Archon_Banish extends ArchonSkill
 			&&(msg.source().location()!=null)
 			&&(msg.sourceMinor()!=CMMsg.TYP_LEAVE))
 			{
-				boolean summon=CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_SUMMONING);
-				boolean teleport=CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_TRANSPORTING);
-				boolean shere=(msg.source().location()==affected)||(msg.source().location().getArea()==affected);
+				final boolean summon=CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_SUMMONING);
+				final boolean teleport=CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_TRANSPORTING);
+				final boolean shere=(msg.source().location()==affected)||(msg.source().location().getArea()==affected);
 				if(((!shere)&&(!summon)&&(teleport))
 				   ||((shere)&&(summon)))
 				{
@@ -144,9 +144,9 @@ public class Archon_Banish extends ArchonSkill
 			&&(msg.source().location()!=null)
 			&&(msg.sourceMinor()!=CMMsg.TYP_ENTER))
 			{
-				boolean shere=(msg.source().location()==affected)||(msg.source().location().getArea()==affected);
-				boolean summon=CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_SUMMONING);
-				boolean teleport=CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_TRANSPORTING);
+				final boolean shere=(msg.source().location()==affected)||(msg.source().location().getArea()==affected);
+				final boolean summon=CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_SUMMONING);
+				final boolean teleport=CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_TRANSPORTING);
 				if(((shere)&&(!summon)&&(teleport))
 				   ||((!shere)&&(summon)))
 				{
@@ -183,7 +183,7 @@ public class Archon_Banish extends ArchonSkill
 			super.unInvoke();
 			return;
 		}
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		super.unInvoke();
 
@@ -204,8 +204,8 @@ public class Archon_Banish extends ArchonSkill
 		long time=0;
 		if(commands.size()>2)
 		{
-			String last=((String)commands.lastElement()).toUpperCase();
-			String num=(String)commands.elementAt(commands.size()-2);
+			final String last=((String)commands.lastElement()).toUpperCase();
+			final String num=(String)commands.elementAt(commands.size()-2);
 			if((CMath.isInteger(num))&&(CMath.s_int(num)>0))
 			{
 				if("DAYS".startsWith(last))
@@ -241,7 +241,7 @@ public class Archon_Banish extends ArchonSkill
 		else
 			myPrison = null;
 
-		MOB target=getTargetAnywhere(mob,commands,givenTarget,false,true,false);
+		final MOB target=getTargetAnywhere(mob,commands,givenTarget,false,true,false);
 		if(target==null) return false;
 
 		Archon_Banish A=(Archon_Banish)target.fetchEffect(ID());
@@ -255,11 +255,11 @@ public class Archon_Banish extends ArchonSkill
 		if(!super.invoke(mob,commands,givenTarget,auto, asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),auto?"<T-NAME> is banished!":"^F<S-NAME> banish(es) <T-NAMESELF>.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),auto?"<T-NAME> is banished!":"^F<S-NAME> banish(es) <T-NAMESELF>.^?");
 			CMLib.color().fixSourceFightColor(msg);
 			if(mob.location().okMessage(mob,msg))
 			{

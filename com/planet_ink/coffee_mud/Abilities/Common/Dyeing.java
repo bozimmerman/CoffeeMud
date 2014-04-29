@@ -58,10 +58,10 @@ public class Dyeing extends CommonSkill
 
 	protected String fixColor(String name, char colorChar, String colorWord)
 	{
-		int end=name.indexOf("^?");
+		final int end=name.indexOf("^?");
 		if((end>0)&&(end<=name.length()-3))
 		{
-			int start=name.substring(0,end).indexOf('^');
+			final int start=name.substring(0,end).indexOf('^');
 			if((start>=0)&&(start<(end-3)))
 			{
 				name=name.substring(0,start)
@@ -69,13 +69,13 @@ public class Dyeing extends CommonSkill
 			}
 		}
 		colorWord="^"+colorChar+colorWord+"^?";
-		Vector<String> V=CMParms.parse(name);
+		final Vector<String> V=CMParms.parse(name);
 		for(int v=0;v<V.size();v++)
 		{
-			String word=V.elementAt(v);
+			final String word=V.elementAt(v);
 			if((word.equalsIgnoreCase("an")) || (word.equalsIgnoreCase("a")))
 			{
-				String properPrefix=CMLib.english().properIndefiniteArticle(colorWord);
+				final String properPrefix=CMLib.english().properIndefiniteArticle(colorWord);
 				V.insertElementAt(colorWord,v+1);
 				if(word.toLowerCase().equals(word))
 					V.set(v,properPrefix.toLowerCase());
@@ -104,12 +104,12 @@ public class Dyeing extends CommonSkill
 		{
 			if((affected!=null)&&(affected instanceof MOB)&&(!aborted)&&(!helping))
 			{
-				MOB mob=(MOB)affected;
+				final MOB mob=(MOB)affected;
 				if(writing.length()==0)
 					commonEmote(mob,"<S-NAME> mess(es) up the dyeing.");
 				else
 				{
-					StringBuffer desc=new StringBuffer(found.description());
+					final StringBuffer desc=new StringBuffer(found.description());
 					for(int x=0;x<(desc.length()-1);x++)
 					{
 						if((desc.charAt(x)=='^')
@@ -119,7 +119,7 @@ public class Dyeing extends CommonSkill
 						&&(desc.charAt(x+1)!=ColorLibrary.COLORCODE_BANSI256))
 							desc.setCharAt(x+1,writing.charAt(0));
 					}
-					String d=desc.toString();
+					final String d=desc.toString();
 					if(!d.endsWith("^?")) desc.append("^?");
 					if(!d.startsWith("^"+writing.charAt(0))) desc.insert(0,"^"+writing.charAt(0));
 					found.setDescription(desc.toString());
@@ -148,7 +148,7 @@ public class Dyeing extends CommonSkill
 			commonTell(mob,"You must specify what you want to dye, and color to dye it.");
 			return false;
 		}
-		Item target=mob.fetchItem(null,Wearable.FILTER_UNWORNONLY,(String)commands.firstElement());
+		final Item target=mob.fetchItem(null,Wearable.FILTER_UNWORNONLY,(String)commands.firstElement());
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
 			commonTell(mob,"You don't seem to have a '"+((String)commands.firstElement())+"'.");
@@ -204,7 +204,7 @@ public class Dyeing extends CommonSkill
 		if((target.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LEATHER)
 			duration*=2;
 		duration=getDuration(duration,mob,1,6);
-		CMMsg msg=CMClass.getMsg(mob,null,this,getActivityMessageType(),"<S-NAME> start(s) dyeing "+target.name()+".");
+		final CMMsg msg=CMClass.getMsg(mob,null,this,getActivityMessageType(),"<S-NAME> start(s) dyeing "+target.name()+".");
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

@@ -14,7 +14,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -52,7 +51,7 @@ public class Chant_EelShock extends Chant
 		// undo the affects of this spell
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		if(canBeUninvoked())
 		super.unInvoke();
 		if(canBeUninvoked())
@@ -74,7 +73,7 @@ public class Chant_EelShock extends Chant
 		if(!(affected instanceof MOB))
 			return true;
 
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		// when this spell is on a MOBs Affected list,
 		// it should consistantly prevent the mob
@@ -98,7 +97,7 @@ public class Chant_EelShock extends Chant
 		   location.domainType() == Room.DOMAIN_OUTDOORS_SWAMP)
 			return true;
 
-		Area currentArea = location.getArea();
+		final Area currentArea = location.getArea();
 		if(currentArea.getClimateObj().weatherType(location) == Climate.WEATHER_RAIN ||
 		   currentArea.getClimateObj().weatherType(location) == Climate.WEATHER_THUNDERSTORM)
 			return true;
@@ -110,10 +109,10 @@ public class Chant_EelShock extends Chant
 	{
 		if(mob!=null)
 		{
-			Set<MOB> h=CMLib.combat().properTargets(this,mob,false);
+			final Set<MOB> h=CMLib.combat().properTargets(this,mob,false);
 			if(h==null)
 				return Ability.QUALITY_INDIFFERENT;
-			Room location=mob.location();
+			final Room location=mob.location();
 			if(location!=null)
 			{
 				if(!roomWet(location))
@@ -126,14 +125,14 @@ public class Chant_EelShock extends Chant
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		Set<MOB> h=CMLib.combat().properTargets(this,mob,auto);
+		final Set<MOB> h=CMLib.combat().properTargets(this,mob,auto);
 		if(h==null)
 		{
 			mob.tell("There doesn't appear to be anyone here worth shocking.");
 			return false;
 		}
 
-		Room location = mob.location();
+		final Room location = mob.location();
 
 		if(!roomWet(location))
 		{
@@ -148,27 +147,27 @@ public class Chant_EelShock extends Chant
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
 			if(mob.location().show(mob,null,this,verbalCastCode(mob,null,auto),"^S<S-NAME> chant(s) and electrical sparks dance across <S-HIS-HER> skin.^?"))
-			for(Iterator f=h.iterator();f.hasNext();)
-			{
-				MOB target=(MOB)f.next();
-
-				// it worked, so build a copy of this ability,
-				// and add it to the affects list of the
-				// affected MOB.  Then tell everyone else
-				// what happened.
-				CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastMask(mob,target,auto)|CMMsg.TYP_ELECTRIC,"<T-NAME> is stunned.");
-				if(mob.location().okMessage(mob,msg))
+				for (final Object element : h)
 				{
-					mob.location().send(mob,msg);
-					if(msg.value()<=0)
-						maliciousAffect(mob,target,asLevel,3+super.getXLEVELLevel(mob)+(2*super.getX1Level(mob)),-1);
+					final MOB target=(MOB)element;
+
+					// it worked, so build a copy of this ability,
+					// and add it to the affects list of the
+					// affected MOB.  Then tell everyone else
+					// what happened.
+					final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastMask(mob,target,auto)|CMMsg.TYP_ELECTRIC,"<T-NAME> is stunned.");
+					if(mob.location().okMessage(mob,msg))
+					{
+						mob.location().send(mob,msg);
+						if(msg.value()<=0)
+							maliciousAffect(mob,target,asLevel,3+super.getXLEVELLevel(mob)+(2*super.getX1Level(mob)),-1);
+					}
 				}
-			}
 		}
 		else
 			return maliciousFizzle(mob,null,"<S-NAME> sees tiny sparks dance across <S-HIS-HER> skin, but nothing more happens.");

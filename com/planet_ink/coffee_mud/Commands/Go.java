@@ -72,11 +72,11 @@ public class Go extends StdCommand
 						((Boolean)commands.elementAt(3)).booleanValue(),false);
 
 		}
-		String whereStr=CMParms.combine(commands,1);
-		Room R=mob.location();
+		final String whereStr=CMParms.combine(commands,1);
+		final Room R=mob.location();
 		if(R==null) return false;
 
-		boolean inAShip =(R instanceof SpaceShip)||(R.getArea() instanceof SpaceShip);
+		final boolean inAShip =(R instanceof SpaceShip)||(R.getArea() instanceof SpaceShip);
 		final String validDirs = inAShip?Directions.SHIP_NAMES_LIST() : Directions.NAMES_LIST();
 
 		int direction=-1;
@@ -117,10 +117,10 @@ public class Go extends StdCommand
 		}
 		if(direction<0)
 		{
-			Environmental E=R.fetchFromRoomFavorItems(null,whereStr);
+			final Environmental E=R.fetchFromRoomFavorItems(null,whereStr);
 			if(E instanceof Rideable)
 			{
-				Command C=CMClass.getCommand("Enter");
+				final Command C=CMClass.getCommand("Enter");
 				return C.execute(mob,commands,metaFlags);
 			}
 			if(E instanceof Exit)
@@ -130,7 +130,7 @@ public class Go extends StdCommand
 					{ direction=d; break;}
 			}
 		}
-		String doing=(String)commands.elementAt(0);
+		final String doing=(String)commands.elementAt(0);
 		if(direction>=0)
 			CMLib.tracking().walk(mob,direction,false,false,false,false);
 		else
@@ -173,7 +173,7 @@ public class Go extends StdCommand
 						}
 						else
 						{
-							Vector V=new Vector();
+							final Vector V=new Vector();
 							V.addElement(doing);
 							V.addElement(inAShip?Directions.getShipDirectionName(direction):Directions.getDirectionName(direction));
 							mob.enqueCommand(V,metaFlags,0);

@@ -86,7 +86,7 @@ public class FilteredListIterator<K> implements ListIterator<K>
 	{
 		if(!hasNext())
 			throw new NoSuchElementException();
-		K element = nextElement;
+		final K element = nextElement;
 		stageNextElement();
 		return element;
 	}
@@ -122,7 +122,7 @@ public class FilteredListIterator<K> implements ListIterator<K>
 	{
 		if(!hasPrevious())
 			throw new NoSuchElementException();
-		K element = prevElement;
+		final K element = prevElement;
 		stagePrevElement();
 		return element;
 	}

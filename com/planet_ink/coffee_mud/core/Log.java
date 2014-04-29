@@ -87,7 +87,7 @@ public class Log extends java.util.logging.Logger
 	public Log()
 	{
 		super("log",null);
-		char threadCode=Thread.currentThread().getThreadGroup().getName().charAt(0);
+		final char threadCode=Thread.currentThread().getThreadGroup().getName().charAt(0);
 		if(logs[threadCode]==null)
 			logs[threadCode]=this;
 	}
@@ -129,9 +129,9 @@ public class Log extends java.util.logging.Logger
 	public static final boolean isMaskedErrMsg(final String str)
 	{
 		if(str==null) return false;
-		String upstr=str.toLowerCase();
-		for(int i=0;i<maskErrMsgs.length;i++)
-			if(upstr.indexOf(maskErrMsgs[i])>=0)
+		final String upstr=str.toLowerCase();
+		for (final String maskErrMsg : maskErrMsgs)
+			if(upstr.indexOf(maskErrMsg)>=0)
 				return true;
 		return false;
 	}
@@ -146,7 +146,7 @@ public class Log extends java.util.logging.Logger
 	private static final int s_int(final String INT)
 	{
 		try{ return Integer.parseInt(INT); }
-		catch(java.lang.NumberFormatException e){ return 0;}
+		catch(final java.lang.NumberFormatException e){ return 0;}
 	}
 
 
@@ -175,8 +175,8 @@ public class Log extends java.util.logging.Logger
 		{
 			WRITTEN.remove(writer);
 			writer.close();
-			FileOutputStream fileOut=this.openLogFile(logName, false, this.numberOfFWLogs);
-			PrintWriter newPW=new PrintWriter(fileOut,true);
+			final FileOutputStream fileOut=this.openLogFile(logName, false, this.numberOfFWLogs);
+			final PrintWriter newPW=new PrintWriter(fileOut,true);
 			this.fileOutWriter[0]=newPW;
 			WRITTEN.put(newPW, new long[]{0,0});
 			return newPW;
@@ -189,8 +189,8 @@ public class Log extends java.util.logging.Logger
 			{
 				WRITTEN.remove(writer);
 				writer.close();
-				FileOutputStream fileOut=this.openLogFile(getLogFilename(type), false, config.maxLogs);
-				PrintWriter newPW=new PrintWriter(fileOut,true);
+				final FileOutputStream fileOut=this.openLogFile(getLogFilename(type), false, config.maxLogs);
+				final PrintWriter newPW=new PrintWriter(fileOut,true);
 				config.writers[0][0]=newPW;
 				WRITTEN.put(newPW, new long[]{0,0});
 				return newPW;
@@ -216,7 +216,7 @@ public class Log extends java.util.logging.Logger
 			||((config.maxBytes>0)&&(counts[1]>=config.maxBytes)))
 				return rollLog(writer);
 		}
-		catch(IOException e)
+		catch(final IOException e)
 		{
 		}
 		return writer;
@@ -256,21 +256,21 @@ public class Log extends java.util.logging.Logger
 			{
 				try
 				{
-					FileOutputStream fileStream=this.openLogFile(logName+"_"+type.toString().toLowerCase(), false, config.maxLogs);
+					final FileOutputStream fileStream=this.openLogFile(logName+"_"+type.toString().toLowerCase(), false, config.maxLogs);
 					final PrintWriter[] writer=new PrintWriter[]{new PrintWriter(fileStream,true)};
 					for(int i=0;i<10;i++)
 						writers[i]=writer;
 					if(!WRITTEN.containsKey(writer))
 						WRITTEN.put(writer[0], new long[]{0,0});
 				}
-				catch (IOException e)
+				catch (final IOException e)
 				{
 					e.printStackTrace();
 				}
 			}
 		}
-		int max=config.maxLevel;
-		PrintWriter[] empty=new PrintWriter[]{null};
+		final int max=config.maxLevel;
+		final PrintWriter[] empty=new PrintWriter[]{null};
 		for(int i=max+1;i<10;i++)
 			writers[i]=empty;
 		if((this.fileOutWriter[0]!=null) && (!WRITTEN.containsKey(fileOutWriter[0])))
@@ -315,7 +315,7 @@ public class Log extends java.util.logging.Logger
 			{
 				x=0;
 				while((x<numStr.length())&&(Character.isDigit(numStr.charAt(x)))) {x++;}
-				int num=s_int(numStr.substring(0,x));
+				final int num=s_int(numStr.substring(0,x));
 				numStr=numStr.substring(x).trim().toLowerCase();
 				if(numStr.startsWith("b"))
 					maxNumberOfBytes=num;
@@ -343,7 +343,7 @@ public class Log extends java.util.logging.Logger
 		{
 			t=Target.valueOf(code);
 		}
-		catch (Exception e)
+		catch (final Exception e)
 		{
 			t=Target.OFF;
 		}
@@ -421,11 +421,11 @@ public class Log extends java.util.logging.Logger
 		{
 			try
 			{
-				String name=logName+(numberOfLogs-1)+".log";
+				final String name=logName+(numberOfLogs-1)+".log";
 				final File f=new File(logPath,name);
 				if(f.exists())
 					f.delete();
-			}catch(Exception e){}
+			}catch(final Exception e){}
 			for(int i=numberOfLogs-1;i>0;i--)
 			{
 				final String inum=(i>0)?(""+i):"";
@@ -435,12 +435,12 @@ public class Log extends java.util.logging.Logger
 					final File f=new File(logPath,logName+inumm1+".log");
 					if(f.exists())
 						f.renameTo(new File(logPath,logName+inum+".log"));
-				}catch(Exception e){}
+				}catch(final Exception e){}
 			}
 		}
-		String name=logName+".log";
+		final String name=logName+".log";
 		final File fileOut=new File(logPath,name);
-		FileOutputStream fileStream=new FileOutputStream(fileOut, append);
+		final FileOutputStream fileStream=new FileOutputStream(fileOut, append);
 		if(logName.equalsIgnoreCase(this.logName))
 			System.setErr(new PrintStream(fileStream));
 		return fileStream;
@@ -456,8 +456,8 @@ public class Log extends java.util.logging.Logger
 	*/
 	public final void configureLogFile(final String logFilePath, final int numberOfLogs)
 	{
-		File F=new File(logFilePath);
-		File parentFile=F.getParentFile();
+		final File F=new File(logFilePath);
+		final File parentFile=F.getParentFile();
 		if(parentFile!=null)
 			this.logPath=parentFile;
 		this.logName=F.getName();
@@ -469,7 +469,7 @@ public class Log extends java.util.logging.Logger
 			fileOutWriter=new PrintWriter[]{new PrintWriter(fileStream,true)};
 			System.setErr(new PrintStream(fileStream));
 		}
-		catch(IOException e)
+		catch(final IOException e)
 		{
 			System.out.println("NO OPEN LOG: "+e.toString());
 		}
@@ -497,7 +497,7 @@ public class Log extends java.util.logging.Logger
 			{ line=reader.readLine(); num++;}
 			reader.close();
 		}
-		catch(Exception e)
+		catch(final Exception e)
 		{
 			standardOut(Type.error,"Log",e.getMessage(),Integer.MIN_VALUE);
 		}
@@ -524,7 +524,7 @@ public class Log extends java.util.logging.Logger
 						final FileReader F=new FileReader(logName+".log");
 						reader = new BufferedReader(F);
 					}
-					catch(Exception e)
+					catch(final Exception e)
 					{
 						standardOut(Type.error,"Log",e.getMessage(),Integer.MIN_VALUE);
 						return null;
@@ -567,7 +567,7 @@ public class Log extends java.util.logging.Logger
 
 		final StringBuffer buf=new StringBuffer("");
 
-		LogReader reader = getLogReader();
+		final LogReader reader = getLogReader();
 		String line;
 		while((line = reader.nextLine()) != null)
 			buf.append(line+"\n\r");
@@ -839,7 +839,7 @@ public class Log extends java.util.logging.Logger
 		if(os==null) return "";
 		if(os.length==0) return "";
 
-		StringBuilder str=new StringBuilder((os[0]==null)?"null":os[0].toString());
+		final StringBuilder str=new StringBuilder((os[0]==null)?"null":os[0].toString());
 		for(int i=1;i<os.length;i++)
 			str.append(",").append(os[i]==null?"null":os[i].toString());
 		return str.toString();
@@ -859,7 +859,7 @@ public class Log extends java.util.logging.Logger
 		{
 			return TYPE_LEVEL_MAP[level.intValue()];
 		}
-		catch(Throwable t)
+		catch(final Throwable t)
 		{
 			if(level.intValue()<0)
 				return Type.debug;

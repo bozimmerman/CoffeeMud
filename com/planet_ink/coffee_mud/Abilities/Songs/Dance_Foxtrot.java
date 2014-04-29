@@ -62,7 +62,7 @@ public class Dance_Foxtrot extends Dance
 		if(!super.tick(ticking,tickID))
 			return false;
 
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		if(mob==null)
 			return false;
 

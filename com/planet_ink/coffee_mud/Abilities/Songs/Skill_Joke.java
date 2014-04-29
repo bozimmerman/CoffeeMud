@@ -46,7 +46,7 @@ public class Skill_Joke extends BardSkill
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		MOB target=this.getTarget(mob,commands,givenTarget);
+		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
 		// if they can't hear the sleep spell, it
@@ -60,7 +60,7 @@ public class Skill_Joke extends BardSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		String str=null;
 		if(success)
@@ -68,10 +68,10 @@ public class Skill_Joke extends BardSkill
 			if(auto) str="<T-NAME> remember(s) a joke!";
 			else
 			{
-				List<String> insultd=Resources.getFileLineVector(Resources.getFileResource("skills/insultd.txt",true));
-				List<String> insulto=Resources.getFileLineVector(Resources.getFileResource("skills/insulto.txt",true));
-				String[] ob=new String[5];
-				String[] de=new String[5];
+				final List<String> insultd=Resources.getFileLineVector(Resources.getFileResource("skills/insultd.txt",true));
+				final List<String> insulto=Resources.getFileLineVector(Resources.getFileResource("skills/insulto.txt",true));
+				final String[] ob=new String[5];
+				final String[] de=new String[5];
 				for (int cnt=1; cnt<4; cnt++)
 				{
 					ob[cnt] = insulto.get(CMLib.dice().roll(1,insulto.size(),-1));
@@ -90,7 +90,7 @@ public class Skill_Joke extends BardSkill
 					break;
 				case 3:
 				{
-					String targetName=target.name();
+					final String targetName=target.name();
 					String jokerName=mob.name();
 					if(mob==target) jokerName="Someone";
 					joke= jokerName+": 'Knock, knock!'\n\r"
@@ -119,18 +119,18 @@ public class Skill_Joke extends BardSkill
 				}
 				str="<S-NAME> joke(s) to <T-NAMESELF>:\n\r"+joke;
 			}
-			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_SPEAK|(auto?CMMsg.MASK_ALWAYS:0),str);
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_SPEAK|(auto?CMMsg.MASK_ALWAYS:0),str);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(CMLib.dice().rollPercentage()<25)
 				{
-					Ability A=CMClass.getAbility("Spell_Laughter");
+					final Ability A=CMClass.getAbility("Spell_Laughter");
 					A.invoke(mob,target,true,asLevel);
 				}
 				else
 				{
-					Ability A=CMClass.getAbility("Disease_Giggles");
+					final Ability A=CMClass.getAbility("Disease_Giggles");
 					A.invoke(mob,target,true,asLevel);
 				}
 

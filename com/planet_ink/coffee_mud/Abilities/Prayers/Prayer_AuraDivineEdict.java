@@ -55,7 +55,7 @@ public class Prayer_AuraDivineEdict extends Prayer
 		// undo the affects of this spell
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		super.unInvoke();
 
@@ -88,8 +88,8 @@ public class Prayer_AuraDivineEdict extends Prayer
 		&&(msg.sourceMessage()!=null)
 		&&(CMStrings.getSayFromMessage(msg.sourceMessage().toUpperCase()).equals(CMStrings.getSayFromMessage(msg.sourceMessage()))))
 		{
-			Vector<String> V=CMParms.parse("ORDER \""+msg.target().Name()+"\" "+CMStrings.getSayFromMessage(msg.sourceMessage()));
-			CMObject O=CMLib.english().findCommand((MOB)msg.target(),(List)V.clone());
+			final Vector<String> V=CMParms.parse("ORDER \""+msg.target().Name()+"\" "+CMStrings.getSayFromMessage(msg.sourceMessage()));
+			final CMObject O=CMLib.english().findCommand((MOB)msg.target(),(List)V.clone());
 			if((!((MOB)msg.target()).isMonster())
 			&&(CMClass.classID(O).equalsIgnoreCase("DROP")
 			   ||CMClass.classID(O).equalsIgnoreCase("SELL")
@@ -99,7 +99,7 @@ public class Prayer_AuraDivineEdict extends Prayer
 			   return false;
 			}
 			noRecurse=true;
-			String oldLiege=((MOB)msg.target()).getLiegeID();
+			final String oldLiege=((MOB)msg.target()).getLiegeID();
 			((MOB)msg.target()).setLiegeID(msg.source().Name());
 			msg.source().doCommand(V,Command.METAFLAG_FORCED);
 			((MOB)msg.target()).setLiegeID(oldLiege);
@@ -120,10 +120,10 @@ public class Prayer_AuraDivineEdict extends Prayer
 			return false;
 		if(invoker()==null) return true;
 
-		Room R=invoker().location();
+		final Room R=invoker().location();
 		for(int i=0;i<R.numInhabitants();i++)
 		{
-			MOB M=R.fetchInhabitant(i);
+			final MOB M=R.fetchInhabitant(i);
 			if((M!=null)&&(M.isInCombat()))
 			{
 				M.tell(invoker().getWorshipCharID().toUpperCase()+" DEMANDS NO FIGHTING!");
@@ -160,7 +160,7 @@ public class Prayer_AuraDivineEdict extends Prayer
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
@@ -168,7 +168,7 @@ public class Prayer_AuraDivineEdict extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> "+prayWord(mob)+" for the aura of the divine edict.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> "+prayWord(mob)+" for the aura of the divine edict.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

@@ -14,8 +14,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
-
 import java.util.*;
 
 /*
@@ -55,7 +53,7 @@ public class Chant_SummonInsects extends Chant
 		&&(affected!=null)
 		&&(affected instanceof MOB))
 		{
-			MOB M=(MOB)affected;
+			final MOB M=(MOB)affected;
 			if(M.location()!=castingLocation)
 				unInvoke();
 			else
@@ -74,7 +72,7 @@ public class Chant_SummonInsects extends Chant
 		// undo the affects of this spell
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		super.unInvoke();
 		if(canBeUninvoked())
@@ -89,7 +87,7 @@ public class Chant_SummonInsects extends Chant
 		 {
 			 if(!mob.isInCombat())
 				 return Ability.QUALITY_INDIFFERENT;
-			 Room R=mob.location();
+			 final Room R=mob.location();
 			 if(R!=null)
 			 {
 				 if((R.domainType()&Room.INDOORS)>0)
@@ -108,7 +106,7 @@ public class Chant_SummonInsects extends Chant
 			return false;
 		}
 
-		Set<MOB> h=properTargets(mob,givenTarget,auto);
+		final Set<MOB> h=properTargets(mob,givenTarget,auto);
 
 		// the invoke method for spells receives as
 		// parameters the invoker, and the REMAINING
@@ -127,27 +125,27 @@ public class Chant_SummonInsects extends Chant
 				return false;
 			}
 			if(mob.location().show(mob,null,this,verbalCastCode(mob,null,auto),auto?"A swarm of stinging insects appear, then flutter away!":"^S<S-NAME> chant(s) into the sky.  A swarm of stinging insects appears and attacks!^?"))
-			for(Iterator f=h.iterator();f.hasNext();)
-			{
-				MOB target=(MOB)f.next();
-
-				// it worked, so build a copy of this ability,
-				// and add it to the affects list of the
-				// affected MOB.  Then tell everyone else
-				// what happened.
-				CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),null);
-				if((mob.location().okMessage(mob,msg))
-				   &&(target.fetchEffect(this.ID())==null))
+				for (final Object element : h)
 				{
-					mob.location().send(mob,msg);
-					if((msg.value()<=0)&&(target.location()==mob.location()))
+					final MOB target=(MOB)element;
+
+					// it worked, so build a copy of this ability,
+					// and add it to the affects list of the
+					// affected MOB.  Then tell everyone else
+					// what happened.
+					final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),null);
+					if((mob.location().okMessage(mob,msg))
+					   &&(target.fetchEffect(this.ID())==null))
 					{
-						castingLocation=mob.location();
-						success=maliciousAffect(mob,target,asLevel,((mob.phyStats().level()+(2*super.getXLEVELLevel(mob)))*10),-1);
-						target.location().show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> become(s) enveloped by the swarm of stinging insects!");
+						mob.location().send(mob,msg);
+						if((msg.value()<=0)&&(target.location()==mob.location()))
+						{
+							castingLocation=mob.location();
+							success=maliciousAffect(mob,target,asLevel,((mob.phyStats().level()+(2*super.getXLEVELLevel(mob)))*10),-1);
+							target.location().show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> become(s) enveloped by the swarm of stinging insects!");
+						}
 					}
 				}
-			}
 		}
 		else
 			return maliciousFizzle(mob,null,"<S-NAME> chant(s), but the magic fizzles.");

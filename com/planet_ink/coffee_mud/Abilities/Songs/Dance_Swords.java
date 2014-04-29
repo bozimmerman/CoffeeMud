@@ -75,7 +75,7 @@ public class Dance_Swords extends Dance
 	@Override
 	public void unInvoke()
 	{
-		Environmental E=affected;
+		final Environmental E=affected;
 		super.unInvoke();
 		if((E!=null)
 		&&(E instanceof Item)
@@ -99,14 +99,14 @@ public class Dance_Swords extends Dance
 	{
 		if((affected instanceof MOB)&&(!super.tick(ticking,tickID)))
 			return false;
-		MOB M=invoker();
+		final MOB M=invoker();
 		if(affected==M)
 		{
 			Weapon sword=null;
 			int num=0;
 			for(int i=0;i<M.location().numItems();i++)
 			{
-				Item I=M.location().getItem(i);
+				final Item I=M.location().getItem(i);
 				if((I!=null)
 				&&(I instanceof Weapon)
 				&&(((Weapon)I).weaponClassification()==Weapon.CLASS_SWORD))
@@ -125,7 +125,7 @@ public class Dance_Swords extends Dance
 			if(sword==null) return true;
 			final int max=3+(super.getXLEVELLevel(invoker())/2);
 			if(num>max) return true;
-			Dance newOne=(Dance)this.copyOf();
+			final Dance newOne=(Dance)this.copyOf();
 			newOne.invokerManaCost=-1;
 			newOne.startTickDown(M,sword,99999);
 			return true;
@@ -138,16 +138,16 @@ public class Dance_Swords extends Dance
 		&&(M.fetchEffect(ID())!=null)
 		&&(CMLib.flags().aliveAwakeMobile(M,true)))
 		{
-			MOB victiM=M.getVictim();
+			final MOB victiM=M.getVictim();
 			if(M.isInCombat())
 			{
-				boolean isHit=(CMLib.combat().rollToHit(CMLib.combat().adjustedAttackBonus(M,victiM)+((Weapon)affected).phyStats().attackAdjustment(), CMLib.combat().adjustedArmor(victiM), 0));
+				final boolean isHit=(CMLib.combat().rollToHit(CMLib.combat().adjustedAttackBonus(M,victiM)+((Weapon)affected).phyStats().attackAdjustment(), CMLib.combat().adjustedArmor(victiM), 0));
 				if((!isHit)||(!(affected instanceof Weapon)))
 					M.location().show(M,victiM,affected,CMMsg.MSG_OK_ACTION,"<O-NAME> attacks <T-NAME> and misses!");
 				else
 				{
-					int bonusDamage=(affected.phyStats().damage()+5+getXLEVELLevel(M))-M.phyStats().damage();
-					int damage=CMLib.combat().adjustedDamage(M, (Weapon)affected, victiM, bonusDamage,false);
+					final int bonusDamage=(affected.phyStats().damage()+5+getXLEVELLevel(M))-M.phyStats().damage();
+					final int damage=CMLib.combat().adjustedDamage(M, (Weapon)affected, victiM, bonusDamage,false);
 					CMLib.combat().postDamage(M,victiM,affected,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_WEAPONATTACK,
 											((Weapon)affected).weaponType(),affected.name()+" attacks and <DAMAGE> <T-NAME>!");
 				}
@@ -194,7 +194,7 @@ public class Dance_Swords extends Dance
 		if((!auto)&&(!CMLib.flags().aliveAwakeMobile(mob,false)))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 		undanceAll(mob,null);
 		if(success)
 		{
@@ -207,9 +207,9 @@ public class Dance_Swords extends Dance
 
 			for(int v=0;v<commonRoomSet.size();v++)
 			{
-				Room R=(Room)commonRoomSet.elementAt(v);
-				String msgStr=getCorrectMsgString(R,str,v);
-				CMMsg msg=CMClass.getMsg(mob,null,this,somanticCastCode(mob,null,auto),msgStr);
+				final Room R=(Room)commonRoomSet.elementAt(v);
+				final String msgStr=getCorrectMsgString(R,str,v);
+				final CMMsg msg=CMClass.getMsg(mob,null,this,somanticCastCode(mob,null,auto),msgStr);
 				if(R.okMessage(mob,msg))
 				{
 					if(originRoom==R)
@@ -217,10 +217,10 @@ public class Dance_Swords extends Dance
 					else
 						R.sendOthers(mob,msg);
 					invoker=mob;
-					Dance newOne=(Dance)this.copyOf();
+					final Dance newOne=(Dance)this.copyOf();
 					newOne.invokerManaCost=-1;
 
-					MOB follower=mob;
+					final MOB follower=mob;
 
 					// malicious dances must not affect the invoker!
 					int affectType=CMMsg.MSG_CAST_SOMANTIC_SPELL;
@@ -228,7 +228,7 @@ public class Dance_Swords extends Dance
 
 					if((CMLib.flags().canBeSeenBy(invoker,follower)&&(follower.fetchEffect(this.ID())==null)))
 					{
-						CMMsg msg2=CMClass.getMsg(mob,follower,this,affectType,null);
+						final CMMsg msg2=CMClass.getMsg(mob,follower,this,affectType,null);
 						if(R.okMessage(mob,msg2))
 						{
 							follower.location().send(follower,msg2);

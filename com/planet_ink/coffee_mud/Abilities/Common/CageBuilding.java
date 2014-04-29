@@ -57,7 +57,7 @@ public class CageBuilding extends Wainwrighting
 			return false;
 		if(!(I instanceof Container))
 			return false;
-		Container C=(Container)I;
+		final Container C=(Container)I;
 		if((C.containTypes()==Container.CONTAIN_CAGED)
 		||(C.containTypes()==(Container.CONTAIN_BODIES|Container.CONTAIN_CAGED)))
 			return true;

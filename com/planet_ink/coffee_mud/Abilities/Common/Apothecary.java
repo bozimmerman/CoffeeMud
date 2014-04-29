@@ -73,7 +73,7 @@ public class Apothecary extends Cooking
 		else
 		if(I instanceof Drink)
 		{
-			Drink D=(Drink)I;
+			final Drink D=(Drink)I;
 			if(D.liquidType()!=RawMaterial.RESOURCE_POISON)
 				return false;
 			if(CMLib.flags().flaggedAffects(D, Ability.FLAG_INTOXICATING).size()>0)
@@ -85,8 +85,8 @@ public class Apothecary extends Cooking
 		else
 		if(I instanceof MagicDust)
 		{
-			MagicDust M=(MagicDust)I;
-			List<Ability> spells=M.getSpells();
+			final MagicDust M=(MagicDust)I;
+			final List<Ability> spells=M.getSpells();
 			if((spells == null)||(spells.size()==0))
 				return false;
 			return true;
@@ -100,7 +100,7 @@ public class Apothecary extends Cooking
 	{
 		if((!super.invoke(mob,commands,givenTarget,auto,asLevel))||(buildingI==null))
 			return false;
-		Ability A2=buildingI.fetchEffect(0);
+		final Ability A2=buildingI.fetchEffect(0);
 		if((A2!=null)
 		&&(buildingI instanceof Drink))
 		{

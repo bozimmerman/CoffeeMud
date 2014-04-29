@@ -56,12 +56,12 @@ public class Practice extends StdCommand
 			if(teacher!=null) commands.removeElementAt(commands.size()-1);
 		}
 
-		String abilityName=CMParms.combine(commands,0);
+		final String abilityName=CMParms.combine(commands,0);
 
 		if(teacher==null)
 		for(int i=0;i<mob.location().numInhabitants();i++)
 		{
-			MOB possTeach=mob.location().fetchInhabitant(i);
+			final MOB possTeach=mob.location().fetchInhabitant(i);
 			if((possTeach!=null)&&(possTeach.findAbility(abilityName)!=null)&&(possTeach!=mob))
 			{
 				teacher=possTeach;
@@ -75,7 +75,7 @@ public class Practice extends StdCommand
 			return false;
 		}
 
-		Ability myAbility=mob.findAbility(abilityName);
+		final Ability myAbility=mob.findAbility(abilityName);
 		if(myAbility==null)
 		{
 			mob.tell("You don't seem to know "+abilityName+".");
@@ -87,7 +87,7 @@ public class Practice extends StdCommand
 			return false;
 		}
 
-		Ability teacherAbility=mob.findAbility(abilityName);
+		final Ability teacherAbility=mob.findAbility(abilityName);
 		if(teacherAbility==null)
 		{
 			mob.tell(teacher.name()+" doesn't seem to know "+abilityName+".");

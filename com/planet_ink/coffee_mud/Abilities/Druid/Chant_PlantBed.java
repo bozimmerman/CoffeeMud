@@ -50,10 +50,10 @@ public class Chant_PlantBed extends Chant
 		super.unInvoke();
 		if(peaPod!=null)
 		{
-			Room R=CMLib.map().roomLocation(peaPod);
+			final Room R=CMLib.map().roomLocation(peaPod);
 			if(R!=null)
 				R.showHappens(CMMsg.MSG_OK_VISUAL,"A pea-pod shrivels up!");
-			Rideable RI=(Rideable)peaPod;
+			final Rideable RI=(Rideable)peaPod;
 			for(int r=RI.numRiders()-1;r>=0;r--)
 				RI.fetchRider(r).setRiding(null);
 			peaPod.destroy();
@@ -80,15 +80,15 @@ public class Chant_PlantBed extends Chant
 			return false;
 
 		// now see if it worked
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":"^S<S-NAME> chant(s) to the ground.^?");
+			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":"^S<S-NAME> chant(s) to the ground.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				Item newItem=CMClass.getItem("GenBed");
-				Rideable newRide=(Rideable)newItem;
+				final Item newItem=CMClass.getItem("GenBed");
+				final Rideable newRide=(Rideable)newItem;
 				newItem.setName("a plant bed");
 				newItem.setDisplayText("A enormously comfortable pea-pod looks ready to sleep in.");
 				newItem.setDescription("The plant bed looks like a hollowed pea-pod with fern-like cushioning inside.  Looks like a nice place to take a nap in!");
@@ -98,7 +98,7 @@ public class Chant_PlantBed extends Chant
 				newItem.basePhyStats().setWeight(1000);
 				newItem.setBaseValue(0);
 				CMLib.flags().setGettable(newItem,false);
-				Ability A=CMClass.getAbility("Prop_RideResister");
+				final Ability A=CMClass.getAbility("Prop_RideResister");
 				A.setMiscText("disease poison");
 				newItem.addNonUninvokableEffect(A);
 				newItem.recoverPhyStats();

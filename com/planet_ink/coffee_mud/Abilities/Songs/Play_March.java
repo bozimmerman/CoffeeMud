@@ -71,7 +71,7 @@ public class Play_March extends Play
 			return false;
 		if((affected instanceof MOB)&&(invoker()!=null))
 		{
-			MOB mob=(MOB)affected;
+			final MOB mob=(MOB)affected;
 			mob.curState().adjMovement(adjustedLevel(invoker(),0)/4,mob.maxState());
 		}
 		return true;

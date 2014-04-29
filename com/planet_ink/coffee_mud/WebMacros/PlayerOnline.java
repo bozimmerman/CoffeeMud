@@ -46,14 +46,14 @@ public class PlayerOnline extends StdWebMacro
 		if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
 			return CMProps.getVar(CMProps.Str.MUDSTATUS);
 
-		String last=httpReq.getUrlParameter("PLAYER");
-		java.util.Map<String,String> parms=parseParms(parm);
+		final String last=httpReq.getUrlParameter("PLAYER");
+		final java.util.Map<String,String> parms=parseParms(parm);
 		if(last==null) return " @break@";
 		if(last.length()>0)
 		{
 			if(parms.size()==0)
 			{
-				MOB M = CMLib.players().getPlayer(last);
+				final MOB M = CMLib.players().getPlayer(last);
 				return String.valueOf((M!=null)&&(M.session()!=null)&&(!M.session().isStopped()));
 			}
 			else
@@ -61,20 +61,20 @@ public class PlayerOnline extends StdWebMacro
 				MOB M=CMLib.players().getLoadPlayer(last);
 				if(M==null)
 				{
-					MOB authM=Authenticate.getAuthenticatedMob(httpReq);
+					final MOB authM=Authenticate.getAuthenticatedMob(httpReq);
 					if((authM!=null)&&(authM.Name().equalsIgnoreCase(last)))
 						M=authM;
 				}
 				if(M!=null)
 				{
-					String login=Authenticate.getLogin(httpReq);
+					final String login=Authenticate.getLogin(httpReq);
 					if(Authenticate.authenticated(httpReq,login,Authenticate.getPassword(httpReq)))
 					{
 						boolean canBan=false;
 						boolean canModify=false;
 						boolean canBoot=false;
 
-						MOB authM=CMLib.players().getLoadPlayer(login);
+						final MOB authM=CMLib.players().getLoadPlayer(login);
 						if((authM!=null)&&(authM.Name().equals(M.Name())))
 						{
 							canBan=true;
@@ -106,10 +106,10 @@ public class PlayerOnline extends StdWebMacro
 						}
 						if(canModify&&(parms.containsKey("EXPIRENEVER")))
 						{
-							PlayerStats P=M.playerStats();
+							final PlayerStats P=M.playerStats();
 							if(P!=null)
 							{
-								List<String> secFlags=CMParms.parseSemicolons(P.getSetSecurityFlags(null),true);
+								final List<String> secFlags=CMParms.parseSemicolons(P.getSetSecurityFlags(null),true);
 								if(!secFlags.contains(CMSecurity.SecFlag.NOEXPIRE.name()))
 								{
 									secFlags.add(CMSecurity.SecFlag.NOEXPIRE.name());
@@ -120,10 +120,10 @@ public class PlayerOnline extends StdWebMacro
 						}
 						if(canModify&&(parms.containsKey("EXPIRENOW")))
 						{
-							PlayerStats P=M.playerStats();
+							final PlayerStats P=M.playerStats();
 							if(P!=null)
 							{
-								List<String> secFlags=CMParms.parseSemicolons(P.getSetSecurityFlags(null),true);
+								final List<String> secFlags=CMParms.parseSemicolons(P.getSetSecurityFlags(null),true);
 								if(secFlags.contains(CMSecurity.SecFlag.NOEXPIRE.name()))
 								{
 									secFlags.remove(CMSecurity.SecFlag.NOEXPIRE.name());
@@ -140,7 +140,7 @@ public class PlayerOnline extends StdWebMacro
 							Resources.removeResource("CMPORTRAIT-"+M.Name());
 							String file="";
 							byte[] buf=null;
-							for(MultiPartData data : httpReq.getMultiParts())
+							for(final MultiPartData data : httpReq.getMultiParts())
 							{
 								if(data.getVariables().containsKey("filename")
 								&& (data.getContentType().startsWith("image")))
@@ -158,7 +158,7 @@ public class PlayerOnline extends StdWebMacro
 							{
 								if(buf==null) return "File `"+file+"` not uploaded -- no buffer!";
 								if(buf.length>MAX_IMAGE_SIZE) return "File `"+file+"` not uploaded -- size exceeds "+MAX_IMAGE_SIZE+" byte limit!";
-								String encoded=B64Encoder.B64encodeBytes(buf);
+								final String encoded=B64Encoder.B64encodeBytes(buf);
 								M.setImage("PlayerPortrait?PLAYER="+M.Name()+"&FILENAME="+M.Name()+System.currentTimeMillis()+file);
 								CMLib.database().DBUpdatePlayerMOBOnly(M);
 								CMLib.database().DBReCreateData(M.Name(),"CMPORTRAIT","CMPORTRAIT-"+M.Name(),encoded);

@@ -42,18 +42,18 @@ public class Draw extends Get
 
 	public Vector getSheaths(MOB mob)
 	{
-		Vector sheaths=new Vector();
+		final Vector sheaths=new Vector();
 		if(mob!=null)
 		for(int i=0;i<mob.numItems();i++)
 		{
-			Item I=mob.getItem(i);
+			final Item I=mob.getItem(i);
 			if((I!=null)
 			&&(!I.amWearingAt(Wearable.IN_INVENTORY))
 			&&(I instanceof Container)
 			&&(((Container)I).capacity()>0)
 			&&(((Container)I).containTypes()!=Container.CONTAIN_ANYTHING))
 			{
-				List<Item> contents=((Container)I).getContents();
+				final List<Item> contents=((Container)I).getContents();
 				for(int c=0;c<contents.size();c++)
 					if(contents.get(c) instanceof Weapon)
 					{
@@ -108,7 +108,7 @@ public class Draw extends Get
 		String containerName="";
 		String whatToGet="";
 		int c=0;
-		Vector sheaths=getSheaths(mob);
+		final Vector sheaths=getSheaths(mob);
 		if(commands.size()>0)
 			commands.removeElementAt(0);
 		if(commands.size()==0)
@@ -119,7 +119,7 @@ public class Draw extends Get
 				containerName="a weapon";
 			for(int i=0;i<mob.numItems();i++)
 			{
-				Item I=mob.getItem(i);
+				final Item I=mob.getItem(i);
 				if((I instanceof Weapon)
 				   &&(I.container()!=null)
 				   &&(sheaths.contains(I.container())))
@@ -132,7 +132,7 @@ public class Draw extends Get
 			if(whatToGet.length()==0)
 				for(int i=0;i<mob.numItems();i++)
 				{
-					Item I=mob.getItem(i);
+					final Item I=mob.getItem(i);
 					if(I instanceof Weapon)
 					{
 						whatToGet=I.name();
@@ -154,7 +154,7 @@ public class Draw extends Get
 		boolean doneSomething=false;
 		while((c<containers.size())||(containers.size()==0))
 		{
-			Vector V=new Vector();
+			final Vector V=new Vector();
 			Container container=null;
 			if(containers.size()>0) container=containers.get(c++);
 			int addendum=1;
@@ -174,7 +174,7 @@ public class Draw extends Get
 
 			for(int i=0;i<V.size();i++)
 			{
-				Item getThis=(Item)V.elementAt(i);
+				final Item getThis=(Item)V.elementAt(i);
 				long wearCode=0;
 				if(container!=null)	wearCode=container.rawWornCode();
 				if((ifNecessary)
@@ -187,13 +187,13 @@ public class Draw extends Get
 					{
 						if(mob.freeWearPositions(Wearable.WORN_WIELD,(short)0,(short)0)==0)
 						{
-							CMMsg newMsg=CMClass.getMsg(mob,getThis,null,CMMsg.MSG_HOLD,null);
+							final CMMsg newMsg=CMClass.getMsg(mob,getThis,null,CMMsg.MSG_HOLD,null);
 							if(mob.location().okMessage(mob,newMsg))
 								mob.location().send(mob,newMsg);
 						}
 						else
 						{
-							CMMsg newMsg=CMClass.getMsg(mob,getThis,null,CMMsg.MSG_WIELD,null);
+							final CMMsg newMsg=CMClass.getMsg(mob,getThis,null,CMMsg.MSG_WIELD,null);
 							if(mob.location().okMessage(mob,newMsg))
 								mob.location().send(mob,newMsg);
 						}
@@ -209,7 +209,7 @@ public class Draw extends Get
 		{
 			if(containers.size()>0)
 			{
-				Container container=containers.get(0);
+				final Container container=containers.get(0);
 				if(container.isOpen())
 					mob.tell("You don't see that in "+container.name()+".");
 				else

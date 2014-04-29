@@ -66,8 +66,8 @@ public class HTTPSReader extends HTTPReader
 		sslEngine=sslContext.createSSLEngine();
 		sslEngine.setUseClientMode(false);
 		sslEngine.beginHandshake();
-		SSLSession session = sslEngine.getSession();
-		int netBufferMax = session.getPacketBufferSize();
+		final SSLSession session = sslEngine.getSession();
+		final int netBufferMax = session.getPacketBufferSize();
 		appSizedBuf=ByteBuffer.allocate(session.getApplicationBufferSize());
 		sslIncomingBuffer=ByteBuffer.allocate(netBufferMax);
 		sslOutgoingBuffer=ByteBuffer.allocate(netBufferMax);
@@ -114,22 +114,22 @@ public class HTTPSReader extends HTTPReader
 				return null;
 			}
 
-			char[] passphrase = config.getSslKeystorePassword().toCharArray();
-			KeyStore keyStore = KeyStore.getInstance(config.getSslKeystoreType());
-			FileManager mgr=config.getFileManager();
+			final char[] passphrase = config.getSslKeystorePassword().toCharArray();
+			final KeyStore keyStore = KeyStore.getInstance(config.getSslKeystoreType());
+			final FileManager mgr=config.getFileManager();
 			keyStore.load(mgr.getFileStream(mgr.createFileFromPath(config.getSslKeystorePath())), passphrase);
 
-			KeyManagerFactory kmf = KeyManagerFactory.getInstance(config.getSslKeyManagerEncoding());
+			final KeyManagerFactory kmf = KeyManagerFactory.getInstance(config.getSslKeyManagerEncoding());
 			kmf.init(keyStore, passphrase);
 
-			TrustManagerFactory tmf = TrustManagerFactory.getInstance(config.getSslKeyManagerEncoding());
+			final TrustManagerFactory tmf = TrustManagerFactory.getInstance(config.getSslKeyManagerEncoding());
 			tmf.init(keyStore);
 
-			SSLContext mySSLContext = SSLContext.getInstance("SSLv3");
+			final SSLContext mySSLContext = SSLContext.getInstance("SSLv3");
 			mySSLContext.init(kmf.getKeyManagers(), tmf.getTrustManagers(), new SecureRandom());
 			return mySSLContext;
 		}
-		catch(Exception e)
+		catch(final Exception e)
 		{
 			config.getLogger().throwing("", "", e);
 			return null;
@@ -203,7 +203,7 @@ public class HTTPSReader extends HTTPReader
 			handshakeComplete=true;
 			return buffer.position();
 		}
-		catch(SSLException ssle)
+		catch(final SSLException ssle)
 		{
 			config.getLogger().severe(ssle.getMessage());
 			return -1;
@@ -222,7 +222,7 @@ public class HTTPSReader extends HTTPReader
 	{
 		while(buffers.hasNext())
 		{
-			ByteBuffer buffer=buffers.next();
+			final ByteBuffer buffer=buffers.next();
 			while(buffer.hasRemaining())
 			{
 				appSizedBuf.clear();
@@ -232,7 +232,7 @@ public class HTTPSReader extends HTTPReader
 				while((buffer.hasRemaining()) && (appSizedBuf.hasRemaining()))
 					appSizedBuf.put(buffer.get());
 				appSizedBuf.flip();
-				ByteBuffer outBuf=ByteBuffer.allocate(sslOutgoingBuffer.capacity());
+				final ByteBuffer outBuf=ByteBuffer.allocate(sslOutgoingBuffer.capacity());
 				sslEngine.wrap(appSizedBuf, outBuf);
 				if(outBuf.position() > 0)
 				{
@@ -254,7 +254,7 @@ public class HTTPSReader extends HTTPReader
 		{
 			sslEngine.closeInbound();
 		}
-		catch (SSLException e)
+		catch (final SSLException e)
 		{ }
 		sslEngine.closeOutbound();
 		super.closeChannels();

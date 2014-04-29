@@ -43,10 +43,10 @@ public class WaterElemental extends StdRace
 	@Override public int weightVariance(){return 100;}
 	@Override public long forbiddenWornBits(){return 0;}
 	@Override public String racialCategory(){return "Water Elemental";}
-	private String[]racialAbilityNames={"Skill_Swim"};
-	private int[]racialAbilityLevels={1};
-	private int[]racialAbilityProficiencies={100};
-	private boolean[]racialAbilityQuals={false};
+	private final String[]racialAbilityNames={"Skill_Swim"};
+	private final int[]racialAbilityLevels={1};
+	private final int[]racialAbilityProficiencies={100};
+	private final boolean[]racialAbilityQuals={false};
 	@Override protected String[] racialAbilityNames(){return racialAbilityNames;}
 	@Override protected int[] racialAbilityLevels(){return racialAbilityLevels;}
 	@Override protected int[] racialAbilityProficiencies(){return racialAbilityProficiencies;}
@@ -60,7 +60,7 @@ public class WaterElemental extends StdRace
 	private static final int[] parts={-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1};
 	@Override public int[] bodyMask(){return parts;}
 
-	private int[] agingChart={0,0,0,0,0,YEARS_AGE_LIVES_FOREVER,YEARS_AGE_LIVES_FOREVER,YEARS_AGE_LIVES_FOREVER,YEARS_AGE_LIVES_FOREVER};
+	private final int[] agingChart={0,0,0,0,0,YEARS_AGE_LIVES_FOREVER,YEARS_AGE_LIVES_FOREVER,YEARS_AGE_LIVES_FOREVER,YEARS_AGE_LIVES_FOREVER};
 	@Override public int[] getAgingChart(){return agingChart;}
 
 	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
@@ -103,7 +103,7 @@ public class WaterElemental extends StdRace
 	@Override
 	public String healthText(MOB viewer, MOB mob)
 	{
-		double pct=(CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));
+		final double pct=(CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));
 
 		if(pct<.10)
 			return "^r" + mob.name(viewer) + "^r is almost dry!^N";

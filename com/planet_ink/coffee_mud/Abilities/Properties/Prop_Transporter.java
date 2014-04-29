@@ -104,8 +104,8 @@ public class Prop_Transporter extends Property implements TriggeredAffect
 		   &&(msg.amITarget(affected)||(msg.tool()==affected))
 		   &&(text().length()>0))
 		{
-			Room prevRoom=msg.source().location();
-			Room otherRoom=CMLib.map().getRoom(text());
+			final Room prevRoom=msg.source().location();
+			final Room otherRoom=CMLib.map().getRoom(text());
 			if(otherRoom==null)
 				msg.source().tell("You are whisked nowhere at all, since '"+text()+"' is nowhere to be found.");
 			else

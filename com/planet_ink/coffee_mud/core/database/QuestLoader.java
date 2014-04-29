@@ -46,16 +46,16 @@ public class QuestLoader
 		try
 		{
 			D=DB.DBFetch();
-			ResultSet R=D.query("SELECT * FROM CMQUESTS");
+			final ResultSet R=D.query("SELECT * FROM CMQUESTS");
 			while(R.next())
 			{
-				String questName=DBConnections.getRes(R,"CMQUESID");
-				String questScript=DBConnections.getRes(R,"CMQSCRPT");
-				String questWinners=DBConnections.getRes(R,"CMQWINNS");
-				long flags=DBConnections.getLongRes(R, "CMQFLAGS");
-				Quest Q=(Quest)CMClass.getCommon("DefaultQuest");
+				final String questName=DBConnections.getRes(R,"CMQUESID");
+				final String questScript=DBConnections.getRes(R,"CMQSCRPT");
+				final String questWinners=DBConnections.getRes(R,"CMQWINNS");
+				final long flags=DBConnections.getLongRes(R, "CMQFLAGS");
+				final Quest Q=(Quest)CMClass.getCommon("DefaultQuest");
 				Q.setFlags(flags);
-				boolean loaded=Q.setScript(questScript,!Q.suspended());
+				final boolean loaded=Q.setScript(questScript,!Q.suspended());
 				Q.setFlags(flags);
 				Q.setWinners(questWinners);
 				if(Q.name().length()==0)
@@ -83,7 +83,7 @@ public class QuestLoader
 					CMLib.quests().addQuest(Q);
 			}
 		}
-		catch(SQLException sqle)
+		catch(final SQLException sqle)
 		{
 			Log.errOut("Quest",sqle);
 		}
@@ -120,17 +120,17 @@ public class QuestLoader
 		if(quests.size()>0) quType=CMClass.classID(quests.get(0));
 		DBConnection D=null;
 		DB.update("DELETE FROM CMQUESTS WHERE CMQUTYPE='"+quType+"'");
-		try{Thread.sleep((1000+(quests.size()*100)));}catch(Exception e){}
+		try{Thread.sleep((1000+(quests.size()*100)));}catch(final Exception e){}
 		if(DB.queryRows("SELECT * FROM CMQUESTS WHERE CMQUTYPE='"+quType+"'")>0)
 			Log.errOut("Failed to delete quest typed '"+quType+"'.");
 		DB.update("DELETE FROM CMQUESTS WHERE CMQUTYPE='Quests'");
-		try{Thread.sleep((1000+(quests.size()*100)));}catch(Exception e){}
+		try{Thread.sleep((1000+(quests.size()*100)));}catch(final Exception e){}
 		if(DB.queryRows("SELECT * FROM CMQUESTS WHERE CMQUTYPE='Quests'")>0)
 			Log.errOut("Failed to delete quest typed 'Quests'.");
 		D=DB.DBFetchEmpty();
 		for(int m=0;m<quests.size();m++)
 		{
-			Quest Q=quests.get(m);
+			final Quest Q=quests.get(m);
 			if(Q.isCopy()) continue;
 			try
 			{
@@ -151,7 +151,7 @@ public class QuestLoader
 				D.setPreparedClobs(new String[]{Q.script()+" ",Q.getWinnerStr()+" "});
 				D.update("",0);
 			}
-			catch(java.sql.SQLException sqle)
+			catch(final java.sql.SQLException sqle)
 			{
 				Log.errOut("Quest",sqle);
 			}

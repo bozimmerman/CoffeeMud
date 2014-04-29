@@ -50,9 +50,9 @@ public class Throw extends StdCommand
 			return false;
 		}
 		commands.removeElementAt(0);
-		String str=(String)commands.lastElement();
+		final String str=(String)commands.lastElement();
 		commands.removeElement(str);
-		String what=CMParms.combine(commands,0);
+		final String what=CMParms.combine(commands,0);
 		Item item=mob.fetchItem(null,Wearable.FILTER_WORNONLY,what);
 		if(item==null) item=mob.findItem(null,what);
 		if((item==null)||(!CMLib.flags().canBeSeenBy(item,mob)))
@@ -66,7 +66,7 @@ public class Throw extends StdCommand
 			return false;
 		}
 
-		int dir=Directions.getGoodDirectionCode(str);
+		final int dir=Directions.getGoodDirectionCode(str);
 		Environmental target=null;
 		if(dir<0)
 			target=mob.location().fetchInhabitant(str);
@@ -80,10 +80,10 @@ public class Throw extends StdCommand
 				mob.tell("You can't throw anything that way!");
 				return false;
 			}
-			boolean amOutside=((mob.location().domainType()&Room.INDOORS)==0);
-			boolean isOutside=((((Room)target).domainType()&Room.INDOORS)==0);
-			boolean isUp=(mob.location().getRoomInDir(Directions.UP)==target);
-			boolean isDown=(mob.location().getRoomInDir(Directions.DOWN)==target);
+			final boolean amOutside=((mob.location().domainType()&Room.INDOORS)==0);
+			final boolean isOutside=((((Room)target).domainType()&Room.INDOORS)==0);
+			final boolean isUp=(mob.location().getRoomInDir(Directions.UP)==target);
+			final boolean isDown=(mob.location().getRoomInDir(Directions.DOWN)==target);
 
 			if(amOutside&&isOutside&&(!isUp)&&(!isDown)
 			&&((((Room)target).domainType()&Room.DOMAIN_OUTDOORS_AIR)==0))
@@ -100,7 +100,7 @@ public class Throw extends StdCommand
 
 		if(!(target instanceof Room))
 		{
-			CMMsg newMsg=CMClass.getMsg(mob,item,null,CMMsg.MSG_REMOVE,null);
+			final CMMsg newMsg=CMClass.getMsg(mob,item,null,CMMsg.MSG_REMOVE,null);
 			if(mob.location().okMessage(mob,newMsg))
 			{
 				mob.location().send(mob,newMsg);
@@ -112,7 +112,7 @@ public class Throw extends StdCommand
 					else
 					if(item instanceof SpellHolder)
 					{
-						List<Ability> V=((SpellHolder)item).getSpells();
+						final List<Ability> V=((SpellHolder)item).getSpells();
 						for(int v=0;v<V.size();v++)
 							if(V.get(v).abstractQuality()==Ability.QUALITY_MALICIOUS)
 							{
@@ -121,7 +121,7 @@ public class Throw extends StdCommand
 							}
 					}
 				}
-				CMMsg msg=CMClass.getMsg(mob,target,item,CMMsg.MSG_THROW,targetMsg,CMMsg.MSG_THROW,"<S-NAME> throw(s) <O-NAME> at <T-NAMESELF>.");
+				final CMMsg msg=CMClass.getMsg(mob,target,item,CMMsg.MSG_THROW,targetMsg,CMMsg.MSG_THROW,"<S-NAME> throw(s) <O-NAME> at <T-NAMESELF>.");
 				if(mob.location().okMessage(mob,msg))
 					mob.location().send(mob,msg);
 			}
@@ -132,8 +132,8 @@ public class Throw extends StdCommand
 			final int opDir=Directions.getOpDirectionCode(dir);
 			final String inDir=useShipDirs?Directions.getShipInDirectionName(dir):Directions.getInDirectionName(dir);
 			final String fromDir=useShipDirs?Directions.getShipFromDirectionName(opDir):Directions.getFromDirectionName(opDir);
-			CMMsg msg=CMClass.getMsg(mob,target,item,CMMsg.MSG_THROW,"<S-NAME> throw(s) <O-NAME> "+inDir.toLowerCase()+".");
-			CMMsg msg2=CMClass.getMsg(mob,target,item,CMMsg.MSG_THROW,"<O-NAME> fl(ys) in from "+fromDir.toLowerCase()+".");
+			final CMMsg msg=CMClass.getMsg(mob,target,item,CMMsg.MSG_THROW,"<S-NAME> throw(s) <O-NAME> "+inDir.toLowerCase()+".");
+			final CMMsg msg2=CMClass.getMsg(mob,target,item,CMMsg.MSG_THROW,"<O-NAME> fl(ys) in from "+fromDir.toLowerCase()+".");
 			if(mob.location().okMessage(mob,msg)&&((Room)target).okMessage(mob,msg2))
 			{
 				mob.location().send(mob,msg);

@@ -76,16 +76,16 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 	{
 		if(newParms.startsWith("+"))
 		{
-			List<String> V=CMParms.parseSemicolons(newParms.substring(1),false);
-			StringBuffer rsc=new StringBuffer("");
+			final List<String> V=CMParms.parseSemicolons(newParms.substring(1),false);
+			final StringBuffer rsc=new StringBuffer("");
 			for(int v=0;v<V.size();v++)
 				rsc.append(V.get(v)+"\n\r");
-			ChattyGroup[] addGroups=parseChatData(rsc);
-			ArrayList<ChattyEntry> newList=new ArrayList<ChattyEntry>(addedChatEntries.length);
-			for(ChattyEntry CE : addedChatEntries)
+			final ChattyGroup[] addGroups=parseChatData(rsc);
+			final ArrayList<ChattyEntry> newList=new ArrayList<ChattyEntry>(addedChatEntries.length);
+			for(final ChattyEntry CE : addedChatEntries)
 				newList.add(CE);
-			for(ChattyGroup CG : addGroups)
-				for(ChattyEntry CE : CG.entries)
+			for(final ChattyGroup CG : addGroups)
+				for(final ChattyEntry CE : CG.entries)
 					newList.add(CE);
 			addedChatEntries = newList.toArray(new ChattyEntry[0]);
 		}
@@ -103,15 +103,15 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 
 	protected static ChattyGroup newChattyGroup(String name)
 	{
-		char[] n = name.toCharArray();
+		final char[] n = name.toCharArray();
 		int last=0;
 		char lookFor=' ';
-		ArrayList<String> names=new ArrayList<String>();
-		ArrayList<MaskingLibrary.CompiledZapperMask> masks=new ArrayList<MaskingLibrary.CompiledZapperMask>();
+		final ArrayList<String> names=new ArrayList<String>();
+		final ArrayList<MaskingLibrary.CompiledZapperMask> masks=new ArrayList<MaskingLibrary.CompiledZapperMask>();
 		for(int i=0;i<n.length;i++)
 			if(n[i]==lookFor)
 			{
-				String s=name.substring(last,i).trim();
+				final String s=name.substring(last,i).trim();
 				last=i;
 				if(s.length()>0)
 				{
@@ -129,7 +129,7 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 				lookFor='/';
 				last=i;
 			}
-		String s=name.substring(last,name.length()).trim();
+		final String s=name.substring(last,name.length()).trim();
 		if(s.length()>0)
 		{
 			if(lookFor=='/')
@@ -153,7 +153,7 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 	{
 		ChattyGroup[] rsc=null;
 		String filename="chat.dat";
-		int x=parms.indexOf('=');
+		final int x=parms.indexOf('=');
 		if(x>0)    filename=parms.substring(0,x);
 		rsc=(ChattyGroup[])Resources.getResource("MUDCHAT GROUPS-"+filename.toLowerCase());
 		if(rsc!=null) return rsc;
@@ -170,11 +170,11 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 	@Override
 	public List<String> externalFiles()
 	{
-		int x=parms.indexOf('=');
+		final int x=parms.indexOf('=');
 		if(x>0)
 		{
-			Vector xmlfiles=new Vector();
-			String filename=parms.substring(0,x).trim();
+			final Vector xmlfiles=new Vector();
+			final String filename=parms.substring(0,x).trim();
 			if(filename.length()>0)
 				xmlfiles.addElement(filename.trim());
 			return xmlfiles;
@@ -184,11 +184,11 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 
 	protected static ChattyGroup[] parseChatData(StringBuffer rsc)
 	{
-		ArrayList<ChattyGroup> chatGroups = new ArrayList<ChattyGroup>();
+		final ArrayList<ChattyGroup> chatGroups = new ArrayList<ChattyGroup>();
 		ChattyGroup currentChatGroup=newChattyGroup("");
-		ArrayList<ChattyEntry> currentChatEntries = new ArrayList<ChattyEntry>();
+		final ArrayList<ChattyEntry> currentChatEntries = new ArrayList<ChattyEntry>();
 		ChattyEntry currentChatEntry=null;
-		ArrayList<ChattyTestResponse> currentChatEntryResponses = new ArrayList<ChattyTestResponse>();
+		final ArrayList<ChattyTestResponse> currentChatEntryResponses = new ArrayList<ChattyTestResponse>();
 
 		ChattyGroup otherChatGroup;
 		chatGroups.add(currentChatGroup);
@@ -233,13 +233,13 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 					if(otherChatGroup==null)
 						otherChatGroup=chatGroups.get(0);
 					if(otherChatGroup != currentChatGroup)
-						for(ChattyEntry CE : otherChatGroup.entries)
+						for(final ChattyEntry CE : otherChatGroup.entries)
 							currentChatEntries.add(CE);
 				}
 				break;
 			case '%':
 				{
-					  StringBuffer rsc2=new StringBuffer(Resources.getFileResource(str.substring(1).trim(),true).toString());
+					  final StringBuffer rsc2=new StringBuffer(Resources.getFileResource(str.substring(1).trim(),true).toString());
 					  if(rsc2.length()<1) { Log.sysOut("MudChat","Error reading resource "+str.substring(1).trim()); }
 					  rsc.insert(0,rsc2.toString());
 				}
@@ -269,7 +269,7 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 
 	protected static ChattyGroup[] loadChatData(String resourceName)
 	{
-		StringBuffer rsc=new CMFile(Resources.makeFileResourceName(resourceName),null,CMFile.FLAG_LOGERRORS).text();
+		final StringBuffer rsc=new CMFile(Resources.makeFileResourceName(resourceName),null,CMFile.FLAG_LOGERRORS).text();
 		return parseChatData(rsc);
 	}
 
@@ -311,14 +311,14 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 		myName=myName.toUpperCase();
 		if(myName.equals("DEFAULT"))
 			return chatGroups[0];
-		for(ChattyGroup CG : chatGroups)
+		for(final ChattyGroup CG : chatGroups)
 			if(CG.entries!=null)
 			{
-				for(String name : CG.groupNames)
+				for(final String name : CG.groupNames)
 					if(name.equals(myName))
 						return CG;
 				if(meM != null)
-					for(MaskingLibrary.CompiledZapperMask mask : CG.groupMasks)
+					for(final MaskingLibrary.CompiledZapperMask mask : CG.groupMasks)
 						if(CMLib.masking().maskCheck(mask, meM, true))
 							return CG;
 			}
@@ -333,7 +333,7 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 		ChattyGroup matchedCG=null;
 		if(getParms().length()>0)
 		{
-			int x=getParms().indexOf('=');
+			final int x=getParms().indexOf('=');
 			if(x<0)
 				matchedCG=matchChatGroup(forMe,getParms(),chatGroups);
 			else
@@ -357,7 +357,7 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 		ChattyGroup chatGrp=getMyBaseChatGroup(forMe,chatGroups);
 		if((addedChatEntries==null)||(addedChatEntries.length==0))
 			return chatGrp;
-		List<ChattyEntry> newEntries = new ArrayList<ChattyEntry>();
+		final List<ChattyEntry> newEntries = new ArrayList<ChattyEntry>();
 		newEntries.addAll(Arrays.asList(addedChatEntries));
 		newEntries.addAll(Arrays.asList(chatGrp.entries));
 		chatGrp=chatGrp.clone();
@@ -369,12 +369,12 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 	protected void queResponse(ArrayList<ChattyTestResponse> responses, MOB source, MOB target, String rest)
 	{
 		int total=0;
-		for(ChattyTestResponse CR : responses)
+		for(final ChattyTestResponse CR : responses)
 			total+=CR.weight;
 
 		ChattyTestResponse selection=null;
 		int select=CMLib.dice().roll(1,total,0);
-		for(ChattyTestResponse CR : responses)
+		for(final ChattyTestResponse CR : responses)
 		{
 			select-=CR.weight;
 			if(select<=0)
@@ -417,7 +417,7 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 					finalCommand=CMStrings.replaceAll(finalCommand,"$$","$");
 
 				Vector<String> V=CMParms.parse(finalCommand);
-				for(ChattyResponse R : responseQue)
+				for(final ChattyResponse R : responseQue)
 					if(CMParms.combine(R.parsedCommand,1).equalsIgnoreCase(finalCommand))
 					{
 						V=null;
@@ -432,7 +432,7 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 
 	protected boolean match(MOB speaker, String expression, String message, String[] rest)
 	{
-		int l=expression.length();
+		final int l=expression.length();
 		if(l==0) return true;
 		if((expression.charAt(0)=='(')
 		&&(expression.charAt(l-1)==')'))
@@ -477,7 +477,7 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 		else
 		if(check.length()>0)
 		{
-			int x=message.toUpperCase().indexOf(check.toUpperCase().trim());
+			final int x=message.toUpperCase().indexOf(check.toUpperCase().trim());
 			response=(x>=0);
 			if(response)
 				rest[0]=message.substring(x+check.length());
@@ -530,8 +530,8 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 		if((!canActAtAll(affecting))
 		||(CMSecurity.isDisabled(CMSecurity.DisFlag.MUDCHAT)))
 			return;
-		MOB mob=msg.source();
-		MOB monster=(MOB)affecting;
+		final MOB mob=msg.source();
+		final MOB monster=(MOB)affecting;
 		if((msg.source()==monster)
 		&&(msg.sourceMinor()==CMMsg.TYP_SPEAK)
 		&&(msg.othersMessage()!=null))
@@ -544,8 +544,8 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 		{
 			ArrayList<ChattyTestResponse> myResponses=null;
 			myChatGroup=getMyChatGroup(monster,getChatGroups(getParms()));
-			String rest[]=new String[1];
-			boolean combat=((monster.isInCombat()))||(mob.isInCombat());
+			final String rest[]=new String[1];
+			final boolean combat=((monster.isInCombat()))||(mob.isInCombat());
 
 			String str;
 			if((msg.targetMinor()==CMMsg.TYP_SPEAK)
@@ -562,9 +562,9 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 			&&((str=CMStrings.getSayFromMessage(msg.sourceMessage()))!=null))
 			{
 				str=" "+CMLib.english().stripPunctuation(str)+" ";
-				for(ChattyEntry entry : myChatGroup.entries)
+				for(final ChattyEntry entry : myChatGroup.entries)
 				{
-					String expression=entry.expression;
+					final String expression=entry.expression;
 					if(entry.combatEntry)
 					{
 						if(!combat) continue;
@@ -612,9 +612,9 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 				}
 				if(str!=null)
 				{
-					for(ChattyEntry entry : myChatGroup.entries)
+					for(final ChattyEntry entry : myChatGroup.entries)
 					{
-						String expression=entry.expression;
+						final String expression=entry.expression;
 						if(entry.combatEntry)
 						{
 							if(!combat) continue;
@@ -674,9 +674,9 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 				return true;
 			}
 			else
-			for(Iterator<ChattyResponse> riter= responseQue.descendingIterator();riter.hasNext();)
+			for(final Iterator<ChattyResponse> riter= responseQue.descendingIterator();riter.hasNext();)
 			{
-				ChattyResponse R = riter.next();
+				final ChattyResponse R = riter.next();
 				R.delay--;
 				if(R.delay<=0)
 				{

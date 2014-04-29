@@ -57,15 +57,15 @@ public class DefaultCoffeeTableRow implements CoffeeTableRow
 	@Override
 	public String data()
 	{
-		StringBuffer data=new StringBuffer("");
+		final StringBuffer data=new StringBuffer("");
 		data.append(CMLib.xml().convertXMLtoTag("HIGH",highestOnline));
 		data.append(CMLib.xml().convertXMLtoTag("NUMONLINE",numberOnlineTotal));
 		data.append(CMLib.xml().convertXMLtoTag("NUMCOUNT",numberOnlineCounter));
 		data.append("<STATS>");
-		for(Enumeration<String> e=stats.keys();e.hasMoreElements();)
+		for(final Enumeration<String> e=stats.keys();e.hasMoreElements();)
 		{
-			String s=e.nextElement();
-			long[] l=stats.get(s);
+			final String s=e.nextElement();
+			final long[] l=stats.get(s);
 			data.append(CMLib.xml().convertXMLtoTag(s,CMParms.toStringList(l)));
 		}
 		data.append("</STATS>");
@@ -93,13 +93,13 @@ public class DefaultCoffeeTableRow implements CoffeeTableRow
 	public void totalUp(String code, long[] tot)
 	{
 		code=tagFix(code);
-		for(Enumeration<String> e=stats.keys();e.hasMoreElements();)
+		for(final Enumeration<String> e=stats.keys();e.hasMoreElements();)
 		{
-			String s=e.nextElement();
+			final String s=e.nextElement();
 			if(s.startsWith(code)
 			||(s.startsWith("C")&&code.startsWith("*")))
 			{
-				long[] theseStats=stats.get(s);
+				final long[] theseStats=stats.get(s);
 				for(int t=0;t<theseStats.length;t++)
 					tot[t]+=theseStats[t];
 			}
@@ -120,7 +120,7 @@ public class DefaultCoffeeTableRow implements CoffeeTableRow
 		if(type==STAT_SPECIAL_NUMONLINE)
 		{
 			int ct=0;
-			for(Session S : CMLib.sessions().localOnlineIterable())
+			for(final Session S : CMLib.sessions().localOnlineIterable())
 				if(S!=null)
 					ct++;
 			numberOnlineCounter++;
@@ -132,20 +132,20 @@ public class DefaultCoffeeTableRow implements CoffeeTableRow
 		// classes, races, levels, genders, faiths, clanned, grouped
 		if(E instanceof MOB)
 		{
-			MOB mob=(MOB)E;
+			final MOB mob=(MOB)E;
 			bumpVal("B"+tagFix(mob.baseCharStats().getCurrentClass().baseClass()),type);
 			bumpVal("C"+tagFix(mob.baseCharStats().getCurrentClass().ID()),type);
 			bumpVal("R"+tagFix(mob.baseCharStats().getMyRace().ID()),type);
 			bumpVal("L"+mob.basePhyStats().level(),type);
 			bumpVal("G"+((char)mob.baseCharStats().getStat(CharStats.STAT_GENDER)),type);
 			bumpVal("F"+tagFix(mob.getWorshipCharID()),type);
-			for(Pair<Clan,Integer> p : mob.clans())
+			for(final Pair<Clan,Integer> p : mob.clans())
 				bumpVal("Q"+tagFix(p.first.clanID()),type);
-			Set<MOB> H=mob.getGroupMembers(new HashSet<MOB>());
+			final Set<MOB> H=mob.getGroupMembers(new HashSet<MOB>());
 			bumpVal("J"+H.size(),type);
 			int pct=0;
-			for(Iterator<MOB> e=H.iterator();e.hasNext();)
-				if(!e.next().isMonster()) pct++;
+			for (final MOB mob2 : H)
+				if(!mob2.isMonster()) pct++;
 			if(pct==0)pct=1;
 			bumpVal("P"+pct,type);
 		}
@@ -164,27 +164,27 @@ public class DefaultCoffeeTableRow implements CoffeeTableRow
 		{
 			startTime=start;
 			endTime=end;
-			List<XMLLibrary.XMLpiece> all=CMLib.xml().parseAllXML(data);
+			final List<XMLLibrary.XMLpiece> all=CMLib.xml().parseAllXML(data);
 			if((all==null)||(all.size()==0)) return;
 			highestOnline=CMLib.xml().getIntFromPieces(all,"HIGH");
 			numberOnlineTotal=CMLib.xml().getIntFromPieces(all,"NUMONLINE");
 			numberOnlineCounter=CMLib.xml().getIntFromPieces(all,"NUMCOUNT");
-			XMLLibrary.XMLpiece X=CMLib.xml().getPieceFromPieces(all,"STATS");
+			final XMLLibrary.XMLpiece X=CMLib.xml().getPieceFromPieces(all,"STATS");
 			if((X==null)||(X.contents==null)||(X.contents.size()==0)||(!X.tag.equals("STATS")))
 				return;
 			stats.clear();
 			for(int s=0;s<X.contents.size();s++)
 			{
-				XMLLibrary.XMLpiece S=X.contents.get(s);
+				final XMLLibrary.XMLpiece S=X.contents.get(s);
 				long[] l=CMParms.toLongArray(CMParms.parseCommas(S.value,true));
 				if(l.length<STAT_TOTAL)
 				{
-					long[] l2=new long[STAT_TOTAL];
+					final long[] l2=new long[STAT_TOTAL];
 					for(int i=0;i<l.length;i++)
 						l2[i]=l[i];
 					l=l2;
 				}
-				long[] l2=stats.get(S.tag);
+				final long[] l2=stats.get(S.tag);
 				if(l2!=null)
 				{
 					for(int i=0;i<l2.length;i++)
@@ -195,7 +195,7 @@ public class DefaultCoffeeTableRow implements CoffeeTableRow
 			}
 		}
 	}
-	@Override public CMObject newInstance(){try{return getClass().newInstance();}catch(Exception e){return new DefaultCoffeeTableRow();}}
+	@Override public CMObject newInstance(){try{return getClass().newInstance();}catch(final Exception e){return new DefaultCoffeeTableRow();}}
 	@Override public void initializeClass(){}
 
 	@Override
@@ -203,10 +203,10 @@ public class DefaultCoffeeTableRow implements CoffeeTableRow
 	{
 		try
 		{
-			DefaultCoffeeTableRow CR=(DefaultCoffeeTableRow)this.clone();
+			final DefaultCoffeeTableRow CR=(DefaultCoffeeTableRow)this.clone();
 			CR.stats=stats.copyOf();
 			return CR;
 		}
-		catch(Exception e){return newInstance();}
+		catch(final Exception e){return newInstance();}
 	}
 }

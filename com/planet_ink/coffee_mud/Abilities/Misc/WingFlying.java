@@ -79,7 +79,7 @@ public class WingFlying extends StdAbility implements HealthCondition
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		MOB target=mob;
+		final MOB target=mob;
 		if(target==null) return false;
 		if(target.charStats().getBodyPart(Race.BODY_WING)<=0)
 		{
@@ -87,7 +87,7 @@ public class WingFlying extends StdAbility implements HealthCondition
 			return false;
 		}
 
-		boolean wasFlying=CMLib.flags().isFlying(target);
+		final boolean wasFlying=CMLib.flags().isFlying(target);
 		Ability A=target.fetchEffect(ID());
 		if(A!=null) A.unInvoke();
 		target.recoverPhyStats();
@@ -101,14 +101,14 @@ public class WingFlying extends StdAbility implements HealthCondition
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
 			// it worked, so build a copy of this ability,
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_NOISYMOVEMENT,str);
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_NOISYMOVEMENT,str);
 			if(target.location().okMessage(target,msg))
 			{
 				target.location().send(target,msg);

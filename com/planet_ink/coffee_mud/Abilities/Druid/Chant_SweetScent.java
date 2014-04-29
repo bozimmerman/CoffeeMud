@@ -52,18 +52,18 @@ public class Chant_SweetScent extends Chant
 		if(!super.tick(ticking,tickID)) return false;
 		if((affected!=null)&&(affected instanceof Item))
 		{
-			Item I=(Item)affected;
+			final Item I=(Item)affected;
 			if(I.owner() instanceof Room)
 			{
-				Room room=(Room)I.owner();
-				Vector rooms=new Vector();
+				final Room room=(Room)I.owner();
+				final Vector rooms=new Vector();
 				TrackingLibrary.TrackingFlags flags;
 				flags = new TrackingLibrary.TrackingFlags()
 						.plus(TrackingLibrary.TrackingFlag.OPENONLY);
 				CMLib.tracking().getRadiantRooms(room,rooms,flags,null,10,null);
 				for(int i=0;i<room.numInhabitants();i++)
 				{
-					MOB M=room.fetchInhabitant(i);
+					final MOB M=room.fetchInhabitant(i);
 					if((M!=null)
 					&&(CMLib.flags().isAnimalIntelligence(M))
 					&&(CMLib.flags().canSmell(M)))
@@ -71,15 +71,15 @@ public class Chant_SweetScent extends Chant
 				}
 				for(int r=0;r<rooms.size();r++)
 				{
-					Room R=(Room)rooms.elementAt(r);
+					final Room R=(Room)rooms.elementAt(r);
 					if(R!=room)
 					{
-						int dir=CMLib.tracking().radiatesFromDir(R,rooms);
+						final int dir=CMLib.tracking().radiatesFromDir(R,rooms);
 						if(dir>=0)
 						{
 							for(int i=0;i<R.numInhabitants();i++)
 							{
-								MOB M=R.fetchInhabitant(i);
+								final MOB M=R.fetchInhabitant(i);
 								if((M!=null)
 								&&(CMLib.flags().isAnimalIntelligence(M))
 								&&(!M.isInCombat())
@@ -125,7 +125,7 @@ public class Chant_SweetScent extends Chant
 			return false;
 		}
 
-		Item target=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_UNWORNONLY);
+		final Item target=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_UNWORNONLY);
 		if(target==null) return false;
 		if(!Druid_MyPlants.isMyPlant(target,mob))
 		{
@@ -137,10 +137,10 @@ public class Chant_SweetScent extends Chant
 			return false;
 
 		// now see if it worked
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> chant(s) to <T-NAMESELF>.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> chant(s) to <T-NAMESELF>.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

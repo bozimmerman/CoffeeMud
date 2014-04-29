@@ -35,8 +35,8 @@ public class Wealth extends Inventory
 
 	public static StringBuilder getInventory(MOB seer, MOB mob, String mask)
 	{
-		StringBuilder msg=new StringBuilder("");
-		InventoryList list = fetchInventory(seer,mob);
+		final StringBuilder msg=new StringBuilder("");
+		final InventoryList list = fetchInventory(seer,mob);
 		if(list.moneyItems.size()==0)
 			msg.append("\n\r^HMoney:^N None!\n\r");
 		else
@@ -54,7 +54,7 @@ public class Wealth extends Inventory
 			commands.addElement(getInventory((MOB)commands.firstElement(),mob,null));
 			return true;
 		}
-		StringBuilder msg=getInventory(mob,mob,CMParms.combine(commands,1));
+		final StringBuilder msg=getInventory(mob,mob,CMParms.combine(commands,1));
 		if(msg.length()==0)
 			mob.tell("You have no money on you.");
 		else

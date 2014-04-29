@@ -57,14 +57,14 @@ public class Spell_PhantomHound extends Spell
 				unInvoke();
 			else
 			{
-				MOB beast=(MOB)affected;
+				final MOB beast=(MOB)affected;
 				int a=0;
 				while(a<beast.numEffects()) // personal
 				{
-					Ability A=beast.fetchEffect(a);
+					final Ability A=beast.fetchEffect(a);
 					if(A!=null)
 					{
-						int n=beast.numEffects();
+						final int n=beast.numEffects();
 						if(A.ID().equals(ID()))
 							a++;
 						else
@@ -79,7 +79,7 @@ public class Spell_PhantomHound extends Spell
 				}
 				if((!beast.isInCombat())||(beast.getVictim()!=victim))
 				{
-					Room R=beast.location();
+					final Room R=beast.location();
 					if(R!=null) R.show(beast, null,CMMsg.MSG_OK_VISUAL, "<S-NAME> vanish(es)!");
 					if(beast.amDead()) beast.setLocation(null);
 					beast.destroy();
@@ -88,12 +88,12 @@ public class Spell_PhantomHound extends Spell
 				{
 					pointsLeft-=(victim.charStats().getStat(CharStats.STAT_INTELLIGENCE));
 					pointsLeft-=victim.phyStats().level();
-					int pointsLost=beast.baseState().getHitPoints()-beast.curState().getHitPoints();
+					final int pointsLost=beast.baseState().getHitPoints()-beast.curState().getHitPoints();
 					if(pointsLost>0)
 						pointsLeft-=pointsLost/4;
 					if(pointsLeft<0)
 					{
-						Room R=beast.location();
+						final Room R=beast.location();
 						if(R!=null) R.show(victim, beast,CMMsg.MSG_OK_VISUAL, "<S-NAME> disbelieve(s) <T-NAME>, who vanish(es)!");
 						if(beast.amDead()) beast.setLocation(null);
 						beast.destroy();
@@ -122,7 +122,7 @@ public class Spell_PhantomHound extends Spell
 	@Override
 	public void unInvoke()
 	{
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		super.unInvoke();
 		if((canBeUninvoked())&&(mob!=null))
 		{
@@ -139,7 +139,7 @@ public class Spell_PhantomHound extends Spell
 		&&(msg.amISource((MOB)affected))
 		&&(msg.targetMinor()==CMMsg.TYP_DAMAGE))
 		{
-			int damageType=Weapon.TYPE_NATURAL;
+			final int damageType=Weapon.TYPE_NATURAL;
 			if(msg.sourceMessage()!=null)
 				msg.setSourceMessage(CMLib.combat().replaceDamageTag(msg.sourceMessage(), msg.value(), damageType, 'S'));
 			if(msg.targetMessage()!=null)
@@ -162,15 +162,15 @@ public class Spell_PhantomHound extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":"^S<S-NAME> invoke(s) a ferocious phantom assistant.^?");
+			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":"^S<S-NAME> invoke(s) a ferocious phantom assistant.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				MOB beast=CMClass.getMOB("GenMOB");
+				final MOB beast=CMClass.getMOB("GenMOB");
 				beast.setName("the phantom hound");
 				beast.setDisplayText("the phantom hound is here");
 				beast.setStartRoom(null);
@@ -182,7 +182,7 @@ public class Spell_PhantomHound extends Spell
 				beast.basePhyStats().setSensesMask(PhyStats.CAN_SEE_DARK|PhyStats.CAN_SEE_HIDDEN|PhyStats.CAN_SEE_INVISIBLE|PhyStats.CAN_SEE_SNEAKERS);
 				beast.baseCharStats().setMyRace(CMClass.getRace("Dog"));
 				beast.baseCharStats().getMyRace().startRacing(beast,false);
-				for(int i : CharStats.CODES.SAVING_THROWS())
+				for(final int i : CharStats.CODES.SAVING_THROWS())
 					beast.baseCharStats().setStat(i,200);
 				beast.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience"));
 				beast.basePhyStats().setAbility(100);

@@ -62,7 +62,7 @@ public class Skill_Cage extends StdSkill
 		{
 			for(int i=0;i<mob.location().numItems();i++)
 			{
-				Item I=mob.location().getItem(i);
+				final Item I=mob.location().getItem(i);
 				if((I!=null)
 				&&(I instanceof Container)
 				&&((((Container)I).containTypes()&Container.CONTAIN_CAGED)==Container.CONTAIN_CAGED))
@@ -70,8 +70,8 @@ public class Skill_Cage extends StdSkill
 			}
 			if(commands.size()>0)
 			{
-				String last=(String)commands.lastElement();
-				Item I=mob.location().findItem(null,last);
+				final String last=(String)commands.lastElement();
+				final Item I=mob.location().findItem(null,last);
 				if((I!=null)
 				&&(I instanceof Container)
 				&&((((Container)I).containTypes()&Container.CONTAIN_CAGED)==Container.CONTAIN_CAGED))
@@ -82,7 +82,7 @@ public class Skill_Cage extends StdSkill
 			}
 		}
 
-		MOB target=getTarget(mob,commands,givenTarget);
+		final MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 		if((!auto)&&(!(CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.ORDER)||target.willFollowOrdersOf(mob))))
 		{
@@ -122,12 +122,12 @@ public class Skill_Cage extends StdSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
-		CagedAnimal caged=(CagedAnimal)CMClass.getItem("GenCaged");
+		final CagedAnimal caged=(CagedAnimal)CMClass.getItem("GenCaged");
 		if((success)&&(caged.cageMe(target)))
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE,null);
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE,null);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -141,7 +141,7 @@ public class Skill_Cage extends StdSkill
 				}
 				else
 					mob.addItem(caged);
-				CMMsg putMsg=CMClass.getMsg(mob,cage,caged,CMMsg.MSG_PUT,"<S-NAME> cage(s) <O-NAME> in <T-NAME>.");
+				final CMMsg putMsg=CMClass.getMsg(mob,cage,caged,CMMsg.MSG_PUT,"<S-NAME> cage(s) <O-NAME> in <T-NAME>.");
 				if(mob.location().okMessage(mob,putMsg))
 				{
 					mob.location().send(mob,putMsg);

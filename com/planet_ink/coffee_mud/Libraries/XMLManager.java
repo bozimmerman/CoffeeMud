@@ -74,7 +74,7 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 		{
 			illegalTags=CMLib.coffeeFilter().getTagTable().keySet();
 		}
-		catch(Exception e)
+		catch(final Exception e)
 		{
 			illegalTags=new HashSet<String>();
 		}
@@ -126,7 +126,7 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 	public String restoreAngleBrackets(String s)
 	{
 		if(s==null) return null;
-		StringBuffer buf=new StringBuffer(s);
+		final StringBuffer buf=new StringBuffer(s);
 		int loop=0;
 		while(loop<buf.length())
 		{
@@ -148,8 +148,8 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 			case '%':
 				if(loop<buf.length()-2)
 				{
-					int dig1=HEX_DIGITS.indexOf(buf.charAt(loop+1));
-					int dig2=HEX_DIGITS.indexOf(buf.charAt(loop+2));
+					final int dig1=HEX_DIGITS.indexOf(buf.charAt(loop+1));
+					final int dig2=HEX_DIGITS.indexOf(buf.charAt(loop+2));
 					if((dig1>=0)&&(dig2>=0))
 					{
 						buf.setCharAt(loop,(char)((dig1*16)+dig2));
@@ -175,7 +175,7 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 	{
 		double sdouble=0;
 		try{ sdouble=Double.parseDouble(DOUBLE); }
-		catch(Exception e){ return 0;}
+		catch(final Exception e){ return 0;}
 		return sdouble;
 	}
 
@@ -190,7 +190,7 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 	{
 		int sint=0;
 		try{ sint=Integer.parseInt(INT); }
-		catch(java.lang.NumberFormatException e){ return 0;}
+		catch(final java.lang.NumberFormatException e){ return 0;}
 		return sint;
 	}
 
@@ -205,7 +205,7 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 	{
 		short sint=0;
 		try{ sint=Short.parseShort(SHORT); }
-		catch(java.lang.NumberFormatException e){ return 0;}
+		catch(final java.lang.NumberFormatException e){ return 0;}
 		return sint;
 	}
 
@@ -220,7 +220,7 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 	{
 		long slong=0;
 		try{ slong=Long.parseLong(LONG); }
-		catch(java.lang.NumberFormatException e){ return 0;}
+		catch(final java.lang.NumberFormatException e){ return 0;}
 		return slong;
 	}
 
@@ -334,7 +334,7 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 	@Override
 	public String getValFromPieces(List<XMLpiece> V, String tag, String defVal)
 	{
-		XMLpiece x=getPieceFromPieces(V,tag);
+		final XMLpiece x=getPieceFromPieces(V,tag);
 		if((x!=null)&&(x.value!=null))
 			return x.value;
 		return defVal;
@@ -343,7 +343,7 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 	@Override
 	public List<XMLpiece> getContentsFromPieces(List<XMLpiece> V, String tag)
 	{
-		XMLpiece x=getPieceFromPieces(V,tag);
+		final XMLpiece x=getPieceFromPieces(V,tag);
 		if(x!=null)	return x.contents;
 		return null;
 	}
@@ -372,7 +372,7 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 	public List<XMLpiece> getPiecesFromPieces(List<XMLpiece> V, String tag)
 	{
 		if(V==null) return null;
-		List<XMLpiece> pieces = new ArrayList<XMLpiece>();
+		final List<XMLpiece> pieces = new ArrayList<XMLpiece>();
 		for(int v=0;v<V.size();v++)
 			if(V.get(v).tag.equalsIgnoreCase(tag))
 				pieces.add(V.get(v));
@@ -382,7 +382,7 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 	@Override
 	public boolean getBoolFromPieces(List<XMLpiece> V, String tag)
 	{
-		String val=getValFromPieces(V,tag);
+		final String val=getValFromPieces(V,tag);
 		if((val==null)||(val.length()==0))
 			return false;
 		if(val.toUpperCase().trim().startsWith("T"))
@@ -418,7 +418,7 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 	@Override
 	public boolean getBoolFromPieces(List<XMLpiece> V, String tag, boolean defVal)
 	{
-		String val=getValFromPieces(V,tag);
+		final String val=getValFromPieces(V,tag);
 		if((val==null)||(val.length()==0))
 			return false;
 		if(val.toUpperCase().trim().startsWith("T"))
@@ -430,7 +430,7 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 	@Override
 	public int getIntFromPieces(List<XMLpiece> V, String tag, int defVal)
 	{
-		XMLpiece x=getPieceFromPieces(V,tag);
+		final XMLpiece x=getPieceFromPieces(V,tag);
 		if((x!=null)&&(x.value!=null))
 			return s_int(x.value);
 		return defVal;
@@ -439,7 +439,7 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 	@Override
 	public short getShortFromPieces(List<XMLpiece> V, String tag, short defVal)
 	{
-		XMLpiece x=getPieceFromPieces(V,tag);
+		final XMLpiece x=getPieceFromPieces(V,tag);
 		if((x!=null)&&(x.value!=null))
 			return s_short(x.value);
 		return defVal;
@@ -448,7 +448,7 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 	@Override
 	public long getLongFromPieces(List<XMLpiece> V, String tag, long defVal)
 	{
-		XMLpiece x=getPieceFromPieces(V,tag);
+		final XMLpiece x=getPieceFromPieces(V,tag);
 		if((x!=null)&&(x.value!=null))
 			return s_long(x.value);
 		return defVal;
@@ -457,7 +457,7 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 	@Override
 	public double getDoubleFromPieces(List<XMLpiece> V, String tag, double defVal)
 	{
-		XMLpiece x=getPieceFromPieces(V,tag);
+		final XMLpiece x=getPieceFromPieces(V,tag);
 		if((x!=null)&&(x.value!=null))
 			return s_double(x.value);
 		return defVal;
@@ -487,7 +487,7 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 				piece.parent.contents.remove(piece);
 			else
 				contents.remove(piece);
-			XMLpiece childPiece=piece;
+			final XMLpiece childPiece=piece;
 			piece=piece.parent;
 			Log.warnOut("XMLManager","Abandoned tag "+childPiece.tag+((piece!=null)?" of parent "+piece.tag:""));
 		}
@@ -497,9 +497,8 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 	protected void handleTagBounds()
 	{
 		int x=0;
-		for(int b=0;b<IGNORE_TAG_BOUNDS.length;b++)
+		for (final String[] bounds : IGNORE_TAG_BOUNDS)
 		{
-			final String[] bounds=IGNORE_TAG_BOUNDS[b];
 			final String boundStart=bounds[0];
 			if(bufDex <= (buf.length()-boundStart.length()))
 			{
@@ -577,7 +576,7 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 
 	protected void startPiece(int endOfTagName)
 	{
-		XMLpiece newPiece=new XMLpiece();
+		final XMLpiece newPiece=new XMLpiece();
 		newPiece.outerStart=beginDex[State.BEFORETAG.ordinal()];
 		newPiece.tag=buf.substring(beginDex[State.INTAG.ordinal()],endOfTagName).toUpperCase().trim();
 		if(piece!=null)
@@ -599,7 +598,7 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 
 	protected void closePiece(int outerEnd)
 	{
-		String closeTag=buf.substring(beginDex[State.INCLOSETAG.ordinal()],endDex[State.INCLOSETAG.ordinal()]).toUpperCase().trim();
+		final String closeTag=buf.substring(beginDex[State.INCLOSETAG.ordinal()],endDex[State.INCLOSETAG.ordinal()]).toUpperCase().trim();
 		XMLpiece closePiece=piece;
 		while((closePiece!=null)&&(!closePiece.tag.equalsIgnoreCase(closeTag)))
 			closePiece=closePiece.parent;
@@ -755,8 +754,8 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 	{
 		if(piece!=null)
 		{
-			String value="";
-			String parmName=buf.substring(beginDex[State.INATTRIB.ordinal()],endOfAttrib);
+			final String value="";
+			final String parmName=buf.substring(beginDex[State.INATTRIB.ordinal()],endOfAttrib);
 			if((parmName.length()>15)||(parmName.length()==0))
 				Log.warnOut("XMLManager","Suspicious attribute '"+parmName+"' for tag "+piece.tag);
 			piece.parms.put(parmName, value);
@@ -815,8 +814,8 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 	{
 		if(piece!=null)
 		{
-			String parmName=buf.substring(beginDex[State.INATTRIB.ordinal()], endDex[State.INATTRIB.ordinal()]).toUpperCase().trim();
-			String value=buf.substring(beginDex[state.ordinal()],endOfValue).trim();
+			final String parmName=buf.substring(beginDex[State.INATTRIB.ordinal()], endDex[State.INATTRIB.ordinal()]).toUpperCase().trim();
+			final String value=buf.substring(beginDex[state.ordinal()],endOfValue).trim();
 			if((parmName.length()>15)||(parmName.length()==0))
 				Log.warnOut("XMLManager","Suspicious attribute '"+parmName+"' for tag "+piece.tag);
 			piece.parms.put(parmName, value);
@@ -922,7 +921,7 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 	@Override
 	public List<XMLpiece> parseAllXML(StringBuffer buf)
 	{
-		XMLManager manager=new XMLManager(buf, 0);
+		final XMLManager manager=new XMLManager(buf, 0);
 		manager.parseXML();
 		return manager.contents;
 	}
@@ -938,7 +937,7 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 			if((start>=Blob.length())||(Blob.charAt(start-1)!='>')||(Blob.charAt(start-1)=='/'))
 				return "";
 		}
-		catch (Throwable t){return "";}
+		catch (final Throwable t){return "";}
 		return Blob.substring(start+1).trim();
 	}
 
@@ -954,14 +953,14 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 			if((start>=Blob.length())||(Blob.charAt(start)!='>')||(Blob.charAt(start-1)=='/'))
 				return "";
 		}
-		catch (Throwable t){return "";}
+		catch (final Throwable t){return "";}
 		return Blob.substring(start+1).trim();
 	}
 
 	@Override
 	public boolean returnXMLBoolean(String Blob, String Tag)
 	{
-		String val=returnXMLValue(Blob,Tag);
+		final String val=returnXMLValue(Blob,Tag);
 		if((val==null)||(val.length()==0))
 			return false;
 		if(val.toUpperCase().trim().startsWith("T"))
@@ -980,9 +979,9 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 	@Override
 	public String getXMLList(List<String> V)
 	{
-		StringBuffer str=new StringBuffer("");
+		final StringBuffer str=new StringBuffer("");
 		if(V!=null)
-		for(String s : V)
+		for(final String s : V)
 			if(s!=null)
 			{
 				if(s.trim().length()==0)
@@ -996,8 +995,8 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 	@Override
 	public List<String> parseXMLList(String numberedList)
 	{
-		List<XMLLibrary.XMLpiece> xml=parseAllXML(numberedList);
-		Vector<String> V=new Vector<String>();
+		final List<XMLLibrary.XMLpiece> xml=parseAllXML(numberedList);
+		final Vector<String> V=new Vector<String>();
 		for(int v=0;v<xml.size();v++)
 			V.addElement(this.restoreAngleBrackets(xml.get(v).value));
 		return V;

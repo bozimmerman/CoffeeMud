@@ -48,7 +48,7 @@ public class Skill_TwoWeaponFighting extends StdSkill
 
 	protected Weapon getFirstWeapon(MOB mob)
 	{
-		Item I=mob.fetchWieldedItem();
+		final Item I=mob.fetchWieldedItem();
 		if(I instanceof Weapon)
 			return (Weapon)I;
 		return null;
@@ -56,7 +56,7 @@ public class Skill_TwoWeaponFighting extends StdSkill
 
 	private Weapon getSecondWeapon(MOB mob)
 	{
-		Item I=mob.fetchHeldItem();
+		final Item I=mob.fetchHeldItem();
 		if((I instanceof Weapon)&&(!I.amWearingAt(Wearable.WORN_WIELD)))
 			return (Weapon)I;
 		return null;
@@ -67,11 +67,11 @@ public class Skill_TwoWeaponFighting extends StdSkill
 	{
 		if(affected instanceof MOB)
 		{
-			MOB mob=(MOB)affected;
+			final MOB mob=(MOB)affected;
 
 			if((getSecondWeapon(mob)!=null)&&(getFirstWeapon(mob)!=null)&&(mob.isInCombat()))
 			{
-				int xlvl=super.getXLEVELLevel(invoker());
+				final int xlvl=super.getXLEVELLevel(invoker());
 				affectableStats.setSpeed(affectableStats.speed()+1.0+(0.1*xlvl));
 				affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()-(affectableStats.attackAdjustment()/(5+xlvl)));
 				affectableStats.setDamage(affectableStats.damage()-(affectableStats.damage()/(20+xlvl)));
@@ -94,14 +94,14 @@ public class Skill_TwoWeaponFighting extends StdSkill
 	{
 		if((tickID==Tickable.TICKID_MOB)&&(affected instanceof MOB))
 		{
-			MOB mob=(MOB)affected;
+			final MOB mob=(MOB)affected;
 			if((mob!=null)&&(mob.isInCombat()))
 			{
 				if(CMath.bset(mob.getBitmap(),MOB.ATT_AUTODRAW))
 					CMLib.commands().postDraw(mob,true,true);
 
-				Item primaryWeapon=getFirstWeapon(mob);
-				Item weapon=getSecondWeapon(mob);
+				final Item primaryWeapon=getFirstWeapon(mob);
+				final Item weapon=getSecondWeapon(mob);
 				if((weapon!=null) // try to wield anything!
 				&&(primaryWeapon!=null)
 				&&attackedSinceLastTick

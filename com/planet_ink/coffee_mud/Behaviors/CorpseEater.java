@@ -62,7 +62,7 @@ public class CorpseEater extends ActiveTicker
 	{
 		if((type==null)||(type.length()==0))
 			type="StdMOB";
-		MOB mob=CMClass.getMOB(type);
+		final MOB mob=CMClass.getMOB(type);
 		if(corpse!=null)
 		{
 			mob.setName(corpse.name());
@@ -72,7 +72,7 @@ public class CorpseEater extends ActiveTicker
 			mob.setBasePhyStats((PhyStats)corpse.basePhyStats().copyOf());
 			mob.recoverCharStats();
 			mob.recoverPhyStats();
-			int level=mob.basePhyStats().level();
+			final int level=mob.basePhyStats().level();
 			mob.baseState().setHitPoints(CMLib.dice().rollHP(level,mob.basePhyStats().ability()));
 			mob.baseState().setMana(CMLib.leveler().getLevelMana(mob));
 			mob.baseState().setMovement(CMLib.leveler().getLevelMove(mob));
@@ -89,12 +89,12 @@ public class CorpseEater extends ActiveTicker
 		super.tick(ticking,tickID);
 		if((canAct(ticking,tickID))&&(ticking instanceof MOB))
 		{
-			MOB mob=(MOB)ticking;
-			Room thisRoom=mob.location();
+			final MOB mob=(MOB)ticking;
+			final Room thisRoom=mob.location();
 			if(thisRoom.numItems()==0) return true;
 			for(int i=0;i<thisRoom.numItems();i++)
 			{
-				Item I=thisRoom.getItem(i);
+				final Item I=thisRoom.getItem(i);
 				if((I!=null)
 				&&(I instanceof DeadBody)
 				&&(CMLib.flags().canBeSeenBy(I,mob)||CMLib.flags().canSmell(mob)))
@@ -110,7 +110,7 @@ public class CorpseEater extends ActiveTicker
 						if((getParms().toUpperCase().indexOf("-NPC")>=0)
 						||(getParms().toUpperCase().indexOf("-MOB")>=0))
 							continue;
-						MOB mob2=makeMOBfromCorpse((DeadBody)I,null);
+						final MOB mob2=makeMOBfromCorpse((DeadBody)I,null);
 						if(!CMLib.masking().maskCheck(getParms(),mob2,false))
 						{
 							mob2.destroy();

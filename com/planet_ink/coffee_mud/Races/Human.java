@@ -45,8 +45,8 @@ public class Human extends StdRace
 	@Override public long forbiddenWornBits(){return 0;}
 	@Override protected int trainsAtFirstLevel(){return 2;}
 	@Override public String racialCategory(){return "Human";}
-	private String[]culturalAbilityNames={"Chopping"};
-	private int[]culturalAbilityProficiencies={50};
+	private final String[]culturalAbilityNames={"Chopping"};
+	private final int[]culturalAbilityProficiencies={50};
 	@Override public String[] culturalAbilityNames(){return culturalAbilityNames;}
 	@Override public int[] culturalAbilityProficiencies(){return culturalAbilityProficiencies;}
 
@@ -54,7 +54,7 @@ public class Human extends StdRace
 	private static final int[] parts={0 ,2 ,2 ,1 ,1 ,2 ,2 ,1 ,2 ,2 ,1 ,0 ,1 ,1 ,0 ,0 };
 	@Override public int[] bodyMask(){return parts;}
 
-	private int[] agingChart={0,1,3,15,35,53,70,74,78};
+	private final int[] agingChart={0,1,3,15,35,53,70,74,78};
 	@Override public int[] getAgingChart(){return agingChart;}
 
 	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
@@ -73,13 +73,13 @@ public class Human extends StdRace
 		{
 			outfitChoices=new Vector();
 			// Have to, since it requires use of special constructor
-			Armor s1=CMClass.getArmor("GenShirt");
+			final Armor s1=CMClass.getArmor("GenShirt");
 			outfitChoices.add(s1);
-			Armor s2=CMClass.getArmor("GenShoes");
+			final Armor s2=CMClass.getArmor("GenShoes");
 			outfitChoices.add(s2);
-			Armor p1=CMClass.getArmor("GenPants");
+			final Armor p1=CMClass.getArmor("GenPants");
 			outfitChoices.add(p1);
-			Armor s3=CMClass.getArmor("GenBelt");
+			final Armor s3=CMClass.getArmor("GenBelt");
 			outfitChoices.add(s3);
 		}
 		return outfitChoices;
@@ -90,7 +90,7 @@ public class Human extends StdRace
 	@Override
 	public String healthText(MOB viewer, MOB mob)
 	{
-		double pct=(CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));
+		final double pct=(CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));
 
 		if(pct<.10)
 			return "^r" + mob.name(viewer) + "^r is mortally wounded and will soon die.^N";

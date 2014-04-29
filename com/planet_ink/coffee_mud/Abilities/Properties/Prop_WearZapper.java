@@ -56,9 +56,9 @@ public class Prop_WearZapper extends Prop_HaveZapper
 	{
 		if(affected==null) return super.okMessage(myHost, msg);
 		if(!(affected instanceof Item)) return super.okMessage(myHost, msg);
-		Item myItem=(Item)affected;
+		final Item myItem=(Item)affected;
 
-		MOB mob=msg.source();
+		final MOB mob=msg.source();
 		if(mob.location()==null)
 			return true;
 

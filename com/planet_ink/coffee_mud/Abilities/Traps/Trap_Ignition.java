@@ -47,7 +47,7 @@ public class Trap_Ignition extends StdTrap
 		if(mob.location()==null) return null;
 		for(int i=0;i<mob.location().numItems();i++)
 		{
-			Item I=mob.location().getItem(i);
+			final Item I=mob.location().getItem(i);
 			if((I!=null)
 			&&(I instanceof Drink)
 			&&(((((Drink)I).containsDrink())
@@ -62,7 +62,7 @@ public class Trap_Ignition extends StdTrap
 	public Trap setTrap(MOB mob, Physical P, int trapBonus, int qualifyingClassLevel, boolean perm)
 	{
 		if(P==null) return null;
-		Item I=getPoison(mob);
+		final Item I=getPoison(mob);
 		if((I!=null)&&(I instanceof Drink))
 		{
 			((Drink)I).setLiquidHeld(0);
@@ -73,7 +73,7 @@ public class Trap_Ignition extends StdTrap
 	@Override
 	public List<Item> getTrapComponents()
 	{
-		Vector V=new Vector();
+		final Vector V=new Vector();
 		V.addElement(CMClass.getBasicItem("OilFlask"));
 		return V;
 	}
@@ -82,7 +82,7 @@ public class Trap_Ignition extends StdTrap
 	public boolean canSetTrapOn(MOB mob, Physical P)
 	{
 		if(!super.canSetTrapOn(mob,P)) return false;
-		Item I=getPoison(mob);
+		final Item I=getPoison(mob);
 		if((I==null)
 		&&(mob!=null))
 		{
@@ -103,7 +103,7 @@ public class Trap_Ignition extends StdTrap
 			if(target.location().show(target,target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,"<S-NAME> set(s) off a trap! "+CMStrings.capitalizeAndLower(affected.name())+" ignites!"))
 			{
 				super.spring(target);
-				Ability B=CMClass.getAbility("Burning");
+				final Ability B=CMClass.getAbility("Burning");
 				if(B!=null)
 					B.invoke(invoker(),affected,true,(trapLevel()/5)+abilityCode());
 				if(affected instanceof Item)

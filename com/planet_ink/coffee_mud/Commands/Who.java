@@ -52,7 +52,7 @@ public class Who extends StdCommand
 
 	public String getHead(int[] colWidths)
 	{
-		StringBuilder head=new StringBuilder("");
+		final StringBuilder head=new StringBuilder("");
 		head.append("^x[");
 		if(!CMSecurity.isDisabled(CMSecurity.DisFlag.RACES))
 			head.append(CMStrings.padRight("Race",colWidths[0])+" ");
@@ -66,7 +66,7 @@ public class Who extends StdCommand
 
 	public StringBuffer showWhoShort(MOB who, int[] colWidths)
 	{
-		StringBuffer msg=new StringBuffer("");
+		final StringBuffer msg=new StringBuffer("");
 		msg.append("[");
 		if(!CMSecurity.isDisabled(CMSecurity.DisFlag.RACES))
 		{
@@ -76,7 +76,7 @@ public class Who extends StdCommand
 				msg.append(CMStrings.padRight(who.charStats().raceName(),colWidths[0])+" ");
 		}
 		String levelStr=who.charStats().displayClassLevel(who,true).trim();
-		int x=levelStr.lastIndexOf(' ');
+		final int x=levelStr.lastIndexOf(' ');
 		if(x>=0) levelStr=levelStr.substring(x).trim();
 		if(!CMSecurity.isDisabled(CMSecurity.DisFlag.CLASSES))
 		{
@@ -126,9 +126,9 @@ public class Who extends StdCommand
 
 	public String getWho(MOB mob, Set<String> friends, String mobName)
 	{
-		StringBuffer msg=new StringBuffer("");
-		int[] colWidths=getShortColWidths(mob);
-		for(Session S : CMLib.sessions().localOnlineIterable())
+		final StringBuffer msg=new StringBuffer("");
+		final int[] colWidths=getShortColWidths(mob);
+		for(final Session S : CMLib.sessions().localOnlineIterable())
 		{
 			MOB mob2=S.mob();
 			if((mob2!=null)&&(mob2.soulMate()!=null))
@@ -145,7 +145,7 @@ public class Who extends StdCommand
 			return "";
 		else
 		{
-			StringBuffer head=new StringBuffer(getHead(colWidths));
+			final StringBuffer head=new StringBuffer(getHead(colWidths));
 			head.append(msg.toString());
 			return head.toString();
 		}
@@ -184,15 +184,15 @@ public class Who extends StdCommand
 		||mobName.equalsIgnoreCase("playerkill")))
 		{
 			friends=new HashSet();
-			for(Session S : CMLib.sessions().allIterable())
+			for(final Session S : CMLib.sessions().allIterable())
 			{
-				MOB mob2=S.mob();
+				final MOB mob2=S.mob();
 				if((mob2!=null)&&(CMath.bset(mob2.getBitmap(),MOB.ATT_PLAYERKILL)))
 					friends.add(mob2.Name());
 			}
 		}
 
-		String msg = getWho(mob,friends,mobName);
+		final String msg = getWho(mob,friends,mobName);
 		if((mobName!=null)&&(msg.length()==0))
 			mob.tell("That person doesn't appear to be online.\n\r");
 		else

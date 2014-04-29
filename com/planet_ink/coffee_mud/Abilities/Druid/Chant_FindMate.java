@@ -61,13 +61,13 @@ public class Chant_FindMate extends Chant
 			||(!(affected instanceof MOB)))
 				return false;
 
-			MOB mob=(MOB)affected;
+			final MOB mob=(MOB)affected;
 			if(mob.location()!=null)
 			{
 				MOB mate=null;
 				for(int i=0;i<mob.location().numInhabitants();i++)
 				{
-					MOB M=mob.location().fetchInhabitant(i);
+					final MOB M=mob.location().fetchInhabitant(i);
 					if(isSuitableMate(M,mob))
 					{ mate=M; break;}
 				}
@@ -108,10 +108,10 @@ public class Chant_FindMate extends Chant
 			if(nextDirection>=0)
 			{
 				mob.tell("You want to continue "+Directions.getDirectionName(nextDirection)+".");
-				Room nextRoom=mob.location().getRoomInDir(nextDirection);
+				final Room nextRoom=mob.location().getRoomInDir(nextDirection);
 				if((nextRoom!=null)&&(nextRoom.getArea()==mob.location().getArea()))
 				{
-					int dir=nextDirection;
+					final int dir=nextDirection;
 					nextDirection=-2;
 					CMLib.tracking().walk(mob,dir,false,false);
 				}
@@ -138,7 +138,7 @@ public class Chant_FindMate extends Chant
 		if(!(affected instanceof MOB))
 			return;
 
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		if((msg.amISource(mob))
 		&&(msg.amITarget(mob.location()))
 		&&(CMLib.flags().canBeSeenBy(mob.location(),mob))
@@ -167,7 +167,7 @@ public class Chant_FindMate extends Chant
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		MOB target=getTarget(mob,commands,givenTarget);
+		final MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 		if((target.charStats().getStat(CharStats.STAT_GENDER)!='M')
 		&&(target.charStats().getStat(CharStats.STAT_GENDER)!='F'))
@@ -176,8 +176,8 @@ public class Chant_FindMate extends Chant
 			return false;
 		}
 
-		List<Ability> V=CMLib.flags().flaggedAffects(mob,Ability.FLAG_TRACKING);
-		for(Ability A : V) A.unInvoke();
+		final List<Ability> V=CMLib.flags().flaggedAffects(mob,Ability.FLAG_TRACKING);
+		for(final Ability A : V) A.unInvoke();
 		if(V.size()>0)
 		{
 			target.tell("You stop tracking.");
@@ -187,20 +187,19 @@ public class Chant_FindMate extends Chant
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		TrackingLibrary.TrackingFlags flags;
 		flags = new TrackingLibrary.TrackingFlags()
 				.plus(TrackingLibrary.TrackingFlag.OPENONLY);
-		Vector rooms=new Vector();
+		final Vector rooms=new Vector();
 		List<Room> checkSet=CMLib.tracking().getRadiantRooms(mob.location(),flags,50);
-		for(Iterator<Room> r=checkSet.iterator();r.hasNext();)
+		for (final Room R : checkSet)
 		{
-			Room R=r.next();
 			if(R!=null)
 			for(int i=0;i<R.numInhabitants();i++)
 			{
-				MOB M=R.fetchInhabitant(i);
+				final MOB M=R.fetchInhabitant(i);
 				if(isSuitableMate(M,target))
 				{ rooms.addElement(R); break;}
 			}
@@ -223,12 +222,12 @@ public class Chant_FindMate extends Chant
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?null:"^S<S-NAME> chant(s) to <T-NAMESELF>.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?null:"^S<S-NAME> chant(s) to <T-NAMESELF>.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				beneficialAffect(mob,target,asLevel,0);
-				Chant_FindMate A=(Chant_FindMate)target.fetchEffect(ID());
+				final Chant_FindMate A=(Chant_FindMate)target.fetchEffect(ID());
 				if(A!=null)
 				{
 					target.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> yearn(s) for a mate!");

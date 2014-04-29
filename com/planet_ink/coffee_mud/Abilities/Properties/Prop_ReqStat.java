@@ -62,9 +62,9 @@ public class Prop_ReqStat extends Property implements TriggeredAffect
 	public void setMiscText(String txt)
 	{
 		noSneak=false;
-		Vector parms=CMParms.parse(txt.toUpperCase());
+		final Vector parms=CMParms.parse(txt.toUpperCase());
 		String s;
-		for(Enumeration p=parms.elements();p.hasMoreElements();)
+		for(final Enumeration p=parms.elements();p.hasMoreElements();)
 		{
 			s=(String)p.nextElement();
 			if(s.startsWith("NOSNEAK"))
@@ -88,7 +88,7 @@ public class Prop_ReqStat extends Property implements TriggeredAffect
 		if(CMLib.flags().isSneaking(mob)&&(!noSneak))
 			return true;
 		int[] comp=null;
-		for(int c : CharStats.CODES.ALL())
+		for(final int c : CharStats.CODES.ALL())
 		{
 			comp=CMParms.getParmCompare(text(),CharStats.CODES.NAME(c),mob.charStats().getStat(c));
 			if(comp[1]<0)
@@ -165,7 +165,7 @@ public class Prop_ReqStat extends Property implements TriggeredAffect
 			if((affected instanceof Item)
 			&&(((Item)affected).owner() instanceof MOB))
 			{
-				Item myItem=(Item)affected;
+				final Item myItem=(Item)affected;
 				if(msg.amISource((MOB)myItem.owner()))
 					switch(msg.sourceMinor())
 					{

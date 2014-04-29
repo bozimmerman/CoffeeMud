@@ -52,7 +52,7 @@ public class Prop_NewDeathMsg extends Property
 		&&(msg.othersMessage()!=null)
 		&&(msg.othersMessage().toUpperCase().indexOf("<S-NAME> IS DEAD")>0))
 		{
-			int x=msg.othersMessage().indexOf("\n\r");
+			final int x=msg.othersMessage().indexOf("\n\r");
 			if(x>=0)
 			{
 				msg.modify(msg.source(),msg.target(),msg.tool(),msg.sourceCode(),text()+msg.othersMessage().substring(x),

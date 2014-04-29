@@ -51,7 +51,7 @@ public class Spell_PredictWeather extends Spell
 	{
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		if(canBeUninvoked())
 			lastPrediction="";
 		super.unInvoke();
@@ -69,7 +69,7 @@ public class Spell_PredictWeather extends Spell
 		   &&(((MOB)affected).location()!=null)
 		   &&((((MOB)affected).location().domainType()&Room.INDOORS)==0))
 		{
-		   String prediction=(((MOB)affected).location().getArea().getClimateObj().nextWeatherDescription(((MOB)affected).location()));
+		   final String prediction=(((MOB)affected).location().getArea().getClimateObj().nextWeatherDescription(((MOB)affected).location()));
 		   if(!prediction.equals(lastPrediction))
 		   {
 			   lastPrediction=prediction;
@@ -95,11 +95,11 @@ public class Spell_PredictWeather extends Spell
 			return false;
 
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> gain(s) sensitivity to the weather!":"^S<S-NAME> invoke(s) weather sensitivity!^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> gain(s) sensitivity to the weather!":"^S<S-NAME> invoke(s) weather sensitivity!^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				lastPrediction="";

@@ -55,7 +55,7 @@ public class Shutdown extends CM1Command
 			com.planet_ink.coffee_mud.application.MUD.globalShutdown(null,true,null);
 			req.close();
 		}
-		catch(java.io.IOException ioe)
+		catch(final java.io.IOException ioe)
 		{
 			Log.errOut(className,ioe);
 			req.close();

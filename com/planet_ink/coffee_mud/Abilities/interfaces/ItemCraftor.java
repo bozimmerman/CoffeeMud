@@ -146,7 +146,7 @@ public interface ItemCraftor extends Ability
 		public ItemKeyPair(Item item, DoorKey key) { this.item=item; this.key=key;}
 		public List<Item> asList()
 		{
-			List<Item> list = new LinkedList<Item>();
+			final List<Item> list = new LinkedList<Item>();
 			if(item!=null) list.add(item);
 			if(key != null) list.add(key);
 			return list;

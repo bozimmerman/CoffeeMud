@@ -14,6 +14,7 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import com.planet_ink.miniweb.interfaces.*;
+
 import java.util.*;
 
 /*
@@ -38,17 +39,17 @@ public class AbilityDomainNext extends StdWebMacro
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
-		java.util.Map<String,String> parms=parseParms(parm);
-		String last=httpReq.getUrlParameter("DOMAIN");
+		final java.util.Map<String,String> parms=parseParms(parm);
+		final String last=httpReq.getUrlParameter("DOMAIN");
 		if(parms.containsKey("RESET"))
 		{
 			if(last!=null) httpReq.removeUrlParameter("DOMAIN");
 			return "";
 		}
 		String lastID="";
-		for(int i=0;i<Ability.DOMAIN_DESCS.length;i++)
+		for (final String element : Ability.DOMAIN_DESCS)
 		{
-			String S=Ability.DOMAIN_DESCS[i];
+			final String S=element;
 			if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!S.equals(lastID))))
 			{
 				httpReq.addFakeUrlParameter("DOMAIN",S);

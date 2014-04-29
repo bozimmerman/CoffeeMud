@@ -52,7 +52,7 @@ public class Prayer_AuraIntolerance extends Prayer
 		// undo the affects of this spell
 		if(!(affected instanceof MOB))
 			return;
-		MOB M=(MOB)affected;
+		final MOB M=(MOB)affected;
 
 		super.unInvoke();
 
@@ -92,10 +92,10 @@ public class Prayer_AuraIntolerance extends Prayer
 		if(!super.tick(ticking,tickID))
 			return false;
 
-		Room R=((MOB)affected).location();
+		final Room R=((MOB)affected).location();
 		for(int i=0;i<R.numInhabitants();i++)
 		{
-			MOB M=R.fetchInhabitant(i);
+			final MOB M=R.fetchInhabitant(i);
 			if((M!=null)
 			&&(M!=((MOB)affected))
 			&&((M.getWorshipCharID().length()==0)
@@ -146,7 +146,7 @@ public class Prayer_AuraIntolerance extends Prayer
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
@@ -154,7 +154,7 @@ public class Prayer_AuraIntolerance extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> "+prayWord(mob)+" for the aura of intolerance.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> "+prayWord(mob)+" for the aura of intolerance.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

@@ -50,7 +50,7 @@ public class Skill_InstrumentBash extends BardSkill
 	{
 		if(mob!=null)
 		{
-			Item instrument=Play.getInstrument(mob,-1,true);
+			final Item instrument=Play.getInstrument(mob,-1,true);
 			if(instrument==null)
 				return Ability.QUALITY_INDIFFERENT;
 			if((CMLib.flags().isSitting(target)||CMLib.flags().isSleeping(target)))
@@ -62,10 +62,10 @@ public class Skill_InstrumentBash extends BardSkill
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		MOB target=this.getTarget(mob,commands,givenTarget);
+		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
-		Item instrument=Play.getInstrument(mob,-1,true);
+		final Item instrument=Play.getInstrument(mob,-1,true);
 		if(instrument==null) return false;
 
 		if((CMLib.flags().isSitting(target)||CMLib.flags().isSleeping(target)))
@@ -77,18 +77,18 @@ public class Skill_InstrumentBash extends BardSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		String str=null;
 		if(success)
 		{
 			str=auto?"<T-NAME> is bashed!":"^F^<FIGHT^><S-NAME> bash(es) <T-NAMESELF> with "+instrument.name()+"!^</FIGHT^>^?";
-			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),str);
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),str);
 			CMLib.color().fixSourceFightColor(msg);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				Weapon w=CMClass.getWeapon("ShieldWeapon");
+				final Weapon w=CMClass.getWeapon("ShieldWeapon");
 				if(w!=null)
 				{
 					w.setName(instrument.name());

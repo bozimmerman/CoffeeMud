@@ -11,12 +11,14 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.JournalsLibrary.CommandJournal;
+import com.planet_ink.coffee_mud.Libraries.interfaces.JournalsLibrary.ForumJournal;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /*
@@ -44,8 +46,8 @@ public class ForumJournalNext extends StdWebMacro
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
-		java.util.Map<String,String> parms=parseParms(parm);
-		String last=httpReq.getUrlParameter("JOURNAL");
+		final java.util.Map<String,String> parms=parseParms(parm);
+		final String last=httpReq.getUrlParameter("JOURNAL");
 		if(parms.containsKey("RESET"))
 		{
 			if(last!=null) httpReq.removeUrlParameter("JOURNAL");
@@ -65,7 +67,7 @@ public class ForumJournalNext extends StdWebMacro
 			M=guestM;
 		}
 
-		Clan setClan=CMLib.clans().getClan(httpReq.getUrlParameter("CLAN"));
+		final Clan setClan=CMLib.clans().getClan(httpReq.getUrlParameter("CLAN"));
 		List<String> journals;
 		if((setClan!=null)&&(CMLib.journals().getClanForums(setClan)!=null))
 		{
@@ -74,9 +76,8 @@ public class ForumJournalNext extends StdWebMacro
 			{
 				journals=new Vector<String>();
 				final List<JournalsLibrary.ForumJournal> clanForumJournals=CMLib.journals().getClanForums(setClan);
-				for(Iterator<JournalsLibrary.ForumJournal> e=clanForumJournals.iterator();e.hasNext();)
+				for (final ForumJournal CJ : clanForumJournals)
 				{
-					JournalsLibrary.ForumJournal CJ=e.next();
 					if((!journals.contains(CJ.NAME().toUpperCase()))
 					&&(CMLib.masking().maskCheck(CJ.readMask(), M, true)))
 						journals.add(CJ.NAME());
@@ -90,9 +91,9 @@ public class ForumJournalNext extends StdWebMacro
 			if(journals==null)
 			{
 				journals=new Vector();
-				for(Enumeration<JournalsLibrary.ForumJournal> e=CMLib.journals().forumJournals();e.hasMoreElements();)
+				for(final Enumeration<JournalsLibrary.ForumJournal> e=CMLib.journals().forumJournals();e.hasMoreElements();)
 				{
-					JournalsLibrary.ForumJournal CJ=e.nextElement();
+					final JournalsLibrary.ForumJournal CJ=e.nextElement();
 					if((!journals.contains(CJ.NAME().toUpperCase()))
 					&&(CMLib.masking().maskCheck(CJ.readMask(), M, true)))
 						journals.add(CJ.NAME());
@@ -101,7 +102,7 @@ public class ForumJournalNext extends StdWebMacro
 			}
 		}
 		String lastID="";
-		HashSet<String> H=CMLib.journals().getArchonJournalNames();
+		final HashSet<String> H=CMLib.journals().getArchonJournalNames();
 		boolean allForumJournals=false;
 		if((Thread.currentThread() instanceof MWThread)
 		&&CMath.s_bool(((MWThread)Thread.currentThread()).getConfig().getMiscProp("ADMIN"))
@@ -110,7 +111,7 @@ public class ForumJournalNext extends StdWebMacro
 
 		for(int j=0;j<journals.size();j++)
 		{
-			String B=journals.get(j);
+			final String B=journals.get(j);
 			if((!allForumJournals)&&(H.contains(B.toUpperCase().trim()))&&((M==null)||(!CMSecurity.isASysOp(M))))
 				continue;
 			if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!B.equals(lastID))))

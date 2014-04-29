@@ -44,11 +44,11 @@ public class DrowElf extends StdMOB
 	{
 		super();
 
-		Random randomizer = new Random(System.currentTimeMillis());
+		final Random randomizer = new Random(System.currentTimeMillis());
 
 		basePhyStats().setLevel(4 + Math.abs(randomizer.nextInt() % 7));
 
-		int gender = Math.abs(randomizer.nextInt() % 2);
+		final int gender = Math.abs(randomizer.nextInt() % 2);
 		String sex = null;
 		if (gender == MALE)
 			sex = "male";

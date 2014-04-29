@@ -40,8 +40,8 @@ public class ComponentNext extends StdWebMacro
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
-		java.util.Map<String,String> parms=parseParms(parm);
-		String last=httpReq.getUrlParameter("COMPONENT");
+		final java.util.Map<String,String> parms=parseParms(parm);
+		final String last=httpReq.getUrlParameter("COMPONENT");
 		if(parms.containsKey("RESET"))
 		{
 			if(last!=null) httpReq.removeUrlParameter("COMPONENT");
@@ -49,7 +49,7 @@ public class ComponentNext extends StdWebMacro
 		}
 		String lastID="";
 		String componentID;
-		for(Iterator<String> i=CMLib.ableMapper().getAbilityComponentMap().keySet().iterator();i.hasNext();)
+		for(final Iterator<String> i=CMLib.ableMapper().getAbilityComponentMap().keySet().iterator();i.hasNext();)
 		{
 			componentID=i.next();
 			if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!componentID.equalsIgnoreCase(lastID))))

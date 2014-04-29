@@ -83,7 +83,7 @@ public class StdTriCorder extends StdElecContainer implements Electronics.Comput
 		{
 			final List<Item> list=getContents();
 			final LinkedList<Software> softwareList=new LinkedList<Software>();
-			for(Item I : list)
+			for(final Item I : list)
 				if(I instanceof Software)
 					softwareList.add((Software)I);
 			nextSoftwareCheck=System.currentTimeMillis()+(10*1000);
@@ -146,7 +146,7 @@ public class StdTriCorder extends StdElecContainer implements Electronics.Comput
 	@Override
 	public List<MOB> getCurrentReaders()
 	{
-		List<MOB> readers=new LinkedList<MOB>();
+		final List<MOB> readers=new LinkedList<MOB>();
 		if(amDestroyed())
 			return readers;
 		if(owner() instanceof MOB)
@@ -237,7 +237,7 @@ public class StdTriCorder extends StdElecContainer implements Electronics.Comput
 				if(msg.targetMessage()!=null)
 				{
 					final List<Software> software=getSoftware();
-					List<CMMsg> msgs=new LinkedList<CMMsg>();
+					final List<CMMsg> msgs=new LinkedList<CMMsg>();
 					synchronized(software)
 					{
 						for(final Software S : software)
@@ -268,14 +268,14 @@ public class StdTriCorder extends StdElecContainer implements Electronics.Comput
 					if(msgs.size()==0)
 						M.location().show(M, this, null, CMMsg.MASK_ALWAYS|CMMsg.TYP_OK_VISUAL, CMMsg.NO_EFFECT, CMMsg.NO_EFFECT, "<T-NAME> says '^N\n\rUnknown command. Please read the screen for a menu.\n\r^.^N'");
 					else
-					for(CMMsg msg2 : msgs)
+					for(final CMMsg msg2 : msgs)
 					{
 						if(msg2.target().okMessage(M, msg2))
 						{
 							msg2.target().executeMsg(M, msg2);
 							if(msg2.target() instanceof Software)
 							{
-								Software sw=(Software)msg2.target();
+								final Software sw=(Software)msg2.target();
 								if(msg2.targetMinor()==CMMsg.TYP_ACTIVATE)
 								{
 									setActiveMenu(sw.getInternalName());
@@ -327,7 +327,7 @@ public class StdTriCorder extends StdElecContainer implements Electronics.Comput
 				if((msg.targetMessage()!=null)&&(activated()))
 				{
 					final List<Software> software=getSoftware();
-					List<CMMsg> msgs=new LinkedList<CMMsg>();
+					final List<CMMsg> msgs=new LinkedList<CMMsg>();
 					synchronized(software)
 					{
 						for(final Software S : software)
@@ -338,12 +338,12 @@ public class StdTriCorder extends StdElecContainer implements Electronics.Comput
 							}
 						}
 					}
-					boolean readFlag=false;
+					final boolean readFlag=false;
 					final MOB M=msg.source();
 					if(msgs.size()==0)
 						M.location().show(M, this, null, CMMsg.MASK_ALWAYS|CMMsg.TYP_OK_VISUAL, CMMsg.NO_EFFECT, CMMsg.NO_EFFECT, "<T-NAME> says '^N\n\rUnknown activation command. Please read the screen for a menu of TYPEable commands.\n\r^.^N'");
 					else
-					for(CMMsg msg2 : msgs)
+					for(final CMMsg msg2 : msgs)
 						if(msg2.target().okMessage(M, msg2))
 							msg2.target().executeMsg(M, msg2);
 					if(readFlag)
@@ -354,7 +354,7 @@ public class StdTriCorder extends StdElecContainer implements Electronics.Comput
 				if((msg.targetMessage()!=null)&&(activated()))
 				{
 					final List<Software> software=getSoftware();
-					List<CMMsg> msgs=new LinkedList<CMMsg>();
+					final List<CMMsg> msgs=new LinkedList<CMMsg>();
 					synchronized(software)
 					{
 						for(final Software S : software)
@@ -365,12 +365,12 @@ public class StdTriCorder extends StdElecContainer implements Electronics.Comput
 							}
 						}
 					}
-					boolean readFlag=false;
+					final boolean readFlag=false;
 					final MOB M=msg.source();
 					if(msgs.size()==0)
 						M.location().show(M, this, null, CMMsg.MASK_ALWAYS|CMMsg.TYP_OK_VISUAL, CMMsg.NO_EFFECT, CMMsg.NO_EFFECT, "<T-NAME> says '^N\n\rUnknown deactivation command. Please read the screen for a menu of TYPEable commands.\n\r^.^N'");
 					else
-					for(CMMsg msg2 : msgs)
+					for(final CMMsg msg2 : msgs)
 						if(msg2.target().okMessage(M, msg2))
 							msg2.target().executeMsg(M, msg2);
 					if(readFlag)
@@ -402,12 +402,12 @@ public class StdTriCorder extends StdElecContainer implements Electronics.Comput
 		{
 			if(activated() && owner() instanceof MOB)
 			{
-				MOB mob=(MOB)owner();
+				final MOB mob=(MOB)owner();
 				final List<Software> software=getSoftware();
-				CMMsg msg2=CMClass.getMsg(mob, null, null, CMMsg.NO_EFFECT,null,CMMsg.MSG_POWERCURRENT,null,CMMsg.NO_EFFECT,null);
+				final CMMsg msg2=CMClass.getMsg(mob, null, null, CMMsg.NO_EFFECT,null,CMMsg.MSG_POWERCURRENT,null,CMMsg.NO_EFFECT,null);
 				synchronized(software) // this is how software ticks, even tricorder software...
 				{
-					for(Software sw : software)
+					for(final Software sw : software)
 					{
 						msg2.setTarget(sw);
 						msg2.setValue(1+(this.getActiveMenu().equals(sw.getInternalName())?1:0));
@@ -437,12 +437,12 @@ public class StdTriCorder extends StdElecContainer implements Electronics.Comput
 			synchronized(software)
 			{
 				final StringBuilder newMsgs=new StringBuilder();
-				for(Software sw : software)
+				for(final Software sw : software)
 					newMsgs.append(sw.getScreenMessage());
 				if(newMsgs.length()>0)
 				{
-					List<MOB> readers=getCurrentReaders();
-					for(MOB M : readers)
+					final List<MOB> readers=getCurrentReaders();
+					for(final MOB M : readers)
 						if(CMLib.flags().canBeSeenBy(this, M))
 							M.location().show(M, this, null, CMMsg.MASK_ALWAYS|CMMsg.TYP_OK_VISUAL, CMMsg.NO_EFFECT, CMMsg.NO_EFFECT, "<T-NAME> says '^N\n\r"+newMsgs.toString()+"\n\r^.^N'");
 				}
@@ -455,8 +455,8 @@ public class StdTriCorder extends StdElecContainer implements Electronics.Comput
 	{
 		if(activated())
 		{
-			List<MOB> readers=getCurrentReaders();
-			for(MOB M : readers)
+			final List<MOB> readers=getCurrentReaders();
+			for(final MOB M : readers)
 				CMLib.commands().postRead(M, this, "", true);
 		}
 	}
@@ -467,10 +467,10 @@ public class StdTriCorder extends StdElecContainer implements Electronics.Comput
 		{
 			final List<Software> software=getSoftware();
 			final Room locR=CMLib.map().roomLocation(this);
-			CMMsg msg2=CMClass.getMsg(CMLib.map().getFactoryMOB(locR), null, null, CMMsg.NO_EFFECT,null,CMMsg.MSG_DEACTIVATE,null,CMMsg.NO_EFFECT,null);
+			final CMMsg msg2=CMClass.getMsg(CMLib.map().getFactoryMOB(locR), null, null, CMMsg.NO_EFFECT,null,CMMsg.MSG_DEACTIVATE,null,CMMsg.NO_EFFECT,null);
 			synchronized(software)
 			{
-				for(Software sw : software)
+				for(final Software sw : software)
 				{
 					msg2.setTarget(sw);
 					if(sw.okMessage(msg2.source(), msg2))
@@ -480,7 +480,7 @@ public class StdTriCorder extends StdElecContainer implements Electronics.Comput
 			activate(false);
 			if(owner() instanceof MOB)
 			{
-				MOB M=(MOB)owner();
+				final MOB M=(MOB)owner();
 				if(CMLib.flags().canBeSeenBy(this, M))
 					M.location().show(M, this, null, CMMsg.MASK_ALWAYS|CMMsg.TYP_OK_VISUAL, CMMsg.NO_EFFECT, CMMsg.NO_EFFECT, "The screen on <T-NAME> goes blank.");
 			}

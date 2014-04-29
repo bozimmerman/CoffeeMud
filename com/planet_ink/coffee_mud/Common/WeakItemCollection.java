@@ -49,8 +49,8 @@ limitations under the License.
  */
 public class WeakItemCollection implements ItemCollection, CMCommon
 {
-	private SVector<WeakReference<Item>> innerContents=new SVector<WeakReference<Item>>(0);
-	private ConvertingList<WeakReference<Item>,Item> contents
+	private final SVector<WeakReference<Item>> innerContents=new SVector<WeakReference<Item>>(0);
+	private final ConvertingList<WeakReference<Item>,Item> contents
 				= new ConvertingList<WeakReference<Item>,Item>(innerContents,
 						new Converter<WeakReference<Item>,Item>()
 						{
@@ -62,21 +62,21 @@ public class WeakItemCollection implements ItemCollection, CMCommon
 	@Override
 	public CMObject copyOf()
 	{
-		WeakItemCollection c=(WeakItemCollection)newInstance();
+		final WeakItemCollection c=(WeakItemCollection)newInstance();
 		for(int i=0;i<contents.size();i++)
 		{
-			Item I=contents.get(i);
+			final Item I=contents.get(i);
 			if(I!=null)
 			{
-				Item I2=(Item)I.copyOf();
+				final Item I2=(Item)I.copyOf();
 				I2.setOwner(I.owner());
 				c.innerContents.add(new WeakReference<Item>(I2));
 			}
 		}
 		for(int i=0;i<contents.size();i++)
 		{
-			Item I=contents.get(i);
-			Item I2=c.contents.get(i);
+			final Item I=contents.get(i);
+			final Item I2=c.contents.get(i);
 			if((I!=null)&&(I2!=null))
 			{
 				if(I.container() != null)
@@ -142,7 +142,7 @@ public class WeakItemCollection implements ItemCollection, CMCommon
 	{
 		for(int i=contents.size()-1;i>=0;i--)
 		{
-			Item I=getItem(i);
+			final Item I=getItem(i);
 			if(I==item)
 			{
 				innerContents.remove(i);
@@ -150,7 +150,7 @@ public class WeakItemCollection implements ItemCollection, CMCommon
 			}
 			else
 			if(I==null)
-				try { innerContents.remove(i); }catch(java.lang.ArrayIndexOutOfBoundsException x){}
+				try { innerContents.remove(i); }catch(final java.lang.ArrayIndexOutOfBoundsException x){}
 		}
 	}
 	@Override
@@ -159,7 +159,7 @@ public class WeakItemCollection implements ItemCollection, CMCommon
 		if(destroy)
 			for(int i=numItems()-1;i>=0;i--)
 			{
-				Item I=getItem(i);
+				final Item I=getItem(i);
 				if(I!=null) I.destroy();
 			}
 		innerContents.clear();
@@ -177,11 +177,11 @@ public class WeakItemCollection implements ItemCollection, CMCommon
 	{
 		for(int i=contents.size()-1;i>=0;i--)
 		{
-			Item I=getItem(i);
+			final Item I=getItem(i);
 			if(I==item)
 				return true;
 			if(I==null)
-				try { innerContents.remove(i); }catch(java.lang.ArrayIndexOutOfBoundsException x){}
+				try { innerContents.remove(i); }catch(final java.lang.ArrayIndexOutOfBoundsException x){}
 		}
 		return false;
 	}
@@ -191,13 +191,13 @@ public class WeakItemCollection implements ItemCollection, CMCommon
 	{
 		try
 		{
-			Item I=contents.get(i);
+			final Item I=contents.get(i);
 			if(I==null)
 				innerContents.remove(i);
 			else
 				return I;
 		}
-		catch(java.lang.ArrayIndexOutOfBoundsException x){}
+		catch(final java.lang.ArrayIndexOutOfBoundsException x){}
 		return null;
 	}
 	@Override
@@ -213,10 +213,10 @@ public class WeakItemCollection implements ItemCollection, CMCommon
 				if(I!=null)
 					applier.apply(I);
 				else
-					try { innerContents.remove(a); }catch(java.lang.ArrayIndexOutOfBoundsException x){}
+					try { innerContents.remove(a); }catch(final java.lang.ArrayIndexOutOfBoundsException x){}
 			}
 		}
-		catch(ArrayIndexOutOfBoundsException e){}
+		catch(final ArrayIndexOutOfBoundsException e){}
 	}
 	@Override
 	public Item getRandomItem()

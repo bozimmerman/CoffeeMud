@@ -50,13 +50,13 @@ public class Fill extends StdCommand
 		}
 		commands.removeElementAt(0);
 		final String testFill=CMParms.combine(commands,0);
-		Environmental fillThisItem=mob.location().fetchFromRoomFavorItems(null,testFill);
+		final Environmental fillThisItem=mob.location().fetchFromRoomFavorItems(null,testFill);
 		if((fillThisItem instanceof Container)
 		&&(!CMLib.flags().isGettable((Container)fillThisItem))
 		&&(((Container)fillThisItem).material()==RawMaterial.RESOURCE_DUST))
 		{
 			final String fillMsg="<S-NAME> fill(s) in <T-NAMESELF>.";
-			CMMsg msg=CMClass.getMsg(mob,fillThisItem,null,CMMsg.MSG_CLOSE,fillMsg,testFill,fillMsg);
+			final CMMsg msg=CMClass.getMsg(mob,fillThisItem,null,CMMsg.MSG_CLOSE,fillMsg,testFill,fillMsg);
 			if(mob.location().okMessage(msg.source(),msg))
 				mob.location().send(msg.source(),msg);
 			return false;
@@ -79,7 +79,7 @@ public class Fill extends StdCommand
 					fromDex=i;
 					commands.removeElementAt(i);
 				}
-			String thingToFillFrom=CMParms.combine(commands,fromDex);
+			final String thingToFillFrom=CMParms.combine(commands,fromDex);
 			fillFromThis=mob.location().fetchFromMOBRoomFavorsItems(mob,null,thingToFillFrom,Wearable.FILTER_ANY);
 			if((fillFromThis==null)||(!CMLib.flags().canBeSeenBy(fillFromThis,mob)))
 			{
@@ -90,13 +90,13 @@ public class Fill extends StdCommand
 				commands.removeElementAt(commands.size()-1);
 		}
 
-		int maxToFill=CMLib.english().calculateMaxToGive(mob,commands,true,mob,false);
+		final int maxToFill=CMLib.english().calculateMaxToGive(mob,commands,true,mob,false);
 		if(maxToFill<0) return false;
 
 		String thingToFill=CMParms.combine(commands,0);
 		int addendum=1;
 		String addendumStr="";
-		Vector V=new Vector();
+		final Vector V=new Vector();
 		boolean allFlag=(commands.size()>0)?((String)commands.elementAt(0)).equalsIgnoreCase("all"):false;
 		if(thingToFill.toUpperCase().startsWith("ALL.")){ allFlag=true; thingToFill="ALL "+thingToFill.substring(4);}
 		if(thingToFill.toUpperCase().endsWith(".ALL")){ allFlag=true; thingToFill="ALL "+thingToFill.substring(0,thingToFill.length()-4);}
@@ -104,7 +104,7 @@ public class Fill extends StdCommand
 		while(doBugFix || ((allFlag)&&(maxToFill<addendum)))
 		{
 			doBugFix=false;
-			Item fillThis=mob.findItem(null,thingToFill+addendumStr);
+			final Item fillThis=mob.findItem(null,thingToFill+addendumStr);
 			if(fillThis==null) break;
 			if((CMLib.flags().canBeSeenBy(fillThis,mob))
 			&&(!V.contains(fillThis)))
@@ -117,8 +117,8 @@ public class Fill extends StdCommand
 		else
 		for(int i=0;i<V.size();i++)
 		{
-			Environmental fillThis=(Environmental)V.elementAt(i);
-			CMMsg fillMsg=CMClass.getMsg(mob,fillThis,fillFromThis,CMMsg.MSG_FILL,"<S-NAME> fill(s) <T-NAME> from <O-NAME>.");
+			final Environmental fillThis=(Environmental)V.elementAt(i);
+			final CMMsg fillMsg=CMClass.getMsg(mob,fillThis,fillFromThis,CMMsg.MSG_FILL,"<S-NAME> fill(s) <T-NAME> from <O-NAME>.");
 			if((!mob.isMine(fillThis))&&(fillThis instanceof Item))
 			{
 				if(CMLib.commands().postGet(mob,null,(Item)fillThis,false))

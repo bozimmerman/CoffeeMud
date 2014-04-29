@@ -46,7 +46,7 @@ public class Top extends StdCommand
 		boolean doPlayers=true;
 		if(commands.size()>1)
 		{
-			String what=((String)commands.get(1)).toUpperCase();
+			final String what=((String)commands.get(1)).toUpperCase();
 			if("PLAYERS".startsWith(what))
 				doPlayers=true;
 			else
@@ -63,13 +63,13 @@ public class Top extends StdCommand
 		List<Pair<String,Integer>> set1;
 		List<Pair<String,Integer>> set2;
 		List<Pair<String,Integer>> set3;
-		StringBuilder str=new StringBuilder();
+		final StringBuilder str=new StringBuilder();
 		final int width=ColFixer.fixColWidth(72, mob)/3;
 		final int nameWidth=width - (width/3)-3;
-		String slashes=CMStrings.repeat("=", width);
-		for(TimePeriod period : new TimePeriod[]{TimePeriod.ALLTIME,TimePeriod.MONTH})
+		final String slashes=CMStrings.repeat("=", width);
+		for(final TimePeriod period : new TimePeriod[]{TimePeriod.ALLTIME,TimePeriod.MONTH})
 		{
-			String desc=(period==TimePeriod.ALLTIME)?"All Time":"This Month";
+			final String desc=(period==TimePeriod.ALLTIME)?"All Time":"This Month";
 			str.append("^xTop "+(doPlayers?"Characters":"Accounts")+" "+desc+"\n\r^x"+slashes+"^.^N ^x"+slashes+"^.^N ^x"+slashes+"^.^N\n\r");
 			str.append(CMStrings.padRight("^HPVP Kills", width)+"^. "+CMStrings.padRight("^HXP Gained", width)+"^. "+CMStrings.padRight("^HQuests Completed", width)+"^.^N\n\r");
 			set1=doPlayers?

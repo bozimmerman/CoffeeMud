@@ -57,8 +57,8 @@ public class GenRecipe extends GenReadable implements Recipe
 	{
 		if(msg.amITarget( this ) && (msg.targetMinor()==CMMsg.TYP_READ) && (super.readableText().length()==0) && (recipeLines.length>0))
 		{
-			StringBuilder str = new StringBuilder("");
-			Ability A=CMClass.getAbility( getCommonSkillID() );
+			final StringBuilder str = new StringBuilder("");
+			final Ability A=CMClass.getAbility( getCommonSkillID() );
 			if(getTotalRecipePages() > 1)
 			{
 				str.append( name()+" contains "+recipeLines.length+" recipe(s)/schematic(s) out of "+getTotalRecipePages()+" total entries.\n\r");
@@ -68,13 +68,13 @@ public class GenRecipe extends GenReadable implements Recipe
 				if(A!=null) str.append( "The following recipe is for the "+A.name()+" skill:\n\r" );
 			if(A instanceof ItemCraftor)
 			{
-				ItemCraftor C=(ItemCraftor)A;
-				for(String line : recipeLines)
+				final ItemCraftor C=(ItemCraftor)A;
+				for(final String line : recipeLines)
 				{
-					List<String> V=CMParms.parseTabs( line+" ", false );
-					Pair<String,Integer> nameAndLevel = C.getDecodedItemNameAndLevel( V );
-					String components = C.getDecodedComponentsDescription( msg.source(), V );
-					String name=CMStrings.replaceAll( nameAndLevel.first, "% ", "");
+					final List<String> V=CMParms.parseTabs( line+" ", false );
+					final Pair<String,Integer> nameAndLevel = C.getDecodedItemNameAndLevel( V );
+					final String components = C.getDecodedComponentsDescription( msg.source(), V );
+					final String name=CMStrings.replaceAll( nameAndLevel.first, "% ", "");
 
 					str.append( name).append(", level "+nameAndLevel.second);
 					if(CMath.s_int(components)>0)
@@ -99,14 +99,14 @@ public class GenRecipe extends GenReadable implements Recipe
 			if(replaceName==null)
 			{
 				replaceName="";
-				int x=Name().indexOf( '%' );
+				final int x=Name().indexOf( '%' );
 				if((recipeLines!=null)&&(recipeLines.length==1)&&(this.getCommonSkillID().length()>0))
 				{
-					Ability A=CMClass.getAbility(this.getCommonSkillID());
+					final Ability A=CMClass.getAbility(this.getCommonSkillID());
 					if(A instanceof ItemCraftor)
 					{
-						List<String> V=CMParms.parseTabs( recipeLines[0], false );
-						Pair<String,Integer> nameAndLevel = ((ItemCraftor)A).getDecodedItemNameAndLevel( V );
+						final List<String> V=CMParms.parseTabs( recipeLines[0], false );
+						final Pair<String,Integer> nameAndLevel = ((ItemCraftor)A).getDecodedItemNameAndLevel( V );
 						String itemName=CMStrings.replaceAll( nameAndLevel.first, "% ","");
 						itemName=CMStrings.replaceAll( itemName, " % ","");
 						if(x>=0)
@@ -150,11 +150,11 @@ public class GenRecipe extends GenReadable implements Recipe
 		case 0: return ""+getCommonSkillID();
 		case 1:
 			{
-				StringBuilder str=new StringBuilder("");
-				for(String s : recipeLines)
+				final StringBuilder str=new StringBuilder("");
+				for(final String s : recipeLines)
 					str.append(s).append("\n");
 				if(str.length()==0) return "";
-				String recipeStr = str.toString();
+				final String recipeStr = str.toString();
 				return recipeStr.substring(0,recipeStr.length()-1);
 			}
 		case 2: return ""+this.getTotalRecipePages();
@@ -172,7 +172,7 @@ public class GenRecipe extends GenReadable implements Recipe
 		{
 		case 0: setCommonSkillID(val); break;
 		case 1: setRecipeCodeLines(CMParms.parseAny(val, '\n', true).toArray(new String[0])); break;
-		case 2: int x=CMath.s_int(val); setTotalRecipePages(x>0?x:1); break;
+		case 2: final int x=CMath.s_int(val); setTotalRecipePages(x>0?x:1); break;
 		default:
 			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
 			break;
@@ -190,8 +190,8 @@ public class GenRecipe extends GenReadable implements Recipe
 	public String[] getStatCodes()
 	{
 		if(codes!=null) return codes;
-		String[] MYCODES=CMProps.getStatCodesList(GenRecipe.MYCODES,this);
-		String[] superCodes=GenericBuilder.GENITEMCODES;
+		final String[] MYCODES=CMProps.getStatCodesList(GenRecipe.MYCODES,this);
+		final String[] superCodes=GenericBuilder.GENITEMCODES;
 		codes=new String[superCodes.length+MYCODES.length];
 		int i=0;
 		for(;i<superCodes.length;i++)
@@ -204,7 +204,7 @@ public class GenRecipe extends GenReadable implements Recipe
 	public boolean sameAs(Environmental E)
 	{
 		if(!(E instanceof GenRecipe)) return false;
-		String[] codes=getStatCodes();
+		final String[] codes=getStatCodes();
 		for(int i=0;i<codes.length;i++)
 			if(!E.getStat(codes[i]).equals(getStat(codes[i])))
 				return false;

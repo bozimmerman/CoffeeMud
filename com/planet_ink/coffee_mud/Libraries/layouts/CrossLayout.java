@@ -43,9 +43,9 @@ public class CrossLayout extends AbstractLayout
 	@Override
 	public List<LayoutNode> generate(int num, int dir)
 	{
-		Vector<LayoutNode> set = new Vector<LayoutNode>();
-		int diameter = (num / 3 / 2) + 1;
-		LayoutSet lSet = new LayoutSet(set,num);
+		final Vector<LayoutNode> set = new Vector<LayoutNode>();
+		final int diameter = (num / 3 / 2) + 1;
+		final LayoutSet lSet = new LayoutSet(set,num);
 		LayoutNode n = new DefaultLayoutNode(new long[]{0,0});
 		LayoutNode firstNode = n;
 		for(int x=0;x<diameter;x++)
@@ -75,9 +75,10 @@ public class CrossLayout extends AbstractLayout
 		n.flagRun(LayoutRuns.ew);
 		if(dir==Directions.WEST) firstNode=n;
 		@SuppressWarnings("unchecked")
+		final
 		Vector<LayoutNode> corridors = (Vector<LayoutNode>)set.clone();
 		int x = 0;
-		for(LayoutNode n2 : corridors)
+		for(final LayoutNode n2 : corridors)
 		{
 			if(x<diameter)
 			{

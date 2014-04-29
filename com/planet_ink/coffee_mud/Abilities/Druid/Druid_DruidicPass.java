@@ -70,29 +70,29 @@ public class Druid_DruidicPass extends StdAbility
 			mob.tell("You must be in the wild to perform the Druidic Pass.");
 			return false;
 		}
-		String whatToOpen=CMParms.combine(commands,0);
-		int dirCode=Directions.getGoodDirectionCode(whatToOpen);
+		final String whatToOpen=CMParms.combine(commands,0);
+		final int dirCode=Directions.getGoodDirectionCode(whatToOpen);
 		if(dirCode<0)
 		{
 			mob.tell("Pass which direction?!");
 			return false;
 		}
 
-		Exit exit=mob.location().getExitInDir(dirCode);
-		Room room=mob.location().getRoomInDir(dirCode);
+		final Exit exit=mob.location().getExitInDir(dirCode);
+		final Room room=mob.location().getRoomInDir(dirCode);
 
 		if((exit==null)||(room==null)||(!CMLib.flags().canBeSeenBy(exit,mob)))
 		{
 			mob.tell("You can't see anywhere to pass that way.");
 			return false;
 		}
-		Exit opExit=room.getReverseExit(dirCode);
+		final Exit opExit=room.getReverseExit(dirCode);
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(!success)
 		{
@@ -116,12 +116,12 @@ public class Druid_DruidicPass extends StdAbility
 		}
 		else
 		{
-			CMMsg msg=CMClass.getMsg(mob,null,null,CMMsg.MSG_QUIETMOVEMENT|CMMsg.MASK_MAGIC,null);
+			final CMMsg msg=CMClass.getMsg(mob,null,null,CMMsg.MSG_QUIETMOVEMENT|CMMsg.MASK_MAGIC,null);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				boolean open=exit.isOpen();
-				boolean locked=exit.isLocked();
+				final boolean open=exit.isOpen();
+				final boolean locked=exit.isLocked();
 				exit.setDoorsNLocks(exit.hasADoor(),true,exit.defaultsClosed(),exit.hasALock(),false,exit.defaultsLocked());
 				if(opExit!=null)
 					opExit.setDoorsNLocks(exit.hasADoor(),true,exit.defaultsClosed(),exit.hasALock(),false,exit.defaultsLocked());

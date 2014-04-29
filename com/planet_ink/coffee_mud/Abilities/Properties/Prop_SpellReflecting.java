@@ -76,10 +76,10 @@ public class Prop_SpellReflecting extends Property implements TriggeredAffect
 		if((fade<=0)&&(abilityCode()<remaining))
 		{
 			if(lastFade==0) lastFade=System.currentTimeMillis();
-			long time=System.currentTimeMillis()-lastFade;
+			final long time=System.currentTimeMillis()-lastFade;
 			if(time>5*60000)
 			{
-				double div=CMath.div(time,(long)5*60000);
+				final double div=CMath.div(time,(long)5*60000);
 				if(div>1.0)
 				{
 					setAbilityCode(abilityCode()+(int)Math.round(div));
@@ -120,7 +120,7 @@ public class Prop_SpellReflecting extends Property implements TriggeredAffect
 			if((lvl<minLevel)||(lvl>maxLevel)) return true;
 
 			target.location().show(target,affected,CMMsg.MSG_OK_VISUAL,"The field around <T-NAMESELF> reflects the spell!");
-			Ability A=(Ability)msg.tool();
+			final Ability A=(Ability)msg.tool();
 			A.invoke(target,msg.source(),true,msg.source().phyStats().level());
 			setAbilityCode(abilityCode()-lvl);
 			if(abilityCode()<=0)

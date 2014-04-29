@@ -52,13 +52,13 @@ public class Chant_SpeedTime extends Chant
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"Something is happening!":"^S<S-NAME> begin(s) to chant...^?");
+			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"Something is happening!":"^S<S-NAME> begin(s) to chant...^?");
 			if(mob.location().okMessage(mob,msg))
 			{
-				int mana=mob.curState().getMana();
+				final int mana=mob.curState().getMana();
 				mob.location().send(mob,msg);
 				for(int i=0;i<(adjustedLevel(mob,asLevel)/2);i++)
 					CMLib.threads().tickAllTickers(mob.location());

@@ -31,8 +31,8 @@ public class AutoPlayTester
 	private Socket 				sock=null;
 	private BufferedReader 		in = null;
 	private BufferedWriter		out = null;
-	private LinkedList<String> 	inbuffer = new LinkedList<String>();
-	private LinkedList<String> 	outbuffer = new LinkedList<String>();
+	private final LinkedList<String> 	inbuffer = new LinkedList<String>();
+	private final LinkedList<String> 	outbuffer = new LinkedList<String>();
 	private String 				name="boobie";
 	private String 				host="localhost";
 	private int 				port = 5555;
@@ -49,7 +49,7 @@ public class AutoPlayTester
 	public LinkedList<String> bufferFill() throws IOException
 	{
 		int c;
-		StringBuffer buf=new StringBuffer("");
+		final StringBuffer buf=new StringBuffer("");
 		int lastc=0;
 
 		try
@@ -70,7 +70,7 @@ public class AutoPlayTester
 				lastc=c;
 			}
 		}
-		catch(Exception e)
+		catch(final Exception e)
 		{
 
 		}
@@ -87,19 +87,19 @@ public class AutoPlayTester
 
 	public String[] waitFor(String regEx, int num) throws IOException
 	{
-		long waitUntil = System.currentTimeMillis() + (60 * 1000);
-		StringBuilder buildUp=new StringBuilder("");
-		Pattern p=Pattern.compile(regEx);
+		final long waitUntil = System.currentTimeMillis() + (60 * 1000);
+		final StringBuilder buildUp=new StringBuilder("");
+		final Pattern p=Pattern.compile(regEx);
 		while(System.currentTimeMillis() < waitUntil)
 		{
 			bufferFill();
 			if(inbuffer.size()==0)
 			{
-				try{Thread.sleep(100);}catch(Exception e){}
+				try{Thread.sleep(100);}catch(final Exception e){}
 			}
 			else
 			{
-				String s=inbuffer.removeFirst();
+				final String s=inbuffer.removeFirst();
 				outbuffer.add(s);
 				if(buildUp.length()>0)
 					buildUp.append(" ");
@@ -113,7 +113,7 @@ public class AutoPlayTester
 				{
 					if(m.groupCount()>=num)
 					{
-						String[] set=new String[num];
+						final String[] set=new String[num];
 						for(int i=0;i<num;i++)
 							set[i]=m.group(i+1);
 						return set;
@@ -128,7 +128,7 @@ public class AutoPlayTester
 	public void writeln(String s) throws IOException
 	{
 		System.out.println(s);
-		try{Thread.sleep(500);}catch(Exception e){}
+		try{Thread.sleep(500);}catch(final Exception e){}
 		out.write(s+"\n");
 		out.flush();
 	}
@@ -141,10 +141,10 @@ public class AutoPlayTester
 			sock.setSoTimeout(100);
 			in = new BufferedReader(new InputStreamReader(sock.getInputStream()));
 			out = new BufferedWriter(new OutputStreamWriter(sock.getOutputStream()));
-			try{Thread.sleep(1000);}catch(Exception e){}
+			try{Thread.sleep(1000);}catch(final Exception e){}
 			return true;
 		}
-		catch(java.io.IOException e)
+		catch(final java.io.IOException e)
 		{
 			e.printStackTrace();
 		}
@@ -153,10 +153,10 @@ public class AutoPlayTester
 
 	public String getJavaScript(String filename)
 	{
-		StringBuilder js=new StringBuilder("");
+		final StringBuilder js=new StringBuilder("");
 		try
 		{
-			BufferedReader br=new BufferedReader(new FileReader(filename));
+			final BufferedReader br=new BufferedReader(new FileReader(filename));
 			String s=br.readLine();
 			while(s!=null)
 			{
@@ -168,7 +168,7 @@ public class AutoPlayTester
 			}
 			br.close();
 		}
-		catch(Exception e)
+		catch(final Exception e)
 		{
 			e.printStackTrace();
 			System.exit(-1);
@@ -179,18 +179,18 @@ public class AutoPlayTester
 	public void run()
 	{
 		System.out.println("Executing: "+filename);
-		String js=getJavaScript(filename);
+		final String js=getJavaScript(filename);
 
-		Context cx = Context.enter();
+		final Context cx = Context.enter();
 		try
 		{
-			JScriptEvent scope = new JScriptEvent(this);
+			final JScriptEvent scope = new JScriptEvent(this);
 			cx.initStandardObjects(scope);
 			scope.defineFunctionProperties(JScriptEvent.functions, JScriptEvent.class,
 										   ScriptableObject.DONTENUM);
 			cx.evaluateString(scope, js.toString(),"<cmd>", 1, null);
 		}
-		catch(Exception e)
+		catch(final Exception e)
 		{
 			System.err.println("JSCRIPT Error: "+e.getMessage());
 		}
@@ -207,20 +207,20 @@ public class AutoPlayTester
 												 "name","rand","sleep"};
 		public AutoPlayTester tester() { return testObj;}
 		public String toJavaString(Object O){return Context.toString(O);}
-		public boolean startsWith(Object O1, Object O2){ try { return toJavaString(O1).startsWith(toJavaString(O2)); } catch(Exception e) {return false; } }
+		public boolean startsWith(Object O1, Object O2){ try { return toJavaString(O1).startsWith(toJavaString(O2)); } catch(final Exception e) {return false; } }
 		public boolean login(){ return testObj.login();}
 		public String name() { return testObj.name;}
-		public void stdout(Object O) { try { System.out.println(toJavaString(O)); } catch(Exception e) { } }
-		public void sleep(Object O) { try { Thread.sleep(Long.valueOf(toJavaString(O)).longValue()); } catch(Exception e) { } }
-		public void stderr(Object O) { try { System.err.println(toJavaString(O)); } catch(Exception e) { } }
-		public int rand(int x){ int y=(int)Math.round(Math.floor(Math.random() * ((x)-0.001))); return (y>0)?y:-y;}
+		public void stdout(Object O) { try { System.out.println(toJavaString(O)); } catch(final Exception e) { } }
+		public void sleep(Object O) { try { Thread.sleep(Long.valueOf(toJavaString(O)).longValue()); } catch(final Exception e) { } }
+		public void stderr(Object O) { try { System.err.println(toJavaString(O)); } catch(final Exception e) { } }
+		public int rand(int x){ final int y=(int)Math.round(Math.floor(Math.random() * ((x)-0.001))); return (y>0)?y:-y;}
 		public Object waitFor(Object regexO)
 		{
 			try
 			{
 				return testObj.waitFor(toJavaString(regexO),1)[0];
 			}
-			catch(Exception e) { return null; }
+			catch(final Exception e) { return null; }
 		}
 		public Object waitForMultiMatch(Object regexO, Object numMatches)
 		{
@@ -228,7 +228,7 @@ public class AutoPlayTester
 			{
 				return testObj.waitFor(toJavaString(regexO),Integer.parseInt(toJavaString(numMatches)));
 			}
-			catch(Exception e) { return null; }
+			catch(final Exception e) { return null; }
 		}
 		public boolean writeLine(Object O)
 		{
@@ -237,7 +237,7 @@ public class AutoPlayTester
 				testObj.writeln(toJavaString(O));
 				return true;
 			}
-			catch(Exception e) { return false; }
+			catch(final Exception e) { return false; }
 		}
 
 		public JScriptEvent(AutoPlayTester testObj)
@@ -249,7 +249,7 @@ public class AutoPlayTester
 	public final static int s_int(final String INT)
 	{
 		try{ return Integer.parseInt(INT); }
-		catch(Exception e){ return 0;}
+		catch(final Exception e){ return 0;}
 	}
 
 	public static void main(String[] args)
@@ -260,10 +260,10 @@ public class AutoPlayTester
 			System.out.println("AutoPlayTester [host] [port] [character name] [script path]");
 			System.exit(-1);
 		}
-		StringBuilder path=new StringBuilder(args[3]);
+		final StringBuilder path=new StringBuilder(args[3]);
 		for(int i=4;i<args.length;i++)
 			path.append(" ").append(args[i]);
-		AutoPlayTester player = new AutoPlayTester(args[0],s_int(args[1]),args[2],path.toString());
+		final AutoPlayTester player = new AutoPlayTester(args[0],s_int(args[1]),args[2],path.toString());
 		player.run();
 	}
 }

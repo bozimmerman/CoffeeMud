@@ -40,10 +40,10 @@ public class AddRequestParameter extends StdWebMacro
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
-		String str="";
-		java.util.Map<String,String> parms=parseParms(parm);
+		final String str="";
+		final java.util.Map<String,String> parms=parseParms(parm);
 
-		for(String key : parms.keySet())
+		for(final String key : parms.keySet())
 		{
 			if(key!=null)
 			{

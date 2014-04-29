@@ -148,7 +148,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 		if(H==null)
 		{
 			H=new Hashtable<String,String>();
-			List<String> V=Resources.getFileLineVector(new CMFile("resources/mxp_images.ini",null).text());
+			final List<String> V=Resources.getFileLineVector(new CMFile("resources/mxp_images.ini",null).text());
 			if((V!=null)&&(V.size()>0))
 			{
 				String s=null;
@@ -179,7 +179,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 		{
 			final String raceName=((MOB)O).charStats().raceName();
 			Race R=null;
-			for(Enumeration<Race> e=CMClass.races();e.hasMoreElements();)
+			for(final Enumeration<Race> e=CMClass.races();e.hasMoreElements();)
 			{
 				R=e.nextElement();
 				if(raceName.equalsIgnoreCase(R.name()))
@@ -239,7 +239,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 		else
 		if(O instanceof CagedAnimal)
 		{
-			MOB mob=((CagedAnimal)O).unCageMe();
+			final MOB mob=((CagedAnimal)O).unCageMe();
 			return getDefaultMXPImage(mob);
 		}
 		else
@@ -252,7 +252,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 		else
 		if(O instanceof DeadBody)
 		{
-			Race R=((DeadBody)O).charStats().getMyRace();
+			final Race R=((DeadBody)O).charStats().getMyRace();
 			if(R!=null)
 			{
 				image=getHashedMXPImage(H,"CORPSE_"+R.ID().toUpperCase());
@@ -286,7 +286,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 		else
 		if(O instanceof MagicDust)
 		{
-			List<Ability> V=((MagicDust)O).getSpells();
+			final List<Ability> V=((MagicDust)O).getSpells();
 			if(V.size()>0)
 				image=getHashedMXPImage(H,"DUST_"+V.get(0).ID().toUpperCase());
 			if(image==null) image=getHashedMXPImage(H,"DUST_*");
@@ -309,7 +309,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 		else
 		if(O instanceof Pill)
 		{
-			List<Ability> V=((Pill)O).getSpells();
+			final List<Ability> V=((Pill)O).getSpells();
 			if(V.size()>0)
 				image=getHashedMXPImage(H,"PILL_"+V.get(0).ID().toUpperCase());
 			if(image==null) image=getHashedMXPImage(H,"PILL_*");
@@ -317,7 +317,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 		else
 		if(O instanceof Potion)
 		{
-			List<Ability> V=((Potion)O).getSpells();
+			final List<Ability> V=((Potion)O).getSpells();
 			if(V.size()>0)
 				image=getHashedMXPImage(H,"POTION_"+V.get(0).ID().toUpperCase());
 			if(image==null) image=getHashedMXPImage(H,"POTION_*");
@@ -328,7 +328,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 		else
 		if(O instanceof Scroll)
 		{
-			List<Ability> V=((Scroll)O).getSpells();
+			final List<Ability> V=((Scroll)O).getSpells();
 			if(V.size()>0)
 				image=getHashedMXPImage(H,"SCROLL_"+V.get(0).ID().toUpperCase());
 			if(image==null) image=getHashedMXPImage(H,"SCROLL_*");
@@ -394,7 +394,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 		else
 		if(O instanceof Armor)
 		{
-			Armor A=(Armor)O;
+			final Armor A=(Armor)O;
 			final long[] bits=
 			{Wearable.WORN_TORSO, Wearable.WORN_FEET, Wearable.WORN_LEGS, Wearable.WORN_HANDS, Wearable.WORN_ARMS,
 			 Wearable.WORN_HEAD, Wearable.WORN_EARS, Wearable.WORN_EYES, Wearable.WORN_MOUTH, Wearable.WORN_NECK,
@@ -426,7 +426,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 			image=getHashedMXPImage(H,"WAND_"+((Wand)O).ID().toUpperCase());
 			if(image==null)
 			{
-				Ability A=((Wand)O).getSpell();
+				final Ability A=((Wand)O).getSpell();
 				if(A!=null) image=getHashedMXPImage(H,"WAND_"+A.ID().toUpperCase());
 			}
 			if(image==null) image=getHashedMXPImage(H,"WAND_*");
@@ -458,7 +458,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 		if(O instanceof Container)
 		{
 			image=getHashedMXPImage(H,"CONTAINER_"+((Container)O).ID().toUpperCase());
-			String lid=((Container)O).hasALid()?"LID_":"";
+			final String lid=((Container)O).hasALid()?"LID_":"";
 			if(image==null) image=getHashedMXPImage(H,"CONTAINER_"+lid+RawMaterial.Material.findByMask(((Container)O).material()&RawMaterial.MATERIAL_MASK).desc());
 			if(image==null) image=getHashedMXPImage(H,"CONTAINER_"+lid+"*");
 		}
@@ -488,8 +488,8 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 		else
 		if(o instanceof Map)
 		{
-			Map<String,Object> newO=new HashMap<String,Object>();
-			for(Object key : ((Map)o).keySet())
+			final Map<String,Object> newO=new HashMap<String,Object>();
+			for(final Object key : ((Map)o).keySet())
 				if(key instanceof StringBuilder)
 					newO.put(((StringBuilder)key).toString().toUpperCase(), msdpStringify(((Map)o).get(key)));
 			return newO;
@@ -497,8 +497,8 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 		else
 		if(o instanceof List)
 		{
-			List<Object> newO=new LinkedList<Object>();
-			for(Object subO : (List)o)
+			final List<Object> newO=new LinkedList<Object>();
+			for(final Object subO : (List)o)
 				newO.add(msdpStringify(subO));
 			return newO;
 		}
@@ -509,7 +509,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	protected Map<String,Object> buildMsdpMap(char[] data, int dataSize)
 	{
-		Stack<Object> stack=new Stack<Object>();
+		final Stack<Object> stack=new Stack<Object>();
 		stack.push(new HashMap<StringBuilder,Object>());
 		StringBuilder str=null;
 		StringBuilder var=null;
@@ -536,7 +536,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 			}
 			case Session.MSDP_TABLE_OPEN: // open a table
 			{
-				Map<StringBuilder,Object> M=new HashMap<StringBuilder,Object>();
+				final Map<StringBuilder,Object> M=new HashMap<StringBuilder,Object>();
 				if((stack.peek() instanceof Map)&&(valVar!=null))
 					((Map)stack.peek()).put(valVar, M);
 				else if(stack.peek() instanceof List)
@@ -551,7 +551,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 				break;
 			case Session.MSDP_ARRAY_OPEN: // open an array
 			{
-				List<Object> M=new LinkedList<Object>();
+				final List<Object> M=new LinkedList<Object>();
 				if((stack.peek() instanceof Map)&&(valVar!=null))
 					((Map)stack.peek()).put(valVar, M);
 				else if(stack.peek() instanceof List)
@@ -613,7 +613,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 		case ALIGNMENT:
 			if(M!=null)
 			{
-				Faction.FRange FR=CMLib.factions().getRange(CMLib.factions().AlignID(),M.fetchFaction(CMLib.factions().AlignID()));
+				final Faction.FRange FR=CMLib.factions().getRange(CMLib.factions().AlignID(),M.fetchFaction(CMLib.factions().AlignID()));
 				if(FR!=null)
 					return FR.name();
 			}
@@ -741,10 +741,10 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 		case AFFECTS:
 			if(M!=null)
 			{
-				List<String> affects=new Vector<String>();
+				final List<String> affects=new Vector<String>();
 				for(int a=0;a<M.numAllEffects();a++)
 				{
-					Ability A=M.fetchEffect(a);
+					final Ability A=M.fetchEffect(a);
 					if(A!=null)
 						affects.add(A.name());
 				}
@@ -756,7 +756,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 		case ALIGNMENT:
 			if(M!=null)
 			{
-				Faction.FRange FR=CMLib.factions().getRange(CMLib.factions().AlignID(),M.fetchFaction(CMLib.factions().AlignID()));
+				final Faction.FRange FR=CMLib.factions().getRange(CMLib.factions().AlignID(),M.fetchFaction(CMLib.factions().AlignID()));
 				if(FR!=null)
 					buf.write(FR.name().toLowerCase().getBytes(Session.MSDP_CHARSET));
 			}
@@ -837,7 +837,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 				{
 					buf.write(C.executeInternal(M, 0, M.getVictim()).toString().getBytes(Session.MSDP_CHARSET));
 				}
-				catch (IOException e)
+				catch (final IOException e)
 				{
 					buf.write(Integer.toString(M.getVictim().phyStats().level()).getBytes(Session.MSDP_CHARSET));
 				}
@@ -959,9 +959,9 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 
 	protected byte[] msdpListToMsdpArray(final Object[] stuff) throws UnsupportedEncodingException, IOException
 	{
-		ByteArrayOutputStream buf=new ByteArrayOutputStream();
+		final ByteArrayOutputStream buf=new ByteArrayOutputStream();
 		buf.write(Session.MSDP_ARRAY_OPEN);
-		for(Object s : stuff)
+		for(final Object s : stuff)
 		{
 			buf.write(Session.MSDP_VAL);
 			buf.write(s.toString().getBytes(Session.MSDP_CHARSET));
@@ -972,7 +972,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 
 	protected byte[] processMsdpList(final Session session, final String var, final Map<Object,Object> reportables) throws UnsupportedEncodingException, IOException
 	{
-		ByteArrayOutputStream buf=new ByteArrayOutputStream();
+		final ByteArrayOutputStream buf=new ByteArrayOutputStream();
 		final MSDPListable type=(MSDPListable)CMath.s_valueOf(MSDPListable.class, var.toUpperCase().trim());
 		if(type == null)
 			return buf.toByteArray();
@@ -984,8 +984,8 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 		case REPORTABLE_VARIABLES: buf.write(msdpListToMsdpArray(MSDPVariable.values())); break;
 		case REPORTED_VARIABLES:
 		{
-			List<String> set=new Vector<String>(reportables.size());
-			for(Object o : reportables.keySet())
+			final List<String> set=new Vector<String>(reportables.size());
+			for(final Object o : reportables.keySet())
 				set.add(o.toString());
 			buf.write(msdpListToMsdpArray(set.toArray(new Object[0])));
 			break;
@@ -1015,7 +1015,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 			synchronized(reportables)
 			{
 				Object newValue;
-				for(Entry<Object,Object> e : reportables.entrySet())
+				for(final Entry<Object,Object> e : reportables.entrySet())
 				{
 					newValue=getMsdpComparable(session, (MSDPVariable)e.getKey());
 					if(!e.getValue().equals(newValue))
@@ -1029,16 +1029,16 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 			}
 			if(broken==null)
 				return null;
-			ByteArrayOutputStream buf=new ByteArrayOutputStream();
+			final ByteArrayOutputStream buf=new ByteArrayOutputStream();
 			buf.write(Session.TELNET_IAC);buf.write(Session.TELNET_SB);buf.write(Session.TELNET_MSDP);
-			for(Object var : broken)
+			for(final Object var : broken)
 			{
 				buf.write(processMsdpSend(session,var.toString()));
 			}
 			buf.write((char)Session.TELNET_IAC);buf.write((char)Session.TELNET_SE);
 			return buf.toByteArray();
 		}
-		catch(IOException e)
+		catch(final IOException e)
 		{
 			return null;
 		}
@@ -1050,13 +1050,13 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 	{
 		try
 		{
-			Map<String,Object> cmds=this.buildMsdpMap(data, dataSize);
-			ByteArrayOutputStream buf=new ByteArrayOutputStream();
+			final Map<String,Object> cmds=this.buildMsdpMap(data, dataSize);
+			final ByteArrayOutputStream buf=new ByteArrayOutputStream();
 			if(cmds.containsKey(MSDPCommand.REPORT.toString()))
 			{
 				synchronized(reportables)
 				{
-					Object o=cmds.get(MSDPCommand.REPORT.toString());
+					final Object o=cmds.get(MSDPCommand.REPORT.toString());
 					if(o instanceof String)
 					{
 						final MSDPVariable type=(MSDPVariable)CMath.s_valueOf(MSDPVariable.class, ((String)o).toUpperCase().trim());
@@ -1066,7 +1066,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 					}
 					else
 					if(o instanceof List)
-						for(Object o2 : ((List)o))
+						for(final Object o2 : ((List)o))
 							if(o2 instanceof String)
 							{
 								final MSDPVariable type=(MSDPVariable)CMath.s_valueOf(MSDPVariable.class, ((String)o2).toUpperCase().trim());
@@ -1078,14 +1078,14 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 			}
 			if(cmds.containsKey(MSDPCommand.SEND.toString()))
 			{
-				Object o=cmds.get(MSDPCommand.SEND.toString());
+				final Object o=cmds.get(MSDPCommand.SEND.toString());
 				if(o instanceof String)
 				{
 					buf.write(processMsdpSend(session,(String)o));
 				}
 				else
 				if(o instanceof List)
-					for(Object o2 : ((List)o))
+					for(final Object o2 : ((List)o))
 						if(o2 instanceof String)
 						{
 							buf.write(processMsdpSend(session,(String)o2));
@@ -1093,14 +1093,14 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 			}
 			if(cmds.containsKey(MSDPCommand.LIST.toString()))
 			{
-				Object o=cmds.get(MSDPCommand.LIST.toString());
+				final Object o=cmds.get(MSDPCommand.LIST.toString());
 				if(o instanceof String)
 				{
 					buf.write(Session.MSDP_VAR);buf.write(((String)o).getBytes(Session.MSDP_CHARSET));buf.write(Session.MSDP_VAL);buf.write(processMsdpList(session,(String)o,reportables));
 				}
 				else
 				if(o instanceof List)
-					for(Object o2 : ((List)o))
+					for(final Object o2 : ((List)o))
 						if(o2 instanceof String)
 						{
 							buf.write(Session.MSDP_VAR);buf.write(((String)o2).getBytes(Session.MSDP_CHARSET));buf.write(Session.MSDP_VAL);buf.write(processMsdpList(session,(String)o2,reportables));
@@ -1108,7 +1108,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 			}
 			if(cmds.containsKey(MSDPCommand.UNREPORT.toString()))
 			{
-				Object o=cmds.get(MSDPCommand.UNREPORT.toString());
+				final Object o=cmds.get(MSDPCommand.UNREPORT.toString());
 				if(o instanceof String)
 				{
 					final MSDPVariable type=(MSDPVariable)CMath.s_valueOf(MSDPVariable.class, ((String)o).toUpperCase().trim());
@@ -1117,7 +1117,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 				}
 				else
 				if(o instanceof List)
-					for(Object o2 : ((List)o))
+					for(final Object o2 : ((List)o))
 						if(o2 instanceof String)
 						{
 							final MSDPVariable type=(MSDPVariable)CMath.s_valueOf(MSDPVariable.class, ((String)o2).toUpperCase().trim());
@@ -1127,25 +1127,25 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 			}
 			if(cmds.containsKey(MSDPCommand.RESET.toString()))
 			{
-				Object o=cmds.get(MSDPCommand.RESET.toString());
+				final Object o=cmds.get(MSDPCommand.RESET.toString());
 				if(o instanceof String)
 				{
 					resetMsdpConfigurable(session, (String)o);
 				}
 				else
 				if(o instanceof List)
-					for(Object o2 : ((List)o))
+					for(final Object o2 : ((List)o))
 						if(o2 instanceof String)
 							resetMsdpConfigurable(session, (String)o2);
 			}
 			if(buf.size()==0)
 				return null;
-			ByteArrayOutputStream bout = new ByteArrayOutputStream();
+			final ByteArrayOutputStream bout = new ByteArrayOutputStream();
 			bout.write(Session.TELNET_IAC); bout.write(Session.TELNET_SB); bout.write(Session.TELNET_MSDP);
 			bout.write(buf.toByteArray()); bout.write(Session.TELNET_IAC); bout.write(Session.TELNET_SE);
 			return bout.toByteArray();
 		}
-		catch(IOException e)
+		catch(final IOException e)
 		{
 			return null;
 		}
@@ -1161,7 +1161,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 			bout.write(json.getBytes(Session.MSDP_CHARSET));
 			bout.write(Session.TELNETBYTES_END_SB);
 		}
-		catch (IOException e) {}
+		catch (final IOException e) {}
 		return bout.toByteArray();
 	}
 
@@ -1188,12 +1188,12 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 
 	protected String processGmcpStr(final Session session, final char[] data, final int dataSize, final Map<String,Double> supportables)
 	{
-		MiniJSON jsonParser=new MiniJSON();
+		final MiniJSON jsonParser=new MiniJSON();
 		try
 		{
 			final MOB mob=session.mob();
 			final String allDoc=new String(data).trim();
-			int pkgSepIndex=allDoc.indexOf(' ');
+			final int pkgSepIndex=allDoc.indexOf(' ');
 			String pkg;
 			MiniJSON.JSONObject json;
 			if(pkgSepIndex>0)
@@ -1218,8 +1218,8 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 						json=json.getCheckedJSONObject("root");
 					if(json != null)
 					{
-						String client=json.getCheckedString("client");
-						double ver=json.getCheckedNumber("version");
+						final String client=json.getCheckedString("client");
+						final double ver=json.getCheckedNumber("version");
 						if(client != null)
 							supportables.put(client, Double.valueOf(ver));
 					}
@@ -1233,11 +1233,11 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 						list=json.getCheckedArray("root");
 					if(list != null)
 					{
-						for(Object o : list)
+						for(final Object o : list)
 						{
 							String s=o.toString().toLowerCase().trim();
 							double ver=1.0;
-							int x=s.indexOf(' ');
+							final int x=s.indexOf(' ');
 							if(x>0)
 							{
 								if(CMath.isNumber(s.substring(x+1).trim()))
@@ -1256,7 +1256,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 						list=json.getCheckedArray("root");
 					if(list != null)
 					{
-						for(Object o : list)
+						for(final Object o : list)
 						{
 							final String s=o.toString().trim();
 							supportables.remove(s.toLowerCase());
@@ -1304,7 +1304,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 				{
 					if(mob != null)
 					{
-						StringBuilder doc=new StringBuilder("char.vitals {");
+						final StringBuilder doc=new StringBuilder("char.vitals {");
 						doc.append("\"hp\":").append(mob.curState().getHitPoints()).append(",");
 						doc.append("\"mana\":").append(mob.curState().getMana()).append(",");
 						doc.append("\"moves\":").append(mob.curState().getMovement());
@@ -1316,11 +1316,11 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 				case char_statusvars:
 					if(mob != null)
 					{
-						StringBuilder doc=new StringBuilder("char.statusvars {");
+						final StringBuilder doc=new StringBuilder("char.statusvars {");
 						doc.append("\"level\":\"").append(mob.phyStats().level()).append("\",");
 						doc.append("\"race\":\"").append(MiniJSON.toJSONString(mob.charStats().raceName())).append("\"");
 						final List<String> clans=new LinkedList<String>();
-						for(Pair<Clan,Integer> p : mob.clans())
+						for(final Pair<Clan,Integer> p : mob.clans())
 							clans.add(MiniJSON.toJSONString(p.first.name()));
 						if(clans.size()==1)
 							doc.append(",\"guild\":\"").append(clans.get(0)).append("\"");
@@ -1342,17 +1342,17 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 				case char_base:
 					if(mob != null)
 					{
-						StringBuilder doc=new StringBuilder("char.base {");
+						final StringBuilder doc=new StringBuilder("char.base {");
 						doc.append("\"name\":\"").append(mob.name()).append("\"").append(",");
 						doc.append("\"class\":\"").append(mob.charStats().getCurrentClass().baseClass()).append("\"").append(",");
 						doc.append("\"subclass\":\"").append(MiniJSON.toJSONString(mob.charStats().displayClassName())).append("\"").append(",");
 						doc.append("\"race\":\"").append(MiniJSON.toJSONString(mob.charStats().raceName())).append("\"").append(",");
 						doc.append("\"perlevel\":").append(mob.getExpNextLevel());
-						String title = (mob.playerStats()!=null)?mob.playerStats().getActiveTitle():null;
+						final String title = (mob.playerStats()!=null)?mob.playerStats().getActiveTitle():null;
 						if(title!=null)
 							doc.append(",\"pretitle\":\"").append(MiniJSON.toJSONString(title)).append("\"");
 						final List<String> clans=new LinkedList<String>();
-						for(Pair<Clan,Integer> p : mob.clans())
+						for(final Pair<Clan,Integer> p : mob.clans())
 							clans.add(MiniJSON.toJSONString(p.first.name()));
 						if(clans.size()==1)
 							doc.append(",\"clan\":\"").append(clans.get(0)).append("\"");
@@ -1374,7 +1374,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 				case char_maxstats:
 					if(mob != null)
 					{
-						StringBuilder doc=new StringBuilder("char.maxstats {");
+						final StringBuilder doc=new StringBuilder("char.maxstats {");
 						doc.append("\"maxhp\":").append(mob.maxState().getHitPoints()).append(",");
 						doc.append("\"maxmana\":").append(mob.maxState().getMana()).append(",");
 						doc.append("\"maxmoves\":").append(mob.maxState().getMovement());
@@ -1385,13 +1385,13 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 				case char_status:
 					if(mob != null)
 					{
-						StringBuilder doc=new StringBuilder("char.status {");
+						final StringBuilder doc=new StringBuilder("char.status {");
 						doc.append("\"level\":").append(mob.phyStats().level()).append(",");
 						doc.append("\"tnl\":").append(mob.getExpNeededLevel()).append(",");
 						doc.append("\"hunger\":").append(mob.curState().getHunger()).append(",");
 						doc.append("\"thirst\":").append(mob.curState().getThirst()).append(",");
 						doc.append("\"fatigue\":").append(mob.curState().getFatigue()).append(",");
-						int align=mob.fetchFaction(CMLib.factions().AlignID());
+						final int align=mob.fetchFaction(CMLib.factions().AlignID());
 						if(align!=Integer.MAX_VALUE)
 							doc.append("\"align\":").append(align).append(",");
 						int state=3;
@@ -1418,7 +1418,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 								CMLib.flags().isSitting(mob)?"Sitting":
 								"Standing"
 								).append("\"");
-						MOB vicM=mob.getVictim();
+						final MOB vicM=mob.getVictim();
 						if(vicM!=null)
 						{
 							doc.append(",");
@@ -1430,7 +1430,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 					}
 					else
 					{
-						StringBuilder doc=new StringBuilder("char.status {");
+						final StringBuilder doc=new StringBuilder("char.status {");
 						doc.append("\"state\":").append(1);
 						doc.append("}");
 						return doc.toString();
@@ -1438,7 +1438,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 				case char_worth:
 					if(mob != null)
 					{
-						StringBuilder doc=new StringBuilder("char.worth {");
+						final StringBuilder doc=new StringBuilder("char.worth {");
 						doc.append("\"gold\":").append(CMLib.beanCounter().getTotalAbsoluteNativeValue(mob)).append(",");
 						doc.append("\"qp\":").append(mob.getQuestPoint()).append(",");
 						//doc.append("\"tp\":").append(mob.getTrains()).append(",");
@@ -1454,7 +1454,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 						final Room room=mob.location();
 						if(room != null)
 						{
-							StringBuilder doc=new StringBuilder("room.info {");
+							final StringBuilder doc=new StringBuilder("room.info {");
 							final String roomID=CMLib.map().getExtendedRoomID(room);
 							final String domType;
 							if((room.domainType()&Room.INDOORS)==0)
@@ -1491,7 +1491,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 				case group:
 					if(mob!=null)
 					{
-						StringBuilder doc=new StringBuilder("group {");
+						final StringBuilder doc=new StringBuilder("group {");
 						final Set<MOB> group=mob.getGroupMembers(new HashSet<MOB>());
 						final MOB leaderM=(mob.amFollowing()==null)?mob:mob.amUltimatelyFollowing();
 						doc.append("\"groupname\":\"").append(leaderM.name(mob)).append("s group").append("\",")
@@ -1500,7 +1500,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 							.append("\"count\":").append(group.size()).append(",")
 							.append("\"members\":[");
 						boolean comma=false;
-						for(MOB M : group)
+						for(final MOB M : group)
 						{
 							if(comma) doc.append(",");
 							comma=true;
@@ -1513,7 +1513,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 								.append("\"mv\":").append(M.curState().getMovement()).append(",")
 								.append("\"mmv\":").append(M.maxState().getMovement()).append(",")
 								.append("\"lvl\":").append(M.phyStats().level()).append(",");
-							int align=mob.fetchFaction(CMLib.factions().AlignID());
+							final int align=mob.fetchFaction(CMLib.factions().AlignID());
 							if(align!=Integer.MAX_VALUE)
 								doc.append("\"align\":").append(align).append(",");
 							doc.append("\"tnl\":").append(M.getExpNeededLevel());
@@ -1529,13 +1529,13 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 				}
 				return null;
 			}
-			catch(Exception e)
+			catch(final Exception e)
 			{
 				Log.errOut("Error parsing GMCP Package: "+pkg);
 				return null;
 			}
 		}
-		catch (MJSONException e)
+		catch (final MJSONException e)
 		{
 			Log.errOut("Error parsing GMCP JSON: "+e.getMessage());
 			return null;
@@ -1667,12 +1667,12 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 			}
 			return (bout.size()==0) ? null: bout.toByteArray();
 		}
-		catch(java.io.IOException ioe)
+		catch(final java.io.IOException ioe)
 		{
 			if(CMSecurity.isDebugging(DbgFlag.TELNET))
 				Log.errOut(ioe);
 		}
-		catch(Throwable t)
+		catch(final Throwable t)
 		{
 			Log.errOut(t);
 		}

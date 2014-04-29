@@ -54,7 +54,7 @@ public class Fighter_DeflectProjectile extends FighterSkill
 		if(!(affected instanceof MOB))
 			return true;
 
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		if(msg.amITarget(mob)
 		&&(!doneThisRound)
 		&&(CMLib.flags().aliveAwakeMobileUnbound(mob,true))
@@ -71,7 +71,7 @@ public class Fighter_DeflectProjectile extends FighterSkill
 		&&((mob.fetchAbility(ID())==null)||proficiencyCheck(null,-85+mob.charStats().getStat(CharStats.STAT_DEXTERITY)+(2*getXLEVELLevel(mob)),false))
 		&&(mob.freeWearPositions(Wearable.WORN_HELD,(short)0,(short)0)>0))
 		{
-			Item w=(Item)msg.tool();
+			final Item w=(Item)msg.tool();
 			if((((Weapon)w).weaponClassification()==Weapon.CLASS_THROWN)
 			&&(msg.source().isMine(w)))
 			{
@@ -81,7 +81,7 @@ public class Fighter_DeflectProjectile extends FighterSkill
 				if(!mob.location().isContent(w))
 					return true;
 			}
-			CMMsg msg2=CMClass.getMsg(mob,w,msg.source(),CMMsg.MSG_GET,"<S-NAME> deflect(s) the <T-NAME> shot by <O-NAME>!");
+			final CMMsg msg2=CMClass.getMsg(mob,w,msg.source(),CMMsg.MSG_GET,"<S-NAME> deflect(s) the <T-NAME> shot by <O-NAME>!");
 			if(mob.location().okMessage(mob,msg2))
 			{
 				mob.location().send(mob,msg2);

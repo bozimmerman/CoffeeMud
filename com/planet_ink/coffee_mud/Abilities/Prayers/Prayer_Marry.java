@@ -52,8 +52,8 @@ public class Prayer_Marry extends Prayer
 			mob.tell("Whom to whom?");
 			return false;
 		}
-		String name1=(String)commands.lastElement();
-		String name2=CMParms.combine(commands,0,commands.size()-1);
+		final String name1=(String)commands.lastElement();
+		final String name2=CMParms.combine(commands,0,commands.size()-1);
 		MOB husband=mob.location().fetchInhabitant(name1);
 		if((husband==null)||(!CMLib.flags().canBeSeenBy(mob,husband)))
 		{
@@ -68,7 +68,7 @@ public class Prayer_Marry extends Prayer
 		}
 		if(wife.charStats().getStat(CharStats.STAT_GENDER)=='M')
 		{
-			MOB M=wife;
+			final MOB M=wife;
 			wife=husband;
 			husband=M;
 		}
@@ -118,7 +118,7 @@ public class Prayer_Marry extends Prayer
 		MOB witness=null;
 		for(int i=0;i<mob.location().numInhabitants();i++)
 		{
-			MOB M=mob.location().fetchInhabitant(i);
+			final MOB M=mob.location().fetchInhabitant(i);
 			if((M!=null)
 			&&(M!=mob)
 			&&(M!=husband)
@@ -134,10 +134,10 @@ public class Prayer_Marry extends Prayer
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":"^S<S-NAME> "+prayForWord(mob)+" to bless the holy union between "+husband.name()+" and "+wife.name()+".^?");
+			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":"^S<S-NAME> "+prayForWord(mob)+" to bless the holy union between "+husband.name()+" and "+wife.name()+".^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -145,7 +145,7 @@ public class Prayer_Marry extends Prayer
 				wife.setLiegeID(husband.Name());
 				CMLib.coffeeTables().bump(husband,CoffeeTableRow.STAT_MARRIAGES);
 				CMLib.commands().postSay(mob,husband,"You may kiss your bride!",false,false);
-				List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.MARRIAGES);
+				final List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.MARRIAGES);
 				for(int i=0;i<channels.size();i++)
 					CMLib.commands().postChannel(channels.get(i),husband.clans(),husband.name()+" and "+wife.name()+" were just joined in holy matrimony!",true);
 			 }

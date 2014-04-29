@@ -48,7 +48,7 @@ public class Play_Blues extends Play
 		// the sex rules
 		if(!(affected instanceof MOB)) return true;
 
-		MOB myChar=(MOB)affected;
+		final MOB myChar=(MOB)affected;
 		if((msg.target()!=null)&&(msg.target() instanceof MOB)&&(myChar!=invoker()))
 		{
 			if((msg.amISource(myChar)||(msg.amITarget(myChar))
@@ -73,11 +73,11 @@ public class Play_Blues extends Play
 			return false;
 		if((affected!=null)&&(affected instanceof MOB)&&(affected!=invoker()))
 		{
-			MOB mob=(MOB)affected;
+			final MOB mob=(MOB)affected;
 			mob.curState().adjHunger(-2,mob.maxState().maxHunger(mob.baseWeight()));
 			if(CMLib.dice().rollPercentage()>(adjustedLevel(invoker(),0)/4))
 			{
-				Ability A=CMClass.getAbility("Disease_Depression");
+				final Ability A=CMClass.getAbility("Disease_Depression");
 				if(A!=null) A.invoke(invoker(),affected,true,0);
 			}
 		}

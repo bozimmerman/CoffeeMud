@@ -43,7 +43,7 @@ public class ColorSet extends StdCommand
 
 	public String colorDescription(String code)
 	{
-		StringBuffer buf=new StringBuffer("");
+		final StringBuffer buf=new StringBuffer("");
 		String what=CMLib.color().translateANSItoCMCode(code);
 		while((what!=null)&&(what.length()>1))
 		{
@@ -95,10 +95,10 @@ public class ColorSet extends StdCommand
 	public void makeColorChanges(final String[][] theSet, final PlayerStats pstats, final Session session, final String[][] clookup)
 	{
 		String newChanges="";
-		String[] common=CMLib.color().standardColorLookups();
-		for(int i=0;i<theSet.length;i++)
+		final String[] common=CMLib.color().standardColorLookups();
+		for (final String[] element : theSet)
 		{
-			char c=theSet[i][1].charAt(0);
+			final char c=element[1].charAt(0);
 			if(!clookup[0][c].equals(common[c]))
 				newChanges+=c+CMLib.color().translateANSItoCMCode(clookup[0][c])+"#";
 		}
@@ -150,7 +150,7 @@ public class ColorSet extends StdCommand
 		{
 			@Override public void showPrompt()
 			{
-				StringBuffer buf=new StringBuffer("");
+				final StringBuffer buf=new StringBuffer("");
 				for(int i=0;i<theSet.length;i++)
 				{
 					buf.append("\n\r^H"+CMStrings.padLeft(""+(i+1),2)+"^N) "+CMStrings.padRight(theSet[i][0],20)+": ");
@@ -172,7 +172,7 @@ public class ColorSet extends StdCommand
 					mob.tell("That is not a valid entry!");
 				else
 				{
-					StringBuffer buf=new StringBuffer("");
+					final StringBuffer buf=new StringBuffer("");
 					buf.append("\n\r\n\r^c"+CMStrings.padLeft(""+(num+1),2)+"^N) "+CMStrings.padRight(theSet[num][0],20)+": ");
 					buf.append(colorDescription(clookup[0][theSet[num][1].charAt(0)]));
 					if(theSet[num][1].charAt(0)!='Q')
@@ -190,7 +190,7 @@ public class ColorSet extends StdCommand
 							@Override public void timedOut() { }
 							@Override public void callBack()
 							{
-								int colorNum=CMath.s_int(this.input);
+								final int colorNum=CMath.s_int(this.input);
 								if(colorNum<0)
 									mob.tell("That is not a valid color!");
 								else
@@ -244,7 +244,7 @@ public class ColorSet extends StdCommand
 										@Override public void timedOut() { }
 										@Override public void callBack()
 										{
-											int colorNum2=CMath.s_int(this.input);
+											final int colorNum2=CMath.s_int(this.input);
 											if((colorNum2<0)||(Character.isUpperCase(ColorLibrary.COLOR_ALLNORMALCOLORCODELETTERS[colorNum2].charAt(0))))
 												mob.tell("That is not a valid Foreground color!");
 											else

@@ -46,7 +46,7 @@ public class HTTPForwarder implements HTTPIOHandler, Runnable
 	private final long			startTime;		   			  // the initial start time of the request, for overall age calculation
 	private volatile long		idleTime 	 	 	= 0;	  // the last time this handler went idle
 	private final boolean		isDebugging;			  	  // true if the log debug channel is on -- an optomization
-	private ByteBuffer			responseBuffer;
+	private final ByteBuffer			responseBuffer;
 	private final String		name;					  	  // the name of this handler -- to denote a request ID
 	private final MiniWebConfig config;
 	private final MiniWebServer server;
@@ -98,7 +98,7 @@ public class HTTPForwarder implements HTTPIOHandler, Runnable
 						announcedAlready=true;
 					}
 					responseBuffer.flip(); // turn the writeable buffer into a "readable" one
-					ByteBuffer writeableBuf=ByteBuffer.allocate(responseBuffer.remaining());
+					final ByteBuffer writeableBuf=ByteBuffer.allocate(responseBuffer.remaining());
 					writeableBuf.put(responseBuffer);
 					writeableBuf.flip();
 					clientReader.writeBytesToChannel(new MWDataBuffers(writeableBuf,0));
@@ -113,13 +113,13 @@ public class HTTPForwarder implements HTTPIOHandler, Runnable
 					closeChannels();
 				}
 			}
-			catch(IOException e)
+			catch(final IOException e)
 			{
 				closeChannels();
 				if(isDebugging)
 					config.getLogger().finer("ERROR: "+e.getClass().getName()+": "+e.getMessage());
 			}
-			catch(Exception e)
+			catch(final Exception e)
 			{
 				closeChannels();
 				config.getLogger().throwing("", "", e);
@@ -140,7 +140,7 @@ public class HTTPForwarder implements HTTPIOHandler, Runnable
 		if(!closeMe)
 		{
 			closeMe=true;
-			for(DataBuffers buf : this.writeables)
+			for(final DataBuffers buf : this.writeables)
 				buf.close();
 			this.writeables.clear();
 			if((isDebugging)&&(webServerChannel.isOpen()))
@@ -148,7 +148,7 @@ public class HTTPForwarder implements HTTPIOHandler, Runnable
 			try
 			{
 				webServerChannel.close();
-			}catch(Exception e){}
+			}catch(final Exception e){}
 		}
 	}
 
@@ -160,10 +160,10 @@ public class HTTPForwarder implements HTTPIOHandler, Runnable
 	public void closeAndWait()
 	{
 		closeChannels();
-		long time = System.currentTimeMillis();
+		final long time = System.currentTimeMillis();
 		while((System.currentTimeMillis()-time<30000) && (isRunning))
 		{
-			try { Thread.sleep(100); }catch(Exception e){}
+			try { Thread.sleep(100); }catch(final Exception e){}
 		}
 	}
 
@@ -183,15 +183,15 @@ public class HTTPForwarder implements HTTPIOHandler, Runnable
 			int bytesWritten=0;
 			while(buffers.hasNext())
 			{
-				ByteBuffer buffer=buffers.next();
+				final ByteBuffer buffer=buffers.next();
 				while(buffer.remaining()>0)
 				{
-					int bytesOut=webServerChannel.write(buffer);
+					final int bytesOut=webServerChannel.write(buffer);
 					if(bytesOut>=0)
 						bytesWritten+=bytesOut;
 					if(buffer.remaining()>0)
 					{
-						try{Thread.sleep(1);}catch(Exception e){}
+						try{Thread.sleep(1);}catch(final Exception e){}
 					}
 				}
 			}
@@ -224,10 +224,10 @@ public class HTTPForwarder implements HTTPIOHandler, Runnable
 		{
 			while(writeables.size()>0)
 			{
-				DataBuffers bufs=writeables.getFirst();
+				final DataBuffers bufs=writeables.getFirst();
 				while(bufs.hasNext())
 				{
-					ByteBuffer buf=bufs.next();
+					final ByteBuffer buf=bufs.next();
 					if(buf.remaining()>0)
 					{
 						webServerChannel.write(buf);

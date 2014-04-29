@@ -45,28 +45,28 @@ public class GConsider extends StdCommand
 		MOB mob2=mobs.iterator().next();
 		if(mob2.amFollowing()!=null) mob2=mob2.amUltimatelyFollowing();
 
-		int mob2Armor=CMLib.combat().adjustedArmor(mob2);
-		int mob1Armor=CMLib.combat().adjustedArmor(mob1);
-		double mob1Attack=CMLib.combat().adjustedAttackBonus(mob1,mob2);
-		int mob1Dmg=mob1.phyStats().damage();
-		int mob2Hp=mob2.baseState().getHitPoints();
-		int mob1Hp=mob1.baseState().getHitPoints();
+		final int mob2Armor=CMLib.combat().adjustedArmor(mob2);
+		final int mob1Armor=CMLib.combat().adjustedArmor(mob1);
+		final double mob1Attack=CMLib.combat().adjustedAttackBonus(mob1,mob2);
+		final int mob1Dmg=mob1.phyStats().damage();
+		final int mob2Hp=mob2.baseState().getHitPoints();
+		final int mob1Hp=mob1.baseState().getHitPoints();
 
 		double mob2HitRound=0.0;
-		for(Iterator i=mobs.iterator();i.hasNext();)
+		for (final Object element : mobs)
 		{
-			MOB mob=(MOB)i.next();
-			double mob2Attack=CMLib.combat().adjustedAttackBonus(mob,mob1);
-			int mob2Dmg=mob.phyStats().damage();
+			final MOB mob=(MOB)element;
+			final double mob2Attack=CMLib.combat().adjustedAttackBonus(mob,mob1);
+			final int mob2Dmg=mob.phyStats().damage();
 			mob2HitRound+=(((CMath.div(CMLib.dice().normalizeBy5((int)Math.round(50.0*mob2Attack/mob1Armor)),100.0))*CMath.div(mob2Dmg,2.0))+1.0)*CMath.mul(mob.phyStats().speed(),1.0);
 		}
-		double mob1HitRound=(((CMath.div(CMLib.dice().normalizeBy5((int)Math.round(50.0*mob1Attack/mob2Armor)),100.0))*CMath.div(mob1Dmg,2.0))+1.0)*CMath.mul(mob1.phyStats().speed(),1.0);
-		double mob2SurvivalRounds=CMath.div(mob2Hp,mob1HitRound);
-		double mob1SurvivalRounds=CMath.div(mob1Hp,mob2HitRound);
+		final double mob1HitRound=(((CMath.div(CMLib.dice().normalizeBy5((int)Math.round(50.0*mob1Attack/mob2Armor)),100.0))*CMath.div(mob1Dmg,2.0))+1.0)*CMath.mul(mob1.phyStats().speed(),1.0);
+		final double mob2SurvivalRounds=CMath.div(mob2Hp,mob1HitRound);
+		final double mob1SurvivalRounds=CMath.div(mob1Hp,mob2HitRound);
 
 		//int levelDiff=(int)Math.round(CMath.div((mob1SurvivalRounds-mob2SurvivalRounds),1));
-		double levelDiff=(mob1SurvivalRounds-mob2SurvivalRounds)/2;
-		int levelDiffed=(int)Math.round(Math.sqrt(Math.abs(levelDiff)));
+		final double levelDiff=(mob1SurvivalRounds-mob2SurvivalRounds)/2;
+		final int levelDiffed=(int)Math.round(Math.sqrt(Math.abs(levelDiff)));
 
 		return levelDiffed*(levelDiff<0.0?-1:1);
 	}
@@ -82,17 +82,17 @@ public class GConsider extends StdCommand
 			return false;
 		}
 		commands.removeElementAt(0);
-		String targetName=CMParms.combine(commands,0);
-		MOB target=mob.location().fetchInhabitant(targetName);
+		final String targetName=CMParms.combine(commands,0);
+		final MOB target=mob.location().fetchInhabitant(targetName);
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
 			mob.tell("I don't see '"+targetName+"' here.");
 			return false;
 		}
 
-		int relDiff=relativeLevelDiff(target,mob.getGroupMembers(new HashSet<MOB>()));
-		int lvlDiff=(target.phyStats().level()-mob.phyStats().level());
-		int realDiff=(relDiff+lvlDiff)/2;
+		final int relDiff=relativeLevelDiff(target,mob.getGroupMembers(new HashSet<MOB>()));
+		final int lvlDiff=(target.phyStats().level()-mob.phyStats().level());
+		final int realDiff=(relDiff+lvlDiff)/2;
 
 		int theDiff=2;
 		if(mob.phyStats().level()>20) theDiff=3;
@@ -100,7 +100,7 @@ public class GConsider extends StdCommand
 		if(mob.phyStats().level()>60) theDiff=5;
 		if(mob.phyStats().level()>80) theDiff=6;
 
-		int levelDiff=Math.abs(realDiff);
+		final int levelDiff=Math.abs(realDiff);
 		if(levelDiff<theDiff)
 		{
 			mob.tell("The perfect match!");

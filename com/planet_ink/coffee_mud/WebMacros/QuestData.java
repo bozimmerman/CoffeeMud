@@ -40,15 +40,15 @@ public class QuestData extends StdWebMacro
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
-		java.util.Map<String,String> parms=parseParms(parm);
-		String last=httpReq.getUrlParameter("QUEST");
+		final java.util.Map<String,String> parms=parseParms(parm);
+		final String last=httpReq.getUrlParameter("QUEST");
 		if(last==null) return "";
 		if(last.length()>0)
 		{
 			Quest Q=CMLib.quests().fetchQuest(last);
 			if(Q==null)
 			{
-				String newLast=CMStrings.replaceAll(last,"*","@");
+				final String newLast=CMStrings.replaceAll(last,"*","@");
 				for(int q=0;q<CMLib.quests().numQuests();q++)
 					if((""+CMLib.quests().fetchQuest(q)).equals(newLast))
 					{ Q=CMLib.quests().fetchQuest(q); break;}
@@ -100,15 +100,15 @@ public class QuestData extends StdWebMacro
 				if((parms.containsKey("REDIRECT"))
 				&&(script.toString().toUpperCase().trim().startsWith("LOAD=")))
 				{
-					String fileName=script.toString().trim().substring(5);
-					CMFile F=new CMFile(Resources.makeFileResourceName(fileName),null,CMFile.FLAG_LOGERRORS);
+					final String fileName=script.toString().trim().substring(5);
+					final CMFile F=new CMFile(Resources.makeFileResourceName(fileName),null,CMFile.FLAG_LOGERRORS);
 					if((F.exists())&&(F.canRead()))
 						script=F.text();
 					script=new StringBuffer(CMStrings.replaceAll(script.toString(),"\n\r","\n"));
 				}
 				script=new StringBuffer(CMStrings.replaceAll(script.toString(),"&","&amp;"));
 				String postFix="";
-				int limit=script.toString().toUpperCase().indexOf("<?XML");
+				final int limit=script.toString().toUpperCase().indexOf("<?XML");
 				if(limit>=0)
 				{
 					postFix=script.toString().substring(limit);

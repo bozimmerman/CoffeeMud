@@ -47,9 +47,9 @@ public class PlayerHelper extends StdBehavior
 	{
 		super.executeMsg(affecting,msg);
 		if((msg.target()==null)||(!(msg.target() instanceof MOB))) return;
-		MOB mob=msg.source();
-		MOB monster=(MOB)affecting;
-		MOB target=(MOB)msg.target();
+		final MOB mob=msg.source();
+		final MOB monster=(MOB)affecting;
+		final MOB target=(MOB)msg.target();
 
 		if((mob!=monster)
 		&&(target!=monster)

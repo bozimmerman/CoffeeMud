@@ -50,12 +50,12 @@ public class Chant_SummonLightning extends Chant
 	{
 		 if(mob!=null)
 		 {
-			 Room R=mob.location();
+			 final Room R=mob.location();
 			 if(R!=null)
 			 {
 				 if((R.domainType()&Room.INDOORS)>0)
 					 return Ability.QUALITY_INDIFFERENT;
-				 Area A=R.getArea();
+				 final Area A=R.getArea();
 				 if(A.getClimateObj().weatherType(mob.location())!=Climate.WEATHER_THUNDERSTORM)
 					 return Ability.QUALITY_INDIFFERENT;
 			 }
@@ -76,7 +76,7 @@ public class Chant_SummonLightning extends Chant
 			mob.tell("This chant requires a thunderstorm!");
 			return false;
 		}
-		MOB target=this.getTarget(mob,commands,givenTarget);
+		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
 		// the invoke method for spells receives as
@@ -87,7 +87,7 @@ public class Chant_SummonLightning extends Chant
 			return false;
 
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
@@ -95,13 +95,13 @@ public class Chant_SummonLightning extends Chant
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),(auto?"^JA lightning bolt streaks out of the sky!^?":"^S<S-NAME> chant(s) to <T-NAMESELF>.  Suddenly a lightning bolt streaks from the sky!^?")+CMLib.protocol().msp("lightning.wav",40));
-			CMMsg msg2=CMClass.getMsg(mob,target,this,verbalCastMask(mob,target,auto)|CMMsg.TYP_ELECTRIC,null);
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),(auto?"^JA lightning bolt streaks out of the sky!^?":"^S<S-NAME> chant(s) to <T-NAMESELF>.  Suddenly a lightning bolt streaks from the sky!^?")+CMLib.protocol().msp("lightning.wav",40));
+			final CMMsg msg2=CMClass.getMsg(mob,target,this,verbalCastMask(mob,target,auto)|CMMsg.TYP_ELECTRIC,null);
 			if((mob.location().okMessage(mob,msg))&&((mob.location().okMessage(mob,msg2))))
 			{
 				mob.location().send(mob,msg);
 				mob.location().send(mob,msg2);
-				int maxDie =  adjustedLevel( mob, asLevel ) + ( 2 * super.getX1Level( mob ) );
+				final int maxDie =  adjustedLevel( mob, asLevel ) + ( 2 * super.getX1Level( mob ) );
 				int damage = CMLib.dice().roll(maxDie,8,maxDie);
 				if((msg.value()>0)||(msg2.value()>0))
 					damage = (int)Math.round(CMath.div(damage,2.0));

@@ -42,7 +42,7 @@ public class ObjectGuardian extends StdBehavior
 	public void setParms(String parameters)
 	{
 		super.setParms(parameters);
-		List<String> parts=CMParms.parse(parameters.toUpperCase());
+		final List<String> parts=CMParms.parse(parameters.toUpperCase());
 		sentinal=parts.contains("SENTINAL")||parts.contains("SENTINEL");
 	}
 
@@ -56,8 +56,8 @@ public class ObjectGuardian extends StdBehavior
 	public boolean okMessage(Environmental oking, CMMsg msg)
 	{
 		if(!super.okMessage(oking,msg)) return false;
-		MOB mob=msg.source();
-		MOB monster=(MOB)oking;
+		final MOB mob=msg.source();
+		final MOB monster=(MOB)oking;
 		if(sentinal)
 		{
 			if(!canActAtAll(monster)) return true;
@@ -73,7 +73,7 @@ public class ObjectGuardian extends StdBehavior
 		&&(((msg.sourceMinor()==CMMsg.TYP_THROW)&&(monster.location()==CMLib.map().roomLocation(msg.target())))
 		||(msg.sourceMinor()==CMMsg.TYP_DROP)))
 		{
-			CMMsg msgs=CMClass.getMsg(monster,mob,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> won't let <T-NAME> drop that.");
+			final CMMsg msgs=CMClass.getMsg(monster,mob,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> won't let <T-NAME> drop that.");
 			if(monster.location().okMessage(monster,msgs))
 			{
 				monster.location().send(monster,msgs);
@@ -84,7 +84,7 @@ public class ObjectGuardian extends StdBehavior
 		if((mob!=monster)
 		&&((msg.sourceMinor()==CMMsg.TYP_GET)||(msg.targetMinor()==CMMsg.TYP_PUSH)||(msg.targetMinor()==CMMsg.TYP_PULL)))
 		{
-			CMMsg msgs=CMClass.getMsg(monster,mob,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> won't let <T-NAME> touch that.");
+			final CMMsg msgs=CMClass.getMsg(monster,mob,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> won't let <T-NAME> touch that.");
 			if(monster.location().okMessage(monster,msgs))
 			{
 				monster.location().send(monster,msgs);

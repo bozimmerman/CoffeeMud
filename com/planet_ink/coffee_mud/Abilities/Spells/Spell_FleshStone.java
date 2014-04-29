@@ -53,7 +53,7 @@ public class Spell_FleshStone extends Spell
 		&&(statue!=null)
 		&&(affected instanceof MOB))
 		{
-			MOB mob=(MOB)affected;
+			final MOB mob=(MOB)affected;
 			mob.makePeace();
 			if((statue.owner()!=null)&&(statue.owner()!=mob.location()))
 			{
@@ -75,12 +75,12 @@ public class Spell_FleshStone extends Spell
 	{
 		if(affected instanceof MOB)
 		{
-			MOB mob=(MOB)affected;
+			final MOB mob=(MOB)affected;
 			if(msg.source().getVictim()==mob)
 				msg.source().setVictim(null);
 			if(mob.isInCombat())
 			{
-				MOB victim=mob.getVictim();
+				final MOB victim=mob.getVictim();
 				if(victim!=null) victim.makePeace();
 				mob.makePeace();
 			}
@@ -109,12 +109,12 @@ public class Spell_FleshStone extends Spell
 
 		if(affected instanceof MOB)
 		{
-			MOB mob=(MOB)affected;
+			final MOB mob=(MOB)affected;
 			if(msg.source().getVictim()==affected)
 				msg.source().setVictim(null);
 			if(mob.isInCombat())
 			{
-				MOB victim=mob.getVictim();
+				final MOB victim=mob.getVictim();
 				if(victim!=null) victim.makePeace();
 				mob.makePeace();
 			}
@@ -150,7 +150,7 @@ public class Spell_FleshStone extends Spell
 		if((affected==null)||(!(affected instanceof MOB))||(recurse))
 			return;
 		recurse=true;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		super.unInvoke();
 		if(canBeUninvoked())
@@ -170,7 +170,7 @@ public class Spell_FleshStone extends Spell
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		MOB target=this.getTarget(mob,commands,givenTarget);
+		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
 		// if they can't hear the sleep spell, it
@@ -201,7 +201,7 @@ public class Spell_FleshStone extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> incant(s) at <T-NAMESELF>.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> incant(s) at <T-NAMESELF>.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -210,8 +210,8 @@ public class Spell_FleshStone extends Spell
 					int a=0;
 					while(a<target.numEffects()) // personal effects
 					{
-						Ability A=target.fetchEffect(a);
-						int s=target.numEffects();
+						final Ability A=target.fetchEffect(a);
+						final int s=target.numEffects();
 						if(A!=null) A.unInvoke();
 						if(target.numEffects()==s)
 							a++;
@@ -231,7 +231,7 @@ public class Spell_FleshStone extends Spell
 					success=maliciousAffect(mob,target,asLevel,(mob.phyStats().level()+(2*getXLEVELLevel(mob))),-1);
 					target.makePeace();
 					if(mob.getVictim()==target) mob.setVictim(null);
-					Ability A=target.fetchEffect(ID());
+					final Ability A=target.fetchEffect(ID());
 					if(success&&(A!=null))
 					{
 						mob.location().addItem(statue);

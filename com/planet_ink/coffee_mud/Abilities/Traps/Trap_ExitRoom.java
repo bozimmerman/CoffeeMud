@@ -46,7 +46,7 @@ public class Trap_ExitRoom extends Trap_Trap
 	@Override @SuppressWarnings({ "unchecked", "rawtypes" })
 	public CMObject copyOf()
 	{
-		Trap_ExitRoom obj=(Trap_ExitRoom)super.copyOf();
+		final Trap_ExitRoom obj=(Trap_ExitRoom)super.copyOf();
 		obj.safeDirs=(PairVector)safeDirs.clone();
 		return obj;
 	}
@@ -68,9 +68,9 @@ public class Trap_ExitRoom extends Trap_Trap
 				{
 					synchronized(safeDirs)
 					{
-						for(Iterator<Pair<MOB,Integer>> i=safeDirs.iterator();i.hasNext();)
+						for(final Iterator<Pair<MOB,Integer>> i=safeDirs.iterator();i.hasNext();)
 						{
-							Pair<MOB,Integer> p=i.next();
+							final Pair<MOB,Integer> p=i.next();
 							if(p.first == msg.source())
 							{
 								i.remove();
@@ -91,7 +91,7 @@ public class Trap_ExitRoom extends Trap_Trap
 				{
 					synchronized(safeDirs)
 					{
-						int dex=safeDirs.indexOf(msg.source());
+						final int dex=safeDirs.indexOf(msg.source());
 						if(dex>=0)
 							safeDirs.remove(dex);
 						while(safeDirs.size()>room.numInhabitants()+1)

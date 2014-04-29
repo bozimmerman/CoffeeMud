@@ -50,7 +50,7 @@ public class Thief_Countertracking extends ThiefSkill
 		if(!(affected instanceof MOB))
 			return super.okMessage(myHost,msg);
 
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		if((!msg.amISource(mob))
 		&&(msg.target()==mob)
 		&&(msg.tool() instanceof Ability)

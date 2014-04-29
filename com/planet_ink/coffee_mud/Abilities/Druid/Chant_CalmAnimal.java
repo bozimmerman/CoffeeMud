@@ -46,7 +46,7 @@ public class Chant_CalmAnimal extends Chant
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		MOB target=this.getTarget(mob,commands,givenTarget);
+		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 		if(!CMLib.flags().isAnimalIntelligence(target))
 		{
@@ -63,7 +63,7 @@ public class Chant_CalmAnimal extends Chant
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
@@ -71,14 +71,14 @@ public class Chant_CalmAnimal extends Chant
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> become(s) surrounded by a natural light.":"^S<S-NAME> chant(s) to <T-NAMESELF> for calm.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> become(s) surrounded by a natural light.":"^S<S-NAME> chant(s) to <T-NAMESELF> for calm.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				beneficialAffect(mob,target,asLevel,3);
 				for(int i=0;i<mob.location().numInhabitants();i++)
 				{
-					MOB mob2=mob.location().fetchInhabitant(i);
+					final MOB mob2=mob.location().fetchInhabitant(i);
 					if((mob2.getVictim()==target)||(mob2==target))
 						mob2.makePeace();
 				}

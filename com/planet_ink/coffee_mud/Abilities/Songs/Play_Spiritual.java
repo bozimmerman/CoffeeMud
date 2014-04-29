@@ -58,15 +58,15 @@ public class Play_Spiritual extends Play
 	{
 		if(!super.tick(ticking,tickID))
 			return false;
-		Room R=CMLib.map().roomLocation(affected);
+		final Room R=CMLib.map().roomLocation(affected);
 		if(R!=null)
 		for(int m=0;m<R.numInhabitants();m++)
 		{
-			MOB mob=R.fetchInhabitant(m);
+			final MOB mob=R.fetchInhabitant(m);
 			if(mob!=null)
 			for(int i=0;i<mob.numEffects();i++) // personal
 			{
-				Ability A=mob.fetchEffect(i);
+				final Ability A=mob.fetchEffect(i);
 				if((A!=null)
 				&&(A instanceof StdAbility)
 				&&(A.abstractQuality()!=Ability.QUALITY_MALICIOUS)

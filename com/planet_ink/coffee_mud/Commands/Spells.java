@@ -43,16 +43,16 @@ public class Spells  extends Skills
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		String qual=CMParms.combine(commands,1).toUpperCase();
+		final String qual=CMParms.combine(commands,1).toUpperCase();
 		if(parsedOutIndividualSkill(mob,qual,Ability.ACODE_SPELL))
 			return true;
-		int[] level=new int[1];
-		int[] domain=new int[1];
-		String[] domainName=new String[1];
+		final int[] level=new int[1];
+		final int[] domain=new int[1];
+		final String[] domainName=new String[1];
 		domainName[0]="";
 		level[0]=-1;
 		parseDomainInfo(mob,commands,new XVector(Integer.valueOf(Ability.ACODE_SPELL)),level,domain,domainName);
-		StringBuffer msg=new StringBuffer("");
+		final StringBuffer msg=new StringBuffer("");
 		msg.append("\n\r^HYour "+domainName[0].replace('_',' ')+"spells:^? "+getAbilities(mob,mob,Ability.ACODE_SPELL,domain[0],true,level[0]));
 		if(!mob.isMonster())
 			mob.session().wraplessPrintln(msg.toString()+"\n\r");

@@ -45,13 +45,13 @@ public class Prayer_Atonement extends Prayer
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		MOB target=this.getTarget(mob,commands,givenTarget);
+		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 		CMMsg msg2=null;
 		if((mob!=target)&&(!mob.getGroupMembers(new HashSet<MOB>()).contains(target)))
 			msg2=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto)|CMMsg.MASK_MALICIOUS,"<T-NAME> do(es) not seem to like <S-NAME> messing with <T-HIS-HER> head.");
@@ -62,7 +62,7 @@ public class Prayer_Atonement extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),(auto?"<T-NAME> feel(s) more good.":"^S<S-NAME> "+prayWord(mob)+" to atone <T-NAMESELF>!^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),(auto?"<T-NAME> feel(s) more good.":"^S<S-NAME> "+prayWord(mob)+" to atone <T-NAMESELF>!^?"));
 			if((mob.location().okMessage(mob,msg))
 			&&((msg2==null)||(mob.location().okMessage(mob,msg2))))
 			{
@@ -70,7 +70,7 @@ public class Prayer_Atonement extends Prayer
 				if((msg.value()<=0)&&((msg2==null)||(msg2.value()<=0)))
 				{
 					target.tell("Good, pure thoughts fill your head.");
-					int evilness=CMLib.dice().roll(10,adjustedLevel(mob,asLevel),0);
+					final int evilness=CMLib.dice().roll(10,adjustedLevel(mob,asLevel),0);
 					CMLib.factions().postFactionChange(target,this, CMLib.factions().AlignID(), evilness);
 				}
 				if(msg2!=null) mob.location().send(mob,msg2);

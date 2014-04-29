@@ -46,7 +46,7 @@ public class Prayer_DemonicConsumption extends Prayer
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		Physical target=getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_ANY);
+		final Physical target=getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_ANY);
 		if(target==null) return false;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -67,19 +67,19 @@ public class Prayer_DemonicConsumption extends Prayer
 
 		if(auto)affectType=affectType|CMMsg.MASK_ALWAYS;
 
-		Room R=mob.location();
+		final Room R=mob.location();
 		if(success && (R!=null))
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,affectType,auto?"":"^S<S-NAME> point(s) at <T-NAMESELF> and "+prayWord(mob)+" treacherously!^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,affectType,auto?"":"^S<S-NAME> point(s) at <T-NAMESELF> and "+prayWord(mob)+" treacherously!^?");
 			if(R.okMessage(mob,msg))
 			{
 				R.send(mob,msg);
 				if(msg.value()<=0)
 				{
-					HashSet<DeadBody> oldBodies=new HashSet<DeadBody>();
+					final HashSet<DeadBody> oldBodies=new HashSet<DeadBody>();
 					for(int i=0;i<R.numItems();i++)
 					{
-						Item I=R.getItem(i);
+						final Item I=R.getItem(i);
 						if((I!=null)&&(I instanceof DeadBody)&&(I.container()==null))
 							oldBodies.add((DeadBody)I);
 					}
@@ -102,7 +102,7 @@ public class Prayer_DemonicConsumption extends Prayer
 					{
 						for(int i=0;i<R.numItems();i++)
 						{
-							Item I=R.getItem(i);
+							final Item I=R.getItem(i);
 							if((I!=null)&&(I instanceof DeadBody)&&(I.container()==null)&&(!oldBodies.contains(I))
 							&&(!((DeadBody)I).playerCorpse()))
 							{

@@ -57,7 +57,7 @@ public class Prayer_Haunted extends Prayer
 			super.unInvoke();
 			return;
 		}
-		Room  R=(Room)affected;
+		final Room  R=(Room)affected;
 
 		super.unInvoke();
 
@@ -70,11 +70,11 @@ public class Prayer_Haunted extends Prayer
 	{
 		if((affected!=null)&&(affected instanceof Room)&&(numDone<numMax))
 		{
-			Room R=(Room)affected;
+			final Room R=(Room)affected;
 			DeadBody B=null;
 			for(int i=0;i<R.numItems();i++)
 			{
-				Item I=R.getItem(i);
+				final Item I=R.getItem(i);
 				if((I!=null)
 				&&(I instanceof DeadBody)
 				&&(I.container()==null)
@@ -100,7 +100,7 @@ public class Prayer_Haunted extends Prayer
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		Room target=mob.location();
+		final Room target=mob.location();
 		if(target==null) return false;
 		if(target.fetchEffect(ID())!=null)
 		{
@@ -111,7 +111,7 @@ public class Prayer_Haunted extends Prayer
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
@@ -119,7 +119,7 @@ public class Prayer_Haunted extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> "+prayWord(mob)+" to haunt this place.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> "+prayWord(mob)+" to haunt this place.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

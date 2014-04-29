@@ -50,17 +50,17 @@ public class Prop_Socials extends Property
 		socials.clear();
 		wornOnly=false;
 		mask=null;
-		List<String> socialsV=CMParms.parseAny(newText, ';', false);
-		List<String> lines = new Vector<String>();
-		for(String social : socialsV)
+		final List<String> socialsV=CMParms.parseAny(newText, ';', false);
+		final List<String> lines = new Vector<String>();
+		for(final String social : socialsV)
 		{
 			boolean forgive=false;
-			String load=CMParms.getParmStr(social, "LOAD", "");
-			String maskStr=CMParms.getParmStr(social, "MASK", "");
-			String wornonly=CMParms.getParmStr(social, "WORNONLY", "");
+			final String load=CMParms.getParmStr(social, "LOAD", "");
+			final String maskStr=CMParms.getParmStr(social, "MASK", "");
+			final String wornonly=CMParms.getParmStr(social, "WORNONLY", "");
 			if(load.length()>0)
 			{
-				List<String> flines=Resources.getFileLineVector(Resources.getFileResource(social.substring(4).trim().substring(1).trim(),true));
+				final List<String> flines=Resources.getFileLineVector(Resources.getFileResource(social.substring(4).trim().substring(1).trim(),true));
 				if((flines!=null)&&(flines.size()>0))
 					lines.addAll(flines);
 				forgive=true;
@@ -76,15 +76,15 @@ public class Prop_Socials extends Property
 				forgive=true;
 			}
 
-			String name=CMParms.getParmStr(social, "NAME", "");
-			String target=CMParms.getParmStr(social, "TARGET", "");
-			String srcCode=CMParms.getParmStr(social, "SRCCODE", CMParms.getParmStr(social, "SOURCECODE", "M"));
-			String othCode=CMParms.getParmStr(social, "OTHCODE", CMParms.getParmStr(social, "TGTCODE", CMParms.getParmStr(social, "OTHERCODE", CMParms.getParmStr(social, "TARGETCODE", "V"))));
-			String youSee=CMParms.getParmStr(social, "YOUSEE", "");
-			String othersSee=CMParms.getParmStr(social, "OTHSEE", CMParms.getParmStr(social, "OTHERSEE", CMParms.getParmStr(social, "OTHERSSEE", "")));
-			String targetSee=CMParms.getParmStr(social, "TARGSEE", CMParms.getParmStr(social, "TARGETSEE", CMParms.getParmStr(social, "TGTSEE", "")));
-			String seeNoTargetSee=CMParms.getParmStr(social, "NOTARGSEE", CMParms.getParmStr(social, "NOTARGETSEE", CMParms.getParmStr(social, "NOTGTSEE", "")));
-			String mspFile=CMParms.getParmStr(social, "MSPFILE", "");
+			final String name=CMParms.getParmStr(social, "NAME", "");
+			final String target=CMParms.getParmStr(social, "TARGET", "");
+			final String srcCode=CMParms.getParmStr(social, "SRCCODE", CMParms.getParmStr(social, "SOURCECODE", "M"));
+			final String othCode=CMParms.getParmStr(social, "OTHCODE", CMParms.getParmStr(social, "TGTCODE", CMParms.getParmStr(social, "OTHERCODE", CMParms.getParmStr(social, "TARGETCODE", "V"))));
+			final String youSee=CMParms.getParmStr(social, "YOUSEE", "");
+			final String othersSee=CMParms.getParmStr(social, "OTHSEE", CMParms.getParmStr(social, "OTHERSEE", CMParms.getParmStr(social, "OTHERSSEE", "")));
+			final String targetSee=CMParms.getParmStr(social, "TARGSEE", CMParms.getParmStr(social, "TARGETSEE", CMParms.getParmStr(social, "TGTSEE", "")));
+			final String seeNoTargetSee=CMParms.getParmStr(social, "NOTARGSEE", CMParms.getParmStr(social, "NOTARGETSEE", CMParms.getParmStr(social, "NOTGTSEE", "")));
+			final String mspFile=CMParms.getParmStr(social, "MSPFILE", "");
 			if(name.length()==0)
 			{
 				if(!forgive) Log.errOut("Prop_Socials","NAME not found in: "+social);
@@ -106,7 +106,7 @@ public class Prop_Socials extends Property
 			}
 			else
 			{
-				StringBuilder tabLine=new StringBuilder("");
+				final StringBuilder tabLine=new StringBuilder("");
 				tabLine.append(srcCode).append(othCode).append("\t");
 				tabLine.append(name.toUpperCase().trim());
 				if(target.trim().length()>0)
@@ -138,7 +138,7 @@ public class Prop_Socials extends Property
 			)
 		)
 		{
-			Vector<String> V=CMParms.parse(msg.targetMessage());
+			final Vector<String> V=CMParms.parse(msg.targetMessage());
 			Social S=CMLib.socials().fetchSocialFromSet(socials, V, true, true);
 			if(S==null) S=CMLib.socials().fetchSocialFromSet(socials, V, false, true);
 			if(S!=null)

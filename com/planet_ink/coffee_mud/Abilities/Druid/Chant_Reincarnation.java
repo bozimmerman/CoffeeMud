@@ -56,7 +56,7 @@ public class Chant_Reincarnation extends Chant
 				affectableStats.setName(CMLib.english().startWithAorAn(newRace.name())+" called "+affected.name());
 			else
 				affectableStats.setName(affected.name()+" the "+newRace.name());
-			int oldAdd=affectableStats.weight()-affected.basePhyStats().weight();
+			final int oldAdd=affectableStats.weight()-affected.basePhyStats().weight();
 			newRace.setHeightWeight(affectableStats,'M');
 			if(oldAdd>0) affectableStats.setWeight(affectableStats.weight()+oldAdd);
 		}
@@ -91,7 +91,7 @@ public class Chant_Reincarnation extends Chant
 				// undo the affects of this spell
 				if(!(affected instanceof MOB))
 					return super.tick(ticking,tickID);
-				MOB mob=(MOB)affected;
+				final MOB mob=(MOB)affected;
 				mob.tell("Your reincarnation geas is lifted as your form solidifies.");
 				if(newRace!=null)
 				{
@@ -118,9 +118,9 @@ public class Chant_Reincarnation extends Chant
 
 	public boolean isGolem(Race R)
 	{
-		MOB M=CMClass.getFactoryMOB();
+		final MOB M=CMClass.getFactoryMOB();
 		R.affectPhyStats(M,M.phyStats());
-		boolean golem= CMLib.flags().isGolem(M);
+		final boolean golem= CMLib.flags().isGolem(M);
 		M.destroy();
 		return golem;
 	}
@@ -133,7 +133,7 @@ public class Chant_Reincarnation extends Chant
 		// undo the affects of this spell
 		if(!(affected instanceof MOB))
 			return true;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		if((msg.sourceMinor()==CMMsg.TYP_DEATH)
 			&&(msg.amISource(mob)))
 		{
@@ -157,7 +157,7 @@ public class Chant_Reincarnation extends Chant
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		MOB target=getTarget(mob,commands,givenTarget,false,true);
+		final MOB target=getTarget(mob,commands,givenTarget,false,true);
 		if(target==null) return false;
 		if(target.fetchEffect(ID())!=null)
 		{
@@ -174,7 +174,7 @@ public class Chant_Reincarnation extends Chant
 		}
 
 		boolean success=proficiencyCheck(mob,0,auto);
-		Set<MOB> groupMembers=mob.getGroupMembers(new HashSet<MOB>());
+		final Set<MOB> groupMembers=mob.getGroupMembers(new HashSet<MOB>());
 		if(success&&(!auto)&&(mob!=target)&&(!mob.mayIFight(target))&&(!groupMembers.contains(target)))
 		{
 			mob.tell(target.name(mob)+" is a player, so you must be group members, and your playerkill flags must be on for this to work.");
@@ -189,7 +189,7 @@ public class Chant_Reincarnation extends Chant
 			int modifier=0;
 			if((target!=mob)&&(!groupMembers.contains(target)))
 				modifier=CMMsg.MASK_MALICIOUS;
-			CMMsg msg=CMClass.getMsg(mob,target,this,modifier|verbalCastCode(mob,target,auto),(auto?"^S<S-NAME> get(s) put under a reincarnation geas!^?":"^S<S-NAME> chant(s) a reincarnation geas upon <T-NAMESELF>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,modifier|verbalCastCode(mob,target,auto),(auto?"^S<S-NAME> get(s) put under a reincarnation geas!^?":"^S<S-NAME> chant(s) a reincarnation geas upon <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

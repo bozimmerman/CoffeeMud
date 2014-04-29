@@ -109,12 +109,12 @@ public class Packet {
 
 	public String convertString(String str)
 	{
-		StringBuffer b = new StringBuffer(str);
+		final StringBuffer b = new StringBuffer(str);
 		int i = 0;
 
 		while( i < b.length() )
 		{
-			char c = b.charAt(i);
+			final char c = b.charAt(i);
 
 			if( c != '\\' && c != '"' )
 			{

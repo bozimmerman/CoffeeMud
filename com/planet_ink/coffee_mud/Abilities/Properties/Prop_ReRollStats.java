@@ -85,7 +85,7 @@ public class Prop_ReRollStats extends Property
 							M.delEffect(me);
 							M.baseCharStats().getCurrentClass().grantAbilities(M, false);
 						}
-						catch (IOException e){}
+						catch (final IOException e){}
 					}
 				});
 			}

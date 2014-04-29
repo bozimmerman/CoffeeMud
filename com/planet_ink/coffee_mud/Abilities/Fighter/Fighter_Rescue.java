@@ -51,7 +51,7 @@ public class Fighter_Rescue extends FighterSkill
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(mob==null) return false;
-		MOB imfighting=mob.getVictim();
+		final MOB imfighting=mob.getVictim();
 		MOB target=null;
 
 		if((commands.size()==0)
@@ -65,7 +65,7 @@ public class Fighter_Rescue extends FighterSkill
 			target=getTarget(mob,commands,givenTarget);
 
 		if(target==null) return false;
-		MOB monster=target.getVictim();
+		final MOB monster=target.getVictim();
 
 		if((target.amDead())||(monster==null)||(monster.amDead()))
 		{
@@ -82,13 +82,13 @@ public class Fighter_Rescue extends FighterSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		String str=null;
 		if(success)
 		{
 			str="^F^<FIGHT^><S-NAME> rescue(s) <T-NAMESELF>!^</FIGHT^>^?";
-			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_NOISYMOVEMENT,str);
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_NOISYMOVEMENT,str);
 			CMLib.color().fixSourceFightColor(msg);
 			if(mob.location().okMessage(mob,msg))
 			{
@@ -99,7 +99,7 @@ public class Fighter_Rescue extends FighterSkill
 		else
 		{
 			str="<S-NAME> attempt(s) to rescue <T-NAMESELF>, but fail(s).";
-			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_NOISYMOVEMENT,str);
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_NOISYMOVEMENT,str);
 			if(mob.location().okMessage(mob,msg))
 				mob.location().send(mob,msg);
 		}

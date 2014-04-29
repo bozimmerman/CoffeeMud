@@ -48,7 +48,7 @@ public class Sniff extends StdCommand
 			commands.removeElementAt(commands.size()-1);
 			quiet=true;
 		}
-		String textMsg="<S-NAME> sniff(s)";
+		final String textMsg="<S-NAME> sniff(s)";
 		if(mob.location()==null)
 			return false;
 
@@ -56,7 +56,7 @@ public class Sniff extends StdCommand
 		{
 			Environmental thisThang=null;
 
-			String ID=CMParms.combine(commands,1);
+			final String ID=CMParms.combine(commands,1);
 			if(ID.equalsIgnoreCase("SELF")||ID.equalsIgnoreCase("ME"))
 				thisThang=mob;
 
@@ -70,7 +70,7 @@ public class Sniff extends StdCommand
 					if(thisThang==mob.location())
 						name=" around";
 				}
-				CMMsg msg=CMClass.getMsg(mob,thisThang,null,CMMsg.MSG_SNIFF,textMsg+name+".");
+				final CMMsg msg=CMClass.getMsg(mob,thisThang,null,CMMsg.MSG_SNIFF,textMsg+name+".");
 				if(mob.location().okMessage(mob,msg))
 					mob.location().send(mob,msg);
 			}
@@ -86,7 +86,7 @@ public class Sniff extends StdCommand
 					return false;
 				}
 
-			CMMsg msg=CMClass.getMsg(mob,mob.location(),null,CMMsg.MSG_SNIFF,(quiet?null:textMsg+" around."),CMMsg.MSG_SNIFF,(quiet?null:textMsg+" you."),CMMsg.MSG_SNIFF,(quiet?null:textMsg+" around."));
+			final CMMsg msg=CMClass.getMsg(mob,mob.location(),null,CMMsg.MSG_SNIFF,(quiet?null:textMsg+" around."),CMMsg.MSG_SNIFF,(quiet?null:textMsg+" you."),CMMsg.MSG_SNIFF,(quiet?null:textMsg+" around."));
 			if(mob.location().okMessage(mob,msg))
 				mob.location().send(mob,msg);
 		}

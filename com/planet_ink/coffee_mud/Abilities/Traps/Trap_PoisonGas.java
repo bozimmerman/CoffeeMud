@@ -43,7 +43,7 @@ public class Trap_PoisonGas extends StdTrap
 
 	public List<Ability> returnOffensiveAffects(Physical fromMe)
 	{
-		Vector offenders=new Vector();
+		final Vector offenders=new Vector();
 
 		for(final Enumeration<Ability> a=fromMe.effects();a.hasMoreElements();)
 		{
@@ -60,11 +60,11 @@ public class Trap_PoisonGas extends StdTrap
 		if(mob.location()==null) return null;
 		for(int i=0;i<mob.location().numItems();i++)
 		{
-			Item I=mob.location().getItem(i);
+			final Item I=mob.location().getItem(i);
 			if((I!=null)
 			&&(I instanceof Drink))
 			{
-				List<Ability> V=returnOffensiveAffects(I);
+				final List<Ability> V=returnOffensiveAffects(I);
 				if(V.size()>0)
 					return I;
 			}
@@ -75,8 +75,8 @@ public class Trap_PoisonGas extends StdTrap
 	@Override
 	public List<Item> getTrapComponents()
 	{
-		Vector V=new Vector();
-		Item I=CMLib.materials().makeItemResource(RawMaterial.RESOURCE_POISON);
+		final Vector V=new Vector();
+		final Item I=CMLib.materials().makeItemResource(RawMaterial.RESOURCE_POISON);
 		Ability A=CMClass.getAbility(text());
 		if(A==null) A=CMClass.getAbility("Poison");
 		I.addNonUninvokableEffect(A);
@@ -87,10 +87,10 @@ public class Trap_PoisonGas extends StdTrap
 	public Trap setTrap(MOB mob, Physical P, int trapBonus, int qualifyingClassLevel, boolean perm)
 	{
 		if(P==null) return null;
-		Item I=getPoison(mob);
+		final Item I=getPoison(mob);
 		if(I!=null)
 		{
-			List<Ability> V=returnOffensiveAffects(I);
+			final List<Ability> V=returnOffensiveAffects(I);
 			if(V.size()>0)
 				setMiscText(V.get(0).ID());
 			I.destroy();
@@ -102,7 +102,7 @@ public class Trap_PoisonGas extends StdTrap
 	public boolean canSetTrapOn(MOB mob, Physical P)
 	{
 		if(!super.canSetTrapOn(mob,P)) return false;
-		Item I=getPoison(mob);
+		final Item I=getPoison(mob);
 		if((I==null)
 		&&(mob!=null))
 		{
@@ -127,7 +127,7 @@ public class Trap_PoisonGas extends StdTrap
 				if(A==null) A=CMClass.getAbility("Poison");
 				for(int i=0;i<target.location().numInhabitants();i++)
 				{
-					MOB M=target.location().fetchInhabitant(i);
+					final MOB M=target.location().fetchInhabitant(i);
 					if((M!=null)&&(M!=invoker())&&(A!=null))
 						if(invoker().mayIFight(M))
 							A.invoke(invoker(),M,true,0);

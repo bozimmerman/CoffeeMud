@@ -129,12 +129,12 @@ public class StdCharClass implements CharClass
 	{
 		try
 		{
-			StdCharClass E=(StdCharClass)this.clone();
+			final StdCharClass E=(StdCharClass)this.clone();
 			E.cloneFix(this);
 			return E;
 
 		}
-		catch(CloneNotSupportedException e)
+		catch(final CloneNotSupportedException e)
 		{
 			return this;
 		}
@@ -162,19 +162,19 @@ public class StdCharClass implements CharClass
 		if(CMSecurity.isDisabled(CMSecurity.DisFlag.STDCLASSES) && (!isGeneric()))
 			return false;
 
-		String multiClassRule=CMProps.getVar(CMProps.Str.MULTICLASS);
+		final String multiClassRule=CMProps.getVar(CMProps.Str.MULTICLASS);
 		String multiClassFirstRule=multiClassRule;
 		String multiClassSecondRule="";
-		int x=multiClassRule.indexOf('-');
+		final int x=multiClassRule.indexOf('-');
 		if(x>0)
 		{
 			multiClassFirstRule=multiClassRule.substring(0, x);
 			multiClassSecondRule=multiClassRule.substring(x+1);
 		}
 
-		String changeToBaseClassID=baseClass();
-		String changeToClassID=ID();
-		SubClassRule changeToSubClassRule = getSubClassRule();
+		final String changeToBaseClassID=baseClass();
+		final String changeToClassID=ID();
+		final SubClassRule changeToSubClassRule = getSubClassRule();
 
 		String canOnlyBeClassID="";
 		String canOnlyBeBaseClassID="";
@@ -182,14 +182,14 @@ public class StdCharClass implements CharClass
 		{
 			if(multiClassSecondRule.startsWith("GRP-"))
 			{
-				CharClass possibleClass=CMClass.findCharClass(multiClassSecondRule.substring(4));
+				final CharClass possibleClass=CMClass.findCharClass(multiClassSecondRule.substring(4));
 				if(possibleClass != null)
 					canOnlyBeBaseClassID=possibleClass.ID();
 				multiClassSecondRule="NO";
 			}
 			else
 			{
-				CharClass possibleClass=CMClass.findCharClass(multiClassSecondRule);
+				final CharClass possibleClass=CMClass.findCharClass(multiClassSecondRule);
 				if(possibleClass != null)
 					canOnlyBeClassID=possibleClass.ID();
 				multiClassSecondRule="NO";
@@ -208,13 +208,13 @@ public class StdCharClass implements CharClass
 				return true;
 		}
 
-		CharClass curClass = mob.baseCharStats().getCurrentClass();
-		String currentClassID=curClass.ID();
-		String currentBaseClassID=curClass.baseClass();
+		final CharClass curClass = mob.baseCharStats().getCurrentClass();
+		final String currentClassID=curClass.ID();
+		final String currentBaseClassID=curClass.baseClass();
 
-		for(Pair<String,Integer> minReq : getMinimumStatRequirements())
+		for(final Pair<String,Integer> minReq : getMinimumStatRequirements())
 		{
-			int statCode=CharStats.CODES.findWhole(minReq.first, true);
+			final int statCode=CharStats.CODES.findWhole(minReq.first, true);
 			if(statCode >= 0)
 			{
 				if(mob.baseCharStats().getStat(statCode) < minReq.second.intValue())
@@ -228,7 +228,7 @@ public class StdCharClass implements CharClass
 		final Race R=mob.baseCharStats().getMyRace();
 		final String[] raceList=getRequiredRaceList();
 		boolean foundOne=raceList.length==0;
-		for(String raceName : raceList)
+		for(final String raceName : raceList)
 		{
 			if(raceName.equalsIgnoreCase("any")
 			|| raceName.equalsIgnoreCase("all")
@@ -314,9 +314,9 @@ public class StdCharClass implements CharClass
 					if(currentBaseClassID.equals(changeToBaseClassID)||(curClass.getSubClassRule()==SubClassRule.ANY))
 						return true;
 					boolean doesBaseHaveAnAny=false;
-					for(Enumeration<CharClass> c=CMClass.charClasses();c.hasMoreElements();)
+					for(final Enumeration<CharClass> c=CMClass.charClasses();c.hasMoreElements();)
 					{
-						CharClass C=c.nextElement();
+						final CharClass C=c.nextElement();
 						if((C.baseClass().equals(currentBaseClassID))&&(C.getSubClassRule()==SubClassRule.ANY))
 						{
 							doesBaseHaveAnAny=true;
@@ -336,7 +336,7 @@ public class StdCharClass implements CharClass
 
 	private StringBuilder getRaceList(String[] raceList)
 	{
-		StringBuilder str=new StringBuilder();
+		final StringBuilder str=new StringBuilder();
 		if(raceList.length==1)
 			str.append(CMStrings.capitalizeAndLower(raceList[0]));
 		else
@@ -363,13 +363,13 @@ public class StdCharClass implements CharClass
 	@Override
 	public String getStatQualDesc()
 	{
-		Pair<String,Integer>[] reqs=getMinimumStatRequirements();
+		final Pair<String,Integer>[] reqs=getMinimumStatRequirements();
 		if(reqs.length==0)
 			return "None";
-		StringBuilder str=new StringBuilder("");
+		final StringBuilder str=new StringBuilder("");
 		for(int x=0;x<reqs.length;x++)
 		{
-			Pair<String,Integer> req=reqs[x];
+			final Pair<String,Integer> req=reqs[x];
 			if(x>0)
 				str.append(", ");
 			str.append(CMStrings.capitalizeAndLower(req.first)).append(" ").append(req.second.toString()).append("+");
@@ -387,8 +387,8 @@ public class StdCharClass implements CharClass
 	@Override
 	public String getMaxStatDesc()
 	{
-		StringBuilder str=new StringBuilder("");
-		for(int i : CharStats.CODES.BASE())
+		final StringBuilder str=new StringBuilder("");
+		for(final int i : CharStats.CODES.BASE())
 			if(maxStatAdjustments()[i]!=0)
 				str.append(CMStrings.capitalizeAndLower(CharStats.CODES.DESC(i))+" ("+(CMProps.getIntVar(CMProps.Int.BASEMAXSTAT)+maxStatAdjustments()[i])+"), ");
 		str.append("Others ("+CMProps.getIntVar(CMProps.Int.BASEMAXSTAT)+")");
@@ -397,7 +397,7 @@ public class StdCharClass implements CharClass
 	@Override
 	public String getPracticeDesc()
 	{
-		StringBuilder str=new StringBuilder("");
+		final StringBuilder str=new StringBuilder("");
 		str.append(getPracsFirstLevel()+" +(Wisdom/6)");
 		if(getBonusPracLevel()>0)
 			str.append("+"+getBonusPracLevel());
@@ -423,10 +423,10 @@ public class StdCharClass implements CharClass
 		if(hitPointsDesc==null)
 		{
 			String formula=getHitPointsFormula();
-			int x=formula.indexOf("*(1?");
+			final int x=formula.indexOf("*(1?");
 			if(x>0)
 			{
-				int y=formula.indexOf(')',x+1);
+				final int y=formula.indexOf(')',x+1);
 				if(y>x)
 					formula=formula.substring(0, x)+"d"+formula.substring(x+4,y)+formula.substring(y+1);
 			}
@@ -442,10 +442,10 @@ public class StdCharClass implements CharClass
 		if(manaDesc==null)
 		{
 			String formula=getManaFormula();
-			int x=formula.indexOf("*(1?");
+			final int x=formula.indexOf("*(1?");
 			if(x>0)
 			{
-				int y=formula.indexOf(')',x+1);
+				final int y=formula.indexOf(')',x+1);
 				if(y>x)
 					formula=formula.substring(0, x)+"d"+formula.substring(x+4,y)+formula.substring(y+1);
 			}
@@ -461,10 +461,10 @@ public class StdCharClass implements CharClass
 		if(movementDesc==null)
 		{
 			String formula=getMovementFormula();
-			int x=formula.indexOf("*(1?");
+			final int x=formula.indexOf("*(1?");
 			if(x>0)
 			{
-				int y=formula.indexOf(')',x+1);
+				final int y=formula.indexOf(')',x+1);
 				if(y>x)
 					formula=formula.substring(0, x)+"d"+formula.substring(x+4,y)+formula.substring(y+1);
 			}
@@ -482,7 +482,7 @@ public class StdCharClass implements CharClass
 	@Override
 	public String getAttackDesc()
 	{
-		StringBuilder str=new StringBuilder("");
+		final StringBuilder str=new StringBuilder("");
 		str.append("+("+getPrimeStatDesc().substring(0,3)+"/18)");
 		if(getBonusAttackLevel()>0)
 			str.append("+"+getBonusAttackLevel());
@@ -498,15 +498,15 @@ public class StdCharClass implements CharClass
 	{
 		if(lvl==CharClass.WEAPONS_ANY)
 			return null;
-		int[] set=CharClass.WEAPONS_SETS[lvl];
-		HashSet H=new HashSet();
+		final int[] set=CharClass.WEAPONS_SETS[lvl];
+		final HashSet H=new HashSet();
 		if(set[0]>Weapon.CLASS_DESCS.length)
 			return null;
 		for(int i=0;i<Weapon.CLASS_DESCS.length;i++)
 		{
 			boolean found=false;
-			for(int s=0;s<set.length;s++)
-				if(set[s]==i) found=true;
+			for (final int element : set)
+				if(element==i) found=true;
 			if(!found) H.add(Integer.valueOf(i));
 		}
 		return H;
@@ -515,12 +515,12 @@ public class StdCharClass implements CharClass
 	{
 		if(allowedWeaponLevel()==CharClass.WEAPONS_ANY)
 			return null;
-		int[] set=CharClass.WEAPONS_SETS[allowedWeaponLevel()];
+		final int[] set=CharClass.WEAPONS_SETS[allowedWeaponLevel()];
 		if(set[0]>Weapon.CLASS_DESCS.length)
 		{
-			HashSet H=new HashSet();
-			for(int s=0;s<set.length;s++)
-				H.add(Integer.valueOf(set[s]));
+			final HashSet H=new HashSet();
+			for (final int element : set)
+				H.add(Integer.valueOf(element));
 			return H;
 		}
 		return null;
@@ -609,8 +609,8 @@ public class StdCharClass implements CharClass
 		if(CMSecurity.isAllowedEverywhere(mob,CMSecurity.SecFlag.ALLSKILLS))
 		{
 			// the most efficient way of doing this -- just hash em!
-			Hashtable alreadyAble=new Hashtable();
-			Hashtable alreadyAff=new Hashtable();
+			final Hashtable alreadyAble=new Hashtable();
+			final Hashtable alreadyAff=new Hashtable();
 			for(final Enumeration<Ability> a=mob.effects();a.hasMoreElements();)
 			{
 				final Ability A=a.nextElement();
@@ -618,12 +618,12 @@ public class StdCharClass implements CharClass
 			}
 			for(int a=0;a<mob.numAbilities();a++)
 			{
-				Ability A=mob.fetchAbility(a);
+				final Ability A=mob.fetchAbility(a);
 				if(A!=null)
 				{
 					A.setProficiency(CMLib.ableMapper().getMaxProficiency(mob,true,A.ID()));
 					A.setSavable(false);
-					Ability A2=(Ability)alreadyAff.get(A.ID());
+					final Ability A2=(Ability)alreadyAff.get(A.ID());
 					if(A2!=null)
 						A2.setProficiency(CMLib.ableMapper().getMaxProficiency(mob,true,A.ID()));
 					else
@@ -631,26 +631,26 @@ public class StdCharClass implements CharClass
 					alreadyAble.put(A.ID(),A);
 				}
 			}
-			for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
+			for(final Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 			{
-				Ability A=a.nextElement();
-				int lvl=CMLib.ableMapper().lowestQualifyingLevel(A.ID());
+				final Ability A=a.nextElement();
+				final int lvl=CMLib.ableMapper().lowestQualifyingLevel(A.ID());
 				if((lvl>=0)
 				&&(CMLib.ableMapper().qualifiesByAnyCharClass(A.ID()))
 				&&(!alreadyAble.containsKey(A.ID())))
 					giveMobAbility(mob,A,100,"",true,false);
 			}
-			for(Enumeration e=CMLib.expertises().definitions();e.hasMoreElements();)
+			for(final Enumeration e=CMLib.expertises().definitions();e.hasMoreElements();)
 				mob.addExpertise(((ExpertiseLibrary.ExpertiseDefinition)e.nextElement()).ID);
 			alreadyAble.clear();
 			alreadyAff.clear();
 		}
 		else
 		{
-			Vector onesToAdd=new Vector();
-			for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
+			final Vector onesToAdd=new Vector();
+			for(final Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 			{
-				Ability A=a.nextElement();
+				final Ability A=a.nextElement();
 				if((CMLib.ableMapper().getQualifyingLevel(ID(),true,A.ID())>0)
 				&&(CMLib.ableMapper().getQualifyingLevel(ID(),true,A.ID())<=mob.baseCharStats().getClassLevel(this))
 				&&(CMLib.ableMapper().getDefaultGain(ID(),true,A.ID())))
@@ -658,7 +658,7 @@ public class StdCharClass implements CharClass
 			}
 			for(int v=0;v<onesToAdd.size();v++)
 			{
-				Ability A=(Ability)onesToAdd.elementAt(v);
+				final Ability A=(Ability)onesToAdd.elementAt(v);
 				giveMobAbility(mob,A,CMLib.ableMapper().getDefaultProficiency(ID(),true,A.ID()),CMLib.ableMapper().getDefaultParm(ID(),true,A.ID()),isBorrowedClass);
 			}
 		}
@@ -668,7 +668,7 @@ public class StdCharClass implements CharClass
 	public CharClass makeGenCharClass()
 	{
 		if(isGeneric()) return this;
-		CharClass CR=(CharClass)CMClass.getCharClass("GenCharClass").copyOf();
+		final CharClass CR=(CharClass)CMClass.getCharClass("GenCharClass").copyOf();
 		CR.setClassParms("<CCLASS><ID>"+ID()+"</ID><NAME>"+name()+"</NAME></CCLASS>");
 		CR.setStat("BASE",baseClass());
 		CR.setStat("HITPOINTSFORMULA",""+getHitPointsFormula());
@@ -696,44 +696,44 @@ public class StdCharClass implements CharClass
 		CR.setStat("NUMMINSTATS", ""+getMinimumStatRequirements().length);
 		for(int p=0;p<getMinimumStatRequirements().length;p++)
 		{
-			Pair<String,Integer> P=getMinimumStatRequirements()[p];
+			final Pair<String,Integer> P=getMinimumStatRequirements()[p];
 			CR.setStat("GETMINSTAT"+p,P.first);
 			CR.setStat("GETSTATMIN"+p,P.second.toString());
 		}
 
 		CR.setStat("QUAL","");
 
-		MOB fakeMOB=CMClass.getFactoryMOB();
+		final MOB fakeMOB=CMClass.getFactoryMOB();
 		fakeMOB.baseCharStats().setMyClasses(ID());
 		fakeMOB.baseCharStats().setMyLevels("0");
 		fakeMOB.recoverCharStats();
 
-		PhyStats RS=(PhyStats)CMClass.getCommon("DefaultPhyStats");
+		final PhyStats RS=(PhyStats)CMClass.getCommon("DefaultPhyStats");
 		RS.setAllValues(0);
 		affectPhyStats(fakeMOB,RS);
 		RS.setRejuv(PhyStats.NO_REJUV);
 		CR.setStat("ESTATS",CMLib.coffeeMaker().getPhyStatsStr(RS));
 
-		CharStats S1=(CharStats)CMClass.getCommon("DefaultCharStats");
+		final CharStats S1=(CharStats)CMClass.getCommon("DefaultCharStats");
 		S1.setMyClasses(ID());
 		S1.setMyLevels("0");
 		S1.setAllValues(0);
-		CharStats S2=(CharStats)CMClass.getCommon("DefaultCharStats");
+		final CharStats S2=(CharStats)CMClass.getCommon("DefaultCharStats");
 		S2.setAllValues(10);
 		S2.setMyClasses(ID());
 		S2.setMyLevels("0");
-		CharStats S3=(CharStats)CMClass.getCommon("DefaultCharStats");
+		final CharStats S3=(CharStats)CMClass.getCommon("DefaultCharStats");
 		S3.setAllValues(11);
 		S3.setMyClasses(ID());
 		S3.setMyLevels("0");
-		CharStats SETSTAT=(CharStats)CMClass.getCommon("DefaultCharStats");
+		final CharStats SETSTAT=(CharStats)CMClass.getCommon("DefaultCharStats");
 		SETSTAT.setAllValues(0);
-		CharStats ADJSTAT=(CharStats)CMClass.getCommon("DefaultCharStats");
+		final CharStats ADJSTAT=(CharStats)CMClass.getCommon("DefaultCharStats");
 		ADJSTAT.setAllValues(0);
 		affectCharStats(fakeMOB,S1);
 		affectCharStats(fakeMOB,S2);
 		affectCharStats(fakeMOB,S3);
-		for(int i: CharStats.CODES.ALL())
+		for(final int i: CharStats.CODES.ALL())
 			if(i!=CharStats.STAT_AGE)
 			{
 				if(CharStats.CODES.isBASE(i))
@@ -755,18 +755,18 @@ public class StdCharClass implements CharClass
 		CR.setStat("ASTATS",CMLib.coffeeMaker().getCharStatsStr(ADJSTAT));
 		CR.setStat("CSTATS",CMLib.coffeeMaker().getCharStatsStr(SETSTAT));
 
-		CharState CS=(CharState)CMClass.getCommon("DefaultCharState"); CS.setAllValues(0);
+		final CharState CS=(CharState)CMClass.getCommon("DefaultCharState"); CS.setAllValues(0);
 		affectCharState(fakeMOB,CS);
 		CR.setStat("ASTATE",CMLib.coffeeMaker().getCharStateStr(CS));
 
-		List<AbilityMapper.AbilityMapping> data1=CMLib.ableMapper().getUpToLevelListings(ID(),Integer.MAX_VALUE,true,false);
+		final List<AbilityMapper.AbilityMapping> data1=CMLib.ableMapper().getUpToLevelListings(ID(),Integer.MAX_VALUE,true,false);
 		if(data1.size()>0)
 			CR.setStat("NUMCABLE",""+data1.size());
 		else
 			CR.setStat("NUMCABLE","");
 		for(int i=0;i<data1.size();i++)
 		{
-			AbilityMapper.AbilityMapping able = data1.get(i);
+			final AbilityMapper.AbilityMapping able = data1.get(i);
 			CR.setStat("GETCABLELVL"+i,Integer.toString(able.qualLevel));
 			CR.setStat("GETCABLEPROF"+i,Integer.toString(able.defaultProficiency));
 			CR.setStat("GETCABLEGAIN"+i,Boolean.toString(able.autoGain));
@@ -807,16 +807,16 @@ public class StdCharClass implements CharClass
 		//CharState STARTCS=(CharState)CMClass.getCommon("DefaultCharState"); STARTCS.setAllValues(0);
 		//this.startCharacter(mob,isBorrowedClass,verifyOnly)
 		//CR.setStat("STARTASTATE",CMLib.coffeeMaker().getCharStateStr(STARTCS));
-		String[] names=nameSet();
-		List<List<String>> securitySets=new Vector();
-		List<Integer> securityLvls=new Vector();
+		final String[] names=nameSet();
+		final List<List<String>> securitySets=new Vector();
+		final List<Integer> securityLvls=new Vector();
 		CR.setStat("NUMNAME",""+names.length);
 		for(int n=0;n<names.length;n++)
 			CR.nameSet()[n]=names[n];
-		int[] lvls=new int[names.length];
+		final int[] lvls=new int[names.length];
 		int nameDex=0;
-		List<String> firstSet=CMParms.parseSemicolons(getSecurityFlags(0).toString(';'),true);
-		Vector cumulativeSet=new Vector();
+		final List<String> firstSet=CMParms.parseSemicolons(getSecurityFlags(0).toString(';'),true);
+		final Vector cumulativeSet=new Vector();
 		cumulativeSet.addAll(firstSet);
 		securitySets.add(firstSet);
 		securityLvls.add(Integer.valueOf(0));
@@ -831,7 +831,7 @@ public class StdCharClass implements CharClass
 			}
 			if(getSecurityFlags(x).size()!=cumulativeSet.size())
 			{
-				List<String> V=new Vector();
+				final List<String> V=new Vector();
 				V.addAll(CMParms.parseSemicolons(getSecurityFlags(x).toString(';'),true));
 				for(int i=0;i<cumulativeSet.size();i++)
 					V.remove(cumulativeSet.elementAt(i));
@@ -905,7 +905,7 @@ public class StdCharClass implements CharClass
 	public void affectCharStats(MOB affectedMob, CharStats affectableStats)
 	{
 		if(affectableStats.getCurrentClass().ID().equals(ID()))
-		for(int i: CharStats.CODES.MAX())
+		for(final int i: CharStats.CODES.MAX())
 			affectableStats.setStat(i,affectableStats.getStat(i)+maxStatAdjustments()[i]+maxStatAdjustments()[CharStats.CODES.toMAXBASE(i)]);
 	}
 

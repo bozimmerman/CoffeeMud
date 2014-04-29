@@ -41,12 +41,12 @@ public class INIValue extends StdWebMacro
 
 	public String getHelpFor(String tag, String mask)
 	{
-		Vector help=new Vector();
-		List<String> page=CMProps.loadEnumerablePage(CMProps.getVar(CMProps.Str.INIPATH));
+		final Vector help=new Vector();
+		final List<String> page=CMProps.loadEnumerablePage(CMProps.getVar(CMProps.Str.INIPATH));
 		boolean startOver=false;
 		for(int p=0;p<page.size();p++)
 		{
-			String s=page.get(p).trim();
+			final String s=page.get(p).trim();
 			if(s.trim().length()==0)
 				startOver=true;
 			else
@@ -58,13 +58,13 @@ public class INIValue extends StdWebMacro
 			}
 			else
 			{
-				int x=s.indexOf('=');
+				final int x=s.indexOf('=');
 				if((x>=0)
 				&&(help.size()>0)
 				&&((s.substring(0,x).equals(mask)
 					||(mask.endsWith("*")&&(s.substring(0,x).startsWith(mask.substring(0,mask.length()-1)))))))
 				{
-					StringBuffer str=new StringBuffer("");
+					final StringBuffer str=new StringBuffer("");
 					for(int i=0;i<help.size();i++)
 						str.append(((String)help.elementAt(i))+"<BR>");
 					return str.toString();
@@ -79,12 +79,12 @@ public class INIValue extends StdWebMacro
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
-		java.util.Map<String,String> parms=parseParms(parm);
+		final java.util.Map<String,String> parms=parseParms(parm);
 		if(parms==null) return "";
-		String last=httpReq.getUrlParameter("INI");
+		final String last=httpReq.getUrlParameter("INI");
 		if((parms.size()==0)&&(last!=null)&&(last.length()>0))
 		{
-			CMProps page=CMProps.loadPropPage(CMProps.getVar(CMProps.Str.INIPATH));
+			final CMProps page=CMProps.loadPropPage(CMProps.getVar(CMProps.Str.INIPATH));
 			if((page==null)||(!page.isLoaded())) return "";
 			return page.getStr(last);
 		}
@@ -97,18 +97,18 @@ public class INIValue extends StdWebMacro
 		{
 			if(!parms.containsKey("MASK"))
 				return " @break@";
-			String mask=parms.get("MASK").toUpperCase().trim();
+			final String mask=parms.get("MASK").toUpperCase().trim();
 			String lastID="";
-			List<String> page=CMProps.loadEnumerablePage(CMProps.getVar(CMProps.Str.INIPATH));
+			final List<String> page=CMProps.loadEnumerablePage(CMProps.getVar(CMProps.Str.INIPATH));
 			for(int p=0;p<page.size();p++)
 			{
-				String s=page.get(p).trim();
+				final String s=page.get(p).trim();
 				if(s.startsWith("#")||s.startsWith("!"))
 					continue;
 				int x=s.indexOf('=');
 				if(x<0) x=s.indexOf(':');
 				if(x<0) continue;
-				String id=s.substring(0,x).trim().toUpperCase();
+				final String id=s.substring(0,x).trim().toUpperCase();
 				if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!id.equals(lastID))))
 				{
 					if(mask.endsWith("*"))
@@ -122,7 +122,7 @@ public class INIValue extends StdWebMacro
 					httpReq.addFakeUrlParameter("INI",id);
 					if(parms.containsKey("VALUE"))
 					{
-						CMProps realPage=CMProps.loadPropPage(CMProps.getVar(CMProps.Str.INIPATH));
+						final CMProps realPage=CMProps.loadPropPage(CMProps.getVar(CMProps.Str.INIPATH));
 						if(realPage!=null) return realPage.getStr(id);
 					}
 					return "";
@@ -136,13 +136,13 @@ public class INIValue extends StdWebMacro
 		}
 		if(!parms.containsKey("MASK"))
 			return "'MASK' not found!";
-		String mask=parms.get("MASK").toUpperCase();
-		CMProps page=CMProps.loadPropPage(CMProps.getVar(CMProps.Str.INIPATH));
+		final String mask=parms.get("MASK").toUpperCase();
+		final CMProps page=CMProps.loadPropPage(CMProps.getVar(CMProps.Str.INIPATH));
 		if((page==null)||(!page.isLoaded())) return "";
 		if(mask.trim().endsWith("*"))
-			for(Enumeration e=page.keys();e.hasMoreElements();)
+			for(final Enumeration e=page.keys();e.hasMoreElements();)
 			{
-				String key=((String)e.nextElement()).toUpperCase();
+				final String key=((String)e.nextElement()).toUpperCase();
 				if(key.startsWith(mask.substring(0,mask.length()-1)))
 				{
 					httpReq.addFakeUrlParameter("INI",key);

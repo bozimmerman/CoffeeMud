@@ -49,8 +49,8 @@ public class Alias extends StdCommand
 		IC[0]=new InputCallback(InputCallback.Type.PROMPT,"",0)
 		{
 			@Override public void showPrompt() {
-				StringBuffer menu=new StringBuffer("^xAlias definitions:^.^?\n\r");
-				String[] aliasNames=pStats.getAliasNames();
+				final StringBuffer menu=new StringBuffer("^xAlias definitions:^.^?\n\r");
+				final String[] aliasNames=pStats.getAliasNames();
 				for(int i=0;i<aliasNames.length;i++)
 					menu.append(CMStrings.padRight((i+1)+". "+aliasNames[i],15)+": "+pStats.getAlias(aliasNames[i])+"\n\r");
 				menu.append((aliasNames.length+1)+". Add a new alias\n\r");
@@ -62,7 +62,7 @@ public class Alias extends StdCommand
 			{
 				if(this.input.length()==0)
 					return;
-				int num=CMath.s_int(this.input);
+				final int num=CMath.s_int(this.input);
 				if(num<=0)
 					return;
 				if(num<=(pStats.getAliasNames().length))
@@ -74,7 +74,7 @@ public class Alias extends StdCommand
 						@Override public void timedOut() { }
 						@Override public void callBack()
 						{
-							String check=this.input;
+							final String check=this.input;
 							if(check.trim().length()==0)
 							{
 								session.prompt(IC[0].reset());

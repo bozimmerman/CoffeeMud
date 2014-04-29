@@ -41,8 +41,8 @@ public class JournalNext extends StdWebMacro
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
-		java.util.Map<String,String> parms=parseParms(parm);
-		String last=httpReq.getUrlParameter("JOURNAL");
+		final java.util.Map<String,String> parms=parseParms(parm);
+		final String last=httpReq.getUrlParameter("JOURNAL");
 		if(parms.containsKey("RESET"))
 		{
 			if(last!=null) httpReq.removeUrlParameter("JOURNAL");
@@ -53,12 +53,12 @@ public class JournalNext extends StdWebMacro
 		List<String> journals=(List<String>)httpReq.getRequestObjects().get("JOURNALLIST");
 		if(journals==null)
 		{
-			List<String> rawJournals=CMLib.database().DBReadJournals();
+			final List<String> rawJournals=CMLib.database().DBReadJournals();
 			if(!rawJournals.contains("SYSTEM_NEWS"))
 				rawJournals.add("SYSTEM_NEWS");
-			for(Enumeration e=CMLib.journals().commandJournals();e.hasMoreElements();)
+			for(final Enumeration e=CMLib.journals().commandJournals();e.hasMoreElements();)
 			{
-				CommandJournal CJ=(CommandJournal)e.nextElement();
+				final CommandJournal CJ=(CommandJournal)e.nextElement();
 				if((!rawJournals.contains(CJ.NAME().toUpperCase()))
 				&&(!rawJournals.contains(CJ.JOURNAL_NAME())))
 					rawJournals.add(CJ.JOURNAL_NAME());
@@ -66,7 +66,7 @@ public class JournalNext extends StdWebMacro
 			Collections.sort(rawJournals);
 			journals=new Vector<String>();
 			String s;
-			for(Iterator<String> i=rawJournals.iterator();i.hasNext();)
+			for(final Iterator<String> i=rawJournals.iterator();i.hasNext();)
 			{
 				s=i.next();
 				if(s.startsWith("SYSTEM_"))
@@ -79,11 +79,11 @@ public class JournalNext extends StdWebMacro
 			httpReq.getRequestObjects().put("JOURNALLIST",journals);
 		}
 		String lastID="";
-		HashSet<String> H=CMLib.journals().getArchonJournalNames();
-		MOB M = Authenticate.getAuthenticatedMob(httpReq);
+		final HashSet<String> H=CMLib.journals().getArchonJournalNames();
+		final MOB M = Authenticate.getAuthenticatedMob(httpReq);
 		for(int j=0;j<journals.size();j++)
 		{
-			String B=journals.get(j);
+			final String B=journals.get(j);
 			if((H.contains(B.toUpperCase().trim()))&&((M==null)||(!CMSecurity.isASysOp(M))))
 				continue;
 			if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!B.equals(lastID))))

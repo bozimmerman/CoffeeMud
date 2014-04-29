@@ -13,6 +13,7 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /*
@@ -68,12 +69,12 @@ public class DVector implements Cloneable, java.io.Serializable
 		int x=0;
 		if(O==null)
 		{
-			for(Enumeration<Object[]> e=stuff.elements();e.hasMoreElements();x++)
+			for(final Enumeration<Object[]> e=stuff.elements();e.hasMoreElements();x++)
 				if(e.nextElement()[0]==null)
 					return x;
 		}
 		else
-		for(Enumeration<Object[]> e=stuff.elements();e.hasMoreElements();x++)
+		for(final Enumeration<Object[]> e=stuff.elements();e.hasMoreElements();x++)
 			if(O.equals(e.nextElement()[0]))
 				return x;
 		return -1;
@@ -87,18 +88,18 @@ public class DVector implements Cloneable, java.io.Serializable
 	public synchronized Object[] removeElementsAt(int x)
 	{
 		if((x<0)||(x>=stuff.size())) throw new java.lang.IndexOutOfBoundsException();
-		Object[] O=stuff.elementAt(x);
+		final Object[] O=stuff.elementAt(x);
 		stuff.removeElementAt(x);
 		return O;
 	}
 
 	public synchronized DVector copyOf()
 	{
-		DVector V=new DVector(dimensions);
+		final DVector V=new DVector(dimensions);
 		if(stuff!=null)
 		{
-			for(Enumeration<Object[]> s=stuff.elements();s.hasMoreElements();)
-				V.stuff.addElement(s.nextElement().clone());
+			for (final Object[] name : stuff)
+				V.stuff.addElement(name.clone());
 		}
 		return V;
 	}
@@ -109,21 +110,20 @@ public class DVector implements Cloneable, java.io.Serializable
 		dim--;
 		if(stuff!=null)
 		{
-			TreeSet sorted=new TreeSet();
+			final TreeSet sorted=new TreeSet();
 			Object O=null;
-			for(Enumeration<Object[]> s=stuff.elements();s.hasMoreElements();)
+			for (final Object[] name : stuff)
 			{
-				O=(s.nextElement())[dim];
+				O=(name)[dim];
 				if(!sorted.contains(O))
 					sorted.add(O);
 			}
-			SVector<Object[]> newStuff = new SVector<Object[]>(stuff.size());
-			for(Iterator i=sorted.iterator();i.hasNext();)
+			final SVector<Object[]> newStuff = new SVector<Object[]>(stuff.size());
+			for(final Iterator i=sorted.iterator();i.hasNext();)
 			{
 				O=i.next();
-				for(Enumeration<Object[]> s=stuff.elements();s.hasMoreElements();)
+				for (final Object[] Os : stuff)
 				{
-					Object[] Os=s.nextElement();
 					if(O==Os[dim]) newStuff.addElement(Os);
 				}
 			}
@@ -133,10 +133,10 @@ public class DVector implements Cloneable, java.io.Serializable
 
 	public static DVector toDVector(Hashtable h)
 	{
-		DVector DV=new DVector(2);
-		for(Enumeration e=h.keys();e.hasMoreElements();)
+		final DVector DV=new DVector(2);
+		for(final Enumeration e=h.keys();e.hasMoreElements();)
 		{
-			Object key=e.nextElement();
+			final Object key=e.nextElement();
 			DV.addElement(key,h.get(key));
 		}
 		return DV;
@@ -159,8 +159,8 @@ public class DVector implements Cloneable, java.io.Serializable
 	public synchronized boolean containsIgnoreCase(String S)
 	{
 		if(S==null) return indexOf(null)>=0;
-		for(Enumeration<Object[]> e=stuff.elements();e.hasMoreElements();)
-			if(S.equalsIgnoreCase(e.nextElement()[0].toString()))
+		for (final Object[] name : stuff)
+			if(S.equalsIgnoreCase(name[0].toString()))
 				return true;
 		return false;
 	}
@@ -179,18 +179,18 @@ public class DVector implements Cloneable, java.io.Serializable
 	}
 	public synchronized Vector getDimensionVector(int dim)
 	{
-		Vector V=new Vector<Object>(stuff.size());
+		final Vector V=new Vector<Object>(stuff.size());
 		if(dimensions<dim) throw new java.lang.IndexOutOfBoundsException();
-		for(Enumeration<Object[]> e=stuff.elements();e.hasMoreElements();)
-			V.addElement(e.nextElement()[dim-1]);
+		for (final Object[] name : stuff)
+			V.addElement(name[dim-1]);
 		return V;
 	}
 	public synchronized Vector getRowVector(int row)
 	{
-		Vector V=new Vector<Object>(dimensions);
-		Object[] O=elementsAt(row);
-		for(int v=0;v<O.length;v++)
-			V.add(O[v]);
+		final Vector V=new Vector<Object>(dimensions);
+		final Object[] O=elementsAt(row);
+		for (final Object element : O)
+			V.add(element);
 		return V;
 	}
 	public synchronized Object elementAt(int i, int dim)

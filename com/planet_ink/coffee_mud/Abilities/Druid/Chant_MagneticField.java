@@ -48,10 +48,10 @@ public class Chant_MagneticField extends Chant
 	{
 		if(affected instanceof MOB)
 		{
-			MOB M=(MOB)affected;
+			final MOB M=(MOB)affected;
 			for(int i=0;i<M.numItems();i++)
 			{
-				Item I=M.getItem(i);
+				final Item I=M.getItem(i);
 				if((I!=null)
 				&&(I.container()==null)
 				&&(CMLib.flags().isMetal(I))
@@ -110,7 +110,7 @@ public class Chant_MagneticField extends Chant
 		// undo the affects of this spell
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		super.unInvoke();
 		if(canBeUninvoked())
@@ -123,7 +123,7 @@ public class Chant_MagneticField extends Chant
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		MOB target=this.getTarget(mob,commands,givenTarget);
+		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
 		int levelDiff=target.phyStats().level()-(mob.phyStats().level()+(2*super.getXLEVELLevel(mob)));
@@ -145,7 +145,7 @@ public class Chant_MagneticField extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> chant(s) at <T-NAMESELF>.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> chant(s) at <T-NAMESELF>.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

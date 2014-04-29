@@ -14,7 +14,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -59,7 +58,7 @@ public class Chant_PlantSnare extends Chant
 		if(!(affected instanceof MOB))
 			return true;
 
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		// when this spell is on a MOBs Affected list,
 		// it should consistantly prevent the mob
@@ -88,7 +87,7 @@ public class Chant_PlantSnare extends Chant
 		// undo the affects of this spell
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		super.unInvoke();
 		if(canBeUninvoked())
@@ -104,10 +103,10 @@ public class Chant_PlantSnare extends Chant
 	{
 		if(mob!=null)
 		{
-			Set<MOB> h=properTargets(mob,target,false);
+			final Set<MOB> h=properTargets(mob,target,false);
 			if(h==null)
 				return Ability.QUALITY_INDIFFERENT;
-			Room room=mob.location();
+			final Room room=mob.location();
 			if(room!=null)
 			{
 				if((room.domainType()!=Room.DOMAIN_OUTDOORS_WOODS)
@@ -126,13 +125,13 @@ public class Chant_PlantSnare extends Chant
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		Set<MOB> h=properTargets(mob,givenTarget,auto);
+		final Set<MOB> h=properTargets(mob,givenTarget,auto);
 		if(h==null)
 		{
 			mob.tell("There doesn't appear to be anyone here worth snaring.");
 			return false;
 		}
-		Room room=mob.location();
+		final Room room=mob.location();
 		if((room.domainType()!=Room.DOMAIN_OUTDOORS_WOODS)
 		&&(room.domainType()!=Room.DOMAIN_OUTDOORS_PLAINS)
 		&&((room.myResource()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_WOODEN)
@@ -157,30 +156,30 @@ public class Chant_PlantSnare extends Chant
 		if(success)
 		{
 			if(room.show(mob,null,this,verbalCastCode(mob,null,auto),auto?"":"^S<S-NAME> chant(s) to the plants around <S-HIM-HER>.^?"))
-			for(Iterator f=h.iterator();f.hasNext();)
-			{
-				MOB target=(MOB)f.next();
-				Room troom = CMLib.map().roomLocation(target);
-
-				// it worked, so build a copy of this ability,
-				// and add it to the affects list of the
-				// affected MOB.  Then tell everyone else
-				// what happened.
-				CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),null);
-				if((troom!=null)&&(troom.okMessage(mob,msg))&&(target.fetchEffect(this.ID())==null))
+				for (final Object element : h)
 				{
-					troom.send(mob,msg);
-					if(msg.value()<=0)
+					final MOB target=(MOB)element;
+					final Room troom = CMLib.map().roomLocation(target);
+
+					// it worked, so build a copy of this ability,
+					// and add it to the affects list of the
+					// affected MOB.  Then tell everyone else
+					// what happened.
+					final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),null);
+					if((troom!=null)&&(troom.okMessage(mob,msg))&&(target.fetchEffect(this.ID())==null))
 					{
-						amountRemaining=400+(100*super.getXLEVELLevel(mob));
-						if(troom==room)
+						troom.send(mob,msg);
+						if(msg.value()<=0)
 						{
-							success=maliciousAffect(mob,target,asLevel,(adjustedLevel(mob,asLevel)*10),-1);
-							troom.show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> become(s) stuck as tangling mass of plant life grows onto <S-HIM-HER>!");
+							amountRemaining=400+(100*super.getXLEVELLevel(mob));
+							if(troom==room)
+							{
+								success=maliciousAffect(mob,target,asLevel,(adjustedLevel(mob,asLevel)*10),-1);
+								troom.show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> become(s) stuck as tangling mass of plant life grows onto <S-HIM-HER>!");
+							}
 						}
 					}
 				}
-			}
 		}
 		else
 			return maliciousFizzle(mob,null,"<S-NAME> chant(s), but the magic fades.");

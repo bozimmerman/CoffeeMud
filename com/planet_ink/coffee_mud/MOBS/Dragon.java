@@ -108,14 +108,14 @@ public class Dragon extends StdMOB
 			return;
 		if((DragonAge()==birthAge)&&(DragonColor()==birthColor))
 			return;
-		int colorValue=DragonColor();
-		int ageValue=DragonAge();
+		final int colorValue=DragonColor();
+		final int ageValue=DragonAge();
 
 		birthAge=ageValue;
 		birthColor=colorValue;
 
 		// ===== is it a male or female
-		short gend = (short)Math.round(Math.random());
+		final short gend = (short)Math.round(Math.random());
 		if (gend == 0)
 		{
 			baseCharStats().setStat(CharStats.STAT_GENDER,'F');
@@ -130,8 +130,8 @@ public class Dragon extends StdMOB
 		setDisplayText(getAgeDescription(DragonAge()).toString() + " " + getColorDescription(DragonColor()) + " Dragon watches you intently.");
 
 		// ===== arm him
-		Weapon ClawOne=CMClass.getWeapon("DragonClaw");
-		Weapon ClawTwo=CMClass.getWeapon("DragonClaw");
+		final Weapon ClawOne=CMClass.getWeapon("DragonClaw");
+		final Weapon ClawTwo=CMClass.getWeapon("DragonClaw");
 		if(ClawOne!=null)
 		{
 			ClawOne.basePhyStats().setLevel(basePhyStats().level());
@@ -177,7 +177,7 @@ public class Dragon extends StdMOB
 
 
 		// ===== Dragons get tougher with age
-		for(int i : CharStats.CODES.BASE())
+		for(final int i : CharStats.CODES.BASE())
 			baseCharStats().setStat(i,13 + (DragonAge()*2));
 		baseCharStats().setMyRace(CMClass.getRace("Dragon"));
 		baseCharStats().getMyRace().startRacing(this,false);
@@ -194,7 +194,7 @@ public class Dragon extends StdMOB
 	protected static int determineAge()
 	{
 		// ===== Get a percent chance
-		int iRoll = CMLib.dice().rollPercentage()+1;
+		final int iRoll = CMLib.dice().rollPercentage()+1;
 
 		// ===== Determine the age based upon this
 		if (iRoll==1) return HATCHLING;
@@ -386,7 +386,7 @@ public class Dragon extends StdMOB
 			return false;
 		}
 
-		Room room=location();
+		final Room room=location();
 		if(room!=null)
 		for (int x=0;x<room.numInhabitants();x++)
 		{
@@ -395,7 +395,7 @@ public class Dragon extends StdMOB
 			// ===== do not attack yourself
 			if ((target!=null)&&(!target.ID().equals(ID())))
 			{
-				CMMsg Message = CMClass.getMsg(this,
+				final CMMsg Message = CMClass.getMsg(this,
 											  target,
 											  null,
 											  CMMsg.MSK_MALICIOUS_MOVE|AffectCode,
@@ -423,19 +423,19 @@ public class Dragon extends StdMOB
 			&&(rangeToTarget()==0)
 			&&(CMLib.flags().canHear(this)||CMLib.flags().canSee(this)||CMLib.flags().canSmell(this)))
 		{
-			MOB TastyMorsel = getVictim();
+			final MOB TastyMorsel = getVictim();
 			if(TastyMorsel==null) return true;
 			if (TastyMorsel.phyStats().weight()<1500)
 			{
 				// ===== if it is less than three so roll for it
-				int roll = (int)Math.round(Math.random()*99);
+				final int roll = (int)Math.round(Math.random()*99);
 
 				// ===== check the result
 				if (roll<2)
 				{
 					// ===== The player has been eaten.
 					// ===== move the tasty morsel to the stomach
-					CMMsg EatMsg=CMClass.getMsg(this,
+					final CMMsg EatMsg=CMClass.getMsg(this,
 											   TastyMorsel,
 											   null,
 											   CMMsg.MSG_EAT,
@@ -448,7 +448,7 @@ public class Dragon extends StdMOB
 						if(EatMsg.value()==0)
 						{
 							Stomach.bringMobHere(TastyMorsel,false);
-							CMMsg enterMsg=CMClass.getMsg(TastyMorsel,Stomach,null,CMMsg.MSG_ENTER,Stomach.description(),CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,"<S-NAME> slide(s) down the gullet into the stomach!");
+							final CMMsg enterMsg=CMClass.getMsg(TastyMorsel,Stomach,null,CMMsg.MSG_ENTER,Stomach.description(),CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,"<S-NAME> slide(s) down the gullet into the stomach!");
 							Stomach.send(TastyMorsel,enterMsg);
 						}
 					}
@@ -504,14 +504,14 @@ public class Dragon extends StdMOB
 	{
 		if(Stomach==null) return true;
 		// ===== loop through all inhabitants of the stomach
-		int morselCount = Stomach.numInhabitants();
+		final int morselCount = Stomach.numInhabitants();
 		for (int x=0;x<morselCount;x++)
 		{
 			// ===== get a tasty morsel
-			MOB TastyMorsel = Stomach.fetchInhabitant(x);
+			final MOB TastyMorsel = Stomach.fetchInhabitant(x);
 			if (TastyMorsel != null)
 			{
-				CMMsg DigestMsg=CMClass.getMsg(this,
+				final CMMsg DigestMsg=CMClass.getMsg(this,
 										   TastyMorsel,
 										   null,
 										   CMMsg.MSG_OK_ACTION,
@@ -535,20 +535,20 @@ public class Dragon extends StdMOB
 		if(room == null) room = CMLib.map().getRandomRoom();
 		if((Stomach!=null)&&(room != null))
 		{
-			int morselCount = Stomach.numInhabitants();
+			final int morselCount = Stomach.numInhabitants();
 			for (int x=morselCount-1;x>=0;x--)
 			{
 				// ===== get the tasty morsels
-				MOB TastyMorsel = Stomach.fetchInhabitant(x);
+				final MOB TastyMorsel = Stomach.fetchInhabitant(x);
 				if(TastyMorsel!=null)
 					room.bringMobHere(TastyMorsel,false);
 			}
 
 			// =====move the inventory of the stomach to the room
-			int itemCount = Stomach.numItems();
+			final int itemCount = Stomach.numItems();
 			for (int y=itemCount-1;y>=0;y--)
 			{
-				Item PartiallyDigestedItem = Stomach.getItem(y);
+				final Item PartiallyDigestedItem = Stomach.getItem(y);
 				if(PartiallyDigestedItem!=null)
 				{
 					room.addItem(PartiallyDigestedItem,ItemPossessor.Expire.Player_Drop);

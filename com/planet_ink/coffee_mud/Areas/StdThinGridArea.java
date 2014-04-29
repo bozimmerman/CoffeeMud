@@ -108,13 +108,13 @@ public class StdThinGridArea extends StdGridArea
 	@Override
 	public Enumeration<Room> getMetroMap()
 	{
-		int minimum=getProperRoomnumbers().roomCountAllAreas()/10;
+		final int minimum=getProperRoomnumbers().roomCountAllAreas()/10;
 		if(getCachedRoomnumbers().roomCountAllAreas()<minimum)
 		{
 			for(int r=0;r<minimum;r++)
 				getRandomProperRoom();
 		}
-		MultiEnumeration<Room> multiEnumerator = new MultiEnumeration<Room>(new RoomIDEnumerator(this));
+		final MultiEnumeration<Room> multiEnumerator = new MultiEnumeration<Room>(new RoomIDEnumerator(this));
 		for(final Iterator<Area> a=getChildrenReverseIterator();a.hasNext();)
 			multiEnumerator.addEnumeration(a.next().getMetroMap());
 		return new CompleteRoomEnumerator(multiEnumerator);

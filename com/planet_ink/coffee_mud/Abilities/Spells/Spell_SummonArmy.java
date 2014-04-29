@@ -47,7 +47,7 @@ public class Spell_SummonArmy extends Spell
 	@Override
 	public void unInvoke()
 	{
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		super.unInvoke();
 		if((canBeUninvoked())&&(mob!=null))
 		{
@@ -94,20 +94,20 @@ public class Spell_SummonArmy extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
 			invoker=mob;
-			CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":"^S<S-NAME> summon(s) help from the Java Plane.^?");
+			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":"^S<S-NAME> summon(s) help from the Java Plane.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				String[] choices={"Dog","Orc","Tiger","Troll","Chimp","BrownBear","Goblin","LargeBat","GiantScorpion","Rattlesnake","Ogre"};
-				int num=(mob.phyStats().level()+(getXLEVELLevel(mob)+(2*getX1Level(mob))))/3;
+				final String[] choices={"Dog","Orc","Tiger","Troll","Chimp","BrownBear","Goblin","LargeBat","GiantScorpion","Rattlesnake","Ogre"};
+				final int num=(mob.phyStats().level()+(getXLEVELLevel(mob)+(2*getX1Level(mob))))/3;
 				for(int i=0;i<num;i++)
 				{
-					MOB newMOB=CMClass.getMOB(choices[CMLib.dice().roll(1,choices.length,-1)]);
+					final MOB newMOB=CMClass.getMOB(choices[CMLib.dice().roll(1,choices.length,-1)]);
 					newMOB.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience"));
 					newMOB.setLocation(mob.location());
 					newMOB.basePhyStats().setRejuv(PhyStats.NO_REJUV);

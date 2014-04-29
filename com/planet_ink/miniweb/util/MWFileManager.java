@@ -58,7 +58,7 @@ public class MWFileManager implements FileManager
 	public byte[] readFile(File file) throws IOException, FileNotFoundException
 	{
 		BufferedInputStream bs = null;
-		byte[] fileBuf = new byte[(int)file.length()];
+		final byte[] fileBuf = new byte[(int)file.length()];
 		try
 		{
 			bs=new BufferedInputStream(new FileInputStream(file));

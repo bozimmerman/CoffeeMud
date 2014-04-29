@@ -66,7 +66,7 @@ public class Spell_Gate extends Spell
 				int tries=0;
 				while(((++tries)<100)&&(M==null))
 				{
-					Room R=CMLib.map().getRandomRoom();
+					final Room R=CMLib.map().getRandomRoom();
 					if(R.numInhabitants()>0)
 						M=R.fetchRandomInhabitant();
 					if((M!=null)&&(M.name().equals(mob.name())))
@@ -81,7 +81,7 @@ public class Spell_Gate extends Spell
 			mob.tell("Gate to whom?");
 			return false;
 		}
-		String areaName=CMParms.combine(commands,0).trim().toUpperCase();
+		final String areaName=CMParms.combine(commands,0).trim().toUpperCase();
 
 		if(mob.location().fetchInhabitant(areaName)!=null)
 		{
@@ -100,7 +100,7 @@ public class Spell_Gate extends Spell
 		try
 		{
 			candidates=CMLib.map().findInhabitants(CMLib.map().rooms(), mob, areaName, 10);
-		}catch(NoSuchElementException nse){}
+		}catch(final NoSuchElementException nse){}
 		Room newRoom=null;
 		if(candidates.size()>0)
 		{
@@ -120,7 +120,7 @@ public class Spell_Gate extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,-adjustment,auto);
+		final boolean success=proficiencyCheck(mob,-adjustment,auto);
 		String addOn=".";
 		if(!success)
 		{
@@ -137,19 +137,19 @@ public class Spell_Gate extends Spell
 			newRoom=room;
 		}
 
-		CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MOVE|verbalCastCode(mob,target,auto),"^S<S-NAME> invoke(s) a teleportation spell"+addOn+"^?");
+		final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MOVE|verbalCastCode(mob,target,auto),"^S<S-NAME> invoke(s) a teleportation spell"+addOn+"^?");
 		if((mob.location().okMessage(mob,msg))&&(newRoom!=null)&&(newRoom.okMessage(mob,msg)))
 		{
 			mob.location().send(mob,msg);
-			Set<MOB> h=properTargets(mob,givenTarget,false);
+			final Set<MOB> h=properTargets(mob,givenTarget,false);
 			if(h==null) return false;
 
-			Room thisRoom=mob.location();
-			for(Iterator f=h.iterator();f.hasNext();)
+			final Room thisRoom=mob.location();
+			for (final Object element : h)
 			{
-				MOB follower=(MOB)f.next();
-				CMMsg enterMsg=CMClass.getMsg(follower,newRoom,this,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,("<S-NAME> appear(s) in a burst of light.")+CMLib.protocol().msp("appear.wav",10));
-				CMMsg leaveMsg=CMClass.getMsg(follower,thisRoom,this,CMMsg.MSG_LEAVE|CMMsg.MASK_MAGIC,"<S-NAME> disappear(s) in a burst of light.");
+				final MOB follower=(MOB)element;
+				final CMMsg enterMsg=CMClass.getMsg(follower,newRoom,this,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,("<S-NAME> appear(s) in a burst of light.")+CMLib.protocol().msp("appear.wav",10));
+				final CMMsg leaveMsg=CMClass.getMsg(follower,thisRoom,this,CMMsg.MSG_LEAVE|CMMsg.MASK_MAGIC,"<S-NAME> disappear(s) in a burst of light.");
 				if(thisRoom.okMessage(follower,leaveMsg)&&newRoom.okMessage(follower,enterMsg))
 				{
 					if(follower.isInCombat())

@@ -14,8 +14,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
-
 import java.util.*;
 
 /*
@@ -101,11 +99,11 @@ public class UnderWaterGrid extends StdGrid
 	@Override
 	protected void buildFinalLinks()
 	{
-		Exit ox=CMClass.getExit("Open");
+		final Exit ox=CMClass.getExit("Open");
 		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 		{
 			if(d==Directions.GATE) continue;
-			Room dirRoom=rawDoors()[d];
+			final Room dirRoom=rawDoors()[d];
 			Exit dirExit=getRawExit(d);
 			if((dirExit==null)||(dirExit.hasADoor()))
 				dirExit=ox;
@@ -117,12 +115,12 @@ public class UnderWaterGrid extends StdGrid
 				switch(d)
 				{
 					case Directions.NORTH:
-						for(int x=0;x<subMap.length;x++)
-							linkRoom(subMap[x][0],dirRoom,d,dirExit,altExit);
+					for (final Room[] element : subMap)
+						linkRoom(element[0],dirRoom,d,dirExit,altExit);
 						break;
 					case Directions.SOUTH:
-						for(int x=0;x<subMap.length;x++)
-							linkRoom(subMap[x][subMap[0].length-1],dirRoom,d,dirExit,altExit);
+					for (final Room[] element : subMap)
+						linkRoom(element[subMap[0].length-1],dirRoom,d,dirExit,altExit);
 						break;
 					case Directions.EAST:
 						for(int y=0;y<subMap[0].length;y++)
@@ -162,11 +160,11 @@ public class UnderWaterGrid extends StdGrid
 		try
 		{
 			subMap=new Room[xsize][ysize];
-			Exit ox=CMClass.getExit("Open");
+			final Exit ox=CMClass.getExit("Open");
 			for(int x=0;x<subMap.length;x++)
 				for(int y=0;y<subMap[x].length;y++)
 				{
-					Room newRoom=getGridRoom(x,y);
+					final Room newRoom=getGridRoom(x,y);
 					if(newRoom!=null)
 					{
 						subMap[x][y]=newRoom;
@@ -193,8 +191,8 @@ public class UnderWaterGrid extends StdGrid
 				linkRoom(subMap[0][0],subMap[1][0],Directions.UP,ox,ox);
 			for(int y=0;y<subMap[0].length;y++)
 				linkRoom(subMap[0][y],subMap[subMap.length-1][y],Directions.WEST,ox,ox);
-			for(int x=0;x<subMap.length;x++)
-				linkRoom(subMap[x][0],subMap[x][subMap[x].length-1],Directions.NORTH,ox,ox);
+			for (final Room[] element : subMap)
+				linkRoom(element[0],element[element.length-1],Directions.NORTH,ox,ox);
 			for(int x=1;x<subMap.length;x++)
 				linkRoom(subMap[x][0],subMap[x-1][subMap[x].length-1],Directions.UP,ox,ox);
 			if(Directions.NORTHWEST<Directions.NUM_DIRECTIONS())
@@ -202,7 +200,7 @@ public class UnderWaterGrid extends StdGrid
 			if(Directions.NORTHEAST<Directions.NUM_DIRECTIONS())
 				linkRoom(subMap[subMap.length-1][0],subMap[0][subMap[0].length-1],Directions.NORTHEAST,ox,ox);
 		}
-		catch(Exception e)
+		catch(final Exception e)
 		{
 			clearGrid(null);
 		}

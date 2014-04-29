@@ -29,7 +29,7 @@ public class MultiIterator<K> implements Iterator<K>
 	{
 		if((esets==null)||(esets.length==0))
 			return;
-		for(Iterator<K> I : esets)
+		for(final Iterator<K> I : esets)
 			iters.add(I);
 		setup();
 	}
@@ -38,7 +38,7 @@ public class MultiIterator<K> implements Iterator<K>
 	{
 		if((esets==null)||(esets.length==0))
 			return;
-		for(Iterable<K> I : esets)
+		for(final Iterable<K> I : esets)
 			iters.add(I.iterator());
 		setup();
 	}
@@ -47,7 +47,7 @@ public class MultiIterator<K> implements Iterator<K>
 	{
 		if(esets==null)
 			return;
-		for(Iterable<K> I : esets)
+		for(final Iterable<K> I : esets)
 			iters.add(I.iterator());
 		setup();
 	}

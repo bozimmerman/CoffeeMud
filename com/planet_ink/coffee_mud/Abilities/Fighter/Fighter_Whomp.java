@@ -59,7 +59,7 @@ public class Fighter_Whomp extends FighterSkill implements HealthCondition
 		if(!(affected instanceof MOB))
 			return true;
 
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		// when this spell is on a MOBs Affected list,
 		// it should consistantly prevent the mob
@@ -96,7 +96,7 @@ public class Fighter_Whomp extends FighterSkill implements HealthCondition
 		// undo the affects of this spell
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		super.unInvoke();
 
@@ -134,7 +134,7 @@ public class Fighter_Whomp extends FighterSkill implements HealthCondition
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		MOB target=this.getTarget(mob,commands,givenTarget);
+		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
 		if(mob.isInCombat()&&(mob.rangeToTarget()>0))
@@ -167,7 +167,7 @@ public class Fighter_Whomp extends FighterSkill implements HealthCondition
 		else
 			levelDiff=0;
 		// now see if it worked
-		boolean hit=(auto)||CMLib.combat().rollToHit(mob,target);
+		final boolean hit=(auto)||CMLib.combat().rollToHit(mob,target);
 		boolean success=proficiencyCheck(mob,(-levelDiff)+(-((target.charStats().getStat(CharStats.STAT_STRENGTH)-mob.charStats().getStat(CharStats.STAT_STRENGTH)))),auto)&&(hit);
 		if(success)
 		{
@@ -176,7 +176,7 @@ public class Fighter_Whomp extends FighterSkill implements HealthCondition
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),(auto?"<T-NAME> hit(s) the floor!":"^F<S-NAME> knock(s) <T-NAMESELF> to the floor!^?"+CMLib.protocol().msp("bashed2.wav",30)));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),(auto?"<T-NAME> hit(s) the floor!":"^F<S-NAME> knock(s) <T-NAMESELF> to the floor!^?"+CMLib.protocol().msp("bashed2.wav",30)));
 			CMLib.color().fixSourceFightColor(msg);
 			if(mob.location().okMessage(mob,msg))
 			{

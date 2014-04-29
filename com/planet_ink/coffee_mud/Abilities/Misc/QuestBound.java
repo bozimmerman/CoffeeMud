@@ -129,7 +129,7 @@ public class QuestBound implements Ability
 		{
 			return this.getClass().newInstance();
 		}
-		catch(Exception e)
+		catch(final Exception e)
 		{
 			Log.errOut(ID(),e);
 		}
@@ -188,13 +188,13 @@ public class QuestBound implements Ability
 	{
 		try
 		{
-			QuestBound E=(QuestBound)this.clone();
+			final QuestBound E=(QuestBound)this.clone();
 			//CMClass.bumpCounter(E,CMClass.CMObjectType.ABILITY);//removed for mem & perf
 			E.cloneFix(this);
 			return E;
 
 		}
-		catch(CloneNotSupportedException e)
+		catch(final CloneNotSupportedException e)
 		{
 			return this.newInstance();
 		}
@@ -265,7 +265,7 @@ public class QuestBound implements Ability
 			Quest theQ=null;
 			for(int q=0;q<CMLib.quests().numQuests();q++)
 			{
-				Quest Q=CMLib.quests().fetchQuest(q);
+				final Quest Q=CMLib.quests().fetchQuest(q);
 				if((Q!=null)&&(""+Q).equals(text()))
 				{ theQ=Q; break;}
 			}

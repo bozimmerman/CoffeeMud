@@ -56,16 +56,16 @@ public class Wizard extends Mage
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Spell_Shield",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Spell_IronGrip",false);
 
-		for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
+		for(final Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 		{
-			Ability A=a.nextElement();
+			final Ability A=a.nextElement();
 			if((A!=null)
 			&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SPELL))
 			{
-				int level=CMLib.ableMapper().getQualifyingLevel(ID(),true,A.ID());
+				final int level=CMLib.ableMapper().getQualifyingLevel(ID(),true,A.ID());
 				if(level>0)
 				{
-					AbilityMapper.AbilityMapping able=CMLib.ableMapper().getAbleMap(ID(),A.ID());
+					final AbilityMapper.AbilityMapping able=CMLib.ableMapper().getAbleMap(ID(),A.ID());
 					if((able!=null)
 					&&(!CMLib.ableMapper().getDefaultGain(ID(),true,A.ID())))
 					{
@@ -96,12 +96,12 @@ public class Wizard extends Mage
 		super.executeMsg(myHost,msg);
 		if((myHost==null)||(!(myHost instanceof MOB)))
 		   return;
-		MOB mob=(MOB)myHost;
+		final MOB mob=(MOB)myHost;
 		if(msg.amISource(mob)&&(msg.tool()!=null))
 		{
 			if(msg.tool() instanceof Ability)
 			{
-				Ability A=mob.fetchAbility(msg.tool().ID());
+				final Ability A=mob.fetchAbility(msg.tool().ID());
 				if((A!=null)&&(!CMLib.ableMapper().getDefaultGain(ID(),false,A.ID()))
 				&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SPELL))
 				{
@@ -131,8 +131,8 @@ public class Wizard extends Mage
 				&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SPELL)
 				&&(!CMLib.ableMapper().getDefaultGain(ID(),false,A.ID())))
 				{
-					int[] cost=A.usageCost(mob,true);
-					int manaCost=cost[Ability.USAGEINDEX_MANA];
+					final int[] cost=A.usageCost(mob,true);
+					final int manaCost=cost[Ability.USAGEINDEX_MANA];
 					if(manaCost>0)
 					{
 						if(state.getMana()<manaCost)
@@ -155,7 +155,7 @@ public class Wizard extends Mage
 	{
 		if(!(myHost instanceof MOB))
 			return super.okMessage(myHost,msg);
-		MOB myChar=(MOB)myHost;
+		final MOB myChar=(MOB)myHost;
 		if((msg.tool()==null)||(!(msg.tool() instanceof Ability)))
 		   return super.okMessage(myChar,msg);
 		if(msg.amISource(myChar)

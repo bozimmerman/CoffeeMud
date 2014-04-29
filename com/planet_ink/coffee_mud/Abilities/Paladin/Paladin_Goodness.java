@@ -53,12 +53,12 @@ public class Paladin_Goodness extends PaladinSkill
 		tickTock=!tickTock;
 		if(tickTock)
 		{
-			MOB mob=invoker;
-			Room R=(mob!=null)?mob.location():null;
+			final MOB mob=invoker;
+			final Room R=(mob!=null)?mob.location():null;
 			if(R!=null)
 			for(int m=0;m<R.numInhabitants();m++)
 			{
-				MOB target=R.fetchInhabitant(m);
+				final MOB target=R.fetchInhabitant(m);
 				if((target!=null)
 				&&(CMLib.flags().isEvil(target))
 				&&((paladinsGroup!=null)&&(paladinsGroup.contains(target))
@@ -66,7 +66,7 @@ public class Paladin_Goodness extends PaladinSkill
 				&&((invoker==null)||(invoker.fetchAbility(ID())==null)||proficiencyCheck(null,0,false)))
 				{
 
-					int harming=CMLib.dice().roll(1,(invoker!=null)?adjustedLevel(invoker,0):15,0);
+					final int harming=CMLib.dice().roll(1,(invoker!=null)?adjustedLevel(invoker,0):15,0);
 					if(CMLib.flags().isEvil(target))
 						CMLib.combat().postDamage(invoker,target,this,harming,CMMsg.MASK_MALICIOUS|CMMsg.MASK_ALWAYS|CMMsg.TYP_UNDEAD,Weapon.TYPE_BURSTING,"^SThe aura of goodness around <S-NAME> <DAMAGES> <T-NAME>!^?");
 				}

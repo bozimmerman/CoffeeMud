@@ -54,7 +54,7 @@ public class Spell_WallOfForce extends Spell
 		if((affected==null)||(!(affected instanceof Item)))
 			return true;
 
-		MOB mob=msg.source();
+		final MOB mob=msg.source();
 
 		if((invoker!=null)
 		&&(mob.isInCombat())
@@ -82,7 +82,7 @@ public class Spell_WallOfForce extends Spell
 			{
 				if(mob!=invoker)
 				{
-					CMMsg msg2=CMClass.getMsg(mob,null,CMMsg.MSG_WEAPONATTACK,"^F^<FIGHT^><S-NAME> attempt(s) to penetrate the wall of force and fail(s).^</FIGHT^>^?");
+					final CMMsg msg2=CMClass.getMsg(mob,null,CMMsg.MSG_WEAPONATTACK,"^F^<FIGHT^><S-NAME> attempt(s) to penetrate the wall of force and fail(s).^</FIGHT^>^?");
 					CMLib.color().fixSourceFightColor(msg2);
 					if(mob.location().okMessage(mob,msg2))
 						mob.location().send(mob,msg2);
@@ -106,7 +106,7 @@ public class Spell_WallOfForce extends Spell
 			&&(((Room)theWall.owner()).isContent(theWall)))
 			{
 				((Room)theWall.owner()).showHappens(CMMsg.MSG_OK_VISUAL,"The wall of force is gone.");
-				Item wall=theWall;
+				final Item wall=theWall;
 				theWall=null;
 				wall.destroy();
 			}
@@ -137,7 +137,7 @@ public class Spell_WallOfForce extends Spell
 		}
 		for(int i=0;i<mob.location().numItems();i++)
 		{
-			Item I=mob.location().getItem(i);
+			final Item I=mob.location().getItem(i);
 			if((I!=null)&&(I.fetchEffect(ID())!=null))
 			{
 				mob.tell("There is already a wall of force here.");
@@ -152,10 +152,10 @@ public class Spell_WallOfForce extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		Physical target = mob.location();
+		final Physical target = mob.location();
 
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
@@ -164,11 +164,11 @@ public class Spell_WallOfForce extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 
-			CMMsg msg = CMClass.getMsg(mob, target, this,verbalCastCode(mob,target,auto),auto?"An impenetrable wall of force appears!":"^S<S-NAME> conjur(s) up a impenetrable wall of force!^?");
+			final CMMsg msg = CMClass.getMsg(mob, target, this,verbalCastCode(mob,target,auto),auto?"An impenetrable wall of force appears!":"^S<S-NAME> conjur(s) up a impenetrable wall of force!^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				Item I=CMClass.getItem("GenItem");
+				final Item I=CMClass.getItem("GenItem");
 				I.setName("a wall of force");
 				I.setDisplayText("an impenetrable wall of force surrounds "+mob.name());
 				I.setDescription("It`s tough, that's for sure.");

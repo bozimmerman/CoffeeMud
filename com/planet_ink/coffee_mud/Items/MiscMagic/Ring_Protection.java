@@ -193,7 +193,7 @@ public class Ring_Protection extends Ring_Ornamental implements MiscMagic
 				material=RawMaterial.RESOURCE_GEM;
 				break;
 			default:
-				double pct=Math.random();
+				final double pct=Math.random();
 				if(basePhyStats().ability()==0)
 					basePhyStats().setAbility((int)Math.round(pct*49));
 				baseGoldValue+=basePhyStats().ability()*100;
@@ -210,7 +210,7 @@ public class Ring_Protection extends Ring_Ornamental implements MiscMagic
 		if((msg.target()==null)||(!(msg.target() instanceof MOB)))
 			return ;
 
-		MOB mob=(MOB)msg.target();
+		final MOB mob=(MOB)msg.target();
 		if(mob!=this.owner()) return;
 
 		if((msg.targetMinor()==correctTargetMinor())

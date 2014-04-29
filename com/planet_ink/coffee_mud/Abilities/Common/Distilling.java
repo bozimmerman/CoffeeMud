@@ -65,7 +65,7 @@ public class Distilling extends Cooking
 			return false;
 		if(I instanceof Drink)
 		{
-			Drink D=(Drink)I;
+			final Drink D=(Drink)I;
 			if(D.liquidType()!=RawMaterial.RESOURCE_LIQUOR)
 				return false;
 			if(CMLib.flags().flaggedAffects(D, Ability.FLAG_INTOXICATING).size()>0)
@@ -79,7 +79,7 @@ public class Distilling extends Cooking
 	{
 		if((!super.invoke(mob,commands,givenTarget,auto,asLevel))||(buildingI==null))
 			return false;
-		Ability A2=buildingI.fetchEffect(0);
+		final Ability A2=buildingI.fetchEffect(0);
 		if((A2!=null)
 		&&(buildingI instanceof Drink))
 		{

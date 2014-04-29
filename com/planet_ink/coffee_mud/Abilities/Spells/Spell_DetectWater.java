@@ -50,7 +50,7 @@ public class Spell_DetectWater extends Spell
 	{
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		if(canBeUninvoked())
 			lastRoom=null;
 		super.unInvoke();
@@ -75,11 +75,11 @@ public class Spell_DetectWater extends Spell
 	}
 	public String waterHere(MOB mob, Environmental E, Item container)
 	{
-		StringBuffer msg=new StringBuffer("");
+		final StringBuffer msg=new StringBuffer("");
 		if(E==null) return msg.toString();
 		if((E instanceof Room)&&(CMLib.flags().canBeSeenBy(E,mob)))
 		{
-			Room room=(Room)E;
+			final Room room=(Room)E;
 			if((room.domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)
 			||(room.domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE)
 			||(room.domainType()==Room.DOMAIN_INDOORS_UNDERWATER)
@@ -102,12 +102,12 @@ public class Spell_DetectWater extends Spell
 			{
 				for(int i=0;i<room.numItems();i++)
 				{
-					Item I=room.getItem(i);
+					final Item I=room.getItem(i);
 					waterCheck(mob,I,container,msg);
 				}
 				for(int m=0;m<room.numInhabitants();m++)
 				{
-					MOB M=room.fetchInhabitant(m);
+					final MOB M=room.fetchInhabitant(m);
 					if((M!=null)&&(M!=mob))
 						msg.append(waterHere(mob,M,null));
 				}
@@ -124,19 +124,19 @@ public class Spell_DetectWater extends Spell
 		{
 			for(int i=0;i<((MOB)E).numItems();i++)
 			{
-				Item I=((MOB)E).getItem(i);
-				StringBuffer msg2=new StringBuffer("");
+				final Item I=((MOB)E).getItem(i);
+				final StringBuffer msg2=new StringBuffer("");
 				waterCheck(mob,I,container,msg2);
 				if(msg2.length()>0)
 					return E.name()+" is carrying some liquids.";
 			}
-			ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(E);
+			final ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(E);
 			if(SK!=null)
 			{
-				StringBuffer msg2=new StringBuffer("");
-				for(Iterator<Environmental> i=SK.getShop().getStoreInventory();i.hasNext();)
+				final StringBuffer msg2=new StringBuffer("");
+				for(final Iterator<Environmental> i=SK.getShop().getStoreInventory();i.hasNext();)
 				{
-					Environmental E2=i.next();
+					final Environmental E2=i.next();
 					if(E2 instanceof Item)
 						waterCheck(mob,(Item)E2,container,msg2);
 					if(msg2.length()>0)
@@ -172,7 +172,7 @@ public class Spell_DetectWater extends Spell
 				else
 				for(int m=0;m<R.numInhabitants();m++)
 				{
-					MOB M=R.fetchInhabitant(m);
+					final MOB M=R.fetchInhabitant(m);
 					if((M!=null)&&(M!=mob)&&(waterHere(mob,M,null).length()>0))
 					{ metalFound=true; break;}
 				}
@@ -240,7 +240,7 @@ public class Spell_DetectWater extends Spell
 		{
 			if((msg.tool()!=null)&&(msg.tool().ID().equals(ID())))
 			{
-				String str=waterHere((MOB)affected,msg.target(),null);
+				final String str=waterHere((MOB)affected,msg.target(),null);
 				if(str.length()>0)
 					((MOB)affected).tell(str);
 			}
@@ -249,7 +249,7 @@ public class Spell_DetectWater extends Spell
 			&&(waterHere((MOB)affected,msg.target(),null).length()>0)
 			&&(msg.source()!=msg.target()))
 			{
-				CMMsg msg2=CMClass.getMsg(msg.source(),msg.target(),this,CMMsg.MSG_LOOK,CMMsg.NO_EFFECT,CMMsg.NO_EFFECT,null);
+				final CMMsg msg2=CMClass.getMsg(msg.source(),msg.target(),this,CMMsg.MSG_LOOK,CMMsg.NO_EFFECT,CMMsg.NO_EFFECT,null);
 				msg.addTrailerMsg(msg2);
 			}
 		}
@@ -271,11 +271,11 @@ public class Spell_DetectWater extends Spell
 			return false;
 
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> gain(s) liquid sensitivities!":"^S<S-NAME> incant(s) softly, and gain(s) liquid sensitivities!^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> gain(s) liquid sensitivities!":"^S<S-NAME> incant(s) softly, and gain(s) liquid sensitivities!^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

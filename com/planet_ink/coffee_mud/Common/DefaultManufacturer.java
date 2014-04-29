@@ -51,7 +51,7 @@ public class DefaultManufacturer implements Manufacturer
 
 	@Override public String name() { return name;}
 
-	@Override public CMObject newInstance(){try{return getClass().newInstance();}catch(Exception e){return new DefaultPoll();}}
+	@Override public CMObject newInstance(){try{return getClass().newInstance();}catch(final Exception e){return new DefaultPoll();}}
 	@Override public void initializeClass(){}
 	@Override public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 	@Override
@@ -61,7 +61,7 @@ public class DefaultManufacturer implements Manufacturer
 		{
 			return (Manufacturer)this.clone();
 		}
-		catch(CloneNotSupportedException e)
+		catch(final CloneNotSupportedException e)
 		{
 			return newInstance();
 		}
@@ -150,7 +150,7 @@ public class DefaultManufacturer implements Manufacturer
 			return false;
 		if(types.contains(TechType.ANY))
 			return true;
-		for(TechType type : types)
+		for(final TechType type : types)
 			if(type == T.getTechType())
 				return true;
 		return false;
@@ -165,10 +165,10 @@ public class DefaultManufacturer implements Manufacturer
 	@Override
 	public void setManufactureredTypesList(String list)
 	{
-		Set<TechType> newTypes=new HashSet<TechType>();
-		for(String s : CMParms.parseCommas(list,true))
+		final Set<TechType> newTypes=new HashSet<TechType>();
+		for(final String s : CMParms.parseCommas(list,true))
 		{
-			TechType t=(TechType)CMath.s_valueOf(TechType.class, s.toUpperCase().trim());
+			final TechType t=(TechType)CMath.s_valueOf(TechType.class, s.toUpperCase().trim());
 			if(t!=null)
 				newTypes.add(t);
 		}
@@ -184,7 +184,7 @@ public class DefaultManufacturer implements Manufacturer
 	@Override
 	public String getXml()
 	{
-		StringBuilder xml=new StringBuilder("");
+		final StringBuilder xml=new StringBuilder("");
 		xml.append("<NAME>"+CMLib.xml().parseOutAngleBrackets(name)+"</NAME>");
 		xml.append("<MAXTECHDIFF>"+maxTechLevelDiff+"</MAXTECHDIFF>");
 		xml.append("<MINTECHDIFF>"+minTechLevelDiff+"</MINTECHDIFF>");
@@ -198,7 +198,7 @@ public class DefaultManufacturer implements Manufacturer
 	@Override
 	public void setXml(String xml)
 	{
-		List<XMLpiece> xpc = CMLib.xml().parseAllXML(xml);
+		final List<XMLpiece> xpc = CMLib.xml().parseAllXML(xml);
 		setName(CMLib.xml().restoreAngleBrackets(CMLib.xml().getValFromPieces(xpc,"NAME")));
 		setMaxTechLevelDiff((byte)CMath.s_short(CMLib.xml().getValFromPieces(xpc,"MAXTECHDIFF")));
 		setMinTechLevelDiff((byte)CMath.s_short(CMLib.xml().getValFromPieces(xpc,"MINTECHDIFF")));

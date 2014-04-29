@@ -60,9 +60,9 @@ public class Clans extends StdLibrary implements ClanManager
 		&&((i1==Clan.REL_WAR)
 		   ||(i1==Clan.REL_ALLY)))
 		   return i1==relation;
-		for(Enumeration<Clan> e=clans();e.hasMoreElements();)
+		for(final Enumeration<Clan> e=clans();e.hasMoreElements();)
 		{
-			Clan C=e.nextElement();
+			final Clan C=e.nextElement();
 			if((C!=C1)&&(C!=C2))
 			{
 				if((i1!=Clan.REL_WAR)
@@ -93,7 +93,7 @@ public class Clans extends StdLibrary implements ClanManager
 	public boolean isAtClanWar(MOB M1, MOB M2)
 	{
 		final List<Pair<Clan,Clan>> pairs=findUncommonRivalrousClans(M1, M2);
-		for(Pair<Clan,Clan> p : pairs)
+		for(final Pair<Clan,Clan> p : pairs)
 			if(isCommonClanRelations(p.first,p.second, Clan.REL_WAR))
 				return true;
 		return false;
@@ -109,7 +109,7 @@ public class Clans extends StdLibrary implements ClanManager
 	public boolean checkClanPrivilege(MOB mob, String clanID, Clan.Function func)
 	{
 		if(mob==null) return false;
-		Pair<Clan,Integer> c=mob.getClanRole(clanID);
+		final Pair<Clan,Integer> c=mob.getClanRole(clanID);
 		if(c==null) return false;
 		if(c.first.getAuthority(c.second.intValue(), func) != Clan.Authority.CAN_NOT_DO)
 			return true;
@@ -119,7 +119,7 @@ public class Clans extends StdLibrary implements ClanManager
 	@Override
 	public Pair<Clan,Integer> findPrivilegedClan(MOB mob, Clan.Function func)
 	{
-		for(Pair<Clan,Integer> c : mob.clans())
+		for(final Pair<Clan,Integer> c : mob.clans())
 		{
 			if(c.first.getAuthority(c.second.intValue(), func) != Clan.Authority.CAN_NOT_DO)
 				return c;
@@ -130,8 +130,8 @@ public class Clans extends StdLibrary implements ClanManager
 	@Override
 	public List<Pair<Clan,Integer>> findPrivilegedClans(MOB mob, Clan.Function func)
 	{
-		List<Pair<Clan,Integer>> set=new Vector<Pair<Clan,Integer>>();
-		for(Pair<Clan,Integer> c : mob.clans())
+		final List<Pair<Clan,Integer>> set=new Vector<Pair<Clan,Integer>>();
+		for(final Pair<Clan,Integer> c : mob.clans())
 		{
 			if(c.first.getAuthority(c.second.intValue(), func) != Clan.Authority.CAN_NOT_DO)
 				set.add(c);
@@ -142,7 +142,7 @@ public class Clans extends StdLibrary implements ClanManager
 	@Override
 	public Clan findRivalrousClan(MOB mob)
 	{
-		for(Pair<Clan,Integer> c : mob.clans())
+		for(final Pair<Clan,Integer> c : mob.clans())
 		{
 			if(c.first.isRivalrous())
 			{
@@ -155,7 +155,7 @@ public class Clans extends StdLibrary implements ClanManager
 	@Override
 	public Clan findConquerableClan(MOB mob)
 	{
-		for(Pair<Clan,Integer> c : mob.clans())
+		for(final Pair<Clan,Integer> c : mob.clans())
 		{
 			if(c.first.getGovernment().isConquestEnabled())
 			{
@@ -168,13 +168,13 @@ public class Clans extends StdLibrary implements ClanManager
 	@Override
 	public List<Triad<Clan,Integer,Integer>> findCommonRivalrousClans(MOB mob1, MOB mob2)
 	{
-		List<Triad<Clan,Integer,Integer>> list=new XVector<Triad<Clan,Integer,Integer>>(1,true);
+		final List<Triad<Clan,Integer,Integer>> list=new XVector<Triad<Clan,Integer,Integer>>(1,true);
 		if((mob1==null)||(mob2==null)) return list;
-		for(Pair<Clan,Integer> c : mob1.clans())
+		for(final Pair<Clan,Integer> c : mob1.clans())
 		{
 			if(c.first.isRivalrous())
 			{
-				Pair<Clan,Integer> c2=mob2.getClanRole(c.first.clanID());
+				final Pair<Clan,Integer> c2=mob2.getClanRole(c.first.clanID());
 				if(c2!=null)
 					list.add(new Triad<Clan,Integer,Integer>(c.first,c.second,c2.second));
 			}
@@ -185,8 +185,8 @@ public class Clans extends StdLibrary implements ClanManager
 	@Override
 	public List<Pair<Clan,Integer>> findRivalrousClans(MOB mob)
 	{
-		List<Pair<Clan,Integer>> list=new XVector<Pair<Clan,Integer>>(1,true);
-		for(Pair<Clan,Integer> c : mob.clans())
+		final List<Pair<Clan,Integer>> list=new XVector<Pair<Clan,Integer>>(1,true);
+		for(final Pair<Clan,Integer> c : mob.clans())
 			if(c.first.isRivalrous())
 				list.add(c);
 		return list;
@@ -195,13 +195,13 @@ public class Clans extends StdLibrary implements ClanManager
 	@Override
 	public List<Pair<Clan,Integer>> findRivalrousClans(MOB clanSourceMob, MOB filterMob)
 	{
-		List<Pair<Clan,Integer>> list=new XVector<Pair<Clan,Integer>>(1,true);
+		final List<Pair<Clan,Integer>> list=new XVector<Pair<Clan,Integer>>(1,true);
 		if((clanSourceMob==null)||(filterMob==null)) return list;
-		for(Pair<Clan,Integer> c : clanSourceMob.clans())
+		for(final Pair<Clan,Integer> c : clanSourceMob.clans())
 		{
 			if(c.first.isRivalrous())
 			{
-				Pair<Clan,Integer> c2=filterMob.getClanRole(c.first.clanID());
+				final Pair<Clan,Integer> c2=filterMob.getClanRole(c.first.clanID());
 				if(c2==null)
 					list.add(c);
 			}
@@ -211,21 +211,21 @@ public class Clans extends StdLibrary implements ClanManager
 
 	public List<Pair<Clan,Clan>> findUncommonRivalrousClans(MOB M1, MOB M2)
 	{
-		List<Pair<Clan,Clan>> list=new XVector<Pair<Clan,Clan>>(1,true);
+		final List<Pair<Clan,Clan>> list=new XVector<Pair<Clan,Clan>>(1,true);
 		if((M1==null)||(M2==null)) return list;
 		// i need the disunion here (what's the word for that?), as a order-irrelevant set of pairs
-		for(Pair<Clan,Integer> c : M1.clans())
+		for(final Pair<Clan,Integer> c : M1.clans())
 		{
 			if(c.first.isRivalrous())
 			{
-				Pair<Clan,Integer> c2=M2.getClanRole(c.first.clanID());
+				final Pair<Clan,Integer> c2=M2.getClanRole(c.first.clanID());
 				if(c2==null)
 					list.add(new Pair<Clan,Clan>(c.first,null));
 			}
 		}
-		List<Pair<Clan,Clan>> finalList=new XVector<Pair<Clan,Clan>>(1,true);
-		for(Pair<Clan,Clan> p : list)
-			for(Pair<Clan,Integer> c : M2.clans())
+		final List<Pair<Clan,Clan>> finalList=new XVector<Pair<Clan,Clan>>(1,true);
+		for(final Pair<Clan,Clan> p : list)
+			for(final Pair<Clan,Integer> c : M2.clans())
 				if(c.first.isRivalrous())
 					finalList.add(new Pair<Clan,Clan>(p.first,c.first));
 		return finalList;
@@ -233,14 +233,14 @@ public class Clans extends StdLibrary implements ClanManager
 
 	public List<Pair<Clan,Clan>> getAllClanPairs(MOB M1, MOB M2)
 	{
-		List<Pair<Clan,Clan>> list=new XVector<Pair<Clan,Clan>>(1,true);
+		final List<Pair<Clan,Clan>> list=new XVector<Pair<Clan,Clan>>(1,true);
 		if((M1==null)||(M2==null)) return list;
 		// i need the disunion here (what's the word for that?), as a order-irrelevant set of pairs
-		for(Pair<Clan,Integer> c : M1.clans())
+		for(final Pair<Clan,Integer> c : M1.clans())
 			list.add(new Pair<Clan,Clan>(c.first,null));
-		List<Pair<Clan,Clan>> finalList=new XVector<Pair<Clan,Clan>>(1,true);
-		for(Pair<Clan,Clan> p : list)
-			for(Pair<Clan,Integer> c : M2.clans())
+		final List<Pair<Clan,Clan>> finalList=new XVector<Pair<Clan,Clan>>(1,true);
+		for(final Pair<Clan,Clan> p : list)
+			for(final Pair<Clan,Integer> c : M2.clans())
 				if(p.first!=c.first)
 					finalList.add(new Pair<Clan,Clan>(p.first,c.first));
 		return finalList;
@@ -249,14 +249,14 @@ public class Clans extends StdLibrary implements ClanManager
 	public int getClanRelations(Clan C1, Clan C2)
 	{
 		if((C1==null)||(C2==null)) return Clan.REL_NEUTRAL;
-		int i1=C1.getClanRelations(C2.clanID());
-		int i2=C2.getClanRelations(C1.clanID());
-		int rel=Clan.RELATIONSHIP_VECTOR[i1][i2];
+		final int i1=C1.getClanRelations(C2.clanID());
+		final int i2=C2.getClanRelations(C1.clanID());
+		final int rel=Clan.RELATIONSHIP_VECTOR[i1][i2];
 		if(rel==Clan.REL_WAR) return Clan.REL_WAR;
 		if(rel==Clan.REL_ALLY) return Clan.REL_ALLY;
-		for(Enumeration<Clan> e=clans();e.hasMoreElements();)
+		for(final Enumeration<Clan> e=clans();e.hasMoreElements();)
 		{
-			Clan C=e.nextElement();
+			final Clan C=e.nextElement();
 			if((C!=C1)
 			&&(C!=C2)
 			&&(((C1.getClanRelations(C.clanID())==Clan.REL_ALLY)&&(C.getClanRelations(C2.clanID())==Clan.REL_WAR)))
@@ -277,7 +277,7 @@ public class Clans extends StdLibrary implements ClanManager
 	@Override
 	public boolean findAnyClanRelations(MOB M1, MOB M2, int relation)
 	{
-		for(Pair<Clan,Clan> c : getAllClanPairs(M1, M2))
+		for(final Pair<Clan,Clan> c : getAllClanPairs(M1, M2))
 			if(getClanRelations(c.first, c.second)==relation)
 				return true;
 		return false;
@@ -287,7 +287,7 @@ public class Clans extends StdLibrary implements ClanManager
 	public boolean isAnyCommonClan(MOB M1, MOB M2)
 	{
 		if((M1==null)||(M2==null)) return false;
-		for(Pair<Clan,Integer> p : M1.clans())
+		for(final Pair<Clan,Integer> p : M1.clans())
 			if(M2.getClanRole(p.first.clanID())!=null)
 				return true;
 		return false;
@@ -299,7 +299,7 @@ public class Clans extends StdLibrary implements ClanManager
 		if((id==null)||(id.length()==0)) return null;
 		Clan C=all.get(id.toUpperCase());
 		if(C!=null) return C;
-		for(Enumeration<Clan> e=all.elements();e.hasMoreElements();)
+		for(final Enumeration<Clan> e=all.elements();e.hasMoreElements();)
 		{
 			C=e.nextElement();
 			if(CMLib.english().containsString(CMStrings.removeColors(C.name()),id))
@@ -313,7 +313,7 @@ public class Clans extends StdLibrary implements ClanManager
 	{
 		Clan C=getClan(id);
 		if(C!=null) return C;
-		for(Enumeration<Clan> e=all.elements();e.hasMoreElements();)
+		for(final Enumeration<Clan> e=all.elements();e.hasMoreElements();)
 		{
 			C=e.nextElement();
 			if(CMLib.english().containsString(CMStrings.removeColors(C.name()),id))
@@ -333,13 +333,13 @@ public class Clans extends StdLibrary implements ClanManager
 		&&(M.isMarriedToLiege())
 		&&(members.contains(M.getLiegeID())))
 			return true;
-		for(Enumeration<MOB.Tattoo> e=M.tattoos();e.hasMoreElements();)
+		for(final Enumeration<MOB.Tattoo> e=M.tattoos();e.hasMoreElements();)
 		{
-			MOB.Tattoo T=e.nextElement();
+			final MOB.Tattoo T=e.nextElement();
 			if(T.tattooName.startsWith("PARENT:"))
 			{
-				String name=T.tattooName.substring("PARENT:".length());
-				MOB M2=CMLib.players().getLoadPlayer(name.toLowerCase());
+				final String name=T.tattooName.substring("PARENT:".length());
+				final MOB M2=CMLib.players().getLoadPlayer(name.toLowerCase());
 				if((M2 != null)&&isFamilyOfMembership(M2,members))
 					return true;
 			}
@@ -382,7 +382,7 @@ public class Clans extends StdLibrary implements ClanManager
 		{
 			CMLib.threads().deleteTick(C,Tickable.TICKID_CLAN);
 			all.remove(C.clanID().toUpperCase());
-			for(Pair<Clan,Integer> p : all2)
+			for(final Pair<Clan,Integer> p : all2)
 				if(p.first==C)
 				{
 					all2.remove(p);
@@ -398,9 +398,9 @@ public class Clans extends StdLibrary implements ClanManager
 	@Override
 	public void tickAllClans()
 	{
-		for(Enumeration<Clan> e=clans();e.hasMoreElements();)
+		for(final Enumeration<Clan> e=clans();e.hasMoreElements();)
 		{
-			Clan C=e.nextElement();
+			final Clan C=e.nextElement();
 			C.tick(C,Tickable.TICKID_CLAN);
 		}
 	}
@@ -408,7 +408,7 @@ public class Clans extends StdLibrary implements ClanManager
 	@Override
 	public void clanAnnounceAll(String msg)
 	{
-		List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.CLANINFO);
+		final List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.CLANINFO);
 		for(int i=0;i<channels.size();i++)
 			CMLib.commands().postChannel(channels.get(i),clanRoles(),msg,true);
 	}
@@ -433,11 +433,11 @@ public class Clans extends StdLibrary implements ClanManager
 		if(prizeStr.length()==0) return "None";
 		if(prizeStr.length()>0)
 		{
-			Vector<String> V=CMParms.parse(prizeStr);
+			final Vector<String> V=CMParms.parse(prizeStr);
 			if(V.size()>=2)
 			{
-				String type=V.lastElement().toUpperCase();
-				String amt=V.firstElement();
+				final String type=V.lastElement().toUpperCase();
+				final String amt=V.firstElement();
 				if("EXPERIENCE".startsWith(type))
 					return amt+" experience point bonus.";
 			}
@@ -461,10 +461,10 @@ public class Clans extends StdLibrary implements ClanManager
 	public boolean goForward(MOB mob, Clan C, Vector<? extends Object> commands, Clan.Function function, boolean voteIfNecessary)
 	{
 		if((mob==null)||(C==null)) return false;
-		Pair<Clan,Integer> clanRole=mob.getClanRole(C.clanID());
+		final Pair<Clan,Integer> clanRole=mob.getClanRole(C.clanID());
 		if(clanRole==null) return false;
-		int role=clanRole.second.intValue();
-		Clan.Authority allowed=C.getAuthority(role,function);
+		final int role=clanRole.second.intValue();
+		final Clan.Authority allowed=C.getAuthority(role,function);
 		if(allowed==Clan.Authority.CAN_DO) return true;
 		if(allowed==Clan.Authority.CAN_NOT_DO) return false;
 		if(function==Clan.Function.ASSIGN)
@@ -476,10 +476,10 @@ public class Clans extends StdLibrary implements ClanManager
 		if(C.getAuthority(role,Clan.Function.VOTE_OTHER)!=Clan.Authority.CAN_DO)
 			return false;
 		if(!voteIfNecessary) return true;
-		String matter=CMParms.combine(commands,0);
-		for(Enumeration<Clan.ClanVote> e=C.votes();e.hasMoreElements();)
+		final String matter=CMParms.combine(commands,0);
+		for(final Enumeration<Clan.ClanVote> e=C.votes();e.hasMoreElements();)
 		{
-			Clan.ClanVote CV=e.nextElement();
+			final Clan.ClanVote CV=e.nextElement();
 			if((CV.voteStarter.equalsIgnoreCase(mob.Name()))
 			&&(CV.voteStatus==Clan.VSTAT_STARTED))
 			{
@@ -495,12 +495,12 @@ public class Clans extends StdLibrary implements ClanManager
 		if(mob.session()==null) return false;
 		try
 		{
-			int numVotes=C.getNumVoters(function);
+			final int numVotes=C.getNumVoters(function);
 			if(numVotes==1) return true;
 
 			if(mob.session().confirm("This matter must be voted upon.  Would you like to start the vote now (y/N)?","N"))
 			{
-				Clan.ClanVote CV=new Clan.ClanVote();
+				final Clan.ClanVote CV=new Clan.ClanVote();
 				CV.matter=matter;
 				CV.voteStarter=mob.Name();
 				CV.function=function.ordinal();
@@ -533,10 +533,10 @@ public class Clans extends StdLibrary implements ClanManager
 						final String[] roleNames = new String[votingRoles.size()];
 						for(int i=0;i<votingRoles.size();i++)
 						{
-							Integer roleID=votingRoles.get(i);
+							final Integer roleID=votingRoles.get(i);
 							roleNames[i]=C.getRoleName(roleID.intValue(), true, true);
 						}
-						String list = CMLib.english().toEnglishStringList(roleNames);
+						final String list = CMLib.english().toEnglishStringList(roleNames);
 						clanAnnounce(mob,"The "+C.getGovernmentName()+" "+C.clanID()+" has a new matter to vote upon. "
 								+list+" should use CLANVOTE to participate.");
 					}
@@ -545,7 +545,7 @@ public class Clans extends StdLibrary implements ClanManager
 				return false;
 			}
 		}
-		catch(java.io.IOException e){}
+		catch(final java.io.IOException e){}
 		mob.tell("Without a vote, this command can not be executed.");
 		return false;
 	}
@@ -565,20 +565,20 @@ public class Clans extends StdLibrary implements ClanManager
 	public String getGovernmentHelp(MOB mob, String named, boolean exact)
 	{
 		ClanGovernment helpG=null;
-		for(ClanGovernment G : getStockGovernments())
+		for(final ClanGovernment G : getStockGovernments())
 			if(G.getName().equalsIgnoreCase(named))
 				helpG=G;
 		if((helpG==null)&&(exact)) return null;
 		if(helpG==null)
-			for(ClanGovernment G : getStockGovernments())
+			for(final ClanGovernment G : getStockGovernments())
 				if(G.getName().toUpperCase().startsWith(named.toUpperCase()))
 					helpG=G;
 		if(helpG==null)
 		{
-			List<ClanGovernment> gtypes=new Vector<ClanGovernment>();
+			final List<ClanGovernment> gtypes=new Vector<ClanGovernment>();
 			String name=null;
-			for(ClanGovernment G : getStockGovernments())
-				for(ClanPosition P : G.getPositions())
+			for(final ClanGovernment G : getStockGovernments())
+				for(final ClanPosition P : G.getPositions())
 					if(P.getName().equalsIgnoreCase(named)||P.getPluralName().equalsIgnoreCase(named))
 					{
 						gtypes.add(G);
@@ -587,8 +587,8 @@ public class Clans extends StdLibrary implements ClanManager
 			if(gtypes.size()==0)
 			{
 				if(exact) return null;
-				for(ClanGovernment G : getStockGovernments())
-					for(ClanPosition P : G.getPositions())
+				for(final ClanGovernment G : getStockGovernments())
+					for(final ClanPosition P : G.getPositions())
 						if(P.getName().toUpperCase().startsWith(named.toUpperCase())
 							||P.getPluralName().toUpperCase().startsWith(named.toUpperCase()))
 						{
@@ -598,7 +598,7 @@ public class Clans extends StdLibrary implements ClanManager
 			}
 			if(gtypes.size()==0)
 				return null;
-			String[] typeNames=new String[gtypes.size()];
+			final String[] typeNames=new String[gtypes.size()];
 			for(int g=0;g<gtypes.size();g++)
 				typeNames[g]=CMStrings.capitalizeAndLower(gtypes.get(g).getName());
 			return "The "+name+" is a rank or position within the following clan types: "
@@ -611,11 +611,11 @@ public class Clans extends StdLibrary implements ClanManager
 	@Override
 	public ClanGovernment createSampleGovernment()
 	{
-		Authority[] pows1=new Authority[Function.values().length];
+		final Authority[] pows1=new Authority[Function.values().length];
 		for(int i=0;i<pows1.length;i++) pows1[i]=Authority.CAN_NOT_DO;
-		Authority[] pows2=new Authority[Function.values().length];
+		final Authority[] pows2=new Authority[Function.values().length];
 		for(int i=0;i<pows2.length;i++) pows2[i]=Authority.CAN_DO;
-		ClanPosition P1=(ClanPosition)CMClass.getCommon("DefaultClanPosition");
+		final ClanPosition P1=(ClanPosition)CMClass.getCommon("DefaultClanPosition");
 		P1.setID("APPLICANT");
 		P1.setRoleID(0);
 		P1.setRank(0);
@@ -625,7 +625,7 @@ public class Clans extends StdLibrary implements ClanManager
 		P1.setInnerMaskStr("");
 		P1.setFunctionChart(pows1);
 		P1.setPublic(false);
-		ClanPosition P2=(ClanPosition)CMClass.getCommon("DefaultClanPosition");
+		final ClanPosition P2=(ClanPosition)CMClass.getCommon("DefaultClanPosition");
 		P2.setID("MEMBER");
 		P2.setRoleID(1);
 		P2.setRank(1);
@@ -635,12 +635,12 @@ public class Clans extends StdLibrary implements ClanManager
 		P2.setInnerMaskStr("");
 		P2.setFunctionChart(pows2);
 		P2.setPublic(false);
-		Set<Integer> usedTypeIDs=new HashSet<Integer>();
-		ClanGovernment[] gvts=(ClanGovernment[])Resources.getResource("parsed_clangovernments");
+		final Set<Integer> usedTypeIDs=new HashSet<Integer>();
+		final ClanGovernment[] gvts=(ClanGovernment[])Resources.getResource("parsed_clangovernments");
 		int id=0;
 		if(gvts!=null)
 		{
-			for(ClanGovernment G2 : gvts)
+			for(final ClanGovernment G2 : gvts)
 				usedTypeIDs.add(Integer.valueOf(G2.getID()));
 			for(int i=0;i<gvts.length;i++)
 				if(!usedTypeIDs.contains(Integer.valueOf(i)))
@@ -649,7 +649,7 @@ public class Clans extends StdLibrary implements ClanManager
 				}
 		}
 
-		ClanGovernment G=(ClanGovernment)CMClass.getCommon("DefaultClanGovernment");
+		final ClanGovernment G=(ClanGovernment)CMClass.getCommon("DefaultClanGovernment");
 		G.setID(id);
 		G.setName("Sample Govt");
 		G.setCategory("");
@@ -678,8 +678,8 @@ public class Clans extends StdLibrary implements ClanManager
 	@Override
 	public void reSaveGovernmentsXML()
 	{
-		ClanGovernment[] govt = getStockGovernments();
-		String xml = makeGovernmentXML(govt);
+		final ClanGovernment[] govt = getStockGovernments();
+		final String xml = makeGovernmentXML(govt);
 		if(!Resources.updateFileResource("clangovernments.xml", xml))
 		{
 			Log.errOut("Clans","Can't save clangovernments.xml");
@@ -691,14 +691,14 @@ public class Clans extends StdLibrary implements ClanManager
 	@Override
 	public ClanGovernment createGovernment(String name)
 	{
-		ClanGovernment[] gvts=getStockGovernments();
-		List<ClanGovernment> govts = new SVector<ClanGovernment>(gvts);
-		for(ClanGovernment G : gvts)
+		final ClanGovernment[] gvts=getStockGovernments();
+		final List<ClanGovernment> govts = new SVector<ClanGovernment>(gvts);
+		for(final ClanGovernment G : gvts)
 			if(G.getName().equalsIgnoreCase(name))
 				return null;
-		ClanGovernment newG=createSampleGovernment();
-		Set<Integer> takenIDs=new HashSet<Integer>();
-		for(ClanGovernment g : gvts)
+		final ClanGovernment newG=createSampleGovernment();
+		final Set<Integer> takenIDs=new HashSet<Integer>();
+		for(final ClanGovernment g : gvts)
 			takenIDs.add(Integer.valueOf(g.getID()));
 		int newID=CMLib.dice().roll(1, Integer.MAX_VALUE, 0);
 		for(int i=0;i<gvts.length+1;i++)
@@ -714,9 +714,9 @@ public class Clans extends StdLibrary implements ClanManager
 	@Override
 	public boolean removeGovernment(ClanGovernment government)
 	{
-		ClanGovernment[] gvts=getStockGovernments();
+		final ClanGovernment[] gvts=getStockGovernments();
 		if(gvts.length==1) return false;
-		List<ClanGovernment> govts = new SVector<ClanGovernment>(gvts);
+		final List<ClanGovernment> govts = new SVector<ClanGovernment>(gvts);
 		govts.remove(government);
 		if(govts.size()==gvts.length) return false;
 		Resources.submitResource("parsed_clangovernments", govts.toArray(new ClanGovernment[0]));
@@ -734,7 +734,7 @@ public class Clans extends StdLibrary implements ClanManager
 				gvts=(ClanGovernment[])Resources.getResource("parsed_clangovernments");
 				if(gvts==null)
 				{
-					StringBuffer str=Resources.getFileResource("clangovernments.xml", true);
+					final StringBuffer str=Resources.getFileResource("clangovernments.xml", true);
 					if(str==null)
 						gvts=new ClanGovernment[0];
 					else
@@ -743,7 +743,7 @@ public class Clans extends StdLibrary implements ClanManager
 					}
 					if((gvts==null)||(gvts.length==0))
 					{
-						ClanGovernment gvt=createSampleGovernment();
+						final ClanGovernment gvt=createSampleGovernment();
 						gvt.setDefault(true);
 						gvts=new ClanGovernment[]{gvt};
 					}
@@ -759,7 +759,7 @@ public class Clans extends StdLibrary implements ClanManager
 	public ClanGovernment getDefaultGovernment()
 	{
 		final ClanGovernment[] gvts=getStockGovernments();
-		for(ClanGovernment gvt : gvts)
+		for(final ClanGovernment gvt : gvts)
 		{
 			if(gvt.isDefault())
 				return gvt;
@@ -789,15 +789,15 @@ public class Clans extends StdLibrary implements ClanManager
 		str.append(indt(1)).append("<SHORTDESC>").append(CMLib.xml().parseOutAngleBrackets(gvt.getShortDesc())).append("</SHORTDESC>\n");
 		str.append(indt(1)).append("<LONGDESC>").append(CMLib.xml().parseOutAngleBrackets(gvt.getLongDesc())).append("</LONGDESC>\n");
 		str.append(indt(1)).append("<POSITIONS>\n");
-		Set<Clan.Function> voteSet = new HashSet<Clan.Function>();
+		final Set<Clan.Function> voteSet = new HashSet<Clan.Function>();
 		for(int p=gvt.getPositions().length-1;p>=0;p--)
 		{
-			ClanPosition pos = gvt.getPositions()[p];
+			final ClanPosition pos = gvt.getPositions()[p];
 			str.append(indt(2)).append("<POSITION ").append("ID=\""+pos.getID()+"\" ").append("ROLEID="+pos.getRoleID()+" ")
 								.append("RANK="+pos.getRank()+" ").append("NAME=\""+pos.getName()+"\" ").append("PLURAL=\""+pos.getPluralName()+"\" ")
 								.append("MAX="+pos.getMax()+" ").append("INNERMASK=\""+CMLib.xml().parseOutAngleBrackets(pos.getInnerMaskStr())+"\" ")
 								.append("PUBLIC=\""+pos.isPublic()+"\">\n");
-			for(Clan.Function func : Clan.Function.values())
+			for(final Clan.Function func : Clan.Function.values())
 				if(pos.getFunctionChart()[func.ordinal()]==Clan.Authority.CAN_DO)
 					str.append(indt(3)).append("<POWER>").append(func.toString()).append("</POWER>\n");
 				else
@@ -811,7 +811,7 @@ public class Clans extends StdLibrary implements ClanManager
 		else
 		{
 			str.append(indt(1)).append("<VOTING ").append("MAXDAYS="+gvt.getMaxVoteDays()+" QUORUMPCT="+gvt.getVoteQuorumPct()+">\n");
-			for(Clan.Function func : voteSet)
+			for(final Clan.Function func : voteSet)
 				str.append(indt(2)).append("<POWER>").append(func.toString()).append("</POWER>\n");
 			str.append(indt(1)).append("</VOTING>\n");
 		}
@@ -845,7 +845,7 @@ public class Clans extends StdLibrary implements ClanManager
 			str.append(indt(1)).append("<ABILITIES>\n");
 			for(;m.hasMoreElements();)
 			{
-				AbilityMapping map=m.nextElement();
+				final AbilityMapping map=m.nextElement();
 				str.append(indt(2)).append("<ABILITY ID=\""+map.abilityID+"\" PROFF="+map.defaultProficiency+" LEVEL="+map.qualLevel+" QUALIFYONLY="+(!map.autoGain)+" />\n");
 			}
 			str.append(indt(1)).append("</ABILITIES>\n");
@@ -858,8 +858,8 @@ public class Clans extends StdLibrary implements ClanManager
 			str.append(indt(1)).append("<EFFECTS>\n");
 			for(int a=0;a<effectList.size();a++)
 			{
-				Ability A=effectList.get(a);
-				int lvl = CMath.s_int(gvt.getStat("GETREFFLVL"+a));
+				final Ability A=effectList.get(a);
+				final int lvl = CMath.s_int(gvt.getStat("GETREFFLVL"+a));
 				str.append(indt(2)).append("<EFFECT ID=\""+A.ID()+"\" LEVEL="+lvl+" PARMS=\""+CMLib.xml().parseOutAngleBrackets(A.text())+"\" />\n");
 			}
 			str.append(indt(1)).append("</EFFECTS>\n");
@@ -874,7 +874,7 @@ public class Clans extends StdLibrary implements ClanManager
 	{
 		final StringBuilder str=new StringBuilder("");
 		str.append("<CLANTYPES>\n");
-		for(ClanGovernment gvt : gvts)
+		for(final ClanGovernment gvt : gvts)
 			str.append(makeGovernmentXML(gvt));
 		str.append("</CLANTYPES>\n");
 		return str.toString();
@@ -883,10 +883,10 @@ public class Clans extends StdLibrary implements ClanManager
 	@Override
 	public List<Pair<Clan,Integer>> getClansByCategory(MOB M, String category)
 	{
-		List<Pair<Clan,Integer>> list=new Vector<Pair<Clan,Integer>>(1);
+		final List<Pair<Clan,Integer>> list=new Vector<Pair<Clan,Integer>>(1);
 		if(M==null) return list;
 		if(category==null) category="";
-		for(Pair<Clan,Integer> p : M.clans())
+		for(final Pair<Clan,Integer> p : M.clans())
 			if(p.first.getCategory().equalsIgnoreCase(category))
 				list.add(p);
 		return list;
@@ -895,14 +895,14 @@ public class Clans extends StdLibrary implements ClanManager
 	@Override
 	public ClanGovernment[] parseGovernmentXML(StringBuffer xml)
 	{
-		List<XMLLibrary.XMLpiece> xmlV = CMLib.xml().parseAllXML(xml);
-		XMLLibrary.XMLpiece clanTypesTag = CMLib.xml().getPieceFromPieces(xmlV, "CLANTYPES");
+		final List<XMLLibrary.XMLpiece> xmlV = CMLib.xml().parseAllXML(xml);
+		final XMLLibrary.XMLpiece clanTypesTag = CMLib.xml().getPieceFromPieces(xmlV, "CLANTYPES");
 		List<XMLLibrary.XMLpiece> clanTypes = null;
 		if(clanTypesTag != null)
 			clanTypes = clanTypesTag.contents;
 		else
 		{
-			XMLLibrary.XMLpiece clanType = CMLib.xml().getPieceFromPieces(xmlV, "CLANTYPE");
+			final XMLLibrary.XMLpiece clanType = CMLib.xml().getPieceFromPieces(xmlV, "CLANTYPE");
 			if(clanType != null)
 			{
 				clanTypes = new SVector<XMLLibrary.XMLpiece>();
@@ -915,8 +915,8 @@ public class Clans extends StdLibrary implements ClanManager
 			}
 		}
 
-		List<ClanGovernment> governments=new SVector<ClanGovernment>();
-		for(XMLLibrary.XMLpiece clanTypePieceTag : clanTypes)
+		final List<ClanGovernment> governments=new SVector<ClanGovernment>();
+		for(final XMLLibrary.XMLpiece clanTypePieceTag : clanTypes)
 		{
 			final String typeName=clanTypePieceTag.parms.get("NAME");
 			final int typeID=CMath.s_int(clanTypePieceTag.parms.get("TYPEID"));
@@ -924,17 +924,17 @@ public class Clans extends StdLibrary implements ClanManager
 			String category=clanTypePieceTag.parms.get("CATEGORY");
 			if(category==null) category="";
 
-			Authority[]	baseFunctionChart = new Authority[Function.values().length];
+			final Authority[]	baseFunctionChart = new Authority[Function.values().length];
 			for(int i=0;i<Function.values().length;i++)
 				baseFunctionChart[i]=Authority.CAN_NOT_DO;
-			XMLLibrary.XMLpiece votingTag = CMLib.xml().getPieceFromPieces(clanTypePieceTag.contents, "VOTING");
-			int maxVotingDays = CMath.s_int(votingTag.parms.get("MAXDAYS"));
-			int minVotingPct = CMath.s_int(votingTag.parms.get("QUORUMPCT"));
-			for(XMLLibrary.XMLpiece piece : votingTag.contents)
+			final XMLLibrary.XMLpiece votingTag = CMLib.xml().getPieceFromPieces(clanTypePieceTag.contents, "VOTING");
+			final int maxVotingDays = CMath.s_int(votingTag.parms.get("MAXDAYS"));
+			final int minVotingPct = CMath.s_int(votingTag.parms.get("QUORUMPCT"));
+			for(final XMLLibrary.XMLpiece piece : votingTag.contents)
 			{
 				if(piece.tag.equalsIgnoreCase("POWER"))
 				{
-					Function power = (Function)CMath.s_valueOf(Clan.Function.values(),piece.value);
+					final Function power = (Function)CMath.s_valueOf(Clan.Function.values(),piece.value);
 					if(power == null)
 						Log.errOut("Clans","Illegal power found in xml: "+piece.value);
 					else
@@ -943,12 +943,12 @@ public class Clans extends StdLibrary implements ClanManager
 			}
 
 			final List<ClanPosition> positions=new SVector<ClanPosition>();
-			XMLLibrary.XMLpiece positionsTag = CMLib.xml().getPieceFromPieces(clanTypePieceTag.contents, "POSITIONS");
-			for(XMLLibrary.XMLpiece posPiece : positionsTag.contents)
+			final XMLLibrary.XMLpiece positionsTag = CMLib.xml().getPieceFromPieces(clanTypePieceTag.contents, "POSITIONS");
+			for(final XMLLibrary.XMLpiece posPiece : positionsTag.contents)
 			{
 				if(posPiece.tag.equalsIgnoreCase("POSITION"))
 				{
-					Authority[]	functionChart = baseFunctionChart.clone();
+					final Authority[]	functionChart = baseFunctionChart.clone();
 					final String ID=posPiece.parms.get("ID");
 					final int roleID=CMath.s_int(posPiece.parms.get("ROLEID"));
 					final int rank=CMath.s_int(posPiece.parms.get("RANK"));
@@ -957,18 +957,18 @@ public class Clans extends StdLibrary implements ClanManager
 					final int max=CMath.s_int(posPiece.parms.get("MAX"));
 					final boolean isPublic=CMath.s_bool(posPiece.parms.get("PUBLIC"));
 					final String innerMaskStr=CMLib.xml().restoreAngleBrackets(posPiece.parms.get("INNERMASK"));
-					for(XMLLibrary.XMLpiece powerPiece : posPiece.contents)
+					for(final XMLLibrary.XMLpiece powerPiece : posPiece.contents)
 					{
 						if(powerPiece.tag.equalsIgnoreCase("POWER"))
 						{
-							Function power = (Function)CMath.s_valueOf(Clan.Function.values(),powerPiece.value);
+							final Function power = (Function)CMath.s_valueOf(Clan.Function.values(),powerPiece.value);
 							if(power == null)
 								Log.errOut("Clans","Illegal power found in xml: "+powerPiece.value);
 							else
 								functionChart[power.ordinal()] = Authority.CAN_DO;
 						}
 					}
-					ClanPosition P=(ClanPosition)CMClass.getCommon("DefaultClanPosition");
+					final ClanPosition P=(ClanPosition)CMClass.getCommon("DefaultClanPosition");
 					P.setID(ID);
 					P.setRoleID(roleID);
 					P.setRank(rank);
@@ -982,7 +982,7 @@ public class Clans extends StdLibrary implements ClanManager
 				}
 			}
 			ClanPosition[] posArray = new ClanPosition[positions.size()];
-			for(ClanPosition pos : positions)
+			for(final ClanPosition pos : positions)
 				if((pos.getRoleID()>=0)&&(pos.getRoleID()<positions.size()))
 					if(posArray[pos.getRoleID()]!=null)
 					{
@@ -999,9 +999,9 @@ public class Clans extends StdLibrary implements ClanManager
 				Log.errOut("Clans","Missing positions in "+typeName);
 				continue;
 			}
-			String	autoRoleStr=CMLib.xml().getValFromPieces(clanTypePieceTag.contents, "AUTOPOSITION");
+			final String	autoRoleStr=CMLib.xml().getValFromPieces(clanTypePieceTag.contents, "AUTOPOSITION");
 			ClanPosition autoRole=null;
-			for(ClanPosition pos : positions)
+			for(final ClanPosition pos : positions)
 				if(pos.getID().equalsIgnoreCase(autoRoleStr) )
 					autoRole=pos;
 			if(autoRole==null)
@@ -1009,9 +1009,9 @@ public class Clans extends StdLibrary implements ClanManager
 				Log.errOut("Clans","Illegal role found in xml: "+autoRoleStr);
 				continue;
 			}
-			String	acceptRoleStr=CMLib.xml().getValFromPieces(clanTypePieceTag.contents, "ACCEPTPOSITION");
+			final String	acceptRoleStr=CMLib.xml().getValFromPieces(clanTypePieceTag.contents, "ACCEPTPOSITION");
 			ClanPosition acceptRole=null;
-			for(ClanPosition pos : positions)
+			for(final ClanPosition pos : positions)
 				if(pos.getID().equalsIgnoreCase(acceptRoleStr) )
 					acceptRole=pos;
 			if(acceptRole==null)
@@ -1019,30 +1019,30 @@ public class Clans extends StdLibrary implements ClanManager
 				Log.errOut("Clans","Illegal acceptRole found in xml: "+acceptRoleStr);
 				continue;
 			}
-			String requiredMaskStr=CMLib.xml().restoreAngleBrackets(CMLib.xml().getValFromPieces(clanTypePieceTag.contents, "REQUIREDMASK"));
-			String entryScript=CMLib.xml().restoreAngleBrackets(CMLib.xml().getValFromPieces(clanTypePieceTag.contents, "ENTRYSCRIPT"));
-			String exitScript=CMLib.xml().restoreAngleBrackets(CMLib.xml().getValFromPieces(clanTypePieceTag.contents, "EXITSCRIPT"));
-			String shortDesc=CMLib.xml().restoreAngleBrackets(CMLib.xml().getValFromPieces(clanTypePieceTag.contents, "SHORTDESC"));
-			String longDesc=CMLib.xml().restoreAngleBrackets(CMLib.xml().getValFromPieces(clanTypePieceTag.contents, "LONGDESC"));
-			String autoPromoteStr=CMLib.xml().getValFromPieces(clanTypePieceTag.contents, "AUTOPROMOTEBY");
-			Clan.AutoPromoteFlag autoPromote = AutoPromoteFlag.valueOf(autoPromoteStr);
+			final String requiredMaskStr=CMLib.xml().restoreAngleBrackets(CMLib.xml().getValFromPieces(clanTypePieceTag.contents, "REQUIREDMASK"));
+			final String entryScript=CMLib.xml().restoreAngleBrackets(CMLib.xml().getValFromPieces(clanTypePieceTag.contents, "ENTRYSCRIPT"));
+			final String exitScript=CMLib.xml().restoreAngleBrackets(CMLib.xml().getValFromPieces(clanTypePieceTag.contents, "EXITSCRIPT"));
+			final String shortDesc=CMLib.xml().restoreAngleBrackets(CMLib.xml().getValFromPieces(clanTypePieceTag.contents, "SHORTDESC"));
+			final String longDesc=CMLib.xml().restoreAngleBrackets(CMLib.xml().getValFromPieces(clanTypePieceTag.contents, "LONGDESC"));
+			final String autoPromoteStr=CMLib.xml().getValFromPieces(clanTypePieceTag.contents, "AUTOPROMOTEBY");
+			final Clan.AutoPromoteFlag autoPromote = AutoPromoteFlag.valueOf(autoPromoteStr);
 			if(autoPromote==null)
 			{
 				Log.errOut("Clans","Illegal AUTOPROMOTEBY found in xml: "+autoPromoteStr);
 				continue;
 			}
-			boolean isPublic=CMath.s_bool(CMLib.xml().getValFromPieces(clanTypePieceTag.contents, "PUBLIC"));
-			boolean isFamilyOnly=CMath.s_bool(CMLib.xml().getValFromPieces(clanTypePieceTag.contents, "FAMILYONLY"));
-			String	overrideMinMembersStr=CMLib.xml().getValFromPieces(clanTypePieceTag.contents, "OVERRIDEMINMEMBERS");
+			final boolean isPublic=CMath.s_bool(CMLib.xml().getValFromPieces(clanTypePieceTag.contents, "PUBLIC"));
+			final boolean isFamilyOnly=CMath.s_bool(CMLib.xml().getValFromPieces(clanTypePieceTag.contents, "FAMILYONLY"));
+			final String	overrideMinMembersStr=CMLib.xml().getValFromPieces(clanTypePieceTag.contents, "OVERRIDEMINMEMBERS");
 			Integer overrideMinMembers = null;
 			if((overrideMinMembersStr!=null)&&CMath.isInteger(overrideMinMembersStr))
 				overrideMinMembers=Integer.valueOf(CMath.s_int(overrideMinMembersStr));
 			boolean isRivalrous=true;
-			String rivalrousStr=CMLib.xml().getValFromPieces(clanTypePieceTag.contents, "RIVALROUS");
+			final String rivalrousStr=CMLib.xml().getValFromPieces(clanTypePieceTag.contents, "RIVALROUS");
 			if(CMath.isBool(rivalrousStr))
 				isRivalrous=CMath.s_bool(rivalrousStr);
-			String xpPerLevelFormulaStr=CMLib.xml().getValFromPieces(clanTypePieceTag.contents, "XPPERLEVELFORMULA");
-			XMLLibrary.XMLpiece conquestTag = CMLib.xml().getPieceFromPieces(clanTypePieceTag.contents, "CONQUEST");
+			final String xpPerLevelFormulaStr=CMLib.xml().getValFromPieces(clanTypePieceTag.contents, "XPPERLEVELFORMULA");
+			final XMLLibrary.XMLpiece conquestTag = CMLib.xml().getPieceFromPieces(clanTypePieceTag.contents, "CONQUEST");
 			boolean conquestEnabled=true;
 			boolean conquestItemLoyalty=true;
 			boolean conquestDeityBasis=false;
@@ -1052,7 +1052,7 @@ public class Clans extends StdLibrary implements ClanManager
 				conquestItemLoyalty=CMath.s_bool(CMLib.xml().getValFromPieces(conquestTag.contents, "ITEMLOYALTY"));
 				conquestDeityBasis=CMath.s_bool(CMLib.xml().getValFromPieces(conquestTag.contents, "DEITYBASIS"));
 			}
-			ClanGovernment G=(ClanGovernment)CMClass.getCommon("DefaultClanGovernment");
+			final ClanGovernment G=(ClanGovernment)CMClass.getCommon("DefaultClanGovernment");
 			G.setID(typeID);
 			G.setName(typeName);
 			G.setCategory(category);
@@ -1077,26 +1077,26 @@ public class Clans extends StdLibrary implements ClanManager
 			G.setVoteQuorumPct(minVotingPct);
 			G.setDefault(isDefault);
 
-			XMLLibrary.XMLpiece abilitiesTag = CMLib.xml().getPieceFromPieces(clanTypePieceTag.contents, "ABILITIES");
+			final XMLLibrary.XMLpiece abilitiesTag = CMLib.xml().getPieceFromPieces(clanTypePieceTag.contents, "ABILITIES");
 			if((abilitiesTag!=null)&&(abilitiesTag.contents!=null)&&(abilitiesTag.contents.size()>0))
 			{
 				G.setStat("NUMRABLE", Integer.toString(abilitiesTag.contents.size()));
 				for(int x=0;x<abilitiesTag.contents.size();x++)
 				{
-					XMLLibrary.XMLpiece able = abilitiesTag.contents.get(x);
+					final XMLLibrary.XMLpiece able = abilitiesTag.contents.get(x);
 					G.setStat("GETRABLE"+x, able.parms.get("ID"));
 					G.setStat("GETRABLEPROF"+x, able.parms.get("PROFF"));
 					G.setStat("GETRABLEQUAL"+x, able.parms.get("QUALIFYONLY"));
 					G.setStat("GETRABLELVL"+x, able.parms.get("LEVEL"));
 				}
 			}
-			XMLLibrary.XMLpiece effectsTag = CMLib.xml().getPieceFromPieces(clanTypePieceTag.contents, "EFFECTS");
+			final XMLLibrary.XMLpiece effectsTag = CMLib.xml().getPieceFromPieces(clanTypePieceTag.contents, "EFFECTS");
 			if((effectsTag!=null)&&(effectsTag.contents!=null)&&(effectsTag.contents.size()>0))
 			{
 				G.setStat("NUMREFF", Integer.toString(effectsTag.contents.size()));
 				for(int x=0;x<effectsTag.contents.size();x++)
 				{
-					XMLLibrary.XMLpiece able = effectsTag.contents.get(x);
+					final XMLLibrary.XMLpiece able = effectsTag.contents.get(x);
 					G.setStat("GETREFF"+x, able.parms.get("ID"));
 					G.setStat("GETREFFPARM"+x, CMLib.xml().restoreAngleBrackets(able.parms.get("PARMS")));
 					G.setStat("GETREFFLVL"+x, able.parms.get("LEVEL"));
@@ -1104,8 +1104,8 @@ public class Clans extends StdLibrary implements ClanManager
 			}
 			governments.add(G);
 		}
-		ClanGovernment[] govts=new ClanGovernment[governments.size()];
-		for(ClanGovernment govt : governments)
+		final ClanGovernment[] govts=new ClanGovernment[governments.size()];
+		for(final ClanGovernment govt : governments)
 			if((govt.getID() < 0)||(govt.getID() >=governments.size()) || (govts[govt.getID()]!=null))
 			{
 				Log.errOut("Clans","Bad TYPEID "+govt.getID());
@@ -1145,10 +1145,10 @@ public class Clans extends StdLibrary implements ClanManager
 
 	private void setClanWebSiteMappings(Clan clan, String allMappingsStr)
 	{
-		for(Iterator<String> keyIter = this.webPathClanMappings.keySet().iterator();keyIter.hasNext();)
+		for(final Iterator<String> keyIter = this.webPathClanMappings.keySet().iterator();keyIter.hasNext();)
 		{
 			final String key=keyIter.next();
-			Clan foundClan = this.webPathClanMappings.get(key);
+			final Clan foundClan = this.webPathClanMappings.get(key);
 			if(foundClan == clan)
 			{
 				keyIter.remove();
@@ -1157,15 +1157,15 @@ public class Clans extends StdLibrary implements ClanManager
 		}
 		if(allMappingsStr==null)
 			return;
-		List<String> set=CMParms.parseCommas(allMappingsStr,true);
+		final List<String> set=CMParms.parseCommas(allMappingsStr,true);
 		for(String s : set)
 		{
-			String originalS=s;
+			final String originalS=s;
 			s=s.trim();
 			if(s.startsWith("["))
 			{
 				int x=s.indexOf(']');
-				String cat=s.substring(1,x).trim();
+				final String cat=s.substring(1,x).trim();
 				if(clan.getGovernment().getCategory().equalsIgnoreCase(cat))
 				{
 					s=s.substring(x+1).trim();
@@ -1174,8 +1174,8 @@ public class Clans extends StdLibrary implements ClanManager
 					{
 						String siteFilesPathStr=CMStrings.replaceAll(s.substring(0,x),"<CLANNAME>",clan.clanID());
 						siteFilesPathStr=CMStrings.replaceAll(siteFilesPathStr,"<CLANTYPE>",clan.getGovernmentName());
-						String siteFilesPath = new CMFile(siteFilesPathStr.trim(),null).getAbsolutePath();
-						String siteTemplatePath = new CMFile(s.substring(x+1).trim(),null).getAbsolutePath();
+						final String siteFilesPath = new CMFile(siteFilesPathStr.trim(),null).getAbsolutePath();
+						final String siteTemplatePath = new CMFile(s.substring(x+1).trim(),null).getAbsolutePath();
 						if(webPathClanMappings.containsKey(siteFilesPath.toLowerCase()))
 						{
 							Log.errOut("Clans","Multiple clans at same webclansites path: in coffeemud.ini: "+originalS);
@@ -1206,15 +1206,15 @@ public class Clans extends StdLibrary implements ClanManager
 	@Override
 	public void clanAnnounce(MOB mob, String msg)
 	{
-		List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.CLANINFO);
+		final List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.CLANINFO);
 		for(int i=0;i<channels.size();i++)
 			CMLib.commands().postChannel(mob,channels.get(i),msg,true);
 	}
 
 	protected int filterMedianLevel(List<FullMemberRecord> members)
 	{
-		List<Integer> lvls=new SortedListWrap<Integer>(new XVector<Integer>());
-		for(FullMemberRecord r : members)
+		final List<Integer> lvls=new SortedListWrap<Integer>(new XVector<Integer>());
+		for(final FullMemberRecord r : members)
 			lvls.add(Integer.valueOf(r.level));
 		if(lvls.size()>0)
 			return lvls.get(lvls.size()/2).intValue();
@@ -1223,9 +1223,9 @@ public class Clans extends StdLibrary implements ClanManager
 
 	protected Clan getTrophyWinner(Trophy trophy)
 	{
-		for(Enumeration<Clan> e=clans();e.hasMoreElements();)
+		for(final Enumeration<Clan> e=clans();e.hasMoreElements();)
 		{
-			Clan C=e.nextElement();
+			final Clan C=e.nextElement();
 			if(CMath.bset(C.getTrophies(),trophy.flagNum()))
 				return C;
 		}
@@ -1241,10 +1241,10 @@ public class Clans extends StdLibrary implements ClanManager
 			{
 				Clan winnerC=getTrophyWinner(Trophy.Members);
 				int winnerMembers=(winnerC==null)?0:winnerC.getSize();
-				for(Enumeration<Clan> e=clans();e.hasMoreElements();)
+				for(final Enumeration<Clan> e=clans();e.hasMoreElements();)
 				{
-					Clan C=e.nextElement(); if(C==winnerC) continue;
-					int numMembers=C.getSize();
+					final Clan C=e.nextElement(); if(C==winnerC) continue;
+					final int numMembers=C.getSize();
 					if(numMembers>winnerMembers)
 					{
 						winnerC=C;
@@ -1258,9 +1258,9 @@ public class Clans extends StdLibrary implements ClanManager
 					winnerC.setTrophies(winnerC.getTrophies()|Trophy.Members.flagNum());
 					clanAnnounceAll("The "+winnerC.getGovernmentName()+" "+winnerC.name()+" has been awarded the trophy for "+Trophy.Members.description+".");
 				}
-				for(Enumeration<Clan> e=clans();e.hasMoreElements();)
+				for(final Enumeration<Clan> e=clans();e.hasMoreElements();)
 				{
-					Clan C=e.nextElement();
+					final Clan C=e.nextElement();
 					if((winnerC!=C)&&(CMath.bset(C.getTrophies(),Trophy.Members.flagNum())))
 					{
 						C.setTrophies(C.getTrophies()-Trophy.Members.flagNum());
@@ -1274,10 +1274,10 @@ public class Clans extends StdLibrary implements ClanManager
 			{
 				Clan winnerC=getTrophyWinner(Trophy.MemberLevel);
 				int winnerLevel=(winnerC==null)?0:filterMedianLevel(winnerC.getFullMemberList());
-				for(Enumeration<Clan> e=clans();e.hasMoreElements();)
+				for(final Enumeration<Clan> e=clans();e.hasMoreElements();)
 				{
-					Clan C=e.nextElement(); if(C==winnerC) continue;
-					int highestLevel=filterMedianLevel(C.getFullMemberList());
+					final Clan C=e.nextElement(); if(C==winnerC) continue;
+					final int highestLevel=filterMedianLevel(C.getFullMemberList());
 					if(highestLevel>winnerLevel)
 					{
 						winnerC=C;
@@ -1291,9 +1291,9 @@ public class Clans extends StdLibrary implements ClanManager
 					winnerC.setTrophies(winnerC.getTrophies()|Trophy.MemberLevel.flagNum());
 					clanAnnounceAll("The "+winnerC.getGovernmentName()+" "+winnerC.name()+" has been awarded the trophy for "+Trophy.MemberLevel.description+".");
 				}
-				for(Enumeration<Clan> e=clans();e.hasMoreElements();)
+				for(final Enumeration<Clan> e=clans();e.hasMoreElements();)
 				{
-					Clan C=e.nextElement();
+					final Clan C=e.nextElement();
 					if((winnerC!=C)&&(CMath.bset(C.getTrophies(),Trophy.MemberLevel.flagNum())))
 					{
 						C.setTrophies(C.getTrophies()-Trophy.MemberLevel.flagNum());
@@ -1306,9 +1306,9 @@ public class Clans extends StdLibrary implements ClanManager
 			if(CMProps.getVar(CMProps.Str.CLANTROPEXP).length()>0)
 			{
 				Clan winnerC=getTrophyWinner(Trophy.Experience);
-				for(Enumeration<Clan> e=clans();e.hasMoreElements();)
+				for(final Enumeration<Clan> e=clans();e.hasMoreElements();)
 				{
-					Clan C=e.nextElement(); if(C==winnerC) continue;
+					final Clan C=e.nextElement(); if(C==winnerC) continue;
 					if((winnerC==null)||(C.getExp()>winnerC.getExp()))
 						winnerC=C;
 				}
@@ -1319,9 +1319,9 @@ public class Clans extends StdLibrary implements ClanManager
 					winnerC.setTrophies(winnerC.getTrophies()|Trophy.Experience.flagNum());
 					clanAnnounceAll("The "+winnerC.getGovernmentName()+" "+winnerC.name()+" has been awarded the trophy for "+Trophy.Experience.description+".");
 				}
-				for(Enumeration<Clan> e=clans();e.hasMoreElements();)
+				for(final Enumeration<Clan> e=clans();e.hasMoreElements();)
 				{
-					Clan C=e.nextElement();
+					final Clan C=e.nextElement();
 					if((winnerC!=C)&&(CMath.bset(C.getTrophies(),Trophy.Experience.flagNum())))
 					{
 						C.setTrophies(C.getTrophies()-Trophy.Experience.flagNum());
@@ -1334,9 +1334,9 @@ public class Clans extends StdLibrary implements ClanManager
 			if(CMProps.getVar(CMProps.Str.CLANTROPPK).length()>0)
 			{
 				Clan winnerC=getTrophyWinner(Trophy.PlayerKills);
-				for(Enumeration<Clan> e=clans();e.hasMoreElements();)
+				for(final Enumeration<Clan> e=clans();e.hasMoreElements();)
 				{
-					Clan C=e.nextElement(); if(C==winnerC) continue;
+					final Clan C=e.nextElement(); if(C==winnerC) continue;
 					if((winnerC==null)||(C.getCurrentClanKills(null)>winnerC.getCurrentClanKills(null)))
 						winnerC=C;
 				}
@@ -1349,9 +1349,9 @@ public class Clans extends StdLibrary implements ClanManager
 					winnerC.setTrophies(winnerC.getTrophies()|Trophy.PlayerKills.flagNum());
 					clanAnnounceAll("The "+winnerC.getGovernmentName()+" "+winnerC.name()+" has been awarded the trophy for "+Trophy.PlayerKills.description+".");
 				}
-				for(Enumeration<Clan> e=clans();e.hasMoreElements();)
+				for(final Enumeration<Clan> e=clans();e.hasMoreElements();)
 				{
-					Clan C=e.nextElement();
+					final Clan C=e.nextElement();
 					if((winnerC!=C)&&(CMath.bset(C.getTrophies(),Trophy.PlayerKills.flagNum())))
 					{
 						C.setTrophies(C.getTrophies()-Trophy.PlayerKills.flagNum());
@@ -1368,12 +1368,12 @@ public class Clans extends StdLibrary implements ClanManager
 				long mostClansControlled=(winnerMostClansControlledC==null)?-1:winnerMostClansControlledC.getControlledAreas().size();
 				Clan winnerMostControlPointsC=getTrophyWinner(Trophy.Points);
 				long mostControlPoints=(winnerMostControlPointsC==null)?-1:winnerMostControlPointsC.calculateMapPoints();
-				for(Enumeration<Clan> e=clans();e.hasMoreElements();)
+				for(final Enumeration<Clan> e=clans();e.hasMoreElements();)
 				{
-					Clan C=e.nextElement();
+					final Clan C=e.nextElement();
 					if((C!=winnerMostClansControlledC)&&(CMProps.getVar(CMProps.Str.CLANTROPAREA).length()>0))
 					{
-						int controlledAreas=C.getControlledAreas().size();
+						final int controlledAreas=C.getControlledAreas().size();
 						if(controlledAreas>mostClansControlled)
 						{
 							winnerMostClansControlledC=C;
@@ -1382,7 +1382,7 @@ public class Clans extends StdLibrary implements ClanManager
 					}
 					if((C!=winnerMostControlPointsC)&&(CMProps.getVar(CMProps.Str.CLANTROPCP).length()>0))
 					{
-						long mapPoints=C.calculateMapPoints();
+						final long mapPoints=C.calculateMapPoints();
 						if(mapPoints>mostControlPoints)
 						{
 							winnerMostControlPointsC=C;
@@ -1404,9 +1404,9 @@ public class Clans extends StdLibrary implements ClanManager
 						clanAnnounceAll("The "+winnerMostClansControlledC.getGovernmentName()+" "+winnerMostClansControlledC.name()+" has been awarded the trophy for "+Trophy.Areas.description+".");
 					}
 				}
-				for(Enumeration<Clan> e=clans();e.hasMoreElements();)
+				for(final Enumeration<Clan> e=clans();e.hasMoreElements();)
 				{
-					Clan C=e.nextElement();
+					final Clan C=e.nextElement();
 					if((winnerMostClansControlledC!=C)
 					&&(CMath.bset(C.getTrophies(),Trophy.Areas.flagNum())))
 					{
@@ -1424,9 +1424,9 @@ public class Clans extends StdLibrary implements ClanManager
 						clanAnnounceAll("The "+winnerMostControlPointsC.getGovernmentName()+" "+winnerMostControlPointsC.name()+" has been awarded the trophy for "+Trophy.Points.description+".");
 					}
 				}
-				for(Enumeration<Clan> e=clans();e.hasMoreElements();)
+				for(final Enumeration<Clan> e=clans();e.hasMoreElements();)
 				{
-					Clan C=e.nextElement();
+					final Clan C=e.nextElement();
 					if((winnerMostControlPointsC!=C)
 					&&(CMath.bset(C.getTrophies(),Trophy.Points.flagNum())))
 					{
@@ -1473,9 +1473,9 @@ public class Clans extends StdLibrary implements ClanManager
 	@Override
 	public boolean shutdown()
 	{
-		for(Enumeration<Clan> e=all.elements();e.hasMoreElements();)
+		for(final Enumeration<Clan> e=all.elements();e.hasMoreElements();)
 		{
-			Clan C=e.nextElement();
+			final Clan C=e.nextElement();
 			CMLib.threads().deleteTick(C,Tickable.TICKID_CLAN);
 		}
 		all.clear();
@@ -1498,15 +1498,15 @@ public class Clans extends StdLibrary implements ClanManager
 	public void propertiesLoaded()
 	{
 		super.propertiesLoaded();
-		for(String clanID : all.keySet())
+		for(final String clanID : all.keySet())
 		{
-			Clan C=all.get(clanID);
+			final Clan C=all.get(clanID);
 			setClanWebSiteMappings(C,null);
 			CMLib.journals().registerClanForum(C,null);
 		}
-		for(String clanID : all.keySet())
+		for(final String clanID : all.keySet())
 		{
-			Clan C=all.get(clanID);
+			final Clan C=all.get(clanID);
 			setClanWebSiteMappings(C,CMProps.getVar(CMProps.Str.CLANWEBSITES));
 			CMLib.journals().registerClanForum(C,CMProps.getVar(CMProps.Str.CLANFORUMDATA));
 		}

@@ -84,7 +84,7 @@ public class PaperMaking extends CraftingSkill implements ItemCraftor
 		{
 			if((affected!=null)&&(affected instanceof MOB))
 			{
-				MOB mob=(MOB)affected;
+				final MOB mob=(MOB)affected;
 				if((buildingI!=null)&&(!aborted))
 				{
 					if(messedUp)
@@ -112,7 +112,7 @@ public class PaperMaking extends CraftingSkill implements ItemCraftor
 			return true;
 		final Session session=mob.session();
 
-		CraftParms parsedVars=super.parseAutoGenerate(auto,givenTarget,commands);
+		final CraftParms parsedVars=super.parseAutoGenerate(auto,givenTarget,commands);
 		givenTarget=parsedVars.givenTarget;
 
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,parsedVars.autoGenerate);
@@ -130,8 +130,8 @@ public class PaperMaking extends CraftingSkill implements ItemCraftor
 				return super.bundle(mob,commands);
 			return false;
 		}
-		List<List<String>> recipes=addRecipes(mob,loadRecipes());
-		String str=(String)commands.elementAt(0);
+		final List<List<String>> recipes=addRecipes(mob,loadRecipes());
+		final String str=(String)commands.elementAt(0);
 		String startStr=null;
 		int duration=4;
 		if(str.equalsIgnoreCase("list"))
@@ -143,20 +143,20 @@ public class PaperMaking extends CraftingSkill implements ItemCraftor
 				allFlag=true;
 				mask="";
 			}
-			int[] cols={
+			final int[] cols={
 					ListingLibrary.ColFixer.fixColWidth(22,mob.session()),
 					ListingLibrary.ColFixer.fixColWidth(3,mob.session())
 				};
-			StringBuffer buf=new StringBuffer(CMStrings.padRight("Item",cols[0])+" "+CMStrings.padRight("Lvl",cols[1])+" Material required\n\r");
+			final StringBuffer buf=new StringBuffer(CMStrings.padRight("Item",cols[0])+" "+CMStrings.padRight("Lvl",cols[1])+" Material required\n\r");
 			for(int r=0;r<recipes.size();r++)
 			{
-				List<String> V=recipes.get(r);
+				final List<String> V=recipes.get(r);
 				if(V.size()>0)
 				{
-					String item=replacePercent(V.get(RCP_FINALNAME),"");
-					int level=CMath.s_int(V.get(RCP_LEVEL));
+					final String item=replacePercent(V.get(RCP_FINALNAME),"");
+					final int level=CMath.s_int(V.get(RCP_LEVEL));
 					String material=V.get(RCP_WOODTYPE);
-					String wood=getComponentDescription(mob,V,RCP_WOOD);
+					final String wood=getComponentDescription(mob,V,RCP_WOOD);
 					if(wood.length()>5) material="";
 					if(((level<=xlevel(mob))||allFlag)
 					&&((mask.length()==0)||mask.equalsIgnoreCase("all")||CMLib.english().containsString(item,mask)))
@@ -179,15 +179,15 @@ public class PaperMaking extends CraftingSkill implements ItemCraftor
 				commands.removeElementAt(commands.size()-1);
 		}
 		String materialDesc="";
-		String recipeName=CMParms.combine(commands,0);
+		final String recipeName=CMParms.combine(commands,0);
 		List<String> foundRecipe=null;
-		List<List<String>> matches=matchingRecipeNames(recipes,recipeName,true);
+		final List<List<String>> matches=matchingRecipeNames(recipes,recipeName,true);
 		for(int r=0;r<matches.size();r++)
 		{
-			List<String> V=matches.get(r);
+			final List<String> V=matches.get(r);
 			if(V.size()>0)
 			{
-				int level=CMath.s_int(V.get(RCP_LEVEL));
+				final int level=CMath.s_int(V.get(RCP_LEVEL));
 				if((parsedVars.autoGenerate>0)||(level<=xlevel(mob)))
 				{
 					foundRecipe=V;
@@ -214,7 +214,7 @@ public class PaperMaking extends CraftingSkill implements ItemCraftor
 		int woodRequired=CMath.s_int(woodRequiredStr);
 		woodRequired=adjustWoodRequired(woodRequired,mob);
 
-		int[][] data=fetchFoundResourceData(mob,
+		final int[][] data=fetchFoundResourceData(mob,
 											woodRequired,materialDesc,null,
 											0,null,null,
 											false,
@@ -223,7 +223,7 @@ public class PaperMaking extends CraftingSkill implements ItemCraftor
 		if(data==null) return false;
 		woodRequired=data[0][FOUND_AMT];
 
-		String misctype=(foundRecipe.size()>RCP_MISCTYPE)?foundRecipe.get(RCP_MISCTYPE).trim():"";
+		final String misctype=(foundRecipe.size()>RCP_MISCTYPE)?foundRecipe.get(RCP_MISCTYPE).trim():"";
 		if((misctype.equalsIgnoreCase("statue"))
 		&&(session!=null)
 		&&((statue==null)||(statue.trim().length()==0)))
@@ -236,10 +236,10 @@ public class PaperMaking extends CraftingSkill implements ItemCraftor
 				@Override public void timedOut() {}
 				@Override public void callBack()
 				{
-					String of=this.input;
+					final String of=this.input;
 					if((of.trim().length()==0)||(of.indexOf('<')>=0))
 						return;
-					Vector newCommands=(Vector)originalCommands.clone();
+					final Vector newCommands=(Vector)originalCommands.clone();
 					newCommands.add("STATUE="+of);
 					me.invoke(mob, newCommands, target, auto, asLevel);
 				}
@@ -274,7 +274,7 @@ public class PaperMaking extends CraftingSkill implements ItemCraftor
 		buildingI.basePhyStats().setWeight(getStandardWeight(woodRequired,bundling));
 		buildingI.setBaseValue(CMath.s_int(foundRecipe.get(RCP_VALUE))+(woodRequired*(RawMaterial.CODES.VALUE(data[0][FOUND_CODE]))));
 		buildingI.setMaterial(data[0][FOUND_CODE]);
-		String spell=(foundRecipe.size()>RCP_SPELL)?foundRecipe.get(RCP_SPELL).trim():"";
+		final String spell=(foundRecipe.size()>RCP_SPELL)?foundRecipe.get(RCP_SPELL).trim():"";
 		addSpells(buildingI,spell);
 		buildingI.setSecretIdentity(getBrand(mob));
 		if(((data[0][FOUND_CODE]&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_WOODEN)
@@ -314,7 +314,7 @@ public class PaperMaking extends CraftingSkill implements ItemCraftor
 			return true;
 		}
 
-		CMMsg msg=CMClass.getMsg(mob,buildingI,this,getActivityMessageType(),startStr);
+		final CMMsg msg=CMClass.getMsg(mob,buildingI,this,getActivityMessageType(),startStr);
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

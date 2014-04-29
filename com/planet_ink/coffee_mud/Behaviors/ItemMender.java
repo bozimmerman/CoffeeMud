@@ -49,7 +49,7 @@ public class ItemMender extends StdBehavior
 	{
 		if(costFormula != null)
 		{
-			double[] vars = {item.phyStats().level(), item.value(), item.usesRemaining(), CMLib.flags().isABonusItems(item)?1.0:0.0,item.basePhyStats().level(), item.baseGoldValue(),0,0,0,0,0};
+			final double[] vars = {item.phyStats().level(), item.value(), item.usesRemaining(), CMLib.flags().isABonusItems(item)?1.0:0.0,item.basePhyStats().level(), item.baseGoldValue(),0,0,0,0,0};
 			return CMath.parseMathExpression(costFormula, vars, 0.0);
 		}
 		else
@@ -65,7 +65,7 @@ public class ItemMender extends StdBehavior
 	public void setParms(String parms)
 	{
 		super.setParms(parms);
-		String formulaString = CMParms.getParmStr(parms,"COST","(100-@x3)+@x1+(@x4*@x1)");
+		final String formulaString = CMParms.getParmStr(parms,"COST","(100-@x3)+@x1+(@x4*@x1)");
 		costFormula = null;
 		if(formulaString.trim().length()>0)
 		{
@@ -73,7 +73,7 @@ public class ItemMender extends StdBehavior
 			{
 				costFormula = CMath.compileMathExpression(formulaString);
 			}
-			catch(Exception e)
+			catch(final Exception e)
 			{
 				Log.errOut(ID(),"Error compiling formula: " + formulaString);
 			}
@@ -86,10 +86,10 @@ public class ItemMender extends StdBehavior
 	{
 		if(!super.okMessage(affecting,msg))
 			return false;
-		MOB source=msg.source();
+		final MOB source=msg.source();
 		if(!canFreelyBehaveNormal(affecting))
 			return true;
-		MOB observer=(MOB)affecting;
+		final MOB observer=(MOB)affecting;
 		if((source!=observer)
 		&&(msg.amITarget(observer))
 		&&(msg.targetMinor()==CMMsg.TYP_GIVE)
@@ -98,8 +98,8 @@ public class ItemMender extends StdBehavior
 		&&(msg.tool()!=null)
 		&&(msg.tool() instanceof Item))
 		{
-			double cost=cost((Item)msg.tool());
-			Item tool=(Item)msg.tool();
+			final double cost=cost((Item)msg.tool());
+			final Item tool=(Item)msg.tool();
 			if(!tool.subjectToWearAndTear())
 			{
 				CMLib.commands().postSay(observer,source,"I'm sorry, I can't work on these.",true,false);
@@ -119,7 +119,7 @@ public class ItemMender extends StdBehavior
 			}
 			if(CMLib.beanCounter().getTotalAbsoluteShopKeepersValue(msg.source(),observer)<(cost))
 			{
-				String costStr=CMLib.beanCounter().nameCurrencyShort(observer,cost);
+				final String costStr=CMLib.beanCounter().nameCurrencyShort(observer,cost);
 				CMLib.commands().postSay(observer,source,"You'll need "+costStr+" for me to repair that.",true,false);
 				return false;
 			}
@@ -132,10 +132,10 @@ public class ItemMender extends StdBehavior
 	public void executeMsg(Environmental affecting, CMMsg msg)
 	{
 		super.executeMsg(affecting,msg);
-		MOB source=msg.source();
+		final MOB source=msg.source();
 		if(!canFreelyBehaveNormal(affecting))
 			return;
-		MOB observer=(MOB)affecting;
+		final MOB observer=(MOB)affecting;
 
 		if((source!=observer)
 		&&(msg.amITarget(observer))
@@ -145,9 +145,9 @@ public class ItemMender extends StdBehavior
 		&&(msg.tool()!=null)
 		&&(msg.tool() instanceof Item))
 		{
-			double cost=cost((Item)msg.tool());
+			final double cost=cost((Item)msg.tool());
 			CMLib.beanCounter().subtractMoney(source,CMLib.beanCounter().getCurrency(observer),cost);
-			String costStr=CMLib.beanCounter().nameCurrencyLong(observer,cost);
+			final String costStr=CMLib.beanCounter().nameCurrencyLong(observer,cost);
 			source.recoverPhyStats();
 			((Item)msg.tool()).setUsesRemaining(100);
 			CMMsg newMsg=CMClass.getMsg(observer,source,msg.tool(),CMMsg.MSG_GIVE,"<S-NAME> give(s) <O-NAME> to <T-NAMESELF> and charges <T-NAMESELF> "+costStr+".");

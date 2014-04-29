@@ -96,21 +96,21 @@ public class TriadVector<T,K,L> extends Vector<Triad<T,K,L>> implements List<Tri
 	}
 	public boolean containsFirst(T t)
 	{
-		for(Iterator<Triad<T,K,L>> i=iterator();i.hasNext();)
+		for(final Iterator<Triad<T,K,L>> i=iterator();i.hasNext();)
 			if((t==null)?i.next()==null:t.equals(i.next().first))
 				return true;
 		return false;
 	}
 	public boolean containsSecond(K k)
 	{
-		for(Iterator<Triad<T,K,L>> i=iterator();i.hasNext();)
+		for(final Iterator<Triad<T,K,L>> i=iterator();i.hasNext();)
 			if((k==null)?i.next()==null:k.equals(i.next().second))
 				return true;
 		return false;
 	}
 	public boolean containsThird(L l)
 	{
-		for(Iterator<Triad<T,K,L>> i=iterator();i.hasNext();)
+		for(final Iterator<Triad<T,K,L>> i=iterator();i.hasNext();)
 			if((l==null)?i.next()==null:l.equals(i.next().third))
 				return true;
 		return false;
@@ -134,7 +134,7 @@ public class TriadVector<T,K,L> extends Vector<Triad<T,K,L>> implements List<Tri
 			for(int i=index;i<size();i++)
 				if((t==null ? get(i).first==null : t.equals(get(i).first)))
 					return i;
-		}catch(Exception e){}
+		}catch(final Exception e){}
 		return -1;
 	}
 	public int indexOfSecond(K k, int index)
@@ -144,7 +144,7 @@ public class TriadVector<T,K,L> extends Vector<Triad<T,K,L>> implements List<Tri
 			for(int i=index;i<size();i++)
 				if((k==null ? get(i).second==null : k.equals(get(i).second)))
 					return i;
-		}catch(Exception e){}
+		}catch(final Exception e){}
 		return -1;
 	}
 	public int indexOfThird(L l, int index)
@@ -154,7 +154,7 @@ public class TriadVector<T,K,L> extends Vector<Triad<T,K,L>> implements List<Tri
 			for(int i=index;i<size();i++)
 				if((l==null ? get(i).third==null : l.equals(get(i).third)))
 					return i;
-		}catch(Exception e){}
+		}catch(final Exception e){}
 		return -1;
 	}
 	public int lastIndexOfFirst(T t, int index)
@@ -164,7 +164,7 @@ public class TriadVector<T,K,L> extends Vector<Triad<T,K,L>> implements List<Tri
 			for(int i=index;i>=0;i--)
 				if((t==null ? get(i).first==null : t.equals(get(i).first)))
 					return i;
-		}catch(Exception e){}
+		}catch(final Exception e){}
 		return -1;
 	}
 	public int lastIndexOfSecond(K k, int index)
@@ -174,7 +174,7 @@ public class TriadVector<T,K,L> extends Vector<Triad<T,K,L>> implements List<Tri
 			for(int i=index;i>=0;i--)
 				if((k==null ? get(i).second==null : k.equals(get(i).second)))
 					return i;
-		}catch(Exception e){}
+		}catch(final Exception e){}
 		return -1;
 	}
 	public int lastIndexOfThird(L l, int index)
@@ -184,7 +184,7 @@ public class TriadVector<T,K,L> extends Vector<Triad<T,K,L>> implements List<Tri
 			for(int i=index;i>=0;i--)
 				if((l==null ? get(i).third==null : l.equals(get(i).third)))
 					return i;
-		}catch(Exception e){}
+		}catch(final Exception e){}
 		return -1;
 	}
 	public synchronized int lastIndexOfFirst(T t)
@@ -279,21 +279,21 @@ public class TriadVector<T,K,L> extends Vector<Triad<T,K,L>> implements List<Tri
 	}
 	public T[] toArrayFirst(T[] a)
 	{
-		T[] objs= toArray(a);
+		final T[] objs= toArray(a);
 		for(int x=0;x<size();x++)
 			objs[x] = getFirst(x);
 		return objs;
 	}
 	public K[] toArraySecond(K[] a)
 	{
-		K[] objs= toArray(a);
+		final K[] objs= toArray(a);
 		for(int x=0;x<size();x++)
 			objs[x] = getSecond(x);
 		return objs;
 	}
 	public L[] toArrayThird(L[] a)
 	{
-		L[] objs= toArray(a);
+		final L[] objs= toArray(a);
 		for(int x=0;x<size();x++)
 			objs[x] = getThird(x);
 		return objs;

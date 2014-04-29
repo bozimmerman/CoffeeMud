@@ -67,7 +67,7 @@ public class Ranger_Track extends StdAbility
 			||(!(affected instanceof MOB)))
 				return false;
 
-			MOB mob=(MOB)affected;
+			final MOB mob=(MOB)affected;
 
 			if(nextDirection==999)
 			{
@@ -88,10 +88,10 @@ public class Ranger_Track extends StdAbility
 				mob.tell("The trail seems to continue "+Directions.getDirectionName(nextDirection)+".");
 				if(mob.isMonster())
 				{
-					Room nextRoom=mob.location().getRoomInDir(nextDirection);
+					final Room nextRoom=mob.location().getRoomInDir(nextDirection);
 					if((nextRoom!=null)&&(nextRoom.getArea()==mob.location().getArea()))
 					{
-						int dir=nextDirection;
+						final int dir=nextDirection;
 						nextDirection=-2;
 						CMLib.tracking().walk(mob,dir,false,false);
 					}
@@ -121,7 +121,7 @@ public class Ranger_Track extends StdAbility
 		if(!(affected instanceof MOB))
 			return;
 
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		if((msg.amISource(mob))
 		&&(msg.amITarget(mob.location()))
 		&&(CMLib.flags().canBeSeenBy(mob.location(),mob))
@@ -141,8 +141,8 @@ public class Ranger_Track extends StdAbility
 			return false;
 		}
 
-		List<Ability> V=CMLib.flags().flaggedAffects(mob,Ability.FLAG_TRACKING);
-		for(Ability A : V) A.unInvoke();
+		final List<Ability> V=CMLib.flags().flaggedAffects(mob,Ability.FLAG_TRACKING);
+		for(final Ability A : V) A.unInvoke();
 		if(V.size()>0)
 		{
 			mob.tell("You stop tracking.");
@@ -155,7 +155,7 @@ public class Ranger_Track extends StdAbility
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		String mobName=CMParms.combine(commands,0);
+		final String mobName=CMParms.combine(commands,0);
 		if(mobName.length()==0)
 		{
 			mob.tell("Track whom?");
@@ -168,7 +168,7 @@ public class Ranger_Track extends StdAbility
 			return false;
 		}
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		TrackingLibrary.TrackingFlags flags;
 		flags=new TrackingLibrary.TrackingFlags()
@@ -176,11 +176,11 @@ public class Ranger_Track extends StdAbility
 			.plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS)
 			.plus(TrackingLibrary.TrackingFlag.NOAIR)
 			.plus(TrackingLibrary.TrackingFlag.NOWATER);
-		Vector rooms=new Vector();
-		List<Room> checkSet=CMLib.tracking().getRadiantRooms(mob.location(),flags,75+(2*getXLEVELLevel(mob)));
-		for(Iterator<Room> r=checkSet.iterator();r.hasNext();)
+		final Vector rooms=new Vector();
+		final List<Room> checkSet=CMLib.tracking().getRadiantRooms(mob.location(),flags,75+(2*getXLEVELLevel(mob)));
+		for (final Room room : checkSet)
 		{
-			Room R=CMLib.map().getRoom(r.next());
+			final Room R=CMLib.map().getRoom(room);
 			if(R.fetchInhabitant(mobName)!=null)
 				rooms.addElement(R);
 		}
@@ -200,14 +200,14 @@ public class Ranger_Track extends StdAbility
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_QUIETMOVEMENT,mob.isMonster()?null:"<S-NAME> begin(s) to track <T-NAMESELF>.",null,mob.isMonster()?null:"<S-NAME> begin(s) to track <T-NAMESELF>.");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_QUIETMOVEMENT,mob.isMonster()?null:"<S-NAME> begin(s) to track <T-NAMESELF>.",null,mob.isMonster()?null:"<S-NAME> begin(s) to track <T-NAMESELF>.");
 			if((mob.location().okMessage(mob,msg))&&(target.okMessage(target,msg)))
 			{
 				mob.location().send(mob,msg);
 				target.executeMsg(target,msg);
 				invoker=mob;
 				displayText="(Tracking "+target.name(mob)+")";
-				Ranger_Track newOne=(Ranger_Track)this.copyOf();
+				final Ranger_Track newOne=(Ranger_Track)this.copyOf();
 				if(mob.fetchEffect(newOne.ID())==null)
 					mob.addEffect(newOne);
 				mob.recoverPhyStats();

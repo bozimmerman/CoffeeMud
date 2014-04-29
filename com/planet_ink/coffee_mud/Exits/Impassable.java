@@ -44,7 +44,7 @@ public class Impassable extends GenExit
 		if(!super.okMessage(myHost,msg))
 			return false;
 
-		MOB mob=msg.source();
+		final MOB mob=msg.source();
 		if((!msg.amITarget(this))&&(msg.tool()!=this))
 			return true;
 		else

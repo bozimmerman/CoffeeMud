@@ -50,7 +50,7 @@ public class DefaultCharStats implements CharStats
 			if(newStats.myRace==null) newStats.myRace=CMClass.getRace("StdRace");
 			return newStats;
 		}
-		catch(Exception e)
+		catch(final Exception e)
 		{
 			return new DefaultCharStats();
 		}
@@ -82,7 +82,7 @@ public class DefaultCharStats implements CharStats
 	{
 		if((def>Short.MAX_VALUE)||(def<Short.MIN_VALUE))
 			Log.errOut("Value out of range",new CMException("Value out of range: "+def+" for all"));
-		for(int i : CharStats.CODES.BASE())
+		for(final int i : CharStats.CODES.BASE())
 			stats[i]=(short)def;
 	}
 	@Override
@@ -90,7 +90,7 @@ public class DefaultCharStats implements CharStats
 	{
 		if((def>Short.MAX_VALUE)||(def<Short.MIN_VALUE))
 			Log.errOut("Value out of range",new CMException("Value out of range: "+def+" for all"));
-		for(int i: CharStats.CODES.ALL())
+		for(final int i: CharStats.CODES.ALL())
 			stats[i]=(short)def;
 		unwearableBitmap=0;
 	}
@@ -163,11 +163,11 @@ public class DefaultCharStats implements CharStats
 	public void setMyClasses(String classes)
 	{
 		int x=classes.indexOf(';');
-		ArrayList<CharClass> classV=new ArrayList<CharClass>();
+		final ArrayList<CharClass> classV=new ArrayList<CharClass>();
 		CharClass C=null;
 		while(x>=0)
 		{
-			String theClass=classes.substring(0,x).trim();
+			final String theClass=classes.substring(0,x).trim();
 			classes=classes.substring(x+1);
 			if(theClass.length()>0)
 			{
@@ -191,10 +191,10 @@ public class DefaultCharStats implements CharStats
 		if((levels.length()==0)&&(myClasses!=null)&&(myClasses.length>0))
 			levels="0";
 		int x=levels.indexOf(';');
-		ArrayList<Integer> levelV=new ArrayList<Integer>();
+		final ArrayList<Integer> levelV=new ArrayList<Integer>();
 		while(x>=0)
 		{
-			String theLevel=levels.substring(0,x).trim();
+			final String theLevel=levels.substring(0,x).trim();
 			levels=levels.substring(x+1);
 			if(theLevel.length()>0)
 				levelV.add(Integer.valueOf(CMath.s_int(theLevel)));
@@ -209,8 +209,8 @@ public class DefaultCharStats implements CharStats
 	{
 		if(myClasses==null)    return "StdCharClass";
 		String classStr="";
-		for(int i=0;i<myClasses.length;i++)
-			classStr+=";"+myClasses[i].ID();
+		for (final CharClass myClasse : myClasses)
+			classStr+=";"+myClasse.ID();
 		if(classStr.length()>0)
 			classStr=classStr.substring(1);
 		return classStr;
@@ -220,8 +220,8 @@ public class DefaultCharStats implements CharStats
 	{
 		if(myLevels==null) return "";
 		String levelStr="";
-		for(int i=0;i<myLevels.length;i++)
-			levelStr+=";"+myLevels[i].intValue();
+		for (final Integer myLevel : myLevels)
+			levelStr+=";"+myLevel.intValue();
 		if(levelStr.length()>0)
 			levelStr=levelStr.substring(1);
 		return levelStr;
@@ -277,7 +277,7 @@ public class DefaultCharStats implements CharStats
 			return "level "+displayClassLevel+" "+displayClassName;
 		}
 		if(mob==null) return "";
-		int classLevel=getClassLevel(getCurrentClass());
+		final int classLevel=getClassLevel(getCurrentClass());
 		String levelStr=null;
 		if(classLevel>=mob.phyStats().level())
 			levelStr=""+mob.phyStats().level();
@@ -294,7 +294,7 @@ public class DefaultCharStats implements CharStats
 		if(mob==null) return "";
 		if(displayClassLevel!=null)
 			return displayClassLevel;
-		int classLevel=getClassLevel(getCurrentClass());
+		final int classLevel=getClassLevel(getCurrentClass());
 		String levelStr=null;
 		if(classLevel>=mob.phyStats().level())
 			levelStr=""+mob.phyStats().level();
@@ -306,9 +306,9 @@ public class DefaultCharStats implements CharStats
 	@Override
 	public String getNonBaseStatsAsString()
 	{
-		StringBuffer str=new StringBuffer("");
-		CharStats.CODES C = CharStats.CODES.instance();
-		for(int x : C.all())
+		final StringBuffer str=new StringBuffer("");
+		final CharStats.CODES C = CharStats.CODES.instance();
+		for(final int x : C.all())
 			if((!C.isBase(x))&&(x!=CharStats.STAT_GENDER))
 				str.append(stats[x]+";");
 		return str.toString();
@@ -317,9 +317,9 @@ public class DefaultCharStats implements CharStats
 	@Override
 	public void setNonBaseStatsFromString(String str)
 	{
-		List<String> V=CMParms.parseSemicolons(str,false);
-		CharStats.CODES C = CharStats.CODES.instance();
-		for(int x : C.all())
+		final List<String> V=CMParms.parseSemicolons(str,false);
+		final CharStats.CODES C = CharStats.CODES.instance();
+		for(final int x : C.all())
 			if((!C.isBase(x))&&(x!=CharStats.STAT_GENDER)&&(V.size()>0))
 			{
 				final long val=CMath.s_long(V.remove(0));
@@ -392,10 +392,10 @@ public class DefaultCharStats implements CharStats
 		{
 			if((level<0)&&(myClasses.length>1))
 			{
-				CharClass[] oldClasses=myClasses;
-				Integer[] oldLevels=myLevels;
-				CharClass[] myNewClasses=new CharClass[oldClasses.length-1];
-				Integer[] myNewLevels=new Integer[oldClasses.length-1];
+				final CharClass[] oldClasses=myClasses;
+				final Integer[] oldLevels=myLevels;
+				final CharClass[] myNewClasses=new CharClass[oldClasses.length-1];
+				final Integer[] myNewLevels=new Integer[oldClasses.length-1];
 				for(int c=0;c<myNewClasses.length;c++)
 				{
 					myNewClasses[c]=oldClasses[c];
@@ -412,7 +412,7 @@ public class DefaultCharStats implements CharStats
 				setCurrentClass(aClass);
 			for(int i=0;i<numClasses();i++)
 			{
-				CharClass C=getMyClass(i);
+				final CharClass C=getMyClass(i);
 				if((C==aClass)&&(myLevels[i].intValue()!=level))
 				{
 					myLevels[i]=Integer.valueOf(level);
@@ -433,7 +433,7 @@ public class DefaultCharStats implements CharStats
 	@Override
 	public void setCurrentClassLevel(int level)
 	{
-		CharClass currentClass=getCurrentClass();
+		final CharClass currentClass=getCurrentClass();
 		if(currentClass!=null)
 			setClassLevel(currentClass,level);
 	}
@@ -452,13 +452,13 @@ public class DefaultCharStats implements CharStats
 			return;
 		}
 
-		int level=getClassLevel(aClass);
+		final int level=getClassLevel(aClass);
 		if(level<0)
 		{
-			CharClass[] oldClasses=myClasses;
-			Integer[] oldLevels=myLevels;
-			CharClass[] myNewClasses=new CharClass[oldClasses.length+1];
-			Integer[] myNewLevels=new Integer[oldClasses.length+1];
+			final CharClass[] oldClasses=myClasses;
+			final Integer[] oldLevels=myLevels;
+			final CharClass[] myNewClasses=new CharClass[oldClasses.length+1];
+			final Integer[] myNewLevels=new Integer[oldClasses.length+1];
 			for(int c=0;c<oldClasses.length;c++)
 			{
 				myNewClasses[c]=oldClasses[c];
@@ -473,13 +473,13 @@ public class DefaultCharStats implements CharStats
 		{
 			if(myClasses[myClasses.length-1]==aClass)
 				return;
-			Integer oldI=Integer.valueOf(level);
+			final Integer oldI=Integer.valueOf(level);
 			boolean go=false;
-			CharClass[] myNewClasses=myClasses.clone();
-			Integer[] myNewLevels=myLevels.clone();
+			final CharClass[] myNewClasses=myClasses.clone();
+			final Integer[] myNewLevels=myLevels.clone();
 			for(int i=0;i<myNewClasses.length-1;i++)
 			{
-				CharClass C=getMyClass(i);
+				final CharClass C=getMyClass(i);
 				if((C==aClass)||(go))
 				{
 					go=true;
@@ -545,7 +545,7 @@ public class DefaultCharStats implements CharStats
 	@Override
 	public String getBodyPartsAsString()
 	{
-		StringBuffer str=new StringBuffer("");
+		final StringBuffer str=new StringBuffer("");
 		for(int i=0;i<getMyRace().bodyMask().length;i++)
 			str.append(getBodyPart(i)+";");
 		return str.toString();
@@ -554,13 +554,13 @@ public class DefaultCharStats implements CharStats
 	@Override
 	public void setBodyPartsFromStringAfterRace(String str)
 	{
-		List<String> V=CMParms.parseSemicolons(str,true);
+		final List<String> V=CMParms.parseSemicolons(str,true);
 		bodyAlterations=null;
 		for(int i=0;i<getMyRace().bodyMask().length;i++)
 		{
 			if(V.size()<=i) break;
-			int val=CMath.s_int(V.get(i));
-			int num=getMyRace().bodyMask()[i];
+			final int val=CMath.s_int(V.get(i));
+			final int num=getMyRace().bodyMask()[i];
 			if(num!=val) alterBodypart(i,val-num);
 		}
 	}
@@ -581,9 +581,9 @@ public class DefaultCharStats implements CharStats
 	@Override
 	public int ageCategory()
 	{
-		int age=getStat(STAT_AGE);
+		final int age=getStat(STAT_AGE);
 		int cat=Race.AGE_INFANT;
-		int[] chart=getMyRace().getAgingChart();
+		final int[] chart=getMyRace().getAgingChart();
 		if(age<chart[1]) return cat;
 		while((cat<=Race.AGE_ANCIENT)&&(age>=chart[cat]))
 			cat++;
@@ -593,13 +593,13 @@ public class DefaultCharStats implements CharStats
 	@Override
 	public String ageName()
 	{
-		int cat=ageCategory();
+		final int cat=ageCategory();
 		if(cat<Race.AGE_ANCIENT) return Race.AGE_DESCS[cat];
 		int age=getStat(STAT_AGE);
-		int[] chart=getMyRace().getAgingChart();
-		int diff=chart[Race.AGE_ANCIENT]-chart[Race.AGE_VENERABLE];
+		final int[] chart=getMyRace().getAgingChart();
+		final int diff=chart[Race.AGE_ANCIENT]-chart[Race.AGE_VENERABLE];
 		age=age-chart[Race.AGE_ANCIENT];
-		int num=(diff>0)?(int)Math.abs(Math.floor(CMath.div(age,diff))):0;
+		final int num=(diff>0)?(int)Math.abs(Math.floor(CMath.div(age,diff))):0;
 		if(num<=0) return Race.AGE_DESCS[cat];
 		return Race.AGE_DESCS[cat]+" "+CMath.convertToRoman(num);
 	}
@@ -653,7 +653,7 @@ public class DefaultCharStats implements CharStats
 	@Override
 	public CMObject copyOf()
 	{
-		DefaultCharStats newOne=new DefaultCharStats();
+		final DefaultCharStats newOne=new DefaultCharStats();
 		if(myClasses!=null)
 			newOne.myClasses=myClasses.clone();
 		if(myRace!=null)
@@ -785,14 +785,14 @@ public class DefaultCharStats implements CharStats
 	@Override
 	public int getMaxStat(int abilityCode)
 	{
-		int baseMax = CMProps.getIntVar(CMProps.Int.BASEMAXSTAT);
+		final int baseMax = CMProps.getIntVar(CMProps.Int.BASEMAXSTAT);
 		return baseMax + getStat(CharStats.CODES.toMAXBASE(abilityCode));
 	}
 
 	@Override
 	public int getRacialStat(MOB mob, int statNum)
 	{
-		CharStats copyStats=(CharStats)copyOf();
+		final CharStats copyStats=(CharStats)copyOf();
 		getMyRace().affectCharStats(mob,copyStats);
 		for(int c=0;c<numClasses();c++)
 			getMyClass(c).affectCharStats(mob,copyStats);
@@ -835,8 +835,8 @@ public class DefaultCharStats implements CharStats
 	@Override
 	public int getCode(String abilityName)
 	{
-		String[] DESCS = CODES.DESCS();
-		for(int i : CharStats.CODES.ALL())
+		final String[] DESCS = CODES.DESCS();
+		for(final int i : CharStats.CODES.ALL())
 			if(DESCS[i].startsWith(abilityName))
 				return i;
 		return -1;
@@ -847,11 +847,11 @@ public class DefaultCharStats implements CharStats
 	@Override
 	public String getStat(String abilityName)
 	{
-		int dex=CMParms.indexOfIgnoreCase(getStatCodes(),abilityName);
+		final int dex=CMParms.indexOfIgnoreCase(getStatCodes(),abilityName);
 		if(dex>=0) return Integer.toString(getStat(dex));
 
-		String[] DESCS=CODES.DESCS();
-		for(int i : CharStats.CODES.ALL())
+		final String[] DESCS=CODES.DESCS();
+		for(final int i : CharStats.CODES.ALL())
 			if(DESCS[i].startsWith(abilityName))
 				return Integer.toString(getStat(i));
 		return null;
@@ -862,11 +862,11 @@ public class DefaultCharStats implements CharStats
 	@Override
 	public void setStat(String code, String val)
 	{
-		int dex=CMParms.indexOfIgnoreCase(getStatCodes(),code);
+		final int dex=CMParms.indexOfIgnoreCase(getStatCodes(),code);
 		if(dex>=0)
 			setStat(dex,CMath.s_parseIntExpression(val));
 		else
-		for(int i : CharStats.CODES.ALL())
+		for(final int i : CharStats.CODES.ALL())
 			if(CODES.DESC(i).startsWith(code))
 			{
 				setStat(dex,CMath.s_parseIntExpression(val));

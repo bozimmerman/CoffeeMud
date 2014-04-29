@@ -45,7 +45,7 @@ public class BankChainNext extends StdWebMacro
 		boolean destroyPlayer=false;
 		try
 		{
-		java.util.Map<String,String> parms=parseParms(parm);
+		final java.util.Map<String,String> parms=parseParms(parm);
 		String last=httpReq.getUrlParameter("BANKCHAIN");
 		String player=httpReq.getUrlParameter("PLAYER");
 		if((player==null)||(player.length()==0)) player=httpReq.getUrlParameter("CLAN");
@@ -55,14 +55,14 @@ public class BankChainNext extends StdWebMacro
 			return "";
 		}
 		String lastID="";
-		MOB M = Authenticate.getAuthenticatedMob(httpReq);
+		final MOB M = Authenticate.getAuthenticatedMob(httpReq);
 		if(M==null) return " @break@";
 		if((player!=null)&&(player.length()>0))
 		{
 			if(((!M.Name().equalsIgnoreCase(player)))
 			&&(!CMSecurity.isAllowedEverywhere(M,CMSecurity.SecFlag.CMDPLAYERS)))
 				return "";
-			Clan C=CMLib.clans().getClan(player);
+			final Clan C=CMLib.clans().getClan(player);
 			if(C!=null)
 			{
 				playerM=CMClass.getFactoryMOB();
@@ -89,16 +89,16 @@ public class BankChainNext extends StdWebMacro
 		if(!CMSecurity.isAllowedEverywhere(M,CMSecurity.SecFlag.CMDPLAYERS))
 			return "";
 
-		for(Iterator j=CMLib.map().bankChains(null);j.hasNext();)
+		for(final Iterator j=CMLib.map().bankChains(null);j.hasNext();)
 		{
-			String bankChain=(String)j.next();
+			final String bankChain=(String)j.next();
 			if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!bankChain.equals(lastID))))
 			{
 				httpReq.addFakeUrlParameter("BANKCHAIN",bankChain);
 				last=bankChain;
 				if(playerM!=null)
 				{
-					Banker bankerM=CMLib.map().getBank(bankChain,bankChain);
+					final Banker bankerM=CMLib.map().getBank(bankChain,bankChain);
 					if((bankerM==null)
 					||((bankerM.isSold(ShopKeeper.DEAL_CLANBANKER))&&(playerM.getClanRole(playerM.Name())==null))
 					||(BankAccountInfo.getMakeAccountInfo(httpReq,bankerM,playerM).balance<=0.0))

@@ -44,8 +44,8 @@ public class Elf extends StdRace
 	@Override public int weightVariance(){return 80;}
 	@Override public long forbiddenWornBits(){return 0;}
 	@Override public String racialCategory(){return "Elf";}
-	private String[]culturalAbilityNames={"Elvish","Foraging"};
-	private int[]culturalAbilityProficiencies={75,50};
+	private final String[]culturalAbilityNames={"Elvish","Foraging"};
+	private final int[]culturalAbilityProficiencies={75,50};
 	@Override public String[] culturalAbilityNames(){return culturalAbilityNames;}
 	@Override public int[] culturalAbilityProficiencies(){return culturalAbilityProficiencies;}
 
@@ -53,7 +53,7 @@ public class Elf extends StdRace
 	private static final int[] parts={0 ,2 ,2 ,1 ,1 ,2 ,2 ,1 ,2 ,2 ,1 ,0 ,1 ,1 ,0 ,0 };
 	@Override public int[] bodyMask(){return parts;}
 
-	private int[] agingChart={0,2,20,110,175,263,350,390,430};
+	private final int[] agingChart={0,2,20,110,175,263,350,390,430};
 	@Override public int[] getAgingChart(){return agingChart;}
 
 	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
@@ -82,28 +82,28 @@ public class Elf extends StdRace
 		{
 			outfitChoices=new Vector();
 			// Have to, since it requires use of special constructor
-			Armor s1=CMClass.getArmor("GenShirt");
+			final Armor s1=CMClass.getArmor("GenShirt");
 			s1.setName("a delicate green shirt");
 			s1.setDisplayText("a delicate green shirt sits gracefully here.");
 			s1.setDescription("Obviously fine craftmenship, with sharp folds and intricate designs.");
 			s1.text();
 			outfitChoices.add(s1);
 
-			Armor s2=CMClass.getArmor("GenShoes");
+			final Armor s2=CMClass.getArmor("GenShoes");
 			s2.setName("a pair of sandals");
 			s2.setDisplayText("a pair of sandals lie here.");
 			s2.setDescription("Obviously fine craftmenship, these light leather sandals have tiny woodland drawings in them.");
 			s2.text();
 			outfitChoices.add(s2);
 
-			Armor p1=CMClass.getArmor("GenPants");
+			final Armor p1=CMClass.getArmor("GenPants");
 			p1.setName("some delicate leggings");
 			p1.setDisplayText("a pair delicate brown leggings sit here.");
 			p1.setDescription("Obviously fine craftmenship, with sharp folds and intricate designs.  They look perfect for dancing in!");
 			p1.text();
 			outfitChoices.add(p1);
 
-			Armor s3=CMClass.getArmor("GenBelt");
+			final Armor s3=CMClass.getArmor("GenBelt");
 			outfitChoices.add(s3);
 		}
 		return outfitChoices;
@@ -115,7 +115,7 @@ public class Elf extends StdRace
 	@Override
 	public String healthText(MOB viewer, MOB mob)
 	{
-		double pct=(CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));
+		final double pct=(CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));
 
 		if(pct<.10)
 			return "^r" + mob.name(viewer) + "^r is facing mortality!^N";

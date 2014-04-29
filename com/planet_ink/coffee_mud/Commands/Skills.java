@@ -57,19 +57,19 @@ public class Skills extends StdCommand
 			if((Ability.DOMAIN_DESCS[i].replace('_',' ').indexOf('/')>=0)
 			&&(Ability.DOMAIN_DESCS[i].replace('_',' ').substring(Ability.DOMAIN_DESCS[i].indexOf('/')+1).equalsIgnoreCase(qual)))
 				return false;
-		Ability A=CMClass.findAbility(qual);
+		final Ability A=CMClass.findAbility(qual);
 		if((A!=null)
 		&&(CMLib.ableMapper().qualifiesByAnyCharClass(A.ID()))
 		&&(acodes.contains(Integer.valueOf(A.classificationCode()&Ability.ALL_ACODES))))
 		{
-			Ability A2=mob.fetchAbility(A.ID());
+			final Ability A2=mob.fetchAbility(A.ID());
 			if(A2==null)
 				mob.tell("You don't know '"+A.name()+"'.");
 			else
 			{
 				int level=CMLib.ableMapper().qualifyingLevel(mob,A2);
 				if(level<0) level=0;
-				StringBuffer line=new StringBuffer("");
+				final StringBuffer line=new StringBuffer("");
 				line.append("\n\rLevel ^!"+level+"^?:\n\r");
 				line.append("^N[^H"+CMStrings.padRight(Integer.toString(A2.proficiency()),3)+"%^?]^N "+CMStrings.padRight("^<HELP^>"+A2.name()+"^</HELP^>",19));
 				line.append("^?\n\r");
@@ -87,7 +87,7 @@ public class Skills extends StdCommand
 		&&(commands.lastElement() instanceof String)
 		&&(CMath.isNumber((String)commands.lastElement())))
 		{
-			int x=CMath.s_int((String)commands.lastElement());
+			final int x=CMath.s_int((String)commands.lastElement());
 			commands.removeElementAt(commands.size()-1);
 			return x;
 		}
@@ -97,7 +97,7 @@ public class Skills extends StdCommand
 	protected void parseDomainInfo(MOB mob, Vector commands, Vector acodes, int[] level, int[] domain, String[] domainName)
 	{
 		level[0]=parseOutLevel(commands);
-		String qual=CMParms.combine(commands,1).toUpperCase();
+		final String qual=CMParms.combine(commands,1).toUpperCase();
 		domain[0]=-1;
 		if(qual.length()>0)
 		for(int i=1;i<Ability.DOMAIN_DESCS.length;i++)
@@ -134,7 +134,7 @@ public class Skills extends StdCommand
 
 	protected StringBuilder getAbilities(MOB viewerM, MOB ableM, int ofType, int ofDomain, boolean addQualLine, int maxLevel)
 	{
-		Vector V=new Vector();
+		final Vector V=new Vector();
 		int mask=Ability.ALL_ACODES;
 		if(ofDomain>=0)
 		{
@@ -151,11 +151,11 @@ public class Skills extends StdCommand
 		final int COL_LEN2=ListingLibrary.ColFixer.fixColWidth(18.0,viewerM);
 		final int COL_LEN3=ListingLibrary.ColFixer.fixColWidth(19.0,viewerM);
 		int highestLevel=0;
-		int lowestLevel=ableM.phyStats().level()+1;
-		StringBuilder msg=new StringBuilder("");
-		for(Enumeration<Ability> a=ableM.allAbilities();a.hasMoreElements();)
+		final int lowestLevel=ableM.phyStats().level()+1;
+		final StringBuilder msg=new StringBuilder("");
+		for(final Enumeration<Ability> a=ableM.allAbilities();a.hasMoreElements();)
 		{
-			Ability A=a.nextElement();
+			final Ability A=a.nextElement();
 			int level=CMLib.ableMapper().qualifyingLevel(ableM,A);
 			if(level<0) level=0;
 			if((A!=null)
@@ -168,11 +168,11 @@ public class Skills extends StdCommand
 			highestLevel=maxLevel;
 		for(int l=0;l<=highestLevel;l++)
 		{
-			StringBuilder thisLine=new StringBuilder("");
+			final StringBuilder thisLine=new StringBuilder("");
 			int col=0;
-			for(Enumeration<Ability> a=ableM.allAbilities();a.hasMoreElements();)
+			for(final Enumeration<Ability> a=ableM.allAbilities();a.hasMoreElements();)
 			{
-				Ability A=a.nextElement();
+				final Ability A=a.nextElement();
 				int level=CMLib.ableMapper().qualifyingLevel(ableM,A);
 				if(level<0) level=0;
 				if((A!=null)
@@ -206,17 +206,17 @@ public class Skills extends StdCommand
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		StringBuilder msg=new StringBuilder("");
-		Vector V=new Vector();
+		final StringBuilder msg=new StringBuilder("");
+		final Vector V=new Vector();
 		V.addElement(Integer.valueOf(Ability.ACODE_THIEF_SKILL));
 		V.addElement(Integer.valueOf(Ability.ACODE_SKILL));
 		V.addElement(Integer.valueOf(Ability.ACODE_COMMON_SKILL));
-		String qual=CMParms.combine(commands,1).toUpperCase();
+		final String qual=CMParms.combine(commands,1).toUpperCase();
 		if(parsedOutIndividualSkill(mob,qual,V))
 			return true;
-		int[] level=new int[1];
-		int[] domain=new int[1];
-		String[] domainName=new String[1];
+		final int[] level=new int[1];
+		final int[] domain=new int[1];
+		final String[] domainName=new String[1];
 		domainName[0]="";
 		level[0]=-1;
 		parseDomainInfo(mob,commands,V,level,domain,domainName);

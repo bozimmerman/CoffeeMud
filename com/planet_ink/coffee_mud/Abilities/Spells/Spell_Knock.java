@@ -53,7 +53,7 @@ public class Spell_Knock extends Spell
 			int theDir=-1;
 			for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 			{
-				Exit E=R.getExitInDir(d);
+				final Exit E=R.getExitInDir(d);
 				if((E!=null)
 				&&(!E.isOpen()))
 				{
@@ -65,9 +65,9 @@ public class Spell_Knock extends Spell
 				commands.addElement(Directions.getDirectionName(theDir));
 		}
 
-		String whatToOpen=CMParms.combine(commands,0);
+		final String whatToOpen=CMParms.combine(commands,0);
 		Physical openThis=givenTarget;
-		int dirCode=Directions.getGoodDirectionCode(whatToOpen);
+		final int dirCode=Directions.getGoodDirectionCode(whatToOpen);
 		if(dirCode>=0)
 			openThis=R.getExitInDir(dirCode);
 		if(openThis==null)
@@ -103,7 +103,7 @@ public class Spell_Knock extends Spell
 
 		int levelDiff=openThis.phyStats().level()-(mob.phyStats().level()+(2*super.getXLEVELLevel(mob)));
 		if(levelDiff<0) levelDiff=0;
-		boolean success=proficiencyCheck(mob,-(levelDiff*25),auto);
+		final boolean success=proficiencyCheck(mob,-(levelDiff*25),auto);
 		if(!success)
 			beneficialWordsFizzle(mob,openThis,auto?"Nothing happens to "+openThis.name()+".":"<S-NAME> point(s) at "+openThis.name()+" and shout(s) incoherently, but nothing happens.");
 		else
@@ -114,10 +114,10 @@ public class Spell_Knock extends Spell
 				R.send(mob,msg);
 				for(int a=0;a<openThis.numEffects();a++)
 				{
-					Ability A=openThis.fetchEffect(a);
+					final Ability A=openThis.fetchEffect(a);
 					if((A!=null)&&(A.ID().equalsIgnoreCase("Spell_WizardLock")))
 					{
-						String txt=A.text().trim();
+						final String txt=A.text().trim();
 						int level=(A.invoker()!=null)?A.invoker().phyStats().level():0;
 						if(txt.length()>0)
 						{
@@ -125,7 +125,7 @@ public class Spell_Knock extends Spell
 								level=CMath.s_int(txt);
 							else
 							{
-								int x=txt.indexOf(' ');
+								final int x=txt.indexOf(' ');
 								if((x>0)&&(CMath.isInteger(txt.substring(0,x))))
 									level=CMath.s_int(txt.substring(0,x));
 							}

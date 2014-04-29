@@ -164,7 +164,7 @@ public class StdItem implements Item
 		{
 			return this.getClass().newInstance();
 		}
-		catch(Exception e)
+		catch(final Exception e)
 		{
 			Log.errOut(ID(),e);
 		}
@@ -181,14 +181,14 @@ public class StdItem implements Item
 		affects=null;
 		behaviors=null;
 		scripts=null;
-		for(Enumeration<Behavior> e=I.behaviors();e.hasMoreElements();)
+		for(final Enumeration<Behavior> e=I.behaviors();e.hasMoreElements();)
 		{
-			Behavior B=e.nextElement();
+			final Behavior B=e.nextElement();
 			if(B!=null)	addBehavior((Behavior)B.copyOf());
 		}
-		for(Enumeration<ScriptingEngine> e=I.scripts();e.hasMoreElements();)
+		for(final Enumeration<ScriptingEngine> e=I.scripts();e.hasMoreElements();)
 		{
-			ScriptingEngine SE=e.nextElement();
+			final ScriptingEngine SE=e.nextElement();
 			if(SE!=null) addScript((ScriptingEngine)SE.copyOf());
 		}
 
@@ -213,7 +213,7 @@ public class StdItem implements Item
 	{
 		try
 		{
-			StdItem E=(StdItem)this.clone();
+			final StdItem E=(StdItem)this.clone();
 			//CMClass.bumpCounter(E,CMClass.CMObjectType.ITEM);//removed for mem & perf
 			E.xtraValues=(xtraValues==null)?null:(String[])xtraValues.clone();
 			E.cloneFix(this);
@@ -221,7 +221,7 @@ public class StdItem implements Item
 			return E;
 
 		}
-		catch(CloneNotSupportedException e)
+		catch(final CloneNotSupportedException e)
 		{
 			return this.newInstance();
 		}
@@ -289,7 +289,7 @@ public class StdItem implements Item
 	@Override
 	public void wearEvenIfImpossible(MOB mob)
 	{
-		for(long code : Wearable.CODES.ALL_ORDERED())
+		for(final long code : Wearable.CODES.ALL_ORDERED())
 		{
 			if(fitsOn(code))
 			{
@@ -317,7 +317,7 @@ public class StdItem implements Item
 	@Override
 	public boolean wearIfPossible(MOB mob)
 	{
-		for(long code : Wearable.CODES.ALL_ORDERED())
+		for(final long code : Wearable.CODES.ALL_ORDERED())
 			if((code>0) && wearIfPossible(mob,code))
 				return true;
 		return false;
@@ -386,10 +386,10 @@ public class StdItem implements Item
 			layerAtt=((Armor)this).getLayerAttributes();
 		}
 
-		Wearable.CODES codes = Wearable.CODES.instance();
+		final Wearable.CODES codes = Wearable.CODES.instance();
 		if(!wornLogicalAnd)
 		{
-			for(long wornCode : codes.all())
+			for(final long wornCode : codes.all())
 				if(wornCode != Wearable.IN_INVENTORY)
 				{
 					if(fitsOn(wornCode))
@@ -401,7 +401,7 @@ public class StdItem implements Item
 				}
 			return couldHaveBeenWornAt;
 		}
-		for(long wornCode : codes.all())
+		for(final long wornCode : codes.all())
 			if(wornCode != Wearable.IN_INVENTORY)
 			{
 				if((fitsOn(wornCode))
@@ -509,7 +509,7 @@ public class StdItem implements Item
 					A.affectPhyStats(affected,affectableStats);
 			}
 		}
-		catch(ArrayIndexOutOfBoundsException e){}
+		catch(final ArrayIndexOutOfBoundsException e){}
 	}
 
 	@Override
@@ -526,7 +526,7 @@ public class StdItem implements Item
 					A.affectCharStats(affectedMob,affectableStats);
 			}
 		}
-		catch(ArrayIndexOutOfBoundsException e){}
+		catch(final ArrayIndexOutOfBoundsException e){}
 	}
 
 	@Override
@@ -543,7 +543,7 @@ public class StdItem implements Item
 					A.affectCharState(affectedMob,affectableMaxState);
 			}
 		}
-		catch(ArrayIndexOutOfBoundsException e){}
+		catch(final ArrayIndexOutOfBoundsException e){}
 	}
 
 	@Override
@@ -731,7 +731,7 @@ public class StdItem implements Item
 			long cantWearAt=whereCantWear(mob);
 			if(wearWhere!=0) cantWearAt = cantWearAt & wearWhere;
 			Item alreadyWearing=(cantWearAt==0)?null:mob.fetchFirstWornItem(cantWearAt);
-			Wearable.CODES codes = Wearable.CODES.instance();
+			final Wearable.CODES codes = Wearable.CODES.instance();
 			if(alreadyWearing!=null)
 			{
 				if((cantWearAt!=Wearable.WORN_HELD)&&(cantWearAt!=Wearable.WORN_WIELD))
@@ -750,8 +750,8 @@ public class StdItem implements Item
 				}
 				else
 				{
-					short layer=(this instanceof Armor)?((Armor)this).getClothingLayer():0;
-					short layer2=(alreadyWearing instanceof Armor)?((Armor)alreadyWearing).getClothingLayer():0;
+					final short layer=(this instanceof Armor)?((Armor)this).getClothingLayer():0;
+					final short layer2=(alreadyWearing instanceof Armor)?((Armor)alreadyWearing).getClothingLayer():0;
 					if((rawProperLocationBitmap() == alreadyWearing.rawProperLocationBitmap())
 					&&(rawLogicalAnd())
 					&&(alreadyWearing.rawLogicalAnd())
@@ -771,7 +771,7 @@ public class StdItem implements Item
 			else
 			if(wearWhere!=0)
 			{
-				StringBuffer locs=new StringBuffer("");
+				final StringBuffer locs=new StringBuffer("");
 				for(int i=0;i<codes.total();i++)
 					if((codes.get(i)&wearWhere)>0)
 						locs.append(", " + codes.name(i));
@@ -837,7 +837,7 @@ public class StdItem implements Item
 				return false;
 		}
 
-		MOB mob=msg.source();
+		final MOB mob=msg.source();
 
 		if(msg.tool()==this)
 		{
@@ -955,7 +955,7 @@ public class StdItem implements Item
 		case CMMsg.TYP_HOLD:
 			if((!fitsOn(Wearable.WORN_HELD))||(properWornBitmap==0))
 			{
-				StringBuffer str=new StringBuffer("You can't hold "+name()+".");
+				final StringBuffer str=new StringBuffer("You can't hold "+name()+".");
 				if(fitsOn(Wearable.WORN_WIELD))
 					str.append("Try WIELDing it.");
 				else
@@ -975,7 +975,7 @@ public class StdItem implements Item
 			{
 				if(!canWear(mob,Wearable.WORN_HELD))
 				{
-					Item alreadyWearing=mob.fetchHeldItem();
+					final Item alreadyWearing=mob.fetchHeldItem();
 					if(alreadyWearing!=null)
 					{
 						if((!CMLib.commands().postRemove(mob,alreadyWearing,false))
@@ -1025,7 +1025,7 @@ public class StdItem implements Item
 			{
 				if(!canWear(mob,Wearable.WORN_WIELD))
 				{
-					Item alreadyWearing=mob.fetchFirstWornItem(Wearable.WORN_WIELD);
+					final Item alreadyWearing=mob.fetchFirstWornItem(Wearable.WORN_WIELD);
 					if(alreadyWearing!=null)
 					{
 						if(!CMLib.commands().postRemove(mob,alreadyWearing,false))
@@ -1137,7 +1137,7 @@ public class StdItem implements Item
 					return false;
 				}
 				Item I=null;
-				short layer=(this instanceof Armor)?((Armor)this).getClothingLayer():0;
+				final short layer=(this instanceof Armor)?((Armor)this).getClothingLayer():0;
 				short thislayer=0;
 				if(rawWornCode()>0)
 				for(int i=0;i<mob.numItems();i++)
@@ -1279,13 +1279,13 @@ public class StdItem implements Item
 			A.executeMsg(me, msg);
 		}});
 
-		MOB mob=msg.source();
+		final MOB mob=msg.source();
 		if((msg.tool()==this)
 		&&(msg.sourceMinor()==CMMsg.TYP_THROW)
 		&&(mob!=null)
 		&&(msg.target()!=null))
 		{
-			Room R=CMLib.map().roomLocation(msg.target());
+			final Room R=CMLib.map().roomLocation(msg.target());
 			if(mob.isMine(this))
 			{
 				mob.delItem(this);
@@ -1352,7 +1352,7 @@ public class StdItem implements Item
 			return;
 		myContainer=null;
 		CMLib.map().registerWorldObjectDestroyed(null,null,this);
-		try {CMLib.catalog().changeCatalogUsage(this,false);} catch(Exception t){}
+		try {CMLib.catalog().changeCatalogUsage(this,false);} catch(final Exception t){}
 		delAllEffects(true);
 		delAllBehaviors();
 		delAllScripts();
@@ -1365,10 +1365,10 @@ public class StdItem implements Item
 		{
 			if (owner instanceof Room)
 			{
-				Room thisRoom=(Room)owner;
+				final Room thisRoom=(Room)owner;
 				for(int r=thisRoom.numItems()-1;r>=0;r--)
 				{
-					Item thisItem = thisRoom.getItem(r);
+					final Item thisItem = thisRoom.getItem(r);
 					if((thisItem!=null)
 					&&(!thisItem.amDestroyed())
 					&&(thisItem.container()!=null)
@@ -1380,10 +1380,10 @@ public class StdItem implements Item
 			else
 			if (owner instanceof MOB)
 			{
-				MOB mob=(MOB)owner;
+				final MOB mob=(MOB)owner;
 				for(int r=mob.numItems()-1;r>=0;r--)
 				{
-					Item thisItem = mob.getItem(r);
+					final Item thisItem = mob.getItem(r);
 					if((thisItem!=null)
 					&&(!thisItem.amDestroyed())
 					&&(thisItem.container()!=null)
@@ -1412,10 +1412,10 @@ public class StdItem implements Item
 
 		if (owner instanceof Room)
 		{
-			Room thisRoom=(Room)owner;
+			final Room thisRoom=(Room)owner;
 			for(int r=thisRoom.numItems()-1;r>=0;r--)
 			{
-				Item thisItem = thisRoom.getItem(r);
+				final Item thisItem = thisRoom.getItem(r);
 				if((thisItem!=null)
 				&&(thisItem.container()!=null)
 				&&(thisItem.container()==this))
@@ -1426,10 +1426,10 @@ public class StdItem implements Item
 		else
 		if (owner instanceof MOB)
 		{
-			MOB mob=(MOB)owner;
+			final MOB mob=(MOB)owner;
 			for(int r=mob.numItems()-1;r>=0;r--)
 			{
-				Item thisItem = mob.getItem(r);
+				final Item thisItem = mob.getItem(r);
 				if((thisItem!=null)
 				&&(thisItem.container()!=null)
 				&&(thisItem.container()==this))
@@ -1480,7 +1480,7 @@ public class StdItem implements Item
 				if(A!=null) applier.apply(A);
 			}
 		}
-		catch(ArrayIndexOutOfBoundsException e){}
+		catch(final ArrayIndexOutOfBoundsException e){}
 	}
 	@Override
 	public void delAllEffects(boolean unInvoke)
@@ -1490,7 +1490,7 @@ public class StdItem implements Item
 		Ability keepThisOne=null;
 		for(int a=numEffects()-1;a>=0;a--)
 		{
-			Ability A=fetchEffect(a);
+			final Ability A=fetchEffect(a);
 			if(A!=null)
 			{
 				if(unInvoke)
@@ -1529,7 +1529,7 @@ public class StdItem implements Item
 		{
 			return affects.elementAt(index);
 		}
-		catch(java.lang.ArrayIndexOutOfBoundsException x){}
+		catch(final java.lang.ArrayIndexOutOfBoundsException x){}
 		return null;
 	}
 
@@ -1553,7 +1553,7 @@ public class StdItem implements Item
 	{
 		if(to==null) return;
 		if(behaviors==null) behaviors=new SVector<Behavior>(1);
-		for(Behavior B : behaviors)
+		for(final Behavior B : behaviors)
 			if(B.ID().equals(to.ID()))
 				return;
 
@@ -1567,7 +1567,7 @@ public class StdItem implements Item
 	@Override
 	public void delAllBehaviors()
 	{
-		boolean didSomething=(behaviors!=null)&&(behaviors.size()>0);
+		final boolean didSomething=(behaviors!=null)&&(behaviors.size()>0);
 		if(didSomething) behaviors.clear();
 		behaviors=null;
 		if(didSomething && ((scripts==null)||(scripts.size()==0)))
@@ -1606,7 +1606,7 @@ public class StdItem implements Item
 		{
 			return behaviors.elementAt(index);
 		}
-		catch(java.lang.ArrayIndexOutOfBoundsException x){}
+		catch(final java.lang.ArrayIndexOutOfBoundsException x){}
 		return null;
 	}
 
@@ -1614,7 +1614,7 @@ public class StdItem implements Item
 	public Behavior fetchBehavior(String ID)
 	{
 		if(behaviors==null) return null;
-		for(Behavior B : behaviors)
+		for(final Behavior B : behaviors)
 			if((B!=null)&&(B.ID().equalsIgnoreCase(ID)))
 				return B;
 		return null;
@@ -1633,7 +1633,7 @@ public class StdItem implements Item
 				if(B!=null) applier.apply(B);
 			}
 		}
-		catch(ArrayIndexOutOfBoundsException e){}
+		catch(final ArrayIndexOutOfBoundsException e){}
 	}
 
 	/** Manipulation of the scripts list */
@@ -1676,7 +1676,7 @@ public class StdItem implements Item
 	@Override
 	public void delAllScripts()
 	{
-		boolean didSomething=(scripts!=null)&&(scripts.size()>0);
+		final boolean didSomething=(scripts!=null)&&(scripts.size()>0);
 		if(didSomething) scripts.clear();
 		scripts=null;
 		if(didSomething && ((behaviors==null)||(behaviors.size()==0)))
@@ -1687,7 +1687,7 @@ public class StdItem implements Item
 
 	@Override public Enumeration<ScriptingEngine> scripts() { return (scripts==null)?EmptyEnumeration.INSTANCE:scripts.elements();}
 
-	@Override public ScriptingEngine fetchScript(int x){try{return scripts.elementAt(x);}catch(Exception e){} return null;}
+	@Override public ScriptingEngine fetchScript(int x){try{return scripts.elementAt(x);}catch(final Exception e){} return null;}
 
 	@Override
 	public void eachScript(final EachApplicable<ScriptingEngine> applier)
@@ -1702,7 +1702,7 @@ public class StdItem implements Item
 				if(S!=null) applier.apply(S);
 			}
 		}
-		catch(ArrayIndexOutOfBoundsException e){}
+		catch(final ArrayIndexOutOfBoundsException e){}
 	}
 
 	protected String tackOns()
@@ -1761,7 +1761,7 @@ public class StdItem implements Item
 	public boolean sameAs(Environmental E)
 	{
 		if(!(E instanceof StdItem)) return false;
-		String[] codes=getStatCodes();
+		final String[] codes=getStatCodes();
 		for(int i=0;i<codes.length;i++)
 			if(!E.getStat(codes[i]).equals(getStat(codes[i])))
 				return false;

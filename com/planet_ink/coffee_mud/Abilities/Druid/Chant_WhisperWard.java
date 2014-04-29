@@ -135,7 +135,7 @@ public class Chant_WhisperWard extends Chant implements Trap
 			mob.tell("You must specify:\n\r What object you want the spell cast on.\n\r AND Whether it is triggered by TOUCH, HOLD, WIELD, WEAR, or someone ENTERing the same room. ");
 			return false;
 		}
-		String triggerStr=((String)commands.lastElement()).trim().toUpperCase();
+		final String triggerStr=((String)commands.lastElement()).trim().toUpperCase();
 
 		if(triggerStr.startsWith("HOLD"))
 			myTrigger=CMMsg.TYP_HOLD;
@@ -158,7 +158,7 @@ public class Chant_WhisperWard extends Chant implements Trap
 		}
 
 		Physical target;
-		String itemName=CMParms.combine(commands,0,commands.size()-1);
+		final String itemName=CMParms.combine(commands,0,commands.size()-1);
 		if(itemName.equalsIgnoreCase("room"))
 			target=mob.location();
 		else
@@ -177,11 +177,11 @@ public class Chant_WhisperWard extends Chant implements Trap
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),"^S<S-NAME> chant(s) to <T-NAMESELF>.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),"^S<S-NAME> chant(s) to <T-NAMESELF>.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

@@ -15,6 +15,7 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /*
@@ -50,7 +51,7 @@ public class ExitData extends StdWebMacro
 									  HTTPRequest httpReq,
 									  java.util.Map<String,String> parms)
 	{
-		StringBuffer str=new StringBuffer("");
+		final StringBuffer str=new StringBuffer("");
 		for(int d=0;d<PhyStats.IS_CODES.length;d++)
 		{
 			if(parms.containsKey(PhyStats.IS_CODES[d]))
@@ -68,9 +69,9 @@ public class ExitData extends StdWebMacro
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
-		java.util.Map<String,String> parms=parseParms(parm);
+		final java.util.Map<String,String> parms=parseParms(parm);
 
-		String last=httpReq.getUrlParameter("ROOM");
+		final String last=httpReq.getUrlParameter("ROOM");
 		if(last==null) return " @break@";
 		Room R=(Room)httpReq.getRequestObjects().get(last);
 		if(R==null)
@@ -83,25 +84,25 @@ public class ExitData extends StdWebMacro
 		if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
 			return CMProps.getVar(CMProps.Str.MUDSTATUS);
 
-		String linkdir=httpReq.getUrlParameter("LINK");
+		final String linkdir=httpReq.getUrlParameter("LINK");
 		if(linkdir==null) return "@break@";
-		int link=Directions.getGoodDirectionCode(linkdir);
+		final int link=Directions.getGoodDirectionCode(linkdir);
 		if((link<0)||(link>=Directions.NUM_DIRECTIONS())) return " @break@";
 
 		Exit X=R.getRawExit(link);
 
 		// important generic<->non generic swap!
-		String newClassID=httpReq.getUrlParameter("CLASSES");
+		final String newClassID=httpReq.getUrlParameter("CLASSES");
 		if((newClassID!=null)&&(!newClassID.equals(CMClass.classID(X))))
 				X=CMClass.getExit(newClassID);
 
-		boolean firstTime=(!httpReq.isUrlParameter("ACTION"))
+		final boolean firstTime=(!httpReq.isUrlParameter("ACTION"))
 					||(!httpReq.getUrlParameter("ACTION").equals("MODIFYEXIT"))
 					||(((httpReq.isUrlParameter("CHANGEDCLASS"))&&(httpReq.getUrlParameter("CHANGEDCLASS")).equals("true")));
 
 		if(X==null) return "@break@";
 
-		StringBuffer str=new StringBuffer("");
+		final StringBuffer str=new StringBuffer("");
 		for(int o=0;o<okparms.length;o++)
 		if(parms.containsKey(okparms[o]))
 		{
@@ -119,15 +120,15 @@ public class ExitData extends StdWebMacro
 					Object[] sorted=(Object[])Resources.getResource("MUDGRINDER-EXITS");
 					if(sorted==null)
 					{
-						Vector sortMe=new Vector();
-						for(Enumeration e=CMClass.exits();e.hasMoreElements();)
+						final Vector sortMe=new Vector();
+						for(final Enumeration e=CMClass.exits();e.hasMoreElements();)
 							sortMe.addElement(CMClass.classID(e.nextElement()));
 						sorted=(new TreeSet(sortMe)).toArray();
 						Resources.submitResource("MUDGRINDER-EXITS",sorted);
 					}
-					for(int r=0;r<sorted.length;r++)
+					for (final Object element : sorted)
 					{
-						String cnam=(String)sorted[r];
+						final String cnam=(String)element;
 						str.append("<OPTION VALUE=\""+cnam+"\"");
 						if(old.equals(cnam))
 							str.append(" SELECTED");

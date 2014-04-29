@@ -56,7 +56,7 @@ public class Ranger_Hide extends StdAbility
 		if(!(affected instanceof MOB))
 			return;
 
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		if(msg.amISource(mob))
 		{
@@ -101,15 +101,15 @@ public class Ranger_Hide extends StdAbility
 	public MOB getHighestLevelMOB(MOB meMOB, Vector not)
 	{
 		if(meMOB==null) return null;
-		Room R=meMOB.location();
+		final Room R=meMOB.location();
 		if(R==null) return null;
 		int highestLevel=0;
 		MOB highestMOB=null;
-		Set<MOB> H=meMOB.getGroupMembers(new HashSet<MOB>());
+		final Set<MOB> H=meMOB.getGroupMembers(new HashSet<MOB>());
 		if(not!=null) H.addAll(not);
 		for(int i=0;i<R.numInhabitants();i++)
 		{
-			MOB M=R.fetchInhabitant(i);
+			final MOB M=R.fetchInhabitant(i);
 			if((M!=null)
 			&&(M!=meMOB)
 			&&(!CMLib.flags().isSleeping(M))
@@ -155,8 +155,8 @@ public class Ranger_Hide extends StdAbility
 			return false;
 		}
 
-		MOB highestMOB=this.getHighestLevelMOB(mob,null);
-		int levelDiff=(mob.phyStats().level()+(2*getXLEVELLevel(mob)))-getMOBLevel(highestMOB);
+		final MOB highestMOB=this.getHighestLevelMOB(mob,null);
+		final int levelDiff=(mob.phyStats().level()+(2*getXLEVELLevel(mob)))-getMOBLevel(highestMOB);
 
 		String str="You creep into some foliage and remain completely still.";
 		if((mob.location().domainType()==Room.DOMAIN_OUTDOORS_ROCKS)
@@ -176,12 +176,12 @@ public class Ranger_Hide extends StdAbility
 		}
 		else
 		{
-			CMMsg msg=CMClass.getMsg(mob,null,this,auto?CMMsg.MSG_OK_ACTION:(CMMsg.MSG_DELICATE_HANDS_ACT|CMMsg.MASK_MOVE),str,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);
+			final CMMsg msg=CMClass.getMsg(mob,null,this,auto?CMMsg.MSG_OK_ACTION:(CMMsg.MSG_DELICATE_HANDS_ACT|CMMsg.MASK_MOVE),str,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				invoker=mob;
-				Ability newOne=(Ability)this.copyOf();
+				final Ability newOne=(Ability)this.copyOf();
 				((Ranger_Hide)newOne).bonus=getXLEVELLevel(mob)*2;
 				if(mob.fetchEffect(newOne.ID())==null)
 					mob.addEffect(newOne);

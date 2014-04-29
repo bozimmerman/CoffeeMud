@@ -51,12 +51,12 @@ public class Chant_SummonHail extends Chant
 	{
 		 if(mob!=null)
 		 {
-			 Room R=mob.location();
+			 final Room R=mob.location();
 			 if(R!=null)
 			 {
 				 if((R.domainType()&Room.INDOORS)>0)
 					 return Ability.QUALITY_INDIFFERENT;
-				 Area A=R.getArea();
+				 final Area A=R.getArea();
 				 if((A.getClimateObj().weatherType(mob.location())!=Climate.WEATHER_WINTER_COLD)
 				 &&(A.getClimateObj().weatherType(mob.location())!=Climate.WEATHER_HAIL))
 					 return Ability.QUALITY_INDIFFERENT;
@@ -80,7 +80,7 @@ public class Chant_SummonHail extends Chant
 			mob.tell("This chant requires a cold snap or a hail storm!");
 			return false;
 		}
-		MOB target=this.getTarget(mob,commands,givenTarget);
+		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
 		// the invoke method for spells receives as
@@ -91,17 +91,17 @@ public class Chant_SummonHail extends Chant
 			return false;
 
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),(auto?"^JHailstones falling from the sky whack <T-NAME>.^?":"^S<S-NAME> chant(s) to <T-NAMESELF>.  Suddenly a volley of hailstones assaults <T-HIM-HER>!^?")+CMLib.protocol().msp("hail.wav",40));
-			CMMsg msg2=CMClass.getMsg(mob,target,this,verbalCastMask(mob,target,auto)|CMMsg.TYP_WATER,null);
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),(auto?"^JHailstones falling from the sky whack <T-NAME>.^?":"^S<S-NAME> chant(s) to <T-NAMESELF>.  Suddenly a volley of hailstones assaults <T-HIM-HER>!^?")+CMLib.protocol().msp("hail.wav",40));
+			final CMMsg msg2=CMClass.getMsg(mob,target,this,verbalCastMask(mob,target,auto)|CMMsg.TYP_WATER,null);
 			if((mob.location().okMessage(mob,msg))&&((mob.location().okMessage(mob,msg2))))
 			{
 				mob.location().send(mob,msg);
 				mob.location().send(mob,msg2);
-				int maxDie =  (adjustedLevel( mob, asLevel )+(2*super.getX1Level(mob))) / 2;
+				final int maxDie =  (adjustedLevel( mob, asLevel )+(2*super.getX1Level(mob))) / 2;
 				int damage = CMLib.dice().roll(maxDie,4,0);
 				if((msg.value()>0)||(msg2.value()>0))
 					damage = (int)Math.round(CMath.div(damage,2.0));
@@ -124,8 +124,8 @@ public class Chant_SummonHail extends Chant
 					else
 						CMLib.combat().postDamage(mob,target,this,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_WATER,Weapon.TYPE_BASHING,"The hailstones <DAMAGE> <T-NAME>!");
 				}
-				Climate C=mob.location().getArea().getClimateObj();
-				Climate oldC=(Climate)C.copyOf();
+				final Climate C=mob.location().getArea().getClimateObj();
+				final Climate oldC=(Climate)C.copyOf();
 				if(C.weatherType(mob.location())!=Climate.WEATHER_HAIL)
 				{
 					C.setNextWeatherType(Climate.WEATHER_HAIL);

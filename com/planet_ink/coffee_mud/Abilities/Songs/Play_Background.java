@@ -44,9 +44,9 @@ public class Play_Background extends Play
 		super.affectCharStats(mob,stats);
 		if(invoker()!=null)
 		{
-			int cha=invoker().charStats().getStat(CharStats.STAT_CHARISMA)/2;
-			int lvl=adjustedLevel(invoker(),0)/3;
-			for(int i : CharStats.CODES.SAVING_THROWS())
+			final int cha=invoker().charStats().getStat(CharStats.STAT_CHARISMA)/2;
+			final int lvl=adjustedLevel(invoker(),0)/3;
+			for(final int i : CharStats.CODES.SAVING_THROWS())
 				stats.setStat(i,stats.getStat(i)+lvl+cha);
 		}
 	}

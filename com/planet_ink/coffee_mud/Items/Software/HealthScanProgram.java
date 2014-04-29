@@ -76,17 +76,17 @@ public class HealthScanProgram extends GenSoftware
 	{
 		final Room R=CMLib.map().roomLocation(M);
 		if(R==null) return "";
-		StringBuilder str=new StringBuilder("");
-		char gender=(char)M.charStats().getStat(CharStats.STAT_GENDER);
-		String genderName=(gender=='M')?"male":(gender=='F')?"female":"neuter";
+		final StringBuilder str=new StringBuilder("");
+		final char gender=(char)M.charStats().getStat(CharStats.STAT_GENDER);
+		final String genderName=(gender=='M')?"male":(gender=='F')?"female":"neuter";
 		str.append(M.name(viewerM)+" is a "+genderName+" "+M.charStats().getMyRace().name()+".\n\r");
-		String age=CMLib.flags().getAge(M);
+		final String age=CMLib.flags().getAge(M);
 		if(!CMSecurity.isDisabled(CMSecurity.DisFlag.ALL_AGEING))
 			str.append("Biological age: "+age+".\n\r");
 		str.append("Health: "+CMath.toPct(M.curState().getHitPoints()/M.maxState().getHitPoints())
 				+"  "+CMStrings.removeColors(M.healthText(viewerM))+"\n\r");
-		List<Ability> diseases=CMLib.flags().domainAffects(M, Ability.ACODE_DISEASE);
-		for(Ability A : diseases)
+		final List<Ability> diseases=CMLib.flags().domainAffects(M, Ability.ACODE_DISEASE);
+		for(final Ability A : diseases)
 		{
 			int[] spreadBits=new int[0];
 			if(A instanceof DiseaseAffect)
@@ -98,8 +98,8 @@ public class HealthScanProgram extends GenSoftware
 			if(spreadBits.length>0)
 			{
 				str.append(", which is spread by: ");
-				List<String> spreadList=new ArrayList<String>();
-				for(int i : spreadBits)
+				final List<String> spreadList=new ArrayList<String>();
+				for(final int i : spreadBits)
 					spreadList.add(DiseaseAffect.SPREAD_DESCS[i]);
 				str.append(CMLib.english().toEnglishStringList(spreadList.toArray(new String[0])));
 			}
@@ -108,11 +108,11 @@ public class HealthScanProgram extends GenSoftware
 		int found=0;
 		for(int a=0;a<M.numAllEffects();a++)
 		{
-			Ability A=M.fetchEffect(a);
+			final Ability A=M.fetchEffect(a);
 			if((A instanceof HealthCondition)&&(!(A instanceof DiseaseAffect))) // diseases handled above
 			{
 				found++;
-				String desc=((HealthCondition)A).getHealthConditionDesc();
+				final String desc=((HealthCondition)A).getHealthConditionDesc();
 				if(desc.length()>0)
 					str.append(desc).append("\n\r");
 			}
@@ -167,13 +167,13 @@ public class HealthScanProgram extends GenSoftware
 	{
 		if(name.equalsIgnoreCase("self"))
 			return mob;
-		Room R=mob.location();
+		final Room R=mob.location();
 		if(R==null)
 			return null;
 		MOB M=R.fetchInhabitant(name);
 		if(M==null)
 		{
-			PhysicalAgent I=R.fetchFromMOBRoomFavorsItems(mob, null, name, Wearable.FILTER_ANY);
+			final PhysicalAgent I=R.fetchFromMOBRoomFavorsItems(mob, null, name, Wearable.FILTER_ANY);
 			if(I instanceof CagedAnimal)
 			{
 				M=((CagedAnimal)I).unCageMe();
@@ -197,18 +197,18 @@ public class HealthScanProgram extends GenSoftware
 	{
 		if(!super.checkTyping(mob, message))
 			return false;
-		List<String> parts=CMParms.parse(message);
+		final List<String> parts=CMParms.parse(message);
 		if(parts.size()==0)
 		{
 			super.addScreenMessage("Failure: HEALTHSCAN target unspecified.");
 			return false;
 		}
-		String name=CMParms.combine(parts,1);
+		final String name=CMParms.combine(parts,1);
 		MOB M=getTarget(mob,name);
-		Room R=(M!=null)?M.location():null;
+		final Room R=(M!=null)?M.location():null;
 		if(R!=null)
 		{
-			CMMsg lookCheck=this.getScanMsg(R);
+			final CMMsg lookCheck=this.getScanMsg(R);
 			lookCheck.setTarget(M);
 			if(!R.okMessage(lookCheck.source(), lookCheck))
 				M=null;
@@ -249,7 +249,7 @@ public class HealthScanProgram extends GenSoftware
 			M=lastMOBChecked.get();
 		if(M!=null)
 		{
-			String scan=getScanMsg(mob,M);
+			final String scan=getScanMsg(mob,M);
 			if(scan.length()>0)
 				super.addScreenMessage(scan);
 		}

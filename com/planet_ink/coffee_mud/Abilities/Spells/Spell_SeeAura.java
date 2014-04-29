@@ -44,26 +44,26 @@ public class Spell_SeeAura extends Spell
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		MOB target=this.getTarget(mob,commands,givenTarget);
+		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 		if(target==mob) return false;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		// it worked, so build a copy of this ability,
 		// and add it to the affects list of the
 		// affected MOB.  Then tell everyone else
 		// what happened.
-		CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^SYou draw out <T-NAME>s aura, seeing <T-HIM-HER> from the inside out...^?",verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> draw(s) out your aura.^?",verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> draws out <T-NAME>s aura.^?");
+		final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^SYou draw out <T-NAME>s aura, seeing <T-HIM-HER> from the inside out...^?",verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> draw(s) out your aura.^?",verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> draws out <T-NAME>s aura.^?");
 		if(success)
 		{
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				StringBuilder str=CMLib.commands().getScore(target);
+				final StringBuilder str=CMLib.commands().getScore(target);
 				if(!mob.isMonster())
 					mob.session().wraplessPrintln(str.toString());
 			}

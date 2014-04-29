@@ -42,7 +42,7 @@ public class Config extends StdCommand
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		StringBuffer msg=new StringBuffer("^HYour configuration flags:^?\n\r");
+		final StringBuffer msg=new StringBuffer("^HYour configuration flags:^?\n\r");
 		for(int i=0;i<MOB.AUTODESC.length;i++)
 		{
 			if((MOB.AUTODESC[i].equalsIgnoreCase("SYSMSGS"))&&(!(CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.SYSMSGS))))
@@ -58,10 +58,10 @@ public class Config extends StdCommand
 		}
 		if(mob.playerStats()!=null)
 		{
-			String wrap=(mob.playerStats().getWrap()!=0)?(""+mob.playerStats().getWrap()):"Disabled";
+			final String wrap=(mob.playerStats().getWrap()!=0)?(""+mob.playerStats().getWrap()):"Disabled";
 			msg.append(CMStrings.padRight("LINEWRAP",15)+": "+wrap);
 			msg.append("\n\r");
-			String pageBreak=(mob.playerStats().getPageBreak()!=0)?(""+mob.playerStats().getPageBreak()):"Disabled";
+			final String pageBreak=(mob.playerStats().getPageBreak()!=0)?(""+mob.playerStats().getPageBreak()):"Disabled";
 			msg.append(CMStrings.padRight("PAGEBREAK",15)+": "+pageBreak);
 			msg.append("\n\r");
 		}

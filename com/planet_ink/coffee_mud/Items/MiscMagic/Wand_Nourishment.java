@@ -67,7 +67,7 @@ public class Wand_Nourishment extends StdWand
 	{
 		if(msg.amITarget(this))
 		{
-			MOB mob=msg.source();
+			final MOB mob=msg.source();
 			switch(msg.targetMinor())
 			{
 			case CMMsg.TYP_WAND_USE:

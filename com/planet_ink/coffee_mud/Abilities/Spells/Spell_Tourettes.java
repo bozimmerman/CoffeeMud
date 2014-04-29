@@ -59,7 +59,7 @@ public class Spell_Tourettes extends Spell implements DiseaseAffect
 		// undo the affects of this spell
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		super.unInvoke();
 
@@ -82,11 +82,11 @@ public class Spell_Tourettes extends Spell implements DiseaseAffect
 			return false;
 		if((--plagueDown)<=0)
 		{
-			MOB mob=(MOB)affected;
+			final MOB mob=(MOB)affected;
 			plagueDown=4;
 			if(invoker==null) invoker=mob;
 
-			MOB target=mob.location().fetchRandomInhabitant();
+			final MOB target=mob.location().fetchRandomInhabitant();
 			if((target!=null)
 			&&(!mob.amDead())
 			&&(target.charStats().getStat(CharStats.STAT_INTELLIGENCE)>5)
@@ -155,7 +155,7 @@ public class Spell_Tourettes extends Spell implements DiseaseAffect
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		MOB target=this.getTarget(mob,commands,givenTarget);
+		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
 		// the invoke method for spells receives as
@@ -164,7 +164,7 @@ public class Spell_Tourettes extends Spell implements DiseaseAffect
 		// and added as String objects to a vector.
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
@@ -173,8 +173,8 @@ public class Spell_Tourettes extends Spell implements DiseaseAffect
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto)|CMMsg.MASK_MALICIOUS,auto?"":"^S<S-NAME> incant(s) rudely to <T-NAMESELF>.^?");
-			CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_DISEASE|(auto?CMMsg.MASK_ALWAYS:0),null);
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto)|CMMsg.MASK_MALICIOUS,auto?"":"^S<S-NAME> incant(s) rudely to <T-NAMESELF>.^?");
+			final CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_DISEASE|(auto?CMMsg.MASK_ALWAYS:0),null);
 			if((mob.location().okMessage(mob,msg))&&(mob.location().okMessage(mob,msg2)))
 			{
 				mob.location().send(mob,msg);

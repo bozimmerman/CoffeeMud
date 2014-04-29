@@ -89,7 +89,7 @@ public class Specialization_Weapon extends StdAbility
 			if((msg.target() instanceof MOB)
 			&&(msg.tool() instanceof Weapon))
 			{
-				Weapon w=(Weapon)msg.tool();
+				final Weapon w=(Weapon)msg.tool();
 				if(isWeaponMatch(w))
 				{
 					if((msg.targetMinor()==CMMsg.TYP_WEAPONATTACK)&&(CMLib.dice().rollPercentage()<10))
@@ -111,7 +111,7 @@ public class Specialization_Weapon extends StdAbility
 		activated=false;
 		if(affected instanceof MOB)
 		{
-			Item myWeapon=((MOB)affected).fetchWieldedItem();
+			final Item myWeapon=((MOB)affected).fetchWieldedItem();
 			if((myWeapon instanceof Weapon)
 			&&(isWeaponMatch((Weapon)myWeapon)))
 			{

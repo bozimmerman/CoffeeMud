@@ -36,7 +36,6 @@ import java.util.*;
  * @version 1.0.0.0
  */
 
-@SuppressWarnings("rawtypes")
 public class Prop_ScrapExplode extends Property {
 
 	@Override public String ID() { return "Prop_ScrapExplode"; }
@@ -50,18 +49,18 @@ public class Prop_ScrapExplode extends Property {
 		if((affect.target()!=null)&&(affect.target().equals(affected))
 		   &&(affect.tool()!=null)&&(affect.tool().ID().equals("Scrapping")))
 		{
-			Item item=(Item)affect.target();
-			MOB mob = affect.source();
+			final Item item=(Item)affect.target();
+			final MOB mob = affect.source();
 			if (mob != null)
 			{
-				Room room = mob.location();
-				int damage = 3 * item.phyStats().weight();
+				final Room room = mob.location();
+				final int damage = 3 * item.phyStats().weight();
 				CMLib.combat().postDamage(mob, mob, item, damage*2,  CMMsg.MASK_ALWAYS|CMMsg.TYP_FIRE, Weapon.TYPE_PIERCING,
 						"Scrapping " + item.Name() + " causes an explosion which <DAMAGE> <T-NAME>!!!");
-				Set<MOB> theBadGuys=mob.getGroupMembers(new HashSet<MOB>());
-				for(Iterator e=theBadGuys.iterator();e.hasNext();)
+				final Set<MOB> theBadGuys=mob.getGroupMembers(new HashSet<MOB>());
+				for (final Object element : theBadGuys)
 				{
-					MOB inhab=(MOB)e.next();
+					final MOB inhab=(MOB)element;
 					if (mob != inhab)
 						CMLib.combat().postDamage(inhab, inhab, item, damage, CMMsg.MASK_ALWAYS|CMMsg.TYP_FIRE, Weapon.TYPE_PIERCING,
 								"Fragments from " + item.Name() + " <DAMAGE> <T-NAME>!");

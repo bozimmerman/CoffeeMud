@@ -95,7 +95,7 @@ public class Thief_ConcealDoor extends ThiefSkill
 			}
 			else
 			{
-				Set<MOB> grp=invoker().getGroupMembers(new HashSet<MOB>());
+				final Set<MOB> grp=invoker().getGroupMembers(new HashSet<MOB>());
 				if(!grp.contains(msg.source()))
 				{
 					unInvoke();
@@ -118,7 +118,7 @@ public class Thief_ConcealDoor extends ThiefSkill
 			return false;
 		}
 		Environmental chkE=null;
-		String typed=CMParms.combine(commands,0);
+		final String typed=CMParms.combine(commands,0);
 		if(Directions.getGoodDirectionCode(typed)<0)
 			chkE=mob.location().fetchFromMOBRoomItemExit(mob,null,typed,Wearable.FILTER_WORNONLY);
 		else
@@ -128,7 +128,7 @@ public class Thief_ConcealDoor extends ThiefSkill
 			mob.tell("You don't see any doors called '"+typed+"' here.");
 			return false;
 		}
-		Exit X=(Exit)chkE;
+		final Exit X=(Exit)chkE;
 		if(!X.hasADoor())
 		{
 			mob.tell(mob,X,null,"<T-NAME> is not a door!");
@@ -149,18 +149,18 @@ public class Thief_ConcealDoor extends ThiefSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,X,this,CMMsg.MSG_THIEF_ACT,"<S-NAME> conceal(s) <T-NAME>.",CMMsg.MSG_THIEF_ACT,null,CMMsg.MSG_THIEF_ACT,null);
+			final CMMsg msg=CMClass.getMsg(mob,X,this,CMMsg.MSG_THIEF_ACT,"<S-NAME> conceal(s) <T-NAME>.",CMMsg.MSG_THIEF_ACT,null,CMMsg.MSG_THIEF_ACT,null);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				Ability A=(Ability)super.copyOf();
+				final Ability A=(Ability)super.copyOf();
 				A.setInvoker(mob);
 				A.setAbilityCode((adjustedLevel(mob,asLevel)*2)-X.phyStats().level());
-				Room R=mob.location();
+				final Room R=mob.location();
 				Room R2=null;
 				for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 					if(R.getExitInDir(d)==X)

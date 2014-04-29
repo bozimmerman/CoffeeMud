@@ -48,7 +48,7 @@ public class Spell_ArmsLength extends Spell
 	{
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		super.unInvoke();
 		if(canBeUninvoked())
@@ -80,7 +80,7 @@ public int castingQuality(MOB mob, Physical target)
 			if((mob.getVictim()==msg.source())
 			&&(mob.location()!=null))
 			{
-		CMMsg msg2=CMClass.getMsg(mob,mob.getVictim(),CMMsg.MSG_RETREAT,"<S-NAME> predict(s) <T-YOUPOSS> advance and retreat(s).");
+		final CMMsg msg2=CMClass.getMsg(mob,mob.getVictim(),CMMsg.MSG_RETREAT,"<S-NAME> predict(s) <T-YOUPOSS> advance and retreat(s).");
 		if(mob.location().okMessage(mob,msg2))
 			mob.location().send(mob,msg2);
 			}
@@ -103,11 +103,11 @@ public int castingQuality(MOB mob, Physical target)
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> begin(s) keeping <T-HIS-HER> enemies at arms length!":"^S<S-NAME> incant(s) distantly!^?");
+			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> begin(s) keeping <T-HIS-HER> enemies at arms length!":"^S<S-NAME> incant(s) distantly!^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

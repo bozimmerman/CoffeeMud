@@ -27,7 +27,7 @@ limitations under the License.
  */
 public class KeyPairSearchTree<V>
 {
-	private KeyPairNode<String,V> root=new KeyPairNode<String,V>();
+	private final KeyPairNode<String,V> root=new KeyPairNode<String,V>();
 	private class KeyPairNode<K,T>
 	{
 		@SuppressWarnings("unchecked")
@@ -45,7 +45,7 @@ public class KeyPairSearchTree<V>
 		KeyPairNode<String,V> curr=root;
 		for(int i=0;i<key.length();i++)
 		{
-			int c=key.charAt(i) % 127;
+			final int c=key.charAt(i) % 127;
 			if(curr.limbs[c]==null)
 				curr.limbs[c]=new KeyPairNode<String,V>();
 			curr=curr.limbs[c];
@@ -67,7 +67,7 @@ public class KeyPairSearchTree<V>
 		{
 			if(curr.value != null)
 				lastValue=curr.value;
-			int c=fullStr.charAt(i) % 127;
+			final int c=fullStr.charAt(i) % 127;
 			if(curr.limbs[c]==null)
 				return lastValue;
 			else

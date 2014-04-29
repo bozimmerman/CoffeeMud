@@ -72,19 +72,19 @@ public class Spell_FoolsGold extends Spell
 			mob.tell("You must specify how big of a pile of gold to create.");
 			return false;
 		}
-		int amount=CMath.s_int(CMParms.combine(commands,0));
+		final int amount=CMath.s_int(CMParms.combine(commands,0));
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,null,this,somanticCastCode(mob,null,auto),auto?"":"^S<S-NAME> wave(s) <S-HIS-HER> arms around dramatically.^?");
+			final CMMsg msg=CMClass.getMsg(mob,null,this,somanticCastCode(mob,null,auto),auto?"":"^S<S-NAME> wave(s) <S-HIS-HER> arms around dramatically.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				Item gold=CMClass.getItem("GenItem");
+				final Item gold=CMClass.getItem("GenItem");
 				switch(amount)
 				{
 				case 1:

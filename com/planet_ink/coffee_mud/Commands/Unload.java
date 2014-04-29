@@ -71,9 +71,8 @@ public class Unload extends StdCommand
 			commands.removeElementAt(0);
 			final List<Item> baseItems=CMLib.english().fetchItemList(mob,mob,null,commands,Wearable.FILTER_ANY,false);
 			final List<AmmunitionWeapon> items=new XVector<AmmunitionWeapon>();
-			for(final Iterator<Item> i=baseItems.iterator();i.hasNext();)
+			for (Item I : baseItems)
 			{
-				final Item I=i.next();
 				if((I instanceof AmmunitionWeapon)&&((AmmunitionWeapon)I).requiresAmmunition())
 					items.add((AmmunitionWeapon)I);
 			}
@@ -85,8 +84,8 @@ public class Unload extends StdCommand
 			else
 			for(final AmmunitionWeapon W : items)
 			{
-				Item ammunition=CMLib.coffeeMaker().makeAmmunition(W.ammunitionType(),W.ammunitionRemaining());
-				CMMsg newMsg=CMClass.getMsg(mob,W,ammunition,CMMsg.MSG_UNLOAD,"<S-NAME> unload(s) <O-NAME> from <T-NAME>.");
+				final Item ammunition=CMLib.coffeeMaker().makeAmmunition(W.ammunitionType(),W.ammunitionRemaining());
+				final CMMsg newMsg=CMClass.getMsg(mob,W,ammunition,CMMsg.MSG_UNLOAD,"<S-NAME> unload(s) <O-NAME> from <T-NAME>.");
 				if(mob.location().okMessage(mob,newMsg))
 					mob.location().send(mob,newMsg);
 			}
@@ -104,14 +103,14 @@ public class Unload extends StdCommand
 				}
 				if(what.equalsIgnoreCase("CLASS"))
 				{
-					Object O=CMClass.getObjectOrPrototype((String)commands.elementAt(2));
+					final Object O=CMClass.getObjectOrPrototype((String)commands.elementAt(2));
 					if(O!=null)
 					{
-						CMClass.CMObjectType x=CMClass.getObjectType(O);
+						final CMClass.CMObjectType x=CMClass.getObjectType(O);
 						if(x!=null) what=x.toString();
 					}
 				}
-				CMObjectType whatType=CMClass.findObjectType(what);
+				final CMObjectType whatType=CMClass.findObjectType(what);
 				if(whatType==null)
 					mob.tell("Don't know how to load a '"+what+"'.  Try one of the following: "+CMParms.toStringList(ARCHON_LIST));
 				else
@@ -120,8 +119,8 @@ public class Unload extends StdCommand
 					commands.removeElementAt(0);
 					for(int i=0;i<commands.size();i++)
 					{
-						String name=(String)commands.elementAt(0);
-						Object O=CMClass.getObjectOrPrototype(name);
+						final String name=(String)commands.elementAt(0);
+						final Object O=CMClass.getObjectOrPrototype(name);
 						if(!(O instanceof CMObject))
 							mob.tell("Class '"+name+"' was not found in the class loader.");
 						else
@@ -136,7 +135,7 @@ public class Unload extends StdCommand
 			else
 			if(str.equalsIgnoreCase("help"))
 			{
-				CMFile F=new CMFile("//resources/help",mob);
+				final CMFile F=new CMFile("//resources/help",mob);
 				if((F.exists())&&(F.canRead())&&(F.canWrite())&&(F.isDirectory()))
 				{
 					CMLib.help().unloadHelpFile(mob);
@@ -168,14 +167,14 @@ public class Unload extends StdCommand
 			&&(mob.session()!=null)
 			&&(CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDPLAYERS)))
 			{
-				String which=CMParms.combine(commands,2);
-				Vector users=new Vector();
+				final String which=CMParms.combine(commands,2);
+				final Vector users=new Vector();
 				if(which.equalsIgnoreCase("all"))
-					for(Enumeration e=CMLib.players().players();e.hasMoreElements();)
+					for(final Enumeration e=CMLib.players().players();e.hasMoreElements();)
 						users.addElement(e.nextElement());
 				else
 				{
-					MOB M=CMLib.players().getPlayer(which);
+					final MOB M=CMLib.players().getPlayer(which);
 					if(M==null)
 					{
 						mob.tell("No such user as '"+which+"'!");
@@ -183,16 +182,16 @@ public class Unload extends StdCommand
 					}
 					users.addElement(M);
 				}
-				boolean saveFirst=mob.session().confirm("Save first (Y/n)?","Y");
+				final boolean saveFirst=mob.session().confirm("Save first (Y/n)?","Y");
 				for(int u=0;u<users.size();u++)
 				{
-					MOB M=(MOB)users.elementAt(u);
+					final MOB M=(MOB)users.elementAt(u);
 					if(M.session()!=null)
 					{
 						if(M!=mob)
 						{
 							if(M.session()!=null) M.session().stopSession(false,false,false);
-							while(M.session()!=null){try{Thread.sleep(100);}catch(Exception e){}}
+							while(M.session()!=null){try{Thread.sleep(100);}catch(final Exception e){}}
 							if(M.session()!=null) M.session().stopSession(true,true,true);
 						}
 						else
@@ -209,7 +208,7 @@ public class Unload extends StdCommand
 				int done=0;
 				for(int u=0;u<users.size();u++)
 				{
-					MOB M=(MOB)users.elementAt(u);
+					final MOB M=(MOB)users.elementAt(u);
 					if(M!=mob)
 					{
 						done++;
@@ -227,7 +226,7 @@ public class Unload extends StdCommand
 			if((((String)commands.elementAt(1)).equalsIgnoreCase("FACTION"))
 			&&(CMSecurity.isAllowed(mob, mob.location(), CMSecurity.SecFlag.CMDFACTIONS)))
 			{
-				String which=CMParms.combine(commands,2);
+				final String which=CMParms.combine(commands,2);
 				if(which.length()==0)
 				{
 					// No factions specified.  That's fine, they must mean ALL FACTIONS!!! hahahahaha
@@ -249,7 +248,7 @@ public class Unload extends StdCommand
 			if((((String)commands.elementAt(1)).equalsIgnoreCase("AREA"))
 			&&(CMSecurity.isAllowed(mob, mob.location(), CMSecurity.SecFlag.CMDAREAS)))
 			{
-				String which=CMParms.combine(commands,2);
+				final String which=CMParms.combine(commands,2);
 				Area A=null;
 				if(which.length()>0)
 					A=CMLib.map().getArea(which);
@@ -272,8 +271,8 @@ public class Unload extends StdCommand
 			else
 			if(((String)commands.elementAt(1)).equalsIgnoreCase("RESOURCE"))
 			{
-				String which=CMParms.combine(commands,2);
-				Iterator<String> k=Resources.findResourceKeys(which);
+				final String which=CMParms.combine(commands,2);
+				final Iterator<String> k=Resources.findResourceKeys(which);
 				if(!k.hasNext())
 				{
 					mob.tell("Unknown resource '"+which+"'.  Use LIST RESOURCES.");
@@ -281,7 +280,7 @@ public class Unload extends StdCommand
 				}
 				for(;k.hasNext();)
 				{
-					String key=k.next();
+					final String key=k.next();
 					Resources.removeResource(key);
 					mob.tell("Resource '"+key+"' unloaded.");
 				}
@@ -289,7 +288,7 @@ public class Unload extends StdCommand
 			else
 			if(((String)commands.elementAt(1)).equalsIgnoreCase("FILE"))
 			{
-				String which=CMParms.combine(commands,2);
+				final String which=CMParms.combine(commands,2);
 				CMFile F1=new CMFile(which,mob,CMFile.FLAG_FORCEALLOW);
 				if(!F1.exists())
 				{
@@ -309,13 +308,13 @@ public class Unload extends StdCommand
 				}
 				if(F1.exists())
 				{
-					CMFile F2=new CMFile(F1.getVFSPathAndName(),mob,CMFile.FLAG_LOGERRORS);
+					final CMFile F2=new CMFile(F1.getVFSPathAndName(),mob,CMFile.FLAG_LOGERRORS);
 					if((!F2.exists())||(!F2.canRead()))
 					{
 						mob.tell("Inaccessible file resource: '"+which+"'");
 						return false;
 					}
-					Iterator<String> k=Resources.findResourceKeys(which);
+					final Iterator<String> k=Resources.findResourceKeys(which);
 					if(!k.hasNext())
 					{
 						mob.tell("Unknown resource '"+which+"'.  Use LIST RESOURCES.");
@@ -323,7 +322,7 @@ public class Unload extends StdCommand
 					}
 					for(;k.hasNext();)
 					{
-						String key=k.next();
+						final String key=k.next();
 						Resources.removeResource(key);
 						mob.tell("Resource '"+key+"' unloaded.");
 					}
@@ -352,13 +351,13 @@ public class Unload extends StdCommand
 				}
 				if(F1.exists())
 				{
-					CMFile F2=new CMFile(F1.getVFSPathAndName(),mob,CMFile.FLAG_LOGERRORS);
+					final CMFile F2=new CMFile(F1.getVFSPathAndName(),mob,CMFile.FLAG_LOGERRORS);
 					if((!F2.exists())||(!F2.canRead()))
 					{
 						mob.tell("Inaccessible file resource: '"+str+"'");
 						return false;
 					}
-					Iterator<String> k=Resources.findResourceKeys(str);
+					final Iterator<String> k=Resources.findResourceKeys(str);
 					if(!k.hasNext())
 					{
 						mob.tell("Unknown resource '"+str+"'.  Use LIST RESOURCES.");
@@ -366,7 +365,7 @@ public class Unload extends StdCommand
 					}
 					for(;k.hasNext();)
 					{
-						String key=k.next();
+						final String key=k.next();
 						Resources.removeResource(key);
 						mob.tell("Resource '"+key+"' unloaded.");
 					}

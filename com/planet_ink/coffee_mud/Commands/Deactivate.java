@@ -50,8 +50,8 @@ public class Deactivate extends StdCommand
 			return false;
 		}
 		commands.removeElementAt(0);
-		String what=(String)commands.lastElement();
-		String whole=CMParms.combine(commands,0);
+		final String what=(String)commands.lastElement();
+		final String whole=CMParms.combine(commands,0);
 		Item item=null;
 		Environmental E=mob.location().fetchFromMOBRoomFavorsItems(mob,null,whole,Wearable.FILTER_ANY);
 		if((!(E instanceof Electronics))||(E instanceof Software))
@@ -59,7 +59,7 @@ public class Deactivate extends StdCommand
 		if(E==null)
 			for(int i=0;i<R.numItems();i++)
 			{
-				Item I=R.getItem(i);
+				final Item I=R.getItem(i);
 				if((I instanceof Electronics.ElecPanel)
 				&&(((Electronics.ElecPanel)I).isOpen()))
 				{
@@ -83,7 +83,7 @@ public class Deactivate extends StdCommand
 			if(E==null)
 				for(int i=0;i<R.numItems();i++)
 				{
-					Item I=R.getItem(i);
+					final Item I=R.getItem(i);
 					if((I instanceof Electronics.ElecPanel)
 					&&(((Electronics.ElecPanel)I).isOpen()))
 					{
@@ -116,8 +116,8 @@ public class Deactivate extends StdCommand
 			mob.tell("You can't deactivate '"+E.name()+"'.");
 		}
 
-		String rest=CMParms.combine(commands,0);
-		CMMsg newMsg=CMClass.getMsg(mob,item,null,CMMsg.MSG_DEACTIVATE,null,CMMsg.MSG_DEACTIVATE,(rest.length()==0)?null:rest,CMMsg.MSG_DEACTIVATE,null);
+		final String rest=CMParms.combine(commands,0);
+		final CMMsg newMsg=CMClass.getMsg(mob,item,null,CMMsg.MSG_DEACTIVATE,null,CMMsg.MSG_DEACTIVATE,(rest.length()==0)?null:rest,CMMsg.MSG_DEACTIVATE,null);
 		if(mob.location().okMessage(mob,newMsg))
 			mob.location().send(mob,newMsg);
 		return false;

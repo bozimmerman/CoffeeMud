@@ -58,7 +58,7 @@ public class Thief_StrategicRetreat extends ThiefSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		String where=CMParms.combine(commands,0);
 		if(!success)
@@ -73,11 +73,11 @@ public class Thief_StrategicRetreat extends ThiefSkill
 			{
 				if(where.length()==0)
 				{
-					Vector directions=new Vector();
+					final Vector directions=new Vector();
 					for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 					{
-						Exit thisExit=mob.location().getExitInDir(d);
-						Room thisRoom=mob.location().getRoomInDir(d);
+						final Exit thisExit=mob.location().getExitInDir(d);
+						final Room thisRoom=mob.location().getRoomInDir(d);
 						if((thisRoom!=null)&&(thisExit!=null)&&(thisExit.isOpen()))
 							directions.addElement(Integer.valueOf(d));
 					}

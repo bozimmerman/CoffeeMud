@@ -14,7 +14,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -76,15 +75,15 @@ public class Chant_PlantTrap extends Chant implements Trap
 			else
 			if(target.location().show(target,target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,"<S-NAME> <S-IS-ARE> assaulted by the plants!"))
 			{
-				Vector them=new XVector<String>(choices);
+				final Vector them=new XVector<String>(choices);
 				if(invoker()!=null)
-				for(int i=0;i<choices.length;i++)
-					if(invoker().fetchAbility(choices[i])==null)
-						them.removeElement(choices[i]);
+					for (final String choice : choices)
+						if(invoker().fetchAbility(choice)==null)
+							them.removeElement(choice);
 				if(them.size()>0)
 				{
-					String s=(String)them.elementAt(CMLib.dice().roll(1,them.size(),-1));
-					Ability A=CMClass.getAbility(s);
+					final String s=(String)them.elementAt(CMLib.dice().roll(1,them.size(),-1));
+					final Ability A=CMClass.getAbility(s);
 					A.invoke(target,target,true,0);
 				}
 			}
@@ -93,8 +92,8 @@ public class Chant_PlantTrap extends Chant implements Trap
 
 	public boolean helpfulAbilityFound(MOB mob)
 	{
-		for(int i=0;i<choices.length;i++)
-			if(mob.fetchAbility(choices[i])!=null)
+		for (final String choice : choices)
+			if(mob.fetchAbility(choice)!=null)
 			 return true;
 		return false;
 	}
@@ -116,7 +115,7 @@ public class Chant_PlantTrap extends Chant implements Trap
 		{
 			if(!helpfulAbilityFound(mob))
 				return Ability.QUALITY_INDIFFERENT;
-			Room R=mob.location();
+			final Room R=mob.location();
 			if(R!=null)
 			{
 				if(((R.domainType()&Room.INDOORS)>0))
@@ -135,7 +134,7 @@ public class Chant_PlantTrap extends Chant implements Trap
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		Room target=mob.location();
+		final Room target=mob.location();
 		if(target==null) return false;
 		if(target.fetchEffect(ID())!=null)
 		{
@@ -166,7 +165,7 @@ public class Chant_PlantTrap extends Chant implements Trap
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
@@ -174,7 +173,7 @@ public class Chant_PlantTrap extends Chant implements Trap
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"This area seems to writh with malicious plants.":"^S<S-NAME> chant(s), stirring the plant life into maliciousness.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"This area seems to writh with malicious plants.":"^S<S-NAME> chant(s), stirring the plant life into maliciousness.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

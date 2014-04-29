@@ -102,16 +102,16 @@ public class StdClanCard extends StdClanItem
 		{
 			if(((MOB)owner()).getClanRole(clanID())==null)
 			{
-				Room R=((MOB)owner()).location();
-				LegalBehavior B=CMLib.law().getLegalBehavior(R);
+				final Room R=((MOB)owner()).location();
+				final LegalBehavior B=CMLib.law().getLegalBehavior(R);
 				if(B!=null)
 				{
-					String rulingClan=B.rulingOrganization();
+					final String rulingClan=B.rulingOrganization();
 					if((rulingClan!=null)&&(rulingClan.length()>0)
 					&&(rulingClan.equals(clanID())))
 					{
 						int roleID=0;
-						Clan C=CMLib.clans().getClan(clanID());
+						final Clan C=CMLib.clans().getClan(clanID());
 						if(C!=null) roleID=C.getGovernment().getAutoRole();
 						((MOB)owner()).setClan(clanID(),roleID);
 					}

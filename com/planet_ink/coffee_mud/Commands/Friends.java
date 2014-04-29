@@ -42,9 +42,9 @@ public class Friends extends StdCommand
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		PlayerStats pstats=mob.playerStats();
+		final PlayerStats pstats=mob.playerStats();
 		if(pstats==null) return false;
-		Set<String> h=pstats.getFriends();
+		final Set<String> h=pstats.getFriends();
 
 		if((commands.size()<2)||(((String)commands.elementAt(1)).equalsIgnoreCase("list")))
 		{
@@ -52,9 +52,9 @@ public class Friends extends StdCommand
 				mob.tell("You have no friends listed.  Use FRIENDS ADD to add more.");
 			else
 			{
-				StringBuffer str=new StringBuffer("Your listed friends are: ");
-				for(Iterator e=h.iterator();e.hasNext();)
-					str.append(((String)e.next())+" ");
+				final StringBuffer str=new StringBuffer("Your listed friends are: ");
+				for (final Object element : h)
+					str.append(((String)element)+" ");
 				mob.tell(str.toString());
 			}
 		}
@@ -87,7 +87,7 @@ public class Friends extends StdCommand
 		else
 		if(((String)commands.elementAt(1)).equalsIgnoreCase("REMOVE"))
 		{
-			String name=CMParms.combine(commands,2);
+			final String name=CMParms.combine(commands,2);
 			if(name.length()==0)
 			{
 				mob.tell("Remove whom?");

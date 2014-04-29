@@ -62,7 +62,7 @@ public class IMC2 extends StdCommand
 			IMC2Error(mob);
 			return false;
 		}
-		String str=(String)commands.firstElement();
+		final String str=(String)commands.firstElement();
 		if(!(CMLib.intermud().imc2online()))
 			mob.tell("IMC2 is unavailable.");
 		else
@@ -83,7 +83,7 @@ public class IMC2 extends StdCommand
 			try
 			{
 				mob.tell(CMLib.hosts().get(0).executeCommand("START IMC2"));
-			}catch(Exception e){ Log.errOut("IMC2Cmd",e);}
+			}catch(final Exception e){ Log.errOut("IMC2Cmd",e);}
 		}
 		else
 			IMC2Error(mob);

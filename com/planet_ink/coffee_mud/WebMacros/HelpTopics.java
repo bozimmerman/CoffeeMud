@@ -39,8 +39,8 @@ public class HelpTopics extends StdWebMacro
 	@Override @SuppressWarnings({ "unchecked", "rawtypes" })
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
-		java.util.Map<String,String> parms=parseParms(parm);
-		String last=httpReq.getUrlParameter("HELPTOPIC");
+		final java.util.Map<String,String> parms=parseParms(parm);
+		final String last=httpReq.getUrlParameter("HELPTOPIC");
 		if(parms.containsKey("RESET"))
 		{
 			if(last!=null) httpReq.removeUrlParameter("HELPTOPIC");
@@ -54,7 +54,7 @@ public class HelpTopics extends StdWebMacro
 			if(parms.containsKey("LIMIT")) limit=CMath.s_int(parms.get("LIMIT"));
 			if((last!=null)&&(last.length()>0))
 			{
-				StringBuilder s=CMLib.help().getHelpText(last,null,parms.containsKey("AHELP"));
+				final StringBuilder s=CMLib.help().getHelpText(last,null,parms.containsKey("AHELP"));
 				if(s!=null)
 					return clearWebMacros(helpHelp(s,limit).toString());
 			}
@@ -109,7 +109,7 @@ public class HelpTopics extends StdWebMacro
 				}
 			}
 
-			boolean noables=parms.containsKey("SHORT");
+			final boolean noables=parms.containsKey("SHORT");
 			String fletter=parms.get("FIRSTLETTER");
 			if(fletter==null) fletter=httpReq.getUrlParameter("FIRSTLETTER");
 			if(fletter==null) fletter="";
@@ -117,7 +117,7 @@ public class HelpTopics extends StdWebMacro
 			String lastID="";
 			for(int h=0;h<topics.size();h++)
 			{
-				String topic=topics.get(h);
+				final String topic=topics.get(h);
 				if(noables&&CMLib.help().isPlayerSkill(topic))
 				   continue;
 				if(topic.startsWith(fletter)||(fletter.length()==0))

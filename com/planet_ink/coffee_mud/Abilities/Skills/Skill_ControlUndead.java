@@ -53,7 +53,7 @@ public class Skill_ControlUndead extends StdSkill
 		else
 		if((text().length()>0)&&(affected instanceof MOB))
 		{
-			Room R=((MOB)affected).location();
+			final Room R=((MOB)affected).location();
 			if(R!=null)
 				charmer=R.fetchInhabitant(text());
 		}
@@ -83,7 +83,7 @@ public class Skill_ControlUndead extends StdSkill
 		if(!(affected instanceof MOB))
 			return true;
 
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		// when this spell is on a MOBs Affected list,
 		// it should consistantly prevent the mob
@@ -141,7 +141,7 @@ public class Skill_ControlUndead extends StdSkill
 	{
 		if((affecting()==null)||(!(affecting() instanceof MOB)))
 			return false;
-		MOB mob=(MOB)affecting();
+		final MOB mob=(MOB)affecting();
 
 		if(mob.isMonster())
 			return super.tick(ticking,tickID);
@@ -165,7 +165,7 @@ public class Skill_ControlUndead extends StdSkill
 		// undo the affects of this spell
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		super.unInvoke();
 
@@ -195,7 +195,7 @@ public class Skill_ControlUndead extends StdSkill
 		if((mob!=null)&&(target!=null))
 		{
 			if(!(target instanceof MOB)) return Ability.QUALITY_INDIFFERENT;
-			MOB targetM=(MOB)target;
+			final MOB targetM=(MOB)target;
 			if((targetM.baseCharStats().getMyRace()==null)
 			||(!targetM.baseCharStats().getMyRace().racialCategory().equals("Undead")))
 				return Ability.QUALITY_INDIFFERENT;
@@ -210,7 +210,7 @@ public class Skill_ControlUndead extends StdSkill
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		MOB target=this.getTarget(mob,commands,givenTarget);
+		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
 		if((target.baseCharStats().getMyRace()==null)
@@ -241,7 +241,7 @@ public class Skill_ControlUndead extends StdSkill
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_CAST_ATTACK_SOMANTIC_SPELL|(auto?CMMsg.MASK_ALWAYS:0),auto?"<T-NAME> seem(s) controlled.":"^S<S-NAME> control(s) <T-NAMESELF>.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_CAST_ATTACK_SOMANTIC_SPELL|(auto?CMMsg.MASK_ALWAYS:0),auto?"<T-NAME> seem(s) controlled.":"^S<S-NAME> control(s) <T-NAMESELF>.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

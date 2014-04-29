@@ -56,7 +56,7 @@ public class Chant_HoneyMoon extends Chant
 			return;
 		}
 
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		if(canBeUninvoked())
 			mob.tell("You are no longer under the honey moon.");
 
@@ -71,13 +71,13 @@ public class Chant_HoneyMoon extends Chant
 		if(affected==null) return false;
 		if(affected instanceof Room)
 		{
-			Room room=(Room)affected;
+			final Room room=(Room)affected;
 			if(!room.getArea().getClimateObj().canSeeTheMoon(room,this))
 				unInvoke();
 			else
 			for(int i=0;i<room.numInhabitants();i++)
 			{
-				MOB M=room.fetchInhabitant(i);
+				final MOB M=room.fetchInhabitant(i);
 				M.curState().adjHunger(+10,M.maxState().maxHunger(M.baseWeight()));
 				M.curState().adjThirst(+10,M.maxState().maxThirst(M.baseWeight()));
 			}
@@ -88,7 +88,7 @@ public class Chant_HoneyMoon extends Chant
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		Room target=mob.location();
+		final Room target=mob.location();
 		if(target==null) return false;
 		if(!target.getArea().getClimateObj().canSeeTheMoon(target,null))
 		{
@@ -118,7 +118,7 @@ public class Chant_HoneyMoon extends Chant
 		// and added as String objects to a vector.
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
@@ -127,7 +127,7 @@ public class Chant_HoneyMoon extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> chant(s) to the sky.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> chant(s) to the sky.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

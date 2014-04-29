@@ -48,7 +48,7 @@ public class Possess extends StdCommand
 			target=mob.location().fetchInhabitant(targetName);
 			if(target==null)
 			{
-				Environmental t=mob.location().fetchFromRoomFavorItems(null,targetName);
+				final Environmental t=mob.location().fetchFromRoomFavorItems(null,targetName);
 				if((t!=null)&&(!(t instanceof MOB)))
 				{
 					if(!quiet)
@@ -86,17 +86,17 @@ public class Possess extends StdCommand
 			return false;
 		}
 		commands.removeElementAt(0);
-		String MOBname=CMParms.combine(commands,0);
+		final String MOBname=CMParms.combine(commands,0);
 		MOB target=getTarget(mob,commands,true);
 		if((target==null)||(!target.isMonster()))
 			target=mob.location().fetchInhabitant(MOBname);
 		if((target==null)||(!target.isMonster()))
 		{
-			Enumeration<Room> r=mob.location().getArea().getProperMap();
+			final Enumeration<Room> r=mob.location().getArea().getProperMap();
 			for(;r.hasMoreElements();)
 			{
-				Room R=r.nextElement();
-				MOB mob2=R.fetchInhabitant(MOBname);
+				final Room R=r.nextElement();
+				final MOB mob2=R.fetchInhabitant(MOBname);
 				if((mob2!=null)&&(mob2.isMonster()))
 				{
 					target=mob2;
@@ -108,14 +108,14 @@ public class Possess extends StdCommand
 		{
 			try
 			{
-				List<MOB> inhabs=CMLib.map().findInhabitants(CMLib.map().rooms(), mob,MOBname,100);
-				for(MOB mob2 : inhabs)
+				final List<MOB> inhabs=CMLib.map().findInhabitants(CMLib.map().rooms(), mob,MOBname,100);
+				for(final MOB mob2 : inhabs)
 					if((mob2.isMonster())&&(CMSecurity.isAllowed(mob,mob2.location(),CMSecurity.SecFlag.POSSESS)))
 					{
 						target=mob2;
 						break;
 					}
-			}catch(NoSuchElementException e){}
+			}catch(final NoSuchElementException e){}
 		}
 		if((target==null)||(!target.isMonster())||(!CMLib.flags().isInTheGame(target,true)))
 		{
@@ -133,12 +133,12 @@ public class Possess extends StdCommand
 			mob.tell("You may not possess '"+MOBname+"'.");
 			return false;
 		}
-		CMMsg msg=CMClass.getMsg(mob,target,null, CMMsg.MSG_POSSESS, "<S-NAME> get(s) a far away look, then seem(s) to fall limp.");
+		final CMMsg msg=CMClass.getMsg(mob,target,null, CMMsg.MSG_POSSESS, "<S-NAME> get(s) a far away look, then seem(s) to fall limp.");
 		final Room room=mob.location();
 		if((room==null)||(room.okMessage(mob, msg)))
 		{
 			if(room!=null) room.send(mob, msg);
-			Session s=mob.session();
+			final Session s=mob.session();
 			s.setMob(target);
 			target.setSession(s);
 			target.setSoulMate(mob);

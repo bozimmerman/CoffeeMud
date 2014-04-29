@@ -59,7 +59,7 @@ public class Tell extends StdCommand
 		   &&(CMath.isNumber(CMParms.combine(commands,1)))
 		   &&(mob.playerStats()!=null))
 		{
-			java.util.List<String> V=mob.playerStats().getTellStack();
+			final java.util.List<String> V=mob.playerStats().getTellStack();
 			if((V.size()==0)
 			||(CMath.bset(metaFlags,Command.METAFLAG_AS))
 			||(CMath.bset(metaFlags,Command.METAFLAG_POSSESSED)))
@@ -68,7 +68,7 @@ public class Tell extends StdCommand
 			{
 				int num=CMath.s_int(CMParms.combine(commands,1));
 				if(num>V.size()) num=V.size();
-				Session S=mob.session();
+				final Session S=mob.session();
 				try
 				{
 					if(S!=null) S.snoopSuspension(1);
@@ -89,7 +89,7 @@ public class Tell extends StdCommand
 		if(targetM==null) targetM=CMLib.sessions().findPlayerOnline(targetName,false);
 		for(int i=1;i<commands.size();i++)
 		{
-			String s=(String)commands.elementAt(i);
+			final String s=(String)commands.elementAt(i);
 			if(s.indexOf(' ')>=0)
 				commands.setElementAt("\""+s+"\"",i);
 		}
@@ -104,7 +104,7 @@ public class Tell extends StdCommand
 		{
 			if(targetName.indexOf('@')>=0)
 			{
-				String mudName=targetName.substring(targetName.indexOf('@')+1);
+				final String mudName=targetName.substring(targetName.indexOf('@')+1);
 				targetName=targetName.substring(0,targetName.indexOf('@'));
 				if(CMLib.intermud().i3online()||CMLib.intermud().imc2online())
 					CMLib.intermud().i3tell(mob,targetName,mudName,combinedCommands);
@@ -123,7 +123,7 @@ public class Tell extends StdCommand
 		}
 
 
-		Session ts=targetM.session();
+		final Session ts=targetM.session();
 		try
 		{
 			if(ts!=null) ts.snoopSuspension(1);

@@ -50,7 +50,7 @@ public class ChannelPacket extends Packet  {
 		super(v);
 		try
 		{
-			String str = (String)v.elementAt(0);
+			final String str = (String)v.elementAt(0);
 
 			channel = (String)v.elementAt(6);
 			channel = Intermud.getLocalChannel(channel);
@@ -78,7 +78,7 @@ public class ChannelPacket extends Packet  {
 				message = (String)v.elementAt(8);
 			}
 		}
-		catch( ClassCastException e )
+		catch( final ClassCastException e )
 		{
 			throw new InvalidPacketException();
 		}

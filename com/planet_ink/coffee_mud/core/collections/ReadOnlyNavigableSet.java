@@ -17,7 +17,7 @@ limitations under the License.
 */
 public class ReadOnlyNavigableSet<K> implements NavigableSet<K>
 {
-	private NavigableSet<K> set;
+	private final NavigableSet<K> set;
 	public ReadOnlyNavigableSet(NavigableSet<K> s)
 	{
 		set=s;

@@ -57,13 +57,13 @@ public class Disease_Asthma extends Disease
 		if(affected==null) return false;
 		if(!(affected instanceof MOB)) return true;
 
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		if((!mob.amDead())&&((--diseaseTick)<=0))
 		{
 			diseaseTick=DISEASE_DELAY();
 			if(CMLib.dice().rollPercentage()==1)
 			{
-				int damage=mob.curState().getHitPoints()/2;
+				final int damage=mob.curState().getHitPoints()/2;
 				MOB diseaser=invoker;
 				if(diseaser==null) diseaser=mob;
 				CMLib.combat().postDamage(diseaser,mob,this,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_DISEASE,-1,"<S-NAME> <S-HAS-HAVE> an asthma attack! It <DAMAGE> <S-NAME>!");

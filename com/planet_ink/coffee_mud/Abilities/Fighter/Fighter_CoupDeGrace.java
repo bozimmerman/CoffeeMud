@@ -54,7 +54,7 @@ public class Fighter_CoupDeGrace extends FighterSkill
 		{
 			if(!mob.isInCombat()) return Ability.QUALITY_INDIFFERENT;
 			if(mob.rangeToTarget()>0) return Ability.QUALITY_INDIFFERENT;
-			Item w=mob.fetchWieldedItem();
+			final Item w=mob.fetchWieldedItem();
 			Weapon ww=null;
 			if((w==null)||(!(w instanceof Weapon))) return Ability.QUALITY_INDIFFERENT;
 			ww=(Weapon)w;
@@ -80,7 +80,7 @@ public class Fighter_CoupDeGrace extends FighterSkill
 			mob.tell("You are too far away to try that!");
 			return false;
 		}
-		Item w=mob.fetchWieldedItem();
+		final Item w=mob.fetchWieldedItem();
 		Weapon ww=null;
 		if(!auto)
 		{
@@ -111,8 +111,8 @@ public class Fighter_CoupDeGrace extends FighterSkill
 			}
 		}
 
-		MOB target=mob.getVictim();
-		int dmg=target.curState().getHitPoints();
+		final MOB target=mob.getVictim();
+		final int dmg=target.curState().getHitPoints();
 		if((!super.invoke(mob,commands,givenTarget,auto,asLevel))||(ww==null))
 			return false;
 
@@ -121,12 +121,12 @@ public class Fighter_CoupDeGrace extends FighterSkill
 			levelDiff=levelDiff*3;
 		else
 			levelDiff=0;
-		int chance=(-levelDiff)+(-(target.charStats().getStat(CharStats.STAT_CONSTITUTION)*2));
-		boolean hit=(auto)||CMLib.combat().rollToHit(mob,target);
-		boolean success=proficiencyCheck(mob,chance,auto)&&(hit);
+		final int chance=(-levelDiff)+(-(target.charStats().getStat(CharStats.STAT_CONSTITUTION)*2));
+		final boolean hit=(auto)||CMLib.combat().rollToHit(mob,target);
+		final boolean success=proficiencyCheck(mob,chance,auto)&&(hit);
 		if((success)&&((dmg<50)||(dmg<(target.maxState().getHitPoints()/4))))
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),null);
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),null);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -137,8 +137,8 @@ public class Fighter_CoupDeGrace extends FighterSkill
 		}
 		else
 		{
-			String str=auto?"":"<S-NAME> attempt(s) a Coup-de-Grace and fail(s)!";
-			CMMsg msg=CMClass.getMsg(mob,target,null,CMMsg.MASK_MALICIOUS|CMMsg.MSG_OK_ACTION,str);
+			final String str=auto?"":"<S-NAME> attempt(s) a Coup-de-Grace and fail(s)!";
+			final CMMsg msg=CMClass.getMsg(mob,target,null,CMMsg.MASK_MALICIOUS|CMMsg.MSG_OK_ACTION,str);
 			if(mob.location().okMessage(mob,msg))
 				mob.location().send(mob,msg);
 		}

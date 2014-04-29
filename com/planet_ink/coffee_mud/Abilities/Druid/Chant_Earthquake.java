@@ -66,7 +66,7 @@ public class Chant_Earthquake extends Chant
 		// undo the affects of this spell
 		if(!(affected instanceof MOB))
 			return super.okMessage(myHost,msg);
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		if((msg.amISource(mob))
 		&&(msg.sourceMinor()==CMMsg.TYP_STAND)
 		&&(mob.location()!=null))
@@ -88,14 +88,14 @@ public class Chant_Earthquake extends Chant
 		// undo the affects of this spell
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		super.unInvoke();
 		if(canBeUninvoked())
 		{
 			if((mob.location()!=null)&&(!mob.amDead()))
 			{
-				CMMsg msg=CMClass.getMsg(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> regain(s) <S-HIS-HER> feet as the ground stops shaking.");
+				final CMMsg msg=CMClass.getMsg(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> regain(s) <S-HIS-HER> feet as the ground stops shaking.");
 				if(mob.location().okMessage(mob,msg))
 				{
 					mob.location().send(mob,msg);
@@ -114,7 +114,7 @@ public class Chant_Earthquake extends Chant
 		{
 			if(target instanceof MOB)
 			{
-				Set<MOB> h=properTargets(mob,target,false);
+				final Set<MOB> h=properTargets(mob,target,false);
 				if(h==null)
 					return Ability.QUALITY_INDIFFERENT;
 			}
@@ -125,7 +125,7 @@ public class Chant_Earthquake extends Chant
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		Set<MOB> h=properTargets(mob,givenTarget,auto);
+		final Set<MOB> h=properTargets(mob,givenTarget,auto);
 		if(h==null)
 		{
 			mob.tell("There doesn't appear to be anyone here worth shaking up.");
@@ -145,37 +145,37 @@ public class Chant_Earthquake extends Chant
 		{
 
 			if(mob.location().show(mob,null,this,verbalCastCode(mob,null,auto),(auto?"":"^S<S-NAME> chant(s) thunderously.^?")+CMLib.protocol().msp("earthquake.wav",40)))
-			for(Iterator f=h.iterator();f.hasNext();)
-			{
-				MOB target=(MOB)f.next();
-
-				// it worked, so build a copy of this ability,
-				// and add it to the affects list of the
-				// affected MOB.  Then tell everyone else
-				// what happened.
-				CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),null);
-				if(CMLib.flags().isInFlight(target))
-					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> seem(s) unaffected.");
-				else
-				if((mob.location().okMessage(mob,msg))&&(target.fetchEffect(this.ID())==null))
+				for (final Object element : h)
 				{
-					mob.location().send(mob,msg);
-					if(msg.value()<=0)
+					final MOB target=(MOB)element;
+
+					// it worked, so build a copy of this ability,
+					// and add it to the affects list of the
+					// affected MOB.  Then tell everyone else
+					// what happened.
+					final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),null);
+					if(CMLib.flags().isInFlight(target))
+						mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> seem(s) unaffected.");
+					else
+					if((mob.location().okMessage(mob,msg))&&(target.fetchEffect(this.ID())==null))
 					{
-						if(target.charStats().getBodyPart(Race.BODY_LEG)>0)
+						mob.location().send(mob,msg);
+						if(msg.value()<=0)
 						{
-							success=maliciousAffect(mob,target,asLevel,3,-1);
-							if(success)
+							if(target.charStats().getBodyPart(Race.BODY_LEG)>0)
 							{
-								if(target.location()==mob.location())
-									CMLib.combat().postDamage(mob,target,this,20,CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,-1,"The ground underneath <T-NAME> shakes as <T-NAME> fall(s) to the ground!!");
+								success=maliciousAffect(mob,target,asLevel,3,-1);
+								if(success)
+								{
+									if(target.location()==mob.location())
+										CMLib.combat().postDamage(mob,target,this,20,CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,-1,"The ground underneath <T-NAME> shakes as <T-NAME> fall(s) to the ground!!");
+								}
 							}
+							else
+								mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> seem(s) unaffected by the quake.");
 						}
-						else
-							mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> seem(s) unaffected by the quake.");
 					}
 				}
-			}
 		}
 		else
 			return maliciousFizzle(mob,null,"<S-NAME> attempt(s) to invoke a thunderous spell, but the spell fizzles.");

@@ -71,17 +71,17 @@ public class GetsAllEquipped extends ActiveTicker
 			if(DoneEquipping)
 				return true;
 
-			MOB mob=(MOB)ticking;
-			Room thisRoom=mob.location();
+			final MOB mob=(MOB)ticking;
+			final Room thisRoom=mob.location();
 			if(thisRoom.numItems()==0) return true;
 
 			DoneEquipping=true;
-			Vector stuffIHad=new Vector();
+			final Vector stuffIHad=new Vector();
 			for(int i=0;i<mob.numItems();i++)
 				stuffIHad.addElement(mob.getItem(i));
 			mob.enqueCommand(new XVector("GET","ALL"),Command.METAFLAG_FORCED,0);
 			Item I=null;
-			Vector dropThisStuff=new Vector();
+			final Vector dropThisStuff=new Vector();
 			for(int i=0;i<mob.numItems();i++)
 			{
 				I=mob.getItem(i);

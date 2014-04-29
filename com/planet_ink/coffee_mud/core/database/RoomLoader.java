@@ -61,11 +61,11 @@ public class RoomLoader
 		try
 		{
 			D=DB.DBFetch();
-			ResultSet R=D.query("SELECT * FROM CMAREA WHERE CMAREA='"+A.Name()+"'");
+			final ResultSet R=D.query("SELECT * FROM CMAREA WHERE CMAREA='"+A.Name()+"'");
 			while(R.next())
 			{
-				String areaName=DBConnections.getRes(R,"CMAREA");
-				String areaType=DBConnections.getRes(R,"CMTYPE");
+				final String areaName=DBConnections.getRes(R,"CMAREA");
+				final String areaType=DBConnections.getRes(R,"CMTYPE");
 				if(A==null) A=CMClass.getAreaType(areaType);
 				if(A==null) A=CMClass.getAreaType("StdArea");
 				if(A==null)
@@ -82,7 +82,7 @@ public class RoomLoader
 				return A;
 			}
 		}
-		catch(SQLException sqle)
+		catch(final SQLException sqle)
 		{
 			Log.errOut("Area",sqle);
 		}
@@ -102,15 +102,15 @@ public class RoomLoader
 		{
 			D=DB.DBFetch();
 			CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"Booting: Counting Areas");
-			ResultSet R=D.query("SELECT * FROM CMAREA");
+			final ResultSet R=D.query("SELECT * FROM CMAREA");
 			recordCount=DB.getRecordCount(D,R);
 			updateBreak=CMath.s_int("1"+zeroes.substring(0,(""+(recordCount/100)).length()-1));
-			LinkedList<Pair<Area,String>> areasLoaded=new LinkedList<Pair<Area,String>>();
+			final LinkedList<Pair<Area,String>> areasLoaded=new LinkedList<Pair<Area,String>>();
 			while(R.next())
 			{
 				currentRecordPos=R.getRow();
-				String areaName=DBConnections.getRes(R,"CMAREA");
-				String areaType=DBConnections.getRes(R,"CMTYPE");
+				final String areaName=DBConnections.getRes(R,"CMAREA");
+				final String areaType=DBConnections.getRes(R,"CMTYPE");
 				Area A=CMClass.getAreaType(areaType);
 				if(A==null) A=CMClass.getAreaType("StdArea");
 				if(A==null)
@@ -122,7 +122,7 @@ public class RoomLoader
 				A.setClimateType((int)DBConnections.getLongRes(R,"CMCLIM"));
 				A.setSubOpList(DBConnections.getRes(R,"CMSUBS"));
 				A.setDescription(DBConnections.getRes(R,"CMDESC"));
-				String miscData=DBConnections.getRes(R,"CMROTX");
+				final String miscData=DBConnections.getRes(R,"CMROTX");
 				A.setTheme((int)DBConnections.getLongRes(R,"CMTECH"));
 				if((currentRecordPos%updateBreak)==0)
 					CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"Booting: Loading Areas ("+currentRecordPos+" of "+recordCount+")");
@@ -130,20 +130,20 @@ public class RoomLoader
 				CMLib.map().addArea(A);
 				areasLoaded.add(new Pair<Area,String>(A,miscData));
 			}
-			for(Pair<Area,String> a : areasLoaded)
+			for(final Pair<Area,String> a : areasLoaded)
 			{
 				a.first.setMiscText(a.second);
 			}
-			for(Pair<Area,String> a : areasLoaded)
+			for(final Pair<Area,String> a : areasLoaded)
 			{
 				a.first.setAreaState(Area.State.ACTIVE);
 			}
 		}
-		catch(SQLException sqle)
+		catch(final SQLException sqle)
 		{
 			Log.errOut("Area",sqle);
 		}
-		catch(Exception sqle)
+		catch(final Exception sqle)
 		{
 			Log.errOut("Area",sqle);
 		}
@@ -155,18 +155,18 @@ public class RoomLoader
 
 	public RoomnumberSet DBReadAreaRoomList(String areaName, boolean reportStatus)
 	{
-		RoomnumberSet roomSet=(RoomnumberSet)CMClass.getCommon("DefaultRoomnumberSet");
+		final RoomnumberSet roomSet=(RoomnumberSet)CMClass.getCommon("DefaultRoomnumberSet");
 		DBConnection D=null;
 		try
 		{
 			D=DB.DBFetch();
 			if(reportStatus)
 				CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"Booting: Fetching roomnums for "+areaName);
-			ResultSet R=D.query("SELECT * FROM CMROOM"+((areaName==null)?"":" WHERE CMAREA='"+areaName+"'"));
+			final ResultSet R=D.query("SELECT * FROM CMROOM"+((areaName==null)?"":" WHERE CMAREA='"+areaName+"'"));
 			while(R.next())
 				roomSet.add(DBConnections.getRes(R,"CMROID"));
 		}
-		catch(SQLException sqle)
+		catch(final SQLException sqle)
 		{
 			Log.errOut("RoomSet",sqle);
 			return null;
@@ -191,11 +191,11 @@ public class RoomLoader
 			D=DB.DBFetch();
 			if(reportStatus)
 				CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"Booting: Counting Rooms");
-			ResultSet R=D.query("SELECT * FROM CMROOM WHERE CMAREA='"+areaName+"'");
-			List<Room> rooms=buildRoomObjects(D,R,reportStatus);
+			final ResultSet R=D.query("SELECT * FROM CMROOM WHERE CMAREA='"+areaName+"'");
+			final List<Room> rooms=buildRoomObjects(D,R,reportStatus);
 			return rooms.toArray(new Room[0]);
 		}
-		catch(SQLException sqle)
+		catch(final SQLException sqle)
 		{
 			Log.errOut("Room",sqle);
 		}
@@ -221,14 +221,14 @@ public class RoomLoader
 		recordCount=DB.getRecordCount(D,R);
 		updateBreak=CMath.s_int("1"+zeroes.substring(0,(""+(recordCount/100)).length()-1));
 		String roomID=null;
-		List<Room> rooms=new Vector<Room>();
+		final List<Room> rooms=new Vector<Room>();
 		while(R.next())
 		{
 			currentRecordPos=R.getRow();
 			roomID=DBConnections.getRes(R,"CMROID");
-			String localeID=DBConnections.getRes(R,"CMLOID");
+			final String localeID=DBConnections.getRes(R,"CMLOID");
 			//String areaName=DBConnections.getRes(R,"CMAREA");
-			Room newRoom=CMClass.getLocale(localeID);
+			final Room newRoom=CMClass.getLocale(localeID);
 			if(newRoom==null)
 				Log.errOut("Room","Couldn't load room '"+roomID+"', localeID '"+localeID+"'.");
 			else
@@ -251,13 +251,13 @@ public class RoomLoader
 		try
 		{
 			D=DB.DBFetch();
-			ResultSet R=D.query("SELECT * FROM CMROOM WHERE CMROID='"+room.roomID()+"'");
+			final ResultSet R=D.query("SELECT * FROM CMROOM WHERE CMROID='"+room.roomID()+"'");
 			if(R.next())
 				buildExistingRoomObject(R, room);
 			else
 				return false;
 		}
-		catch(SQLException sqle)
+		catch(final SQLException sqle)
 		{
 			Log.errOut("Room",sqle);
 			return false;
@@ -277,12 +277,12 @@ public class RoomLoader
 			D=DB.DBFetch();
 			if(reportStatus)
 				CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"Booting: Counting Rooms");
-			ResultSet R=D.query("SELECT * FROM CMROOM WHERE CMROID='"+roomIDtoLoad+"'");
-			List<Room> rooms=buildRoomObjects(D,R,reportStatus);
+			final ResultSet R=D.query("SELECT * FROM CMROOM WHERE CMROID='"+roomIDtoLoad+"'");
+			final List<Room> rooms=buildRoomObjects(D,R,reportStatus);
 			if(rooms.size()>0)
 				return rooms.get(0);
 		}
-		catch(SQLException sqle)
+		catch(final SQLException sqle)
 		{
 			Log.errOut("Room",sqle);
 		}
@@ -299,7 +299,7 @@ public class RoomLoader
 										   List<String> unknownAreas,
 										   RoomnumberSet unloadedRooms)
 	{
-		STreeMap<String, Room> roomSet = new STreeMap<String, Room>(new Comparator<String>()
+		final STreeMap<String, Room> roomSet = new STreeMap<String, Room>(new Comparator<String>()
 		{
 			@Override
 			public int compare(String o1, String o2)
@@ -316,7 +316,7 @@ public class RoomLoader
 			D=DB.DBFetch();
 			if(reportStatus)
 				CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"Booting: Counting Rooms");
-			ResultSet R=D.query("SELECT * FROM CMROOM"+((singleRoomIDtoLoad==null)?"":" WHERE CMROID='"+singleRoomIDtoLoad+"'"));
+			final ResultSet R=D.query("SELECT * FROM CMROOM"+((singleRoomIDtoLoad==null)?"":" WHERE CMROID='"+singleRoomIDtoLoad+"'"));
 			recordCount=DB.getRecordCount(D,R);
 			updateBreak=CMath.s_int("1"+zeroes.substring(0,(""+(recordCount/100)).length()-1));
 			String roomID=null;
@@ -326,8 +326,8 @@ public class RoomLoader
 				roomID=DBConnections.getRes(R,"CMROID");
 				if((roomsToLoad!=null)&&(!roomsToLoad.contains(roomID)))
 					continue;
-				String localeID=DBConnections.getRes(R,"CMLOID");
-				String areaName=DBConnections.getRes(R,"CMAREA");
+				final String localeID=DBConnections.getRes(R,"CMLOID");
+				final String areaName=DBConnections.getRes(R,"CMAREA");
 				Area myArea=CMLib.map().getArea(areaName);
 				if(myArea==null)
 				{
@@ -347,7 +347,7 @@ public class RoomLoader
 						continue;
 					}
 				}
-				Room newRoom=CMClass.getLocale(localeID);
+				final Room newRoom=CMClass.getLocale(localeID);
 				if(newRoom==null)
 					Log.errOut("Room","Couldn't load room '"+roomID+"', localeID '"+localeID+"'.");
 				else
@@ -367,7 +367,7 @@ public class RoomLoader
 					CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"Booting: Loading Rooms ("+currentRecordPos+" of "+recordCount+")");
 			}
 		}
-		catch(SQLException sqle)
+		catch(final SQLException sqle)
 		{
 			Log.errOut("Room",sqle);
 			return null;
@@ -381,7 +381,7 @@ public class RoomLoader
 
 	public void DBReadRoomExits(String roomID, Room room, boolean reportStatus)
 	{
-		Map<String,Room> map=new TreeMap<String,Room>();
+		final Map<String,Room> map=new TreeMap<String,Room>();
 		map.put(roomID, room);
 		DBReadRoomExits(roomID,map,reportStatus,null);
 	}
@@ -395,7 +395,7 @@ public class RoomLoader
 			D=DB.DBFetch();
 			if(reportStatus)
 				CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"Booting: Counting Exits");
-			ResultSet R=D.query("SELECT * FROM CMROEX"+((roomID==null)?"":" WHERE CMROID='"+roomID+"'"));
+			final ResultSet R=D.query("SELECT * FROM CMROEX"+((roomID==null)?"":" WHERE CMROID='"+roomID+"'"));
 			Room thisRoom=null;
 			Room newRoom=null;
 			recordCount=DB.getRecordCount(D,R);
@@ -404,7 +404,7 @@ public class RoomLoader
 			{
 				currentRecordPos=R.getRow();
 				roomID=DBConnections.getRes(R,"CMROID");
-				int direction=(int)DBConnections.getLongRes(R,"CMDIRE");
+				final int direction=(int)DBConnections.getLongRes(R,"CMDIRE");
 				thisRoom=allRooms.get(roomID);
 				if(thisRoom==null)
 				{
@@ -413,17 +413,17 @@ public class RoomLoader
 				}
 				else
 				{
-					String exitID=DBConnections.getRes(R,"CMEXID");
-					String exitMiscText=DBConnections.getResQuietly(R,"CMEXTX");
-					String nextRoomID=DBConnections.getRes(R,"CMNRID");
+					final String exitID=DBConnections.getRes(R,"CMEXID");
+					final String exitMiscText=DBConnections.getResQuietly(R,"CMEXTX");
+					final String nextRoomID=DBConnections.getRes(R,"CMNRID");
 					newRoom=allRooms.get(nextRoomID);
-					Exit newExit=CMClass.getExit(exitID);
+					final Exit newExit=CMClass.getExit(exitID);
 					if(nextRoomID.length()==0)
 					{ /* this is likely a room link (rebuilt by import at a later time) */}
 					else
 					if(newRoom==null)
 					{
-						int x=nextRoomID.indexOf('#');
+						final int x=nextRoomID.indexOf('#');
 						Area otherA=null;
 						if((unloadedRooms!=null)&&(unloadedRooms.contains(nextRoomID)))
 							otherA=thisRoom.getArea();
@@ -463,15 +463,15 @@ public class RoomLoader
 					else
 					if((direction>255)&&(newRoom!=null))
 					{
-						List<String> CEs=CMParms.parseSemicolons(exitMiscText.trim(),true);
+						final List<String> CEs=CMParms.parseSemicolons(exitMiscText.trim(),true);
 						for(int ces=0;ces<CEs.size();ces++)
 						{
-							Vector<String> SCE=CMParms.parse(CEs.get(ces).trim());
-							WorldMap.CrossExit CE=new WorldMap.CrossExit();
+							final Vector<String> SCE=CMParms.parse(CEs.get(ces).trim());
+							final WorldMap.CrossExit CE=new WorldMap.CrossExit();
 							if(SCE.size()<3) continue;
 							CE.x=CMath.s_int(SCE.elementAt(0));
 							CE.y=CMath.s_int(SCE.elementAt(1));
-							int codeddir=CMath.s_int(SCE.elementAt(2));
+							final int codeddir=CMath.s_int(SCE.elementAt(2));
 							if(SCE.size()>=4)
 								CE.destRoomID=newRoom.roomID()+SCE.elementAt(3);
 							else
@@ -507,7 +507,7 @@ public class RoomLoader
 					CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"Booting: Loading Exits ("+currentRecordPos+" of "+recordCount+")");
 			}
 		}
-		catch(SQLException sqle)
+		catch(final SQLException sqle)
 		{
 			Log.errOut("Room",sqle);
 		}
@@ -519,26 +519,26 @@ public class RoomLoader
 
 	public void DBReadAllRooms(RoomnumberSet set)
 	{
-		List<String> newAreasToCreate=new Vector<String>();
+		final List<String> newAreasToCreate=new Vector<String>();
 		if(set==null)
 			DBReadAllAreas();
 		if(CMLib.map().numAreas()==0)
 			return;
 
-		RoomnumberSet unloadedRooms=(RoomnumberSet)CMClass.getCommon("DefaultRoomnumberSet");
-		Map<String,Room> rooms=DBReadRoomData(null,set,set==null,newAreasToCreate,unloadedRooms);
+		final RoomnumberSet unloadedRooms=(RoomnumberSet)CMClass.getCommon("DefaultRoomnumberSet");
+		final Map<String,Room> rooms=DBReadRoomData(null,set,set==null,newAreasToCreate,unloadedRooms);
 
 		// handle stray areas
-		for(String areaName : newAreasToCreate)
+		for(final String areaName : newAreasToCreate)
 		{
 			Log.sysOut("Area","Creating unhandled area: "+areaName);
-			Area A=CMClass.getAreaType("StdArea");
+			final Area A=CMClass.getAreaType("StdArea");
 			A.setName(areaName);
 			DBCreate(A);
 			CMLib.map().addArea(A);
-			for(Map.Entry<String,Room> entry : rooms.entrySet())
+			for(final Map.Entry<String,Room> entry : rooms.entrySet())
 			{
-				Room R=entry.getValue();
+				final Room R=entry.getValue();
 				if(R.getArea().Name().equals(areaName))
 					R.setArea(A);
 			}
@@ -551,15 +551,15 @@ public class RoomLoader
 		if(set==null)
 			CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"Booting: Finalizing room data)");
 
-		for(Map.Entry<String,Room> entry : rooms.entrySet())
+		for(final Map.Entry<String,Room> entry : rooms.entrySet())
 		{
-			Room thisRoom=entry.getValue();
+			final Room thisRoom=entry.getValue();
 			thisRoom.startItemRejuv();
 			thisRoom.recoverRoomStats();
 		}
 
 		if(set==null)
-			for(Enumeration<Area> a=CMLib.map().areas();a.hasMoreElements();)
+			for(final Enumeration<Area> a=CMLib.map().areas();a.hasMoreElements();)
 				a.nextElement().getAreaStats();
 	}
 
@@ -570,14 +570,14 @@ public class RoomLoader
 		try
 		{
 			D=DB.DBFetch();
-			ResultSet R=D.query("SELECT * FROM CMROOM WHERE CMROID='"+roomID+"'");
+			final ResultSet R=D.query("SELECT * FROM CMROOM WHERE CMROID='"+roomID+"'");
 			if(R.next())
 			{
-				String txt=DBConnections.getRes(R,"CMDESC2");
+				final String txt=DBConnections.getRes(R,"CMDESC2");
 				return txt;
 			}
 		}
-		catch(SQLException sqle)
+		catch(final SQLException sqle)
 		{
 			Log.errOut("Room",sqle);
 		}
@@ -595,18 +595,18 @@ public class RoomLoader
 		try
 		{
 			D=DB.DBFetch();
-			ResultSet R=D.query("SELECT * FROM CMROCH WHERE CMROID='"+roomID+"'");
+			final ResultSet R=D.query("SELECT * FROM CMROCH WHERE CMROID='"+roomID+"'");
 			while(R.next())
 			{
-				String NUMID=DBConnections.getRes(R,"CMCHNM");
+				final String NUMID=DBConnections.getRes(R,"CMCHNM");
 				if(NUMID.equalsIgnoreCase(mobID))
 				{
-					String txt=DBConnections.getRes(R,"CMCHTX");
+					final String txt=DBConnections.getRes(R,"CMCHTX");
 					return txt;
 				}
 			}
 		}
-		catch(SQLException sqle)
+		catch(final SQLException sqle)
 		{
 			Log.errOut("Room",sqle);
 		}
@@ -619,11 +619,11 @@ public class RoomLoader
 
 	private void fixItemKeys(Hashtable<Item,String> itemLocs, Hashtable<String, PhysicalAgent> itemNums)
 	{
-		for(Enumeration<Item> e=itemLocs.keys();e.hasMoreElements();)
+		for(final Enumeration<Item> e=itemLocs.keys();e.hasMoreElements();)
 		{
-			Item keyItem=e.nextElement();
-			String location=itemLocs.get(keyItem);
-			Environmental container=itemNums.get(location);
+			final Item keyItem=e.nextElement();
+			final String location=itemLocs.get(keyItem);
+			final Environmental container=itemNums.get(location);
 			if((container instanceof Container)&&(((Container)container).capacity()>0))
 				keyItem.setContainer((Container)container);
 			else
@@ -637,12 +637,12 @@ public class RoomLoader
 
 	private void fixMOBRides(Map<MOB, String> mobRides, Map<String,PhysicalAgent> itemNums)
 	{
-		for(MOB M : mobRides.keySet())
+		for(final MOB M : mobRides.keySet())
 		{
-			String ride=mobRides.get(M);
+			final String ride=mobRides.get(M);
 			if(ride!=null)
 			{
-				PhysicalAgent P=itemNums.get(ride);
+				final PhysicalAgent P=itemNums.get(ride);
 				if(P!=null)
 				{
 					if(P instanceof Rideable)
@@ -661,9 +661,9 @@ public class RoomLoader
 		Hashtable<Item,String> itemLocs=null;
 		Hashtable<MOB, String> mobRides=null;
 		if(room != null)
-			for(Enumeration<PhysicalAgent> i=content.elements();i.hasMoreElements();)
+			for(final Enumeration<PhysicalAgent> i=content.elements();i.hasMoreElements();)
 			{
-				PhysicalAgent P=i.nextElement();
+				final PhysicalAgent P=i.nextElement();
 				if((debug)&&((lastName==null)||(!lastName.equals(P.Name()))))
 				{lastName=P.Name(); Log.debugOut("RoomLoader","Loading object(s): "+P.Name());}
 				if(P instanceof Item)
@@ -710,17 +710,17 @@ public class RoomLoader
 
 	public void DBReadContent(String thisRoomID, Room thisRoom, Map<String, Room> rooms, RoomnumberSet unloadedRooms, boolean setStatus, boolean makeLive)
 	{
-		boolean debug=Log.debugChannelOn()&&(CMSecurity.isDebugging(CMSecurity.DbgFlag.DBROOMPOP));
+		final boolean debug=Log.debugChannelOn()&&(CMSecurity.isDebugging(CMSecurity.DbgFlag.DBROOMPOP));
 		if(debug||(Log.debugChannelOn()&&(CMSecurity.isDebugging(CMSecurity.DbgFlag.DBROOMS))))
 			Log.debugOut("RoomLoader","Reading content of "+((thisRoomID!=null)?thisRoomID:"ALL"));
 
-		StuffClass stuff=new StuffClass();
+		final StuffClass stuff=new StuffClass();
 		Hashtable<String,PhysicalAgent> itemNums=null;
 		Hashtable<String,String> cataData=null;
 		Hashtable<Item,String> itemLocs=null;
 		Hashtable<MOB, String> mobRides=null;
 
-		boolean catalog=((thisRoomID!=null)&&(thisRoomID.startsWith("CATALOG_")));
+		final boolean catalog=((thisRoomID!=null)&&(thisRoomID.startsWith("CATALOG_")));
 
 		DBConnection D=null;
 		// now grab the items
@@ -729,13 +729,13 @@ public class RoomLoader
 			D=DB.DBFetch();
 			if(setStatus)
 				CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"Booting: Counting Items");
-			ResultSet R=D.query("SELECT * FROM CMROIT"+((thisRoomID==null)?"":" WHERE CMROID='"+thisRoomID+"'"));
+			final ResultSet R=D.query("SELECT * FROM CMROIT"+((thisRoomID==null)?"":" WHERE CMROID='"+thisRoomID+"'"));
 			if(setStatus) recordCount=DB.getRecordCount(D,R);
 			updateBreak=CMath.s_int("1"+zeroes.substring(0,(""+(recordCount/100)).length()-1));
 			while(R.next())
 			{
 				currentRecordPos=R.getRow();
-				String roomID=DBConnections.getRes(R,"CMROID");
+				final String roomID=DBConnections.getRes(R,"CMROID");
 				if((unloadedRooms!=null)&&(unloadedRooms.contains(roomID)))
 					continue;
 				if((!catalog)&&(roomID.startsWith("CATALOG_")))
@@ -752,21 +752,21 @@ public class RoomLoader
 					itemLocs=new Hashtable<Item,String>();
 					stuff.itemLocs.put("LOCSFOR"+roomID.toUpperCase(),itemLocs);
 				}
-				String itemNum=DBConnections.getRes(R,"CMITNM");
-				String itemID=DBConnections.getRes(R,"CMITID");
-				Item newItem=CMClass.getItem(itemID);
+				final String itemNum=DBConnections.getRes(R,"CMITNM");
+				final String itemID=DBConnections.getRes(R,"CMITID");
+				final Item newItem=CMClass.getItem(itemID);
 				if(newItem==null)
 					Log.errOut("Room","Couldn't find item '"+itemID+"' for room "+roomID);
 				else
 				{
 					newItem.setDatabaseID(itemNum);
 					itemNums.put(itemNum,newItem);
-					Room room=(rooms!=null)?rooms.get(roomID):thisRoom;
+					final Room room=(rooms!=null)?rooms.get(roomID):thisRoom;
 					newItem.setOwner(room); // temporary measure to make sure item behavior thread group is properly assigned
-					String loc=DBConnections.getResQuietly(R,"CMITLO");
+					final String loc=DBConnections.getResQuietly(R,"CMITLO");
 					if(loc.length()>0)
 					{
-						PhysicalAgent container=itemNums.get(loc);
+						final PhysicalAgent container=itemNums.get(loc);
 						if(container instanceof Container)
 							newItem.setContainer((Container)container);
 						else
@@ -777,7 +777,7 @@ public class RoomLoader
 						if(catalog)
 						{
 							String text=DBConnections.getResQuietly(R,"CMITTX");
-							int x=text.lastIndexOf("<CATALOGDATA");
+							final int x=text.lastIndexOf("<CATALOGDATA");
 							if((x>0)&&(text.indexOf("</CATALOGDATA>",x)>0))
 							{
 								cataData=stuff.cataData.get("CATADATAFOR"+roomID.toUpperCase());
@@ -800,13 +800,13 @@ public class RoomLoader
 						newItem.basePhyStats().setHeight((int)DBConnections.getLongRes(R,"CMHEIT"));
 						newItem.recoverPhyStats();
 					}
-					catch(Exception e) { Log.errOut("RoomLoader",e); itemNums.remove(itemNum);}
+					catch(final Exception e) { Log.errOut("RoomLoader",e); itemNums.remove(itemNum);}
 				}
 				if(((currentRecordPos%updateBreak)==0)&&(setStatus))
 					CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"Booting: Loading Items ("+currentRecordPos+" of "+recordCount+")");
 			}
 		}
-		catch(SQLException sqle)
+		catch(final SQLException sqle)
 		{
 			Log.errOut("Room",sqle);
 		}
@@ -821,19 +821,19 @@ public class RoomLoader
 			D=DB.DBFetch();
 			if(setStatus)
 				CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"Booting: Counting MOBS");
-			ResultSet R=D.query("SELECT * FROM CMROCH"+((thisRoomID==null)?"":" WHERE CMROID='"+thisRoomID+"'"));
+			final ResultSet R=D.query("SELECT * FROM CMROCH"+((thisRoomID==null)?"":" WHERE CMROID='"+thisRoomID+"'"));
 			if(setStatus) recordCount=DB.getRecordCount(D,R);
 			updateBreak=CMath.s_int("1"+zeroes.substring(0,(""+(recordCount/100)).length()-1));
 			while(R.next())
 			{
 				currentRecordPos=R.getRow();
-				String roomID=DBConnections.getRes(R,"CMROID");
+				final String roomID=DBConnections.getRes(R,"CMROID");
 				if((unloadedRooms!=null)&&(unloadedRooms.contains(roomID)))
 					continue;
 				if((!catalog)&&(roomID.startsWith("CATALOG_")))
 					continue;
-				String NUMID=DBConnections.getRes(R,"CMCHNM");
-				String MOBID=DBConnections.getRes(R,"CMCHID");
+				final String NUMID=DBConnections.getRes(R,"CMCHNM");
+				final String MOBID=DBConnections.getRes(R,"CMCHID");
 
 				itemNums=stuff.itemNums.get("NUMSFOR"+roomID.toUpperCase());
 				if(itemNums==null)
@@ -848,12 +848,12 @@ public class RoomLoader
 					stuff.mobRides.put("RIDESFOR"+roomID.toUpperCase(),mobRides);
 				}
 
-				MOB newMOB=CMClass.getMOB(MOBID);
+				final MOB newMOB=CMClass.getMOB(MOBID);
 				if(newMOB==null)
 					Log.errOut("Room","Couldn't find MOB '"+MOBID+"'");
 				else
 				{
-					Room room=(rooms!=null)?rooms.get(roomID):thisRoom;
+					final Room room=(rooms!=null)?rooms.get(roomID):thisRoom;
 					newMOB.setLocation(room); // temporary measure to make sure thread group is properly assigned
 					newMOB.setDatabaseID(NUMID);
 					itemNums.put(NUMID,newMOB);
@@ -873,7 +873,7 @@ public class RoomLoader
 							String text=DBConnections.getResQuietly(R,"CMCHTX");
 							if(catalog)
 							{
-								int x=text.lastIndexOf("<CATALOGDATA");
+								final int x=text.lastIndexOf("<CATALOGDATA");
 								if((x>0)&&(text.indexOf("</CATALOGDATA>",x)>0))
 								{
 									cataData=stuff.cataData.get("CATADATAFOR"+roomID.toUpperCase());
@@ -891,7 +891,7 @@ public class RoomLoader
 						newMOB.basePhyStats().setLevel(((int)DBConnections.getLongRes(R,"CMCHLV")));
 						newMOB.basePhyStats().setAbility((int)DBConnections.getLongRes(R,"CMCHAB"));
 						newMOB.basePhyStats().setRejuv((int)DBConnections.getLongRes(R,"CMCHRE"));
-						String ride=DBConnections.getRes(R,"CMCHRI");
+						final String ride=DBConnections.getRes(R,"CMCHRI");
 						if((ride!=null)&&(ride.length()>0))
 							mobRides.put(newMOB,ride);
 						newMOB.recoverCharStats();
@@ -899,13 +899,13 @@ public class RoomLoader
 						newMOB.recoverMaxState();
 						newMOB.resetToMaxState();
 					}
-					catch(Exception e) { Log.errOut("RoomLoader",e); itemNums.remove(NUMID);}
+					catch(final Exception e) { Log.errOut("RoomLoader",e); itemNums.remove(NUMID);}
 				}
 				if(((currentRecordPos%updateBreak)==0)&&(setStatus))
 					CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"Booting: Loading MOBs ("+currentRecordPos+" of "+recordCount+")");
 			}
 		}
-		catch(SQLException sqle)
+		catch(final SQLException sqle)
 		{
 			Log.errOut("Room",sqle);
 		}
@@ -930,12 +930,12 @@ public class RoomLoader
 			Item I;
 			String data;
 			fixContentContainers(itemNums,stuff,"CATALOG_ITEMS",null,debug,false);
-			for(Enumeration<String> e=itemNums.keys();e.hasMoreElements();)
+			for(final Enumeration<String> e=itemNums.keys();e.hasMoreElements();)
 			{
 				itemNum=e.nextElement();
 				I=(Item)itemNums.get(itemNum);
 				data=(cataData!=null)?cataData.get(itemNum):null;
-				Item oldI=CMLib.catalog().getCatalogItem(I.Name());
+				final Item oldI=CMLib.catalog().getCatalogItem(I.Name());
 				if((oldI!=null)&&(I.databaseID().length()>0)&&(!oldI.databaseID().equals(I.databaseID())))
 					DBDeleteRoomItem("CATALOG_ITEMS", I);
 				else
@@ -943,7 +943,7 @@ public class RoomLoader
 					CMLib.catalog().submitToCatalog(I);
 					if((data!=null)&&(data.length()>0))
 					{
-						CatalogLibrary.CataData dataI=CMLib.catalog().getCatalogItemData(I.Name());
+						final CatalogLibrary.CataData dataI=CMLib.catalog().getCatalogItemData(I.Name());
 						if(dataI!=null)
 							dataI.build(data);
 					}
@@ -960,12 +960,12 @@ public class RoomLoader
 			MOB M;
 			String data;
 			fixContentContainers(itemNums,stuff,"CATALOG_MOBS",null,debug,false);
-			for(Enumeration<String> e=itemNums.keys();e.hasMoreElements();)
+			for(final Enumeration<String> e=itemNums.keys();e.hasMoreElements();)
 			{
 				itemNum=e.nextElement();
 				M=(MOB)itemNums.get(itemNum);
 				data=(cataData!=null)?cataData.get(itemNum):null;
-				MOB oldM=CMLib.catalog().getCatalogMob(M.Name());
+				final MOB oldM=CMLib.catalog().getCatalogMob(M.Name());
 				if((oldM!=null)&&(M.databaseID().length()>0)&&(!oldM.databaseID().equals(M.databaseID())))
 					DBDeleteRoomMOB("CATALOG_MOBS", M);
 				else
@@ -973,7 +973,7 @@ public class RoomLoader
 					CMLib.catalog().submitToCatalog(M);
 					if((data!=null)&&(data.length()>0))
 					{
-						CatalogLibrary.CataData dataM=CMLib.catalog().getCatalogMobData(M.Name());
+						final CatalogLibrary.CataData dataM=CMLib.catalog().getCatalogMobData(M.Name());
 						if(dataM!=null)
 							dataM.build(data);
 					}
@@ -983,11 +983,11 @@ public class RoomLoader
 
 		// now load the rooms
 		if(rooms!=null)
-		for(Map.Entry<String,Room> entry : rooms.entrySet())
+		for(final Map.Entry<String,Room> entry : rooms.entrySet())
 		{
 			if((((++currentRecordPos)%updateBreak)==0)&&(setStatus))
 				CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"Booting: Populating Rooms ("+(currentRecordPos)+" of "+recordCount+")");
-			Room room=entry.getValue();
+			final Room room=entry.getValue();
 			if(debug) Log.debugOut("RoomLoader","Populating room: "+room.roomID());
 			itemNums=stuff.itemNums.get("NUMSFOR"+room.roomID().toUpperCase());
 			if(itemNums!=null)
@@ -1001,10 +1001,10 @@ public class RoomLoader
 	private List<Item> DBGetContents(Room room)
 	{
 		if((!room.isSavable())||(room.amDestroyed())) return new Vector<Item>();
-		List<Item> contents=new Vector<Item>();
+		final List<Item> contents=new Vector<Item>();
 		for(int i=0;i<room.numItems();i++)
 		{
-			Item thisItem=room.getItem(i);
+			final Item thisItem=room.getItem(i);
 			if((thisItem!=null)&&(!contents.contains(thisItem))&&thisItem.isSavable())
 				contents.add(thisItem);
 		}
@@ -1013,24 +1013,24 @@ public class RoomLoader
 
 	protected DBPreparedBatchEntry getDBCreateItemString(String roomID, Item thisItem)
 	{
-		boolean catalog=((roomID!=null)&&(roomID.startsWith("CATALOG_")));
+		final boolean catalog=((roomID!=null)&&(roomID.startsWith("CATALOG_")));
 		thisItem.setExpirationDate(0); // saved items won't clear!
 		Environmental container=thisItem.container();
 		if((container==null)
 		&&(thisItem.riding()!=null)
 		&&(thisItem.riding().isSavable()))
 		{
-			Room room=CMLib.map().roomLocation(thisItem);
+			final Room room=CMLib.map().roomLocation(thisItem);
 			if(((room!=null)&&(room.isHere(thisItem.riding())))
 			||(CMLib.catalog().isCatalogObj(thisItem.riding())))
 				container=thisItem.riding();
 		}
-		String itemID=""+thisItem;
+		final String itemID=""+thisItem;
 		thisItem.setDatabaseID(itemID);
 		String text=thisItem.text();
 		if(catalog)
 		{
-			CatalogLibrary.CataData dataI=CMLib.catalog().getCatalogItemData(thisItem.Name());
+			final CatalogLibrary.CataData dataI=CMLib.catalog().getCatalogItemData(thisItem.Name());
 			if(dataI!=null)
 				text+=dataI.data();
 		}
@@ -1069,11 +1069,11 @@ public class RoomLoader
 		if((!room.isSavable())||(room.amDestroyed())) return;
 		if(Log.debugChannelOn()&&(CMSecurity.isDebugging(CMSecurity.DbgFlag.CMROIT)||CMSecurity.isDebugging(CMSecurity.DbgFlag.DBROOMS)))
 			Log.debugOut("RoomLoader","Start item update for room "+room.roomID());
-		List<DBPreparedBatchEntry> statements=new Vector<DBPreparedBatchEntry>();
+		final List<DBPreparedBatchEntry> statements=new Vector<DBPreparedBatchEntry>();
 		statements.add(new DBPreparedBatchEntry("DELETE FROM CMROIT WHERE CMROID='"+room.roomID()+"'"));
 		for(int i=0;i<items.size();i++)
 		{
-			Item thisItem=items.get(i);
+			final Item thisItem=items.get(i);
 			CMLib.map().registerWorldObjectLoaded(room.getArea(), room, thisItem);
 			statements.add(getDBCreateItemString(room.roomID(),thisItem));
 		}
@@ -1094,7 +1094,7 @@ public class RoomLoader
 
 		if(Log.debugChannelOn()&&(CMSecurity.isDebugging(CMSecurity.DbgFlag.CMROEX)||CMSecurity.isDebugging(CMSecurity.DbgFlag.DBROOMS)))
 			Log.debugOut("RoomLoader","Starting exit update for room "+room.roomID());
-		List<DBPreparedBatchEntry> statements=new Vector<DBPreparedBatchEntry>();
+		final List<DBPreparedBatchEntry> statements=new Vector<DBPreparedBatchEntry>();
 		statements.add(new DBPreparedBatchEntry("DELETE FROM CMROEX WHERE CMROID='"+room.roomID()+"'"));
 		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 		{
@@ -1126,32 +1126,32 @@ public class RoomLoader
 		}
 		if(room instanceof GridLocale)
 		{
-			HashSet<String> done=new HashSet<String>();
+			final HashSet<String> done=new HashSet<String>();
 			int ordinal=0;
-			for(Iterator<WorldMap.CrossExit> i=((GridLocale)room).outerExits();i.hasNext();)
+			for(final Iterator<WorldMap.CrossExit> i=((GridLocale)room).outerExits();i.hasNext();)
 			{
-				WorldMap.CrossExit CE=i.next();
+				final WorldMap.CrossExit CE=i.next();
 				Room R=CMLib.map().getRoom(CE.destRoomID);
 				if(R==null) continue;
 				if(R.getGridParent()!=null) R=R.getGridParent();
 				if((R!=null)&&(R.isSavable())&&(!done.contains(R.roomID())))
 				{
 					done.add(R.roomID());
-					HashSet<String> oldStrs=new HashSet<String>();
-					for(Iterator<WorldMap.CrossExit> i2=((GridLocale)room).outerExits();i2.hasNext();)
+					final HashSet<String> oldStrs=new HashSet<String>();
+					for(final Iterator<WorldMap.CrossExit> i2=((GridLocale)room).outerExits();i2.hasNext();)
 					{
-						WorldMap.CrossExit CE2=i2.next();
+						final WorldMap.CrossExit CE2=i2.next();
 						if((CE2.destRoomID.equals(R.roomID())
 						||(CE2.destRoomID.startsWith(R.roomID()+"#("))))
 						{
-							String str=CE2.x+" "+CE2.y+" "+((CE2.out?256:512)|CE2.dir)+" "+CE2.destRoomID.substring(R.roomID().length())+";";
+							final String str=CE2.x+" "+CE2.y+" "+((CE2.out?256:512)|CE2.dir)+" "+CE2.destRoomID.substring(R.roomID().length())+";";
 							if(!oldStrs.contains(str))
 								oldStrs.add(str);
 						}
 					}
-					StringBuffer exitStr=new StringBuffer("");
-					for(Iterator<String> a=oldStrs.iterator();a.hasNext();)
-						exitStr.append(a.next());
+					final StringBuffer exitStr=new StringBuffer("");
+					for (final String string : oldStrs)
+						exitStr.append(string);
 					statements.add(new DBPreparedBatchEntry(
 					"INSERT INTO CMROEX ("
 					+"CMROID, "
@@ -1183,7 +1183,7 @@ public class RoomLoader
 	{
 		if(Log.debugChannelOn()&&(CMSecurity.isDebugging(CMSecurity.DbgFlag.CMROCH)||CMSecurity.isDebugging(CMSecurity.DbgFlag.DBROOMS)))
 			Log.debugOut("RoomLoader","Creating mob "+thisMOB.name()+" for room "+roomID);
-		boolean catalog=((roomID!=null)&&(roomID.startsWith("CATALOG_")));
+		final boolean catalog=((roomID!=null)&&(roomID.startsWith("CATALOG_")));
 
 		String ride=null;
 		if(thisMOB.riding()!=null)
@@ -1193,7 +1193,7 @@ public class RoomLoader
 			ride=""+thisMOB.amFollowing();
 		else
 			ride="";
-		String mobID=""+thisMOB;
+		final String mobID=""+thisMOB;
 		thisMOB.setDatabaseID(mobID);
 
 		if(Log.debugChannelOn()&&(CMSecurity.isDebugging(CMSecurity.DbgFlag.CMROCH)||CMSecurity.isDebugging(CMSecurity.DbgFlag.DBROOMS)))
@@ -1205,7 +1205,7 @@ public class RoomLoader
 		String text=thisMOB.text();
 		if(catalog)
 		{
-			CatalogLibrary.CataData dataM=CMLib.catalog().getCatalogMobData(thisMOB.Name());
+			final CatalogLibrary.CataData dataM=CMLib.catalog().getCatalogMobData(thisMOB.Name());
 			if(dataM!=null)
 				text+=dataM.data();
 		}
@@ -1238,11 +1238,11 @@ public class RoomLoader
 		if(Log.debugChannelOn()&&(CMSecurity.isDebugging(CMSecurity.DbgFlag.CMROCH)||CMSecurity.isDebugging(CMSecurity.DbgFlag.DBROOMS)))
 			Log.debugOut("RoomLoader","Updating mobs for room "+room.roomID());
 		if(mobs==null) mobs=new Vector<MOB>();
-		List<DBPreparedBatchEntry> statements=new Vector<DBPreparedBatchEntry>();
+		final List<DBPreparedBatchEntry> statements=new Vector<DBPreparedBatchEntry>();
 		statements.add(new DBPreparedBatchEntry("DELETE FROM CMROCH WHERE CMROID='"+room.roomID()+"'"));
 		for(int m=0;m<mobs.size();m++)
 		{
-			MOB thisMOB=mobs.get(m);
+			final MOB thisMOB=mobs.get(m);
 			CMLib.map().registerWorldObjectLoaded(room.getArea(), room, thisMOB);
 			statements.add(getDBCreateMOBString(room.roomID(),thisMOB));
 		}
@@ -1254,10 +1254,10 @@ public class RoomLoader
 	public void DBUpdateMOBs(Room room)
 	{
 		if((!room.isSavable())||(room.amDestroyed())) return;
-		Vector<MOB> mobs=new Vector<MOB>();
+		final Vector<MOB> mobs=new Vector<MOB>();
 		for(int m=0;m<room.numInhabitants();m++)
 		{
-			MOB thisMOB=room.fetchInhabitant(m);
+			final MOB thisMOB=room.fetchInhabitant(m);
 			if((thisMOB!=null)&&(thisMOB.isSavable()))
 				mobs.addElement(thisMOB);
 		}
@@ -1311,7 +1311,7 @@ public class RoomLoader
 		if(CMProps.getBoolVar(CMProps.Bool.MOBNOCACHE))
 			for(int m=0;m<room.numInhabitants();m++)
 			{
-				MOB M=room.fetchInhabitant(m);
+				final MOB M=room.fetchInhabitant(m);
 				if((M!=null)&&(M.isSavable()))
 					M.setMiscText(M.text());
 			}
@@ -1384,7 +1384,7 @@ public class RoomLoader
 		if((A==null)||(!A.isSavable())) return;
 		if(Log.debugChannelOn()&&(CMSecurity.isDebugging(CMSecurity.DbgFlag.CMAREA)||CMSecurity.isDebugging(CMSecurity.DbgFlag.DBROOMS)))
 			Log.debugOut("RoomLoader","Updating area "+A.name());
-		boolean ignoreType=CMSecurity.isDisabled(CMSecurity.DisFlag.FATAREAS)||CMSecurity.isDisabled(CMSecurity.DisFlag.THINAREAS);
+		final boolean ignoreType=CMSecurity.isDisabled(CMSecurity.DisFlag.FATAREAS)||CMSecurity.isDisabled(CMSecurity.DisFlag.THINAREAS);
 		CMLib.map().registerWorldObjectLoaded(A, null, A);
 		DB.updateWithClobs(
 		"UPDATE CMAREA SET "

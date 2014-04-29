@@ -53,7 +53,7 @@ public class GateGuard extends StdBehavior
 		super.setParms(parm);
 		keepLocked=false;
 		allnight=false;
-		Vector<String> V=CMParms.parse(parm);
+		final Vector<String> V=CMParms.parse(parm);
 		for(int v=0;v<V.size();v++)
 		{
 			if(V.elementAt(v).equalsIgnoreCase("keeplocked"))
@@ -76,13 +76,13 @@ public class GateGuard extends StdBehavior
 	{
 		if(!CMLib.flags().isInTheGame(mob,false))
 			return -1;
-		Room R=mob.location();
+		final Room R=mob.location();
 		if(R!=null)
 		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 		{
 			if(R.getRoomInDir(d)!=null)
 			{
-				Exit e=R.getExitInDir(d);
+				final Exit e=R.getExitInDir(d);
 				if((e!=null)&&(e.hasADoor()))
 					return d;
 			}
@@ -93,10 +93,10 @@ public class GateGuard extends StdBehavior
 	protected DoorKey getMyKeyTo(MOB mob, Exit e)
 	{
 		DoorKey key=null;
-		String keyCode=e.keyName();
+		final String keyCode=e.keyName();
 		for(int i=0;i<mob.numItems();i++)
 		{
-			Item item=mob.getItem(i);
+			final Item item=mob.getItem(i);
 			if((item instanceof DoorKey)&&(((DoorKey)item).getKey().equals(keyCode)))
 			{
 				key=(DoorKey)item;
@@ -118,7 +118,7 @@ public class GateGuard extends StdBehavior
 		int num=0;
 		for(int i=0;i<room.numInhabitants();i++)
 		{
-			MOB M=room.fetchInhabitant(i);
+			final MOB M=room.fetchInhabitant(i);
 			if((M!=null)
 			&&(!M.isMonster())
 			&&(CMLib.flags().canBeSeenBy(M,mob))
@@ -133,7 +133,7 @@ public class GateGuard extends StdBehavior
 	{
 		if(host instanceof MOB)
 		{
-			MOB mob=(MOB)host;
+			final MOB mob=(MOB)host;
 			if((msg.targetMinor()==CMMsg.TYP_KNOCK)
 			&&(!msg.amISource(mob))
 			&&(mob.location()!=null)
@@ -142,11 +142,11 @@ public class GateGuard extends StdBehavior
 			&&(CMLib.flags().canHear(mob))
 			&&(canFreelyBehaveNormal(host)))
 			{
-				int dir=findGate(mob);
+				final int dir=findGate(mob);
 				if((dir>=0)
 				&&(CMLib.masking().maskCheck(getParms(),msg.source(),false)))
 				{
-					Exit e=mob.location().getExitInDir(dir);
+					final Exit e=mob.location().getExitInDir(dir);
 					if(msg.amITarget(e))
 						heardKnock=true;
 				}
@@ -162,10 +162,10 @@ public class GateGuard extends StdBehavior
 
 		if(tickID!=Tickable.TICKID_MOB) return true;
 		if(!canFreelyBehaveNormal(ticking)) return true;
-		MOB mob=(MOB)ticking;
-		int dir=findGate(mob);
+		final MOB mob=(MOB)ticking;
+		final int dir=findGate(mob);
 		if(dir<0) return true;
-		Exit e=mob.location().getExitInDir(dir);
+		final Exit e=mob.location().getExitInDir(dir);
 		int numPlayers=numValidPlayers(mob,mob.location());
 		if(noticeTock==0)
 		{
@@ -176,7 +176,7 @@ public class GateGuard extends StdBehavior
 				{
 					if(getMyKeyTo(mob,e)!=null)
 					{
-						CMMsg msg=CMClass.getMsg(mob,e,CMMsg.MSG_LOCK,"<S-NAME> lock(s) <T-NAME>.");
+						final CMMsg msg=CMClass.getMsg(mob,e,CMMsg.MSG_LOCK,"<S-NAME> lock(s) <T-NAME>.");
 						if(mob.location().okMessage(mob,msg))
 							CMLib.utensils().roomAffectFully(msg,mob.location(),dir);
 					}
@@ -188,7 +188,7 @@ public class GateGuard extends StdBehavior
 				{
 					if(getMyKeyTo(mob,e)!=null)
 					{
-						CMMsg msg=CMClass.getMsg(mob,e,CMMsg.MSG_UNLOCK,"<S-NAME> unlock(s) <T-NAME>.");
+						final CMMsg msg=CMClass.getMsg(mob,e,CMMsg.MSG_UNLOCK,"<S-NAME> unlock(s) <T-NAME>.");
 						if(mob.location().okMessage(mob,msg))
 							CMLib.utensils().roomAffectFully(msg,mob.location(),dir);
 					}
@@ -205,7 +205,7 @@ public class GateGuard extends StdBehavior
 				{
 					if(getMyKeyTo(mob,e)!=null)
 					{
-						CMMsg msg=CMClass.getMsg(mob,e,CMMsg.MSG_LOCK,"<S-NAME> lock(s) <T-NAME>.");
+						final CMMsg msg=CMClass.getMsg(mob,e,CMMsg.MSG_LOCK,"<S-NAME> lock(s) <T-NAME>.");
 						if(mob.location().okMessage(mob,msg))
 							CMLib.utensils().roomAffectFully(msg,mob.location(),dir);
 					}

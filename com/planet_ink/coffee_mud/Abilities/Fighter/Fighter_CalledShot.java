@@ -49,14 +49,14 @@ public class Fighter_CalledShot extends Fighter_CalledStrike
 			return false;
 		}
 
-		Item w=mob.fetchWieldedItem();
+		final Item w=mob.fetchWieldedItem();
 		if((w==null)||(!(w instanceof Weapon)))
 		{
 			if(!quiet)
 				mob.tell("You need a weapon to perform a called shot!");
 			return false;
 		}
-		Weapon wp=(Weapon)w;
+		final Weapon wp=(Weapon)w;
 		if((wp.weaponClassification()!=Weapon.CLASS_RANGED)&&(wp.weaponClassification()!=Weapon.CLASS_THROWN))
 		{
 			if(!quiet)

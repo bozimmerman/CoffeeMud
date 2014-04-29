@@ -59,7 +59,7 @@ public class LinkedWeather extends StdBehavior
 			if(getParms().length()==0)
 				return true;
 			String s=getParms();
-			int x=s.indexOf(';');
+			final int x=s.indexOf(';');
 			rolling=false;
 			if(x>=0)
 			{
@@ -67,12 +67,12 @@ public class LinkedWeather extends StdBehavior
 				   rolling=true;
 				s=s.substring(0,x);
 			}
-			Area A=CMLib.map().getArea(s);
+			final Area A=CMLib.map().getArea(s);
 			if(A!=null) areaName=A.Name();
 		}
 
-		Area A=(Area)ticking;
-		Area linkedA=CMLib.map().getArea(areaName);
+		final Area A=(Area)ticking;
+		final Area linkedA=CMLib.map().getArea(areaName);
 		if(linkedA!=null)
 		{
 			if(rolling)

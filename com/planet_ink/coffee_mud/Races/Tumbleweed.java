@@ -50,7 +50,7 @@ public class Tumbleweed extends StdRace
 	private static final int[] parts={0 ,0 ,0 ,0 ,0 ,0 ,0 ,1 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 };
 	@Override public int[] bodyMask(){return parts;}
 
-	private int[] agingChart={0,0,0,0,0,YEARS_AGE_LIVES_FOREVER,YEARS_AGE_LIVES_FOREVER,YEARS_AGE_LIVES_FOREVER,YEARS_AGE_LIVES_FOREVER};
+	private final int[] agingChart={0,0,0,0,0,YEARS_AGE_LIVES_FOREVER,YEARS_AGE_LIVES_FOREVER,YEARS_AGE_LIVES_FOREVER,YEARS_AGE_LIVES_FOREVER};
 	@Override public int[] getAgingChart(){return agingChart;}
 
 	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
@@ -65,10 +65,10 @@ public class Tumbleweed extends StdRace
 		affectableStats.setDamage(affectableStats.damage()+(affected.phyStats().level()/4));
 		if(affected instanceof MOB)
 		{
-			Room R=((MOB)affected).location();
+			final Room R=((MOB)affected).location();
 			if(R!=null)
 			{
-				Area A=R.getArea();
+				final Area A=R.getArea();
 				switch(A.getClimateObj().weatherType(R))
 				{
 				case Climate.WEATHER_BLIZZARD:
@@ -135,7 +135,7 @@ public class Tumbleweed extends StdRace
 	@Override
 	public String healthText(MOB viewer, MOB mob)
 	{
-		double pct=(CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));
+		final double pct=(CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));
 
 		if(pct<.10)
 			return "^r" + mob.name(viewer) + "^r is near destruction!^N";

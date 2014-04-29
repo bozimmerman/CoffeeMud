@@ -71,7 +71,7 @@ public class Ranger_WoodlandCreep extends StdAbility
 		if(!(affected instanceof MOB))
 			return;
 
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		if((mob.location()!=null)
 		&&(mob.location().domainType()!=Room.DOMAIN_OUTDOORS_JUNGLE)
@@ -119,20 +119,20 @@ public class Ranger_WoodlandCreep extends StdAbility
 			return false;
 		}
 
-		String str="You creep into some foliage.";
+		final String str="You creep into some foliage.";
 		boolean success=proficiencyCheck(mob,0,auto);
 
 		if(!success)
 			beneficialVisualFizzle(mob,null,"<S-NAME> attempt(s) to creep into the foliage and fail(s).");
 		else
 		{
-			CMMsg msg=CMClass.getMsg(mob,null,this,auto?CMMsg.MSG_OK_ACTION:(CMMsg.MSG_DELICATE_HANDS_ACT|CMMsg.MASK_MOVE),str,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);
+			final CMMsg msg=CMClass.getMsg(mob,null,this,auto?CMMsg.MSG_OK_ACTION:(CMMsg.MSG_DELICATE_HANDS_ACT|CMMsg.MASK_MOVE),str,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				invoker=mob;
 				beneficialAffect(mob, mob, asLevel, 0);
-				Ranger_WoodlandCreep newOne=(Ranger_WoodlandCreep)mob.fetchEffect(ID());
+				final Ranger_WoodlandCreep newOne=(Ranger_WoodlandCreep)mob.fetchEffect(ID());
 				newOne.bonus=getXLEVELLevel(mob)*2;
 				newOne.makeLongLasting();
 				mob.recoverPhyStats();

@@ -40,9 +40,9 @@ public class SystemInfo extends StdWebMacro
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
-		StringBuffer str=new StringBuffer("");
-		java.util.Map<String,String> parms=parseParms(parm);
-		for(String key : parms.keySet())
+		final StringBuffer str=new StringBuffer("");
+		final java.util.Map<String,String> parms=parseParms(parm);
+		for(final String key : parms.keySet())
 		{
 			if(key.length()>0)
 			{

@@ -56,7 +56,7 @@ public class Skill_Arrest extends StdSkill
 			warrants=B.getWarrantsOf(legalA,target);
 			for(int i=warrants.size()-1;i>=0;i--)
 			{
-				LegalWarrant W=warrants.get(i);
+				final LegalWarrant W=warrants.get(i);
 				if(W.crime().equalsIgnoreCase("pardoned"))
 					warrants.remove(i);
 			}
@@ -69,7 +69,7 @@ public class Skill_Arrest extends StdSkill
 		if(R==null) return;
 		for(int i=0;i<R.numInhabitants();i++)
 		{
-			MOB inhab=R.fetchInhabitant(i);
+			final MOB inhab=R.fetchInhabitant(i);
 			if((inhab!=null)&&(inhab.isInCombat()))
 			{
 				if(inhab.getVictim()==mob)
@@ -83,7 +83,7 @@ public class Skill_Arrest extends StdSkill
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		MOB target=this.getTarget(mob,commands,givenTarget);
+		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 		if((mob==target)&&(!auto))
 		{
@@ -120,7 +120,7 @@ public class Skill_Arrest extends StdSkill
 		levelDiff-=(abilityCode()*mob.charStats().getStat(CharStats.STAT_STRENGTH));
 
 		// now see if it worked
-		boolean success=proficiencyCheck(mob,(-levelDiff)+(-((target.charStats().getStat(CharStats.STAT_STRENGTH)-mob.charStats().getStat(CharStats.STAT_STRENGTH)))),auto);
+		final boolean success=proficiencyCheck(mob,(-levelDiff)+(-((target.charStats().getStat(CharStats.STAT_STRENGTH)-mob.charStats().getStat(CharStats.STAT_STRENGTH)))),auto);
 		if(success)
 		{
 			Ability A=CMClass.getAbility("Skill_ArrestingSap");

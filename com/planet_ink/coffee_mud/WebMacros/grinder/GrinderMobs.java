@@ -60,7 +60,7 @@ public class GrinderMobs
 		P.basePhyStats().setSensesMask(0);
 		for(int d=0;d<PhyStats.CAN_SEE_CODES.length;d++)
 		{
-			String parm=httpReq.getUrlParameter(PhyStats.CAN_SEE_CODES[d]);
+			final String parm=httpReq.getUrlParameter(PhyStats.CAN_SEE_CODES[d]);
 			if((parm!=null)&&(parm.equals("on")))
 			   P.basePhyStats().setSensesMask(P.basePhyStats().sensesMask()|(1<<d));
 		}
@@ -80,17 +80,16 @@ public class GrinderMobs
 
 	public static String abilities(MOB M, HTTPRequest httpReq, java.util.Map<String,String> parms)
 	{
-		boolean player=M.playerStats()!=null;
-		LinkedList<Ability> onesToDel=new LinkedList<Ability>();
+		final boolean player=M.playerStats()!=null;
+		final LinkedList<Ability> onesToDel=new LinkedList<Ability>();
 		for(int a=0;a<M.numAbilities();a++)
 		{
-			Ability A=M.fetchAbility(a);
+			final Ability A=M.fetchAbility(a);
 			if((A!=null)&&((!player)||(A.isSavable())))
 				onesToDel.add(A);
 		}
-		for(Iterator<Ability> a=onesToDel.iterator();a.hasNext();)
+		for (final Ability A : onesToDel)
 		{
-			Ability A=a.next();
 			if(M.fetchEffect(A.ID())!=null)
 				M.delEffect(M.fetchEffect(A.ID()));
 			M.delAbility(A);
@@ -103,7 +102,7 @@ public class GrinderMobs
 			{
 				if(aff.length()>0)
 				{
-					Ability B=CMClass.getAbility(aff);
+					final Ability B=CMClass.getAbility(aff);
 					if(B==null)
 						return "Unknown Ability '"+aff+"'.";
 					else
@@ -130,9 +129,9 @@ public class GrinderMobs
 
 	public static String factions(MOB E, HTTPRequest httpReq, java.util.Map<String,String> parms)
 	{
-		for(Enumeration e=E.fetchFactions();e.hasMoreElements();)
+		for(final Enumeration e=E.fetchFactions();e.hasMoreElements();)
 		{
-			String strip=(String)e.nextElement();
+			final String strip=(String)e.nextElement();
 			E.removeFaction(strip);
 		}
 		if(httpReq.isUrlParameter("FACTION1"))
@@ -144,7 +143,7 @@ public class GrinderMobs
 			{
 				if(whichFaction.length()>0)
 				{
-					Faction F=CMLib.factions().getFaction(whichFaction);
+					final Faction F=CMLib.factions().getFaction(whichFaction);
 					if(F!=null)
 					{
 						int amt=Integer.valueOf(howMuch).intValue();
@@ -165,7 +164,7 @@ public class GrinderMobs
 	{
 		while(E.numBlessings()>0)
 		{
-			Ability A=E.fetchBlessing(0);
+			final Ability A=E.fetchBlessing(0);
 			if(A!=null)
 				E.delBlessing(A);
 		}
@@ -177,8 +176,8 @@ public class GrinderMobs
 			{
 				if(aff.length()>0)
 				{
-					boolean clericOnly=(httpReq.isUrlParameter("BLONLY"+num))&&(httpReq.getUrlParameter("BLONLY"+num)).equalsIgnoreCase("on");
-					Ability B=CMClass.getAbility(aff);
+					final boolean clericOnly=(httpReq.isUrlParameter("BLONLY"+num))&&(httpReq.getUrlParameter("BLONLY"+num)).equalsIgnoreCase("on");
+					final Ability B=CMClass.getAbility(aff);
 					if(B==null)
 						return "Unknown Blessing '"+aff+"'.";
 					else
@@ -193,10 +192,10 @@ public class GrinderMobs
 
 	public static String clans(MOB E, HTTPRequest httpReq, java.util.Map<String,String> parms)
 	{
-		List<String> clans=new Vector<String>();
-		for(Pair<Clan,Integer> p : E.clans())
+		final List<String> clans=new Vector<String>();
+		for(final Pair<Clan,Integer> p : E.clans())
 			clans.add(p.first.clanID());
-		for(String clanID : clans)
+		for(final String clanID : clans)
 			E.setClan(clanID, -1);
 		if(httpReq.isUrlParameter("CLAN1"))
 		{
@@ -206,8 +205,8 @@ public class GrinderMobs
 			{
 				if(aff.length()>0)
 				{
-					int role=CMath.s_int(httpReq.getUrlParameter("CLANROLE"+num));
-					Clan C=CMLib.clans().getClan(aff);
+					final int role=CMath.s_int(httpReq.getUrlParameter("CLANROLE"+num));
+					final Clan C=CMLib.clans().getClan(aff);
 					if(C==null)
 						return "Unknown Clan '"+aff+"'.";
 					else
@@ -224,7 +223,7 @@ public class GrinderMobs
 	{
 		while(E.numCurses()>0)
 		{
-			Ability A=E.fetchCurse(0);
+			final Ability A=E.fetchCurse(0);
 			if(A!=null)
 				E.delCurse(A);
 		}
@@ -236,8 +235,8 @@ public class GrinderMobs
 			{
 				if(aff.length()>0)
 				{
-					Ability B=CMClass.getAbility(aff);
-					boolean clericOnly=(httpReq.isUrlParameter("CUONLY"+num))&&(httpReq.getUrlParameter("CUONLY"+num)).equalsIgnoreCase("on");
+					final Ability B=CMClass.getAbility(aff);
+					final boolean clericOnly=(httpReq.isUrlParameter("CUONLY"+num))&&(httpReq.getUrlParameter("CUONLY"+num)).equalsIgnoreCase("on");
 					if(B==null)
 						return "Unknown Curse '"+aff+"'.";
 					else
@@ -261,7 +260,7 @@ public class GrinderMobs
 			{
 				if(aff.length()>0)
 				{
-					ExpertiseLibrary.ExpertiseDefinition def=CMLib.expertises().getDefinition(aff);
+					final ExpertiseLibrary.ExpertiseDefinition def=CMLib.expertises().getDefinition(aff);
 					if(def==null)
 						return "Unknown Expertise '"+aff+"'.";
 					else
@@ -279,12 +278,12 @@ public class GrinderMobs
 	{
 		if(httpReq.isUrlParameter("ITEM1"))
 		{
-			Vector items=new Vector();
-			Vector cstrings=new Vector();
+			final Vector items=new Vector();
+			final Vector cstrings=new Vector();
 			for(int i=1;;i++)
 			{
-				String MATCHING=httpReq.getUrlParameter("ITEM"+i);
-				String WORN=httpReq.getUrlParameter("ITEMWORN"+i);
+				final String MATCHING=httpReq.getUrlParameter("ITEM"+i);
+				final String WORN=httpReq.getUrlParameter("ITEMWORN"+i);
 				if(MATCHING==null) break;
 				Item I2=RoomData.getItemFromAnywhere(allitems,MATCHING);
 				if(I2!=null)
@@ -293,30 +292,30 @@ public class GrinderMobs
 						I2=(Item)I2.copyOf();
 					if(I2!=null)
 					{
-						boolean worn=((WORN!=null)&&(WORN.equalsIgnoreCase("on")));
+						final boolean worn=((WORN!=null)&&(WORN.equalsIgnoreCase("on")));
 						I2.setContainer(null);
 						I2.unWear();
 						if(worn) I2.wearEvenIfImpossible(M);
 						happilyAddItem(I2,M);
 						items.addElement(I2);
 						I2.setContainer(null);
-						String CONTAINER=httpReq.getUrlParameter("ITEMCONT"+i);
+						final String CONTAINER=httpReq.getUrlParameter("ITEMCONT"+i);
 						cstrings.addElement((CONTAINER==null)?"":CONTAINER);
 					}
 				}
 			}
 			for(int i=0;i<cstrings.size();i++)
 			{
-				String CONTAINER=(String)cstrings.elementAt(i);
+				final String CONTAINER=(String)cstrings.elementAt(i);
 				if(CONTAINER.length()==0) continue;
-				Item I2=(Item)items.elementAt(i);
-				Item C2=(Item)CMLib.english().fetchEnvironmental(items,CONTAINER,true);
+				final Item I2=(Item)items.elementAt(i);
+				final Item C2=(Item)CMLib.english().fetchEnvironmental(items,CONTAINER,true);
 				if(C2 instanceof Container)
 					I2.setContainer((Container)C2);
 			}
 			for(int i=0;i<allitems.size();i++)
 			{
-				Item I=(Item)allitems.elementAt(i);
+				final Item I=(Item)allitems.elementAt(i);
 				if(!M.isMine(I))
 				{
 					I.setOwner(M);
@@ -325,7 +324,7 @@ public class GrinderMobs
 			}
 			for(int i=0;i<M.numItems();i++)
 			{
-				Item I=M.getItem(i);
+				final Item I=M.getItem(i);
 				if((I.container()!=null)&&(!M.isMine(I.container())))
 					I.setContainer(null);
 			}
@@ -338,7 +337,7 @@ public class GrinderMobs
 	{
 		while(E.numPowers()>0)
 		{
-			Ability A=E.fetchPower(0);
+			final Ability A=E.fetchPower(0);
 			if(A!=null)
 				E.delPower(A);
 		}
@@ -350,7 +349,7 @@ public class GrinderMobs
 			{
 				if(aff.length()>0)
 				{
-					Ability B=CMClass.getAbility(aff);
+					final Ability B=CMClass.getAbility(aff);
 					if(B==null)
 						return "Unknown Power '"+aff+"'.";
 					else
@@ -365,10 +364,10 @@ public class GrinderMobs
 
 	public static String editMob(HTTPRequest httpReq, java.util.Map<String,String> parms, MOB whom, Room R)
 	{
-		String mobCode=httpReq.getUrlParameter("MOB");
+		final String mobCode=httpReq.getUrlParameter("MOB");
 		if(mobCode==null) return "@break@";
 
-		String newClassID=httpReq.getUrlParameter("CLASSES");
+		final String newClassID=httpReq.getUrlParameter("CLASSES");
 		CatalogLibrary.CataData cataData=null;
 		synchronized(("SYNC"+((R!=null)?R.roomID():"null")).intern())
 		{
@@ -386,29 +385,29 @@ public class GrinderMobs
 
 			if(M==null)
 			{
-				StringBuffer str=new StringBuffer("No MOB?!");
+				final StringBuffer str=new StringBuffer("No MOB?!");
 				str.append(" Got: "+mobCode);
 				str.append(", Includes: ");
 				if(R!=null)
 				{
 					for(int m=0;m<R.numInhabitants();m++)
 					{
-						MOB M2=R.fetchInhabitant(m);
+						final MOB M2=R.fetchInhabitant(m);
 						if((M2!=null)&&(M2.isSavable()))
 						   str.append(M2.Name()+"="+RoomData.getMOBCode(R,M2));
 					}
 				}
 				return str.toString();
 			}
-			MOB oldM=M;
+			final MOB oldM=M;
 			if((newClassID!=null)&&(!newClassID.equals(CMClass.classID(M))))
 				M=CMClass.getMOB(newClassID);
 			M.setStartRoom(R);
 
-			Vector allitems=new Vector();
+			final Vector allitems=new Vector();
 			while(oldM.numItems()>0)
 			{
-				Item I=oldM.getItem(0);
+				final Item I=oldM.getItem(0);
 				allitems.addElement(I);
 				oldM.delItem(I);
 			}
@@ -479,7 +478,7 @@ public class GrinderMobs
 					M.basePhyStats().setArmor(CMath.s_int(old));
 					break;
 				case 16: // alignment
-					for(Faction.Align v : Faction.Align.values())
+					for(final Faction.Align v : Faction.Align.values())
 						if(old.equalsIgnoreCase(v.toString()))
 							CMLib.factions().setAlignment(M,v);
 					break;
@@ -567,14 +566,14 @@ public class GrinderMobs
 					break;
 				case 39: // clanid
 				{
-					List<String> list=CMParms.parseCommas(old,true);
+					final List<String> list=CMParms.parseCommas(old,true);
 					M.setClan("", Integer.MIN_VALUE); // signal to clear the list
 					for(String entry : list)
 					{
 						entry=entry.trim();
 						String clanID=entry;
 						int role=-1;
-						int x=entry.lastIndexOf('(');
+						final int x=entry.lastIndexOf('(');
 						if(x>0)
 						{
 							clanID=entry.substring(0,x).trim();
@@ -595,8 +594,8 @@ public class GrinderMobs
 				}
 				case 40: // tattoos
 					{
-						List<String> V=CMParms.parseSemicolons(old,true);
-						for(Enumeration<MOB.Tattoo> e=M.tattoos();e.hasMoreElements();)
+						final List<String> V=CMParms.parseSemicolons(old,true);
+						for(final Enumeration<MOB.Tattoo> e=M.tattoos();e.hasMoreElements();)
 							M.delTattoo(e.nextElement());
 						for(int v=0;v<V.size();v++)
 							M.addTattoo(CMLib.database().parseTattoo(V.get(v)));
@@ -604,7 +603,7 @@ public class GrinderMobs
 					break;
 				case 41: // expertises
 					{
-						List<String> V=CMParms.parseSemicolons(old,true);
+						final List<String> V=CMParms.parseSemicolons(old,true);
 						M.delAllExpertises();
 						for(int v=0;v<V.size();v++)
 							M.addExpertise(V.get(v));
@@ -772,8 +771,8 @@ public class GrinderMobs
 				if((M instanceof ShopKeeper)
 				&&(httpReq.isUrlParameter("SHP1")))
 				{
-					ShopKeeper SK=(ShopKeeper)M;
-					XVector inventory=new XVector(SK.getShop().getStoreInventory());
+					final ShopKeeper SK=(ShopKeeper)M;
+					final XVector inventory=new XVector(SK.getShop().getStoreInventory());
 					SK.getShop().emptyAllShelves();
 
 					int num=1;
@@ -784,7 +783,7 @@ public class GrinderMobs
 					{
 						if(CMath.isNumber(MATCHING)&&(inventory.size()>0))
 						{
-							Environmental O=(Environmental)inventory.elementAt(CMath.s_int(MATCHING)-1);
+							final Environmental O=(Environmental)inventory.elementAt(CMath.s_int(MATCHING)-1);
 							if(O!=null)
 								SK.getShop().addStoreInventory(O,CMath.s_int(theparm),CMath.s_int(theprice));
 						}
@@ -801,9 +800,8 @@ public class GrinderMobs
 						if(MATCHING.indexOf('@')>0)
 						{
 							Environmental O=null;
-							for(Iterator<MOB> m=RoomData.getMOBCache().iterator(); m.hasNext();)
+							for (final MOB M2 : RoomData.getMOBCache())
 							{
-								MOB M2=m.next();
 								if(MATCHING.equals(""+M2))
 								{	O=M2;	break;	}
 							}
@@ -815,16 +813,16 @@ public class GrinderMobs
 						else
 						{
 							Environmental O=null;
-							for(Enumeration m=CMClass.mobTypes();m.hasMoreElements();)
+							for(final Enumeration m=CMClass.mobTypes();m.hasMoreElements();)
 							{
-								MOB M2=(MOB)m.nextElement();
+								final MOB M2=(MOB)m.nextElement();
 								if(CMClass.classID(M2).equals(MATCHING)&&(!M2.isGeneric()))
 								{	O=(MOB)M2.copyOf(); break;	}
 							}
 							if(O==null)
-							for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
+							for(final Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 							{
-								Ability A2=a.nextElement();
+								final Ability A2=a.nextElement();
 								if(CMClass.classID(A2).equals(MATCHING))
 								{	O=(Ability)A2.copyOf(); break;	}
 							}
@@ -844,7 +842,7 @@ public class GrinderMobs
 				if((M instanceof Economics)
 				&&(httpReq.isUrlParameter("IPRIC1")))
 				{
-					Vector prics=new Vector();
+					final Vector prics=new Vector();
 					String DOUBLE=httpReq.getUrlParameter("IPRIC"+num);
 					String MASK=httpReq.getUrlParameter("IPRICM"+num);
 					while((DOUBLE!=null)&&(MASK!=null))
@@ -869,7 +867,7 @@ public class GrinderMobs
 			{
 				if(mobCode.startsWith("CATALOG-")||mobCode.startsWith("NEWCATA-"))
 				{
-					MOB M2=CMLib.catalog().getCatalogMob(mobCode.substring(8));
+					final MOB M2=CMLib.catalog().getCatalogMob(mobCode.substring(8));
 					if((M2!=null)&&(!M.Name().equalsIgnoreCase(M2.Name())))
 						M.setName(M2.Name());
 					newMobCode=mobCode;
@@ -885,7 +883,7 @@ public class GrinderMobs
 					{
 						if(cataData!=null)
 						{
-							CatalogLibrary.CataData data=CMLib.catalog().getCatalogMobData(M.Name());
+							final CatalogLibrary.CataData data=CMLib.catalog().getCatalogMobData(M.Name());
 							data.build(cataData.data());
 						}
 						CMLib.catalog().updateCatalog(M);
@@ -896,7 +894,7 @@ public class GrinderMobs
 				else
 				{
 					RoomData.contributeMOBs(new XVector(M));
-					MOB M2=RoomData.getReferenceMOB(M);
+					final MOB M2=RoomData.getReferenceMOB(M);
 					newMobCode=RoomData.getMOBCode(RoomData.getMOBCache(),M2);
 				}
 			}

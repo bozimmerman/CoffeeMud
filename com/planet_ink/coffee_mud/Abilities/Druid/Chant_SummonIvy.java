@@ -45,7 +45,7 @@ public class Chant_SummonIvy extends Chant_SummonPlants
 
 	public static Item buildIvy(MOB mob, Room room)
 	{
-		Item newItem=CMClass.getItem("GenItem");
+		final Item newItem=CMClass.getItem("GenItem");
 		newItem.setMaterial(RawMaterial.RESOURCE_GREENS);
 		switch(CMLib.dice().roll(1,5,0))
 		{
@@ -67,7 +67,7 @@ public class Chant_SummonIvy extends Chant_SummonPlants
 			newItem.setDescription("");
 			break;
 		}
-		Chant_SummonIvy newChant=new Chant_SummonIvy();
+		final Chant_SummonIvy newChant=new Chant_SummonIvy();
 		newItem.basePhyStats().setLevel(10+newChant.getX1Level(mob));
 		newItem.basePhyStats().setWeight(1);
 		newItem.setSecretIdentity(mob.Name());

@@ -42,7 +42,7 @@ public class STreeSet<K> implements Serializable, Iterable<K>, Collection<K>, Na
 	{
 		T=new TreeSet<K>();
 		if(E!=null)
-			for(K o : E)
+			for(final K o : E)
 				T.add(o);
 	}
 
@@ -66,7 +66,7 @@ public class STreeSet<K> implements Serializable, Iterable<K>, Collection<K>, Na
 	{
 		T=new TreeSet<K>();
 		if(E!=null)
-			for(K o : E)
+			for(final K o : E)
 				add(o);
 	}
 
@@ -80,7 +80,7 @@ public class STreeSet<K> implements Serializable, Iterable<K>, Collection<K>, Na
 	public synchronized void addAll(K[] E)
 	{
 		if(E!=null)
-			for(K e : E)
+			for(final K e : E)
 				T.add(e);
 	}
 
@@ -108,7 +108,7 @@ public class STreeSet<K> implements Serializable, Iterable<K>, Collection<K>, Na
 	public synchronized void removeAll(List<K> E)
 	{
 		if(E!=null)
-			for(K o : E)
+			for(final K o : E)
 				T.remove(o);
 	}
 
@@ -119,9 +119,9 @@ public class STreeSet<K> implements Serializable, Iterable<K>, Collection<K>, Na
 	}
 	public synchronized Vector<K> toVector()
 	{
-		Vector<K> V=new Vector<K>(size());
-		for(Iterator<K> s=T.iterator();s.hasNext();)
-			V.add(s.next());
+		final Vector<K> V=new Vector<K>(size());
+		for (final K k : T)
+			V.add(k);
 		return V;
 	}
 	@SuppressWarnings("unchecked")
@@ -153,7 +153,7 @@ public class STreeSet<K> implements Serializable, Iterable<K>, Collection<K>, Na
 	@SuppressWarnings("unchecked")
 	public synchronized STreeSet<K> copyOf()
 	{
-		STreeSet<K> TS=new STreeSet<K>();
+		final STreeSet<K> TS=new STreeSet<K>();
 		TS.T=(TreeSet<K>)T.clone();
 		return TS;
 	}

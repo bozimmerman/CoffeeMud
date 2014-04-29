@@ -40,8 +40,8 @@ public class GrinderClans
 
 	public static String membersList(Clan C, HTTPRequest httpReq)
 	{
-		Vector newMembersNames=new Vector();
-		List<MemberRecord> DV=C.getMemberList();
+		final Vector newMembersNames=new Vector();
+		final List<MemberRecord> DV=C.getMemberList();
 		if(httpReq.isUrlParameter("MEMB1"))
 		{
 			int num=1;
@@ -50,20 +50,20 @@ public class GrinderClans
 			{
 				if(aff.length()>0)
 				{
-					MOB M=CMLib.players().getLoadPlayer(aff);
+					final MOB M=CMLib.players().getLoadPlayer(aff);
 					if(M==null) return "Unknown player '"+aff+"'.";
 					newMembersNames.addElement(M.Name());
-					int newRole=CMath.s_int(httpReq.getUrlParameter("ROLE"+num));
+					final int newRole=CMath.s_int(httpReq.getUrlParameter("ROLE"+num));
 					C.addMember(M,newRole);
 				}
 				num++;
 				aff=httpReq.getUrlParameter("MEMB"+num);
 			}
-			for(MemberRecord member : DV)
+			for(final MemberRecord member : DV)
 			{
 				if(!newMembersNames.contains(member.name))
 				{
-					MOB M=CMLib.players().getLoadPlayer(member.name);
+					final MOB M=CMLib.players().getLoadPlayer(member.name);
 					if(M!=null) C.delMember(M);
 				}
 			}
@@ -77,12 +77,12 @@ public class GrinderClans
 		{
 			int relat=0;
 			Clan CC=null;
-			for(Enumeration e=CMLib.clans().clans();e.hasMoreElements();)
+			for(final Enumeration e=CMLib.clans().clans();e.hasMoreElements();)
 			{
 				CC=(Clan)e.nextElement();
 				if(CC==C) continue;
 				relat++;
-				String aff=httpReq.getUrlParameter("RELATION"+relat);
+				final String aff=httpReq.getUrlParameter("RELATION"+relat);
 				if((aff!=null)&&(aff.length()>0))
 				{
 					if(C.getClanRelations(CC.clanID())!=CMath.s_int(aff))
@@ -97,11 +97,11 @@ public class GrinderClans
 
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
-		String last=httpReq.getUrlParameter("CLAN");
+		final String last=httpReq.getUrlParameter("CLAN");
 		if(last==null) return " @break@";
 		if(last.length()>0)
 		{
-			Clan C=CMLib.clans().getClan(last);
+			final Clan C=CMLib.clans().getClan(last);
 			if(C!=null)
 			{
 				String str=null;
@@ -110,13 +110,13 @@ public class GrinderClans
 				str=httpReq.getUrlParameter("RECALLID");
 				if(str!=null)
 				{
-					Room R=CMLib.map().getRoom(str);
+					final Room R=CMLib.map().getRoom(str);
 					if(R!=null) C.setRecall(CMLib.map().getExtendedRoomID(R));
 				}
 				str=httpReq.getUrlParameter("MORGUEID");
 				if(str!=null)
 				{
-					Room R=CMLib.map().getRoom(str);
+					final Room R=CMLib.map().getRoom(str);
 					if(R!=null) C.setMorgue(CMLib.map().getExtendedRoomID(R));
 				}
 				str=httpReq.getUrlParameter("AUTOPOSITIONID");
@@ -124,7 +124,7 @@ public class GrinderClans
 				str=httpReq.getUrlParameter("DONATIONID");
 				if(str!=null)
 				{
-					Room R=CMLib.map().getRoom(str);
+					final Room R=CMLib.map().getRoom(str);
 					if(R!=null) C.setDonation(CMLib.map().getExtendedRoomID(R));
 				}
 				str=httpReq.getUrlParameter("TAX");

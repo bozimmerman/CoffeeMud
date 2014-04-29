@@ -49,12 +49,12 @@ public class Spell_Augury extends Spell
 			mob.tell("Divine the fate of which direction?");
 			return false;
 		}
-		String targetName=CMParms.combine(commands,0);
+		final String targetName=CMParms.combine(commands,0);
 
 		Exit exit=null;
 		Exit opExit=null;
 		Room room=null;
-		int dirCode=Directions.getGoodDirectionCode(targetName);
+		final int dirCode=Directions.getGoodDirectionCode(targetName);
 		if(dirCode>=0)
 		{
 			exit=mob.location().getExitInDir(dirCode);
@@ -76,21 +76,21 @@ public class Spell_Augury extends Spell
 		if(!super.invoke(mob,commands,null,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":"^S<S-NAME> point(s) <S-HIS-HER> finger "+Directions.getDirectionName(dirCode)+", incanting.^?");
+			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":"^S<S-NAME> point(s) <S-HIS-HER> finger "+Directions.getDirectionName(dirCode)+", incanting.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				boolean aggressiveMonster=false;
 				for(int m=0;m<room.numInhabitants();m++)
 				{
-					MOB mon=room.fetchInhabitant(m);
+					final MOB mon=room.fetchInhabitant(m);
 					if(mon!=null)
-						for(Enumeration<Behavior> e=mob.behaviors();e.hasMoreElements();)
+						for(final Enumeration<Behavior> e=mob.behaviors();e.hasMoreElements();)
 						{
-							Behavior B=e.nextElement();
+							final Behavior B=e.nextElement();
 							if((B!=null)&&(B.grantsAggressivenessTo(mob)))
 							{
 								aggressiveMonster=true;

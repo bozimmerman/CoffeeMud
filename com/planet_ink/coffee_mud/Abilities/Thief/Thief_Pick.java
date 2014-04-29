@@ -54,8 +54,8 @@ public class Thief_Pick extends ThiefSkill
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		int[] dirCode=new int[]{-1};
-		Physical unlockThis=super.getOpenable(mob, mob.location(), givenTarget, commands, dirCode, true);
+		final int[] dirCode=new int[]{-1};
+		final Physical unlockThis=super.getOpenable(mob, mob.location(), givenTarget, commands, dirCode, true);
 		if(unlockThis==null) return false;
 
 		if(((unlockThis instanceof Exit)&&(!((Exit)unlockThis).hasALock()))
@@ -71,7 +71,7 @@ public class Thief_Pick extends ThiefSkill
 
 		int adjustment=((mob.phyStats().level()+abilityCode()+(2*super.getXLEVELLevel(mob)))-unlockThis.phyStats().level())*5;
 		if(adjustment>0) adjustment=0;
-		boolean success=proficiencyCheck(mob,adjustment,auto);
+		final boolean success=proficiencyCheck(mob,adjustment,auto);
 
 		if(!success)
 			beneficialVisualFizzle(mob,unlockThis,"<S-NAME> attempt(s) to pick the lock on <T-NAME> and fail(s).");

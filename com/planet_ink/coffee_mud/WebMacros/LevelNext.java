@@ -39,15 +39,15 @@ public class LevelNext extends StdWebMacro
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
-		java.util.Map<String,String> parms=parseParms(parm);
-		String last=httpReq.getUrlParameter("LEVEL");
+		final java.util.Map<String,String> parms=parseParms(parm);
+		final String last=httpReq.getUrlParameter("LEVEL");
 		if(parms.containsKey("RESET"))
 		{
 			if(last!=null) httpReq.removeUrlParameter("LEVEL");
 			return "";
 		}
 		int lastLevel=CMProps.getIntVar(CMProps.Int.LASTPLAYERLEVEL);
-		for(String key : parms.keySet())
+		for(final String key : parms.keySet())
 		{
 			if(CMath.isInteger(key))
 				lastLevel=CMath.s_int(key);

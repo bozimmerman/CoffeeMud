@@ -46,7 +46,7 @@ public class Thief_UsePoison extends ThiefSkill
 
 	public List<Ability> returnOffensiveAffects(Physical fromMe)
 	{
-		Vector offenders=new Vector();
+		final Vector offenders=new Vector();
 
 		for(final Enumeration<Ability> a=fromMe.effects();a.hasMoreElements();)
 		{
@@ -65,7 +65,7 @@ public class Thief_UsePoison extends ThiefSkill
 			mob.tell("What would you like to poison, and which poison would you use?");
 			return false;
 		}
-		Item target=mob.fetchItem(null,Wearable.FILTER_UNWORNONLY,(String)commands.elementAt(0));
+		final Item target=mob.fetchItem(null,Wearable.FILTER_UNWORNONLY,(String)commands.elementAt(0));
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
 			mob.tell("You don't see '"+((String)commands.elementAt(0))+"' here.");
@@ -78,32 +78,32 @@ public class Thief_UsePoison extends ThiefSkill
 			mob.tell("You don't know how to poison "+target.name(mob)+".");
 			return false;
 		}
-		Item poison=mob.fetchItem(null,Wearable.FILTER_UNWORNONLY,CMParms.combine(commands,1));
+		final Item poison=mob.fetchItem(null,Wearable.FILTER_UNWORNONLY,CMParms.combine(commands,1));
 		if((poison==null)||(!CMLib.flags().canBeSeenBy(poison,mob)))
 		{
 			mob.tell("You don't see '"+CMParms.combine(commands,1)+"' here.");
 			return false;
 		}
-		List<Ability> V=returnOffensiveAffects(poison);
+		final List<Ability> V=returnOffensiveAffects(poison);
 		if((V.size()==0)||(!(poison instanceof Drink)))
 		{
 			mob.tell(poison.name()+" is not a poison!");
 			return false;
 		}
-		Drink dPoison=(Drink)poison;
+		final Drink dPoison=(Drink)poison;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
-		CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_THIEF_ACT,"<S-NAME> attempt(s) to poison <T-NAMESELF>.");
+		final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_THIEF_ACT,"<S-NAME> attempt(s) to poison <T-NAMESELF>.");
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
 			if(success)
 			{
-				Ability A=V.get(0);
+				final Ability A=V.get(0);
 				if(A!=null)
 				{
 					if(target instanceof Weapon)

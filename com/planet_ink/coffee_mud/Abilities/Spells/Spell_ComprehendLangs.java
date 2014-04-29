@@ -49,7 +49,7 @@ public class Spell_ComprehendLangs extends Spell
 		// undo the affects of this spell
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		super.unInvoke();
 
 		if(canBeUninvoked())
@@ -77,7 +77,7 @@ public class Spell_ComprehendLangs extends Spell
 			&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_LANGUAGE)
 			&&(((MOB)affected).fetchEffect(msg.tool().ID())==null))
 			{
-				String str=CMStrings.getSayFromMessage(msg.sourceMessage());
+				final String str=CMStrings.getSayFromMessage(msg.sourceMessage());
 				if(str!=null)
 				{
 					if(CMath.bset(msg.sourceMajor(),CMMsg.MASK_CHANNEL))
@@ -131,7 +131,7 @@ public class Spell_ComprehendLangs extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
@@ -140,7 +140,7 @@ public class Spell_ComprehendLangs extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> feel(s) more comprehending.":"^S<S-NAME> invoke(s) the power of comprehension!^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> feel(s) more comprehending.":"^S<S-NAME> invoke(s) the power of comprehension!^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

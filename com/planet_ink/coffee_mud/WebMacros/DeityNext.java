@@ -40,18 +40,18 @@ public class DeityNext extends StdWebMacro
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
-		java.util.Map<String,String> parms=parseParms(parm);
-		String last=httpReq.getUrlParameter("DEITY");
+		final java.util.Map<String,String> parms=parseParms(parm);
+		final String last=httpReq.getUrlParameter("DEITY");
 		if(parms.containsKey("RESET"))
 		{
 			if(last!=null) httpReq.removeUrlParameter("DEITY");
 			return "";
 		}
 		String lastID="";
-		HashSet heavensfound=new HashSet();
-		for(Enumeration d=CMLib.map().deities();d.hasMoreElements();)
+		final HashSet heavensfound=new HashSet();
+		for(final Enumeration d=CMLib.map().deities();d.hasMoreElements();)
 		{
-			Deity D=(Deity)d.nextElement();
+			final Deity D=(Deity)d.nextElement();
 			if((D.location()!=null)&&(!heavensfound.contains(D.location())))
 			{
 				if(parms.containsKey("HEAVENS"))

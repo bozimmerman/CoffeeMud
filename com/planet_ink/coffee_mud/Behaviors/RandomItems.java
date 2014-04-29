@@ -55,16 +55,16 @@ public class RandomItems extends ActiveTicker
 	@Override
 	public List<String> externalFiles()
 	{
-		Vector xmlfiles=new Vector();
-		String theseparms=getParms();
-		int x=theseparms.indexOf(';');
+		final Vector xmlfiles=new Vector();
+		final String theseparms=getParms();
+		final int x=theseparms.indexOf(';');
 		String filename=(x>=0)?theseparms.substring(x+1):theseparms;
 		if(filename.trim().length()==0)
 			return null;
-		int start=filename.indexOf("<ITEMS>");
+		final int start=filename.indexOf("<ITEMS>");
 		if((start<0)||(start>20))
 		{
-			int extraSemicolon=filename.indexOf(';');
+			final int extraSemicolon=filename.indexOf(';');
 			if(extraSemicolon>=0) filename=filename.substring(0,extraSemicolon);
 			if(filename.trim().length()>0)
 				xmlfiles.addElement(filename.trim());
@@ -79,7 +79,7 @@ public class RandomItems extends ActiveTicker
 	{
 		favorMobs=false;
 		maintained=new Vector();
-		int x=newParms.indexOf(';');
+		final int x=newParms.indexOf(';');
 		String oldParms=newParms;
 		restrictedLocales=null;
 		if(x>=0)
@@ -89,11 +89,11 @@ public class RandomItems extends ActiveTicker
 			int extraX=newParms.indexOf("<ITEMS>");
 			if(extraX<0)
 			{
-				String xtra=newParms.substring(x+1);
+				final String xtra=newParms.substring(x+1);
 				extraX=xtra.indexOf(';');
 				if(extraX>=0) extraParms=xtra.substring(extraX+1);
 			}
-			Vector<String> V=CMParms.parse(extraParms);
+			final Vector<String> V=CMParms.parse(extraParms);
 			for(int v=0;v<V.size();v++)
 			{
 				String s=V.elementAt(v);
@@ -117,7 +117,7 @@ public class RandomItems extends ActiveTicker
 					}
 					else
 					{
-						char c=s.charAt(0);
+						final char c=s.charAt(0);
 						s=s.substring(1).toUpperCase().trim();
 						int code=-1;
 						for(int i=0;i<Room.indoorDomainDescs.length;i++)
@@ -179,7 +179,7 @@ public class RandomItems extends ActiveTicker
 		if(SK!=null) return SK.getShop().doIHaveThisInStock(I.Name(),null);
 		if(thang instanceof Area)
 		{
-			Room R=CMLib.map().roomLocation(I);
+			final Room R=CMLib.map().roomLocation(I);
 			if(R==null) return false;
 			return ((Area)thang).inMyMetroArea(R.getArea());
 		}
@@ -198,7 +198,7 @@ public class RandomItems extends ActiveTicker
 	public List<Item> getItems(Tickable thang, String theseparms)
 	{
 		List<Item> items=null;
-		int x=theseparms.indexOf(';');
+		final int x=theseparms.indexOf(';');
 		String thangName="null";
 		if(thang instanceof Room)
 			thangName=CMLib.map().getExtendedRoomID((Room)thang);
@@ -208,7 +208,7 @@ public class RandomItems extends ActiveTicker
 		else
 		if(thang!=null)
 			thangName=thang.name();
-		String thangID=CMClass.classID(thang);
+		final String thangID=CMClass.classID(thang);
 		String filename=(x>=0)?theseparms.substring(x+1):theseparms;
 		if(filename.trim().length()==0)
 		{
@@ -217,7 +217,7 @@ public class RandomItems extends ActiveTicker
 			Log.errOut("RandomItems: Blank XML/filename: '"+filename+"' on object "+thangName+" ("+thangID+").");
 			return null;
 		}
-		int start=filename.indexOf("<ITEMS>");
+		final int start=filename.indexOf("<ITEMS>");
 		if((start>=0)&&(start<=20))
 		{
 			int end=start+20;
@@ -225,7 +225,7 @@ public class RandomItems extends ActiveTicker
 			items=(List<Item>)Resources.getResource("RANDOMITEMS-XML/"+filename.length()+"/"+filename.hashCode());
 			if(items!=null) return items;
 			items=new Vector();
-			String error=CMLib.coffeeMaker().addItemsFromXML(filename,items,null);
+			final String error=CMLib.coffeeMaker().addItemsFromXML(filename,items,null);
 			if(error.length()>0)
 			{
 				if(alreadyTriedLoad) return null;
@@ -244,14 +244,14 @@ public class RandomItems extends ActiveTicker
 		}
 		else
 		{
-			int extraSemicolon=filename.indexOf(';');
+			final int extraSemicolon=filename.indexOf(';');
 			if(extraSemicolon>=0) filename=filename.substring(0,extraSemicolon);
 			filename=filename.trim();
 			items=(List<Item>)Resources.getResource("RANDOMITEMS-"+filename);
 			if((items==null)&&(!alreadyTriedLoad))
 			{
 				alreadyTriedLoad=true;
-				StringBuffer buf=Resources.getFileResource(filename,true);
+				final StringBuffer buf=Resources.getFileResource(filename,true);
 
 				if((buf==null)||(buf.length()<20))
 				{
@@ -264,7 +264,7 @@ public class RandomItems extends ActiveTicker
 					return null;
 				}
 				items=new Vector();
-				String error=CMLib.coffeeMaker().addItemsFromXML(buf.toString(),items,null);
+				final String error=CMLib.coffeeMaker().addItemsFromXML(buf.toString(),items,null);
 				if(error.length()>0)
 				{
 					Log.errOut("RandomItems: Error on import of: '"+filename+"' for '"+thangName+"' ("+thangID+"): "+error+".");
@@ -291,8 +291,8 @@ public class RandomItems extends ActiveTicker
 		||(CMSecurity.isDisabled(CMSecurity.DisFlag.RANDOMITEMS)))
 			return true;
 		Item I=null;
-		Environmental E=(Environmental)ticking;
-		ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(E);
+		final Environmental E=(Environmental)ticking;
+		final ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(E);
 		for(int i=maintained.size()-1;i>=0;i--)
 		{
 			try
@@ -300,13 +300,13 @@ public class RandomItems extends ActiveTicker
 				I=(Item)maintained.elementAt(i);
 				if(!isStillMaintained(E,SK,I)) maintained.removeElement(I);
 			}
-			catch(Exception e){	}
+			catch(final Exception e){	}
 		}
 		if(maintained.size()>=maxItems)
 			return true;
 		if((canAct(ticking,tickID))||(maintained.size()<minItems))
 		{
-			List<Item> items=getItems(ticking,getParms());
+			final List<Item> items=getItems(ticking,getParms());
 			if(items==null) return true;
 			int attempts=10;
 			if((ticking instanceof Environmental)&&(((Environmental)ticking).amDestroyed()))
@@ -388,16 +388,16 @@ public class RandomItems extends ActiveTicker
 							room=((GridLocale)room).getRandomGridChild();
 						if(room!=null)
 						{
-							Vector inhabs=new Vector();
+							final Vector inhabs=new Vector();
 							for(int m=0;m<room.numInhabitants();m++)
 							{
-								MOB M=room.fetchInhabitant(m);
+								final MOB M=room.fetchInhabitant(m);
 								if((M.isSavable())&&(M.getStartRoom().getArea().inMyMetroArea(room.getArea())))
 									inhabs.addElement(M);
 							}
 							if(inhabs.size()>0)
 							{
-								MOB M=(MOB)inhabs.elementAt(CMLib.dice().roll(1,inhabs.size(),-1));
+								final MOB M=(MOB)inhabs.elementAt(CMLib.dice().roll(1,inhabs.size(),-1));
 								M.addItem(I);
 								I.wearIfPossible(M);
 								maintained.addElement(I);

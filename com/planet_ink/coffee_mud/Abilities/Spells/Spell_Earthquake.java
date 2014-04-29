@@ -65,7 +65,7 @@ public class Spell_Earthquake extends Spell
 		// undo the affects of this spell
 		if(!(affected instanceof MOB))
 			return super.okMessage(myHost,msg);
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		if((msg.amISource(mob))
 		&&(msg.sourceMinor()==CMMsg.TYP_STAND)
 		&&(mob.location()!=null))
@@ -86,14 +86,14 @@ public class Spell_Earthquake extends Spell
 		// undo the affects of this spell
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		super.unInvoke();
 		if(canBeUninvoked())
 		{
 			if((mob.location()!=null)&&(!mob.amDead()))
 			{
-				CMMsg msg=CMClass.getMsg(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> regain(s) <S-HIS-HER> feet as the ground stops shaking.");
+				final CMMsg msg=CMClass.getMsg(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> regain(s) <S-HIS-HER> feet as the ground stops shaking.");
 				if(mob.location().okMessage(mob,msg))
 				{
 					mob.location().send(mob,msg);
@@ -108,7 +108,7 @@ public class Spell_Earthquake extends Spell
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		Set<MOB> h=properTargets(mob,givenTarget,auto);
+		final Set<MOB> h=properTargets(mob,givenTarget,auto);
 		if(h==null)
 		{
 			mob.tell("There doesn't appear to be anyone here worth shaking up.");
@@ -128,15 +128,15 @@ public class Spell_Earthquake extends Spell
 		{
 
 			mob.location().show(mob,null,verbalCastCode(mob,null,auto),(auto?"":"^S<S-NAME> invoke(s) a thunderous spell.^?")+CMLib.protocol().msp("earthquake.wav",40));
-			for(Iterator f=h.iterator();f.hasNext();)
+			for (final Object element : h)
 			{
-				MOB target=(MOB)f.next();
+				final MOB target=(MOB)element;
 
 				// it worked, so build a copy of this ability,
 				// and add it to the affects list of the
 				// affected MOB.  Then tell everyone else
 				// what happened.
-				CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),null);
+				final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),null);
 				if(CMLib.flags().isInFlight(target))
 					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> seem(s) unaffected.");
 				else

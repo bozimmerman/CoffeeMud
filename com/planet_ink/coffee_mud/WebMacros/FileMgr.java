@@ -61,12 +61,12 @@ public class FileMgr extends StdWebMacro
 	public void compileFilenamesList(CMFile F, String regex, Vector V)
 	{
 		if((!F.canRead())||(!F.isDirectory())) return;
-		String[] list=F.list();
+		final String[] list=F.list();
 		String path=F.getAbsolutePath();
 		if(!path.endsWith("/")) path+="/";
 		for(int l=0;l<list.length;l++)
 		{
-			CMFile F2=new CMFile(path+list[l],null,CMFile.FLAG_LOGERRORS);
+			final CMFile F2=new CMFile(path+list[l],null,CMFile.FLAG_LOGERRORS);
 			if(F2.isDirectory() && !(path+list[l]).equalsIgnoreCase("/resources/map"))
 				compileFilenamesList(F2,regex,V);
 			else
@@ -77,10 +77,10 @@ public class FileMgr extends StdWebMacro
 
 	public void compileTextListFromFiles(Vector files, String regex, Vector V)
 	{
-		Pattern P=Pattern.compile(regex,Pattern.CASE_INSENSITIVE|Pattern.DOTALL|Pattern.MULTILINE);
+		final Pattern P=Pattern.compile(regex,Pattern.CASE_INSENSITIVE|Pattern.DOTALL|Pattern.MULTILINE);
 		for(int f=0;f<files.size();f++)
 		{
-			StringBuffer buf=new CMFile((String)files.elementAt(f),null).text();
+			final StringBuffer buf=new CMFile((String)files.elementAt(f),null).text();
 			if(P.matcher(buf).find())
 				V.addElement(files.elementAt(f));
 		}
@@ -90,7 +90,7 @@ public class FileMgr extends StdWebMacro
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
-		java.util.Map<String,String> parms=parseParms(parm);
+		final java.util.Map<String,String> parms=parseParms(parm);
 		String path=httpReq.getUrlParameter("PATH");
 		if(path==null) path="";
 		String file=httpReq.getUrlParameter("FILE");
@@ -98,7 +98,7 @@ public class FileMgr extends StdWebMacro
 		{
 			file="";
 		}
-		MOB M = Authenticate.getAuthenticatedMob(httpReq);
+		final MOB M = Authenticate.getAuthenticatedMob(httpReq);
 		if(M==null) return "[authentication error]";
 		try
 		{
@@ -131,11 +131,11 @@ public class FileMgr extends StdWebMacro
 			else
 			if(parms.containsKey("CREATE"))
 			{
-				String s=httpReq.getUrlParameter("RAWTEXT");
+				final String s=httpReq.getUrlParameter("RAWTEXT");
 				if(s==null) return "File `"+last+"` not updated -- no buffer!";
 				if(parms.containsKey("VFS")||parms.containsKey("LOCAL")||parms.containsKey("BOTH"))
 				{
-					StringBuilder returnMsg=new StringBuilder("");
+					final StringBuilder returnMsg=new StringBuilder("");
 					/*
 					// code for "moving" files between vfs/local
 					if(!parms.containsKey("VFS") && !parms.containsKey("BOTH"))
@@ -190,14 +190,14 @@ public class FileMgr extends StdWebMacro
 			{
 				if(!F.isDirectory())
 					return "Path not found! Search not completed.";
-				String s=parms.get("STR");
+				final String s=parms.get("STR");
 				if((s==null)||(s.length()==0))
 					return "Search not completed! No expression given!";
-				Vector compiledList=new Vector();
+				final Vector compiledList=new Vector();
 				compileFilenamesList(F, s, compiledList);
 				if(compiledList.size()==0)
 					return "No files found matching your criteria.";
-				StringBuffer theList=new StringBuffer("");
+				final StringBuffer theList=new StringBuffer("");
 				for(int c=0;c<compiledList.size();c++)
 				{
 					String name=((String)compiledList.elementAt(c));
@@ -212,18 +212,18 @@ public class FileMgr extends StdWebMacro
 			{
 				if(!F.isDirectory())
 					return "Path not found! Search not completed.";
-				String s=parms.get("STR");
+				final String s=parms.get("STR");
 				if((s==null)||(s.length()==0))
 					return "Search not completed! No expression given!";
-				Vector fileList=new Vector();
+				final Vector fileList=new Vector();
 				compileFilenamesList(F,"", fileList);
 				if(fileList.size()==0)
 					return "No files found!";
-				Vector compiledList=new Vector();
+				final Vector compiledList=new Vector();
 				compileTextListFromFiles(fileList, s, compiledList);
 				if(compiledList.size()==0)
 					return "No files found matching your criteria.";
-				StringBuffer theList=new StringBuffer("");
+				final StringBuffer theList=new StringBuffer("");
 				for(int c=0;c<compiledList.size();c++)
 				{
 					String name=((String)compiledList.elementAt(c));
@@ -253,7 +253,7 @@ public class FileMgr extends StdWebMacro
 					return  "Error deleting directory!";
 				String newPath=F.getAbsolutePath();
 				if(newPath.endsWith("/")) newPath=newPath.substring(0,newPath.length()-1);
-				int x=newPath.lastIndexOf('/');
+				final int x=newPath.lastIndexOf('/');
 				if(x>0) newPath=newPath.substring(0,x);
 				httpReq.addFakeUrlParameter("PATH",newPath);
 				httpReq.removeUrlParameter("FILE");
@@ -262,9 +262,9 @@ public class FileMgr extends StdWebMacro
 			else
 			if(parms.containsKey("APPEND"))
 			{
-				String s=httpReq.getUrlParameter("RAWTEXT");
+				final String s=httpReq.getUrlParameter("RAWTEXT");
 				if(s==null) return "File `"+last+"` not appended -- no buffer!";
-				StringBuffer buf=F.textUnformatted();
+				final StringBuffer buf=F.textUnformatted();
 				buf.append(s);
 				if((!F.canWrite())||(!F.saveText(buf)))
 					return "File `"+last+"` not appended -- error!";
@@ -274,7 +274,7 @@ public class FileMgr extends StdWebMacro
 			if(parms.containsKey("UPLOAD"))
 			{
 				byte[] buf=null;
-				for(MultiPartData d : httpReq.getMultiParts())
+				for(final MultiPartData d : httpReq.getMultiParts())
 				{
 					if((d.getVariables().containsKey("filename"))&&(d.getData()!=null))
 					{
@@ -289,7 +289,7 @@ public class FileMgr extends StdWebMacro
 				return "File `"+F.getAbsolutePath()+"` uploaded.";
 			}
 		}
-		catch(Exception e)
+		catch(final Exception e)
 		{
 			return "[an error occurred performing the last operation]";
 		}

@@ -44,7 +44,7 @@ public class Spell_Fear extends Spell
 	public void unInvoke()
 	{
 		MOB M=null;
-		MOB oldI=invoker;
+		final MOB oldI=invoker;
 		if(affected instanceof MOB) M=(MOB)affected;
 		super.unInvoke();
 		if(M!=null)
@@ -77,8 +77,8 @@ public class Spell_Fear extends Spell
 	{
 		if((affected instanceof MOB)&&(invoker!=null)&&(invoker!=affected)&&(((MOB)affected).getVictim()==invoker))
 		{
-			int xlvl=super.getXLEVELLevel(invoker());
-			float f=(float)0.05*xlvl;
+			final int xlvl=super.getXLEVELLevel(invoker());
+			final float f=(float)0.05*xlvl;
 			stats.setArmor(stats.armor()+30+(3*xlvl));
 			stats.setAttackAdjustment((int)Math.round(CMath.mul(stats.attackAdjustment(),0.90-f)));
 			stats.setDamage((int)Math.round(CMath.mul(stats.damage(),0.90-f)));
@@ -88,7 +88,7 @@ public class Spell_Fear extends Spell
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		Set<MOB> h=properTargets(mob,givenTarget,auto);
+		final Set<MOB> h=properTargets(mob,givenTarget,auto);
 		if(h==null)
 		{
 			if(!auto)
@@ -103,20 +103,20 @@ public class Spell_Fear extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
-			for(Iterator f=h.iterator();f.hasNext();)
+			for (final Object element : h)
 			{
-				MOB target=(MOB)f.next();
+				final MOB target=(MOB)element;
 
 				// it worked, so build a copy of this ability,
 				// and add it to the affects list of the
 				// affected MOB.  Then tell everyone else
 				// what happened.
-				CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> scare(s) <T-NAMESELF>.^?");
-				CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_MIND|(auto?CMMsg.MASK_ALWAYS:0),null);
+				final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> scare(s) <T-NAMESELF>.^?");
+				final CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_MIND|(auto?CMMsg.MASK_ALWAYS:0),null);
 				if(((text().toUpperCase().indexOf("WEAK")<0)||((mob.phyStats().level()/2)>target.phyStats().level()))
 				&&((mob.location().okMessage(mob,msg))&&((mob.location().okMessage(mob,msg2)))))
 				{

@@ -75,12 +75,12 @@ public class Prop_EnterAdjuster extends Property implements TriggeredAffect
 		   ||((msg.targetMinor()==CMMsg.TYP_SIT)&&(affected==msg.target())&&(affected instanceof Rideable)))
 		&&((mask==null)||(CMLib.masking().maskCheck(mask,msg.source(),true))))
 		{
-			MOB mob=msg.source();
-			Vector theSpells=new Vector();
+			final MOB mob=msg.source();
+			final Vector theSpells=new Vector();
 			int del=parameters[0].indexOf(';');
 			while(del>=0)
 			{
-				String thisOne=parameters[0].substring(0,del);
+				final String thisOne=parameters[0].substring(0,del);
 				if((thisOne.length()>0)&&(!thisOne.equals(";")))
 				{
 					Ability A=CMClass.getAbility(thisOne);
@@ -104,7 +104,7 @@ public class Prop_EnterAdjuster extends Property implements TriggeredAffect
 			}
 			for(int i=0;i<theSpells.size();i++)
 			{
-				Ability thisOne=(Ability)((Ability)theSpells.elementAt(i)).copyOf();
+				final Ability thisOne=(Ability)((Ability)theSpells.elementAt(i)).copyOf();
 				thisOne.invoke(mob,mob,true,0);
 			}
 
@@ -130,14 +130,14 @@ public class Prop_EnterAdjuster extends Property implements TriggeredAffect
 			val=CMParms.getParmStr(parameters[0],"cla","").toUpperCase();
 			if(val.length()>0)
 			{
-				CharClass C=CMClass.findCharClass(val);
+				final CharClass C=CMClass.findCharClass(val);
 				if((C!=null)&&(C.availabilityCode()!=0))
 					mob.baseCharStats().setCurrentClass(C);
 			}
 			val=CMParms.getParmStr(parameters[0],"rac","").toUpperCase();
 			if((val.length()>0)&&(CMClass.getRace(val)!=null))
 			{
-				int oldCat=mob.baseCharStats().ageCategory();
+				final int oldCat=mob.baseCharStats().ageCategory();
 				mob.baseCharStats().setMyRace(CMClass.getRace(val));
 				mob.baseCharStats().getMyRace().startRacing(mob,false);
 				if(mob.baseCharStats().getStat(CharStats.STAT_AGE)>0)
@@ -156,14 +156,14 @@ public class Prop_EnterAdjuster extends Property implements TriggeredAffect
 
 			mob.setPractices(mob.getPractices()+CMParms.getParmPlus(parameters[0],"prac"));
 			mob.setTrains(mob.getTrains()+CMParms.getParmPlus(parameters[0],"trai"));
-			int qp=CMParms.getParmPlus(parameters[0],"ques");
+			final int qp=CMParms.getParmPlus(parameters[0],"ques");
 			if(qp!=0)
 				mob.setQuestPoint(mob.getQuestPoint()+qp);
 			if(qp>0)
 				CMLib.players().bumpPrideStat(mob,PrideStat.QUESTPOINTS_EARNED, qp);
-			int newMoney=CMParms.getParmPlus(parameters[0],"coin");
+			final int newMoney=CMParms.getParmPlus(parameters[0],"coin");
 			if(newMoney!=0) CMLib.beanCounter().setMoney(mob,CMLib.beanCounter().getMoney(mob)+newMoney);
-			int exp=CMParms.getParmPlus(parameters[0],"expe");
+			final int exp=CMParms.getParmPlus(parameters[0],"expe");
 			if(exp>0) CMLib.leveler().postExperience(mob,null,null,exp,false);
 			mob.recoverCharStats();
 			mob.recoverPhyStats();

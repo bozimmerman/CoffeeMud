@@ -57,7 +57,7 @@ public class Dance_Swing extends Dance
 		if(!(affected instanceof MOB))
 			return true;
 
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		if(msg.amITarget(mob)
 		   &&(CMLib.flags().aliveAwakeMobile(mob,true))
@@ -67,7 +67,7 @@ public class Dance_Swing extends Dance
 		{
 			if((msg.tool()!=null)&&(msg.tool() instanceof Item))
 			{
-				Item attackerWeapon=(Item)msg.tool();
+				final Item attackerWeapon=(Item)msg.tool();
 				if((attackerWeapon!=null)
 				&&(attackerWeapon instanceof Weapon)
 				&&(((Weapon)attackerWeapon).weaponClassification()!=Weapon.CLASS_FLAILED)
@@ -77,7 +77,7 @@ public class Dance_Swing extends Dance
 				{
 					if(proficiencyCheck(null,mob.charStats().getStat(CharStats.STAT_DEXTERITY)+(getXLEVELLevel(invoker())*2)-70,false))
 					{
-						CMMsg msg2=CMClass.getMsg(mob,msg.source(),null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> parr(ys) "+attackerWeapon.name()+" attack from <T-NAME>!");
+						final CMMsg msg2=CMClass.getMsg(mob,msg.source(),null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> parr(ys) "+attackerWeapon.name()+" attack from <T-NAME>!");
 						if(mob.location().okMessage(mob,msg2))
 						{
 							doneThisRound=true;

@@ -36,7 +36,7 @@ public final class ReadOnlyVector<T> extends Vector<T>
 	  public ReadOnlyVector(T[] E)
 	  {
 		  if(E!=null)
-			  for(T o : E)
+			  for(final T o : E)
 				  super.add(o);
 	  }
 
@@ -62,7 +62,7 @@ public final class ReadOnlyVector<T> extends Vector<T>
 
 	  public ReadOnlyVector(Set<T> E)
 	  {
-			for(T o : E)
+			for(final T o : E)
 				super.add(o);
 	  }
 

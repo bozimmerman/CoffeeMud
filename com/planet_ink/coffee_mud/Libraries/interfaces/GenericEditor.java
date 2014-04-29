@@ -120,8 +120,8 @@ public interface GenericEditor extends CMLibrary
 		public Object eval(Object val, Object[] choices, boolean emptyOK) throws CMException
 		{
 			if(choices.length==0) return "";
-			String str=val.toString().trim();
-			for(Object o : choices)
+			final String str=val.toString().trim();
+			for(final Object o : choices)
 				if(str.equalsIgnoreCase(o.toString()))
 					return o.toString();
 			throw new CMException("That was not one of your choices.");

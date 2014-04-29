@@ -134,10 +134,10 @@ public class MWFileCache implements FileCacheManager
 			if(totalBytes.get() > targetBytes)
 			{
 				final long currentTime=System.currentTimeMillis();
-				for(Iterator<String> k=cache.keySet().iterator(); k.hasNext();)
+				for(final Iterator<String> k=cache.keySet().iterator(); k.hasNext();)
 				{
-					String key=k.next();
-					FileCacheEntry e=cache.get(key);
+					final String key=k.next();
+					final FileCacheEntry e=cache.get(key);
 					if(currentTime >= entry.expires.getTime())
 					{
 						k.remove();
@@ -169,7 +169,7 @@ public class MWFileCache implements FileCacheManager
 	 */
 	private FileCacheEntry getFileData(final String fileName, final String[] eTag)  throws HTTPException
 	{
-		FileCacheEntry entry = cache.get(fileName);
+		final FileCacheEntry entry = cache.get(fileName);
 		if(entry != null)
 		{
 			if(System.currentTimeMillis() < entry.expires.getTime())
@@ -209,7 +209,7 @@ public class MWFileCache implements FileCacheManager
 		if(pageFile != null)
 		{
 			fileName = pageFile.getAbsolutePath();
-			FileCacheEntry entry = getFileData(fileName, null);
+			final FileCacheEntry entry = getFileData(fileName, null);
 			if((entry != null) && (entry.buf[type.ordinal()]!=null))
 			{
 				uncompressedData.close(); // we aren't going to need this.
@@ -221,14 +221,14 @@ public class MWFileCache implements FileCacheManager
 		final boolean cacheActive=(cacheMaxBytes > 0);
 		synchronized(fileName.intern())
 		{
-			FileCacheEntry entry = getFileData(fileName, null);
+			final FileCacheEntry entry = getFileData(fileName, null);
 			if((entry != null) && (entry.buf[type.ordinal()]!=null))
 			{
 				uncompressedData.close(); // we aren't going to need this.
 				return new MWDataBuffers(entry.buf[type.ordinal()],entry.modified);
 			}
 			DeflaterOutputStream compressor=null;
-			ByteArrayOutputStream bufStream=new ByteArrayOutputStream();
+			final ByteArrayOutputStream bufStream=new ByteArrayOutputStream();
 			try
 			{
 				switch(type)
@@ -243,14 +243,14 @@ public class MWFileCache implements FileCacheManager
 				}
 				while(uncompressedData.hasNext())
 				{
-					ByteBuffer buf=uncompressedData.next();
+					final ByteBuffer buf=uncompressedData.next();
 					compressor.write(buf.array(),buf.position(),buf.remaining());
 					buf.position(buf.limit());
 				}
 				compressor.flush();
 				compressor.finish();
 			}
-			catch(IOException ioe)
+			catch(final IOException ioe)
 			{
 				uncompressedData.close();
 				logger.throwing("", "", ioe);
@@ -260,7 +260,7 @@ public class MWFileCache implements FileCacheManager
 			{
 				if(compressor!=null)
 					try
-					{ compressor.close();} catch(Exception e){}
+					{ compressor.close();} catch(final Exception e){}
 			}
 			final byte[] compressedBytes = bufStream.toByteArray();
 			if((cacheActive) && (entry != null) && (entry.buf[type.ordinal()] == null))
@@ -311,12 +311,12 @@ public class MWFileCache implements FileCacheManager
 				}
 				throw HTTPException.standardException(HTTPStatus.S404_NOT_FOUND);
 			}
-			boolean cacheActiveThisFile=cacheActive;
+			final boolean cacheActiveThisFile=cacheActive;
 			try
 			{
 				if((cacheMaxFileBytes==0)||(pageFile.length()<=cacheMaxFileBytes)||(!fileManager.supportsRandomAccess(pageFile)))
 				{
-					byte[] fileBuf = fileManager.readFile(pageFile);
+					final byte[] fileBuf = fileManager.readFile(pageFile);
 					if(cacheActiveThisFile)
 					{
 						entry = new FileCacheEntry(fileBuf, pageFile.lastModified());
@@ -329,7 +329,7 @@ public class MWFileCache implements FileCacheManager
 					return new MWDataBuffers(fileManager.getRandomAccessFile(pageFile), pageFile.lastModified());
 				}
 			}
-			catch(FileNotFoundException e)
+			catch(final FileNotFoundException e)
 			{
 				logger.throwing("", "", e);
 				if(cacheActiveThisFile)
@@ -342,7 +342,7 @@ public class MWFileCache implements FileCacheManager
 				// not quite sure how we could get here.
 				throw HTTPException.standardException(HTTPStatus.S404_NOT_FOUND);
 			}
-			catch (IOException e)
+			catch (final IOException e)
 			{
 				logger.throwing("", "", e);
 				if(cacheActiveThisFile)

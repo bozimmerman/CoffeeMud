@@ -39,7 +39,7 @@ public class ComponentPieceID extends StdWebMacro
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
-		String last=httpReq.getUrlParameter("COMPONENTPIECE");
+		final String last=httpReq.getUrlParameter("COMPONENTPIECE");
 		if(last==null) return " @break@";
 		return last;
 	}

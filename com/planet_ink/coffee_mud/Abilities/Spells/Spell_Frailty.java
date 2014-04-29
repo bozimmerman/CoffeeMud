@@ -51,7 +51,7 @@ public class Spell_Frailty extends Spell
 		if(!(affected instanceof MOB))
 			return true;
 
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		if((msg.amITarget(mob))
 		&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
 		&&((msg.tool()==null)
@@ -60,7 +60,7 @@ public class Spell_Frailty extends Spell
 				||((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_THIEF_SKILL)
 				))
 		{
-			int recovery=(int)Math.round(CMath.div((msg.value()),3.0));
+			final int recovery=(int)Math.round(CMath.div((msg.value()),3.0));
 			msg.setValue(msg.value()+recovery);
 		}
 		return true;
@@ -72,7 +72,7 @@ public class Spell_Frailty extends Spell
 		// undo the affects of this spell
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		super.unInvoke();
 
@@ -86,7 +86,7 @@ public class Spell_Frailty extends Spell
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		MOB target=this.getTarget(mob,commands,givenTarget);
+		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
 		// the invoke method for spells receives as
@@ -95,7 +95,7 @@ public class Spell_Frailty extends Spell
 		// and added as String objects to a vector.
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
-		boolean success=proficiencyCheck(mob,(mob.phyStats().level()+(2*getXLEVELLevel(mob)))-target.phyStats().level(),auto);
+		final boolean success=proficiencyCheck(mob,(mob.phyStats().level()+(2*getXLEVELLevel(mob)))-target.phyStats().level(),auto);
 
 		if(success)
 		{
@@ -104,7 +104,7 @@ public class Spell_Frailty extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> incant(s) to <T-NAMESELF>.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> incant(s) to <T-NAMESELF>.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

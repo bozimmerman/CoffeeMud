@@ -46,7 +46,7 @@ public class Gaoler extends StdCharClass
 	@Override public String getManaFormula(){return "((@x4<@x5)/10)+(1*(1?2))"; }
 	@Override public int allowedArmorLevel(){return CharClass.ARMOR_CLOTH;}
 	@Override public int allowedWeaponLevel(){return CharClass.WEAPONS_FLAILONLY;}
-	private HashSet disallowedWeapons=buildDisallowedWeaponClasses();
+	private final HashSet disallowedWeapons=buildDisallowedWeaponClasses();
 	@Override protected HashSet disallowedWeaponClasses(MOB mob){return disallowedWeapons;}
 	@Override public int availabilityCode(){return Area.THEME_FANTASY;}
 	public Hashtable<String,int[]> mudHourMOBXPMap=new Hashtable<String,int[]>();
@@ -149,7 +149,7 @@ public class Gaoler extends StdCharClass
 	{
 		if((tickID==Tickable.TICKID_MOB)&&(ticking instanceof MOB))
 		{
-			MOB mob=(MOB)ticking;
+			final MOB mob=(MOB)ticking;
 			if(mob.charStats().getCurrentClass().ID().equals(ID()))
 			{
 				int exp=0;
@@ -187,15 +187,15 @@ public class Gaoler extends StdCharClass
 		&&(CMLib.map().getStartArea(host)!=null)
 		&&(((MOB)host).charStats().getClassLevel(this)>0))
 		{
-			CMMsg msg2=CMClass.getMsg((MOB)msg.target(),null,null,CMMsg.MSG_NOISE,"<S-NAME> scream(s) in agony, AAAAAAARRRRGGGHHH!!"+CMLib.protocol().msp("scream.wav",40));
+			final CMMsg msg2=CMClass.getMsg((MOB)msg.target(),null,null,CMMsg.MSG_NOISE,"<S-NAME> scream(s) in agony, AAAAAAARRRRGGGHHH!!"+CMLib.protocol().msp("scream.wav",40));
 			if(((MOB)msg.target()).location().okMessage(msg.target(),msg2))
 			{
-				int xp=(int)Math.round(10.0*CMath.div(((MOB)msg.target()).phyStats().level(),((MOB)host).charStats().getClassLevel(this)));
+				final int xp=(int)Math.round(10.0*CMath.div(((MOB)msg.target()).phyStats().level(),((MOB)host).charStats().getClassLevel(this)));
 				int[] done=mudHourMOBXPMap.get(host.Name()+"/"+msg.tool().ID());
 				if(done==null){ done=new int[3]; mudHourMOBXPMap.put(host.Name()+"/"+msg.tool().ID(),done);}
 				if(Calendar.getInstance().get(Calendar.SECOND)!=done[2])
 				{
-					TimeClock clock =CMLib.map().getStartArea(host).getTimeObj();
+					final TimeClock clock =CMLib.map().getStartArea(host).getTimeObj();
 					if(done[0]!=clock.getHourOfDay())
 						done[1]=0;
 					done[0]=clock.getHourOfDay();
@@ -231,7 +231,7 @@ public class Gaoler extends StdCharClass
 		if(outfitChoices==null)
 		{
 			outfitChoices=new Vector();
-			Weapon w=CMClass.getWeapon("Whip");
+			final Weapon w=CMClass.getWeapon("Whip");
 			outfitChoices.add(w);
 		}
 		return outfitChoices;

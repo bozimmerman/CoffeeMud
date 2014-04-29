@@ -52,15 +52,15 @@ public class Chant_CrystalGrowth extends Chant
 			mob.tell("This magic will not work here.");
 			return false;
 		}
-		int material=RawMaterial.RESOURCE_CRYSTAL;
+		final int material=RawMaterial.RESOURCE_CRYSTAL;
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		// now see if it worked
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":"^S<S-NAME> chant(s) to the cave walls.^?");
+			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":"^S<S-NAME> chant(s) to the cave walls.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -92,11 +92,11 @@ public class Chant_CrystalGrowth extends Chant
 					mob.tell("The chant failed for some reason...");
 					return false;
 				}
-				Item building=pair.item;
-				Item key=pair.key;
+				final Item building=pair.item;
+				final Item key=pair.key;
 				mob.location().addItem(building,ItemPossessor.Expire.Resource);
 				if(key!=null) mob.location().addItem(key,ItemPossessor.Expire.Resource);
-				Ability A2=CMClass.getAbility("Chant_Brittle");
+				final Ability A2=CMClass.getAbility("Chant_Brittle");
 				if(A2!=null) building.addNonUninvokableEffect(A2);
 
 				mob.location().showHappens(CMMsg.MSG_OK_ACTION,"a tiny crystal fragment drops out of the stone, swells and grows, forming into "+building.name()+".");

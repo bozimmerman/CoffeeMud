@@ -54,7 +54,7 @@ public class DBUpgrade
 
 	private static long s_long(String str)
 	{
-		try { return Long.valueOf(str).longValue(); } catch(Exception e){ return 0;}
+		try { return Long.valueOf(str).longValue(); } catch(final Exception e){ return 0;}
 	}
 
 	public static Object getFieldValue(final String field, int oldIndex, List<String> row)
@@ -77,10 +77,10 @@ public class DBUpgrade
 
 	public static int[] getMatrix(List<String> ofields, List<String> nfields)
 	{
-		int[] matrix=new int[nfields.size()];
+		final int[] matrix=new int[nfields.size()];
 		for(int i=0;i<nfields.size();i++)
 		{
-			String field=nfields.get(i);
+			final String field=nfields.get(i);
 			int oldIndex=-1;
 			for(int u=0;u<ofields.size();u++)
 				if(ofields.get(u).substring(1).equals(field.substring(1)))
@@ -97,7 +97,7 @@ public class DBUpgrade
 		pl("Another product of ...Planet Ink!");
 		pl("");
 		pl("");
-		Hashtable<String,List<String>> oldTables=new Hashtable<String,List<String>>();
+		final Hashtable<String,List<String>> oldTables=new Hashtable<String,List<String>>();
 		while(oldTables.size()==0)
 		{
 			pl("Enter the path to the 'fakedb.schema' file");
@@ -112,7 +112,7 @@ public class DBUpgrade
 			}
 			if(!oldfakedbfile.endsWith("fakedb.schema"))
 				oldfakedbfile+=File.separatorChar+"fakedb.schema";
-			File F=new File(oldfakedbfile);
+			final File F=new File(oldfakedbfile);
 			if((!F.exists())||(!F.isFile()))
 			{
 				pl("!Hmm.. can't find that file.  Enter it again!");
@@ -121,8 +121,8 @@ public class DBUpgrade
 			}
 			try
 			{
-				FileReader FR=new FileReader(F);
-				BufferedReader reader=new BufferedReader(FR);
+				final FileReader FR=new FileReader(F);
+				final BufferedReader reader=new BufferedReader(FR);
 				String line="";
 				Vector table=null;
 				while((line!=null)&&(reader.ready()))
@@ -143,7 +143,7 @@ public class DBUpgrade
 							{
 								int x=line.indexOf(' ');
 								if(x<0)	throw new Exception("BAH!");
-								String name=line.substring(0,x).trim();
+								final String name=line.substring(0,x).trim();
 								line=line.substring(x+1).trim();
 								x=line.indexOf(' ');
 								if(x>0)	line=line.substring(0,x).trim();
@@ -160,7 +160,7 @@ public class DBUpgrade
 				}
 				FR.close();
 			}
-			catch(Exception e)
+			catch(final Exception e)
 			{
 				pl("!!Hmm.. can't read that file.  Enter it again!!");
 				pl("");
@@ -178,7 +178,7 @@ public class DBUpgrade
 		pl("");
 		pl("Cool.. I got the old schema now.");
 		pl("");
-		Hashtable<String,List<String>> newTables=new Hashtable<String,List<String>>();
+		final Hashtable<String,List<String>> newTables=new Hashtable<String,List<String>>();
 		while(newTables.size()==0)
 		{
 			pl("Enter the path to the 'fakedb.schema' file");
@@ -193,7 +193,7 @@ public class DBUpgrade
 			}
 			if(!newfakedbfile.endsWith("fakedb.schema"))
 				newfakedbfile+=File.separatorChar+"fakedb.schema";
-			File F=new File(newfakedbfile);
+			final File F=new File(newfakedbfile);
 			if((!F.exists())||(!F.isFile()))
 			{
 				pl("!Hmm.. can't find that file.  Enter it again!");
@@ -202,8 +202,8 @@ public class DBUpgrade
 			}
 			try
 			{
-				FileReader FR=new FileReader(F);
-				BufferedReader reader=new BufferedReader(FR);
+				final FileReader FR=new FileReader(F);
+				final BufferedReader reader=new BufferedReader(FR);
 				String line="";
 				Vector table=null;
 				while((line!=null)&&(reader.ready()))
@@ -224,7 +224,7 @@ public class DBUpgrade
 							{
 								int x=line.indexOf(' ');
 								if(x<0)	throw new Exception("BAH!");
-								String name=line.substring(0,x).trim();
+								final String name=line.substring(0,x).trim();
 								line=line.substring(x+1).trim();
 								x=line.indexOf(' ');
 								if(x>0)	line=line.substring(0,x).trim();
@@ -243,7 +243,7 @@ public class DBUpgrade
 				}
 				FR.close();
 			}
-			catch(Exception e)
+			catch(final Exception e)
 			{
 				pl("!!Hmm.. can't read that file.  Enter it again!!");
 				pl("");
@@ -259,11 +259,11 @@ public class DBUpgrade
 			}
 		}
 		boolean same=true;
-		for(Enumeration e=oldTables.keys();e.hasMoreElements();)
+		for(final Enumeration e=oldTables.keys();e.hasMoreElements();)
 		{
-			String s=(String)e.nextElement();
-			List V1=oldTables.get(s);
-			List V2=newTables.get(s);
+			final String s=(String)e.nextElement();
+			final List V1=oldTables.get(s);
+			final List V2=newTables.get(s);
 			if((V1==null)||(V2==null))
 			{ same=false; break;}
 			if((V1.size()!=V2.size()))
@@ -275,11 +275,11 @@ public class DBUpgrade
 			}
 			if(!same) break;
 		}
-		for(Enumeration e=newTables.keys();e.hasMoreElements();)
+		for(final Enumeration e=newTables.keys();e.hasMoreElements();)
 		{
-			String s=(String)e.nextElement();
-			List V1=oldTables.get(s);
-			List V2=newTables.get(s);
+			final String s=(String)e.nextElement();
+			final List V1=oldTables.get(s);
+			final List V2=newTables.get(s);
 			if((V1==null)||(V2==null))
 			{ same=false; break;}
 			if((V1.size()!=V2.size()))
@@ -333,7 +333,7 @@ public class DBUpgrade
 				Class.forName(sclass);
 				tested=true;
 			}
-			catch(ClassNotFoundException ce)
+			catch(final ClassNotFoundException ce)
 			{
 				pl("That class name just did not work for me.");
 				pl("Are you sure it's in your CLASSPATH?");
@@ -414,9 +414,9 @@ public class DBUpgrade
 			try
 			{
 				Class.forName(sclass);
-				java.sql.Connection myConnection=DriverManager.getConnection(sservice,slogin,spassword);
-				java.sql.Statement myStatement=myConnection.createStatement(java.sql.ResultSet.TYPE_SCROLL_INSENSITIVE, java.sql.ResultSet.CONCUR_READ_ONLY);
-				java.sql.ResultSet R=myStatement.executeQuery("SELECT * FROM CMROOM");
+				final java.sql.Connection myConnection=DriverManager.getConnection(sservice,slogin,spassword);
+				final java.sql.Statement myStatement=myConnection.createStatement(java.sql.ResultSet.TYPE_SCROLL_INSENSITIVE, java.sql.ResultSet.CONCUR_READ_ONLY);
+				final java.sql.ResultSet R=myStatement.executeQuery("SELECT * FROM CMROOM");
 				if(R!=null)
 				{
 					tested=true;
@@ -425,7 +425,7 @@ public class DBUpgrade
 					myConnection.close();
 				}
 			}
-			catch(Exception ce)
+			catch(final Exception ce)
 			{
 				pl("That information just did not work for me.");
 				pl(ce.getMessage());
@@ -471,7 +471,7 @@ public class DBUpgrade
 				Class.forName(dclass);
 				tested=true;
 			}
-			catch(ClassNotFoundException ce)
+			catch(final ClassNotFoundException ce)
 			{
 				pl("That class name just did not work for me.");
 				pl("Are you sure it's in your CLASSPATH?");
@@ -558,17 +558,17 @@ public class DBUpgrade
 			try
 			{
 				Class.forName(dclass);
-				java.sql.Connection myConnection=DriverManager.getConnection(dservice,dlogin,dpassword);
-				for(Enumeration e=newTables.keys();e.hasMoreElements();)
+				final java.sql.Connection myConnection=DriverManager.getConnection(dservice,dlogin,dpassword);
+				for(final Enumeration e=newTables.keys();e.hasMoreElements();)
 				{
 					boolean doThisTable=true;
 					while(doThisTable)
 					{
 						doThisTable=false;
 						boolean deleteAllData=false;
-						String table=(String)e.nextElement();
+						final String table=(String)e.nextElement();
 						java.sql.Statement myStatement=myConnection.createStatement(java.sql.ResultSet.TYPE_SCROLL_INSENSITIVE, java.sql.ResultSet.CONCUR_READ_ONLY);
-						java.sql.ResultSet R=myStatement.executeQuery("SELECT * FROM "+table);
+						final java.sql.ResultSet R=myStatement.executeQuery("SELECT * FROM "+table);
 						if(R!=null)
 						{
 							tested=true;
@@ -577,7 +577,7 @@ public class DBUpgrade
 								pl("Argh! There is data in your destination database table: "+table+"");
 								pl("Enter Y if you want me to delete the data.  Enter N to exit this program and do it yourself.");
 								p(":");
-								String ans=in.readLine();
+								final String ans=in.readLine();
 								if((ans!=null)&&(ans.trim().toUpperCase().startsWith("Y")))
 									deleteAllData=true;
 								else
@@ -600,7 +600,7 @@ public class DBUpgrade
 				}
 				myConnection.close();
 			}
-			catch(Exception ce)
+			catch(final Exception ce)
 			{
 				pl("Could not connect to your destination database.  Not so good.");
 				pl(ce.getMessage());
@@ -615,22 +615,22 @@ public class DBUpgrade
 		pl("");
 		pl("");
 		p("Reading source tables: ");
-		Hashtable<String,List<List<String>>> data=new Hashtable<String,List<List<String>>>();
+		final Hashtable<String,List<List<String>>> data=new Hashtable<String,List<List<String>>>();
 		try
 		{
 			Class.forName(sclass);
-			java.sql.Connection myConnection=DriverManager.getConnection(sservice,slogin,spassword);
-			for(Enumeration e=oldTables.keys();e.hasMoreElements();)
+			final java.sql.Connection myConnection=DriverManager.getConnection(sservice,slogin,spassword);
+			for(final Enumeration e=oldTables.keys();e.hasMoreElements();)
 			{
-				String table=(String)e.nextElement();
-				List<String> fields=oldTables.get(table);
-				Vector<List<String>> rows=new Vector<List<String>>();
+				final String table=(String)e.nextElement();
+				final List<String> fields=oldTables.get(table);
+				final Vector<List<String>> rows=new Vector<List<String>>();
 				data.put(table,rows);
-				java.sql.Statement myStatement=myConnection.createStatement(java.sql.ResultSet.TYPE_SCROLL_INSENSITIVE, java.sql.ResultSet.CONCUR_READ_ONLY);
-				java.sql.ResultSet R=myStatement.executeQuery("SELECT * FROM "+table);
+				final java.sql.Statement myStatement=myConnection.createStatement(java.sql.ResultSet.TYPE_SCROLL_INSENSITIVE, java.sql.ResultSet.CONCUR_READ_ONLY);
+				final java.sql.ResultSet R=myStatement.executeQuery("SELECT * FROM "+table);
 				while(R.next())
 				{
-					Vector<String> row=new Vector<String>();
+					final Vector<String> row=new Vector<String>();
 					rows.addElement(row);
 					for(int s=0;s<fields.size();s++)
 					{
@@ -644,7 +644,7 @@ public class DBUpgrade
 				p(table+"("+rows.size()+") ");
 			}
 		}
-		catch(Exception ce)
+		catch(final Exception ce)
 		{
 			pl("\n\nOops.. failed to read your old data!");
 			pl(ce.getMessage());
@@ -655,7 +655,7 @@ public class DBUpgrade
 		// first, look for the CLAN conversion
 		if(newTables.containsKey("CMCHCL") && (!oldTables.containsKey("CMCHCL")))
 		{
-			List<List<String>> charRows=data.get("CMCHAR");
+			final List<List<String>> charRows=data.get("CMCHAR");
 			List<List<String>> cmchclRows=data.get("CMCHCL");
 			if(cmchclRows==null)
 			{
@@ -665,23 +665,23 @@ public class DBUpgrade
 			pl(" ");
 			pl(" ");
 			p("Making CMCHCL conversion: ");
-			List<String> ofields=oldTables.get("CMCHAR");
-			List<String> nfields=newTables.get("CMCHCL");
-			int cmUserIDIndex=ofields.indexOf("$CMUSERID");
-			int cmClanIndex=ofields.indexOf("$CMCLAN");
-			int cmClRoIndex=ofields.indexOf("#CMCLRO");
-			int cm2UserIDIndex=nfields.indexOf("$CMUSERID");
-			int cm2ClanIndex=nfields.indexOf("$CMCLAN");
-			int cm2ClRoIndex=nfields.indexOf("#CMCLRO");
+			final List<String> ofields=oldTables.get("CMCHAR");
+			final List<String> nfields=newTables.get("CMCHCL");
+			final int cmUserIDIndex=ofields.indexOf("$CMUSERID");
+			final int cmClanIndex=ofields.indexOf("$CMCLAN");
+			final int cmClRoIndex=ofields.indexOf("#CMCLRO");
+			final int cm2UserIDIndex=nfields.indexOf("$CMUSERID");
+			final int cm2ClanIndex=nfields.indexOf("$CMCLAN");
+			final int cm2ClRoIndex=nfields.indexOf("#CMCLRO");
 			for(int r=0;r<charRows.size();r++)
 			{
-				List<String> row=charRows.get(r);
-				String userID=row.get(cmUserIDIndex);
-				String clanID=row.get(cmClanIndex);
-				String clanRo=row.get(cmClRoIndex);
+				final List<String> row=charRows.get(r);
+				final String userID=row.get(cmUserIDIndex);
+				final String clanID=row.get(cmClanIndex);
+				final String clanRo=row.get(cmClRoIndex);
 				if((clanID==null)||(clanID.length()==0))
 					continue;
-				Vector<String> newRow=new Vector<String>(3);
+				final Vector<String> newRow=new Vector<String>(3);
 				newRow.add(""); newRow.add(""); newRow.add("");
 				newRow.add(cm2UserIDIndex,userID);
 				newRow.add(cm2ClanIndex,clanID);
@@ -698,27 +698,27 @@ public class DBUpgrade
 		try
 		{
 			Class.forName(dclass);
-			java.sql.Connection myConnection=DriverManager.getConnection(dservice,dlogin,dpassword);
-			for(Enumeration e=newTables.keys();e.hasMoreElements();)
+			final java.sql.Connection myConnection=DriverManager.getConnection(dservice,dlogin,dpassword);
+			for(final Enumeration e=newTables.keys();e.hasMoreElements();)
 			{
-				String table=(String)e.nextElement();
-				List<String> ofields=oldTables.get(table);
-				List<String> nfields=newTables.get(table);
-				List rows=data.get(table);
+				final String table=(String)e.nextElement();
+				final List<String> ofields=oldTables.get(table);
+				final List<String> nfields=newTables.get(table);
+				final List rows=data.get(table);
 				p(table);
 				if((rows==null)||(rows.size()==0))
 				{
 					p(" ");
 					continue;
 				}
-				int[] matrix=getMatrix(ofields,nfields);
+				final int[] matrix=getMatrix(ofields,nfields);
 
 				for(int r=0;r<rows.size();r++)
 				{
-					List row=(List)rows.get(r);
+					final List row=(List)rows.get(r);
 					try
 					{
-						StringBuffer str=new StringBuffer("INSERT INTO "+table+" (");
+						final StringBuffer str=new StringBuffer("INSERT INTO "+table+" (");
 						for(int i=0;i<nfields.size();i++)
 							str.append(nfields.get(i).substring(1)+",");
 						if(nfields.size()>0)
@@ -730,12 +730,12 @@ public class DBUpgrade
 							str.setCharAt(str.length()-1,')');
 						else
 							str.append(")");
-						java.sql.PreparedStatement myStatement=myConnection.prepareStatement(str.toString());
+						final java.sql.PreparedStatement myStatement=myConnection.prepareStatement(str.toString());
 						for(int i=0;i<nfields.size();i++)
 						{
-							String field=nfields.get(i);
-							int oldIndex=matrix[i];
-							Object value=getFieldValue(field,oldIndex,row);
+							final String field=nfields.get(i);
+							final int oldIndex=matrix[i];
+							final Object value=getFieldValue(field,oldIndex,row);
 							if(value instanceof String)
 								myStatement.setString(i+1, (String)value);
 							else
@@ -746,18 +746,18 @@ public class DBUpgrade
 						myStatement.executeUpdate();
 						myStatement.close();
 					}
-					catch(SQLException sqle)
+					catch(final SQLException sqle)
 					{
-						StringBuffer str=new StringBuffer("SELECT * FROM "+table+" WHERE ");
+						final StringBuffer str=new StringBuffer("SELECT * FROM "+table+" WHERE ");
 						for(int i=0;i<2 && i<nfields.size();i++)
 						{
 							final String field=nfields.get(i).substring(1);
 							str.append((i>0)?" and ":"").append(field).append("=");
-							int oldIndex=matrix[i];
+							final int oldIndex=matrix[i];
 							str.append(getStringFieldValue(field,oldIndex,row));
 						}
-						java.sql.Statement myStatement=myConnection.createStatement(java.sql.ResultSet.TYPE_SCROLL_INSENSITIVE, java.sql.ResultSet.CONCUR_READ_ONLY);
-						java.sql.ResultSet R=myStatement.executeQuery(str.toString());
+						final java.sql.Statement myStatement=myConnection.createStatement(java.sql.ResultSet.TYPE_SCROLL_INSENSITIVE, java.sql.ResultSet.CONCUR_READ_ONLY);
+						final java.sql.ResultSet R=myStatement.executeQuery(str.toString());
 						final boolean found=((R!=null)&&(R.next()));
 						if(R!=null) R.close();
 						myStatement.close();
@@ -770,7 +770,7 @@ public class DBUpgrade
 				p(" ");
 			}
 		}
-		catch(Exception ce)
+		catch(final Exception ce)
 		{
 			pl("\n\nOops.. something bad happened writing to your target database!");
 			pl(ce.getMessage());

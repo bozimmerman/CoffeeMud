@@ -50,14 +50,14 @@ public class Play_Solo extends Play
 		if(!super.okMessage(E,msg)) return false;
 		if((affected!=null)&&(affected instanceof MOB))
 		{
-			MOB myChar=(MOB)affected;
+			final MOB myChar=(MOB)affected;
 			if(!msg.amISource(myChar)
 			&&(msg.tool()!=null)
 			&&(!msg.tool().ID().equals(ID()))
 			&&(msg.tool() instanceof Ability)
 			&&(((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SONG)))
 			{
-				MOB otherBard=msg.source();
+				final MOB otherBard=msg.source();
 				if(((otherBard.phyStats().level()+CMLib.dice().roll(1,30,0)+getXLEVELLevel(otherBard))>(myChar.phyStats().level()+CMLib.dice().roll(1,20,0)+getXLEVELLevel(myChar)))
 				&&(otherBard.location()!=null))
 				{
@@ -98,7 +98,7 @@ public class Play_Solo extends Play
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 		unplayAll(mob,mob);
 		if(success)
 		{
@@ -111,9 +111,9 @@ public class Play_Solo extends Play
 
 			for(int v=0;v<commonRoomSet.size();v++)
 			{
-				Room R=(Room)commonRoomSet.elementAt(v);
-				String msgStr=getCorrectMsgString(R,str,v);
-				CMMsg msg=CMClass.getMsg(mob,null,this,somanticCastCode(mob,null,auto),msgStr);
+				final Room R=(Room)commonRoomSet.elementAt(v);
+				final String msgStr=getCorrectMsgString(R,str,v);
+				final CMMsg msg=CMClass.getMsg(mob,null,this,somanticCastCode(mob,null,auto),msgStr);
 				if(R.okMessage(mob,msg))
 				{
 					if(originRoom==R)
@@ -121,23 +121,23 @@ public class Play_Solo extends Play
 					else
 						R.sendOthers(mob,msg);
 					invoker=mob;
-					Play newOne=(Play)this.copyOf();
+					final Play newOne=(Play)this.copyOf();
 
-					Vector songsToCancel=new Vector();
+					final Vector songsToCancel=new Vector();
 					for(int i=0;i<R.numInhabitants();i++)
 					{
-						MOB M=R.fetchInhabitant(i);
+						final MOB M=R.fetchInhabitant(i);
 						if(M!=null)
 						for(int a=0;a<M.numEffects();a++) // personal affects
 						{
-							Ability A=M.fetchEffect(a);
+							final Ability A=M.fetchEffect(a);
 							if((A!=null)
 							&&(A.invoker()!=mob)
 							&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SONG))
 								songsToCancel.addElement(A);
 						}
 					}
-					int reqMana=songsToCancel.size()*10;
+					final int reqMana=songsToCancel.size()*10;
 					if(mob.curState().getMana()<reqMana)
 					{
 						mob.tell("You needed "+reqMana+" mana to play this solo!");
@@ -146,7 +146,7 @@ public class Play_Solo extends Play
 					mob.curState().adjMana(-reqMana,mob.maxState());
 					for(int i=0;i<songsToCancel.size();i++)
 					{
-						Ability A=(Ability)songsToCancel.elementAt(i);
+						final Ability A=(Ability)songsToCancel.elementAt(i);
 						A.unInvoke();
 					}
 					mob.addEffect(newOne);

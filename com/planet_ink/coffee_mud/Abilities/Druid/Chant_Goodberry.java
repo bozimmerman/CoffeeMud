@@ -52,7 +52,7 @@ public class Chant_Goodberry extends Chant
 		&&(newTarget.container()==originaltarget.container())
 		&&(newTarget.name().equals(originaltarget.name())))
 		{
-			Pill newItem=(Pill)CMClass.getItem("GenPill");
+			final Pill newItem=(Pill)CMClass.getItem("GenPill");
 			newItem.setName(newTarget.name());
 			newItem.setDisplayText(newTarget.displayText());
 			newItem.setDescription(newTarget.description());
@@ -61,7 +61,7 @@ public class Chant_Goodberry extends Chant
 			newItem.setSpellList(";Prayer_CureLight;");
 			newItem.recoverPhyStats();
 			newItem.setMiscText(newItem.text());
-			Container location=newTarget.container();
+			final Container location=newTarget.container();
 			newTarget.destroy();
 			if(owner instanceof MOB)
 				((MOB)owner).addItem(newItem);
@@ -79,16 +79,16 @@ public class Chant_Goodberry extends Chant
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		Item target=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_UNWORNONLY);
+		final Item target=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_UNWORNONLY);
 		if(target==null) return false;
 
-		Environmental owner=target.owner();
+		final Environmental owner=target.owner();
 		if(owner==null) return false;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if((!(target instanceof Food))
 		||(!isBerry(target)))
@@ -100,7 +100,7 @@ public class Chant_Goodberry extends Chant
 		if(success)
 		{
 			int numAffected=CMLib.dice().roll(1,adjustedLevel(mob,asLevel)/7,1);
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> chant(s) to <T-NAMESELF>.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> chant(s) to <T-NAMESELF>.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -108,7 +108,7 @@ public class Chant_Goodberry extends Chant
 				if(owner instanceof MOB)
 					for(int i=0;i<((MOB)owner).numItems();i++)
 					{
-						Item newTarget=((MOB)owner).getItem(i);
+						final Item newTarget=((MOB)owner).getItem(i);
 						if((newTarget!=null)&&(checkDo(newTarget,target,owner)))
 						{
 							if((--numAffected)==0)
@@ -119,7 +119,7 @@ public class Chant_Goodberry extends Chant
 				if(owner instanceof Room)
 					for(int i=0;i<((Room)owner).numItems();i++)
 					{
-						Item newTarget=((Room)owner).getItem(i);
+						final Item newTarget=((Room)owner).getItem(i);
 						if((newTarget!=null)&&(checkDo(newTarget,target,owner)))
 						{
 							if((--numAffected)==0)

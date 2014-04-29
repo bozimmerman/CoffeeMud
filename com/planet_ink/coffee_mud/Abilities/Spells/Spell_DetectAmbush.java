@@ -50,7 +50,7 @@ public class Spell_DetectAmbush extends Spell
 	{
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		lastRoom=null;
 		super.unInvoke();
 		if(canBeUninvoked())
@@ -62,26 +62,26 @@ public class Spell_DetectAmbush extends Spell
 	{
 		if(!(affected instanceof MOB))
 			return super.okMessage(myHost,msg);
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		if((msg.amISource(mob)
 		&&(msg.targetMinor()==CMMsg.TYP_ENTER)
 		&&(msg.target()!=null)
 		&&(msg.target()!=lastRoom)
 		&&(msg.target() instanceof Room)))
 		{
-			Room R=(Room)msg.target();
+			final Room R=(Room)msg.target();
 			boolean found=false;
 			for(int m=0;m<R.numInhabitants();m++)
 			{
-				MOB M=R.fetchInhabitant(m);
+				final MOB M=R.fetchInhabitant(m);
 				if(CMLib.flags().isHidden(M))
 				{
 					found=true;
 					break;
 				}
-				for(Enumeration<Behavior> e=M.behaviors();e.hasMoreElements();)
+				for(final Enumeration<Behavior> e=M.behaviors();e.hasMoreElements();)
 				{
-					Behavior B=e.nextElement();
+					final Behavior B=e.nextElement();
 					if((B!=null)&&(B.grantsAggressivenessTo(M)))
 					{ found=true; break;}
 				}
@@ -127,11 +127,11 @@ public class Spell_DetectAmbush extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> gain(s) careful senses!":"^S<S-NAME> incant(s) softly, and gain(s) careful senses!^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> gain(s) careful senses!":"^S<S-NAME> incant(s) softly, and gain(s) careful senses!^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

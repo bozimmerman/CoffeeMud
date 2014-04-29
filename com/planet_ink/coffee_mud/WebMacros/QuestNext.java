@@ -41,7 +41,7 @@ public class QuestNext extends StdWebMacro
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
-		java.util.Map<String,String> parms=parseParms(parm);
+		final java.util.Map<String,String> parms=parseParms(parm);
 		String last=httpReq.getUrlParameter("QUEST");
 		if(parms.containsKey("RESET"))
 		{
@@ -51,10 +51,10 @@ public class QuestNext extends StdWebMacro
 		if(last!=null) last=CMStrings.replaceAll(last,"*","@");
 		String lastID="";
 
-		Vector V=new Vector();
+		final Vector V=new Vector();
 		for(int q=0;q<CMLib.quests().numQuests();q++)
 			V.addElement(CMLib.quests().fetchQuest(q));
-		Vector sortedV=new Vector();
+		final Vector sortedV=new Vector();
 		while(V.size()>0)
 		{
 			Quest lowQ=(Quest)V.firstElement();
@@ -67,7 +67,7 @@ public class QuestNext extends StdWebMacro
 
 		for(int q=0;q<sortedV.size();q++)
 		{
-			Quest Q=(Quest)sortedV.elementAt(q);
+			final Quest Q=(Quest)sortedV.elementAt(q);
 			if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!(""+Q).equals(lastID))))
 			{
 				httpReq.addFakeUrlParameter("QUEST",CMStrings.replaceAll(""+Q,"@","*"));

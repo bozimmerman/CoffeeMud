@@ -48,11 +48,11 @@ public class PageBreak extends StdCommand
 
 		if(commands.size()<2)
 		{
-			String pageBreak=(mob.playerStats().getPageBreak()!=0)?(""+mob.playerStats().getPageBreak()):"Disabled";
+			final String pageBreak=(mob.playerStats().getPageBreak()!=0)?(""+mob.playerStats().getPageBreak()):"Disabled";
 			mob.tell("Change your page break to what? Your current page break setting is: "+pageBreak+". Enter a number larger than 0 or 'disable'.");
 			return false;
 		}
-		String newBreak=CMParms.combine(commands,1);
+		final String newBreak=CMParms.combine(commands,1);
 		int newVal=mob.playerStats().getWrap();
 		if((CMath.isInteger(newBreak))&&(CMath.s_int(newBreak)>0))
 			newVal=CMath.s_int(newBreak);
@@ -65,7 +65,7 @@ public class PageBreak extends StdCommand
 			return false;
 		}
 		mob.playerStats().setPageBreak(newVal);
-		String pageBreak=(mob.playerStats().getPageBreak()!=0)?(""+mob.playerStats().getPageBreak()):"Disabled";
+		final String pageBreak=(mob.playerStats().getPageBreak()!=0)?(""+mob.playerStats().getPageBreak()):"Disabled";
 		mob.tell("Your new page break setting is: "+pageBreak+".");
 		return false;
 	}

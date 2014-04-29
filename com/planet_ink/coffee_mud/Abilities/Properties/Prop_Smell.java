@@ -56,10 +56,10 @@ public class Prop_Smell extends Property
 		else
 		if(newStr.startsWith("-"))
 		{
-			int x=text().indexOf(newStr.substring(1).trim());
+			final int x=text().indexOf(newStr.substring(1).trim());
 			if(x>=0)
 			{
-				int len=newStr.substring(1).trim().length();
+				final int len=newStr.substring(1).trim().length();
 				super.setMiscText(text().substring(0,x)+text().substring(x+len));
 				smells=null;
 			}
@@ -75,19 +75,19 @@ public class Prop_Smell extends Property
 	public DVector getSmells()
 	{
 		if(smells!=null) return smells;
-		List<String> allsmells=CMParms.parseSemicolons(text(),true);
+		final List<String> allsmells=CMParms.parseSemicolons(text(),true);
 		smells=new DVector(3);
 		for(int i=0;i<allsmells.size();i++)
 		{
-			String smell=allsmells.get(i);
+			final String smell=allsmells.get(i);
 			if(smell.length()>0)
 			{
 				int pct=100;
 				int ticks=-1;
-				Vector parsedSmell=CMParms.parse(smell);
+				final Vector parsedSmell=CMParms.parse(smell);
 				for(int ii=parsedSmell.size()-1;ii>=0;ii--)
 				{
-					String s=((String)parsedSmell.elementAt(ii)).toUpperCase();
+					final String s=((String)parsedSmell.elementAt(ii)).toUpperCase();
 					if(s.startsWith("TICKS="))
 					{
 						ticks=CMath.s_int(s.substring(6).trim());
@@ -109,7 +109,7 @@ public class Prop_Smell extends Property
 						parsedSmell.removeElementAt(ii);
 					}
 				}
-				String finalSmell=CMParms.combine(parsedSmell,0).trim();
+				final String finalSmell=CMParms.combine(parsedSmell,0).trim();
 				if(finalSmell.length()>0)
 					smells.addElement(finalSmell,Integer.valueOf(pct),Integer.valueOf(ticks));
 			}
@@ -126,7 +126,7 @@ public class Prop_Smell extends Property
 			int total=0;
 			for(int i=0;i<smells.size();i++)
 			{
-				int pct=((Integer)smells.elementAt(i,2)).intValue();
+				final int pct=((Integer)smells.elementAt(i,2)).intValue();
 				if((!emoteOnly)||(CMath.bset(pct,FLAG_EMOTE)))
 					total+=pct&511;
 			}
@@ -134,7 +134,7 @@ public class Prop_Smell extends Property
 			int draw=CMLib.dice().roll(1,total,0);
 			for(int i=0;i<smells.size();i++)
 			{
-				int pct=((Integer)smells.elementAt(i,2)).intValue();
+				final int pct=((Integer)smells.elementAt(i,2)).intValue();
 				if((!emoteOnly)||(CMath.bset(pct,FLAG_EMOTE)))
 				{
 					draw-=pct&511;
@@ -161,11 +161,11 @@ public class Prop_Smell extends Property
 
 	public void emoteHere(Room room, MOB emoter, String str)
 	{
-		CMMsg msg=CMClass.getMsg(emoter,null,CMMsg.MSG_EMOTE,str);
+		final CMMsg msg=CMClass.getMsg(emoter,null,CMMsg.MSG_EMOTE,str);
 		if(room.okMessage(emoter,msg))
 		for(int i=0;i<room.numInhabitants();i++)
 		{
-			MOB M=room.fetchInhabitant(i);
+			final MOB M=room.fetchInhabitant(i);
 			if((M!=null)&&(!M.isMonster())&&(CMLib.flags().canSmell(M)))
 				M.executeMsg(M,msg);
 		}
@@ -176,20 +176,20 @@ public class Prop_Smell extends Property
 	{
 		if((affected instanceof MOB)&&(CMLib.dice().rollPercentage()<=20))
 		{
-			String emote=selectSmell(true);
+			final String emote=selectSmell(true);
 			if((emote!=null)&&(emote.length()>0))
 			{
-				Room room=CMLib.map().roomLocation(affected);
+				final Room room=CMLib.map().roomLocation(affected);
 				if(room!=null)
 				{
 					emoteHere(room,(MOB)affected,emote);
 					if(lastWasBroadcast)
 					{
-						MOB emoter=CMClass.getFactoryMOB();
+						final MOB emoter=CMClass.getFactoryMOB();
 						for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 						{
-							Room R=room.getRoomInDir(d);
-							Exit E=room.getExitInDir(d);
+							final Room R=room.getRoomInDir(d);
+							final Exit E=room.getExitInDir(d);
 							if((R!=null)&&(E!=null)&&(E.isOpen()))
 							{
 								emoter.setLocation(R);
@@ -204,17 +204,17 @@ public class Prop_Smell extends Property
 					}
 				}
 			}
-			DVector sm=getSmells();
+			final DVector sm=getSmells();
 			boolean redo=false;
 			for(int i=sm.size()-1;i>=0;i--)
 			{
 				if(((Integer)sm.elementAt(i,3)).intValue()>0)
 				{
-					Integer I=Integer.valueOf(((Integer)smells.elementAt(i,3)).intValue()-1);
+					final Integer I=Integer.valueOf(((Integer)smells.elementAt(i,3)).intValue()-1);
 					if(I.intValue()>0)
 					{
-						String smell=(String)sm.elementAt(i,1);
-						Integer pct=(Integer)sm.elementAt(i,2);
+						final String smell=(String)sm.elementAt(i,1);
+						final Integer pct=(Integer)sm.elementAt(i,2);
 						sm.addElement(smell,pct,I);
 					}
 					sm.removeElementAt(i);
@@ -223,12 +223,12 @@ public class Prop_Smell extends Property
 			}
 			if(redo)
 			{
-				StringBuffer newText=new StringBuffer("");
+				final StringBuffer newText=new StringBuffer("");
 				for(int i=0;i<sm.size();i++)
 				{
-					String smell=(String)sm.elementAt(i,1);
-					Integer pct=(Integer)sm.elementAt(i,2);
-					Integer ticks=(Integer)sm.elementAt(i,3);
+					final String smell=(String)sm.elementAt(i,1);
+					final Integer pct=(Integer)sm.elementAt(i,2);
+					final Integer ticks=(Integer)sm.elementAt(i,3);
 					if(ticks.intValue()>0)
 						newText.append("TICKS="+ticks+" ");
 					if(CMath.bset(pct.intValue(),FLAG_EMOTE))

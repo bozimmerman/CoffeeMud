@@ -56,7 +56,7 @@ public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		MOB target=this.getTarget(mob,commands,givenTarget);
+		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
 		// the invoke method for spells receives as
@@ -67,7 +67,7 @@ public void affectPhyStats(Physical affected, PhyStats affectableStats)
 			return false;
 
 		// now see if it worked
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
@@ -75,15 +75,15 @@ public void affectPhyStats(Physical affected, PhyStats affectableStats)
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),"<S-NAME> incant(s) at <T-NAMESELF> and geyser of water blasts towards <T-HIM-HER>.");
-			CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_WATER|(auto?CMMsg.MASK_ALWAYS:0),null);
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),"<S-NAME> incant(s) at <T-NAMESELF> and geyser of water blasts towards <T-HIM-HER>.");
+			final CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_WATER|(auto?CMMsg.MASK_ALWAYS:0),null);
 			if((mob.location().okMessage(mob,msg))&&(mob.location().okMessage(mob,msg2)))
 			{
 				mob.location().send(mob,msg);
 				invoker=mob;
 
 				int damage = 0;
-				int maxDie =  (adjustedLevel( mob, asLevel )+(2*super.getX1Level(mob))) / 2;
+				final int maxDie =  (adjustedLevel( mob, asLevel )+(2*super.getX1Level(mob))) / 2;
 				damage += CMLib.dice().roll(maxDie,8,15);
 				mob.location().send(mob,msg2);
 				if((msg2.value()>0)||(msg.value()>0))
@@ -92,10 +92,10 @@ public void affectPhyStats(Physical affected, PhyStats affectableStats)
 				if(target.location()==mob.location())
 					CMLib.combat().postDamage(mob,target,this,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_WATER,Weapon.TYPE_BASHING,"The water blast <DAMAGE> <T-NAME>!");
 
-				int percentage = CMLib.dice().roll(1, 100, 0);
+				final int percentage = CMLib.dice().roll(1, 100, 0);
 				if(percentage < 10)
 				{
-	  				CMMsg msg3=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),"<T-NAME> is knocked down by the water cannon.");
+	  				final CMMsg msg3=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),"<T-NAME> is knocked down by the water cannon.");
 					if(mob.location().okMessage(mob,msg3))
 					{
 					   mob.location().send(mob, msg3);

@@ -48,19 +48,19 @@ public class Examine extends StdCommand
 			commands.removeElementAt(commands.size()-1);
 			quiet=true;
 		}
-		String textMsg="<S-NAME> examine(s) ";
+		final String textMsg="<S-NAME> examine(s) ";
 		if(mob.location()==null) return false;
 		if((commands!=null)&&(commands.size()>1))
 		{
 			Environmental thisThang=null;
 
-			String ID=CMParms.combine(commands,1);
+			final String ID=CMParms.combine(commands,1);
 			if(ID.length()==0)
 				thisThang=mob.location();
 			else
 			if((ID.toUpperCase().startsWith("EXIT")&&(commands.size()==2)))
 			{
-				CMMsg exitMsg=CMClass.getMsg(mob,thisThang,null,CMMsg.MSG_LOOK_EXITS,null);
+				final CMMsg exitMsg=CMClass.getMsg(mob,thisThang,null,CMMsg.MSG_LOOK_EXITS,null);
 				if((CMProps.getIntVar(CMProps.Int.EXVIEW)>=2)!=CMath.bset(mob.getBitmap(), MOB.ATT_BRIEF))
 					exitMsg.setValue(CMMsg.MASK_OPTIMIZE);
 				if(mob.location().okMessage(mob, exitMsg))
@@ -78,8 +78,8 @@ public class Examine extends StdCommand
 				dirCode=Directions.getGoodDirectionCode(ID);
 				if(dirCode>=0)
 				{
-					Room room=mob.location().getRoomInDir(dirCode);
-					Exit exit=mob.location().getExitInDir(dirCode);
+					final Room room=mob.location().getRoomInDir(dirCode);
+					final Exit exit=mob.location().getExitInDir(dirCode);
 					if((room!=null)&&(exit!=null))
 						thisThang=exit;
 					else
@@ -101,7 +101,7 @@ public class Examine extends StdCommand
 						name=((mob.location() instanceof SpaceShip)||(mob.location().getArea() instanceof SpaceShip))?
 							Directions.getShipDirectionName(dirCode):Directions.getDirectionName(dirCode);
 				}
-				CMMsg msg=CMClass.getMsg(mob,thisThang,null,CMMsg.MSG_EXAMINE,textMsg+name+" closely.");
+				final CMMsg msg=CMClass.getMsg(mob,thisThang,null,CMMsg.MSG_EXAMINE,textMsg+name+" closely.");
 				if(mob.location().okMessage(mob,msg))
 					mob.location().send(mob,msg);
 				if((CMath.bset(mob.getBitmap(),MOB.ATT_AUTOEXITS))&&(thisThang instanceof Room))
@@ -112,7 +112,7 @@ public class Examine extends StdCommand
 		}
 		else
 		{
-			CMMsg msg=CMClass.getMsg(mob,mob.location(),null,CMMsg.MSG_EXAMINE,(quiet?null:textMsg+"around carefully."),CMMsg.MSG_EXAMINE,(quiet?null:textMsg+"at you."),CMMsg.MSG_EXAMINE,(quiet?null:textMsg+"around carefully."));
+			final CMMsg msg=CMClass.getMsg(mob,mob.location(),null,CMMsg.MSG_EXAMINE,(quiet?null:textMsg+"around carefully."),CMMsg.MSG_EXAMINE,(quiet?null:textMsg+"at you."),CMMsg.MSG_EXAMINE,(quiet?null:textMsg+"around carefully."));
 			if((CMath.bset(mob.getBitmap(),MOB.ATT_AUTOEXITS))&&(CMLib.flags().canBeSeenBy(mob.location(),mob)))
 				msg.addTrailerMsg(CMClass.getMsg(mob,mob.location(),null,CMMsg.MSG_LOOK_EXITS,null));
 			if(mob.location().okMessage(mob,msg))

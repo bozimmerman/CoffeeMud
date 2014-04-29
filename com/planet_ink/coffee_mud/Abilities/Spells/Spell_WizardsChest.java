@@ -52,7 +52,7 @@ public class Spell_WizardsChest extends Spell
 		if(!super.okMessage(myHost,msg))
 			return false;
 
-		MOB mob=msg.source();
+		final MOB mob=msg.source();
 		if(((!msg.amITarget(affected))&&(msg.tool()!=affected))
 		||(msg.source()==invoker())
 		||((invoker()!=null)&&(invoker().Name().equals(text()))))
@@ -89,7 +89,7 @@ public class Spell_WizardsChest extends Spell
 		&&(msg.sourceMessage().toUpperCase().indexOf("OPEN")>=0)
 		&&(affected instanceof Container))
 		{
-			Container container=(Container)affected;
+			final Container container=(Container)affected;
 			container.setLidsNLocks(container.hasALid(),true,container.hasALock(),false);
 			msg.addTrailerMsg(CMClass.getMsg(msg.source(),affected,null,CMMsg.MSG_OK_VISUAL,"<T-NAME> pop(s) open!"));
 		}
@@ -128,18 +128,18 @@ public class Spell_WizardsChest extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> point(s) <S-HIS-HER> finger at <T-NAMESELF>, incanting.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> point(s) <S-HIS-HER> finger at <T-NAMESELF>, incanting.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(target instanceof Container)
 				{
 					beneficialAffect(mob,target,asLevel,Ability.TICKS_ALMOST_FOREVER);
-					Container container=(Container)target;
+					final Container container=(Container)target;
 					container.setLidsNLocks(container.hasALid(),false,container.hasALock(),true);
 					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,"<T-NAME> look(s) well protected!");
 				}

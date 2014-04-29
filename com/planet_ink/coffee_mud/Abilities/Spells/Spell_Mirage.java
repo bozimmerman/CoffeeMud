@@ -53,7 +53,7 @@ public class Spell_Mirage extends Spell
 			return;
 		if(!(affected instanceof Room))
 			return;
-		Room room=(Room)affected;
+		final Room room=(Room)affected;
 		if(canBeUninvoked())
 			room.showHappens(CMMsg.MSG_OK_VISUAL, "The appearance of this place changes...");
 		super.unInvoke();
@@ -84,7 +84,7 @@ public class Spell_Mirage extends Spell
 		&&(room().fetchEffect(ID())==null)
 		&&((msg.targetMinor()==CMMsg.TYP_LOOK)||(msg.targetMinor()==CMMsg.TYP_EXAMINE)))
 		{
-			CMMsg msg2=CMClass.getMsg(msg.source(),room(),msg.tool(),
+			final CMMsg msg2=CMClass.getMsg(msg.source(),room(),msg.tool(),
 						  msg.sourceCode(),msg.sourceMessage(),
 						  msg.targetCode(),msg.targetMessage(),
 						  msg.othersCode(),msg.othersMessage());
@@ -127,8 +127,8 @@ public class Spell_Mirage extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		Physical target = mob.location();
-		boolean success=proficiencyCheck(mob,0,auto);
+		final Physical target = mob.location();
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
@@ -137,14 +137,14 @@ public class Spell_Mirage extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 
-			CMMsg msg = CMClass.getMsg(mob, target, this, verbalCastCode(mob,target,auto), auto?"":"^S<S-NAME> speak(s) and gesture(s) dramatically!^?");
+			final CMMsg msg = CMClass.getMsg(mob, target, this, verbalCastCode(mob,target,auto), auto?"":"^S<S-NAME> speak(s) and gesture(s) dramatically!^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				mob.location().showHappens(CMMsg.MSG_OK_VISUAL,"The appearance of this place changes...");
 				if(CMLib.law().doesOwnThisProperty(mob,mob.location()))
 				{
-					Ability A=(Ability)copyOf();
+					final Ability A=(Ability)copyOf();
 					A.setInvoker(mob);
 					newRoom=mob.location().getArea().getRandomProperRoom();
 					if((newRoom!=null)&&(newRoom.roomID().length()>0)&&(!(newRoom instanceof GridLocale)))

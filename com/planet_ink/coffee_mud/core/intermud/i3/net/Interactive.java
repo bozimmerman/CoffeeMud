@@ -54,13 +54,13 @@ public abstract class Interactive implements ServerUser {
 	 * @param nom the visual name to create a key from
 	 */
 	static public String createKeyName(String nom) throws InvalidNameException {
-		StringBuffer buff = new StringBuffer(nom.toLowerCase());
+		final StringBuffer buff = new StringBuffer(nom.toLowerCase());
 		String key = "";
 		int i;
 
 		for(i=0; i<buff.length(); i++)
 		{
-			char c = buff.charAt(i);
+			final char c = buff.charAt(i);
 
 			if( c >= 'a' && c <= 'z' )
 			{
@@ -91,20 +91,20 @@ public abstract class Interactive implements ServerUser {
 	 */
 	static public Interactive findUser(String nom)
 	{
-		ServerUser[] users = I3Server.getInteractives();
+		final ServerUser[] users = I3Server.getInteractives();
 		int i;
 
 		try
 		{
 			nom = createKeyName(nom);
 		}
-		catch( InvalidNameException e )
+		catch( final InvalidNameException e )
 		{
 			return null;
 		}
 		for(i=0; i<users.length; i++)
 		{
-			Interactive user = (Interactive)users[i];
+			final Interactive user = (Interactive)users[i];
 
 			if( user.getKeyName().equals(nom) )
 			{
@@ -128,7 +128,7 @@ public abstract class Interactive implements ServerUser {
 	private PrintStream 	output_stream;
 	private String  		password;
 	private String  		real_name;
-	private Vector  		redirect;
+	private final Vector  		redirect;
 	private Socket  		socket;
 
 	/**
@@ -178,7 +178,7 @@ public abstract class Interactive implements ServerUser {
 			if(socket!=null)
 				socket.close();
 		}
-		catch( java.io.IOException e )
+		catch( final java.io.IOException e )
 		{
 			Log.errOut("IMInteractive",e);
 		}
@@ -261,7 +261,7 @@ public abstract class Interactive implements ServerUser {
 	{
 		if( input_thread != null )
 		{
-			String msg = input_thread.nextMessage();
+			final String msg = input_thread.nextMessage();
 
 			if( msg != null )
 			{
@@ -406,7 +406,7 @@ public abstract class Interactive implements ServerUser {
 			}
 			display_name = str;
 		}
-		catch( InvalidNameException e )
+		catch( final InvalidNameException e )
 		{
 			return;
 		}
@@ -625,11 +625,11 @@ public abstract class Interactive implements ServerUser {
 @SuppressWarnings({"unchecked","rawtypes"})
 class InputThread implements Runnable
 {
-	private List<String>  			input_buffer;
-	private BufferedReader 			stream;
+	private final List<String>  			input_buffer;
+	private final BufferedReader 			stream;
 	private boolean 				destructed;
-	private Thread  				thread;
-	private Interactive 			user;
+	private final Thread  				thread;
+	private final Interactive 			user;
 	private volatile long			internalSize=0;
 
 	/**
@@ -669,7 +669,7 @@ class InputThread implements Runnable
 			{
 				msg = stream.readLine();
 			}
-			catch( java.io.IOException e )
+			catch( final java.io.IOException e )
 			{
 				synchronized( user )
 				{
@@ -690,7 +690,7 @@ class InputThread implements Runnable
 				Log.errOut("Excessive buffer size: "+internalSize);
 			}
 			try { Thread.sleep(10); }
-			catch( InterruptedException e ) { }
+			catch( final InterruptedException e ) { }
 		}
 	}
 

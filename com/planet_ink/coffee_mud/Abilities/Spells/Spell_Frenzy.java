@@ -49,7 +49,7 @@ public class Spell_Frenzy extends Spell
 		super.affectPhyStats(affected,affectableStats);
 		if((invoker==null)&&(affected instanceof MOB))
 			invoker=(MOB)affected;
-		int xlvl=super.getXLEVELLevel(invoker());
+		final int xlvl=super.getXLEVELLevel(invoker());
 		float f=(float)0.1*xlvl;
 		if(f>5.0) f=5.0f;
 		affectableStats.setDamage(affectableStats.damage()+(int)Math.round(CMath.div(affectableStats.damage(),6.0-f)));
@@ -79,7 +79,7 @@ public class Spell_Frenzy extends Spell
 		// undo the affects of this spell
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		super.unInvoke();
 		if(canBeUninvoked())
 		{
@@ -95,7 +95,7 @@ public class Spell_Frenzy extends Spell
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		MOB target=this.getTarget(mob,commands,givenTarget);
+		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 		Room R=CMLib.map().roomLocation(target);
 		if(R==null) R=mob.location();
@@ -107,7 +107,7 @@ public class Spell_Frenzy extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
@@ -116,7 +116,7 @@ public class Spell_Frenzy extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> scream(s) at <T-NAMESELF>!^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> scream(s) at <T-NAMESELF>!^?");
 			if(R.okMessage(mob,msg))
 			{
 				R.send(mob,msg);
@@ -125,7 +125,7 @@ public class Spell_Frenzy extends Spell
 					R.show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> go(es) wild!");
 					hpAdjustment=(int)Math.round(CMath.div(target.maxState().getHitPoints(),5.0));
 					beneficialAffect(mob,target,asLevel,0);
-					Ability A=target.fetchEffect(ID());
+					final Ability A=target.fetchEffect(ID());
 					if(A!=null) A.setMiscText(Integer.toString(hpAdjustment));
 					target.curState().setHitPoints(target.curState().getHitPoints()+hpAdjustment);
 					target.recoverMaxState();

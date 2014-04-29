@@ -50,7 +50,7 @@ public class Spell_SpottersOrders extends Spell
 	{
 		if(target instanceof MOB)
 		{
-			MOB M=(MOB)target;
+			final MOB M=(MOB)target;
 			if(!M.isInCombat())
 				return Ability.QUALITY_INDIFFERENT;
 			if(M.fetchEffect("Spell_DetectWeaknesses")==null)
@@ -77,14 +77,14 @@ public class Spell_SpottersOrders extends Spell
 			return false;
 		if(ticking instanceof MOB)
 		{
-			MOB mob=(MOB)ticking;
+			final MOB mob=(MOB)ticking;
 			if((!mob.isInCombat())
 			||((spottedM!=null) && (spottedM.amDead())))
 			{
 				unInvoke();
 				return false;
 			}
-			MOB victim=mob.getVictim();
+			final MOB victim=mob.getVictim();
 			if((victim!=null)
 			&&((victim==spottedM)||( (spottedM==null) && victim.Name().equalsIgnoreCase(text()))))
 			{
@@ -104,16 +104,16 @@ public class Spell_SpottersOrders extends Spell
 			}
 			if(groupMembers==null)
 			{
-				Set<MOB> grp=mob.getGroupMembers(new TreeSet<MOB>());
+				final Set<MOB> grp=mob.getGroupMembers(new TreeSet<MOB>());
 				groupMembers=new LinkedList<Triad<MOB,Ability,long[]>>();
-				for(MOB M : grp)
+				for(final MOB M : grp)
 				{
-					long[] time=new long[]{System.currentTimeMillis()-1};
-					Triad<MOB,Ability,long[]> P=new Triad<MOB,Ability,long[]>(M,null,time);
+					final long[] time=new long[]{System.currentTimeMillis()-1};
+					final Triad<MOB,Ability,long[]> P=new Triad<MOB,Ability,long[]>(M,null,time);
 					groupMembers.add(P);
 				}
 			}
-			for(Triad<MOB,Ability,long[]> P : groupMembers)
+			for(final Triad<MOB,Ability,long[]> P : groupMembers)
 			{
 				boolean ishouldhaveit=activated;
 				if(P.first.location()!=mob.location())
@@ -163,7 +163,7 @@ public class Spell_SpottersOrders extends Spell
 	{
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		if(canBeUninvoked())
 		{
@@ -202,18 +202,18 @@ public class Spell_SpottersOrders extends Spell
 
 
 		// now see if it worked
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> point(s) at <S-HIS-HER> group members and knowingly cast(s) a spell concerning <T-NAMESELF>.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> point(s) at <S-HIS-HER> group members and knowingly cast(s) a spell concerning <T-NAMESELF>.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(beneficialAffect(mob,target,asLevel,0))
 				{
-					Spell_SpottersOrders A=(Spell_SpottersOrders)target.fetchEffect(ID());
-					MOB victim=target.getVictim();
+					final Spell_SpottersOrders A=(Spell_SpottersOrders)target.fetchEffect(ID());
+					final MOB victim=target.getVictim();
 					if(A!=null)
 					{
 						A.spottedM=victim;

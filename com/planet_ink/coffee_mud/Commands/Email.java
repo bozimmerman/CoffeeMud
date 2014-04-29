@@ -48,7 +48,7 @@ public class Email extends StdCommand
 		throws java.io.IOException
 	{
 		if(mob.session()==null)    return true;
-		PlayerStats pstats=mob.playerStats();
+		final PlayerStats pstats=mob.playerStats();
 		if(pstats==null) return true;
 
 		if((commands!=null)
@@ -61,25 +61,25 @@ public class Email extends StdCommand
 				mob.tell("A mailbox has not been defined by this muds administrators, so mail can be neither sent, or received.");
 				return false;
 			}
-			String name=CMParms.combine(commands,1);
+			final String name=CMParms.combine(commands,1);
 			if(name.equalsIgnoreCase("BOX"))
 			{
-				String journalName=CMProps.getVar(CMProps.Str.MAILBOX);
-				List<JournalsLibrary.JournalEntry> msgs=CMLib.database().DBReadJournalMsgs(journalName);
-				int[] cols={
+				final String journalName=CMProps.getVar(CMProps.Str.MAILBOX);
+				final List<JournalsLibrary.JournalEntry> msgs=CMLib.database().DBReadJournalMsgs(journalName);
+				final int[] cols={
 						ListingLibrary.ColFixer.fixColWidth(48,mob.session()),
 						ListingLibrary.ColFixer.fixColWidth(15,mob.session()),
 						ListingLibrary.ColFixer.fixColWidth(20,mob.session())
 					};
 				while((mob.session()!=null)&&(!mob.session().isStopped()))
 				{
-					Vector mymsgs=new Vector();
+					final Vector mymsgs=new Vector();
 					StringBuffer messages=new StringBuffer("^X"+CMStrings.padCenter(mob.Name()+"'s MailBox",cols[0])+"^?^.\n\r");
 					messages.append("^X### "+CMStrings.padRight("From",cols[1])+" "+CMStrings.padRight("Date",cols[2])+" Subject^?^.\n\r");
 					for(int num=0;num<msgs.size();num++)
 					{
-						JournalsLibrary.JournalEntry thismsg=msgs.get(num);
-						String to=thismsg.to;
+						final JournalsLibrary.JournalEntry thismsg=msgs.get(num);
+						final String to=thismsg.to;
 						if(to.equalsIgnoreCase("ALL")
 						||to.equalsIgnoreCase(mob.Name())
 						||(to.toUpperCase().trim().startsWith("MASK=")&&CMLib.masking().maskCheck(to.trim().substring(5),mob,true)))
@@ -102,7 +102,7 @@ public class Email extends StdCommand
 							mob.tell("You have no email waiting.");
 						return false;
 					}
-					Session S=mob.session();
+					final Session S=mob.session();
 					try
 					{
 						if(S!=null) S.snoopSuspension(1);
@@ -116,18 +116,18 @@ public class Email extends StdCommand
 					String s=mob.session().prompt("Enter a message #","");
 					if((!CMath.isInteger(s))||(mob.session().isStopped()))
 						return false;
-					int num=CMath.s_int(s);
+					final int num=CMath.s_int(s);
 					if((num<=0)||(num>mymsgs.size()))
 						mob.tell("That is not a valid number.");
 					else
 					while((mob.session()!=null)&&(!mob.session().isStopped()))
 					{
-						JournalsLibrary.JournalEntry thismsg=(JournalsLibrary.JournalEntry)mymsgs.elementAt(num-1);
-						String key=thismsg.key;
-						String from=thismsg.from;
-						String date=CMLib.time().date2String(thismsg.date);
-						String subj=thismsg.subj;
-						String message=thismsg.msg;
+						final JournalsLibrary.JournalEntry thismsg=(JournalsLibrary.JournalEntry)mymsgs.elementAt(num-1);
+						final String key=thismsg.key;
+						final String from=thismsg.from;
+						final String date=CMLib.time().date2String(thismsg.date);
+						final String subj=thismsg.subj;
+						final String message=thismsg.msg;
 						messages=new StringBuffer("");
 						messages.append("^XMessage :^?^."+num+"\n\r");
 						messages.append("^XFrom    :^?^."+from+"\n\r");
@@ -171,7 +171,7 @@ public class Email extends StdCommand
 			}
 			else
 			{
-				MOB M=CMLib.players().getLoadPlayer(name);
+				final MOB M=CMLib.players().getLoadPlayer(name);
 				if(M==null)
 				{
 					mob.tell("There is no player called '"+name+"' to send email to.  If you were trying to read your mail, try EMAIL BOX.  If you were trying to change your email address, just enter EMAIL without any parameters.");
@@ -189,7 +189,7 @@ public class Email extends StdCommand
 				}
 				if(CMProps.getIntVar(CMProps.Int.MAXMAILBOX)>0)
 				{
-					int count=CMLib.database().DBCountJournal(CMProps.getVar(CMProps.Str.MAILBOX),null,M.Name());
+					final int count=CMLib.database().DBCountJournal(CMProps.getVar(CMProps.Str.MAILBOX),null,M.Name());
 					if(count>=CMProps.getIntVar(CMProps.Int.MAXMAILBOX))
 					{
 						mob.tell(M.Name()+"'s mailbox is full.");
@@ -197,7 +197,7 @@ public class Email extends StdCommand
 					}
 				}
 				if(mob.session()==null) return false;
-				String subject=mob.session().prompt("Email Subject: ","").trim();
+				final String subject=mob.session().prompt("Email Subject: ","").trim();
 				if(subject.length()==0)
 				{
 					mob.tell("Aborted");
@@ -230,7 +230,7 @@ public class Email extends StdCommand
 		else
 		{
 			if(commands==null) return true;
-			String change=mob.session().prompt("You currently have '"+pstats.getEmail()+"' set as the email address for this character.\n\rChange it (y/N)?","N");
+			final String change=mob.session().prompt("You currently have '"+pstats.getEmail()+"' set as the email address for this character.\n\rChange it (y/N)?","N");
 			if(change.toUpperCase().startsWith("N")) return false;
 		}
 		if((CMProps.getVar(CMProps.Str.EMAILREQ).toUpperCase().startsWith("PASS"))
@@ -256,7 +256,7 @@ public class Email extends StdCommand
 		&&(CMProps.getVar(CMProps.Str.EMAILREQ).toUpperCase().startsWith("PASS"))
 		&&(CMProps.getVar(CMProps.Str.MAILBOX).length()>0))
 		{
-			String password=CMLib.encoder().generateRandomPassword();
+			final String password=CMLib.encoder().generateRandomPassword();
 			pstats.setPassword(password);
 			CMLib.database().DBUpdatePassword(mob.Name(),pstats.getPasswordStr());
 			CMLib.database().DBWriteJournal(CMProps.getVar(CMProps.Str.MAILBOX),
@@ -267,7 +267,7 @@ public class Email extends StdCommand
 			mob.tell("You will receive an email with your new password shortly.  Goodbye.");
 			if(mob.session()!=null)
 			{
-				try{Thread.sleep(1000);}catch(Exception e){}
+				try{Thread.sleep(1000);}catch(final Exception e){}
 				mob.session().stopSession(false,false,false);
 			}
 		}

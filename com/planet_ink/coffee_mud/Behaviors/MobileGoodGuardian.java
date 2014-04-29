@@ -59,7 +59,7 @@ public class MobileGoodGuardian extends Mobile
 			tickStatus=Tickable.STATUS_NOT;
 			return true;
 		}
-		MOB mob=(MOB)ticking;
+		final MOB mob=(MOB)ticking;
 
 		// ridden things dont wander!
 		if(ticking instanceof Rideable)
@@ -77,7 +77,7 @@ public class MobileGoodGuardian extends Mobile
 		}
 
 		tickStatus=Tickable.STATUS_MISC+3;
-		Room thisRoom=mob.location();
+		final Room thisRoom=mob.location();
 		MOB victim=GoodGuardian.anyPeaceToMake(mob.location(),mob);
 		GoodGuardian.keepPeace(mob,victim);
 		victim=null;
@@ -86,8 +86,8 @@ public class MobileGoodGuardian extends Mobile
 		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 		{
 			tickStatus=Tickable.STATUS_MISC+5+d;
-			Room room=thisRoom.getRoomInDir(d);
-			Exit exit=thisRoom.getExitInDir(d);
+			final Room room=thisRoom.getRoomInDir(d);
+			final Exit exit=thisRoom.getExitInDir(d);
 			if((room!=null)&&(exit!=null)&&(okRoomForMe(mob,thisRoom,room)))
 			{
 				tickStatus=Tickable.STATUS_MISC+20+d;

@@ -57,7 +57,7 @@ public class Chant_PlantChoke extends Chant
 		if((canBeUninvoked())&&(I!=null)&&(I.owner() instanceof MOB)
 		&&(!I.amWearingAt(Wearable.IN_INVENTORY)))
 		{
-			MOB mob=(MOB)I.owner();
+			final MOB mob=(MOB)I.owner();
 			if((!mob.amDead())
 			&&(CMLib.flags().isInTheGame(mob,false)))
 			{
@@ -77,7 +77,7 @@ public class Chant_PlantChoke extends Chant
 		if((canBeUninvoked())&&(I!=null)&&(I.owner() instanceof MOB)
 		&&(I.amWearingAt(Wearable.WORN_NECK)))
 		{
-			MOB mob=(MOB)I.owner();
+			final MOB mob=(MOB)I.owner();
 			if((!mob.amDead())
 			&&(mob.isMonster())
 			&&(CMLib.flags().isInTheGame(mob,false)))
@@ -118,7 +118,7 @@ public class Chant_PlantChoke extends Chant
 	{
 		if(mob!=null)
 		{
-			Item myPlant=Druid_MyPlants.myPlant(mob.location(),mob,0);
+			final Item myPlant=Druid_MyPlants.myPlant(mob.location(),mob,0);
 			if(myPlant==null)
 				return Ability.QUALITY_INDIFFERENT;
 			if(target instanceof MOB)
@@ -133,7 +133,7 @@ public class Chant_PlantChoke extends Chant
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		MOB target=getTarget(mob,commands,givenTarget);
+		final MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 		Item myPlant=Druid_MyPlants.myPlant(mob.location(),mob,0);
 		if(myPlant==null)
@@ -161,7 +161,7 @@ public class Chant_PlantChoke extends Chant
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
 			// it worked, so build a copy of this ability,
@@ -169,7 +169,7 @@ public class Chant_PlantChoke extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 
-			CMMsg msg = CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> chant(s) at <T-NAME> while pointing at "+myPlant.name()+"!^?");
+			final CMMsg msg = CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> chant(s) at <T-NAME> while pointing at "+myPlant.name()+"!^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

@@ -52,16 +52,16 @@ public class CMath
 		}
 		if(i>=100)
 		{
-			int x=i%100;
-			int y=(i-x)/100;
+			final int x=i%100;
+			final int y=(i-x)/100;
 			if(y>0)
 				roman.append(ROMAN_HUNDREDS[y-1]);
 			i=x;
 		}
 		if(i>=10)
 		{
-			int x=i%10;
-			int y=(i-x)/10;
+			final int x=i%10;
+			final int y=(i-x)/10;
 			if(y>0)
 				roman.append(ROMAN_TENS[y-1]);
 		}
@@ -178,7 +178,7 @@ public class CMath
 	public final static Object s_valueOf(Object[] o, String s)
 	{
 		if(s==null) return null;
-		for(Object a : o)
+		for(final Object a : o)
 			if(a.toString().equalsIgnoreCase(s.trim()))
 				return a;
 		return null;
@@ -222,7 +222,7 @@ public class CMath
 		{
 			return Enum.valueOf(c, s);
 		}
-		catch(Exception e)
+		catch(final Exception e)
 		{
 			return null;
 		}
@@ -238,7 +238,7 @@ public class CMath
 	@SuppressWarnings("rawtypes")
 	public final static Enum<? extends Enum> s_valueOf(Class<? extends Enum> c, String s, Enum<? extends Enum> def)
 	{
-		Enum<? extends Enum> obj = s_valueOf(c,s);
+		final Enum<? extends Enum> obj = s_valueOf(c,s);
 		if(obj == null)
 			return def;
 		return obj;
@@ -601,11 +601,11 @@ public class CMath
 	 */
 	public final static int[] getAllBitsSet(int bits)
 	{
-		List<Integer> bitsSet=new ArrayList<Integer>();
+		final List<Integer> bitsSet=new ArrayList<Integer>();
 		for(int i=0;i<32;i++)
 			if(isSet(bits,i))
 				bitsSet.add(Integer.valueOf(i));
-		int[] ret=new int[bitsSet.size()];
+		final int[] ret=new int[bitsSet.size()];
 		for(int i=0;i<bitsSet.size();i++)
 			ret[i]=bitsSet.get(i).intValue();
 		return ret;
@@ -620,7 +620,7 @@ public class CMath
 	 */
 	public final static boolean isSet(final int number, final int bitnumber)
 	{
-		int mask=(int)pow(2,bitnumber);
+		final int mask=(int)pow(2,bitnumber);
 		return ((number&mask)==mask);
 	}
 	/**
@@ -756,7 +756,7 @@ public class CMath
 	public final static boolean isMathExpression(final String st)
 	{
 		if((st==null)||(st.length()==0)) return false;
-		try{ parseMathExpression(st);}catch(Exception e){ return false;}
+		try{ parseMathExpression(st);}catch(final Exception e){ return false;}
 		return true;
 	}
 	/**
@@ -772,7 +772,7 @@ public class CMath
 	public final static boolean isMathExpression(final String st, final double[] vars)
 	{
 		if((st==null)||(st.length()==0)) return false;
-		try{ parseMathExpression(st,vars);}catch(Exception e){ return false;}
+		try{ parseMathExpression(st,vars);}catch(final Exception e){ return false;}
 		return true;
 	}
 	/**
@@ -785,7 +785,7 @@ public class CMath
 	 * @return the result of the expression
 	 */
 	public final static double s_parseMathExpression(final String st)
-	{ try{ return parseMathExpression(st);}catch(Exception e){ return 0.0;}}
+	{ try{ return parseMathExpression(st);}catch(final Exception e){ return 0.0;}}
 	/**
 	 * Returns the result of evaluating the given math
 	 * expression.  An expression can be a double or int
@@ -799,7 +799,7 @@ public class CMath
 	 * @return the result of the expression
 	 */
 	public final static double s_parseMathExpression(final String st, final double[] vars)
-	{ try{ return parseMathExpression(st,vars);}catch(Exception e){ return 0.0;}}
+	{ try{ return parseMathExpression(st,vars);}catch(final Exception e){ return 0.0;}}
 	/**
 	 * Returns the result of evaluating the given math
 	 * expression.  An expression can be a double or int
@@ -811,7 +811,7 @@ public class CMath
 	 * @return the result of the expression
 	 */
 	public final static long s_parseLongExpression(final String st)
-	{ try{ return parseLongExpression(st);}catch(Exception e){ return 0;}}
+	{ try{ return parseLongExpression(st);}catch(final Exception e){ return 0;}}
 	/**
 	 * Returns the result of evaluating the given math
 	 * expression.  An expression can be a double or int
@@ -826,7 +826,7 @@ public class CMath
 	 * @return the result of the expression
 	 */
 	public final static long s_parseLongExpression(final String st, final double[] vars)
-	{ try{ return parseLongExpression(st,vars);}catch(Exception e){ return 0;}}
+	{ try{ return parseLongExpression(st,vars);}catch(final Exception e){ return 0;}}
 	/**
 	 * Returns the result of evaluating the given math
 	 * expression.  An expression can be a double or int
@@ -838,7 +838,7 @@ public class CMath
 	 * @return the result of the expression
 	 */
 	public final static int s_parseIntExpression(final String st)
-	{ try{ return parseIntExpression(st);}catch(Exception e){ return 0;}}
+	{ try{ return parseIntExpression(st);}catch(final Exception e){ return 0;}}
 	/**
 	 * Returns the result of evaluating the given math
 	 * expression.  An expression can be a double or int
@@ -853,7 +853,7 @@ public class CMath
 	 * @return the result of the expression
 	 */
 	public final static int s_parseIntExpression(final String st, final double[] vars)
-	{ try{ return parseIntExpression(st,vars);}catch(Exception e){ return 0;}}
+	{ try{ return parseIntExpression(st,vars);}catch(final Exception e){ return 0;}}
 
 	private final static double parseMathExpression(final StreamTokenizer st, final boolean inParen, final double[] vars, final double previous)
 		throws ArithmeticException
@@ -936,7 +936,7 @@ public class CMath
 				c=st.nextToken();
 			}
 		}
-		catch(IOException e){}
+		catch(final IOException e){}
 		if(inParen)
 			throw new ArithmeticException("')' was missing from this expression");
 		return finalValue;
@@ -1066,7 +1066,7 @@ public class CMath
 				c=st.nextToken();
 			}
 		}
-		catch(IOException e){}
+		catch(final IOException e){}
 		if(inParen)
 			throw new ArithmeticException("')' was missing from this expression");
 		return list;
@@ -1084,9 +1084,8 @@ public class CMath
 	{
 		double finalValue=0.0;
 		double curValue=0.0;
-		for(final Iterator<CompiledOperation> i=list.iterator();i.hasNext();)
+		for (CompiledOperation o : list)
 		{
-			final CompiledOperation o=i.next();
 			switch(o.type)
 			{
 				case CompiledOperation.OPERATION_VALUE:
@@ -1210,7 +1209,7 @@ public class CMath
 	public final static long s_long(final String LONG)
 	{
 		try{ return Long.parseLong(LONG); }
-		catch(Exception e){ return 0;}
+		catch(final Exception e){ return 0;}
 	}
 
 	/**
@@ -1223,7 +1222,7 @@ public class CMath
 	public final static float s_float(final String FLOAT)
 	{
 		try{ return Float.parseFloat(FLOAT); }
-		catch(Exception e){ return 0;}
+		catch(final Exception e){ return 0;}
 	}
 
 	/**
@@ -1236,7 +1235,7 @@ public class CMath
 	public final static double s_double(final String DOUBLE)
 	{
 		try{ return Double.parseDouble(DOUBLE); }
-		catch(Exception e){ return 0.0;}
+		catch(final Exception e){ return 0.0;}
 	}
 
 
@@ -1313,7 +1312,7 @@ public class CMath
 	public final static int s_int(final String INT)
 	{
 		try{ return Integer.parseInt(INT); }
-		catch(Exception e){ return 0;}
+		catch(final Exception e){ return 0;}
 	}
 
 	/**
@@ -1343,7 +1342,7 @@ public class CMath
 	public final static int s_int(final String INT, final int def)
 	{
 		try{ return Integer.parseInt(INT); }
-		catch(Exception e){ return def;}
+		catch(final Exception e){ return def;}
 	}
 
 	/**
@@ -1356,7 +1355,7 @@ public class CMath
 	public final static short s_short(final String SHORT)
 	{
 		try{ return Short.parseShort(SHORT); }
-		catch(Exception e){ return 0;}
+		catch(final Exception e){ return 0;}
 	}
 
 	/**
@@ -1569,7 +1568,7 @@ public class CMath
 				return null;
 		if(dex>=str.length())
 			return null;
-		int endNumber=dex;
+		final int endNumber=dex;
 		for(;dex<str.length();dex++)
 			if(!Character.isLetter(str.charAt(dex)))
 				return null;

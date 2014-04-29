@@ -57,7 +57,7 @@ public class Chant_SummonVine extends Chant
 			&&(affected instanceof MOB)
 			&&(invoker!=null))
 			{
-				MOB mob=(MOB)affected;
+				final MOB mob=(MOB)affected;
 				if(((mob.amFollowing()==null)
 				||(mob.amDead())
 				||(mob.location()!=invoker.location())))
@@ -91,7 +91,7 @@ public class Chant_SummonVine extends Chant
 	@Override
 	public void unInvoke()
 	{
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		super.unInvoke();
 		if((canBeUninvoked())&&(mob!=null))
 		{
@@ -121,7 +121,7 @@ public class Chant_SummonVine extends Chant
 	{
 		if(mob!=null)
 		{
-			Room R=mob.location();
+			final Room R=mob.location();
 			if(R!=null)
 			{
 				if((R.domainType()&Room.INDOORS)>0)
@@ -163,21 +163,21 @@ public class Chant_SummonVine extends Chant
 			mob.tell("Only the anger of combat can summon fighting vines.");
 			return false;
 		}
-		int material=RawMaterial.RESOURCE_HEMP;
+		final int material=RawMaterial.RESOURCE_HEMP;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
 			invoker=mob;
-			CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":"^S<S-NAME> chant(s) and summon(s) help from the vines.^?");
+			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":"^S<S-NAME> chant(s) and summon(s) help from the vines.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				MOB target = determineMonster(mob, material);
+				final MOB target = determineMonster(mob, material);
 				if(target!=null)
 				{
 					beneficialAffect(mob,target,asLevel,0);
@@ -194,19 +194,19 @@ public class Chant_SummonVine extends Chant
 	}
 	public MOB determineMonster(MOB caster, int material)
 	{
-		MOB victim=caster.getVictim();
-		MOB newMOB=CMClass.getMOB("GenMOB");
+		final MOB victim=caster.getVictim();
+		final MOB newMOB=CMClass.getMOB("GenMOB");
 		int level=adjustedLevel(caster,0);
 		if(level<1) level=1;
 		newMOB.basePhyStats().setLevel(level);
 		newMOB.basePhyStats().setAbility(13);
 		newMOB.baseCharStats().setMyRace(CMClass.getRace("Vine"));
-		String name="a vine";
+		final String name="a vine";
 		newMOB.setName(name);
 		newMOB.setDisplayText(name+" looks enraged!");
 		newMOB.setDescription("");
 		CMLib.factions().setAlignment(newMOB,Faction.Align.NEUTRAL);
-		Ability A=CMClass.getAbility("Fighter_Rescue");
+		final Ability A=CMClass.getAbility("Fighter_Rescue");
 		A.setProficiency(100);
 		newMOB.addAbility(A);
 		newMOB.setVictim(victim);

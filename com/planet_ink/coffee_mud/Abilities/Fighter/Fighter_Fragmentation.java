@@ -66,7 +66,7 @@ public class Fighter_Fragmentation extends FighterSkill
 		&&(((Weapon)msg.tool()).weaponClassification()==Weapon.CLASS_THROWN))
 		{
 			if(CMLib.dice().rollPercentage()<25) helpProficiency((MOB)affected, 0);
-			CMMsg msg2=CMClass.getMsg((MOB)msg.target(),msg.tool(),this,CMMsg.MSG_OK_VISUAL,"^F^<FIGHT^><T-NAME> fragment(s) in <S-NAME>!^</FIGHT^>^?");
+			final CMMsg msg2=CMClass.getMsg((MOB)msg.target(),msg.tool(),this,CMMsg.MSG_OK_VISUAL,"^F^<FIGHT^><T-NAME> fragment(s) in <S-NAME>!^</FIGHT^>^?");
 			CMLib.color().fixSourceFightColor(msg2);
 			msg.addTrailerMsg(msg2);
 			msg.setValue(msg.value()+(int)Math.round(CMath.mul(3.0 * msg.value(),CMath.div(proficiency(),100.0-(10.0*getXLEVELLevel(invoker()))))));

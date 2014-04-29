@@ -47,15 +47,15 @@ public class Spell_Cogniportive extends Spell
 		if(me instanceof LandTitle)
 			return ((LandTitle)me).getAllTitledRooms().get(0).roomID();
 		// check mobs worn items first!
-		String srchStr="$"+me.Name()+"$";
+		final String srchStr="$"+me.Name()+"$";
 		List<Item> mobInventory=new Vector(1);
 		try
 		{
 			mobInventory=CMLib.map().findInventory(CMLib.map().rooms(),null, srchStr, 10);
-			for(Item I : mobInventory)
+			for(final Item I : mobInventory)
 			{
-				Environmental owner=I.owner();
-				Room room=CMLib.map().roomLocation(owner);
+				final Environmental owner=I.owner();
+				final Room room=CMLib.map().roomLocation(owner);
 				if((owner instanceof MOB)
 				&&(((MOB)owner).isMonster())
 				&&(!I.amWearingAt(Wearable.IN_INVENTORY))
@@ -63,29 +63,29 @@ public class Spell_Cogniportive extends Spell
 				&&(CMLib.law().getLandTitle(room)==null))
 					return CMLib.map().getExtendedRoomID(room);
 			}
-		}catch(NoSuchElementException nse){}
+		}catch(final NoSuchElementException nse){}
 		try
 		{
-			List<Environmental> all=CMLib.map().findShopStockers(CMLib.map().rooms(), mob, srchStr, 10);
-			for(Environmental O : all)
+			final List<Environmental> all=CMLib.map().findShopStockers(CMLib.map().rooms(), mob, srchStr, 10);
+			for(final Environmental O : all)
 				if(O instanceof ShopKeeper)
 				{
 					final ShopKeeper S=(ShopKeeper)O;
-					Room room=CMLib.map().getStartRoom(S);
-					Environmental E=S.getShop().getStock(me.Name(), null);
+					final Room room=CMLib.map().getStartRoom(S);
+					final Environmental E=S.getShop().getStock(me.Name(), null);
 					if((E instanceof Item)
 					&&((beLoose) || me.sameAs(E))
 					&&(CMLib.law().getLandTitle(room)==null))
 						return CMLib.map().getExtendedRoomID(room);
 				}
-		}catch(NoSuchElementException nse){}
+		}catch(final NoSuchElementException nse){}
 		try
 		{
 			// check mobs inventory items third!
-			for(Item I : mobInventory)
+			for(final Item I : mobInventory)
 			{
-				Environmental owner=I.owner();
-				Room room=CMLib.map().getStartRoom(owner);
+				final Environmental owner=I.owner();
+				final Room room=CMLib.map().getStartRoom(owner);
 				if((owner instanceof MOB)
 				&&(((MOB)owner).isMonster())
 				&&(I.amWearingAt(Wearable.IN_INVENTORY))
@@ -93,20 +93,20 @@ public class Spell_Cogniportive extends Spell
 				&&(CMLib.law().getLandTitle(room)==null))
 					return CMLib.map().getExtendedRoomID(room);
 			}
-		}catch(NoSuchElementException nse){}
+		}catch(final NoSuchElementException nse){}
 		try
 		{
 			// check room stuff last
-			List<Item> targets=CMLib.map().findRoomItems(CMLib.map().rooms(), mob, me.Name(), false,10);
-			for(Item I : targets)
+			final List<Item> targets=CMLib.map().findRoomItems(CMLib.map().rooms(), mob, me.Name(), false,10);
+			for(final Item I : targets)
 			{
-				Room R=CMLib.map().roomLocation(I);
+				final Room R=CMLib.map().roomLocation(I);
 				if((R!=null)
 				&&((beLoose) || me.sameAs(I))
 				&&(CMLib.law().getLandTitle(R)==null))
 				   return CMLib.map().getExtendedRoomID(R);
 			}
-		}catch(NoSuchElementException nse){}
+		}catch(final NoSuchElementException nse){}
 		return "";
 	}
 
@@ -118,20 +118,20 @@ public class Spell_Cogniportive extends Spell
 				setMiscText(establishHome(mob,me,false));
 			if(text().length()==0)
 				setMiscText(establishHome(mob,me,true));
-			Room home=CMLib.map().getRoom(text());
+			final Room home=CMLib.map().getRoom(text());
 			if((home==null)||(!CMLib.flags().canAccess(mob,home)))
 				mob.location().showHappens(CMMsg.MSG_OK_VISUAL,"Strange fizzled sparks fly from "+me.name()+".");
 			else
 			{
-				Set<MOB> h=properTargets(mob,null,false);
+				final Set<MOB> h=properTargets(mob,null,false);
 				if(h==null) return;
 
-				Room thisRoom=mob.location();
-				for(Iterator f=h.iterator();f.hasNext();)
+				final Room thisRoom=mob.location();
+				for (final Object element : h)
 				{
-					MOB follower=(MOB)f.next();
-					CMMsg enterMsg=CMClass.getMsg(follower,home,this,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,"<S-NAME> appears in a puff of smoke.");
-					CMMsg leaveMsg=CMClass.getMsg(follower,thisRoom,this,CMMsg.MSG_LEAVE|CMMsg.MASK_MAGIC,"<S-NAME> disappear(s) in a puff of smoke.");
+					final MOB follower=(MOB)element;
+					final CMMsg enterMsg=CMClass.getMsg(follower,home,this,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,"<S-NAME> appears in a puff of smoke.");
+					final CMMsg leaveMsg=CMClass.getMsg(follower,thisRoom,this,CMMsg.MSG_LEAVE|CMMsg.MASK_MAGIC,"<S-NAME> disappear(s) in a puff of smoke.");
 					if(thisRoom.isInhabitant(follower)
 					&&thisRoom.okMessage(follower,leaveMsg)
 					&&(!home.isInhabitant(follower))
@@ -156,7 +156,7 @@ public class Spell_Cogniportive extends Spell
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
-		MOB mob=msg.source();
+		final MOB mob=msg.source();
 
 		if(affected instanceof Item)
 		switch(msg.targetMinor())
@@ -169,14 +169,14 @@ public class Spell_Cogniportive extends Spell
 			if((msg.sourceMinor()==CMMsg.TYP_SPEAK)
 			&&(msg.sourceMessage()!=null))
 			{
-				String msgStr=CMStrings.getSayFromMessage(msg.sourceMessage());
+				final String msgStr=CMStrings.getSayFromMessage(msg.sourceMessage());
 				if(msgStr!=null)
 				{
-					Vector<String> V=CMParms.parse(msgStr);
+					final Vector<String> V=CMParms.parse(msgStr);
 					if((V.size()>=2)
 					&&(V.firstElement().equalsIgnoreCase("HOME")))
 					{
-						String str=CMParms.combine(V,1);
+						final String str=CMParms.combine(V,1);
 						if((str.length()>0)
 						&&((CMLib.english().containsString(affected.name(),str)
 							||CMLib.english().containsString(affected.displayText(),str))))
@@ -184,7 +184,7 @@ public class Spell_Cogniportive extends Spell
 							boolean alreadyWanding=false;
 							final List<CMMsg> trailers =msg.trailerMsgs();
 							if(trailers!=null)
-								for(CMMsg msg2 : trailers)
+								for(final CMMsg msg2 : trailers)
 									if(msg2.targetMinor()==CMMsg.TYP_WAND_USE)
 										alreadyWanding=true;
 							if(!alreadyWanding)
@@ -203,10 +203,10 @@ public class Spell_Cogniportive extends Spell
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		Item target=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_ANY);
+		final Item target=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_ANY);
 		if(target==null)
 		{
-			String str=CMParms.combine(commands,0).toUpperCase();
+			final String str=CMParms.combine(commands,0).toUpperCase();
 			if(str.equals("MONEY")||str.equals("GOLD")||str.equals("COINS"))
 				mob.tell("You can't cast this spell on coins!");
 			return false;
@@ -222,11 +222,11 @@ public class Spell_Cogniportive extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,somanticCastCode(mob,target,auto),auto?"":"^S<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAMESELF>, incanting.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,somanticCastCode(mob,target,auto),auto?"":"^S<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAMESELF>, incanting.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

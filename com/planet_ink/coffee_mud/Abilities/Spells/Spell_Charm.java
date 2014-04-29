@@ -52,7 +52,7 @@ public class Spell_Charm extends Spell
 		else
 		if((text().length()>0)&&(affected instanceof MOB))
 		{
-			Room R=((MOB)affected).location();
+			final Room R=((MOB)affected).location();
 			if(R!=null)
 				charmer=R.fetchInhabitant(text());
 		}
@@ -80,7 +80,7 @@ public class Spell_Charm extends Spell
 		if(!(affected instanceof MOB))
 			return true;
 
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		// when this spell is on a MOBs Affected list,
 		// it should consistantly prevent the mob
@@ -125,7 +125,7 @@ public class Spell_Charm extends Spell
 	{
 		if((affecting()==null)||(!(affecting() instanceof MOB)))
 			return false;
-		MOB mob=(MOB)affecting();
+		final MOB mob=(MOB)affecting();
 		if((getCharmer()!=null)
 		&&(!CMLib.flags().isInTheGame(getCharmer(),false)))
 			unInvoke();
@@ -145,7 +145,7 @@ public class Spell_Charm extends Spell
 		// undo the affects of this spell
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		super.unInvoke();
 
@@ -191,7 +191,7 @@ public class Spell_Charm extends Spell
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		MOB target=this.getTarget(mob,commands,givenTarget);
+		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
 		int levelDiff=target.phyStats().level()-(mob.phyStats().level()+(2*getXLEVELLevel(mob)));
@@ -227,8 +227,8 @@ public class Spell_Charm extends Spell
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			String str=auto?"":"^S<S-NAME> smile(s) and wink(s) at <T-NAMESELF>.^?";
-			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_CAST_SOMANTIC_SPELL,str);
+			final String str=auto?"":"^S<S-NAME> smile(s) and wink(s) at <T-NAMESELF>.^?";
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_CAST_SOMANTIC_SPELL,str);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

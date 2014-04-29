@@ -43,7 +43,7 @@ public class Spell_MirrorImage extends Spell
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ILLUSION;}
 
-	private	Random randomizer = new Random(System.currentTimeMillis());
+	private final	Random randomizer = new Random(System.currentTimeMillis());
 	protected int numberOfImages = 0;
 	protected boolean notAgain=false;
 
@@ -54,7 +54,7 @@ public class Spell_MirrorImage extends Spell
 		if(!(affected instanceof MOB))
 			return true;
 
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		if((msg.amITarget(mob))
 		&&(msg.targetMinor()==CMMsg.TYP_WEAPONATTACK)
@@ -68,7 +68,7 @@ public class Spell_MirrorImage extends Spell
 			int intAdjustment = (mob.charStats().getMaxStat(CharStats.STAT_INTELLIGENCE) - mob.charStats().getStat(CharStats.STAT_INTELLIGENCE))/2;
 			if(intAdjustment < 1) intAdjustment = 1;
 
-			int numberOfTargets = numberOfImages + intAdjustment;
+			final int numberOfTargets = numberOfImages + intAdjustment;
 			if(randomizer.nextInt() % numberOfTargets >= intAdjustment)
 			{
 				if(mob.location().show(mob,msg.source(),CMMsg.MSG_NOISYMOVEMENT,"<T-NAME> attack(s) a mirrored image!"))
@@ -88,7 +88,7 @@ public class Spell_MirrorImage extends Spell
 
 		if(notAgain) return;
 
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		if(msg.amISource(mob))
 		{
 			if((
@@ -112,8 +112,8 @@ public class Spell_MirrorImage extends Spell
 		if((msg.amITarget(mob.location())&&(!msg.amISource(mob))&&((msg.targetMinor()==CMMsg.TYP_LOOK)||(msg.targetMinor()==CMMsg.TYP_EXAMINE)))
 		&&((CMLib.flags().canBeSeenBy(mob,msg.source()))&&(mob.displayText(msg.source()).length()>0)))
 		{
-			StringBuffer Say=new StringBuffer("");
-			boolean compress=CMath.bset(msg.source().getBitmap(),MOB.ATT_COMPRESS);
+			final StringBuffer Say=new StringBuffer("");
+			final boolean compress=CMath.bset(msg.source().getBitmap(),MOB.ATT_COMPRESS);
 			for(int i=0;i<numberOfImages;i++)
 			{
 				Say.append("^M");
@@ -129,7 +129,7 @@ public class Spell_MirrorImage extends Spell
 			}
 			if(Say.toString().length()>0)
 			{
-				CMMsg msg2=CMClass.getMsg(msg.source(),null,this,CMMsg.MSG_OK_VISUAL,Say.toString(),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);
+				final CMMsg msg2=CMClass.getMsg(msg.source(),null,this,CMMsg.MSG_OK_VISUAL,Say.toString(),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);
 				msg.addTrailerMsg(msg2);
 			}
 		}
@@ -150,7 +150,7 @@ public class Spell_MirrorImage extends Spell
 		// undo the affects of this spell
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		if(canBeUninvoked())
 			numberOfImages=0;
 		super.unInvoke();
@@ -178,7 +178,7 @@ public class Spell_MirrorImage extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
@@ -188,7 +188,7 @@ public class Spell_MirrorImage extends Spell
 			// what happened.
 			invoker=mob;
 			numberOfImages = CMLib.dice().roll(1,(int)(Math.round(CMath.div(adjustedLevel(mob,asLevel),3.0))),2);
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),(auto?"A spell forms around":"^S<S-NAME> incant(s) the reflective spell of")+" <T-NAME>, and suddenly " + numberOfImages + " copies appear.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),(auto?"A spell forms around":"^S<S-NAME> incant(s) the reflective spell of")+" <T-NAME>, and suddenly " + numberOfImages + " copies appear.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

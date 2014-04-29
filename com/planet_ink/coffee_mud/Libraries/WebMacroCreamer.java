@@ -71,10 +71,10 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 			request.getRequestObjects().put("SYSTEM_HTTP_STATUS", Integer.toString(status.getStatusCode()));
 			request.getRequestObjects().put("SYSTEM_HTTP_STATUS_INFO", status.description());
 		}
-		long[] systemStartTime=new long[]{System.currentTimeMillis()};
+		final long[] systemStartTime=new long[]{System.currentTimeMillis()};
 		if(pageFile.getParent()!=null)
 		{
-			Clan mappedClan = CMLib.clans().getWebPathClan(pageFile.getParent());
+			final Clan mappedClan = CMLib.clans().getWebPathClan(pageFile.getParent());
 			if(mappedClan!=null)
 				request.addFakeUrlParameter("CLAN", mappedClan.clanID());
 		}
@@ -83,7 +83,7 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 		{
 			return ByteBuffer.wrap(virtualPageFilter(request, request.getRequestObjects(), systemStartTime,  new String[]{""}, new StringBuffer(new String(buffer.array()))).toString().getBytes());
 		}
-		catch(HTTPRedirectException he)
+		catch(final HTTPRedirectException he)
 		{
 			throw new HTTPException(HTTPStatus.S307_TEMPORARY_REDIRECT,he.getMessage());
 		}
@@ -115,7 +115,7 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 			@Override public Set<String> getUrlParameters() { return params.keySet(); }
 			@Override public HTTPMethod getMethod() { return HTTPMethod.GET; }
 			@Override public String getHeader(String name) { return null; }
-			@Override public InetAddress getClientAddress() { try { return InetAddress.getLocalHost(); } catch (UnknownHostException e) { return null; } }
+			@Override public InetAddress getClientAddress() { try { return InetAddress.getLocalHost(); } catch (final UnknownHostException e) { return null; } }
 			@Override public int getClientPort() { return 0; }
 			@Override public InputStream getBody() { return null; }
 			@Override public String getCookie(String name) { return null; }
@@ -196,12 +196,12 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 						s.replace(i,i+foundMacro.length()+2,foundMacro);
 					else
 					{
-						int x=foundMacro.indexOf('?');
-						int len=foundMacro.length();
+						final int x=foundMacro.indexOf('?');
+						final int len=foundMacro.length();
 						if(x>=0) foundMacro=foundMacro.substring(0,x);
 						if(foundMacro!=null)
 						{
-							WebMacro W=CMClass.getWebMacro(foundMacro.toUpperCase());
+							final WebMacro W=CMClass.getWebMacro(foundMacro.toUpperCase());
 							if(W!=null) s.replace(i,i+len+2,foundMacro);
 						}
 					}
@@ -217,7 +217,7 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 	public StringBuffer virtualPageFilter(HTTPRequest request, Map<String, Object> objects, long[] processStartTime, String[] lastFoundMacro, StringBuffer s) throws HTTPRedirectException
 	{
 		String redirectTo = null;
-		boolean debugMacros=CMSecurity.isDebugging(CMSecurity.DbgFlag.HTTPMACROS);
+		final boolean debugMacros=CMSecurity.isDebugging(CMSecurity.DbgFlag.HTTPMACROS);
 		boolean isAdminServer=false;
 		if(Thread.currentThread() instanceof MWThread)
 			isAdminServer=CMath.s_bool(((MWThread)Thread.currentThread()).getConfig().getMiscProp("ADMIN"));
@@ -240,8 +240,8 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 						if(debugMacros) Log.debugOut("ProcessHTTPRequest", "Found macro: "+foundMacro);
 						if(foundMacro.startsWith("if?")||foundMacro.startsWith("IF?"))
 						{
-							int l=foundMacro.length()+2;
-							int v=myEndif(s,i+l,lastFoundMacro);
+							final int l=foundMacro.length()+2;
+							final int v=myEndif(s,i+l,lastFoundMacro);
 							if(v<0)
 							{
 								if(debugMacros) Log.debugOut("ProcessHTTPRequest", "if without endif");
@@ -249,7 +249,7 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 							}
 							else
 							{
-								int v2=myElse(s,i+l,v,lastFoundMacro);
+								final int v2=myElse(s,i+l,v,lastFoundMacro);
 								foundMacro=foundMacro.substring(3);
 								try
 								{
@@ -260,7 +260,7 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 										compare="false";
 									}
 									if(debugMacros) Log.debugOut("ProcessHTTPRequest", "Found IF macro: "+foundMacro);
-									String q=runMacro(request,foundMacro,lastFoundMacro,isAdminServer);
+									final String q=runMacro(request,foundMacro,lastFoundMacro,isAdminServer);
 									if(debugMacros) Log.debugOut("ProcessHTTPRequest", "Ran IF macro: "+foundMacro+"="+q);
 									if((q!=null)&&(q.equalsIgnoreCase(compare)))
 									{
@@ -280,7 +280,7 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 											s.replace(i,v+7,"");
 									}
 								}
-								catch (HTTPRedirectException e)
+								catch (final HTTPRedirectException e)
 								{
 									if(debugMacros) Log.debugOut("ProcessHTTPRequest", "if exception: "+e.getMessage());
 									redirectTo = e.getMessage();
@@ -291,29 +291,29 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 						else
 						if(foundMacro.equalsIgnoreCase("/jscript"))
 						{
-							int l=foundMacro.length()+2;
+							final int l=foundMacro.length()+2;
 							s.replace(i,i+l,"[/jscript without jscript]");
 						}
 						else
 						if(foundMacro.equalsIgnoreCase("/html"))
 						{
-							int l=foundMacro.length()+2;
+							final int l=foundMacro.length()+2;
 							s.replace(i,i+l,"[/html without html]");
 						}
 						else
 						if(foundMacro.equalsIgnoreCase("jscript"))
 						{
-							int l=foundMacro.length()+2;
-							int v=myEndJScript(s,i+l,lastFoundMacro);
+							final int l=foundMacro.length()+2;
+							final int v=myEndJScript(s,i+l,lastFoundMacro);
 							if(v<0)
 								s.replace(i,i+l,"[jscript without /jscript]");
 							else
 							{
-								Context cx = Context.enter();
+								final Context cx = Context.enter();
 								try
 								{
-									String script=s.substring(i+l,v);
-									JScriptablePage scope = new JScriptablePage(request);
+									final String script=s.substring(i+l,v);
+									final JScriptablePage scope = new JScriptablePage(request);
 									cx.initStandardObjects(scope);
 									scope.defineFunctionProperties(JScriptablePage.functions,
 																   JScriptablePage.class,
@@ -322,7 +322,7 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 									s.replace(i,v+l+1,scope.getBuffer());
 									i=i+scope.getBuffer().length();
 								}
-								catch(Exception e)
+								catch(final Exception e)
 								{
 									s.replace(i,v+l+1,"[jscript error: "+e.getMessage()+"]");
 								}
@@ -333,13 +333,13 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 						else
 						if(foundMacro.startsWith("block?")||foundMacro.startsWith("BLOCK?"))
 						{
-							int l=foundMacro.length()+2;
-							int v=myEndBlock(s,i+l,lastFoundMacro);
+							final int l=foundMacro.length()+2;
+							final int v=myEndBlock(s,i+l,lastFoundMacro);
 							if(v<0)
 								s.replace(i,i+l,"[block without /block]");
 							else
 							{
-								String name=foundMacro.substring(6).trim().toUpperCase();
+								final String name=foundMacro.substring(6).trim().toUpperCase();
 								objects.put(name,s.substring(i+l,v));
 								s.delete(i,v+8);
 							}
@@ -348,9 +348,9 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 						else
 						if(foundMacro.startsWith("insert?")||foundMacro.startsWith("INSERT?"))
 						{
-							int l=foundMacro.length()+2;
-							String name=foundMacro.substring(7).trim().toUpperCase();
-							Object o=objects.get(name);
+							final int l=foundMacro.length()+2;
+							final String name=foundMacro.substring(7).trim().toUpperCase();
+							final Object o=objects.get(name);
 							if(o!=null)
 								s.replace(i,i+l,o.toString());
 							else
@@ -372,12 +372,12 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 						else
 						if(foundMacro.equalsIgnoreCase("loop"))
 						{
-							int v=myBack(s,i+6,lastFoundMacro);
+							final int v=myBack(s,i+6,lastFoundMacro);
 							if(v<0)
 								s.replace(i,i+6, "[loop without back]" );
 							else
 							{
-								String s2=s.substring(i+6,v);
+								final String s2=s.substring(i+6,v);
 								s.replace(i,v+6,"");
 								int ldex=i;
 								String s3=" ";
@@ -387,7 +387,7 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 									{
 										s3=new String(virtualPageFilter( request, objects, processStartTime, lastFoundMacro, new StringBuffer(s2)));
 									}
-									catch (HTTPRedirectException e)
+									catch (final HTTPRedirectException e)
 									{
 										s3 = " ";
 										redirectTo = e.getMessage();
@@ -409,9 +409,9 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 						else
 						if(foundMacro.startsWith("for?")||foundMacro.startsWith("FOR?"))
 						{
-							String forCond=foundMacro.substring(4);
-							int fc=forCond.indexOf('=');
-							int v=myNext(s,i+foundMacro.length()+2,lastFoundMacro);
+							final String forCond=foundMacro.substring(4);
+							final int fc=forCond.indexOf('=');
+							final int v=myNext(s,i+foundMacro.length()+2,lastFoundMacro);
 							if(fc<0)
 								s.replace(i,i+foundMacro.length()+2, "[for without variabledef=]" );
 							else
@@ -419,10 +419,10 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 								s.replace(i,i+foundMacro.length()+2, "[for without next]" );
 							else
 							{
-								String s2=s.substring(i+foundMacro.length()+2,v);
+								final String s2=s.substring(i+foundMacro.length()+2,v);
 								s.replace(i,v+6,"");
 								if(debugMacros) Log.debugOut("ProcessHTTPRequest", "Found FOR macro: "+foundMacro);
-								String varName=forCond.substring(0,fc).trim().toUpperCase();
+								final String varName=forCond.substring(0,fc).trim().toUpperCase();
 								String q=runMacro(request,forCond.substring(fc+1).trim(),lastFoundMacro,isAdminServer);
 								if(q==null) q=forCond.substring(fc+1).trim();
 								if(debugMacros) Log.debugOut("ProcessHTTPRequest", "Ran FOR macro: "+foundMacro+"="+q);
@@ -433,14 +433,14 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 									set=new XVector<String>();
 								else
 									set=CMParms.parseCommas(q, false);
-								for(String qq : set)
+								for(final String qq : set)
 								{
 									try
 									{
 										request.addFakeUrlParameter(varName, qq);
 										s3=new String(virtualPageFilter( request, objects, processStartTime, lastFoundMacro, new StringBuffer(s2)));
 									}
-									catch (HTTPRedirectException e)
+									catch (final HTTPRedirectException e)
 									{
 										s3 = " ";
 										redirectTo = e.getMessage();
@@ -506,8 +506,8 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 						{
 							try
 							{
-								int l=foundMacro.length();
-								String q=runMacro(request, foundMacro,lastFoundMacro, isAdminServer);
+								final int l=foundMacro.length();
+								final String q=runMacro(request, foundMacro,lastFoundMacro, isAdminServer);
 								if(debugMacros) Log.debugOut("ProcessHTTPRequest", "Ran Macro: "+foundMacro+"="+q);
 								if (q != null)
 								{
@@ -518,7 +518,7 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 								else
 									s.replace(i,i+l+2, "[error]" );
 							}
-							catch (HTTPRedirectException e)
+							catch (final HTTPRedirectException e)
 							{
 								// can't just do this:
 								// throw e;
@@ -533,9 +533,9 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 				}
 			}
 		}
-		catch (Exception e)
+		catch (final Exception e)
 		{
-			String errMsg=e.getMessage()==null?e.toString():e.getMessage();
+			final String errMsg=e.getMessage()==null?e.toString():e.getMessage();
 			if((errMsg!=null)
 			&&((!Log.isMaskedErrMsg(errMsg))||(CMSecurity.isDebugging(CMSecurity.DbgFlag.HTTPMACROS))))
 			{
@@ -554,7 +554,7 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 
 	protected String runMacro(HTTPRequest request, String foundMacro, final String[] lastFoundMacro, final boolean isAdminServer) throws HTTPRedirectException, HTTPServerException
 	{
-		int x=foundMacro.indexOf('?');
+		final int x=foundMacro.indexOf('?');
 		StringBuffer parms=null;
 		if(x>=0)
 		{
@@ -563,11 +563,11 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 			int y=parms.indexOf("@");
 			while(y>=0)
 			{
-				String newFoundMacro=parseFoundMacro(parms,y,lastFoundMacro,false);
+				final String newFoundMacro=parseFoundMacro(parms,y,lastFoundMacro,false);
 				if((newFoundMacro!=null)&&(newFoundMacro.length()>0))
 				{
-					int l=newFoundMacro.length();
-					String qq=runMacro(request, newFoundMacro, lastFoundMacro, isAdminServer);
+					final int l=newFoundMacro.length();
+					final String qq=runMacro(request, newFoundMacro, lastFoundMacro, isAdminServer);
 					if (qq != null)
 						parms.replace(y,y+l+2, qq );
 					else
@@ -580,7 +580,7 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 		}
 		if(foundMacro.length()==0)
 			return "";
-		WebMacro W=CMClass.getWebMacro(foundMacro.toUpperCase());
+		final WebMacro W=CMClass.getWebMacro(foundMacro.toUpperCase());
 		if(W!=null)
 		{
 			String q=null;
@@ -592,7 +592,7 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 			else
 			if(W.preferBinary())
 			{
-				byte[] bin=W.runBinaryMacro(request,(parms==null)?null:parms.toString());
+				final byte[] bin=W.runBinaryMacro(request,(parms==null)?null:parms.toString());
 				if(bin==null)
 					q=" @break@";
 				else
@@ -653,7 +653,7 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 		{
 			if(s.charAt(i)=='@')
 			{
-				String foundMacro=parseFoundMacro(s,i,lastFoundMacro,true);
+				final String foundMacro=parseFoundMacro(s,i,lastFoundMacro,true);
 				if((foundMacro!=null)&&(foundMacro.length()>0))
 				{
 					if(foundMacro.startsWith("if?"))
@@ -681,7 +681,7 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 		{
 			if(s.charAt(i)=='@')
 			{
-				String foundMacro=parseFoundMacro(s,i,lastFoundMacro,true);
+				final String foundMacro=parseFoundMacro(s,i,lastFoundMacro,true);
 				if((foundMacro!=null)&&(foundMacro.length()>0))
 				{
 					if(foundMacro.equalsIgnoreCase("loop"))
@@ -706,7 +706,7 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 		{
 			if(s.charAt(i)=='@')
 			{
-				String foundMacro=parseFoundMacro(s,i,lastFoundMacro,true);
+				final String foundMacro=parseFoundMacro(s,i,lastFoundMacro,true);
 				if((foundMacro!=null)&&(foundMacro.length()>0))
 				{
 					if(foundMacro.equalsIgnoreCase("for"))
@@ -731,7 +731,7 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 		{
 			if(s.charAt(i)=='@')
 			{
-				String foundMacro=parseFoundMacro(s,i,lastFoundMacro,true);
+				final String foundMacro=parseFoundMacro(s,i,lastFoundMacro,true);
 				if((foundMacro!=null)&&(foundMacro.length()>0))
 				{
 					if(foundMacro.startsWith("if?"))
@@ -755,7 +755,7 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 		{
 			if(s.charAt(i)=='@')
 			{
-				String foundMacro=parseFoundMacro(s,i,lastFoundMacro,true);
+				final String foundMacro=parseFoundMacro(s,i,lastFoundMacro,true);
 				if((foundMacro!=null)&&(foundMacro.length()>0))
 				{
 					if(foundMacro.equalsIgnoreCase("/jscript"))
@@ -772,7 +772,7 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 		{
 			if(s.charAt(i)=='@')
 			{
-				String foundMacro=parseFoundMacro(s,i,lastFoundMacro,true);
+				final String foundMacro=parseFoundMacro(s,i,lastFoundMacro,true);
 				if((foundMacro!=null)&&(foundMacro.length()>0))
 				{
 					if(foundMacro.equalsIgnoreCase("/block"))
@@ -802,14 +802,14 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 	@Override
 	public void doGet(SimpleServletRequest request, SimpleServletResponse response)
 	{
-		String[] url=request.getUrlPath().split("/");
+		final String[] url=request.getUrlPath().split("/");
 		if(url.length>0)
 		{
 			String macroName=url[url.length-1];
-			int x=macroName.indexOf('?');
+			final int x=macroName.indexOf('?');
 			if(x>0)
 				macroName=macroName.substring(0,x);
-			WebMacro W=CMClass.getWebMacro(macroName.toUpperCase());
+			final WebMacro W=CMClass.getWebMacro(macroName.toUpperCase());
 			if(W==null)
 			{
 				Log.errOut("WebMacroCreamer","No web macro: '"+macroName+"'");
@@ -821,7 +821,7 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 			}
 			else
 			{
-				String filename=W.getFilename(request, "");
+				final String filename=W.getFilename(request, "");
 				try
 				{
 					try
@@ -834,16 +834,16 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 							responseData=W.runMacro(request, "").getBytes();
 						response.getOutputStream().write(responseData);
 					}
-					catch (HTTPServerException e)
+					catch (final HTTPServerException e)
 					{
 						try
 						{
 							response.getOutputStream().write(HTTPException.standardException(HTTPStatus.S500_INTERNAL_ERROR).generateOutput(request).flushToBuffer().array());
 						}
-						catch (HTTPException e1)	{ }
+						catch (final HTTPException e1)	{ }
 					}
 				}
-				catch (IOException e2)
+				catch (final IOException e2)
 				{}
 			}
 		}
@@ -862,7 +862,7 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 	@Override
 	public boolean activate()
 	{
-		String flag=Resources.getPropResource("WEBMACROCREAMER", "RUNYAHOOMSGGRABBER");
+		final String flag=Resources.getPropResource("WEBMACROCREAMER", "RUNYAHOOMSGGRABBER");
 		if(flag.equalsIgnoreCase("TRUE"))
 		{
 			int tickCount=CMath.s_int(Resources.getPropResource("WEBMACROCREAMER", "YAHOOTICKSPERRUN"));
@@ -900,7 +900,7 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 		try
 		{
 			tickStatus=Tickable.STATUS_ALIVE;
-			String timesPerRunStr=Resources.getPropResource("WEBMACROCREAMER", "TIMESPERRUN");
+			final String timesPerRunStr=Resources.getPropResource("WEBMACROCREAMER", "TIMESPERRUN");
 			if(!CMath.isInteger(timesPerRunStr))
 			{
 				Log.errOut("WebMacroCreamer var TIMESPERRUN not properly set.");
@@ -908,32 +908,32 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 			}
 			if(yahooSession==null)
 			{
-				String yahooUsername=Resources.getPropResource("WEBMACROCREAMER", "YAHOOUSER");
+				final String yahooUsername=Resources.getPropResource("WEBMACROCREAMER", "YAHOOUSER");
 				if(yahooUsername.length()==0)
 				{
 					Log.errOut("WebMacroCreamer var YAHOOUSER not properly set.");
 					return true;
 				}
-				String yahooPassword=Resources.getPropResource("WEBMACROCREAMER", "YAHOOPASSWORD");
+				final String yahooPassword=Resources.getPropResource("WEBMACROCREAMER", "YAHOOPASSWORD");
 				if(yahooUsername.length()==0)
 				{
 					Log.errOut("WebMacroCreamer var YAHOOPASSWORD not properly set.");
 					return true;
 				}
-				String yahooUrl=Resources.getPropResource("WEBMACROCREAMER", "YAHOOURL");
+				final String yahooUrl=Resources.getPropResource("WEBMACROCREAMER", "YAHOOURL");
 				if(yahooUrl.length()==0)
 				{
 					Log.errOut("WebMacroCreamer var YAHOOURL not properly set.");
 					return true;
 				}
-				String forumName=Resources.getPropResource("WEBMACROCREAMER", "FORUM");
+				final String forumName=Resources.getPropResource("WEBMACROCREAMER", "FORUM");
 				if(forumName.length()==0)
 				{
 					Log.errOut("WebMacroCreamer var FORUM not properly set.");
 					return true;
 				}
-				String skipList=Resources.getPropResource("WEBMACROCREAMER", "SKIPLIST");
-				int[] skipInts=CMParms.toIntArray(CMParms.parseCommas(skipList,true));
+				final String skipList=Resources.getPropResource("WEBMACROCREAMER", "SKIPLIST");
+				final int[] skipInts=CMParms.toIntArray(CMParms.parseCommas(skipList,true));
 				yahooSession=new YahooGroupSession();
 				yahooSession.url=yahooUrl;
 				yahooSession.user=yahooUsername;
@@ -954,7 +954,7 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 				yahooSession.H=(HttpClient)CMClass.getCommon("DefaultHttpClient");
 				try
 				{
-					String resp=this.loginToYahooSession(yahooSession);
+					final String resp=this.loginToYahooSession(yahooSession);
 					if(resp.length()>0)
 					{
 						Log.warnOut("Yahoo Groups Copier failure reported: "+resp);
@@ -964,7 +964,7 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 					}
 					yahooSession.numTotalTimes=CMath.s_int(timesPerRunStr);
 				}
-				catch (UnsupportedEncodingException e)
+				catch (final UnsupportedEncodingException e)
 				{
 					Log.errOut(Thread.currentThread().getName(),e);
 					yahooSession.H.finished();
@@ -978,7 +978,7 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 
 			yahooSession.numTotalTimes--;
 			yahooSession.numTimes=1;
-			String resp=copyYahooGroupMsg(yahooSession);
+			final String resp=copyYahooGroupMsg(yahooSession);
 			if((resp!=null)&&(resp.toLowerCase().startsWith("fail")))
 			{
 				yahooSession.lastFailedNum=yahooSession.lastMsgNum;
@@ -1027,16 +1027,16 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 			}
 			if(Arrays.binarySearch(sess.skipList, sess.lastMsgNum)>=0)
 				continue;
-			byte[] b=sess.H.getRawUrl(sess.url+"/message/"+sess.lastMsgNum,sess.cookieSet);
+			final byte[] b=sess.H.getRawUrl(sess.url+"/message/"+sess.lastMsgNum,sess.cookieSet);
 			if(b==null)
 				return "Failed: to read message from url:"+sess.url+"/message/"+sess.lastMsgNum;
-			String msgPage=new String(b);
+			final String msgPage=new String(b);
 			int startOfSubject=msgPage.indexOf("<em class=\"msg-bg msg-bd\"");
 			if(startOfSubject<0)
 				startOfSubject=msgPage.indexOf("<em class=\"msg-newfont\"");
 			if(startOfSubject<0)
 			{
-				int x=msgPage.indexOf("Message  does not exist in ");
+				final int x=msgPage.indexOf("Message  does not exist in ");
 				if((x>0)&&(msgPage.substring(0,x).trim().endsWith("<div class=\"ygrp-contentblock\">")))
 				{
 					Resources.setPropResource("WEBMACROCREAMER", "LASTYAHOOMSGNUMBER",Integer.toString(sess.lastMsgNum));
@@ -1045,7 +1045,7 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 				return "Failed: to find subject start in url:"+sess.url+"/message/"+sess.lastMsgNum;
 			}
 			startOfSubject=msgPage.indexOf(">",startOfSubject);
-			int endOfSubject=msgPage.indexOf("</em>",startOfSubject);
+			final int endOfSubject=msgPage.indexOf("</em>",startOfSubject);
 			if(endOfSubject<0)
 				return "Failed: to find subject end in url:"+sess.url+"/message/"+sess.lastMsgNum;
 			String subject=msgPage.substring(startOfSubject+1,endOfSubject).trim();
@@ -1066,14 +1066,14 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 			endOfDate=msgPage.indexOf("\"",startOfDate+1);
 			if(endOfDate<0)
 				return "Failed: to find date end in url:"+sess.url+"/message/"+sess.lastMsgNum;
-			String dateStr=msgPage.substring(startOfDate,endOfDate).trim();
-			SimpleDateFormat  format = new SimpleDateFormat("yyyy-M-d'T'HH:mm:ss'Z'");
+			final String dateStr=msgPage.substring(startOfDate,endOfDate).trim();
+			final SimpleDateFormat  format = new SimpleDateFormat("yyyy-M-d'T'HH:mm:ss'Z'");
 			Date postDate;
 			try
 			{
 				postDate=format.parse(dateStr);
 			}
-			catch(ParseException p)
+			catch(final ParseException p)
 			{
 				return "Failed: to parse date '"+dateStr+"' in url:"+sess.url+"/message/"+sess.lastMsgNum;
 			}
@@ -1081,7 +1081,7 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 			if(startOfAuthor<0)
 				return "Failed: to find author start in url:"+sess.url+"/message/"+sess.lastMsgNum;
 			startOfAuthor=msgPage.indexOf(">",startOfAuthor+4);
-			int endOfAuthor=msgPage.indexOf("</span>",startOfAuthor);
+			final int endOfAuthor=msgPage.indexOf("</span>",startOfAuthor);
 			if(endOfAuthor<0)
 				return "Failed: to find author end in url:"+sess.url+"/message/"+sess.lastMsgNum;
 			String author=msgPage.substring(startOfAuthor+1,endOfAuthor).trim();
@@ -1109,18 +1109,18 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 			theMessage=CMStrings.replaceAll(theMessage,"\r","");
 			if(theMessage.trim().length()==0)
 				return "Failed: to find lengthy msg in url:"+sess.url+"/message/"+sess.lastMsgNum;
-			JournalsLibrary.ForumJournal forum=CMLib.journals().getForumJournal(sess.journal);
+			final JournalsLibrary.ForumJournal forum=CMLib.journals().getForumJournal(sess.journal);
 			if(forum==null)
 				return "Failed: bad forum given";
 			if(author.indexOf('@')>=0)
 			{
-				MOB aM=CMLib.players().getLoadPlayerByEmail(author);
+				final MOB aM=CMLib.players().getLoadPlayerByEmail(author);
 				if(aM!=null)
 					author=aM.Name();
 				else
 				if(CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)>1)
 				{
-					PlayerAccount A=CMLib.players().getLoadAccountByEmail(author);
+					final PlayerAccount A=CMLib.players().getLoadAccountByEmail(author);
 					if(A==null)
 						author=author.substring(0,author.indexOf('@'));
 					else
@@ -1147,29 +1147,29 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 						subj=subj.substring(11).trim();
 				}
 
-				Vector<JournalEntry> journalEntries=CMLib.database().DBSearchAllJournalEntries(forum.NAME(), subj);
+				final Vector<JournalEntry> journalEntries=CMLib.database().DBSearchAllJournalEntries(forum.NAME(), subj);
 				if((journalEntries!=null)&&(journalEntries.size()>0))
 				{
 					JournalEntry WIN=null;
-					for(JournalEntry J : journalEntries)
+					for(final JournalEntry J : journalEntries)
 					{
 						if(J.subj.trim().equals(subj))
 							WIN=J;
 					}
 					if(WIN==null)
-					for(JournalEntry J : journalEntries)
+					for(final JournalEntry J : journalEntries)
 					{
 						if(J.subj.trim().equalsIgnoreCase(subj))
 							WIN=J;
 					}
 					if(WIN==null)
-					for(JournalEntry J : journalEntries)
+					for(final JournalEntry J : journalEntries)
 					{
 						if(J.subj.trim().indexOf(subj)>=0)
 							WIN=J;
 					}
 					if(WIN==null)
-					for(JournalEntry J : journalEntries)
+					for(final JournalEntry J : journalEntries)
 					{
 						if(J.subj.toLowerCase().trim().indexOf(subj.toLowerCase())>=0)
 							WIN=J;
@@ -1181,7 +1181,7 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 				if(parent.length()==0)
 					subject=subj;
 			}
-			JournalsLibrary.JournalEntry msg = new JournalsLibrary.JournalEntry();
+			final JournalsLibrary.JournalEntry msg = new JournalsLibrary.JournalEntry();
 			msg.from=author;
 			msg.subj=CMLib.webMacroFilter().clearWebMacros(subject);
 			msg.msg=CMLib.webMacroFilter().clearWebMacros(theMessage);
@@ -1192,8 +1192,8 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 			msg.data="";
 			msg.to="ALL";
 			// check for dups
-			Vector<JournalsLibrary.JournalEntry> chckEntries = CMLib.database().DBReadJournalMsgsNewerThan(forum.NAME(), "ALL", msg.date-1);
-			for(JournalsLibrary.JournalEntry entry : chckEntries)
+			final Vector<JournalsLibrary.JournalEntry> chckEntries = CMLib.database().DBReadJournalMsgsNewerThan(forum.NAME(), "ALL", msg.date-1);
+			for(final JournalsLibrary.JournalEntry entry : chckEntries)
 				if((entry.date == msg.date)
 				&&(entry.from.equals(msg.from))
 				&&(entry.subj.equals(msg.subj))
@@ -1215,36 +1215,36 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 	protected String loginToYahooSession(YahooGroupSession sess) throws UnsupportedEncodingException
 	{
 		final String loginUrl="http://login.yahoo.com?login="+URLEncoder.encode(sess.user,"UTF8")+"&passwd="+URLEncoder.encode(sess.password,"UTF8");
-		Map<String,List<String>> M = sess.H.getHeaders(loginUrl);
+		final Map<String,List<String>> M = sess.H.getHeaders(loginUrl);
 		if(M==null)
 			return "Fail: Http error hitting "+loginUrl;
-		StringBuilder cookieSet=new StringBuilder("");
+		final StringBuilder cookieSet=new StringBuilder("");
 		List<String> cookies=M.get("Set-Cookie");
 		if(cookies==null)
 			return "Fail: Http get cookies from "+loginUrl;
-		for(String val : cookies)
+		for(final String val : cookies)
 		{
 			if(cookieSet.length()>0)
 				cookieSet.append(" ; ");
-			int x=val.indexOf(';');
+			final int x=val.indexOf(';');
 			cookieSet.append((x>=0)?val.substring(0,x).trim():val.trim());
 		}
-		byte[] b=sess.H.getRawUrl(sess.url+"/messages",cookieSet.toString());
+		final byte[] b=sess.H.getRawUrl(sess.url+"/messages",cookieSet.toString());
 		if(b==null)
 			return "Failed: to read page: "+sess.url+"/messages";
 		cookies=M.get("Set-Cookie");
 		if(cookies!=null)
-			for(String val : cookies)
+			for(final String val : cookies)
 			{
 				if(cookieSet.length()>0)
 					cookieSet.append(" ; ");
-				int x=val.indexOf(';');
+				final int x=val.indexOf(';');
 				cookieSet.append((x>=0)?val.substring(0,x).trim():val.trim());
 			}
 		sess.cookieSet=cookieSet.toString();
-		StringBuilder s=new StringBuilder(new String(b));
+		final StringBuilder s=new StringBuilder(new String(b));
 		CMStrings.convertHtmlToText(s);
-		String txt=s.toString();
+		final String txt=s.toString();
 		int x=txt.indexOf(" of ");
 		int num=-1;
 		while((num<0)&&(x>=0))
@@ -1270,7 +1270,7 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 	@Override
 	public String copyYahooGroupMsgs(String user, String password, String url, int numTimes, int[] skipList, String journal)
 	{
-		YahooGroupSession sess=new YahooGroupSession();
+		final YahooGroupSession sess=new YahooGroupSession();
 		sess.url=url;
 		sess.user=user;
 		sess.password=password;
@@ -1282,12 +1282,12 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 
 		try
 		{
-			String resp=this.loginToYahooSession(sess);
+			final String resp=this.loginToYahooSession(sess);
 			if(resp.length()>0)
 				return resp;
 			return copyYahooGroupMsg(sess);
 		}
-		catch (UnsupportedEncodingException e)
+		catch (final UnsupportedEncodingException e)
 		{
 			Log.errOut(Thread.currentThread().getName(),e);
 		}

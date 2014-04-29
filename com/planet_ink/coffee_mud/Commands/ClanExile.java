@@ -45,15 +45,15 @@ public class ClanExile extends StdCommand
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		String memberStr=(commands.size()>1)?(String)commands.get(commands.size()-1):"";
-		String clanName=(commands.size()>2)?CMParms.combine(commands,1,commands.size()-1):"";
+		final String memberStr=(commands.size()>1)?(String)commands.get(commands.size()-1):"";
+		final String clanName=(commands.size()>2)?CMParms.combine(commands,1,commands.size()-1):"";
 
 		Clan C=null;
-		boolean skipChecks=mob.getClanRole(mob.Name())!=null;
+		final boolean skipChecks=mob.getClanRole(mob.Name())!=null;
 		if(skipChecks) C=mob.getClanRole(mob.Name()).first;
 
 		if(C==null)
-		for(Pair<Clan,Integer> c : mob.clans())
+		for(final Pair<Clan,Integer> c : mob.clans())
 			if((clanName.length()==0)||(CMLib.english().containsString(c.first.getName(), clanName))
 			&&(c.first.getAuthority(c.second.intValue(), Clan.Function.EXILE)!=Authority.CAN_NOT_DO))
 			{	C=c.first; break; }
@@ -62,7 +62,7 @@ public class ClanExile extends StdCommand
 		commands.addElement(getAccessWords()[0]);
 		commands.addElement(memberStr);
 
-		StringBuffer msg=new StringBuffer("");
+		final StringBuffer msg=new StringBuffer("");
 		boolean found=false;
 		if(memberStr.length()>0)
 		{
@@ -73,13 +73,13 @@ public class ClanExile extends StdCommand
 			}
 			if(skipChecks||CMLib.clans().goForward(mob,C,commands,Clan.Function.EXILE,false))
 			{
-				List<MemberRecord> apps=C.getMemberList();
+				final List<MemberRecord> apps=C.getMemberList();
 				if(apps.size()<1)
 				{
 					mob.tell("There are no members in your "+C.getGovernmentName()+".");
 					return false;
 				}
-				for(MemberRecord member : apps)
+				for(final MemberRecord member : apps)
 				{
 					if(member.name.equalsIgnoreCase(memberStr))
 					{
@@ -88,7 +88,7 @@ public class ClanExile extends StdCommand
 				}
 				if(found)
 				{
-					MOB M=CMLib.players().getLoadPlayer(memberStr);
+					final MOB M=CMLib.players().getLoadPlayer(memberStr);
 					if(M==null)
 					{
 						mob.tell(memberStr+" was not found.  Could not exile from "+C.getGovernmentName()+".");
@@ -98,14 +98,14 @@ public class ClanExile extends StdCommand
 					{
 						if(C.getGovernment().getExitScript().trim().length()>0)
 						{
-							Pair<Clan,Integer> curClanRole=M.getClanRole(C.clanID());
+							final Pair<Clan,Integer> curClanRole=M.getClanRole(C.clanID());
 							if(curClanRole!=null)
 								M.setClan(C.clanID(), curClanRole.second.intValue());
-							ScriptingEngine S=(ScriptingEngine)CMClass.getCommon("DefaultScriptingEngine");
+							final ScriptingEngine S=(ScriptingEngine)CMClass.getCommon("DefaultScriptingEngine");
 							S.setSavable(false);
 							S.setVarScope("*");
 							S.setScript(C.getGovernment().getExitScript());
-							CMMsg msg2=CMClass.getMsg(M,M,null,CMMsg.MSG_OK_VISUAL,null,null,"CLANEXIT");
+							final CMMsg msg2=CMClass.getMsg(M,M,null,CMMsg.MSG_OK_VISUAL,null,null,"CLANEXIT");
 							S.executeMsg(M, msg2);
 							S.dequeResponses();
 							S.tick(M,Tickable.TICKID_MOB);

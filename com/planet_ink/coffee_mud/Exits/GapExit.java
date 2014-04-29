@@ -42,7 +42,7 @@ public class GapExit extends StdExit
 		int weight=mob.basePhyStats().weight();
 		for(int i=0;i<mob.numItems();i++)
 		{
-			Item I=mob.getItem(i);
+			final Item I=mob.getItem(i);
 			if((I!=null)&&(!I.amWearingAt(Wearable.WORN_FLOATING_NEARBY)))
 				weight+=I.phyStats().weight();
 		}
@@ -53,13 +53,13 @@ public class GapExit extends StdExit
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg)) return false;
-		MOB mob=msg.source();
+		final MOB mob=msg.source();
 		if(((msg.amITarget(this))||(msg.tool()==this))
 		&&(msg.targetMinor()==CMMsg.TYP_ENTER)
 		&&(!CMLib.flags().isInFlight(mob))
 		&&(!CMLib.flags().isFalling(mob)))
 		{
-			int chance=(int)Math.round(CMath.div(mobWeight(mob),mob.maxCarry())*(100.0-(3.0*mob.charStats().getStat(CharStats.STAT_STRENGTH))));
+			final int chance=(int)Math.round(CMath.div(mobWeight(mob),mob.maxCarry())*(100.0-(3.0*mob.charStats().getStat(CharStats.STAT_STRENGTH))));
 			if(CMLib.dice().rollPercentage()<chance)
 			{
 				mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> attempt(s) to jump the crevasse, but miss(es) the far ledge!");
@@ -75,7 +75,7 @@ public class GapExit extends StdExit
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
-		MOB mob=msg.source();
+		final MOB mob=msg.source();
 		if(((msg.amITarget(this))||(msg.tool()==this))
 		&&(msg.targetMinor()==CMMsg.TYP_ENTER)
 		&&(!CMLib.flags().isInFlight(mob))

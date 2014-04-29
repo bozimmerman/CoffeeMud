@@ -68,7 +68,7 @@ public class GenKineticField extends GenPersonalShield
 		{
 			if(msg.tool() instanceof Weapon)
 			{
-				String s="^F"+((Weapon)msg.tool()).hitString(0)+"^N";
+				final String s="^F"+((Weapon)msg.tool()).hitString(0)+"^N";
 				if(s.indexOf("<DAMAGE> <T-HIM-HER>")>0)
 					mob.location().show(msg.source(),msg.target(),msg.tool(),CMMsg.MSG_OK_VISUAL,CMStrings.replaceAll(s, "<DAMAGE>", "it`s stopped by the shield around"));
 				else

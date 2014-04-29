@@ -63,7 +63,7 @@ public class DefaultHttpClient implements HttpClient, Cloneable
 		{
 			return getClass().newInstance();
 		}
-		catch(Exception e)
+		catch(final Exception e)
 		{
 			return new DefaultHttpClient();
 		}
@@ -186,11 +186,11 @@ public class DefaultHttpClient implements HttpClient, Cloneable
 			port=CMath.s_int(host.substring(x+1),80);
 			host=host.substring(0,x);
 		}
-		List<String> onesToClear=new Vector<String>();
+		final List<String> onesToClear=new Vector<String>();
 		conditionalHeader("Host",host,onesToClear);
 		conditionalHeader("Connection","Keep-Alive",onesToClear);
 		conditionalHeader("Accept","*/*",onesToClear);
-		int len=(outBody!=null)?outBody.length:0;
+		final int len=(outBody!=null)?outBody.length:0;
 		conditionalHeader("Content-Length",""+len,onesToClear);
 		if(sock == null)
 		{
@@ -206,15 +206,15 @@ public class DefaultHttpClient implements HttpClient, Cloneable
 			while(in.read()!=-1){} /* clear the stream */
 			throw cleanException;
 		}
-		catch(IOException e)
+		catch(final IOException e)
 		{
 			if(e==cleanException)
 				throw e;
 		}
 		out.write((meth.toString()+" "+rest+" HTTP/1.1\r\n").getBytes());
-		for(String key : reqHeaders.keySet())
+		for(final String key : reqHeaders.keySet())
 			out.write((key+": "+reqHeaders.get(key)+"\r\n").getBytes());
-		for(String key : onesToClear)
+		for(final String key : onesToClear)
 			reqHeaders.remove(key);
 		out.write("\r\n".getBytes());
 		if(outBody!=null)
@@ -223,8 +223,8 @@ public class DefaultHttpClient implements HttpClient, Cloneable
 		int lastC=-1;
 
 		HState state=HState.PREHEAD;
-		ByteArrayOutputStream bodyBuilder=new ByteArrayOutputStream();
-		StringBuilder headBuilder=new StringBuilder();
+		final ByteArrayOutputStream bodyBuilder=new ByteArrayOutputStream();
+		final StringBuilder headBuilder=new StringBuilder();
 		int c=0;
 		int maxBytes=this.maxReadBytes;
 		int chunkSize=0;
@@ -237,7 +237,7 @@ public class DefaultHttpClient implements HttpClient, Cloneable
 				if(this.readTimeout>0)
 					nextReadTimeout=(System.currentTimeMillis()+this.readTimeout);
 			}
-			catch(IOException e)
+			catch(final IOException e)
 			{
 				if(e instanceof java.net.SocketTimeoutException)
 				{
@@ -254,9 +254,9 @@ public class DefaultHttpClient implements HttpClient, Cloneable
 				if((c=='\n')&&(lastC=='\r'))
 				{
 					state=HState.INHEAD;
-					String s=headBuilder.toString();
+					final String s=headBuilder.toString();
 					headBuilder.setLength(0);
-					String[] parts=s.split(" ", 3);
+					final String[] parts=s.split(" ", 3);
 					if(CMath.isInteger(parts[1]))
 						respStatus=Integer.valueOf(CMath.s_int(parts[1]));
 					else
@@ -283,11 +283,11 @@ public class DefaultHttpClient implements HttpClient, Cloneable
 						else
 						if(respHeaders.containsKey("Content-Length"))
 						{
-							List<String> l=respHeaders.get("Content-Length");
-							for(String s : l)
+							final List<String> l=respHeaders.get("Content-Length");
+							for(final String s : l)
 								if(CMath.isInteger(s))
 								{
-									int possMax=CMath.s_int(s);
+									final int possMax=CMath.s_int(s);
 									if((maxBytes==0)||(possMax<maxBytes))
 										maxBytes=possMax;
 								}
@@ -301,12 +301,12 @@ public class DefaultHttpClient implements HttpClient, Cloneable
 					}
 					else
 					{
-						String s=headBuilder.toString();
+						final String s=headBuilder.toString();
 						x=s.indexOf(':');
 						if(x>0)
 						{
-							String key=s.substring(0,x).trim();
-							String value=s.substring(x+1).trim();
+							final String key=s.substring(0,x).trim();
+							final String value=s.substring(x+1).trim();
 							List<String> list;
 							if(respHeaders.containsKey(key))
 								list=respHeaders.get(key);
@@ -376,12 +376,12 @@ public class DefaultHttpClient implements HttpClient, Cloneable
 						c=-1;
 					else
 					{
-						String s=headBuilder.toString();
+						final String s=headBuilder.toString();
 						x=s.indexOf(':');
 						if(x>0)
 						{
-							String key=s.substring(0,x).trim();
-							String value=s.substring(x+1).trim();
+							final String key=s.substring(0,x).trim();
+							final String value=s.substring(x+1).trim();
 							List<String> list;
 							if(respHeaders.containsKey(key))
 								list=respHeaders.get(key);
@@ -465,12 +465,12 @@ public class DefaultHttpClient implements HttpClient, Cloneable
 			h.doRequest(urlStr);
 			if (h.getResponseCode() == 302)
 			{
-				InputStream in=h.getResponseBody();
+				final InputStream in=h.getResponseBody();
 				int len=h.getResponseContentLength();
 				if((len > 0)&&((maxLength==0)||(len<=maxLength)))
 				{
-					byte[] buffer = new byte[1024];
-					ByteArrayOutputStream bout=new ByteArrayOutputStream();
+					final byte[] buffer = new byte[1024];
+					final ByteArrayOutputStream bout=new ByteArrayOutputStream();
 					while ((len = in.read(buffer)) != -1)
 					{
 						bout.write(buffer, 0, len);
@@ -481,12 +481,12 @@ public class DefaultHttpClient implements HttpClient, Cloneable
 
 			if (h.getResponseCode() == 200)
 			{
-				InputStream in=h.getResponseBody();
+				final InputStream in=h.getResponseBody();
 				int len=h.getResponseContentLength();
 				if((len > 0)&&((maxLength==0)||(len<=maxLength)))
 				{
-					byte[] buffer = new byte[1024];
-					ByteArrayOutputStream bout=new ByteArrayOutputStream();
+					final byte[] buffer = new byte[1024];
+					final ByteArrayOutputStream bout=new ByteArrayOutputStream();
 					while ((len = in.read(buffer)) != -1)
 					{
 						bout.write(buffer, 0, len);
@@ -495,7 +495,7 @@ public class DefaultHttpClient implements HttpClient, Cloneable
 				}
 			}
 		}
-		catch (Exception e)
+		catch (final Exception e)
 		{
 			if(e.getMessage()==null)
 				Log.errOut("HttpClient",e);
@@ -522,7 +522,7 @@ public class DefaultHttpClient implements HttpClient, Cloneable
 				sock.shutdownOutput();
 				sock.close();
 			}
-			catch(Exception e) {}
+			catch(final Exception e) {}
 			finally
 			{
 				sock=null;
@@ -543,7 +543,7 @@ public class DefaultHttpClient implements HttpClient, Cloneable
 			h.doRequest(urlStr);
 			return h.getResponseHeaders();
 		}
-		catch (Exception e)
+		catch (final Exception e)
 		{
 			if(e.getMessage()==null)
 				Log.errOut("HttpClient",e);
@@ -566,7 +566,7 @@ public class DefaultHttpClient implements HttpClient, Cloneable
 		return false;
 	}
 
-	@Override public CMObject copyOf() { try { return (CMObject)this.clone(); } catch (CloneNotSupportedException e) { return this; } }
+	@Override public CMObject copyOf() { try { return (CMObject)this.clone(); } catch (final CloneNotSupportedException e) { return this; } }
 
 	@Override
 	public int compareTo(CMObject o)

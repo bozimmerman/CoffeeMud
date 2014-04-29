@@ -70,7 +70,7 @@ public class FilteredEnumeration<K> implements Enumeration<K>
 	{
 		if(!hasMoreElements())
 			throw new NoSuchElementException();
-		K element = nextElement;
+		final K element = nextElement;
 		stageNextElement();
 		return element;
 	}

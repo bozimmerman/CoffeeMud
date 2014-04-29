@@ -69,7 +69,7 @@ public class Sinking extends StdAbility
 		if((fromHere==null)||(direction<0)||(direction>=Directions.NUM_DIRECTIONS()))
 			return false;
 
-		Room toHere=fromHere.getRoomInDir(direction);
+		final Room toHere=fromHere.getRoomInDir(direction);
 		if((toHere==null)
 		||(fromHere.getExitInDir(direction)==null)
 		||(!fromHere.getExitInDir(direction).isOpen()))
@@ -109,7 +109,7 @@ public class Sinking extends StdAbility
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
-		MOB mob=msg.source();
+		final MOB mob=msg.source();
 		if((affected!=null)&&(affected instanceof MOB)&&(msg.amISource((MOB)affected)))
 		{
 			if(msg.sourceMinor()==CMMsg.TYP_RECALL)
@@ -147,7 +147,7 @@ public class Sinking extends StdAbility
 		}
 		if(affected instanceof MOB)
 		{
-			MOB mob=(MOB)affected;
+			final MOB mob=(MOB)affected;
 			if(mob==null) return false;
 			Room R=mob.location();
 			if(R==null) return false;
@@ -159,7 +159,7 @@ public class Sinking extends StdAbility
 			||(!canSinkFrom(R,direction)))
 				return stopSinking(mob);
 
-			Ability A=mob.fetchAbility("Skill_Swim");
+			final Ability A=mob.fetchAbility("Skill_Swim");
 			if(((direction==Directions.DOWN)&&(A!=null))
 			&&(A.proficiencyCheck(mob,25,(A.proficiency()>=75))
 			&&(mob.curState().getMovement()>0)))
@@ -187,7 +187,7 @@ public class Sinking extends StdAbility
 		else
 		if(affected instanceof Item)
 		{
-			Item item=(Item)affected;
+			final Item item=(Item)affected;
 			if((room==null)
 			&&(item.owner()!=null)
 			&&(item.owner() instanceof Room))
@@ -217,7 +217,7 @@ public class Sinking extends StdAbility
 				if((--sinkTickDown)>0)
 					return true;
 			}
-			Room nextRoom=room.getRoomInDir(direction);
+			final Room nextRoom=room.getRoomInDir(direction);
 			if((nextRoom!=null)&&(canSinkFrom(room,direction)))
 			{
 				room.show(invoker,null,item,CMMsg.MSG_OK_ACTION,"<O-NAME> sinks "+addStr+".");
@@ -258,12 +258,12 @@ public class Sinking extends StdAbility
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(!auto) return false;
-		Physical target=givenTarget;
+		final Physical target=givenTarget;
 		if(target==null) return false;
 		if((target instanceof Item)&&(room==null)) return false;
 		if(target.fetchEffect("Sinking")==null)
 		{
-			Sinking F=new Sinking();
+			final Sinking F=new Sinking();
 			F.setProficiency(proficiency());
 			F.invoker=null;
 			if(target instanceof MOB)

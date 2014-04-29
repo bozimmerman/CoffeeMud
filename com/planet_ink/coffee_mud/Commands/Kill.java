@@ -93,7 +93,7 @@ public class Kill extends StdCommand
 
 		if(reallyKill)
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,null,CMMsg.MSG_OK_ACTION,"^F^<FIGHT^><S-NAME> touch(es) <T-NAMESELF>.^</FIGHT^>^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,null,CMMsg.MSG_OK_ACTION,"^F^<FIGHT^><S-NAME> touch(es) <T-NAMESELF>.^</FIGHT^>^?");
 			CMLib.color().fixSourceFightColor(msg);
 			if(mob.location().okMessage(mob,msg))
 			{
@@ -106,7 +106,7 @@ public class Kill extends StdCommand
 
 		if(mob.isInCombat())
 		{
-			MOB oldVictim=mob.getVictim();
+			final MOB oldVictim=mob.getVictim();
 			if(((oldVictim!=null)&&(oldVictim==target)
 			&&(CMProps.getIntVar(CMProps.Int.COMBATSYSTEM)==CombatLibrary.COMBAT_DEFAULT)))
 			{
@@ -138,10 +138,10 @@ public class Kill extends StdCommand
 			mob.tell("You are not allowed to attack "+target.name(mob)+".");
 		else
 		{
-			Item weapon=mob.fetchWieldedItem();
+			final Item weapon=mob.fetchWieldedItem();
 			if(weapon==null)
 			{
-				Item possibleOtherWeapon=mob.fetchHeldItem();
+				final Item possibleOtherWeapon=mob.fetchHeldItem();
 				if((possibleOtherWeapon!=null)
 				&&(possibleOtherWeapon instanceof Weapon)
 				&&possibleOtherWeapon.fitsOn(Wearable.WORN_WIELD)
@@ -151,7 +151,7 @@ public class Kill extends StdCommand
 					CMLib.commands().postRemove(mob,possibleOtherWeapon,false);
 					if(possibleOtherWeapon.amWearingAt(Wearable.IN_INVENTORY))
 					{
-						Command C=CMClass.getCommand("Wield");
+						final Command C=CMClass.getCommand("Wield");
 						if(C!=null) C.execute(mob,new XVector("WIELD",possibleOtherWeapon),metaFlags);
 					}
 				}

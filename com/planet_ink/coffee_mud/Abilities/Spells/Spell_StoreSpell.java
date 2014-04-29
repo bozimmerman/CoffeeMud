@@ -45,7 +45,7 @@ public class Spell_StoreSpell extends Spell
 			if(spellName.length()==0)
 			{
 				spellName="unknown";
-				int x=text().indexOf('/');
+				final int x=text().indexOf('/');
 				Ability A=null;
 				if(x>0)
 				{
@@ -86,7 +86,7 @@ public class Spell_StoreSpell extends Spell
 			if(x>=0)
 			{
 				message=message.substring(x+name.length());
-				int y=message.indexOf('\'');
+				final int y=message.indexOf('\'');
 				if(y>=0) message=message.substring(0,y);
 				message=message.trim();
 				x=text().indexOf('/');
@@ -109,7 +109,7 @@ public class Spell_StoreSpell extends Spell
 				{
 					setMiscText(A.ID()+"/"+(charges-1));
 					A=(Ability)A.newInstance();
-					Vector V=new Vector();
+					final Vector V=new Vector();
 					if(target!=null)
 						V.addElement(target.name());
 					V.addElement(message);
@@ -123,7 +123,7 @@ public class Spell_StoreSpell extends Spell
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
-		MOB mob=msg.source();
+		final MOB mob=msg.source();
 
 		switch(msg.targetMinor())
 		{
@@ -139,13 +139,13 @@ public class Spell_StoreSpell extends Spell
 				boolean alreadyWanding=false;
 				final List<CMMsg> trailers =msg.trailerMsgs();
 				if(trailers!=null)
-					for(CMMsg msg2 : trailers)
+					for(final CMMsg msg2 : trailers)
 						if(msg2.targetMinor()==CMMsg.TYP_WAND_USE)
 							alreadyWanding=true;
 				if(!alreadyWanding)
 				{
 					final String name=getSpeakableName(affected.name());
-					int x=msg.targetMessage().toUpperCase().indexOf(name);
+					final int x=msg.targetMessage().toUpperCase().indexOf(name);
 					if(x>=0)
 					{
 						msg.addTrailerMsg(CMClass.getMsg(msg.source(),affected,msg.target(),CMMsg.NO_EFFECT,null,CMMsg.MASK_ALWAYS|CMMsg.TYP_WAND_USE,CMStrings.getSayFromMessage(msg.sourceMessage()),CMMsg.NO_EFFECT,null));
@@ -167,7 +167,7 @@ public class Spell_StoreSpell extends Spell
 			mob.tell("Store which spell onto what?");
 			return false;
 		}
-		Physical target=mob.location().fetchFromMOBRoomFavorsItems(mob,null,(String)commands.lastElement(),Wearable.FILTER_UNWORNONLY);
+		final Physical target=mob.location().fetchFromMOBRoomFavorsItems(mob,null,(String)commands.lastElement(),Wearable.FILTER_UNWORNONLY);
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
 			mob.tell("You don't see '"+((String)commands.lastElement())+"' here.");
@@ -179,15 +179,15 @@ public class Spell_StoreSpell extends Spell
 			return false;
 		}
 
-		Item item=(Item)target;
+		final Item item=(Item)target;
 
 		commands.removeElementAt(commands.size()-1);
 
-		String spellName=CMParms.combine(commands,0).trim();
+		final String spellName=CMParms.combine(commands,0).trim();
 		Spell wandThis=null;
-		for(Enumeration<Ability> a=mob.allAbilities();a.hasMoreElements();)
+		for(final Enumeration<Ability> a=mob.allAbilities();a.hasMoreElements();)
 		{
-			Ability A=a.nextElement();
+			final Ability A=a.nextElement();
 			if((A!=null)
 			&&(A instanceof Spell)
 			&&((!A.isSavable())||(CMLib.ableMapper().qualifiesByLevel(mob,A)))
@@ -219,7 +219,7 @@ public class Spell_StoreSpell extends Spell
 			A.setMiscText(wandThis.ID()+"/0");
 		}
 		int charges=0;
-		int x=A.text().indexOf('/');
+		final int x=A.text().indexOf('/');
 		if(x>=0) charges=CMath.s_int(A.text().substring(x+1));
 		overridemana=-1;
 		int mana=usageCost(mob,true)[0]+wandThis.usageCost(mob,true)[0];
@@ -232,12 +232,12 @@ public class Spell_StoreSpell extends Spell
 			return false;
 		overridemana=-1;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
 			setMiscText(wandThis.ID());
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),"^S<S-NAME> move(s) <S-HIS-HER> fingers around <T-NAMESELF>, incanting softly.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),"^S<S-NAME> move(s) <S-HIS-HER> fingers around <T-NAMESELF>, incanting softly.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

@@ -47,7 +47,7 @@ public class Rebuke extends StdCommand
 			mob.tell("Rebuke whom?");
 			return false;
 		}
-		String str=CMParms.combine(commands,1);
+		final String str=CMParms.combine(commands,1);
 		MOB target=mob.location().fetchInhabitant(str);
 		if((target==null)&&(mob.getWorshipCharID().length()>0)
 		&&(CMLib.english().containsString(mob.getWorshipCharID(),str)))
@@ -70,7 +70,7 @@ public class Rebuke extends StdCommand
 			mob.location().send(mob,msg);
 		if((target.amFollowing()==mob)&&(target.location()!=null))
 		{
-			Room R=target.location();
+			final Room R=target.location();
 			msg=CMClass.getMsg(target,target.amFollowing(),null,CMMsg.MSG_NOFOLLOW,"<S-NAME> stop(s) following <T-NAMESELF>.");
 			// no room OKaffects, since the damn leader may not be here.
 			if(target.okMessage(mob,msg))

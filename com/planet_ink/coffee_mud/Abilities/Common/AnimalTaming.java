@@ -56,7 +56,7 @@ public class AnimalTaming extends CommonSkill
 		&&(affected instanceof MOB)
 		&&(tickID==Tickable.TICKID_MOB))
 		{
-			MOB mob=(MOB)affected;
+			final MOB mob=(MOB)affected;
 			if((taming==null)||(mob.location()==null))
 			{
 				messedUp=true;
@@ -83,7 +83,7 @@ public class AnimalTaming extends CommonSkill
 		{
 			if((affected!=null)&&(affected instanceof MOB))
 			{
-				MOB mob=(MOB)affected;
+				final MOB mob=(MOB)affected;
 				if((taming!=null)&&(!aborted))
 				{
 					MOB animal=null;
@@ -112,7 +112,7 @@ public class AnimalTaming extends CommonSkill
 							for(int i=0;i<amount;i++)
 							{
 								if(animal.numBehaviors()==0) break;
-								Behavior B=animal.fetchBehavior(CMLib.dice().roll(1,animal.numBehaviors(),-1));
+								final Behavior B=animal.fetchBehavior(CMLib.dice().roll(1,animal.numBehaviors(),-1));
 								if(B!=null)	{
 									animal.delBehavior(B);
 								}
@@ -143,7 +143,7 @@ public class AnimalTaming extends CommonSkill
 		verb="taming";
 		taming=null;
 		Item cage=null;
-		String str=CMParms.combine(commands,0);
+		final String str=CMParms.combine(commands,0);
 		MOB M=mob.location().fetchInhabitant(str);
 		taming=null;
 		if(M!=null)
@@ -171,7 +171,7 @@ public class AnimalTaming extends CommonSkill
 		{
 			for(int i=0;i<mob.location().numItems();i++)
 			{
-				Item I=mob.location().getItem(i);
+				final Item I=mob.location().getItem(i);
 				if((I!=null)
 				&&(I instanceof Container)
 				&&((((Container)I).containTypes()&Container.CONTAIN_CAGED)==Container.CONTAIN_CAGED))
@@ -179,8 +179,8 @@ public class AnimalTaming extends CommonSkill
 			}
 			if(commands.size()>0)
 			{
-				String last=(String)commands.lastElement();
-				Item I=mob.location().findItem(null,last);
+				final String last=(String)commands.lastElement();
+				final Item I=mob.location().findItem(null,last);
 				if((I!=null)
 				&&(I instanceof Container)
 				&&((((Container)I).containTypes()&Container.CONTAIN_CAGED)==Container.CONTAIN_CAGED))
@@ -208,9 +208,9 @@ public class AnimalTaming extends CommonSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 		messedUp=!proficiencyCheck(mob,-taming.phyStats().level()+(2*getXLEVELLevel(mob)),auto);
-		int duration=getDuration(35,mob,taming.phyStats().level(),10);
+		final int duration=getDuration(35,mob,taming.phyStats().level(),10);
 		verb="taming "+M.name();
-		CMMsg msg=CMClass.getMsg(mob,null,this,getActivityMessageType(),"<S-NAME> start(s) taming "+M.name()+".");
+		final CMMsg msg=CMClass.getMsg(mob,null,this,getActivityMessageType(),"<S-NAME> start(s) taming "+M.name()+".");
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

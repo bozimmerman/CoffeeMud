@@ -41,7 +41,7 @@ public class GrinderAllQualifys
 
 	public String editAllQualify(HTTPRequest httpReq, java.util.Map<String,String> parms)
 	{
-		String last=httpReq.getUrlParameter("ALLQUALID");
+		final String last=httpReq.getUrlParameter("ALLQUALID");
 		if((last==null)||(last.length()==0))
 			return " @break@";
 		String which=httpReq.getUrlParameter("ALLQUALWHICH");
@@ -49,8 +49,8 @@ public class GrinderAllQualifys
 			which=parms.get("WHICH");
 		if((which==null)||(which.length()==0))
 			return " @break@";
-		Map<String,Map<String,AbilityMapper.AbilityMapping>> allQualMap=CMLib.ableMapper().getAllQualifiesMap(httpReq.getRequestObjects());
-		Map<String,AbilityMapper.AbilityMapping> map=allQualMap.get(which.toUpperCase().trim());
+		final Map<String,Map<String,AbilityMapper.AbilityMapping>> allQualMap=CMLib.ableMapper().getAllQualifiesMap(httpReq.getRequestObjects());
+		final Map<String,AbilityMapper.AbilityMapping> map=allQualMap.get(which.toUpperCase().trim());
 		if(map==null) return " @break@";
 
 		AbilityMapper.AbilityMapping newMap=map.get(last.toUpperCase().trim());
@@ -69,18 +69,18 @@ public class GrinderAllQualifys
 		if(s!=null) newMap.extraMask=s;
 		s=httpReq.getUrlParameter("AUTOGAIN");
 		if(s!=null) newMap.autoGain=s.equalsIgnoreCase("on");
-		StringBuilder preReqs=new StringBuilder("");
+		final StringBuilder preReqs=new StringBuilder("");
 		int curChkNum=1;
 		while(httpReq.isUrlParameter("REQABLE"+curChkNum))
 		{
-			String curVal=httpReq.getUrlParameter("REQABLE"+curChkNum);
+			final String curVal=httpReq.getUrlParameter("REQABLE"+curChkNum);
 			if(curVal.equals("DEL")||curVal.equals("DELETE")||curVal.trim().length()==0)
 			{
 				// do nothing
 			}
 			else
 			{
-				String curLvl=httpReq.getUrlParameter("REQLEVEL"+curChkNum);
+				final String curLvl=httpReq.getUrlParameter("REQLEVEL"+curChkNum);
 				preReqs.append(curVal);
 				if((curLvl!=null)&&(curLvl.trim().length()>0)&&(CMath.s_int(curLvl.trim())>0))
 					preReqs.append("(").append(curLvl).append(")");

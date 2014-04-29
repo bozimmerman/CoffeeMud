@@ -46,12 +46,12 @@ public class Drowish extends StdLanguage
 	{
 		if(wordLists==null)
 		{
-			String[] one={"a","e","i","o","á","é","í","ó"};
-			String[] two={"os","vi","ne","vo","li","eh","no","ai","by","et","ce","un","il"};
-			String[] three={"ána","cil","sar","tan","hel","loa","si'r","hep","yur","nol","hol","qua","éth"};
-			String[] four={"séya","qual","quel","lara","uqua","sana","yava","mas'se","yan'na","quettaparma","manna","manan","merme","carma","harno","harne","varno","essar","saira","cilta","veuma","norta","turme","saita"};
-			String[] five={"cuiva","cuina","nonwa","imire","nauta","cilta","entuc","norta","latin","lòtea","veuya","veuro","apama","hampa","nurta","firta","saira","holle","herwa","uquen","arcoa","calte","cemma","hanta","tan'en"};
-			String[] six={"mahtale","porisal'que","hairie","tararan","amba'rwa","lati'na","olòtie","amawil","apacen","yavinqua","apalume","lin'quil'ea","menelwa","alassea","nurmea","parmasse","ceniril","heldasse","imirin","eari'na","calaten'gew","lapselunga","ria'nna","eneques"};
+			final String[] one={"a","e","i","o","á","é","í","ó"};
+			final String[] two={"os","vi","ne","vo","li","eh","no","ai","by","et","ce","un","il"};
+			final String[] three={"ána","cil","sar","tan","hel","loa","si'r","hep","yur","nol","hol","qua","éth"};
+			final String[] four={"séya","qual","quel","lara","uqua","sana","yava","mas'se","yan'na","quettaparma","manna","manan","merme","carma","harno","harne","varno","essar","saira","cilta","veuma","norta","turme","saita"};
+			final String[] five={"cuiva","cuina","nonwa","imire","nauta","cilta","entuc","norta","latin","lòtea","veuya","veuro","apama","hampa","nurta","firta","saira","holle","herwa","uquen","arcoa","calte","cemma","hanta","tan'en"};
+			final String[] six={"mahtale","porisal'que","hairie","tararan","amba'rwa","lati'na","olòtie","amawil","apacen","yavinqua","apalume","lin'quil'ea","menelwa","alassea","nurmea","parmasse","ceniril","heldasse","imirin","eari'na","calaten'gew","lapselunga","ria'nna","eneques"};
 			wordLists=new Vector<String[]>();
 			wordLists.add(one);
 			wordLists.add(two);

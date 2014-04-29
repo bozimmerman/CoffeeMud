@@ -41,7 +41,7 @@ public class Bomb_Spores extends StdBomb
 
 	public List<Ability> returnOffensiveAffects(Physical fromMe)
 	{
-		Vector offenders=new Vector();
+		final Vector offenders=new Vector();
 
 		for(final Enumeration<Ability> a=fromMe.effects();a.hasMoreElements();)
 		{
@@ -55,8 +55,8 @@ public class Bomb_Spores extends StdBomb
 	@Override
 	public List<Item> getTrapComponents()
 	{
-		Vector V=new Vector();
-		Item I=CMLib.materials().makeItemResource(RawMaterial.RESOURCE_MEAT);
+		final Vector V=new Vector();
+		final Item I=CMLib.materials().makeItemResource(RawMaterial.RESOURCE_MEAT);
 		Ability A=CMClass.getAbility(text());
 		if(A==null) A=CMClass.getAbility("Disease_Cold");
 		I.addNonUninvokableEffect(A);
@@ -67,7 +67,7 @@ public class Bomb_Spores extends StdBomb
 	public boolean canSetTrapOn(MOB mob, Physical P)
 	{
 		if(!super.canSetTrapOn(mob,P)) return false;
-		List<Ability> V=returnOffensiveAffects(P);
+		final List<Ability> V=returnOffensiveAffects(P);
 		if((!(P instanceof Food))||(V.size()==0))
 		{
 			if(mob!=null)
@@ -80,7 +80,7 @@ public class Bomb_Spores extends StdBomb
 	public Trap setTrap(MOB mob, Physical P, int trapBonus, int qualifyingClassLevel, boolean perm)
 	{
 		if(P==null) return null;
-		List<Ability> V=returnOffensiveAffects(P);
+		final List<Ability> V=returnOffensiveAffects(P);
 		if(V.size()>0)
 			setMiscText(V.get(0).ID());
 		return super.setTrap(mob,P,trapBonus,qualifyingClassLevel,perm);

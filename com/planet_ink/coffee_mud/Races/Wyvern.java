@@ -43,14 +43,14 @@ public class Wyvern extends StdRace
 	@Override public int weightVariance(){return 500;}
 	@Override public long forbiddenWornBits(){return Wearable.WORN_HELD|Wearable.WORN_WIELD|Wearable.WORN_WAIST;}
 	@Override public String racialCategory(){return "Reptile";}
-	private String[]culturalAbilityNames={"Draconic"};
-	private int[]culturalAbilityProficiencies={50};
+	private final String[]culturalAbilityNames={"Draconic"};
+	private final int[]culturalAbilityProficiencies={50};
 	@Override protected String[] culturalAbilityNames(){return culturalAbilityNames;}
 	@Override protected int[] culturalAbilityProficiencies(){return culturalAbilityProficiencies;}
-	private String[]racialAbilityNames={"WingFlying"};
-	private int[]racialAbilityLevels={1};
-	private int[]racialAbilityProficiencies={100};
-	private boolean[]racialAbilityQuals={false};
+	private final String[]racialAbilityNames={"WingFlying"};
+	private final int[]racialAbilityLevels={1};
+	private final int[]racialAbilityProficiencies={100};
+	private final boolean[]racialAbilityQuals={false};
 	@Override protected String[] racialAbilityNames(){return racialAbilityNames;}
 	@Override protected int[] racialAbilityLevels(){return racialAbilityLevels;}
 	@Override protected int[] racialAbilityProficiencies(){return racialAbilityProficiencies;}
@@ -60,7 +60,7 @@ public class Wyvern extends StdRace
 	private static final int[] parts={0 ,2 ,2 ,1 ,1 ,0 ,0 ,1 ,4 ,4 ,1 ,0 ,1 ,1 ,1 ,2 };
 	@Override public int[] bodyMask(){return parts;}
 
-	private int[] agingChart={0,5,20,110,325,500,850,950,1050};
+	private final int[] agingChart={0,5,20,110,325,500,850,950,1050};
 	@Override public int[] getAgingChart(){return agingChart;}
 
 	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
@@ -103,7 +103,7 @@ public class Wyvern extends StdRace
 	@Override
 	public String healthText(MOB viewer, MOB mob)
 	{
-		double pct=(CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));
+		final double pct=(CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));
 
 		if(pct<.10)
 			return "^r" + mob.name(viewer) + "^r is raging in bloody pain!^N";

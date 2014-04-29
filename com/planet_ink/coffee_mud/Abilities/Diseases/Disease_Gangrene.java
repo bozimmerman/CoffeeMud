@@ -67,7 +67,7 @@ public class Disease_Gangrene extends Disease
 			daysSick++;
 			tickUpToDay=0;
 		}
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		if(mob.curState().getHitPoints()>=mob.maxState().getHitPoints())
 		{ unInvoke(); return false;}
 		if(lastHP<mob.curState().getHitPoints())
@@ -79,11 +79,11 @@ public class Disease_Gangrene extends Disease
 		{
 			diseaseTick=DISEASE_DELAY();
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,DISEASE_AFFECT());
-			int damage=1;
+			final int damage=1;
 			CMLib.combat().postDamage(diseaser,mob,this,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_DISEASE,-1,null);
 			if(CMLib.dice().rollPercentage()==1)
 			{
-				Ability A=CMClass.getAbility("Disease_Fever");
+				final Ability A=CMClass.getAbility("Disease_Fever");
 				if(A!=null) A.invoke(diseaser,mob,true,0);
 			}
 			return true;

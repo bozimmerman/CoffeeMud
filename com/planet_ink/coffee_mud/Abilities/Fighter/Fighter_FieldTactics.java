@@ -147,7 +147,7 @@ public class Fighter_FieldTactics extends FighterSkill
 			if((hidden)&&((System.currentTimeMillis()-sitTime)>(60*2*1000)))
 				affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_HIDDEN);
 			activated=true;
-			float xlvl=getXLEVELLevel(invoker());
+			final float xlvl=getXLEVELLevel(invoker());
 			affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+(int)Math.round((15.0+xlvl)*(CMath.div(proficiency(),100.0))));
 			affectableStats.setArmor(affectableStats.armor()-(int)Math.round((15.0+xlvl)*(CMath.div(proficiency(),100.0))));
 		}

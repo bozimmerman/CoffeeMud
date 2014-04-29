@@ -62,10 +62,10 @@ public class Dueler extends StdAbility
 	{
 		if(affected instanceof MOB)
 		{
-			MOB mob=(MOB)affected;
+			final MOB mob=(MOB)affected;
 			if((mob != null)&&(oldCurState!=null))
 			{
-				Dueler oDA=otherDueler;
+				final Dueler oDA=otherDueler;
 				if(oDA!=null)
 				{
 					otherDueler=null;
@@ -79,23 +79,23 @@ public class Dueler extends StdAbility
 				if(!oldPVPStatus)
 					mob.setBitmap(CMath.unsetb(mob.getBitmap(), MOB.ATT_PLAYERKILL));
 				oldCurState.copyInto(mob.curState());
-				LinkedList<Ability> cleanOut=new LinkedList<Ability>();
-				for(Enumeration<Ability> a=mob.effects();a.hasMoreElements();)
+				final LinkedList<Ability> cleanOut=new LinkedList<Ability>();
+				for(final Enumeration<Ability> a=mob.effects();a.hasMoreElements();)
 				{
 					final Ability A=a.nextElement();
 					if(!oldEffects.contains(A))
 						cleanOut.add(A);
 				}
-				for(Ability A : cleanOut)
+				for(final Ability A : cleanOut)
 				{
 					if(!(A instanceof Dueler))
 						A.unInvoke();
 					mob.delEffect(A);
 					A.destroy();
 				}
-				for(Item I : oldEq.keySet())
+				for(final Item I : oldEq.keySet())
 				{
-					Item copyI=oldEq.get(I);
+					final Item copyI=oldEq.get(I);
 					if(I.amDestroyed())
 						mob.addItem(copyI);
 					else
@@ -107,7 +107,7 @@ public class Dueler extends StdAbility
 				mob.recoverMaxState();
 				mob.recoverPhyStats();
 				mob.makePeace();
-				Ability A=CMClass.getAbility("Immunities");
+				final Ability A=CMClass.getAbility("Immunities");
 				if(A!=null)
 					A.invoke(mob, new XVector("LEGAL","TICKS=1"), mob, true, 0);
 			}
@@ -128,10 +128,10 @@ public class Dueler extends StdAbility
 		if((msg.sourceMinor()==CMMsg.TYP_DEATH)
 		&&(msg.source()==affecting()))
 		{
-			MOB target=msg.source();
-			Room deathRoom=target.location();
-			String msp=CMLib.protocol().msp("death"+CMLib.dice().roll(1,7,0)+".wav",50);
-			CMMsg msg2=CMClass.getMsg(target,null,otherDuelPartner,
+			final MOB target=msg.source();
+			final Room deathRoom=target.location();
+			final String msp=CMLib.protocol().msp("death"+CMLib.dice().roll(1,7,0)+".wav",50);
+			final CMMsg msg2=CMClass.getMsg(target,null,otherDuelPartner,
 					CMMsg.MSG_OK_VISUAL,"^f^*^<FIGHT^>!!!!!!!!!!!!!!YOU ARE DEFEATED!!!!!!!!!!!!!!^</FIGHT^>^?^.\n\r"+msp,
 					CMMsg.MSG_OK_VISUAL,null,
 					CMMsg.MSG_OK_VISUAL,"^F^<FIGHT^><S-NAME> is DEFEATED!!!^</FIGHT^>^?\n\r"+msp);
@@ -157,7 +157,7 @@ public class Dueler extends StdAbility
 			return false;
 		if((ticking instanceof MOB)&&(tickID==Tickable.TICKID_MOB))
 		{
-			MOB mob=(MOB)ticking;
+			final MOB mob=(MOB)ticking;
 			mob.setWimpHitPoint(0);
 			final Dueler tDuel=otherDueler;
 			if((tDuel==null)
@@ -174,7 +174,7 @@ public class Dueler extends StdAbility
 				unInvoke();
 			else
 			{
-				MOB tMOB=(MOB)tDuel.affecting();
+				final MOB tMOB=(MOB)tDuel.affecting();
 				if(mob.location()==tMOB.location())
 					lastTimeISawYou=System.currentTimeMillis();
 				if((System.currentTimeMillis()-lastTimeISawYou)>30000)
@@ -190,13 +190,13 @@ public class Dueler extends StdAbility
 		mob.setBitmap(mob.getBitmap()|MOB.ATT_PLAYERKILL);
 		oldCurState=(CharState)mob.curState().copyOf();
 		oldEffects.clear();
-		for(Enumeration<Ability> a=mob.personalEffects();a.hasMoreElements();)
+		for(final Enumeration<Ability> a=mob.personalEffects();a.hasMoreElements();)
 			oldEffects.add(a.nextElement());
 		autoWimp=mob.getWimpHitPoint();
 		mob.setWimpHitPoint(0);
-		for(Enumeration<Item> i=mob.items();i.hasMoreElements();)
+		for(final Enumeration<Item> i=mob.items();i.hasMoreElements();)
 		{
-			Item I=i.nextElement();
+			final Item I=i.nextElement();
 			if(((I instanceof Weapon)||(I instanceof Armor))
 			&&(!I.amWearingAt(Wearable.IN_INVENTORY)))
 				oldEq.put(I,(Item)I.copyOf());
@@ -211,7 +211,7 @@ public class Dueler extends StdAbility
 		if(((MOB)target).location()==null) return false;
 		if(((MOB)target).location().show(mob,target,this,CMMsg.MSG_OK_VISUAL,"^R<S-NAME> and <T-NAME> start(s) dueling!^?"))
 		{
-			MOB tmob = (MOB)target;
+			final MOB tmob = (MOB)target;
 			Dueler A;
 			Dueler tA;
 			A=(Dueler)mob.fetchEffect(ID());

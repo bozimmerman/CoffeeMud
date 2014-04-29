@@ -54,7 +54,7 @@ public class Prop_AreaForSale extends Property implements LandTitle
 	{
 		if(text().length()==0)
 			return 100000;
-		String s=text();
+		final String s=text();
 		int index=s.length();
 		while((--index)>=0)
 		{
@@ -101,9 +101,9 @@ public class Prop_AreaForSale extends Property implements LandTitle
 	@Override
 	public CMObject getOwnerObject()
 	{
-		String owner=getOwnerName();
+		final String owner=getOwnerName();
 		if(owner.length()==0) return null;
-		Clan C=CMLib.clans().getClan(owner);
+		final Clan C=CMLib.clans().getClan(owner);
 		if(C!=null) return C;
 		return CMLib.players().getLoadPlayer(owner);
 	}
@@ -121,9 +121,9 @@ public class Prop_AreaForSale extends Property implements LandTitle
 	public int backTaxes()
 	{
 		if(text().indexOf('/')<0) return 0;
-		int x=text().indexOf("TAX",text().indexOf('/'));
+		final int x=text().indexOf("TAX",text().indexOf('/'));
 		if(x<0) return 0;
-		String s=CMParms.parse(text().substring(x+3)).firstElement();
+		final String s=CMParms.parse(text().substring(x+3)).firstElement();
 		return CMath.s_int(s.substring(0,s.length()-1));
 	}
 	@Override
@@ -161,7 +161,7 @@ public class Prop_AreaForSale extends Property implements LandTitle
 			Log.errOut("Prop_AreaForSale","Prop_AreaForSale goes on an Area, NOT "+CMLib.map().getExtendedRoomID((Room)affected));
 		else
 		{
-			Area A=CMLib.map().getArea(landPropertyID());
+			final Area A=CMLib.map().getArea(landPropertyID());
 			if(A!=null)
 				CMLib.database().DBUpdateArea(A.Name(),A);
 		}
@@ -199,7 +199,7 @@ public class Prop_AreaForSale extends Property implements LandTitle
 		&&((System.currentTimeMillis()-lastMobSave)>360000))
 		{
 			lastMobSave=System.currentTimeMillis();
-			List<Room> V=getAllTitledRooms();
+			final List<Room> V=getAllTitledRooms();
 			for(int v=0;v<V.size();v++)
 			{
 				Room R=V.get(v);
@@ -207,10 +207,10 @@ public class Prop_AreaForSale extends Property implements LandTitle
 				{
 					R=CMLib.map().getRoom(R);
 					lastMobSave=System.currentTimeMillis();
-					Vector mobs=new Vector();
+					final Vector mobs=new Vector();
 					for(int m=0;m<R.numInhabitants();m++)
 					{
-						MOB M=R.fetchInhabitant(m);
+						final MOB M=R.fetchInhabitant(m);
 						if((M!=null)
 						&&(M.isSavable())
 						&&(M.getStartRoom()==R)
@@ -228,7 +228,7 @@ public class Prop_AreaForSale extends Property implements LandTitle
 	@Override
 	public List<Room> getAllTitledRooms()
 	{
-		List<Room> V=new Vector();
+		final List<Room> V=new Vector();
 		Area A=null;
 		if(affected instanceof Area)
 			A=(Area)affected;
@@ -239,7 +239,7 @@ public class Prop_AreaForSale extends Property implements LandTitle
 			A=CMLib.map().getArea(landPropertyID());
 		if(A!=null)
 		{
-			for(Enumeration<Room> e=A.getProperMap();e.hasMoreElements();)
+			for(final Enumeration<Room> e=A.getProperMap();e.hasMoreElements();)
 				V.add(e.nextElement());
 		}
 		return V;
@@ -253,12 +253,12 @@ public class Prop_AreaForSale extends Property implements LandTitle
 		if(((System.currentTimeMillis()-lastCall)>360000)
 		&&(CMProps.getBoolVar(CMProps.Bool.MUDSTARTED)))
 		{
-			List<Room> V=getAllTitledRooms();
+			final List<Room> V=getAllTitledRooms();
 			for(int v=0;v<V.size();v++)
 			{
-				Room R=V.get(v);
+				final Room R=V.get(v);
 				lastCall=System.currentTimeMillis();
-				Integer lastItemNum=(Integer)lastItemNums.get(R);
+				final Integer lastItemNum=(Integer)lastItemNums.get(R);
 				lastItemNums.put(R,Integer.valueOf(Prop_RoomForSale.updateLotWithThisData(R,this,false,false,optPlayerList,(lastItemNum==null)?-1:lastItemNum.intValue())));
 			}
 			lastCall=System.currentTimeMillis();

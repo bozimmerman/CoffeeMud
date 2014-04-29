@@ -57,15 +57,15 @@ public class AuctionCoffeeShop implements CoffeeShop
 	{
 		try
 		{
-			Object O=this.clone();
+			final Object O=this.clone();
 			return (CMObject)O;
 		}
-		catch(CloneNotSupportedException e)
+		catch(final CloneNotSupportedException e)
 		{
 			return new AuctionCoffeeShop();
 		}
 	}
-	@Override public CMObject newInstance(){try{return getClass().newInstance();}catch(Exception e){return new AuctionCoffeeShop();}}
+	@Override public CMObject newInstance(){try{return getClass().newInstance();}catch(final Exception e){return new AuctionCoffeeShop();}}
 	@Override public void initializeClass(){}
 
 
@@ -77,7 +77,7 @@ public class AuctionCoffeeShop implements CoffeeShop
 	}
 
 	@Override public ShopKeeper shopKeeper(){ return (shopKeeper==null)?null:shopKeeper.get();}
-	@Override public boolean isSold(int code){ShopKeeper SK=shopKeeper(); return (SK==null)?false:SK.isSold(code);}
+	@Override public boolean isSold(int code){final ShopKeeper SK=shopKeeper(); return (SK==null)?false:SK.isSold(code);}
 
 	@Override
 	public boolean inEnumerableInventory(Environmental thisThang)
@@ -120,16 +120,16 @@ public class AuctionCoffeeShop implements CoffeeShop
 	@Override
 	public Environmental getStock(String name, MOB mob)
 	{
-		List<AuctionData> auctions=CMLib.coffeeShops().getAuctions(null,auctionShop);
-		Vector auctionItems=new Vector();
+		final List<AuctionData> auctions=CMLib.coffeeShops().getAuctions(null,auctionShop);
+		final Vector auctionItems=new Vector();
 		for(int a=0;a<auctions.size();a++)
 		{
-			Item I=auctions.get(a).auctioningI;
+			final Item I=auctions.get(a).auctioningI;
 			auctionItems.addElement(I);
 		}
 		for(int a=0;a<auctionItems.size();a++)
 		{
-			Item I=(Item)auctionItems.elementAt(a);
+			final Item I=(Item)auctionItems.elementAt(a);
 			I.setExpirationDate(CMLib.english().getContextNumber(auctionItems,I));
 		}
 		Environmental item=CMLib.english().fetchEnvironmental(auctionItems,name,true);

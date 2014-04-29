@@ -36,7 +36,7 @@ public class NeedleChest extends LargeChest
 	public NeedleChest()
 	{
 		super();
-		Trap t=(Trap)CMClass.getAbility("Trap_OpenNeedle");
+		final Trap t=(Trap)CMClass.getAbility("Trap_OpenNeedle");
 		if(t!=null) CMLib.utensils().setTrapped(this,t,true);
 		isLocked=false;
 		setMaterial(RawMaterial.RESOURCE_OAK);

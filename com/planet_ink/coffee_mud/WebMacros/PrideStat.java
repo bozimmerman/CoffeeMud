@@ -40,13 +40,13 @@ public class PrideStat extends StdWebMacro
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
-		java.util.Map<String,String> parms=parseParms(parm);
+		final java.util.Map<String,String> parms=parseParms(parm);
 		TimeClock.TimePeriod period=null;
 		AccountStats.PrideStat stat=null;
 		int which=-1;
 		String val=null;
 		boolean player = true;
-		for(String s : parms.keySet())
+		for(final String s : parms.keySet())
 		{
 			if(CMath.isInteger(s))
 				which=CMath.s_int(s.trim());
@@ -68,13 +68,13 @@ public class PrideStat extends StdWebMacro
 				{
 					period=TimeClock.TimePeriod.valueOf(s.toUpperCase().trim());
 				}
-				catch(Exception e)
+				catch(final Exception e)
 				{
 					try
 					{
 						stat=AccountStats.PrideStat.valueOf(s.toUpperCase().trim());
 					}
-					catch(Exception e2)
+					catch(final Exception e2)
 					{
 						return " [error unknown parameter: "+s+"]";
 					}
@@ -90,10 +90,10 @@ public class PrideStat extends StdWebMacro
 		if(which<1)
 			return " [error missing number, try 1-10]";
 
-		List<Pair<String,Integer>> list=player?CMLib.players().getTopPridePlayers(period, stat):CMLib.players().getTopPrideAccounts(period, stat);
+		final List<Pair<String,Integer>> list=player?CMLib.players().getTopPridePlayers(period, stat):CMLib.players().getTopPrideAccounts(period, stat);
 		if(which>list.size())
 			return "";
-		Pair<String,Integer> p=list.get(which-1);
+		final Pair<String,Integer> p=list.get(which-1);
 		if(val.equals("NAME"))
 			return p.first;
 		else

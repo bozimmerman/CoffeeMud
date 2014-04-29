@@ -14,7 +14,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -60,7 +59,7 @@ public class Spell_Web extends Spell
 		if(!(affected instanceof MOB))
 			return true;
 
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		// when this spell is on a MOBs Affected list,
 		// it should consistantly prevent the mob
@@ -89,7 +88,7 @@ public class Spell_Web extends Spell
 		// undo the affects of this spell
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		super.unInvoke();
 		if(canBeUninvoked())
@@ -103,7 +102,7 @@ public class Spell_Web extends Spell
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		Set<MOB> h=properTargets(mob,givenTarget,auto);
+		final Set<MOB> h=properTargets(mob,givenTarget,auto);
 		if(h==null)
 		{
 			mob.tell("There doesn't appear to be anyone here worth webbing.");
@@ -122,29 +121,29 @@ public class Spell_Web extends Spell
 		if(success)
 		{
 			if(mob.location().show(mob,null,this,verbalCastCode(mob,null,auto),(auto?"":"^S<S-NAME> speak(s) and wave(s) <S-HIS-HER> arms.^?")+CMLib.protocol().msp("web.wav",40)))
-			for(Iterator f=h.iterator();f.hasNext();)
-			{
-				MOB target=(MOB)f.next();
-
-				// it worked, so build a copy of this ability,
-				// and add it to the affects list of the
-				// affected MOB.  Then tell everyone else
-				// what happened.
-				CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),null);
-				if((mob.location().okMessage(mob,msg))&&(target.fetchEffect(this.ID())==null))
+				for (final Object element : h)
 				{
-					mob.location().send(mob,msg);
-					if(msg.value()<=0)
+					final MOB target=(MOB)element;
+
+					// it worked, so build a copy of this ability,
+					// and add it to the affects list of the
+					// affected MOB.  Then tell everyone else
+					// what happened.
+					final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),null);
+					if((mob.location().okMessage(mob,msg))&&(target.fetchEffect(this.ID())==null))
 					{
-						amountRemaining=super.adjustedLevel(mob, asLevel)*10;
-						if(target.location()==mob.location())
+						mob.location().send(mob,msg);
+						if(msg.value()<=0)
 						{
-							success=maliciousAffect(mob,target,asLevel,(adjustedLevel(mob,asLevel)*10),-1);
-							target.location().show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> become(s) stuck in a mass of web!");
+							amountRemaining=super.adjustedLevel(mob, asLevel)*10;
+							if(target.location()==mob.location())
+							{
+								success=maliciousAffect(mob,target,asLevel,(adjustedLevel(mob,asLevel)*10),-1);
+								target.location().show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> become(s) stuck in a mass of web!");
+							}
 						}
 					}
 				}
-			}
 		}
 		else
 			return maliciousFizzle(mob,null,"<S-NAME> speak(s) and wave(s) <S-HIS-HER> arms, but the spell fizzles.");

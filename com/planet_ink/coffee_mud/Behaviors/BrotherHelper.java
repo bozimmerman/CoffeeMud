@@ -59,7 +59,7 @@ public class BrotherHelper extends StdBehavior
 		if(num<0)
 		{
 			num=0;
-			Vector<String> V=CMParms.parse(getParms());
+			final Vector<String> V=CMParms.parse(getParms());
 			for(int v=0;v<V.size();v++)
 				if(CMath.isInteger(V.elementAt(v)))
 					num=CMath.s_int(V.elementAt(v));
@@ -89,11 +89,11 @@ public class BrotherHelper extends StdBehavior
 	{
 		super.executeMsg(affecting,msg);
 		if((msg.target()==null)||(!(msg.target() instanceof MOB))) return;
-		MOB source=msg.source();
-		MOB observer=(MOB)affecting;
-		MOB target=(MOB)msg.target();
+		final MOB source=msg.source();
+		final MOB observer=(MOB)affecting;
+		final MOB target=(MOB)msg.target();
 
-		Room R=source.location();
+		final Room R=source.location();
 		if((source!=observer)
 		&&(target!=observer)
 		&&(source!=target)
@@ -108,7 +108,7 @@ public class BrotherHelper extends StdBehavior
 			int numInFray=0;
 			for(int m=0;m<R.numInhabitants();m++)
 			{
-				MOB M=R.fetchInhabitant(m);
+				final MOB M=R.fetchInhabitant(m);
 				if((M!=null)&&(M.getVictim()==source))
 					numInFray++;
 			}

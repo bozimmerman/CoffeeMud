@@ -40,17 +40,17 @@ public class PollNext extends StdWebMacro
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
-		java.util.Map<String,String> parms=parseParms(parm);
-		String last=httpReq.getUrlParameter("POLL");
+		final java.util.Map<String,String> parms=parseParms(parm);
+		final String last=httpReq.getUrlParameter("POLL");
 		if(parms.containsKey("RESET"))
 		{
 			if(last!=null) httpReq.removeUrlParameter("POLL");
 			return "";
 		}
 		String lastID="";
-		for(Iterator<Poll> q=CMLib.polls().getPollList();q.hasNext();)
+		for(final Iterator<Poll> q=CMLib.polls().getPollList();q.hasNext();)
 		{
-			Poll poll=q.next();
+			final Poll poll=q.next();
 			if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!poll.getName().equalsIgnoreCase(lastID))))
 			{
 				httpReq.addFakeUrlParameter("POLL",poll.getName());

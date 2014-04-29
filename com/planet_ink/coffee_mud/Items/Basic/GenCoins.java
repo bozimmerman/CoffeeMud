@@ -72,7 +72,7 @@ public class GenCoins extends GenItem implements Coins
 			setMaterial(RawMaterial.RESOURCE_PAPER);
 		else
 		{
-			RawMaterial.CODES codes = RawMaterial.CODES.instance();
+			final RawMaterial.CODES codes = RawMaterial.CODES.instance();
 			for(int s=0;s<codes.total();s++)
 				if(CMLib.english().containsString(name(),codes.name(s)))
 				{
@@ -129,10 +129,10 @@ public class GenCoins extends GenItem implements Coins
 		Coins alternative=null;
 		if(owner() instanceof Room)
 		{
-			Room R=(Room)owner();
+			final Room R=(Room)owner();
 			for(int i=0;i<R.numItems();i++)
 			{
-				Item I=R.getItem(i);
+				final Item I=R.getItem(i);
 				if((I!=null)
 				&&(I!=this)
 				&&(I instanceof Coins)
@@ -148,10 +148,10 @@ public class GenCoins extends GenItem implements Coins
 		else
 		if(owner() instanceof MOB)
 		{
-			MOB M=(MOB)owner();
+			final MOB M=(MOB)owner();
 			for(int i=0;i<M.numItems();i++)
 			{
-				Item I=M.getItem(i);
+				final Item I=M.getItem(i);
 				if((I!=null)
 				&&(I!=this)
 				&&(I instanceof Coins)
@@ -216,8 +216,8 @@ public class GenCoins extends GenItem implements Coins
 	public String[] getStatCodes()
 	{
 		if(codes!=null) return codes;
-		String[] MYCODES=CMProps.getStatCodesList(GenCoins.MYCODES,this);
-		String[] superCodes=GenericBuilder.GENITEMCODES;
+		final String[] MYCODES=CMProps.getStatCodesList(GenCoins.MYCODES,this);
+		final String[] superCodes=GenericBuilder.GENITEMCODES;
 		codes=new String[superCodes.length+MYCODES.length];
 		int i=0;
 		for(;i<superCodes.length;i++)
@@ -230,7 +230,7 @@ public class GenCoins extends GenItem implements Coins
 	public boolean sameAs(Environmental E)
 	{
 		if(!(E instanceof GenCoins)) return false;
-		String[] codes=getStatCodes();
+		final String[] codes=getStatCodes();
 		for(int i=0;i<codes.length;i++)
 			if(!E.getStat(codes[i]).equals(getStat(codes[i])))
 				return false;

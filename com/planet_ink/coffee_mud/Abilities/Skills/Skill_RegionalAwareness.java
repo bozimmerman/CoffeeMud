@@ -112,14 +112,14 @@ public class Skill_RegionalAwareness extends StdSkill
 
 	public String[] getMiniMap(Room room, final int diameter, boolean openOnly)
 	{
-		char[][] map=new char[diameter][diameter];
+		final char[][] map=new char[diameter][diameter];
 		for(int i=0;i<diameter;i++)
 			for(int i2=0;i2<diameter;i2++)
 				map[i][i2]=' ';
-		boolean amIndoors=((room.domainType()&Room.INDOORS)==Room.INDOORS);
-		Room[][] rmap=new Room[diameter][diameter];
-		Vector rooms=new Vector();
-		HashSet closedPaths=new HashSet();
+		final boolean amIndoors=((room.domainType()&Room.INDOORS)==Room.INDOORS);
+		final Room[][] rmap=new Room[diameter][diameter];
+		final Vector rooms=new Vector();
+		final HashSet closedPaths=new HashSet();
 		TrackingLibrary.TrackingFlags flags;
 		flags = new TrackingLibrary.TrackingFlags()
 					.plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS)
@@ -133,7 +133,7 @@ public class Skill_RegionalAwareness extends StdSkill
 		map[diameter/2][diameter/2]='*';
 		for(int i=0;i<rooms.size();i++)
 		{
-			Room R=(Room)rooms.elementAt(i);
+			final Room R=(Room)rooms.elementAt(i);
 			if((closedPaths.contains(R))
 			||(R==room))
 				continue;
@@ -143,7 +143,7 @@ public class Skill_RegionalAwareness extends StdSkill
 			for(int i2=0;(i2<diameter)&&(parentR==null);i2++)
 				for(int i3=0;(i3<diameter)&&(parentR==null);i3++)
 				{
-					Room R2=rmap[i2][i3];
+					final Room R2=rmap[i2][i3];
 					if(R2!=null)
 					for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 						if((R2.getRoomInDir(d)==R)
@@ -227,15 +227,15 @@ public class Skill_RegionalAwareness extends StdSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_LOOK,auto?"":"<S-NAME> peer(s) at the horizon with a distant expression.");
+			final CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_LOOK,auto?"":"<S-NAME> peer(s) at the horizon with a distant expression.");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				final String[] miniMap=getMiniMap(mob.location(), 2+(adjustedLevel(mob,asLevel)/10), true);
-				for(String s : miniMap)
+				for(final String s : miniMap)
 					if(mob.session()!=null)
 						mob.session().colorOnlyPrintln(s+"\n\r");
 			}

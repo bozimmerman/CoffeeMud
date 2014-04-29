@@ -43,8 +43,8 @@ public class Naga extends Python
 	@Override public int weightVariance(){return 80;}
 	@Override public long forbiddenWornBits(){return Wearable.WORN_LEGS|Wearable.WORN_FEET;}
 	@Override public String racialCategory(){return "Serpent";}
-	private String[]culturalAbilityNames={"Draconic"};
-	private int[]culturalAbilityProficiencies={100};
+	private final String[]culturalAbilityNames={"Draconic"};
+	private final int[]culturalAbilityProficiencies={100};
 	@Override public String[] culturalAbilityNames(){return culturalAbilityNames;}
 	@Override public int[] culturalAbilityProficiencies(){return culturalAbilityProficiencies;}
 

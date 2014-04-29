@@ -59,7 +59,7 @@ public class Skill_Imitation extends BardSkill
 		super.executeMsg(myHost,msg);
 		if((myHost==null)||(!(myHost instanceof MOB)))
 		   return;
-		MOB mob=(MOB)myHost;
+		final MOB mob=(MOB)myHost;
 		if(msg.tool()!=null)
 		{
 			if((msg.amISource(mob))
@@ -71,7 +71,7 @@ public class Skill_Imitation extends BardSkill
 			&&(msg.tool().text().length()>0)
 			&&(!immitations.containsKey(msg.tool().text())))
 			{
-				Ability A=CMClass.getAbility(msg.tool().text());
+				final Ability A=CMClass.getAbility(msg.tool().text());
 				if(A!=null)	immitations.put(A.name(),lastOnes[1]);
 			}
 			else
@@ -96,10 +96,10 @@ public class Skill_Imitation extends BardSkill
 			if(target==null) target=mob.findItem(null,(String)commands.lastElement());
 			if(target!=null) commands.removeElementAt(commands.size()-1);
 		}
-		String cmd=(commands.size()>0)?CMParms.combine(commands,0).toUpperCase():"";
-		StringBuffer str=new StringBuffer("");
+		final String cmd=(commands.size()>0)?CMParms.combine(commands,0).toUpperCase():"";
+		final StringBuffer str=new StringBuffer("");
 		String found=null;
-		for(String key : immitations.keySet())
+		for(final String key : immitations.keySet())
 		{
 			if((cmd.length()>0)&&(key.toUpperCase().startsWith(cmd)))
 				found=key;
@@ -117,11 +117,11 @@ public class Skill_Imitation extends BardSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_NOISYMOVEMENT|CMMsg.MASK_DELICATE|(auto?CMMsg.MASK_ALWAYS:0),immitations.get(found));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_NOISYMOVEMENT|CMMsg.MASK_DELICATE|(auto?CMMsg.MASK_ALWAYS:0),immitations.get(found));
 			if(mob.location().okMessage(mob,msg))
 				mob.location().send(mob,msg);
 		}

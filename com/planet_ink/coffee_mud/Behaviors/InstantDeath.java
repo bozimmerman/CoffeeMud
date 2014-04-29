@@ -52,7 +52,7 @@ public class InstantDeath extends ActiveTicker
 	public void setParms(String parms)
 	{
 		super.setParms(parms);
-		String maskStr=CMParms.getParmStr(parms,"mask","");
+		final String maskStr=CMParms.getParmStr(parms,"mask","");
 		mask=null;
 		if((maskStr!=null)&&(maskStr.trim().length()>0))
 			mask=CMLib.masking().getPreCompiledMask(maskStr);
@@ -69,10 +69,10 @@ public class InstantDeath extends ActiveTicker
 	public void killEveryoneHere(MOB spareMe, Room R)
 	{
 		if(R==null) return;
-		Vector V=new Vector();
+		final Vector V=new Vector();
 		for(int i=0;i<R.numInhabitants();i++)
 		{
-			MOB M=R.fetchInhabitant(i);
+			final MOB M=R.fetchInhabitant(i);
 			if((spareMe!=null)&&(spareMe==M))
 				continue;
 			if((M!=null)
@@ -82,7 +82,7 @@ public class InstantDeath extends ActiveTicker
 		}
 		for(int v=0;v<V.size();v++)
 		{
-			MOB M=(MOB)V.elementAt(v);
+			final MOB M=(MOB)V.elementAt(v);
 			CMLib.combat().postDeath(null,M,null);
 		}
 	}
@@ -96,18 +96,18 @@ public class InstantDeath extends ActiveTicker
 		{
 			if(ticking instanceof MOB)
 			{
-				MOB mob=(MOB)ticking;
-				Room room=mob.location();
+				final MOB mob=(MOB)ticking;
+				final Room room=mob.location();
 				if(room!=null)
 					killEveryoneHere(mob,room);
 			}
 			else
 			if(ticking instanceof Item)
 			{
-				Item item=(Item)ticking;
-				Environmental E=item.owner();
+				final Item item=(Item)ticking;
+				final Environmental E=item.owner();
 				if(E==null) return true;
-				Room room=getBehaversRoom(ticking);
+				final Room room=getBehaversRoom(ticking);
 				if(room==null) return true;
 				if((E instanceof MOB)&&((mask==null)||(CMLib.masking().maskCheck(mask, E, false))))
 					CMLib.combat().postDeath(null,(MOB)E,null);
@@ -122,9 +122,9 @@ public class InstantDeath extends ActiveTicker
 			else
 			if(ticking instanceof Area)
 			{
-				for(Enumeration r=((Area)ticking).getMetroMap();r.hasMoreElements();)
+				for(final Enumeration r=((Area)ticking).getMetroMap();r.hasMoreElements();)
 				{
-					Room R=(Room)r.nextElement();
+					final Room R=(Room)r.nextElement();
 					killEveryoneHere(null,R);
 				}
 			}

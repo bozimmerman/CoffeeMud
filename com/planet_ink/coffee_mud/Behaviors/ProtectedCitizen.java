@@ -76,7 +76,7 @@ public class ProtectedCitizen extends ActiveTicker
 	{
 		if(cityguard!=null) return "-NAME \"+"+cityguard+"\"";
 		if(zapper!=null) return zapper;
-		String s=getParmsNoTicks();
+		final String s=getParmsNoTicks();
 		if(s.length()==0)
 		{ cityguard=defcityguard; return "-NAME \"+"+cityguard+"\"";}
 		char c=';';
@@ -115,11 +115,11 @@ public class ProtectedCitizen extends ActiveTicker
 		s=s.substring(x+1).trim();
 		if(s.length()==0)
 		{ claims=defclaims; return claims;}
-		Vector V=new Vector();
+		final Vector V=new Vector();
 		x=s.indexOf(c);
 		while(x>=0)
 		{
-			String str=s.substring(0,x).trim();
+			final String str=s.substring(0,x).trim();
 			s=s.substring(x+1).trim();
 			if(str.length()>0)V.addElement(str);
 			x=s.indexOf(c);
@@ -136,7 +136,7 @@ public class ProtectedCitizen extends ActiveTicker
 		int assistance=0;
 		for(int i=0;i<mob.location().numInhabitants();i++)
 		{
-			MOB M=mob.location().fetchInhabitant(i);
+			final MOB M=mob.location().fetchInhabitant(i);
 			if((M!=null)
 			&&(M!=mob)
 			&&(M.getVictim()==mob.getVictim()))
@@ -145,14 +145,14 @@ public class ProtectedCitizen extends ActiveTicker
 		if(assistance>=maxAssistance)
 			return false;
 
-		String claim=getClaims()[CMLib.dice().roll(1,getClaims().length,-1)].trim();
+		final String claim=getClaims()[CMLib.dice().roll(1,getClaims().length,-1)].trim();
 		if(claim.startsWith(","))
 			mob.doCommand(CMParms.parse("EMOTE \""+claim.substring(1).trim()+"\""),Command.METAFLAG_FORCED);
 		else
 			mob.doCommand(CMParms.parse("YELL \""+claim+"\""),Command.METAFLAG_FORCED);
 
-		Room thisRoom=mob.location();
-		Vector V=new Vector();
+		final Room thisRoom=mob.location();
+		final Vector V=new Vector();
 		TrackingLibrary.TrackingFlags flags;
 		flags = new TrackingLibrary.TrackingFlags()
 				.plus(TrackingLibrary.TrackingFlag.OPENONLY);
@@ -160,12 +160,12 @@ public class ProtectedCitizen extends ActiveTicker
 		CMLib.tracking().getRadiantRooms(thisRoom,V,flags,null,radius,null);
 		for(int v=0;v<V.size();v++)
 		{
-			Room R=(Room)V.elementAt(v);
+			final Room R=(Room)V.elementAt(v);
 			MOB M=null;
 			if(R.getArea().Name().equals(mob.location().getArea().Name()))
 				for(int i=0;i<R.numInhabitants();i++)
 				{
-					MOB M2=R.fetchInhabitant(i);
+					final MOB M2=R.fetchInhabitant(i);
 					if((M2!=null)
 					&&(M2.mayIFight(mob.getVictim()))
 					&&(M2!=mob.getVictim())
@@ -187,7 +187,7 @@ public class ProtectedCitizen extends ActiveTicker
 					CMLib.combat().postAttack(M,mob.getVictim(),M.fetchWieldedItem());
 				else
 				{
-					int dir=CMLib.tracking().radiatesFromDir(R,V);
+					final int dir=CMLib.tracking().radiatesFromDir(R,V);
 					if(dir>=0)
 						CMLib.tracking().walk(M,dir,false,false);
 				}

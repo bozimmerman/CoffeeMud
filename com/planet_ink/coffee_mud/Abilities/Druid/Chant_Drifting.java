@@ -50,7 +50,7 @@ public class Chant_Drifting extends Chant
 		if(!(affected instanceof MOB))
 			return true;
 
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		// when this spell is on a MOBs Affected list,
 		// it should consistantly prevent the mob
@@ -90,7 +90,7 @@ public class Chant_Drifting extends Chant
 		&&(((MOB)affected).location()!=null)
 		&&((((MOB)affected).location().domainType()&Room.INDOORS)==0))
 		{
-			Ability A=CMClass.getAbility("Falling");
+			final Ability A=CMClass.getAbility("Falling");
 			A.setAffectedOne(null);
 			A.setProficiency(100);
 			A.invoke(null,null,affected,true,0);
@@ -116,12 +116,12 @@ public class Chant_Drifting extends Chant
 			super.unInvoke();
 			return;
 		}
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		super.unInvoke();
 		if(canBeUninvoked())
 		{
-			Ability A=mob.fetchEffect("Falling");
+			final Ability A=mob.fetchEffect("Falling");
 			if(A!=null) A.unInvoke();
 			mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> float(s) back down.");
 			CMLib.commands().postStand(mob,true);
@@ -151,7 +151,7 @@ public class Chant_Drifting extends Chant
 
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> chant(s) <S-HIM-HERSELF> off the ground.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> chant(s) <S-HIM-HERSELF> off the ground.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

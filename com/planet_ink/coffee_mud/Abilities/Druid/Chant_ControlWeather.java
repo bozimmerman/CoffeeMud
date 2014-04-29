@@ -56,7 +56,7 @@ public class Chant_ControlWeather extends Chant
 		{
 			if(abilityCode()==1)
 			{
-				Ability A=(Ability)msg.tool();
+				final Ability A=(Ability)msg.tool();
 				if((!msg.amISource(invoker()))
 				||(((A.classificationCode()&Ability.ALL_DOMAINS)!=Ability.DOMAIN_MOONALTERING)
 				   &&((A.classificationCode()&Ability.ALL_DOMAINS)!=Ability.DOMAIN_MOONSUMMONING)))
@@ -86,10 +86,10 @@ public class Chant_ControlWeather extends Chant
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		Chant_ControlWeather A=(Chant_ControlWeather)mob.location().getArea().fetchEffect(ID());
+		final Chant_ControlWeather A=(Chant_ControlWeather)mob.location().getArea().fetchEffect(ID());
 		if((A!=null)&&(A.abilityCode()==1))
 		{
-			long remaining=A.tickDown*CMProps.getTickMillis();
+			final long remaining=A.tickDown*CMProps.getTickMillis();
 			mob.tell("This area is under an enchantment of climactic balance, which can not be controlled for "+mob.location().getArea().getTimeObj().deriveEllapsedTimeString(remaining)+".");
 			return false;
 		}
@@ -97,10 +97,10 @@ public class Chant_ControlWeather extends Chant
 		size=size/(mob.phyStats().level()+(super.getXLEVELLevel(mob)));
 		if(size<0) size=0;
 		if(A!=null) size=size-((A.invoker().phyStats().level()-(mob.phyStats().level()+(super.getXLEVELLevel(mob))))*10);
-		boolean success=proficiencyCheck(mob,-size,auto);
+		final boolean success=proficiencyCheck(mob,-size,auto);
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,mob.location().getArea(),this,verbalCastCode(mob,mob.location().getArea(),auto),auto?"The sky changes color as the weather comes under control!":"^S<S-NAME> chant(s) into the sky for control of the weather!^?");
+			final CMMsg msg=CMClass.getMsg(mob,mob.location().getArea(),this,verbalCastCode(mob,mob.location().getArea(),auto),auto?"The sky changes color as the weather comes under control!":"^S<S-NAME> chant(s) into the sky for control of the weather!^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

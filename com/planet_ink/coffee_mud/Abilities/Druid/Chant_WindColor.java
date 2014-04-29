@@ -49,7 +49,7 @@ public class Chant_WindColor extends Chant
 	{
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		if(canBeUninvoked())
 			lastRoom=null;
 		super.unInvoke();
@@ -70,7 +70,7 @@ public class Chant_WindColor extends Chant
 		&&(((MOB)affected).location().domainType()!=Room.DOMAIN_OUTDOORS_UNDERWATER))
 		{
 			lastRoom=((MOB)affected).location();
-			String prediction=getWindColor((MOB)affected,((MOB)affected).location());
+			final String prediction=getWindColor((MOB)affected,((MOB)affected).location());
 			if(prediction.length()>0) ((MOB)affected).tell("The winds are "+prediction+".");
 		}
 		return true;
@@ -100,10 +100,10 @@ public class Chant_WindColor extends Chant
 		int sourceCode=-1;
 		int levelCode=-1;
 		int[] colors=null;
-		Set<MOB> group=mob.getGroupMembers(new HashSet<MOB>());
+		final Set<MOB> group=mob.getGroupMembers(new HashSet<MOB>());
 		for(int i=0;i<R.numItems();i++)
 		{
-			Item I=R.getItem(i);
+			final Item I=R.getItem(i);
 			if(I!=null)
 			{
 				int done=0;
@@ -145,7 +145,7 @@ public class Chant_WindColor extends Chant
 		}
 		for(int i=0;i<R.numInhabitants();i++)
 		{
-			MOB M=R.fetchInhabitant(i);
+			final MOB M=R.fetchInhabitant(i);
 			if((M!=null)&&(M!=mob)&&(!group.contains(M)))
 			{
 				if(colors==null) colors=new int[9];
@@ -190,11 +190,11 @@ public class Chant_WindColor extends Chant
 		}
 		if(colors==null) return "";
 		boolean foundOne=false;
-		for(int i=0;i<colors.length;i++)
-			if(colors[i]>0){foundOne=true; break;}
+		for (final int color : colors)
+			if(color>0){foundOne=true; break;}
 		if(!foundOne) return "";
 
-		StringBuffer str=new StringBuffer("");
+		final StringBuffer str=new StringBuffer("");
 		switch(sourceCode)
 		{
 		case 0:
@@ -266,7 +266,7 @@ public class Chant_WindColor extends Chant
 			}
 			break;
 		}
-		Vector V=new Vector();
+		final Vector V=new Vector();
 		for(int i=0;i<colors.length;i++)
 			if(colors[i]>0)
 				V.addElement(Integer.valueOf(i));
@@ -274,7 +274,7 @@ public class Chant_WindColor extends Chant
 			return str.toString()+getColor(((Integer)V.firstElement()).intValue());
 		for(int i=0;i<V.size();i++)
 		{
-			int x=((Integer)V.elementAt(i)).intValue();
+			final int x=((Integer)V.elementAt(i)).intValue();
 			if(i==V.size()-1) str.append("and "+getColor(x)+" ");
 			else
 			if(i>0) str.append(", "+getColor(x)+" ");
@@ -305,11 +305,11 @@ public class Chant_WindColor extends Chant
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> gain(s) visions of the winds!":"^S<S-NAME> chant(s) for visions on the wind!^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> gain(s) visions of the winds!":"^S<S-NAME> chant(s) for visions on the wind!^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				lastRoom=null;

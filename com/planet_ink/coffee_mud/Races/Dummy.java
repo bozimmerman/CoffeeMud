@@ -75,11 +75,11 @@ public class Dummy extends Doll
 			{
 				msg.source().curState().setHitPoints(99999);
 				((MOB)myHost).makePeace();
-				Room room=((MOB)myHost).location();
+				final Room room=((MOB)myHost).location();
 				if(room!=null)
 				for(int i=0;i<room.numInhabitants();i++)
 				{
-					MOB mob=room.fetchInhabitant(i);
+					final MOB mob=room.fetchInhabitant(i);
 					if((mob.getVictim()!=null)&&(mob.getVictim()==myHost))
 						mob.makePeace();
 				}

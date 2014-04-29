@@ -38,7 +38,7 @@ public class LifeFountain extends StdDrink implements MiscMagic
 {
 	@Override public String ID(){	return "LifeFountain";}
 
-	private Hashtable lastDrinks=new Hashtable();
+	private final Hashtable lastDrinks=new Hashtable();
 
 	public LifeFountain()
 	{
@@ -62,7 +62,7 @@ public class LifeFountain extends StdDrink implements MiscMagic
 	{
 		if(msg.amITarget(this))
 		{
-			MOB mob=msg.source();
+			final MOB mob=msg.source();
 			switch(msg.targetMinor())
 			{
 			case CMMsg.TYP_DRINK:

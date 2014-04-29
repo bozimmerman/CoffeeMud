@@ -41,11 +41,11 @@ public class AreaData extends StdWebMacro
 
 	public static StringBuffer behaves(PhysicalAgent E, HTTPRequest httpReq, java.util.Map<String,String> parms, int borderSize)
 	{
-		StringBuffer str=new StringBuffer("");
+		final StringBuffer str=new StringBuffer("");
 		if(parms.containsKey("BEHAVIORS"))
 		{
-			Vector theclasses=new Vector();
-			Vector theparms=new Vector();
+			final Vector theclasses=new Vector();
+			final Vector theparms=new Vector();
 			if(httpReq.isUrlParameter("BEHAV1"))
 			{
 				int num=1;
@@ -66,9 +66,9 @@ public class AreaData extends StdWebMacro
 				}
 			}
 			else
-			for(Enumeration<Behavior> e=E.behaviors();e.hasMoreElements();)
+			for(final Enumeration<Behavior> e=E.behaviors();e.hasMoreElements();)
 			{
-				Behavior B=e.nextElement();
+				final Behavior B=e.nextElement();
 				if((B!=null)&&(B.isSavable()))
 				{
 					theclasses.addElement(CMClass.classID(B));
@@ -78,11 +78,11 @@ public class AreaData extends StdWebMacro
 				}
 			}
 			str.append("<TABLE WIDTH=100% BORDER=\""+borderSize+"\" CELLSPACING=0 CELLPADDING=0>");
-			HashSet<String> alreadyHave=new HashSet<String>();
+			final HashSet<String> alreadyHave=new HashSet<String>();
 			for(int i=0;i<theclasses.size();i++)
 			{
-				String theclass=(String)theclasses.elementAt(i);
-				String theparm=(String)theparms.elementAt(i);
+				final String theclass=(String)theclasses.elementAt(i);
+				final String theparm=(String)theparms.elementAt(i);
 				str.append("<TR><TD WIDTH=50%>");
 				str.append("<SELECT ONCHANGE=\"EditBehavior(this);\" NAME=BEHAV"+(i+1)+">");
 				str.append("<OPTION VALUE=\"\">Delete!");
@@ -98,10 +98,10 @@ public class AreaData extends StdWebMacro
 			str.append("<OPTION SELECTED VALUE=\"\">Select a Behavior");
 
 			Object[] sortedB=null;
-			Vector sortMeB=new Vector();
-			for(Enumeration b=CMClass.behaviors();b.hasMoreElements();)
+			final Vector sortMeB=new Vector();
+			for(final Enumeration b=CMClass.behaviors();b.hasMoreElements();)
 			{
-				Behavior B=(Behavior)b.nextElement();
+				final Behavior B=(Behavior)b.nextElement();
 				if(B.canImprove(E))
 					sortMeB.addElement(CMClass.classID(B));
 			}
@@ -109,7 +109,7 @@ public class AreaData extends StdWebMacro
 			for(int r=0;r<sortedB.length;r++)
 				if(!alreadyHave.contains(((String)sortedB[r]).toLowerCase()))
 				{
-					String cnam=(String)sortedB[r];
+					final String cnam=(String)sortedB[r];
 					str.append("<OPTION VALUE=\""+cnam+"\">"+cnam);
 				}
 			str.append("</SELECT>");
@@ -123,11 +123,11 @@ public class AreaData extends StdWebMacro
 
 	public static StringBuffer affects(Physical P, HTTPRequest httpReq, java.util.Map<String,String> parms, int borderSize)
 	{
-		StringBuffer str=new StringBuffer("");
+		final StringBuffer str=new StringBuffer("");
 		if(parms.containsKey("AFFECTS"))
 		{
-			Vector theclasses=new Vector();
-			Vector theparms=new Vector();
+			final Vector theclasses=new Vector();
+			final Vector theparms=new Vector();
 			if(httpReq.isUrlParameter("AFFECT1"))
 			{
 				int num=1;
@@ -150,7 +150,7 @@ public class AreaData extends StdWebMacro
 			else
 			for(int a=0;a<P.numEffects();a++) // personal effects
 			{
-				Ability Able=P.fetchEffect(a);
+				final Ability Able=P.fetchEffect(a);
 				if((Able!=null)&&(Able.isSavable()))
 				{
 					theclasses.addElement(CMClass.classID(Able));
@@ -160,12 +160,12 @@ public class AreaData extends StdWebMacro
 				}
 			}
 			str.append("<TABLE WIDTH=100% BORDER=\""+borderSize+"\" CELLSPACING=0 CELLPADDING=0>");
-			HashSet<String> alreadyHave=new HashSet<String>();
+			final HashSet<String> alreadyHave=new HashSet<String>();
 			for(int i=0;i<theclasses.size();i++)
 			{
-				String theclass=(String)theclasses.elementAt(i);
+				final String theclass=(String)theclasses.elementAt(i);
 				alreadyHave.add(theclass.toLowerCase());
-				String theparm=(String)theparms.elementAt(i);
+				final String theparm=(String)theparms.elementAt(i);
 				str.append("<TR><TD WIDTH=50%>");
 				str.append("<SELECT ONCHANGE=\"EditAffect(this);\" NAME=AFFECT"+(i+1)+">");
 				str.append("<OPTION VALUE=\"\">Delete!");
@@ -178,9 +178,9 @@ public class AreaData extends StdWebMacro
 			str.append("<TR><TD WIDTH=50%>");
 			str.append("<SELECT ONCHANGE=\"AddAffect(this);\" NAME=AFFECT"+(theclasses.size()+1)+">");
 			str.append("<OPTION SELECTED VALUE=\"\">Select an Effect");
-			for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
+			for(final Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 			{
-				Ability A=a.nextElement();
+				final Ability A=a.nextElement();
 				if(((!A.canAffect(P))||(alreadyHave.contains(A.ID().toLowerCase())))
 				||((A.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_ARCHON))
 					continue;
@@ -201,31 +201,31 @@ public class AreaData extends StdWebMacro
 		if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
 			return CMProps.getVar(CMProps.Str.MUDSTATUS);
 
-		java.util.Map<String,String> parms=parseParms(parm);
+		final java.util.Map<String,String> parms=parseParms(parm);
 		if(parms.containsKey("AREATYPES"))
 		{
-			StringBuffer str=new StringBuffer("");
-			for(Enumeration e=CMClass.areaTypes();e.hasMoreElements();)
+			final StringBuffer str=new StringBuffer("");
+			for(final Enumeration e=CMClass.areaTypes();e.hasMoreElements();)
 			{
-				Area A=(Area)e.nextElement();
+				final Area A=(Area)e.nextElement();
 				str.append("<OPTION VALUE=\""+A.ID()+"\">"+A.ID());
 			}
 			return str.toString();
 		}
 		if(parms.containsKey("AREAISGRID"))
 		{
-			Area A=CMLib.map().getArea(""+parms.get("AREAISGRID"));
+			final Area A=CMLib.map().getArea(""+parms.get("AREAISGRID"));
 			return ""+(A instanceof GridZones);
 		}
-		String last=httpReq.getUrlParameter("AREA");
+		final String last=httpReq.getUrlParameter("AREA");
 		if(last==null) return " @break@";
 
 		if(last.length()>0)
 		{
-			Area A=CMLib.map().getArea(last);
+			final Area A=CMLib.map().getArea(last);
 			if(A!=null)
 			{
-				StringBuffer str=new StringBuffer("");
+				final StringBuffer str=new StringBuffer("");
 				if(parms.containsKey("HELP"))
 				{
 					StringBuilder s=CMLib.help().getHelpText("AREA_"+A.Name(),null,false);
@@ -245,7 +245,7 @@ public class AreaData extends StdWebMacro
 						{
 							if(httpReq.isUrlParameter("CLIMATE"+(Integer.toString(i))))
 							{
-								int newVal=CMath.s_int(httpReq.getUrlParameter("CLIMATE"+(Integer.toString(i))));
+								final int newVal=CMath.s_int(httpReq.getUrlParameter("CLIMATE"+(Integer.toString(i))));
 								if(newVal<0)
 								{
 									climate=-1;
@@ -260,8 +260,8 @@ public class AreaData extends StdWebMacro
 					str.append("<OPTION VALUE=-1 "+((climate<0)?"SELECTED":"")+">Inherited");
 					for(int i=1;i<Places.NUM_CLIMATES;i++)
 					{
-						String climstr=Places.CLIMATE_DESCS[i];
-						int mask=(int)CMath.pow(2,i-1);
+						final String climstr=Places.CLIMATE_DESCS[i];
+						final int mask=(int)CMath.pow(2,i-1);
 						str.append("<OPTION VALUE="+mask);
 						if((climate>=0)&&((climate&mask)>0)) str.append(" SELECTED");
 						str.append(">"+climstr);
@@ -272,9 +272,9 @@ public class AreaData extends StdWebMacro
 					String atmoVal=httpReq.getUrlParameter("ATMOSPHERE");
 					if((atmoVal==null)||(!CMath.isNumber(atmoVal)))
 						atmoVal=""+A.getAtmosphereCode();
-					int atmo=CMath.s_int(atmoVal);
+					final int atmo=CMath.s_int(atmoVal);
 					str.append("<OPTION VALUE=\"-1\"").append((atmo<0)?"SELECTED":"").append(">Inherited");
-					for(int r : RawMaterial.CODES.ALL_SBN())
+					for(final int r : RawMaterial.CODES.ALL_SBN())
 					{
 						str.append("<OPTION VALUE=\""+r+"\"");
 						if(r==atmo)
@@ -347,7 +347,7 @@ public class AreaData extends StdWebMacro
 					str.append(">Default Currency");
 					for(int i=1;i<CMLib.beanCounter().getAllCurrencies().size();i++)
 					{
-						String s=CMLib.beanCounter().getAllCurrencies().get(i);
+						final String s=CMLib.beanCounter().getAllCurrencies().get(i);
 						if(s.length()>0)
 						{
 							str.append("<OPTION VALUE=\""+s+"\"");
@@ -408,15 +408,15 @@ public class AreaData extends StdWebMacro
 					Object[] sortedA=(Object[])Resources.getResource("MUDGRINDER-AREAS");
 					if(sortedA==null)
 					{
-						Vector sortMeA=new Vector();
-						for(Enumeration a=CMClass.areaTypes();a.hasMoreElements();)
+						final Vector sortMeA=new Vector();
+						for(final Enumeration a=CMClass.areaTypes();a.hasMoreElements();)
 							sortMeA.addElement(CMClass.classID(a.nextElement()));
 						sortedA=(new TreeSet(sortMeA)).toArray();
 						Resources.submitResource("MUDGRINDER-AREAS",sortedA);
 					}
-					for(int r=0;r<sortedA.length;r++)
+					for (final Object element : sortedA)
 					{
-						String cnam=(String)sortedA[r];
+						final String cnam=(String)element;
 						str.append("<OPTION VALUE=\""+cnam+"\"");
 						if(className.equals(cnam))
 							str.append(" SELECTED");
@@ -426,14 +426,14 @@ public class AreaData extends StdWebMacro
 
 				if(parms.containsKey("BLURBS"))
 				{
-					Vector theprices=new Vector();
-					Vector themasks=new Vector();
+					final Vector theprices=new Vector();
+					final Vector themasks=new Vector();
 					int num=1;
 					if(!httpReq.isUrlParameter("IPRIC"+num))
 					{
-						for(Enumeration<String> f=A.areaBlurbFlags();f.hasMoreElements();)
+						for(final Enumeration<String> f=A.areaBlurbFlags();f.hasMoreElements();)
 						{
-							String flag=f.nextElement();
+							final String flag=f.nextElement();
 							theprices.addElement(flag);
 							themasks.addElement(A.getBlurbFlag(flag));
 						}
@@ -441,8 +441,8 @@ public class AreaData extends StdWebMacro
 					else
 					while(httpReq.isUrlParameter("BLURBFLAG"+num))
 					{
-						String PRICE=httpReq.getUrlParameter("BLURBFLAG"+num);
-						String MASK=httpReq.getUrlParameter("BLURB"+num);
+						final String PRICE=httpReq.getUrlParameter("BLURBFLAG"+num);
+						final String MASK=httpReq.getUrlParameter("BLURB"+num);
 						if((PRICE!=null)&&(PRICE.length()>0))
 						{
 							theprices.addElement(PRICE);
@@ -457,8 +457,8 @@ public class AreaData extends StdWebMacro
 					str.append("<TR><TD WIDTH=20%>Flag</TD><TD>Description</TD></TR>");
 					for(int i=0;i<theprices.size();i++)
 					{
-						String PRICE=(String)theprices.elementAt(i);
-						String MASK=(String)themasks.elementAt(i);
+						final String PRICE=(String)theprices.elementAt(i);
+						final String MASK=(String)themasks.elementAt(i);
 						str.append("<TR><TD>");
 						str.append("<INPUT TYPE=TEXT SIZE=5 NAME=BLURBFLAG"+(i+1)+" VALUE=\""+PRICE+"\">");
 						str.append("</TD><TD>");
@@ -483,13 +483,13 @@ public class AreaData extends StdWebMacro
 
 				if(parms.containsKey("SUBOPS"))
 				{
-					List<String> V=CMLib.database().getUserList();
-					List<String> theSubOps=new LinkedList<String>();
+					final List<String> V=CMLib.database().getUserList();
+					final List<String> theSubOps=new LinkedList<String>();
 					int num=1;
 					if(!httpReq.isUrlParameter("SUBOP"+num))
 					{
-						List<String> subV=CMParms.parseSemicolons(A.getSubOpList(),true);
-						for(String subOp : subV)
+						final List<String> subV=CMParms.parseSemicolons(A.getSubOpList(),true);
+						for(final String subOp : subV)
 						{
 							if(CMLib.players().playerExists(subOp))
 								theSubOps.add(CMStrings.capitalizeAndLower(subOp));
@@ -498,7 +498,7 @@ public class AreaData extends StdWebMacro
 					else
 					while(httpReq.isUrlParameter("SUBOP"+num))
 					{
-						String subOp=httpReq.getUrlParameter("SUBOP"+num);
+						final String subOp=httpReq.getUrlParameter("SUBOP"+num);
 						if((subOp!=null)&&(subOp.length()>0))
 						{
 							if(CMLib.players().playerExists(subOp))
@@ -508,7 +508,7 @@ public class AreaData extends StdWebMacro
 					}
 					str.append("<TABLE WIDTH=100% BORDER=\"1\" CELLSPACING=0 CELLPADDING=0>\n");
 					int i=0;
-					for(String subOp : theSubOps)
+					for(final String subOp : theSubOps)
 					{
 						str.append("<TR><TD>");
 						str.append("<SELECT  ONCHANGE=\"EditSubOp(this);\" NAME=SUBOP"+(i+1)+" >");
@@ -520,7 +520,7 @@ public class AreaData extends StdWebMacro
 					str.append("<TR><TD>");
 					str.append("<SELECT  ONCHANGE=\"AddSubOp(this);\" NAME=SUBOP"+(i+1)+" >");
 					str.append("<OPTION VALUE=\"\" SELECTED>Select a Player");
-					for(String subOp : V)
+					for(final String subOp : V)
 						if(!theSubOps.contains(subOp))
 							str.append("<OPTION VALUE=\""+subOp+"\">"+subOp);
 					str.append("</SELECT></TD></TR>\n");
@@ -536,15 +536,15 @@ public class AreaData extends StdWebMacro
 
 				if(parms.containsKey("PARENT"))
 				{
-					List<String> V=CMParms.toNameVector(CMLib.map().areas());
-					List<String> theAreas=new LinkedList<String>();
+					final List<String> V=CMParms.toNameVector(CMLib.map().areas());
+					final List<String> theAreas=new LinkedList<String>();
 					int num=1;
 					if(!httpReq.isUrlParameter("PARENT"+num))
 					{
-						List<String> subV=CMParms.toNameVector(A.getParents());
-						for(String areaName : subV)
+						final List<String> subV=CMParms.toNameVector(A.getParents());
+						for(final String areaName : subV)
 						{
-							Area findA=CMLib.map().getArea(areaName);
+							final Area findA=CMLib.map().getArea(areaName);
 							if(findA!=null)
 								theAreas.add(findA.Name());
 						}
@@ -552,10 +552,10 @@ public class AreaData extends StdWebMacro
 					else
 					while(httpReq.isUrlParameter("PARENT"+num))
 					{
-						String areaName=httpReq.getUrlParameter("PARENT"+num);
+						final String areaName=httpReq.getUrlParameter("PARENT"+num);
 						if((areaName!=null)&&(areaName.length()>0))
 						{
-							Area findA=CMLib.map().getArea(areaName);
+							final Area findA=CMLib.map().getArea(areaName);
 							if(findA!=null)
 								theAreas.add(findA.Name());
 						}
@@ -563,7 +563,7 @@ public class AreaData extends StdWebMacro
 					}
 					str.append("<TABLE WIDTH=100% BORDER=\"1\" CELLSPACING=0 CELLPADDING=0>\n");
 					int i=0;
-					for(String areaName : theAreas)
+					for(final String areaName : theAreas)
 					{
 						str.append("<TR><TD>");
 						str.append("<SELECT  ONCHANGE=\"EditAreaParent(this);\" NAME=PARENT"+(i+1)+" >");
@@ -575,7 +575,7 @@ public class AreaData extends StdWebMacro
 					str.append("<TR><TD>");
 					str.append("<SELECT  ONCHANGE=\"AddAreaParent(this);\" NAME=PARENT"+(i+1)+" >");
 					str.append("<OPTION VALUE=\"\" SELECTED>Select an Area");
-					for(String areaName : V)
+					for(final String areaName : V)
 						if(!theAreas.contains(areaName))
 							str.append("<OPTION VALUE=\""+areaName+"\">"+areaName);
 					str.append("</SELECT></TD></TR>\n");
@@ -584,17 +584,17 @@ public class AreaData extends StdWebMacro
 
 				if(parms.containsKey("CHILDREN"))
 				{
-					Area defaultParentArea=CMLib.map().getDefaultParentArea();
-					List<String> V=CMParms.toNameVector(CMLib.map().areas());
-					List<String> theAreas=new LinkedList<String>();
+					final Area defaultParentArea=CMLib.map().getDefaultParentArea();
+					final List<String> V=CMParms.toNameVector(CMLib.map().areas());
+					final List<String> theAreas=new LinkedList<String>();
 					int num=1;
 					if(!httpReq.isUrlParameter("CHILDREN"+num))
 					{
-						List<String> subV=CMParms.toNameVector(A.getChildren());
+						final List<String> subV=CMParms.toNameVector(A.getChildren());
 						if(defaultParentArea!=A)
-						for(String areaName : subV)
+						for(final String areaName : subV)
 						{
-							Area findA=CMLib.map().getArea(areaName);
+							final Area findA=CMLib.map().getArea(areaName);
 							if(findA!=null)
 								theAreas.add(findA.Name());
 						}
@@ -602,10 +602,10 @@ public class AreaData extends StdWebMacro
 					else
 					while(httpReq.isUrlParameter("CHILDREN"+num))
 					{
-						String areaName=httpReq.getUrlParameter("CHILDREN"+num);
+						final String areaName=httpReq.getUrlParameter("CHILDREN"+num);
 						if((areaName!=null)&&(areaName.length()>0))
 						{
-							Area findA=CMLib.map().getArea(areaName);
+							final Area findA=CMLib.map().getArea(areaName);
 							if(findA!=null)
 								theAreas.add(findA.Name());
 						}
@@ -613,7 +613,7 @@ public class AreaData extends StdWebMacro
 					}
 					str.append("<TABLE WIDTH=100% BORDER=\"1\" CELLSPACING=0 CELLPADDING=0>\n");
 					int i=0;
-					for(String areaName : theAreas)
+					for(final String areaName : theAreas)
 					{
 						str.append("<TR><TD>");
 						str.append("<SELECT  ONCHANGE=\"EditAreaChild(this);\" NAME=CHILDREN"+(i+1)+" >");
@@ -625,7 +625,7 @@ public class AreaData extends StdWebMacro
 					str.append("<TR><TD>");
 					str.append("<SELECT  ONCHANGE=\"AddAreaChild(this);\" NAME=CHILDREN"+(i+1)+" >");
 					str.append("<OPTION VALUE=\"\" SELECTED>Select an Area");
-					for(String areaName : V)
+					for(final String areaName : V)
 						if(!theAreas.contains(areaName))
 							str.append("<OPTION VALUE=\""+areaName+"\">"+areaName);
 					str.append("</SELECT></TD></TR>\n");
@@ -634,7 +634,7 @@ public class AreaData extends StdWebMacro
 
 				if(A instanceof AutoGenArea)
 				{
-					AutoGenArea AG=(AutoGenArea)A;
+					final AutoGenArea AG=(AutoGenArea)A;
 
 					if(parms.containsKey("AGAUTOVAR"))
 					{

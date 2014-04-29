@@ -48,7 +48,7 @@ public class Spell_LedFoot extends Spell
 		// undo the affects of this spell
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		super.unInvoke();
 
 		if(canBeUninvoked())
@@ -61,7 +61,7 @@ public class Spell_LedFoot extends Spell
 		if(!(affected instanceof MOB))
 			return true;
 
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		// when this spell is on a MOBs Affected list,
 		// it should consistantly prevent the mob
@@ -92,7 +92,7 @@ public class Spell_LedFoot extends Spell
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		MOB target=this.getTarget(mob,commands,givenTarget);
+		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
 		if((!auto)&&(target.charStats().getBodyPart(Race.BODY_FOOT)==0))
@@ -117,7 +117,7 @@ public class Spell_LedFoot extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^SYou invoke a heavy spell into <T-NAME>s feet.^?",verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> invoke(s) a heavy spell into your feet.^?",CMMsg.MSG_CAST_ATTACK_VERBAL_SPELL,auto?"":"^S<S-NAME> invokes a heavy spell into <T-NAME>s feet.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^SYou invoke a heavy spell into <T-NAME>s feet.^?",verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> invoke(s) a heavy spell into your feet.^?",CMMsg.MSG_CAST_ATTACK_VERBAL_SPELL,auto?"":"^S<S-NAME> invokes a heavy spell into <T-NAME>s feet.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

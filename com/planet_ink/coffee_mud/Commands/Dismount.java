@@ -50,19 +50,19 @@ public class Dismount extends StdCommand
 				mob.tell("But you aren't riding anything?!");
 				return false;
 			}
-			CMMsg msg=CMClass.getMsg(mob,mob.riding(),null,CMMsg.MSG_DISMOUNT,"<S-NAME> "+mob.riding().dismountString(mob)+" <T-NAMESELF>.");
+			final CMMsg msg=CMClass.getMsg(mob,mob.riding(),null,CMMsg.MSG_DISMOUNT,"<S-NAME> "+mob.riding().dismountString(mob)+" <T-NAMESELF>.");
 			if(mob.location().okMessage(mob,msg))
 				mob.location().send(mob,msg);
 		}
 		else
 		{
-			Environmental E=mob.location().fetchFromRoomFavorItems(null,CMParms.combine(commands,0));
+			final Environmental E=mob.location().fetchFromRoomFavorItems(null,CMParms.combine(commands,0));
 			if((E==null)||(!(E instanceof Rider)))
 			{
 				mob.tell("You don't see anything called '"+CMParms.combine(commands,0)+"' here to dismount from anything.");
 				return false;
 			}
-			Rider RI=(Rider)E;
+			final Rider RI=(Rider)E;
 			if((RI.riding()==null)
 			   ||((RI.riding() instanceof MOB)&&(!mob.location().isInhabitant((MOB)RI.riding())))
 			   ||((RI.riding() instanceof Item)&&(!mob.location().isContent((Item)RI.riding())))
@@ -76,7 +76,7 @@ public class Dismount extends StdCommand
 				mob.tell(RI.name(mob)+" may not want you to do that.");
 				return false;
 			}
-			CMMsg msg=CMClass.getMsg(mob,RI.riding(),RI,CMMsg.MSG_DISMOUNT,"<S-NAME> dismount(s) <O-NAME> from <T-NAMESELF>.");
+			final CMMsg msg=CMClass.getMsg(mob,RI.riding(),RI,CMMsg.MSG_DISMOUNT,"<S-NAME> dismount(s) <O-NAME> from <T-NAMESELF>.");
 			if(mob.location().okMessage(mob,msg))
 				mob.location().send(mob,msg);
 		}

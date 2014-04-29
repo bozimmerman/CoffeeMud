@@ -75,7 +75,7 @@ public class Spell_ArcanePossession extends Spell
 		super.executeMsg(host,msg);
 		if((affected instanceof Item)&&(text().length()>0))
 		{
-			Item I=(Item)affected;
+			final Item I=(Item)affected;
 			if((owner==null)&&(I.owner()!=null)
 			&&(I.owner() instanceof MOB)
 			&&(I.owner().Name().equals(text())))
@@ -86,17 +86,17 @@ public class Spell_ArcanePossession extends Spell
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		Item target=getTarget(mob,null,givenTarget,commands,Wearable.FILTER_ANY);
+		final Item target=getTarget(mob,null,givenTarget,commands,Wearable.FILTER_ANY);
 		if(target==null) return false;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> hold(s) a <T-NAMESELF> tightly and cast(s) a spell.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> hold(s) a <T-NAMESELF> tightly and cast(s) a spell.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

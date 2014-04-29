@@ -50,7 +50,7 @@ public class Skill_Bash extends StdSkill
 	{
 		if((mob!=null)&&(target!=null))
 		{
-			Item thisShield=getShield(mob);
+			final Item thisShield=getShield(mob);
 			if(thisShield==null)
 				return Ability.QUALITY_INDIFFERENT;
 			if((CMLib.flags().isSitting(target)||CMLib.flags().isSleeping(target)))
@@ -64,7 +64,7 @@ public class Skill_Bash extends StdSkill
 		Item thisShield=null;
 		for(int i=0;i<mob.numItems();i++)
 		{
-			Item I=mob.getItem(i);
+			final Item I=mob.getItem(i);
 			if((I!=null)&&(I instanceof Shield)&&(!I.amWearingAt(Wearable.IN_INVENTORY)))
 			{ thisShield=I; break;}
 		}
@@ -74,9 +74,9 @@ public class Skill_Bash extends StdSkill
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		MOB target=this.getTarget(mob,commands,givenTarget);
+		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
-		Item thisShield=getShield(mob);
+		final Item thisShield=getShield(mob);
 		if(thisShield==null)
 		{
 			mob.tell("You must have a shield to perform a bash.");
@@ -92,18 +92,18 @@ public class Skill_Bash extends StdSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		String str=null;
 		if(success)
 		{
 			str=auto?"<T-NAME> is bashed!":"^F^<FIGHT^><S-NAME> bash(es) <T-NAMESELF> with "+thisShield.name()+"!^</FIGHT^>^?";
-			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),str);
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),str);
 			CMLib.color().fixSourceFightColor(msg);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				Weapon w=CMClass.getWeapon("ShieldWeapon");
+				final Weapon w=CMClass.getWeapon("ShieldWeapon");
 				if(w!=null)
 				{
 					w.setName(thisShield.name());

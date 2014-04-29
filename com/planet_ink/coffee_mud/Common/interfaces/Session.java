@@ -1092,7 +1092,7 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 		 */
 		public boolean isTimedOut()
 		{
-			boolean isTimedOut=(timeout > 0) && (System.currentTimeMillis() > timeout);
+			final boolean isTimedOut=(timeout > 0) && (System.currentTimeMillis() > timeout);
 			if(isTimedOut)
 				waiting=false;
 			return isTimedOut;

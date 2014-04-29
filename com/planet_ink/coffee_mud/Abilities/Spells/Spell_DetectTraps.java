@@ -50,7 +50,7 @@ public class Spell_DetectTraps extends Spell
 	{
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		if(canBeUninvoked())
 			lastRoom=null;
 		super.unInvoke();
@@ -67,15 +67,15 @@ public class Spell_DetectTraps extends Spell
 
 	public String trapHere(MOB mob, Physical P)
 	{
-		StringBuffer msg=new StringBuffer("");
+		final StringBuffer msg=new StringBuffer("");
 		if(P==null) return msg.toString();
 		if((P instanceof Room)&&(CMLib.flags().canBeSeenBy(P,mob)))
 			msg.append(trapCheck(mob.location()));
 		else
 		if((P instanceof Container)&&(CMLib.flags().canBeSeenBy(P,mob)))
 		{
-			Container C=(Container)P;
-			List<Item> V=C.getContents();
+			final Container C=(Container)P;
+			final List<Item> V=C.getContents();
 			for(int v=0;v<V.size();v++)
 				if(trapCheck(V.get(v)).length()>0)
 					msg.append(C.name()+" contains something trapped.");
@@ -86,14 +86,14 @@ public class Spell_DetectTraps extends Spell
 		else
 		if((P instanceof Exit)&&(CMLib.flags().canBeSeenBy(P,mob)))
 		{
-			Room room=mob.location();
+			final Room room=mob.location();
 			if(room!=null)
 			for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 			{
 				if(room.getExitInDir(d)==P)
 				{
-					Exit E2=room.getReverseExit(d);
-					Room R2=room.getRoomInDir(d);
+					final Exit E2=room.getReverseExit(d);
+					final Room R2=room.getRoomInDir(d);
 					msg.append(trapCheck(P));
 					msg.append(trapCheck(E2));
 					msg.append(trapCheck(R2));
@@ -106,16 +106,16 @@ public class Spell_DetectTraps extends Spell
 		{
 			for(int i=0;i<((MOB)P).numItems();i++)
 			{
-				Item I=((MOB)P).getItem(i);
+				final Item I=((MOB)P).getItem(i);
 				if(trapCheck(I).length()>0)
 					return P.name()+" is carrying something trapped.";
 			}
-			ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(P);
+			final ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(P);
 			if(SK!=null)
 			{
-				for(Iterator<Environmental> i=SK.getShop().getStoreInventory();i.hasNext();)
+				for(final Iterator<Environmental> i=SK.getShop().getStoreInventory();i.hasNext();)
 				{
-					Environmental E2=i.next();
+					final Environmental E2=i.next();
 					if(E2 instanceof Item)
 						if(trapCheck((Item)E2).length()>0)
 							return P.name()+" has something trapped in stock.";
@@ -137,7 +137,7 @@ public class Spell_DetectTraps extends Spell
 		{
 			if((msg.tool()!=null)&&(msg.tool().ID().equals(ID())))
 			{
-				String str=trapHere((MOB)affected,(Physical)msg.target());
+				final String str=trapHere((MOB)affected,(Physical)msg.target());
 				if(str.length()>0)
 					((MOB)affected).tell(str);
 			}
@@ -145,7 +145,7 @@ public class Spell_DetectTraps extends Spell
 			if((trapHere((MOB)affected,(Physical)msg.target()).length()>0)
 			&&(msg.source()!=msg.target()))
 			{
-				CMMsg msg2=CMClass.getMsg(msg.source(),msg.target(),this,CMMsg.MSG_LOOK,CMMsg.NO_EFFECT,CMMsg.NO_EFFECT,null);
+				final CMMsg msg2=CMClass.getMsg(msg.source(),msg.target(),this,CMMsg.MSG_LOOK,CMMsg.NO_EFFECT,CMMsg.NO_EFFECT,null);
 				msg.addTrailerMsg(msg2);
 			}
 		}
@@ -179,11 +179,11 @@ public class Spell_DetectTraps extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> gain(s) trap sensitivities!":"^S<S-NAME> incant(s) softly, and gain(s) sensitivity to traps!^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> gain(s) trap sensitivities!":"^S<S-NAME> incant(s) softly, and gain(s) sensitivity to traps!^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

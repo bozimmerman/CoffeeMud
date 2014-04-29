@@ -72,7 +72,7 @@ public class StdScroll extends StdItem implements MiscMagic, Scroll
 	public boolean useTheScroll(Ability A, MOB mob)
 	{
 		int manaRequired=5;
-		int q=CMLib.ableMapper().qualifyingLevel(mob,A);
+		final int q=CMLib.ableMapper().qualifyingLevel(mob,A);
 		if(q>0)
 		{
 			if(q<CMLib.ableMapper().qualifyingClassLevel(mob,A))
@@ -99,12 +99,12 @@ public class StdScroll extends StdItem implements MiscMagic, Scroll
 
 	public static String makeSecretIdentity(String thang, String id, String more, List<Ability> V)
 	{
-		StringBuffer add=new StringBuffer("");
+		final StringBuffer add=new StringBuffer("");
 		for(int v=0;v<V.size();v++)
 		{
 			if(v==0)
 				add.append("A "+thang+" of ");
-			Ability A=V.get(v);
+			final Ability A=V.get(v);
 			if(V.size()==1)
 				add.append(A.name());
 			else
@@ -126,7 +126,7 @@ public class StdScroll extends StdItem implements MiscMagic, Scroll
 	{
 		if(mob.isMine(me))
 		{
-			boolean readingMagic=(mob.fetchEffect("Spell_ReadMagic")!=null);
+			final boolean readingMagic=(mob.fetchEffect("Spell_ReadMagic")!=null);
 			if(readingMagic)
 			{
 				mob.tell(name()+" glows softly.");
@@ -144,7 +144,7 @@ public class StdScroll extends StdItem implements MiscMagic, Scroll
 					else
 					{
 						Ability thisOne=null;
-						Vector params=new Vector();
+						final Vector params=new Vector();
 						if(spellName.length()>0)
 						{
 							spellName=spellName.trim();
@@ -154,7 +154,7 @@ public class StdScroll extends StdItem implements MiscMagic, Scroll
 							while((thisOne==null)&&(spellName.length()>0))
 							{
 
-								int t=spellName.lastIndexOf(' ');
+								final int t=spellName.lastIndexOf(' ');
 								if(t<0)
 									spellName="";
 								else
@@ -172,7 +172,7 @@ public class StdScroll extends StdItem implements MiscMagic, Scroll
 						{
 							thisOne=(Ability)thisOne.copyOf();
 							int level=phyStats().level();
-							int lowest=CMLib.ableMapper().lowestQualifyingLevel(thisOne.ID());
+							final int lowest=CMLib.ableMapper().lowestQualifyingLevel(thisOne.ID());
 							if(level<lowest)
 								level=lowest;
 							thisOne.invoke(mob,params,null,true,level);
@@ -184,11 +184,11 @@ public class StdScroll extends StdItem implements MiscMagic, Scroll
 						else
 						if(!mob.isMonster())
 						{
-							StringBuffer theNews=new StringBuffer("The scroll contains the following spells:\n\r");
+							final StringBuffer theNews=new StringBuffer("The scroll contains the following spells:\n\r");
 							Spells=me.getSpells();
 							for(int u=0;u<Spells.size();u++)
 							{
-								Ability A=Spells.get(u);
+								final Ability A=Spells.get(u);
 								theNews.append("Level "+CMStrings.padRight(""+CMLib.ableMapper().lowestQualifyingLevel(A.ID()),2)+": "+A.name()+"\n\r");
 							}
 							mob.tell(theNews.toString());
@@ -204,14 +204,14 @@ public class StdScroll extends StdItem implements MiscMagic, Scroll
 	public static Vector getSpells(SpellHolder me)
 	{
 		int baseValue=200;
-		Vector theSpells=new Vector();
-		String names=me.getSpellList();
-		List<String> parsedSpells=CMParms.parseSemicolons(names, true);
+		final Vector theSpells=new Vector();
+		final String names=me.getSpellList();
+		final List<String> parsedSpells=CMParms.parseSemicolons(names, true);
 		for(String thisOne : parsedSpells)
 		{
 			thisOne=thisOne.trim();
 			String parms="";
-			int x=thisOne.indexOf('(');
+			final int x=thisOne.indexOf('(');
 			if((x>0)&&(thisOne.endsWith(")")))
 			{
 				parms=thisOne.substring(x+1,thisOne.length()-1);
@@ -238,7 +238,7 @@ public class StdScroll extends StdItem implements MiscMagic, Scroll
 	{
 		if(msg.amITarget(this))
 		{
-			MOB mob=msg.source();
+			final MOB mob=msg.source();
 			switch(msg.targetMinor())
 			{
 			case CMMsg.TYP_READ:
@@ -297,7 +297,7 @@ public class StdScroll extends StdItem implements MiscMagic, Scroll
 	public boolean sameAs(Environmental E)
 	{
 		if(!(E instanceof StdScroll)) return false;
-		String[] codes=getStatCodes();
+		final String[] codes=getStatCodes();
 		for(int i=0;i<codes.length;i++)
 			if(!E.getStat(codes[i]).equals(getStat(codes[i])))
 				return false;

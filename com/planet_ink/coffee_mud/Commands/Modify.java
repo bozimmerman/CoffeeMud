@@ -56,20 +56,20 @@ public class Modify extends StdCommand
 		MOB srchMob=mob;
 		Item srchContainer=null;
 		Room srchRoom=mob.location();
-		int x=itemID.indexOf('@');
+		final int x=itemID.indexOf('@');
 		if(x>0)
 		{
-			String rest=itemID.substring(x+1).trim();
+			final String rest=itemID.substring(x+1).trim();
 			itemID=itemID.substring(0,x).trim();
 			if(rest.equalsIgnoreCase("room"))
 				srchMob=null;
 			else
 			if(rest.length()>0)
 			{
-				MOB M=srchRoom.fetchInhabitant(rest);
+				final MOB M=srchRoom.fetchInhabitant(rest);
 				if(M==null)
 				{
-					Item I = srchRoom.findItem(null, rest);
+					final Item I = srchRoom.findItem(null, rest);
 					if(I instanceof Container)
 						srchContainer=I;
 					else
@@ -114,10 +114,10 @@ public class Modify extends StdCommand
 		}
 		mob.location().showOthers(mob,modItem,CMMsg.MSG_OK_ACTION,"<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAMESELF>.");
 
-		Item copyItem=(Item)modItem.copyOf();
+		final Item copyItem=(Item)modItem.copyOf();
 		if(command.equals("LEVEL"))
 		{
-			int newLevel=CMath.s_int(restStr);
+			final int newLevel=CMath.s_int(restStr);
 			if(newLevel>=0)
 			{
 				modItem.basePhyStats().setLevel(newLevel);
@@ -128,7 +128,7 @@ public class Modify extends StdCommand
 		else
 		if(command.equals("ABILITY"))
 		{
-			int newAbility=CMath.s_int(restStr);
+			final int newAbility=CMath.s_int(restStr);
 			modItem.basePhyStats().setAbility(newAbility);
 			modItem.recoverPhyStats();
 			mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,modItem.name()+" shake(s) under the transforming power.");
@@ -136,7 +136,7 @@ public class Modify extends StdCommand
 		else
 		if(command.equals("HEIGHT"))
 		{
-			int newAbility=CMath.s_int(restStr);
+			final int newAbility=CMath.s_int(restStr);
 			modItem.basePhyStats().setHeight(newAbility);
 			modItem.recoverPhyStats();
 			mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,modItem.name()+" shake(s) under the transforming power.");
@@ -144,7 +144,7 @@ public class Modify extends StdCommand
 		else
 		if(command.equals("REJUV"))
 		{
-			int newRejuv=CMath.s_int(restStr);
+			final int newRejuv=CMath.s_int(restStr);
 			if(newRejuv>0)
 			{
 				modItem.basePhyStats().setRejuv(newRejuv);
@@ -162,7 +162,7 @@ public class Modify extends StdCommand
 		else
 		if(command.equals("USES"))
 		{
-			int newUses=CMath.s_int(restStr);
+			final int newUses=CMath.s_int(restStr);
 			if(newUses>=0)
 			{
 				modItem.setUsesRemaining(newUses);
@@ -192,7 +192,7 @@ public class Modify extends StdCommand
 		}
 		else
 		{
-			STreeSet<String> set=new STreeSet<String>();
+			final STreeSet<String> set=new STreeSet<String>();
 			set.addAll(CMParms.parseCommas("LEVEL,ABILITY,HEIGHT,REJUV,USES,MISC",true));
 			set.addAll(CMLib.coffeeMaker().getAllGenStats(modItem));
 			mob.tell("...but failed to specify an aspect.  Try one of: "+CMParms.toStringList(set));
@@ -227,8 +227,8 @@ public class Modify extends StdCommand
 		mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> wave(s) <S-HIS-HER> hands around the room.");
 		if(commands.size()==2)
 		{
-			Room oldRoom=(Room)mob.location().copyOf();
-			Room newRoom=CMLib.genEd().modifyRoom(mob,mob.location());
+			final Room oldRoom=(Room)mob.location().copyOf();
+			final Room newRoom=CMLib.genEd().modifyRoom(mob,mob.location());
 			if((!oldRoom.sameAs(newRoom))&&(!newRoom.amDestroyed()))
 			{
 				CMLib.database().DBUpdateRoom(newRoom);
@@ -241,7 +241,7 @@ public class Modify extends StdCommand
 		}
 		if(commands.size()<3) { flunkRoomCmd(mob); return;}
 
-		String command=((String)commands.elementAt(2)).toUpperCase();
+		final String command=((String)commands.elementAt(2)).toUpperCase();
 		String restStr="";
 		if(commands.size()>=3)
 			restStr=CMParms.combine(commands,3);
@@ -299,11 +299,11 @@ public class Modify extends StdCommand
 			if(reid)
 			{
 				Room R=mob.location();
-				String oldID=R.roomID();
+				final String oldID=R.roomID();
 				synchronized(("SYNC"+R.roomID()).intern())
 				{
 					R=CMLib.map().getRoom(R);
-					Room reference=CMLib.map().findConnectingRoom(R);
+					final Room reference=CMLib.map().findConnectingRoom(R);
 					String checkID=null;
 					if(A!=null)
 					{
@@ -329,7 +329,7 @@ public class Modify extends StdCommand
 		if(command.equalsIgnoreCase("CLASS"))
 		{
 			if(commands.size()<4) { flunkRoomCmd(mob); return;}
-			Room newRoom=CMClass.getLocale(restStr);
+			final Room newRoom=CMClass.getLocale(restStr);
 			if(newRoom==null)
 			{
 				mob.tell("'"+restStr+"' is not a valid room locale.");
@@ -390,7 +390,7 @@ public class Modify extends StdCommand
 		}
 		else
 		{
-			STreeSet<String> set=new STreeSet<String>();
+			final STreeSet<String> set=new STreeSet<String>();
 			set.addAll(CMParms.parseCommas("NAME,AREA,DESCRIPTION,AFFECTS,BEHAVIORS,CLASS,XGRID,YGRID",true));
 			set.addAll(CMLib.coffeeMaker().getAllGenStats(mob.location()));
 			mob.tell("...but failed to specify an aspect.  Try one of: "+CMParms.toStringList(set));
@@ -422,7 +422,7 @@ public class Modify extends StdCommand
 		}
 		else
 		{
-			String accountName=CMStrings.capitalizeAndLower(CMParms.combine(commands, 2));
+			final String accountName=CMStrings.capitalizeAndLower(CMParms.combine(commands, 2));
 			theAccount = CMLib.players().getLoadAccount(accountName);
 			if(theAccount==null)
 			{
@@ -437,19 +437,19 @@ public class Modify extends StdCommand
 		Log.sysOut("Modify",mob.Name()+" modified account "+theAccount.getAccountName()+".");
 		if(!oldName.equals(theAccount.getAccountName()))
 		{
-			Vector<MOB> V=new Vector<MOB>();
-			for(Enumeration<String> es=theAccount.getPlayers();es.hasMoreElements();)
+			final Vector<MOB> V=new Vector<MOB>();
+			for(final Enumeration<String> es=theAccount.getPlayers();es.hasMoreElements();)
 			{
-				String playerName=es.nextElement();
-				MOB playerM=CMLib.players().getLoadPlayer(playerName);
+				final String playerName=es.nextElement();
+				final MOB playerM=CMLib.players().getLoadPlayer(playerName);
 				if((playerM!=null)&&(!CMLib.flags().isInTheGame(playerM,true)))
 					V.addElement(playerM);
 			}
-			PlayerAccount acc = (PlayerAccount)CMClass.getCommon("DefaultPlayerAccount");
+			final PlayerAccount acc = (PlayerAccount)CMClass.getCommon("DefaultPlayerAccount");
 			acc.setAccountName(oldName);
 			CMLib.database().DBDeleteAccount(acc);
 			CMLib.database().DBCreateAccount(theAccount);
-			for(MOB playerM : V)
+			for(final MOB playerM : V)
 				CMLib.database().DBUpdatePlayerPlayerStats(playerM);
 		}
 		CMLib.database().DBUpdateAccount(theAccount);
@@ -463,8 +463,8 @@ public class Modify extends StdCommand
 		Area myArea=mob.location().getArea();
 
 		String oldName=myArea.Name();
-		Vector allMyDamnRooms=new Vector();
-		for(Enumeration e=myArea.getCompleteMap();e.hasMoreElements();)
+		final Vector allMyDamnRooms=new Vector();
+		for(final Enumeration e=myArea.getCompleteMap();e.hasMoreElements();)
 			allMyDamnRooms.addElement(e.nextElement());
 
 		mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> wave(s) <S-HIS-HER> hands around wildly.");
@@ -483,12 +483,12 @@ public class Modify extends StdCommand
 			if(commands.size()<3) { flunkAreaCmd(mob); return;}
 
 			String command=((String)commands.elementAt(2)).toUpperCase();
-			STreeSet<String> helpSet=new STreeSet<String>();
+			final STreeSet<String> helpSet=new STreeSet<String>();
 			helpSet.addAll(CMParms.parseCommas("NAME,DESCRIPTION,CLIMATE,FILE,AFFECTS,BEHAVIORS,ADDSUB,DELSUB,XGRID,YGRID,PASSIVE,ACTIVE,FROZEN,STOPPED",true));
 			helpSet.addAll(CMLib.coffeeMaker().getAllGenStats(myArea));
 			if((commands.size()>3)&&(!helpSet.contains(command)))
 			{
-				Area possibleArea=CMLib.map().getArea(command);
+				final Area possibleArea=CMLib.map().getArea(command);
 				if(possibleArea!=null)
 				{
 					myArea=possibleArea;
@@ -633,7 +633,7 @@ public class Modify extends StdCommand
 		{
 			if(mob.session().confirm("Is changing the name of this area really necessary (y/N)?","N"))
 			{
-				for(Enumeration r=myArea.getCompleteMap();r.hasMoreElements();)
+				for(final Enumeration r=myArea.getCompleteMap();r.hasMoreElements();)
 				{
 					Room R=(Room)r.nextElement();
 					synchronized(("SYNC"+R.roomID()).intern())
@@ -643,7 +643,7 @@ public class Modify extends StdCommand
 						&&(CMLib.map().getRoom(myArea.Name()+"#"+R.roomID().substring(oldName.length()+1))==null))
 						{
 							R=CMLib.map().getRoom(R);
-							String oldID=R.roomID();
+							final String oldID=R.roomID();
 							R.setRoomID(myArea.Name()+"#"+R.roomID().substring(oldName.length()+1));
 							CMLib.database().DBReCreate(R,oldID);
 						}
@@ -678,7 +678,7 @@ public class Modify extends StdCommand
 		else
 		{
 			int cmdDex=-1;
-			String[] CMDS={"START","STOP","ENABLE","DISABLE"};
+			final String[] CMDS={"START","STOP","ENABLE","DISABLE"};
 			if(commands.size()>3)
 			{
 				cmdDex=CMParms.indexOf(CMDS,((String)commands.lastElement()).toUpperCase());
@@ -717,7 +717,7 @@ public class Modify extends StdCommand
 						doCmd=Q.suspended()?2:3;
 					if(doCmd<0)
 					{
-						String oldScript=Q.script();
+						final String oldScript=Q.script();
 						newScript=CMLib.genEd().prompt(mob,oldScript,++showNumber,showFlag,"Script",false,false,CMLib.help().getHelpText("QUESTS",mob,true).toString(),null,null);
 						if(!newScript.equals(oldScript))
 						{
@@ -737,7 +737,7 @@ public class Modify extends StdCommand
 							else
 							for(int q=0;q<CMLib.quests().numQuests();q++)
 							{
-								Quest Q1=CMLib.quests().fetchQuest(q);
+								final Quest Q1=CMLib.quests().fetchQuest(q);
 								if(Q1.name().equalsIgnoreCase(Q.name())&&(Q1!=Q))
 								{
 									mob.tell("A quest with that name already exists.");
@@ -828,7 +828,7 @@ public class Modify extends StdCommand
 		CMLib.database().DBUpdateExits(baseRoom);
 		try
 		{
-			for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
+			for(final Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 			{
 				Room room=(Room)r.nextElement();
 				synchronized(("SYNC"+room.roomID()).intern())
@@ -838,7 +838,7 @@ public class Modify extends StdCommand
 					{
 						for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 						{
-							Exit exit=room.getRawExit(d);
+							final Exit exit=room.getRawExit(d);
 							if((exit!=null)&&(exit==thisExit))
 							{
 								CMLib.database().DBUpdateExits(room);
@@ -849,7 +849,7 @@ public class Modify extends StdCommand
 					}
 				}
 			}
-		}catch(NoSuchElementException e){}
+		}catch(final NoSuchElementException e){}
 		if(!prevExit.sameAs(thisExit))
 			Log.sysOut("CreateEdit",mob.Name()+" modified exit "+thisExit.ID()+".");
 		prevExit.destroy();
@@ -873,7 +873,7 @@ public class Modify extends StdCommand
 			return;
 		}
 
-		int direction=Directions.getGoodDirectionCode(((String)commands.elementAt(2)));
+		final int direction=Directions.getGoodDirectionCode(((String)commands.elementAt(2)));
 		if(direction<0)
 		{
 			mob.tell("You have failed to specify a direction.  Try "+Directions.LETTERS()+".\n\r");
@@ -881,7 +881,7 @@ public class Modify extends StdCommand
 			return;
 		}
 
-		Exit thisExit=mob.location().getRawExit(direction);
+		final Exit thisExit=mob.location().getRawExit(direction);
 		if(thisExit==null)
 		{
 			mob.tell("You have failed to specify a valid exit '"+((String)commands.elementAt(2))+"'.\n\r");
@@ -891,7 +891,7 @@ public class Modify extends StdCommand
 		final boolean useShipDirs=(mob.location() instanceof SpaceShip)||(mob.location().getArea() instanceof SpaceShip);
 		final String inDirName=useShipDirs?Directions.getShipInDirectionName(direction):Directions.getInDirectionName(direction);
 		mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> wave(s) <S-HIS-HER> hands around to the "+inDirName+".");
-		Exit copyExit=(Exit)thisExit.copyOf();
+		final Exit copyExit=(Exit)thisExit.copyOf();
 		if(thisExit.isGeneric() && (commands.size()<5))
 		{
 			CMLib.genEd().modifyGenExit(mob,thisExit);
@@ -906,8 +906,8 @@ public class Modify extends StdCommand
 			return;
 		}
 
-		String command=((String)commands.elementAt(3)).toUpperCase();
-		String restStr=CMParms.combine(commands,4);
+		final String command=((String)commands.elementAt(3)).toUpperCase();
+		final String restStr=CMParms.combine(commands,4);
 
 		if(command.equalsIgnoreCase("text"))
 		{
@@ -924,7 +924,7 @@ public class Modify extends StdCommand
 		}
 		else
 		{
-			STreeSet<String> set=new STreeSet<String>();
+			final STreeSet<String> set=new STreeSet<String>();
 			set.addAll(CMParms.parseCommas("TEXT",true));
 			set.addAll(CMLib.coffeeMaker().getAllGenStats(thisExit));
 			mob.tell("...but failed to specify an aspect.  Try one of: "+CMParms.toStringList(set));
@@ -944,8 +944,8 @@ public class Modify extends StdCommand
 			return false;
 		}
 
-		String raceID=CMParms.combine(commands,2);
-		Race R=CMClass.getRace(raceID);
+		final String raceID=CMParms.combine(commands,2);
+		final Race R=CMClass.getRace(raceID);
 		if(R==null)
 		{
 			mob.tell("'"+raceID+"' is an invalid race id.");
@@ -975,15 +975,15 @@ public class Modify extends StdCommand
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 			return;
 		}
-		String eachOrAll=(String)commands.get(2);
+		final String eachOrAll=(String)commands.get(2);
 		if((!eachOrAll.equalsIgnoreCase("each"))&&(!eachOrAll.equalsIgnoreCase("all")))
 		{
 			mob.tell("You have failed to specify the proper fields.\n\rThe format is MODIFY ALLQUALIFY EACH/ALL [SKILL ID]\n\r");
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 			return;
 		}
-		String classD=CMParms.combine(commands,3);
-		Ability A=CMClass.getAbility(classD);
+		final String classD=CMParms.combine(commands,3);
+		final Ability A=CMClass.getAbility(classD);
 		if(A==null)
 		{
 			mob.tell("Ability with the ID '"+classD+"' does not exist! Try LIST ABILITIES.");
@@ -998,7 +998,7 @@ public class Modify extends StdCommand
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 			return;
 		}
-		AbilityMapper.AbilityMapping mapped = CMLib.genEd().modifyAllQualifyEntry(mob,eachOrAll.toUpperCase().trim(),A);
+		final AbilityMapper.AbilityMapping mapped = CMLib.genEd().modifyAllQualifyEntry(mob,eachOrAll.toUpperCase().trim(),A);
 		map=CMLib.ableMapper().getAllQualifiesMap(null);
 		subMap=map.get(eachOrAll.toUpperCase().trim());
 		subMap.put(A.ID().toUpperCase().trim(), mapped);
@@ -1016,8 +1016,8 @@ public class Modify extends StdCommand
 			return false;
 		}
 
-		String classID=CMParms.combine(commands,2);
-		CharClass C=CMClass.getCharClass(classID);
+		final String classID=CMParms.combine(commands,2);
+		final CharClass C=CMClass.getCharClass(classID);
 		if(C==null)
 		{
 			mob.tell("'"+classID+"' is an invalid class id.");
@@ -1048,8 +1048,8 @@ public class Modify extends StdCommand
 			return false;
 		}
 
-		String classID=CMParms.combine(commands,2);
-		Ability A=CMClass.getAbility(classID);
+		final String classID=CMParms.combine(commands,2);
+		final Ability A=CMClass.getAbility(classID);
 		if(A==null)
 		{
 			mob.tell("'"+classID+"' is an invalid ability id.");
@@ -1092,8 +1092,8 @@ public class Modify extends StdCommand
 			return false;
 		}
 
-		String classID=CMParms.combine(commands,2);
-		Ability A=CMClass.getAbility(classID);
+		final String classID=CMParms.combine(commands,2);
+		final Ability A=CMClass.getAbility(classID);
 		if(A==null)
 		{
 			mob.tell("'"+classID+"' is an invalid ability id.");
@@ -1136,8 +1136,8 @@ public class Modify extends StdCommand
 			return false;
 		}
 
-		String classID=CMParms.combine(commands,2);
-		Ability A=CMClass.getAbility(classID);
+		final String classID=CMParms.combine(commands,2);
+		final Ability A=CMClass.getAbility(classID);
 		if(A==null)
 		{
 			mob.tell("'"+classID+"' is an invalid ability id.");
@@ -1180,7 +1180,7 @@ public class Modify extends StdCommand
 			return;
 		}
 		String skillID=CMParms.combine(commands,2);
-		Ability A=CMClass.getAbility(skillID);
+		final Ability A=CMClass.getAbility(skillID);
 		if(A==null)
 		{
 			mob.tell("'"+skillID+"' is not a proper skill/spell ID.  Try LIST ABILITIES.");
@@ -1195,8 +1195,8 @@ public class Modify extends StdCommand
 			return;
 		}
 		CMLib.genEd().modifyComponents(mob,skillID);
-		String parms=CMLib.ableMapper().getAbilityComponentCodedString(skillID);
-		String error=CMLib.ableMapper().addAbilityComponent(parms,CMLib.ableMapper().getAbilityComponentMap());
+		final String parms=CMLib.ableMapper().getAbilityComponentCodedString(skillID);
+		final String error=CMLib.ableMapper().addAbilityComponent(parms,CMLib.ableMapper().getAbilityComponentMap());
 		if(error!=null)
 		{
 			mob.tell(error);
@@ -1219,7 +1219,7 @@ public class Modify extends StdCommand
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
 			return;
 		}
-		String name=((String)commands.elementAt(2)).toUpperCase();
+		final String name=((String)commands.elementAt(2)).toUpperCase();
 		String stuff="";
 		if(commands.size()>3)
 			stuff=CMParms.combine(commands,3).toUpperCase().trim();
@@ -1227,17 +1227,17 @@ public class Modify extends StdCommand
 			stuff="TNAME";
 		if(stuff.equals("TNAME"))
 			stuff="<T-NAME>";
-		String oldStuff=stuff;
+		final String oldStuff=stuff;
 		if(stuff.equals("NONE"))
 			stuff="";
-		Social S=CMLib.socials().fetchSocial((name+" "+stuff).trim(),false);
+		final Social S=CMLib.socials().fetchSocial((name+" "+stuff).trim(),false);
 		if(S==null)
 		{
 			mob.tell("The social '"+stuff+"' does not exist.");
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
 			return;
 		}
-		List<Social> oldSocials = new Vector();
+		final List<Social> oldSocials = new Vector();
 		List<Social> allSocials = CMLib.socials().getSocialsSet(name);
 		if(allSocials==null) allSocials=new Vector();
 		for(int a = 0; a<allSocials.size();a++)
@@ -1249,11 +1249,11 @@ public class Modify extends StdCommand
 		if(!changed)
 		for(int a=0;a<oldSocials.size();a++)
 		{
-			Social oldSocial = oldSocials.get(a);
+			final Social oldSocial = oldSocials.get(a);
 			boolean found = false;
 			for(int a2=0;a2<allSocials.size();a2++)
 			{
-				Social newSocial = allSocials.get(a2);
+				final Social newSocial = allSocials.get(a2);
 				if(oldSocial.name().equals(newSocial.name()))
 				{
 					found = true;
@@ -1278,8 +1278,8 @@ public class Modify extends StdCommand
 			return;
 		}
 
-		String mobID=(String)commands.elementAt(2);
-		MOB M=CMLib.players().getLoadPlayer(mobID);
+		final String mobID=(String)commands.elementAt(2);
+		final MOB M=CMLib.players().getLoadPlayer(mobID);
 		if(M!=null)
 		{
 			CMLib.database().DBReadFollowers(M,false);
@@ -1295,7 +1295,7 @@ public class Modify extends StdCommand
 			return;
 		}
 		mob.location().showOthers(mob,M,CMMsg.MSG_OK_ACTION,"<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAMESELF>.");
-		MOB copyMOB=(MOB)M.copyOf();
+		final MOB copyMOB=(MOB)M.copyOf();
 		if(commands.size()<5)
 		{
 			CMLib.genEd().modifyPlayer(mob,M);
@@ -1304,16 +1304,16 @@ public class Modify extends StdCommand
 		}
 		else
 		{
-			String command=((String)commands.elementAt(3)).toUpperCase();
-			String restStr=CMParms.combine(commands,4);
+			final String command=((String)commands.elementAt(3)).toUpperCase();
+			final String restStr=CMParms.combine(commands,4);
 			if(command.equalsIgnoreCase("PROFICIENCIES")||command.equalsIgnoreCase("PROFICIENCY"))
 			{
-				int prof=CMath.s_int(restStr);
+				final int prof=CMath.s_int(restStr);
 				for(int a=0;a<M.numAbilities();a++)
 					M.fetchAbility(a).setProficiency(prof);
 				for(int a=0;a<M.numEffects();a++)
 				{
-					Ability A=M.fetchEffect(a);
+					final Ability A=M.fetchEffect(a);
 					if((A!=null)&&(A.isNowAnAutoEffect()))
 						A.setProficiency(prof);
 				}
@@ -1323,9 +1323,9 @@ public class Modify extends StdCommand
 			else
 			if(command.toUpperCase().startsWith("PROFICIENCY(")&&command.endsWith(")"))
 			{
-				int prof=CMath.s_int(restStr);
-				String ableName=command.substring(12,command.length()-1).trim();
-				Ability A=M.findAbility(ableName);
+				final int prof=CMath.s_int(restStr);
+				final String ableName=command.substring(12,command.length()-1).trim();
+				final Ability A=M.findAbility(ableName);
 				if(A==null)
 				{
 					mob.tell("...but failed to specify an valid ability name.  Try one of: "+CMParms.toCMObjectStringList(M.abilities()));
@@ -1333,7 +1333,7 @@ public class Modify extends StdCommand
 					return;
 				}
 				A.setProficiency(prof);
-				Ability eA=M.fetchEffect(A.ID());
+				final Ability eA=M.fetchEffect(A.ID());
 				if((eA!=null)&&(eA.isNowAnAutoEffect()))
 					eA.setProficiency(prof);
 				mob.tell(M.Name()+"'s skill proficiency in "+A.ID()+" set to "+prof);
@@ -1351,7 +1351,7 @@ public class Modify extends StdCommand
 			}
 			else
 			{
-				STreeSet<String> set=new STreeSet<String>();
+				final STreeSet<String> set=new STreeSet<String>();
 				set.addAll(CMLib.coffeeMaker().getAllGenStats(M));
 				set.add("PROFICIENCIES");
 				set.add("PROFICIENCY(ABILITY_ID)");
@@ -1376,9 +1376,9 @@ public class Modify extends StdCommand
 			return;
 		}
 
-		String manufacturerID=CMParms.combine(commands,2);
+		final String manufacturerID=CMParms.combine(commands,2);
 
-		Manufacturer manufacturer=CMLib.tech().getManufacturer(manufacturerID);
+		final Manufacturer manufacturer=CMLib.tech().getManufacturer(manufacturerID);
 		if((manufacturer==null)||(manufacturer==CMLib.tech().getDefaultManufacturer()))
 		{
 			mob.tell("There's no manufacturer called '"+manufacturerID+"' Try LIST MANUFACTURERS.\n\r");
@@ -1403,14 +1403,14 @@ public class Modify extends StdCommand
 			return;
 		}
 
-		String mobID=((String)commands.elementAt(2));
-		String command=((String)commands.elementAt(3)).toUpperCase();
+		final String mobID=((String)commands.elementAt(2));
+		final String command=((String)commands.elementAt(3)).toUpperCase();
 		String restStr="";
 		if(commands.size()>4)
 			restStr=CMParms.combine(commands,4);
 
 
-		MOB modMOB=mob.location().fetchInhabitant(mobID);
+		final MOB modMOB=mob.location().fetchInhabitant(mobID);
 		if(modMOB==null)
 		{
 			mob.tell("I don't see '"+mobID+" here.\n\r");
@@ -1423,11 +1423,11 @@ public class Modify extends StdCommand
 			mob.tell(modMOB.Name()+" is a player! Try MODIFY USER!");
 			return;
 		}
-		MOB copyMOB=(MOB)modMOB.copyOf();
+		final MOB copyMOB=(MOB)modMOB.copyOf();
 		mob.location().showOthers(mob,modMOB,CMMsg.MSG_OK_ACTION,"<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAMESELF>.");
 		if(command.equals("LEVEL"))
 		{
-			int newLevel=CMath.s_int(restStr);
+			final int newLevel=CMath.s_int(restStr);
 			if(newLevel>=0)
 			{
 				modMOB.basePhyStats().setLevel(newLevel);
@@ -1439,7 +1439,7 @@ public class Modify extends StdCommand
 		else
 		if(command.equals("ABILITY"))
 		{
-			int newAbility=CMath.s_int(restStr);
+			final int newAbility=CMath.s_int(restStr);
 			modMOB.basePhyStats().setAbility(newAbility);
 			modMOB.recoverPhyStats();
 			mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,modMOB.name()+" shakes under the transforming power.");
@@ -1447,7 +1447,7 @@ public class Modify extends StdCommand
 		else
 		if(command.equals("REJUV"))
 		{
-			int newRejuv=CMath.s_int(restStr);
+			final int newRejuv=CMath.s_int(restStr);
 			if(newRejuv>0)
 			{
 				modMOB.basePhyStats().setRejuv(newRejuv);
@@ -1479,7 +1479,7 @@ public class Modify extends StdCommand
 		}
 		else
 		{
-			STreeSet<String> set=new STreeSet<String>();
+			final STreeSet<String> set=new STreeSet<String>();
 			set.addAll(CMParms.parseCommas("LEVEL,ABILITY,REJUV,MISC",true));
 			set.addAll(CMLib.coffeeMaker().getAllGenStats(modMOB));
 			mob.tell("...but failed to specify an aspect.  Try one of: "+CMParms.toStringList(set));
@@ -1503,7 +1503,7 @@ public class Modify extends StdCommand
 		String commandType="";
 		if(commands.size()>1)
 		{
-			Object O = commands.elementAt(1);
+			final Object O = commands.elementAt(1);
 			if(O instanceof Environmental)
 			{
 				CMLib.genEd().genMiscSet(mob,(Environmental)O);
@@ -1535,8 +1535,8 @@ public class Modify extends StdCommand
 				mob.tell("Modify which recipe?  Name a common skill ID -- use list abilities to find one.");
 				return false;
 			}
-			String name=CMParms.combine(commands,2);
-			Ability A=CMClass.findAbility(name,Ability.ACODE_COMMON_SKILL,-1,false);
+			final String name=CMParms.combine(commands,2);
+			final Ability A=CMClass.findAbility(name,Ability.ACODE_COMMON_SKILL,-1,false);
 			if(A==null)
 			{
 				mob.tell("'"+name+"' is not a valid skill id.");
@@ -1547,7 +1547,7 @@ public class Modify extends StdCommand
 				mob.tell("'"+A.ID()+"' is not a common crafting skill.");
 				return false;
 			}
-			ItemCraftor iA = (ItemCraftor)A;
+			final ItemCraftor iA = (ItemCraftor)A;
 			if((iA.parametersFormat()==null)
 			||(iA.parametersFormat().length()==0)
 			||(iA.parametersFile()==null)
@@ -1704,8 +1704,8 @@ public class Modify extends StdCommand
 				mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell.");
 				return false;
 			}
-			TimeClock C=mob.location().getArea().getTimeObj();
-			TimeClock.TimeOfDay oldTOD=C.getTODCode();
+			final TimeClock C=mob.location().getArea().getTimeObj();
+			final TimeClock.TimeOfDay oldTOD=C.getTODCode();
 			C.setHourOfDay(CMath.s_int((String)commands.get(2)));
 			if(oldTOD!=C.getTODCode())
 				C.handleTimeChange();
@@ -1723,9 +1723,9 @@ public class Modify extends StdCommand
 				return true;
 			}
 			Object O=null;
-			Map<Long,String> j=CMSecurity.getApprovedJScriptTable();
+			final Map<Long,String> j=CMSecurity.getApprovedJScriptTable();
 			boolean somethingFound=false;
-			for(Long L : j.keySet())
+			for(final Long L : j.keySet())
 			{
 				O=j.get(L);
 				if(O instanceof StringBuffer)
@@ -1752,7 +1752,7 @@ public class Modify extends StdCommand
 		if(commandType.equals("POLL"))
 		{
 			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.POLLS)) return errorOut(mob);
-			String name=CMParms.combine(commands,2);
+			final String name=CMParms.combine(commands,2);
 			Poll P=null;
 			if(CMath.isInteger(name))
 				P=CMLib.polls().getPoll(CMath.s_int(name)-1);
@@ -1774,7 +1774,7 @@ public class Modify extends StdCommand
 		if(commandType.equals("HOLIDAY"))
 		{
 			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDQUESTS)) return errorOut(mob);
-			String name=CMParms.combine(commands,2);
+			final String name=CMParms.combine(commands,2);
 			int num=-1;
 			if(CMath.isInteger(name))
 				num=CMath.s_int(name);
@@ -1799,10 +1799,10 @@ public class Modify extends StdCommand
 				return errorOut(mob);
 
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
-			Item I=CMClass.getItem("StdJournal");
+			final Item I=CMClass.getItem("StdJournal");
 			I.setName("SYSTEM_NEWS");
 			I.setDescription("Enter `LIST NEWS [NUMBER]` to read an entry.%0D%0AEnter CREATE NEWS to add new entries. ");
-			CMMsg newMsg=CMClass.getMsg(mob,I,null,CMMsg.MSG_WRITE|CMMsg.MASK_ALWAYS,null,CMMsg.MSG_WRITE|CMMsg.MASK_ALWAYS,CMParms.combine(commands,2),CMMsg.MSG_WRITE|CMMsg.MASK_ALWAYS,null);
+			final CMMsg newMsg=CMClass.getMsg(mob,I,null,CMMsg.MSG_WRITE|CMMsg.MASK_ALWAYS,null,CMMsg.MSG_WRITE|CMMsg.MASK_ALWAYS,CMParms.combine(commands,2),CMMsg.MSG_WRITE|CMMsg.MASK_ALWAYS,null);
 			if(mob.location().okMessage(mob,newMsg)&&I.okMessage(mob, newMsg))
 			{
 				mob.location().send(mob,newMsg);
@@ -1822,27 +1822,27 @@ public class Modify extends StdCommand
 			if(!CMSecurity.isASysOp(mob)) return errorOut(mob);
 			try
 			{
-				String sql=CMParms.combine(commands,2);
+				final String sql=CMParms.combine(commands,2);
 				if(sql.equals("ping"))
 				{
-					int num=CMLib.database().pingAllConnections(1000);
+					final int num=CMLib.database().pingAllConnections(1000);
 					mob.tell("Pings completed="+num+".");
 				}
 				else
 				if(sql.toUpperCase().trim().startsWith("SELECT"))
 				{
 					mob.tell("SQL Query: "+sql);
-					List<String[]> results=CMLib.database().DBRawQuery(sql.replace('`','\''));
-					StringBuilder buf=new StringBuilder("QueryResults\n\r");
+					final List<String[]> results=CMLib.database().DBRawQuery(sql.replace('`','\''));
+					final StringBuilder buf=new StringBuilder("QueryResults\n\r");
 					if(results.size()>0)
 					{
-						String[] headerRow=results.get(0);
-						for(int c=0;c<headerRow.length;c++)
-							buf.append(headerRow[c]);
+						final String[] headerRow=results.get(0);
+						for (final String element : headerRow)
+							buf.append(element);
 						buf.append("\n\r");
 						for(int r=1;r<results.size();r++)
 						{
-							String[] row=results.get(r);
+							final String[] row=results.get(r);
 							for(int c=0;c<row.length;c++)
 							{
 								if(c<headerRow.length)
@@ -1860,11 +1860,11 @@ public class Modify extends StdCommand
 				else
 				{
 					mob.tell("SQL Statement: "+sql);
-					int resp=CMLib.database().DBRawExecute(sql.replace('`','\''));
+					final int resp=CMLib.database().DBRawExecute(sql.replace('`','\''));
 					mob.tell("Command completed. Response code: "+resp);
 				}
 			}
-			catch(Exception e)
+			catch(final Exception e)
 			{
 				mob.tell("SQL Error: "+e.getMessage());
 			}
@@ -1877,13 +1877,13 @@ public class Modify extends StdCommand
 				mob.tell("Modify which government?  Use list governments.");
 			else
 			{
-				String name=CMParms.combine(commands,2);
+				final String name=CMParms.combine(commands,2);
 				ClanGovernment G = null;
-				for(ClanGovernment g : CMLib.clans().getStockGovernments())
+				for(final ClanGovernment g : CMLib.clans().getStockGovernments())
 					if(g.getName().equalsIgnoreCase(name))
 						G=g;
 				if(G==null)
-					for(ClanGovernment g : CMLib.clans().getStockGovernments())
+					for(final ClanGovernment g : CMLib.clans().getStockGovernments())
 						if(g.getName().toLowerCase().startsWith(name.toLowerCase()))
 							G=g;
 				if(G==null)
@@ -1906,7 +1906,7 @@ public class Modify extends StdCommand
 				mob.tell("Modify which faction?  Use list factions.");
 			else
 			{
-				String name=CMParms.combine(commands,2);
+				final String name=CMParms.combine(commands,2);
 				Faction F=CMLib.factions().getFaction(name);
 				if(F==null) F=CMLib.factions().getFactionByName(name);
 				if(F==null)
@@ -1928,8 +1928,8 @@ public class Modify extends StdCommand
 				mob.tell("Modify which clan?  Use clanlist.");
 			else
 			{
-				String name=CMParms.combine(commands,2);
-				Clan C=CMLib.clans().findClan(name);
+				final String name=CMParms.combine(commands,2);
+				final Clan C=CMLib.clans().findClan(name);
 				if(C==null)
 					mob.tell("Clan '"+name+"' is unknown.  Try clanlist.");
 				else
@@ -1944,23 +1944,23 @@ public class Modify extends StdCommand
 		else
 		{
 			String allWord=CMParms.combine(commands,1);
-			int x=allWord.indexOf('@');
+			final int x=allWord.indexOf('@');
 			MOB srchMob=mob;
 			Item srchContainer=null;
 			Room srchRoom=mob.location();
 			if(x>0)
 			{
-				String rest=allWord.substring(x+1).trim();
+				final String rest=allWord.substring(x+1).trim();
 				allWord=allWord.substring(0,x).trim();
 				if(rest.equalsIgnoreCase("room"))
 					srchMob=null;
 				else
 				if(rest.length()>0)
 				{
-					MOB M=srchRoom.fetchInhabitant(rest);
+					final MOB M=srchRoom.fetchInhabitant(rest);
 					if(M==null)
 					{
-						Item I = srchRoom.findItem(null, rest);
+						final Item I = srchRoom.findItem(null, rest);
 						if(I instanceof Container)
 							srchContainer=I;
 						else
@@ -1990,7 +1990,7 @@ public class Modify extends StdCommand
 			{
 				if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDITEMS))
 					return errorOut(mob);
-				Item copyItem=(Item)thang.copyOf();
+				final Item copyItem=(Item)thang.copyOf();
 				mob.location().showOthers(mob,thang,CMMsg.MSG_OK_ACTION,"<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAMESELF>.");
 				if(!thang.isGeneric())
 				{
@@ -2011,7 +2011,7 @@ public class Modify extends StdCommand
 					return errorOut(mob);
 				if((!thang.isGeneric())&&(((MOB)thang).isMonster()))
 				{
-					MOB copyMOB=(MOB)thang.copyOf();
+					final MOB copyMOB=(MOB)thang.copyOf();
 					mob.location().showOthers(mob,thang,CMMsg.MSG_OK_ACTION,"<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAMESELF>.");
 					CMLib.genEd().modifyStdMob(mob,(MOB)thang);
 					if(!copyMOB.sameAs(thang))
@@ -2025,7 +2025,7 @@ public class Modify extends StdCommand
 				}
 				else
 				{
-					MOB copyMOB=(MOB)thang.copyOf();
+					final MOB copyMOB=(MOB)thang.copyOf();
 					mob.location().showOthers(mob,thang,CMMsg.MSG_OK_ACTION,"<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAMESELF>.");
 					CMLib.genEd().genMiscSet(mob,thang);
 					if(!copyMOB.sameAs(thang))
@@ -2045,7 +2045,7 @@ public class Modify extends StdCommand
 				{
 					if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDEXITS)) return errorOut(mob);
 					mob.location().showOthers(mob,thang,CMMsg.MSG_OK_ACTION,"<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAMESELF>.");
-					Exit copyExit=(Exit)thang.copyOf();
+					final Exit copyExit=(Exit)thang.copyOf();
 					CMLib.genEd().genMiscText(mob,thang,1,1);
 					updateChangedExit(mob, mob.location(), (Exit)thang, copyExit);
 				}

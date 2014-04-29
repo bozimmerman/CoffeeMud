@@ -77,7 +77,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 		String date=CMStrings.padRight("Unknown",11);
 		if(E!=null)
 		{
-			TimeClock C=(E instanceof Area)?((Area)E).getTimeObj():((CMLib.map().roomLocation(E)!=null)?CMLib.map().roomLocation(E).getArea().getTimeObj():null);
+			final TimeClock C=(E instanceof Area)?((Area)E).getTimeObj():((CMLib.map().roomLocation(E)!=null)?CMLib.map().roomLocation(E).getArea().getTimeObj():null);
 			if(C!=null)
 				date=CMStrings.padRight(C.getDayOfMonth()+"-"+C.getMonth()+"-"+C.getYear(),11);
 		}
@@ -111,7 +111,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 	public Trap makeADeprecatedTrap(Physical unlockThis)
 	{
 		Trap theTrap=null;
-		int roll=(int)Math.round(Math.random()*100.0);
+		final int roll=(int)Math.round(Math.random()*100.0);
 		if(unlockThis instanceof Exit)
 		{
 			if(((Exit)unlockThis).hasADoor())
@@ -173,7 +173,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 	@Override
 	public void setTrapped(Physical myThang, boolean isTrapped)
 	{
-		Trap t=makeADeprecatedTrap(myThang);
+		final Trap t=makeADeprecatedTrap(myThang);
 		t.setReset(50);
 		setTrapped(myThang,t,isTrapped);
 	}
@@ -182,7 +182,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 	{
 		for(int a=0;a<myThang.numEffects();a++)
 		{
-			Ability A=myThang.fetchEffect(a);
+			final Ability A=myThang.fetchEffect(a);
 			if((A!=null)&&(A instanceof Trap))
 				A.unInvoke();
 		}
@@ -208,8 +208,8 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 	{
 		if((E==null)||(!(E instanceof Item)))
 			return true;
-		Item I=(Item)E;
-		Rideable R=mob.riding();
+		final Item I=(Item)E;
+		final Rideable R=mob.riding();
 		if((mob.isMine(I))
 		||((mob.riding()!=null)&&((I==mob.riding())
 								  ||(I.owner()==R)
@@ -226,23 +226,23 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 		double s=-1.0;
 		try
 		{
-			int n = number;
-			Object[] objs = new Object[n] ;
-			Environmental cl = E;
-			Runtime rt = Runtime.getRuntime() ;
-			long m0 =rt.totalMemory() - rt.freeMemory() ;
+			final int n = number;
+			final Object[] objs = new Object[n] ;
+			final Environmental cl = E;
+			final Runtime rt = Runtime.getRuntime() ;
+			final long m0 =rt.totalMemory() - rt.freeMemory() ;
 			System.gc() ;
 			Thread.sleep( 500 ) ;
 			for (int i = 0 ; i < n ; ++i) objs[i] =
 					E=(Environmental)cl.copyOf();
 			System.gc() ;
 			Thread.sleep( 1000 ) ;
-			long m1 =rt.totalMemory() - rt.freeMemory() ;
-			long dm = m1 - m0 ;
+			final long m1 =rt.totalMemory() - rt.freeMemory() ;
+			final long dm = m1 - m0 ;
 			s = (double)dm / (double)n ;
 			if(s<0.0) return memoryUse(E,number);
 		}
-		catch(Exception e){return -1;}
+		catch(final Exception e){return -1;}
 		return s;
 	}
 
@@ -264,22 +264,22 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 	{
 		if(target instanceof Room)
 		{
-			Room R=(Room)target;
+			final Room R=(Room)target;
 			for(int m=0;m<R.numInhabitants();m++)
 			{
-				MOB M=R.fetchInhabitant(m);
+				final MOB M=R.fetchInhabitant(m);
 				if(M!=null) extinguish(source,M,mundane);
 			}
 			for(int i=0;i<R.numItems();i++)
 			{
-				Item I=R.getItem(i);
+				final Item I=R.getItem(i);
 				if(I!=null) extinguish(source,I,mundane);
 			}
 			return;
 		}
 		for(int a=target.numEffects()-1;a>=0;a--) // personal effects
 		{
-			Ability A=target.fetchEffect(a);
+			final Ability A=target.fetchEffect(a);
 			if((A!=null)&&((!mundane)||((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PROPERTY)))
 			{
 				if((CMath.bset(A.flags(),Ability.FLAG_HEATING)&&(!mundane))
@@ -290,12 +290,12 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 		}
 		if((target instanceof MOB)&&(!mundane))
 		{
-			MOB tmob=(MOB)target;
+			final MOB tmob=(MOB)target;
 			if(tmob.charStats().getMyRace().ID().equals("FireElemental"))
 				CMLib.combat().postDeath(source,(MOB)target,null);
 			for(int i=0;i<tmob.numItems();i++)
 			{
-				Item I=tmob.getItem(i);
+				final Item I=tmob.getItem(i);
 				if(I!=null) extinguish(tmob,I,mundane);
 			}
 		}
@@ -318,7 +318,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 				if(room.getExitInDir(d)==msg.target()){ dirCode=d; break;}
 		}
 		if(dirCode<0) return;
-		Exit pair=room.getPairedExit(dirCode);
+		final Exit pair=room.getPairedExit(dirCode);
 		if(pair!=null)
 		{
 			CMMsg altMsg=null;
@@ -339,7 +339,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 		boolean doneSomething=false;
 		if(target instanceof Wand)
 		{
-			Ability A=((Wand)target).getSpell();
+			final Ability A=((Wand)target).getSpell();
 			if(A!=null)
 				level=level-CMLib.ableMapper().lowestQualifyingLevel(A.ID())+2;
 			((Wand)target).setSpell(null);
@@ -361,14 +361,14 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 			doneSomething=true;
 		}
 
-		LinkedList<Ability> affects=new LinkedList<Ability>();
+		final LinkedList<Ability> affects=new LinkedList<Ability>();
 		for(final Enumeration<Ability> a=target.effects();a.hasMoreElements();)
 		{
 			final Ability A=a.nextElement();
 			if(A!=null)
 				affects.add(A);
 		}
-		for(Ability A : affects)
+		for(final Ability A : affects)
 		{
 			A.unInvoke();
 			level=level-1;
@@ -387,15 +387,15 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 		if(E==null) return false;
 		if(E instanceof Affectable)
 		{
-			Affectable aE=(Affectable)E;
-			LinkedList<Ability> affects=new LinkedList<Ability>();
+			final Affectable aE=(Affectable)E;
+			final LinkedList<Ability> affects=new LinkedList<Ability>();
 			for(int a=aE.numEffects()-1;a>=0;a--) // personal affects
 			{
-				Ability A=aE.fetchEffect(a);
+				final Ability A=aE.fetchEffect(a);
 				if(A!=null)
 					affects.add(A);
 			}
-			for(Ability A : affects)
+			for(final Ability A : affects)
 			{
 				if(A.canBeUninvoked() && (!A.isAutoInvoked()))
 					A.unInvoke();
@@ -410,28 +410,28 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 		int newLastTickedDateTime=0;
 		if(mob!=null)
 		{
-			Room R=mob.location();
+			final Room R=mob.location();
 			if(R!=null)
 			{
 				for(int i=0;i<R.numInhabitants();i++)
 				{
-					MOB M=R.fetchInhabitant(i);
+					final MOB M=R.fetchInhabitant(i);
 					if((M!=null)&&(!M.isMonster())&&(CMSecurity.isAllowed(M,R,CMSecurity.SecFlag.CMDMOBS)))
 					{ newLastTickedDateTime=-1; break;}
 				}
 				if(newLastTickedDateTime==0)
 				{
-					List<List<Item>> rivals=new Vector<List<Item>>();
+					final List<List<Item>> rivals=new Vector<List<Item>>();
 					for(int i=0;i<mob.numItems();i++)
 					{
-						Item I=mob.getItem(i);
+						final Item I=mob.getItem(i);
 						if((I!=null)&&(I.basePhyStats().rejuv()>0)&&(I.basePhyStats().rejuv()!=PhyStats.NO_REJUV))
 						{
 							List<Item> V=null;
 							for(int r=0;r<rivals.size();r++)
 							{
-								List<Item> V2=rivals.get(r);
-								Item I2=V2.get(0);
+								final List<Item> V2=rivals.get(r);
+								final Item I2=V2.get(0);
 								if(I2.rawWornCode()==I.rawWornCode())
 								{ V=V2; break;}
 							}
@@ -441,12 +441,12 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 					}
 					for(int i=0;i<rivals.size();i++)
 					{
-						List<Item> V=rivals.get(i);
+						final List<Item> V=rivals.get(i);
 						if((V.size()==1)||(V.get(0).rawWornCode()==0))
 						{
 							for(int r=0;r<V.size();r++)
 							{
-								Item I=V.get(r);
+								final Item I=V.get(r);
 								if(CMLib.dice().rollPercentage()<I.basePhyStats().rejuv())
 									mob.delItem(I);
 								else
@@ -461,15 +461,15 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 							int totalChance=0;
 							for(int r=0;r<V.size();r++)
 							{
-								Item I=V.get(r);
+								final Item I=V.get(r);
 								totalChance+=I.basePhyStats().rejuv();
 							}
-							int chosenChance=CMLib.dice().roll(1,totalChance,0);
+							final int chosenChance=CMLib.dice().roll(1,totalChance,0);
 							totalChance=0;
 							Item chosenI=null;
 							for(int r=0;r<V.size();r++)
 							{
-								Item I=V.get(r);
+								final Item I=V.get(r);
 								if(chosenChance<=(totalChance+I.basePhyStats().rejuv()))
 								{
 									chosenI=I;
@@ -479,7 +479,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 							}
 							for(int r=0;r<V.size();r++)
 							{
-								Item I=V.get(r);
+								final Item I=V.get(r);
 								if(chosenI!=I)
 									mob.delItem(I);
 								else
@@ -492,17 +492,17 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 					}
 					if(mob instanceof ShopKeeper)
 					{
-						List<Item> V=new Vector<Item>();
-						CoffeeShop shop = ((ShopKeeper)mob).getShop();
-						for(Iterator<Environmental> i=shop.getStoreInventory();i.hasNext();)
+						final List<Item> V=new Vector<Item>();
+						final CoffeeShop shop = ((ShopKeeper)mob).getShop();
+						for(final Iterator<Environmental> i=shop.getStoreInventory();i.hasNext();)
 						{
-							Environmental E=i.next();
+							final Environmental E=i.next();
 							if((E instanceof Item)
 							&&(((Item)E).basePhyStats().rejuv()>0)
 							&&(((Item)E).basePhyStats().rejuv()!=PhyStats.NO_REJUV))
 								V.add((Item)E);
 						}
-						for(Item I : V)
+						for(final Item I : V)
 						{
 							if(CMLib.dice().rollPercentage()>I.basePhyStats().rejuv())
 								shop.delAllStoreInventory(I);
@@ -550,7 +550,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 			nothingDone=true;
 			for(int i=0;i<mob.numItems();i++)
 			{
-				Item thisItem=mob.getItem(i);
+				final Item thisItem=mob.getItem(i);
 				if((thisItem!=null)&&(thisItem.container()==thisContainer))
 				{
 					recursiveDropMOB(mob,room,thisItem,bodyFlag);
@@ -567,7 +567,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 	{
 		if(mob==null) return null;
 		MOB M=null;
-		for(Session S : CMLib.sessions().localOnlineIterable())
+		for(final Session S : CMLib.sessions().localOnlineIterable())
 		{
 			M=S.mob();
 			if((M!=null)&&(M.soulMate()==mob))
@@ -663,10 +663,10 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 
 		for(int i=0;i<mob.numItems();i++)
 		{
-			Item I=mob.getItem(i);
+			final Item I=mob.getItem(i);
 			if((I!=null)&&(!I.amWearingAt(Wearable.IN_INVENTORY)))
 			{
-				boolean ok=armorCheck(mob,I,allowedArmorLevel);
+				final boolean ok=armorCheck(mob,I,allowedArmorLevel);
 				if((!ok)&&((I.rawWornCode()&CharClass.ARMOR_WEARMASK)>0))
 					return false;
 			}
@@ -682,8 +682,8 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 			return new XVector<DeadBody>((DeadBody)E);
 		if(E instanceof Container)
 		{
-			Vector<DeadBody> Bs=new Vector<DeadBody>();
-			List<Item> V=((Container)E).getContents();
+			final Vector<DeadBody> Bs=new Vector<DeadBody>();
+			final List<Item> V=((Container)E).getContents();
 			for(int v=0;v<V.size();v++)
 				Bs.addAll(getDeadBodies(V.get(v)));
 			return Bs;
@@ -699,14 +699,14 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 		final String lootPolicyStr=CMProps.getVar(CMProps.Str.ITEMLOOTPOLICY);
 		if((lootPolicy==null)||(lastLootPolicyHash!=lootPolicyStr.hashCode()))
 		{
-			List<String> lootPolicies=(!mob.isMonster())?new Vector<String>():CMParms.parseCommas(CMProps.getVar(CMProps.Str.ITEMLOOTPOLICY),true);
-			TriadVector<Integer,Integer,MaskingLibrary.CompiledZapperMask> policies=new TriadVector<Integer,Integer,MaskingLibrary.CompiledZapperMask>();
+			final List<String> lootPolicies=(!mob.isMonster())?new Vector<String>():CMParms.parseCommas(CMProps.getVar(CMProps.Str.ITEMLOOTPOLICY),true);
+			final TriadVector<Integer,Integer,MaskingLibrary.CompiledZapperMask> policies=new TriadVector<Integer,Integer,MaskingLibrary.CompiledZapperMask>();
 			for(int p=0;p<lootPolicies.size();p++)
 			{
 				String s=lootPolicies.get(p).toUpperCase().trim();
 				if(s.length()==0) continue;
 				MaskingLibrary.CompiledZapperMask compiledMask=null;
-				int maskDex=s.indexOf("MASK=");
+				final int maskDex=s.indexOf("MASK=");
 				if(maskDex>=0)
 				{
 					s=s.substring(0,maskDex).trim();
@@ -714,7 +714,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 				}
 				else
 					compiledMask=MaskingLibrary.CompiledZapperMask.EMPTY();
-				Vector<String> parsed=CMParms.parse(s);
+				final Vector<String> parsed=CMParms.parse(s);
 				int pct=100;
 				for(int x=0;x<parsed.size();x++)
 					if(CMath.isInteger(parsed.elementAt(x)))
@@ -742,21 +742,21 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 	public void confirmWearability(MOB mob)
 	{
 		if(mob==null) return;
-		Race R=mob.charStats().getMyRace();
-		DVector reWearSet=new DVector(2);
+		final Race R=mob.charStats().getMyRace();
+		final DVector reWearSet=new DVector(2);
 		Item item=null;
 		for(int i=0;i<mob.numItems();i++)
 		{
 			item=mob.getItem(i);
 			if((item!=null)&&(!item.amWearingAt(Wearable.IN_INVENTORY)))
 			{
-				Long oldCode=Long.valueOf(item.rawWornCode());
+				final Long oldCode=Long.valueOf(item.rawWornCode());
 				item.unWear();
 				if(reWearSet.size()==0)
 					reWearSet.addElement(item,oldCode);
 				else
 				{
-					short layer=(item instanceof Armor)?((Armor)item).getClothingLayer():0;
+					final short layer=(item instanceof Armor)?((Armor)item).getClothingLayer():0;
 					int d=0;
 					for(;d<reWearSet.size();d++)
 						if(reWearSet.elementAt(d,1) instanceof Armor)
@@ -778,14 +778,14 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 		for(int r=0;r<reWearSet.size();r++)
 		{
 			item=(Item)reWearSet.elementAt(r,1);
-			long oldCode=((Long)reWearSet.elementAt(r,2)).longValue();
+			final long oldCode=((Long)reWearSet.elementAt(r,2)).longValue();
 			int msgCode=CMMsg.MSG_WEAR;
 			if((oldCode&Wearable.WORN_WIELD)>0)
 				msgCode=CMMsg.MSG_WIELD;
 			else
 			if((oldCode&Wearable.WORN_HELD)>0)
 				msgCode=CMMsg.MSG_HOLD;
-			CMMsg msg=CMClass.getMsg(mob,item,null,CMMsg.NO_EFFECT,null,msgCode,null,CMMsg.NO_EFFECT,null);
+			final CMMsg msg=CMClass.getMsg(mob,item,null,CMMsg.NO_EFFECT,null,msgCode,null,CMMsg.NO_EFFECT,null);
 			if((R.okMessage(mob,msg))
 			&&(item.okMessage(item,msg))
 			&&((mob.charStats().getWearableRestrictionsBitmap()&oldCode)==0)
@@ -816,7 +816,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 				continue;
 			if(CMLib.dice().rollPercentage()>policies.get(d).first.intValue())
 				continue;
-			int flags=policies.get(d).second.intValue();
+			final int flags=policies.get(d).second.intValue();
 			if(CMath.bset(flags,CMMiscUtils.LOOTFLAG_WORN)&&I.amWearingAt(Wearable.IN_INVENTORY))
 				continue;
 			else
@@ -824,7 +824,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 				continue;
 			if(CMath.bset(flags,CMMiscUtils.LOOTFLAG_LOSS))
 				return null;
-			Item I2=CMClass.getItem("GenItem");
+			final Item I2=CMClass.getItem("GenItem");
 			I2.basePhyStats().setWeight(I.basePhyStats().weight());
 			I2.setName(I.Name());
 			I2.setDisplayText(I.displayText());
@@ -863,9 +863,9 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 					break;
 			}
 			I2.setDescription(CMStrings.endWithAPeriod(I2.description())+" "+ruinDescAdder);
-			String oldName=I2.Name();
+			final String oldName=I2.Name();
 			I2.setName(CMLib.english().insertUnColoredAdjective(I2.Name(),"ruined"));
-			int x=I2.displayText().toUpperCase().indexOf(oldName.toUpperCase());
+			final int x=I2.displayText().toUpperCase().indexOf(oldName.toUpperCase());
 			I2.setBaseValue(0);
 			if(x>=0)
 				I2.setDisplayText(I2.displayText().substring(0,x)+I2.Name()+I2.displayText().substring(x+oldName.length()));
@@ -877,12 +877,12 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 	@Override
 	public void reloadCharClasses(CharClass oldC)
 	{
-		for(Enumeration<Room> e=CMLib.map().rooms();e.hasMoreElements();)
+		for(final Enumeration<Room> e=CMLib.map().rooms();e.hasMoreElements();)
 		{
-			Room room=e.nextElement();
+			final Room room=e.nextElement();
 			for(int i=0;i<room.numInhabitants();i++)
 			{
-				MOB M=room.fetchInhabitant(i);
+				final MOB M=room.fetchInhabitant(i);
 				if(M==null) continue;
 				for(int c=0;c<M.baseCharStats().numClasses();c++)
 					if(M.baseCharStats().getMyClass(c)==oldC)
@@ -897,9 +897,9 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 						break;
 					}
 			}
-			for(Enumeration<MOB> e2=CMLib.players().players();e2.hasMoreElements();)
+			for(final Enumeration<MOB> e2=CMLib.players().players();e2.hasMoreElements();)
 			{
-				MOB M=e2.nextElement();
+				final MOB M=e2.nextElement();
 				for(int c=0;c<M.baseCharStats().numClasses();c++)
 					if(M.baseCharStats().getMyClass(c)==oldC)
 					{
@@ -919,21 +919,21 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 	@Override
 	public void swapRaces(Race newR, Race oldR)
 	{
-		for(Enumeration<Room> e=CMLib.map().rooms();e.hasMoreElements();)
+		for(final Enumeration<Room> e=CMLib.map().rooms();e.hasMoreElements();)
 		{
-			Room room=e.nextElement();
+			final Room room=e.nextElement();
 			for(int i=0;i<room.numInhabitants();i++)
 			{
-				MOB M=room.fetchInhabitant(i);
+				final MOB M=room.fetchInhabitant(i);
 				if(M==null) continue;
 				if(M.baseCharStats().getMyRace()==oldR)
 					M.baseCharStats().setMyRace(newR);
 				if(M.charStats().getMyRace()==oldR)
 					M.charStats().setMyRace(newR);
 			}
-			for(Enumeration<MOB> e2=CMLib.players().players();e2.hasMoreElements();)
+			for(final Enumeration<MOB> e2=CMLib.players().players();e2.hasMoreElements();)
 			{
-				MOB M=e2.nextElement();
+				final MOB M=e2.nextElement();
 				if(M.baseCharStats().getMyRace()==oldR)
 					M.baseCharStats().setMyRace(newR);
 				if(M.charStats().getMyRace()==oldR)
@@ -945,7 +945,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 	@Override
 	public boolean resurrect(MOB tellMob, Room corpseRoom, DeadBody body, int XPLevel)
 	{
-		MOB rejuvedMOB=CMLib.players().getPlayer(body.mobName());
+		final MOB rejuvedMOB=CMLib.players().getPlayer(body.mobName());
 
 		if(rejuvedMOB!=null) // doing this here is helpful -- it can trigger a socket error.
 			rejuvedMOB.tell("You are being resurrected.");
@@ -965,12 +965,12 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 			int it=0;
 			while(it<rejuvedMOB.location().numItems())
 			{
-				Item item=rejuvedMOB.location().getItem(it);
+				final Item item=rejuvedMOB.location().getItem(it);
 				if((item!=null)&&(item.container()==body))
 				{
-					CMMsg msg2=CMClass.getMsg(rejuvedMOB,body,item,CMMsg.MSG_GET,null);
+					final CMMsg msg2=CMClass.getMsg(rejuvedMOB,body,item,CMMsg.MSG_GET,null);
 					rejuvedMOB.location().send(rejuvedMOB,msg2);
-					CMMsg msg3=CMClass.getMsg(rejuvedMOB,item,null,CMMsg.MSG_GET,null);
+					final CMMsg msg3=CMClass.getMsg(rejuvedMOB,item,null,CMMsg.MSG_GET,null);
 					rejuvedMOB.location().send(rejuvedMOB,msg3);
 					it=0;
 				}
@@ -983,10 +983,10 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 			rejuvedMOB.phyStats().setDisposition(CMath.unsetb(rejuvedMOB.basePhyStats().disposition(),PhyStats.IS_SITTING));
 			rejuvedMOB.location().show(rejuvedMOB,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> get(s) up!");
 			corpseRoom.recoverRoomStats();
-			Vector<String> whatsToDo=CMParms.parse(CMProps.getVar(CMProps.Str.PLAYERDEATH));
+			final Vector<String> whatsToDo=CMParms.parse(CMProps.getVar(CMProps.Str.PLAYERDEATH));
 			for(int w=0;w<whatsToDo.size();w++)
 			{
-				String whatToDo=whatsToDo.elementAt(w);
+				final String whatToDo=whatsToDo.elementAt(w);
 				if(whatToDo.startsWith("UNL"))
 					CMLib.leveler().level(rejuvedMOB);
 				else
@@ -1000,7 +1000,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 				{
 					if(XPLevel>=0)
 					{
-						int expLost=(CMath.s_int(whatToDo)+(2*XPLevel))/2;
+						final int expLost=(CMath.s_int(whatToDo)+(2*XPLevel))/2;
 						rejuvedMOB.tell("^*You regain "+expLost+" experience points.^?^.");
 						CMLib.leveler().postExperience(rejuvedMOB,null,null,expLost,false);
 					}
@@ -1014,7 +1014,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 					double lvl=body.phyStats().level();
 					for(int l=body.phyStats().level();l<rejuvedMOB.phyStats().level();l++)
 						lvl=lvl/2.0;
-					int expRestored=(int)Math.round(((100.0+(2.0*(XPLevel)))*lvl)/2.0);
+					final int expRestored=(int)Math.round(((100.0+(2.0*(XPLevel)))*lvl)/2.0);
 					rejuvedMOB.tell("^*You regain "+expRestored+" experience points.^?^.");
 					CMLib.leveler().postExperience(rejuvedMOB,null,null,expRestored,false);
 				}
@@ -1029,12 +1029,12 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 	@Override
 	public long[][] compileConditionalRange(List<String> condV, int numDigits, final int startOfRange, final int endOfRange)
 	{
-		long[][] finalSet = new long[endOfRange - startOfRange + 1][];
+		final long[][] finalSet = new long[endOfRange - startOfRange + 1][];
 		for(String cond : condV)
 		{
-			Vector<String> V=CMParms.parse(cond.trim());
+			final Vector<String> V=CMParms.parse(cond.trim());
 			if(V.size()<2) continue;
-			long[] vals=new long[numDigits];
+			final long[] vals=new long[numDigits];
 			for(int i=0;i<numDigits;i++)
 				if(i+1<V.size())
 					vals[i]=CMath.s_long(V.elementAt(i+1));
@@ -1080,8 +1080,8 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 	@Override
 	public String builtPrompt(MOB mob)
 	{
-		StringBuffer buf=new StringBuffer("\n\r");
-		String prompt=mob.playerStats().getPrompt();
+		final StringBuffer buf=new StringBuffer("\n\r");
+		final String prompt=mob.playerStats().getPrompt();
 		String promptUp=null;
 		int c=0;
 		while(c<prompt.length())
@@ -1093,14 +1093,14 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 					if(c<(prompt.length()-2))
 					{
 						if(promptUp==null) promptUp=prompt.toUpperCase();
-						String promptSub=promptUp.substring(c+1);
-						Wearable.CODES wcodes = Wearable.CODES.instance();
+						final String promptSub=promptUp.substring(c+1);
+						final Wearable.CODES wcodes = Wearable.CODES.instance();
 						boolean isFound=false;
-						for(long code : wcodes.all())
+						for(final long code : wcodes.all())
 							if(promptSub.startsWith(wcodes.nameup(code)))
 							{
 								c+=1+wcodes.nameup(code).length();
-								Item I=mob.fetchFirstWornItem(code);
+								final Item I=mob.fetchFirstWornItem(code);
 								if(I!=null)
 									buf.append(I.name());
 								isFound=true;
@@ -1108,8 +1108,8 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 							}
 						if(!isFound)
 						{
-							CharStats.CODES ccodes = CharStats.CODES.instance();
-							for(int code : ccodes.all())
+							final CharStats.CODES ccodes = CharStats.CODES.instance();
+							for(final int code : ccodes.all())
 								if(promptSub.startsWith(ccodes.name(code)))
 								{
 									c+=1+ccodes.name(code).length();
@@ -1118,7 +1118,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 									break;
 								}
 							if(!isFound)
-							for(int code : ccodes.all())
+							for(final int code : ccodes.all())
 								if(promptSub.startsWith("BASE "+ccodes.name(code)))
 								{
 									buf.append(mob.baseCharStats().getStat(code));
@@ -1129,7 +1129,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 						}
 						if(!isFound)
 						{
-							for(String s : mob.phyStats().getStatCodes())
+							for(final String s : mob.phyStats().getStatCodes())
 								if(promptSub.startsWith(s))
 								{
 									c+=1+s.length();
@@ -1138,7 +1138,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 									break;
 								}
 							if(!isFound)
-							for(String s : mob.basePhyStats().getStatCodes())
+							for(final String s : mob.basePhyStats().getStatCodes())
 								if(promptSub.startsWith("BASE "+s))
 								{
 									c+=6+s.length();
@@ -1192,11 +1192,11 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 								  buf.append(""+((AmmunitionWeapon)I).ammunitionRemaining());
 							  break;
 						  }
-				case 'e': {   MOB victim=mob.getVictim();
+				case 'e': {   final MOB victim=mob.getVictim();
 							  if((mob.isInCombat())&&(victim!=null)&&(CMLib.flags().canBeSeenBy(victim,mob)))
 								  buf.append(victim.name(mob));
 							  c++; break; }
-				case 'E': {   MOB victim=mob.getVictim();
+				case 'E': {   final MOB victim=mob.getVictim();
 							  if((mob.isInCombat())&&(victim!=null)&&(!victim.amDead())&&(CMLib.flags().canBeSeenBy(victim,mob)))
 								  buf.append(victim.healthText(mob)+"\n\r");
 							  c++; break; }

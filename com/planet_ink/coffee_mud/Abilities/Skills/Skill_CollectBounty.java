@@ -59,7 +59,7 @@ public class Skill_CollectBounty extends StdSkill
 			warrants=B.getWarrantsOf(legalA,target);
 			for(int i=warrants.size()-1;i>=0;i--)
 			{
-				LegalWarrant W=warrants.get(i);
+				final LegalWarrant W=warrants.get(i);
 				if(W.crime().equalsIgnoreCase("pardoned"))
 					warrants.remove(i);
 			}
@@ -73,23 +73,23 @@ public class Skill_CollectBounty extends StdSkill
 		if(legalA!=null) B=CMLib.law().getLegalBehavior(legalA);
 		if((B!=null)&&(myArea!=null))
 		{
-			for(Enumeration e=myArea.getMetroMap();e.hasMoreElements();)
+			for(final Enumeration e=myArea.getMetroMap();e.hasMoreElements();)
 			{
-				Room R=(Room)e.nextElement();
+				final Room R=(Room)e.nextElement();
 				for(int i=0;i<R.numInhabitants();i++)
 				{
-					MOB M=R.fetchInhabitant(i);
+					final MOB M=R.fetchInhabitant(i);
 					if((M!=null)&&(B.isElligibleOfficer(legalA,M)))
 						return M;
 				}
 			}
 			if((legalA!=myArea)&&(legalA!=null))
-			for(Enumeration e=legalA.getMetroMap();e.hasMoreElements();)
+			for(final Enumeration e=legalA.getMetroMap();e.hasMoreElements();)
 			{
-				Room R=(Room)e.nextElement();
+				final Room R=(Room)e.nextElement();
 				for(int i=0;i<R.numInhabitants();i++)
 				{
-					MOB M=R.fetchInhabitant(i);
+					final MOB M=R.fetchInhabitant(i);
 					if((M!=null)&&(B.isElligibleOfficer(legalA,M)))
 						return M;
 				}
@@ -102,11 +102,11 @@ public class Skill_CollectBounty extends StdSkill
 	{
 		LegalBehavior B=null;
 		if(R!=null) B=CMLib.law().getLegalBehavior(R);
-		Area legalA=CMLib.law().getLegalObject(R);
+		final Area legalA=CMLib.law().getLegalObject(R);
 		if((B!=null)&&(R!=null))
 			for(int i=0;i<R.numInhabitants();i++)
 			{
-				MOB M=R.fetchInhabitant(i);
+				final MOB M=R.fetchInhabitant(i);
 				if((M!=null)&&(M!=mob)&&(M!=target)&&(B.isJudge(legalA,M)))
 					return M;
 			}
@@ -117,16 +117,16 @@ public class Skill_CollectBounty extends StdSkill
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		MOB target=this.getTarget(mob,commands,givenTarget);
+		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
-		Room R=mob.location();
+		final Room R=mob.location();
 		if(mob.fetchEffect(ID())!=null)
 		{
 			mob.tell("You are already collecting a bounty.  Be patient.");
 			return false;
 		}
 
-		MOB judge=getJudgeIfHere(mob,target,R);
+		final MOB judge=getJudgeIfHere(mob,target,R);
 
 		if(judge==null)
 		{
@@ -134,7 +134,7 @@ public class Skill_CollectBounty extends StdSkill
 			return false;
 		}
 
-		List<LegalWarrant> warrants=getWarrantsOf(target,R);
+		final List<LegalWarrant> warrants=getWarrantsOf(target,R);
 		if(warrants.size()==0)
 		{
 			mob.tell(target.name(mob)+" is not wanted for anything here.");
@@ -147,7 +147,7 @@ public class Skill_CollectBounty extends StdSkill
 		}
 		for(int w=0;w<warrants.size();w++)
 		{
-			LegalWarrant W=warrants.get(w);
+			final LegalWarrant W=warrants.get(w);
 			if(W.crime().equalsIgnoreCase("pardoned"))
 			{
 				mob.tell(target.name(mob)+" has been pardoned, and is no longer a criminal.");
@@ -158,16 +158,16 @@ public class Skill_CollectBounty extends StdSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
-		Area legalA=CMLib.law().getLegalObject(R);
+		final Area legalA=CMLib.law().getLegalObject(R);
 		if((success)&&(legalA!=null))
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MOUTH|CMMsg.MASK_SOUND|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),"<S-NAME> turn(s) <T-NAMESELF> in to "+judge.name()+" for the bounty.");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MOUTH|CMMsg.MASK_SOUND|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),"<S-NAME> turn(s) <T-NAMESELF> in to "+judge.name()+" for the bounty.");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				MOB officer=findElligibleOfficer(mob.location().getArea(),legalA);
+				final MOB officer=findElligibleOfficer(mob.location().getArea(),legalA);
 				if((officer!=null)&&(!mob.location().isInhabitant(officer)))
 					CMLib.tracking().wanderFromTo(officer,mob.location(),true);
 				if((officer==null)||(!mob.location().isInhabitant(officer)))
@@ -192,7 +192,7 @@ public class Skill_CollectBounty extends StdSkill
 					gold+=(W.punishment()*(5+getXLEVELLevel(mob)));
 				}
 				mob.location().show(judge,mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> pay(s) <T-NAMESELF> the bounty of "+CMLib.beanCounter().nameCurrencyShort(judge,gold)+" on "+target.Name()+".");
-				String currency=CMLib.beanCounter().getCurrency(judge);
+				final String currency=CMLib.beanCounter().getCurrency(judge);
 				CMLib.beanCounter().giveSomeoneMoney(judge,mob,currency,gold);
 			}
 		}

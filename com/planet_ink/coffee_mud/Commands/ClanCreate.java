@@ -45,14 +45,14 @@ public class ClanCreate extends StdCommand
 	{
 		int numGovernmentsAvailable=0;
 		Pair<Clan,Integer> p=null;
-		for(ClanGovernment gvt : CMLib.clans().getStockGovernments())
+		for(final ClanGovernment gvt : CMLib.clans().getStockGovernments())
 			if(CMProps.isPublicClanGvtCategory(gvt.getCategory()))
 			{
 				if(CMLib.clans().getClansByCategory(mob, gvt.getCategory()).size()<CMProps.getMaxClansThisCategory(gvt.getCategory()))
 					numGovernmentsAvailable++;
 				else
 				if(p==null)
-				for(Pair<Clan,Integer> c : mob.clans())
+				for(final Pair<Clan,Integer> c : mob.clans())
 					if(c.first.getCategory().equalsIgnoreCase(gvt.getCategory()))
 						p=c;
 			}
@@ -83,7 +83,7 @@ public class ClanCreate extends StdCommand
 				@Override public void timedOut() { }
 				@Override public void callBack()
 				{
-					String check=this.input;
+					final String check=this.input;
 					if(!check.equalsIgnoreCase("Y"))
 						return;
 					session.prompt(new InputCallback(InputCallback.Type.PROMPT,"",0)
@@ -115,7 +115,7 @@ public class ClanCreate extends StdCommand
 									@Override public void timedOut() { }
 									@Override public void callBack()
 									{
-										String check=this.input;
+										final String check=this.input;
 										if(!check.equalsIgnoreCase("Y"))
 											return;
 										final Clan newClan=(Clan)CMClass.getCommon("DefaultClan");
@@ -125,13 +125,13 @@ public class ClanCreate extends StdCommand
 										{
 											@Override public void showPrompt()
 											{
-												StringBuilder promptmsg=new StringBuilder("\n\r^HNow enter a political style for this clan. Choices are:\n\r^N");
+												final StringBuilder promptmsg=new StringBuilder("\n\r^HNow enter a political style for this clan. Choices are:\n\r^N");
 												{
 													int longest=0;
-													for(ClanGovernment gvt : CMLib.clans().getStockGovernments())
+													for(final ClanGovernment gvt : CMLib.clans().getStockGovernments())
 														if((gvt.getName().length() > longest)&&(CMProps.isPublicClanGvtCategory(gvt.getCategory())))
 															longest=gvt.getName().length();
-													for(ClanGovernment gvt : CMLib.clans().getStockGovernments())
+													for(final ClanGovernment gvt : CMLib.clans().getStockGovernments())
 														if(CMProps.isPublicClanGvtCategory(gvt.getCategory()))
 															promptmsg.append("^H"+CMStrings.padRight(gvt.getName(), longest))
 																	 .append("^N:").append(gvt.getShortDesc()).append("\n\r");
@@ -142,11 +142,11 @@ public class ClanCreate extends StdCommand
 											@Override public void timedOut() { }
 											@Override public void callBack()
 											{
-												String govt=this.input;
+												final String govt=this.input;
 												if(govt.length()==0){ mob.tell("Aborted."); return;}
 												int govtType=-1;
 												int newRoleID=-1;
-												for(ClanGovernment gvt : CMLib.clans().getStockGovernments())
+												for(final ClanGovernment gvt : CMLib.clans().getStockGovernments())
 												{
 													if((govt.equalsIgnoreCase(gvt.getName()))&&(CMProps.isPublicClanGvtCategory(gvt.getCategory())))
 													{

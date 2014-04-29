@@ -51,7 +51,7 @@ public class Spell_Geas extends Spell
 		// undo the affects of this spell
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		super.unInvoke();
 		if(canBeUninvoked())
 		{
@@ -74,7 +74,7 @@ public class Spell_Geas extends Spell
 		// undo the affects of this spell
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		if(msg.amITarget(mob)
 		&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
 		&&((msg.value())>0))
@@ -85,7 +85,7 @@ public class Spell_Geas extends Spell
 		&&((msg.target()==null)||(msg.target() instanceof MOB))
 		&&(msg.sourceMessage().length()>0))
 		{
-			String str=CMStrings.getSayFromMessage(msg.sourceMessage());
+			final String str=CMStrings.getSayFromMessage(msg.sourceMessage());
 			if(str!=null)
 				STEPS.sayResponse(msg.source(),(MOB)msg.target(),str);
 		}
@@ -125,9 +125,9 @@ public class Spell_Geas extends Spell
 			mob.tell("You need to specify a target creature, and a geas to place on them.");
 			return false;
 		}
-		Vector name=CMParms.parse((String)commands.elementAt(0));
+		final Vector name=CMParms.parse((String)commands.elementAt(0));
 		commands.remove(commands.firstElement());
-		MOB target=getTarget(mob,name,givenTarget);
+		final MOB target=getTarget(mob,name,givenTarget);
 		if(target==null) return false;
 		if(target.charStats().getStat(CharStats.STAT_INTELLIGENCE)<5)
 		{
@@ -138,12 +138,12 @@ public class Spell_Geas extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
 			invoker=mob;
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> place(s) a powerful geas upon <T-NAMESELF>!^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> place(s) a powerful geas upon <T-NAMESELF>!^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -164,7 +164,7 @@ public class Spell_Geas extends Spell
 					{
 						for(int m=0;m<target.location().numInhabitants();m++)
 						{
-							MOB M=target.location().fetchInhabitant(m);
+							final MOB M=target.location().fetchInhabitant(m);
 							if((M!=null)&&(M.getVictim()==target))
 								M.makePeace();
 						}

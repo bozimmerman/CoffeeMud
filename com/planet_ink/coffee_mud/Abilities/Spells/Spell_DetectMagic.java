@@ -49,7 +49,7 @@ public class Spell_DetectMagic extends Spell
 	{
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		super.unInvoke();
 		if(canBeUninvoked())
@@ -69,7 +69,7 @@ public class Spell_DetectMagic extends Spell
 		&&(CMLib.flags().canBeSeenBy(msg.target(),(MOB)affected)))
 		{
 			String msg2=null;
-			Physical targetP=(Physical)msg.target();
+			final Physical targetP=(Physical)msg.target();
 			for(final Enumeration<Ability> a=targetP.effects();a.hasMoreElements();)
 			{
 				final Ability A=a.nextElement();
@@ -91,7 +91,7 @@ public class Spell_DetectMagic extends Spell
 				msg2=msg.target().name()+" is enchanted";
 			if(msg2!=null)
 			{
-				CMMsg msg3=CMClass.getMsg(msg.source(),targetP,this,
+				final CMMsg msg3=CMClass.getMsg(msg.source(),targetP,this,
 										CMMsg.MSG_OK_VISUAL,msg2+".",
 										CMMsg.NO_EFFECT,null,
 										CMMsg.NO_EFFECT,null);
@@ -138,11 +138,11 @@ public class Spell_DetectMagic extends Spell
 			return false;
 
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> gain(s) sparkling eyes!":"^S<S-NAME> incant(s) softly, and gain(s) sparkling eyes!^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> gain(s) sparkling eyes!":"^S<S-NAME> incant(s) softly, and gain(s) sparkling eyes!^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

@@ -370,12 +370,12 @@ public interface XMLLibrary extends CMLibrary
 		{
 			try
 			{
-				XMLpiece piece2=(XMLpiece)this.clone();
+				final XMLpiece piece2=(XMLpiece)this.clone();
 				piece2.contents=new XVector<XMLpiece>(contents);
 				piece2.parms=new XHashtable<String,String>(parms);
 				return piece2;
 			}
-			catch(Exception e)
+			catch(final Exception e)
 			{
 				return this;
 			}
@@ -394,7 +394,7 @@ public interface XMLLibrary extends CMLibrary
 		{
 			final StringBuilder str=new StringBuilder("");
 			str.append("<").append(tag);
-			for(String parm : parms.keySet())
+			for(final String parm : parms.keySet())
 				str.append(" ").append(parm).append("=\"").append(parms.get(parms)).append("\"");
 			str.append(">").append(value).append("</").append(tag).append(">");
 			return str.toString();

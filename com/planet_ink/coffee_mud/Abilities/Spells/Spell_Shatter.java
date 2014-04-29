@@ -43,11 +43,11 @@ public class Spell_Shatter extends Spell
 
 	public Item getItem(MOB mobTarget)
 	{
-		Vector goodPossibilities=new Vector();
-		Vector possibilities=new Vector();
+		final Vector goodPossibilities=new Vector();
+		final Vector possibilities=new Vector();
 		for(int i=0;i<mobTarget.numItems();i++)
 		{
-			Item item=mobTarget.getItem(i);
+			final Item item=mobTarget.getItem(i);
 			if((item!=null)
 			   &&(item.subjectToWearAndTear()))
 			{
@@ -72,7 +72,7 @@ public class Spell_Shatter extends Spell
 		{
 			if((target instanceof MOB)&&(mob!=target))
 			{
-				Item I=getItem((MOB)target);
+				final Item I=getItem((MOB)target);
 				if(I==null)
 					return Ability.QUALITY_INDIFFERENT;
 			}
@@ -83,7 +83,7 @@ public class Spell_Shatter extends Spell
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		MOB mobTarget=getTarget(mob,commands,givenTarget,true,false);
+		final MOB mobTarget=getTarget(mob,commands,givenTarget,true,false);
 		Item target=null;
 		if(mobTarget!=null)
 		{
@@ -102,7 +102,7 @@ public class Spell_Shatter extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
@@ -110,8 +110,8 @@ public class Spell_Shatter extends Spell
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> starts vibrating!":"^S<S-NAME> utter(s) a shattering spell, causing <T-NAMESELF> to vibrate and resonate.^?");
-			CMMsg msg2=CMClass.getMsg(mob,mobTarget,this,verbalCastCode(mob,target,auto),null);
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> starts vibrating!":"^S<S-NAME> utter(s) a shattering spell, causing <T-NAMESELF> to vibrate and resonate.^?");
+			final CMMsg msg2=CMClass.getMsg(mob,mobTarget,this,verbalCastCode(mob,target,auto),null);
 			if((R.okMessage(mob,msg))&&((mobTarget==null)||(R.okMessage(mob,msg2))))
 			{
 				R.send(mob,msg);

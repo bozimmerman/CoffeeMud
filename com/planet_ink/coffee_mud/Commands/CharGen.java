@@ -41,9 +41,9 @@ public class CharGen extends StdCommand
 
 	protected void equipPlayer(MOB M)
 	{
-		int level = M.basePhyStats().level();
-		CharClass C=M.baseCharStats().getCurrentClass();
-		for(long wornCode : Wearable.CODES.ALL())
+		final int level = M.basePhyStats().level();
+		final CharClass C=M.baseCharStats().getCurrentClass();
+		for(final long wornCode : Wearable.CODES.ALL())
 		{
 			if((wornCode == Wearable.IN_INVENTORY)
 			|| (wornCode == Wearable.WORN_HELD)
@@ -51,7 +51,7 @@ public class CharGen extends StdCommand
 				 continue;
 			if(wornCode==Wearable.WORN_WIELD)
 			{
-				Weapon W=CMClass.getWeapon("GenWeapon");
+				final Weapon W=CMClass.getWeapon("GenWeapon");
 				W.setWeaponClassification(Weapon.CLASS_SWORD);
 				W.setWeaponType(Weapon.TYPE_SLASHING);
 				W.setMaterial(RawMaterial.RESOURCE_STEEL);
@@ -108,7 +108,7 @@ public class CharGen extends StdCommand
 			else
 			if(wornCode != Wearable.WORN_FLOATING_NEARBY)
 			{
-				Armor A=CMClass.getArmor("GenArmor");
+				final Armor A=CMClass.getArmor("GenArmor");
 				A.setRawProperLocationBitmap(wornCode);
 				A.setMaterial(RawMaterial.RESOURCE_STEEL);
 				if((CharClass.ARMOR_WEARMASK & wornCode) > 0)
@@ -142,13 +142,13 @@ public class CharGen extends StdCommand
 
 	protected MOB levelMOBup(int level, CharClass C, boolean player)
 	{
-		MOB mob=CMClass.getFactoryMOB();
+		final MOB mob=CMClass.getFactoryMOB();
 		CMLib.factions().setAlignment(mob,Faction.Align.NEUTRAL);
 		mob.setName("Average Joe");
 		if(player) mob.setPlayerStats((PlayerStats)CMClass.getCommon("DefaultPlayerStats"));
 		mob.baseCharStats().setMyRace(CMClass.getRace("Human"));
 		mob.baseCharStats().setStat(CharStats.STAT_GENDER,'M');
-		for(int i : CharStats.CODES.BASE())
+		for(final int i : CharStats.CODES.BASE())
 			mob.baseCharStats().setStat(i,10);
 		mob.baseCharStats().setStat(CharStats.STAT_STRENGTH,11);
 		mob.baseCharStats().setStat(CharStats.STAT_WISDOM,11);
@@ -167,17 +167,17 @@ public class CharGen extends StdCommand
 		mob.recoverMaxState();
 		mob.baseCharStats().getCurrentClass().startCharacter(mob,false,false);
 
-		int max=CMProps.getIntVar(CMProps.Int.BASEMAXSTAT);
+		final int max=CMProps.getIntVar(CMProps.Int.BASEMAXSTAT);
 		for(int lvl=1;lvl<level;lvl++)
 		{
 			if((lvl % 3)==0)
 			{
 				int stat=-1;
 				int bestDiff=0;
-				for(int i: CharStats.CODES.BASE())
+				for(final int i: CharStats.CODES.BASE())
 				{
-					int base = max + mob.charStats().getStat(CharStats.CODES.toMAXBASE(i));
-					int diff = base - mob.baseCharStats().getStat(i);
+					final int base = max + mob.charStats().getStat(CharStats.CODES.toMAXBASE(i));
+					final int diff = base - mob.baseCharStats().getStat(i);
 					if(diff >= bestDiff)
 					{
 						stat=i;
@@ -197,7 +197,7 @@ public class CharGen extends StdCommand
 			mob.recoverMaxState();
 		}
 		equipPlayer(mob);
-		for(Enumeration<Ability> a=mob.allAbilities();a.hasMoreElements();)
+		for(final Enumeration<Ability> a=mob.allAbilities();a.hasMoreElements();)
 			a.nextElement().setProficiency(100);
 		for(int a=0;a<mob.numEffects();a++) // personal
 			mob.fetchEffect(a).setProficiency(100);
@@ -210,7 +210,7 @@ public class CharGen extends StdCommand
 
 	public void averageout(MOB avgMob, int tries)
 	{
-		for(int i : CharStats.CODES.BASE())
+		for(final int i : CharStats.CODES.BASE())
 			avgMob.baseCharStats().setStat(i,(int)Math.round(CMath.div(avgMob.baseCharStats().getStat(i),tries)));
 		avgMob.basePhyStats().setArmor((int)Math.round(CMath.div(avgMob.basePhyStats().armor(),tries)));
 		avgMob.baseState().setHitPoints((int)Math.round(CMath.div(avgMob.baseState().getHitPoints(),tries)));
@@ -225,7 +225,7 @@ public class CharGen extends StdCommand
 
 	public void addHimIn(MOB avgMob, MOB mob2)
 	{
-		for(int i : CharStats.CODES.BASE())
+		for(final int i : CharStats.CODES.BASE())
 			avgMob.baseCharStats().setStat(i,avgMob.baseCharStats().getStat(i)+mob2.baseCharStats().getStat(i));
 		avgMob.basePhyStats().setArmor(avgMob.basePhyStats().armor()+mob2.basePhyStats().armor());
 		avgMob.baseState().setHitPoints(avgMob.baseState().getHitPoints()+mob2.baseState().getHitPoints());
@@ -239,13 +239,13 @@ public class CharGen extends StdCommand
 
 	public MOB AverageClassMOB(MOB mob, int level, CharClass C, int numTries, boolean player)
 	{
-		MOB avgMob=levelMOBup(level,C, player);
+		final MOB avgMob=levelMOBup(level,C, player);
 		int tries=1;
 		for(;tries<numTries;tries++)
 		{
 			if(((tries % 20)==0)&&(mob!=null))
 				mob.session().print(".");
-			MOB mob2=levelMOBup(level,C, player);
+			final MOB mob2=levelMOBup(level,C, player);
 			addHimIn(avgMob,mob2);
 		}
 		averageout(avgMob,tries);
@@ -259,13 +259,13 @@ public class CharGen extends StdCommand
 		int numClasses=0;
 		for(;tries<numTriesClass;tries++)
 		{
-			for(Enumeration c=CMClass.charClasses();c.hasMoreElements();)
+			for(final Enumeration c=CMClass.charClasses();c.hasMoreElements();)
 			{
-				CharClass C=(CharClass)c.nextElement();
+				final CharClass C=(CharClass)c.nextElement();
 				if(C.availabilityCode()!=0)
 				{
 					numClasses++;
-					MOB mob2=AverageClassMOB(mob,level,C,numTriesMOB,player);
+					final MOB mob2=AverageClassMOB(mob,level,C,numTriesMOB,player);
 					if(avgMob==null)
 					{
 						avgMob=mob2;
@@ -297,14 +297,14 @@ public class CharGen extends StdCommand
 
 	public void combatRun(MOB mob, Vector commands)
 	{
-		CombatStats c=new CombatStats();
+		final CombatStats c=new CombatStats();
 		c.mob=mob;
 		if(commands.size()==0)
 		{
 			mob.tell("USAGE: CHARGEN COMBAT ([CHARCLASS(S)]...) (EXPORT=FILENAME) (FAILCHECK) (ITERATIONS=[X]) (SKIPLEVELS=[X]) ([START LEVEL]) ([END LEVEL])");
 			return;
 		}
-		String[][] CAMATCH={
+		final String[][] CAMATCH={
 				{"Commoner","CombatAbilities"},
 				{"Bard","Bardness"},
 				{"Cleric","Clericness"},
@@ -314,18 +314,18 @@ public class CharGen extends StdCommand
 				{"Fighter","Fighterness"},
 		};
 
-		for(Enumeration e=CMClass.charClasses();e.hasMoreElements();)
+		for(final Enumeration e=CMClass.charClasses();e.hasMoreElements();)
 		{
-			CharClass C=(CharClass)e.nextElement();
+			final CharClass C=(CharClass)e.nextElement();
 			if((CMath.bset(C.availabilityCode(),Area.THEME_FANTASY)
 				||CMath.bset(C.availabilityCode(),Area.THEME_HEROIC)
 				||CMath.bset(C.availabilityCode(),Area.THEME_TECHNOLOGY))
 			&&(!CMath.bset(C.availabilityCode(),Area.THEME_SKILLONLYMASK)))
 			{
 				String behav="CombatAbilities";
-				for(int x=0;x<CAMATCH.length;x++)
-					if(C.baseClass().equalsIgnoreCase(CAMATCH[x][0]))
-						behav=CAMATCH[x][1];
+				for (final String[] element : CAMATCH)
+					if(C.baseClass().equalsIgnoreCase(element[0]))
+						behav=element[1];
 				c.classSet.addElement(C,behav);
 			}
 		}
@@ -339,7 +339,7 @@ public class CharGen extends StdCommand
 			String s=(String)commands.elementAt(i);
 			if(CMath.isInteger(s))
 			{
-				int x=CMath.s_int(s);
+				final int x=CMath.s_int(s);
 				if(x>=0)
 				{
 					if((nextLevel)&&(x>=c.levelStart))
@@ -372,25 +372,25 @@ public class CharGen extends StdCommand
 			else
 			if(CMClass.findCharClass(s)!=null)
 			{
-				CharClass C=CMClass.findCharClass(s);
+				final CharClass C=CMClass.findCharClass(s);
 				if(!classCleared)
 				{
 					classCleared=true;
 					c.classSet=new DVector(2);
 				}
 				String behav="CombatAbilities";
-				for(int x=0;x<CAMATCH.length;x++)
-					if(C.baseClass().equalsIgnoreCase(CAMATCH[x][0]))
-						behav=CAMATCH[x][1];
+				for (final String[] element : CAMATCH)
+					if(C.baseClass().equalsIgnoreCase(element[0]))
+						behav=element[1];
 				c.classSet.addElement(C,behav);
 			}
 			else
 			if(s.endsWith("s"))
 			{
 				s=s.substring(0,s.length()-1);
-				for(Enumeration e=CMClass.charClasses();e.hasMoreElements();)
+				for(final Enumeration e=CMClass.charClasses();e.hasMoreElements();)
 				{
-					CharClass C=(CharClass)e.nextElement();
+					final CharClass C=(CharClass)e.nextElement();
 					if((CMath.bset(C.availabilityCode(),Area.THEME_FANTASY)
 						||CMath.bset(C.availabilityCode(),Area.THEME_HEROIC)
 						||CMath.bset(C.availabilityCode(),Area.THEME_TECHNOLOGY))
@@ -403,9 +403,9 @@ public class CharGen extends StdCommand
 							c.classSet=new DVector(2);
 						}
 						String behav="CombatAbilities";
-						for(int x=0;x<CAMATCH.length;x++)
-							if(C.baseClass().equalsIgnoreCase(CAMATCH[x][0]))
-								behav=CAMATCH[x][1];
+						for (final String[] element : CAMATCH)
+							if(C.baseClass().equalsIgnoreCase(element[0]))
+								behav=element[1];
 						c.classSet.addElement(C,behav);
 					}
 				}
@@ -455,7 +455,7 @@ public class CharGen extends StdCommand
 		};
 
 
-		boolean[] aborted = new boolean[1];
+		final boolean[] aborted = new boolean[1];
 		aborted[0]=false;
 		final java.util.concurrent.CountDownLatch latch = new java.util.concurrent.CountDownLatch(c.classSet.size());
 		final java.util.concurrent.atomic.AtomicInteger IDGEN=new java.util.concurrent.atomic.AtomicInteger(1);
@@ -481,37 +481,37 @@ public class CharGen extends StdCommand
 				@Override
 				public void run()
 				{
-					MOB mob=c.mob;
-					int[][][] allData = c.allData;
-					String[][][] allSkills=c.allSkills;
-					DVector classSet=c.classSet;
-					int levelStart=c.levelStart;
+					final MOB mob=c.mob;
+					final int[][][] allData = c.allData;
+					final String[][][] allSkills=c.allSkills;
+					final DVector classSet=c.classSet;
+					final int levelStart=c.levelStart;
 					for(int level=c.levelStart;level<=c.levelEnd;level+=c.skipLevels)
 					{
-						CharClass C=(CharClass)c.classSet.elementAt(charClassDex,1);
+						final CharClass C=(CharClass)c.classSet.elementAt(charClassDex,1);
 						mob.tell(C.ID()+": "+level);
 						int roomRobin=0;
 						Room R=null;
 
-						int[] bestSingleHitScore=new int[]{0};
-						String[] bestSingleHitSkill=new String[]{""};
-						int[] bestSingleHitPhys=new int[]{0};
-						int[] bestHitScore=new int[]{0};
-						String[] bestHitSkill=new String[]{""};
-						int[] bestIterScore=new int[]{Integer.MAX_VALUE};
-						String[] bestIterSkill=new String[]{""};
+						final int[] bestSingleHitScore=new int[]{0};
+						final String[] bestSingleHitSkill=new String[]{""};
+						final int[] bestSingleHitPhys=new int[]{0};
+						final int[] bestHitScore=new int[]{0};
+						final String[] bestHitSkill=new String[]{""};
+						final int[] bestIterScore=new int[]{Integer.MAX_VALUE};
+						final String[] bestIterSkill=new String[]{""};
 
-						int[] losses=new int[]{0};
+						final int[] losses=new int[]{0};
 
-						XVector<Integer> medScore=new XVector<Integer>();
-						XVector<Integer> medWinIters=new XVector<Integer>();
-						XVector<Integer> medPhysDone=new XVector<Integer>();
-						XVector<Double> medHitPct=new XVector<Double>();
-						XVector<Double> medIsHitPct=new XVector<Double>();
-						XVector<Integer> medPhysTaken=new XVector<Integer>();
-						XVector<Integer> medLossIters=new XVector<Integer>();
-						XVector<Double> medPlayerDamPct = new XVector();
-						XVector<Double> medPlayerManaPct = new XVector();
+						final XVector<Integer> medScore=new XVector<Integer>();
+						final XVector<Integer> medWinIters=new XVector<Integer>();
+						final XVector<Integer> medPhysDone=new XVector<Integer>();
+						final XVector<Double> medHitPct=new XVector<Double>();
+						final XVector<Double> medIsHitPct=new XVector<Double>();
+						final XVector<Integer> medPhysTaken=new XVector<Integer>();
+						final XVector<Integer> medLossIters=new XVector<Integer>();
+						final XVector<Double> medPlayerDamPct = new XVector();
+						final XVector<Double> medPlayerManaPct = new XVector();
 
 						int H1=0;
 						int H2=0;
@@ -526,7 +526,7 @@ public class CharGen extends StdCommand
 								lastPct+=5;
 								if(mob.session()!=null) mob.session().print(".");
 							}
-							Behavior B1=CMClass.getBehavior((String)classSet.elementAt(charClassDex,2));
+							final Behavior B1=CMClass.getBehavior((String)classSet.elementAt(charClassDex,2));
 							B1.setParms(C.ID());
 							switch(roomRobin)
 							{
@@ -550,7 +550,7 @@ public class CharGen extends StdCommand
 							if(C.ID().equalsIgnoreCase("StdCharClass"))
 							{
 								M1=CMClass.getFactoryMOB();  // MOB stat
-								Behavior B2=CMClass.getBehavior("CombatAbilities");
+								final Behavior B2=CMClass.getBehavior("CombatAbilities");
 								M1.baseCharStats().setMyRace(humanR);
 								M1.basePhyStats().setLevel(level);
 								M1.setName("GOODGUY");
@@ -610,8 +610,8 @@ public class CharGen extends StdCommand
 							playerArmor=CMLib.combat().adjustedArmor(M1);
 							playerAttack=CMLib.combat().adjustedAttackBonus(M1,null);
 
-							MOB M2=CMClass.getFactoryMOB();  // MOB stat
-							Behavior B2=CMClass.getBehavior("CombatAbilities");
+							final MOB M2=CMClass.getFactoryMOB();  // MOB stat
+							final Behavior B2=CMClass.getBehavior("CombatAbilities");
 							M2.baseCharStats().setMyRace(humanR);
 							M2.basePhyStats().setLevel(level);
 							M2.setName("BADGUY");
@@ -628,7 +628,7 @@ public class CharGen extends StdCommand
 							M2.bringToLife(M2.location(),true);
 							CMLib.threads().deleteTick(M2,Tickable.TICKID_MOB);
 							CMLib.leveler().fillOutMOB(M2,level);
-							int hp=CMLib.leveler().getPlayerHitPoints(M2);
+							final int hp=CMLib.leveler().getPlayerHitPoints(M2);
 							if(hp>M2.baseState().getHitPoints())
 								M2.baseState().setHitPoints(hp);
 							M2.setWimpHitPoint(0);
@@ -690,10 +690,10 @@ public class CharGen extends StdCommand
 								}
 								iterations++;
 								ALMOSTZEROSKILL=B1.getStat("LASTSPELL");
-								int h1=M1.curState().getHitPoints();
-								int h2=M2.curState().getHitPoints();
-								int L1=l1;
-								int L2=l2;
+								final int h1=M1.curState().getHitPoints();
+								final int h2=M2.curState().getHitPoints();
+								final int L1=l1;
+								final int L2=l2;
 								l1=CMath.s_int(B2.getStat("PHYSDAMTAKEN"));
 								l2=CMath.s_int(B1.getStat("PHYSDAMTAKEN"));
 								if(l1>L1) hits++;
@@ -705,7 +705,7 @@ public class CharGen extends StdCommand
 									M1.tick(M1,Tickable.TICKID_MOB);
 									M2.tick(M2,Tickable.TICKID_MOB);
 								}
-								catch(Exception t)
+								catch(final Exception t)
 								{
 									Log.errOut("CharGen",t);
 								}
@@ -777,7 +777,7 @@ public class CharGen extends StdCommand
 								}
 								if(c.failSkillCheck!=null)
 								{
-									List<String> V=CMParms.parseSemicolons(B1.getStat("RECORD"),true);
+									final List<String> V=CMParms.parseSemicolons(B1.getStat("RECORD"),true);
 									for(int v=0;v<V.size();v++)
 									{
 										String s=V.get(v).trim();
@@ -858,14 +858,14 @@ public class CharGen extends StdCommand
 							mob.tell("LOSSES   : "+losses[0]);
 							if((c.failSkillCheck!=null)&&(c.failSkillCheck.size()>0))
 							{
-								StringBuffer fails=new StringBuffer("SKILLFAILS: ");
-								for(Enumeration i=c.failSkillCheck.keys();i.hasMoreElements();)
+								final StringBuffer fails=new StringBuffer("SKILLFAILS: ");
+								for(final Enumeration i=c.failSkillCheck.keys();i.hasMoreElements();)
 								{
-									String s=(String)i.nextElement();
-									int[] times=(int[])c.failSkillCheck.get(s);
+									final String s=(String)i.nextElement();
+									final int[] times=(int[])c.failSkillCheck.get(s);
 									if(times[1]>0)
 									{
-										int pct=(int)Math.round(100.0*CMath.div(times[1],times[0]));
+										final int pct=(int)Math.round(100.0*CMath.div(times[1],times[0]));
 										if(pct>20)
 											fails.append(s+"("+pct+"%) ");
 									}
@@ -885,7 +885,7 @@ public class CharGen extends StdCommand
 		{
 			latch.await();
 		}
-		catch(Exception e)
+		catch(final Exception e)
 		{
 			aborted[0]=true;
 			return;
@@ -893,14 +893,14 @@ public class CharGen extends StdCommand
 		mob.tell("");
 		if(fileExp!=null)
 		{
-			CMFile file=new CMFile(fileExp,mob);
+			final CMFile file=new CMFile(fileExp,mob);
 			if(file.canWrite())
 			{
-				StringBuffer buf=new StringBuffer("");
-				Vector baseClasses=new Vector();
+				final StringBuffer buf=new StringBuffer("");
+				final Vector baseClasses=new Vector();
 				for(int charClassDex=0;charClassDex<c.classSet.size();charClassDex++)
 				{
-					CharClass C=(CharClass)c.classSet.elementAt(charClassDex,1);
+					final CharClass C=(CharClass)c.classSet.elementAt(charClassDex,1);
 					if(!baseClasses.contains(C.baseClass()))
 						baseClasses.addElement(C.baseClass());
 				}
@@ -912,7 +912,7 @@ public class CharGen extends StdCommand
 					buf.append("\n\r");
 					for(int charClassDex=0;charClassDex<c.classSet.size();charClassDex++)
 					{
-						CharClass C=(CharClass)c.classSet.elementAt(charClassDex,1);
+						final CharClass C=(CharClass)c.classSet.elementAt(charClassDex,1);
 						buf.append(C.ID()).append("\t").append(C.baseClass()).append("\t");
 						for(int level=c.levelStart;level<=c.levelEnd;level+=c.skipLevels)
 						{
@@ -929,8 +929,8 @@ public class CharGen extends StdCommand
 					buf.append("\n\r");
 					for(int b=0;b<baseClasses.size();b++)
 					{
-						String baseClass=(String)baseClasses.elementAt(b);
-						int[] levels=new int[c.levelEnd+1];
+						final String baseClass=(String)baseClasses.elementAt(b);
+						final int[] levels=new int[c.levelEnd+1];
 						double ct=0;
 						for(int charClassDex=0;charClassDex<c.classSet.size();charClassDex++)
 							if(((CharClass)c.classSet.elementAt(charClassDex,1)).baseClass().equalsIgnoreCase(baseClass))
@@ -1003,7 +1003,7 @@ public class CharGen extends StdCommand
 			{
 				ClassName=mob.session().prompt("Enter a class name:");
 			}
-			catch(Exception e){return false;}
+			catch(final Exception e){return false;}
 
 			C=CMClass.findCharClass(ClassName);
 			if((C==null)&&(createNewOnly||(ClassName.toUpperCase().indexOf("ALL")<0)))
@@ -1016,7 +1016,7 @@ public class CharGen extends StdCommand
 			{
 				level=CMath.s_int(mob.session().prompt("Enter a level (1-"+CMProps.getIntVar(CMProps.Int.LASTPLAYERLEVEL)+"): "));
 			}
-			catch(Exception e){return false;}
+			catch(final Exception e){return false;}
 			if(level<=0)
 				return false;
 		}
@@ -1040,7 +1040,7 @@ public class CharGen extends StdCommand
 				avgMob.bringToLife(mob.location(),true);
 			else
 			{
-				StringBuilder msg=CMLib.commands().getScore(avgMob);
+				final StringBuilder msg=CMLib.commands().getScore(avgMob);
 				if(!mob.isMonster())
 					mob.session().wraplessPrintln(msg.toString());
 				avgMob.destroy();

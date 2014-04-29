@@ -78,7 +78,7 @@ public class CraftingSkill extends GatheringSkill
 
 	public int getStandardWeight(int baseWoodRequired, boolean bundling)
 	{
-		int newWeight=(int)Math.round( baseWoodRequired * this.getItemWeightMultiplier( bundling ));
+		final int newWeight=(int)Math.round( baseWoodRequired * this.getItemWeightMultiplier( bundling ));
 		if((baseWoodRequired>0) && (newWeight<=0))
 			return 1;
 		return newWeight;
@@ -97,7 +97,7 @@ public class CraftingSkill extends GatheringSkill
 		}
 		else
 		{
-			int x=thisStr.indexOf('%');
+			final int x=thisStr.indexOf('%');
 			if(x>=0) return new StringBuffer(thisStr).replace(x,x+1,withThis).toString();
 		}
 		return thisStr;
@@ -107,7 +107,7 @@ public class CraftingSkill extends GatheringSkill
 	{
 		if((auto)&&(commands.size()>0)&&(commands.firstElement() instanceof Integer))
 		{
-			Integer autoGenerate=(Integer)commands.firstElement();
+			final Integer autoGenerate=(Integer)commands.firstElement();
 			commands.removeElementAt(0);
 			Boolean preserveLevels=Boolean.FALSE;
 			if((commands.size()>0)&&(commands.firstElement() instanceof Boolean))
@@ -154,7 +154,7 @@ public class CraftingSkill extends GatheringSkill
 		final String[] allTypes=s.split("|");
 		for(final String splitS : allTypes)
 		{
-			int bit=CMParms.indexOf(Container.CONTAIN_DESCS, splitS.toUpperCase().trim());
+			final int bit=CMParms.indexOf(Container.CONTAIN_DESCS, splitS.toUpperCase().trim());
 			if(bit>0)
 				return 0;
 			else
@@ -178,10 +178,10 @@ public class CraftingSkill extends GatheringSkill
 			&&(((Recipe)I).getCommonSkillID().equalsIgnoreCase(ID())))
 			{
 				if(!clonedYet){ recipes=new XVector<List<String>>(recipes); clonedYet=true;}
-				StringBuffer allRecipeLines=new StringBuffer("");
+				final StringBuffer allRecipeLines=new StringBuffer("");
 				if(((Recipe)I).getRecipeCodeLines().length>0)
 				{
-					for(String recipeLine : ((Recipe)I).getRecipeCodeLines())
+					for(final String recipeLine : ((Recipe)I).getRecipeCodeLines())
 					{
 						allRecipeLines.append(recipeLine);
 						allRecipeLines.append( "\n" );
@@ -229,7 +229,7 @@ public class CraftingSkill extends GatheringSkill
 
 	protected void dropAWinner(MOB mob, Item building)
 	{
-		Room R=mob.location();
+		final Room R=mob.location();
 		if(R==null)
 			commonTell(mob,"You are NOWHERE?!");
 		else
@@ -255,7 +255,7 @@ public class CraftingSkill extends GatheringSkill
 	{
 		if(spells.length()==0) return;
 		if(spells.equalsIgnoreCase("bundle")) return;
-		List<Ability> V=CMLib.ableParms().getCodedSpells(spells);
+		final List<Ability> V=CMLib.ableParms().getCodedSpells(spells);
 		for(int v=0;v<V.size();v++)
 			P.addNonUninvokableEffect(V.get(v));
 	}
@@ -268,13 +268,13 @@ public class CraftingSkill extends GatheringSkill
 		{
 			layerAtt = new short[1];
 			layers = new short[1];
-			long[] wornLoc = new long[1];
-			boolean[] logicalAnd = new boolean[1];
-			double[] hardBonus=new double[]{hardnessMultiplier};
+			final long[] wornLoc = new long[1];
+			final boolean[] logicalAnd = new boolean[1];
+			final double[] hardBonus=new double[]{hardnessMultiplier};
 			CMLib.ableParms().parseWearLocation(layerAtt,layers,wornLoc,logicalAnd,hardBonus,wearLocation);
 			if(I instanceof Armor)
 			{
-				Armor armor = (Armor)I;
+				final Armor armor = (Armor)I;
 				armor.setClothingLayer(layers[0]);
 				armor.setLayerAttributes(layerAtt[0]);
 			}
@@ -287,7 +287,7 @@ public class CraftingSkill extends GatheringSkill
 
 	protected List<List<String>> loadList(StringBuffer str)
 	{
-		List<List<String>> V=new Vector<List<String>>();
+		final List<List<String>> V=new Vector<List<String>>();
 		if(str==null) return V;
 		List<String> V2=new Vector<String>();
 		boolean oneComma=false;
@@ -346,7 +346,7 @@ public class CraftingSkill extends GatheringSkill
 		List<List<String>> V=(List<List<String>>)Resources.getResource("PARSED_RECIPE: "+filename);
 		if(V==null)
 		{
-			StringBuffer str=new CMFile(Resources.buildResourcePath("skills")+filename,null,CMFile.FLAG_LOGERRORS).text();
+			final StringBuffer str=new CMFile(Resources.buildResourcePath("skills")+filename,null,CMFile.FLAG_LOGERRORS).text();
 			V=loadList(str);
 			if((V.size()==0)&&(!ID().equals("GenCraftSkill")))
 				Log.errOut(ID(),"Recipes not found!");
@@ -395,7 +395,7 @@ public class CraftingSkill extends GatheringSkill
 											 int autoGeneration,
 											 PairVector<Integer,Integer> eduMods)
 	{
-		int[][] data=new int[2][2];
+		final int[][] data=new int[2][2];
 		if((req1Desc!=null)&&(req1Desc.length()==0)) req1Desc=null;
 		if((req2Desc!=null)&&(req2Desc.length()==0)) req2Desc=null;
 
@@ -413,12 +413,12 @@ public class CraftingSkill extends GatheringSkill
 		Item firstOther=null;
 		if(req1!=null)
 		{
-			for(int i=0;i<req1.length;i++)
+			for (final int element : req1)
 			{
-				if((req1[i]&RawMaterial.RESOURCE_MASK)==0)
-					firstWood=CMLib.materials().findMostOfMaterial(mob.location(),req1[i]);
+				if((element&RawMaterial.RESOURCE_MASK)==0)
+					firstWood=CMLib.materials().findMostOfMaterial(mob.location(),element);
 				else
-					firstWood=CMLib.materials().findFirstResource(mob.location(),req1[i]);
+					firstWood=CMLib.materials().findFirstResource(mob.location(),element);
 
 				if(firstWood!=null) break;
 			}
@@ -435,12 +435,12 @@ public class CraftingSkill extends GatheringSkill
 
 		if(req2!=null)
 		{
-			for(int i=0;i<req2.length;i++)
+			for (final int element : req2)
 			{
-				if((req2[i]&RawMaterial.RESOURCE_MASK)==0)
-					firstOther=CMLib.materials().findMostOfMaterial(mob.location(),req2[i]);
+				if((element&RawMaterial.RESOURCE_MASK)==0)
+					firstOther=CMLib.materials().findMostOfMaterial(mob.location(),element);
 				else
-					firstOther=CMLib.materials().findFirstResource(mob.location(),req2[i]);
+					firstOther=CMLib.materials().findFirstResource(mob.location(),element);
 				if(firstOther!=null) break;
 			}
 		}
@@ -501,10 +501,10 @@ public class CraftingSkill extends GatheringSkill
 		&&(recipes.size()>0))
 		{
 			int tries=0;
-			int maxtries=100;
+			final int maxtries=100;
 			while((++tries)<maxtries)
 			{
-				List<String> randomRecipe=recipes.get(CMLib.dice().roll(1,recipes.size(),-1));
+				final List<String> randomRecipe=recipes.get(CMLib.dice().roll(1,recipes.size(),-1));
 				boolean proceed=true;
 				if((randomRecipe.size()>1))
 				{
@@ -540,7 +540,7 @@ public class CraftingSkill extends GatheringSkill
 		Item building=null;
 		DoorKey key=null;
 		int tries=0;
-		MOB mob=CMLib.map().getFactoryMOBInAnyRoom();
+		final MOB mob=CMLib.map().getFactoryMOBInAnyRoom();
 		mob.basePhyStats().setLevel(Integer.MAX_VALUE/2);
 		mob.basePhyStats().setSensesMask(mob.basePhyStats().sensesMask()|PhyStats.CAN_SEE_DARK);
 		mob.recoverPhyStats();
@@ -552,7 +552,7 @@ public class CraftingSkill extends GatheringSkill
 		}
 		while(((building==null)||(building.name().endsWith(" bundle")))&&(((++tries)<100)))
 		{
-			Vector V=new Vector();
+			final Vector V=new Vector();
 			V.addElement(Integer.valueOf(material));
 			if(forceLevels)
 				V.addElement(Boolean.TRUE);
@@ -587,10 +587,10 @@ public class CraftingSkill extends GatheringSkill
 
 	public List<ItemKeyPair> craftAllItemSets(int material, boolean forceLevels)
 	{
-		List<ItemKeyPair> allItems=new Vector<ItemKeyPair>();
-		List<List<String>> recipes=fetchRecipes();
+		final List<ItemKeyPair> allItems=new Vector<ItemKeyPair>();
+		final List<List<String>> recipes=fetchRecipes();
 		Item built=null;
-		HashSet<String> usedNames=new HashSet<String>();
+		final HashSet<String> usedNames=new HashSet<String>();
 		ItemKeyPair pair=null;
 		String s=null;
 		for(int r=0;r<recipes.size();r++)
@@ -614,14 +614,14 @@ public class CraftingSkill extends GatheringSkill
 	{
 		List<Integer> rscs=myResources();
 		if(rscs.size()==0) rscs=new XVector(Integer.valueOf(RawMaterial.RESOURCE_WOOD));
-		int material=rscs.get(CMLib.dice().roll(1,rscs.size(),-1)).intValue();
+		final int material=rscs.get(CMLib.dice().roll(1,rscs.size(),-1)).intValue();
 		return craftItem(recipeName,material,false);
 	}
 
 	public List<ItemKeyPair> craftAllItemSets(boolean forceLevels)
 	{
 		List<Integer> rscs=myResources();
-		List<ItemKeyPair> allItems=new Vector<ItemKeyPair>();
+		final List<ItemKeyPair> allItems=new Vector<ItemKeyPair>();
 		List<ItemKeyPair> pairs=null;
 		if(rscs.size()==0) rscs=new XVector(Integer.valueOf(RawMaterial.RESOURCE_WOOD));
 		for(int r=0;r<rscs.size();r++)
@@ -640,14 +640,14 @@ public class CraftingSkill extends GatheringSkill
 
 	protected List<List<String>> matchingRecipeNames(List<List<String>> recipes, String recipeName, boolean beLoose)
 	{
-		List<List<String>> matches=new Vector();
+		final List<List<String>> matches=new Vector();
 		if(recipeName.length()==0) return matches;
 		for(int r=0;r<recipes.size();r++)
 		{
-			List<String> V=recipes.get(r);
+			final List<String> V=recipes.get(r);
 			if(V.size()>0)
 			{
-				String item=V.get(RCP_FINALNAME);
+				final String item=V.get(RCP_FINALNAME);
 				if(replacePercent(item,"").equalsIgnoreCase(recipeName))
 					matches.add(V);
 			}
@@ -655,10 +655,10 @@ public class CraftingSkill extends GatheringSkill
 		if(matches.size()>0) return matches;
 		for(int r=0;r<recipes.size();r++)
 		{
-			List<String> V=recipes.get(r);
+			final List<String> V=recipes.get(r);
 			if(V.size()>0)
 			{
-				String item=V.get(RCP_FINALNAME);
+				final String item=V.get(RCP_FINALNAME);
 				if((replacePercent(item,"").toUpperCase().indexOf(recipeName.toUpperCase())>=0))
 					matches.add(V);
 			}
@@ -668,23 +668,23 @@ public class CraftingSkill extends GatheringSkill
 		{
 			for(int r=0;r<recipes.size();r++)
 			{
-				List<String> V=recipes.get(r);
+				final List<String> V=recipes.get(r);
 				if(V.size()>0)
 				{
-					String item=V.get(RCP_FINALNAME);
+					final String item=V.get(RCP_FINALNAME);
 					if((recipeName.toUpperCase().indexOf(replacePercent(item,"").toUpperCase())>=0))
 						matches.add(V);
 				}
 			}
 			if(matches.size()>0) return matches;
-			String lastWord=CMParms.parse(recipeName).lastElement();
+			final String lastWord=CMParms.parse(recipeName).lastElement();
 			if(lastWord.length()>1)
 				for(int r=0;r<recipes.size();r++)
 				{
-					List<String> V=recipes.get(r);
+					final List<String> V=recipes.get(r);
 					if(V.size()>0)
 					{
-						String item=V.get(RCP_FINALNAME);
+						final String item=V.get(RCP_FINALNAME);
 						if((replacePercent(item,"").toUpperCase().indexOf(lastWord.toUpperCase())>=0)
 						||(lastWord.toUpperCase().indexOf(replacePercent(item,"").toUpperCase())>=0))
 							matches.add(V);
@@ -700,10 +700,10 @@ public class CraftingSkill extends GatheringSkill
 		if(from==null) return V;
 		if(from instanceof Room)
 		{
-			Room R=(Room)from;
+			final Room R=(Room)from;
 			for(int i=0;i<R.numItems();i++)
 			{
-				Item I=R.getItem(i);
+				final Item I=R.getItem(i);
 				if((I!=null)
 				&&(I.container()==contained)
 				&&(canMend(mob,I,true))
@@ -714,10 +714,10 @@ public class CraftingSkill extends GatheringSkill
 		else
 		if(from instanceof MOB)
 		{
-			MOB M=(MOB)from;
+			final MOB M=(MOB)from;
 			for(int i=0;i<M.numItems();i++)
 			{
-				Item I=M.getItem(i);
+				final Item I=M.getItem(i);
 				if((I!=null)
 				&&(I.container()==contained)
 				&&(canMend(mob,I,true))
@@ -739,7 +739,7 @@ public class CraftingSkill extends GatheringSkill
 
 	public boolean publicScan(MOB mob, Vector commands)
 	{
-		String rest=CMParms.combine(commands,1);
+		final String rest=CMParms.combine(commands,1);
 		Environmental scanning=null;
 		if(rest.length()==0)
 			scanning=mob;
@@ -755,7 +755,7 @@ public class CraftingSkill extends GatheringSkill
 				return false;
 			}
 		}
-		Vector allStuff=getAllMendable(mob,scanning,null);
+		final Vector allStuff=getAllMendable(mob,scanning,null);
 		if(allStuff.size()==0)
 		{
 			if(mob==scanning)
@@ -764,14 +764,14 @@ public class CraftingSkill extends GatheringSkill
 				commonTell(mob,"You don't see anything on "+scanning.name()+" that needs mending with "+name()+".");
 			return false;
 		}
-		StringBuffer buf=new StringBuffer("");
+		final StringBuffer buf=new StringBuffer("");
 		if(scanning==mob)
 			buf.append("The following items could use some "+name()+":\n\r");
 		else
 			buf.append("The following items on "+scanning.name()+" could use some "+name()+":\n\r");
 		for(int i=0;i<allStuff.size();i++)
 		{
-			Item I=(Item)allStuff.elementAt(i);
+			final Item I=(Item)allStuff.elementAt(i);
 			buf.append(CMStrings.padRight(I.usesRemaining()+"%",5)+I.name());
 			if(!I.amWearingAt(Wearable.IN_INVENTORY))
 				buf.append(" ("+Wearable.CODES.NAME(I.rawWornCode())+")");
@@ -801,12 +801,12 @@ public class CraftingSkill extends GatheringSkill
 			return false;
 		if(!(this instanceof ItemCraftor))
 			return false;
-		ItemCraftor C=(ItemCraftor)this;
+		final ItemCraftor C=(ItemCraftor)this;
 		if(!C.supportsDeconstruction())
 			return false;
 		if(!C.mayICraft(I))
 			return false;
-		List<String> existingRecipes=new XVector<String>(R.getRecipeCodeLines());
+		final List<String> existingRecipes=new XVector<String>(R.getRecipeCodeLines());
 		if(R.getTotalRecipePages() <=existingRecipes.size())
 			return false;
 		try
@@ -815,7 +815,7 @@ public class CraftingSkill extends GatheringSkill
 			R.setRecipeCodeLines(existingRecipes.toArray(new String[0]));
 			R.setCommonSkillID( ID() );
 		}
-		catch(CMException cme)
+		catch(final CMException cme)
 		{
 			Log.errOut("CraftingSkill",cme.getMessage());
 			return false;
@@ -862,7 +862,7 @@ public class CraftingSkill extends GatheringSkill
 			return false;
 		if(CMLib.flags().flaggedBehaviors(I, Behavior.FLAG_POTENTIALLYAUTODEATHING).size()>0)
 			return false;
-		Item I2=CMClass.getItem(I.ID());
+		final Item I2=CMClass.getItem(I.ID());
 		if(CMLib.flags().isGettable(I)!=CMLib.flags().isGettable(I2))
 			return false;
 		if(CMLib.flags().isRemovable(I)!=CMLib.flags().isRemovable(I2))
@@ -873,20 +873,20 @@ public class CraftingSkill extends GatheringSkill
 	public boolean isANativeItem(String name)
 	{
 		name=CMLib.english().stripPunctuation(name);
-		List<String> nameV=CMParms.parse(name.toUpperCase());
-		List<List<String>> recipes = this.loadRecipes();
+		final List<String> nameV=CMParms.parse(name.toUpperCase());
+		final List<List<String>> recipes = this.loadRecipes();
 		if(nameV.size()==0) return false;
 		TreeSet<String> allExpertiseWords=(TreeSet<String>)Resources.getResource("CRAFTING_SKILL_EXPERTISE_WORDS");
 		if(allExpertiseWords == null)
 		{
 			if (this instanceof EnhancedCraftingSkill)
 			{
-				List<ExpertiseLibrary.ExpertiseDefinition> V = ((EnhancedCraftingSkill)this).getAllThisSkillsDefinitions();
+				final List<ExpertiseLibrary.ExpertiseDefinition> V = ((EnhancedCraftingSkill)this).getAllThisSkillsDefinitions();
 				allExpertiseWords = new TreeSet<String>();
 				for(final ExpertiseLibrary.ExpertiseDefinition def : V )
 				{
 					if(def.data != null)
-						for(String s : def.data)
+						for(final String s : def.data)
 							allExpertiseWords.add(s.toUpperCase());
 				}
 				Resources.submitResource("CRAFTING_SKILL_EXPERTISE_WORDS", allExpertiseWords);
@@ -894,12 +894,12 @@ public class CraftingSkill extends GatheringSkill
 			else
 				allExpertiseWords=new TreeSet<String>();
 		}
-		for(List<String> recipe : recipes)
+		for(final List<String> recipe : recipes)
 		{
 			if(recipe.size() <= RCP_FINALNAME)
 				continue;
-			String thisOnesName = recipe.get(RCP_FINALNAME);
-			List<String> thisOneNameV=CMParms.parse(thisOnesName.toUpperCase());
+			final String thisOnesName = recipe.get(RCP_FINALNAME);
+			final List<String> thisOneNameV=CMParms.parse(thisOnesName.toUpperCase());
 			boolean match=false;
 			for(int n=0,o=0;;n++)
 			{
@@ -1058,7 +1058,7 @@ public class CraftingSkill extends GatheringSkill
 				commonTell(mob,"You can't mend "+E.name()+".");
 			return false;
 		}
-		Item IE=(Item)E;
+		final Item IE=(Item)E;
 		if(!IE.subjectToWearAndTear())
 		{
 			if(!quiet)
@@ -1081,8 +1081,8 @@ public class CraftingSkill extends GatheringSkill
 		final List<AbilityComponent> componentsRequirements;
 		if(componentID.trim().startsWith("("))
 		{
-			Map<String, List<AbilityComponent>> H=new TreeMap<String, List<AbilityComponent>>();
-			String error=CMLib.ableMapper().addAbilityComponent("ID="+componentID, H);
+			final Map<String, List<AbilityComponent>> H=new TreeMap<String, List<AbilityComponent>>();
+			final String error=CMLib.ableMapper().addAbilityComponent("ID="+componentID, H);
 			if(error!=null)
 				Log.errOut(ID(),"Error parsing custom component: "+componentID);
 			componentsRequirements=H.get("ID");
@@ -1091,12 +1091,12 @@ public class CraftingSkill extends GatheringSkill
 			componentsRequirements=CMLib.ableMapper().getAbilityComponentMap().get(componentID.toUpperCase());
 		if(componentsRequirements!=null)
 		{
-			List<Object> components=CMLib.ableMapper().componentCheck(mob,componentsRequirements);
+			final List<Object> components=CMLib.ableMapper().componentCheck(mob,componentsRequirements);
 			if(components!=null)
 			{
 				return components;
 			}
-			StringBuffer buf=new StringBuffer("");
+			final StringBuffer buf=new StringBuffer("");
 			for(int r=0;r<componentsRequirements.size();r++)
 				buf.append(CMLib.ableMapper().getAbilityComponentDesc(mob,componentsRequirements,r));
 			mob.tell("You lack the necessary materials to "
@@ -1128,8 +1128,8 @@ public class CraftingSkill extends GatheringSkill
 			final String ID=woodStr.toUpperCase().trim();
 			if(woodStr.trim().startsWith("("))
 			{
-				Map<String, List<AbilityComponent>> H=new TreeMap<String, List<AbilityComponent>>();
-				String error=CMLib.ableMapper().addAbilityComponent("ID="+ID, H);
+				final Map<String, List<AbilityComponent>> H=new TreeMap<String, List<AbilityComponent>>();
+				final String error=CMLib.ableMapper().addAbilityComponent("ID="+ID, H);
 				if(error!=null)
 					return "Error parsing custom component: "+woodStr;
 				componentsRequirements=H.get("ID");
@@ -1183,10 +1183,10 @@ public class CraftingSkill extends GatheringSkill
 		recipeHolder=null;
 		for(int i=0;i<mob.numItems();i++)
 		{
-			Item I=mob.getItem( i );
+			final Item I=mob.getItem( i );
 			if((I instanceof Recipe)&&(I.container()==null))
 			{
-				Recipe R=(Recipe)I;
+				final Recipe R=(Recipe)I;
 				if(((R.getCommonSkillID().length()==0)||(R.getCommonSkillID().equalsIgnoreCase( ID() )))
 				&&(R.getTotalRecipePages() > R.getRecipeCodeLines().length))
 				{
@@ -1206,12 +1206,12 @@ public class CraftingSkill extends GatheringSkill
 		displayText="You are deconstructing "+buildingI.name();
 		verb="deconstructing "+buildingI.name();
 		messedUp=!proficiencyCheck(mob,0,auto);
-		CMMsg msg=CMClass.getMsg(mob,buildingI,this,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> start(s) deconstructing and studying <T-NAMESELF>.");
+		final CMMsg msg=CMClass.getMsg(mob,buildingI,this,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> start(s) deconstructing and studying <T-NAMESELF>.");
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
 			buildingI=(Item)msg.target();
-			int duration = getDuration(10+buildingI.phyStats().level(),mob,buildingI.phyStats().level(),10);
+			final int duration = getDuration(10+buildingI.phyStats().level(),mob,buildingI.phyStats().level(),10);
 			beneficialAffect(mob,mob,asLevel,duration);
 		}
 		return true;

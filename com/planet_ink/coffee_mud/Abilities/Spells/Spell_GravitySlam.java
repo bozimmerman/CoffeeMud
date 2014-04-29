@@ -45,7 +45,7 @@ public class Spell_GravitySlam extends Spell
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		MOB target=getTarget(mob,commands,givenTarget);
+		final MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
 		// the invoke method for spells receives as
@@ -56,7 +56,7 @@ public class Spell_GravitySlam extends Spell
 			return false;
 
 		// now see if it worked
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
@@ -64,7 +64,7 @@ public class Spell_GravitySlam extends Spell
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),(auto?"":"^S<S-NAME> incant(s) and point(s) at <T-NAMESELF>!^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),(auto?"":"^S<S-NAME> incant(s) and point(s) at <T-NAMESELF>!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -74,7 +74,7 @@ public class Spell_GravitySlam extends Spell
 				int maxDie =  (int)Math.round((adjustedLevel(mob,asLevel)+(2.0*super.getX1Level(mob)))/2.0);
 				if(!CMLib.flags().isInFlight(target))
 					maxDie=maxDie/2;
-				Room R=mob.location();
+				final Room R=mob.location();
 				if((R.domainType()==Room.DOMAIN_INDOORS_UNDERWATER)
 				||(R.domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER))
 					maxDie=maxDie/6;

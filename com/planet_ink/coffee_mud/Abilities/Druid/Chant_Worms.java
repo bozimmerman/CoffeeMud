@@ -61,13 +61,13 @@ public class Chant_Worms extends Chant implements DiseaseAffect
 
 		if(!super.tick(ticking,tickID))
 			return false;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		mob.curState().adjHunger(-100,mob.maxState().maxHunger(mob.baseWeight()));
 		if((--plagueDown)<=0)
 		{
 			plagueDown=5;
 			if(invoker==null) invoker=mob;
-			int dmg=((mob.phyStats().level()+(2*super.getXLEVELLevel(invoker())))/4)+1;
+			final int dmg=((mob.phyStats().level()+(2*super.getXLEVELLevel(invoker())))/4)+1;
 			CMLib.combat().postDamage(invoker,mob,this,dmg,CMMsg.TYP_DISEASE,-1,"<T-NAME> feel(s) <T-HIS-HER> innards being consumed by worms!");
 		}
 		return true;
@@ -88,7 +88,7 @@ public class Chant_Worms extends Chant implements DiseaseAffect
 		// undo the affects of this spell
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		super.unInvoke();
 
@@ -104,21 +104,21 @@ public class Chant_Worms extends Chant implements DiseaseAffect
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		MOB target=this.getTarget(mob,commands,givenTarget);
+		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
 			// it worked, so build a copy of this ability,
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto)|CMMsg.MASK_MALICIOUS,auto?"":"^S<S-NAME> chant(s) at <T-NAMESELF>!^?");
-			CMMsg msg2=CMClass.getMsg(mob,target,this,verbalCastMask(mob,target,auto)|CMMsg.TYP_DISEASE,null);
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto)|CMMsg.MASK_MALICIOUS,auto?"":"^S<S-NAME> chant(s) at <T-NAMESELF>!^?");
+			final CMMsg msg2=CMClass.getMsg(mob,target,this,verbalCastMask(mob,target,auto)|CMMsg.TYP_DISEASE,null);
 			if((mob.location().okMessage(mob,msg))&&(mob.location().okMessage(mob,msg2)))
 			{
 				mob.location().send(mob,msg);

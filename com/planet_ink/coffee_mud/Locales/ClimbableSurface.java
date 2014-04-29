@@ -46,8 +46,8 @@ public class ClimbableSurface extends StdRoom
 
 	public void mountLadder(MOB mob, Rideable ladder)
 	{
-		String mountStr=ladder.mountString(CMMsg.TYP_MOUNT,mob);
-		CMMsg msg=CMClass.getMsg(mob,ladder,null,CMMsg.MSG_MOUNT,"<S-NAME> "+mountStr+" <T-NAMESELF>.");
+		final String mountStr=ladder.mountString(CMMsg.TYP_MOUNT,mob);
+		final CMMsg msg=CMClass.getMsg(mob,ladder,null,CMMsg.MSG_MOUNT,"<S-NAME> "+mountStr+" <T-NAMESELF>.");
 		Room room=(Room)((Item)ladder).owner();
 		if(mob.location()==room) room=null;
 		if((mob.location().okMessage(mob,msg))
@@ -65,7 +65,7 @@ public class ClimbableSurface extends StdRoom
 		if(mob.riding()!=null) return null;
 		for(int i=0;i<room.numItems();i++)
 		{
-			Item I=room.getItem(i);
+			final Item I=room.getItem(i);
 			if((I!=null)
 			   &&(I instanceof Rideable)
 			   &&(CMLib.flags().canBeSeenBy(I,mob))
@@ -92,7 +92,7 @@ public class ClimbableSurface extends StdRoom
 		&&(!CMLib.flags().isClimbing(msg.source()))
 		&&(!CMLib.flags().isInFlight(msg.source())))
 		{
-			Rideable ladder=findALadder(msg.source(),this);
+			final Rideable ladder=findALadder(msg.source(),this);
 			if(ladder!=null)
 				mountLadder(msg.source(),ladder);
 			if((!CMLib.flags().isClimbing(msg.source()))
@@ -130,7 +130,7 @@ public class ClimbableSurface extends StdRoom
 		&&(CMath.bset(msg.targetMajor(),CMMsg.MASK_MOVE))
 		&&(!CMLib.flags().isFalling(msg.source())))
 		{
-			MOB mob=msg.source();
+			final MOB mob=msg.source();
 			if(isInhabitant(mob))
 			{
 				if((!CMLib.flags().isInFlight(mob))

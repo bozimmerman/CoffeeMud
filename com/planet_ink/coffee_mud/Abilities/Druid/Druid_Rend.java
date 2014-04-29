@@ -85,7 +85,7 @@ public class Druid_Rend extends StdAbility
 			mob.tell("You must have legs to rend!");
 			return false;
 		}
-		Ability A=mob.fetchEffect("Fighter_Pin");
+		final Ability A=mob.fetchEffect("Fighter_Pin");
 		if(A!=null)
 		{
 			mob.tell("You rend your way out of the pin!");
@@ -95,7 +95,7 @@ public class Druid_Rend extends StdAbility
 			return true;
 		}
 
-		MOB target=this.getTarget(mob,commands,givenTarget);
+		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
 		if(CMLib.flags().isStanding(target))
@@ -112,7 +112,7 @@ public class Druid_Rend extends StdAbility
 			return false;
 
 		// now see if it worked
-		boolean success=proficiencyCheck(mob,mob.charStats().getStat(CharStats.STAT_STRENGTH)-target.charStats().getStat(CharStats.STAT_STRENGTH)-10,auto);
+		final boolean success=proficiencyCheck(mob,mob.charStats().getStat(CharStats.STAT_STRENGTH)-target.charStats().getStat(CharStats.STAT_STRENGTH)-10,auto);
 		if(success)
 		{
 			// it worked, so build a copy of this ability,
@@ -120,9 +120,9 @@ public class Druid_Rend extends StdAbility
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			int topDamage=(adjustedLevel(mob,asLevel)+getX2Level(mob))*2;
+			final int topDamage=(adjustedLevel(mob,asLevel)+getX2Level(mob))*2;
 			int damage=CMLib.dice().roll(1,topDamage,adjustedLevel(mob,asLevel));
-			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),null);
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),null);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

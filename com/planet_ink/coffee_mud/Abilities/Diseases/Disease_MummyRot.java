@@ -66,7 +66,7 @@ public class Disease_MummyRot extends StdAbility implements DiseaseAffect
 		if(affected==null) return false;
 		if(!(affected instanceof MOB)) return true;
 
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		if((!mob.amDead())&&((--diseaseTick)<=0))
 		{
 			diseaseTick=10;
@@ -86,7 +86,7 @@ public class Disease_MummyRot extends StdAbility implements DiseaseAffect
 			super.unInvoke();
 			return;
 		}
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		super.unInvoke();
 		if(canBeUninvoked())
 		{
@@ -118,7 +118,7 @@ public class Disease_MummyRot extends StdAbility implements DiseaseAffect
 			mob.tell("You are too far away to touch!");
 			return false;
 		}
-		MOB target=this.getTarget(mob,commands,givenTarget);
+		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -130,7 +130,7 @@ public class Disease_MummyRot extends StdAbility implements DiseaseAffect
 		if(success)
 		{
 			str=auto?"":"^S<S-NAME> extend(s) a rotting hand to <T-NAMESELF>!^?";
-			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_UNDEAD|(auto?CMMsg.MASK_ALWAYS:0),str);
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_UNDEAD|(auto?CMMsg.MASK_ALWAYS:0),str);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

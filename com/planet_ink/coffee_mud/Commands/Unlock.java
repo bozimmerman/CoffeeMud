@@ -42,7 +42,7 @@ public class Unlock extends StdCommand
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		String whatTounlock=CMParms.combine(commands,1);
+		final String whatTounlock=CMParms.combine(commands,1);
 		if(whatTounlock.length()==0)
 		{
 			mob.tell("Unlock what?");
@@ -61,10 +61,10 @@ public class Unlock extends StdCommand
 			return false;
 		}
 		final String unlockMsg="<S-NAME> unlock(s) <T-NAMESELF>."+CMLib.protocol().msp("doorunlock.wav",10);
-		CMMsg msg=CMClass.getMsg(mob,unlockThis,null,CMMsg.MSG_UNLOCK,unlockMsg,whatTounlock,unlockMsg);
+		final CMMsg msg=CMClass.getMsg(mob,unlockThis,null,CMMsg.MSG_UNLOCK,unlockMsg,whatTounlock,unlockMsg);
 		if(unlockThis instanceof Exit)
 		{
-			boolean locked=((Exit)unlockThis).isLocked();
+			final boolean locked=((Exit)unlockThis).isLocked();
 			if((mob.location().okMessage(msg.source(),msg))
 			&&(locked))
 			{
@@ -76,14 +76,14 @@ public class Unlock extends StdCommand
 
 				if((dirCode>=0)&&(mob.location().getRoomInDir(dirCode)!=null))
 				{
-					Room opR=mob.location().getRoomInDir(dirCode);
-					Exit opE=mob.location().getPairedExit(dirCode);
+					final Room opR=mob.location().getRoomInDir(dirCode);
+					final Exit opE=mob.location().getPairedExit(dirCode);
 					if(opE!=null)
 					{
-						CMMsg altMsg=CMClass.getMsg(msg.source(),opE,msg.tool(),msg.sourceCode(),null,msg.targetCode(),null,msg.othersCode(),null);
+						final CMMsg altMsg=CMClass.getMsg(msg.source(),opE,msg.tool(),msg.sourceCode(),null,msg.targetCode(),null,msg.othersCode(),null);
 						opE.executeMsg(msg.source(),altMsg);
 					}
-					int opCode=Directions.getOpDirectionCode(dirCode);
+					final int opCode=Directions.getOpDirectionCode(dirCode);
 					if((opE!=null)
 					&&(!opE.isLocked())
 					&&(!((Exit)unlockThis).isLocked()))

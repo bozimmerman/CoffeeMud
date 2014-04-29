@@ -48,7 +48,7 @@ public class ResultSet implements java.sql.ResultSet
    private static final List<RecordInfo> fakeList = new Vector<RecordInfo>(1);
    static
    {
-	   RecordInfo info = new RecordInfo(0,0);
+	   final RecordInfo info = new RecordInfo(0,0);
 	   info.indexedData=new ComparableValue[0];
 	   fakeList.add(info);
    }
@@ -69,7 +69,7 @@ public class ResultSet implements java.sql.ResultSet
 	  this.orderByKeyDexCols=orderByKeyDexCols;
 	  this.orderByConditions=orderByConditions;
 	  this.iter = table.indexIterator(this.orderByKeyDexCols,this.orderByConditions);
-	  try { this.closeStatementOnClose=stmt.isCloseOnCompletion(); } catch (SQLException e) {this.closeStatementOnClose=false; }
+	  try { this.closeStatementOnClose=stmt.isCloseOnCompletion(); } catch (final SQLException e) {this.closeStatementOnClose=false; }
 	  for(int s=0;s<showCols.length;s++)
 		  if(showCols[s]==FakeColumn.INDEX_COUNT)
 		  {
@@ -96,7 +96,7 @@ public boolean next() throws java.sql.SQLException
 	  {
 		 if (!iter.hasNext())
 			 return false;
-		 Backend.RecordInfo rowInfo=iter.next();
+		 final Backend.RecordInfo rowInfo=iter.next();
 		 if(countValue!=null)
 		 {
 			 currentRow++;
@@ -104,7 +104,7 @@ public boolean next() throws java.sql.SQLException
 		 }
 		 if (conditions.size()>0)
 		 {
-			 boolean[] dataLoaded = new boolean[1];
+			 final boolean[] dataLoaded = new boolean[1];
 			 dataLoaded[0]=false;
 			 if(!fakeTable.recordCompare(rowInfo,conditions,dataLoaded,values))
 				 continue;
@@ -142,7 +142,7 @@ public boolean wasNull() throws java.sql.SQLException
 	  columnIndex=showCols[columnIndex-1];
 	  if(columnIndex==FakeColumn.INDEX_COUNT)
 		  return this.countValue;
-	  Object v=values[columnIndex].getValue();
+	  final Object v=values[columnIndex].getValue();
 	  if(v == null)
 	  {
 		  wasNullFlag=true;
@@ -154,35 +154,35 @@ public boolean wasNull() throws java.sql.SQLException
    @Override
 public String getString(int columnIndex) throws java.sql.SQLException
    {
-	  Object o = getProperValue(columnIndex);
+	  final Object o = getProperValue(columnIndex);
 	  if(o==null) return null;
 	  return o.toString();
    }
    @Override
 public java.sql.Array getArray(int columnIndex) throws java.sql.SQLException
    {
-	  Object o = getProperValue(columnIndex);
+	  final Object o = getProperValue(columnIndex);
 	  if(o==null) return null;
 	  throw new java.sql.SQLException();
    }
    @Override
 public java.sql.Blob getBlob(int columnIndex) throws java.sql.SQLException
    {
-	  Object o = getProperValue(columnIndex);
+	  final Object o = getProperValue(columnIndex);
 	  if(o==null) return null;
 	  throw new java.sql.SQLException();
    }
    @Override
 public java.sql.Clob getClob(int columnIndex) throws java.sql.SQLException
    {
-	  Object o = getProperValue(columnIndex);
+	  final Object o = getProperValue(columnIndex);
 	  if(o==null) return null;
 	  throw new java.sql.SQLException();
    }
    @Override
 public java.sql.Ref getRef(int columnIndex) throws java.sql.SQLException
    {
-	  Object o = getProperValue(columnIndex);
+	  final Object o = getProperValue(columnIndex);
 	  if(o==null) return null;
 	  throw new java.sql.SQLException();
    }
@@ -190,7 +190,7 @@ public java.sql.Ref getRef(int columnIndex) throws java.sql.SQLException
    @Override
 public boolean getBoolean(int columnIndex) throws java.sql.SQLException
    {
-	  String s=getString(columnIndex);
+	  final String s=getString(columnIndex);
 	  if ((s!=null)&&(s.length()>0))
 		 switch (Character.toUpperCase(s.charAt(0)))
 		 {
@@ -201,7 +201,7 @@ public boolean getBoolean(int columnIndex) throws java.sql.SQLException
    @Override
 public byte getByte(int columnIndex) throws java.sql.SQLException
    {
-	  Object o = getProperValue(columnIndex);
+	  final Object o = getProperValue(columnIndex);
 	  if(o==null) return 0;
 	  if(o instanceof Integer) return ((Integer)o).byteValue();
 	  if(o instanceof Long) return ((Long)o).byteValue();
@@ -209,7 +209,7 @@ public byte getByte(int columnIndex) throws java.sql.SQLException
 	  {
 		 return Byte.parseByte(o.toString());
 	  }
-	  catch (NumberFormatException e) { throw new java.sql.SQLException(e.getMessage()); }
+	  catch (final NumberFormatException e) { throw new java.sql.SQLException(e.getMessage()); }
    }
    @Override
 public short getShort(int columnIndex) throws java.sql.SQLException
@@ -224,7 +224,7 @@ public int getInt(int columnIndex) throws java.sql.SQLException
    @Override
 public long getLong(int columnIndex) throws java.sql.SQLException
    {
-	  Object o = getProperValue(columnIndex);
+	  final Object o = getProperValue(columnIndex);
 	  if(o==null) return 0;
 	  if(o instanceof Integer) return ((Integer)o).longValue();
 	  if(o instanceof Long) return ((Long)o).longValue();
@@ -232,12 +232,12 @@ public long getLong(int columnIndex) throws java.sql.SQLException
 	  {
 		 return Long.parseLong(o.toString());
 	  }
-	  catch (NumberFormatException e) { throw new java.sql.SQLException(e.getMessage()); }
+	  catch (final NumberFormatException e) { throw new java.sql.SQLException(e.getMessage()); }
    }
    @Override
 public float getFloat(int columnIndex) throws java.sql.SQLException
    {
-	  Object o = getProperValue(columnIndex);
+	  final Object o = getProperValue(columnIndex);
 	  if(o==null) return 0;
 	  if(o instanceof Integer) return ((Integer)o).floatValue();
 	  if(o instanceof Long) return ((Long)o).floatValue();
@@ -245,12 +245,12 @@ public float getFloat(int columnIndex) throws java.sql.SQLException
 	  {
 		 return Float.parseFloat(o.toString());
 	  }
-	  catch (NumberFormatException e) { throw new java.sql.SQLException(e.getMessage()); }
+	  catch (final NumberFormatException e) { throw new java.sql.SQLException(e.getMessage()); }
    }
    @Override
 public double getDouble(int columnIndex) throws java.sql.SQLException
    {
-	  Object o = getProperValue(columnIndex);
+	  final Object o = getProperValue(columnIndex);
 	  if(o==null) return 0;
 	  if(o instanceof Integer) return ((Integer)o).doubleValue();
 	  if(o instanceof Long) return ((Long)o).doubleValue();
@@ -258,18 +258,18 @@ public double getDouble(int columnIndex) throws java.sql.SQLException
 	  {
 		 return Double.parseDouble(o.toString());
 	  }
-	  catch (NumberFormatException e) { throw new java.sql.SQLException(e.getMessage()); }
+	  catch (final NumberFormatException e) { throw new java.sql.SQLException(e.getMessage()); }
    }
    @Override
 public java.math.BigDecimal getBigDecimal(int columnIndex) throws java.sql.SQLException
    {
-	  Object o = getProperValue(columnIndex);
+	  final Object o = getProperValue(columnIndex);
 	  if(o==null) return new java.math.BigDecimal(0);
 	  try
 	  {
 		 return new java.math.BigDecimal(o.toString());
 	  }
-	  catch (NumberFormatException e) { throw new java.sql.SQLException(e.getMessage()); }
+	  catch (final NumberFormatException e) { throw new java.sql.SQLException(e.getMessage()); }
    }
    /**
 	* @deprecated
@@ -278,25 +278,25 @@ public java.math.BigDecimal getBigDecimal(int columnIndex) throws java.sql.SQLEx
 	@Override
 public java.math.BigDecimal getBigDecimal(int columnIndex, int scale) throws java.sql.SQLException
    {
-	  java.math.BigDecimal decimal = getBigDecimal(columnIndex);
+	  final java.math.BigDecimal decimal = getBigDecimal(columnIndex);
 	  decimal.setScale(scale);
 	  return decimal;
    }
    @Override
 public byte[] getBytes(int columnIndex) throws java.sql.SQLException
    {
-	  Object o = getProperValue(columnIndex);
+	  final Object o = getProperValue(columnIndex);
 	  if(o==null) return null;
 	  try
 	  {
 		 return o.toString().getBytes();
 	  }
-	  catch (NumberFormatException e) { throw new java.sql.SQLException(e.getMessage()); }
+	  catch (final NumberFormatException e) { throw new java.sql.SQLException(e.getMessage()); }
    }
    @Override
 public java.sql.Date getDate(int columnIndex) throws java.sql.SQLException
    {
-	  Object o = getProperValue(columnIndex);
+	  final Object o = getProperValue(columnIndex);
 	  if(o==null) return null;
 	  if(o instanceof Integer) return new java.sql.Date(((Integer)o).longValue());
 	  if(o instanceof Long) return new java.sql.Date(((Long)o).longValue());
@@ -304,12 +304,12 @@ public java.sql.Date getDate(int columnIndex) throws java.sql.SQLException
 	  {
 		 return java.sql.Date.valueOf(o.toString());
 	  }
-	  catch (NumberFormatException e) { throw new java.sql.SQLException(e.getMessage()); }
+	  catch (final NumberFormatException e) { throw new java.sql.SQLException(e.getMessage()); }
    }
    @Override
 public java.sql.Time getTime(int columnIndex) throws java.sql.SQLException
    {
-	  Object o = getProperValue(columnIndex);
+	  final Object o = getProperValue(columnIndex);
 	  if(o==null) return null;
 	  if(o instanceof Integer) return new java.sql.Time(((Integer)o).longValue());
 	  if(o instanceof Long) return new java.sql.Time(((Long)o).longValue());
@@ -317,12 +317,12 @@ public java.sql.Time getTime(int columnIndex) throws java.sql.SQLException
 	  {
 		 return java.sql.Time.valueOf(o.toString());
 	  }
-	  catch (NumberFormatException e) { throw new java.sql.SQLException(e.getMessage()); }
+	  catch (final NumberFormatException e) { throw new java.sql.SQLException(e.getMessage()); }
    }
    @Override
 public java.sql.Timestamp getTimestamp(int columnIndex) throws java.sql.SQLException
    {
-	  Object o = getProperValue(columnIndex);
+	  final Object o = getProperValue(columnIndex);
 	  if(o==null) return null;
 	  if(o instanceof Integer) return new java.sql.Timestamp(((Integer)o).longValue());
 	  if(o instanceof Long) return new java.sql.Timestamp(((Long)o).longValue());
@@ -330,7 +330,7 @@ public java.sql.Timestamp getTimestamp(int columnIndex) throws java.sql.SQLExcep
 	  {
 		 return java.sql.Timestamp.valueOf(o.toString());
 	  }
-	  catch (NumberFormatException e) { throw new java.sql.SQLException(e.getMessage()); }
+	  catch (final NumberFormatException e) { throw new java.sql.SQLException(e.getMessage()); }
    }
    @Override
 public java.io.InputStream getAsciiStream(int columnIndex) throws java.sql.SQLException
@@ -349,33 +349,33 @@ public java.io.InputStream getUnicodeStream(int columnIndex) throws java.sql.SQL
    @Override
 public java.io.InputStream getBinaryStream(int columnIndex) throws java.sql.SQLException
    {
-	  byte b[] = getBytes(columnIndex);
+	  final byte b[] = getBytes(columnIndex);
 	  if (b==null) return null;
 	  return new java.io.ByteArrayInputStream(b);
    }
    @Override
 public java.io.Reader getCharacterStream(int columnIndex) throws java.sql.SQLException
    {
-	  String s=getString(columnIndex);
+	  final String s=getString(columnIndex);
 	  if(s==null) return null;
 	  return new java.io.CharArrayReader(s.toCharArray());
    }
    @Override
 public Object getObject(int columnIndex) throws java.sql.SQLException
    {
-	  Object o = getProperValue(columnIndex);
+	  final Object o = getProperValue(columnIndex);
 	  return o;
    }
    @Override
 public java.net.URL getURL(int columnIndex) throws java.sql.SQLException
    {
-	  String s=getString(columnIndex);
+	  final String s=getString(columnIndex);
 	  if(s==null) return null;
 	  try
 	  {
 		 return new java.net.URL(s);
 	  }
-	  catch (java.net.MalformedURLException e) { throw new java.sql.SQLException(e.getMessage()); }
+	  catch (final java.net.MalformedURLException e) { throw new java.sql.SQLException(e.getMessage()); }
    }
 
    @Override
@@ -713,7 +713,7 @@ public boolean last()
 		   while(next())
 			   {}
 	   }
-	   catch(java.sql.SQLException sqle)
+	   catch(final java.sql.SQLException sqle)
 	   {
 		   sqle.printStackTrace();
 	   }

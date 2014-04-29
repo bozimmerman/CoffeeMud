@@ -72,13 +72,13 @@ public class Skill_Swim extends StdSkill
 	{
 		if(secondsElapsed==0)
 		{
-			int dirCode=Directions.getDirectionCode(CMParms.combine(commands,0));
+			final int dirCode=Directions.getDirectionCode(CMParms.combine(commands,0));
 			if(dirCode<0)
 			{
 				mob.tell("Swim where?");
 				return false;
 			}
-			Room r=mob.location().getRoomInDir(dirCode);
+			final Room r=mob.location().getRoomInDir(dirCode);
 			if(!placeToSwim(mob.location()))
 			{
 				if(!placeToSwim(r))
@@ -103,8 +103,8 @@ public class Skill_Swim extends StdSkill
 				mob.tell("You need to get off "+mob.riding().name()+" first!");
 				return false;
 			}
-			CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> start(s) swimming "+Directions.getDirectionName(dirCode)+".");
-			Room R=mob.location();
+			final CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> start(s) swimming "+Directions.getDirectionName(dirCode)+".");
+			final Room R=mob.location();
 			if((R!=null)&&(R.okMessage(mob,msg)))
 				R.send(mob,msg);
 			else
@@ -115,7 +115,7 @@ public class Skill_Swim extends StdSkill
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		int dirCode=Directions.getDirectionCode(CMParms.combine(commands,0));
+		final int dirCode=Directions.getDirectionCode(CMParms.combine(commands,0));
 		if(!preInvoke(mob,commands,givenTarget,auto,asLevel,0,0.0))
 			return false;
 
@@ -123,8 +123,8 @@ public class Skill_Swim extends StdSkill
 			return false;
 
 		boolean success=proficiencyCheck(mob,0,auto);
-		CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,null);
-		Room R=mob.location();
+		final CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,null);
+		final Room R=mob.location();
 		if((R!=null)
 		&&(R.okMessage(mob,msg)))
 		{

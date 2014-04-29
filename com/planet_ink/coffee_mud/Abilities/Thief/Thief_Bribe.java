@@ -54,9 +54,9 @@ public class Thief_Bribe extends ThiefSkill
 			mob.tell("Bribe whom?");
 			return false;
 		}
-		Vector V=new Vector();
+		final Vector V=new Vector();
 		V.addElement(commands.elementAt(0));
-		MOB target=this.getTarget(mob,V,givenTarget);
+		final MOB target=this.getTarget(mob,V,givenTarget);
 		if(target==null) return false;
 
 		commands.removeElementAt(0);
@@ -104,37 +104,37 @@ public class Thief_Bribe extends ThiefSkill
 			return false;
 		}
 
-		int oldProficiency=proficiency();
+		final int oldProficiency=proficiency();
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 
-		double amountRequired=CMLib.beanCounter().getTotalAbsoluteNativeValue(target)
+		final double amountRequired=CMLib.beanCounter().getTotalAbsoluteNativeValue(target)
 						+((double)((100l-((mob.charStats().getStat(CharStats.STAT_CHARISMA)+(2l*getXLEVELLevel(mob)))*2)))*target.phyStats().level());
 
-		String currency=CMLib.beanCounter().getCurrency(target);
+		final String currency=CMLib.beanCounter().getCurrency(target);
 		boolean success=proficiencyCheck(mob,0,auto);
 
 		if((!success)||(CMLib.beanCounter().getTotalAbsoluteValue(mob,currency)<amountRequired))
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_SPEAK,"^T<S-NAME> attempt(s) to bribe <T-NAMESELF> to '"+CMParms.combine(commands,0)+"', but no deal is reached.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_SPEAK,"^T<S-NAME> attempt(s) to bribe <T-NAMESELF> to '"+CMParms.combine(commands,0)+"', but no deal is reached.^?");
 			if(mob.location().okMessage(mob,msg))
 				mob.location().send(mob,msg);
 			if(CMLib.beanCounter().getTotalAbsoluteValue(mob,currency)<amountRequired)
 			{
-				String costWords=CMLib.beanCounter().nameCurrencyShort(currency,amountRequired);
+				final String costWords=CMLib.beanCounter().nameCurrencyShort(currency,amountRequired);
 				mob.tell(target.charStats().HeShe()+" requires "+costWords+" to do this.");
 			}
 			success=false;
 		}
 		else
 		{
-			String costWords=CMLib.beanCounter().nameCurrencyShort(target,amountRequired);
-			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_SPEAK,"^T<S-NAME> bribe(s) <T-NAMESELF> to '"+CMParms.combine(commands,0)+"' for "+costWords+".^?");
+			final String costWords=CMLib.beanCounter().nameCurrencyShort(target,amountRequired);
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_SPEAK,"^T<S-NAME> bribe(s) <T-NAMESELF> to '"+CMParms.combine(commands,0)+"' for "+costWords+".^?");
 			CMLib.beanCounter().subtractMoney(mob,currency,amountRequired);
 			mob.recoverPhyStats();
-			CMMsg omsg=CMClass.getMsg(mob,target,null,CMMsg.MSG_ORDER,null);
+			final CMMsg omsg=CMClass.getMsg(mob,target,null,CMMsg.MSG_ORDER,null);
 			if((mob.location().okMessage(mob,msg))
 			&&(mob.location().okMessage(mob,omsg)))
 			{

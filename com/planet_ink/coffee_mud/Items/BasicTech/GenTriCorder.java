@@ -102,8 +102,8 @@ public class GenTriCorder extends StdTriCorder
 	public String[] getStatCodes()
 	{
 		if(codes!=null) return codes;
-		String[] MYCODES=CMProps.getStatCodesList(GenTriCorder.MYCODES,this);
-		String[] superCodes=GenericBuilder.GENITEMCODES;
+		final String[] MYCODES=CMProps.getStatCodesList(GenTriCorder.MYCODES,this);
+		final String[] superCodes=GenericBuilder.GENITEMCODES;
 		codes=new String[superCodes.length+MYCODES.length];
 		int i=0;
 		for(;i<superCodes.length;i++)
@@ -116,7 +116,7 @@ public class GenTriCorder extends StdTriCorder
 	public boolean sameAs(Environmental E)
 	{
 		if(!(E instanceof GenTriCorder)) return false;
-		String[] theCodes=getStatCodes();
+		final String[] theCodes=getStatCodes();
 		for(int i=0;i<theCodes.length;i++)
 			if(!E.getStat(theCodes[i]).equals(getStat(theCodes[i])))
 				return false;

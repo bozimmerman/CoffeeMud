@@ -73,7 +73,7 @@ public class Stat  extends Skills
 			target=mob.location().fetchInhabitant(targetName);
 			if(target==null)
 			{
-				Environmental t=mob.location().fetchFromRoomFavorItems(null,targetName);
+				final Environmental t=mob.location().fetchFromRoomFavorItems(null,targetName);
 				if((t!=null)&&(!(t instanceof MOB)))
 				{
 					if(!quiet)
@@ -87,29 +87,29 @@ public class Stat  extends Skills
 
 	public boolean showTableStats(MOB mob, int days, int scale, String rest)
 	{
-		Calendar ENDQ=Calendar.getInstance();
+		final Calendar ENDQ=Calendar.getInstance();
 		ENDQ.add(Calendar.DATE,-days);
 		ENDQ.set(Calendar.HOUR_OF_DAY,23);
 		ENDQ.set(Calendar.MINUTE,59);
 		ENDQ.set(Calendar.SECOND,59);
 		ENDQ.set(Calendar.MILLISECOND,999);
 		CMLib.coffeeTables().update();
-		List<CoffeeTableRow> V=CMLib.database().DBReadStats(ENDQ.getTimeInMillis()-1);
+		final List<CoffeeTableRow> V=CMLib.database().DBReadStats(ENDQ.getTimeInMillis()-1);
 		if(V.size()==0){ mob.tell("No Stats?!"); return false;}
-		StringBuffer table=new StringBuffer("");
+		final StringBuffer table=new StringBuffer("");
 		boolean skillUse=false;
 		boolean questStats=false;
 		if(rest.toUpperCase().trim().startsWith("SKILLUSE"))
 		{
 			skillUse=true;
-			int x=rest.indexOf(' ');
+			final int x=rest.indexOf(' ');
 			if(x>0) rest=rest.substring(x+1).trim();
 			else rest="";
 		}
 		if(rest.toUpperCase().trim().startsWith("QUEST"))
 		{
 			questStats=true;
-			int x=rest.indexOf(' ');
+			final int x=rest.indexOf(' ');
 			if(x>0) rest=rest.substring(x+1).trim();
 			else rest="";
 		}
@@ -142,7 +142,7 @@ public class Stat  extends Skills
 						 +CMStrings.padRight("PURG",5)
 						 +CMStrings.padRight("MARR",5)+"\n\r");
 		table.append(CMStrings.repeat("-",75)+"\n\r");
-		Calendar C=Calendar.getInstance();
+		final Calendar C=Calendar.getInstance();
 		C.set(Calendar.HOUR_OF_DAY,23);
 		C.set(Calendar.MINUTE,59);
 		C.set(Calendar.SECOND,59);
@@ -153,15 +153,15 @@ public class Stat  extends Skills
 		long lastCur=System.currentTimeMillis();
 		if(skillUse)
 		{
-			CharClass CharC=CMClass.getCharClass(rest);
-			Vector allSkills=new Vector();
-			for(Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
+			final CharClass CharC=CMClass.getCharClass(rest);
+			final Vector allSkills=new Vector();
+			for(final Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
 				allSkills.addElement(e.nextElement());
-			long[][] totals=new long[allSkills.size()][CoffeeTableRow.STAT_TOTAL];
+			final long[][] totals=new long[allSkills.size()][CoffeeTableRow.STAT_TOTAL];
 			while((V.size()>0)&&(curTime>(ENDQ.getTimeInMillis())))
 			{
 				lastCur=curTime;
-				Calendar C2=Calendar.getInstance();
+				final Calendar C2=Calendar.getInstance();
 				C.setTimeInMillis(curTime);
 				C2.add(Calendar.DATE,-(scale));
 				curTime=C2.getTimeInMillis();
@@ -170,10 +170,10 @@ public class Stat  extends Skills
 				C2.set(Calendar.SECOND,59);
 				C2.set(Calendar.MILLISECOND,999);
 				curTime=C2.getTimeInMillis();
-				Vector set=new Vector();
+				final Vector set=new Vector();
 				for(int v=V.size()-1;v>=0;v--)
 				{
-					CoffeeTableRow T=V.get(v);
+					final CoffeeTableRow T=V.get(v);
 					if((T.startTime()>curTime)&&(T.endTime()<=lastCur))
 					{
 						set.addElement(T);
@@ -182,7 +182,7 @@ public class Stat  extends Skills
 				}
 				for(int s=0;s<set.size();s++)
 				{
-					CoffeeTableRow T=(CoffeeTableRow)set.elementAt(s);
+					final CoffeeTableRow T=(CoffeeTableRow)set.elementAt(s);
 					for(int x=0;x<allSkills.size();x++)
 						T.totalUp("A"+((Ability)allSkills.elementAt(x)).ID().toUpperCase(),totals[x]);
 				}
@@ -220,11 +220,11 @@ public class Stat  extends Skills
 		else
 		if(questStats)
 		{
-			long[][] totals=new long[CMLib.quests().numQuests()][CoffeeTableRow.STAT_TOTAL];
+			final long[][] totals=new long[CMLib.quests().numQuests()][CoffeeTableRow.STAT_TOTAL];
 			while((V.size()>0)&&(curTime>(ENDQ.getTimeInMillis())))
 			{
 				lastCur=curTime;
-				Calendar C2=Calendar.getInstance();
+				final Calendar C2=Calendar.getInstance();
 				C.setTimeInMillis(curTime);
 				C2.add(Calendar.DATE,-(scale));
 				curTime=C2.getTimeInMillis();
@@ -233,10 +233,10 @@ public class Stat  extends Skills
 				C2.set(Calendar.SECOND,59);
 				C2.set(Calendar.MILLISECOND,999);
 				curTime=C2.getTimeInMillis();
-				Vector set=new Vector();
+				final Vector set=new Vector();
 				for(int v=V.size()-1;v>=0;v--)
 				{
-					CoffeeTableRow T=V.get(v);
+					final CoffeeTableRow T=V.get(v);
 					if((T.startTime()>curTime)&&(T.endTime()<=lastCur))
 					{
 						set.addElement(T);
@@ -246,7 +246,7 @@ public class Stat  extends Skills
 				if(set.size()==0){ set.addAll(V); V.clear();}
 				for(int s=0;s<set.size();s++)
 				{
-					CoffeeTableRow T=(CoffeeTableRow)set.elementAt(s);
+					final CoffeeTableRow T=(CoffeeTableRow)set.elementAt(s);
 					for(int x=0;x<CMLib.quests().numQuests();x++)
 						T.totalUp("U"+T.tagFix(CMLib.quests().fetchQuest(x).name()),totals[x]);
 				}
@@ -254,7 +254,7 @@ public class Stat  extends Skills
 			}
 			for(int x=0;x<CMLib.quests().numQuests();x++)
 			{
-				Quest Q=CMLib.quests().fetchQuest(x);
+				final Quest Q=CMLib.quests().fetchQuest(x);
 				table.append(
 						 CMStrings.padRight(Q.name(),30)
 						+CMStrings.centerPreserve(""+totals[x][CoffeeTableRow.STAT_QUESTSTARTATTEMPT],5)
@@ -274,7 +274,7 @@ public class Stat  extends Skills
 		while((V.size()>0)&&(curTime>(ENDQ.getTimeInMillis())))
 		{
 			lastCur=curTime;
-			Calendar C2=Calendar.getInstance();
+			final Calendar C2=Calendar.getInstance();
 			C2.setTimeInMillis(curTime);
 			C2.add(Calendar.DATE,-(scale));
 			curTime=C2.getTimeInMillis();
@@ -283,23 +283,23 @@ public class Stat  extends Skills
 			C2.set(Calendar.SECOND,59);
 			C2.set(Calendar.MILLISECOND,999);
 			curTime=C2.getTimeInMillis();
-			Vector set=new Vector();
+			final Vector set=new Vector();
 			for(int v=V.size()-1;v>=0;v--)
 			{
-				CoffeeTableRow T=V.get(v);
+				final CoffeeTableRow T=V.get(v);
 				if((T.startTime()>curTime)&&(T.endTime()<=lastCur))
 				{
 					set.addElement(T);
 					V.remove(v);
 				}
 			}
-			long[] totals=new long[CoffeeTableRow.STAT_TOTAL];
+			final long[] totals=new long[CoffeeTableRow.STAT_TOTAL];
 			long highestOnline=0;
 			long numberOnlineTotal=0;
 			long numberOnlineCounter=0;
 			for(int s=0;s<set.size();s++)
 			{
-				CoffeeTableRow T=(CoffeeTableRow)set.elementAt(s);
+				final CoffeeTableRow T=(CoffeeTableRow)set.elementAt(s);
 				T.totalUp(code,totals);
 				if(T.highestOnline()>highestOnline) highestOnline=T.highestOnline();
 				numberOnlineTotal+=T.numberOnlineTotal();
@@ -342,23 +342,23 @@ public class Stat  extends Skills
 		&&(commands.firstElement() instanceof String)
 		&&((String)commands.firstElement()).equals("?"))
 		{
-			StringBuilder msg = new StringBuilder("STAT allows the following options: \n\r");
+			final StringBuilder msg = new StringBuilder("STAT allows the following options: \n\r");
 			msg.append("[MOB/PLAYER NAME], [NUMBER] [DAYS/WEEKS/MONTHS], ");
-			for(int i=0;i<ABLETYPE_DESCS.length;i++)
-				msg.append(ABLETYPE_DESCS[i][0]+", ");
+			for (final String[] element : ABLETYPE_DESCS)
+				msg.append(element[0]+", ");
 			msg.append(CMParms.toStringList(Ability.ACODE_DESCS));
 			mob.tell(msg.toString());
 			return false;
 		}
 		if(commands.size()==0) commands.addElement("TODAY");
-		String s1=(commands.size()>0)?((String)commands.elementAt(0)).toUpperCase():"";
-		String s2=(commands.size()>1)?((String)commands.elementAt(1)).toUpperCase():"";
+		final String s1=(commands.size()>0)?((String)commands.elementAt(0)).toUpperCase():"";
+		final String s2=(commands.size()>1)?((String)commands.elementAt(1)).toUpperCase():"";
 		if(s1.equalsIgnoreCase("TODAY"))
 			return showTableStats(mob,1,1,CMParms.combine(commands,1));
 		else
 		if(commands.size()>1)
 		{
-			String rest=(commands.size()>2)?CMParms.combine(commands,2):"";
+			final String rest=(commands.size()>2)?CMParms.combine(commands,2):"";
 			if(s2.equals("DAY")&&(CMath.isNumber(s1)))
 				return showTableStats(mob,(CMath.s_int(s1)),1,rest);
 			else
@@ -387,7 +387,7 @@ public class Stat  extends Skills
 		int ableTypes=-1;
 		if(commands.size()>1)
 		{
-			String s=((String)commands.elementAt(0)).toUpperCase();
+			final String s=((String)commands.elementAt(0)).toUpperCase();
 			for(int i=0;i<ABLETYPE_DESCS.length;i++)
 				for(int is=0;is<ABLETYPE_DESCS[i].length;is++)
 					if(s.equals(ABLETYPE_DESCS[i][is]))
@@ -407,7 +407,7 @@ public class Stat  extends Skills
 				}
 			}
 		}
-		String MOBname=CMParms.combine(commands,0);
+		final String MOBname=CMParms.combine(commands,0);
 		MOB target=getTarget(mob,MOBname,true);
 		if((target==null)||(!target.isMonster()))
 			target=mob.location().fetchInhabitant(MOBname);
@@ -415,17 +415,17 @@ public class Stat  extends Skills
 		{
 			try
 			{
-				List<MOB> inhabs=CMLib.map().findInhabitants(CMLib.map().rooms(), mob,MOBname,100);
-				for(MOB mob2 : inhabs)
+				final List<MOB> inhabs=CMLib.map().findInhabitants(CMLib.map().rooms(), mob,MOBname,100);
+				for(final MOB mob2 : inhabs)
 				{
-					Room R=mob2.location();
+					final Room R=mob2.location();
 					if(CMSecurity.isAllowed(mob,R,CMSecurity.SecFlag.STAT))
 					{
 						target=mob2;
 						break;
 					}
 				}
-			}catch(NoSuchElementException nse){}
+			}catch(final NoSuchElementException nse){}
 		}
 		if(target==null)
 			target=CMLib.players().getLoadPlayer(MOBname);
@@ -444,8 +444,8 @@ public class Stat  extends Skills
 		StringBuilder str=new StringBuilder("");
 		if(ableTypes>=0)
 		{
-			Vector V=new Vector();
-			int mask=Ability.ALL_ACODES;
+			final Vector V=new Vector();
+			final int mask=Ability.ALL_ACODES;
 			V.addElement(Integer.valueOf(ableTypes));
 			str=getAbilities(mob,target,V,mask,false,-1);
 		}
@@ -459,10 +459,10 @@ public class Stat  extends Skills
 		if(ableTypes==ABLETYPE_QUESTWINS)
 		{
 			str.append("Quests won:");
-			StringBuffer won=new StringBuffer("");
+			final StringBuffer won=new StringBuffer("");
 			for(int q=0;q<CMLib.quests().numQuests();q++)
 			{
-				Quest Q=CMLib.quests().fetchQuest(q);
+				final Quest Q=CMLib.quests().fetchQuest(q);
 				if(Q.wasWinner(target.Name()))
 					won.append(" "+Q.name()+",");
 			}
@@ -476,11 +476,11 @@ public class Stat  extends Skills
 		if(ableTypes==ABLETYPE_TITLES)
 		{
 			str.append("Titles:");
-			StringBuffer ttl=new StringBuffer("");
+			final StringBuffer ttl=new StringBuffer("");
 			if(target.playerStats()!=null)
 				for(int t=0;t<target.playerStats().getTitles().size();t++)
 				{
-					String title = target.playerStats().getTitles().get(t);
+					final String title = target.playerStats().getTitles().get(t);
 					ttl.append(" "+title+",");
 				}
 			if(ttl.length()==0)
@@ -494,9 +494,9 @@ public class Stat  extends Skills
 		{
 			str.append("Scripts covered:\n\r");
 			int q=1;
-			for(Enumeration<ScriptingEngine> e=target.scripts();e.hasMoreElements();q++)
+			for(final Enumeration<ScriptingEngine> e=target.scripts();e.hasMoreElements();q++)
 			{
-				ScriptingEngine SE=e.nextElement();
+				final ScriptingEngine SE=e.nextElement();
 				str.append("Script #"+q+"\n\r");
 				str.append("Quest: "+SE.defaultQuestName()+"\n\r");
 				str.append("Savable: "+SE.isSavable()+"\n\r");
@@ -511,7 +511,7 @@ public class Stat  extends Skills
 		if(ableTypes==ABLETYPE_TATTOOS)
 		{
 			str.append("Tattoos:");
-			for(Enumeration<MOB.Tattoo> e=target.tattoos();e.hasMoreElements();)
+			for(final Enumeration<MOB.Tattoo> e=target.tattoos();e.hasMoreElements();)
 				str.append(" "+e.nextElement().tattooName+",");
 			str.deleteCharAt(str.length()-1);
 			str.append("\n\r");
@@ -520,9 +520,9 @@ public class Stat  extends Skills
 		if(ableTypes==ABLETYPE_FACTIONS)
 		{
 			str.append("Factions:\n\r");
-			for(Enumeration<String> f=target.fetchFactions();f.hasMoreElements();)
+			for(final Enumeration<String> f=target.fetchFactions();f.hasMoreElements();)
 			{
-				Faction F=CMLib.factions().getFaction(f.nextElement());
+				final Faction F=CMLib.factions().getFaction(f.nextElement());
 				if(F!=null)
 					str.append("^W[^H"+F.name()+"^N("+F.factionID()+"): "+target.fetchFaction(F.factionID())+"^W]^N, ");
 			}
@@ -541,10 +541,10 @@ public class Stat  extends Skills
 		{
 			if(target.playerStats()!=null)
 			{
-				for(Enumeration e=CMLib.map().areas();e.hasMoreElements();)
+				for(final Enumeration e=CMLib.map().areas();e.hasMoreElements();)
 				{
-					Area A=(Area)e.nextElement();
-					int pct=mob.playerStats().percentVisited(target, A);
+					final Area A=(Area)e.nextElement();
+					final int pct=mob.playerStats().percentVisited(target, A);
 					if(pct>0) str.append("^H"+A.name()+"^N: "+pct+"%, ");
 				}
 				str=new StringBuilder(str.toString().substring(0,str.toString().length()-2)+"\n\r");
@@ -557,9 +557,9 @@ public class Stat  extends Skills
 		{
 			if(target.playerStats()!=null)
 			{
-				for(Enumeration e=CMLib.map().rooms();e.hasMoreElements();)
+				for(final Enumeration e=CMLib.map().rooms();e.hasMoreElements();)
 				{
-					Room R=(Room)e.nextElement();
+					final Room R=(Room)e.nextElement();
 					if((R.roomID().length()>0)&&(mob.playerStats().hasVisited(R)))
 						str.append("^H"+R.roomID()+"^N, ");
 				}
@@ -572,7 +572,7 @@ public class Stat  extends Skills
 		if(ableTypes==ABLETYPE_COMBAT)
 		{
 			str.append("Combat summary:\n\r\n\r");
-			MOB M=CMClass.getMOB("StdMOB");
+			final MOB M=CMClass.getMOB("StdMOB");
 			M.setBaseCharStats((CharStats)target.baseCharStats().copyOf());
 			M.setBasePhyStats((PhyStats)target.basePhyStats().copyOf());
 			M.setBaseState((CharState)target.baseState().copyOf());
@@ -582,14 +582,14 @@ public class Stat  extends Skills
 			str.append("^c"+CMStrings.padRight("Base Attack",40)+": ^W"+base+"\n\r");
 			for(int i=0;i<target.numItems();i++)
 			{
-				Item I=target.getItem(i);
-				if((I!=null)&&(!I.amWearingAt(Wearable.IN_INVENTORY))){ recoverMOB(M); base=CMLib.combat().adjustedAttackBonus(M,null); testMOB(target,M,I); int diff=CMLib.combat().adjustedAttackBonus(M,null)-base; reportOnDiffMOB(I,diff,str);}
+				final Item I=target.getItem(i);
+				if((I!=null)&&(!I.amWearingAt(Wearable.IN_INVENTORY))){ recoverMOB(M); base=CMLib.combat().adjustedAttackBonus(M,null); testMOB(target,M,I); final int diff=CMLib.combat().adjustedAttackBonus(M,null)-base; reportOnDiffMOB(I,diff,str);}
 			}
 			recoverMOB(M);
 			for(final Enumeration<Ability> a=target.effects();a.hasMoreElements();)
 			{
 				final Ability A=a.nextElement();
-				if(A!=null){ recoverMOB(M); base=CMLib.combat().adjustedAttackBonus(M,null); testMOB(target,M,A); int diff=CMLib.combat().adjustedAttackBonus(M,null)-base; reportOnDiffMOB(A,diff,str);}
+				if(A!=null){ recoverMOB(M); base=CMLib.combat().adjustedAttackBonus(M,null); testMOB(target,M,A); final int diff=CMLib.combat().adjustedAttackBonus(M,null)-base; reportOnDiffMOB(A,diff,str);}
 			}
 			recoverMOB(target);
 			recoverMOB(M);
@@ -600,14 +600,14 @@ public class Stat  extends Skills
 			str.append("^C"+CMStrings.padRight("Base Armor",40)+": ^W"+base+"\n\r");
 			for(int i=0;i<target.numItems();i++)
 			{
-				Item I=target.getItem(i);
-				if(I!=null){ recoverMOB(M); base=CMLib.combat().adjustedArmor(M); testMOB(target,M,I); int diff=CMLib.combat().adjustedArmor(M)-base; reportOnDiffMOB(I,diff,str);}
+				final Item I=target.getItem(i);
+				if(I!=null){ recoverMOB(M); base=CMLib.combat().adjustedArmor(M); testMOB(target,M,I); final int diff=CMLib.combat().adjustedArmor(M)-base; reportOnDiffMOB(I,diff,str);}
 			}
 			recoverMOB(M);
 			for(final Enumeration<Ability> a=target.effects();a.hasMoreElements();)
 			{
 				final Ability A=a.nextElement();
-				if(A!=null){ recoverMOB(M); base=CMLib.combat().adjustedArmor(M); testMOB(target,M,A); int diff=CMLib.combat().adjustedArmor(M)-base; reportOnDiffMOB(A,diff,str);}
+				if(A!=null){ recoverMOB(M); base=CMLib.combat().adjustedArmor(M); testMOB(target,M,A); final int diff=CMLib.combat().adjustedArmor(M)-base; reportOnDiffMOB(A,diff,str);}
 			}
 			recoverMOB(target);
 			recoverMOB(M);
@@ -618,14 +618,14 @@ public class Stat  extends Skills
 			str.append("^C"+CMStrings.padRight("Base Damage",40)+": ^W"+base+"\n\r");
 			for(int i=0;i<target.numItems();i++)
 			{
-				Item I=target.getItem(i);
-				if(I!=null){ recoverMOB(M); base=averageDamage(M); testMOB(target,M,I); int diff=averageDamage(M)-base; reportOnDiffMOB(I,diff,str);}
+				final Item I=target.getItem(i);
+				if(I!=null){ recoverMOB(M); base=averageDamage(M); testMOB(target,M,I); final int diff=averageDamage(M)-base; reportOnDiffMOB(I,diff,str);}
 			}
 			recoverMOB(M);
 			for(final Enumeration<Ability> a=target.effects();a.hasMoreElements();)
 			{
 				final Ability A=a.nextElement();
-				if(A!=null){ recoverMOB(M); base=averageDamage(M); testMOB(target,M,A); int diff=averageDamage(M)-base; reportOnDiffMOB(A,diff,str);}
+				if(A!=null){ recoverMOB(M); base=averageDamage(M); testMOB(target,M,A); final int diff=averageDamage(M)-base; reportOnDiffMOB(A,diff,str);}
 			}
 			recoverMOB(target);
 			recoverMOB(M);
@@ -636,14 +636,14 @@ public class Stat  extends Skills
 			str.append("^C"+CMStrings.padRight("Base Attacks%",40)+": ^W"+base+"\n\r");
 			for(int i=0;i<target.numItems();i++)
 			{
-				Item I=target.getItem(i);
-				if(I!=null){ recoverMOB(M); base=(int)Math.round(M.phyStats().speed()*100); testMOB(target,M,I); int diff=(int)Math.round(M.phyStats().speed()*100)-base; reportOnDiffMOB(I,diff,str);}
+				final Item I=target.getItem(i);
+				if(I!=null){ recoverMOB(M); base=(int)Math.round(M.phyStats().speed()*100); testMOB(target,M,I); final int diff=(int)Math.round(M.phyStats().speed()*100)-base; reportOnDiffMOB(I,diff,str);}
 			}
 			recoverMOB(M);
 			for(final Enumeration<Ability> a=target.effects();a.hasMoreElements();)
 			{
 				final Ability A=a.nextElement();
-				if(A!=null){ recoverMOB(M); base=(int)Math.round(M.phyStats().speed()*100); testMOB(target,M,A); int diff=(int)Math.round(M.phyStats().speed()*100)-base; reportOnDiffMOB(A,diff,str);}
+				if(A!=null){ recoverMOB(M); base=(int)Math.round(M.phyStats().speed()*100); testMOB(target,M,A); final int diff=(int)Math.round(M.phyStats().speed()*100)-base; reportOnDiffMOB(A,diff,str);}
 			}
 			recoverMOB(target);
 			recoverMOB(M);
@@ -654,14 +654,14 @@ public class Stat  extends Skills
 			str.append("^C"+CMStrings.padRight("Base Hit Points",40)+": ^W"+base+"\n\r");
 			for(int i=0;i<target.numItems();i++)
 			{
-				Item I=target.getItem(i);
-				if(I!=null){ recoverMOB(M); base=M.maxState().getHitPoints(); testMOB(target,M,I); int diff=M.maxState().getHitPoints()-base; reportOnDiffMOB(I,diff,str);}
+				final Item I=target.getItem(i);
+				if(I!=null){ recoverMOB(M); base=M.maxState().getHitPoints(); testMOB(target,M,I); final int diff=M.maxState().getHitPoints()-base; reportOnDiffMOB(I,diff,str);}
 			}
 			recoverMOB(M);
 			for(int i=0;i<target.numAllEffects();i++)
 			{
-				Ability A=target.fetchEffect(i);
-				if(A!=null){ recoverMOB(M); base=M.maxState().getHitPoints(); testMOB(target,M,A); int diff=M.maxState().getHitPoints()-base; reportOnDiffMOB(A,diff,str);}
+				final Ability A=target.fetchEffect(i);
+				if(A!=null){ recoverMOB(M); base=M.maxState().getHitPoints(); testMOB(target,M,A); final int diff=M.maxState().getHitPoints()-base; reportOnDiffMOB(A,diff,str);}
 			}
 			recoverMOB(M);
 			str.append("^W-------------------------\n\r");

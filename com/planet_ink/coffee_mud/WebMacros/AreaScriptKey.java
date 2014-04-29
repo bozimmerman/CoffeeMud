@@ -41,9 +41,9 @@ public class AreaScriptKey extends StdWebMacro
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
-		String last=httpReq.getUrlParameter("AREASCRIPT");
+		final String last=httpReq.getUrlParameter("AREASCRIPT");
 		if(last==null) return " @break@";
-		java.util.Map<String,String> parms=parseParms(parm);
+		final java.util.Map<String,String> parms=parseParms(parm);
 		try
 		{
 			if(last.length()>0)
@@ -52,7 +52,7 @@ public class AreaScriptKey extends StdWebMacro
 				else
 					return clearWebMacros(last);
 		}
-		catch(Exception e){}
+		catch(final Exception e){}
 		return "";
 	}
 }

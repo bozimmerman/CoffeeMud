@@ -58,7 +58,7 @@ public class Chant_ChargeMetal extends Chant
 	@Override
 	public CMObject copyOf()
 	{
-		Chant_ChargeMetal obj=(Chant_ChargeMetal)super.copyOf();
+		final Chant_ChargeMetal obj=(Chant_ChargeMetal)super.copyOf();
 		obj.affectedItems=new Vector<Item>();
 		obj.affectedItems.addAll(affectedItems);
 		return obj;
@@ -68,7 +68,7 @@ public class Chant_ChargeMetal extends Chant
 	{
 		for(int i=0;i<mob.numItems();i++)
 		{
-			Item item=mob.getItem(i);
+			final Item item=mob.getItem(i);
 			if((item!=null)
 			&&(!item.amWearingAt(Wearable.IN_INVENTORY))
 			&&(CMLib.flags().isMetal(item))
@@ -87,13 +87,13 @@ public class Chant_ChargeMetal extends Chant
 		if(affected==null) return true;
 		if(!(affected instanceof Item)) return true;
 
-		Item I=(Item)affected;
+		final Item I=(Item)affected;
 		if((I.owner()==null)
 		||(!(I.owner() instanceof MOB))
 		||(I.amWearingAt(Wearable.IN_INVENTORY)))
 			return true;
 
-		MOB mob=(MOB)I.owner();
+		final MOB mob=(MOB)I.owner();
 		if((!msg.amITarget(mob))
 		&&((msg.targetMinor()==CMMsg.TYP_ELECTRIC)
 			||((msg.sourceMinor()==CMMsg.TYP_ELECTRIC)&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)))
@@ -131,7 +131,7 @@ public class Chant_ChargeMetal extends Chant
 		{
 			for(int i=0;i<affectedItems.size();i++)
 			{
-				Item I=affectedItems.get(i);
+				final Item I=affectedItems.get(i);
 				Ability A=I.fetchEffect(this.ID());
 				while(A!=null)
 				{
@@ -151,7 +151,7 @@ public class Chant_ChargeMetal extends Chant
 		{
 			if(target instanceof MOB)
 			{
-				Item I=wieldingMetal((MOB)target);
+				final Item I=wieldingMetal((MOB)target);
 				if(I==null)
 					return Ability.QUALITY_INDIFFERENT;
 			}
@@ -162,7 +162,7 @@ public class Chant_ChargeMetal extends Chant
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		Physical target=getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_ANY);
+		final Physical target=getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_ANY);
 		if(target==null) return false;
 		Item I=null;
 		if(target instanceof MOB) I=wieldingMetal((MOB)target);
@@ -192,7 +192,7 @@ public class Chant_ChargeMetal extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> chant(s) upon <T-NAMESELF>.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> chant(s) upon <T-NAMESELF>.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

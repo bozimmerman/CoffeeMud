@@ -40,17 +40,17 @@ public class AddRandomFile extends StdWebMacro
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
-		java.util.Map<String,String> parms=parseParms(parm);
+		final java.util.Map<String,String> parms=parseParms(parm);
 		if((parms==null)||(parms.size()==0)) return "";
-		StringBuffer buf=new StringBuffer("");
-		int d=CMLib.dice().roll(1,parms.size(),0);
+		final StringBuffer buf=new StringBuffer("");
+		final int d=CMLib.dice().roll(1,parms.size(),0);
 		String file=null;
 		int i=0;
 		boolean LINKONLY=false;
-		for(String val : parms.values())
+		for(final String val : parms.values())
 			if(val.equalsIgnoreCase("LINKONLY"))
 				LINKONLY=true;
-		for(String val : parms.values())
+		for(final String val : parms.values())
 		{
 			file=val;
 			if(file.equalsIgnoreCase("LINKONLY")) continue;
@@ -65,7 +65,7 @@ public class AddRandomFile extends StdWebMacro
 				else
 					buf.append(new String(getHTTPFileData(httpReq,file)));
 			}
-			catch(HTTPException e)
+			catch(final HTTPException e)
 			{
 				Log.warnOut("Failed "+name()+" "+file);
 			}

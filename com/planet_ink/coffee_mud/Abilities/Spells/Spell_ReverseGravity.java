@@ -53,10 +53,10 @@ public class Spell_ReverseGravity extends Spell
 		else
 		if((affected!=null)&&(affected instanceof Room)&&(invoker!=null))
 		{
-			Room room=(Room)affected;
+			final Room room=(Room)affected;
 			for(int i=0;i<room.numInhabitants();i++)
 			{
-				MOB inhab=room.fetchInhabitant(i);
+				final MOB inhab=room.fetchInhabitant(i);
 				if(!CMLib.flags().isInFlight(inhab))
 				{
 					inhab.makePeace();
@@ -71,7 +71,7 @@ public class Spell_ReverseGravity extends Spell
 			}
 			for(int i=0;i<room.numItems();i++)
 			{
-				Item inhab=room.getItem(i);
+				final Item inhab=room.getItem(i);
 				if((inhab!=null)
 				&&(inhab.container()==null)
 				&&(!CMLib.flags().isInFlight(inhab.ultimateContainer(null))))
@@ -99,28 +99,28 @@ public class Spell_ReverseGravity extends Spell
 		{
 			if(affected instanceof Room)
 			{
-				Room room=(Room)affected;
+				final Room room=(Room)affected;
 				room.showHappens(CMMsg.MSG_OK_VISUAL, "Gravity returns to normal...");
 				if(invoker!=null)
 				{
-					Ability me=invoker.fetchEffect(ID());
+					final Ability me=invoker.fetchEffect(ID());
 					if(me!=null) me.setProficiency(0);
 				}
 			}
 			else
 			if(affected instanceof MOB)
 			{
-				MOB mob=(MOB)affected;
+				final MOB mob=(MOB)affected;
 				if(mob.location()!=null)
 				{
 					mob.location().show(mob, null, CMMsg.MSG_OK_VISUAL, "Gravity returns to normal..");
-					Ability me=mob.location().fetchEffect(ID());
+					final Ability me=mob.location().fetchEffect(ID());
 					if(me!=null) me.setProficiency(0);
 				}
 			}
 			while(childrenAffects.size()>0)
 			{
-				Ability A=(Ability)childrenAffects.elementAt(0);
+				final Ability A=(Ability)childrenAffects.elementAt(0);
 				A.setProficiency(0);
 				childrenAffects.removeElement(A);
 			}
@@ -149,7 +149,7 @@ public class Spell_ReverseGravity extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		Physical target = mob.location();
+		final Physical target = mob.location();
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
@@ -158,7 +158,7 @@ public class Spell_ReverseGravity extends Spell
 		}
 
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
@@ -167,7 +167,7 @@ public class Spell_ReverseGravity extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 
-			CMMsg msg = CMClass.getMsg(mob, target, this, verbalCastCode(mob,target,auto), (auto?"G":"^S<S-NAME> speak(s) and wave(s) and g")+"ravity begins to reverse!^?");
+			final CMMsg msg = CMClass.getMsg(mob, target, this, verbalCastCode(mob,target,auto), (auto?"G":"^S<S-NAME> speak(s) and wave(s) and g")+"ravity begins to reverse!^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				childrenAffects=new Vector();

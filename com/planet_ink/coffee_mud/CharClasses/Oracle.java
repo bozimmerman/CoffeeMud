@@ -40,7 +40,7 @@ public class Oracle extends Cleric
 	@Override public String baseClass(){return "Cleric";}
 	@Override public int getAttackAttribute(){return CharStats.STAT_WISDOM;}
 	@Override public int allowedWeaponLevel(){return CharClass.WEAPONS_GOODCLERIC;}
-	private HashSet disallowedWeapons=buildDisallowedWeaponClasses();
+	private final HashSet disallowedWeapons=buildDisallowedWeaponClasses();
 	@Override protected HashSet disallowedWeaponClasses(MOB mob){return disallowedWeapons;}
 	@Override protected int alwaysFlunksThisQuality(){return 0;}
 
@@ -174,11 +174,11 @@ public class Oracle extends Cleric
 		int numNonQualified=0;
 		for(int a=0;a<mob.numAbilities();a++)
 		{
-			Ability A=mob.fetchAbility(a);
+			final Ability A=mob.fetchAbility(a);
 			boolean qualifies=false;
 			for(int c=0;c<mob.charStats().numClasses();c++)
 			{
-				CharClass C=mob.charStats().getMyClass(c);
+				final CharClass C=mob.charStats().getMyClass(c);
 				if(CMLib.ableMapper().getQualifyingLevel(C.ID(),true,A.ID())>0)
 					qualifies=true;
 			}
@@ -212,7 +212,7 @@ public class Oracle extends Cleric
 			int tries=0;
 			while((newOne==null)&&((++tries)<100))
 			{
-				CharClass C=CMClass.randomCharClass();
+				final CharClass C=CMClass.randomCharClass();
 				if((C!=null)
 				&&(!C.ID().equals(ID()))
 				&&(!C.ID().equalsIgnoreCase("Archon"))
@@ -221,10 +221,10 @@ public class Oracle extends Cleric
 					int tries2=0;
 					while((newOne==null)&&((++tries2)<10000))
 					{
-						Ability A=CMClass.randomAbility();
+						final Ability A=CMClass.randomAbility();
 						if( A != null )
 						{
-						  int lql=CMLib.ableMapper().lowestQualifyingLevel(A.ID());
+						  final int lql=CMLib.ableMapper().lowestQualifyingLevel(A.ID());
 						  if((lql<25)
 						  &&(lql>0)
 						  &&(!CMLib.ableMapper().getSecretSkill(C.ID(),true,A.ID()))
@@ -251,7 +251,7 @@ public class Oracle extends Cleric
 		if(outfitChoices==null)
 		{
 			outfitChoices=new Vector();
-			Weapon w=CMClass.getWeapon("SmallMace");
+			final Weapon w=CMClass.getWeapon("SmallMace");
 			outfitChoices.add(w);
 		}
 		return outfitChoices;

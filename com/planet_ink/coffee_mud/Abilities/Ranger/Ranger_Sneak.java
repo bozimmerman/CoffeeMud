@@ -55,15 +55,15 @@ public class Ranger_Sneak extends StdAbility
 	public MOB getHighestLevelMOB(MOB meMOB, Vector not)
 	{
 		if(meMOB==null) return null;
-		Room R=meMOB.location();
+		final Room R=meMOB.location();
 		if(R==null) return null;
 		int highestLevel=0;
 		MOB highestMOB=null;
-		Set<MOB> H=meMOB.getGroupMembers(new HashSet<MOB>());
+		final Set<MOB> H=meMOB.getGroupMembers(new HashSet<MOB>());
 		if(not!=null) H.addAll(not);
 		for(int i=0;i<R.numInhabitants();i++)
 		{
-			MOB M=R.fetchInhabitant(i);
+			final MOB M=R.fetchInhabitant(i);
 			if((M!=null)
 			&&(M!=meMOB)
 			&&(!H.contains(M))
@@ -81,7 +81,7 @@ public class Ranger_Sneak extends StdAbility
 	{
 		String dir=CMParms.combine(commands,0);
 		if(commands.size()>0) dir=(String)commands.lastElement();
-		int dirCode=Directions.getGoodDirectionCode(dir);
+		final int dirCode=Directions.getGoodDirectionCode(dir);
 		if(dirCode<0)
 		{
 			mob.tell("Sneak where?");
@@ -107,14 +107,14 @@ public class Ranger_Sneak extends StdAbility
 			return false;
 		}
 
-		MOB highestMOB=getHighestLevelMOB(mob,null);
+		final MOB highestMOB=getHighestLevelMOB(mob,null);
 		int levelDiff=(mob.phyStats().level()+(2*super.getXLEVELLevel(mob)))-getMOBLevel(highestMOB);
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=false;
-		CMMsg msg=CMClass.getMsg(mob,null,this,auto?CMMsg.MSG_OK_VISUAL:CMMsg.MSG_DELICATE_HANDS_ACT,"You quietly sneak "+Directions.getDirectionName(dirCode)+".",CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);
+		final CMMsg msg=CMClass.getMsg(mob,null,this,auto?CMMsg.MSG_OK_VISUAL:CMMsg.MSG_DELICATE_HANDS_ACT,"You quietly sneak "+Directions.getDirectionName(dirCode)+".",CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
@@ -133,7 +133,7 @@ public class Ranger_Sneak extends StdAbility
 			if(success)
 			{
 
-				int disposition=mob.basePhyStats().disposition();
+				final int disposition=mob.basePhyStats().disposition();
 				if((disposition&PhyStats.IS_SNEAKING)>0)
 				{
 					mob.basePhyStats().setDisposition(disposition-PhyStats.IS_SNEAKING);

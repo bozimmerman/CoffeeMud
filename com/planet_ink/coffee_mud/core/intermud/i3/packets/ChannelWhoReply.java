@@ -53,9 +53,9 @@ public class ChannelWhoReply extends Packet {
 			try
 			{
 			who = (Vector)v.elementAt(7);
-			}catch(Exception e){ who=new Vector();}
+			}catch(final Exception e){ who=new Vector();}
 		}
-		catch( ClassCastException e )
+		catch( final ClassCastException e )
 		{
 			throw new InvalidPacketException();
 		}
@@ -80,7 +80,7 @@ public class ChannelWhoReply extends Packet {
 
 		for(i=0; i<who.size(); i++)
 		{
-			String nom = (String)who.elementAt(0);
+			final String nom = (String)who.elementAt(0);
 			str += "\"" + nom + "\",";
 		}
 		str += "}),})";

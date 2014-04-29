@@ -53,20 +53,20 @@ public class Hunting extends CommonSkill
 
 	public Room nearByRoom()
 	{
-		Vector possibilities=new Vector();
+		final Vector possibilities=new Vector();
 		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 		{
 			if(d!=Directions.UP)
 			{
-				Room room=activityRoom.getRoomInDir(d);
-				Exit exit=activityRoom.getExitInDir(d);
+				final Room room=activityRoom.getRoomInDir(d);
+				final Exit exit=activityRoom.getExitInDir(d);
 				if((room!=null)&&(exit!=null)&&(exit.isOpen()))
 					possibilities.addElement(Integer.valueOf(d));
 			}
 		}
 		if(possibilities.size()>0)
 		{
-			int dir=((Integer)possibilities.elementAt(CMLib.dice().roll(1,possibilities.size(),-1))).intValue();
+			final int dir=((Integer)possibilities.elementAt(CMLib.dice().roll(1,possibilities.size(),-1))).intValue();
 			return activityRoom.getRoomInDir(dir);
 		}
 		return null;
@@ -76,20 +76,20 @@ public class Hunting extends CommonSkill
 	{
 		if(found.location()==null) return;
 
-		Vector possibilities=new Vector();
+		final Vector possibilities=new Vector();
 		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 		{
 			if(d!=Directions.UP)
 			{
-				Room room=found.location().getRoomInDir(d);
-				Exit exit=found.location().getExitInDir(d);
+				final Room room=found.location().getRoomInDir(d);
+				final Exit exit=found.location().getExitInDir(d);
 				if((room!=null)&&(exit!=null)&&(exit.isOpen()))
 					possibilities.addElement(Integer.valueOf(d));
 			}
 		}
 		if(possibilities.size()>0)
 		{
-			int dir=((Integer)possibilities.elementAt(CMLib.dice().roll(1,possibilities.size(),-1))).intValue();
+			final int dir=((Integer)possibilities.elementAt(CMLib.dice().roll(1,possibilities.size(),-1))).intValue();
 			CMLib.tracking().walk(found,dir,true,false);
 		}
 	}
@@ -99,7 +99,7 @@ public class Hunting extends CommonSkill
 	{
 		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Tickable.TICKID_MOB))
 		{
-			MOB mob=(MOB)affected;
+			final MOB mob=(MOB)affected;
 			activityRoom=mob.location();
 			if((found!=null)&&(found.amDead()))
 			{
@@ -135,7 +135,7 @@ public class Hunting extends CommonSkill
 					verb="hunting for "+found.name();
 					found.basePhyStats().setLevel(mob.basePhyStats().level());
 					found.recoverPhyStats();
-					Ability A=CMClass.getAbility("Prop_ModExperience");
+					final Ability A=CMClass.getAbility("Prop_ModExperience");
 					A.setMiscText("=20%");
 					found.addNonUninvokableEffect(A);
 					found.bringToLife(nearByRoom(),true);
@@ -143,8 +143,8 @@ public class Hunting extends CommonSkill
 				}
 				else
 				{
-					StringBuffer str=new StringBuffer("You can't seem to find any game around here.\n\r");
-					int d=lookingFor(RawMaterial.MATERIAL_FLESH,mob.location());
+					final StringBuffer str=new StringBuffer("You can't seem to find any game around here.\n\r");
+					final int d=lookingFor(RawMaterial.MATERIAL_FLESH,mob.location());
 					if(d<0)
 						str.append("You might try elsewhere.");
 					else
@@ -163,7 +163,7 @@ public class Hunting extends CommonSkill
 			{
 				for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 				{
-					Room R=mob.location().getRoomInDir(d);
+					final Room R=mob.location().getRoomInDir(d);
 					if((R!=null)&&(R==found.location()))
 					{ CMLib.tracking().walk(mob,d,false,false); break;}
 				}
@@ -179,7 +179,7 @@ public class Hunting extends CommonSkill
 		{
 			if((affected!=null)&&(affected instanceof MOB))
 			{
-				MOB mob=(MOB)affected;
+				final MOB mob=(MOB)affected;
 				if((found!=null)&&(!found.amDead())&&(found.location()!=null)&&(!found.isInCombat()))
 				{
 					if(found.location()==mob.location())
@@ -205,7 +205,7 @@ public class Hunting extends CommonSkill
 		activityRoom=null;
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
-		int resourceType=mob.location().myResource();
+		final int resourceType=mob.location().myResource();
 		if((proficiencyCheck(mob,0,auto))
 		   &&(nearByRoom()!=null)
 		   &&(resourceType!=RawMaterial.RESOURCE_FISH)
@@ -232,8 +232,8 @@ public class Hunting extends CommonSkill
 				found.setLocation(null);
 			}
 		}
-		int duration=10+mob.phyStats().level()+(super.getXTIMELevel(mob)*2);
-		CMMsg msg=CMClass.getMsg(mob,found,this,getActivityMessageType(),"<S-NAME> start(s) hunting.");
+		final int duration=10+mob.phyStats().level()+(super.getXTIMELevel(mob)*2);
+		final CMMsg msg=CMClass.getMsg(mob,found,this,getActivityMessageType(),"<S-NAME> start(s) hunting.");
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

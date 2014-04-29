@@ -54,7 +54,7 @@ public class Thief_BackStab extends ThiefSkill
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
-		int factor=(int)Math.round(CMath.div(adjustedLevel((MOB)affected,0),6.0))+2+abilityCode();
+		final int factor=(int)Math.round(CMath.div(adjustedLevel((MOB)affected,0),6.0))+2+abilityCode();
 		affectableStats.setDamage(affectableStats.damage()*factor);
 		affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+100+(10*super.getXLEVELLevel(invoker())));
 	}
@@ -84,7 +84,7 @@ public class Thief_BackStab extends ThiefSkill
 			mob.tell("Backstab whom?");
 			return false;
 		}
-		MOB target=this.getTarget(mob,commands,givenTarget);
+		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
 		if(CMLib.flags().canBeSeenBy(mob,target))
@@ -105,7 +105,7 @@ public class Thief_BackStab extends ThiefSkill
 
 		CMLib.commands().postDraw(mob,false,true);
 
-		Item I=mob.fetchWieldedItem();
+		final Item I=mob.fetchWieldedItem();
 		Weapon weapon=null;
 		if((I!=null)&&(I instanceof Weapon))
 			weapon=(Weapon)I;
@@ -130,7 +130,7 @@ public class Thief_BackStab extends ThiefSkill
 
 		boolean success=proficiencyCheck(mob,0,auto);
 
-		CMMsg msg=CMClass.getMsg(mob,target,this,(auto?CMMsg.MSG_OK_ACTION:CMMsg.MSG_THIEF_ACT),auto?"":"<S-NAME> attempt(s) to stab <T-NAMESELF> in the back!");
+		final CMMsg msg=CMClass.getMsg(mob,target,this,(auto?CMMsg.MSG_OK_ACTION:CMMsg.MSG_THIEF_ACT),auto?"":"<S-NAME> attempt(s) to stab <T-NAMESELF> in the back!");
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

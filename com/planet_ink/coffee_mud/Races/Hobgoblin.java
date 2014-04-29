@@ -43,8 +43,8 @@ public class Hobgoblin extends StdRace
 	@Override public int weightVariance(){return 50;}
 	@Override public long forbiddenWornBits(){return 0;}
 	@Override public String racialCategory(){return "Goblinoid";}
-	private String[]culturalAbilityNames={"Goblinese"};
-	private int[]culturalAbilityProficiencies={100};
+	private final String[]culturalAbilityNames={"Goblinese"};
+	private final int[]culturalAbilityProficiencies={100};
 	@Override public String[] culturalAbilityNames(){return culturalAbilityNames;}
 	@Override public int[] culturalAbilityProficiencies(){return culturalAbilityProficiencies;}
 
@@ -52,7 +52,7 @@ public class Hobgoblin extends StdRace
 	private static final int[] parts={0 ,2 ,2 ,1 ,1 ,2 ,2 ,1 ,2 ,2 ,1 ,0 ,1 ,1 ,0 ,0 };
 	@Override public int[] bodyMask(){return parts;}
 
-	private int[] agingChart={0,1,2,12,20,30,45,47,49};
+	private final int[] agingChart={0,1,2,12,20,30,45,47,49};
 	@Override public int[] getAgingChart(){return agingChart;}
 
 	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
@@ -78,7 +78,7 @@ public class Hobgoblin extends StdRace
 	@Override
 	public String healthText(MOB viewer, MOB mob)
 	{
-		double pct=(CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));
+		final double pct=(CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));
 
 		if(pct<.10)
 			return "^r" + mob.name(viewer) + "^r is nearly defeated.^N";

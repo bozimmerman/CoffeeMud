@@ -58,7 +58,7 @@ public class Disease_Alzheimers extends Disease
 		if(!(affected instanceof MOB))
 			return super.okMessage(myHost,msg);
 
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		// when this spell is on a MOBs Affected list,
 		// it should consistantly prevent the mob
@@ -88,15 +88,15 @@ public class Disease_Alzheimers extends Disease
 			else
 			if((--everyTick)<=0)
 				return true;
-			MOB mob=(MOB)affected;
+			final MOB mob=(MOB)affected;
 			if(CMLib.flags().aliveAwakeMobileUnbound(mob,true))
 			{
 				if(!CMLib.flags().isStanding(mob))
 					CMLib.commands().postStand(mob,true);
-				Room R=mob.location();
+				final Room R=mob.location();
 				if((CMLib.flags().isStanding(mob))&&(R!=null)&&(CMLib.flags().isInTheGame(mob,true)))
 				{
-					Vector dirs=new Vector();
+					final Vector dirs=new Vector();
 					for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 						if((R.getRoomInDir(d)!=null)
 						&&(R.getExitInDir(d)!=null)
@@ -105,7 +105,7 @@ public class Disease_Alzheimers extends Disease
 					if(dirs.size()==0) everyTick=0;
 					else
 					{
-						int dir=((Integer)dirs.elementAt(CMLib.dice().roll(1,dirs.size(),-1))).intValue();
+						final int dir=((Integer)dirs.elementAt(CMLib.dice().roll(1,dirs.size(),-1))).intValue();
 						CMLib.tracking().walk(mob,dir,false,false,false);
 					}
 				}

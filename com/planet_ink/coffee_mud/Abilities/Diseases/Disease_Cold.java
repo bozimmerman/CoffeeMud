@@ -57,7 +57,7 @@ public class Disease_Cold extends Disease
 		if(affected==null) return false;
 		if(!(affected instanceof MOB)) return true;
 
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		MOB diseaser=invoker;
 		if(diseaser==null) diseaser=mob;
 		if((getTickDownRemaining()==1)
@@ -67,7 +67,7 @@ public class Disease_Cold extends Disease
 		&&(!mob.isMonster()))
 		{
 			mob.delEffect(this);
-			Ability A=CMClass.getAbility("Disease_Pneumonia");
+			final Ability A=CMClass.getAbility("Disease_Pneumonia");
 			A.invoke(diseaser,mob,true,0);
 		}
 		else
@@ -77,7 +77,7 @@ public class Disease_Cold extends Disease
 			mob.location().show(mob,null,CMMsg.MSG_NOISE,DISEASE_AFFECT());
 			if(mob.curState().getHitPoints()>((2*mob.phyStats().level())+1))
 			{
-				int damage=CMLib.dice().roll(2,mob.phyStats().level(),1);
+				final int damage=CMLib.dice().roll(2,mob.phyStats().level(),1);
 				CMLib.combat().postDamage(diseaser,mob,this,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_DISEASE,-1,null);
 			}
 			catchIt(mob);

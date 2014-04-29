@@ -45,7 +45,7 @@ public class AngryCitizen extends StdMOB
 		basePhyStats.setWeight(150);
 		setWimpHitPoint(0);
 
-		Weapon d=CMClass.getWeapon("ThrowingStone");
+		final Weapon d=CMClass.getWeapon("ThrowingStone");
 		if(d!=null)
 		{
 			d.wearAt(Wearable.WORN_WIELD);

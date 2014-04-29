@@ -75,31 +75,31 @@ public class Chant_SnatchLight extends Chant
 			return false;
 		if((affected==invoker)&&(invoker!=null))
 		{
-			MOB mob=invoker;
-			Room R=mob.location();
+			final MOB mob=invoker;
+			final Room R=mob.location();
 			if(R==null) return true;
 			if(R.fetchEffect(ID())==null)
 			{
-				Ability A=(Ability)copyOf();
+				final Ability A=(Ability)copyOf();
 				A.setSavable(false);
 				R.addEffect(A);
 			}
 			for(int m=0;m<R.numInhabitants();m++)
 			{
-				MOB M=R.fetchInhabitant(m);
+				final MOB M=R.fetchInhabitant(m);
 				if((M!=null)&&(CMLib.flags().isGlowing(M)||CMLib.flags().isLightSource(M))&&(M.fetchEffect(ID())==null))
 				{
-					Ability A=(Ability)copyOf();
+					final Ability A=(Ability)copyOf();
 					A.setSavable(false);
 					M.addEffect(A);
 				}
 				if(M!=null)
 				for(int i=0;i<M.numItems();i++)
 				{
-					Item I=M.getItem(i);
+					final Item I=M.getItem(i);
 					if((I!=null)&&(I.container()==null)&&(CMLib.flags().isGlowing(I)||CMLib.flags().isLightSource(I))&&(I.fetchEffect(ID())==null))
 					{
-						Ability A=(Ability)copyOf();
+						final Ability A=(Ability)copyOf();
 						A.setSavable(false);
 						I.addEffect(A);
 					}
@@ -107,10 +107,10 @@ public class Chant_SnatchLight extends Chant
 			}
 			for(int i=0;i<R.numItems();i++)
 			{
-				Item I=R.getItem(i);
+				final Item I=R.getItem(i);
 				if((I!=null)&&(CMLib.flags().isGlowing(I)||CMLib.flags().isLightSource(I))&&(I.fetchEffect(ID())==null))
 				{
-					Ability A=(Ability)copyOf();
+					final Ability A=(Ability)copyOf();
 					A.setSavable(false);
 					I.addEffect(A);
 				}
@@ -121,7 +121,7 @@ public class Chant_SnatchLight extends Chant
 		else
 		if(affected!=null)
 		{
-			Room R=CMLib.map().roomLocation(affected);
+			final Room R=CMLib.map().roomLocation(affected);
 			if((invoker==null)||(R!=invoker.location()))
 			{
 				unInvoke();
@@ -138,31 +138,31 @@ public class Chant_SnatchLight extends Chant
 		// undo the affects of this spell
 		if((affected==null)||(invoker==null)||(affected!=invoker))
 		{
-			Environmental E=affected;
-			MOB oldI=invoker;
+			final Environmental E=affected;
+			final MOB oldI=invoker;
 			super.unInvoke();
 			if(E!=null)
 			{
 				if(E instanceof MOB)
 				{
-					MOB M=(MOB)E;
+					final MOB M=(MOB)E;
 					for(int i=0;i<M.numItems();i++)
 					{
-						Item I=M.getItem(i);
+						final Item I=M.getItem(i);
 						if(I!=null)
 						{
-							Ability A=I.fetchEffect(ID());
+							final Ability A=I.fetchEffect(ID());
 							if((A!=null)&&(A.invoker()==oldI))
 								A.unInvoke();
 						}
 					}
 				}
-				Room R=CMLib.map().roomLocation(E);
+				final Room R=CMLib.map().roomLocation(E);
 				if(R!=null) R.recoverRoomStats();
 			}
 			return;
 		}
-		MOB mob=invoker;
+		final MOB mob=invoker;
 		super.unInvoke();
 
 		if((canBeUninvoked())&&(mob!=null))
@@ -196,7 +196,7 @@ public class Chant_SnatchLight extends Chant
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
@@ -205,7 +205,7 @@ public class Chant_SnatchLight extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<S-NAME> gain(s) an aura of light snatching!":"^S<S-NAME> chant(s), feeling <S-HIS-HER> body become a light snatcher!^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<S-NAME> gain(s) an aura of light snatching!":"^S<S-NAME> chant(s), feeling <S-HIS-HER> body become a light snatcher!^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

@@ -50,17 +50,17 @@ public class ItemRejuv extends StdAbility implements ItemTicker
 	{
 		if(ticker instanceof ItemRejuv)
 		{
-			ItemRejuv ability=(ItemRejuv)ticker;
+			final ItemRejuv ability=(ItemRejuv)ticker;
 			ability.contents.addElement(item);
 
-			Item newItem=(Item)item.copyOf();
+			final Item newItem=(Item)item.copyOf();
 			newItem.stopTicking();
 			newItem.setContainer(item.container());
 			ability.ccontents.addElement(newItem);
 
 			for(int r=0;r<room.numItems();r++)
 			{
-				Item content=room.getItem(r);
+				final Item content=room.getItem(r);
 				if((content!=null)&&(content.container()==item))
 					loadContent(ability,content,room);
 			}
@@ -77,7 +77,7 @@ public class ItemRejuv extends StdAbility implements ItemTicker
 		unloadIfNecessary(item);
 		contents=new Vector();
 		ccontents=new Vector();
-		ItemRejuv ability=new ItemRejuv();
+		final ItemRejuv ability=new ItemRejuv();
 		ability.myProperLocation=room;
 		if(item.fetchEffect(ability.ID())==null)
 			item.addEffect(ability);
@@ -91,7 +91,7 @@ public class ItemRejuv extends StdAbility implements ItemTicker
 	@Override
 	public void unloadIfNecessary(Item item)
 	{
-		ItemRejuv a=(ItemRejuv)item.fetchEffect(new ItemRejuv().ID());
+		final ItemRejuv a=(ItemRejuv)item.fetchEffect(new ItemRejuv().ID());
 		if(a!=null)
 			a.unInvoke();
 	}
@@ -117,12 +117,12 @@ public class ItemRejuv extends StdAbility implements ItemTicker
 			if((!R.isContent(thisItem))
 			&&((!CMLib.flags().isMobile(thisItem)) || (!CMLib.flags().isInTheGame(thisItem,true))))
 			{
-				Item newThisItem=(Item)((Item)ccontents.elementAt(i)).copyOf();
+				final Item newThisItem=(Item)((Item)ccontents.elementAt(i)).copyOf();
 
 				contents.setElementAt(newThisItem,i);
 				for(int c=0;c<ccontents.size();c++)
 				{
-					Item thatItem=(Item)ccontents.elementAt(c);
+					final Item thatItem=(Item)ccontents.elementAt(c);
 					if((thatItem.container()==thisItem)&&(newThisItem instanceof Container))
 						thatItem.setContainer((Container)newThisItem);
 				}
@@ -130,9 +130,9 @@ public class ItemRejuv extends StdAbility implements ItemTicker
 				if(thisItem==null) continue;
 				if(thisItem instanceof Container)
 				{
-					Container C=(Container)thisItem;
-					boolean open=!C.hasALid();
-					boolean locked=C.hasALock();
+					final Container C=(Container)thisItem;
+					final boolean open=!C.hasALid();
+					final boolean locked=C.hasALock();
 					C.setLidsNLocks(C.hasALid(),open,C.hasALock(),locked);
 				}
 				thisItem.setExpirationDate(0);
@@ -147,7 +147,7 @@ public class ItemRejuv extends StdAbility implements ItemTicker
 		if(!super.tick(ticking,tickID))
 			return false;
 
-		Item item=(Item)affected;
+		final Item item=(Item)affected;
 		final Room R=myProperLocation;
 		if((item==null)||(R==null))
 			return false;
@@ -164,9 +164,9 @@ public class ItemRejuv extends StdAbility implements ItemTicker
 			}
 			if(item instanceof Container)
 			{
-				Container C=(Container)item;
-				boolean open=!C.hasALid();
-				boolean locked=C.hasALock();
+				final Container C=(Container)item;
+				final boolean open=!C.hasALid();
+				final boolean locked=C.hasALock();
 				C.setLidsNLocks(C.hasALid(),open,C.hasALock(),locked);
 			}
 		}

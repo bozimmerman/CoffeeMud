@@ -46,7 +46,7 @@ public class Cloak extends StdCommand
 		if(Character.toUpperCase(str.charAt(0))!='C')
 			commands.insertElementAt("OFF",1);
 		commands.removeElementAt(0);
-		int abilityCode=PhyStats.IS_CLOAKED;
+		final int abilityCode=PhyStats.IS_CLOAKED;
 		str="Prop_WizInvis";
 		Ability A=mob.fetchEffect(str);
 		if(CMParms.combine(commands,0).trim().equalsIgnoreCase("OFF"))

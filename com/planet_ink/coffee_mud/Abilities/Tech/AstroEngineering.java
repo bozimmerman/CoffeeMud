@@ -73,21 +73,21 @@ public class AstroEngineering extends TechSkill
 		if((mob==null)||(item==null))
 			return 0;
 		double score = 0.0;
-		Manufacturer m=item.getFinalManufacturer();
+		final Manufacturer m=item.getFinalManufacturer();
 		if(m==null)
 			score+=0.5;
 		else
 		{
-			Pair<String,Integer> manuExpertise=mob.fetchExpertise(m.name()+"%");
+			final Pair<String,Integer> manuExpertise=mob.fetchExpertise(m.name()+"%");
 			if(manuExpertise!=null)
 				score += (0.5 * CMath.div(manuExpertise.second.intValue(), 100.0));
 		}
-		Technical.TechType ttype = item.getTechType();
+		final Technical.TechType ttype = item.getTechType();
 		if(ttype==null)
 			score+=0.5;
 		else
 		{
-			Pair<String,Integer> techTypeExpertise=mob.fetchExpertise(ttype.getDisplayName()+"%");
+			final Pair<String,Integer> techTypeExpertise=mob.fetchExpertise(ttype.getDisplayName()+"%");
 			if(techTypeExpertise!=null)
 				score += (0.5 * CMath.div(techTypeExpertise.second.intValue(), 100.0));
 		}
@@ -105,7 +105,7 @@ public class AstroEngineering extends TechSkill
 		String experName;
 		if(CMLib.dice().rollPercentage()>50)
 		{
-			Manufacturer m=item.getFinalManufacturer();
+			final Manufacturer m=item.getFinalManufacturer();
 			if(m!=null)
 			{
 				experName=m.name();
@@ -115,7 +115,7 @@ public class AstroEngineering extends TechSkill
 		}
 		else
 		{
-			Technical.TechType ttype = item.getTechType();
+			final Technical.TechType ttype = item.getTechType();
 			if(ttype!=null)
 			{
 				experName=ttype.getDisplayName();
@@ -146,8 +146,8 @@ public class AstroEngineering extends TechSkill
 			if((affected instanceof MOB)
 			&&(((MOB)affected).location()!=null))
 			{
-				MOB mob=(MOB)affected;
-				Room room=mob.location();
+				final MOB mob=(MOB)affected;
+				final Room room=mob.location();
 				if((aborted)||(room==null))
 					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> stop(s) "+op.verb+".");
 				else
@@ -158,7 +158,7 @@ public class AstroEngineering extends TechSkill
 				else
 				if(op==Operation.INSTALL)
 				{
-					CMMsg msg=CMClass.getMsg(mob,targetPanel,targetItem,CMMsg.MSG_INSTALL,"<S-NAME> install(s) <T-NAME> into <O-NAME>.");
+					final CMMsg msg=CMClass.getMsg(mob,targetPanel,targetItem,CMMsg.MSG_INSTALL,"<S-NAME> install(s) <T-NAME> into <O-NAME>.");
 					msg.setValue(50+getBonus(mob,(Electronics)targetItem,50));
 					if(room.okMessage(msg.source(), msg))
 					{
@@ -169,7 +169,7 @@ public class AstroEngineering extends TechSkill
 				else
 				if(op==Operation.REPAIR)
 				{
-					CMMsg msg=CMClass.getMsg(mob,targetItem,this,CMMsg.MSG_REPAIR,"<S-NAME> repair(s) <T-NAME>.");
+					final CMMsg msg=CMClass.getMsg(mob,targetItem,this,CMMsg.MSG_REPAIR,"<S-NAME> repair(s) <T-NAME>.");
 					msg.setValue(CMLib.dice().roll(1, proficiency()/2, getBonus(mob,(Electronics)targetItem,50)));
 					if(room.okMessage(msg.source(), msg))
 					{
@@ -179,7 +179,7 @@ public class AstroEngineering extends TechSkill
 				}
 				else
 				{
-					CMMsg msg=CMClass.getMsg(mob,targetItem,this,CMMsg.MSG_ENHANCE,"<S-NAME> enhance(s) <T-NAME>.");
+					final CMMsg msg=CMClass.getMsg(mob,targetItem,this,CMMsg.MSG_ENHANCE,"<S-NAME> enhance(s) <T-NAME>.");
 					msg.setValue((proficiency()/2)+getBonus(mob,(Electronics)targetItem,50));
 					if(room.okMessage(msg.source(), msg))
 					{
@@ -201,7 +201,7 @@ public class AstroEngineering extends TechSkill
 	{
 		if((affected instanceof MOB)&&(tickID==Tickable.TICKID_MOB))
 		{
-			MOB mob=(MOB)affected;
+			final MOB mob=(MOB)affected;
 			if((mob.isInCombat())
 			||(mob.location()!=targetRoom)
 			||(!CMLib.flags().aliveAwakeMobileUnbound(mob,true)))
@@ -215,9 +215,9 @@ public class AstroEngineering extends TechSkill
 			else
 			if(((baseTickSpan-tickDown)%4)==0)
 			{
-				int total=baseTickSpan;
-				int tickUp=(baseTickSpan-tickDown);
-				int pct=(int)Math.round(CMath.div(tickUp,total)*100.0);
+				final int total=baseTickSpan;
+				final int tickUp=(baseTickSpan-tickDown);
+				final int pct=(int)Math.round(CMath.div(tickUp,total)*100.0);
 				String verb=op.verb;
 				if(op==Operation.ENHANCE)
 					verb=altverb;
@@ -283,7 +283,7 @@ public class AstroEngineering extends TechSkill
 				}
 				else
 				{
-					String panelName=(String)commands.lastElement();
+					final String panelName=(String)commands.lastElement();
 					targetPanel=mob.fetchItem(null,Wearable.FILTER_UNWORNONLY,panelName);
 					if(targetPanel==null)
 					{
@@ -327,7 +327,7 @@ public class AstroEngineering extends TechSkill
 				commands.remove(0);
 			}
 		}
-		String itemName=CMParms.combine(commands,0);
+		final String itemName=CMParms.combine(commands,0);
 		if(targetItem == null)
 			targetItem=mob.fetchItem(null,Wearable.FILTER_UNWORNONLY,itemName);
 		if(targetItem==null)

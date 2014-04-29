@@ -53,22 +53,22 @@ public class Lacquerring extends CommonSkill
 
 	protected String fixColor(String name, String colorWord)
 	{
-		int end=name.indexOf("^?");
+		final int end=name.indexOf("^?");
 		if((end>0)&&(end<=name.length()-3))
 		{
-			int start=name.substring(0,end).indexOf('^');
+			final int start=name.substring(0,end).indexOf('^');
 			if((start>=0)&&(start<(end-3)))
 				name=name.substring(0,start)
 					 +name.substring(end+3);
 		}
 		colorWord="^"+colorWord.charAt(0)+colorWord+"^?";
-		Vector<String> V=CMParms.parse(name);
+		final Vector<String> V=CMParms.parse(name);
 		for(int v=0;v<V.size();v++)
 		{
-			String word=V.elementAt(v);
+			final String word=V.elementAt(v);
 			if((word.equalsIgnoreCase("an")) || (word.equalsIgnoreCase("a")))
 			{
-				String properPrefix=CMLib.english().properIndefiniteArticle(colorWord);
+				final String properPrefix=CMLib.english().properIndefiniteArticle(colorWord);
 				V.insertElementAt(colorWord,v+1);
 				if(word.toLowerCase().equals(word))
 					V.set(v,properPrefix.toLowerCase());
@@ -97,12 +97,12 @@ public class Lacquerring extends CommonSkill
 		{
 			if((affected!=null)&&(affected instanceof MOB)&&(!aborted)&&(!helping))
 			{
-				MOB mob=(MOB)affected;
+				final MOB mob=(MOB)affected;
 				if(writing.length()==0)
 					commonEmote(mob,"<S-NAME> mess(es) up the lacquering.");
 				else
 				{
-					StringBuffer desc=new StringBuffer(found.description());
+					final StringBuffer desc=new StringBuffer(found.description());
 					for(int x=0;x<(desc.length()-1);x++)
 					{
 						if((desc.charAt(x)=='^')
@@ -111,7 +111,7 @@ public class Lacquerring extends CommonSkill
 						&&(desc.charAt(x+1)!='#'))
 							desc.setCharAt(x+1,writing.charAt(0));
 					}
-					String d=desc.toString();
+					final String d=desc.toString();
 					if(!d.endsWith("^?")) desc.append("^?");
 					if(!d.startsWith("^"+writing.charAt(0))) desc.insert(0,"^"+writing.charAt(0));
 					found.setDescription(desc.toString());
@@ -141,9 +141,9 @@ public class Lacquerring extends CommonSkill
 			target=mob.location().findItem(null, (String)commands.firstElement());
 			if((target!=null)&&(CMLib.flags().canBeSeenBy(target,mob)))
 			{
-				Set<MOB> followers=mob.getGroupMembers(new TreeSet<MOB>());
+				final Set<MOB> followers=mob.getGroupMembers(new TreeSet<MOB>());
 				boolean ok=false;
-				for(MOB M : followers)
+				for(final MOB M : followers)
 				{
 					if(target.secretIdentity().indexOf(getBrand(M))>=0)
 						ok=true;
@@ -194,8 +194,8 @@ public class Lacquerring extends CommonSkill
 		found=target;
 		if(darkFlag) writing=CMStrings.capitalizeAndLower(writing);
 		if(!proficiencyCheck(mob,0,auto)) writing="";
-		int duration=getDuration(60,mob,1,12);
-		CMMsg msg=CMClass.getMsg(mob,target,this,getActivityMessageType(),"<S-NAME> start(s) lacquering <T-NAME>.");
+		final int duration=getDuration(60,mob,1,12);
+		final CMMsg msg=CMClass.getMsg(mob,target,this,getActivityMessageType(),"<S-NAME> start(s) lacquering <T-NAME>.");
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

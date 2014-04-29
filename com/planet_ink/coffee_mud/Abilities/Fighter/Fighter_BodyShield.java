@@ -54,7 +54,7 @@ public class Fighter_BodyShield extends FighterSkill
 		if(!(affected instanceof MOB))
 			return true;
 
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		if(msg.amITarget(mob)
 		&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
 		&&(!mob.amDead())
@@ -69,13 +69,13 @@ public class Fighter_BodyShield extends FighterSkill
 		&&(!doneThisRound)
 		&&(mob.getVictim().baseWeight()>=(mob.baseWeight()/2)))
 		{
-			Ability A=mob.fetchEffect("Fighter_Pin");
+			final Ability A=mob.fetchEffect("Fighter_Pin");
 			if((A!=null)&&(A.invoker()==mob))
 			{
 				doneThisRound=true;
-				int regain=(int)Math.round(CMath.mul((msg.value()),CMath.div(proficiency(),100.0)));
+				final int regain=(int)Math.round(CMath.mul((msg.value()),CMath.div(proficiency(),100.0)));
 				msg.setValue(msg.value()-regain);
-				CMMsg msg2=CMClass.getMsg(mob,mob.getVictim(),this,CMMsg.MSG_DAMAGE,"<S-NAME> use(s) <T-NAMESELF> as a body shield!");
+				final CMMsg msg2=CMClass.getMsg(mob,mob.getVictim(),this,CMMsg.MSG_DAMAGE,"<S-NAME> use(s) <T-NAMESELF> as a body shield!");
 				msg2.setValue(regain);
 				msg.addTrailerMsg(msg2);
 				helpProficiency(mob, 0);

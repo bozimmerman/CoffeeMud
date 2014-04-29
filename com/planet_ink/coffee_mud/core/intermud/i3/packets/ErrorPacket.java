@@ -67,9 +67,9 @@ public class ErrorPacket extends Packet
 				error_code = v.elementAt(6).toString();
 				error_message = v.elementAt(7).toString();
 				packetStr=v.elementAt(8).toString();
-			}catch(Exception e){ }
+			}catch(final Exception e){ }
 		}
-		catch( ClassCastException e )
+		catch( final ClassCastException e )
 		{
 			throw new InvalidPacketException();
 		}
@@ -84,7 +84,7 @@ public class ErrorPacket extends Packet
 	@Override
 	public String toString()
 	{
-		String str = "({\"error\",5,\"" + I3Server.getMudName() +
+		final String str = "({\"error\",5,\"" + I3Server.getMudName() +
 				 "\",0,\"" + target_mud + "\",\"" + target_name + "\"," +
 				 "\""+error_code+"\",\""+error_message+"\","+packetStr+",})";
 		return str;

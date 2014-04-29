@@ -52,10 +52,10 @@ public class Fighter_RapidShot extends FighterSkill
 		if(!(affected instanceof MOB))
 			return true;
 
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		if(mob.isInCombat())
 		{
-			Item w=mob.fetchWieldedItem();
+			final Item w=mob.fetchWieldedItem();
 			if((w instanceof AmmunitionWeapon)
 			&&(((Weapon)w).weaponClassification()==Weapon.CLASS_RANGED)
 			&&(((AmmunitionWeapon)w).ammunitionType().length()>0)

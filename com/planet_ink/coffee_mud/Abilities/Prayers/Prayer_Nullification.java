@@ -80,17 +80,17 @@ public class Prayer_Nullification extends Prayer
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 		for(int i=0;i<mob.location().numInhabitants();i++)
 		{
-			MOB target=mob.location().fetchInhabitant(i);
+			final MOB target=mob.location().fetchInhabitant(i);
 			if((target!=null)&&(success))
 			{
 				// it worked, so build a copy of this ability,
 				// and add it to the affects list of the
 				// affected MOB.  Then tell everyone else
 				// what happened.
-				CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> become(s) nullified.":"^S<S-NAME> sweep(s) <S-HIS-HER> hands over <T-NAMESELF>.^?");
+				final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> become(s) nullified.":"^S<S-NAME> sweep(s) <S-HIS-HER> hands over <T-NAMESELF>.^?");
 				if(mob.location().okMessage(mob,msg))
 				{
 					mob.location().send(mob,msg);
@@ -98,7 +98,7 @@ public class Prayer_Nullification extends Prayer
 					boolean foundSomethingAtLeast=false;
 					for(int a=0;a<target.numEffects();a++) // personal affects
 					{
-						Ability A=target.fetchEffect(a);
+						final Ability A=target.fetchEffect(a);
 						if((A!=null)&&(A.canBeUninvoked())&&(!A.isAutoInvoked())
 						&&(((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SPELL)
 						   ||((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PRAYER)

@@ -58,10 +58,10 @@ public class Disease_Fever extends Disease
 
 		if(!super.tick(ticking,tickID))
 			return false;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		if(mob.isInCombat())
 		{
-			MOB newvictim=mob.location().fetchRandomInhabitant();
+			final MOB newvictim=mob.location().fetchRandomInhabitant();
 			if(newvictim!=mob) mob.setVictim(newvictim);
 		}
 		else

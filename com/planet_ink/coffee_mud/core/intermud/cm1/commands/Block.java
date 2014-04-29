@@ -51,11 +51,11 @@ public class Block extends CM1Command
 	{
 		try
 		{
-			String eob="/BLOCK:"+Math.random();
+			final String eob="/BLOCK:"+Math.random();
 			req.sendMsg("[OK "+eob+"]");
 			req.setEndOfLine(eob);
 		}
-		catch(Exception ioe)
+		catch(final Exception ioe)
 		{
 			Log.errOut(className,ioe);
 			req.close();

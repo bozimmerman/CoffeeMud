@@ -62,8 +62,8 @@ public class Prop_HaveEnabler extends Prop_SpellAdder
 		if((!(target instanceof MOB))
 		||((compiledMask!=null)&&(!CMLib.masking().maskCheck(compiledMask,target,true))))
 			return false;
-		MOB newMOB=(MOB)target;
-		List<Ability> V=getMySpellsV();
+		final MOB newMOB=(MOB)target;
+		final List<Ability> V=getMySpellsV();
 		int proff=100;
 		int x=text().indexOf('%');
 		if(x>0)
@@ -83,10 +83,10 @@ public class Prop_HaveEnabler extends Prop_SpellAdder
 		boolean clearedYet=false;
 		for(int v=0;v<V.size();v++)
 		{
-			Ability A=V.get(v);
+			final Ability A=V.get(v);
 			if(newMOB.fetchAbility(A.ID())==null)
 			{
-				String t=A.text();
+				final String t=A.text();
 				if(t.length()>0)
 				{
 					x=t.indexOf('/');
@@ -95,7 +95,7 @@ public class Prop_HaveEnabler extends Prop_SpellAdder
 					else
 						A.setMiscText(t.substring(x+1));
 				}
-				Ability A2=newMOB.fetchEffect(A.ID());
+				final Ability A2=newMOB.fetchEffect(A.ID());
 				A.setProficiency(proff);
 				newMOB.addAbility(A);
 				A.setSavable(makeLongLasting);
@@ -118,18 +118,18 @@ public class Prop_HaveEnabler extends Prop_SpellAdder
 	{
 		if(!(P instanceof MOB))
 			return;
-		List<Ability> V=getMySpellsV();
+		final List<Ability> V=getMySpellsV();
 		for(int v=0;v<V.size();v++)
 		{
-			Ability A=V.get(v);
+			final Ability A=V.get(v);
 			((MOB)P).delAbility(A);
 		}
 		if(P==lastMOB)
 		{
-			for(Iterator e=lastMOBeffected.iterator();e.hasNext();)
+			for(final Iterator e=lastMOBeffected.iterator();e.hasNext();)
 			{
-				String AID=(String)e.next();
-				Ability A2=lastMOB.fetchEffect(AID);
+				final String AID=(String)e.next();
+				final Ability A2=lastMOB.fetchEffect(AID);
 				if(A2!=null)
 				{
 					A2.unInvoke();

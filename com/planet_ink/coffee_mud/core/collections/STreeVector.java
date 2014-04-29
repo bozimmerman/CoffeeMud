@@ -57,7 +57,7 @@ public class STreeVector<T extends CMObject> implements Serializable, Iterable<T
 		S=new TreeMap<String,T>();
 		if(E!=null)
 		{
-			for(T o : E)
+			for(final T o : E)
 				addBoth(o);
 		}
 	}
@@ -85,7 +85,7 @@ public class STreeVector<T extends CMObject> implements Serializable, Iterable<T
 	{
 		V=new Vector<T>();
 		S=new TreeMap<String,T>();
-		for(T o : E)
+		for(final T o : E)
 			addBoth(o);
 	}
 
@@ -106,7 +106,7 @@ public class STreeVector<T extends CMObject> implements Serializable, Iterable<T
 		if(E!=null)
 		{
 			V=(Vector<T>)V.clone();
-			for(T e : E)
+			for(final T e : E)
 				addBoth(e);
 		}
 	}
@@ -150,7 +150,7 @@ public class STreeVector<T extends CMObject> implements Serializable, Iterable<T
 		if(E!=null)
 		{
 			V=(Vector<T>)V.clone();
-			for(T o : E)
+			for(final T o : E)
 				removeBoth(o);
 		}
 	}
@@ -169,7 +169,7 @@ public class STreeVector<T extends CMObject> implements Serializable, Iterable<T
 	@SuppressWarnings("unchecked")
 	public synchronized STreeVector<T> copyOf()
 	{
-		STreeVector<T> SV=new STreeVector<T>();
+		final STreeVector<T> SV=new STreeVector<T>();
 		SV.V=(Vector<T>)V.clone();
 		SV.S.putAll(S);
 		return SV;
@@ -271,7 +271,7 @@ public class STreeVector<T extends CMObject> implements Serializable, Iterable<T
 	public synchronized boolean retainAll(Collection<?> c)
 	{
 		final int oldSize=size();
-		for(T o : V)
+		for(final T o : V)
 			if(!c.contains(o))
 				remove(o);
 		return oldSize < size();
@@ -402,7 +402,7 @@ public class STreeVector<T extends CMObject> implements Serializable, Iterable<T
 			addAll(c);
 		else
 		{
-			for(Object o : c)
+			for(final Object o : c)
 				if(o instanceof CMObject)
 					insertElementAt((T)o, index++);
 		}
@@ -487,7 +487,7 @@ public class STreeVector<T extends CMObject> implements Serializable, Iterable<T
 	{
 		V=(Vector<T>)V.clone();
 		boolean kaplah=false;
-		for(Object o : c)
+		for(final Object o : c)
 			kaplah = removeBoth(o) || kaplah;
 		return kaplah;
 	}

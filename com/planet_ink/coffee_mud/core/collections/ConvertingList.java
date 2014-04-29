@@ -18,7 +18,7 @@ limitations under the License.
 */
 public class ConvertingList<L,K> implements List<K>
 {
-	private List<L> list;
+	private final List<L> list;
 	Converter<L, K> converter;
 
 	public ConvertingList(List<L> l, Converter<L, K> conv)
@@ -69,7 +69,7 @@ public class ConvertingList<L,K> implements List<K>
 	@Override
 	public boolean containsAll(Collection<?> arg0)
 	{
-		for(Object o : arg0)
+		for(final Object o : arg0)
 			if(!contains(o))
 				return false;
 		return true;
@@ -168,7 +168,7 @@ public class ConvertingList<L,K> implements List<K>
 	@Override
 	public Object[] toArray()
 	{
-		Object[] obj=new Object[size()];
+		final Object[] obj=new Object[size()];
 		for(int x=0;x<size();x++)
 			obj[x]=get(x);
 		return obj;
@@ -178,7 +178,7 @@ public class ConvertingList<L,K> implements List<K>
 	@Override
 	public <T> T[] toArray(T[] arg0)
 	{
-		T[] objs= list.toArray(arg0);
+		final T[] objs= list.toArray(arg0);
 		for(int x=0;x<size();x++)
 			objs[x] = (T) get(x);
 		return objs;

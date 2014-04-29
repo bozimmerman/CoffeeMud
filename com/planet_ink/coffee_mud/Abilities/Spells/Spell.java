@@ -54,7 +54,7 @@ public class Spell extends StdAbility
 								   int tickAdjustmentFromStandard,
 								   int additionAffectCheckCode)
 	{
-		boolean truefalse=super.maliciousAffect(mob,target,asLevel,tickAdjustmentFromStandard,additionAffectCheckCode);
+		final boolean truefalse=super.maliciousAffect(mob,target,asLevel,tickAdjustmentFromStandard,additionAffectCheckCode);
 		if(truefalse
 		&&(target!=null)
 		&&(target instanceof MOB)
@@ -63,7 +63,7 @@ public class Spell extends StdAbility
 		&&(CMLib.dice().rollPercentage()==1)
 		&&(((MOB)target).charStats().getCurrentClass().baseClass().equals("Mage")))
 		{
-			MOB tmob=(MOB)target;
+			final MOB tmob=(MOB)target;
 			int num=0;
 			for(final Enumeration<Ability> a=tmob.effects();a.hasMoreElements();)
 			{
@@ -75,7 +75,7 @@ public class Spell extends StdAbility
 					num++;
 					if((num>5)&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.AUTODISEASE)))
 					{
-						Ability A2=CMClass.getAbility("Disease_Magepox");
+						final Ability A2=CMClass.getAbility("Disease_Magepox");
 						if((A2!=null)&&(target.fetchEffect(A2.ID())==null))
 							A2.invoke(mob,target,true,asLevel);
 						break;

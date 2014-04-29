@@ -56,7 +56,7 @@ public class Fighter_Roll extends FighterSkill
 		if(!(affected instanceof MOB))
 			return true;
 
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		if(msg.amITarget(mob)
 		&&(CMLib.flags().aliveAwakeMobile(mob,true))
 		&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
@@ -68,7 +68,7 @@ public class Fighter_Roll extends FighterSkill
 		&&((mob.fetchAbility(ID())==null)||proficiencyCheck(null,-85+mob.charStats().getStat(CharStats.STAT_DEXTERITY)+(2*getXLEVELLevel(mob)),false)))
 		{
 			doneThisRound=true;
-			double pctRecovery=(CMath.div(proficiency(),100.0)*Math.random());
+			final double pctRecovery=(CMath.div(proficiency(),100.0)*Math.random());
 			regain=(int)Math.round(CMath.mul((msg.value()),pctRecovery));
 			msg.setValue(msg.value()-regain);
 		}
@@ -91,7 +91,7 @@ public class Fighter_Roll extends FighterSkill
 		if(!(affected instanceof MOB))
 			return;
 
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		if((msg.amITarget(mob))
 		&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
 		&&(regain>0))

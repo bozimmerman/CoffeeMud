@@ -42,7 +42,7 @@ public class Necromancer extends Cleric
 	@Override public String baseClass(){return "Cleric";}
 	@Override public int getAttackAttribute(){return CharStats.STAT_WISDOM;}
 	@Override public int allowedWeaponLevel(){return CharClass.WEAPONS_EVILCLERIC;}
-	private HashSet disallowedWeapons=buildDisallowedWeaponClasses();
+	private final HashSet disallowedWeapons=buildDisallowedWeaponClasses();
 	@Override protected HashSet disallowedWeaponClasses(MOB mob){return disallowedWeapons;}
 	@Override protected int alwaysFlunksThisQuality(){return 1000;}
 	protected boolean registeredAsListener=false;
@@ -168,7 +168,7 @@ public class Necromancer extends Cleric
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!(myHost instanceof MOB)) return super.okMessage(myHost,msg);
-		MOB myChar=(MOB)myHost;
+		final MOB myChar=(MOB)myHost;
 		if(!super.okMessage(myChar, msg))
 			return false;
 
@@ -178,7 +178,7 @@ public class Necromancer extends Cleric
 		&&(myChar.baseCharStats().getClassLevel(this)>=30)
 		&&(!myChar.baseCharStats().getMyRace().ID().equals("Lich")))
 		{
-			Race newRace=CMClass.getRace("Lich");
+			final Race newRace=CMClass.getRace("Lich");
 			if(newRace!=null)
 			{
 				myChar.tell("The dark powers are transforming you into a "+newRace.name()+"!!");
@@ -199,14 +199,14 @@ public class Necromancer extends Cleric
 		else
 		if((msg.sourceCode()==CMMsg.TYP_DEATH)&&(msg.othersCode()==CMMsg.TYP_DEATH))
 		{
-			MOB aChar=(MOB)myHost;
+			final MOB aChar=(MOB)myHost;
 			super.executeMsg(myHost,msg);
 			MOB M=null;
-			Room myRoom=aChar.location();
+			final Room myRoom=aChar.location();
 			if((myRoom!=null)
 			&&(myRoom.getArea()!=null))
 			{
-				for(Session S : CMLib.sessions().localOnlineIterable())
+				for(final Session S : CMLib.sessions().localOnlineIterable())
 				{
 					M=S.mob();
 					if((M!=null)
@@ -249,7 +249,7 @@ public class Necromancer extends Cleric
 		if(outfitChoices==null)
 		{
 			outfitChoices=new Vector();
-			Weapon w=CMClass.getWeapon("Shortsword");
+			final Weapon w=CMClass.getWeapon("Shortsword");
 			outfitChoices.add(w);
 		}
 		return outfitChoices;

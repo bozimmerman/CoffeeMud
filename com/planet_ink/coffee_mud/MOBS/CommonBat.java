@@ -37,7 +37,7 @@ public class CommonBat extends StdMOB
 	public CommonBat()
 	{
 		super();
-		Random randomizer = new Random(System.currentTimeMillis());
+		final Random randomizer = new Random(System.currentTimeMillis());
 
 		username="a common bat";
 		setDescription("It seemingly has the body of a rat with wings.");

@@ -50,10 +50,10 @@ public class Chant_Reabsorb extends Chant
 		{
 			if(!(target instanceof Item))
 				return Ability.QUALITY_INDIFFERENT;
-			Room R=mob.location();
+			final Room R=mob.location();
 			if(R!=null)
 			{
-				int type=R.domainType();
+				final int type=R.domainType();
 				if((type==Room.DOMAIN_INDOORS_STONE)
 				||(type==Room.DOMAIN_INDOORS_WOOD)
 				||(type==Room.DOMAIN_INDOORS_MAGIC)
@@ -74,13 +74,13 @@ public class Chant_Reabsorb extends Chant
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		Item target=this.getTarget(mob,mob.location(),givenTarget,null,commands,Wearable.FILTER_UNWORNONLY);
+		final Item target=this.getTarget(mob,mob.location(),givenTarget,null,commands,Wearable.FILTER_UNWORNONLY);
 		if(target==null) return false;
 
-		List<DeadBody> V=CMLib.utensils().getDeadBodies(target);
+		final List<DeadBody> V=CMLib.utensils().getDeadBodies(target);
 		for(int v=0;v<V.size();v++)
 		{
-			DeadBody D=V.get(v);
+			final DeadBody D=V.get(v);
 			if((D!=null)
 			&&(D.playerCorpse())
 			&&(!D.mobName().equals(mob.Name())))
@@ -94,7 +94,7 @@ public class Chant_Reabsorb extends Chant
 			mob.tell("You need to put "+target.name(mob)+" on the ground first.");
 			return false;
 		}
-		int type=mob.location().domainType();
+		final int type=mob.location().domainType();
 		if((type==Room.DOMAIN_INDOORS_STONE)
 			||(type==Room.DOMAIN_INDOORS_WOOD)
 			||(type==Room.DOMAIN_INDOORS_MAGIC)
@@ -113,7 +113,7 @@ public class Chant_Reabsorb extends Chant
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
@@ -121,7 +121,7 @@ public class Chant_Reabsorb extends Chant
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> starts vibrating!":"^S<S-NAME> chant(s), causing <T-NAMESELF> to decay!^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> starts vibrating!":"^S<S-NAME> chant(s), causing <T-NAMESELF> to decay!^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

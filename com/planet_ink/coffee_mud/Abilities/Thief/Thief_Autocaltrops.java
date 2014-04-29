@@ -68,8 +68,8 @@ public class Thief_Autocaltrops extends ThiefSkill
 			A=CMClass.getAbility("Thief_Caltrops");
 			A.setProficiency(100);
 		}
-		int mana=mob.curState().getMana();
-		int movement=mob.curState().getMovement();
+		final int mana=mob.curState().getMana();
+		final int movement=mob.curState().getMovement();
 		A.invoke(mob,R,false,0);
 		mob.curState().setMana(mana);
 		mob.curState().setMana(movement);
@@ -86,7 +86,7 @@ public class Thief_Autocaltrops extends ThiefSkill
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		MOB target=(givenTarget instanceof MOB)?(MOB)givenTarget:mob;
+		final MOB target=(givenTarget instanceof MOB)?(MOB)givenTarget:mob;
 		if(target.fetchEffect(ID())!=null)
 		{
 			target.tell("You are no longer automatically dropping caltrops.");
@@ -101,7 +101,7 @@ public class Thief_Autocaltrops extends ThiefSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{

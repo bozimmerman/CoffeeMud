@@ -94,7 +94,7 @@ public class Thief_Caltrops extends ThiefSkill implements Trap
 		if(affected==null) return super.okMessage(myHost,msg);
 		if(!(affected instanceof Room)) return super.okMessage(myHost,msg);
 		if(invoker()==null) return super.okMessage(myHost,msg);
-		Room room=(Room)affected;
+		final Room room=(Room)affected;
 		if((msg.amITarget(room)||room.isInhabitant(msg.source()))
 		&&(!msg.amISource(invoker()))
 		&&((msg.sourceMinor()==CMMsg.TYP_ENTER)
@@ -109,7 +109,7 @@ public class Thief_Caltrops extends ThiefSkill implements Trap
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		Physical target=(givenTarget!=null)?givenTarget:mob.location();
+		final Physical target=(givenTarget!=null)?givenTarget:mob.location();
 		if(target.fetchEffect(ID())!=null)
 		{
 			mob.tell(CMStrings.capitalizeFirstLetter(caltropTypeName())+"Caltrops have already been tossed down here.");

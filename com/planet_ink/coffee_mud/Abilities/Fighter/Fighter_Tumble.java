@@ -55,7 +55,7 @@ public class Fighter_Tumble extends FighterSkill
 		   invoker=(MOB)affected;
 		if(invoker!=null)
 		{
-			float f=(float)CMath.mul(0.2,getXLEVELLevel(invoker));
+			final float f=(float)CMath.mul(0.2,getXLEVELLevel(invoker));
 			affectableStats.setDamage(affectableStats.damage()-(int)Math.round(CMath.div(affectableStats.damage(),2.0+f)));
 			affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()-(int)Math.round(CMath.div(affectableStats.attackAdjustment(),2.0+f)));
 		}
@@ -70,7 +70,7 @@ public class Fighter_Tumble extends FighterSkill
 		if(!(affected instanceof MOB))
 			return true;
 
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		if(!mob.isInCombat())
 			this.unInvoke();
 		else
@@ -134,10 +134,10 @@ public class Fighter_Tumble extends FighterSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_QUIETMOVEMENT,auto?"<T-NAME> begin(s) tumbling around!":"<S-NAME> tumble(s) around!");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_QUIETMOVEMENT,auto?"<T-NAME> begin(s) tumbling around!":"<S-NAME> tumble(s) around!");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

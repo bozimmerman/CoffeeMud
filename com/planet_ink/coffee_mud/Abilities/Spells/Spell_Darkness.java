@@ -51,7 +51,7 @@ public class Spell_Darkness extends Spell
 			return;
 		if(!(affected instanceof Room))
 			return;
-		Room room=(Room)affected;
+		final Room room=(Room)affected;
 		super.unInvoke();
 		if(canBeUninvoked())
 		{
@@ -89,7 +89,7 @@ public class Spell_Darkness extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		Physical target = mob.location();
+		final Physical target = mob.location();
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
@@ -98,7 +98,7 @@ public class Spell_Darkness extends Spell
 		}
 
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
@@ -107,7 +107,7 @@ public class Spell_Darkness extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 
-			CMMsg msg = CMClass.getMsg(mob, target, this, verbalCastCode(mob,target,auto), (auto?"D":"^S<S-NAME> incant(s) and gesture(s) and d")+"arkness envelopes everyone.^?");
+			final CMMsg msg = CMClass.getMsg(mob, target, this, verbalCastCode(mob,target,auto), (auto?"D":"^S<S-NAME> incant(s) and gesture(s) and d")+"arkness envelopes everyone.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

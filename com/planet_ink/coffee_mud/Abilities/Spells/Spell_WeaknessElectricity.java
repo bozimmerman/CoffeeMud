@@ -50,7 +50,7 @@ public class Spell_WeaknessElectricity extends Spell
 		// undo the affects of this spell
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		if(canBeUninvoked())
 			mob.tell("Your electric weakness is now gone.");
 
@@ -67,11 +67,11 @@ public class Spell_WeaknessElectricity extends Spell
 		if(!(affected instanceof MOB))
 			return true;
 
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		if((msg.amITarget(mob))&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
 		   &&(msg.sourceMinor()==CMMsg.TYP_ELECTRIC))
 		{
-			int recovery=(int)Math.round(CMath.mul((msg.value()),1.5));
+			final int recovery=(int)Math.round(CMath.mul((msg.value()),1.5));
 			msg.setValue(msg.value()+recovery);
 		}
 		return true;
@@ -91,13 +91,13 @@ public class Spell_WeaknessElectricity extends Spell
 		if(tickID!=Tickable.TICKID_MOB) return false;
 		if((affecting()!=null)&&(affecting() instanceof MOB))
 		{
-			MOB M=(MOB)affecting();
-			Room room=M.location();
+			final MOB M=(MOB)affecting();
+			final Room room=M.location();
 			if((room!=null)
 			&&(room.getArea().getClimateObj().weatherType(room)==Climate.WEATHER_THUNDERSTORM)
 			&&(CMLib.dice().rollPercentage()>M.charStats().getSave(CharStats.STAT_SAVE_ELECTRIC)))
 			{
-				int damage=CMLib.dice().roll(1,3,0);
+				final int damage=CMLib.dice().roll(1,3,0);
 				CMLib.combat().postDamage(invoker,M,null,damage,CMMsg.MASK_MALICIOUS|CMMsg.MASK_ALWAYS|CMMsg.TYP_ELECTRIC,Weapon.TYPE_STRIKING,"The electricity in the air <DAMAGE> <T-NAME>!");
 				if((!M.isInCombat())&&(M.isMonster())&&(M!=invoker)&&(invoker!=null)&&(M.location()==invoker.location())&&(M.location().isInhabitant(invoker))&&(CMLib.flags().canBeSeenBy(invoker,M)))
 					CMLib.combat().postAttack(M,invoker,M.fetchWieldedItem());
@@ -109,7 +109,7 @@ public class Spell_WeaknessElectricity extends Spell
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		MOB target=getTarget(mob,commands,givenTarget);
+		final MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -118,7 +118,7 @@ public class Spell_WeaknessElectricity extends Spell
 		boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"A shimmering conductive field appears around <T-NAMESELF>.":"^S<S-NAME> invoke(s) a shimmering conductive field around <T-NAMESELF>.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"A shimmering conductive field appears around <T-NAMESELF>.":"^S<S-NAME> invoke(s) a shimmering conductive field around <T-NAMESELF>.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

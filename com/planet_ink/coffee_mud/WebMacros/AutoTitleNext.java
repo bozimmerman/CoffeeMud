@@ -40,17 +40,17 @@ public class AutoTitleNext extends StdWebMacro
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
-		java.util.Map<String,String> parms=parseParms(parm);
-		String last=httpReq.getUrlParameter("AUTOTITLE");
+		final java.util.Map<String,String> parms=parseParms(parm);
+		final String last=httpReq.getUrlParameter("AUTOTITLE");
 		if(parms.containsKey("RESET"))
 		{
 			if(last!=null) httpReq.removeUrlParameter("AUTOTITLE");
 			return "";
 		}
 		String lastID="";
-		for(Enumeration r=CMLib.titles().autoTitles();r.hasMoreElements();)
+		for(final Enumeration r=CMLib.titles().autoTitles();r.hasMoreElements();)
 		{
-			String title=(String)r.nextElement();
+			final String title=(String)r.nextElement();
 			if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!title.equals(lastID))))
 			{
 				httpReq.addFakeUrlParameter("AUTOTITLE",title);

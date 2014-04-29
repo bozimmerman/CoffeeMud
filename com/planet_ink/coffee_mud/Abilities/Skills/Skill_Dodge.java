@@ -58,7 +58,7 @@ public class Skill_Dodge extends StdSkill
 		if(!(affected instanceof MOB))
 			return true;
 
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		if(msg.amITarget(mob)
 		&&(msg.targetMinor()==CMMsg.TYP_WEAPONATTACK)
@@ -69,7 +69,7 @@ public class Skill_Dodge extends StdSkill
 			  &&(((Weapon)msg.tool()).weaponClassification()!=Weapon.CLASS_RANGED)
 			  &&(((Weapon)msg.tool()).weaponClassification()!=Weapon.CLASS_THROWN))))
 		{
-			CMMsg msg2=CMClass.getMsg(mob,msg.source(),null,CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> dodge(s) the attack by <T-NAME>!");
+			final CMMsg msg2=CMClass.getMsg(mob,msg.source(),null,CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> dodge(s) the attack by <T-NAME>!");
 			if((proficiencyCheck(null,mob.charStats().getStat(CharStats.STAT_DEXTERITY)-93+(getXLEVELLevel(mob)),false))
 			&&(msg.source().getVictim()==mob)
 			&&(!doneThisRound)

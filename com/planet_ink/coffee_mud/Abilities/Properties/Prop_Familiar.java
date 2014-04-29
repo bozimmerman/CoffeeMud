@@ -71,7 +71,7 @@ public class Prop_Familiar extends Property
 	{
 		if(familiarTo!=null)
 		{
-			Ability A=familiarTo.fetchEffect(ID());
+			final Ability A=familiarTo.fetchEffect(ID());
 			if(A!=null)
 			{
 				familiarTo.delEffect(A);
@@ -86,7 +86,7 @@ public class Prop_Familiar extends Property
 		}
 		if(familiarWith!=null)
 		{
-			Ability A=familiarWith.fetchEffect(ID());
+			final Ability A=familiarWith.fetchEffect(ID());
 			if(A!=null)
 			{
 				familiarWith.delEffect(A);
@@ -115,7 +115,7 @@ public class Prop_Familiar extends Property
 				familiarWith=null;
 				imthedaddy=false;
 			}
-			MOB familiar=(MOB)affected;
+			final MOB familiar=(MOB)affected;
 			if(familiar.amDead())
 				return removeMeFromFamiliarTo();
 			if((!imthedaddy)
@@ -125,10 +125,10 @@ public class Prop_Familiar extends Property
 			&&(((MOB)affected).amFollowing()!=null)
 			&&(CMLib.flags().isInTheGame(((MOB)affected).amFollowing(),true)))
 			{
-				MOB following=((MOB)affected).amFollowing();
+				final MOB following=((MOB)affected).amFollowing();
 				familiarWith=(MOB)affected;
 				familiarTo=following;
-				Prop_Familiar F=(Prop_Familiar)copyOf();
+				final Prop_Familiar F=(Prop_Familiar)copyOf();
 				F.setSavable(false);
 				F.imthedaddy=true;
 				F.familiarWith=(MOB)affected;
@@ -193,7 +193,7 @@ public class Prop_Familiar extends Property
 		&&(familiarWith.location()==familiarTo.location())
 		&&(familiarType==RABBIT))
 		{
-			MOB target=(MOB)msg.target();
+			final MOB target=(MOB)msg.target();
 			if((!target.isInCombat())
 			&&(msg.source().location()==target.location())
 			&&(msg.source().getVictim()!=target))

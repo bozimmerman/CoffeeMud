@@ -51,7 +51,7 @@ public class Spell_Dream extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
@@ -61,13 +61,13 @@ public class Spell_Dream extends Spell
 				mob.location().send(mob,msg);
 				try
 				{
-					for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
+					for(final Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 					{
-						Room R=(Room)r.nextElement();
+						final Room R=(Room)r.nextElement();
 						if(CMLib.flags().canAccess(mob,R))
 						for(int i=0;i<R.numInhabitants();i++)
 						{
-							MOB inhab=R.fetchInhabitant(i);
+							final MOB inhab=R.fetchInhabitant(i);
 							if((inhab!=null)&&(CMLib.flags().isSleeping(inhab)))
 							{
 								msg=CMClass.getMsg(mob,inhab,this,verbalCastCode(mob,inhab,auto),null);
@@ -76,7 +76,7 @@ public class Spell_Dream extends Spell
 							}
 						}
 					}
-				}catch(NoSuchElementException nse){}
+				}catch(final NoSuchElementException nse){}
 			}
 
 		}

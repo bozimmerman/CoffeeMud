@@ -49,7 +49,7 @@ public class Druid extends StdCharClass
 	@Override protected String armorFailMessage(){return "<S-NAME> watch(es) <S-HIS-HER> armor absorb <S-HIS-HER> magical energy!";}
 	@Override public int allowedArmorLevel(){return CharClass.ARMOR_NONMETAL;}
 	@Override public int allowedWeaponLevel(){return CharClass.WEAPONS_NATURAL;}
-	private HashSet requiredWeaponMaterials=buildRequiredWeaponMaterials();
+	private final HashSet requiredWeaponMaterials=buildRequiredWeaponMaterials();
 	@Override protected HashSet requiredWeaponMaterials(){return requiredWeaponMaterials;}
 	@Override public int requiredArmorSourceMinor(){return CMMsg.TYP_CAST_SPELL;}
 	public static Hashtable animalChecking=new Hashtable();
@@ -210,13 +210,13 @@ public class Druid extends StdCharClass
 
 		if(mob.playerStats()==null)
 		{
-			List<AbilityMapper.AbilityMapping> V=CMLib.ableMapper().getUpToLevelListings(ID(),
+			final List<AbilityMapper.AbilityMapping> V=CMLib.ableMapper().getUpToLevelListings(ID(),
 												mob.charStats().getClassLevel(ID()),
 												false,
 												false);
-			for(AbilityMapper.AbilityMapping able : V)
+			for(final AbilityMapper.AbilityMapping able : V)
 			{
-				Ability A=CMClass.getAbility(able.abilityID);
+				final Ability A=CMClass.getAbility(able.abilityID);
 				if((A!=null)
 				&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_CHANT)
 				&&(!CMLib.ableMapper().getDefaultGain(ID(),true,A.ID())))
@@ -225,13 +225,13 @@ public class Druid extends StdCharClass
 			return;
 		}
 
-		Vector grantable=new Vector();
+		final Vector grantable=new Vector();
 
-		int level=mob.charStats().getClassLevel(this);
+		final int level=mob.charStats().getClassLevel(this);
 		int numChants=2;
-		for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
+		for(final Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 		{
-			Ability A=a.nextElement();
+			final Ability A=a.nextElement();
 			if((CMLib.ableMapper().getQualifyingLevel(ID(),true,A.ID())==level)
 			&&((CMLib.ableMapper().getQualifyingLevel(ID(),true,A.ID())<=25)
 			&&(!CMLib.ableMapper().getSecretSkill(ID(),true,A.ID()))
@@ -244,7 +244,7 @@ public class Druid extends StdCharClass
 		}
 		for(int a=0;a<mob.numAbilities();a++)
 		{
-			Ability A=mob.fetchAbility(a);
+			final Ability A=mob.fetchAbility(a);
 			if(grantable.contains(A.ID()))
 			{
 				grantable.remove(A.ID());
@@ -254,7 +254,7 @@ public class Druid extends StdCharClass
 		for(int i=0;i<numChants;i++)
 		{
 			if(grantable.size()==0) break;
-			String AID=(String)grantable.elementAt(CMLib.dice().roll(1,grantable.size(),-1));
+			final String AID=(String)grantable.elementAt(CMLib.dice().roll(1,grantable.size(),-1));
 			if(AID!=null)
 			{
 				grantable.removeElement(AID);
@@ -275,7 +275,7 @@ public class Druid extends StdCharClass
 		if(affected.location()!=null)
 			for(int i=0;i<affected.location().numItems();i++)
 			{
-				Item I=affected.location().getItem(i);
+				final Item I=affected.location().getItem(i);
 				if((I!=null)&&(I.ID().equals("DruidicMonument")))
 					affectableState.setMana(affectableState.getMana()+(affectableState.getMana()/2));
 			}
@@ -300,7 +300,7 @@ public class Druid extends StdCharClass
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!(myHost instanceof MOB)) return super.okMessage(myHost,msg);
-		MOB myChar=(MOB)myHost;
+		final MOB myChar=(MOB)myHost;
 		if(!super.okMessage(myChar, msg))
 			return false;
 
@@ -335,7 +335,7 @@ public class Druid extends StdCharClass
 			  ||msg.source().charStats().getMyRace().racialCategory().equalsIgnoreCase("Vegetation")
 			  ||msg.source().charStats().getMyRace().racialCategory().equalsIgnoreCase("Stone Golem")))
 			{
-				int xp=msg.source().phyStats().level()*5;
+				final int xp=msg.source().phyStats().level()*5;
 				if(xp>0)
 				{
 					druidM.tell("Your stewardship has benefitted "+msg.source().name(druidM)+".");
@@ -366,7 +366,7 @@ public class Druid extends StdCharClass
 		&&(!CMLib.law().isACity(msg.source().location().getArea())))
 		{
 			Object[] stuff=(Object[])animalChecking.get(host);
-			Room room=msg.source().location();
+			final Room room=msg.source().location();
 			if((stuff==null)||(System.currentTimeMillis()-((Long)stuff[0]).longValue()>(room.getArea().getTimeObj().getDaysInMonth()*room.getArea().getTimeObj().getHoursInDay()*CMProps.getMillisPerMudHour())))
 			{
 				stuff=new Object[3];
@@ -413,7 +413,7 @@ public class Druid extends StdCharClass
 		if(outfitChoices==null)
 		{
 			outfitChoices=new Vector();
-			Weapon w=CMClass.getWeapon("Quarterstaff");
+			final Weapon w=CMClass.getWeapon("Quarterstaff");
 			outfitChoices.add(w);
 		}
 		return outfitChoices;

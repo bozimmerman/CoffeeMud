@@ -51,7 +51,7 @@ public class Spell_Summon extends Spell
 	{
 		if(affected instanceof MOB)
 		{
-			MOB mob=(MOB)affected;
+			final MOB mob=(MOB)affected;
 			if((!mob.amDead())&&(mob.location()!=null))
 			{
 				if((mob.amFollowing()!=null)
@@ -82,10 +82,10 @@ public class Spell_Summon extends Spell
 		{
 			for(int i=0;i<2000;i++)
 			{
-				Room R=CMLib.map().getRandomRoom();
+				final Room R=CMLib.map().getRandomRoom();
 				if((CMLib.flags().canAccess(mob,R))&&(R.numInhabitants()>0))
 				{
-					MOB M=R.fetchRandomInhabitant();
+					final MOB M=R.fetchRandomInhabitant();
 					if(M!=null)
 					{
 						areaName=M.Name().toUpperCase();
@@ -105,7 +105,7 @@ public class Spell_Summon extends Spell
 		MOB target=null;
 		try
 		{
-			for(Session S : CMLib.sessions().localOnlineIterable())
+			for(final Session S : CMLib.sessions().localOnlineIterable())
 			{
 				if((S.mob()!=null)
 				&&(CMLib.flags().canAccess(mob,S.mob().location()))
@@ -122,7 +122,7 @@ public class Spell_Summon extends Spell
 				if(target != null)
 					oldRoom=target.location();
 			}
-		}catch(NoSuchElementException nse){}
+		}catch(final NoSuchElementException nse){}
 
 		if((oldRoom==null)||(target==null))
 		{
@@ -133,7 +133,7 @@ public class Spell_Summon extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		int adjustment=(target.phyStats().level()-(mob.phyStats().level()+(getXLEVELLevel(mob)+(2*getX1Level(mob)))))*3;
+		final int adjustment=(target.phyStats().level()-(mob.phyStats().level()+(getXLEVELLevel(mob)+(2*getX1Level(mob)))))*3;
 		boolean success=proficiencyCheck(mob,-adjustment,auto);
 
 		if(success&&(!auto)&&(!mob.mayIFight(target))&&(!mob.getGroupMembers(new HashSet<MOB>()).contains(target)))
@@ -144,15 +144,15 @@ public class Spell_Summon extends Spell
 
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MOVE|verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> summon(s) <T-NAME> in a mighty cry!^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MOVE|verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> summon(s) <T-NAME> in a mighty cry!^?");
 			if((mob.location().okMessage(mob,msg))&&(oldRoom.okMessage(mob,msg)))
 			{
 				mob.location().send(mob,msg);
 
-				MOB follower=target;
-				Room newRoom=mob.location();
-				CMMsg enterMsg=CMClass.getMsg(follower,newRoom,this,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,("<S-NAME> appear(s) in a burst of light.")+CMLib.protocol().msp("appear.wav",10));
-				CMMsg leaveMsg=CMClass.getMsg(follower,oldRoom,this,CMMsg.MSG_LEAVE|CMMsg.MASK_MAGIC,"<S-NAME> disappear(s) in a great summoning swirl created by "+mob.name()+".");
+				final MOB follower=target;
+				final Room newRoom=mob.location();
+				final CMMsg enterMsg=CMClass.getMsg(follower,newRoom,this,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,("<S-NAME> appear(s) in a burst of light.")+CMLib.protocol().msp("appear.wav",10));
+				final CMMsg leaveMsg=CMClass.getMsg(follower,oldRoom,this,CMMsg.MSG_LEAVE|CMMsg.MASK_MAGIC,"<S-NAME> disappear(s) in a great summoning swirl created by "+mob.name()+".");
 				if(oldRoom.okMessage(follower,leaveMsg))
 				{
 					if(newRoom.okMessage(follower,enterMsg))

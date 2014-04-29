@@ -39,10 +39,10 @@ public class AutoTitleData extends StdWebMacro
 	public String deleteTitle(String title)
 	{
 		CMLib.titles().dispossesTitle(title);
-		CMFile F=new CMFile(Resources.makeFileResourceName("titles.txt"),null,CMFile.FLAG_LOGERRORS);
+		final CMFile F=new CMFile(Resources.makeFileResourceName("titles.txt"),null,CMFile.FLAG_LOGERRORS);
 		if(F.exists())
 		{
-			boolean removed=Resources.findRemoveProperty(F, title);
+			final boolean removed=Resources.findRemoveProperty(F, title);
 			if(removed)
 			{
 				Resources.removeResource("titles.txt");
@@ -57,20 +57,20 @@ public class AutoTitleData extends StdWebMacro
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
-		java.util.Map<String,String> parms=parseParms(parm);
-		String last=httpReq.getUrlParameter("AUTOTITLE");
+		final java.util.Map<String,String> parms=parseParms(parm);
+		final String last=httpReq.getUrlParameter("AUTOTITLE");
 		if((last==null)&&(!parms.containsKey("EDIT"))) return " @break@";
 
 		if(parms.containsKey("EDIT"))
 		{
-			MOB M = Authenticate.getAuthenticatedMob(httpReq);
+			final MOB M = Authenticate.getAuthenticatedMob(httpReq);
 			if(M==null) return "[authentication error]";
 			if(!CMSecurity.isAllowed(M,M.location(),CMSecurity.SecFlag.TITLES)) return "[authentication error]";
-			String req=httpReq.getUrlParameter("ISREQUIRED");
+			final String req=httpReq.getUrlParameter("ISREQUIRED");
 			String newTitle=httpReq.getUrlParameter("TITLE");
 			if((req!=null)&&(req.equalsIgnoreCase("on")))
 				newTitle="{"+newTitle+"}";
-			String newMask=httpReq.getUrlParameter("MASK");
+			final String newMask=httpReq.getUrlParameter("MASK");
 			if((newTitle==null)||(newMask==null)||(newTitle.length()==0))
 				return "[missing data error]";
 
@@ -80,19 +80,19 @@ public class AutoTitleData extends StdWebMacro
 				return "[new title already exists!]";
 			}
 
-			String error=CMLib.titles().evaluateAutoTitle(newTitle+"="+newMask,false);
+			final String error=CMLib.titles().evaluateAutoTitle(newTitle+"="+newMask,false);
 			if(error!=null) return "[error: "+error+"]";
 
 			if((last!=null)&&(CMLib.titles().isExistingAutoTitle(last)))
 			{
-				String err=deleteTitle(last);
+				final String err=deleteTitle(last);
 				if(err!=null)
 				{
 					CMLib.titles().reloadAutoTitles();
 					return err;
 				}
 			}
-			CMFile F=new CMFile(Resources.makeFileResourceName("titles.txt"),null,CMFile.FLAG_LOGERRORS);
+			final CMFile F=new CMFile(Resources.makeFileResourceName("titles.txt"),null,CMFile.FLAG_LOGERRORS);
 			F.saveText("\n"+newTitle+"="+newMask,true);
 			Resources.removeResource("titles.txt");
 			CMLib.titles().reloadAutoTitles();
@@ -100,19 +100,19 @@ public class AutoTitleData extends StdWebMacro
 		else
 		if(parms.containsKey("DELETE"))
 		{
-			MOB M = Authenticate.getAuthenticatedMob(httpReq);
+			final MOB M = Authenticate.getAuthenticatedMob(httpReq);
 			if(M==null) return "[authentication error]";
 			if(!CMSecurity.isAllowed(M,M.location(),CMSecurity.SecFlag.TITLES)) return "[authentication error]";
 			if(last==null) return " @break@";
 			if(!CMLib.titles().isExistingAutoTitle(last))
 				return "Unknown title!";
-			String err=deleteTitle(last);
+			final String err=deleteTitle(last);
 			if(err==null) return "Auto-Title deleted.";
 			return err;
 		}
 		else
 		if(last==null) return " @break@";
-		StringBuffer str=new StringBuffer("");
+		final StringBuffer str=new StringBuffer("");
 
 		if(parms.containsKey("MASK"))
 		{

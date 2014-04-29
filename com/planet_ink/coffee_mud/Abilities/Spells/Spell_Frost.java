@@ -46,7 +46,7 @@ public class Spell_Frost extends Spell
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		MOB target=this.getTarget(mob,commands,givenTarget);
+		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 		Room R=CMLib.map().roomLocation(target);
 		if(R==null) R=mob.location();
@@ -59,7 +59,7 @@ public class Spell_Frost extends Spell
 			return false;
 
 		// now see if it worked
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
@@ -67,15 +67,15 @@ public class Spell_Frost extends Spell
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),((auto?"A ":"^S<S-NAME> incant(s) and point(s) at <T-NAMESELF>. A ")+"blast of frost erupts!^?")+CMLib.protocol().msp("spelldam1.wav",40));
-			CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_COLD|(auto?CMMsg.MASK_ALWAYS:0),null);
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),((auto?"A ":"^S<S-NAME> incant(s) and point(s) at <T-NAMESELF>. A ")+"blast of frost erupts!^?")+CMLib.protocol().msp("spelldam1.wav",40));
+			final CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_COLD|(auto?CMMsg.MASK_ALWAYS:0),null);
 			if((R.okMessage(mob,msg))&&(R.okMessage(mob,msg2)))
 			{
 				R.send(mob,msg);
 				invoker=mob;
 
 				int damage = 0;
-				int maxDie =  (adjustedLevel(mob,asLevel)+(2*super.getX1Level(mob)))/4;
+				final int maxDie =  (adjustedLevel(mob,asLevel)+(2*super.getX1Level(mob)))/4;
 				damage += CMLib.dice().roll(maxDie,6,5);
 				R.send(mob,msg2);
 				if((msg2.value()>0)||(msg.value()>0))

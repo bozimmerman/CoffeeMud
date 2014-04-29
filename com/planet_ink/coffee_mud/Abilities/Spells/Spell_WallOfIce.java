@@ -57,7 +57,7 @@ public class Spell_WallOfIce extends Spell
 		if((affected==null)||(!(affected instanceof Item)))
 			return true;
 
-		MOB mob=msg.source();
+		final MOB mob=msg.source();
 
 		if((invoker!=null)
 		&&(mob.isInCombat())
@@ -69,8 +69,8 @@ public class Spell_WallOfIce extends Spell
 				Item w=mob.fetchWieldedItem();
 				if(w==null) w=mob.myNaturalWeapon();
 				if(w==null) return false;
-				Room room=mob.location();
-				CMMsg msg2=CMClass.getMsg(mob,null,w,CMMsg.MSG_WEAPONATTACK,"^F^<FIGHT^><S-NAME> hack(s) at the wall of ice with <O-NAME>.^</FIGHT^>^?");
+				final Room room=mob.location();
+				final CMMsg msg2=CMClass.getMsg(mob,null,w,CMMsg.MSG_WEAPONATTACK,"^F^<FIGHT^><S-NAME> hack(s) at the wall of ice with <O-NAME>.^</FIGHT^>^?");
 				CMLib.color().fixSourceFightColor(msg2);
 				if(mob.location().okMessage(mob,msg2))
 				{
@@ -81,7 +81,7 @@ public class Spell_WallOfIce extends Spell
 						deathNotice="The wall of ice shatters!!!";
 						for(int i=0;i<room.numInhabitants();i++)
 						{
-							MOB M=room.fetchInhabitant(i);
+							final MOB M=room.fetchInhabitant(i);
 							if((M.isInCombat())
 							&&(M.getVictim()==invoker)
 							&&(M.rangeToTarget()>0)
@@ -111,7 +111,7 @@ public class Spell_WallOfIce extends Spell
 			{
 				final MOB actorM=(invoker!=null)? invoker : CMLib.map().deity();
 				((Room)theWall.owner()).show(actorM,null,CMMsg.MSG_OK_VISUAL,deathNotice);
-				Item wall=theWall;
+				final Item wall=theWall;
 				theWall=null;
 				wall.destroy();
 			}
@@ -143,7 +143,7 @@ public class Spell_WallOfIce extends Spell
 		}
 		for(int i=0;i<mob.location().numItems();i++)
 		{
-			Item I=mob.location().getItem(i);
+			final Item I=mob.location().getItem(i);
 			if((I!=null)&&(I.fetchEffect(ID())!=null))
 			{
 				mob.tell("There is already a wall of ice here.");
@@ -158,10 +158,10 @@ public class Spell_WallOfIce extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		Physical target = mob.location();
+		final Physical target = mob.location();
 
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
@@ -170,12 +170,12 @@ public class Spell_WallOfIce extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 
-			CMMsg msg = CMClass.getMsg(mob, target, this,verbalCastCode(mob,target,auto),auto?"A mighty wall of ice appears!":"^S<S-NAME> conjur(s) up a mighty wall of ice!^?");
+			final CMMsg msg = CMClass.getMsg(mob, target, this,verbalCastCode(mob,target,auto),auto?"A mighty wall of ice appears!":"^S<S-NAME> conjur(s) up a mighty wall of ice!^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				amountRemaining=20;
-				Item I=CMClass.getItem("GenItem");
+				final Item I=CMClass.getItem("GenItem");
 				I.setName("a wall of ice");
 				I.setDisplayText("a mighty wall of ice has been erected here");
 				I.setDescription("The ice is crystal clear.");

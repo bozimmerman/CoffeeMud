@@ -48,7 +48,7 @@ public class Drop extends StdCommand
 		final Room R=mob.location();
 		if(R==null) return false;
 		final int msgCode=(optimize?CMMsg.MASK_OPTIMIZE:0)|(intermediate?CMMsg.MASK_INTERMSG:0)|CMMsg.MSG_DROP;
-		CMMsg msg=CMClass.getMsg(mob,dropThis,null,msgCode,quiet?null:"<S-NAME> drop(s) <T-NAME>.");
+		final CMMsg msg=CMClass.getMsg(mob,dropThis,null,msgCode,quiet?null:"<S-NAME> drop(s) <T-NAME>.");
 		if(R.okMessage(mob,msg))
 		{
 			R.send(mob,msg);
@@ -90,8 +90,8 @@ public class Drop extends StdCommand
 		throws java.io.IOException
 	{
 		String whatToDrop=null;
-		Item container=null;
-		Vector V=new Vector();
+		final Item container=null;
+		final Vector V=new Vector();
 
 		//this is probably unnecessary and can be removed
 		if((commands.size()>=3)
@@ -118,7 +118,7 @@ public class Drop extends StdCommand
 		//container=CMLib.english().possibleContainer(mob,commands,true,Wearable.FILTER_UNWORNONLY);
 
 
-		int maxToDrop=CMLib.english().calculateMaxToGive(mob,commands,true,mob,false);
+		final int maxToDrop=CMLib.english().calculateMaxToGive(mob,commands,true,mob,false);
 		if(maxToDrop<0) return false;
 
 		whatToDrop=CMParms.combine(commands,0);
@@ -127,7 +127,7 @@ public class Drop extends StdCommand
 		if(whatToDrop.toUpperCase().endsWith(".ALL")){ allFlag=true; whatToDrop="ALL "+whatToDrop.substring(0,whatToDrop.length()-4);}
 		int addendum=1;
 		String addendumStr="";
-		boolean onlyGoldFlag=mob.hasOnlyGoldInInventory();
+		final boolean onlyGoldFlag=mob.hasOnlyGoldInInventory();
 		Item dropThis=CMLib.english().bestPossibleGold(mob,null,whatToDrop);
 		if(dropThis!=null)
 		{
@@ -155,7 +155,7 @@ public class Drop extends StdCommand
 						mob.tell("You must remove that first.");
 						return false;
 					}
-					CMMsg newMsg=CMClass.getMsg(mob,dropThis,null,CMMsg.MSG_REMOVE,null);
+					final CMMsg newMsg=CMClass.getMsg(mob,dropThis,null,CMMsg.MSG_REMOVE,null);
 					if(mob.location().okMessage(mob,newMsg))
 						mob.location().send(mob,newMsg);
 					else

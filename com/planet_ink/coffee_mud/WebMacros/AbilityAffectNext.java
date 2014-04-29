@@ -14,6 +14,7 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import com.planet_ink.miniweb.interfaces.*;
+
 import java.util.*;
 
 /*
@@ -38,27 +39,27 @@ public class AbilityAffectNext extends StdWebMacro
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
-		java.util.Map<String,String> parms=parseParms(parm);
-		String last=httpReq.getUrlParameter("ABILITY");
+		final java.util.Map<String,String> parms=parseParms(parm);
+		final String last=httpReq.getUrlParameter("ABILITY");
 		if(parms.containsKey("RESET"))
 		{
 			if(last!=null) httpReq.removeUrlParameter("ABILITY");
 			return "";
 		}
 		String lastID="";
-		String ableType=httpReq.getUrlParameter("ABILITYTYPE");
+		final String ableType=httpReq.getUrlParameter("ABILITYTYPE");
 		if((ableType!=null)&&(ableType.length()>0))
 			parms.put(ableType,ableType);
-		for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
+		for(final Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 		{
-			Ability A=a.nextElement();
+			final Ability A=a.nextElement();
 			boolean okToShow=true;
-			int classType=A.classificationCode()&Ability.ALL_ACODES;
+			final int classType=A.classificationCode()&Ability.ALL_ACODES;
 			if(CMLib.ableMapper().getQualifyingLevel("Archon",true,A.ID())>=0)
 				continue;
 			boolean containsOne=false;
-			for(int i=0;i<Ability.ACODE_DESCS.length;i++)
-				if(parms.containsKey(Ability.ACODE_DESCS[i]))
+			for (final String element : Ability.ACODE_DESCS)
+				if(parms.containsKey(element))
 				{ containsOne=true; break;}
 			if(containsOne&&(!parms.containsKey(Ability.ACODE_DESCS[classType])))
 				okToShow=false;

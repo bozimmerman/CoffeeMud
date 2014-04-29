@@ -72,11 +72,11 @@ public class WimpyAggressive extends Aggressive
 	public static void pickAWimpyFight(MOB observer, boolean mobKiller, boolean misBehave, String attackMsg, String zapStr)
 	{
 		if(!canFreelyBehaveNormal(observer)) return;
-		Room R=observer.location();
+		final Room R=observer.location();
 		if(R!=null)
 		for(int i=0;i<R.numInhabitants();i++)
 		{
-			MOB mob=R.fetchInhabitant(i);
+			final MOB mob=R.fetchInhabitant(i);
 			if((mob!=null)
 			&&(mob!=observer)
 			&&(CMLib.flags().isSleeping(mob))

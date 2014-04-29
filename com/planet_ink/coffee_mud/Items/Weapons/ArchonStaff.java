@@ -99,9 +99,9 @@ public class ArchonStaff extends Staff implements Wand, MiscMagic, ArchonOnly
 	{
 		if(message==null)
 			return false;
-		List<String> parms=CMParms.paramParse(message.toUpperCase());
-		for(int i=0;i<MAGIC_WORDS.length;i++)
-			if(parms.contains(MAGIC_WORDS[i]))
+		final List<String> parms=CMParms.paramParse(message.toUpperCase());
+		for (final String element : MAGIC_WORDS)
+			if(parms.contains(element))
 			{
 				return (mob.isMine(this)) && (!amWearingAt(Wearable.IN_INVENTORY));
 			}
@@ -116,7 +116,7 @@ public class ArchonStaff extends Staff implements Wand, MiscMagic, ArchonOnly
 		{
 			if((mob.location()!=null)&&(afftarget!=null)&&(afftarget instanceof MOB))
 			{
-				MOB target=(MOB)afftarget;
+				final MOB target=(MOB)afftarget;
 				if(message.toUpperCase().indexOf("LEVEL ALL UP")>0)
 				{
 					if(!safetyCheck(mob,message)) return;
@@ -190,8 +190,8 @@ public class ArchonStaff extends Staff implements Wand, MiscMagic, ArchonOnly
 							CMLib.leveler().unLevel(target);
 						else
 						{
-							int xpLevelBelow=CMLib.leveler().getLevelExperience(target.basePhyStats().level()-2);
-							int levelDown=(target.getExperience()-xpLevelBelow)+1;
+							final int xpLevelBelow=CMLib.leveler().getLevelExperience(target.basePhyStats().level()-2);
+							final int levelDown=(target.getExperience()-xpLevelBelow)+1;
 							CMLib.leveler().postExperience(target,null,null,-levelDown,false);
 						}
 					}
@@ -202,13 +202,13 @@ public class ArchonStaff extends Staff implements Wand, MiscMagic, ArchonOnly
 				{
 					if(!safetyCheck(mob,message)) return;
 					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,this.name()+" glows brightly at <T-NAME>.");
-					List<Ability> diseaseV=CMLib.flags().domainAffects(target,Ability.ACODE_DISEASE);
-					if(diseaseV.size()>0){ Ability A=CMClass.getAbility("Prayer_CureDisease"); if(A!=null) A.invoke(mob,target,true,0);}
-					List<Ability> poisonV=CMLib.flags().domainAffects(target,Ability.ACODE_POISON);
-					if(poisonV.size()>0){ Ability A=CMClass.getAbility("Prayer_RemovePoison"); if(A!=null) A.invoke(mob,target,true,0);}
-					Ability bleed=target.fetchEffect("Bleeding"); if(bleed!=null){ bleed.unInvoke(); target.delEffect(bleed);}
-					Ability injury=target.fetchEffect("Injury"); if(injury!=null){ injury.unInvoke(); target.delEffect(injury);}
-					Ability ampu=target.fetchEffect("Amputation"); if(ampu!=null){ ampu.unInvoke(); target.delEffect(ampu);}
+					final List<Ability> diseaseV=CMLib.flags().domainAffects(target,Ability.ACODE_DISEASE);
+					if(diseaseV.size()>0){ final Ability A=CMClass.getAbility("Prayer_CureDisease"); if(A!=null) A.invoke(mob,target,true,0);}
+					final List<Ability> poisonV=CMLib.flags().domainAffects(target,Ability.ACODE_POISON);
+					if(poisonV.size()>0){ final Ability A=CMClass.getAbility("Prayer_RemovePoison"); if(A!=null) A.invoke(mob,target,true,0);}
+					final Ability bleed=target.fetchEffect("Bleeding"); if(bleed!=null){ bleed.unInvoke(); target.delEffect(bleed);}
+					final Ability injury=target.fetchEffect("Injury"); if(injury!=null){ injury.unInvoke(); target.delEffect(injury);}
+					final Ability ampu=target.fetchEffect("Amputation"); if(ampu!=null){ ampu.unInvoke(); target.delEffect(ampu);}
 
 					target.recoverMaxState();
 					target.resetToMaxState();
@@ -220,7 +220,7 @@ public class ArchonStaff extends Staff implements Wand, MiscMagic, ArchonOnly
 				{
 					if(!safetyCheck(mob,message)) return;
 					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,this.name()+" glows brightly at <T-NAME>.");
-					Ability bleed=target.fetchEffect("Bleeding"); if(bleed!=null){ bleed.unInvoke(); target.delEffect(bleed);}
+					final Ability bleed=target.fetchEffect("Bleeding"); if(bleed!=null){ bleed.unInvoke(); target.delEffect(bleed);}
 					target.recoverMaxState();
 					target.resetToMaxState();
 					target.tell("You feel refreshed!");
@@ -270,7 +270,7 @@ public class ArchonStaff extends Staff implements Wand, MiscMagic, ArchonOnly
 		if(!super.okMessage(myHost,msg))
 			return false;
 
-		MOB mob=msg.source();
+		final MOB mob=msg.source();
 		if(mob.location()==null)
 			return true;
 
@@ -296,7 +296,7 @@ public class ArchonStaff extends Staff implements Wand, MiscMagic, ArchonOnly
 			if(said!=null)
 			{
 				said=said.trim().toUpperCase();
-				int x=said.indexOf(' ');
+				final int x=said.indexOf(' ');
 				if(x>0)
 					said=said.substring(0,x);
 				if(CMParms.indexOf(MAGIC_WORDS, said)>=0)
@@ -317,7 +317,7 @@ public class ArchonStaff extends Staff implements Wand, MiscMagic, ArchonOnly
 		&&(msg.target() instanceof MOB)
 		&&(!((MOB)msg.target()).amDead()))
 		{
-			CMMsg msg2=CMClass.getMsg(msg.source(),msg.target(),new ArchonStaff(),CMMsg.MSG_OK_ACTION,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_FIRE,CMMsg.MSG_NOISYMOVEMENT,null);
+			final CMMsg msg2=CMClass.getMsg(msg.source(),msg.target(),new ArchonStaff(),CMMsg.MSG_OK_ACTION,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_FIRE,CMMsg.MSG_NOISYMOVEMENT,null);
 			if(msg.source().location().okMessage(msg.source(),msg2))
 			{
 				msg.source().location().send(msg.source(), msg2);

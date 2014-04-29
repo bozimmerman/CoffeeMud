@@ -58,16 +58,16 @@ public class Spell_IllusoryWall extends Spell
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 
-		String whatToOpen=CMParms.combine(commands,0);
-		int dirCode=Directions.getGoodDirectionCode(whatToOpen);
+		final String whatToOpen=CMParms.combine(commands,0);
+		final int dirCode=Directions.getGoodDirectionCode(whatToOpen);
 		if(dirCode<0)
 		{
 			mob.tell("Cast which direction?!");
 			return false;
 		}
 
-		Exit exit=mob.location().getExitInDir(dirCode);
-		Room room=mob.location().getRoomInDir(dirCode);
+		final Exit exit=mob.location().getExitInDir(dirCode);
+		final Room room=mob.location().getRoomInDir(dirCode);
 
 		if((exit==null)||(room==null)||(!CMLib.flags().canBeSeenBy(exit,mob)))
 		{
@@ -78,13 +78,13 @@ public class Spell_IllusoryWall extends Spell
 			return false;
 
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(!success)
 			beneficialVisualFizzle(mob,null,"<S-NAME> whisper(s) "+Directions.getDirectionName(dirCode)+", but nothing happens.");
 		else
 		{
-			CMMsg msg=CMClass.getMsg(mob,exit,this,verbalCastCode(mob,exit,auto),auto?"":"^S<S-NAME> whisper(s) "+Directions.getDirectionName(dirCode)+".^?");
+			final CMMsg msg=CMClass.getMsg(mob,exit,this,verbalCastCode(mob,exit,auto),auto?"":"^S<S-NAME> whisper(s) "+Directions.getDirectionName(dirCode)+".^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

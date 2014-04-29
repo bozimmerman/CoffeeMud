@@ -54,7 +54,7 @@ public class Spell_Toadstool extends Spell
 				affectableStats.setName("a "+newRace.name()+" called "+affected.name());
 			else
 				affectableStats.setName(affected.name()+" the "+newRace.name());
-			int oldAdd=affectableStats.weight()-affected.basePhyStats().weight();
+			final int oldAdd=affectableStats.weight()-affected.basePhyStats().weight();
 			newRace.setHeightWeight(affectableStats,'M');
 			if(oldAdd>0) affectableStats.setWeight(affectableStats.weight()+oldAdd);
 		}
@@ -66,7 +66,7 @@ public class Spell_Toadstool extends Spell
 		super.affectCharStats(affected,affectableStats);
 		if(newRace!=null)
 		{
-			int oldCat=affected.baseCharStats().ageCategory();
+			final int oldCat=affected.baseCharStats().ageCategory();
 			affectableStats.setMyRace(newRace);
 			if(affected.baseCharStats().getStat(CharStats.STAT_AGE)>0)
 				affectableStats.setStat(CharStats.STAT_AGE,newRace.getAgingChart()[oldCat]);
@@ -90,7 +90,7 @@ public class Spell_Toadstool extends Spell
 		// undo the affects of this spell
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		super.unInvoke();
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
@@ -100,7 +100,7 @@ public class Spell_Toadstool extends Spell
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		MOB target=this.getTarget(mob,commands,givenTarget);
+		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
 		if(target.baseCharStats().getMyRace() != target.charStats().getMyRace())
@@ -116,7 +116,7 @@ public class Spell_Toadstool extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		int chance=-((target.phyStats().level()-adjustedLevel(mob,asLevel))*5);
+		final int chance=-((target.phyStats().level()-adjustedLevel(mob,asLevel))*5);
 		boolean success=proficiencyCheck(mob,chance-(target.charStats().getStat(CharStats.STAT_CONSTITUTION)*2),auto);
 
 		if(success)
@@ -126,7 +126,7 @@ public class Spell_Toadstool extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> form(s) a spell around <T-NAMESELF>.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> form(s) a spell around <T-NAMESELF>.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -138,7 +138,7 @@ public class Spell_Toadstool extends Spell
 					target.makePeace();
 					for(int i=0;i<mob.location().numInhabitants();i++)
 					{
-						MOB M=mob.location().fetchInhabitant(i);
+						final MOB M=mob.location().fetchInhabitant(i);
 						if((M!=null)&&(M.getVictim()==target))
 							M.makePeace();
 					}

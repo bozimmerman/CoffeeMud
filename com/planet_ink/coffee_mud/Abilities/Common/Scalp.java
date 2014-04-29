@@ -69,7 +69,7 @@ public class Scalp extends CommonSkill
 		{
 			if((affected!=null)&&(affected instanceof MOB))
 			{
-				MOB mob=(MOB)affected;
+				final MOB mob=(MOB)affected;
 				if((body!=null)&&(!aborted))
 				{
 					if((failed)||(!mob.location().isContent(body)))
@@ -80,7 +80,7 @@ public class Scalp extends CommonSkill
 						lastSoManyScalps.addElement(body);
 						if(lastSoManyScalps.size()>100)
 							lastSoManyScalps.removeElementAt(0);
-						Item scalp=CMClass.getItem("GenItem");
+						final Item scalp=CMClass.getItem("GenItem");
 						String race="";
 						if((body.charStats()!=null)&&(body.charStats().getMyRace()!=null))
 							race=" "+body.charStats().getMyRace().name();
@@ -118,7 +118,7 @@ public class Scalp extends CommonSkill
 		{
 			for(int i=0;i<mob.location().numItems();i++)
 			{
-				Item I2=mob.location().getItem(i);
+				final Item I2=mob.location().getItem(i);
 				if((I2!=null)
 				&&(I2 instanceof DeadBody)
 				&&(CMLib.flags().canBeSeenBy(I2,mob))
@@ -150,7 +150,7 @@ public class Scalp extends CommonSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 		failed=!proficiencyCheck(mob,0,auto);
-		CMMsg msg=CMClass.getMsg(mob,I,this,getActivityMessageType(),getActivityMessageType(),getActivityMessageType(),"<S-NAME> start(s) scalping <T-NAME>.");
+		final CMMsg msg=CMClass.getMsg(mob,I,this,getActivityMessageType(),getActivityMessageType(),getActivityMessageType(),"<S-NAME> start(s) scalping <T-NAME>.");
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

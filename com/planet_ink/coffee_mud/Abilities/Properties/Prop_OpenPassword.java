@@ -50,20 +50,20 @@ public class Prop_OpenPassword extends Property
 		&&(msg.sourceMessage()!=null)
 		&&((msg.sourceMajor()&CMMsg.MASK_MAGIC)==0))
 		{
-			int start=msg.sourceMessage().indexOf("\'");
-			int end=msg.sourceMessage().lastIndexOf("\'");
+			final int start=msg.sourceMessage().indexOf("\'");
+			final int end=msg.sourceMessage().lastIndexOf("\'");
 			if((start>0)&&(end>start))
 			{
-				String str=msg.sourceMessage().substring(start+1,end).trim();
-				MOB mob=msg.source();
+				final String str=msg.sourceMessage().substring(start+1,end).trim();
+				final MOB mob=msg.source();
 				if(str.equalsIgnoreCase(text())
 				&&(text().length()>0)
 				&&(mob.location()!=null))
 				{
-					Room R=mob.location();
+					final Room R=mob.location();
 					if(affected instanceof Exit)
 					{
-						Exit E=(Exit)affected;
+						final Exit E=(Exit)affected;
 						if(!E.isOpen())
 						{
 							int dirCode=-1;

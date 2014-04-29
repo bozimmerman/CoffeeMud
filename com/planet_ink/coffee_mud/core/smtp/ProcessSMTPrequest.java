@@ -65,12 +65,12 @@ public class ProcessSMTPrequest implements Runnable
 
 	public String validLocalAccount(String s, boolean checkFROMcase)
 	{
-		int x=s.indexOf('@');
+		final int x=s.indexOf('@');
 		String name=s;
 		if(x>0)
 		{
 			name=s.substring(0,x).trim();
-			String domain=s.substring(x+1).trim();
+			final String domain=s.substring(x+1).trim();
 			if(!domain.toUpperCase().endsWith(server.domainName().toUpperCase()))
 			{
 				if(server.mailboxName().length()>0)
@@ -109,15 +109,15 @@ public class ProcessSMTPrequest implements Runnable
 			return CMLib.players().getLoadPlayer(s);
 		if(CMLib.players().accountExists(s))
 		{
-			PlayerAccount A=CMLib.players().getLoadAccount(s);
+			final PlayerAccount A=CMLib.players().getLoadAccount(s);
 			if(A.numPlayers()==0)
 				M=A.getAccountMob();
 			else
 			{
 				ThinPlayer tP=null;
-				for(Enumeration<ThinPlayer> e=A.getThinPlayers();e.hasMoreElements();)
+				for(final Enumeration<ThinPlayer> e=A.getThinPlayers();e.hasMoreElements();)
 				{
-					ThinPlayer P=e.nextElement();
+					final ThinPlayer P=e.nextElement();
 					if((tP==null)||(P.level>tP.level))
 						tP=P;
 				}
@@ -134,7 +134,7 @@ public class ProcessSMTPrequest implements Runnable
 		if(journal!= null)
 		{
 			// the input MUST be html -- text that only might be need not apply
-			JournalsLibrary.ForumJournal forum=CMLib.journals().getForumJournal(journal);
+			final JournalsLibrary.ForumJournal forum=CMLib.journals().getForumJournal(journal);
 			if(forum!=null)
 				CMStrings.stripHeadHtmlTags(finalData);
 			else
@@ -153,7 +153,7 @@ public class ProcessSMTPrequest implements Runnable
 		debug = CMSecurity.isDebugging(CMSecurity.DbgFlag.SMTPSERVER);
 
 		byte[] replyData = null;
-		byte[] lastReplyData = null;
+		final byte[] lastReplyData = null;
 		int msgsSent = 0;
 
 		try
@@ -167,14 +167,14 @@ public class ProcessSMTPrequest implements Runnable
 			sout.flush();
 			boolean quitFlag=false;
 			boolean dataMode=false;
-			LinkedList<String> cmdQueue=new LinkedList<String>();
-			LinkedList<byte[]> respQueue=new LinkedList<byte[]>();
+			final LinkedList<String> cmdQueue=new LinkedList<String>();
+			final LinkedList<byte[]> respQueue=new LinkedList<byte[]>();
 			long timeSinceLastChar=System.currentTimeMillis();
 			while(!quitFlag)
 			{
 				char lastc=(char)-1;
 				char c=(char)-1;
-				StringBuffer input=new StringBuffer("");
+				final StringBuffer input=new StringBuffer("");
 				while(!quitFlag)
 				{
 					lastc=c;
@@ -182,7 +182,7 @@ public class ProcessSMTPrequest implements Runnable
 					{
 						c=(char)sin.read();
 					}
-					catch(java.net.SocketTimeoutException ioe)
+					catch(final java.net.SocketTimeoutException ioe)
 					{
 						c=65535;
 					}
@@ -221,7 +221,7 @@ public class ProcessSMTPrequest implements Runnable
 					{
 						if(debug)
 						{
-							StringBuilder str=new StringBuilder("");
+							final StringBuilder str=new StringBuilder("");
 							for(int i=0;i<10 && i<input.length();i++)
 								str.append((int)input.charAt(i)).append(",");
 							Log.debugOut(runnableName,"Internal: 552 String exceeds size limit ("+server.getMaxMsgSize()+"): "+str.toString());
@@ -237,7 +237,7 @@ public class ProcessSMTPrequest implements Runnable
 				{
 					final String s=cmdQueue.removeFirst();
 					String parm="";
-					int cmdindex=s.indexOf(' ');
+					final int cmdindex=s.indexOf(' ');
 					String cmd=s.toUpperCase();
 					if(cmdindex>0)
 					{
@@ -263,7 +263,7 @@ public class ProcessSMTPrequest implements Runnable
 							char bodyType='t'; // h=html, t=text
 							String subject=null;
 							String boundry=null;
-							Map<Character,StringBuilder> dataBlocks=new Hashtable<Character,StringBuilder>();
+							final Map<Character,StringBuilder> dataBlocks=new Hashtable<Character,StringBuilder>();
 
 							// -1=waitForHeaderDone,
 							// 0=waitForFirstHeaderDone,
@@ -272,7 +272,7 @@ public class ProcessSMTPrequest implements Runnable
 							int boundryState=-1;
 							try
 							{
-								BufferedReader lineR=new BufferedReader(new InputStreamReader(new ByteArrayInputStream(data.toString().getBytes())));
+								final BufferedReader lineR=new BufferedReader(new InputStreamReader(new ByteArrayInputStream(data.toString().getBytes())));
 								while(true)
 								{
 									String s2=lineR.readLine();
@@ -298,14 +298,14 @@ public class ProcessSMTPrequest implements Runnable
 										{
 											if(s2.indexOf('=')>=0)
 											{
-												StringBuffer newStr=new StringBuffer(s2);
+												final StringBuffer newStr=new StringBuffer(s2);
 												for(int c1=0;c1<newStr.length()-2;c1++)
 													if(newStr.charAt(c1)=='=')
 													{
 														if(("0123456789ABCDEF".indexOf(Character.toUpperCase(newStr.charAt(c1+1)))>=0)
 														&&("0123456789ABCDEF".indexOf(Character.toUpperCase(newStr.charAt(c1+2)))>=0))
 														{
-															int x=(16*("0123456789ABCDEF".indexOf(Character.toUpperCase(newStr.charAt(c1+1)))))
+															final int x=(16*("0123456789ABCDEF".indexOf(Character.toUpperCase(newStr.charAt(c1+1)))))
 																	 +"0123456789ABCDEF".indexOf(Character.toUpperCase(newStr.charAt(c1+2)));
 															newStr.replace(c1,c1+3,""+((char)x));
 														}
@@ -421,7 +421,7 @@ public class ProcessSMTPrequest implements Runnable
 									}
 								}
 							}
-							catch(IOException e){}
+							catch(final IOException e){}
 
 							if((replyData!=null)&&(new String(replyData).startsWith("250")))
 							{
@@ -458,11 +458,11 @@ public class ProcessSMTPrequest implements Runnable
 
 									for(int i=0;i<to.size();i++)
 									{
-										String journal=server.getAnEmailJournal(to.elementAt(i));
+										final String journal=server.getAnEmailJournal(to.elementAt(i));
 										if(journal!=null)
 										{
 											String parentKey="";
-											String fdat=finalData.toString().trim();
+											final String fdat=finalData.toString().trim();
 											if((subject!=null)
 											&&(!subject.trim().equalsIgnoreCase("subscribe"))
 											&&(!subject.trim().equalsIgnoreCase("unsubscribe"))
@@ -480,7 +480,7 @@ public class ProcessSMTPrequest implements Runnable
 												}
 												else
 												{
-													Map<String, List<String>> lists=Resources.getCachedMultiLists("mailinglists.txt",true);
+													final Map<String, List<String>> lists=Resources.getCachedMultiLists("mailinglists.txt",true);
 													List<String> mylist=null;
 													if(lists!=null)    mylist=lists.get(journal);
 													if((mylist==null)||(!mylist.contains(from)))
@@ -489,14 +489,14 @@ public class ProcessSMTPrequest implements Runnable
 														replyData=("552 Mailbox '"+journal+"' only accepts messages from subscribers.  Send an email with 'subscribe' as the subject."+cr).getBytes();
 														break;
 													}
-													JournalsLibrary.ForumJournal forum=CMLib.journals().getForumJournal(journal);
+													final JournalsLibrary.ForumJournal forum=CMLib.journals().getForumJournal(journal);
 													if((forum != null)
 													&&(subject.trim().toUpperCase().startsWith("RE:")||subject.trim().toUpperCase().startsWith("RE ")))
 													{
 														String realSubject=subject.substring(3).trim();
 														if(realSubject.toUpperCase().startsWith("["+journal.toUpperCase()+"]"))
 															realSubject=realSubject.substring(journal.length()+2).trim();
-														List<JournalsLibrary.JournalEntry> entries = CMLib.database().DBReadJournalPageMsgs(journal, null, realSubject, 0, 0);
+														final List<JournalsLibrary.JournalEntry> entries = CMLib.database().DBReadJournalPageMsgs(journal, null, realSubject, 0, 0);
 														for(final JournalsLibrary.JournalEntry entry : entries)
 															if(entry.subj.equalsIgnoreCase(realSubject))
 															{
@@ -508,7 +508,7 @@ public class ProcessSMTPrequest implements Runnable
 											}
 
 											if(debug) Log.debugOut(runnableName,"Written: "+journal+"/"+from+"/ALL/"+bodyType);
-											StringBuilder finalFinalData=new StringBuilder(finalData);
+											final StringBuilder finalFinalData=new StringBuilder(finalData);
 											if(bodyType=='h')
 												cleanHtml(journal, finalFinalData);
 											CMLib.database().DBWriteJournalChild(journal, "",from, "ALL", parentKey,
@@ -519,7 +519,7 @@ public class ProcessSMTPrequest implements Runnable
 										if(finalData.toString().trim().length()>0)
 										{
 											if(debug) Log.debugOut(runnableName,"Written: "+server.mailboxName()+"/"+from+"/"+to.elementAt(i)+"/"+bodyType);
-											StringBuilder finalFinalData=new StringBuilder(finalData);
+											final StringBuilder finalFinalData=new StringBuilder(finalData);
 											if(bodyType=='h')
 												cleanHtml(journal, finalFinalData);
 											CMLib.database().DBWriteJournal(server.mailboxName(),
@@ -740,7 +740,7 @@ public class ProcessSMTPrequest implements Runnable
 							replyData=("501 Syntax error in \""+parm+"\""+cr).getBytes();
 						else
 						{
-							String to2=parm.substring(0,x).trim();
+							final String to2=parm.substring(0,x).trim();
 							if(!to2.equalsIgnoreCase("from"))
 								replyData=("500 Unrecognized command \""+cmd+"\""+cr).getBytes();
 							else
@@ -773,7 +773,7 @@ public class ProcessSMTPrequest implements Runnable
 									if((parmparms.trim().toUpperCase().startsWith("SIZE="))
 									||(!CMath.isNumber(parmparms.trim().toUpperCase().substring(5))))
 									{
-										int size=CMath.s_int(parmparms.trim().toUpperCase().substring(5));
+										final int size=CMath.s_int(parmparms.trim().toUpperCase().substring(5));
 										if(size>server.getMaxMsgSize())
 										{
 											replyData=("552 String exceeds size limit. But you were nice to tell me!"+cr).getBytes();
@@ -788,7 +788,7 @@ public class ProcessSMTPrequest implements Runnable
 								}
 								if(!error)
 								{
-									String name=validLocalAccount(parm,true);
+									final String name=validLocalAccount(parm,true);
 									if(name==null)
 									{
 										if((++failures)==3)
@@ -849,7 +849,7 @@ public class ProcessSMTPrequest implements Runnable
 							replyData=("501 Syntax error in \""+parm+"\""+cr).getBytes();
 						else
 						{
-							String to2=parm.substring(0,x).trim();
+							final String to2=parm.substring(0,x).trim();
 							if(!to2.equalsIgnoreCase("to"))
 								replyData=("500 Unrecognized command \""+cmd+"\""+cr).getBytes();
 							else
@@ -882,7 +882,7 @@ public class ProcessSMTPrequest implements Runnable
 									if((parmparms.trim().toUpperCase().startsWith("SIZE="))
 									||(!CMath.isNumber(parmparms.trim().toUpperCase().substring(5))))
 									{
-										int size=CMath.s_int(parmparms.trim().toUpperCase().substring(5));
+										final int size=CMath.s_int(parmparms.trim().toUpperCase().substring(5));
 										if(size>server.getMaxMsgSize())
 											replyData=("552 String exceeds size limit. But you were nice to tell me!"+cr).getBytes();
 									}
@@ -895,7 +895,7 @@ public class ProcessSMTPrequest implements Runnable
 								else
 								if(!error)
 								{
-									String name=validLocalAccount(parm,false);
+									final String name=validLocalAccount(parm,false);
 									if(name==null)
 									{
 										if((++failures)==3)
@@ -963,7 +963,7 @@ public class ProcessSMTPrequest implements Runnable
 						if((cmdQueue.size()==0)&&(respQueue.size()>0))
 						{
 							// we should be looping through these .. why does ZD act so wierd?!
-							byte [] resp=respQueue.getLast();
+							final byte [] resp=respQueue.getLast();
 							if(debug) Log.debugOut(runnableName,"Reply: "+CMStrings.replaceAll(new String(resp),cr,"\\r\\n"));
 							// must insert a blank line before message body
 							sout.write(new String(resp));
@@ -974,7 +974,7 @@ public class ProcessSMTPrequest implements Runnable
 				}
 			}
 		}
-		catch (java.net.SocketTimeoutException e2)
+		catch (final java.net.SocketTimeoutException e2)
 		{
 			try
 			{
@@ -984,18 +984,18 @@ public class ProcessSMTPrequest implements Runnable
 					sout.flush();
 				}
 			}
-			catch(Exception e)
+			catch(final Exception e)
 			{
 				Log.errOut(runnableName,"Exception2: " + e.getMessage() );
 			}
 		}
-		catch (Exception e)
+		catch (final Exception e)
 		{
 			final String errorMessage=e.getMessage();
 			final StringBuilder msg = new StringBuilder(errorMessage==null?"EMPTY e.getMessage()":errorMessage);
 			final StackTraceElement[] ts = e.getStackTrace();
 			if(ts != null)
-				for(StackTraceElement t : ts)
+				for(final StackTraceElement t : ts)
 					msg.append(" ").append(t.getFileName()).append("(").append(t.getLineNumber()).append(")");
 			Log.errOut(runnableName,"Exception: " + msg.toString() );
 		}
@@ -1009,7 +1009,7 @@ public class ProcessSMTPrequest implements Runnable
 				sout = null;
 			}
 		}
-		catch (Exception e)    {}
+		catch (final Exception e)    {}
 
 		try
 		{
@@ -1019,7 +1019,7 @@ public class ProcessSMTPrequest implements Runnable
 				sin = null;
 			}
 		}
-		catch (Exception e)    {}
+		catch (final Exception e)    {}
 
 		try
 		{
@@ -1029,7 +1029,7 @@ public class ProcessSMTPrequest implements Runnable
 				sock = null;
 			}
 		}
-		catch (Exception e)    {}
+		catch (final Exception e)    {}
 	}
 
 }

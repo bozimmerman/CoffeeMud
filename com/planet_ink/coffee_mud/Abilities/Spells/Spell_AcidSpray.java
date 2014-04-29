@@ -52,7 +52,7 @@ public class Spell_AcidSpray extends Spell
 		&&(affected!=null)
 		&&(affected instanceof MOB))
 		{
-			MOB vic=(MOB)affected;
+			final MOB vic=(MOB)affected;
 			if((!vic.amDead())&&(vic.location()!=null))
 				CMLib.combat().postDamage(invoker,vic,this,CMLib.dice().roll(1,10+super.getXLEVELLevel(invoker())+(2*super.getX1Level(invoker())),0),CMMsg.MASK_ALWAYS|CMMsg.TYP_ACID,-1,"<T-NAME> sizzle(s) from the acid!");
 		}
@@ -61,7 +61,7 @@ public class Spell_AcidSpray extends Spell
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		MOB target=this.getTarget(mob,commands,givenTarget);
+		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 		Room R=CMLib.map().roomLocation(target);
 		if(R==null) R=mob.location();
@@ -69,7 +69,7 @@ public class Spell_AcidSpray extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
@@ -77,14 +77,14 @@ public class Spell_AcidSpray extends Spell
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			CMMsg msg=CMClass.getMsg(mob,target,this,somanticCastCode(mob,target,auto),(auto?"<T-NAME> <T-IS-ARE> sprayed with acid.":"^S<S-NAME> reach(es) for <T-NAMESELF>, spraying acid all over <T-HIM-HER>!^?")+CMLib.protocol().msp("spelldam1.wav",40));
-			CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_ACID|(auto?CMMsg.MASK_ALWAYS:0),null);
+			final CMMsg msg=CMClass.getMsg(mob,target,this,somanticCastCode(mob,target,auto),(auto?"<T-NAME> <T-IS-ARE> sprayed with acid.":"^S<S-NAME> reach(es) for <T-NAMESELF>, spraying acid all over <T-HIM-HER>!^?")+CMLib.protocol().msp("spelldam1.wav",40));
+			final CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_ACID|(auto?CMMsg.MASK_ALWAYS:0),null);
 			if((R.okMessage(mob,msg))&&((R.okMessage(mob,msg2))))
 			{
 				R.send(mob,msg);
 				R.send(mob,msg2);
 				invoker=mob;
-				int numDice = (adjustedLevel(mob,asLevel)+(2*super.getX1Level(invoker())))/2;
+				final int numDice = (adjustedLevel(mob,asLevel)+(2*super.getX1Level(invoker())))/2;
 				int damage = CMLib.dice().roll(2, numDice, 1);
 				if((msg2.value()>0)||(msg.value()>0))
 					damage = (int)Math.round(CMath.div(damage,2.0));

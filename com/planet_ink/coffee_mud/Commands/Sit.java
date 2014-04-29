@@ -58,7 +58,7 @@ public class Sit extends StdCommand
 				mob.location().send(mob,msg);
 			return false;
 		}
-		String possibleRideable=CMParms.combine(commands,1);
+		final String possibleRideable=CMParms.combine(commands,1);
 		Environmental E=null;
 		if(possibleRideable.length()>0)
 		{
@@ -70,7 +70,7 @@ public class Sit extends StdCommand
 			}
 			if(E instanceof MOB)
 			{
-				Command C=CMClass.getCommand("Mount");
+				final Command C=CMClass.getCommand("Mount");
 				if(C!=null) return C.execute(mob,commands,metaFlags);
 			}
 		}
@@ -79,7 +79,7 @@ public class Sit extends StdCommand
 			mountStr="<S-NAME> "+((Rideable)E).mountString(CMMsg.TYP_SIT,mob)+" <T-NAME>.";
 		else
 			mountStr="<S-NAME> sit(s) on <T-NAME>.";
-		CMMsg msg=CMClass.getMsg(mob,E,null,CMMsg.MSG_SIT,mountStr);
+		final CMMsg msg=CMClass.getMsg(mob,E,null,CMMsg.MSG_SIT,mountStr);
 		if(mob.location().okMessage(mob,msg))
 			mob.location().send(mob,msg);
 		return false;

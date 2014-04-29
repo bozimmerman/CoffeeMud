@@ -48,7 +48,7 @@ public class AutoInvoke extends StdCommand
 		final Vector<String> abilities=new Vector<String>();
 		for(int a=0;a<mob.numAbilities();a++)
 		{
-			Ability A=mob.fetchAbility(a);
+			final Ability A=mob.fetchAbility(a);
 			if((A!=null)
 			&&(A.isAutoInvoked())
 			&&((A.classificationCode()&Ability.ALL_ACODES)!=Ability.ACODE_LANGUAGE)
@@ -59,18 +59,18 @@ public class AutoInvoke extends StdCommand
 		final Vector<String> effects=new Vector<String>();
 		for(int a=0;a<mob.numEffects();a++)
 		{
-			Ability A=mob.fetchEffect(a);
+			final Ability A=mob.fetchEffect(a);
 			if((A!=null)
 			&&(abilities.contains(A.ID()))
 			&&(!A.isSavable()))
 				effects.addElement(A.ID());
 		}
 
-		StringBuffer str=new StringBuffer("^xAuto-invoking abilities:^?^.\n\r^N");
+		final StringBuffer str=new StringBuffer("^xAuto-invoking abilities:^?^.\n\r^N");
 		int col=0;
 		for(int a=0;a<abilities.size();a++)
 		{
-			Ability A=mob.fetchAbility(abilities.elementAt(a));
+			final Ability A=mob.fetchAbility(abilities.elementAt(a));
 			if(A!=null)
 			{
 				if(effects.contains(A.ID()))
@@ -99,20 +99,20 @@ public class AutoInvoke extends StdCommand
 				@Override public void timedOut() { }
 				@Override public void callBack()
 				{
-					String s=this.input;
+					final String s=this.input;
 					Ability foundA=null;
 					if(s.length()>0)
 					{
 						for(int a=0;a<abilities.size();a++)
 						{
-							Ability A=mob.fetchAbility(abilities.elementAt(a));
+							final Ability A=mob.fetchAbility(abilities.elementAt(a));
 							if((A!=null)&&(A.name().equalsIgnoreCase(s)))
 							{ foundA=A; break;}
 						}
 						if(foundA==null)
 						for(int a=0;a<abilities.size();a++)
 						{
-							Ability A=mob.fetchAbility(abilities.elementAt(a));
+							final Ability A=mob.fetchAbility(abilities.elementAt(a));
 							if((A!=null)&&(CMLib.english().containsString(A.name(),s)))
 							{ foundA=A; break;}
 						}

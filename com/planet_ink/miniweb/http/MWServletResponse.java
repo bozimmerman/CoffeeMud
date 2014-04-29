@@ -49,9 +49,9 @@ public class MWServletResponse implements SimpleServletResponse
 {
 	private int		 				statusCode 	= HTTPStatus.S200_OK.getStatusCode();
 	private String 					statusString= HTTPStatus.S200_OK.description();
-	private Map<String, String> 	headers 	= new Hashtable<String, String>();
-	private ByteArrayOutputStream	bout		= new ByteArrayOutputStream();
-	private Map<String,String>		cookies		= new Hashtable<String,String>();
+	private final Map<String, String> 	headers 	= new Hashtable<String, String>();
+	private final ByteArrayOutputStream	bout		= new ByteArrayOutputStream();
+	private final Map<String,String>		cookies		= new Hashtable<String,String>();
 	private static final String		EOLN		= HTTPIOHandler.EOLN;
 
 	/**
@@ -70,7 +70,7 @@ public class MWServletResponse implements SimpleServletResponse
 	public void setStatusCode(int httpStatusCode)
 	{
 		statusCode = httpStatusCode;
-		HTTPStatus status = HTTPStatus.find(httpStatusCode);
+		final HTTPStatus status = HTTPStatus.find(httpStatusCode);
 		if(status!=null)
 			statusString = status.description();
 		else
@@ -109,10 +109,10 @@ public class MWServletResponse implements SimpleServletResponse
 	 */
 	public DataBuffers generateOutput(HTTPRequest request) throws HTTPException
 	{
-		StringBuilder str=new StringBuilder("");
+		final StringBuilder str=new StringBuilder("");
 		str.append("HTTP/").append(request.getHttpVer()).append(" ").append(statusCode).append(" ").append(statusString).append(EOLN);
-		HashSet<String> normalizedHeaders = new HashSet<String>();
-		for(String header : headers.keySet())
+		final HashSet<String> normalizedHeaders = new HashSet<String>();
+		for(final String header : headers.keySet())
 		{
 			normalizedHeaders.add(header.toLowerCase());
 			str.append(header).append(": ").append(headers.get(header)).append(EOLN);
@@ -137,15 +137,15 @@ public class MWServletResponse implements SimpleServletResponse
 			str.append(HTTPHeader.getKeepAliveHeader());
 		if(!normalizedHeaders.contains(HTTPHeader.DATE.lowerCaseName()))
 			str.append(HTTPHeader.DATE.makeLine(HTTPIOHandler.DATE_FORMAT.format(new Date(System.currentTimeMillis()))));
-		for(String key : cookies.keySet())
+		for(final String key : cookies.keySet())
 			str.append(HTTPHeader.SET_COOKIE.makeLine(key+"="+cookies.get(key)));
 		str.append(EOLN);
-		MWDataBuffers bufs=new MWDataBuffers(str.toString().getBytes(), System.currentTimeMillis());
+		final MWDataBuffers bufs=new MWDataBuffers(str.toString().getBytes(), System.currentTimeMillis());
 		if(bout.size()>0)
 		{
-			byte[] output=bout.toByteArray();
+			final byte[] output=bout.toByteArray();
 			bufs.add(output, System.currentTimeMillis());
-			try{ bout.flush();  bout.reset(); bout.close(); }catch(Exception e){}
+			try{ bout.flush();  bout.reset(); bout.close(); }catch(final Exception e){}
 		}
 		return bufs;
 	}

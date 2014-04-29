@@ -96,8 +96,8 @@ public class Spell_WellDressed extends Spell
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		int newDressCode=1;
-		MOB target=this.getTarget(mob,commands,givenTarget);
+		final int newDressCode=1;
+		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
 		// the invoke method for spells receives as
@@ -109,7 +109,7 @@ public class Spell_WellDressed extends Spell
 
 
 		// now see if it worked
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
@@ -117,7 +117,7 @@ public class Spell_WellDressed extends Spell
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> speak(s) exquisitely to <T-NAMESELF>.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> speak(s) exquisitely to <T-NAMESELF>.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -125,7 +125,7 @@ public class Spell_WellDressed extends Spell
 				{
 					//target.location().show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> <S-IS-ARE> very well dressed.");
 					beneficialAffect(mob,target,asLevel,0);
-					Ability A=target.fetchEffect(ID());
+					final Ability A=target.fetchEffect(ID());
 					if(A!=null) A.setMiscText(""+newDressCode);
 				}
 			}

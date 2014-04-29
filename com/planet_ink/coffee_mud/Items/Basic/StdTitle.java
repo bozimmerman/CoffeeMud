@@ -64,7 +64,7 @@ public class StdTitle extends StdItem implements LandTitle
 	@Override
 	public boolean allowsExpansionConstruction()
 	{
-		LandTitle A=fetchALandTitle();
+		final LandTitle A=fetchALandTitle();
 		if(A==null)    return false;
 		return A.allowsExpansionConstruction();
 	}
@@ -72,7 +72,7 @@ public class StdTitle extends StdItem implements LandTitle
 	@Override
 	public int getPrice()
 	{
-		LandTitle A=fetchALandTitle();
+		final LandTitle A=fetchALandTitle();
 		if(A==null)    return 0;
 		return A.getPrice()+A.backTaxes();
 	}
@@ -80,7 +80,7 @@ public class StdTitle extends StdItem implements LandTitle
 	@Override
 	public void setPrice(int price)
 	{
-		LandTitle A=fetchALandTitle();
+		final LandTitle A=fetchALandTitle();
 		if(A==null)    return;
 		A.setPrice(price);
 		A.updateTitle();
@@ -89,7 +89,7 @@ public class StdTitle extends StdItem implements LandTitle
 	@Override
 	public void setBackTaxes(int amount)
 	{
-		LandTitle A=fetchALandTitle();
+		final LandTitle A=fetchALandTitle();
 		if(A==null)    return;
 		A.setBackTaxes(amount);
 		A.updateTitle();
@@ -97,14 +97,14 @@ public class StdTitle extends StdItem implements LandTitle
 	@Override
 	public int backTaxes()
 	{
-		LandTitle A=fetchALandTitle();
+		final LandTitle A=fetchALandTitle();
 		if(A==null)    return 0;
 		return A.backTaxes();
 	}
 	@Override
 	public boolean rentalProperty()
 	{
-		LandTitle A=fetchALandTitle();
+		final LandTitle A=fetchALandTitle();
 		if(A==null)    return false;
 		return A.rentalProperty();
 	}
@@ -112,14 +112,14 @@ public class StdTitle extends StdItem implements LandTitle
 	@Override
 	public String getUniqueLotID()
 	{
-		LandTitle A=fetchALandTitle();
+		final LandTitle A=fetchALandTitle();
 		if(A==null)    return "";
 		return A.getUniqueLotID();
 	}
 	@Override
 	public void setRentalProperty(boolean truefalse)
 	{
-		LandTitle A=fetchALandTitle();
+		final LandTitle A=fetchALandTitle();
 		if(A==null)    return;
 		A.setRentalProperty(truefalse);
 		A.updateTitle();
@@ -128,11 +128,11 @@ public class StdTitle extends StdItem implements LandTitle
 	@Override
 	public CMObject getOwnerObject()
 	{
-		LandTitle A=fetchALandTitle();
+		final LandTitle A=fetchALandTitle();
 		if(A==null)    return null;
-		String owner=A.getOwnerName();
+		final String owner=A.getOwnerName();
 		if(owner.length()==0) return null;
-		Clan C=CMLib.clans().getClan(owner);
+		final Clan C=CMLib.clans().getClan(owner);
 		if(C!=null) return C;
 		return CMLib.players().getLoadPlayer(owner);
 	}
@@ -140,14 +140,14 @@ public class StdTitle extends StdItem implements LandTitle
 	@Override
 	public String getOwnerName()
 	{
-		LandTitle A=fetchALandTitle();
+		final LandTitle A=fetchALandTitle();
 		if(A==null)    return "";
 		return A.getOwnerName();
 	}
 	@Override
 	public void setOwnerName(String owner)
 	{
-		LandTitle A=fetchALandTitle();
+		final LandTitle A=fetchALandTitle();
 		if(A==null)    return;
 		A.setOwnerName(owner);
 		A.updateTitle();
@@ -155,7 +155,7 @@ public class StdTitle extends StdItem implements LandTitle
 
 	public LandTitle fetchALandTitle()
 	{
-		List<Room> V=getAllTitledRooms();
+		final List<Room> V=getAllTitledRooms();
 		if((V!=null)&&(V.size()>0))
 			return CMLib.law().getLandTitle(V.get(0));
 		return null;
@@ -171,7 +171,7 @@ public class StdTitle extends StdItem implements LandTitle
 	{
 		if(!name.startsWith("the title to"))
 		{
-			List<Room> V=getAllTitledRooms();
+			final List<Room> V=getAllTitledRooms();
 			if((V.size()<2)
 			||(CMLib.map().getArea(landPropertyID())!=null))
 				setName("the title to "+landPropertyID());
@@ -190,11 +190,11 @@ public class StdTitle extends StdItem implements LandTitle
 	@Override
 	public void updateLot(List optPlayerList)
 	{
-		List<Room> V=getAllTitledRooms();
+		final List<Room> V=getAllTitledRooms();
 		for(int v=0;v<V.size();v++)
 		{
-			Room R=V.get(v);
-			LandTitle T=CMLib.law().getLandTitle(R);
+			final Room R=V.get(v);
+			final LandTitle T=CMLib.law().getLandTitle(R);
 			if(T!=null) T.updateLot(optPlayerList);
 		}
 	}
@@ -202,23 +202,23 @@ public class StdTitle extends StdItem implements LandTitle
 	@Override
 	public void updateTitle()
 	{
-		LandTitle T=fetchALandTitle();
+		final LandTitle T=fetchALandTitle();
 		if(T!=null) T.updateTitle();
 	}
 
 	@Override
 	public List<Room> getConnectedPropertyRooms()
 	{
-		Room R=CMLib.map().getRoom(landPropertyID());
+		final Room R=CMLib.map().getRoom(landPropertyID());
 		if(R!=null)
 		{
-			LandTitle A=CMLib.law().getLandTitle(R);
+			final LandTitle A=CMLib.law().getLandTitle(R);
 			if(A!=null) return A.getConnectedPropertyRooms();
 		}
-		Area area=CMLib.map().getArea(landPropertyID());
+		final Area area=CMLib.map().getArea(landPropertyID());
 		if(area!=null)
 		{
-			LandTitle A=CMLib.law().getLandTitle(area);
+			final LandTitle A=CMLib.law().getLandTitle(area);
 			if(A!=null) return A.getConnectedPropertyRooms();
 		}
 		return new Vector();
@@ -227,16 +227,16 @@ public class StdTitle extends StdItem implements LandTitle
 	@Override
 	public List<Room> getAllTitledRooms()
 	{
-		Room R=CMLib.map().getRoom(landPropertyID());
+		final Room R=CMLib.map().getRoom(landPropertyID());
 		if(R!=null)
 		{
-			LandTitle A=CMLib.law().getLandTitle(R);
+			final LandTitle A=CMLib.law().getLandTitle(R);
 			if(A!=null) return A.getAllTitledRooms();
 		}
-		Area area=CMLib.map().getArea(landPropertyID());
+		final Area area=CMLib.map().getArea(landPropertyID());
 		if(area!=null)
 		{
-			LandTitle A=CMLib.law().getLandTitle(area);
+			final LandTitle A=CMLib.law().getLandTitle(area);
 			if(A!=null) return A.getAllTitledRooms();
 		}
 		return new Vector();
@@ -245,16 +245,16 @@ public class StdTitle extends StdItem implements LandTitle
 	@Override
 	public String getTitleID()
 	{
-		Room R=CMLib.map().getRoom(landPropertyID());
+		final Room R=CMLib.map().getRoom(landPropertyID());
 		if(R!=null)
 		{
-			LandTitle A=CMLib.law().getLandTitle(R);
+			final LandTitle A=CMLib.law().getLandTitle(R);
 			if(A!=null) return A.getTitleID();
 		}
-		Area area=CMLib.map().getArea(landPropertyID());
+		final Area area=CMLib.map().getArea(landPropertyID());
 		if(area!=null)
 		{
-			LandTitle A=CMLib.law().getLandTitle(area);
+			final LandTitle A=CMLib.law().getLandTitle(area);
 			if(A!=null) return A.getTitleID();
 		}
 		return "";
@@ -268,7 +268,7 @@ public class StdTitle extends StdItem implements LandTitle
 		if((msg.targetMinor()==CMMsg.TYP_WRITE)
 		&&(msg.amITarget(this)))
 		{
-			MOB mob=msg.source();
+			final MOB mob=msg.source();
 			mob.tell("You shouldn't write on "+name()+".");
 			return false;
 		}
@@ -277,7 +277,7 @@ public class StdTitle extends StdItem implements LandTitle
 		&&(msg.amITarget(this))
 		&&(msg.tool() instanceof ShopKeeper))
 		{
-			LandTitle A=fetchALandTitle();
+			final LandTitle A=fetchALandTitle();
 			if(A==null)
 			{
 				destroy();
@@ -286,7 +286,7 @@ public class StdTitle extends StdItem implements LandTitle
 			}
 			if(A.getOwnerName().length()==0)
 			{
-				Area AREA=CMLib.map().getArea(A.landPropertyID());
+				final Area AREA=CMLib.map().getArea(A.landPropertyID());
 				if((AREA!=null)&&(AREA.Name().indexOf("UNNAMED")>=0)&&(msg.source().isMonster()))
 					return false;
 			}
@@ -296,10 +296,10 @@ public class StdTitle extends StdItem implements LandTitle
 		&&(msg.target() instanceof MOB)
 		&&(msg.tool()==this))
 		{
-			LandTitle A=fetchALandTitle();
+			final LandTitle A=fetchALandTitle();
 			if((A!=null)&&(A.getOwnerName().length()>0))
 			{
-				ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(msg.target());
+				final ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(msg.target());
 				if((((SK.isSold(ShopKeeper.DEAL_CLANBANKER))||(SK.isSold(ShopKeeper.DEAL_CLANDSELLER)))
 						&&(msg.source().getClanRole(A.getOwnerName())==null))
 				||(((SK.isSold(ShopKeeper.DEAL_BANKER))||(SK.isSold(ShopKeeper.DEAL_CLANBANKER)))
@@ -307,7 +307,7 @@ public class StdTitle extends StdItem implements LandTitle
 				||(((SK.isSold(ShopKeeper.DEAL_POSTMAN))||(SK.isSold(ShopKeeper.DEAL_CLANPOSTMAN)))
 						&&(!A.getOwnerName().equals(msg.source().Name()))))
 				{
-					String str="I'm sorry, '"+msg.tool().Name()+" is not for sale.  It already belongs to "+A.getOwnerName()+".  It should be destroyed.";
+					final String str="I'm sorry, '"+msg.tool().Name()+" is not for sale.  It already belongs to "+A.getOwnerName()+".  It should be destroyed.";
 					if(((MOB)msg.target()).isMonster())
 						CMLib.commands().postSay((MOB)msg.target(),msg.source(),str,false,false);
 					else
@@ -324,7 +324,7 @@ public class StdTitle extends StdItem implements LandTitle
 		&&(msg.target() instanceof MOB)
 		&&(msg.tool()==this))
 		{
-			LandTitle A=fetchALandTitle();
+			final LandTitle A=fetchALandTitle();
 			if((A!=null)
 			&&((A.getOwnerName().length()==0)
 			||((A.getOwnerName().length()>0)
@@ -332,12 +332,12 @@ public class StdTitle extends StdItem implements LandTitle
 				&&(!((msg.source().isMarriedToLiege())&&(A.getOwnerName().equals(msg.source().getLiegeID()))))
 				&&(msg.source().getClanRole(A.getOwnerName())==null))))
 			{
-				String str="I'm sorry, '"+msg.tool().Name()+" must be destroyed.";
+				final String str="I'm sorry, '"+msg.tool().Name()+" must be destroyed.";
 				if(((MOB)msg.target()).isMonster())
 					CMLib.commands().postSay((MOB)msg.target(),msg.source(),str,false,false);
 				else
 					((MOB)msg.target()).tell(str+" You might want to tell the customer.");
-				ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(msg.target());
+				final ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(msg.target());
 				if(SK!=null) SK.getShop().removeStock(msg.tool().Name(),msg.source());
 				destroy();
 				return false;
@@ -374,7 +374,7 @@ public class StdTitle extends StdItem implements LandTitle
 		&&(msg.target()!=null)
 		&&(msg.target() instanceof ShopKeeper))
 		{
-			LandTitle A=fetchALandTitle();
+			final LandTitle A=fetchALandTitle();
 			if(A==null)
 			{
 				Log.errOut("StdTitle","Unsellable room: "+landPropertyID());
@@ -400,7 +400,7 @@ public class StdTitle extends StdItem implements LandTitle
 		&&(!(msg.target() instanceof Auctioneer))
 		&&(!(msg.target() instanceof PostOffice)))
 		{
-			LandTitle A=fetchALandTitle();
+			final LandTitle A=fetchALandTitle();
 			if(A==null)
 			{
 				Log.errOut("StdTitle","Unsellable room: "+landPropertyID());
@@ -409,7 +409,7 @@ public class StdTitle extends StdItem implements LandTitle
 			}
 			if(CMLib.clans().checkClanPrivilege(msg.source(), getOwnerName(), Clan.Function.PROPERTY_OWNER))
 			{
-				Pair<Clan,Integer> targetClan=CMLib.clans().findPrivilegedClan((MOB)msg.target(), Clan.Function.PROPERTY_OWNER);
+				final Pair<Clan,Integer> targetClan=CMLib.clans().findPrivilegedClan((MOB)msg.target(), Clan.Function.PROPERTY_OWNER);
 				if(targetClan!=null)
 					A.setOwnerName(targetClan.first.clanID());
 				else
@@ -426,24 +426,24 @@ public class StdTitle extends StdItem implements LandTitle
 				msg.source().tell("This property is a rental.  Your rent will be paid every mud-month out of your bank account.");
 			else
 			{
-				List<Room> allRooms=getAllTitledRooms();
+				final List<Room> allRooms=getAllTitledRooms();
 				if((allRooms!=null)&&(allRooms.size()>0))
 				{
-					Room R=allRooms.get(0);
-					LegalBehavior B=CMLib.law().getLegalBehavior(R);
+					final Room R=allRooms.get(0);
+					final LegalBehavior B=CMLib.law().getLegalBehavior(R);
 					if(B!=null)
 					{
-						Area A2=CMLib.law().getLegalObject(R);
+						final Area A2=CMLib.law().getLegalObject(R);
 						if(A2==null)
 							Log.errOut("StdTitle",CMLib.map().getExtendedRoomID(R)+" has a legal behavior, but no area!");
 						else
 						{
-							Law theLaw=B.legalInfo(A2);
+							final Law theLaw=B.legalInfo(A2);
 							if(theLaw==null)
 								Log.errOut("StdTitle",A2.Name()+" has no law.");
 							else
 							{
-								String taxs=(String)theLaw.taxLaws().get("PROPERTYTAX");
+								final String taxs=(String)theLaw.taxLaws().get("PROPERTYTAX");
 								if((taxs!=null)&&(taxs.length()==0)&&(CMath.s_double(taxs)>0.0))
 									msg.source().tell("A property tax of "+CMath.s_double(taxs)+"% of "+A.getPrice()+" will be paid monthly out of your bank account.");
 							}
@@ -458,7 +458,7 @@ public class StdTitle extends StdItem implements LandTitle
 		&&(msg.tool()!=null)
 		&&(msg.tool() instanceof ShopKeeper))
 		{
-			LandTitle A=fetchALandTitle();
+			final LandTitle A=fetchALandTitle();
 			if(A==null)
 			{
 				Log.errOut("StdTitle","Unsellable room: "+landPropertyID());
@@ -470,7 +470,7 @@ public class StdTitle extends StdItem implements LandTitle
 				String newOwnerName=msg.source().Name();
 				if(((ShopKeeper)msg.tool()).isSold(ShopKeeper.DEAL_CLANDSELLER))
 				{
-					Pair<Clan,Integer> clanPair=CMLib.clans().findPrivilegedClan(msg.source(), Clan.Function.PROPERTY_OWNER);
+					final Pair<Clan,Integer> clanPair=CMLib.clans().findPrivilegedClan(msg.source(), Clan.Function.PROPERTY_OWNER);
 					if(clanPair!=null)
 						newOwnerName=clanPair.first.clanID();
 				}

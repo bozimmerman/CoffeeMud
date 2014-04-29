@@ -49,9 +49,9 @@ public class Chant_VineMass extends Chant_SummonVine
 	@Override
 	public MOB determineMonster(MOB caster, int material)
 	{
-		MOB victim=caster.getVictim();
+		final MOB victim=caster.getVictim();
 		MOB newMOB=null;
-		int limit=((caster.phyStats().level()+(2*super.getXLEVELLevel(caster)))/4);
+		final int limit=((caster.phyStats().level()+(2*super.getXLEVELLevel(caster)))/4);
 		for(int i=0;i<limit;i++)
 		{
 			newMOB=CMClass.getMOB("GenMOB");
@@ -60,7 +60,7 @@ public class Chant_VineMass extends Chant_SummonVine
 			newMOB.basePhyStats().setLevel(level);
 			newMOB.basePhyStats().setAbility(newMOB.basePhyStats().ability()*2);
 			newMOB.baseCharStats().setMyRace(CMClass.getRace("Vine"));
-			String name="a vine";
+			final String name="a vine";
 			newMOB.setName(name);
 			newMOB.setDisplayText(name+" looks enraged!");
 			newMOB.setDescription("");

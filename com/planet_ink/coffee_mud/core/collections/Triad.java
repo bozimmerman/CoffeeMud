@@ -42,6 +42,7 @@ public class Triad<T,K,L> extends Pair<T,K>
 		if(o instanceof Triad)
 		{
 			@SuppressWarnings("rawtypes")
+			final
 			Triad p=(Triad)o;
 			return ((p.first==first)||((p.first!=null)&&(p.first.equals(first))))
 					&&((p.second==second)||((p.second!=null)&&(p.second.equals(second))))

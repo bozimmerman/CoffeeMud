@@ -35,12 +35,12 @@ public class Ignan extends StdLanguage
 	{
 		if(wordLists==null)
 		{
-			String[] one={"am","sa","pu","ra","an","aj","na","dh"};
-			String[] two={"pul","sak","dhu","ka","rej","ya","no","la","iy","da","vra","ni","ik"};
-			String[] three={"nya","rik","iwa","tya","mat","kaj","raj","lak","vak","dra","vik","sat","nav"};
-			String[] four={"nahi","ty'aj","tras","dams","dagh","jatu","chik","jhak","gruk","k'sip","kuha","ucca","inkh","asya","abhi","arya","isti","id'va","mala","mrga","s'ami","sira","skus","stup"};
-			String[] five={"stigh","stubh","stoka","me'das","mraks","ghana","buk'ni","narka","pams'u","niska","netrya","ni'jh","dhu'li","dhraj","taran","tarus","jungu","chupna","jattu","chirnu","cukvu","jhakut","jhaur","udaya","ilih"};
-			String[] six={"masu'ra","marttika","bhai'sa","bollai","vila'sini","barhis't'ha","barkro","parada","nikauriya","nird'har","dhanik","ja'n'o","tanakti","chikka'ra","kullada","uccaya","utsava","istaka","i'rsya","inkhuksa","akha'ra","adhuna","avas'dyak"};
+			final String[] one={"am","sa","pu","ra","an","aj","na","dh"};
+			final String[] two={"pul","sak","dhu","ka","rej","ya","no","la","iy","da","vra","ni","ik"};
+			final String[] three={"nya","rik","iwa","tya","mat","kaj","raj","lak","vak","dra","vik","sat","nav"};
+			final String[] four={"nahi","ty'aj","tras","dams","dagh","jatu","chik","jhak","gruk","k'sip","kuha","ucca","inkh","asya","abhi","arya","isti","id'va","mala","mrga","s'ami","sira","skus","stup"};
+			final String[] five={"stigh","stubh","stoka","me'das","mraks","ghana","buk'ni","narka","pams'u","niska","netrya","ni'jh","dhu'li","dhraj","taran","tarus","jungu","chupna","jattu","chirnu","cukvu","jhakut","jhaur","udaya","ilih"};
+			final String[] six={"masu'ra","marttika","bhai'sa","bollai","vila'sini","barhis't'ha","barkro","parada","nikauriya","nird'har","dhanik","ja'n'o","tanakti","chikka'ra","kullada","uccaya","utsava","istaka","i'rsya","inkhuksa","akha'ra","adhuna","avas'dyak"};
 			wordLists=new Vector<String[]>();
 			wordLists.add(one);
 			wordLists.add(two);

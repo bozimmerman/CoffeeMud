@@ -58,8 +58,8 @@ public class Spell_ContinualLight extends Spell
 		// undo the affects of this spell
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
-		Room room=((MOB)affected).location();
+		final MOB mob=(MOB)affected;
+		final Room room=((MOB)affected).location();
 		if(canBeUninvoked())
 			room.show(mob,null,CMMsg.MSG_OK_VISUAL,"The light above <S-NAME> dims.");
 		super.unInvoke();
@@ -90,13 +90,13 @@ public class Spell_ContinualLight extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
 			String str="^S<S-NAME> invoke(s) a continual light toward(s) <T-NAMESELF>!^?";
 			if(!(target instanceof MOB))
 				str="^S<S-NAME> invoke(s) a continual light into <T-NAME>!^?";
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),str);
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),str);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

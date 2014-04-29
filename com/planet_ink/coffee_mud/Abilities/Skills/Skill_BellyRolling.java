@@ -58,7 +58,7 @@ public class Skill_BellyRolling extends StdSkill
 		if(!(affected instanceof MOB))
 			return true;
 
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		if(msg.amITarget(mob)
 		&&(msg.targetMinor()==CMMsg.TYP_WEAPONATTACK)
@@ -69,7 +69,7 @@ public class Skill_BellyRolling extends StdSkill
 		&&(msg.tool() instanceof Weapon))
 		{
 			// can't use -NAME for msg.source() lest sitting prevent it
-			CMMsg msg2=CMClass.getMsg(mob,msg.source(),null,CMMsg.MSG_SITMOVE,"<S-NAME> roll(s) away from the attack by <T-NAMESELF>!");
+			final CMMsg msg2=CMClass.getMsg(mob,msg.source(),null,CMMsg.MSG_SITMOVE,"<S-NAME> roll(s) away from the attack by <T-NAMESELF>!");
 			if((proficiencyCheck(null,mob.charStats().getStat(CharStats.STAT_DEXTERITY)-50+(super.getXLEVELLevel(mob)*5),false))
 			&&((msg.source().getVictim()==mob)||(msg.source().getVictim()==null))
 			&&(mob.location().okMessage(mob,msg2)))

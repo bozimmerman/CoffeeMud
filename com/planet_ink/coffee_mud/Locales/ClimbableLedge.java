@@ -46,7 +46,7 @@ public class ClimbableLedge extends ClimbableSurface
 		if((msg.targetMinor()==CMMsg.TYP_ENTER)
 		&&(msg.amITarget(this)))
 		{
-			Rideable ladder=findALadder(msg.source(),this);
+			final Rideable ladder=findALadder(msg.source(),this);
 			if(ladder!=null)
 			{
 				msg.source().setRiding(ladder);

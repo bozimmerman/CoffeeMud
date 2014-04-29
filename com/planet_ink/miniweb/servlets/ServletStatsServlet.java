@@ -47,11 +47,11 @@ public class ServletStatsServlet implements SimpleServlet
 		try
 		{
 			response.setMimeType(MIMEType.html.getType());
-			StringBuilder str = new StringBuilder("");
+			final StringBuilder str = new StringBuilder("");
 			str.append("<html><body>");
 
 			MWRequestStats stats;
-			for(Class<? extends SimpleServlet> servletClass : request.getServletManager().getServlets())
+			for(final Class<? extends SimpleServlet> servletClass : request.getServletManager().getServlets())
 			{
 				stats = request.getServletManager().getServletStats(servletClass);
 				str.append("<P><h2>"+servletClass.getSimpleName()+"</h2></p><br>");
@@ -60,7 +60,7 @@ public class ServletStatsServlet implements SimpleServlet
 			str.append("</body></html>");
 			response.getOutputStream().write(str.toString().getBytes());
 		}
-		catch (IOException e)
+		catch (final IOException e)
 		{
 			response.setStatusCode(500);
 		}

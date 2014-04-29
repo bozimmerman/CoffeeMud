@@ -53,7 +53,7 @@ public class Spell_Shrink extends Spell
 		{
 			if(affected instanceof MOB)
 			{
-				MOB mob=(MOB)affected;
+				final MOB mob=(MOB)affected;
 				if((mob.location()!=null)&&(!mob.amDead()))
 					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> return(s) to <S-HIS-HER> normal size.");
 				recheckMOB=mob;
@@ -61,7 +61,7 @@ public class Spell_Shrink extends Spell
 			else
 			if(affected instanceof Item)
 			{
-				Item item=(Item)affected;
+				final Item item=(Item)affected;
 				if(item.owner()!=null)
 				{
 					if(item.owner() instanceof Room)
@@ -84,8 +84,8 @@ public class Spell_Shrink extends Spell
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
-		int str=affectableStats.getStat(CharStats.STAT_STRENGTH);
-		int baseDex=affected.baseCharStats().getStat(CharStats.STAT_DEXTERITY);
+		final int str=affectableStats.getStat(CharStats.STAT_STRENGTH);
+		final int baseDex=affected.baseCharStats().getStat(CharStats.STAT_DEXTERITY);
 		affectableStats.setStat(CharStats.STAT_STRENGTH,(str/10)+1);
 		if(affectableStats.getStat(CharStats.STAT_DEXTERITY) <= baseDex + 5)
 			affectableStats.setStat(CharStats.STAT_DEXTERITY,baseDex + 5);
@@ -103,23 +103,23 @@ public class Spell_Shrink extends Spell
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		Physical target=getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_UNWORNONLY);
+		final Physical target=getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_UNWORNONLY);
 		if(target==null) return false;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 		if((success)&&((target instanceof MOB)||(target instanceof Item)))
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> feel(s) somewhat smaller.":"^S<S-NAME> cast(s) a small spell on <T-NAMESELF>.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> feel(s) somewhat smaller.":"^S<S-NAME> cast(s) a small spell on <T-NAMESELF>.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				boolean isJustUnInvoking=false;
 				if(target instanceof Item)
 				{
-					Ability A=target.fetchEffect("Spell_Shrink");
+					final Ability A=target.fetchEffect("Spell_Shrink");
 					if((A!=null)&&(A.canBeUninvoked()))
 					{
 						A.unInvoke();
@@ -129,7 +129,7 @@ public class Spell_Shrink extends Spell
 				else
 				if(target instanceof MOB)
 				{
-					Ability A=target.fetchEffect("Spell_Grow");
+					final Ability A=target.fetchEffect("Spell_Grow");
 					if((A!=null)&&(A.canBeUninvoked()))
 					{
 						A.unInvoke();

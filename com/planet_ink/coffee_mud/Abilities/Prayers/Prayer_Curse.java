@@ -51,7 +51,7 @@ public class Prayer_Curse extends Prayer
 		super.affectPhyStats(affected,affectableStats);
 		if(affected==null) return;
 		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_EVIL);
-		int xlvl=super.getXLEVELLevel(invoker());
+		final int xlvl=super.getXLEVELLevel(invoker());
 		if(affected instanceof MOB)
 			affectableStats.setArmor(affectableStats.armor()+5+(2*xlvl));
 		else
@@ -71,7 +71,7 @@ public class Prayer_Curse extends Prayer
 			super.unInvoke();
 			return;
 		}
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		if(canBeUninvoked())
 			mob.tell("The curse is lifted.");
 		super.unInvoke();
@@ -79,12 +79,12 @@ public class Prayer_Curse extends Prayer
 
 	public static Item getSomething(MOB mob, boolean blessedOnly)
 	{
-		Vector good=new Vector();
-		Vector great=new Vector();
+		final Vector good=new Vector();
+		final Vector great=new Vector();
 		Item target=null;
 		for(int i=0;i<mob.numItems();i++)
 		{
-			Item I=mob.getItem(i);
+			final Item I=mob.getItem(i);
 			if((!blessedOnly)||(isBlessed(I)))
 				if(I.amWearingAt(Wearable.IN_INVENTORY))
 					good.addElement(I);
@@ -101,10 +101,10 @@ public class Prayer_Curse extends Prayer
 
 	public static void endLowerBlessings(Physical target, int level)
 	{
-		List<Ability> V=CMLib.flags().domainAffects(target,Ability.DOMAIN_BLESSING);
+		final List<Ability> V=CMLib.flags().domainAffects(target,Ability.DOMAIN_BLESSING);
 		for(int v=0;v<V.size();v++)
 		{
-			Ability A=V.get(v);
+			final Ability A=V.get(v);
 			if(CMLib.ableMapper().lowestQualifyingLevel(A.ID())<=level)
 				A.unInvoke();
 		}
@@ -116,10 +116,10 @@ public class Prayer_Curse extends Prayer
 
 	public static void endLowerCurses(Physical target, int level)
 	{
-		List<Ability> V=CMLib.flags().domainAffects(target,Ability.DOMAIN_CURSING);
+		final List<Ability> V=CMLib.flags().domainAffects(target,Ability.DOMAIN_CURSING);
 		for(int v=0;v<V.size();v++)
 		{
-			Ability A=V.get(v);
+			final Ability A=V.get(v);
 			if(CMLib.ableMapper().lowestQualifyingLevel(A.ID())<level)
 				A.unInvoke();
 		}
@@ -128,7 +128,7 @@ public class Prayer_Curse extends Prayer
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		MOB target=this.getTarget(mob,commands,givenTarget);
+		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -142,13 +142,13 @@ public class Prayer_Curse extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto)|CMMsg.MASK_MALICIOUS,auto?"<T-NAME> <T-IS-ARE> cursed!":"^S<S-NAME> curse(s) <T-NAMESELF>.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto)|CMMsg.MASK_MALICIOUS,auto?"<T-NAME> <T-IS-ARE> cursed!":"^S<S-NAME> curse(s) <T-NAMESELF>.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
-					Item I=getSomething(mob,true);
+					final Item I=getSomething(mob,true);
 					if(I!=null)
 					{
 						endLowerBlessings(I,CMLib.ableMapper().lowestQualifyingLevel(ID()));

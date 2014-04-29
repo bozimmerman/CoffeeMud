@@ -62,7 +62,7 @@ public class MOBReSave extends ActiveTicker
 	{
 		super.setParms(newParms);
 		startStats=(CharStats)CMClass.getCommon("DefaultCharStats");
-		for(int c: CharStats.CODES.ALL())
+		for(final int c: CharStats.CODES.ALL())
 			startStats.setStat(c,CMParms.getParmInt(parms,CharStats.CODES.ABBR(c),-1));
 	}
 
@@ -70,10 +70,10 @@ public class MOBReSave extends ActiveTicker
 	public String getParms()
 	{
 		if(host==null) return super.getParms();
-		MOB M=(MOB)host.get();
+		final MOB M=(MOB)host.get();
 		if(M==null) return super.getParms();
-		StringBuffer rebuiltParms=new StringBuffer(super.rebuildParms());
-		for(int c: CharStats.CODES.ALL())
+		final StringBuffer rebuiltParms=new StringBuffer(super.rebuildParms());
+		for(final int c: CharStats.CODES.ALL())
 			rebuiltParms.append(" "+CharStats.CODES.ABBR(c)+"="+M.baseCharStats().getStat(c));
 		return rebuiltParms.toString();
 	}
@@ -89,7 +89,7 @@ public class MOBReSave extends ActiveTicker
 		&&(((MOB)ticking).getStartRoom().roomID().length()>0)
 		&&(((MOB)ticking).databaseID().length()>0))
 		{
-			MOB mob=(MOB)ticking;
+			final MOB mob=(MOB)ticking;
 			if((host==null)||(host.get()==null))
 				host=new WeakReference(mob);
 			noRecurse=true;
@@ -97,7 +97,7 @@ public class MOBReSave extends ActiveTicker
 			{
 				synchronized(startStats)
 				{
-					for(int c: CharStats.CODES.ALL())
+					for(final int c: CharStats.CODES.ALL())
 						if(startStats.getStat(c)>0)
 							mob.baseCharStats().setStat(c,startStats.getStat(c));
 					startStats=null;
@@ -105,7 +105,7 @@ public class MOBReSave extends ActiveTicker
 			}
 			if(canAct(ticking,tickID))
 			{
-				Room R=mob.getStartRoom();
+				final Room R=mob.getStartRoom();
 				CMLib.database().DBUpdateMOB(R.roomID(),mob);
 			}
 		}

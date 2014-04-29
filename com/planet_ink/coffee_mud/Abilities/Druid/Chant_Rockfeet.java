@@ -87,7 +87,7 @@ public int castingQuality(MOB mob, Physical target)
 				&&(((MOB)target).getWearPositions(Wearable.WORN_FEET)==0))
 					return Ability.QUALITY_INDIFFERENT;
 			}
-			Room R=mob.location();
+			final Room R=mob.location();
 			if(R!=null)
 			{
 			}
@@ -98,7 +98,7 @@ public int castingQuality(MOB mob, Physical target)
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		MOB target=getTarget(mob,commands,givenTarget);
+		final MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
 		if((target.getWearPositions(Wearable.WORN_HANDS)==0)
@@ -116,7 +116,7 @@ public int castingQuality(MOB mob, Physical target)
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
 			// it worked, so build a copy of this ability,
@@ -124,7 +124,7 @@ public int castingQuality(MOB mob, Physical target)
 			// affected MOB.  Then tell everyone else
 			// what happened.
 
-			CMMsg msg = CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> chant(s) at <T-NAME> heavily!^?");
+			final CMMsg msg = CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> chant(s) at <T-NAME> heavily!^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

@@ -81,14 +81,14 @@ public class LayoutSet
 
 	public LayoutNode makeNextNode(LayoutNode n, int dir)
 	{
-		long[] l = makeNextCoord(n.coord(),dir);
+		final long[] l = makeNextCoord(n.coord(),dir);
 		if(l!=null) return new DefaultLayoutNode(l);
 		return null;
 	}
 
 	public LayoutNode getNextNode(LayoutNode n, int dir)
 	{
-		LayoutNode next = makeNextNode(n,dir);
+		final LayoutNode next = makeNextNode(n,dir);
 		return getNode(next.coord());
 	}
 
@@ -151,20 +151,20 @@ public class LayoutSet
 
 	public boolean fillMaze(LayoutNode p)
 	{
-		Vector<Integer> dirs = new Vector<Integer>();
+		final Vector<Integer> dirs = new Vector<Integer>();
 		for(int i=0;i<4;i++)
 			dirs.add(Integer.valueOf(i));
-		Vector<Integer> rdirs = new Vector<Integer>();
+		final Vector<Integer> rdirs = new Vector<Integer>();
 		while(dirs.size()>0)
 		{
-			int x = r.nextInt(dirs.size());
-			Integer dir = dirs.elementAt(x);
+			final int x = r.nextInt(dirs.size());
+			final Integer dir = dirs.elementAt(x);
 			dirs.removeElementAt(x);
 			rdirs.addElement(dir);
 		}
 		for(int r=0;r<rdirs.size();r++)
 		{
-			Integer dir = rdirs.elementAt(r);
+			final Integer dir = rdirs.elementAt(r);
 			LayoutNode p2 = getNextNode(p, dir.intValue());
 			if(p2 == null)
 			{
@@ -180,25 +180,25 @@ public class LayoutSet
 	public void clipLongStreets()
 	{
 		@SuppressWarnings("unchecked")
+		final
 		Vector<LayoutNode> set2=(Vector<LayoutNode>)set().clone();
-		for(Enumeration<LayoutNode> e=set2.elements();e.hasMoreElements();)
+		for (final LayoutNode p : set2)
 		{
-			LayoutNode p=e.nextElement();
 			if(isUsed(p) && p.isStreetLike())
 				for(int d=0;d<4;d++)
 					if(p.getLink(d)==null)
 					{
-						LayoutNode p2 =getNextNode(p, d);
+						final LayoutNode p2 =getNextNode(p, d);
 						if((p2!=null)
 						&&(!p.links().containsValue(p2)))
 						{
-							Enumeration<LayoutNode> nodes=p.links().elements();
-							LayoutNode p_1=nodes.nextElement();
-							LayoutNode p_2=nodes.nextElement();
+							final Enumeration<LayoutNode> nodes=p.links().elements();
+							final LayoutNode p_1=nodes.nextElement();
+							final LayoutNode p_2=nodes.nextElement();
 							p.deLink();
 							p_1.crossLink(p_2);
 							unUse(p);
-							LayoutNode p3 = makeNextNode(p2, Directions.getOpDirectionCode(d));
+							final LayoutNode p3 = makeNextNode(p2, Directions.getOpDirectionCode(d));
 							p2.crossLink(p3);
 							use(p3, LayoutTypes.leaf);
 							break;
@@ -209,27 +209,25 @@ public class LayoutSet
 
 	public void fillInFlags()
 	{
-		for(Enumeration<LayoutNode> e=set().elements();e.hasMoreElements();)
+		for (final LayoutNode n : set())
 		{
-			LayoutNode n = e.nextElement();
-			int[] dirs=new int[n.links().size()];
+			final int[] dirs=new int[n.links().size()];
 			int x=0;
-			for(Integer dirLink : n.links().keySet())
+			for(final Integer dirLink : n.links().keySet())
 				dirs[x++]=dirLink.intValue();
 			n.setExits(dirs);
 			if((dirs.length==1)&&(!n.isFlagged(LayoutFlags.gate)))
 				n.reType(LayoutTypes.leaf);
 		}
-		for(Enumeration<LayoutNode> e=set().elements();e.hasMoreElements();)
+		for (final LayoutNode n : set())
 		{
-			LayoutNode n = e.nextElement();
 			if(n.links().size()==2)
 			{
 				LayoutFlags flag = null;
 				if(n.type()==LayoutTypes.interior)
-					for(Integer dirLink : n.links().keySet())
+					for(final Integer dirLink : n.links().keySet())
 					{
-						LayoutNode n2=n.links().get(dirLink);
+						final LayoutNode n2=n.links().get(dirLink);
 						if((n2!=null)&&(n2.type()==LayoutTypes.leaf))
 							flag=LayoutFlags.offleaf;
 					}
@@ -237,9 +235,9 @@ public class LayoutSet
 					n.flag(flag);
 				else
 				{
-					Enumeration<Integer> dirs=n.links().keys();
-					Integer lN1=dirs.nextElement();
-					Integer lN2=dirs.nextElement();
+					final Enumeration<Integer> dirs=n.links().keys();
+					final Integer lN1=dirs.nextElement();
+					final Integer lN2=dirs.nextElement();
 					if(lN1.intValue() != Directions.getOpDirectionCode(lN2.intValue()))
 						n.flag(LayoutFlags.corner);
 				}
@@ -250,9 +248,9 @@ public class LayoutSet
 				||(n.type()!=LayoutTypes.surround))))
 			{
 				boolean allStreet = true;
-				for(Integer dirLink : n.links().keySet())
+				for(final Integer dirLink : n.links().keySet())
 				{
-					LayoutNode n2=n.links().get(dirLink);
+					final LayoutNode n2=n.links().get(dirLink);
 					if((n2==null)
 					||((n2.type()!=LayoutTypes.street)
 						&&(n2.type()!=LayoutTypes.surround)))
@@ -267,9 +265,9 @@ public class LayoutSet
 				||(n.type()!=LayoutTypes.surround))))
 			{
 				boolean allStreet = true;
-				for(Integer dirLink : n.links().keySet())
+				for(final Integer dirLink : n.links().keySet())
 				{
-					LayoutNode n2=n.links().get(dirLink);
+					final LayoutNode n2=n.links().get(dirLink);
 					if((n2==null)
 					||((n2.type()!=LayoutTypes.street)
 						&&(n2.type()!=LayoutTypes.surround)))

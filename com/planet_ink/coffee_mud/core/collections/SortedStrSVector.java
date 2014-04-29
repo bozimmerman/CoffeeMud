@@ -109,7 +109,7 @@ public class SortedStrSVector<T> extends SVector<T> implements SearchIDList<T>
 	@Override
 	public boolean containsAll(Collection<?> arg0)
 	{
-		for(Object o : arg0)
+		for(final Object o : arg0)
 			if(!contains(o))
 				return false;
 		return true;
@@ -142,8 +142,8 @@ public class SortedStrSVector<T> extends SVector<T> implements SearchIDList<T>
 		{
 			while(start<=end)
 			{
-				int mid=(end+start)/2;
-				int comp=compareTo(super.get(mid),(T)arg0);
+				final int mid=(end+start)/2;
+				final int comp=compareTo(super.get(mid),(T)arg0);
 				if(comp==0)
 					return mid;
 				else
@@ -159,8 +159,8 @@ public class SortedStrSVector<T> extends SVector<T> implements SearchIDList<T>
 		{
 			while(start<=end)
 			{
-				int mid=(end+start)/2;
-				int comp=compareTo(super.get(mid),(String)arg0);
+				final int mid=(end+start)/2;
+				final int comp=compareTo(super.get(mid),(String)arg0);
 				if(comp==0)
 					return mid;
 				else
@@ -183,8 +183,8 @@ public class SortedStrSVector<T> extends SVector<T> implements SearchIDList<T>
 		int end=size()-1;
 		while(start<=end)
 		{
-			int mid=(end+start)/2;
-			int comp=compareTo(super.get(mid),arg0);
+			final int mid=(end+start)/2;
+			final int comp=compareTo(super.get(mid),arg0);
 			if(comp==0)
 				return super.get(mid);
 			else
@@ -205,8 +205,8 @@ public class SortedStrSVector<T> extends SVector<T> implements SearchIDList<T>
 		int end=size()-1;
 		while(start<=end)
 		{
-			int mid=(end+start)/2;
-			int comp=compareTo(super.get(mid),arg0);
+			final int mid=(end+start)/2;
+			final int comp=compareTo(super.get(mid),arg0);
 			if(comp==0)
 				return super.get(mid);
 			else

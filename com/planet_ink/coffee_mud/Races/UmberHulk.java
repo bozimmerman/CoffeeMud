@@ -45,10 +45,10 @@ public class UmberHulk extends StdRace
 	@Override public String racialCategory(){return "Giant-kin";}
 	@Override public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
 	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
-	private String[]racialAbilityNames={"Chant_StoneWalking","Spell_Confusion"};
-	private int[]racialAbilityLevels={1,10};
-	private int[]racialAbilityProficiencies={100,50};
-	private boolean[]racialAbilityQuals={false,false};
+	private final String[]racialAbilityNames={"Chant_StoneWalking","Spell_Confusion"};
+	private final int[]racialAbilityLevels={1,10};
+	private final int[]racialAbilityProficiencies={100,50};
+	private final boolean[]racialAbilityQuals={false,false};
 	@Override public String[] racialAbilityNames(){return racialAbilityNames;}
 	@Override public int[] racialAbilityLevels(){return racialAbilityLevels;}
 	@Override public int[] racialAbilityProficiencies(){return racialAbilityProficiencies;}
@@ -106,7 +106,7 @@ public class UmberHulk extends StdRace
 	@Override
 	public String healthText(MOB viewer, MOB mob)
 	{
-		double pct=(CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));
+		final double pct=(CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));
 
 		if(pct<.10)
 			return "^r" + mob.name(viewer) + "^r is near to heartless death!^N";

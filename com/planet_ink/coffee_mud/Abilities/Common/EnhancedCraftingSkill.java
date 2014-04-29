@@ -66,8 +66,8 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 		if(expMods!=null)
 		for(int t=0;t<expMods.size();t++)
 		{
-			int type=expMods.elementAt(t).first.intValue();
-			int stage=expMods.elementAt(t).second.intValue();
+			final int type=expMods.elementAt(t).first.intValue();
+			final int stage=expMods.elementAt(t).second.intValue();
 			switch(type)
 			{
 			case TYPE_LITECRAFT:
@@ -157,11 +157,11 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 		if((data[0][FOUND_CODE]==0)&&(data[1][FOUND_CODE]==0))
 		{
 			final List<Integer> rscs=myResources();
-			for(Object o : componentsFoundList)
+			for(final Object o : componentsFoundList)
 			{
 				if(o instanceof Item)
 				{
-					Item I=(Item)o;
+					final Item I=(Item)o;
 					if(rscs.contains(Integer.valueOf(I.material())))
 					{
 						data[0][FOUND_CODE]=I.material();
@@ -202,7 +202,7 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 
 	protected String applyName(String name, String word)
 	{
-		Vector<String> V=CMParms.parse(name);
+		final Vector<String> V=CMParms.parse(name);
 		int insertHere=0;
 		if((V.size()>0)
 		&&(CMLib.english().isAnArticle(V.firstElement())))
@@ -220,7 +220,7 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 
 	protected void applyName(Item item, String word)
 	{
-		String oldName=item.Name();
+		final String oldName=item.Name();
 		item.setName(applyName(item.Name(),word));
 		item.setDisplayText(applyName(item.displayText(),word));
 		item.setDescription(applyName(item.description(),word));
@@ -231,10 +231,10 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 
 	public List<String> getThisSkillsExpertises()
 	{
-		List<String> V=new Vector<String>();
+		final List<String> V=new Vector<String>();
 		for(int x=ExpertiseLibrary.XFLAG_X1;x<=ExpertiseLibrary.XFLAG_X5;x++)
 		{
-			String s=CMLib.expertises().getApplicableExpertise(ID(),x);
+			final String s=CMLib.expertises().getApplicableExpertise(ID(),x);
 			if(s!=null) V.add(s);
 		}
 		return V;
@@ -274,18 +274,18 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 
 	public void enhanceList(MOB mob)
 	{
-		StringBuffer extras=new StringBuffer("");
+		final StringBuffer extras=new StringBuffer("");
 		String stage=null;
 		String key=null;
-		List<String> types=getThisSkillsExpertises();
+		final List<String> types=getThisSkillsExpertises();
 		for(int t=0;t<types.size();t++)
 		{
 			key=types.get(t);
-			int stages=CMLib.expertises().getStages(key);
-			int code=getLocalExpCode(key);
+			final int stages=CMLib.expertises().getStages(key);
+			final int code=getLocalExpCode(key);
 			if(code>=0)
 			{
-				Pair<String,Integer> X=mob.fetchExpertise(key);
+				final Pair<String,Integer> X=mob.fetchExpertise(key);
 				for(int s=stages-1;s>=0;s--)
 				{
 					if((X!=null)&&(X.getValue().intValue()>=(s+1)))
@@ -308,15 +308,15 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 
 	public List<ExpertiseLibrary.ExpertiseDefinition> getAllThisSkillsDefinitions()
 	{
-		List<ExpertiseLibrary.ExpertiseDefinition> defs = new ArrayList<ExpertiseLibrary.ExpertiseDefinition>();
-		List<String> experTypes=getThisSkillsExpertises();
+		final List<ExpertiseLibrary.ExpertiseDefinition> defs = new ArrayList<ExpertiseLibrary.ExpertiseDefinition>();
+		final List<String> experTypes=getThisSkillsExpertises();
 		String key=null;
 		String stage;
 		for(int t=0;t<experTypes.size();t++)
 		{
 			key=experTypes.get(t);
-			int stages=CMLib.expertises().getStages(key);
-			int code=getLocalExpCode(key);
+			final int stages=CMLib.expertises().getStages(key);
+			final int code=getLocalExpCode(key);
 			if(code>=0)
 			{
 				for(int s=stages-1;s>=0;s--)
@@ -357,7 +357,7 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 			{
 				boolean foundSomething=true;
 				String stage=null;
-				List<String> experTypes=getThisSkillsExpertises();
+				final List<String> experTypes=getThisSkillsExpertises();
 				while(foundSomething)
 				{
 					foundSomething=false;
@@ -365,11 +365,11 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 					for(int t=0;t<experTypes.size();t++)
 					{
 						key=experTypes.get(t);
-						int stages=CMLib.expertises().getStages(key);
-						int code=getLocalExpCode(key);
+						final int stages=CMLib.expertises().getStages(key);
+						final int code=getLocalExpCode(key);
 						if(code>=0)
 						{
-							Pair<String,Integer> X=mob.fetchExpertise(key);
+							final Pair<String,Integer> X=mob.fetchExpertise(key);
 							for(int s=stages-1;s>=0;s--)
 							{
 								if((X==null)||(X.getValue().intValue()<(s+1)))
@@ -444,7 +444,7 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 	public void enhanceItem(MOB mob, Item item, PairVector<Integer,Integer> types)
 	{
 		if(types==null) return;
-		EnhancedCraftingSkill affect=(EnhancedCraftingSkill)mob.fetchEffect(ID());
+		final EnhancedCraftingSkill affect=(EnhancedCraftingSkill)mob.fetchEffect(ID());
 		if((affect!=null)
 		&&(!affect.aborted)
 		&&(activity == CraftingActivity.CRAFTING)
@@ -452,8 +452,8 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 		{
 			for(int t=0;t<types.size();t++)
 			{
-				int type=types.elementAt(t).first.intValue();
-				int stage=types.elementAt(t).second.intValue();
+				final int type=types.elementAt(t).first.intValue();
+				final int stage=types.elementAt(t).second.intValue();
 				final String expertiseID=CMLib.expertises().getApplicableExpertise(ID(),type);
 				ExpertiseLibrary.ExpertiseDefinition def = CMLib.expertises().getDefinition(expertiseID+CMath.convertToRoman(1));
 				if(def==null) def = CMLib.expertises().getDefinition(expertiseID+1);

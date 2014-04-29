@@ -95,7 +95,7 @@ public class Prop_Doppleganger extends Property
 			((Item)affected).basePhyStats().setLevel(((MOB)lastOwner).phyStats().level());
 			((Item)affected).phyStats().setLevel(((MOB)lastOwner).phyStats().level());
 			lastOwner.recoverPhyStats();
-			Room R=((MOB)lastOwner).location();
+			final Room R=((MOB)lastOwner).location();
 			if(R!=null) R.recoverRoomStats();
 		}
 		super.executeMsg(myHost,msg);
@@ -131,21 +131,21 @@ public class Prop_Doppleganger extends Property
 		//&&(lastLevelChangers))
 		{
 			//lastLevelChangers=false;
-			MOB mob=(MOB)affected;
-			Room R=(msg.target() instanceof Room)?((Room)msg.target()):msg.source().location();
+			final MOB mob=(MOB)affected;
+			final Room R=(msg.target() instanceof Room)?((Room)msg.target()):msg.source().location();
 			if((R!=null)
 			&&(CMLib.flags().aliveAwakeMobile(mob,true))
 			&&(mob.curState().getHitPoints()>=mob.maxState().getHitPoints()))
 			{
 				int total=0;
 				int num=0;
-				MOB victim=mob.getVictim();
+				final MOB victim=mob.getVictim();
 				if(qualifies(victim,R))
 				{
 					total+=victim.phyStats().level();
 					num++;
 				}
-				MOB entrant=msg.source();
+				final MOB entrant=msg.source();
 				if(qualifies(entrant,R))
 				{
 					total+=entrant.phyStats().level();
@@ -153,7 +153,7 @@ public class Prop_Doppleganger extends Property
 				}
 				for(int i=0;i<R.numInhabitants();i++)
 				{
-					MOB M=R.fetchInhabitant(i);
+					final MOB M=R.fetchInhabitant(i);
 					if((M!=mob)
 					&&((M.getVictim()==mob)||(victim==null))
 					&&((M!=victim)&&(M!=entrant))

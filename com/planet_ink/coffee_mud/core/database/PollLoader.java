@@ -47,10 +47,10 @@ public class PollLoader
 		try
 		{
 			D=DB.DBFetch();
-			ResultSet R=D.query("SELECT * FROM CMPOLL WHERE CMNAME='"+name+"'");
+			final ResultSet R=D.query("SELECT * FROM CMPOLL WHERE CMNAME='"+name+"'");
 			while(R.next())
 			{
-				DatabaseEngine.PollData data = new DBInterface.PollData();
+				final DatabaseEngine.PollData data = new DBInterface.PollData();
 				data.name=DBConnections.getRes(R,"CMNAME");
 				data.byName=DBConnections.getRes(R,"CMBYNM");
 				data.subject=DBConnections.getRes(R,"CMSUBJ");
@@ -63,7 +63,7 @@ public class PollLoader
 				return data;
 			}
 		}
-		catch(Exception sqle)
+		catch(final Exception sqle)
 		{
 			Log.errOut("PollLoader",sqle);
 		}
@@ -79,14 +79,14 @@ public class PollLoader
 	public List<DatabaseEngine.PollData> DBReadList()
 	{
 		DBConnection D=null;
-		Vector<DatabaseEngine.PollData> rows=new Vector<DatabaseEngine.PollData>();
+		final Vector<DatabaseEngine.PollData> rows=new Vector<DatabaseEngine.PollData>();
 		try
 		{
 			D=DB.DBFetch();
-			ResultSet R=D.query("SELECT * FROM CMPOLL");
+			final ResultSet R=D.query("SELECT * FROM CMPOLL");
 			while(R.next())
 			{
-				DatabaseEngine.PollData data = new DBInterface.PollData();
+				final DatabaseEngine.PollData data = new DBInterface.PollData();
 				data.name=DBConnections.getRes(R,"CMNAME");
 				data.flag=DBConnections.getLongRes(R,"CMFLAG");
 				data.qual=DBConnections.getRes(R,"CMQUAL");
@@ -94,7 +94,7 @@ public class PollLoader
 				rows.addElement(data);
 			}
 		}
-		catch(Exception sqle)
+		catch(final Exception sqle)
 		{
 			Log.errOut("PollLoader",sqle);
 		}
@@ -147,7 +147,7 @@ public class PollLoader
 	public void DBDelete(String name)
 	{
 		DB.update("DELETE FROM CMPOLL WHERE CMNAME='"+name+"'");
-		try{Thread.sleep(500);}catch(Exception e){}
+		try{Thread.sleep(500);}catch(final Exception e){}
 		if(DB.queryRows("SELECT * FROM CMPOLL WHERE CMNAME='"+name+"'")>0)
 			Log.errOut("Failed to delete data from poll "+name+".");
 	}

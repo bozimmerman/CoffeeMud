@@ -51,7 +51,7 @@ public class Chant_Thorns extends Chant
 		// undo the affects of this spell
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		super.unInvoke();
 
@@ -66,10 +66,10 @@ public class Chant_Thorns extends Chant
 		super.executeMsg(myHost,msg);
 		if(affected==null) return;
 		if(!(affected instanceof MOB)) return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		if(msg.target()==null) return;
 		if(msg.source()==null) return;
-		MOB source=msg.source();
+		final MOB source=msg.source();
 		if(source.location()==null) return;
 
 
@@ -81,14 +81,14 @@ public class Chant_Thorns extends Chant
 			{
 				if((CMLib.dice().rollPercentage()>(source.charStats().getStat(CharStats.STAT_DEXTERITY)*2)))
 				{
-					CMMsg msg2=CMClass.getMsg(mob,source,this,verbalCastCode(mob,source,true),null);
+					final CMMsg msg2=CMClass.getMsg(mob,source,this,verbalCastCode(mob,source,true),null);
 					if(source.location().okMessage(source,msg2))
 					{
 						source.location().send(mob,msg2);
 						if(invoker==null) invoker=source;
 						if(msg2.value()<=0)
 						{
-							int damage = CMLib.dice().roll( 1, (int)Math.round( (adjustedLevel( invoker(), 0 ) ) / 3.0 ), 1 );
+							final int damage = CMLib.dice().roll( 1, (int)Math.round( (adjustedLevel( invoker(), 0 ) ) / 3.0 ), 1 );
 							CMLib.combat().postDamage(mob,source,this,damage,CMMsg.MASK_MALICIOUS|CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,Weapon.TYPE_PIERCING,msgStr);
 						}
 					}
@@ -124,7 +124,7 @@ public class Chant_Thorns extends Chant
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
@@ -132,7 +132,7 @@ public class Chant_Thorns extends Chant
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),(auto?"":"^S<S-NAME> chant(s) to <S-HIM-HERSELF>.  ")+"Long prickly thorns erupt all over <T-NAME>!^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),(auto?"":"^S<S-NAME> chant(s) to <S-HIM-HERSELF>.  ")+"Long prickly thorns erupt all over <T-NAME>!^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

@@ -53,7 +53,7 @@ public class Fighter_Behead extends FighterSkill
 	{
 		if((mob!=null)&&(target!=null)&&(target instanceof MOB))
 		{
-			Race R=((MOB)target).charStats().getMyRace();
+			final Race R=((MOB)target).charStats().getMyRace();
 			if(R.bodyMask()[Race.BODY_HEAD]<=0)
 				return Ability.QUALITY_INDIFFERENT;
 			LegalBehavior B=null;
@@ -63,7 +63,7 @@ public class Fighter_Behead extends FighterSkill
 				warrants=B.getWarrantsOf(CMLib.law().getLegalObject(mob.location()),(MOB)target);
 			if(warrants.size()==0)
 				return Ability.QUALITY_INDIFFERENT;
-			Item w=mob.fetchWieldedItem();
+			final Item w=mob.fetchWieldedItem();
 			Weapon ww=null;
 			if((w==null)||(!(w instanceof Weapon)))
 				return Ability.QUALITY_INDIFFERENT;
@@ -81,9 +81,9 @@ public class Fighter_Behead extends FighterSkill
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		MOB target=super.getTarget(mob,commands,givenTarget);
+		final MOB target=super.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
-		Race R=target.charStats().getMyRace();
+		final Race R=target.charStats().getMyRace();
 		if(R.bodyMask()[Race.BODY_HEAD]<=0)
 		{
 			mob.tell(target.name(mob)+" has no head!");
@@ -101,7 +101,7 @@ public class Fighter_Behead extends FighterSkill
 			return false;
 		}
 
-		Item w=mob.fetchWieldedItem();
+		final Item w=mob.fetchWieldedItem();
 		Weapon ww=null;
 		if((!auto)&&(!CMSecurity.isASysOp(mob)))
 		{
@@ -136,20 +136,20 @@ public class Fighter_Behead extends FighterSkill
 			levelDiff=levelDiff*3;
 		else
 			levelDiff=0;
-		boolean hit=(auto)||CMLib.combat().rollToHit(mob,target);
+		final boolean hit=(auto)||CMLib.combat().rollToHit(mob,target);
 		boolean success=proficiencyCheck(mob,0,auto)&&(hit);
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MALICIOUS|CMMsg.MASK_MOVE|CMMsg.MASK_SOUND|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),null);
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MALICIOUS|CMMsg.MASK_MOVE|CMMsg.MASK_SOUND|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),null);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				target.curState().setHitPoints(1);
-				Ability A2=target.fetchEffect("Injury");
+				final Ability A2=target.fetchEffect("Injury");
 				if(A2!=null) A2.setMiscText(mob.Name()+"/head");
 				CMLib.combat().postDamage(mob,target,ww,Integer.MAX_VALUE/2,CMMsg.MSG_WEAPONATTACK,ww.weaponClassification(),auto?"":"^F^<FIGHT^><S-NAME> rear(s) back and behead(s) <T-NAME>!^</FIGHT^>^?"+CMLib.protocol().msp("decap.wav",30));
 				mob.location().recoverRoomStats();
-				Item limb=CMClass.getItem("GenLimb");
+				final Item limb=CMClass.getItem("GenLimb");
 				limb.setName(target.Name()+"`s head");
 				limb.basePhyStats().setAbility(1);
 				limb.setDisplayText("the bloody head of "+target.Name()+" is sitting here.");
@@ -157,8 +157,8 @@ public class Fighter_Behead extends FighterSkill
 				int material=RawMaterial.RESOURCE_MEAT;
 				for(int r=0;r<R.myResources().size();r++)
 				{
-					Item I=R.myResources().get(r);
-					int mat=I.material()&RawMaterial.MATERIAL_MASK;
+					final Item I=R.myResources().get(r);
+					final int mat=I.material()&RawMaterial.MATERIAL_MASK;
 					if(((mat==RawMaterial.MATERIAL_FLESH))
 					||(r==R.myResources().size()-1))
 					{
@@ -173,7 +173,7 @@ public class Fighter_Behead extends FighterSkill
 				mob.location().addItem(limb,ItemPossessor.Expire.Player_Drop);
 				for(int i=0;i<warrants.size();i++)
 				{
-					LegalWarrant W=warrants.get(i);
+					final LegalWarrant W=warrants.get(i);
 					W.setCrime("pardoned");
 					W.setOffenses(0);
 				}

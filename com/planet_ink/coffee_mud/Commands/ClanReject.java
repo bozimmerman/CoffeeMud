@@ -45,14 +45,14 @@ public class ClanReject extends StdCommand
 		throws java.io.IOException
 	{
 		String memberStr=(commands.size()>1)?(String)commands.get(commands.size()-1):"";
-		String clanName=(commands.size()>2)?CMParms.combine(commands,1,commands.size()-1):"";
+		final String clanName=(commands.size()>2)?CMParms.combine(commands,1,commands.size()-1):"";
 
 		Clan C=null;
-		boolean skipChecks=mob.getClanRole(mob.Name())!=null;
+		final boolean skipChecks=mob.getClanRole(mob.Name())!=null;
 		if(skipChecks) C=mob.getClanRole(mob.Name()).first;
 
 		if(C==null)
-		for(Pair<Clan,Integer> c : mob.clans())
+		for(final Pair<Clan,Integer> c : mob.clans())
 			if((clanName.length()==0)||(CMLib.english().containsString(c.first.getName(), clanName))
 			&&(c.first.getAuthority(c.second.intValue(), Clan.Function.REJECT)!=Authority.CAN_NOT_DO))
 			{	C=c.first; break; }
@@ -61,7 +61,7 @@ public class ClanReject extends StdCommand
 		commands.addElement(getAccessWords()[0]);
 		commands.addElement(memberStr);
 
-		StringBuffer msg=new StringBuffer("");
+		final StringBuffer msg=new StringBuffer("");
 		boolean found=false;
 		if(memberStr.length()>0)
 		{
@@ -77,14 +77,14 @@ public class ClanReject extends StdCommand
 			}
 			if(skipChecks||CMLib.clans().goForward(mob,C,commands,Clan.Function.REJECT,false))
 			{
-				List<MemberRecord> apps=C.getMemberList(C.getGovernment().getAutoRole());
+				final List<MemberRecord> apps=C.getMemberList(C.getGovernment().getAutoRole());
 				if(apps.size()<1)
 				{
 					mob.tell("There are no applicants to your "+C.getGovernmentName()+".");
 					return false;
 				}
 				memberStr=CMStrings.capitalizeAndLower(memberStr);
-				for(MemberRecord member : apps)
+				for(final MemberRecord member : apps)
 				{
 					if(member.name.equalsIgnoreCase(memberStr))
 					{
@@ -93,7 +93,7 @@ public class ClanReject extends StdCommand
 				}
 				if(found)
 				{
-					MOB M=CMLib.players().getLoadPlayer(memberStr);
+					final MOB M=CMLib.players().getLoadPlayer(memberStr);
 					if(M==null)
 					{
 						mob.tell(memberStr+" was not found.  Could not reject from "+C.getGovernmentName()+".");

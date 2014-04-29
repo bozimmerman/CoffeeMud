@@ -91,7 +91,7 @@ public class GenWallpaper implements Item
 		{
 			return this.getClass().newInstance();
 		}
-		catch(Exception e)
+		catch(final Exception e)
 		{
 			Log.errOut(ID(),e);
 		}
@@ -103,13 +103,13 @@ public class GenWallpaper implements Item
 	{
 		try
 		{
-			GenWallpaper E=(GenWallpaper)this.clone();
+			final GenWallpaper E=(GenWallpaper)this.clone();
 			//CMClass.bumpCounter(E,CMClass.CMObjectType.ITEM);//removed for mem & perf
 			E.destroyed=false;
 			return E;
 
 		}
-		catch(CloneNotSupportedException e)
+		catch(final CloneNotSupportedException e)
 		{
 			return this.newInstance();
 		}
@@ -160,7 +160,7 @@ public class GenWallpaper implements Item
 	@Override
 	public void setMiscText(String newText)
 	{
-		List<XMLLibrary.XMLpiece> V=CMLib.xml().parseAllXML(newText);
+		final List<XMLLibrary.XMLpiece> V=CMLib.xml().parseAllXML(newText);
 		if(V!=null)
 		{
 			setName(CMLib.xml().getValFromPieces(V,"NAME"));
@@ -171,7 +171,7 @@ public class GenWallpaper implements Item
 	}
 	@Override
 	public String text()
-	{    StringBuffer text=new StringBuffer("");
+	{    final StringBuffer text=new StringBuffer("");
 		text.append(CMLib.xml().convertXMLtoTag("NAME",Name()));
 		text.append(CMLib.xml().convertXMLtoTag("DESC",description()));
 		text.append(CMLib.xml().convertXMLtoTag("FLAG",CMLib.coffeeMaker().envFlags(this)));
@@ -237,7 +237,7 @@ public class GenWallpaper implements Item
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
-		MOB mob=msg.source();
+		final MOB mob=msg.source();
 		if(!msg.amITarget(this))
 			return true;
 		else
@@ -312,13 +312,13 @@ public class GenWallpaper implements Item
 		if(owner==null) return;
 		if (owner instanceof Room)
 		{
-			Room thisRoom=(Room)owner;
+			final Room thisRoom=(Room)owner;
 			thisRoom.delItem(this);
 		}
 		else
 		if (owner instanceof MOB)
 		{
-			MOB mob=(MOB)owner;
+			final MOB mob=(MOB)owner;
 			mob.delItem(this);
 		}
 	}

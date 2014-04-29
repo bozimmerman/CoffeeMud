@@ -48,7 +48,7 @@ public class Thief extends StdCharClass
 	@Override public String getManaFormula(){return "((@x4<@x5)/6)+(1*(1?3))"; }
 	@Override public int allowedArmorLevel(){return CharClass.ARMOR_LEATHER;}
 	@Override public int allowedWeaponLevel(){return CharClass.WEAPONS_THIEFLIKE;}
-	private HashSet disallowedWeapons=buildDisallowedWeaponClasses();
+	private final HashSet disallowedWeapons=buildDisallowedWeaponClasses();
 	@Override protected HashSet disallowedWeaponClasses(MOB mob){return disallowedWeapons;}
 
 
@@ -176,7 +176,7 @@ public class Thief extends StdCharClass
 		if(outfitChoices==null)
 		{
 			outfitChoices=new Vector();
-			Weapon w=CMClass.getWeapon("Shortsword");
+			final Weapon w=CMClass.getWeapon("Shortsword");
 			outfitChoices.add(w);
 		}
 		return outfitChoices;
@@ -188,13 +188,13 @@ public class Thief extends StdCharClass
 		super.grantAbilities(mob,isBorrowedClass);
 		if(mob.playerStats()==null)
 		{
-			List<AbilityMapper.AbilityMapping> V=CMLib.ableMapper().getUpToLevelListings(ID(),
+			final List<AbilityMapper.AbilityMapping> V=CMLib.ableMapper().getUpToLevelListings(ID(),
 												mob.charStats().getClassLevel(ID()),
 												false,
 												false);
-			for(AbilityMapper.AbilityMapping able : V)
+			for(final AbilityMapper.AbilityMapping able : V)
 			{
-				Ability A=CMClass.getAbility(able.abilityID);
+				final Ability A=CMClass.getAbility(able.abilityID);
 				if((A!=null)
 				&&(!CMLib.ableMapper().getAllQualified(ID(),true,A.ID()))
 				&&(!CMLib.ableMapper().getDefaultGain(ID(),true,A.ID())))
@@ -208,7 +208,7 @@ public class Thief extends StdCharClass
 	{
 		if(myHost instanceof MOB)
 		{
-			MOB myChar=(MOB)myHost;
+			final MOB myChar=(MOB)myHost;
 			if(msg.amISource(myChar)
 			   &&(!myChar.isMonster())
 			   &&(msg.sourceCode()==CMMsg.MSG_THIEF_ACT)
@@ -224,7 +224,7 @@ public class Thief extends StdCharClass
 				  ||msg.tool().ID().equals("Thief_Racketeer")
 				  ||msg.tool().ID().equals("Thief_Swipe")))
 			{
-				int xp=CMLib.flags().aliveAwakeMobileUnbound((MOB)msg.target(), true)?10:5;
+				final int xp=CMLib.flags().aliveAwakeMobileUnbound((MOB)msg.target(), true)?10:5;
 				CMLib.leveler().postExperience(myChar,(MOB)msg.target()," for a successful "+msg.tool().name(),xp,false);
 			}
 		}

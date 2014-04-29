@@ -34,7 +34,7 @@ public class SLinkedHashtable<K,F> implements java.util.Map<K,F>, java.io.Serial
 		super();
 		this.H=new LinkedHashMap<K,F>();
 		if(H!=null)
-			for(K o : H.keySet())
+			for(final K o : H.keySet())
 				put(o,H.get(o));
 	}
 
@@ -44,7 +44,7 @@ public class SLinkedHashtable<K,F> implements java.util.Map<K,F>, java.io.Serial
 		super();
 		this.H=new LinkedHashMap<K,F>();
 		if(H!=null)
-			for(Object[] o : H)
+			for(final Object[] o : H)
 				this.H.put((K) o[0],(F) o[1]);
 	}
 
@@ -55,11 +55,11 @@ public class SLinkedHashtable<K,F> implements java.util.Map<K,F>, java.io.Serial
 	}
 	public synchronized Vector<String> toStringVector(String divider)
 	{
-		Vector<String> V=new Vector<String>(size());
-		for(Object S : keySet())
+		final Vector<String> V=new Vector<String>(size());
+		for(final Object S : keySet())
 			if(S!=null)
 			{
-				Object O = get(S);
+				final Object O = get(S);
 				if(O==null)
 					V.add(S.toString() + divider);
 				else
@@ -79,7 +79,7 @@ public class SLinkedHashtable<K,F> implements java.util.Map<K,F>, java.io.Serial
 	@SuppressWarnings("unchecked")
 	public synchronized SLinkedHashtable<K,F> copyOf()
 	{
-		SLinkedHashtable<K,F> SH=new SLinkedHashtable<K,F>();
+		final SLinkedHashtable<K,F> SH=new SLinkedHashtable<K,F>();
 		SH.H=(LinkedHashMap<K,F>)H.clone();
 		return SH;
 	}

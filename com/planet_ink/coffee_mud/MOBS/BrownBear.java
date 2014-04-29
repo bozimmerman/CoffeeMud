@@ -37,7 +37,7 @@ public class BrownBear extends StdMOB
 	public BrownBear()
 	{
 		super();
-		Random randomizer = new Random(System.currentTimeMillis());
+		final Random randomizer = new Random(System.currentTimeMillis());
 
 		username="a Brown Bear";
 		setDescription("A bear, large and husky with brown fur.");

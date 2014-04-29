@@ -39,7 +39,7 @@ public class HolidayID extends StdWebMacro
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
-		String last=httpReq.getUrlParameter("HOLIDAY");
+		final String last=httpReq.getUrlParameter("HOLIDAY");
 		if(last==null) return " @break@";
 		if(last.length()>0)
 			return clearWebMacros(last);

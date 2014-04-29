@@ -41,17 +41,17 @@ public class DefaultClimate implements Climate
 	protected int nextWeather=WEATHER_CLEAR;
 	protected int weatherTicker=WEATHER_TICK_DOWN;
 
-	@Override public CMObject newInstance(){try{return getClass().newInstance();}catch(Exception e){return new DefaultClimate();}}
+	@Override public CMObject newInstance(){try{return getClass().newInstance();}catch(final Exception e){return new DefaultClimate();}}
 	@Override public void initializeClass(){}
 	@Override
 	public CMObject copyOf()
 	{
 		try
 		{
-			Object O=this.clone();
+			final Object O=this.clone();
 			return (CMObject)O;
 		}
-		catch(CloneNotSupportedException e)
+		catch(final CloneNotSupportedException e)
 		{
 			return new DefaultClimate();
 		}
@@ -162,7 +162,7 @@ public class DefaultClimate implements Climate
 	public boolean canSeeTheMoon(Room room, Ability butNotA)
 	{
 		if(canSeeTheStars(room)) return true;
-		List<Ability> V=CMLib.flags().domainAffects(room,Ability.DOMAIN_MOONSUMMONING);
+		final List<Ability> V=CMLib.flags().domainAffects(room,Ability.DOMAIN_MOONSUMMONING);
 		for(int v=0;v<V.size();v++)
 			if(V.get(v)!=butNotA)
 				return true;
@@ -233,7 +233,7 @@ public class DefaultClimate implements Climate
 	{
 		if(one.length!=two.length)
 			return one;
-		int[] returnable=new int[one.length];
+		final int[] returnable=new int[one.length];
 		for(int o=0;o<one.length;o++)
 			returnable[o]=one[o]+two[o];
 		return returnable;
@@ -277,12 +277,12 @@ public class DefaultClimate implements Climate
 			for(int g=0;g<Climate.NUM_WEATHER;g++)
 			{
 				// take the base chance for a seasonal weather occurrence (rain in winter, etc)
-				int seasonalNum=seasonal[(A.getTimeObj().getSeasonCode().ordinal()*Climate.NUM_WEATHER)+g];
+				final int seasonalNum=seasonal[(A.getTimeObj().getSeasonCode().ordinal()*Climate.NUM_WEATHER)+g];
 				// find the chance of changing from what it will be, to some new condition.
-				int changeNum=changeMap[(nextWeather*Climate.NUM_WEATHER)+g];
+				final int changeNum=changeMap[(nextWeather*Climate.NUM_WEATHER)+g];
 				// add them together to find the chance of a particular change in a particular season
 				// to a particular condition.
-				int chance=seasonalNum+changeNum;
+				final int chance=seasonalNum+changeNum;
 				// total all the change chances, negative means NO chance of this change
 				if(chance>0) goodWeatherTotal+=chance;
 			}
@@ -298,19 +298,19 @@ public class DefaultClimate implements Climate
 			}*/
 
 			// roll a number from this to that.  Like the lottery, whosever number gets rolled wins!
-			int newGoodWeatherNum=CMLib.dice().roll(1,goodWeatherTotal,-1);
+			final int newGoodWeatherNum=CMLib.dice().roll(1,goodWeatherTotal,-1);
 
 			// now, determine the winner!
 			int tempWeatherTotal=0;
 			for(int g=0;g<Climate.NUM_WEATHER;g++)
 			{
 				// take the base chance for a seasonal weather occurrence (rain in winter, etc)
-				int seasonalNum=seasonal[(A.getTimeObj().getSeasonCode().ordinal()*Climate.NUM_WEATHER)+g];
+				final int seasonalNum=seasonal[(A.getTimeObj().getSeasonCode().ordinal()*Climate.NUM_WEATHER)+g];
 				// find the chance of changing from what it will be, to some new condition.
-				int changeNum=changeMap[(nextWeather*Climate.NUM_WEATHER)+g];
+				final int changeNum=changeMap[(nextWeather*Climate.NUM_WEATHER)+g];
 				// add them together to find the chance of a particular change in a particular season
 				// to a particular condition.
-				int chance=seasonalNum+changeNum;
+				final int chance=seasonalNum+changeNum;
 				if(chance>0)
 				{
 					tempWeatherTotal+=chance;
@@ -323,7 +323,7 @@ public class DefaultClimate implements Climate
 			}
 
 			// remember your olde weather
-			int oldWeather=currentWeather;
+			final int oldWeather=currentWeather;
 			if(!CMSecurity.isDisabled(CMSecurity.DisFlag.WEATHERCHANGES))
 			{
 				currentWeather=nextWeather;
@@ -336,7 +336,7 @@ public class DefaultClimate implements Climate
 				// 2=say stop word only
 				// 3=say stop word, then weatherdescription
 				/*					 -   CL  WD  RA  TH  SN  HA  HE  SL  BL  DU  DR  WC*/
-				int[] sayMap=		{
+				final int[] sayMap=		{
 				/*CLEAR*/			 0,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,
 				/*CLOUDY*/			 2,  0,  3,  1,  1,  1,  1,  3,  1,  1,  3,  3,  3,
 				/*WINDY*/			 2,  1,  0,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,
@@ -351,7 +351,7 @@ public class DefaultClimate implements Climate
 				/*DROUGHT*/  		 2,  3,  3,  3,  3,  3,  3,  2,  3,  3,  1,  0,  3,
 				/*WINTER*/			 2,  3,  3,  3,  3,  1,  1,  3,  1,  1,  1,  1,  0,
 									};
-				String stopWord=getWeatherStop(oldWeather);
+				final String stopWord=getWeatherStop(oldWeather);
 				switch(sayMap[(oldWeather*Climate.NUM_WEATHER)+currentWeather])
 				{
 				case 0: break; //say=null break;
@@ -363,13 +363,13 @@ public class DefaultClimate implements Climate
 
 			if((say!=null)&&!CMSecurity.isDisabled(CMSecurity.DisFlag.WEATHERNOTIFIES))
 			{
-				for(Enumeration<Room> r=A.getProperMap();r.hasMoreElements();)
+				for(final Enumeration<Room> r=A.getProperMap();r.hasMoreElements();)
 				{
-					Room R=r.nextElement();
+					final Room R=r.nextElement();
 					if(CMLib.map().hasASky(R))
 						for(int i=0;i<R.numInhabitants();i++)
 						{
-							MOB mob=R.fetchInhabitant(i);
+							final MOB mob=R.fetchInhabitant(i);
 							if((mob!=null)
 							&&(!mob.isMonster())
 							&&(CMLib.flags().canSee(mob)||(currentWeather!=oldWeather)))
@@ -384,7 +384,7 @@ public class DefaultClimate implements Climate
 	{
 		if(ticking instanceof Area)
 		{
-			Area A=(Area)ticking;
+			final Area A=(Area)ticking;
 			tickStatus=Tickable.STATUS_WEATHER;
 			weatherTick(A);
 		}
@@ -394,7 +394,7 @@ public class DefaultClimate implements Climate
 
 	protected String theWeatherDescription(Area A, int weather)
 	{
-		StringBuffer desc=new StringBuffer("");
+		final StringBuffer desc=new StringBuffer("");
 		if((weather<0)||(weather>=Climate.NUM_WEATHER))
 			return "";
 		final int listFileOrd = CMProps.ListFile.WEATHER_CLEAR.ordinal() + weather;

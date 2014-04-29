@@ -66,7 +66,7 @@ public class LightSource extends StdItem implements Light
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
-		MOB mob=msg.source();
+		final MOB mob=msg.source();
 		if(!msg.amITarget(this))
 			return super.okMessage(myHost,msg);
 		switch(msg.targetMinor())
@@ -77,7 +77,7 @@ public class LightSource extends StdItem implements Light
 				mob.tell(name()+" looks used up.");
 				return false;
 			}
-			Room room=mob.location();
+			final Room room=mob.location();
 			if(room!=null)
 			{
 				if(((LightSource.inTheRain(room)&&(goesOutInTheRain()))
@@ -123,7 +123,7 @@ public class LightSource extends StdItem implements Light
 			{
 				if(owner() instanceof Room)
 				{
-					Room R=(Room)owner();
+					final Room R=(Room)owner();
 					if(R.numInhabitants()>0)
 						R.showHappens(CMMsg.MSG_OK_VISUAL,name()+" flickers and burns out.");
 					if(destroyedWhenBurnedOut())
@@ -133,7 +133,7 @@ public class LightSource extends StdItem implements Light
 				else
 				if(owner() instanceof MOB)
 				{
-					MOB M=(MOB)owner();
+					final MOB M=(MOB)owner();
 					M.tell(M,null,this,"<O-NAME> flickers and burns out.");
 					setDuration(0);
 					if(destroyedWhenBurnedOut())
@@ -178,9 +178,9 @@ public class LightSource extends StdItem implements Light
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
-		MOB mob=msg.source();
+		final MOB mob=msg.source();
 		if(mob==null) return;
-		Room room=mob.location();
+		final Room room=mob.location();
 		if(room==null) return;
 		if(((LightSource.inTheRain(room)&&goesOutInTheRain())
 				   ||(LightSource.inTheWater(msg.source(),room)))
@@ -234,7 +234,7 @@ public class LightSource extends StdItem implements Light
 				{
 					if(msg.source().location()!=null)
 						msg.source().location().recoverRoomStats();
-					Room R=CMLib.map().roomLocation(msg.target());
+					final Room R=CMLib.map().roomLocation(msg.target());
 					if((R!=null)&&(R!=msg.source().location()))
 						R.recoverRoomStats();
 				}
@@ -256,7 +256,7 @@ public class LightSource extends StdItem implements Light
 							msg.source().recoverPhyStats();
 							if(msg.source().location()!=null)
 								msg.source().location().recoverRoomStats();
-							Room R=CMLib.map().roomLocation(msg.tool());
+							final Room R=CMLib.map().roomLocation(msg.tool());
 							if((R!=null)&&(R!=msg.source().location()))
 								R.recoverRoomStats();
 						}

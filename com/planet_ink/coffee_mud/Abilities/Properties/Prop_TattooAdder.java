@@ -96,14 +96,14 @@ public class Prop_TattooAdder extends Property
 			tattooName=tattooName.substring(1);
 		}
 
-		boolean silent=tattooName.startsWith("~");
+		final boolean silent=tattooName.startsWith("~");
 		if(silent) tattooName=tattooName.substring(1);
 
 		if(addOnly) tattooMinus=false;
 		if(subOnly) tattooPlus=false;
 
-		MOB.Tattoo pT=CMLib.database().parseTattoo(tattooName);
-		MOB.Tattoo T = mob.findTattoo(pT.tattooName);
+		final MOB.Tattoo pT=CMLib.database().parseTattoo(tattooName);
+		final MOB.Tattoo T = mob.findTattoo(pT.tattooName);
 		if(T!=null)
 		{
 			if(tattooMinus)

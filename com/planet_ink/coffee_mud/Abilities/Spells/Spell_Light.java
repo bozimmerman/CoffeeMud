@@ -66,7 +66,7 @@ public class Spell_Light extends Spell
 	public void unInvoke()
 	{
 		// undo the affects of this spell
-		Room room=CMLib.map().roomLocation(affected);
+		final Room room=CMLib.map().roomLocation(affected);
 		if(canBeUninvoked()&&(room!=null)&&(affected instanceof MOB))
 			room.show((MOB)affected,null,CMMsg.MSG_OK_VISUAL,"The light above <S-NAME> dims.");
 		super.unInvoke();
@@ -89,12 +89,12 @@ public class Spell_Light extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		final Room room=mob.location();
 		if((success)&&(room!=null))
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"^S<S-NAME> attain(s) a light above <S-HIS-HER> head!":"^S<S-NAME> invoke(s) a white light above <S-HIS-HER> head!^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"^S<S-NAME> attain(s) a light above <S-HIS-HER> head!":"^S<S-NAME> invoke(s) a white light above <S-HIS-HER> head!^?");
 			if(room.okMessage(mob,msg))
 			{
 				room.send(mob,msg);

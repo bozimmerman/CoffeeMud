@@ -14,7 +14,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -65,9 +64,9 @@ public class Spell_MassDisintegrate extends Spell
 			return false;
 
 		int avgLevel=0;
-		for(Iterator e=h.iterator();e.hasNext();)
+		for (final Object element : h)
 		{
-			MOB mob2=(MOB)e.next();
+			final MOB mob2=(MOB)element;
 			avgLevel+=mob2.phyStats().level();
 		}
 		if(h.size()>0)
@@ -84,33 +83,33 @@ public class Spell_MassDisintegrate extends Spell
 			if(avgLevel <= 0)
 				avgLevel = 1;
 			if(mob.location().show(mob,null,this,verbalCastCode(mob,null,auto),auto?"Something is happening!":"^S<S-NAME> wave(s) <S-HIS-HER> arms and utter(s) a trecherous spell!^?"))
-			for(Iterator f=h.iterator();f.hasNext();)
-			{
-				MOB target=(MOB)f.next();
-				if((target.phyStats().level()/avgLevel)<2)
+				for (final Object element : h)
 				{
-					CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),null);
-					if(mob.location().okMessage(mob,msg))
+					final MOB target=(MOB)element;
+					if((target.phyStats().level()/avgLevel)<2)
 					{
-						mob.location().send(mob,msg);
-						if(msg.value()<=0)
+						final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),null);
+						if(mob.location().okMessage(mob,msg))
 						{
-							if(target.curState().getHitPoints()>0)
-								CMLib.combat().postDamage(mob,target,this,target.curState().getHitPoints()*100,CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,Weapon.TYPE_BURSTING,("^SThe spell <DAMAGE> <T-NAME>!^?")+CMLib.protocol().msp("spelldam2.wav",40));
+							mob.location().send(mob,msg);
+							if(msg.value()<=0)
+							{
+								if(target.curState().getHitPoints()>0)
+									CMLib.combat().postDamage(mob,target,this,target.curState().getHitPoints()*100,CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,Weapon.TYPE_BURSTING,("^SThe spell <DAMAGE> <T-NAME>!^?")+CMLib.protocol().msp("spelldam2.wav",40));
+							}
 						}
 					}
 				}
-			}
 			mob.location().recoverRoomStats();
-			Vector V=new Vector();
+			final Vector V=new Vector();
 			for(int i=mob.location().numItems()-1;i>=0;i--)
 			{
-				Item I=mob.location().getItem(i);
+				final Item I=mob.location().getItem(i);
 				if((I!=null)&&(I.container()==null))
 				{
-					List<DeadBody> DBs=CMLib.utensils().getDeadBodies(I);
+					final List<DeadBody> DBs=CMLib.utensils().getDeadBodies(I);
 					boolean ok=true;
-					for(DeadBody DB : DBs)
+					for(final DeadBody DB : DBs)
 					{
 						if(DB.playerCorpse()
 						&&(!((DeadBody)I).mobName().equals(mob.Name())))
@@ -121,12 +120,12 @@ public class Spell_MassDisintegrate extends Spell
 			}
 			for(int i=0;i<V.size();i++)
 			{
-				Item I=(Item)V.elementAt(i);
+				final Item I=(Item)V.elementAt(i);
 				if((!(I instanceof DeadBody))
 				||(!((DeadBody)I).playerCorpse())
 				||(((DeadBody)I).mobName().equals(mob.Name())))
 				{
-					CMMsg msg=CMClass.getMsg(mob,I,this,verbalCastCode(mob,I,auto),I.name()+" disintegrates!");
+					final CMMsg msg=CMClass.getMsg(mob,I,this,verbalCastCode(mob,I,auto),I.name()+" disintegrates!");
 					if(mob.location().okMessage(mob,msg))
 					{
 						mob.location().send(mob,msg);

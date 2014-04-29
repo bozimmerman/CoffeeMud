@@ -43,14 +43,14 @@ public class Look extends StdCommand
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		Room R=mob.location();
+		final Room R=mob.location();
 		boolean quiet=false;
 		if((commands!=null)&&(commands.size()>1)&&(((String)commands.lastElement()).equalsIgnoreCase("UNOBTRUSIVELY")))
 		{
 			commands.removeElementAt(commands.size()-1);
 			quiet=true;
 		}
-		String textMsg="<S-NAME> look(s) ";
+		final String textMsg="<S-NAME> look(s) ";
 		if(R==null) return false;
 		if((commands!=null)&&(commands.size()>1))
 		{
@@ -61,11 +61,11 @@ public class Look extends StdCommand
 			else
 			if((commands.size()>2)&&(((String)commands.elementAt(1)).equalsIgnoreCase("to")))
 			   commands.removeElementAt(1);
-			String ID=CMParms.combine(commands,1);
+			final String ID=CMParms.combine(commands,1);
 
 			if((ID.toUpperCase().startsWith("EXIT")&&(commands.size()==2))&&(CMProps.getIntVar(CMProps.Int.EXVIEW)!=1))
 			{
-				CMMsg exitMsg=CMClass.getMsg(mob,R,null,CMMsg.MSG_LOOK_EXITS,null);
+				final CMMsg exitMsg=CMClass.getMsg(mob,R,null,CMMsg.MSG_LOOK_EXITS,null);
 				if((CMProps.getIntVar(CMProps.Int.EXVIEW)>=2)!=CMath.bset(mob.getBitmap(), MOB.ATT_BRIEF))
 					exitMsg.setValue(CMMsg.MASK_OPTIMIZE);
 				if(R.okMessage(mob, exitMsg))
@@ -84,7 +84,7 @@ public class Look extends StdCommand
 			&&(((String)commands.elementAt(1)).equalsIgnoreCase("in")))
 			{
 				commands.removeElementAt(1);
-				String ID2=CMParms.combine(commands,1);
+				final String ID2=CMParms.combine(commands,1);
 				thisThang=R.fetchFromMOBRoomFavorsItems(mob,null,ID2,Wearable.FILTER_ANY);
 				if((thisThang!=null)&&((!(thisThang instanceof Container))||(((Container)thisThang).capacity()==0)))
 				{
@@ -99,8 +99,8 @@ public class Look extends StdCommand
 				dirCode=Directions.getGoodDirectionCode(ID);
 				if(dirCode>=0)
 				{
-					Room room=R.getRoomInDir(dirCode);
-					Exit exit=R.getExitInDir(dirCode);
+					final Room room=R.getRoomInDir(dirCode);
+					final Exit exit=R.getExitInDir(dirCode);
 					if((room!=null)&&(exit!=null))
 					{
 						thisThang=exit;
@@ -125,10 +125,10 @@ public class Look extends StdCommand
 						name=((R instanceof SpaceShip)||(R.getArea() instanceof SpaceShip))?
 								Directions.getShipDirectionName(dirCode):Directions.getDirectionName(dirCode);
 				}
-				CMMsg msg=CMClass.getMsg(mob,thisThang,lookingTool,CMMsg.MSG_LOOK,textMsg+name+".");
+				final CMMsg msg=CMClass.getMsg(mob,thisThang,lookingTool,CMMsg.MSG_LOOK,textMsg+name+".");
 				if((thisThang instanceof Room)&&(CMath.bset(mob.getBitmap(),MOB.ATT_AUTOEXITS))&&(CMProps.getIntVar(CMProps.Int.EXVIEW)!=1))
 				{
-					CMMsg exitMsg=CMClass.getMsg(mob,thisThang,lookingTool,CMMsg.MSG_LOOK_EXITS,null);
+					final CMMsg exitMsg=CMClass.getMsg(mob,thisThang,lookingTool,CMMsg.MSG_LOOK_EXITS,null);
 					if((CMProps.getIntVar(CMProps.Int.EXVIEW)>=2)!=CMath.bset(mob.getBitmap(), MOB.ATT_BRIEF))
 						exitMsg.setValue(CMMsg.MASK_OPTIMIZE);
 					msg.addTrailerMsg(exitMsg);
@@ -148,10 +148,10 @@ public class Look extends StdCommand
 					return false;
 				}
 
-			CMMsg msg=CMClass.getMsg(mob,R,null,CMMsg.MSG_LOOK,(quiet?null:textMsg+"around."),CMMsg.MSG_LOOK,(quiet?null:textMsg+"at you."),CMMsg.MSG_LOOK,(quiet?null:textMsg+"around."));
+			final CMMsg msg=CMClass.getMsg(mob,R,null,CMMsg.MSG_LOOK,(quiet?null:textMsg+"around."),CMMsg.MSG_LOOK,(quiet?null:textMsg+"at you."),CMMsg.MSG_LOOK,(quiet?null:textMsg+"around."));
 			if((CMath.bset(mob.getBitmap(),MOB.ATT_AUTOEXITS))&&(CMProps.getIntVar(CMProps.Int.EXVIEW)!=1)&&(CMLib.flags().canBeSeenBy(R,mob)))
 			{
-				CMMsg exitMsg=CMClass.getMsg(mob,R,null,CMMsg.MSG_LOOK_EXITS,null);
+				final CMMsg exitMsg=CMClass.getMsg(mob,R,null,CMMsg.MSG_LOOK_EXITS,null);
 				if((CMProps.getIntVar(CMProps.Int.EXVIEW)>=2)!=CMath.bset(mob.getBitmap(), MOB.ATT_BRIEF))
 					exitMsg.setValue(CMMsg.MASK_OPTIMIZE);
 				msg.addTrailerMsg(exitMsg);

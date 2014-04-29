@@ -85,18 +85,18 @@ public class Where extends StdCommand
 		if((CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.WHERE))
 		&&(!overrideSet))
 		{
-			StringBuffer lines=new StringBuffer("^x");
+			final StringBuffer lines=new StringBuffer("^x");
 			lines.append(CMStrings.padRight("Name",17)+"| ");
 			lines.append(CMStrings.padRight("Location",17)+"^.^N\n\r");
 			String who=CMParms.combineWithQuotes(commands,1);
 			if(who.length()==0)
 			{
-				for(Session S : CMLib.sessions().localOnlineIterable())
+				for(final Session S : CMLib.sessions().localOnlineIterable())
 				{
-					MOB mob2=S.mob();
+					final MOB mob2=S.mob();
 					if(canShowTo(mob,mob2))
 					{
-						Room R=mob2.location();
+						final Room R=mob2.location();
 						if(CMSecurity.isAllowed(mob,R,CMSecurity.SecFlag.WHERE))
 						{
 							lines.append("^!"+CMStrings.padRight(mob2.Name(),17)+"^N| ");
@@ -225,7 +225,7 @@ public class Where extends StdCommand
 							{
 								for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 								{
-									Exit E=R.getRawExit(d);
+									final Exit E=R.getRawExit(d);
 									if((E!=null)
 									&&((who.length()==0)
 											||((E.Name().length()>0)&&(CMLib.english().containsString(E.Name(),who)))
@@ -241,7 +241,7 @@ public class Where extends StdCommand
 							if((!mobOnly)&&(!roomOnly)&&(!exitOnly))
 								for(int i=0;i<R.numItems();i++)
 								{
-									Item I=R.getItem(i);
+									final Item I=R.getItem(i);
 									if((zapperMask)&&(itemOnly))
 									{
 										if(CMLib.masking().maskCheck(compiledZapperMask,I,true))
@@ -277,7 +277,7 @@ public class Where extends StdCommand
 								}
 							for(int m=0;m<R.numInhabitants();m++)
 							{
-								MOB M=R.fetchInhabitant(m);
+								final MOB M=R.fetchInhabitant(m);
 								if((M!=null)&&((M.isMonster())||(canShowTo(mob,M))))
 								{
 									if((!itemOnly)&&(!roomOnly)&&(!exitOnly))
@@ -317,7 +317,7 @@ public class Where extends StdCommand
 									{
 										for(int i=0;i<M.numItems();i++)
 										{
-											Item I=M.getItem(i);
+											final Item I=M.getItem(i);
 											if((zapperMask)&&(itemOnly))
 											{
 												if(CMLib.masking().maskCheck(compiledZapperMask,I,true))
@@ -351,11 +351,11 @@ public class Where extends StdCommand
 												lines.append("\n\r");
 											}
 										}
-										ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(M);
+										final ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(M);
 										if(SK!=null)
-										for(Iterator<Environmental> i=SK.getShop().getStoreInventory();i.hasNext();)
+										for(final Iterator<Environmental> i=SK.getShop().getStoreInventory();i.hasNext();)
 										{
-											Environmental E=i.next();
+											final Environmental E=i.next();
 											if((zapperMask)&&(E instanceof Item)&&(itemOnly))
 											{
 												if(CMLib.masking().maskCheck(compiledZapperMask,E,true))
@@ -416,7 +416,7 @@ public class Where extends StdCommand
 							}
 						}
 					}
-				}catch(NoSuchElementException nse){}
+				}catch(final NoSuchElementException nse){}
 			}
 			mob.tell(lines.toString()+"^.");
 		}
@@ -425,7 +425,7 @@ public class Where extends StdCommand
 			int alignment=mob.fetchFaction(CMLib.factions().AlignID());
 			for(int i=commands.size()-1;i>=0;i--)
 			{
-				String s=(String)commands.elementAt(i);
+				final String s=(String)commands.elementAt(i);
 				if(s.equalsIgnoreCase("good"))
 				{
 					alignment=CMLib.factions().getAlignMedianFacValue(Faction.Align.GOOD);
@@ -445,21 +445,21 @@ public class Where extends StdCommand
 				}
 			}
 
-			int adjust=CMath.s_int(CMParms.combine(commands,1));
-			DVector levelsVec=new DVector(2);
-			DVector mobsVec=new DVector(2);
-			DVector alignVec=new DVector(2);
-			int moblevel=mob.phyStats().level()+adjust;
-			for(Enumeration a=CMLib.map().areas();a.hasMoreElements();)
+			final int adjust=CMath.s_int(CMParms.combine(commands,1));
+			final DVector levelsVec=new DVector(2);
+			final DVector mobsVec=new DVector(2);
+			final DVector alignVec=new DVector(2);
+			final int moblevel=mob.phyStats().level()+adjust;
+			for(final Enumeration a=CMLib.map().areas();a.hasMoreElements();)
 			{
-				Area A=(Area)a.nextElement();
+				final Area A=(Area)a.nextElement();
 				if((CMLib.flags().canAccess(mob,A))
 				&&(CMLib.flags().canBeLocated(A))
 				&&(A.getAreaIStats()!=null))
 				{
-					int median=A.getAreaIStats()[Area.Stats.MED_LEVEL.ordinal()];
+					final int median=A.getAreaIStats()[Area.Stats.MED_LEVEL.ordinal()];
 					int medianDiff=0;
-					int diffLimit=6;
+					final int diffLimit=6;
 					if((median<(moblevel+diffLimit))
 					&&((median>=(moblevel-diffLimit))))
 					{
@@ -472,24 +472,24 @@ public class Where extends StdCommand
 
 					whereAdd(mobsVec,A,A.getAreaIStats()[Area.Stats.POPULATION.ordinal()]);
 
-					int align=A.getAreaIStats()[Area.Stats.MED_ALIGNMENT.ordinal()];
-					int alignDiff=((int)Math.abs((double)(alignment-align)));
+					final int align=A.getAreaIStats()[Area.Stats.MED_ALIGNMENT.ordinal()];
+					final int alignDiff=((int)Math.abs((double)(alignment-align)));
 					whereAdd(alignVec,A,alignDiff);
 				}
 			}
-			StringBuffer msg=new StringBuffer("You are currently in: ^H"+mob.location().getArea().name()+"^?\n\r");
+			final StringBuffer msg=new StringBuffer("You are currently in: ^H"+mob.location().getArea().name()+"^?\n\r");
 			if((!CMSecurity.isDisabled(CMSecurity.DisFlag.ROOMVISITS))&&(mob.playerStats()!=null))
 				msg.append("You have explored "+mob.playerStats().percentVisited(mob,mob.location().getArea())+"% of this area and "+mob.playerStats().percentVisited(mob,null)+"% of the world.\n\r");
-			DVector scores=new DVector(2);
-			for(Enumeration a=CMLib.map().areas();a.hasMoreElements();)
+			final DVector scores=new DVector(2);
+			for(final Enumeration a=CMLib.map().areas();a.hasMoreElements();)
 			{
-				Area A=(Area)a.nextElement();
+				final Area A=(Area)a.nextElement();
 				if(CMLib.flags().canAccess(mob,A))
 				{
 					int index=levelsVec.indexOf(A);
 					if(index>=0)
 					{
-						Integer I=(Integer)levelsVec.elementAt(index,2);
+						final Integer I=(Integer)levelsVec.elementAt(index,2);
 						if((I!=null)&&(I.intValue()!=0))
 						{
 							int score=(index+1);
@@ -509,9 +509,9 @@ public class Where extends StdCommand
 			msg.append("^x"+CMStrings.padRight("Area Name",35)+CMStrings.padRight("Level",6)+CMStrings.padRight("Alignment",20)+CMStrings.padRight("Pop",10)+"^.^?\n\r");
 			for(int i=scores.size()-1;((i>=0)&&(i>=(scores.size()-15)));i--)
 			{
-				Area A=(Area)scores.elementAt(i,1);
-				int lvl=A.getAreaIStats()[Area.Stats.MED_LEVEL.ordinal()];
-				int align=A.getAreaIStats()[Area.Stats.MED_ALIGNMENT.ordinal()];
+				final Area A=(Area)scores.elementAt(i,1);
+				final int lvl=A.getAreaIStats()[Area.Stats.MED_LEVEL.ordinal()];
+				final int align=A.getAreaIStats()[Area.Stats.MED_ALIGNMENT.ordinal()];
 
 				msg.append(CMStrings.padRight(A.name(),35))
 				   .append(CMStrings.padRight(Integer.toString(lvl),6))

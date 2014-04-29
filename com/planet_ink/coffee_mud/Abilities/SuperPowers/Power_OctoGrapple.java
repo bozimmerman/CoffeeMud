@@ -60,7 +60,7 @@ public class Power_OctoGrapple extends SuperPower
 		if(!(affected instanceof MOB))
 			return true;
 
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		// when this spell is on a MOBs Affected list,
 		// it should consistantly prevent the mob
@@ -83,7 +83,7 @@ public class Power_OctoGrapple extends SuperPower
 							unInvoke();
 							if((mob.fetchEffect(ID())==null)&&(invoker!=null)&&(invoker!=mob))
 							{
-								Ability A=mob.fetchEffect(ID());
+								final Ability A=mob.fetchEffect(ID());
 								if(A!=null) A.unInvoke();
 							}
 						}
@@ -119,7 +119,7 @@ public class Power_OctoGrapple extends SuperPower
 		// undo the affects of this spell
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		super.unInvoke();
 
@@ -151,7 +151,7 @@ public class Power_OctoGrapple extends SuperPower
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		MOB target=this.getTarget(mob,commands,givenTarget);
+		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
 		if((!auto)&&(mob.baseWeight()<(target.baseWeight()-200)))
@@ -173,7 +173,7 @@ public class Power_OctoGrapple extends SuperPower
 		else
 			levelDiff=0;
 		// now see if it worked
-		boolean hit=(auto)||CMLib.combat().rollToHit(mob,target);
+		final boolean hit=(auto)||CMLib.combat().rollToHit(mob,target);
 		boolean success=proficiencyCheck(mob,(-levelDiff)+(-(((target.charStats().getStat(CharStats.STAT_STRENGTH)-mob.charStats().getStat(CharStats.STAT_STRENGTH))*5))),auto)&&(hit);
 		success=success&&(target.charStats().getBodyPart(Race.BODY_ARM)>2);
 		if(success)
@@ -183,7 +183,7 @@ public class Power_OctoGrapple extends SuperPower
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),auto?"<T-NAME> get(s) grappled!":"^F^<FIGHT^><S-NAME> grab(s) <T-NAMESELF> with <S-HIS-HER> huge metallic arms!^</FIGHT^>^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),auto?"<T-NAME> get(s) grappled!":"^F^<FIGHT^><S-NAME> grab(s) <T-NAMESELF> with <S-HIS-HER> huge metallic arms!^</FIGHT^>^?");
 			CMLib.color().fixSourceFightColor(msg);
 			if((mob.location().okMessage(mob,msg))&&(msg.value()<=0))
 			{

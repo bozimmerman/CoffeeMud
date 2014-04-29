@@ -40,7 +40,7 @@ public class MudInfo extends StdWebMacro
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
-		java.util.Map<String,String> parms=parseParms(parm);
+		final java.util.Map<String,String> parms=parseParms(parm);
 		if(parms.containsKey("DOMAIN"))
 			return CMProps.getVar(CMProps.Str.MUDDOMAIN);
 		if(parms.containsKey("EMAILOK"))
@@ -56,7 +56,7 @@ public class MudInfo extends StdWebMacro
 			String ports=CMProps.getVar(CMProps.Str.MUDPORTS);
 			if(ports==null) return "Booting";
 			ports=ports.trim();
-			int x=ports.indexOf(' ');
+			final int x=ports.indexOf(' ');
 			if(x<0)
 				return clearWebMacros(ports);
 			return clearWebMacros(ports.substring(0,x));

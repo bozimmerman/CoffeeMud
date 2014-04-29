@@ -102,7 +102,7 @@ public class Skill_Mimicry extends BardSkill
 		if(((affected instanceof MOB)&&(!CMLib.flags().aliveAwakeMobileUnbound((MOB)affected,true))))
 			return true;
 		msg=(CMMsg)msg.copyOf();
-		MOB sMOB=msg.source();
+		final MOB sMOB=msg.source();
 		if(msg.sourceMinor()==CMMsg.TYP_EMOTE)
 		{
 			if(affected instanceof MOB)
@@ -112,7 +112,7 @@ public class Skill_Mimicry extends BardSkill
 						   msg.othersCode(),msg.othersMessage());
 			else
 			{
-				MOB newSMOB=CMClass.getFactoryMOB();
+				final MOB newSMOB=CMClass.getFactoryMOB();
 				newSMOB.baseCharStats().setStat(CharStats.STAT_GENDER,'N');
 				newSMOB.setName(affected.name());
 				newSMOB.recoverCharStats();
@@ -135,7 +135,7 @@ public class Skill_Mimicry extends BardSkill
 						   msg.othersCode(),msg.othersMessage());
 			else
 			{
-				MOB newSMOB=CMClass.getFactoryMOB();
+				final MOB newSMOB=CMClass.getFactoryMOB();
 				newSMOB.baseCharStats().setStat(CharStats.STAT_GENDER,'N');
 				newSMOB.setName(affected.name());
 				newSMOB.recoverCharStats();
@@ -167,22 +167,22 @@ public class Skill_Mimicry extends BardSkill
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		MOB target=this.getTarget(mob,commands,givenTarget);
+		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_QUIETMOVEMENT|(auto?CMMsg.MASK_ALWAYS:0),auto?"":"<S-NAME> begin(s) mimicing <T-NAMESELF>.");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_QUIETMOVEMENT|(auto?CMMsg.MASK_ALWAYS:0),auto?"":"<S-NAME> begin(s) mimicing <T-NAMESELF>.");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				beneficialAffect(mob,mob,asLevel,0);
-				Ability A=mob.fetchEffect(ID());
+				final Ability A=mob.fetchEffect(ID());
 				if((A!=null)&&(target!=mob)) A.setMiscText(target.Name());
 			}
 		}

@@ -126,7 +126,7 @@ public class HTTPException extends Exception
 	 */
 	public DataBuffers generateOutput(HTTPRequest request) throws HTTPException
 	{
-		StringBuilder str = new StringBuilder("");
+		final StringBuilder str = new StringBuilder("");
 		str.append("HTTP/").append(request.getHttpVer()).append(" ").append(getStatus().getStatusCode()).append(" ").append(getMessage());
 		if(isDebugging)
 			debugLogger.finer("Response Exception: "+str.toString());
@@ -143,19 +143,19 @@ public class HTTPException extends Exception
 		&&(config!=null)
 		&&(config.getErrorPage().length()>0))
 		{
-			File errorFile=config.getFileManager().createFileFromPath(config.getErrorPage());
+			final File errorFile=config.getFileManager().createFileFromPath(config.getErrorPage());
 			DataBuffers fileBytes=null;
 			try
 			{
 				fileBytes=config.getFileCache().getFileData(errorFile, null);
-				MIMEType mimeType=MIMEType.getMIMEType(config.getErrorPage());
+				final MIMEType mimeType=MIMEType.getMIMEType(config.getErrorPage());
 				if(mimeType!=null)
 				{
 					headers.put(HTTPHeader.CONTENT_TYPE, mimeType.getType());
-					Class<? extends HTTPOutputConverter> converterClass=config.getConverters().findConverter(mimeType);
+					final Class<? extends HTTPOutputConverter> converterClass=config.getConverters().findConverter(mimeType);
 					if(converterClass != null)
 					{
-						HTTPOutputConverter converter=converterClass.newInstance();
+						final HTTPOutputConverter converter=converterClass.newInstance();
 						finalBody=new MWDataBuffers(converter.convertOutput(config, request, errorFile, status, fileBytes.flushToBuffer()),0);
 					}
 					else
@@ -164,7 +164,7 @@ public class HTTPException extends Exception
 				else
 					finalBody=fileBytes;
 			}
-			catch(Exception e)
+			catch(final Exception e)
 			{
 				if(fileBytes!=null)
 					fileBytes.close();
@@ -174,7 +174,7 @@ public class HTTPException extends Exception
 		{
 			finalBody=new MWDataBuffers(body.getBytes(), 0);
 		}
-		for(HTTPHeader header : headers.keySet())
+		for(final HTTPHeader header : headers.keySet())
 		{
 			str.append(header.makeLine(headers.get(header)));
 		}

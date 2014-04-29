@@ -42,7 +42,7 @@ public class Prop_ReqLevels extends Property implements TriggeredAffect
 	private boolean noFollow=false;
 	private boolean noSneak=false;
 	private boolean allFlag=false;
-	private boolean sysopFlag=false;
+	private final boolean sysopFlag=false;
 
 	@Override public long flags(){return Ability.FLAG_ZAPPER;}
 
@@ -57,9 +57,9 @@ public class Prop_ReqLevels extends Property implements TriggeredAffect
 	{
 		noFollow=false;
 		noSneak=false;
-		Vector parms=CMParms.parse(txt.toUpperCase());
+		final Vector parms=CMParms.parse(txt.toUpperCase());
 		String s;
-		for(Enumeration p=parms.elements();p.hasMoreElements();)
+		for(final Enumeration p=parms.elements();p.hasMoreElements();)
 		{
 			s=(String)p.nextElement();
 			if("NOFOLLOW".startsWith(s))
@@ -92,16 +92,14 @@ public class Prop_ReqLevels extends Property implements TriggeredAffect
 		||(CMSecurity.isAllowed(mob,(Room)R,CMSecurity.SecFlag.GOTO)))
 			return true;
 
-		if((sysopFlag)
-		&&(R instanceof Room)
-		&&(!CMSecurity.isAllowed(mob,(Room)R,CMSecurity.SecFlag.GOTO)))
+		if(sysopFlag)
 			return false;
 
-		int lvl=mob.phyStats().level();
+		final int lvl=mob.phyStats().level();
 
 		int lastPlace=0;
 		int x=0;
-		String text=text().trim();
+		final String text=text().trim();
 		if(text.length()==0) return true;
 		while(x>=0)
 		{
@@ -110,7 +108,7 @@ public class Prop_ReqLevels extends Property implements TriggeredAffect
 			if(x<0) x=text.indexOf('=',lastPlace);
 			if(x>=0)
 			{
-				char primaryChar=text.charAt(x);
+				final char primaryChar=text.charAt(x);
 				x++;
 				boolean andEqual=false;
 				if(text.charAt(x)=='=')
@@ -132,7 +130,7 @@ public class Prop_ReqLevels extends Property implements TriggeredAffect
 				}
 				if(cmpString.length()>0)
 				{
-					int cmpLevel=CMath.s_int(cmpString);
+					final int cmpLevel=CMath.s_int(cmpString);
 					if((cmpLevel==lvl)&&(andEqual))
 						found=true;
 					else
@@ -158,19 +156,19 @@ public class Prop_ReqLevels extends Property implements TriggeredAffect
 		&&(!CMLib.flags().isFalling(msg.source()))
 		&&((msg.amITarget(affected))||(msg.tool()==affected)||(affected instanceof Area)))
 		{
-			HashSet H=new HashSet();
+			final HashSet H=new HashSet();
 			if(noFollow)
 				H.add(msg.source());
 			else
 			{
 				msg.source().getGroupMembers(H);
-				HashSet H2=(HashSet)H.clone();
-				for(Iterator e=H2.iterator();e.hasNext();)
+				final HashSet H2=(HashSet)H.clone();
+				for(final Iterator e=H2.iterator();e.hasNext();)
 					((MOB)e.next()).getRideBuddies(H);
 			}
-			for(Iterator e=H.iterator();e.hasNext();)
+			for(final Iterator e=H.iterator();e.hasNext();)
 			{
-				Environmental E=(Environmental)e.next();
+				final Environmental E=(Environmental)e.next();
 				if((E instanceof MOB)
 				&&(passesMuster((MOB)E,msg.target())))
 					return super.okMessage(myHost,msg);

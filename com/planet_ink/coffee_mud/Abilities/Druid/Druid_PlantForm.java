@@ -80,7 +80,7 @@ public class Druid_PlantForm extends StdAbility
 		&&(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_ALWAYS))
 		&&((msg.amITarget(affected))))
 		{
-			MOB target=(MOB)msg.target();
+			final MOB target=(MOB)msg.target();
 			if((!target.isInCombat())
 			&&(msg.source().isMonster())
 			&&(msg.source().location()==target.location())
@@ -105,7 +105,7 @@ public class Druid_PlantForm extends StdAbility
 		if((newRace!=null)&&(affected instanceof MOB))
 		{
 			affectableStats.setName(CMLib.english().startWithAorAn(raceName.toLowerCase()));
-			int oldAdd=affectableStats.weight()-affected.basePhyStats().weight();
+			final int oldAdd=affectableStats.weight()-affected.basePhyStats().weight();
 			newRace.setHeightWeight(affectableStats,'M');
 			if(oldAdd>0) affectableStats.setWeight(affectableStats.weight()+oldAdd);
 		}
@@ -117,7 +117,7 @@ public class Druid_PlantForm extends StdAbility
 		super.affectCharStats(affected,affectableStats);
 		if(newRace!=null)
 		{
-			int oldCat=affected.baseCharStats().ageCategory();
+			final int oldCat=affected.baseCharStats().ageCategory();
 			affectableStats.setMyRace(newRace);
 			if(affected.baseCharStats().getStat(CharStats.STAT_AGE)>0)
 				affectableStats.setStat(CharStats.STAT_AGE,newRace.getAgingChart()[oldCat]);
@@ -131,7 +131,7 @@ public class Druid_PlantForm extends StdAbility
 		// undo the affects of this spell
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		super.unInvoke();
 		if((canBeUninvoked())&&(mob.location()!=null))
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> revert(s) to "+mob.charStats().raceName().toLowerCase()+" form.");
@@ -139,7 +139,7 @@ public class Druid_PlantForm extends StdAbility
 
 	public void setRaceName(MOB mob)
 	{
-		int classLevel=CMLib.ableMapper().qualifyingClassLevel(mob,this)+(2*getXLEVELLevel(mob))
+		final int classLevel=CMLib.ableMapper().qualifyingClassLevel(mob,this)+(2*getXLEVELLevel(mob))
 							-CMLib.ableMapper().qualifyingLevel(mob,this);
 		raceName=getRaceName(classLevel);
 		newRace=getRace(classLevel);
@@ -171,7 +171,7 @@ public class Druid_PlantForm extends StdAbility
 	{
 		if(mob!=null)
 		{
-			Room R=mob.location();
+			final Room R=mob.location();
 			if(R!=null)
 			{
 				if((R.domainType()&Room.INDOORS)>0)
@@ -185,7 +185,7 @@ public class Druid_PlantForm extends StdAbility
 				if((((MOB)target).isInCombat())
 				&&(!Druid_ShapeShift.isShapeShifted((MOB)target)))
 				{
-					int qualClassLevel=CMLib.ableMapper().qualifyingClassLevel(mob,this)+(2*getXLEVELLevel(mob));
+					final int qualClassLevel=CMLib.ableMapper().qualifyingClassLevel(mob,this)+(2*getXLEVELLevel(mob));
 					int classLevel=qualClassLevel-CMLib.ableMapper().qualifyingLevel(mob,this);
 					if(qualClassLevel<0) classLevel=30;
 					if(getRaceLevel(classLevel)==3)
@@ -233,17 +233,17 @@ public class Druid_PlantForm extends StdAbility
 			return false;
 		}
 
-		int qualClassLevel=CMLib.ableMapper().qualifyingClassLevel(mob,this)+(2*getXLEVELLevel(mob));
+		final int qualClassLevel=CMLib.ableMapper().qualifyingClassLevel(mob,this)+(2*getXLEVELLevel(mob));
 		int classLevel=qualClassLevel-CMLib.ableMapper().qualifyingLevel(mob,this);
 		if(qualClassLevel<0) classLevel=30;
-		String choice=(mob.isMonster()||(commands.size()==0))?getRaceName(classLevel-1):CMParms.combine(commands,0);
+		final String choice=(mob.isMonster()||(commands.size()==0))?getRaceName(classLevel-1):CMParms.combine(commands,0);
 		if(choice.trim().length()>0)
 		{
-			StringBuffer buf=new StringBuffer("Plant Forms:\n\r");
-			Vector choices=new Vector();
+			final StringBuffer buf=new StringBuffer("Plant Forms:\n\r");
+			final Vector choices=new Vector();
 			for(int i=0;i<classLevel;i++)
 			{
-				String s=getRaceName(i);
+				final String s=getRaceName(i);
 				if(!choices.contains(s))
 				{
 					choices.addElement(s);
@@ -267,7 +267,7 @@ public class Druid_PlantForm extends StdAbility
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if((!appropriateToMyFactions(mob))&&(!auto))
 		{
@@ -284,7 +284,7 @@ public class Druid_PlantForm extends StdAbility
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_OK_ACTION,null);
+			final CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_OK_ACTION,null);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

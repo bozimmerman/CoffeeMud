@@ -63,7 +63,7 @@ public class StdPerfume extends StdDrink implements Perfume
 	@Override
 	public String getSmellList()
 	{
-		StringBuffer list=new StringBuffer("");
+		final StringBuffer list=new StringBuffer("");
 		for(int i=0;i<smellList.size();i++)
 			list.append((smellList.get(i))+";");
 		return list.toString();
@@ -122,7 +122,7 @@ public class StdPerfume extends StdDrink implements Perfume
 				// the order that these things are checked in should
 				// be holy, and etched in stone.
 				if(behaviors != null)
-					for(Behavior B : behaviors)
+					for(final Behavior B : behaviors)
 						if(B!=null)
 							B.executeMsg(this,msg);
 

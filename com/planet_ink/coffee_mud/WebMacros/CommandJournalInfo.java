@@ -41,12 +41,12 @@ public class CommandJournalInfo extends StdWebMacro
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
-		java.util.Map<String,String> parms=parseParms(parm);
-		String last=httpReq.getUrlParameter("COMMANDJOURNAL");
-		StringBuffer str=new StringBuffer("");
+		final java.util.Map<String,String> parms=parseParms(parm);
+		final String last=httpReq.getUrlParameter("COMMANDJOURNAL");
+		final StringBuffer str=new StringBuffer("");
 		if(parms.containsKey("ALLFLAGS"))
 		{
-			for(JournalsLibrary.CommandJournalFlags flag : JournalsLibrary.CommandJournalFlags.values())
+			for(final JournalsLibrary.CommandJournalFlags flag : JournalsLibrary.CommandJournalFlags.values())
 				str.append("FLAG_"+flag.name()).append(", ");
 		}
 		else
@@ -65,9 +65,9 @@ public class CommandJournalInfo extends StdWebMacro
 			if(parms.containsKey("MASK"))
 				str.append(C.mask()).append(", ");
 			if(parms.containsKey("FLAGSET"))
-				for(JournalsLibrary.CommandJournalFlags flag : JournalsLibrary.CommandJournalFlags.values())
+				for(final JournalsLibrary.CommandJournalFlags flag : JournalsLibrary.CommandJournalFlags.values())
 					httpReq.addFakeUrlParameter("FLAG_"+flag.name(), C.getFlag(flag)!=null?((C.getFlag(flag).length()==0)?"on":C.getFlag(flag)):"");
-			for(JournalsLibrary.CommandJournalFlags flag : JournalsLibrary.CommandJournalFlags.values())
+			for(final JournalsLibrary.CommandJournalFlags flag : JournalsLibrary.CommandJournalFlags.values())
 				if(parms.containsKey("FLAG_"+flag.name().toUpperCase().trim()))
 					str.append(C.getFlag(flag)!=null?((C.getFlag(flag).length()==0)?"on":C.getFlag(flag)):"").append(", ");
 		}

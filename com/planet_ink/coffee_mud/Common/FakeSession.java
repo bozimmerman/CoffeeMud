@@ -48,8 +48,8 @@ public class FakeSession implements Session
 	public boolean tick(Tickable ticking, int tickID){return false;}
 	@Override public String ID(){return "FakeSession";}
 	@Override public String name() { return ID();}
-	@Override public CMObject newInstance(){try{return getClass().newInstance();}catch(Exception e){return new FakeSession();}}
-	@Override public CMObject copyOf(){try{return (CMObject)this.clone();}catch(Exception e){return newInstance();}}
+	@Override public CMObject newInstance(){try{return getClass().newInstance();}catch(final Exception e){return new FakeSession();}}
+	@Override public CMObject copyOf(){try{return (CMObject)this.clone();}catch(final Exception e){return newInstance();}}
 	@Override public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 	public long getTickStatus(){return 0;}
 	@Override
@@ -96,7 +96,7 @@ public class FakeSession implements Session
 				{
 					bout.write(msg.getBytes());
 				}
-				catch(Exception e)
+				catch(final Exception e)
 				{
 					Log.errOut("FakeSession",e);
 				}
@@ -131,7 +131,7 @@ public class FakeSession implements Session
 	@Override
 	public String prompt(String Message, String Default) {
 		onlyPrint(Message,false);
-		String msg  = readlineContinue();
+		final String msg  = readlineContinue();
 		if(msg.length()==0) return Default;
 		return msg;
 	}
@@ -149,14 +149,14 @@ public class FakeSession implements Session
 	public boolean confirm(String Message, String Default)
 	{
 		if(Default.toUpperCase().startsWith("T")) Default="Y";
-		String YN=choose(Message,"YN",Default,0);
+		final String YN=choose(Message,"YN",Default,0);
 		return(YN.equals("Y"))?true:false;
 	}
 	@Override public boolean confirm(String Message, String Default, long maxTime) { return confirm(Message,Default,0);}
 	@Override
 	public String choose(String Message, String Choices, String Default) {
 		onlyPrint(Message,false);
-		String msg  = readlineContinue();
+		final String msg  = readlineContinue();
 		if(msg.length()==0) return Default;
 		if(Choices.toUpperCase().indexOf(msg.toUpperCase().trim())>=0)
 			return msg.toUpperCase().trim();
@@ -173,7 +173,7 @@ public class FakeSession implements Session
 		synchronized(inputV)
 		{
 			if(inputV.size()==0) return "";
-			String input = inputV.firstElement();
+			final String input = inputV.firstElement();
 			inputV.removeElementAt(0);
 			return input;
 		}

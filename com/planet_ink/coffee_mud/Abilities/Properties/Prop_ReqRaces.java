@@ -54,9 +54,9 @@ public class Prop_ReqRaces extends Property implements TriggeredAffect
 	{
 		noFollow=false;
 		noSneak=false;
-		Vector parms=CMParms.parse(txt.toUpperCase());
+		final Vector parms=CMParms.parse(txt.toUpperCase());
 		String s;
-		for(Enumeration p=parms.elements();p.hasMoreElements();)
+		for(final Enumeration p=parms.elements();p.hasMoreElements();)
 		{
 			s=(String)p.nextElement();
 			if("NOFOLLOW".startsWith(s))
@@ -77,8 +77,8 @@ public class Prop_ReqRaces extends Property implements TriggeredAffect
 		if(CMLib.flags().isSneaking(mob)&&(!noSneak))
 			return true;
 
-		int x=text().toUpperCase().indexOf("ALL");
-		int y=text().toUpperCase().indexOf(mob.charStats().raceName().toUpperCase());
+		final int x=text().toUpperCase().indexOf("ALL");
+		final int y=text().toUpperCase().indexOf(mob.charStats().raceName().toUpperCase());
 		if(((x>0)
 			&&(text().charAt(x-1)=='-')
 			&&((y<=0)
@@ -98,19 +98,19 @@ public class Prop_ReqRaces extends Property implements TriggeredAffect
 		   &&(!CMLib.flags().isFalling(msg.source()))
 		   &&((msg.amITarget(affected))||(msg.tool()==affected)||(affected instanceof Area)))
 		{
-			HashSet H=new HashSet();
+			final HashSet H=new HashSet();
 			if(noFollow)
 				H.add(msg.source());
 			else
 			{
 				msg.source().getGroupMembers(H);
-				HashSet H2=(HashSet)H.clone();
-				for(Iterator e=H2.iterator();e.hasNext();)
+				final HashSet H2=(HashSet)H.clone();
+				for(final Iterator e=H2.iterator();e.hasNext();)
 					((MOB)e.next()).getRideBuddies(H);
 			}
-			for(Iterator e=H.iterator();e.hasNext();)
+			for(final Iterator e=H.iterator();e.hasNext();)
 			{
-				Environmental E=(Environmental)e.next();
+				final Environmental E=(Environmental)e.next();
 				if((E instanceof MOB)
 				&&(passesMuster((MOB)E)))
 					return super.okMessage(myHost,msg);

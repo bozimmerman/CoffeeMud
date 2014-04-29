@@ -42,18 +42,18 @@ public class AreaNext extends StdWebMacro
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
-		java.util.Map<String,String> parms=parseParms(parm);
+		final java.util.Map<String,String> parms=parseParms(parm);
 		String last=httpReq.getUrlParameter("AREA");
 		if(parms.containsKey("RESET"))
 		{
 			if(last!=null) httpReq.removeUrlParameter("AREA");
 			return "";
 		}
-		boolean all=parms.containsKey("SPACE")||parms.containsKey("ALL");
+		final boolean all=parms.containsKey("SPACE")||parms.containsKey("ALL");
 		String lastID="";
-		for(Enumeration a=CMLib.map().areas();a.hasMoreElements();)
+		for(final Enumeration a=CMLib.map().areas();a.hasMoreElements();)
 		{
-			Area A=(Area)a.nextElement();
+			final Area A=(Area)a.nextElement();
 			if((!(A instanceof SpaceObject))||all)
 			{
 				if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!A.Name().equals(lastID))))

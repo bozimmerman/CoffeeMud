@@ -106,7 +106,7 @@ public class GenElecPanel extends StdElecPanel
 		case 7: try
 		{
 					setPanelType(TechType.valueOf(val.toUpperCase().trim()));
-				}catch(Exception e){}
+				}catch(final Exception e){}
 				break;
 		default:
 			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
@@ -125,8 +125,8 @@ public class GenElecPanel extends StdElecPanel
 	public String[] getStatCodes()
 	{
 		if(codes!=null) return codes;
-		String[] MYCODES=CMProps.getStatCodesList(GenElecPanel.MYCODES,this);
-		String[] superCodes=GenericBuilder.GENITEMCODES;
+		final String[] MYCODES=CMProps.getStatCodesList(GenElecPanel.MYCODES,this);
+		final String[] superCodes=GenericBuilder.GENITEMCODES;
 		codes=new String[superCodes.length+MYCODES.length];
 		int i=0;
 		for(;i<superCodes.length;i++)
@@ -139,7 +139,7 @@ public class GenElecPanel extends StdElecPanel
 	public boolean sameAs(Environmental E)
 	{
 		if(!(E instanceof GenElecPanel)) return false;
-		String[] theCodes=getStatCodes();
+		final String[] theCodes=getStatCodes();
 		for(int i=0;i<theCodes.length;i++)
 			if(!E.getStat(theCodes[i]).equals(getStat(theCodes[i])))
 				return false;

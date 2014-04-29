@@ -38,7 +38,7 @@ public class HeavenlyServent extends StdMOB
 	{
 		super();
 
-		Random randomizer = new Random(System.currentTimeMillis());
+		final Random randomizer = new Random(System.currentTimeMillis());
 
 		username="an archon servant";
 		setDescription("An angelic form in gowns of white, with golden hair, and an ever present smile.");

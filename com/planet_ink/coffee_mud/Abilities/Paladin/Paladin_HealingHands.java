@@ -59,19 +59,19 @@ public class Paladin_HealingHands extends StdAbility
 			return false;
 		}
 
-		int healing=1+((int)Math.round(CMath.div(adjustedLevel(mob,asLevel),4.0)));
+		final int healing=1+((int)Math.round(CMath.div(adjustedLevel(mob,asLevel),4.0)));
 		if(mob.curState().getMana()<healing)
 		{
 			mob.tell("You don't have enough mana to do that.");
 			return false;
 		}
 
-		MOB target=this.getTarget(mob,commands,givenTarget);
+		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
 		helpProficiency(mob, 0);
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
@@ -79,7 +79,7 @@ public class Paladin_HealingHands extends StdAbility
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_CAST_SOMANTIC_SPELL,auto?"A pair of celestial hands surround <T-NAME>":"^S<S-NAME> lay(s) <S-HIS-HER> healing hands onto <T-NAMESELF>.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_CAST_SOMANTIC_SPELL,auto?"A pair of celestial hands surround <T-NAME>":"^S<S-NAME> lay(s) <S-HIS-HER> healing hands onto <T-NAMESELF>.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

@@ -52,7 +52,7 @@ public class Prayer_IceHealing extends Prayer
 		// undo the affects of this spell
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		super.unInvoke();
 
@@ -69,13 +69,13 @@ public class Prayer_IceHealing extends Prayer
 		if(!(affected instanceof MOB))
 			return true;
 
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		if((msg.amITarget(mob))
 		&&((msg.sourceMinor()==CMMsg.TYP_COLD)
 			||(msg.sourceMinor()==CMMsg.TYP_WATER))
 		&&(msg.targetMinor()==CMMsg.TYP_DAMAGE))
 		{
-			int recovery=(int)Math.round(CMath.div((msg.value()),2.0));
+			final int recovery=(int)Math.round(CMath.div((msg.value()),2.0));
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"The icy attack heals <S-NAME> "+recovery+" points.");
 			CMLib.combat().postHealing(mob,mob,this,CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,recovery,null);
 			return false;
@@ -99,7 +99,7 @@ public class Prayer_IceHealing extends Prayer
 		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
 			target=(MOB)givenTarget;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
@@ -107,7 +107,7 @@ public class Prayer_IceHealing extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> "+prayWord(mob)+" for icey healing.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> "+prayWord(mob)+" for icey healing.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

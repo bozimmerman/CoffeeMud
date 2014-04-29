@@ -41,8 +41,8 @@ public class FactionNext extends StdWebMacro
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
-		java.util.Map<String,String> parms=parseParms(parm);
-		String last=httpReq.getUrlParameter("FACTION");
+		final java.util.Map<String,String> parms=parseParms(parm);
+		final String last=httpReq.getUrlParameter("FACTION");
 		if(parms.containsKey("RESET"))
 		{
 			if(last!=null) httpReq.removeUrlParameter("FACTION");
@@ -51,7 +51,7 @@ public class FactionNext extends StdWebMacro
 		String lastID="";
 		Faction F;
 		String factionID;
-		for(Enumeration q=CMLib.factions().factions();q.hasMoreElements();)
+		for(final Enumeration q=CMLib.factions().factions();q.hasMoreElements();)
 		{
 			F=(Faction)q.nextElement();
 			factionID=F.factionID().toUpperCase().trim();

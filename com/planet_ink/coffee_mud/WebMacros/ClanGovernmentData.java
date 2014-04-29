@@ -41,21 +41,21 @@ public class ClanGovernmentData extends StdWebMacro
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
-		java.util.Map<String,String> parms=parseParms(parm);
-		String last=httpReq.getUrlParameter("GOVERNMENT");
+		final java.util.Map<String,String> parms=parseParms(parm);
+		final String last=httpReq.getUrlParameter("GOVERNMENT");
 		if(last==null) return " @break@";
 		if(last.length()>0)
 		{
 			ClanGovernment G=null;
 			if(CMath.isInteger(last))
 			{
-				int lastID=CMath.s_int(last);
+				final int lastID=CMath.s_int(last);
 				G=CMLib.clans().getStockGovernment(lastID);
 			}
 			if(G==null)
 			{
-				Set<Integer> usedTypeIDs=new HashSet<Integer>();
-				for(ClanGovernment G2 : CMLib.clans().getStockGovernments())
+				final Set<Integer> usedTypeIDs=new HashSet<Integer>();
+				for(final ClanGovernment G2 : CMLib.clans().getStockGovernments())
 					usedTypeIDs.add(Integer.valueOf(G2.getID()));
 				G=CMLib.clans().createSampleGovernment();
 				G.setName(httpReq.getUrlParameter("NAME"));
@@ -67,18 +67,18 @@ public class ClanGovernmentData extends StdWebMacro
 						break;
 					}
 			}
-			StringBuffer str=new StringBuffer("");
+			final StringBuffer str=new StringBuffer("");
 
 			// ******************************************************************************************
 			// do govt positions FIRST!
 			// ******************************************************************************************
-			List<ClanPosition> posList=new Vector<ClanPosition>();
+			final List<ClanPosition> posList=new Vector<ClanPosition>();
 			String posDexStr="0";
 			int posDex=0;
-			Set<Integer> usedRoleIDs=new HashSet<Integer>();
+			final Set<Integer> usedRoleIDs=new HashSet<Integer>();
 			if(!httpReq.isUrlParameter("GPOSID_"+posDexStr))
 			{
-				for(ClanPosition P : G.getPositions())
+				for(final ClanPosition P : G.getPositions())
 				{
 					posList.add(P);
 					usedRoleIDs.add(Integer.valueOf(P.getRoleID()));
@@ -87,29 +87,29 @@ public class ClanGovernmentData extends StdWebMacro
 			else
 			while(httpReq.isUrlParameter("GPOSID_"+posDexStr) && httpReq.getUrlParameter("GPOSID_"+posDexStr).trim().length()>0)
 			{
-				String oldID=httpReq.getUrlParameter("GPOSID_"+posDexStr);
-				String oldName=httpReq.getUrlParameter("GPOSNAME_"+posDexStr);
-				String oldPluralName=httpReq.getUrlParameter("GPOSPLURALNAME_"+posDexStr);
-				int oldRoleID=CMath.s_int(httpReq.getUrlParameter("GPOSROLEID_"+posDexStr));
+				final String oldID=httpReq.getUrlParameter("GPOSID_"+posDexStr);
+				final String oldName=httpReq.getUrlParameter("GPOSNAME_"+posDexStr);
+				final String oldPluralName=httpReq.getUrlParameter("GPOSPLURALNAME_"+posDexStr);
+				final int oldRoleID=CMath.s_int(httpReq.getUrlParameter("GPOSROLEID_"+posDexStr));
 				usedRoleIDs.add(Integer.valueOf(oldRoleID));
-				int oldRank=CMath.s_int(httpReq.getUrlParameter("GPOSRANK_"+posDexStr));
-				int oldMax=CMath.s_int(httpReq.getUrlParameter("GPOSMAX_"+posDexStr));
-				String oldMask=httpReq.getUrlParameter("GPOSINNERMASK_"+posDexStr);
-				String oldIsPublicStr=httpReq.getUrlParameter("GPOSISPUBLIC_"+posDexStr);
-				boolean oldIsPublic=oldIsPublicStr==null?false:oldIsPublicStr.equalsIgnoreCase("on");
-				Clan.Authority powerFuncs[]=new Clan.Authority[Clan.Function.values().length];
+				final int oldRank=CMath.s_int(httpReq.getUrlParameter("GPOSRANK_"+posDexStr));
+				final int oldMax=CMath.s_int(httpReq.getUrlParameter("GPOSMAX_"+posDexStr));
+				final String oldMask=httpReq.getUrlParameter("GPOSINNERMASK_"+posDexStr);
+				final String oldIsPublicStr=httpReq.getUrlParameter("GPOSISPUBLIC_"+posDexStr);
+				final boolean oldIsPublic=oldIsPublicStr==null?false:oldIsPublicStr.equalsIgnoreCase("on");
+				final Clan.Authority powerFuncs[]=new Clan.Authority[Clan.Function.values().length];
 				for(int f=0;f<Clan.Function.values().length;f++)
 					powerFuncs[f]=Clan.Authority.CAN_NOT_DO;
 				String authDexStr="";
 				int authDex=0;
 				while(httpReq.getUrlParameter("GPOSPOWER_"+posDexStr+"_"+authDexStr)!=null)
 				{
-					Clan.Function auth = (Clan.Function)CMath.s_valueOf(Clan.Function.values(),httpReq.getUrlParameter("GPOSPOWER_"+posDexStr+"_"+authDexStr));
+					final Clan.Function auth = (Clan.Function)CMath.s_valueOf(Clan.Function.values(),httpReq.getUrlParameter("GPOSPOWER_"+posDexStr+"_"+authDexStr));
 					powerFuncs[auth.ordinal()]=Clan.Authority.CAN_DO;
 					authDex++;
 					authDexStr=Integer.toString(authDex);
 				}
-				ClanPosition P=(ClanPosition)CMClass.getCommon("DefaultClanPosition");
+				final ClanPosition P=(ClanPosition)CMClass.getCommon("DefaultClanPosition");
 				P.setID(oldID);
 				P.setRoleID(oldRoleID);
 				P.setRank(oldRank);
@@ -124,7 +124,7 @@ public class ClanGovernmentData extends StdWebMacro
 				posDexStr=Integer.toString(posDex);
 			}
 
-			String cmpos=httpReq.getUrlParameter("GOVTPOSITION");
+			final String cmpos=httpReq.getUrlParameter("GOVTPOSITION");
 			ClanPosition gPos = null;
 			if((cmpos!=null)&&(cmpos.length()>0)&&(CMath.s_int(cmpos)>=0)&&(CMath.s_int(cmpos)<posList.size()))
 				gPos=posList.get(CMath.s_int(cmpos));
@@ -147,7 +147,7 @@ public class ClanGovernmentData extends StdWebMacro
 				str.append(gPos.isPublic()?"checked, ":"");
 			if((gPos!=null)&&parms.containsKey("GPOSPOWER_"+cmpos+"_"))
 			{
-				for(Clan.Function func : Clan.Function.values())
+				for(final Clan.Function func : Clan.Function.values())
 				{
 					str.append("<OPTION VALUE=\""+func.toString()+"\"");
 					if(gPos.getFunctionChart()[func.ordinal()]==Authority.CAN_DO)
@@ -156,7 +156,7 @@ public class ClanGovernmentData extends StdWebMacro
 				}
 			}
 			if(parms.containsKey("GPOSPOWERLIST"))
-				for(Clan.Function func : Clan.Function.values())
+				for(final Clan.Function func : Clan.Function.values())
 					str.append("<OPTION VALUE=\""+func.toString()+"\">"+func.toString());
 
 			if(parms.containsKey("NEXTPOSITIONID"))
@@ -205,16 +205,16 @@ public class ClanGovernmentData extends StdWebMacro
 			{
 				String old=httpReq.getUrlParameter("AUTOROLE");
 				if(old==null) old=""+G.getAutoRole();
-				int autoPos=CMath.s_int(old);
-				for(ClanPosition pos : posList)
+				final int autoPos=CMath.s_int(old);
+				for(final ClanPosition pos : posList)
 					str.append("<OPTION VALUE="+pos.getRoleID()+" "+((autoPos==pos.getRoleID())?"SELECTED":"")+">"+pos.getName());
 			}
 			if(parms.containsKey("ACCEPTPOS"))
 			{
 				String old=httpReq.getUrlParameter("ACCEPTPOS");
 				if(old==null) old=""+G.getAcceptPos();
-				int autoPos=CMath.s_int(old);
-				for(ClanPosition pos : posList)
+				final int autoPos=CMath.s_int(old);
+				for(final ClanPosition pos : posList)
 					str.append("<OPTION VALUE="+pos.getRoleID()+" "+((autoPos==pos.getRoleID())?"SELECTED":"")+">"+pos.getName());
 			}
 			if(parms.containsKey("SHORTDESC"))
@@ -317,19 +317,19 @@ public class ClanGovernmentData extends StdWebMacro
 			{
 				String old=httpReq.getUrlParameter("AUTOPROMOTEBY");
 				if(old==null) old=""+G.getAutoPromoteBy().toString();
-				for(Clan.AutoPromoteFlag flag : Clan.AutoPromoteFlag.values())
+				for(final Clan.AutoPromoteFlag flag : Clan.AutoPromoteFlag.values())
 					str.append("<OPTION VALUE="+flag.toString()+" "+((old.equals(flag.toString()))?"SELECTED":"")+">"+flag.toString());
 			}
 			if(parms.containsKey("VOTEFUNCS"))
 			{
-				String old=httpReq.getUrlParameter("VOTEFUNCS");
-				Set<String> voteFuncs=new HashSet<String>();
+				final String old=httpReq.getUrlParameter("VOTEFUNCS");
+				final Set<String> voteFuncs=new HashSet<String>();
 				if(old==null)
 				{
 					if(posList.size()>0)
 					{
-						ClanPosition P=posList.get(0);
-						for(Clan.Function func : Clan.Function.values())
+						final ClanPosition P=posList.get(0);
+						for(final Clan.Function func : Clan.Function.values())
 							if(P.getFunctionChart()[func.ordinal()]==Clan.Authority.MUST_VOTE_ON)
 								voteFuncs.add(func.toString());
 					}
@@ -344,7 +344,7 @@ public class ClanGovernmentData extends StdWebMacro
 						x++;
 					}
 				}
-				for(Clan.Function func : Clan.Function.values())
+				for(final Clan.Function func : Clan.Function.values())
 				{
 					str.append("<OPTION VALUE=\""+func.toString()+"\"");
 					if(voteFuncs.contains(func.toString())) str.append(" SELECTED");

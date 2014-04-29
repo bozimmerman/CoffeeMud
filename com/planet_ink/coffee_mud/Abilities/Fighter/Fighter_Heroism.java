@@ -61,7 +61,7 @@ public class Fighter_Heroism extends FighterSkill
 		if(!(affected instanceof MOB))
 			return super.tick(ticking,tickID);
 
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		if((CMLib.flags().isStanding(mob))
 		&&(mob.isInCombat())

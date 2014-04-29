@@ -50,14 +50,14 @@ public class Thief_Swipe extends ThiefSkill
 	@Override public int abilityCode(){return code;}
 	@Override public void setAbilityCode(int newCode){code=newCode;}
 
-	private PairVector<MOB,Integer> lastOnes=new PairVector<MOB,Integer>();
+	private final PairVector<MOB,Integer> lastOnes=new PairVector<MOB,Integer>();
 	protected int timesPicked(MOB target)
 	{
 		int times=0;
 		for(int x=0;x<lastOnes.size();x++)
 		{
-			MOB M=lastOnes.getFirst(x);
-			Integer I=lastOnes.getSecond(x);
+			final MOB M=lastOnes.getFirst(x);
+			final Integer I=lastOnes.getSecond(x);
 			if(M==target)
 			{
 				times=I.intValue();
@@ -97,7 +97,7 @@ public class Thief_Swipe extends ThiefSkill
 			mob.tell("Swipe from whom?");
 			return false;
 		}
-		MOB target=this.getTarget(mob,commands,givenTarget);
+		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
 		if((mob.isInCombat())&&(CMLib.flags().aliveAwakeMobile(target,true)||(mob.getVictim()!=target)))
@@ -120,11 +120,11 @@ public class Thief_Swipe extends ThiefSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		String currency=CMLib.beanCounter().getCurrency(target);
+		final String currency=CMLib.beanCounter().getCurrency(target);
 		int discoverChance=(target.charStats().getStat(CharStats.STAT_WISDOM)*5)
 							-(levelDiff*3)
 							+(getX1Level(mob)*5);
-		int times=timesPicked(target);
+		final int times=timesPicked(target);
 		if(times>5) discoverChance-=(20*(times-5));
 		if(!CMLib.flags().canBeSeenBy(mob,target))
 			discoverChance+=50;
@@ -136,14 +136,14 @@ public class Thief_Swipe extends ThiefSkill
 		else
 			levelDiff=-(levelDiff*((!CMLib.flags().canBeSeenBy(mob,target))?1:2));
 		if(!CMLib.flags().aliveAwakeMobile(target,true)){levelDiff=100;discoverChance=0;}
-		boolean success=proficiencyCheck(mob,levelDiff,auto);
+		final boolean success=proficiencyCheck(mob,levelDiff,auto);
 
 		if(!success)
 		{
 			if(CMLib.dice().rollPercentage()>discoverChance)
 			{
 				if((target.isMonster())&&(mob.getVictim()==null)) mob.setVictim(target);
-				CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_NOISYMOVEMENT,auto?"":"You fumble the swipe; <T-NAME> spots you!",CMMsg.MSG_NOISYMOVEMENT,auto?"":"<S-NAME> tries to pick your pocket and fails!",CMMsg.MSG_OK_VISUAL,auto?"":"<S-NAME> tries to pick <T-NAME>'s pocket and fails!");
+				final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_NOISYMOVEMENT,auto?"":"You fumble the swipe; <T-NAME> spots you!",CMMsg.MSG_NOISYMOVEMENT,auto?"":"<S-NAME> tries to pick your pocket and fails!",CMMsg.MSG_OK_VISUAL,auto?"":"<S-NAME> tries to pick <T-NAME>'s pocket and fails!");
 				if(mob.location().okMessage(mob,msg))
 					mob.location().send(mob,msg);
 			}
@@ -160,7 +160,7 @@ public class Thief_Swipe extends ThiefSkill
 			if(goldTaken<(CMLib.ableMapper().qualifyingClassLevel(mob,this)))
 				goldTaken=CMLib.ableMapper().qualifyingClassLevel(mob,this);
 			if(goldTaken>CMLib.beanCounter().getTotalAbsoluteNativeValue(target)) goldTaken=CMLib.beanCounter().getTotalAbsoluteNativeValue(target);
-			String goldTakenStr=CMLib.beanCounter().nameCurrencyShort(target,goldTaken);
+			final String goldTakenStr=CMLib.beanCounter().nameCurrencyShort(target,goldTaken);
 
 			String str=null;
 			int code=CMMsg.MSG_THIEF_ACT;
@@ -173,7 +173,7 @@ public class Thief_Swipe extends ThiefSkill
 					code=CMMsg.MSG_QUIETMOVEMENT;
 				}
 
-			boolean alreadyFighting=(mob.getVictim()==target)||(target.getVictim()==mob);
+			final boolean alreadyFighting=(mob.getVictim()==target)||(target.getVictim()==mob);
 			String hisStr=str;
 			int hisCode=CMMsg.MSG_THIEF_ACT;
 			if(CMLib.dice().rollPercentage()<discoverChance)
@@ -184,7 +184,7 @@ public class Thief_Swipe extends ThiefSkill
 				hisCode=hisCode|((target.mayIFight(mob))?CMMsg.MASK_MALICIOUS:0);
 			}
 
-			CMMsg msg=CMClass.getMsg(mob,target,this,code,str,hisCode,hisStr,CMMsg.NO_EFFECT,null);
+			final CMMsg msg=CMClass.getMsg(mob,target,this,code,str,hisCode,hisStr,CMMsg.NO_EFFECT,null);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

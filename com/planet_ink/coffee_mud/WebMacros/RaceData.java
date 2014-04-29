@@ -45,11 +45,11 @@ public class RaceData extends StdWebMacro
 
 	private String raceDropDown(String old)
 	{
-		StringBuffer str=new StringBuffer("");
+		final StringBuffer str=new StringBuffer("");
 		str.append("<OPTION VALUE=\"\" "+((old.length()==0)?"SELECTED":"")+">None");
 		Race R2=null;
 		String R2ID=null;
-		for(Enumeration e=CMClass.races();e.hasMoreElements();)
+		for(final Enumeration e=CMClass.races();e.hasMoreElements();)
 		{
 			R2=(Race)e.nextElement();
 			R2ID="com.planet_ink.coffee_mud.Races."+R2.ID();
@@ -69,8 +69,8 @@ public class RaceData extends StdWebMacro
 
 	public static StringBuffer estats(PhyStats E, char c, HTTPRequest httpReq, java.util.Map<String,String> parms, int borderSize)
 	{
-		StringBuffer str=new StringBuffer("");
-		PairVector<String,String> theclasses=new PairVector<String,String>();
+		final StringBuffer str=new StringBuffer("");
+		final PairVector<String,String> theclasses=new PairVector<String,String>();
 		if(httpReq.isUrlParameter(c+"ESTATS1"))
 		{
 			int num=1;
@@ -100,7 +100,7 @@ public class RaceData extends StdWebMacro
 		str.append("<TABLE WIDTH=100% BORDER="+borderSize+" CELLSPACING=0 CELLPADDING=0>");
 		for(int i=0;i<theclasses.size();i++)
 		{
-			String theclass=theclasses.elementAt(i).first;
+			final String theclass=theclasses.elementAt(i).first;
 			str.append("<TR><TD WIDTH=35%>");
 			str.append("<SELECT ONCHANGE=\"EditAffect(this);\" NAME="+c+"ESTATS"+(i+1)+">");
 			str.append("<OPTION VALUE=\"\">Delete!");
@@ -130,8 +130,8 @@ public class RaceData extends StdWebMacro
 
 	public static StringBuffer cstats(CharStats E, char c, HTTPRequest httpReq, java.util.Map<String,String> parms, int borderSize)
 	{
-		StringBuffer str=new StringBuffer("");
-		PairVector<String,String> theclasses=new PairVector<String,String>();
+		final StringBuffer str=new StringBuffer("");
+		final PairVector<String,String> theclasses=new PairVector<String,String>();
 		if(httpReq.isUrlParameter(c+"CSTATS1"))
 		{
 			int num=1;
@@ -151,14 +151,14 @@ public class RaceData extends StdWebMacro
 		}
 		else
 		{
-			for(int i : CharStats.CODES.ALL())
+			for(final int i : CharStats.CODES.ALL())
 				if(CMath.s_int(E.getStat(CharStats.CODES.NAME(i)))!=0)
 					theclasses.addElement(CharStats.CODES.NAME(i),E.getStat(CharStats.CODES.NAME(i)));
 		}
 		str.append("<TABLE WIDTH=100% BORDER="+borderSize+" CELLSPACING=0 CELLPADDING=0>");
 		for(int i=0;i<theclasses.size();i++)
 		{
-			String theclass=theclasses.elementAt(i).first;
+			final String theclass=theclasses.elementAt(i).first;
 			str.append("<TR><TD WIDTH=35%>");
 			str.append("<SELECT ONCHANGE=\"EditAffect(this);\" NAME="+c+"CSTATS"+(i+1)+">");
 			str.append("<OPTION VALUE=\"\">Delete!");
@@ -173,7 +173,7 @@ public class RaceData extends StdWebMacro
 		str.append("<TR><TD WIDTH=35%>");
 		str.append("<SELECT ONCHANGE=\"AddAffect(this);\" NAME="+c+"CSTATS"+(theclasses.size()+1)+">");
 		str.append("<OPTION SELECTED VALUE=\"\">Select a stat");
-		for(int i : CharStats.CODES.ALL())
+		for(final int i : CharStats.CODES.ALL())
 			if(!theclasses.contains(CharStats.CODES.NAME(i)))
 				str.append("<OPTION VALUE=\""+CharStats.CODES.NAME(i)+"\">"+CharStats.CODES.DESC(i));
 		str.append("</SELECT>");
@@ -188,8 +188,8 @@ public class RaceData extends StdWebMacro
 
 	public static StringBuffer cstate(CharState E, char c, HTTPRequest httpReq, java.util.Map<String,String> parms, int borderSize)
 	{
-		StringBuffer str=new StringBuffer("");
-		PairVector<String,String> theclasses=new PairVector<String,String>();
+		final StringBuffer str=new StringBuffer("");
+		final PairVector<String,String> theclasses=new PairVector<String,String>();
 		if(httpReq.isUrlParameter(c+"CSTATE1"))
 		{
 			int num=1;
@@ -216,7 +216,7 @@ public class RaceData extends StdWebMacro
 		str.append("<TABLE WIDTH=100% BORDER="+borderSize+" CELLSPACING=0 CELLPADDING=0>");
 		for(int i=0;i<theclasses.size();i++)
 		{
-			String theclass=theclasses.elementAt(i).first;
+			final String theclass=theclasses.elementAt(i).first;
 			str.append("<TR><TD WIDTH=35%>");
 			str.append("<SELECT ONCHANGE=\"EditAffect(this);\" NAME="+c+"CSTATE"+(i+1)+">");
 			str.append("<OPTION VALUE=\"\">Delete!");
@@ -248,15 +248,15 @@ public class RaceData extends StdWebMacro
 	public static StringBuffer itemList(List<? extends Item> items, char c, HTTPRequest httpReq, java.util.Map<String,String> parms, int borderSize, boolean one)
 	{
 		if(items==null) items=new Vector();
-		StringBuffer str=new StringBuffer("");
-		Vector classes=new Vector();
+		final StringBuffer str=new StringBuffer("");
+		final Vector classes=new Vector();
 		List<Item> itemlist=null;
 		if(httpReq.isUrlParameter(c+"ITEM1"))
 		{
 			itemlist=RoomData.getItemCache();
 			for(int i=1;;i++)
 			{
-				String MATCHING=httpReq.getUrlParameter(c+"ITEM"+i);
+				final String MATCHING=httpReq.getUrlParameter(c+"ITEM"+i);
 				if(MATCHING==null)
 					break;
 				Item I2=RoomData.getItemFromAnywhere(itemlist,MATCHING);
@@ -282,7 +282,7 @@ public class RaceData extends StdWebMacro
 		for(int i=0;i<classes.size();i++)
 		{
 			numItems++;
-			Item I=(Item)classes.elementAt(i);
+			final Item I=(Item)classes.elementAt(i);
 			str.append("<TR>");
 			str.append("<TD WIDTH=90%>");
 			str.append("<SELECT ONCHANGE=\"AddItem(this);\" NAME="+c+"ITEM"+(numItems)+">");
@@ -303,7 +303,7 @@ public class RaceData extends StdWebMacro
 		str.append("<TR><TD WIDTH=90%>");
 		str.append("<SELECT ONCHANGE=\"AddItem(this);\" NAME="+c+"ITEM"+(numItems+1)+">");
 		if(!one) str.append("<OPTION SELECTED VALUE=\"\">Select a new Item");
-		for(Item I : itemlist)
+		for(final Item I : itemlist)
 		{
 			if(one&&(classes.contains(I)))
 			{
@@ -317,16 +317,16 @@ public class RaceData extends StdWebMacro
 		}
 		if(one)
 		{
-			Vector sortMe=new Vector();
+			final Vector sortMe=new Vector();
 			CMClass.addAllItemClassNames(sortMe,true,true,false);
-			Object[] sorted=(new TreeSet(sortMe)).toArray();
-			for(int i=0;i<sorted.length;i++)
+			final Object[] sorted=(new TreeSet(sortMe)).toArray();
+			for (final Object element : sorted)
 			{
 				boolean selected=false;
 				for(int x=0;x<classes.size();x++)
-					if(((Item)classes.elementAt(x)).ID().equals(sorted[i]))
+					if(((Item)classes.elementAt(x)).ID().equals(element))
 					{ selected=true; break;}
-				str.append("<OPTION "+(selected?"SELECTED":"")+" VALUE=\""+(String)sorted[i]+"\">"+(String)sorted[i]);
+				str.append("<OPTION "+(selected?"SELECTED":"")+" VALUE=\""+(String)element+"\">"+(String)element);
 			}
 		}
 		else
@@ -335,11 +335,11 @@ public class RaceData extends StdWebMacro
 			if(mposs==null)
 			{
 				mposs=new StringBuffer("");
-				Vector sortMe=new Vector();
+				final Vector sortMe=new Vector();
 				CMClass.addAllItemClassNames(sortMe,true,true,false);
-				Object[] sorted=(new TreeSet(sortMe)).toArray();
-				for(int i=0;i<sorted.length;i++)
-					mposs.append("<OPTION VALUE=\""+(String)sorted[i]+"\">"+(String)sorted[i]);
+				final Object[] sorted=(new TreeSet(sortMe)).toArray();
+				for (final Object element : sorted)
+					mposs.append("<OPTION VALUE=\""+(String)element+"\">"+(String)element);
 				Resources.submitResource("MUDGRINDER-OTHERPOSS",mposs);
 			}
 			str.append(mposs);
@@ -354,8 +354,8 @@ public class RaceData extends StdWebMacro
 
 	public static StringBuffer dynAbilities(List<Ability> ables, String ID, Modifiable obj, HTTPRequest httpReq, java.util.Map<String,String> parms, int borderSize, String font)
 	{
-		StringBuffer str=new StringBuffer("");
-		QuadVector<String,String,String,String> theclasses=new QuadVector<String,String,String,String>();
+		final StringBuffer str=new StringBuffer("");
+		final QuadVector<String,String,String,String> theclasses=new QuadVector<String,String,String,String>();
 		if(httpReq.isUrlParameter("RABLES1"))
 		{
 			int num=1;
@@ -383,13 +383,12 @@ public class RaceData extends StdWebMacro
 				cables=((Race)obj).culturalAbilities();
 			else
 				cables=new PairVector<String,Integer>();
-			for(final Iterator<Ability> a=ables.iterator();a.hasNext();)
+			for (final Ability A : ables)
 			{
-				final Ability A=a.next();
 				if((A!=null)&&(!cables.containsFirst(A.ID())))
 				{
-					boolean defaultGain = CMLib.ableMapper().getDefaultGain(ID, false, A.ID());
-					int qualifyingLevel = CMLib.ableMapper().getQualifyingLevel(ID, false,A.ID()) ;
+					final boolean defaultGain = CMLib.ableMapper().getDefaultGain(ID, false, A.ID());
+					final int qualifyingLevel = CMLib.ableMapper().getQualifyingLevel(ID, false,A.ID()) ;
 					theclasses.addElement(A.ID(),A.proficiency()+"",defaultGain?"":"on",qualifyingLevel+"");
 				}
 			}
@@ -398,7 +397,7 @@ public class RaceData extends StdWebMacro
 		str.append("<TABLE WIDTH=100% BORDER="+borderSize+" CELLSPACING=0 CELLPADDING=0>");
 		for(int i=0;i<theclasses.size();i++)
 		{
-			String theclass=theclasses.elementAt(i).first;
+			final String theclass=theclasses.elementAt(i).first;
 			str.append("<TR><TD WIDTH=35%>");
 			str.append("<SELECT ONCHANGE=\"EditAffect(this);\" NAME=RABLES"+(i+1)+">");
 			str.append("<OPTION VALUE=\"\">Delete!");
@@ -419,10 +418,10 @@ public class RaceData extends StdWebMacro
 		str.append("<TR><TD WIDTH=35%>");
 		str.append("<SELECT ONCHANGE=\"AddAffect(this);\" NAME=RABLES"+(theclasses.size()+1)+">");
 		str.append("<OPTION SELECTED VALUE=\"\">Select an Ability");
-		for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
+		for(final Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 		{
-			Ability A=a.nextElement();
-			String cnam=A.ID();
+			final Ability A=a.nextElement();
+			final String cnam=A.ID();
 			if((A.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_ARCHON)
 				continue;
 			str.append("<OPTION VALUE=\""+cnam+"\">"+cnam);
@@ -446,8 +445,8 @@ public class RaceData extends StdWebMacro
 
 	public static StringBuffer dynEffects(String ID, List<Ability> ables, Modifiable obj, HTTPRequest httpReq, java.util.Map<String,String> parms, int borderSize, String font)
 	{
-		StringBuffer str=new StringBuffer("");
-		TriadVector<String,String,String> theclasses=new TriadVector<String,String,String>();
+		final StringBuffer str=new StringBuffer("");
+		final TriadVector<String,String,String> theclasses=new TriadVector<String,String,String>();
 		if(httpReq.isUrlParameter("REFFS1"))
 		{
 			int num=1;
@@ -473,7 +472,7 @@ public class RaceData extends StdWebMacro
 				final Ability A=ables.get(a);
 				if(A!=null)
 				{
-					int qualifyingLevel = CMath.s_int(obj.getStat("GETREFFLVL"+a));
+					final int qualifyingLevel = CMath.s_int(obj.getStat("GETREFFLVL"+a));
 					theclasses.addElement(A.ID(),A.text(),qualifyingLevel+"");
 				}
 			}
@@ -482,7 +481,7 @@ public class RaceData extends StdWebMacro
 		str.append("<TABLE WIDTH=100% BORDER="+borderSize+" CELLSPACING=0 CELLPADDING=0>");
 		for(int i=0;i<theclasses.size();i++)
 		{
-			String theclass=theclasses.elementAt(i).first;
+			final String theclass=theclasses.elementAt(i).first;
 			str.append("<TR><TD WIDTH=35%>");
 			str.append("<SELECT ONCHANGE=\"EditAffect(this);\" NAME=REFFS"+(i+1)+">");
 			str.append("<OPTION VALUE=\"\">Delete!");
@@ -500,9 +499,9 @@ public class RaceData extends StdWebMacro
 		str.append("<TR><TD WIDTH=35%>");
 		str.append("<SELECT ONCHANGE=\"AddAffect(this);\" NAME=REFFS"+(theclasses.size()+1)+">");
 		str.append("<OPTION SELECTED VALUE=\"\">Select an Ability");
-		for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
+		for(final Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 		{
-			String cnam=a.nextElement().ID();
+			final String cnam=a.nextElement().ID();
 			str.append("<OPTION VALUE=\""+cnam+"\">"+cnam);
 		}
 		str.append("</SELECT>");
@@ -520,8 +519,8 @@ public class RaceData extends StdWebMacro
 
 	public static StringBuffer cabilities(Race E, HTTPRequest httpReq, java.util.Map<String,String> parms, int borderSize, String font)
 	{
-		StringBuffer str=new StringBuffer("");
-		PairVector<String,String> theclasses=new PairVector<String,String>();
+		final StringBuffer str=new StringBuffer("");
+		final PairVector<String,String> theclasses=new PairVector<String,String>();
 		if(httpReq.isUrlParameter("CABLES1"))
 		{
 			int num=1;
@@ -540,7 +539,7 @@ public class RaceData extends StdWebMacro
 		}
 		else
 		{
-			PairVector<String,Integer> ables=E.culturalAbilities();
+			final PairVector<String,Integer> ables=E.culturalAbilities();
 			for(int i=0;i<ables.size();i++)
 				theclasses.addElement(ables.getFirst(i),ables.getSecond(i).toString());
 		}
@@ -548,7 +547,7 @@ public class RaceData extends StdWebMacro
 		str.append("<TABLE WIDTH=100% BORDER="+borderSize+" CELLSPACING=0 CELLPADDING=0>");
 		for(int i=0;i<theclasses.size();i++)
 		{
-			String theclass=theclasses.elementAt(i).first;
+			final String theclass=theclasses.elementAt(i).first;
 			str.append("<TR><TD WIDTH=35%>");
 			str.append("<SELECT ONCHANGE=\"EditAffect(this);\" NAME=CABLES"+(i+1)+">");
 			str.append("<OPTION VALUE=\"\">Delete!");
@@ -563,9 +562,9 @@ public class RaceData extends StdWebMacro
 		str.append("<TR><TD WIDTH=35%>");
 		str.append("<SELECT ONCHANGE=\"AddAffect(this);\" NAME=CABLES"+(theclasses.size()+1)+">");
 		str.append("<OPTION SELECTED VALUE=\"\">Select an Ability");
-		for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
+		for(final Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 		{
-			String cnam=a.nextElement().ID();
+			final String cnam=a.nextElement().ID();
 			str.append("<OPTION VALUE=\""+cnam+"\">"+cnam);
 		}
 		str.append("</SELECT>");
@@ -581,16 +580,16 @@ public class RaceData extends StdWebMacro
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
-		java.util.Map<String,String> parms=parseParms(parm);
+		final java.util.Map<String,String> parms=parseParms(parm);
 
-		String replaceCommand=httpReq.getUrlParameter("REPLACE");
+		final String replaceCommand=httpReq.getUrlParameter("REPLACE");
 		if((replaceCommand != null)
 		&& (replaceCommand.length()>0)
 		&& (replaceCommand.indexOf('=')>0))
 		{
-			int eq=replaceCommand.indexOf('=');
-			String field=replaceCommand.substring(0,eq);
-			String value=replaceCommand.substring(eq+1);
+			final int eq=replaceCommand.indexOf('=');
+			final String field=replaceCommand.substring(0,eq);
+			final String value=replaceCommand.substring(eq+1);
 			httpReq.addFakeUrlParameter(field, value);
 			httpReq.addFakeUrlParameter("REPLACE","");
 		}
@@ -601,11 +600,11 @@ public class RaceData extends StdWebMacro
 		{
 			if(parms.containsKey("ISGENERIC"))
 			{
-				Race R2=CMClass.getRace(last);
+				final Race R2=CMClass.getRace(last);
 				return ""+((R2!=null)&&(R2.isGeneric()));
 			}
 
-			String newRaceID=httpReq.getUrlParameter("NEWRACE");
+			final String newRaceID=httpReq.getUrlParameter("NEWRACE");
 			Race R = (Race)httpReq.getRequestObjects().get("RACE-"+last);
 			if((R==null)
 			&&(newRaceID!=null)
@@ -624,7 +623,7 @@ public class RaceData extends StdWebMacro
 
 			if(R!=null)
 			{
-				StringBuffer str=new StringBuffer("");
+				final StringBuffer str=new StringBuffer("");
 				if(parms.containsKey("HELP"))
 				{
 					StringBuilder s=CMLib.help().getHelpText(R.ID(),null,false,true);
@@ -749,7 +748,7 @@ public class RaceData extends StdWebMacro
 					if(httpReq.isUrlParameter("BREATHES"))
 					{
 						int breathe=CMath.s_int(httpReq.getUrlParameter("BREATHES"));
-						List<Integer> l=new Vector<Integer>();
+						final List<Integer> l=new Vector<Integer>();
 						if(breathe>=0)
 						{
 							l.add(Integer.valueOf(breathe));
@@ -774,7 +773,7 @@ public class RaceData extends StdWebMacro
 						}
 					}
 					str.append("<OPTION VALUE=-1 "+((breathes.length==0)?"SELECTED":"")+">Anything");
-					for(int r : RawMaterial.CODES.ALL_SBN())
+					for(final int r : RawMaterial.CODES.ALL_SBN())
 					{
 						str.append("<OPTION VALUE="+r);
 						if(CMParms.indexOf(breathes, r)>=0)
@@ -806,7 +805,7 @@ public class RaceData extends StdWebMacro
 				}
 				if(parms.containsKey("WEAR"))
 				{
-					Wearable.CODES codes = Wearable.CODES.instance();
+					final Wearable.CODES codes = Wearable.CODES.instance();
 					for(int b=0;b<codes.total();b++)
 						if(CMath.bset(R.forbiddenWornBits(),codes.get(b)))
 							str.append(codes.name(b)+", ");
@@ -819,7 +818,7 @@ public class RaceData extends StdWebMacro
 					str.append(cabilities(R,httpReq,parms,0,parms.get("FONT"))+", ");
 				if(parms.containsKey("WEARID"))
 				{
-					String old=httpReq.getUrlParameter("WEARID");
+					final String old=httpReq.getUrlParameter("WEARID");
 					long mask=0;
 					if(old==null)
 						mask=R.forbiddenWornBits();
@@ -832,7 +831,7 @@ public class RaceData extends StdWebMacro
 							else
 								break;
 					}
-					Wearable.CODES codes = Wearable.CODES.instance();
+					final Wearable.CODES codes = Wearable.CODES.instance();
 					for(int i=1;i<codes.total();i++)
 					{
 						str.append("<OPTION VALUE="+codes.get(i)+" ");
@@ -844,7 +843,7 @@ public class RaceData extends StdWebMacro
 				}
 				if(parms.containsKey("PLAYABLEID"))
 				{
-					String old=httpReq.getUrlParameter("PLAYABLEID");
+					final String old=httpReq.getUrlParameter("PLAYABLEID");
 					long mask=0;
 					if(old==null)
 						mask=R.availabilityCode();
@@ -870,36 +869,36 @@ public class RaceData extends StdWebMacro
 
 					if(parms.containsKey("ESTATS"))
 					{
-						String eStats=R.getStat("ESTATS");
-						PhyStats adjPStats=(PhyStats)CMClass.getCommon("DefaultPhyStats"); adjPStats.setAllValues(0);
+						final String eStats=R.getStat("ESTATS");
+						final PhyStats adjPStats=(PhyStats)CMClass.getCommon("DefaultPhyStats"); adjPStats.setAllValues(0);
 						if(eStats.length()>0){ CMLib.coffeeMaker().setPhyStats(adjPStats,eStats);}
 						str.append(estats(adjPStats,'E',httpReq,parms,0)+", ");
 					}
 					if(parms.containsKey("CSTATS"))
 					{
-						CharStats setStats=(CharStats)CMClass.getCommon("DefaultCharStats"); setStats.setAllValues(0);
-						String cStats=R.getStat("CSTATS");
+						final CharStats setStats=(CharStats)CMClass.getCommon("DefaultCharStats"); setStats.setAllValues(0);
+						final String cStats=R.getStat("CSTATS");
 						if(cStats.length()>0){  CMLib.coffeeMaker().setCharStats(setStats,cStats);}
 						str.append(cstats(setStats,'S',httpReq,parms,0)+", ");
 					}
 					if(parms.containsKey("ASTATS"))
 					{
-						CharStats adjStats=(CharStats)CMClass.getCommon("DefaultCharStats"); adjStats.setAllValues(0);
-						String cStats=R.getStat("ASTATS");
+						final CharStats adjStats=(CharStats)CMClass.getCommon("DefaultCharStats"); adjStats.setAllValues(0);
+						final String cStats=R.getStat("ASTATS");
 						if(cStats.length()>0){  CMLib.coffeeMaker().setCharStats(adjStats,cStats);}
 						str.append(cstats(adjStats,'A',httpReq,parms,0)+", ");
 					}
 					if(parms.containsKey("ASTATE"))
 					{
-						CharState adjState=(CharState)CMClass.getCommon("DefaultCharState"); adjState.setAllValues(0);
-						String aState=R.getStat("ASTATE");
+						final CharState adjState=(CharState)CMClass.getCommon("DefaultCharState"); adjState.setAllValues(0);
+						final String aState=R.getStat("ASTATE");
 						if(aState.length()>0){  CMLib.coffeeMaker().setCharState(adjState,aState);}
 						str.append(cstate(adjState,'A',httpReq,parms,0)+", ");
 					}
 					if(parms.containsKey("STARTASTATE"))
 					{
-						CharState startAdjState=(CharState)CMClass.getCommon("DefaultCharState"); startAdjState.setAllValues(0);
-						String saState=R.getStat("STARTASTATE");
+						final CharState startAdjState=(CharState)CMClass.getCommon("DefaultCharState"); startAdjState.setAllValues(0);
+						final String saState=R.getStat("STARTASTATE");
 						if(saState.length()>0){ CMLib.coffeeMaker().setCharState(startAdjState,saState);}
 						str.append(cstate(startAdjState,'S',httpReq,parms,0)+", ");
 					}
@@ -909,14 +908,14 @@ public class RaceData extends StdWebMacro
 					str.append(itemList(R.outfit(null),'O',httpReq,parms,0,false)+", ");
 				if(parms.containsKey("WEAPON"))
 				{
-					Vector V=new XVector(R.myNaturalWeapon());
+					final Vector V=new XVector(R.myNaturalWeapon());
 					str.append(itemList(V,'W',httpReq,parms,0,true)+", ");
 				}
 				if(parms.containsKey("RESOURCES"))
 					str.append(itemList(R.myResources(),'R',httpReq,parms,0,false)+", ");
 				if(parms.containsKey("BODYKILL"))
 				{
-					String old=httpReq.getUrlParameter("BODYKILL");
+					final String old=httpReq.getUrlParameter("BODYKILL");
 					boolean bodyKill=false;
 					if(old==null)
 						bodyKill=CMath.s_bool(R.makeGenRace().getStat("BODYKILL"));
@@ -931,7 +930,7 @@ public class RaceData extends StdWebMacro
 						R=R.makeGenRace();
 						httpReq.addFakeUrlParameter("DISFLAGS",R.getStat("DISFLAGS"));
 					}
-					int flags=CMath.s_int(httpReq.getUrlParameter("DISFLAGS"));
+					final int flags=CMath.s_int(httpReq.getUrlParameter("DISFLAGS"));
 					for(int i=0;i<Race.GENFLAG_DESCS.length;i++)
 					{
 						str.append("<OPTION VALUE="+CMath.pow(2,i));
@@ -942,14 +941,14 @@ public class RaceData extends StdWebMacro
 				}
 				if(parms.containsKey("AGING"))
 				{
-					int[] ageChart=R.getAgingChart();
+					final int[] ageChart=R.getAgingChart();
 					if(!httpReq.isUrlParameter("AGE0"))
 						for(int i=0;i<Race.AGE_DESCS.length;i++)
 							httpReq.addFakeUrlParameter("AGE"+i,""+ageChart[i]);
 					int val=-1;
 					for(int i=0;i<Race.AGE_DESCS.length;i++)
 					{
-						int lastVal=val;
+						final int lastVal=val;
 						val=CMath.s_int(httpReq.getUrlParameter("AGE"+i));
 						if(val<lastVal){ val=lastVal; httpReq.addFakeUrlParameter("AGE"+i,""+val);}
 						str.append("<INPUT TYPE=TEXT SIZE=4 NAME=AGE"+i+" VALUE="+val+">"+Race.AGE_DESCS[i]+"<BR>");
@@ -976,7 +975,7 @@ public class RaceData extends StdWebMacro
 						str.append(R.getAbilitiesDesc()+", ");
 				if(parms.containsKey("EFFECTS"))
 				{
-					for(Ability A : R.racialEffects(null))
+					for(final Ability A : R.racialEffects(null))
 						if(A!=null)
 							str.append(A.Name()+", ");
 				}
@@ -987,15 +986,15 @@ public class RaceData extends StdWebMacro
 				if(parms.containsKey("STARTINGEQ"))
 				{
 					if(R.outfit(null)!=null)
-						for(Item I : R.outfit(null))
+						for(final Item I : R.outfit(null))
 							if(I!=null)
 								str.append(I.Name()+", ");
 				}
 				if(parms.containsKey("CLASSES"))
 				{
-					for(Enumeration c=CMClass.charClasses();c.hasMoreElements();)
+					for(final Enumeration c=CMClass.charClasses();c.hasMoreElements();)
 					{
-						CharClass C=(CharClass)c.nextElement();
+						final CharClass C=(CharClass)c.nextElement();
 						if((C!=null)
 						&&(CMProps.isTheme(C.availabilityCode()))
 						&&(CMStrings.containsIgnoreCase(C.getRequiredRaceList(),"All")

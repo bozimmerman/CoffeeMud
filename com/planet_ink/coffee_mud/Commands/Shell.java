@@ -69,7 +69,7 @@ public class Shell extends StdCommand
 		{
 			for(int c=cmds.size()-1;c>=0;c--)
 			{
-				String s=(String)cmds.elementAt(c);
+				final String s=(String)cmds.elementAt(c);
 				if(s.startsWith("-"))
 				{
 					for(int c2=1;c2<s.length();c2++)
@@ -96,9 +96,9 @@ public class Shell extends StdCommand
 
 	private java.util.List<CMFile> sortDirsUp(CMFile[] files)
 	{
-		Vector<CMFile> dirs=new Vector<CMFile>();
+		final Vector<CMFile> dirs=new Vector<CMFile>();
 		CMFile CF=null;
-		Vector<CMFile> finalList=new Vector<CMFile>();
+		final Vector<CMFile> finalList=new Vector<CMFile>();
 		for(int v=files.length-1;v>=0;v--)
 		{
 			CF=files[v];
@@ -132,8 +132,8 @@ public class Shell extends StdCommand
 
 	private java.util.List<CMFile>  sortDirsDown(CMFile[] files)
 	{
-		Vector<CMFile> dirs=new Vector<CMFile>();
-		HashSet<CMFile> dirsH=new HashSet<CMFile>();
+		final Vector<CMFile> dirs=new Vector<CMFile>();
+		final HashSet<CMFile> dirsH=new HashSet<CMFile>();
 		CMFile CF=null;
 		for(int v=files.length-1;v>=0;v--)
 		{
@@ -161,7 +161,7 @@ public class Shell extends StdCommand
 				}
 			}
 		}
-		for(CMFile F : files)
+		for(final CMFile F : files)
 			if(!dirsH.contains(F))
 				dirs.addElement(F);
 		return dirs;
@@ -184,7 +184,7 @@ public class Shell extends StdCommand
 				if(filename.startsWith(".."))
 				{
 					filename=filename.substring(2);
-					int x=currentPath.lastIndexOf('/');
+					final int x=currentPath.lastIndexOf('/');
 					if(x>=0)
 						currentPath=currentPath.substring(0,x);
 					else
@@ -220,10 +220,10 @@ public class Shell extends StdCommand
 		}
 		int cmd=-1;
 		String first=((String)commands.firstElement()).toUpperCase();
-		StringBuffer allcmds=new StringBuffer("");
+		final StringBuffer allcmds=new StringBuffer("");
 		for(int i=0;i<SUB_CMDS.length;i++)
 		{
-			String shortcut=SUB_CMDS[i][0];
+			final String shortcut=SUB_CMDS[i][0];
 			if(first.startsWith(shortcut))
 			{
 				first=first.substring(shortcut.length()).trim();
@@ -262,17 +262,17 @@ public class Shell extends StdCommand
 		{
 		case 0: // directory
 		{
-			cp_options opts=new cp_options(commands);
-			CMFile[] dirs=CMFile.getFileList(incorporateBaseDir(pwd,CMParms.combine(commands,1)),mob,opts.recurse,true);
+			final cp_options opts=new cp_options(commands);
+			final CMFile[] dirs=CMFile.getFileList(incorporateBaseDir(pwd,CMParms.combine(commands,1)),mob,opts.recurse,true);
 			if(dirs==null)
 			{
 				mob.tell("^xError: invalid directory!^N");
 				return false;
 			}
-			StringBuffer msg=new StringBuffer("\n\r^y .\n\r^y ..\n\r");
-			for(int d=0;d<dirs.length;d++)
+			final StringBuffer msg=new StringBuffer("\n\r^y .\n\r^y ..\n\r");
+			for (final CMFile dir : dirs)
 			{
-				CMFile entry=dirs[d];
+				final CMFile entry=dir;
 				if(entry.isDirectory())
 				{
 					if(entry.isLocalFile()&&(!entry.canVFSEquiv()))
@@ -289,9 +289,9 @@ public class Shell extends StdCommand
 					msg.append("\n\r");
 				}
 			}
-			for(int d=0;d<dirs.length;d++)
+			for (final CMFile dir : dirs)
 			{
-				CMFile entry=dirs[d];
+				final CMFile entry=dir;
 				if(!entry.isDirectory())
 				{
 					if(entry.isLocalFile()&&(!entry.canVFSEquiv()))
@@ -314,7 +314,7 @@ public class Shell extends StdCommand
 		}
 		case 1: // copy
 		{
-			cp_options opts=new cp_options(commands);
+			final cp_options opts=new cp_options(commands);
 			if(commands.size()==2)
 				commands.addElement(".");
 			if(commands.size()<3)
@@ -324,9 +324,9 @@ public class Shell extends StdCommand
 				mob.tell("^x       : -p = preserve paths.^N");
 				return false;
 			}
-			String source=(String)commands.elementAt(1);
+			final String source=(String)commands.elementAt(1);
 			String target=CMParms.combine(commands,2);
-			CMFile[] dirs=CMFile.getFileList(incorporateBaseDir(pwd,source),mob,opts.recurse,true);
+			final CMFile[] dirs=CMFile.getFileList(incorporateBaseDir(pwd,source),mob,opts.recurse,true);
 			if(dirs==null)
 			{
 				mob.tell("^xError: invalid source!^N");
@@ -339,9 +339,9 @@ public class Shell extends StdCommand
 			}
 			if((dirs.length==1)&&(!target.trim().startsWith("::")&&(!target.trim().startsWith("//"))))
 				target=(dirs[0].isLocalFile())?"//"+target.trim():"::"+target.trim();
-			CMFile DD=new CMFile(incorporateBaseDir(pwd,target),mob);
-			java.util.List<CMFile> ddirs=sortDirsUp(dirs);
-			for(CMFile SF: ddirs)
+			final CMFile DD=new CMFile(incorporateBaseDir(pwd,target),mob);
+			final java.util.List<CMFile> ddirs=sortDirsUp(dirs);
+			for(final CMFile SF: ddirs)
 			{
 				if((SF==null)||(!SF.exists())){ mob.tell("^xError: source "+desc(SF)+" does not exist!^N"); return false;}
 				if(!SF.canRead()){mob.tell("^xError: access denied to source "+desc(SF)+"!^N"); return false;}
@@ -361,7 +361,7 @@ public class Shell extends StdCommand
 					String name=SF.getName();
 					if((opts.recurse)&&(opts.preservePaths))
 					{
-						String srcPath=SF.getVFSPathAndName();
+						final String srcPath=SF.getVFSPathAndName();
 						if(srcPath.startsWith(pwd+"/"))
 							name=srcPath.substring(pwd.length()+1);
 						else
@@ -397,7 +397,7 @@ public class Shell extends StdCommand
 				}
 				else
 				{
-					byte[] O=SF.raw();
+					final byte[] O=SF.raw();
 					if(O.length==0){ mob.tell("^xWarning: "+desc(SF)+" file had no data^N");}
 					if(!DF.saveRaw(O))
 						mob.tell("^xWarning: write failed to "+desc(DF)+" ^N");
@@ -409,8 +409,8 @@ public class Shell extends StdCommand
 		}
 		case 2: // cd
 		{
-			CMFile newDir=new CMFile(incorporateBaseDir(pwd,CMParms.combine(commands,1)),mob);
-			String changeTo=newDir.getVFSPathAndName();
+			final CMFile newDir=new CMFile(incorporateBaseDir(pwd,CMParms.combine(commands,1)),mob);
+			final String changeTo=newDir.getVFSPathAndName();
 			if(!newDir.exists())
 			{
 				mob.tell("^xError: Directory '"+CMParms.combine(commands,1)+"' does not exist.^N");
@@ -429,8 +429,8 @@ public class Shell extends StdCommand
 		}
 		case 3: // delete
 		{
-			cp_options opts=new cp_options(commands);
-			CMFile[] dirs=CMFile.getFileList(incorporateBaseDir(pwd,CMParms.combine(commands,1)),mob,opts.recurse,false);
+			final cp_options opts=new cp_options(commands);
+			final CMFile[] dirs=CMFile.getFileList(incorporateBaseDir(pwd,CMParms.combine(commands,1)),mob,opts.recurse,false);
 			if(dirs==null)
 			{
 				mob.tell("^xError: invalid filename!^N");
@@ -441,10 +441,10 @@ public class Shell extends StdCommand
 				mob.tell("^xError: no files matched^N");
 				return false;
 			}
-			java.util.List<CMFile> ddirs=sortDirsDown(dirs);
+			final java.util.List<CMFile> ddirs=sortDirsDown(dirs);
 			for(int d=0;d<ddirs.size();d++)
 			{
-				CMFile CF=ddirs.get(d);
+				final CMFile CF=ddirs.get(d);
 				if((CF==null)||(!CF.exists()))
 				{
 					mob.tell("^xError: "+desc(CF)+" does not exist!^N");
@@ -466,7 +466,7 @@ public class Shell extends StdCommand
 		}
 		case 4: // type
 		{
-			CMFile[] dirs=CMFile.getFileList(incorporateBaseDir(pwd,CMParms.combine(commands,1)),mob,false,false);
+			final CMFile[] dirs=CMFile.getFileList(incorporateBaseDir(pwd,CMParms.combine(commands,1)),mob,false,false);
 			if(dirs==null)
 			{
 				mob.tell("^xError: invalid filename!^N");
@@ -477,9 +477,9 @@ public class Shell extends StdCommand
 				mob.tell("^xError: no files matched^N");
 				return false;
 			}
-			for(int d=0;d<dirs.length;d++)
+			for (final CMFile dir : dirs)
 			{
-				CMFile CF=dirs[d];
+				final CMFile CF=dir;
 				if((CF==null)||(!CF.exists()))
 				{
 					mob.tell("^xError: file does not exist!^N");
@@ -500,7 +500,7 @@ public class Shell extends StdCommand
 		}
 		case 5: // makedirectory
 		{
-			CMFile CF=new CMFile(incorporateBaseDir(pwd,CMParms.combine(commands,1)),mob);
+			final CMFile CF=new CMFile(incorporateBaseDir(pwd,CMParms.combine(commands,1)),mob);
 			if(CF.exists())
 			{
 				mob.tell("^xError: file already exists!^N");
@@ -523,16 +523,16 @@ public class Shell extends StdCommand
 		{
 			String substring=CMParms.combine(commands,1).trim();
 			if(substring.length()==0) substring="*";
-			CMFile[] dirs=CMFile.getFileList(incorporateBaseDir(pwd,substring),mob,true,true);
-			StringBuffer msg=new StringBuffer("");
+			final CMFile[] dirs=CMFile.getFileList(incorporateBaseDir(pwd,substring),mob,true,true);
+			final StringBuffer msg=new StringBuffer("");
 			if(dirs.length==0)
 			{
 				mob.tell("^xError: no files matched^N");
 				return false;
 			}
-			for(int d=0;d<dirs.length;d++)
+			for (final CMFile dir : dirs)
 			{
-				CMFile entry=dirs[d];
+				final CMFile entry=dir;
 				if(!entry.isDirectory())
 				{
 					if(entry.isLocalFile()&&(!entry.canVFSEquiv()))
@@ -559,7 +559,7 @@ public class Shell extends StdCommand
 				mob.tell("^xError: you must specify a search string^N");
 				return false;
 			}
-			CMFile[] dirs=CMFile.getFileList(incorporateBaseDir(pwd,"*"),mob,true,true);
+			final CMFile[] dirs=CMFile.getFileList(incorporateBaseDir(pwd,"*"),mob,true,true);
 			if(dirs.length==0)
 			{
 				mob.tell("^xError: no files found!^N");
@@ -567,19 +567,19 @@ public class Shell extends StdCommand
 			}
 			mob.session().print("\n\rSearching...");
 			substring=substring.toUpperCase();
-			Vector dirs2=new Vector();
-			for(int d=0;d<dirs.length;d++)
+			final Vector dirs2=new Vector();
+			for (final CMFile dir : dirs)
 			{
-				CMFile entry=dirs[d];
+				final CMFile entry=dir;
 				if(!entry.isDirectory())
 				{
 					boolean proceed=true;
-					for(int i=0;i<badTextExtensions.length;i++)
-						if(entry.getName().toUpperCase().endsWith(badTextExtensions[i]))
+					for (final String badTextExtension : badTextExtensions)
+						if(entry.getName().toUpperCase().endsWith(badTextExtension))
 						{ proceed=false; break;}
 					if(proceed)
 					{
-						StringBuffer text=entry.textUnformatted();
+						final StringBuffer text=entry.textUnformatted();
 						if(text.toString().toUpperCase().indexOf(substring)>=0)
 							dirs2.addElement(entry);
 					}
@@ -590,10 +590,10 @@ public class Shell extends StdCommand
 				mob.tell("\n\r^xError: no files matched^N");
 				return false;
 			}
-			StringBuffer msg=new StringBuffer("\n\r");
+			final StringBuffer msg=new StringBuffer("\n\r");
 			for(int d=0;d<dirs2.size();d++)
 			{
-				CMFile entry=(CMFile)dirs2.elementAt(d);
+				final CMFile entry=(CMFile)dirs2.elementAt(d);
 				if(entry.isLocalFile()&&(!entry.canVFSEquiv()))
 					msg.append(" ");
 				else
@@ -611,7 +611,7 @@ public class Shell extends StdCommand
 		}
 		case 8: // edit
 		{
-			CMFile file=new CMFile(incorporateBaseDir(pwd,CMParms.combine(commands,1)),mob);
+			final CMFile file=new CMFile(incorporateBaseDir(pwd,CMParms.combine(commands,1)),mob);
 			if((!file.canWrite())
 			||(file.isDirectory()))
 			{
@@ -619,15 +619,15 @@ public class Shell extends StdCommand
 				return false;
 			}
 			StringBuffer buf=file.textUnformatted();
-			String CR=Resources.getLineMarker(buf);
-			List<String> vbuf=Resources.getFileLineVector(buf);
+			final String CR=Resources.getLineMarker(buf);
+			final List<String> vbuf=Resources.getFileLineVector(buf);
 			buf=null;
 			mob.tell(desc(file)+" has been loaded.\n\r\n\r");
 			final String messageTitle="File: "+file.getVFSPathAndName();
-			JournalsLibrary.MsgMkrResolution resolution=CMLib.journals().makeMessage(mob, messageTitle, vbuf, false);
+			final JournalsLibrary.MsgMkrResolution resolution=CMLib.journals().makeMessage(mob, messageTitle, vbuf, false);
 			if(resolution==JournalsLibrary.MsgMkrResolution.SAVEFILE)
 			{
-				StringBuffer text=new StringBuffer("");
+				final StringBuffer text=new StringBuffer("");
 				for(int i=0;i<vbuf.size();i++)
 					text.append((vbuf.get(i))+CR);
 				if(file.saveText(text))
@@ -646,7 +646,7 @@ public class Shell extends StdCommand
 		}
 		case 9: // move
 		{
-			cp_options opts=new cp_options(commands);
+			final cp_options opts=new cp_options(commands);
 			if(commands.size()==2)
 				commands.addElement(".");
 			if(commands.size()<3)
@@ -657,9 +657,9 @@ public class Shell extends StdCommand
 				mob.tell("^x       : -p = preserve paths.^N");
 				return false;
 			}
-			String source=(String)commands.elementAt(1);
+			final String source=(String)commands.elementAt(1);
 			String target=CMParms.combine(commands,2);
-			CMFile[] dirs=CMFile.getFileList(incorporateBaseDir(pwd,source),mob,opts.recurse,true);
+			final CMFile[] dirs=CMFile.getFileList(incorporateBaseDir(pwd,source),mob,opts.recurse,true);
 			if(dirs==null)
 			{
 				mob.tell("^xError: invalid source!^N");
@@ -672,12 +672,12 @@ public class Shell extends StdCommand
 			}
 			if((dirs.length==1)&&(!target.trim().startsWith("::")&&(!target.trim().startsWith("//"))))
 				target=(dirs[0].isLocalFile())?"//"+target.trim():"::"+target.trim();
-			CMFile DD=new CMFile(incorporateBaseDir(pwd,target),mob);
-			java.util.List<CMFile> ddirs=sortDirsUp(dirs);
+			final CMFile DD=new CMFile(incorporateBaseDir(pwd,target),mob);
+			final java.util.List<CMFile> ddirs=sortDirsUp(dirs);
 			java.util.List<CMFile> dirsLater=new Vector<CMFile>();
 			for(int d=0;d<ddirs.size();d++)
 			{
-				CMFile SF=ddirs.get(d);
+				final CMFile SF=ddirs.get(d);
 				if((SF==null)||(!SF.exists())){ mob.tell("^xError: source "+desc(SF)+" does not exist!^N"); return false;}
 				if(!SF.canRead()){mob.tell("^xError: access denied to source "+desc(SF)+"!^N"); return false;}
 				if((SF.isDirectory())&&(!opts.preservePaths))
@@ -696,7 +696,7 @@ public class Shell extends StdCommand
 					String name=SF.getName();
 					if((opts.recurse)&&(opts.preservePaths))
 					{
-						String srcPath=SF.getVFSPathAndName();
+						final String srcPath=SF.getVFSPathAndName();
 						if(srcPath.startsWith(pwd+"/"))
 							name=srcPath.substring(pwd.length()+1);
 						else
@@ -733,7 +733,7 @@ public class Shell extends StdCommand
 				}
 				else
 				{
-					byte[] O=SF.raw();
+					final byte[] O=SF.raw();
 					if(O.length==0){ mob.tell("^xWarning: "+desc(SF)+" file had no data^N");}
 					if(!DF.saveRaw(O))
 						mob.tell("^xWarning: write failed to "+desc(DF)+" ^N");
@@ -749,7 +749,7 @@ public class Shell extends StdCommand
 			dirsLater=sortDirsDown(dirsLater.toArray(new CMFile[0]));
 			for(int d=0;d<dirsLater.size();d++)
 			{
-				CMFile CF=dirsLater.get(d);
+				final CMFile CF=dirsLater.get(d);
 				if((!CF.delete())&&(CF.exists()))
 				{
 					mob.tell("^xError: Unable to delete dir "+desc(CF));
@@ -767,9 +767,9 @@ public class Shell extends StdCommand
 				mob.tell("^xError  : first and second files be specified!^N");
 				return false;
 			}
-			String firstFilename=(String)commands.elementAt(1);
+			final String firstFilename=(String)commands.elementAt(1);
 			String secondFilename=CMParms.combine(commands,2);
-			CMFile file1=new CMFile(incorporateBaseDir(pwd,firstFilename),mob);
+			final CMFile file1=new CMFile(incorporateBaseDir(pwd,firstFilename),mob);
 			if((!file1.canRead())
 			||(file1.isDirectory()))
 			{
@@ -796,25 +796,25 @@ public class Shell extends StdCommand
 					return false;
 				}
 			}
-			CMFile file2=new CMFile(prefix+incorporateBaseDir(pwd,secondFilename),mob);
+			final CMFile file2=new CMFile(prefix+incorporateBaseDir(pwd,secondFilename),mob);
 			if((!file2.canRead())||(file2.isDirectory()))
 			{
 				mob.tell("^xError: You are not authorized to read the second file.^N");
 				return false;
 			}
-			StringBuilder text1=new StringBuilder("");
-			for(String s : Resources.getFileLineVector(file1.text()))
+			final StringBuilder text1=new StringBuilder("");
+			for(final String s : Resources.getFileLineVector(file1.text()))
 				if(s.trim().length()>0)
 					text1.append(s.trim()).append("\n\r");
-			StringBuilder text2=new StringBuilder("");
-			for(String s : Resources.getFileLineVector(file2.text()))
+			final StringBuilder text2=new StringBuilder("");
+			for(final String s : Resources.getFileLineVector(file2.text()))
 				if(s.trim().length()>0)
 					text2.append(s.trim()).append("\n\r");
-			LinkedList<CMStrings.Diff> diffs=CMStrings.diff_main(text1.toString(), text2.toString(), false);
+			final LinkedList<CMStrings.Diff> diffs=CMStrings.diff_main(text1.toString(), text2.toString(), false);
 			boolean flipFlop=false;
-			for(CMStrings.Diff d : diffs)
+			for(final CMStrings.Diff d : diffs)
 			{
-				StringBuilder str=new StringBuilder("\n\r^H"+d.operation.toString()+": ");
+				final StringBuilder str=new StringBuilder("\n\r^H"+d.operation.toString()+": ");
 				str.append(flipFlop?"^N":"^w");
 				flipFlop=!flipFlop;
 				str.append(d.text);

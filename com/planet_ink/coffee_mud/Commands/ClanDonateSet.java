@@ -44,14 +44,14 @@ public class ClanDonateSet extends StdCommand
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		String clanName=(commands.size()>1)?CMParms.combine(commands,1,commands.size()):"";
+		final String clanName=(commands.size()>1)?CMParms.combine(commands,1,commands.size()):"";
 
 		Clan C=null;
-		boolean skipChecks=mob.getClanRole(mob.Name())!=null;
+		final boolean skipChecks=mob.getClanRole(mob.Name())!=null;
 		if(skipChecks) C=mob.getClanRole(mob.Name()).first;
 
 		if(C==null)
-		for(Pair<Clan,Integer> c : mob.clans())
+		for(final Pair<Clan,Integer> c : mob.clans())
 			if((clanName.length()==0)||(CMLib.english().containsString(c.first.getName(), clanName))
 			&&(c.first.getAuthority(c.second.intValue(), Clan.Function.SET_DONATE)!=Authority.CAN_NOT_DO))
 			{	C=c.first; break; }

@@ -15,6 +15,7 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /*
@@ -81,8 +82,8 @@ public class CatalogMobNext extends StdWebMacro
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
-		java.util.Map<String,String> parms=parseParms(parm);
-		String last=httpReq.getUrlParameter("MOB");
+		final java.util.Map<String,String> parms=parseParms(parm);
+		final String last=httpReq.getUrlParameter("MOB");
 		String catagory=httpReq.getUrlParameter("CATACAT");
 		if(catagory!=null)
 		{
@@ -94,7 +95,7 @@ public class CatalogMobNext extends StdWebMacro
 			else
 				catagory=catagory.toUpperCase().trim();
 		}
-		String optCol=httpReq.getUrlParameter("OPTIONALCOLUMN");
+		final String optCol=httpReq.getUrlParameter("OPTIONALCOLUMN");
 		final String optionalColumn;
 		if(optCol==null)
 			optionalColumn="";
@@ -104,8 +105,8 @@ public class CatalogMobNext extends StdWebMacro
 		{
 			if(last!=null)
 				httpReq.removeUrlParameter("MOB");
-			for(int d=0;d<DATA.length;d++)
-				httpReq.removeUrlParameter(DATA[d]);
+			for (final String element : DATA)
+				httpReq.removeUrlParameter(element);
 			if(optionalColumn.length()>0)
 				httpReq.removeUrlParameter("CATALOG_MOB_"+optionalColumn);
 			return "";
@@ -115,18 +116,18 @@ public class CatalogMobNext extends StdWebMacro
 		String name=null;
 		CatalogLibrary.CataData data=null;
 		String[] names=CMLib.catalog().getCatalogMobNames(catagory);
-		String sortBy=httpReq.getUrlParameter("SORTBY");
+		final String sortBy=httpReq.getUrlParameter("SORTBY");
 		if((sortBy!=null)&&(sortBy.length()>0))
 		{
 			final int sortIndex=CMParms.indexOf(DATA, "CATALOG_MOB_"+sortBy.toUpperCase());
 			if((sortIndex>=0)||(sortBy.equalsIgnoreCase(optionalColumn)))
 			{
-				String[] sortedNames=(String[])httpReq.getRequestObjects().get("CATALOG_MOB_"+catagory+"_"+sortBy.toUpperCase());
+				final String[] sortedNames=(String[])httpReq.getRequestObjects().get("CATALOG_MOB_"+catagory+"_"+sortBy.toUpperCase());
 				if(sortedNames!=null)
 					names=sortedNames;
 				else
 				{
-					Object[] sortifiable=new Object[names.length];
+					final Object[] sortifiable=new Object[names.length];
 					for(int s=0;s<names.length;s++)
 						sortifiable[s]=new Object[]{
 							names[s],
@@ -137,10 +138,10 @@ public class CatalogMobNext extends StdWebMacro
 						@Override
 						public int compare(Object o1, Object o2)
 						{
-							Object[] O1=(Object[])o1;
-							Object[] O2=(Object[])o2;
-							String s1=getCataStat((MOB)O1[1],(CatalogLibrary.CataData)O1[2],sortIndex,optionalColumn);
-							String s2=getCataStat((MOB)O2[1],(CatalogLibrary.CataData)O2[2],sortIndex,optionalColumn);
+							final Object[] O1=(Object[])o1;
+							final Object[] O2=(Object[])o2;
+							final String s1=getCataStat((MOB)O1[1],(CatalogLibrary.CataData)O1[2],sortIndex,optionalColumn);
+							final String s2=getCataStat((MOB)O2[1],(CatalogLibrary.CataData)O2[2],sortIndex,optionalColumn);
 							if(CMath.isNumber(s1)&&CMath.isNumber(s2))
 								return Double.valueOf(CMath.s_double(s1)).compareTo(Double.valueOf(CMath.s_double(s2)));
 							else
@@ -153,13 +154,13 @@ public class CatalogMobNext extends StdWebMacro
 				}
 			}
 		}
-		for(int s=0;s<names.length;s++)
+		for (final String name2 : names)
 		{
-			name="CATALOG-"+names[s].toUpperCase().trim();
+			name="CATALOG-"+name2.toUpperCase().trim();
 			if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!name.equalsIgnoreCase(lastID))))
 			{
-				data=CMLib.catalog().getCatalogMobData(names[s]);
-				M=CMLib.catalog().getCatalogMob(names[s]);
+				data=CMLib.catalog().getCatalogMobData(name2);
+				M=CMLib.catalog().getCatalogMob(name2);
 				if(M==null) continue;
 				httpReq.addFakeUrlParameter("MOB",name);
 				for(int d=0;d<DATA.length;d++)
@@ -171,8 +172,8 @@ public class CatalogMobNext extends StdWebMacro
 			lastID=name;
 		}
 		httpReq.addFakeUrlParameter("MOB","");
-		for(int d=0;d<DATA.length;d++)
-			httpReq.addFakeUrlParameter(DATA[d],"");
+		for (final String element : DATA)
+			httpReq.addFakeUrlParameter(element,"");
 		if(optionalColumn.length()>0)
 			httpReq.addFakeUrlParameter("CATALOG_MOB_"+optionalColumn,"");
 		if(parms.containsKey("EMPTYOK"))

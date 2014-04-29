@@ -54,10 +54,10 @@ public class Thief_SenseLaw extends ThiefSkill
 		if(room==null) return empty;
 		if(room.numInhabitants()==0) return empty;
 		if(B==null) return empty;
-		Vector V=new Vector();
+		final Vector V=new Vector();
 		for(int m=0;m<room.numInhabitants();m++)
 		{
-			MOB M=room.fetchInhabitant(m);
+			final MOB M=room.fetchInhabitant(m);
 			if((M!=null)&&(M.isMonster())&&(B.isElligibleOfficer(legalObject,M)))
 				V.addElement(M);
 		}
@@ -74,17 +74,17 @@ public class Thief_SenseLaw extends ThiefSkill
 	{
 		if((affected!=null)&&(affected instanceof MOB))
 		{
-			MOB mob=(MOB)affected;
+			final MOB mob=(MOB)affected;
 			if((mob.location()!=null)&&(!mob.isMonster()))
 			{
-				LegalBehavior B=CMLib.law().getLegalBehavior(mob.location());
+				final LegalBehavior B=CMLib.law().getLegalBehavior(mob.location());
 				if(B==null)
 					return super.tick(ticking,tickID);
-				StringBuffer buf=new StringBuffer("");
+				final StringBuffer buf=new StringBuffer("");
 				Vector V=getLawMen(CMLib.law().getLegalObject(mob.location()),mob.location(),B);
 				for(int l=0;l<V.size();l++)
 				{
-					MOB M=(MOB)V.elementAt(l);
+					final MOB M=(MOB)V.elementAt(l);
 					if(CMLib.flags().canBeSeenBy(M,mob))
 						buf.append(M.name(mob)+" is an officer of the law.  ");
 					else
@@ -92,8 +92,8 @@ public class Thief_SenseLaw extends ThiefSkill
 				}
 				for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 				{
-					Room R=mob.location().getRoomInDir(d);
-					Exit E=mob.location().getExitInDir(d);
+					final Room R=mob.location().getRoomInDir(d);
+					final Exit E=mob.location().getExitInDir(d);
 					if((R!=null)&&(E!=null)&&(E.isOpen()))
 					{
 						V=getLawMen(mob.location().getArea(),R,B);

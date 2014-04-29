@@ -41,8 +41,8 @@ public class ExpertiseNext extends StdWebMacro
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
-		java.util.Map<String,String> parms=parseParms(parm);
-		String last=httpReq.getUrlParameter("EXPERTISE");
+		final java.util.Map<String,String> parms=parseParms(parm);
+		final String last=httpReq.getUrlParameter("EXPERTISE");
 		if(parms.containsKey("RESET"))
 		{
 			if(last!=null) httpReq.removeUrlParameter("EXPERTISE");
@@ -57,7 +57,7 @@ public class ExpertiseNext extends StdWebMacro
 			String Ename=null;
 			String Vname=null;
 			int x=0;
-			for(Enumeration e=CMLib.expertises().definitions();e.hasMoreElements();)
+			for(final Enumeration e=CMLib.expertises().definitions();e.hasMoreElements();)
 			{
 				E=(ExpertiseLibrary.ExpertiseDefinition)e.nextElement();
 				Ename=E.name;
@@ -80,9 +80,9 @@ public class ExpertiseNext extends StdWebMacro
 			httpReq.getRequestObjects().put("SORTED_EXPERTISE",experts);
 		}
 		Integer qualLevel=null;
-		String levelName=httpReq.getUrlParameter("LEVEL");
-		int levelCheck=((levelName!=null)&&(levelName.length()>0))?CMath.s_int(levelName):-1;
-		String className=httpReq.getUrlParameter("CLASS");
+		final String levelName=httpReq.getUrlParameter("LEVEL");
+		final int levelCheck=((levelName!=null)&&(levelName.length()>0))?CMath.s_int(levelName):-1;
+		final String className=httpReq.getUrlParameter("CLASS");
 		Hashtable expertsAllows=null;
 		if((className!=null)&&(className.length()>0))
 		{
@@ -91,11 +91,11 @@ public class ExpertiseNext extends StdWebMacro
 			{
 				expertsAllows=new Hashtable();
 				httpReq.getRequestObjects().put("ALLOWS-"+className.toUpperCase().trim(),expertsAllows);
-				List<QualifyingID> DV=CMLib.ableMapper().getClassAllowsList(className);
+				final List<QualifyingID> DV=CMLib.ableMapper().getClassAllowsList(className);
 				if(DV!=null)
-					for(QualifyingID qID : DV)
+					for(final QualifyingID qID : DV)
 					{
-						String xpertise=qID.ID;
+						final String xpertise=qID.ID;
 						E=CMLib.expertises().getDefinition(xpertise);
 						if(E!=null)
 						{
@@ -108,7 +108,7 @@ public class ExpertiseNext extends StdWebMacro
 					}
 			}
 		}
-		for(Enumeration e=experts.getDimensionVector(2).elements();e.hasMoreElements();)
+		for(final Enumeration e=experts.getDimensionVector(2).elements();e.hasMoreElements();)
 		{
 			E=(ExpertiseLibrary.ExpertiseDefinition)e.nextElement();
 			if(E!=null)

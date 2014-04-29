@@ -80,16 +80,16 @@ public class Hireling extends StdBehavior
 	public void setParms(String newParms)
 	{
 		super.setParms(newParms);
-		int dex=newParms.indexOf(';');
+		final int dex=newParms.indexOf(';');
 		zapperMask=null;
 		if(dex>=0)
 		{
-			int dex2=newParms.indexOf(';',dex+1);
+			final int dex2=newParms.indexOf(';',dex+1);
 			if(dex2>dex)
 			{
 				setPrice(newParms.substring(0,dex));
 				setMinutes(newParms.substring(dex+1,dex2));
-				String s=getParms().substring(dex2+1);
+				final String s=getParms().substring(dex2+1);
 				if(s.trim().length()>0)
 					zapperMask=s.trim();
 			}
@@ -114,8 +114,8 @@ public class Hireling extends StdBehavior
 
 	protected double gamehours()
 	{
-		double d=CMath.div((minutes() * 60L * 1000L),CMProps.getMillisPerMudHour());
-		long d2=Math.round(d*10.0);
+		final double d=CMath.div((minutes() * 60L * 1000L),CMProps.getMillisPerMudHour());
+		final long d2=Math.round(d*10.0);
 		return CMath.div(d2,10.0);
 	}
 
@@ -126,7 +126,7 @@ public class Hireling extends StdBehavior
 		CMLib.commands().postFollow(observer,null,false);
 		observer.setFollowing(null);
 		int direction=-1;
-		for(int dir : Directions.CODES())
+		for(final int dir : Directions.CODES())
 			if(observer.location().getExitInDir(dir)!=null)
 			{
 				if(observer.location().getExitInDir(dir).isOpen())
@@ -148,10 +148,10 @@ public class Hireling extends StdBehavior
 		super.tick(ticking,tickID);
 		if(tickID!=Tickable.TICKID_MOB) return true;
 		if(onTheJobUntil==0) return true;
-		MOB observer=(MOB)ticking;
+		final MOB observer=(MOB)ticking;
 		if(System.currentTimeMillis()>onTheJobUntil)
 		{
-			Double D=(Double)partials.get(workingFor);
+			final Double D=(Double)partials.get(workingFor);
 			partials.remove(workingFor);
 			CMLib.commands().postStand(observer,true);
 			if(!canActAtAll(observer))
@@ -192,7 +192,7 @@ public class Hireling extends StdBehavior
 		   &&(observer.amFollowing()==null)
 		   &&(canFreelyBehaveNormal(observer)))
 		{
-			MOB talkTo=observer.location().fetchInhabitant(workingFor);
+			final MOB talkTo=observer.location().fetchInhabitant(workingFor);
 			if(talkTo!=null)
 			{
 				CMLib.commands().postFollow(observer,talkTo,false);
@@ -205,10 +205,10 @@ public class Hireling extends StdBehavior
 	@Override
 	public boolean okMessage(Environmental affecting, CMMsg msg)
 	{
-		MOB source=msg.source();
+		final MOB source=msg.source();
 		if(affecting instanceof MOB)
 		{
-			MOB observer=(MOB)affecting;
+			final MOB observer=(MOB)affecting;
 
 			if(msg.amITarget(observer)
 			&&(!msg.amISource(observer))
@@ -246,11 +246,11 @@ public class Hireling extends StdBehavior
 	public void executeMsg(Environmental affecting, CMMsg msg)
 	{
 		super.executeMsg(affecting,msg);
-		MOB source=msg.source();
+		final MOB source=msg.source();
 		if(!canActAtAll(affecting)) return;
 		if(!(affecting instanceof MOB)) return;
 
-		MOB observer=(MOB)affecting;
+		final MOB observer=(MOB)affecting;
 		if((msg.sourceMinor()==CMMsg.TYP_QUIT)
 		&&(msg.amISource(observer)||msg.amISource(observer.amFollowing())))
 		   allDone(observer);
@@ -278,7 +278,7 @@ public class Hireling extends StdBehavior
 			else
 			if(((upperSrcMsg.indexOf(" SKILLS") > 0)))
 			{
-				StringBuffer skills = new StringBuffer("");
+				final StringBuffer skills = new StringBuffer("");
 				for(final Enumeration<Ability> a=observer.allAbilities();a.hasMoreElements();)
 				{
 					final Ability A=a.nextElement();
@@ -333,10 +333,10 @@ public class Hireling extends StdBehavior
 				{
 					if(given>price())
 						partials.put(msg.source().Name(),Double.valueOf(given-price()));
-					StringBuffer skills=new StringBuffer("");
-					for(Enumeration<Ability> a=observer.allAbilities();a.hasMoreElements();)
+					final StringBuffer skills=new StringBuffer("");
+					for(final Enumeration<Ability> a=observer.allAbilities();a.hasMoreElements();)
 					{
-						Ability A=a.nextElement();
+						final Ability A=a.nextElement();
 						if(A!=null)
 						{
 							if(A.proficiency()==0)

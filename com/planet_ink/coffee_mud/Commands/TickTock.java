@@ -43,7 +43,7 @@ public class TickTock extends StdCommand
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		String s=CMParms.combine(commands,1).toLowerCase();
+		final String s=CMParms.combine(commands,1).toLowerCase();
 		try
 		{
 			if(CMath.isInteger(s))
@@ -59,9 +59,9 @@ public class TickTock extends StdCommand
 				CMLib.clans().tickAllClans();
 			else
 			{
-				for(Enumeration e=CMLib.libraries();e.hasMoreElements();)
+				for(final Enumeration e=CMLib.libraries();e.hasMoreElements();)
 				{
-					CMLibrary lib=(CMLibrary)e.nextElement();
+					final CMLibrary lib=(CMLibrary)e.nextElement();
 					if((lib.getServiceClient()!=null)&&(s.equalsIgnoreCase(lib.getServiceClient().getName())))
 					{
 						if(lib instanceof Runnable)
@@ -75,7 +75,7 @@ public class TickTock extends StdCommand
 				mob.tell("Ticktock what?  Enter a number of mud-hours, or clanticks, or thread id.");
 			}
 		}
-		catch(Exception e)
+		catch(final Exception e)
 		{
 			mob.tell("Ticktock failed: "+e.getMessage());
 		}

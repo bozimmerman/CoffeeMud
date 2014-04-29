@@ -39,11 +39,11 @@ public class AreaName extends StdWebMacro
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
-		String last=httpReq.getUrlParameter("AREA");
+		final String last=httpReq.getUrlParameter("AREA");
 		if(last==null) return " @break@";
 		if(last.length()>0)
 		{
-			Area A=CMLib.map().getArea(last);
+			final Area A=CMLib.map().getArea(last);
 			if(A!=null)
 				return clearWebMacros(A.Name());
 		}

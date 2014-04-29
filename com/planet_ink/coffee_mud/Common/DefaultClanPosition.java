@@ -56,7 +56,7 @@ public class DefaultClanPosition implements ClanPosition
 	protected Clan.Authority[] functionChart;
 
 	/** return a new instance of the object*/
-	@Override public CMObject newInstance(){try{return getClass().newInstance();}catch(Exception e){return new DefaultClanPosition();}}
+	@Override public CMObject newInstance(){try{return getClass().newInstance();}catch(final Exception e){return new DefaultClanPosition();}}
 	@Override public void initializeClass(){}
 	@Override public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 	@Override
@@ -66,7 +66,7 @@ public class DefaultClanPosition implements ClanPosition
 		{
 			return (ClanPosition)this.clone();
 		}
-		catch(CloneNotSupportedException e)
+		catch(final CloneNotSupportedException e)
 		{
 			return new DefaultClanPosition();
 		}
@@ -219,7 +219,7 @@ public class DefaultClanPosition implements ClanPosition
 					functionChart[a]=Clan.Authority.CAN_NOT_DO;
 			for(final String funcName : funcs)
 			{
-				Clan.Function func=(Clan.Function)CMath.s_valueOf(Clan.Function.values(), funcName);
+				final Clan.Function func=(Clan.Function)CMath.s_valueOf(Clan.Function.values(), funcName);
 				if(func!=null) functionChart[func.ordinal()] = Clan.Authority.CAN_DO;
 			}
 			break;

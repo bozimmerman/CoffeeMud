@@ -60,7 +60,7 @@ public class Play_Reveille extends Play
 		timeOut=0;
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 		unplayAll(mob,mob);
 		if(success)
 		{
@@ -73,9 +73,9 @@ public class Play_Reveille extends Play
 
 			for(int v=0;v<commonRoomSet.size();v++)
 			{
-				Room R=(Room)commonRoomSet.elementAt(v);
-				String msgStr=getCorrectMsgString(R,str,v);
-				CMMsg msg=CMClass.getMsg(mob,null,this,somanticCastCode(mob,null,auto),msgStr);
+				final Room R=(Room)commonRoomSet.elementAt(v);
+				final String msgStr=getCorrectMsgString(R,str,v);
+				final CMMsg msg=CMClass.getMsg(mob,null,this,somanticCastCode(mob,null,auto),msgStr);
 				if(R.okMessage(mob,msg))
 				{
 					if(originRoom==R)
@@ -83,34 +83,34 @@ public class Play_Reveille extends Play
 					else
 						R.sendOthers(mob,msg);
 					invoker=mob;
-					HashSet<MOB> h=new HashSet<MOB>();
+					final HashSet<MOB> h=new HashSet<MOB>();
 					for(int i=0;i<R.numInhabitants();i++)
 					{
-						MOB M=R.fetchInhabitant(i);
+						final MOB M=R.fetchInhabitant(i);
 						h.add(M);
 					}
 
 					for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 					{
-						Room R3=R.getRoomInDir(d);
+						final Room R3=R.getRoomInDir(d);
 						if((R3!=null)&&(!commonRoomSet.contains(R3)))
 							for(int i=0;i<R3.numInhabitants();i++)
 							{
-								MOB M=R3.fetchInhabitant(i);
+								final MOB M=R3.fetchInhabitant(i);
 								h.add(M);
 							}
 					}
 
-					for(MOB follower : h)
+					for(final MOB follower : h)
 					{
-						Room R2=follower.location();
+						final Room R2=follower.location();
 
 						// malicious songs must not affect the invoker!
 						int affectType=CMMsg.MSG_CAST_SOMANTIC_SPELL;
 						if(auto) affectType=affectType|CMMsg.MASK_ALWAYS;
 						if((CMLib.flags().canBeHeardSpeakingBy(invoker,follower)&&(follower.fetchEffect(this.ID())==null)))
 						{
-							CMMsg msg2=CMClass.getMsg(mob,follower,this,affectType,null);
+							final CMMsg msg2=CMClass.getMsg(mob,follower,this,affectType,null);
 							if(R2.okMessage(mob,msg2))
 							{
 								R2.send(follower,msg2);
@@ -119,7 +119,7 @@ public class Play_Reveille extends Play
 									follower.doCommand(CMParms.parse("WAKE"),Command.METAFLAG_FORCED);
 									if(!CMLib.flags().isSleeping(follower))
 									{
-										Ability A=CMClass.getAbility("Searching");
+										final Ability A=CMClass.getAbility("Searching");
 										if(A!=null)	A.invoke(follower,null,true,asLevel);
 									}
 								}

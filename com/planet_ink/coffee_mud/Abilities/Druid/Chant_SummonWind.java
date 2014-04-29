@@ -59,15 +59,15 @@ public class Chant_SummonWind extends Chant
 		int size=mob.location().getArea().numberOfProperIDedRooms();
 		size=size/(mob.phyStats().level()+(2*super.getXLEVELLevel(mob)));
 		if(size<0) size=0;
-		boolean success=proficiencyCheck(mob,-size,auto);
+		final boolean success=proficiencyCheck(mob,-size,auto);
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"^JThe sky changes color!^?":"^S<S-NAME> chant(s) into the sky for wind!^?");
+			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"^JThe sky changes color!^?":"^S<S-NAME> chant(s) into the sky for wind!^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				Climate C=mob.location().getArea().getClimateObj();
-				Climate oldC=(Climate)C.copyOf();
+				final Climate C=mob.location().getArea().getClimateObj();
+				final Climate oldC=(Climate)C.copyOf();
 				switch(C.weatherType(mob.location()))
 				{
 				case Climate.WEATHER_BLIZZARD:

@@ -50,10 +50,10 @@ public class Chant_AstralProjection extends Chant
 	{
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		if((invoker!=null)&&(invoker.soulMate()==mob))
 		{
-			Session s=invoker.session();
+			final Session s=invoker.session();
 			s.setMob(invoker.soulMate());
 			mob.setSession(s);
 			invoker.setSession(null);
@@ -98,11 +98,11 @@ public class Chant_AstralProjection extends Chant
 
 	public void peaceAt(MOB mob)
 	{
-		Room room=mob.location();
+		final Room room=mob.location();
 		if(room==null) return;
 		for(int m=0;m<room.numInhabitants();m++)
 		{
-			MOB inhab=room.fetchInhabitant(m);
+			final MOB inhab=room.fetchInhabitant(m);
 			if((inhab!=null)&&(inhab.getVictim()==mob))
 				inhab.setVictim(null);
 		}
@@ -129,7 +129,7 @@ public class Chant_AstralProjection extends Chant
 			target=(MOB)givenTarget;
 		if(target.soulMate()!=null)
 		{
-			Ability AS=target.soulMate().fetchEffect(ID());
+			final Ability AS=target.soulMate().fetchEffect(ID());
 			if(AS!=null)
 			{
 				AS.unInvoke();
@@ -146,19 +146,19 @@ public class Chant_AstralProjection extends Chant
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 		if(!success)
 		{
 			return beneficialWordsFizzle(mob,null,"<S-NAME> chant(s) softly, but nothing happens");
 		}
 
-		CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> chant(s) softly.^?");
+		final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> chant(s) softly.^?");
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
 			target.makePeace();
 			peaceAt(target);
-			MOB spirit=CMClass.getFactoryMOB();
+			final MOB spirit=CMClass.getFactoryMOB();
 			spirit.setName("The Spirit of "+target.Name());
 			spirit.baseCharStats().setMyRace(CMClass.getRace("Spirit"));
 			spirit.setPlayerStats(target.playerStats());
@@ -167,9 +167,9 @@ public class Chant_AstralProjection extends Chant
 			mob.location().show(target,null,CMMsg.MSG_OK_ACTION,"^Z<S-NAME> go(es) limp!^.^?\n\r");
 			CMLib.threads().startTickDown(spirit,Tickable.TICKID_MOB,1);
 			beneficialAffect(spirit,target,asLevel,0);
-			Ability A=CMClass.getAbility("Prop_AstralSpirit");
+			final Ability A=CMClass.getAbility("Prop_AstralSpirit");
 			spirit.addNonUninvokableEffect(A);
-			Session s=target.session();
+			final Session s=target.session();
 			s.setMob(spirit);
 			spirit.setSession(s);
 			spirit.setSoulMate(target);

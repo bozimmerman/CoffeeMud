@@ -47,21 +47,21 @@ public class GCClassLoader
 	public List<DatabaseEngine.AckRecord> DBReadClasses()
 	{
 		DBConnection D=null;
-		Vector<DatabaseEngine.AckRecord> rows=new Vector<DatabaseEngine.AckRecord>();
+		final Vector<DatabaseEngine.AckRecord> rows=new Vector<DatabaseEngine.AckRecord>();
 		try
 		{
 			D=DB.DBFetch();
-			ResultSet R=D.query("SELECT * FROM CMCCAC");
+			final ResultSet R=D.query("SELECT * FROM CMCCAC");
 			while(R.next())
 			{
-				DatabaseEngine.AckRecord ack = new DatabaseEngine.AckRecord(
+				final DatabaseEngine.AckRecord ack = new DatabaseEngine.AckRecord(
 					DBConnections.getRes(R,"CMCCID"),
 					DBConnections.getRes(R,"CMCDAT"),
 					"GenCharClass");
 				rows.addElement(ack);
 			}
 		}
-		catch(Exception sqle)
+		catch(final Exception sqle)
 		{
 			Log.errOut("DataLoader",sqle);
 		}

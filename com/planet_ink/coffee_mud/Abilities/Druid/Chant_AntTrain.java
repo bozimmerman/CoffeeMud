@@ -54,8 +54,8 @@ public class Chant_AntTrain extends Chant
 		if(invoker==null)
 			return;
 
-		MOB mob=invoker;
-		Item item=(Item)affected;
+		final MOB mob=invoker;
+		final Item item=(Item)affected;
 		super.unInvoke();
 
 
@@ -99,7 +99,7 @@ public class Chant_AntTrain extends Chant
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		Physical target=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_UNWORNONLY);
+		final Physical target=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_UNWORNONLY);
 		if(target==null) return false;
 		if((!(target instanceof Item))
 		||(!CMLib.flags().isGettable(((Item)target))))
@@ -117,7 +117,7 @@ public class Chant_AntTrain extends Chant
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
@@ -142,12 +142,12 @@ public class Chant_AntTrain extends Chant
 				target.delEffect(this);
 				target.recoverPhyStats();
 			}
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> begin(s) to float around.":"^S<S-NAME> chant(s), and a train of ants appears to carry <T-NAMESELF> for <S-HIM-HER>.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> begin(s) to float around.":"^S<S-NAME> chant(s), and a train of ants appears to carry <T-NAMESELF> for <S-HIM-HER>.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				long properWornCode=((Item)target).rawProperLocationBitmap();
-				boolean properWornLogical=((Item)target).rawLogicalAnd();
+				final long properWornCode=((Item)target).rawProperLocationBitmap();
+				final boolean properWornLogical=((Item)target).rawLogicalAnd();
 				((Item)target).setRawLogicalAnd(false);
 				((Item)target).setRawProperLocationBitmap(Wearable.WORN_FLOATING_NEARBY);
 				((Item)target).wearAt(Wearable.WORN_FLOATING_NEARBY);

@@ -67,7 +67,7 @@ public class Disease_Vampirism extends Disease
 	{
 		if((affected!=null)&&(affected instanceof MOB))
 		{
-			MOB mob=(MOB)affected;
+			final MOB mob=(MOB)affected;
 			if(msg.amISource(mob)
 			   &&(msg.tool()!=null)
 			   &&(msg.tool().ID().equals("Skill_Swim")))

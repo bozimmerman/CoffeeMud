@@ -74,9 +74,9 @@ public class Spell_MarkerPortal extends Spell
 
 		try
 		{
-			for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
+			for(final Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 			{
-				Room R=(Room)r.nextElement();
+				final Room R=(Room)r.nextElement();
 				if(CMLib.flags().canAccess(mob,R))
 					for(final Enumeration<Ability> a=R.effects();a.hasMoreElements();)
 					{
@@ -91,7 +91,7 @@ public class Spell_MarkerPortal extends Spell
 					}
 				if(newRoom!=null) break;
 			}
-		}catch(NoSuchElementException nse){}
+		}catch(final NoSuchElementException nse){}
 		if(newRoom==null)
 		{
 			mob.tell("You can't seem to focus on your marker.  Are you sure you've already summoned it?");
@@ -114,7 +114,7 @@ public class Spell_MarkerPortal extends Spell
 		int profNeg=0;
 		for(int i=0;i<newRoom.numInhabitants();i++)
 		{
-			MOB t=newRoom.fetchInhabitant(i);
+			final MOB t=newRoom.fetchInhabitant(i);
 			if(t!=null)
 			{
 				int adjustment=t.phyStats().level()-(mob.phyStats().level()+(2*getXLEVELLevel(mob)));
@@ -127,32 +127,32 @@ public class Spell_MarkerPortal extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,-profNeg,auto);
+		final boolean success=proficiencyCheck(mob,-profNeg,auto);
 
 		if((success)
 		&&((newRoom.getRoomInDir(Directions.GATE)==null)
 		&&(newRoom.getExitInDir(Directions.GATE)==null)))
 		{
-			CMMsg msg=CMClass.getMsg(mob,oldRoom,this,verbalCastCode(mob,oldRoom,auto),"^S<S-NAME> conjur(s) a blinding, swirling portal here.^?");
-			CMMsg msg2=CMClass.getMsg(mob,newRoom,this,verbalCastCode(mob,newRoom,auto),"A blinding, swirling portal appears here.");
+			final CMMsg msg=CMClass.getMsg(mob,oldRoom,this,verbalCastCode(mob,oldRoom,auto),"^S<S-NAME> conjur(s) a blinding, swirling portal here.^?");
+			final CMMsg msg2=CMClass.getMsg(mob,newRoom,this,verbalCastCode(mob,newRoom,auto),"A blinding, swirling portal appears here.");
 			if((oldRoom.okMessage(mob,msg))&&(newRoom.okMessage(mob,msg2)))
 			{
 				oldRoom.send(mob,msg);
 				newRoom.send(mob,msg2);
-				Exit e=CMClass.getExit("GenExit");
+				final Exit e=CMClass.getExit("GenExit");
 				e.setDescription("A swirling portal to somewhere");
 				e.setDisplayText("A swirling portal to somewhere");
 				e.setDoorsNLocks(false,true,false,false,false,false);
 				e.setExitParams("portal","close","open","closed.");
 				e.setName("a swirling portal");
-				Ability A1=CMClass.getAbility("Prop_RoomView");
+				final Ability A1=CMClass.getAbility("Prop_RoomView");
 				if(A1!=null)
 				{
 					A1.setMiscText(CMLib.map().getExtendedRoomID(newRoom));
 					e.addNonUninvokableEffect(A1);
 				}
-				Exit e2=(Exit)e.copyOf();
-				Ability A2=CMClass.getAbility("Prop_RoomView");
+				final Exit e2=(Exit)e.copyOf();
+				final Ability A2=CMClass.getAbility("Prop_RoomView");
 				if(A2!=null)
 				{
 					A2.setMiscText(CMLib.map().getExtendedRoomID(mob.location()));

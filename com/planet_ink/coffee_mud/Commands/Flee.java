@@ -45,7 +45,7 @@ public class Flee extends Go
 		String direction="";
 		if(commands.size()>1) direction=CMParms.combine(commands,1);
 		if(mob==null) return false;
-		Room R=mob.location();
+		final Room R=mob.location();
 		if(R==null) return false;
 		if((!mob.isMonster())||(mob.amFollowing()!=null))
 		{
@@ -57,13 +57,13 @@ public class Flee extends Go
 		}
 
 		boolean XPloss=true;
-		MOB fighting=mob.getVictim();
+		final MOB fighting=mob.getVictim();
 		if(fighting!=null)
 		{
-			Set<MOB> H=CMLib.combat().allCombatants(mob);
-			for(Iterator i=H.iterator();i.hasNext();)
+			final Set<MOB> H=CMLib.combat().allCombatants(mob);
+			for (final Object element : H)
 			{
-				MOB M=(MOB)i.next();
+				final MOB M=(MOB)element;
 				if(CMLib.flags().aliveAwakeMobileUnbound(M,true))
 				{
 					XPloss=true;
@@ -84,11 +84,11 @@ public class Flee extends Go
 		{
 			if(direction.length()==0)
 			{
-				Vector directions=new Vector();
+				final Vector directions=new Vector();
 				for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 				{
-					Exit thisExit=R.getExitInDir(d);
-					Room thisRoom=R.getRoomInDir(d);
+					final Exit thisExit=R.getExitInDir(d);
+					final Room thisRoom=R.getRoomInDir(d);
 					if((thisRoom!=null)&&(thisExit!=null)&&(thisExit.isOpen()))
 						directions.addElement(Integer.valueOf(d));
 				}
@@ -114,16 +114,16 @@ public class Flee extends Go
 			mob.makePeace();
 			if(XPloss&&(fighting!=null))
 			{
-				String whatToDo=CMProps.getVar(CMProps.Str.PLAYERFLEE);
+				final String whatToDo=CMProps.getVar(CMProps.Str.PLAYERFLEE);
 				if(whatToDo==null) return false;
-				int[] expLost={10+((mob.phyStats().level()-fighting.phyStats().level()))*5};
+				final int[] expLost={10+((mob.phyStats().level()-fighting.phyStats().level()))*5};
 				if(expLost[0]<10) expLost[0]=10;
-				String[] cmds=CMParms.toStringArray(CMParms.parseCommas(whatToDo,true));
+				final String[] cmds=CMParms.toStringArray(CMParms.parseCommas(whatToDo,true));
 				CMLib.combat().handleConsequences(mob,fighting,cmds,expLost,"You lose @x1 experience points for withdrawing.");
-				double pctHPremaining=CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints());
+				final double pctHPremaining=CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints());
 				if(expLost[0]>0)
 				{
-					int gainedExperience=(int)Math.round(CMath.mul(expLost[0],1.0-pctHPremaining))/4;
+					final int gainedExperience=(int)Math.round(CMath.mul(expLost[0],1.0-pctHPremaining))/4;
 					if((fighting!=mob)
 					&&(gainedExperience>0)
 					&&((mob.session()==null)

@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -68,13 +67,13 @@ public class Thief_UndergroundConnections extends ThiefSkill
 				pathOut.remove(0);
 				if(currRoom!=null)
 				{
-					String roomDesc=currRoom.displayText(null);
+					final String roomDesc=currRoom.displayText(null);
 					if((lastDesc==null)||(!roomDesc.equalsIgnoreCase(lastDesc)))
 					{
 						lastDesc=roomDesc;
 						for(int g=0;g<theGroup.size();g++)
 						{
-							MOB M=(MOB)theGroup.elementAt(g);
+							final MOB M=(MOB)theGroup.elementAt(g);
 							if(M.playerStats()!=null) M.playerStats().adjHygiene(hygieneLoss);
 							switch(CMLib.dice().roll(1,10,0))
 							{
@@ -119,7 +118,7 @@ public class Thief_UndergroundConnections extends ThiefSkill
 			if(theGroup!=null)
 			for(int g=0;g<theGroup.size();g++)
 			{
-				MOB M=(MOB)theGroup.elementAt(g);
+				final MOB M=(MOB)theGroup.elementAt(g);
 				M.tell("You are told that it's safe and released.");
 				currRoom.bringMobHere(M,false);
 				CMLib.commands().postStand(M,true);
@@ -142,7 +141,7 @@ public class Thief_UndergroundConnections extends ThiefSkill
 	{
 		for(int g=group.size()-1;g>=0;g--)
 		{
-			MOB follower=(MOB)group.elementAt(g);
+			final MOB follower=(MOB)group.elementAt(g);
 			if(!bringMOBHere(newRoom,follower,enterStr,leaveStr))
 				group.removeElementAt(g);
 		}
@@ -151,8 +150,8 @@ public class Thief_UndergroundConnections extends ThiefSkill
 	{
 		for(int g=group.size()-1;g>=0;g--)
 		{
-			MOB follower=(MOB)group.elementAt(g);
-			Room R=(Room)newRoom.copyOf();
+			final MOB follower=(MOB)group.elementAt(g);
+			final Room R=(Room)newRoom.copyOf();
 			if(!bringMOBHere(R,follower,enterStr,leaveStr))
 				group.removeElementAt(g);
 			else
@@ -161,9 +160,9 @@ public class Thief_UndergroundConnections extends ThiefSkill
 	}
 	public boolean bringMOBHere(Room newRoom, MOB follower, String leaveStr, String enterStr)
 	{
-		Room thisRoom=follower.location();
-		CMMsg enterMsg=CMClass.getMsg(follower,newRoom,this,CMMsg.MSG_ENTER,enterStr,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,"You are joined by <S-NAME>.");
-		CMMsg leaveMsg=CMClass.getMsg(follower,thisRoom,this,CMMsg.MSG_LEAVE,leaveStr,CMMsg.MSG_LEAVE,null,CMMsg.MSG_LEAVE,leaveStr);
+		final Room thisRoom=follower.location();
+		final CMMsg enterMsg=CMClass.getMsg(follower,newRoom,this,CMMsg.MSG_ENTER,enterStr,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,"You are joined by <S-NAME>.");
+		final CMMsg leaveMsg=CMClass.getMsg(follower,thisRoom,this,CMMsg.MSG_LEAVE,leaveStr,CMMsg.MSG_LEAVE,null,CMMsg.MSG_LEAVE,leaveStr);
 		if(thisRoom.okMessage(follower,leaveMsg)&&newRoom.okMessage(follower,enterMsg))
 		{
 			if(follower.isInCombat())
@@ -186,15 +185,15 @@ public class Thief_UndergroundConnections extends ThiefSkill
 
 	public Room makeNewRoom(Area area, String display, String description)
 	{
-		Room R=CMClass.getLocale("MagicShelter");
+		final Room R=CMClass.getLocale("MagicShelter");
 		R.setDisplayText(display);
 		R.setDescription(description);
 		R.setRoomID("");
 		R.setArea(area);
-		Ability A=CMClass.getAbility("Thief_Bind");
+		final Ability A=CMClass.getAbility("Thief_Bind");
 		if(A!=null)
 		{
-			Item I=CMClass.getBasicItem("StdItem");
+			final Item I=CMClass.getBasicItem("StdItem");
 			I.setName(display);
 			A.setAffectedOne(I);
 			R.addNonUninvokableEffect(A);
@@ -213,7 +212,7 @@ public class Thief_UndergroundConnections extends ThiefSkill
 			mob.tell(target,null,null,"Not while <S-NAME> <S-IS-ARE> fighting.");
 			return false;
 		}
-		Room thisRoom=target.location();
+		final Room thisRoom=target.location();
 		if(thisRoom==null) return false;
 
 		if((!auto)&&(thisRoom.domainType()!=Room.DOMAIN_OUTDOORS_CITY))
@@ -221,7 +220,7 @@ public class Thief_UndergroundConnections extends ThiefSkill
 			mob.tell("You must be out on a street to contact your underground connections.");
 			return false;
 		}
-		Area A=CMLib.map().areaLocation(target);
+		final Area A=CMLib.map().areaLocation(target);
 		if((!CMLib.law().isACity(A))
 		&&(!auto))
 		{
@@ -229,12 +228,12 @@ public class Thief_UndergroundConnections extends ThiefSkill
 			return false;
 		}
 
-		TrackingLibrary.TrackingFlags flags=new TrackingLibrary.TrackingFlags();
+		final TrackingLibrary.TrackingFlags flags=new TrackingLibrary.TrackingFlags();
 		flags.plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS)
 			 .plus(TrackingLibrary.TrackingFlag.NOAIR)
 			 .plus(TrackingLibrary.TrackingFlag.NOWATER);
-		List<Room> trail=CMLib.tracking().getRadiantRooms(thisRoom,flags,30+(2*getXLEVELLevel(mob)));
-		Vector finalTos=new Vector();
+		final List<Room> trail=CMLib.tracking().getRadiantRooms(thisRoom,flags,30+(2*getXLEVELLevel(mob)));
+		final Vector finalTos=new Vector();
 		Room R=null;
 		for(int c=0;c<trail.size();c++)
 		{
@@ -255,10 +254,10 @@ public class Thief_UndergroundConnections extends ThiefSkill
 				}
 			}
 		}
-		List<List<Integer>> allTrails=CMLib.tracking().findAllTrails(thisRoom,finalTos,trail);
+		final List<List<Integer>> allTrails=CMLib.tracking().findAllTrails(thisRoom,finalTos,trail);
 		for(int a=allTrails.size()-1;a>=0;a--)
 		{
-			List<Integer> thisTrail=allTrails.get(a);
+			final List<Integer> thisTrail=allTrails.get(a);
 			R=thisRoom;
 			for(int t=0;t<thisTrail.size();t++)
 			{
@@ -272,14 +271,14 @@ public class Thief_UndergroundConnections extends ThiefSkill
 			mob.tell("Your informants tell you that there's no way they can get you out of here.");
 			return false;
 		}
-		List<Integer> theTrail=allTrails.get(CMLib.dice().roll(1,allTrails.size(),-1));
+		final List<Integer> theTrail=allTrails.get(CMLib.dice().roll(1,allTrails.size(),-1));
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
-		CMMsg msg=CMClass.getMsg(mob,null,this,auto?CMMsg.MASK_ALWAYS:CMMsg.MSG_DELICATE_HANDS_ACT,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,auto?"":"<S-NAME> contact(s) <S-HIS-HER> underground connections here.");
+		final CMMsg msg=CMClass.getMsg(mob,null,this,auto?CMMsg.MASK_ALWAYS:CMMsg.MSG_DELICATE_HANDS_ACT,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,auto?"":"<S-NAME> contact(s) <S-HIS-HER> underground connections here.");
 		if(!success)
 			return beneficialVisualFizzle(mob,null,auto?"":"<S-NAME> can't seem to contact <S-HIS-HER> underground connections here.");
 		else
@@ -287,16 +286,16 @@ public class Thief_UndergroundConnections extends ThiefSkill
 		{
 			mob.location().send(mob,msg);
 			beneficialAffect(mob,target,asLevel,0);
-			Thief_UndergroundConnections underA=(Thief_UndergroundConnections)target.fetchEffect(ID());
+			final Thief_UndergroundConnections underA=(Thief_UndergroundConnections)target.fetchEffect(ID());
 			if(underA!=null)
 			{
 				underA.currRoom=thisRoom;
-				Set<MOB> H=target.getGroupMembers(new HashSet<MOB>());
-				Vector group=new Vector();
+				final Set<MOB> H=target.getGroupMembers(new HashSet<MOB>());
+				final Vector group=new Vector();
 				group.addElement(target);
-				for(Iterator i=H.iterator();i.hasNext();)
+				for (final Object element : H)
 				{
-					MOB M=(MOB)i.next();
+					final MOB M=(MOB)element;
 					if((M!=null)
 					&&(M.location()==thisRoom)
 					&&(CMLib.flags().isInTheGame(M,true))
@@ -304,15 +303,15 @@ public class Thief_UndergroundConnections extends ThiefSkill
 						group.addElement(M);
 				}
 				underA.theGroup=group;
-				Area area=thisRoom.getArea();
-				Vector rooms=new Vector();
+				final Area area=thisRoom.getArea();
+				final Vector rooms=new Vector();
 				switch(CMLib.dice().roll(1,4,0))
 				{
 				case 1:
 				{
 					underA.theNoun="a strange horse drawn cart";
 					thisRoom.showHappens(CMMsg.MSG_OK_ACTION,"A horse drawn wagon filled with hay pulls up.\n\rTwo large farmers jump out.");
-					Room destR=makeNewRoom(area,"A bundle of straw","Your eyes, mouth, and ears are filled with the stuff. This trip better be short!");
+					final Room destR=makeNewRoom(area,"A bundle of straw","Your eyes, mouth, and ears are filled with the stuff. This trip better be short!");
 					rooms.addElement(destR);
 					bringMOBSHere(destR,group,"","<S-NAME> <S-IS-ARE> picked up and stuffed into the piles of hay");
 					break;
@@ -321,7 +320,7 @@ public class Thief_UndergroundConnections extends ThiefSkill
 				{
 					underA.theNoun="a large group of teamsters carrying potato sacks";
 					thisRoom.showHappens(CMMsg.MSG_OK_ACTION,"A group of large teamsters with big empty potato sacks approaches.");
-					Room destR=makeNewRoom(area,"A potato sack","Once you get past the musty rotten smell, this is really uncomfortable!");
+					final Room destR=makeNewRoom(area,"A potato sack","Once you get past the musty rotten smell, this is really uncomfortable!");
 					bringMOBSLikeHere(rooms,destR,group,"","<S-NAME> <S-IS-ARE> picked up and stuffed into a sack");
 					break;
 				}
@@ -329,7 +328,7 @@ public class Thief_UndergroundConnections extends ThiefSkill
 				{
 					underA.theNoun="a pullcart full of plague victims";
 					thisRoom.showHappens(CMMsg.MSG_OK_ACTION,"A pullcart full of the decaying bodies of plague victims pulls up.");
-					Room destR=makeNewRoom(area,"A pile of bodies","There is a finger in your ear, and you aren't sure whose it is.");
+					final Room destR=makeNewRoom(area,"A pile of bodies","There is a finger in your ear, and you aren't sure whose it is.");
 					rooms.addElement(destR);
 					bringMOBSHere(destR,group,"","<S-NAME> <S-IS-ARE> picked up and stuffed into the bottom of the pile");
 					break;
@@ -338,7 +337,7 @@ public class Thief_UndergroundConnections extends ThiefSkill
 				{
 					underA.theNoun="a horse drawn cart full of empty vinegar barrels";
 					thisRoom.showHappens(CMMsg.MSG_OK_ACTION,"A horse drawn cart full of empty vinegar barrels pulls up.");
-					Room destR=makeNewRoom(area,"A vinegar barrel","You feel thoroughly pickled!");
+					final Room destR=makeNewRoom(area,"A vinegar barrel","You feel thoroughly pickled!");
 					bringMOBSLikeHere(rooms,destR,group,"","<S-NAME> <S-IS-ARE> picked up and stuffed into an empty barrel.");
 					break;
 				}

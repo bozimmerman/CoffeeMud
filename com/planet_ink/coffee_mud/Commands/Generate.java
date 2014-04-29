@@ -62,7 +62,7 @@ public class Generate extends StdCommand
 		if(E==null) E = CMClass.getExit("Open");
 		oldR.setRawExit(direction, E);
 		oldR.rawDoors()[direction]=R;
-		int opDir=Directions.getOpDirectionCode(direction);
+		final int opDir=Directions.getOpDirectionCode(direction);
 		if(R.getRoomInDir(opDir)!=null)
 			mob.tell("An error has caused the following exit to be one-way.");
 		else
@@ -71,7 +71,7 @@ public class Generate extends StdCommand
 			R.rawDoors()[opDir]=oldR;
 		}
 		CMLib.database().DBUpdateExits(oldR);
-		String dirName=((R instanceof SpaceShip)||(R.getArea() instanceof SpaceShip))?
+		final String dirName=((R instanceof SpaceShip)||(R.getArea() instanceof SpaceShip))?
 				Directions.getShipDirectionName(direction):Directions.getDirectionName(direction);
 		oldR.showHappens(CMMsg.MSG_OK_VISUAL,"A new place materializes to the "+dirName);
 	}
@@ -85,7 +85,7 @@ public class Generate extends StdCommand
 			mob.tell("Generate what? Try GENERATE [TYPE] [ID] (FROM [DATA_FILE_PATH]) ([VAR=VALUE]..) [DIRECTION]");
 			return false;
 		}
-		String finalLog = mob.Name()+" called generate command with parms: " + CMParms.combine(commands, 1);
+		final String finalLog = mob.Name()+" called generate command with parms: " + CMParms.combine(commands, 1);
 		CMFile file = null;
 		if((commands.size()>3)&&((String)commands.elementAt(3)).equalsIgnoreCase("FROM"))
 		{
@@ -100,18 +100,18 @@ public class Generate extends StdCommand
 			mob.tell("Random data file '"+file.getCanonicalPath()+"' not found.  Aborting.");
 			return false;
 		}
-		StringBuffer xml = file.textUnformatted();
-		List<XMLLibrary.XMLpiece> xmlRoot = CMLib.xml().parseAllXML(xml);
-		Hashtable definedIDs = new Hashtable();
+		final StringBuffer xml = file.textUnformatted();
+		final List<XMLLibrary.XMLpiece> xmlRoot = CMLib.xml().parseAllXML(xml);
+		final Hashtable definedIDs = new Hashtable();
 		CMLib.percolator().buildDefinedIDSet(xmlRoot,definedIDs);
-		String typeName = (String)commands.elementAt(1);
+		final String typeName = (String)commands.elementAt(1);
 		String objectType = typeName.toUpperCase().trim();
 		CMClass.CMObjectType codeI=OBJECT_TYPES.get(objectType);
 		if(codeI==null)
 		{
-			for(Enumeration e=OBJECT_TYPES.keys();e.hasMoreElements();)
+			for(final Enumeration e=OBJECT_TYPES.keys();e.hasMoreElements();)
 			{
-				String key =(String)e.nextElement();
+				final String key =(String)e.nextElement();
 				if(key.startsWith(typeName.toUpperCase().trim()))
 				{
 					objectType = key;
@@ -127,7 +127,7 @@ public class Generate extends StdCommand
 		int direction=-1;
 		if((codeI==CMClass.CMObjectType.AREA)||(codeI==CMClass.CMObjectType.LOCALE))
 		{
-			String possDir=(String)commands.lastElement();
+			final String possDir=(String)commands.lastElement();
 			direction = Directions.getGoodDirectionCode(possDir);
 			if(direction<0)
 			{
@@ -136,26 +136,26 @@ public class Generate extends StdCommand
 			}
 			if(mob.location().getRoomInDir(direction)!=null)
 			{
-				String dirName=((mob.location() instanceof SpaceShip)||(mob.location().getArea() instanceof SpaceShip))?
+				final String dirName=((mob.location() instanceof SpaceShip)||(mob.location().getArea() instanceof SpaceShip))?
 						Directions.getShipDirectionName(direction):Directions.getDirectionName(direction);
 				mob.tell("A room already exists in direction "+dirName+". Action aborted.");
 				return false;
 			}
 		}
-		String idName = ((String)commands.elementAt(2)).toUpperCase().trim();
+		final String idName = ((String)commands.elementAt(2)).toUpperCase().trim();
 		if((!(definedIDs.get(idName) instanceof XMLLibrary.XMLpiece))
 		||(!((XMLLibrary.XMLpiece)definedIDs.get(idName)).tag.equalsIgnoreCase(objectType)))
 		{
 			mob.tell("The "+objectType+" id '"+idName+"' has not been defined in the data file.");
-			StringBuffer foundIDs=new StringBuffer("");
-			for(Enumeration tkeye=OBJECT_TYPES.keys();tkeye.hasMoreElements();)
+			final StringBuffer foundIDs=new StringBuffer("");
+			for(final Enumeration tkeye=OBJECT_TYPES.keys();tkeye.hasMoreElements();)
 			{
-				String tKey=(String)tkeye.nextElement();
+				final String tKey=(String)tkeye.nextElement();
 				foundIDs.append("^H"+tKey+"^N: \n\r");
-				Vector xmlTagsV=new Vector();
-				for(Enumeration keys=definedIDs.keys();keys.hasMoreElements();)
+				final Vector xmlTagsV=new Vector();
+				for(final Enumeration keys=definedIDs.keys();keys.hasMoreElements();)
 				{
-					String key=(String)keys.nextElement();
+					final String key=(String)keys.nextElement();
 					if((definedIDs.get(key) instanceof XMLLibrary.XMLpiece)
 					&&(((XMLLibrary.XMLpiece)definedIDs.get(key)).tag.equalsIgnoreCase(tKey)))
 						xmlTagsV.addElement(key.toLowerCase());
@@ -166,18 +166,18 @@ public class Generate extends StdCommand
 			return false;
 		}
 
-		XMLLibrary.XMLpiece piece=(XMLLibrary.XMLpiece)definedIDs.get(idName);
+		final XMLLibrary.XMLpiece piece=(XMLLibrary.XMLpiece)definedIDs.get(idName);
 		definedIDs.putAll(CMParms.parseEQParms(commands,3,commands.size()));
 		try
 		{
 			CMLib.percolator().checkRequirements(piece, definedIDs);
 		}
-		catch(CMException cme)
+		catch(final CMException cme)
 		{
 			mob.tell("Required ids for "+idName+" were missing: "+cme.getMessage());
 			return false;
 		}
-		Vector V = new Vector();
+		final Vector V = new Vector();
 		try
 		{
 			switch(codeI)
@@ -186,7 +186,7 @@ public class Generate extends StdCommand
 			{
 				CMLib.percolator().preDefineReward(null, null, null, piece, definedIDs);
 				CMLib.percolator().defineReward(null, null, null, piece, piece.value,definedIDs);
-				String s=CMLib.percolator().findString("STRING", piece, definedIDs);
+				final String s=CMLib.percolator().findString("STRING", piece, definedIDs);
 				if(s!=null)
 					V.addElement(s);
 				break;
@@ -194,7 +194,7 @@ public class Generate extends StdCommand
 			case AREA:
 				CMLib.percolator().preDefineReward(null, null, null, piece, definedIDs);
 				CMLib.percolator().defineReward(null, null, null, piece, piece.value,definedIDs);
-				Area A=CMLib.percolator().findArea(piece, definedIDs, direction);
+				final Area A=CMLib.percolator().findArea(piece, definedIDs, direction);
 				if(A!=null)
 					V.addElement(A);
 				break;
@@ -205,10 +205,10 @@ public class Generate extends StdCommand
 				break;
 			case LOCALE:
 			{
-				Exit[] exits=new Exit[Directions.NUM_DIRECTIONS()];
+				final Exit[] exits=new Exit[Directions.NUM_DIRECTIONS()];
 				CMLib.percolator().preDefineReward(null, null, null, piece, definedIDs);
 				CMLib.percolator().defineReward(null, null, null, piece, piece.value,definedIDs);
-				Room R=CMLib.percolator().buildRoom(piece, definedIDs, exits, direction);
+				final Room R=CMLib.percolator().buildRoom(piece, definedIDs, exits, direction);
 				if(R!=null)
 					V.addElement(R);
 				break;
@@ -222,7 +222,7 @@ public class Generate extends StdCommand
 				break;
 			}
 		}
-		catch(CMException cex)
+		catch(final CMException cex)
 		{
 			mob.tell("Unable to generate: "+cex.getMessage());
 			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.MUDPERCOLATOR))
@@ -252,7 +252,7 @@ public class Generate extends StdCommand
 			else
 			if(V.elementAt(v) instanceof Room)
 			{
-				Room R=(Room)V.elementAt(v);
+				final Room R=(Room)V.elementAt(v);
 				createNewPlace(mob,mob.location(),R,direction);
 				CMLib.database().DBCreateRoom(R);
 				CMLib.database().DBUpdateExits(R);
@@ -263,14 +263,14 @@ public class Generate extends StdCommand
 			else
 			if(V.elementAt(v) instanceof Area)
 			{
-				Area A=(Area)V.elementAt(v);
+				final Area A=(Area)V.elementAt(v);
 				CMLib.map().addArea(A);
 				CMLib.database().DBCreateArea(A);
 				Room R=A.getRoom(A.Name()+"#0");
 				if(R==null) R=A.getFilledProperMap().nextElement();
 				createNewPlace(mob,mob.location(),R,direction);
 				mob.tell("Saving remaining rooms for area '"+A.name()+"'...");
-				for(Enumeration e=A.getFilledProperMap();e.hasMoreElements();)
+				for(final Enumeration e=A.getFilledProperMap();e.hasMoreElements();)
 				{
 					R=(Room)e.nextElement();
 					CMLib.database().DBCreateRoom(R);

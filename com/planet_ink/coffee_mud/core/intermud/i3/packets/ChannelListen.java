@@ -51,7 +51,7 @@ public class ChannelListen extends Packet  {
 			channel = (String)v.elementAt(6);
 			onoff = (String)v.elementAt(7);
 		}
-		catch( ClassCastException e )
+		catch( final ClassCastException e )
 		{
 			throw new InvalidPacketException();
 		}
@@ -78,8 +78,8 @@ public class ChannelListen extends Packet  {
 	@Override
 	public String toString()
 	{
-		NameServer n = Intermud.getNameServer();
-		String str=
+		final NameServer n = Intermud.getNameServer();
+		final String str=
 			 "({\"channel-listen\",5,\"" + I3Server.getMudName() + "\",0,\""+n.name+"\",0,\"" + channel + "\"," +
 			   onoff + ",})";
 		return str;

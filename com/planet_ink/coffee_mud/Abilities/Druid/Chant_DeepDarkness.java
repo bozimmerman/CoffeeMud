@@ -52,7 +52,7 @@ public class Chant_DeepDarkness extends Chant
 			return;
 		if(!(affected instanceof Room))
 			return;
-		Room room=(Room)affected;
+		final Room room=(Room)affected;
 		super.unInvoke();
 		if(canBeUninvoked())
 		{
@@ -101,7 +101,7 @@ public class Chant_DeepDarkness extends Chant
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		Physical target = mob.location();
+		final Physical target = mob.location();
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
@@ -110,7 +110,7 @@ public class Chant_DeepDarkness extends Chant
 		}
 
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
@@ -119,7 +119,7 @@ public class Chant_DeepDarkness extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 
-			CMMsg msg = CMClass.getMsg(mob, target,this,verbalCastCode(mob,target,auto), (auto?"D":"^S<S-NAME> chant(s) deeply and d")+"arkness descends.^?");
+			final CMMsg msg = CMClass.getMsg(mob, target,this,verbalCastCode(mob,target,auto), (auto?"D":"^S<S-NAME> chant(s) deeply and d")+"arkness descends.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

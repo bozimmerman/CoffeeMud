@@ -26,6 +26,7 @@ import com.planet_ink.miniweb.interfaces.HTTPRequest;
 
 
 
+
 import java.io.InputStream;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -60,9 +61,9 @@ public class Test extends StdCommand
 	public static String semiSpellList()
 	{
 		if(semiSpellList!=null) return semiSpellList;
-		StringBuffer str=new StringBuffer("");
-		for(int i=0;i<spells.length;i++)
-			str.append(spells[i]+";");
+		final StringBuffer str=new StringBuffer("");
+		for (final String spell : spells)
+			str.append(spell+";");
 		semiSpellList=str.toString();
 		return semiSpellList;
 	}
@@ -72,9 +73,9 @@ public class Test extends StdCommand
 	public static String maliciousSemiSpellList()
 	{
 		if(maliciousSemiSpellList!=null) return maliciousSemiSpellList;
-		StringBuffer str=new StringBuffer("");
-		for(int i=0;i<maliciousspells.length;i++)
-			str.append(maliciousspells[i]+";");
+		final StringBuffer str=new StringBuffer("");
+		for (final String maliciousspell : maliciousspells)
+			str.append(maliciousspell+";");
 		maliciousSemiSpellList=str.toString();
 		return maliciousSemiSpellList;
 	}
@@ -111,14 +112,14 @@ public class Test extends StdCommand
 
 	public void giveAbility(Physical P, Ability A)
 	{
-		Ability A2=((Ability)A.copyOf());
+		final Ability A2=((Ability)A.copyOf());
 		A2.setMiscText(A.text());
 		P.addNonUninvokableEffect(A2);
 	}
 
 	public boolean testResistance(MOB mob)
 	{
-		Item I=CMClass.getWeapon("Dagger");
+		final Item I=CMClass.getWeapon("Dagger");
 		mob.curState().setHitPoints(mob.maxState().getHitPoints());
 		int curHitPoints=mob.curState().getHitPoints();
 		CMLib.combat().postDamage(mob,mob,I,5,CMMsg.MSG_WEAPONATTACK,Weapon.TYPE_PIERCING,"<S-NAME> <DAMAGE> <T-NAME>.");
@@ -126,7 +127,7 @@ public class Test extends StdCommand
 			return false;
 		curHitPoints=mob.curState().getHitPoints();
 		CMLib.factions().setAlignmentOldRange(mob,0);
-		Ability A=CMClass.getAbility("Prayer_DispelEvil");
+		final Ability A=CMClass.getAbility("Prayer_DispelEvil");
 		A.invoke(mob,mob,true,1);
 		if(mob.curState().getHitPoints()<curHitPoints)
 			return false;
@@ -139,8 +140,8 @@ public class Test extends StdCommand
 
 	public Item[] giveTo(Item I, Ability A, MOB mob1, MOB mob2, int code)
 	{
-		Item[] IS=new Item[2];
-		Item I1=(Item)I.copyOf();
+		final Item[] IS=new Item[2];
+		final Item I1=(Item)I.copyOf();
 		if(A!=null)
 			giveAbility(I1,A);
 		if(code<2)
@@ -157,7 +158,7 @@ public class Test extends StdCommand
 
 		IS[0]=I1;
 
-		Item I2=(Item)I.copyOf();
+		final Item I2=(Item)I.copyOf();
 		if(A!=null)
 			giveAbility(I2,A);
 		if(mob2!=null)
@@ -181,16 +182,16 @@ public class Test extends StdCommand
 
 	public boolean spellCheck(String[] spells, MOB mob)
 	{
-		for(int i=0;i<spells.length;i++)
-			if(mob.fetchAbility(spells[i])==null)
+		for (final String spell : spells)
+			if(mob.fetchAbility(spell)==null)
 				return false;
 		return true;
 	}
 
 	public boolean effectCheck(String[] spells, MOB mob)
 	{
-		for(int i=0;i<spells.length;i++)
-			if(mob.fetchEffect(spells[i])==null)
+		for (final String spell : spells)
+			if(mob.fetchEffect(spell)==null)
 				return false;
 		return true;
 	}
@@ -228,9 +229,9 @@ public class Test extends StdCommand
 	public int[] recoverMath(int level, int con, int inte, int wis, int str, boolean isHungry, boolean isThirsty, boolean isFatigued, boolean isSleeping, boolean isSittingOrRiding,boolean isFlying,boolean isSwimming)
 	{
 		/*	# @x1=stat(con/str/int-wis), @x2=level, @x3=hungry?1:0, @x4=thirsty?1:0, @x5=fatigued?0:1 # @x6=asleep?1:0, @x7=sitorride?1:0, @x8=flying?0:1, @x9=swimming?0:1 */
-		LinkedList<CompiledOperation> stateHitPointRecoverFormula = CMath.compileMathExpression("5+(((@x1 - (@xx*@x3/2.0) - (@xx*@x4/2.0))*@x2/9.0) + (@xx*@x6*.5) + (@xx/4.0*@x7) - (@xx/2.0*@x9))");
-		LinkedList<CompiledOperation> stateManaRecoverFormula = CMath.compileMathExpression("25+(((@x1 - (@xx*@x3/2.0) - (@xx*@x4/2.0) - (@xx*@x5/2.0))*@x2/50.0) + (@xx*@x6*.5) + (@xx/4.0*@x7) - (@xx/2.0*@x9))");
-		LinkedList<CompiledOperation> stateMovesRecoverFormula = CMath.compileMathExpression("25+(((@x1 - (@xx*@x3/2.0) - (@xx*@x4/2.0) - (@xx*@x5/2.0))*@x2/10.0) + (@xx*@x6*.5) + (@xx/4.0*@x7) + (@xx/4.0*@x8) - (@xx/2.0*@x9))");
+		final LinkedList<CompiledOperation> stateHitPointRecoverFormula = CMath.compileMathExpression("5+(((@x1 - (@xx*@x3/2.0) - (@xx*@x4/2.0))*@x2/9.0) + (@xx*@x6*.5) + (@xx/4.0*@x7) - (@xx/2.0*@x9))");
+		final LinkedList<CompiledOperation> stateManaRecoverFormula = CMath.compileMathExpression("25+(((@x1 - (@xx*@x3/2.0) - (@xx*@x4/2.0) - (@xx*@x5/2.0))*@x2/50.0) + (@xx*@x6*.5) + (@xx/4.0*@x7) - (@xx/2.0*@x9))");
+		final LinkedList<CompiledOperation> stateMovesRecoverFormula = CMath.compileMathExpression("25+(((@x1 - (@xx*@x3/2.0) - (@xx*@x4/2.0) - (@xx*@x5/2.0))*@x2/10.0) + (@xx*@x6*.5) + (@xx/4.0*@x7) + (@xx/4.0*@x8) - (@xx/2.0*@x9))");
 		final double[] vals=new double[]{
 			con,
 			level,
@@ -242,7 +243,7 @@ public class Test extends StdCommand
 			isFlying?1.0:0.0,
 			isSwimming?1.0:0.0
 		};
-		int[] v=new int[3];
+		final int[] v=new int[3];
 		v[0]= (int)Math.round(CMath.parseMathExpression(stateHitPointRecoverFormula, vals, 0.0));
 
 		vals[0]=((inte+wis));
@@ -259,13 +260,13 @@ public class Test extends StdCommand
 	{
 		if(commands.size()>1)
 		{
-			String what=((String)commands.elementAt(1)).toUpperCase().trim();
+			final String what=((String)commands.elementAt(1)).toUpperCase().trim();
 			//String rest=CMParms.combine(commands,2);
 			if(what.equalsIgnoreCase("levelxptest"))
 			{
 				for(int i=0;i<100;i++)
 					CMLib.leveler().getLevelExperience(CMLib.dice().roll(1,100,0));
-				MOB M=CMClass.getMOB("StdMOB");
+				final MOB M=CMClass.getMOB("StdMOB");
 				M.setExperience(0);
 				for(int i=1;i<100;i++)
 				{
@@ -273,9 +274,9 @@ public class Test extends StdCommand
 					M.phyStats().setLevel(i);
 					M.baseCharStats().setClassLevel(M.baseCharStats().getCurrentClass(),i);
 					M.charStats().setClassLevel(M.baseCharStats().getCurrentClass(),i);
-					int level=M.basePhyStats().level();
+					final int level=M.basePhyStats().level();
 					int xp=0;
-					String s=i+") "+M.getExperience()+"/"+M.getExpNextLevel()+"/"+M.getExpNeededLevel()+": ";
+					final String s=i+") "+M.getExperience()+"/"+M.getExpNextLevel()+"/"+M.getExpNeededLevel()+": ";
 					while(level==M.basePhyStats().level())
 					{
 						xp+=10;
@@ -287,7 +288,7 @@ public class Test extends StdCommand
 			else
 			if(what.equalsIgnoreCase("levelcharts"))
 			{
-				StringBuffer str=new StringBuffer("");
+				final StringBuffer str=new StringBuffer("");
 				for(int i=0;i<110;i++)
 					str.append(i+"="+CMLib.leveler().getLevelExperience(i)+"\r");
 				mob.tell(str.toString());
@@ -296,21 +297,21 @@ public class Test extends StdCommand
 			if(what.equalsIgnoreCase("timsdeconstruction"))
 			{
 				mob.tell("Checking...");
-				String theRest=CMParms.combine(commands,2).toUpperCase();
-				for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
+				final String theRest=CMParms.combine(commands,2).toUpperCase();
+				for(final Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 				{
-					Ability A=a.nextElement();
+					final Ability A=a.nextElement();
 					if(A instanceof ItemCraftor)
 					{
-						ItemCraftor I=(ItemCraftor)A;
+						final ItemCraftor I=(ItemCraftor)A;
 						if((theRest.length()==0)||(I.ID().toUpperCase().indexOf(theRest)>=0))
 						{
-							List<ItemCraftor.ItemKeyPair> set=I.craftAllItemSets(false);
-							for(ItemCraftor.ItemKeyPair KP : set)
+							final List<ItemCraftor.ItemKeyPair> set=I.craftAllItemSets(false);
+							for(final ItemCraftor.ItemKeyPair KP : set)
 							{
 								if((KP.item instanceof Armor)||(KP.item instanceof Weapon))
 								{
-									int newLevel=CMLib.itemBuilder().timsLevelCalculator(KP.item);
+									final int newLevel=CMLib.itemBuilder().timsLevelCalculator(KP.item);
 									if((newLevel < Math.round(KP.item.basePhyStats().level() * .7))
 									||(newLevel > Math.round(KP.item.basePhyStats().level() * 1.3)))
 										mob.tell(KP.item.name()+": "+KP.item.basePhyStats().level()+"!="+newLevel);
@@ -323,7 +324,7 @@ public class Test extends StdCommand
 			else
 			if(what.equalsIgnoreCase("recover"))
 			{
-				for(int level : new int[]{1,10,50,90})
+				for(final int level : new int[]{1,10,50,90})
 				{
 					int hp;
 					int mana;
@@ -357,7 +358,7 @@ public class Test extends StdCommand
 						stat=18;
 						break;
 					}
-					StringBuilder str=new StringBuilder("level: "+level+"\n\r");
+					final StringBuilder str=new StringBuilder("level: "+level+"\n\r");
 					int[] resp;
 					resp=recoverMath(level,stat,stat,stat-4,stat,/*Hun*/false,/*Thirs*/false,/*Fatig*/false,/*Sleep*/false,/*Sit*/false,/*Fly*/false,/*Swim*/false);
 					str.append("standing: hpticks="+(hp/resp[0])+",  manaticks="+(mana/resp[1])+",  moveticks="+(move/resp[2])+"\n\r");
@@ -383,24 +384,24 @@ public class Test extends StdCommand
 			if(what.equalsIgnoreCase("deconstruction"))
 			{
 				mob.tell("Building item sets...");
-				Hashtable<ItemCraftor,List<ItemCraftor.ItemKeyPair>> allSets=new Hashtable();
-				for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
+				final Hashtable<ItemCraftor,List<ItemCraftor.ItemKeyPair>> allSets=new Hashtable();
+				for(final Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 				{
-					Ability A=a.nextElement();
+					final Ability A=a.nextElement();
 					if(A instanceof ItemCraftor)
 					{
-						ItemCraftor I=(ItemCraftor)A;
+						final ItemCraftor I=(ItemCraftor)A;
 						allSets.put(I,I.craftAllItemSets(false));
 					}
 				}
 				mob.tell("Sorting...");
-				for(ItemCraftor I : allSets.keySet())
+				for(final ItemCraftor I : allSets.keySet())
 				{
-					List<ItemCraftor.ItemKeyPair> allItems=allSets.get(I);
-					for(ItemCraftor.ItemKeyPair P : allItems)
+					final List<ItemCraftor.ItemKeyPair> allItems=allSets.get(I);
+					for(final ItemCraftor.ItemKeyPair P : allItems)
 					{
 						if(P.item.material()!=RawMaterial.RESOURCE_WHITE_GOLD)
-						for(ItemCraftor oI : allSets.keySet())
+						for(final ItemCraftor oI : allSets.keySet())
 						{
 							if(oI.supportsDeconstruction())
 							{
@@ -458,7 +459,7 @@ public class Test extends StdCommand
 			else
 			if(what.equalsIgnoreCase("randomroompick"))
 			{
-				int num=CMath.s_int(CMParms.combine(commands,2));
+				final int num=CMath.s_int(CMParms.combine(commands,2));
 				int numNull=0;
 				for(int i=0;i<num;i++)
 					if(mob.location().getArea().getRandomProperRoom()==null)
@@ -468,13 +469,13 @@ public class Test extends StdCommand
 			else
 			if(what.equalsIgnoreCase("edrecipe"))
 			{
-				boolean save = CMParms.combine(commands,2).equalsIgnoreCase("save");
-				for(Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
+				final boolean save = CMParms.combine(commands,2).equalsIgnoreCase("save");
+				for(final Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
 				{
-					Ability A=e.nextElement();
+					final Ability A=e.nextElement();
 					if(A instanceof ItemCraftor)
 					{
-						ItemCraftor iA=(ItemCraftor)A;
+						final ItemCraftor iA=(ItemCraftor)A;
 						if(iA.parametersFormat().length()>0)
 							CMLib.ableParms().testRecipeParsing(iA.parametersFile(),iA.parametersFormat(),save);
 					}
@@ -483,36 +484,36 @@ public class Test extends StdCommand
 			else
 			if(what.equalsIgnoreCase("scriptable"))
 			{
-				Area A=CMClass.getAreaType("StdArea");
+				final Area A=CMClass.getAreaType("StdArea");
 				A.setName("UNKNOWNAREA");
-				Room R=CMClass.getLocale("WoodRoom");
+				final Room R=CMClass.getLocale("WoodRoom");
 				R.setRoomID("UNKNOWN1");
 				R.setArea(A);
-				MOB M=CMClass.getMOB("GenShopkeeper");
+				final MOB M=CMClass.getMOB("GenShopkeeper");
 				M.setName("Shoppy");
-				ShopKeeper SK=(ShopKeeper)M;
+				final ShopKeeper SK=(ShopKeeper)M;
 				Item I=CMClass.getWeapon("Dagger");
 				SK.getShop().addStoreInventory(I,10,5);
 				I=CMClass.getWeapon("Shortsword");
 				SK.getShop().addStoreInventory(I,10,5);
 				SK.setInvResetRate(999999999);
-				Room R2=CMClass.getLocale("WoodRoom");
+				final Room R2=CMClass.getLocale("WoodRoom");
 				R2.setRoomID("UNKNOWN2");
 				R2.setArea(A);
 				R.rawDoors()[Directions.NORTH]=R2;
 				R2.rawDoors()[Directions.SOUTH]=R;
 				R.setRawExit(Directions.NORTH,CMClass.getExit("Open"));
 				R2.setRawExit(Directions.SOUTH,CMClass.getExit("Open"));
-				Behavior B=CMClass.getBehavior("Scriptable");
+				final Behavior B=CMClass.getBehavior("Scriptable");
 				B.setParms("LOAD=progs/scriptableTest.script");
 				M.addBehavior(B);
 				M.text();
 				M.bringToLife(R,true);
 				M.setStartRoom(null);
-				ScriptingEngine S=(ScriptingEngine)M.fetchBehavior("Scriptable");
+				final ScriptingEngine S=(ScriptingEngine)M.fetchBehavior("Scriptable");
 				for(int i=0;i<1000;i++)
 				{
-					try{ Thread.sleep(1000); } catch(Exception e){}
+					try{ Thread.sleep(1000); } catch(final Exception e){}
 					if(S.getVar("Shoppy","ERRORS").length()>0)
 						break;
 				}
@@ -528,12 +529,12 @@ public class Test extends StdCommand
 			else
 			if(what.equalsIgnoreCase("mudhourstil"))
 			{
-				String startDate=CMParms.combine(commands,2);
-				int x=startDate.indexOf('-');
-				int mudmonth=CMath.s_int(startDate.substring(0,x));
-				int mudday=CMath.s_int(startDate.substring(x+1));
-				TimeClock C=(TimeClock)CMClass.getCommon("DefaultTimeClock");
-				TimeClock NOW=mob.location().getArea().getTimeObj();
+				final String startDate=CMParms.combine(commands,2);
+				final int x=startDate.indexOf('-');
+				final int mudmonth=CMath.s_int(startDate.substring(0,x));
+				final int mudday=CMath.s_int(startDate.substring(x+1));
+				final TimeClock C=(TimeClock)CMClass.getCommon("DefaultTimeClock");
+				final TimeClock NOW=mob.location().getArea().getTimeObj();
 				C.setMonth(mudmonth);
 				C.setDayOfMonth(mudday);
 				C.setHourOfDay(0);
@@ -542,29 +543,29 @@ public class Test extends StdCommand
 					C.setYear(NOW.getYear()+1);
 				else
 					C.setYear(NOW.getYear());
-				long millidiff=C.deriveMillisAfter(NOW);
+				final long millidiff=C.deriveMillisAfter(NOW);
 				mob.tell("MilliDiff="+millidiff);
 				return true;
 			}
 			else
 			if(what.equalsIgnoreCase("horsedraggers"))
 			{
-				MOB M=CMClass.getMOB("GenMOB");
+				final MOB M=CMClass.getMOB("GenMOB");
 				M.setName("MrRider");
 				M.setDisplayText("MrRider is here");
-				Behavior B=CMClass.getBehavior("Mobile");
+				final Behavior B=CMClass.getBehavior("Mobile");
 				B.setParms("min=1 max=1 chance=99 wander");
 				M.addBehavior(B);
 				M.bringToLife(mob.location(),true);
-				MOB M2=CMClass.getMOB("GenRideable");
+				final MOB M2=CMClass.getMOB("GenRideable");
 				M2.setName("a pack horse");
 				M2.setDisplayText("a pack horse is here");
 				M2.bringToLife(mob.location(),true);
 				M.setRiding((Rideable)M2);
-				Behavior B2=CMClass.getBehavior("Scriptable");
+				final Behavior B2=CMClass.getBehavior("Scriptable");
 				B2.setParms("RAND_PROG 100;IF !ISHERE(nondescript);MPECHO LOST MY CONTAINER $d $D!; GOSSIP LOST MY CONTAINER! $d $D; MPPURGE $i;ENDIF;~;");
 				M2.addBehavior(B2);
-				Item I=CMClass.getBasicItem("LockableContainer");
+				final Item I=CMClass.getBasicItem("LockableContainer");
 				mob.location().addItem(I,ItemPossessor.Expire.Player_Drop);
 				I.setRiding((Rideable)M2);
 			}
@@ -574,23 +575,23 @@ public class Test extends StdCommand
 			CMMsg msg=null;
 			Command C=null;
 			Item IS[]=new Item[2];
-			Room R=mob.location();
-			Room upRoom=R.rawDoors()[Directions.UP];
-			Exit upExit=R.getRawExit(Directions.UP);
-			Room R2=CMClass.getLocale("StoneRoom");
+			final Room R=mob.location();
+			final Room upRoom=R.rawDoors()[Directions.UP];
+			final Exit upExit=R.getRawExit(Directions.UP);
+			final Room R2=CMClass.getLocale("StoneRoom");
 			R2.setArea(R.getArea());
 			R.setRawExit(Directions.UP,CMClass.getExit("Open"));
 			R2.setRawExit(Directions.DOWN,CMClass.getExit("Open"));
 			R.rawDoors()[Directions.UP]=R2;
 			R2.rawDoors()[Directions.DOWN]=R;
-			MOB[] mobs=new MOB[2];
-			MOB[] backups=new MOB[2];
+			final MOB[] mobs=new MOB[2];
+			final MOB[] backups=new MOB[2];
 			if((what.equalsIgnoreCase("all_properties"))
 			||(what.equalsIgnoreCase("Prop_HaveEnabler"))
 			||what.equalsIgnoreCase("all"))
 			{
 				reset(mobs,backups,R,IS,R2);
-				Ability HaveEnabler=CMClass.getAbility("Prop_HaveEnabler");
+				final Ability HaveEnabler=CMClass.getAbility("Prop_HaveEnabler");
 				HaveEnabler.setMiscText(semiSpellList());
 				mob.tell("Test#1-1: "+HaveEnabler.accountForYourself());
 				IS=giveTo(CMClass.getWeapon("Sword"),HaveEnabler,mobs[0],null,0);
@@ -619,7 +620,7 @@ public class Test extends StdCommand
 			||what.equalsIgnoreCase("all"))
 			{
 				reset(mobs,backups,R,IS,R2);
-				Ability HaveSpellCast=CMClass.getAbility("Prop_HaveSpellCast");
+				final Ability HaveSpellCast=CMClass.getAbility("Prop_HaveSpellCast");
 				HaveSpellCast.setMiscText(semiSpellList());
 				mob.tell("Test#2-1: "+HaveSpellCast.accountForYourself());
 				IS=giveTo(CMClass.getWeapon("Sword"),HaveSpellCast,mobs[0],null,0);
@@ -662,7 +663,7 @@ public class Test extends StdCommand
 			||what.equalsIgnoreCase("all"))
 			{
 				reset(mobs,backups,R,IS,R2);
-				Ability WearEnabler=CMClass.getAbility("Prop_WearEnabler");
+				final Ability WearEnabler=CMClass.getAbility("Prop_WearEnabler");
 				WearEnabler.setMiscText(semiSpellList());
 				mob.tell("Test#3-1: "+WearEnabler.accountForYourself());
 				IS=giveTo(CMClass.getWeapon("Sword"),WearEnabler,mobs[0],null,1);
@@ -688,7 +689,7 @@ public class Test extends StdCommand
 			||what.equalsIgnoreCase("all"))
 			{
 				reset(mobs,backups,R,IS,R2);
-				Ability WearSpellCast=CMClass.getAbility("Prop_WearSpellCast");
+				final Ability WearSpellCast=CMClass.getAbility("Prop_WearSpellCast");
 				WearSpellCast.setMiscText(semiSpellList());
 				mob.tell("Test#4-1: "+WearSpellCast.accountForYourself());
 				IS=giveTo(CMClass.getWeapon("Sword"),WearSpellCast,mobs[0],null,1);
@@ -726,7 +727,7 @@ public class Test extends StdCommand
 			||what.equalsIgnoreCase("all"))
 			{
 				reset(mobs,backups,R,IS,R2);
-				Ability RideEnabler=CMClass.getAbility("Prop_RideEnabler");
+				final Ability RideEnabler=CMClass.getAbility("Prop_RideEnabler");
 				RideEnabler.setMiscText(semiSpellList());
 				mob.tell("Test#5-1: "+RideEnabler.accountForYourself());
 				IS=giveTo(CMClass.getItem("Boat"),RideEnabler,mobs[0],null,2);
@@ -752,7 +753,7 @@ public class Test extends StdCommand
 			||what.equalsIgnoreCase("all"))
 			{
 				reset(mobs,backups,R,IS,R2);
-				Ability RideSpellCast=CMClass.getAbility("Prop_RideSpellCast");
+				final Ability RideSpellCast=CMClass.getAbility("Prop_RideSpellCast");
 				RideSpellCast.setMiscText(semiSpellList());
 			   // mob.tell("Test#6-1: "+RideSpellCast.accountForYourself());
 				IS=giveTo(CMClass.getItem("Boat"),RideSpellCast,mobs[0],null,2);
@@ -790,7 +791,7 @@ public class Test extends StdCommand
 			||what.equalsIgnoreCase("all"))
 			{
 				reset(mobs,backups,R,IS,R2);
-				Ability HereSpellCast=CMClass.getAbility("Prop_HereSpellCast");
+				final Ability HereSpellCast=CMClass.getAbility("Prop_HereSpellCast");
 				HereSpellCast.setMiscText(semiSpellList()+"MASK=-RACE +Dwarf");
 				mob.tell("Test#7-1: "+HereSpellCast.accountForYourself());
 				A2=((Ability)HereSpellCast.copyOf());
@@ -839,7 +840,7 @@ public class Test extends StdCommand
 			||what.equalsIgnoreCase("all"))
 			{
 				reset(mobs,backups,R,IS,R2);
-				Ability SpellAdder=CMClass.getAbility("Prop_SpellAdder");
+				final Ability SpellAdder=CMClass.getAbility("Prop_SpellAdder");
 				SpellAdder.setMiscText(semiSpellList()+"MASK=-RACE +Dwarf");
 				mob.tell("Test#8-1: "+SpellAdder.accountForYourself());
 				R2.addNonUninvokableEffect(SpellAdder);
@@ -854,7 +855,7 @@ public class Test extends StdCommand
 			||what.equalsIgnoreCase("all"))
 			{
 				reset(mobs,backups,R,IS,R2);
-				Ability UseSpellCast=CMClass.getAbility("Prop_UseSpellCast"); // put IN
+				final Ability UseSpellCast=CMClass.getAbility("Prop_UseSpellCast"); // put IN
 				UseSpellCast.setMiscText(semiSpellList());
 				mob.tell("Test#9-1: "+UseSpellCast.accountForYourself());
 				IS=giveTo(CMClass.getItem("SmallSack"),UseSpellCast,mobs[0],null,0);
@@ -886,7 +887,7 @@ public class Test extends StdCommand
 			||what.equalsIgnoreCase("all"))
 			{
 				reset(mobs,backups,R,IS,R2);
-				Ability UseSpellCast2=CMClass.getAbility("Prop_UseSpellCast2"); // EAT
+				final Ability UseSpellCast2=CMClass.getAbility("Prop_UseSpellCast2"); // EAT
 				UseSpellCast2.setMiscText(semiSpellList());
 				mob.tell("Test#10-1: "+UseSpellCast2.accountForYourself());
 				IS=giveTo(CMClass.getItem("StdFood"),UseSpellCast2,mobs[0],null,0);
@@ -909,7 +910,7 @@ public class Test extends StdCommand
 			}
 			if(what.equalsIgnoreCase("metaflags")||what.equalsIgnoreCase("all"))
 			{
-				StringBuffer str=new StringBuffer("");
+				final StringBuffer str=new StringBuffer("");
 				if(CMath.bset(metaFlags,Command.METAFLAG_AS))
 					str.append(" AS ");
 				if(CMath.bset(metaFlags,Command.METAFLAG_FORCED))
@@ -977,7 +978,7 @@ public class Test extends StdCommand
 			||what.equalsIgnoreCase("all"))
 			{
 				reset(mobs,backups,R,IS,R2);
-				Ability FightSpellCast=CMClass.getAbility("Prop_FightSpellCast");
+				final Ability FightSpellCast=CMClass.getAbility("Prop_FightSpellCast");
 				FightSpellCast.setMiscText(maliciousSemiSpellList());
 				mob.tell("Test#11-1: "+FightSpellCast.accountForYourself());
 				IS=giveTo(CMClass.getWeapon("Sword"),FightSpellCast,mobs[0],null,1);
@@ -1033,7 +1034,7 @@ public class Test extends StdCommand
 			||what.equalsIgnoreCase("all"))
 			{
 				reset(mobs,backups,R,IS,R2);
-				Ability HaveZapper=CMClass.getAbility("Prop_HaveZapper");
+				final Ability HaveZapper=CMClass.getAbility("Prop_HaveZapper");
 				HaveZapper.setMiscText("-RACE +Dwarf");
 				mob.tell("Test#12-1: "+HaveZapper.accountForYourself());
 				IS=giveTo(CMClass.getWeapon("Sword"),HaveZapper,mobs[0],mobs[1],2);
@@ -1047,7 +1048,7 @@ public class Test extends StdCommand
 			||what.equalsIgnoreCase("all"))
 			{
 				reset(mobs,backups,R,IS,R2);
-				Ability RideZapper=CMClass.getAbility("Prop_RideZapper");
+				final Ability RideZapper=CMClass.getAbility("Prop_RideZapper");
 				RideZapper.setMiscText("-RACE +Dwarf");
 				mob.tell("Test#13-1: "+RideZapper.accountForYourself());
 				IS=giveTo(CMClass.getItem("Boat"),RideZapper,mobs[0],mobs[1],3);
@@ -1063,7 +1064,7 @@ public class Test extends StdCommand
 			||what.equalsIgnoreCase("all"))
 			{
 				reset(mobs,backups,R,IS,R2);
-				Ability WearZapper=CMClass.getAbility("Prop_WearZapper");
+				final Ability WearZapper=CMClass.getAbility("Prop_WearZapper");
 				WearZapper.setMiscText("-RACE +Dwarf");
 				mob.tell("Test#14-1: "+WearZapper.accountForYourself());
 				IS=giveTo(CMClass.getWeapon("Sword"),WearZapper,mobs[0],mobs[1],0);
@@ -1079,7 +1080,7 @@ public class Test extends StdCommand
 			||what.equalsIgnoreCase("all"))
 			{
 				reset(mobs,backups,R,IS,R2);
-				Ability Resistance=CMClass.getAbility("Prop_Resistance");
+				final Ability Resistance=CMClass.getAbility("Prop_Resistance");
 				Resistance.setMiscText("pierce 100% holy 100% acid 30%");
 				mob.tell("Test#15-1: "+Resistance.accountForYourself());
 				if(testResistance(mobs[0])){ mob.tell("Error15-1"); return false;}
@@ -1103,7 +1104,7 @@ public class Test extends StdCommand
 			||what.equalsIgnoreCase("all"))
 			{
 				reset(mobs,backups,R,IS,R2);
-				Ability HaveResister=CMClass.getAbility("Prop_HaveResister");
+				final Ability HaveResister=CMClass.getAbility("Prop_HaveResister");
 				HaveResister.setMiscText("pierce 100% holy 100% acid 30%");
 				mob.tell("Test#16-1: "+HaveResister.accountForYourself());
 				if(testResistance(mobs[0])){ mob.tell("Error16-1"); return false;}
@@ -1137,7 +1138,7 @@ public class Test extends StdCommand
 			||what.equalsIgnoreCase("all"))
 			{
 				reset(mobs,backups,R,IS,R2);
-				Ability WearResister=CMClass.getAbility("Prop_WearResister");
+				final Ability WearResister=CMClass.getAbility("Prop_WearResister");
 				WearResister.setMiscText("pierce 100% holy 100% acid 30%");
 				mob.tell("Test#17-1: "+WearResister.accountForYourself());
 				if(testResistance(mobs[0])){ mob.tell("Error17-1"); return false;}
@@ -1168,7 +1169,7 @@ public class Test extends StdCommand
 			||what.equalsIgnoreCase("all"))
 			{
 				reset(mobs,backups,R,IS,R2);
-				Ability RideResister=CMClass.getAbility("Prop_RideResister");
+				final Ability RideResister=CMClass.getAbility("Prop_RideResister");
 				RideResister.setMiscText("pierce 100% holy 100% acid 30%");
 				mob.tell("Test#18-1: "+RideResister.accountForYourself());
 				if(testResistance(mobs[0])){ mob.tell("Error18-1"); return false;}
@@ -1199,7 +1200,7 @@ public class Test extends StdCommand
 			||what.equalsIgnoreCase("all"))
 			{
 				reset(mobs,backups,R,IS,R2);
-				Ability HaveAdjuster=CMClass.getAbility("Prop_HaveAdjuster");
+				final Ability HaveAdjuster=CMClass.getAbility("Prop_HaveAdjuster");
 				HaveAdjuster.setMiscText("abi+10 gen=F class=Fighter cha+10 man+1000");
 				mob.tell("Test#19-1: "+HaveAdjuster.accountForYourself());
 				if(isAnyAdjusted(mobs[0])){ mob.tell("Error19-1"); return false;}
@@ -1232,7 +1233,7 @@ public class Test extends StdCommand
 			||what.equalsIgnoreCase("all"))
 			{
 				reset(mobs,backups,R,IS,R2);
-				Ability WearAdjuster=CMClass.getAbility("Prop_WearAdjuster");
+				final Ability WearAdjuster=CMClass.getAbility("Prop_WearAdjuster");
 				WearAdjuster.setMiscText("abi+10 gen=F class=Fighter cha+10 man+1000");
 				mob.tell("Test#20-1: "+WearAdjuster.accountForYourself());
 				if(isAnyAdjusted(mobs[0])){ mob.tell("Error20-1"); return false;}
@@ -1262,7 +1263,7 @@ public class Test extends StdCommand
 			||what.equalsIgnoreCase("all"))
 			{
 				reset(mobs,backups,R,IS,R2);
-				Ability RideAdjuster=CMClass.getAbility("Prop_RideAdjuster");
+				final Ability RideAdjuster=CMClass.getAbility("Prop_RideAdjuster");
 				RideAdjuster.setMiscText("abi+10 gen=F class=Fighter cha+10 man+1000");
 				mob.tell("Test#21-1: "+RideAdjuster.accountForYourself());
 				if(isAnyAdjusted(mobs[0])){ mob.tell("Error21-1"); return false;}
@@ -1292,7 +1293,7 @@ public class Test extends StdCommand
 			||what.equalsIgnoreCase("all"))
 			{
 				reset(mobs,backups,R,IS,R2);
-				Ability HereAdjuster=CMClass.getAbility("Prop_HereAdjuster");
+				final Ability HereAdjuster=CMClass.getAbility("Prop_HereAdjuster");
 				HereAdjuster.setMiscText("abi+10 gen=F class=Fighter cha+10 man+1000");
 				mob.tell("Test#22-1: "+HereAdjuster.accountForYourself());
 				A2=((Ability)HereAdjuster.copyOf());
@@ -1348,7 +1349,7 @@ public class Test extends StdCommand
 			||what.equalsIgnoreCase("all"))
 			{
 				reset(mobs,backups,R,IS,R2);
-				Ability reqA=CMClass.getAbility("Prop_ReqAlignments");
+				final Ability reqA=CMClass.getAbility("Prop_ReqAlignments");
 				reqA.setMiscText("NOFOL -EVIL");
 				R2.addNonUninvokableEffect(reqA);
 
@@ -1385,7 +1386,7 @@ public class Test extends StdCommand
 			||what.equalsIgnoreCase("all"))
 			{
 				reset(mobs,backups,R,IS,R2);
-				Ability reqA=CMClass.getAbility("Prop_ReqCapacity");
+				final Ability reqA=CMClass.getAbility("Prop_ReqCapacity");
 				reqA.setMiscText("people=1 weight=100 items=1");
 				R2.addNonUninvokableEffect(reqA);
 				IS=giveTo(CMClass.getWeapon("Sword"),null,mobs[0],mobs[1],0);
@@ -1459,11 +1460,11 @@ public class Test extends StdCommand
 			}
 			if((what.equalsIgnoreCase("all")||what.equalsIgnoreCase("rtree"))&&(mob.session()!=null))
 			{
-				long t1=System.currentTimeMillis();
-				RTree tree=new RTree();
-				List<BoundedObject> origSet=new Vector<BoundedObject>();
-				List<long[]> samples=new Vector<long[]>();
-				Random r=new Random(System.currentTimeMillis());
+				final long t1=System.currentTimeMillis();
+				final RTree tree=new RTree();
+				final List<BoundedObject> origSet=new Vector<BoundedObject>();
+				final List<long[]> samples=new Vector<long[]>();
+				final Random r=new Random(System.currentTimeMillis());
 				for(int g=0;g<15;g++)
 				{
 					long gcenterX=r.nextLong();
@@ -1475,10 +1476,10 @@ public class Test extends StdCommand
 					final long grp=g;
 					for(int i=0;i<100;i++)
 					{
-						int dist=r.nextInt(0x0fff);
+						final int dist=r.nextInt(0x0fff);
 						final BoundedObject.BoundedCube cube=new BoundedObject.BoundedCube(gcenterX-dist,gcenterX+dist,gcenterY-dist,gcenterY+dist,gcenterZ-dist,gcenterZ+dist);
 						final int num=i;
-						BoundedObject obj=new BoundedObject()
+						final BoundedObject obj=new BoundedObject()
 						{
 							@Override
 							public BoundedCube getBounds()
@@ -1491,12 +1492,12 @@ public class Test extends StdCommand
 					}
 					samples.add(new long[]{gcenterX,gcenterY,gcenterZ});
 				}
-				List<BoundedObject> setToAdd=new Vector<BoundedObject>(origSet.size());
-				List<BoundedObject> randomSet=new Vector<BoundedObject>(origSet.size());
+				final List<BoundedObject> setToAdd=new Vector<BoundedObject>(origSet.size());
+				final List<BoundedObject> randomSet=new Vector<BoundedObject>(origSet.size());
 				setToAdd.addAll(origSet);
 				while(setToAdd.size()>0)
 				{
-					BoundedObject O=setToAdd.remove(r.nextInt(setToAdd.size()));
+					final BoundedObject O=setToAdd.remove(r.nextInt(setToAdd.size()));
 					if((tree.contains(O))||(tree.leafSearch(O)))
 					{ mob.tell("Error25-0"); return false;}
 					tree.insert(O);
@@ -1508,12 +1509,12 @@ public class Test extends StdCommand
 				for(int gnum=0; gnum<samples.size();gnum++)
 				{
 					setToAdd.clear();
-					long[] pt=samples.get(gnum);
+					final long[] pt=samples.get(gnum);
 					tree.query(setToAdd,pt[0],pt[1],pt[2]);
 					totalSize+=setToAdd.size();
 				}
 				mob.tell("Average set size="+(totalSize/samples.size())+", time="+((System.currentTimeMillis()-t1))+", count="+tree.count());
-				for(BoundedObject O : origSet)
+				for(final BoundedObject O : origSet)
 				{
 					if((!tree.contains(O))||(!tree.leafSearch(O)))
 					{ mob.tell("Error25-0.2"); return false;}
@@ -1521,7 +1522,7 @@ public class Test extends StdCommand
 				for(int gnum=0; gnum<samples.size();gnum++)
 				{
 					setToAdd.clear();
-					long[] pt=samples.get(gnum);
+					final long[] pt=samples.get(gnum);
 					tree.query(setToAdd,pt[0],pt[1],pt[2]);
 					if(setToAdd.size()!=100)
 					{ mob.tell("Error25-1"); return false;}
@@ -1532,17 +1533,17 @@ public class Test extends StdCommand
 				for(int gnum=0; gnum<samples.size();gnum++)
 				{
 					setToAdd.clear();
-					long[] pt=samples.get(gnum);
+					final long[] pt=samples.get(gnum);
 					tree.query(setToAdd,pt[0],pt[1],pt[2]);
 					for(int i2=0;i2<setToAdd.size();i2++)
 					{
-						BoundedObject O2=setToAdd.get(i2);
+						final BoundedObject O2=setToAdd.get(i2);
 						if((!tree.contains(O2))||(!tree.leafSearch(O2)))
 						{ mob.tell("Error25-1.99#"+gnum+"/"+i2+"/"+setToAdd.size()); return false;}
 					}
 					for(int i2=0;i2<setToAdd.size();i2++) // remove dups
 					{
-						BoundedObject O2=setToAdd.get(i2);
+						final BoundedObject O2=setToAdd.get(i2);
 						for(int i3=setToAdd.size()-1;i3>i2;i3--) // remove dups
 							if(setToAdd.get(i3)==O2)
 							{
@@ -1552,21 +1553,21 @@ public class Test extends StdCommand
 					}
 					for(int i=0;i<setToAdd.size();i++)
 					{
-						int ct=tree.count();
-						BoundedObject O=setToAdd.get(i);
+						final int ct=tree.count();
+						final BoundedObject O=setToAdd.get(i);
 						if((!tree.contains(O))&&(!tree.leafSearch(O)))
 						{ mob.tell("Error25-2#"+gnum+"/"+i); return false;}
 						if(!tree.remove(O))
 						{ mob.tell("Error25-3#"+gnum+"/"+i); return false;}
 						for(int i2=i+1;i2<setToAdd.size();i2++)
 						{
-							BoundedObject O2=setToAdd.get(i2);
+							final BoundedObject O2=setToAdd.get(i2);
 							if((!tree.contains(O2))&&(!tree.leafSearch(O2)))
 							{ mob.tell("Error25-3.2#"+gnum+"/"+i+"/"+i2+"/"+setToAdd.size()); return false;}
 						}
 						if(tree.contains(O))
 						{ mob.tell("Error25-4#"+gnum+"/"+i); return false;}
-						List<BoundedObject> dblCheck=new Vector<BoundedObject>(setToAdd.size()-i);
+						final List<BoundedObject> dblCheck=new Vector<BoundedObject>(setToAdd.size()-i);
 						tree.query(dblCheck,pt[0],pt[1],pt[2]);
 						if(dblCheck.contains(O))
 						{ mob.tell("Error25-5#"+gnum+"/"+i); return false;}
@@ -1592,8 +1593,8 @@ public class Test extends StdCommand
 				reset(mobs,backups,R,IS,R2);
 				mobs[0].setPlayerStats((PlayerStats)CMClass.getCommon("DefaultPlayerStats"));
 				mobs[1].setPlayerStats((PlayerStats)CMClass.getCommon("DefaultPlayerStats"));
-				Session S1=(Session)CMClass.getCommon("FakeSession");
-				Session S2=(Session)CMClass.getCommon("FakeSession");
+				final Session S1=(Session)CMClass.getCommon("FakeSession");
+				final Session S2=(Session)CMClass.getCommon("FakeSession");
 				S1.initializeSession(null,Thread.currentThread().getThreadGroup().getName(), "MEMORY");
 				S2.initializeSession(null,Thread.currentThread().getThreadGroup().getName(), "MEMORY");
 				mobs[0].setSession(S1);

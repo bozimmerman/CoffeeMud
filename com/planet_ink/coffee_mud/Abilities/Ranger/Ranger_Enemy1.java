@@ -52,18 +52,18 @@ public class Ranger_Enemy1 extends StdAbility
 		{
 			if(!(affected instanceof MOB))
 				return super.text();
-			MOB mob=(MOB)affected;
-			Vector choices=new Vector();
-			for(Enumeration r=CMClass.races();r.hasMoreElements();)
+			final MOB mob=(MOB)affected;
+			final Vector choices=new Vector();
+			for(final Enumeration r=CMClass.races();r.hasMoreElements();)
 			{
-				Race R=(Race)r.nextElement();
+				final Race R=(Race)r.nextElement();
 				if((!choices.contains(R.racialCategory()))
 				&&(CMath.bset(R.availabilityCode(),Area.THEME_FANTASY)))
 					choices.addElement(R.racialCategory());
 			}
 			for(int a=0;a<mob.numAbilities();a++)
 			{
-				Ability A=mob.fetchAbility(a);
+				final Ability A=mob.fetchAbility(a);
 				if((A instanceof Ranger_Enemy1)
 				   &&(((Ranger_Enemy1)A).miscText.length()>0))
 					choices.remove(((Ranger_Enemy1)A).miscText);
@@ -81,13 +81,13 @@ public class Ranger_Enemy1 extends StdAbility
 			miscText=(String)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1));
 			for(int a=0;a<mob.numAbilities();a++)
 			{
-				Ability A=mob.fetchAbility(a);
+				final Ability A=mob.fetchAbility(a);
 				if((A!=null)&&(A.ID().equals(ID())))
 					((Ranger_Enemy1)A).miscText=miscText;
 			}
 			for(int a=0;a<mob.numEffects();a++) // personal
 			{
-				Ability A=mob.fetchEffect(a);
+				final Ability A=mob.fetchEffect(a);
 				if((A!=null)&&(A.ID().equals(ID())))
 					((Ranger_Enemy1)A).miscText=miscText;
 			}
@@ -101,13 +101,13 @@ public class Ranger_Enemy1 extends StdAbility
 		super.affectPhyStats(affected,affectableStats);
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
-		MOB victim=mob.getVictim();
+		final MOB mob=(MOB)affected;
+		final MOB victim=mob.getVictim();
 		if((victim!=null)&&(victim.charStats().getMyRace().racialCategory().equals(text())))
 		{
-			int level=1+adjustedLevel(mob,0);
-			double damBonus=CMath.mul(CMath.div(proficiency(),100.0),level);
-			double attBonus=CMath.mul(CMath.div(proficiency(),100.0),3*level);
+			final int level=1+adjustedLevel(mob,0);
+			final double damBonus=CMath.mul(CMath.div(proficiency(),100.0),level);
+			final double attBonus=CMath.mul(CMath.div(proficiency(),100.0),3*level);
 			affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+(int)Math.round(attBonus));
 			affectableStats.setDamage(affectableStats.damage()+(int)Math.round(damBonus));
 		}

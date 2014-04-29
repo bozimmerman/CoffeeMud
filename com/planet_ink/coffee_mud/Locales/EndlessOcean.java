@@ -14,7 +14,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -71,15 +70,15 @@ public class EndlessOcean extends StdGrid
 		super.buildGrid();
 		if(subMap!=null)
 		{
-			Exit ox=CMClass.getExit("Open");
+			final Exit ox=CMClass.getExit("Open");
 			if(rawDoors()[Directions.NORTH]==null)
-				for(int i=0;i<subMap.length;i++)
-					if(subMap[i][0]!=null)
-						linkRoom(subMap[i][0],subMap[i][yGridSize()/2],Directions.NORTH,ox,ox);
+				for (final Room[] element : subMap)
+					if(element[0]!=null)
+						linkRoom(element[0],element[yGridSize()/2],Directions.NORTH,ox,ox);
 			if(rawDoors()[Directions.SOUTH]==null)
-				for(int i=0;i<subMap.length;i++)
-					if(subMap[i][yGridSize()-1]!=null)
-						linkRoom(subMap[i][yGridSize()-1],subMap[i][yGridSize()/2],Directions.SOUTH,ox,ox);
+				for (final Room[] element : subMap)
+					if(element[yGridSize()-1]!=null)
+						linkRoom(element[yGridSize()-1],element[yGridSize()/2],Directions.SOUTH,ox,ox);
 			if(rawDoors()[Directions.EAST]==null)
 				for(int i=0;i<subMap[0].length;i++)
 					if(subMap[xGridSize()-1][i]!=null)
@@ -92,36 +91,36 @@ public class EndlessOcean extends StdGrid
 			{
 				if(rawDoors()[Directions.NORTHEAST]==null)
 				{
-					for(int i=0;i<subMap.length;i++)
-						if(subMap[i][0]!=null)
-							linkRoom(subMap[i][0],subMap[xGridSize()/2][yGridSize()/2],Directions.NORTHEAST,ox,ox);
+					for (final Room[] element : subMap)
+						if(element[0]!=null)
+							linkRoom(element[0],subMap[xGridSize()/2][yGridSize()/2],Directions.NORTHEAST,ox,ox);
 					for(int i=0;i<subMap[0].length;i++)
 						if(subMap[subMap.length-1][i]!=null)
 							linkRoom(subMap[subMap.length-1][i],subMap[xGridSize()/2][yGridSize()/2],Directions.NORTHEAST,ox,ox);
 				}
 				if(rawDoors()[Directions.NORTHWEST]==null)
 				{
-					for(int i=0;i<subMap.length;i++)
-						if(subMap[i][0]!=null)
-							linkRoom(subMap[i][0],subMap[xGridSize()/2][yGridSize()/2],Directions.NORTHWEST,ox,ox);
+					for (final Room[] element : subMap)
+						if(element[0]!=null)
+							linkRoom(element[0],subMap[xGridSize()/2][yGridSize()/2],Directions.NORTHWEST,ox,ox);
 					for(int i=0;i<subMap[0].length;i++)
 						if(subMap[0][i]!=null)
 							linkRoom(subMap[0][i],subMap[xGridSize()/2][yGridSize()/2],Directions.NORTHWEST,ox,ox);
 				}
 				if(rawDoors()[Directions.SOUTHWEST]==null)
 				{
-					for(int i=0;i<subMap.length;i++)
-						if(subMap[i][yGridSize()-1]!=null)
-							linkRoom(subMap[i][yGridSize()-1],subMap[xGridSize()/2][yGridSize()/2],Directions.SOUTHWEST,ox,ox);
+					for (final Room[] element : subMap)
+						if(element[yGridSize()-1]!=null)
+							linkRoom(element[yGridSize()-1],subMap[xGridSize()/2][yGridSize()/2],Directions.SOUTHWEST,ox,ox);
 					for(int i=0;i<subMap[0].length;i++)
 						if(subMap[0][i]!=null)
 							linkRoom(subMap[0][i],subMap[xGridSize()/2][yGridSize()/2],Directions.SOUTHWEST,ox,ox);
 				}
 				if(rawDoors()[Directions.SOUTHEAST]==null)
 				{
-					for(int i=0;i<subMap.length;i++)
-						if(subMap[i][yGridSize()-1]!=null)
-							linkRoom(subMap[i][yGridSize()-1],subMap[xGridSize()/2][yGridSize()/2],Directions.SOUTHEAST,ox,ox);
+					for (final Room[] element : subMap)
+						if(element[yGridSize()-1]!=null)
+							linkRoom(element[yGridSize()-1],subMap[xGridSize()/2][yGridSize()/2],Directions.SOUTHEAST,ox,ox);
 					for(int i=0;i<subMap[0].length;i++)
 						if(subMap[subMap.length-1][i]!=null)
 							linkRoom(subMap[subMap.length-1][i],subMap[xGridSize()/2][yGridSize()/2],Directions.NORTHEAST,ox,ox);

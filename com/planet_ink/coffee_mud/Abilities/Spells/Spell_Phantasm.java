@@ -52,7 +52,7 @@ public class Spell_Phantasm extends Spell
 		{
 			if((affected!=null)&&(affected instanceof MOB))
 			{
-				MOB mob=(MOB)affected;
+				final MOB mob=(MOB)affected;
 				if(myTarget==null)
 					myTarget=mob.getVictim();
 
@@ -78,7 +78,7 @@ public class Spell_Phantasm extends Spell
 		if((affected!=null)
 		&&(affected instanceof MOB))
 		{
-			MOB mob=(MOB)affected;
+			final MOB mob=(MOB)affected;
 			if(msg.amITarget(mob)&&(msg.sourceMinor()==CMMsg.TYP_CAST_SPELL))
 			{
 				msg.source().tell(mob.name(msg.source())+" seems strangely unaffected by your magic.");
@@ -94,7 +94,7 @@ public class Spell_Phantasm extends Spell
 		if((affected!=null)
 		&&(affected instanceof MOB))
 		{
-			MOB mob=(MOB)affected;
+			final MOB mob=(MOB)affected;
 			if((msg.amISource(mob)||msg.amISource(mob.amFollowing()))
 			&&(msg.sourceMinor()==CMMsg.TYP_QUIT))
 			{
@@ -110,7 +110,7 @@ public class Spell_Phantasm extends Spell
 	@Override
 	public void unInvoke()
 	{
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		super.unInvoke();
 		if((canBeUninvoked())&&(mob!=null))
 		{
@@ -154,7 +154,7 @@ public class Spell_Phantasm extends Spell
 			}
 			type=CMStrings.capitalizeAndLower(CMParms.combine(commands,0));
 		}
-		Race R=CMClass.getRace(type);
+		final Race R=CMClass.getRace(type);
 		if((R==null)
 		||(!CMProps.isTheme(R.availabilityCode())))
 		{
@@ -162,16 +162,16 @@ public class Spell_Phantasm extends Spell
 			return false;
 		}
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
 			invoker=mob;
-			CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":"^S<S-NAME> incant(s), calling on the name of "+type+".^?");
+			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":"^S<S-NAME> incant(s), calling on the name of "+type+".^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				MOB myMonster = determineMonster(mob, R, mob.phyStats().level()+(2*getXLEVELLevel(mob)));
+				final MOB myMonster = determineMonster(mob, R, mob.phyStats().level()+(2*getXLEVELLevel(mob)));
 				myMonster.setVictim(mob.getVictim());
 				CMLib.commands().postFollow(myMonster,mob,true);
 				if(myMonster.getVictim()!=null)
@@ -190,9 +190,9 @@ public class Spell_Phantasm extends Spell
 	}
 	public MOB determineMonster(MOB caster, Race R, int level)
 	{
-		MOB newMOB=CMClass.getMOB("GenMob");
+		final MOB newMOB=CMClass.getMOB("GenMob");
 		newMOB.basePhyStats().setAbility(11);
-		CharClass C=CMClass.getCharClass("Fighter");
+		final CharClass C=CMClass.getCharClass("Fighter");
 		newMOB.baseCharStats().setCurrentClass(C);
 		newMOB.basePhyStats().setLevel(level);
 		CMLib.factions().setAlignment(newMOB,Faction.Align.EVIL);

@@ -60,13 +60,13 @@ public class Spell_IncreaseGravity extends Spell
 		else
 		if((affected!=null)&&(affected instanceof Room)&&(invoker!=null))
 		{
-			Room room=(Room)affected;
+			final Room room=(Room)affected;
 			for(int i=0;i<room.numInhabitants();i++)
 			{
-				MOB inhab=room.fetchInhabitant(i);
+				final MOB inhab=room.fetchInhabitant(i);
 				if(inhab.fetchEffect(ID())==null)
 				{
-					Ability A=(Ability)this.copyOf();
+					final Ability A=(Ability)this.copyOf();
 					A.setSavable(false);
 					A.startTickDown(invoker,inhab,tickDown);
 				}
@@ -87,13 +87,13 @@ public class Spell_IncreaseGravity extends Spell
 		{
 			if(affected instanceof Room)
 			{
-				Room room=(Room)affected;
+				final Room room=(Room)affected;
 				room.showHappens(CMMsg.MSG_OK_VISUAL, "Gravity returns to normal...");
 			}
 			else
 			if(affected instanceof MOB)
 			{
-				MOB mob=(MOB)affected;
+				final MOB mob=(MOB)affected;
 				if((mob.location()!=null)&&(mob.location()!=gravityRoom()))
 					mob.location().show(mob, null, CMMsg.MSG_OK_VISUAL, "Your weight returns to normal..");
 			}
@@ -161,7 +161,7 @@ public class Spell_IncreaseGravity extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		Physical target = mob.location();
+		final Physical target = mob.location();
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
@@ -170,7 +170,7 @@ public class Spell_IncreaseGravity extends Spell
 		}
 
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
@@ -179,7 +179,7 @@ public class Spell_IncreaseGravity extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 
-			CMMsg msg = CMClass.getMsg(mob, target, this, verbalCastCode(mob,target,auto), (auto?"G":"^S<S-NAME> speak(s) and wave(s) and g")+"ravity begins to increase!^?");
+			final CMMsg msg = CMClass.getMsg(mob, target, this, verbalCastCode(mob,target,auto), (auto?"G":"^S<S-NAME> speak(s) and wave(s) and g")+"ravity begins to increase!^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

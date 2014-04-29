@@ -85,13 +85,13 @@ public class Spell_Meld extends Spell
 			mob.tell("Meld what and what else together?");
 			return false;
 		}
-		Item itemOne=mob.findItem(null,(String)commands.elementAt(0));
+		final Item itemOne=mob.findItem(null,(String)commands.elementAt(0));
 		if((itemOne==null)||(!CMLib.flags().canBeSeenBy(itemOne,mob)))
 		{
 			mob.tell("You don't seem to have a '"+((String)commands.elementAt(0))+"'.");
 			return false;
 		}
-		Item itemTwo=mob.findItem(null,CMParms.combine(commands,1));
+		final Item itemTwo=mob.findItem(null,CMParms.combine(commands,1));
 		if((itemTwo==null)||(!CMLib.flags().canBeSeenBy(itemTwo,mob)))
 		{
 			mob.tell("You don't seem to have a '"+CMParms.combine(commands,1)+"'.");
@@ -102,8 +102,8 @@ public class Spell_Meld extends Spell
 
 		if((itemOne instanceof Armor)&&(itemTwo instanceof Armor))
 		{
-			Armor armorOne=(Armor)itemOne;
-			Armor armorTwo=(Armor)itemTwo;
+			final Armor armorOne=(Armor)itemOne;
+			final Armor armorTwo=(Armor)itemTwo;
 			if(armorOne.getClothingLayer()!=armorTwo.getClothingLayer())
 			{
 				mob.tell("This spell can only be cast on items worn at the same layer.");
@@ -186,7 +186,7 @@ public class Spell_Meld extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
@@ -195,8 +195,8 @@ public class Spell_Meld extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			CMMsg msg=CMClass.getMsg(mob,itemOne,this,verbalCastCode(mob,itemOne,auto),"^S<S-NAME> meld(s) "+itemOne.name()+" and "+itemTwo.name()+".^?");
-			CMMsg msg2=CMClass.getMsg(mob,itemTwo,this,verbalCastCode(mob,itemOne,auto),null);
+			final CMMsg msg=CMClass.getMsg(mob,itemOne,this,verbalCastCode(mob,itemOne,auto),"^S<S-NAME> meld(s) "+itemOne.name()+" and "+itemTwo.name()+".^?");
+			final CMMsg msg2=CMClass.getMsg(mob,itemTwo,this,verbalCastCode(mob,itemOne,auto),null);
 			if(mob.location().okMessage(mob,msg)&&mob.location().okMessage(mob,msg2))
 			{
 				mob.location().send(mob,msg);
@@ -216,7 +216,7 @@ public class Spell_Meld extends Spell
 				if(getHeiarchy(material&RawMaterial.MATERIAL_MASK)<getHeiarchy(itemTwo.material()&RawMaterial.MATERIAL_MASK))
 					material=itemTwo.material();
 
-				String newName=itemOneName+" and "+itemTwoName+" melded together";
+				final String newName=itemOneName+" and "+itemTwoName+" melded together";
 				if((itemOne instanceof Armor)&&(itemTwo instanceof Armor))
 				{
 
@@ -262,7 +262,7 @@ public class Spell_Meld extends Spell
 					}
 
 
-					Armor gc=CMClass.getArmor("GenArmor");
+					final Armor gc=CMClass.getArmor("GenArmor");
 					gc.setMaterial(material);
 					gc.setName(newName);
 					gc.setDisplayText(newName+" sits here.");
@@ -273,7 +273,7 @@ public class Spell_Meld extends Spell
 					gc.basePhyStats().setArmor((itemOne.basePhyStats().armor()+itemTwo.basePhyStats().armor())/2);
 					if(gc instanceof Container)
 					{
-						Container cgc=(Container)gc;
+						final Container cgc=(Container)gc;
 						cgc.setCapacity(0);
 						if(itemOne instanceof Container)
 							cgc.setCapacity(cgc.capacity()+((Container)itemOne).capacity());
@@ -293,7 +293,7 @@ public class Spell_Meld extends Spell
 				else
 				if((itemOne instanceof Weapon)||(itemTwo instanceof Weapon))
 				{
-					Weapon gc=CMClass.getWeapon("GenWeapon");
+					final Weapon gc=CMClass.getWeapon("GenWeapon");
 					gc.setMaterial(material);
 					gc.setName(newName);
 					gc.setDisplayText(newName+" sits here.");
@@ -341,7 +341,7 @@ public class Spell_Meld extends Spell
 						isLocked=((Container)itemTwo).hasALock();
 						keyName=((Container)itemTwo).keyName();
 					}
-					Container gc=(Container)CMClass.getItem("GenContainer");
+					final Container gc=(Container)CMClass.getItem("GenContainer");
 					gc.setMaterial(material);
 					gc.setName(newName);
 					gc.setDisplayText(newName+" sits here.");
@@ -374,15 +374,15 @@ public class Spell_Meld extends Spell
 						if((A!=null)&&(A.isSavable())&&(melded.fetchEffect(A.ID())==null))
 							melded.addEffect((Ability)A.copyOf());
 					}
-					for(Enumeration<Behavior> e=itemOne.behaviors();e.hasMoreElements();)
+					for(final Enumeration<Behavior> e=itemOne.behaviors();e.hasMoreElements();)
 					{
-						Behavior B=e.nextElement();
+						final Behavior B=e.nextElement();
 						if((B!=null)&&(B.isSavable()))
 							melded.addBehavior((Behavior)B.copyOf());
 					}
-					for(Enumeration<Behavior> e=itemTwo.behaviors();e.hasMoreElements();)
+					for(final Enumeration<Behavior> e=itemTwo.behaviors();e.hasMoreElements();)
 					{
-						Behavior B=e.nextElement();
+						final Behavior B=e.nextElement();
 						if((B!=null)&&(B.isSavable()))
 							melded.addBehavior((Behavior)B.copyOf());
 					}

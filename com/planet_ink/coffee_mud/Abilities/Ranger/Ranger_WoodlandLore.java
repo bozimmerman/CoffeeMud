@@ -56,7 +56,7 @@ public class Ranger_WoodlandLore extends StdAbility
 		   &&(invoker.location().domainType()!=Room.DOMAIN_OUTDOORS_SPACEPORT)
 		   &&(invoker.location().domainType()!=Room.DOMAIN_OUTDOORS_CITY)))
 		{
-			int xlvl=super.getXLEVELLevel(invoker());
+			final int xlvl=super.getXLEVELLevel(invoker());
 			affectableStats.setDamage(affectableStats.damage()+5+xlvl);
 			affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+10+(2*xlvl));
 			affectableStats.setArmor(affectableStats.armor()-20-(2*xlvl));

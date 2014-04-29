@@ -47,16 +47,16 @@ public class Thief_Embezzle extends ThiefSkill
 	@Override public int classificationCode() {   return Ability.ACODE_SKILL|Ability.DOMAIN_CRIMINAL; }
 	@Override protected boolean disregardsArmorCheck(MOB mob){return true;}
 	public List<MOB> mobs=new Vector<MOB>();
-	private LinkedList<Pair<MOB,Integer>> lastOnes=new LinkedList<Pair<MOB,Integer>>();
+	private final LinkedList<Pair<MOB,Integer>> lastOnes=new LinkedList<Pair<MOB,Integer>>();
 
 	protected int timesPicked(MOB target)
 	{
 		int times=0;
-		for(Iterator<Pair<MOB,Integer>> p=lastOnes.iterator();p.hasNext();)
+		for(final Iterator<Pair<MOB,Integer>> p=lastOnes.iterator();p.hasNext();)
 		{
-			Pair<MOB,Integer> P=p.next();
-			MOB M=P.first;
-			Integer I=P.second;
+			final Pair<MOB,Integer> P=p.next();
+			final MOB M=P.first;
+			final Integer I=P.second;
 			if(M==target)
 			{
 				times=I.intValue();
@@ -129,14 +129,14 @@ public class Thief_Embezzle extends ThiefSkill
 			mob.tell("You are too busy to embezzle.");
 			return false;
 		}
-		Banker bank=(Banker)target;
-		Ability A=target.fetchEffect(ID());
+		final Banker bank=(Banker)target;
+		final Ability A=target.fetchEffect(ID());
 		if(A!=null)
 		{
 			mob.tell(target.name(mob)+" is watching "+target.charStats().hisher()+" books too closely.");
 			return false;
 		}
-		int levelDiff=target.phyStats().level()-(mob.phyStats().level()+(2*super.getXLEVELLevel(mob)));
+		final int levelDiff=target.phyStats().level()-(mob.phyStats().level()+(2*super.getXLEVELLevel(mob)));
 
 		if(!target.mayIFight(mob))
 		{
@@ -160,15 +160,15 @@ public class Thief_Embezzle extends ThiefSkill
 			mob.tell("You don't have your own account with "+target.name(mob)+".");
 			return false;
 		}
-		List<String> accounts=bank.getAccountNames();
+		final List<String> accounts=bank.getAccountNames();
 		String victim="";
 		int tries=0;
 		Coins hisCoins=null;
 		double hisAmount=0;
 		while((hisCoins==null)&&((++tries)<10))
 		{
-			String possVic=accounts.get(CMLib.dice().roll(1,accounts.size(),-1));
-			Item C=bank.findDepositInventory(possVic,"1");
+			final String possVic=accounts.get(CMLib.dice().roll(1,accounts.size(),-1));
+			final Item C=bank.findDepositInventory(possVic,"1");
 			if((C!=null)
 			&&(C instanceof Coins)
 			&&((((Coins)C).getTotalValue()/50.0)>0.0)
@@ -179,7 +179,7 @@ public class Thief_Embezzle extends ThiefSkill
 				hisAmount=hisCoins.getTotalValue()/50.0;
 			}
 		}
-		int classLevel=CMLib.ableMapper().qualifyingClassLevel(mob,this)+(2*getXLEVELLevel(mob));
+		final int classLevel=CMLib.ableMapper().qualifyingClassLevel(mob,this)+(2*getXLEVELLevel(mob));
 		if((classLevel>0)
 		&&(Math.round(hisAmount)>(1000*(classLevel)+(2*getXLEVELLevel(mob)))))
 		   hisAmount=1000l*(classLevel+(2l*getXLEVELLevel(mob)));
@@ -187,11 +187,11 @@ public class Thief_Embezzle extends ThiefSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,(-(levelDiff+(timesPicked(mob)*50))),auto);
+		final boolean success=proficiencyCheck(mob,(-(levelDiff+(timesPicked(mob)*50))),auto);
 		if((success)&&(hisAmount>0)&&(hisCoins!=null))
 		{
-			String str="<S-NAME> embezzle(s) "+CMLib.beanCounter().nameCurrencyShort(target,hisAmount)+" from the "+victim+" account maintained by <T-NAME>.";
-			CMMsg msg=CMClass.getMsg(mob,target,this,(auto?CMMsg.MASK_ALWAYS:0)|CMMsg.MSG_THIEF_ACT,str,null,str);
+			final String str="<S-NAME> embezzle(s) "+CMLib.beanCounter().nameCurrencyShort(target,hisAmount)+" from the "+victim+" account maintained by <T-NAME>.";
+			final CMMsg msg=CMClass.getMsg(mob,target,this,(auto?CMMsg.MASK_ALWAYS:0)|CMMsg.MSG_THIEF_ACT,str,null,str);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

@@ -46,12 +46,12 @@ public class Spell_Disintegrate extends Spell
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		Physical target=getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_ANY);
+		final Physical target=getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_ANY);
 		if(target==null) return false;
-		List<DeadBody> DBs=CMLib.utensils().getDeadBodies(target);
+		final List<DeadBody> DBs=CMLib.utensils().getDeadBodies(target);
 		for(int v=0;v<DBs.size();v++)
 		{
-			DeadBody DB=DBs.get(v);
+			final DeadBody DB=DBs.get(v);
 			if(DB.playerCorpse()
 			&&(!DB.mobName().equals(mob.Name())))
 			{
@@ -80,17 +80,17 @@ public class Spell_Disintegrate extends Spell
 
 		if(success)
 		{
-			Room R=mob.location();
-			CMMsg msg=CMClass.getMsg(mob,target,this,affectType,(auto?"":"^S<S-NAME> point(s) at <T-NAMESELF> and utter(s) a treacherous spell!^?")+CMLib.protocol().msp("spelldam2.wav",40));
+			final Room R=mob.location();
+			final CMMsg msg=CMClass.getMsg(mob,target,this,affectType,(auto?"":"^S<S-NAME> point(s) at <T-NAMESELF> and utter(s) a treacherous spell!^?")+CMLib.protocol().msp("spelldam2.wav",40));
 			if((R!=null)&&(R.okMessage(mob,msg)))
 			{
 				R.send(mob,msg);
 				if(msg.value()<=0)
 				{
-					HashSet<DeadBody> oldBodies=new HashSet<DeadBody>();
+					final HashSet<DeadBody> oldBodies=new HashSet<DeadBody>();
 					for(int i=0;i<R.numItems();i++)
 					{
-						Item I=R.getItem(i);
+						final Item I=R.getItem(i);
 						if((I!=null)&&(I instanceof DeadBody)&&(I.container()==null))
 							oldBodies.add((DeadBody)I);
 					}
@@ -113,7 +113,7 @@ public class Spell_Disintegrate extends Spell
 					{
 						for(int i=0;i<R.numItems();i++)
 						{
-							Item I=R.getItem(i);
+							final Item I=R.getItem(i);
 							if((I!=null)&&(I instanceof DeadBody)&&(I.container()==null)&&(!oldBodies.contains(I))
 							&&(!((DeadBody)I).playerCorpse()))
 							{

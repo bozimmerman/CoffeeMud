@@ -42,18 +42,18 @@ public class AreaNameEncoded extends StdWebMacro
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
-		String last=httpReq.getUrlParameter("AREA");
+		final String last=httpReq.getUrlParameter("AREA");
 		if(last==null) return "";
 		if(last.length()>0)
 		{
-			Area A=CMLib.map().getArea(last);
+			final Area A=CMLib.map().getArea(last);
 			if(A!=null)
 			{
 				try
 				{
 					return clearWebMacros(URLEncoder.encode(A.Name(),"UTF-8"));
 				}
-				catch(java.io.UnsupportedEncodingException e)
+				catch(final java.io.UnsupportedEncodingException e)
 				{
 					Log.errOut(name(),"Wrong Encoding");
 				}

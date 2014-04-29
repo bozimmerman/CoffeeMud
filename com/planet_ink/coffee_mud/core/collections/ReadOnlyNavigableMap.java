@@ -24,7 +24,7 @@ limitations under the License.
 */
 public class ReadOnlyNavigableMap<K,V> implements NavigableMap<K,V>
 {
-	private NavigableMap<K,V> map;
+	private final NavigableMap<K,V> map;
 	public ReadOnlyNavigableMap(NavigableMap<K,V> s)
 	{
 		map=s;

@@ -47,7 +47,7 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 	public void unloadCurrencySet(String currency)
 	{
 		String code=currency.toUpperCase().trim();
-		int x=code.indexOf('=');
+		final int x=code.indexOf('=');
 		if(x>=0) code=code.substring(0,x).trim();
 		if((code.length()>0)&&(currencies.containsKey(code)))
 		{
@@ -67,16 +67,16 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 	{
 		int x=currency.indexOf('=');
 		if(x<0) return null;
-		String code=currency.substring(0,x).trim().toUpperCase();
+		final String code=currency.substring(0,x).trim().toUpperCase();
 		if(currencies.containsKey(code))
 			return currencies.get(code);
 		currency=currency.substring(x+1).trim();
-		List<String> CV=CMParms.parseSemicolons(currency,true);
-		Vector<MoneyDenomination> DV=new Vector<MoneyDenomination>();
+		final List<String> CV=CMParms.parseSemicolons(currency,true);
+		final Vector<MoneyDenomination> DV=new Vector<MoneyDenomination>();
 		String s=null;
 		String num=null;
 		double d=0.0;
-		Vector<String> currencyNames=new Vector<String>();
+		final Vector<String> currencyNames=new Vector<String>();
 		for(int v=0;v<CV.size();v++)
 		{
 			s=CV.get(v);
@@ -116,7 +116,7 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 					currencyNames.add(shortName);
 			}
 		}
-		MoneyDenomination[] DVs=new MoneyDenomination[DV.size()];
+		final MoneyDenomination[] DVs=new MoneyDenomination[DV.size()];
 		for(int i=0;i<DV.size();i++)
 			DVs[i]=DV.elementAt(i);
 		currencies.put(code,DVs);
@@ -128,7 +128,7 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 	@Override
 	public int getDenominationIndex(String currency, double value)
 	{
-		MoneyDenomination[] DV=getCurrencySet(currency);
+		final MoneyDenomination[] DV=getCurrencySet(currency);
 		if(DV!=null)
 		for(int d=0;d<DV.length;d++)
 			if(value==DV[d].value) return d;
@@ -140,7 +140,7 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 	{
 		if(currency==null) return null;
 		String code=currency.toUpperCase().trim();
-		int x=code.indexOf('=');
+		final int x=code.indexOf('=');
 		if(x<0)
 		{
 			if(currencies.containsKey(code))
@@ -180,12 +180,12 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 	@Override
 	public double lowestAbbreviatedDenomination(String currency)
 	{
-		MoneyDenomination[] DV=getCurrencySet(currency);
+		final MoneyDenomination[] DV=getCurrencySet(currency);
 		if(DV!=null)
 		{
-			for(int i=0;i<DV.length;i++)
-				if(DV[i].abbr.length()>0)
-					return DV[i].value;
+			for (final MoneyDenomination element : DV)
+				if(element.abbr.length()>0)
+					return element.value;
 			return getLowestDenomination(currency);
 		}
 		return 1.0;
@@ -194,10 +194,10 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 	@Override
 	public double lowestAbbreviatedDenomination(String currency, double absoluteAmount)
 	{
-		MoneyDenomination[] DV=getCurrencySet(currency);
+		final MoneyDenomination[] DV=getCurrencySet(currency);
 		if(DV!=null)
 		{
-			double absoluteLowest=lowestAbbreviatedDenomination(currency);
+			final double absoluteLowest=lowestAbbreviatedDenomination(currency);
 			double lowestDenom=Double.MAX_VALUE;
 			double diff=0.0;
 			double denom=0.0;
@@ -232,8 +232,8 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 	@Override
 	public double abbreviatedRePrice(String currency, double absoluteAmount)
 	{
-		double lowDenom=lowestAbbreviatedDenomination(currency,absoluteAmount);
-		long lowAmt=Math.round(absoluteAmount/lowDenom);
+		final double lowDenom=lowestAbbreviatedDenomination(currency,absoluteAmount);
+		final long lowAmt=Math.round(absoluteAmount/lowDenom);
 		return CMath.mul(lowDenom,lowAmt);
 	}
 
@@ -246,9 +246,9 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 	@Override
 	public String abbreviatedPrice(String currency, double absoluteAmount)
 	{
-		double lowDenom=lowestAbbreviatedDenomination(currency,absoluteAmount);
-		long lowAmt=Math.round(absoluteAmount/lowDenom);
-		String denominationShortCode=getDenominationShortCode(currency,lowDenom);
+		final double lowDenom=lowestAbbreviatedDenomination(currency,absoluteAmount);
+		final long lowAmt=Math.round(absoluteAmount/lowDenom);
+		final String denominationShortCode=getDenominationShortCode(currency,lowDenom);
 		if(denominationShortCode.length()==0)
 			return ""+lowAmt;
 		return lowAmt+denominationShortCode;
@@ -257,18 +257,18 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 	@Override
 	public String getDenominationShortCode(String currency, double denomination)
 	{
-		MoneyDenomination[] DV=getCurrencySet(currency);
+		final MoneyDenomination[] DV=getCurrencySet(currency);
 		if(DV==null) return "";
-		for(int d=0;d<DV.length;d++)
-			if(DV[d].value==denomination)
-				return DV[d].abbr;
+		for (final MoneyDenomination element : DV)
+			if(element.value==denomination)
+				return element.abbr;
 		return "";
 	}
 
 	@Override
 	public double getLowestDenomination(String currency)
 	{
-		MoneyDenomination[] DV=getCurrencySet(currency);
+		final MoneyDenomination[] DV=getCurrencySet(currency);
 		if((DV==null)||(DV.length==0)) return 1.0;
 		return DV[0].value;
 	}
@@ -282,7 +282,7 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 	@Override
 	public String getDenominationName(String currency, double denomination, long number)
 	{
-		String s=getDenominationName(currency,denomination);
+		final String s=getDenominationName(currency,denomination);
 		if(s.toUpperCase().endsWith("(S)"))
 		{
 			if(number>1)
@@ -295,11 +295,11 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 	@Override
 	public double getBestDenomination(String currency, double absoluteValue)
 	{
-		MoneyDenomination[] DV=getCurrencySet(currency);
+		final MoneyDenomination[] DV=getCurrencySet(currency);
 		double denom=0.0;
 		if(DV!=null)
 		{
-			double low=getLowestDenomination(currency);
+			final double low=getLowestDenomination(currency);
 			for(int d=DV.length-1;d>=0;d--)
 			{
 				denom=DV[d].value;
@@ -314,13 +314,13 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 	@Override
 	public double getBestDenomination(String currency, int numberOfCoins, double absoluteValue)
 	{
-		MoneyDenomination[] DV=getCurrencySet(currency);
+		final MoneyDenomination[] DV=getCurrencySet(currency);
 		double bestDenom=0.0;
 		if(DV!=null)
 		{
 			for(int d=DV.length-1;d>=0;d--)
 			{
-				double denom=DV[d].value;
+				final double denom=DV[d].value;
 				if(((denom*(numberOfCoins))<=absoluteValue)
 				&&(denom>bestDenom))
 					bestDenom=denom;
@@ -332,15 +332,15 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 	@Override
 	public double[] getBestDenominations(String currency, double absoluteValue)
 	{
-		MoneyDenomination[] DV=getCurrencySet(currency);
-		Vector<Double> V=new Vector<Double>();
+		final MoneyDenomination[] DV=getCurrencySet(currency);
+		final Vector<Double> V=new Vector<Double>();
 		if(DV!=null)
 		for(int d=DV.length-1;d>=0;d--)
 		{
-			double denom=DV[d].value;
+			final double denom=DV[d].value;
 			if(denom<=absoluteValue)
 			{
-				long number=Math.round(Math.floor(absoluteValue/denom));
+				final long number=Math.round(Math.floor(absoluteValue/denom));
 				if(number>0)
 				{
 					V.addElement(Double.valueOf(denom));
@@ -348,7 +348,7 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 				}
 			}
 		}
-		double[] ds=new double[V.size()];
+		final double[] ds=new double[V.size()];
 		for(int d=0;d<V.size();d++)
 			ds[d]=V.elementAt(d).doubleValue();
 		return ds;
@@ -357,7 +357,7 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 	@Override
 	public String getConvertableDescription(String currency, double denomination)
 	{
-		double low=getLowestDenomination(currency);
+		final double low=getLowestDenomination(currency);
 		if(low==denomination) return "";
 		return "Equal to "+getDenominationName(currency,low,Math.round(Math.floor(denomination/low)))+".";
 	}
@@ -404,7 +404,7 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 	@Override
 	public String nameCurrencyShort(String currency, double absoluteValue)
 	{
-		double denom=getBestDenomination(currency,absoluteValue);
+		final double denom=getBestDenomination(currency,absoluteValue);
 		if(denom>0.0)
 			return getDenominationName(currency,denom,Math.round(Math.floor(absoluteValue/denom)));
 		return getDenominationName(currency,denom,Math.round(Math.floor(absoluteValue)));
@@ -425,13 +425,12 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 	@Override
 	public String nameCurrencyLong(String currency, double absoluteValue)
 	{
-		StringBuffer str=new StringBuffer("");
-		double[] ds=getBestDenominations(currency,absoluteValue);
-		for(int d=0;d<ds.length;d++)
+		final StringBuffer str=new StringBuffer("");
+		final double[] ds=getBestDenominations(currency,absoluteValue);
+		for (final double denom : ds)
 		{
-			double denom=ds[d];
-			long number=Math.round(Math.floor(absoluteValue/denom));
-			String name=getDenominationName(currency,denom,number);
+			final long number=Math.round(Math.floor(absoluteValue/denom));
+			final String name=getDenominationName(currency,denom,number);
 			absoluteValue-=CMath.mul(denom,number);
 			if(str.length()>0) str.append(", ");
 			str.append(name);
@@ -448,7 +447,7 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 	@Override
 	public Coins makeBestCurrency(String currency, double absoluteValue, Environmental owner, Container container)
 	{
-		Coins C=makeBestCurrency(currency,absoluteValue);
+		final Coins C=makeBestCurrency(currency,absoluteValue);
 		if(C!=null)
 		{
 			if(owner instanceof Room)
@@ -463,26 +462,26 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 
 	protected void parseDebt(Vector<DebtItem> debt, String debtor, String xml)
 	{
-		List<XMLLibrary.XMLpiece> V=CMLib.xml().parseAllXML(xml);
+		final List<XMLLibrary.XMLpiece> V=CMLib.xml().parseAllXML(xml);
 		if(xml==null){ Log.errOut("BeanCounter","Unable to parse: "+xml); return ;}
-		List<XMLLibrary.XMLpiece> debtData=CMLib.xml().getContentsFromPieces(V,"DEBT");
+		final List<XMLLibrary.XMLpiece> debtData=CMLib.xml().getContentsFromPieces(V,"DEBT");
 		if(debtData==null){ Log.errOut("BeanCounter","Unable to get debt data"); return ;}
 		for(int p=0;p<debtData.size();p++)
 		{
-			XMLLibrary.XMLpiece ablk=debtData.get(p);
+			final XMLLibrary.XMLpiece ablk=debtData.get(p);
 			if((!ablk.tag.equalsIgnoreCase("OWE"))||(ablk.contents==null)||(ablk.contents.size()==0)) continue;
-			String owed=CMLib.xml().getValFromPieces(ablk.contents,"TO");
-			double amt=CMLib.xml().getDoubleFromPieces(ablk.contents,"AMT");
-			String reason=CMLib.xml().getValFromPieces(ablk.contents,"FOR");
-			long due=CMLib.xml().getLongFromPieces(ablk.contents,"DUE");
-			double interest=CMLib.xml().getDoubleFromPieces(ablk.contents,"INT");
+			final String owed=CMLib.xml().getValFromPieces(ablk.contents,"TO");
+			final double amt=CMLib.xml().getDoubleFromPieces(ablk.contents,"AMT");
+			final String reason=CMLib.xml().getValFromPieces(ablk.contents,"FOR");
+			final long due=CMLib.xml().getLongFromPieces(ablk.contents,"DUE");
+			final double interest=CMLib.xml().getDoubleFromPieces(ablk.contents,"INT");
 			debt.addElement(new DebtItem(debtor,owed,amt,reason,due,interest));
 		}
 	}
 
 	protected String unparseDebt(Vector<DebtItem> debt, String name, String owedTo)
 	{
-		StringBuffer xml=new StringBuffer("<DEBT>");
+		final StringBuffer xml=new StringBuffer("<DEBT>");
 		for(int d=0;d<debt.size();d++)
 		{
 			if((debt.elementAt(d).debtor.equalsIgnoreCase(name))
@@ -504,10 +503,10 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 	@Override
 	public double getDebtOwed(String name, String owedTo)
 	{
-		String key=name.toUpperCase()+"-DEBT-"+owedTo.toUpperCase().trim();
+		final String key=name.toUpperCase()+"-DEBT-"+owedTo.toUpperCase().trim();
 		synchronized(key.intern())
 		{
-			Vector<DebtItem> debt=getDebt(name,owedTo);
+			final Vector<DebtItem> debt=getDebt(name,owedTo);
 			double total=0.0;
 			for(int d=0;d<debt.size();d++)
 				total+=debt.elementAt(d).amt;
@@ -518,7 +517,7 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 	@Override
 	public void delAllDebt(String name, String owedTo)
 	{
-		String key=name.toUpperCase()+"-DEBT-"+owedTo.toUpperCase().trim();
+		final String key=name.toUpperCase()+"-DEBT-"+owedTo.toUpperCase().trim();
 		synchronized(key.intern())
 		{
 			CMLib.database().DBDeleteData(name.toUpperCase(),"DEBT",key);
@@ -528,13 +527,13 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 	@Override
 	public Vector<DebtItem> getDebtOwed(String owedTo)
 	{
-		List<PlayerData> rows=CMLib.database().DBReadDataKey("DEBT",".*-DEBT-"+owedTo.toUpperCase().trim());
-		Vector<DebtItem> debt=new Vector<DebtItem>(rows.size());
+		final List<PlayerData> rows=CMLib.database().DBReadDataKey("DEBT",".*-DEBT-"+owedTo.toUpperCase().trim());
+		final Vector<DebtItem> debt=new Vector<DebtItem>(rows.size());
 		for(int r=0;r<rows.size();r++)
 		{
-			PlayerData row=rows.get(r);
-			String debtor=row.who;
-			String xml=row.xml;
+			final PlayerData row=rows.get(r);
+			final String debtor=row.who;
+			final String xml=row.xml;
 			parseDebt(debt,debtor,xml);
 		}
 		return debt;
@@ -543,15 +542,15 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 	@Override
 	public void adjustDebt(String name, String owedTo, double adjustAmt, String reason, double interest, long due)
 	{
-		String key=name.toUpperCase()+"-DEBT-"+owedTo.toUpperCase().trim();
+		final String key=name.toUpperCase()+"-DEBT-"+owedTo.toUpperCase().trim();
 		synchronized(key.intern())
 		{
-			Vector<DebtItem> debts=getDebt(name,owedTo);
-			boolean update=debts.size()>0;
+			final Vector<DebtItem> debts=getDebt(name,owedTo);
+			final boolean update=debts.size()>0;
 			boolean done=false;
 			for(int d=0;d<debts.size();d++)
 			{
-				DebtItem debt=debts.elementAt(d);
+				final DebtItem debt=debts.elementAt(d);
 				if((debt.debtor.equalsIgnoreCase(name))
 				&&(debt.owedTo.equalsIgnoreCase(owedTo))
 				&&(debt.interest==interest)
@@ -567,7 +566,7 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 			if((!done)&&(adjustAmt>=0.0))
 				debts.addElement(new DebtItem(name,owedTo,adjustAmt,reason,due,interest));
 
-			String xml=unparseDebt(debts,name,owedTo);
+			final String xml=unparseDebt(debts,name,owedTo);
 			if(update)
 			{
 				if(debts.size()==0)
@@ -583,13 +582,13 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 	@Override
 	public Vector<DebtItem> getDebt(String name, String owedTo)
 	{
-		List<PlayerData> rows=CMLib.database().DBReadData(name.toUpperCase(),"DEBT",name.toUpperCase()+"-DEBT-"+owedTo.toUpperCase().trim());
-		Vector<DebtItem> debt=new Vector<DebtItem>(rows.size());
+		final List<PlayerData> rows=CMLib.database().DBReadData(name.toUpperCase(),"DEBT",name.toUpperCase()+"-DEBT-"+owedTo.toUpperCase().trim());
+		final Vector<DebtItem> debt=new Vector<DebtItem>(rows.size());
 		for(int r=0;r<rows.size();r++)
 		{
-			PlayerData row=rows.get(r);
-			String debtor=row.who;
-			String xml=row.xml;
+			final PlayerData row=rows.get(r);
+			final String debtor=row.who;
+			final String xml=row.xml;
 			parseDebt(debt,debtor,xml);
 		}
 		return debt;
@@ -598,13 +597,13 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 	@Override
 	public Vector<DebtItem> getDebt(String name)
 	{
-		List<PlayerData> rows=CMLib.database().DBReadData(name.toUpperCase(),"DEBT");
-		Vector<DebtItem> debt=new Vector<DebtItem>(rows.size());
+		final List<PlayerData> rows=CMLib.database().DBReadData(name.toUpperCase(),"DEBT");
+		final Vector<DebtItem> debt=new Vector<DebtItem>(rows.size());
 		for(int r=0;r<rows.size();r++)
 		{
-			PlayerData row=rows.get(r);
-			String debtor=row.who;
-			String xml=row.xml;
+			final PlayerData row=rows.get(r);
+			final String debtor=row.who;
+			final String xml=row.xml;
 			parseDebt(debt,debtor,xml);
 		}
 		return debt;
@@ -621,7 +620,7 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 	{
 		if(numberOfCoins>0)
 		{
-			Coins C=(Coins)CMClass.getItem("StdCoins");
+			final Coins C=(Coins)CMClass.getItem("StdCoins");
 			C.setCurrency(currency);
 			C.setDenomination(denomination);
 			C.setNumberOfCoins(numberOfCoins);
@@ -634,9 +633,9 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 	@Override
 	public Coins makeBestCurrency(String currency, double absoluteValue)
 	{
-		double denom=getBestDenomination(currency,absoluteValue);
+		final double denom=getBestDenomination(currency,absoluteValue);
 		if(denom==0.0) return null;
-		long number=Math.round(Math.floor(absoluteValue/denom));
+		final long number=Math.round(Math.floor(absoluteValue/denom));
 		if(number>0)
 			return makeCurrency(currency,denom,number);
 		return null;
@@ -645,15 +644,14 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 	@Override
 	public List<Coins> makeAllCurrency(String currency, double absoluteValue)
 	{
-		Vector<Coins> V=new Vector<Coins>();
-		double[] ds=getBestDenominations(currency,absoluteValue);
-		for(int d=0;d<ds.length;d++)
+		final Vector<Coins> V=new Vector<Coins>();
+		final double[] ds=getBestDenominations(currency,absoluteValue);
+		for (final double denom : ds)
 		{
-			double denom=ds[d];
-			long number=Math.round(Math.floor(absoluteValue/denom));
+			final long number=Math.round(Math.floor(absoluteValue/denom));
 			if(number>0)
 			{
-				Coins C=makeCurrency(currency,denom,number);
+				final Coins C=makeCurrency(currency,denom,number);
 				if(C!=null)
 				{
 					absoluteValue-=C.getTotalValue();
@@ -698,10 +696,10 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 	public void addMoney(MOB mob, Container container, String currency, double absoluteValue)
 	{
 		if(mob==null) return;
-		List<Coins> V=makeAllCurrency(currency,absoluteValue);
+		final List<Coins> V=makeAllCurrency(currency,absoluteValue);
 		for(int i=0;i<V.size();i++)
 		{
-			Coins C=V.get(i);
+			final Coins C=V.get(i);
 			C.setContainer(container);
 			mob.addItem(C);
 			C.putCoinsBack();
@@ -737,12 +735,12 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 			return;
 		}
 
-		List<Coins> V=makeAllCurrency(currency,absoluteValue);
+		final List<Coins> V=makeAllCurrency(currency,absoluteValue);
 		for(int i=0;i<V.size();i++)
 		{
-			Coins C=V.get(i);
+			final Coins C=V.get(i);
 			banker.addItem(C);
-			CMMsg newMsg=CMClass.getMsg(banker,customer,C,CMMsg.MSG_GIVE,"<S-NAME> give(s) "+C.Name()+" to <T-NAMESELF>.");
+			final CMMsg newMsg=CMClass.getMsg(banker,customer,C,CMMsg.MSG_GIVE,"<S-NAME> give(s) "+C.Name()+" to <T-NAMESELF>.");
 			if(banker.location().okMessage(banker,newMsg))
 			{
 				banker.location().send(banker,newMsg);
@@ -758,8 +756,8 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 	@Override
 	public void dropMoney(Room R, Container container, String currency, double absoluteValue)
 	{
-		List<Coins> V=makeAllCurrency(currency,absoluteValue);
-		for(Coins I : V)
+		final List<Coins> V=makeAllCurrency(currency,absoluteValue);
+		for(final Coins I : V)
 		{
 			I.setContainer(container);
 			R.addItem(I,ItemPossessor.Expire.Monster_EQ);
@@ -771,7 +769,7 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 	public void removeMoney(Room R, Container container, String currency, double absoluteValue)
 	{
 		double myMoney=getTotalAbsoluteValue(R,container,currency);
-		List<Coins> V=getStandardCurrency(R,container,currency);
+		final List<Coins> V=getStandardCurrency(R,container,currency);
 		for(int v=0;v<V.size();v++)
 			((Item)V.get(v)).destroy();
 		if(myMoney>=absoluteValue)
@@ -787,14 +785,14 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 	{
 		synchronized((this+"LEDGER"+bankName).intern())
 		{
-			List<PlayerData> V=CMLib.database().DBReadData(owner,"LEDGER-"+bankName,"LEDGER-"+bankName+"/"+owner);
+			final List<PlayerData> V=CMLib.database().DBReadData(owner,"LEDGER-"+bankName,"LEDGER-"+bankName+"/"+owner);
 			if((V!=null)&&(V.size()>0))
 			{
-				DatabaseEngine.PlayerData D=V.get(0);
+				final DatabaseEngine.PlayerData D=V.get(0);
 				String last=D.xml;
 				if(last.length()>4096)
 				{
-					int x=last.indexOf(";|;",1024);
+					final int x=last.indexOf(";|;",1024);
 					if(x>=0) last=last.substring(x+3);
 				}
 				CMLib.database().DBReCreateData(owner,D.section,D.key,last+explanation+";|;");
@@ -807,11 +805,11 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 	@Override
 	public boolean modifyBankGold(String bankName, String owner, String explanation, String currency, double absoluteAmount)
 	{
-		List<PlayerData> V=CMLib.database().DBReadAllPlayerData(owner);
+		final List<PlayerData> V=CMLib.database().DBReadAllPlayerData(owner);
 		for(int v=0;v<V.size();v++)
 		{
-			DatabaseEngine.PlayerData D=V.get(v);
-			String last=D.xml;
+			final DatabaseEngine.PlayerData D=V.get(v);
+			final String last=D.xml;
 			if(last.startsWith("COINS;"))
 			{
 				if((bankName==null)||(bankName.length()==0)||(bankName.equals(D.section)))
@@ -821,7 +819,7 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 					if((C.getDenomination()==0.0)&&(C.getNumberOfCoins()>0))
 						C.setDenomination(1.0);
 					C.recoverPhyStats();
-					double value=C.getTotalValue();
+					final double value=C.getTotalValue();
 					if((absoluteAmount>0.0)||(value>=(-absoluteAmount)))
 					{
 						C=makeBestCurrency(currency,value+absoluteAmount);
@@ -848,7 +846,7 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 	{
 		Banker B=null;
 		Room R=null;
-		for(Enumeration<Banker> e=CMLib.map().banks();e.hasMoreElements();)
+		for(final Enumeration<Banker> e=CMLib.map().banks();e.hasMoreElements();)
 		{
 			B=e.nextElement();
 			R=CMLib.map().roomLocation(B);
@@ -871,12 +869,12 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 									   String currency,
 									   double absoluteAmount)
 	{
-		HashSet<String> triedBanks=new HashSet<String>();
+		final HashSet<String> triedBanks=new HashSet<String>();
 		if(modifyThisAreaBankGold(A,triedBanks,owner,explanation,currency,absoluteAmount))
 			return true;
-		for(Enumeration<Area> e=A.getParents();e.hasMoreElements();)
+		for(final Enumeration<Area> e=A.getParents();e.hasMoreElements();)
 		{
-			Area A2=e.nextElement();
+			final Area A2=e.nextElement();
 			if(modifyThisAreaBankGold(A2,triedBanks,owner,explanation,currency,absoluteAmount))
 				return true;
 		}
@@ -900,7 +898,7 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 	{
 		if(mob==null) return;
 		double myMoney=getTotalAbsoluteValue(mob,currency);
-		List<Coins> V=getStandardCurrency(mob,currency);
+		final List<Coins> V=getStandardCurrency(mob,currency);
 		for(int v=0;v<V.size();v++)
 			((Item)V.get(v)).destroy();
 		if(myMoney>=absoluteAmount)
@@ -941,7 +939,7 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 	{
 		if(mob==null) return;
 		double myMoney=getTotalAbsoluteValue(mob,container,currency);
-		List<Coins> V=getStandardCurrency(mob,container,currency);
+		final List<Coins> V=getStandardCurrency(mob,container,currency);
 		for(int v=0;v<V.size();v++)
 			((Item)V.get(v)).destroy();
 		if(myMoney>=absoluteAmount)
@@ -958,7 +956,7 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 		if(mob==null) return 0;
 		long money=mob.getMoney();
 		if(money>0) return mob.getMoney();
-		List<Coins> V=getStandardCurrency(mob,null);
+		final List<Coins> V=getStandardCurrency(mob,null);
 		for(int i=0;i<V.size();i++)
 			money+=Math.round(V.get(i).getTotalValue());
 		if(money>Integer.MAX_VALUE/2) return Integer.MAX_VALUE/2;
@@ -1015,7 +1013,7 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 	public void subtractMoney(MOB mob, String currency, double denomination, double absoluteAmount)
 	{
 		if(mob==null) return;
-		List<Coins> V=getStandardCurrency(mob,currency);
+		final List<Coins> V=getStandardCurrency(mob,currency);
 		Coins C=null;
 		for(int v=0;v<V.size();v++)
 		{
@@ -1037,11 +1035,11 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 	@Override
 	public List<Coins> getStandardCurrency(Room R, Item container, String currency)
 	{
-		Vector<Coins> V=new Vector<Coins>();
+		final Vector<Coins> V=new Vector<Coins>();
 		if(R==null) return V;
 		for(int i=0;i<R.numItems();i++)
 		{
-			Item I=R.getItem(i);
+			final Item I=R.getItem(i);
 			if((I!=null)
 			&&(I instanceof Coins)
 			&&((currency==null)||((Coins)I).getCurrency().equalsIgnoreCase(currency))
@@ -1060,7 +1058,7 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 	@Override
 	public List<Coins> getStandardCurrency(MOB mob, Item container, String currency)
 	{
-		Vector<Coins> V=new Vector<Coins>();
+		final Vector<Coins> V=new Vector<Coins>();
 		if(mob==null) return V;
 		if(((currency==null)||(currency.equals(getCurrency(mob))))&&(mob.getMoney()>0)&&(container==null))
 		{
@@ -1069,7 +1067,7 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 		}
 		for(int i=0;i<mob.numItems();i++)
 		{
-			Item I=mob.getItem(i);
+			final Item I=mob.getItem(i);
 			if((I!=null)
 			&&(I instanceof Coins)
 			&&((currency==null)||((Coins)I).getCurrency().equalsIgnoreCase(currency))
@@ -1082,7 +1080,7 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 	@Override
 	public long getNumberOfCoins(MOB mob, String currency, double denomination)
 	{
-		List<Coins> V=getStandardCurrency(mob,currency);
+		final List<Coins> V=getStandardCurrency(mob,currency);
 		long gold=0;
 		for(int v=0;v<V.size();v++)
 			if(V.get(v).getDenomination()==denomination)
@@ -1112,13 +1110,13 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 		{
 			String s=((Area)E).getCurrency();
 			if(s.length()==0)
-				for(Enumeration<Area> p=((Area)E).getParents();p.hasMoreElements();)
+				for(final Enumeration<Area> p=((Area)E).getParents();p.hasMoreElements();)
 				{
 					s=getCurrency(p.nextElement());
 					if(s.length()>0)
 						break;
 				}
-			int x=s.indexOf('=');
+			final int x=s.indexOf('=');
 			if(x<0) return s.toUpperCase().trim();
 			return s.substring(0,x).toUpperCase().trim();
 		}
@@ -1129,7 +1127,7 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 	public double getTotalAbsoluteValue(Room R, Item container, String currency)
 	{
 		double money=0.0;
-		List<Coins> V=getStandardCurrency(R,container,currency);
+		final List<Coins> V=getStandardCurrency(R,container,currency);
 		for(int v=0;v<V.size();v++)
 			money+=V.get(v).getTotalValue();
 		return money;
@@ -1145,7 +1143,7 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 	public double getTotalAbsoluteValue(MOB mob, Item container, String currency)
 	{
 		double money=0.0;
-		List<Coins> V=getStandardCurrency(mob,container,currency);
+		final List<Coins> V=getStandardCurrency(mob,container,currency);
 		for(int v=0;v<V.size();v++)
 			money+=V.get(v).getTotalValue();
 		return money;
@@ -1155,7 +1153,7 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 	public double getTotalAbsoluteNativeValue(MOB mob)
 	{
 		double money=0.0;
-		List<Coins> V=getStandardCurrency(mob,getCurrency(mob));
+		final List<Coins> V=getStandardCurrency(mob,getCurrency(mob));
 		for(int v=0;v<V.size();v++)
 			money+=V.get(v).getTotalValue();
 		return money;
@@ -1165,7 +1163,7 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 	public double getTotalAbsoluteShopKeepersValue(MOB mob, MOB shopkeeper)
 	{
 		double money=0.0;
-		List<Coins> V=getStandardCurrency(mob,getCurrency(shopkeeper));
+		final List<Coins> V=getStandardCurrency(mob,getCurrency(shopkeeper));
 		for(int v=0;v<V.size();v++)
 			money+=V.get(v).getTotalValue();
 		return money;

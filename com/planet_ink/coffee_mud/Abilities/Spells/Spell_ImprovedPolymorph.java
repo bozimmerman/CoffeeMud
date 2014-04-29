@@ -54,7 +54,7 @@ public class Spell_ImprovedPolymorph extends Spell
 				affectableStats.setName("a "+newRace.name()+" called "+affected.name());
 			else
 				affectableStats.setName(affected.name()+" the "+newRace.name());
-			int oldAdd=affectableStats.weight()-affected.basePhyStats().weight();
+			final int oldAdd=affectableStats.weight()-affected.basePhyStats().weight();
 			newRace.setHeightWeight(affectableStats,'M');
 			if(oldAdd>0) affectableStats.setWeight(affectableStats.weight()+oldAdd);
 		}
@@ -65,7 +65,7 @@ public class Spell_ImprovedPolymorph extends Spell
 		super.affectCharStats(affected,affectableStats);
 		if(newRace!=null)
 		{
-			int oldCat=affected.baseCharStats().ageCategory();
+			final int oldCat=affected.baseCharStats().ageCategory();
 			affectableStats.setMyRace(newRace);
 			if((affected.baseCharStats().getStat(CharStats.STAT_AGE)>0)
 			&&(newRace.getAgingChart()[oldCat]<Short.MAX_VALUE))
@@ -79,7 +79,7 @@ public class Spell_ImprovedPolymorph extends Spell
 		// undo the affects of this spell
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		super.unInvoke();
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
@@ -108,9 +108,9 @@ public class Spell_ImprovedPolymorph extends Spell
 			mob.tell("You need to specify what to turn your target into!");
 			return false;
 		}
-		String race=(String)commands.lastElement();
+		final String race=(String)commands.lastElement();
 		commands.removeElement(commands.lastElement());
-		MOB target=this.getTarget(mob,commands,givenTarget);
+		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 		if((target==mob)&&(!auto))
 		{
@@ -172,8 +172,8 @@ public class Spell_ImprovedPolymorph extends Spell
 			return false;
 
 		int targetStatTotal=0;
-		MOB fakeMOB=CMClass.getFactoryMOB();
-		for(int s: CharStats.CODES.BASE())
+		final MOB fakeMOB=CMClass.getFactoryMOB();
+		for(final int s: CharStats.CODES.BASE())
 		{
 			targetStatTotal+=target.baseCharStats().getStat(s);
 			fakeMOB.baseCharStats().setStat(s,target.baseCharStats().getStat(s));
@@ -186,7 +186,7 @@ public class Spell_ImprovedPolymorph extends Spell
 		fakeMOB.recoverPhyStats();
 		fakeMOB.recoverMaxState();
 		int fakeStatTotal=0;
-		for(int s: CharStats.CODES.BASE())
+		for(final int s: CharStats.CODES.BASE())
 			fakeStatTotal+=fakeMOB.charStats().getStat(s);
 
 		int statDiff=targetStatTotal-fakeStatTotal;
@@ -199,7 +199,7 @@ public class Spell_ImprovedPolymorph extends Spell
 		fakeMOB.destroy();
 
 		if(statDiff<0) statDiff=statDiff*-1;
-		int levelDiff=((mob.phyStats().level()+(2*getXLEVELLevel(mob)))-target.phyStats().level());
+		final int levelDiff=((mob.phyStats().level()+(2*getXLEVELLevel(mob)))-target.phyStats().level());
 		boolean success=proficiencyCheck(mob,levelDiff-statDiff,auto);
 		if(success&&(!auto)&&(!mob.mayIFight(target))&&(mob!=target)&&(!mob.getGroupMembers(new HashSet<MOB>()).contains(target)))
 		{
@@ -214,7 +214,7 @@ public class Spell_ImprovedPolymorph extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> form(s) an improved spell around <T-NAMESELF>.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> form(s) an improved spell around <T-NAMESELF>.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

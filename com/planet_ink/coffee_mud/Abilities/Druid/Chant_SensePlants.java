@@ -45,10 +45,10 @@ public class Chant_SensePlants extends Chant
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	Room lastRoom=null;
 	protected String word(){return "plants";}
-	private int[] myMats={RawMaterial.MATERIAL_VEGETATION,
+	private final int[] myMats={RawMaterial.MATERIAL_VEGETATION,
 						  RawMaterial.MATERIAL_WOODEN};
 	protected int[] okMaterials(){	return myMats;}
-	private int[] myRscs={RawMaterial.RESOURCE_COTTON,
+	private final int[] myRscs={RawMaterial.RESOURCE_COTTON,
 						  RawMaterial.RESOURCE_HEMP};
 	protected int[] okResources(){	return myRscs;}
 
@@ -57,7 +57,7 @@ public class Chant_SensePlants extends Chant
 	{
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		if(canBeUninvoked())
 			lastRoom=null;
 		super.unInvoke();
@@ -80,7 +80,7 @@ public class Chant_SensePlants extends Chant
 
 	public void messageTo(MOB mob)
 	{
-		String here=itsHere(mob,mob.location());
+		final String here=itsHere(mob,mob.location());
 		if(here.length()>0)
 			mob.tell(here);
 		else
@@ -89,8 +89,8 @@ public class Chant_SensePlants extends Chant
 			String dirs="";
 			for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 			{
-				Room R=mob.location().getRoomInDir(d);
-				Exit E=mob.location().getExitInDir(d);
+				final Room R=mob.location().getRoomInDir(d);
+				final Exit E=mob.location().getExitInDir(d);
 				if((R!=null)&&(E!=null)&&(itsHere(mob,R).length()>0))
 				{
 					if(last.length()>0)
@@ -137,11 +137,11 @@ public class Chant_SensePlants extends Chant
 			mob.tell(target,null,null,"<S-NAME> <S-IS-ARE> already sensing "+word()+".");
 			return false;
 		}
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> gain(s) sensitivity to "+word()+"!":"^S<S-NAME> chant(s) and gain(s) sensitivity to "+word()+"!^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> gain(s) sensitivity to "+word()+"!":"^S<S-NAME> chant(s) and gain(s) sensitivity to "+word()+"!^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

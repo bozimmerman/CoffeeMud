@@ -56,7 +56,7 @@ public class Chant_SaplingWorkers extends Chant
 			&&(affected instanceof MOB)
 			&&(invoker!=null))
 			{
-				MOB mob=(MOB)affected;
+				final MOB mob=(MOB)affected;
 				if(((mob.amFollowing()==null)
 				||(mob.amDead())
 				||(mob.location()!=invoker.location())))
@@ -85,7 +85,7 @@ public class Chant_SaplingWorkers extends Chant
 	@Override
 	public void unInvoke()
 	{
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		super.unInvoke();
 		if((canBeUninvoked())&&(mob!=null))
 		{
@@ -115,7 +115,7 @@ public class Chant_SaplingWorkers extends Chant
 	{
 		if(mob!=null)
 		{
-			Room R=mob.location();
+			final Room R=mob.location();
 			if(R!=null)
 			{
 				if((R.domainType()!=Room.DOMAIN_OUTDOORS_WOODS)
@@ -147,8 +147,8 @@ public class Chant_SaplingWorkers extends Chant
 			material=mob.location().myResource();
 		else
 		{
-			List<Integer> V=mob.location().resourceChoices();
-			Vector V2=new Vector();
+			final List<Integer> V=mob.location().resourceChoices();
+			final Vector V2=new Vector();
 			if(V!=null)
 			for(int v=0;v<V.size();v++)
 			{
@@ -162,16 +162,16 @@ public class Chant_SaplingWorkers extends Chant
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
 			invoker=mob;
-			CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":"^S<S-NAME> chant(s) to the trees.^?");
+			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":"^S<S-NAME> chant(s) to the trees.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				MOB target = determineMonster(mob, material);
+				final MOB target = determineMonster(mob, material);
 				beneficialAffect(mob,target,asLevel,0);
 				CMLib.commands().postFollow(target,mob,true);
 				if(target.amFollowing()!=mob)
@@ -186,12 +186,12 @@ public class Chant_SaplingWorkers extends Chant
 	}
 	public MOB determineMonster(MOB caster, int material)
 	{
-		MOB newMOB=CMClass.getMOB("GenMOB");
+		final MOB newMOB=CMClass.getMOB("GenMOB");
 		int level=adjustedLevel(caster,0)-6;
 		if(level<1) level=1;
 		newMOB.basePhyStats().setLevel(level);
 		newMOB.baseCharStats().setMyRace(CMClass.getRace("TreeGolem"));
-		String resourceName=RawMaterial.CODES.NAME(material).toLowerCase();
+		final String resourceName=RawMaterial.CODES.NAME(material).toLowerCase();
 		String name=resourceName+" sapling";
 		name=CMLib.english().startWithAorAn(name).toLowerCase();
 		newMOB.setName(name);

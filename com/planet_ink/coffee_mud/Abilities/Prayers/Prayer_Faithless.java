@@ -66,7 +66,7 @@ public class Prayer_Faithless extends Prayer
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		MOB target=this.getTarget(mob,commands,givenTarget);
+		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 		if((!auto)&&(target.charStats().getCurrentClass().baseClass().equals("Cleric")))
 		{
@@ -84,7 +84,7 @@ public class Prayer_Faithless extends Prayer
 
 		int levelDiff=target.phyStats().level()-(mob.phyStats().level()+(2*super.getXLEVELLevel(mob)));
 		if(levelDiff<0) levelDiff=0;
-		boolean success=proficiencyCheck(mob,-(levelDiff*25),auto);
+		final boolean success=proficiencyCheck(mob,-(levelDiff*25),auto);
 		Deity D=null;
 		if(target.getWorshipCharID().length()>0)
 			D=CMLib.map().getDeity(target.getWorshipCharID());
@@ -97,9 +97,9 @@ public class Prayer_Faithless extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			CMMsg msg=CMClass.getMsg(mob,target,this,type,auto?"":"^S<S-NAME> "+prayWord(mob)+" for <T-NAMESELF> to lose faith!^?");
-			CMMsg msg2=CMClass.getMsg(target,D,this,CMMsg.MSG_REBUKE,"<S-NAME> LOSE(S) FAITH!!!");
-			CMMsg msg3=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_VERBAL|mal|CMMsg.TYP_MIND|(auto?CMMsg.MASK_ALWAYS:0),null);
+			final CMMsg msg=CMClass.getMsg(mob,target,this,type,auto?"":"^S<S-NAME> "+prayWord(mob)+" for <T-NAMESELF> to lose faith!^?");
+			final CMMsg msg2=CMClass.getMsg(target,D,this,CMMsg.MSG_REBUKE,"<S-NAME> LOSE(S) FAITH!!!");
+			final CMMsg msg3=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_VERBAL|mal|CMMsg.TYP_MIND|(auto?CMMsg.MASK_ALWAYS:0),null);
 			if((mob.location().okMessage(mob,msg))
 			&&(mob.location().okMessage(mob,msg3))
 			&&(mob.location().okMessage(mob,msg2)))

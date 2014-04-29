@@ -59,7 +59,7 @@ public class Wear extends StdCommand
 		else
 		if(locationIndex!=0)
 			str="<S-NAME> put(s) <T-NAME> on <S-HIS-HER> "+Wearable.CODES.NAME(locationIndex).toLowerCase()+".";
-		CMMsg newMsg=CMClass.getMsg(mob,item,null,msgType,quiet?null:str);
+		final CMMsg newMsg=CMClass.getMsg(mob,item,null,msgType,quiet?null:str);
 		newMsg.setValue(locationIndex);
 		if(mob.location().okMessage(mob,newMsg))
 		{
@@ -79,11 +79,11 @@ public class Wear extends StdCommand
 			mob.tell("Wear what?");
 			return false;
 		}
-		Wearable.CODES codes = Wearable.CODES.instance();
+		final Wearable.CODES codes = Wearable.CODES.instance();
 		commands.removeElementAt(0);
 		if(commands.firstElement() instanceof Item)
 		{
-			Item wearWhat = (Item)commands.firstElement();
+			final Item wearWhat = (Item)commands.firstElement();
 			boolean quietly = false;
 			int wearLocationIndex = 0;
 			commands.removeElementAt(0);
@@ -97,7 +97,7 @@ public class Wear extends StdCommand
 				else
 				if(commands.firstElement() instanceof String)
 				{
-					int newDex = codes.findDex_ignoreCase((String)commands.firstElement());
+					final int newDex = codes.findDex_ignoreCase((String)commands.firstElement());
 					if(newDex>0)
 					{
 						wearLocationIndex=newDex;
@@ -119,7 +119,7 @@ public class Wear extends StdCommand
 			{
 				if((i<commands.size()-2)&&((String)commands.elementAt(i+1)).equalsIgnoreCase("my"))
 					commands.removeElementAt(i+1);
-				String possibleWearLocation = CMParms.combine(commands, i+1).toLowerCase().trim();
+				final String possibleWearLocation = CMParms.combine(commands, i+1).toLowerCase().trim();
 				int possIndex = CMParms.indexOfIgnoreCase(Wearable.CODES.NAMES(), possibleWearLocation);
 				if(possIndex<0)
 					possIndex = Wearable.CODES.FINDDEX_endsWith(" " + possibleWearLocation);
@@ -137,7 +137,7 @@ public class Wear extends StdCommand
 				}
 				// will always break out here, one way or the other.
 			}
-		List<Item> items=CMLib.english().fetchItemList(mob,mob,null,commands,Wearable.FILTER_UNWORNONLY,false);
+		final List<Item> items=CMLib.english().fetchItemList(mob,mob,null,commands,Wearable.FILTER_UNWORNONLY,false);
 		if(items.size()==0)
 			mob.tell("You don't seem to be carrying that.");
 		else

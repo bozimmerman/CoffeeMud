@@ -40,7 +40,7 @@ public class DefaultArrestWarrant implements LegalWarrant
 {
 	@Override public String ID(){return "DefaultArrestWarrant";}
 	@Override public String name() { return ID();}
-	@Override public CMObject newInstance(){try{return getClass().newInstance();}catch(Exception e){return new DefaultArrestWarrant();}}
+	@Override public CMObject newInstance(){try{return getClass().newInstance();}catch(final Exception e){return new DefaultArrestWarrant();}}
 	@Override public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 	@Override public void initializeClass(){}
 	@Override
@@ -50,7 +50,7 @@ public class DefaultArrestWarrant implements LegalWarrant
 		{
 			return (DefaultArrestWarrant)this.clone();
 		}
-		catch(CloneNotSupportedException e)
+		catch(final CloneNotSupportedException e)
 		{
 			return newInstance();
 		}
@@ -63,7 +63,7 @@ public class DefaultArrestWarrant implements LegalWarrant
 	private Room jail=null;
 	private Room releaseRoom=null;
 	private String crime="";
-	private DVector punishmentParms=new DVector(2);
+	private final DVector punishmentParms=new DVector(2);
 	private int punishment=-1;
 	private int jailTime=0;
 	private int state=0;
@@ -96,14 +96,14 @@ public class DefaultArrestWarrant implements LegalWarrant
 	@Override
 	public String getPunishmentParm(int code)
 	{
-		int index=punishmentParms.indexOf(Integer.valueOf(code));
+		final int index=punishmentParms.indexOf(Integer.valueOf(code));
 		if(index<0) return "";
 		return (String)punishmentParms.elementAt(index,2);
 	}
 	@Override
 	public void addPunishmentParm(int code, String parm)
 	{
-		int index=punishmentParms.indexOf(Integer.valueOf(code));
+		final int index=punishmentParms.indexOf(Integer.valueOf(code));
 		if(index>=0)
 			punishmentParms.removeElementAt(index);
 		punishmentParms.addElement(Integer.valueOf(code),parm);

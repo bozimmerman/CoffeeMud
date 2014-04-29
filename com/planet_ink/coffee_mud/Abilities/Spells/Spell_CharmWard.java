@@ -51,7 +51,7 @@ public class Spell_CharmWard extends Spell
 			super.unInvoke();
 			return;
 		}
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		if(canBeUninvoked())
 			mob.tell("Your charm ward dissipates.");
 
@@ -68,7 +68,7 @@ public class Spell_CharmWard extends Spell
 
 		if(affected instanceof MOB)
 		{
-			MOB mob=(MOB)affected;
+			final MOB mob=(MOB)affected;
 			if((msg.amITarget(mob))
 			&&(!msg.amISource(mob))
 			&&(msg.tool()!=null)
@@ -76,7 +76,7 @@ public class Spell_CharmWard extends Spell
 			&&(CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_CHARMING))
 			&&(!mob.amDead()))
 			{
-				Ability A=(Ability)msg.tool();
+				final Ability A=(Ability)msg.tool();
 				if(((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_CHANT)
 				||((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SPELL)
 				||((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PRAYER)
@@ -88,7 +88,7 @@ public class Spell_CharmWard extends Spell
 		else
 		if(affected instanceof Room)
 		{
-			Room R=(Room)affected;
+			final Room R=(Room)affected;
 			if((msg.tool()!=null)
 			&&(msg.tool() instanceof Ability)
 			&&(CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_CHARMING)))
@@ -109,7 +109,7 @@ public class Spell_CharmWard extends Spell
 		{
 			if(target instanceof MOB)
 			{
-				MOB victim=((MOB)target).getVictim();
+				final MOB victim=((MOB)target).getVictim();
 				if((victim!=null)&&(CMLib.flags().flaggedAbilities(victim,Ability.FLAG_CHARMING).size()>0))
 					return super.castingQuality(mob, target,Ability.QUALITY_BENEFICIAL_SELF);
 			}
@@ -123,7 +123,7 @@ public class Spell_CharmWard extends Spell
 		Physical target=null;
 		if(commands.size()>0)
 		{
-			String s=CMParms.combine(commands,0);
+			final String s=CMParms.combine(commands,0);
 			if(s.equalsIgnoreCase("room"))
 				target=mob.location();
 			else
@@ -153,10 +153,10 @@ public class Spell_CharmWard extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> seem(s) magically protected.":"^S<S-NAME> invoke(s) a charm ward upon <T-NAMESELF>.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> seem(s) magically protected.":"^S<S-NAME> invoke(s) a charm ward upon <T-NAMESELF>.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

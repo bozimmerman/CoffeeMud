@@ -145,7 +145,7 @@ public class CMLib
 	public static final Enumeration<CMLibrary> libraries()
 	{
 		final Vector<CMLibrary> V=new Vector<CMLibrary>();
-		for(Library lbry : Library.values())
+		for(final Library lbry : Library.values())
 			if(l().libraries[lbry.ordinal()]!=null)
 				V.add(l().libraries[lbry.ordinal()]);
 		return V.elements();
@@ -206,7 +206,7 @@ public class CMLib
 	{
 		if(O==null)
 			return null;
-		for(Library lbry : Library.values())
+		for(final Library lbry : Library.values())
 			if(CMClass.checkAncestry(O.getClass(),lbry.ancestor))
 				return lbry;
 
@@ -245,7 +245,7 @@ public class CMLib
 			boolean stillAlive=false;
 			if(t instanceof CMFactoryThread)
 			{
-				Runnable r=CMLib.threads().findRunnableByThread(t);
+				final Runnable r=CMLib.threads().findRunnableByThread(t);
 				t.interrupt();
 				for(int i=0;i<sleepTime;i++)
 				{
@@ -258,12 +258,12 @@ public class CMLib
 			else
 			{
 				t.interrupt();
-				try{Thread.sleep(sleepTime);}catch(Exception e){}
+				try{Thread.sleep(sleepTime);}catch(final Exception e){}
 				int att=0;
 				while((att++<attempts)&&t.isAlive())
 				{
-					try { Thread.sleep(sleepTime); }catch(Exception e){}
-					try { t.interrupt(); }catch(Exception e){}
+					try { Thread.sleep(sleepTime); }catch(final Exception e){}
+					try { t.interrupt(); }catch(final Exception e){}
 				}
 				stillAlive=t.isAlive();
 			}
@@ -271,29 +271,29 @@ public class CMLib
 			{
 				if(stillAlive)
 				{
-					java.lang.StackTraceElement[] s=t.getStackTrace();
-					StringBuffer dump = new StringBuffer("Unable to kill thread "+t.getName()+".  It is still running.\n\r");
-					for(int i=0;i<s.length;i++)
-						dump.append("\n   "+s[i].getClassName()+": "+s[i].getMethodName()+"("+s[i].getFileName()+": "+s[i].getLineNumber()+")");
+					final java.lang.StackTraceElement[] s=t.getStackTrace();
+					final StringBuffer dump = new StringBuffer("Unable to kill thread "+t.getName()+".  It is still running.\n\r");
+					for (final StackTraceElement element : s)
+						dump.append("\n   "+element.getClassName()+": "+element.getMethodName()+"("+element.getFileName()+": "+element.getLineNumber()+")");
 					Log.errOut(dump.toString());
 				}
 			}
-			catch(java.lang.ThreadDeath td) {}
+			catch(final java.lang.ThreadDeath td) {}
 		}
-		catch(Throwable th){}
+		catch(final Throwable th){}
 
 	}
 
 	public static final boolean s_sleep(final long millis)
 	{
-		try{ Thread.sleep(millis); } catch(java.lang.InterruptedException ex) { return false;}
+		try{ Thread.sleep(millis); } catch(final java.lang.InterruptedException ex) { return false;}
 		return true;
 	}
 
 	public static final void propertiesLoaded()
 	{
 		final CMLib lib=l();
-		for(Library lbry : Library.values())
+		for(final Library lbry : Library.values())
 		{
 			if((!CMProps.isPrivateToMe(lbry.toString())&&(libs[MudHost.MAIN_HOST]!=lib)))
 			{}
@@ -311,7 +311,7 @@ public class CMLib
 	public static final void activateLibraries()
 	{
 		final CMLib lib=l();
-		for(Library lbry : Library.values())
+		for(final Library lbry : Library.values())
 		{
 			if((!CMProps.isPrivateToMe(lbry.toString())&&(libs[MudHost.MAIN_HOST]!=lib)))
 			{
@@ -354,8 +354,8 @@ public class CMLib
 	public static final int countRegistered()
 	{
 		int x=0;
-		for(int i=0;i<l().registered.length;i++)
-			if(l().registered[i]) x++;
+		for (final boolean element : l().registered)
+			if(element) x++;
 		return x;
 	}
 	public static final String unregistered()

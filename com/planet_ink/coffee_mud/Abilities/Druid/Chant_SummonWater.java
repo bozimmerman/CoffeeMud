@@ -57,7 +57,7 @@ public class Chant_SummonWater extends Chant
 		super.unInvoke();
 		if(canBeUninvoked())
 		{
-			Item spring=littleSpring; // protects against uninvoke loops!
+			final Item spring=littleSpring; // protects against uninvoke loops!
 			littleSpring=null;
 			spring.destroy();
 			SpringLocation.recoverRoomStats();
@@ -87,16 +87,16 @@ public class Chant_SummonWater extends Chant
 			return false;
 
 		// now see if it worked
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":"^S<S-NAME> chant(s) for water.^?");
+			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":"^S<S-NAME> chant(s) for water.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				String itemID = "Spring";
+				final String itemID = "Spring";
 
-				Item newItem=CMClass.getItem(itemID);
+				final Item newItem=CMClass.getItem(itemID);
 
 				if(newItem==null)
 				{

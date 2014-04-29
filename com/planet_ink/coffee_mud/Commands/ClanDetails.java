@@ -43,18 +43,18 @@ public class ClanDetails extends StdCommand
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		String subCommand = (commands.size()>0)?((String)commands.get(0)).toUpperCase():"CLAN";
+		final String subCommand = (commands.size()>0)?((String)commands.get(0)).toUpperCase():"CLAN";
 		String clanName=(commands.size()>1)?CMParms.combine(commands,1,commands.size()):"";
 		if((clanName.length()==0)&&(mob.clans().iterator().hasNext()))
 			clanName=mob.clans().iterator().next().first.clanID();
-		StringBuffer msg=new StringBuffer("");
+		final StringBuffer msg=new StringBuffer("");
 		if(clanName.length()>0)
 		{
 			Clan foundClan=CMLib.clans().getClan(clanName);
 			if(foundClan == null)
-			for(Enumeration e=CMLib.clans().clans();e.hasMoreElements();)
+			for(final Enumeration e=CMLib.clans().clans();e.hasMoreElements();)
 			{
-				Clan C=(Clan)e.nextElement();
+				final Clan C=(Clan)e.nextElement();
 				if(CMLib.english().containsString(C.getName(), clanName))
 				{
 					foundClan=C;
@@ -72,11 +72,12 @@ public class ClanDetails extends StdCommand
 				}
 				else
 				{
-					List<Pair<String,Integer>> topKillers = new ArrayList<Pair<String,Integer>>();
-					for(Clan.MemberRecord M : foundClan.getMemberList())
+					final List<Pair<String,Integer>> topKillers = new ArrayList<Pair<String,Integer>>();
+					for(final Clan.MemberRecord M : foundClan.getMemberList())
 						if(M.playerpvps > 0)
 							topKillers.add(new Pair<String,Integer>(M.name,new Integer(M.playerpvps)));
 					@SuppressWarnings("unchecked")
+					final
 					Pair<String,Integer>[] killerArray = topKillers.toArray(new Pair[0]);
 					Arrays.sort(killerArray,new Comparator<Pair<String,Integer>>()
 					{
@@ -92,10 +93,10 @@ public class ClanDetails extends StdCommand
 					{
 						msg.append("^XTop ranked rival clan playerkillers of "+foundClan.name()+"^?^.\n\r\n\r");
 						topKillers.clear();
-						List<String> reverseList = new ArrayList<String>();
+						final List<String> reverseList = new ArrayList<String>();
 						for(int x=0;x<killerArray.length;x++)
 						{
-							Pair<String,Integer> p=killerArray[x];
+							final Pair<String,Integer> p=killerArray[x];
 							reverseList.add((x+1)+". "+p.first+" ("+p.second.intValue()+")");
 						}
 						msg.append(CMLib.lister().threeColumns(mob, reverseList));
@@ -111,11 +112,12 @@ public class ClanDetails extends StdCommand
 				}
 				else
 				{
-					List<Pair<String,Integer>> topKillers = new ArrayList<Pair<String,Integer>>();
-					for(Clan.MemberRecord M : foundClan.getMemberList())
+					final List<Pair<String,Integer>> topKillers = new ArrayList<Pair<String,Integer>>();
+					for(final Clan.MemberRecord M : foundClan.getMemberList())
 						if((M.mobpvps+M.playerpvps) > 0)
 							topKillers.add(new Pair<String,Integer>(M.name,new Integer(M.mobpvps+M.playerpvps)));
 					@SuppressWarnings("unchecked")
+					final
 					Pair<String,Integer>[] killerArray = topKillers.toArray(new Pair[0]);
 					Arrays.sort(killerArray,new Comparator<Pair<String,Integer>>()
 					{
@@ -131,10 +133,10 @@ public class ClanDetails extends StdCommand
 					{
 						msg.append("^XTop ranked rival clan killers of "+foundClan.name()+"^?^.\n\r\n\r");
 						topKillers.clear();
-						List<String> reverseList = new ArrayList<String>();
+						final List<String> reverseList = new ArrayList<String>();
 						for(int x=0;x<killerArray.length;x++)
 						{
-							Pair<String,Integer> p=killerArray[x];
+							final Pair<String,Integer> p=killerArray[x];
 							reverseList.add((x+1)+". "+p.first+" ("+p.second.intValue()+")");
 						}
 						msg.append(CMLib.lister().threeColumns(mob, reverseList));
@@ -144,7 +146,7 @@ public class ClanDetails extends StdCommand
 			else
 			{
 				msg.append(foundClan.getDetail(mob));
-				Pair<Clan,Integer> p=mob.getClanRole(foundClan.clanID());
+				final Pair<Clan,Integer> p=mob.getClanRole(foundClan.clanID());
 				if((p!=null)&&(mob.clans().iterator().next().first!=p.first))
 				{
 					mob.setClan(foundClan.clanID(), mob.getClanRole(foundClan.clanID()).second.intValue());

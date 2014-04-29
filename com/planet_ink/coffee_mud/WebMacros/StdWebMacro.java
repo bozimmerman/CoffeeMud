@@ -87,7 +87,7 @@ public class StdWebMacro implements WebMacro
 	{
 		if(s==null) return null;
 		int i=0;
-		String[] lookup=CMLib.color().standardHTMLlookups();
+		final String[] lookup=CMLib.color().standardHTMLlookups();
 		while(i<s.length())
 		{
 			if(s.charAt(i)=='^')
@@ -96,7 +96,7 @@ public class StdWebMacro implements WebMacro
 				{
 					final char c=s.charAt(i+1);
 					//TODO: handle ~ and # here?
-					String code=lookup[c];
+					final String code=lookup[c];
 					if(code!=null)
 					{
 						s.delete(i,i+2);
@@ -180,7 +180,7 @@ public class StdWebMacro implements WebMacro
 	{
 		if(s!=null)
 		{
-			String[] lookup=CMLib.color().standardHTMLlookups();
+			final String[] lookup=CMLib.color().standardHTMLlookups();
 			s=new StringBuilder(s.toString());
 			int x=s.toString().indexOf("\n\r");
 			while(x>=0){	s.replace(x,x+2,"<BR>"); x=s.toString().indexOf("\n\r");}
@@ -237,8 +237,8 @@ public class StdWebMacro implements WebMacro
 				case '^':
 					if(x<(s.length()-1))
 					{
-						char c=s.charAt(x+1);
-						String code=lookup[c];
+						final char c=s.charAt(x+1);
+						final String code=lookup[c];
 						if(code!=null)
 						{
 							s.delete(x,x+2);
@@ -276,7 +276,7 @@ public class StdWebMacro implements WebMacro
 
 	protected PairSVector<String,String> parseOrderedParms(String parm, boolean preserveCase)
 	{
-		PairSVector<String,String> requestParms=new PairSVector<String,String>();
+		final PairSVector<String,String> requestParms=new PairSVector<String,String>();
 		if((parm!=null)&&(parm.length()>0))
 		{
 			int lastDex=0;
@@ -353,7 +353,7 @@ public class StdWebMacro implements WebMacro
 					endloop++;
 				if(endloop<buf.length())
 				{
-					String s=buf.substring(loop,endloop+1);
+					final String s=buf.substring(loop,endloop+1);
 					if(s.equalsIgnoreCase("&gt;"))
 					{
 						buf.setCharAt(loop,'>');
@@ -432,8 +432,8 @@ public class StdWebMacro implements WebMacro
 	{
 		if(Thread.currentThread() instanceof MWThread)
 		{
-			MiniWebConfig config=((MWThread)Thread.currentThread()).getConfig();
-			HTTPRequest newReq=new HTTPRequest()
+			final MiniWebConfig config=((MWThread)Thread.currentThread()).getConfig();
+			final HTTPRequest newReq=new HTTPRequest()
 			{
 				final Hashtable<String,String> params=new XHashtable<String,String>(httpReq.getUrlParametersCopy());
 				@Override public String getHost() { return httpReq.getHost(); }
@@ -460,7 +460,7 @@ public class StdWebMacro implements WebMacro
 				@Override public float getHttpVer() { return httpReq.getHttpVer(); }
 			};
 
-			DataBuffers data=config.getFileGetter().getFileData(newReq);
+			final DataBuffers data=config.getFileGetter().getFileData(newReq);
 			return data.flushToBuffer().array();
 		}
 		return new byte[0];
@@ -473,8 +473,8 @@ public class StdWebMacro implements WebMacro
 			filename=filename.replace(File.separatorChar,'/');
 			if (!filename.startsWith("/")) filename = '/' + filename;
 			final String file=filename;
-			MiniWebConfig config=((MWThread)Thread.currentThread()).getConfig();
-			HTTPRequest newReq=new HTTPRequest()
+			final MiniWebConfig config=((MWThread)Thread.currentThread()).getConfig();
+			final HTTPRequest newReq=new HTTPRequest()
 			{
 				public final Hashtable<String,String> params=new XHashtable<String,String>(httpReq.getUrlParametersCopy());
 				@Override public String getHost() { return httpReq.getHost(); }

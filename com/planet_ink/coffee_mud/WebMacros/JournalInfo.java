@@ -10,6 +10,7 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.JournalsLibrary.ForumJournalFlags;
+import com.planet_ink.coffee_mud.Libraries.interfaces.JournalsLibrary.JournalEntry;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
@@ -44,9 +45,8 @@ public class JournalInfo extends StdWebMacro
 			return null;
 		if(key==null)
 			return null;
-		for(Iterator<JournalsLibrary.JournalEntry> e=msgs.iterator();e.hasNext();)
+		for (final JournalEntry entry : msgs)
 		{
-			JournalsLibrary.JournalEntry entry = e.next();
 			if(entry.key.equalsIgnoreCase(key))
 				return entry;
 		}
@@ -67,7 +67,7 @@ public class JournalInfo extends StdWebMacro
 				page="0";
 			else
 			{
-				int x=page.lastIndexOf(',');
+				final int x=page.lastIndexOf(',');
 				if(x>0)
 					page=page.substring(x+1);
 			}
@@ -77,7 +77,7 @@ public class JournalInfo extends StdWebMacro
 		else
 		if(parent==null)
 			parent="";
-		String httpkey="JOURNAL: "+journalName+": "+parent+": "+dbsearch+": "+page;
+		final String httpkey="JOURNAL: "+journalName+": "+parent+": "+dbsearch+": "+page;
 		List<JournalsLibrary.JournalEntry> msgs=(List<JournalsLibrary.JournalEntry>)objs.get(httpkey);
 		if(msgs==null)
 		{
@@ -85,8 +85,8 @@ public class JournalInfo extends StdWebMacro
 				msgs=CMLib.database().DBReadJournalMsgs(journalName);
 			else
 			{
-				JournalsLibrary.JournalSummaryStats stats = CMLib.journals().getJournalStats(forumJournal);
-				long pageDate = CMath.s_long(page);
+				final JournalsLibrary.JournalSummaryStats stats = CMLib.journals().getJournalStats(forumJournal);
+				final long pageDate = CMath.s_long(page);
 				int limit = CMProps.getIntVar(CMProps.Int.JOURNALLIMIT);
 				if(limit<=0) limit=Integer.MAX_VALUE;
 				msgs = new Vector<JournalsLibrary.JournalEntry>();
@@ -95,9 +95,9 @@ public class JournalInfo extends StdWebMacro
 				&& ((dbsearch==null)||(dbsearch.length()==0))
 				&& ((parent != null)&&(parent.length()==0)))
 				{
-					for(String stuckyKey : stats.stuckyKeys)
+					for(final String stuckyKey : stats.stuckyKeys)
 					{
-						JournalsLibrary.JournalEntry entry = CMLib.database().DBReadJournalEntry(journalName, stuckyKey);
+						final JournalsLibrary.JournalEntry entry = CMLib.database().DBReadJournalEntry(journalName, stuckyKey);
 						if(entry != null)
 							msgs.add(entry);
 					}
@@ -113,8 +113,8 @@ public class JournalInfo extends StdWebMacro
 
 	public static void clearJournalCache(HTTPRequest httpReq, String journalName)
 	{
-		List<String> h = new XVector<String>(httpReq.getRequestObjects().keySet());
-		for(String o : h)
+		final List<String> h = new XVector<String>(httpReq.getRequestObjects().keySet());
+		for(final String o : h)
 			if((o!=null)&&(o.startsWith("JOURNAL: "+journalName+": ")))
 				httpReq.getRequestObjects().remove(o.toString());
 	}
@@ -123,9 +123,9 @@ public class JournalInfo extends StdWebMacro
 	{
 		if(info==null)
 			return null;
-		for(Iterator<JournalsLibrary.JournalEntry> e=info.iterator();e.hasNext();)
+		for(final Iterator<JournalsLibrary.JournalEntry> e=info.iterator();e.hasNext();)
 		{
-			JournalsLibrary.JournalEntry entry = e.next();
+			final JournalsLibrary.JournalEntry entry = e.next();
 			if((key == null)||(key.length()==0))
 				return entry;
 			if(entry.key.equalsIgnoreCase(key))
@@ -141,8 +141,8 @@ public class JournalInfo extends StdWebMacro
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
-		java.util.Map<String,String> parms=parseParms(parm);
-		String journalName=httpReq.getUrlParameter("JOURNAL");
+		final java.util.Map<String,String> parms=parseParms(parm);
+		final String journalName=httpReq.getUrlParameter("JOURNAL");
 		if(journalName==null)
 			return " @break@";
 
@@ -152,22 +152,22 @@ public class JournalInfo extends StdWebMacro
 		if(parms.containsKey("JOURNALLIMIT"))
 			return ""+CMProps.getIntVar(CMProps.Int.JOURNALLIMIT);
 
-		MOB M = Authenticate.getAuthenticatedMob(httpReq);
+		final MOB M = Authenticate.getAuthenticatedMob(httpReq);
 		if((CMLib.journals().isArchonJournalName(journalName))&&((M==null)||(!CMSecurity.isASysOp(M))))
 			return " @break@";
 
-		String msgKey=httpReq.getUrlParameter("JOURNALMESSAGE");
+		final String msgKey=httpReq.getUrlParameter("JOURNALMESSAGE");
 		if(msgKey==null)
 			return " @break@";
 
-		Clan setClan=CMLib.clans().getClan(httpReq.getUrlParameter("CLAN"));
-		JournalsLibrary.ForumJournal journal= CMLib.journals().getForumJournal(journalName,setClan);
+		final Clan setClan=CMLib.clans().getClan(httpReq.getUrlParameter("CLAN"));
+		final JournalsLibrary.ForumJournal journal= CMLib.journals().getForumJournal(journalName,setClan);
 
-		String cardinal=httpReq.getUrlParameter("JOURNALCARDINAL");
+		final String cardinal=httpReq.getUrlParameter("JOURNALCARDINAL");
 		JournalsLibrary.JournalEntry entry=null;
 		if(msgKey.equalsIgnoreCase("FORUMLATEST"))
 		{
-			JournalsLibrary.JournalSummaryStats stats = CMLib.journals().getJournalStats(journal);
+			final JournalsLibrary.JournalSummaryStats stats = CMLib.journals().getJournalStats(journal);
 			if((stats!=null)&&(stats.latestKey!=null)&&(stats.latestKey.length()>0))
 			{
 				entry=CMLib.database().DBReadJournalEntry(journalName, stats.latestKey);
@@ -177,13 +177,13 @@ public class JournalInfo extends StdWebMacro
 		}
 		else
 		{
-			String page=httpReq.getUrlParameter("JOURNALPAGE");
-			String mpage=httpReq.getUrlParameter("MESSAGEPAGE");
-			String parent=httpReq.getUrlParameter("JOURNALPARENT");
-			String dbsearch=httpReq.getUrlParameter("DBSEARCH");
+			final String page=httpReq.getUrlParameter("JOURNALPAGE");
+			final String mpage=httpReq.getUrlParameter("MESSAGEPAGE");
+			final String parent=httpReq.getUrlParameter("JOURNALPARENT");
+			final String dbsearch=httpReq.getUrlParameter("DBSEARCH");
 			if((page!=null)&&(page.length()>0))
 			{
-				List<JournalsLibrary.JournalEntry> msgs=JournalInfo.getMessages(journalName,journal,page,mpage,parent,dbsearch,httpReq.getRequestObjects());
+				final List<JournalsLibrary.JournalEntry> msgs=JournalInfo.getMessages(journalName,journal,page,mpage,parent,dbsearch,httpReq.getRequestObjects());
 				entry= JournalInfo.getEntry(msgs,msgKey);
 			}
 		}
@@ -196,7 +196,7 @@ public class JournalInfo extends StdWebMacro
 			return " @break@";
 		if(cardinal!=null)
 			entry.cardinal=CMath.s_int(cardinal);
-		boolean priviledged=CMSecurity.isAllowedAnywhere(M,CMSecurity.SecFlag.JOURNALS)&&(!parms.containsKey("NOPRIV"));
+		final boolean priviledged=CMSecurity.isAllowedAnywhere(M,CMSecurity.SecFlag.JOURNALS)&&(!parms.containsKey("NOPRIV"));
 		String to=entry.to;
 		if(to.equalsIgnoreCase("all")
 		||((M!=null)
@@ -216,10 +216,10 @@ public class JournalInfo extends StdWebMacro
 			else
 			if(parms.containsKey("QUOTEDTEXT") && httpReq.isUrlParameter("QUOTEDMESSAGE"))
 			{
-				String quotedMessage=httpReq.getUrlParameter("QUOTEDMESSAGE");
+				final String quotedMessage=httpReq.getUrlParameter("QUOTEDMESSAGE");
 				if((quotedMessage==null)||(quotedMessage.length()==0))
 					return "";
-				JournalsLibrary.JournalEntry quotedEntry =CMLib.database().DBReadJournalEntry(journalName, quotedMessage);
+				final JournalsLibrary.JournalEntry quotedEntry =CMLib.database().DBReadJournalEntry(journalName, quotedMessage);
 				return "<P><BLOCKQUOTE style=\"border : solid #000 1px; padding : 3px; margin-left: 1em; margin-bottom:0.2em; background: #f9f9f9 none; color: #000;\">"
 					+"<FONT SIZE=-1>Quoted from "+quotedEntry.from
 					+" &nbsp;("+CMLib.time().date2String(quotedEntry.date)+"):</FONT><HR>"
@@ -269,17 +269,17 @@ public class JournalInfo extends StdWebMacro
 			else
 			if(parms.containsKey("DATEPOSTED"))
 			{
-				Calendar meC=Calendar.getInstance();
-				Calendar C=Calendar.getInstance();
+				final Calendar meC=Calendar.getInstance();
+				final Calendar C=Calendar.getInstance();
 				meC.setTimeInMillis(entry.update);
 				if(Calendar.getInstance().get(Calendar.YEAR)!=meC.get(Calendar.YEAR))
 					return CMLib.time().date2Date2String(entry.update);
-				String dateString = CMLib.time().date2MonthDateString(entry.date, false);
-				String todayString = CMLib.time().date2MonthDateString(System.currentTimeMillis(), false);
+				final String dateString = CMLib.time().date2MonthDateString(entry.date, false);
+				final String todayString = CMLib.time().date2MonthDateString(System.currentTimeMillis(), false);
 				if(dateString.equals(todayString))
 					return "Today";
 				C.add(Calendar.DATE, -1);
-				String yesterdayString = CMLib.time().date2MonthDateString(C.getTimeInMillis(), false);
+				final String yesterdayString = CMLib.time().date2MonthDateString(C.getTimeInMillis(), false);
 				if(dateString.equals(yesterdayString))
 					return "Yesterday";
 				return dateString;
@@ -292,17 +292,17 @@ public class JournalInfo extends StdWebMacro
 			else
 			if(parms.containsKey("DATEUPDATED"))
 			{
-				Calendar meC=Calendar.getInstance();
-				Calendar C=Calendar.getInstance();
+				final Calendar meC=Calendar.getInstance();
+				final Calendar C=Calendar.getInstance();
 				meC.setTimeInMillis(entry.update);
 				if(Calendar.getInstance().get(Calendar.YEAR)!=meC.get(Calendar.YEAR))
 					return CMLib.time().date2Date2String(entry.update);
-				String dateString = CMLib.time().date2MonthDateString(entry.update, false);
-				String todayString = CMLib.time().date2MonthDateString(System.currentTimeMillis(), false);
+				final String dateString = CMLib.time().date2MonthDateString(entry.update, false);
+				final String todayString = CMLib.time().date2MonthDateString(System.currentTimeMillis(), false);
 				if(dateString.equals(todayString))
 					return "Today";
 				C.add(Calendar.DATE, -1);
-				String yesterdayString = CMLib.time().date2MonthDateString(C.getTimeInMillis(), false);
+				final String yesterdayString = CMLib.time().date2MonthDateString(C.getTimeInMillis(), false);
 				if(dateString.equals(yesterdayString))
 					return "Yesterday";
 				return dateString;
@@ -334,7 +334,7 @@ public class JournalInfo extends StdWebMacro
 				String s=entry.msg;
 				if(parms.containsKey("NOREPLIES"))
 				{
-					int x=s.indexOf(JournalsLibrary.JOURNAL_BOUNDARY);
+					final int x=s.indexOf(JournalsLibrary.JOURNAL_BOUNDARY);
 					if(x>=0) s=s.substring(0,x);
 				}
 				if(parms.containsKey("PLAIN"))

@@ -156,7 +156,7 @@ public class IMudInterface implements ImudServices, Serializable
 
 	public String fixColors(String str)
 	{
-		StringBuffer buf=new StringBuffer(str);
+		final StringBuffer buf=new StringBuffer(str);
 		int startedAt=-1;
 		for(int i=0;i<buf.length();i++)
 		{
@@ -168,11 +168,11 @@ public class IMudInterface implements ImudServices, Serializable
 				if(((i+1)<buf.length())&&(buf.charAt(i+1)=='^'))
 				{
 					String found=null;
-					String code=buf.substring(startedAt,i+2);
-					for(int x=0;x<i3ansi_conversion.length;x++)
+					final String code=buf.substring(startedAt,i+2);
+					for (final String[] element : i3ansi_conversion)
 					{
-						if(code.equals(i3ansi_conversion[x][1]))
-						{found=i3ansi_conversion[x][0]; break;}
+						if(code.equals(element[1]))
+						{found=element[0]; break;}
 					}
 					if(found!=null)
 					{
@@ -241,8 +241,8 @@ public class IMudInterface implements ImudServices, Serializable
 		case Packet.CHAN_TARGET:
 			{
 				lastPacketReceivedTime=System.currentTimeMillis();
-				ChannelPacket ck=(ChannelPacket)packet;
-				String channelName=ck.channel;
+				final ChannelPacket ck=(ChannelPacket)packet;
+				final String channelName=ck.channel;
 				CMMsg msg=null;
 
 				if((ck.sender_mud!=null)&&(ck.sender_mud.equalsIgnoreCase(getMudName())))
@@ -250,7 +250,7 @@ public class IMudInterface implements ImudServices, Serializable
 				if((ck.channel==null)||(ck.channel.length()==0))
 					return;
 				String channelColor="";
-				int channelInt=CMLib.channels().getChannelIndex(channelName);
+				final int channelInt=CMLib.channels().getChannelIndex(channelName);
 				int channelCode=channelInt;
 				if(channelInt >= 0)
 				{
@@ -265,7 +265,7 @@ public class IMudInterface implements ImudServices, Serializable
 				ck.message=fixColors(CMProps.applyINIFilter(ck.message,CMProps.Str.CHANNELFILTER));
 				if(ck.message_target!=null)
 					ck.message_target=fixColors(CMProps.applyINIFilter(ck.message_target,CMProps.Str.CHANNELFILTER));
-				MOB mob=CMClass.getFactoryMOB();
+				final MOB mob=CMClass.getFactoryMOB();
 				mob.setName(ck.sender_name+"@"+ck.sender_mud);
 				mob.setLocation(getUniversalRoom());
 				MOB targetMOB=null;
@@ -285,8 +285,8 @@ public class IMudInterface implements ImudServices, Serializable
 					msgs=CMProps.applyINIFilter(msgs,CMProps.Str.EMOTEFILTER);
 					String targmsgs=socialFixIn(ck.message_target);
 					targmsgs=CMProps.applyINIFilter(targmsgs,CMProps.Str.EMOTEFILTER);
-					String str=channelColor+"^<CHANNEL \""+channelName+"\"^>["+channelName+"] "+msgs+"^</CHANNEL^>^N^.";
-					String str2=channelColor+"^<CHANNEL \""+channelName+"\"^>["+channelName+"] "+targmsgs+"^</CHANNEL^>^N^.";
+					final String str=channelColor+"^<CHANNEL \""+channelName+"\"^>["+channelName+"] "+msgs+"^</CHANNEL^>^N^.";
+					final String str2=channelColor+"^<CHANNEL \""+channelName+"\"^>["+channelName+"] "+targmsgs+"^</CHANNEL^>^N^.";
 					msg=CMClass.getMsg(mob,targetMOB,null,CMMsg.NO_EFFECT,null,CMMsg.MASK_CHANNEL|(CMMsg.TYP_CHANNEL+channelCode),str2,CMMsg.MASK_CHANNEL|(CMMsg.TYP_CHANNEL+channelCode),str);
 				}
 				else
@@ -294,19 +294,19 @@ public class IMudInterface implements ImudServices, Serializable
 				{
 					String msgs=socialFixIn(ck.message);
 					msgs=CMProps.applyINIFilter(msgs,CMProps.Str.EMOTEFILTER);
-					String str=channelColor+"^<CHANNEL \""+channelName+"\"^>["+channelName+"] "+msgs+"^</CHANNEL^>^N^.";
+					final String str=channelColor+"^<CHANNEL \""+channelName+"\"^>["+channelName+"] "+msgs+"^</CHANNEL^>^N^.";
 					msg=CMClass.getMsg(mob,null,null,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null,CMMsg.MASK_CHANNEL|(CMMsg.TYP_CHANNEL+channelCode),str);
 				}
 				else
 				{
-					String str=channelColor+"^<CHANNEL \""+channelName+"\"^>"+mob.name()+" "+channelName+"(S) '"+ck.message+"'^</CHANNEL^>^N^.";
+					final String str=channelColor+"^<CHANNEL \""+channelName+"\"^>"+mob.name()+" "+channelName+"(S) '"+ck.message+"'^</CHANNEL^>^N^.";
 					msg=CMClass.getMsg(mob,null,null,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null,CMMsg.MASK_CHANNEL|(CMMsg.TYP_CHANNEL+channelCode),str);
 				}
 				CMLib.commands().monitorGlobalMessage(mob.location(), msg);
 				if(channelInt>=0) CMLib.channels().channelQueUp(channelInt,msg);
-				for(Session S : CMLib.sessions().localOnlineIterable())
+				for(final Session S : CMLib.sessions().localOnlineIterable())
 				{
-					MOB M=S.mob();
+					final MOB M=S.mob();
 					if(((channelInt<0)||CMLib.channels().mayReadThisChannel(mob,false,S,channelInt))
 					&&(M.location()!=null)
 					&&(M.location().okMessage(M,msg)))
@@ -319,10 +319,10 @@ public class IMudInterface implements ImudServices, Serializable
 		case Packet.LOCATE_QUERY:
 			{
 				lastPacketReceivedTime=System.currentTimeMillis();
-				LocateQueryPacket lk=(LocateQueryPacket)packet;
+				final LocateQueryPacket lk=(LocateQueryPacket)packet;
 				String stat="online";
 				String name=CMStrings.capitalizeAndLower(lk.user_name);
-				MOB smob=findSessMob(lk.user_name);
+				final MOB smob=findSessMob(lk.user_name);
 				if(smob!=null)
 				{
 					if(CMLib.flags().isCloaked(smob))
@@ -338,19 +338,19 @@ public class IMudInterface implements ImudServices, Serializable
 					name=null;
 				if(name!=null)
 				{
-					LocateReplyPacket lpk=new LocateReplyPacket(lk.sender_name,lk.sender_mud,name,0,stat);
+					final LocateReplyPacket lpk=new LocateReplyPacket(lk.sender_name,lk.sender_mud,name,0,stat);
 					try
 					{
 					lpk.send();
-					}catch(Exception e){Log.errOut("IMudClient",e);}
+					}catch(final Exception e){Log.errOut("IMudClient",e);}
 				}
 			}
 			break;
 		case Packet.LOCATE_REPLY:
 			{
 				lastPacketReceivedTime=System.currentTimeMillis();
-				LocateReplyPacket lk=(LocateReplyPacket)packet;
-				MOB smob=findSessMob(lk.target_name);
+				final LocateReplyPacket lk=(LocateReplyPacket)packet;
+				final MOB smob=findSessMob(lk.target_name);
 				if(smob!=null)
 					smob.tell(fixColors(lk.located_visible_name)+"@"+fixColors(lk.located_mud_name)+" ("+lk.idle_time+"): "+fixColors(lk.status));
 			}
@@ -358,17 +358,17 @@ public class IMudInterface implements ImudServices, Serializable
 		case Packet.FINGER_REQUEST:
 			{
 				lastPacketReceivedTime=System.currentTimeMillis();
-				FingerRequest lk=(FingerRequest)packet;
+				final FingerRequest lk=(FingerRequest)packet;
 				Packet pkt;
-				MOB M=CMLib.players().getLoadPlayer(lk.target_name);
+				final MOB M=CMLib.players().getLoadPlayer(lk.target_name);
 				if(M==null)
 					pkt=new ErrorPacket(lk.sender_name,lk.sender_mud,"unk-user","User "+lk.target_name+" is not known here.","0");
 				else
 				{
-					FingerReply fpkt = new FingerReply(lk.sender_name,lk.sender_mud);
+					final FingerReply fpkt = new FingerReply(lk.sender_name,lk.sender_mud);
 					pkt=fpkt;
 					fpkt.e_mail="0";
-					Session sess=M.session();
+					final Session sess=M.session();
 					if((sess==null)||(!sess.isAfk()))
 						fpkt.idle_time="-1";
 					else
@@ -386,17 +386,17 @@ public class IMudInterface implements ImudServices, Serializable
 				try
 				{
 					pkt.send();
-				}catch(Exception e){Log.errOut("IMudClient",e);}
+				}catch(final Exception e){Log.errOut("IMudClient",e);}
 			}
 			break;
 		case Packet.FINGER_REPLY:
 			{
 				lastPacketReceivedTime=System.currentTimeMillis();
-				FingerReply lk=(FingerReply)packet;
-				MOB smob=findSessMob(lk.target_name);
+				final FingerReply lk=(FingerReply)packet;
+				final MOB smob=findSessMob(lk.target_name);
 				if(smob!=null)
 				{
-					StringBuilder response=new StringBuilder("");
+					final StringBuilder response=new StringBuilder("");
 					if((lk.visible_name.length()>0)&&(!lk.visible_name.equals("0")))
 						response.append("^H").append(CMStrings.padRight("Name",10)).append(": ^N").append(lk.visible_name).append("\n\r");
 					if((lk.title.length()>0)&&(!lk.title.equals("0")))
@@ -418,7 +418,7 @@ public class IMudInterface implements ImudServices, Serializable
 		case Packet.MAUTH_REQUEST:
 			{
 				lastPacketReceivedTime=System.currentTimeMillis();
-				MudAuthRequest lk=(MudAuthRequest)packet;
+				final MudAuthRequest lk=(MudAuthRequest)packet;
 				if(lk.sender_mud.equalsIgnoreCase(I3Server.getMudName()))
 				{
 					if(CMSecurity.isDebugging(DbgFlag.I3))
@@ -426,17 +426,17 @@ public class IMudInterface implements ImudServices, Serializable
 				}
 				else
 					Log.sysOut("I3","MUD "+lk.sender_mud+" wants to mud-auth.");
-				MudAuthReply pkt = new MudAuthReply(lk.sender_mud, System.currentTimeMillis());
+				final MudAuthReply pkt = new MudAuthReply(lk.sender_mud, System.currentTimeMillis());
 				try
 				{
 					pkt.send();
-				}catch(Exception e){Log.errOut("IMudClient",e);}
+				}catch(final Exception e){Log.errOut("IMudClient",e);}
 			}
 			break;
 		case Packet.MAUTH_REPLY:
 			{
 				lastPacketReceivedTime=System.currentTimeMillis();
-				MudAuthReply lk=(MudAuthReply)packet;
+				final MudAuthReply lk=(MudAuthReply)packet;
 				if(lk.sender_mud.equalsIgnoreCase(I3Server.getMudName()))
 				{
 					if(CMSecurity.isDebugging(DbgFlag.I3))
@@ -450,23 +450,23 @@ public class IMudInterface implements ImudServices, Serializable
 		case Packet.WHO_REPLY:
 			{
 				lastPacketReceivedTime=System.currentTimeMillis();
-				WhoPacket wk=(WhoPacket)packet;
-				MOB smob=findSessMob(wk.target_name);
+				final WhoPacket wk=(WhoPacket)packet;
+				final MOB smob=findSessMob(wk.target_name);
 				if(smob!=null)
 				{
-					StringBuffer buf=new StringBuffer("\n\rwhois@"+fixColors(wk.sender_mud)+":\n\r");
-					Vector V=wk.who;
+					final StringBuffer buf=new StringBuffer("\n\rwhois@"+fixColors(wk.sender_mud)+":\n\r");
+					final Vector V=wk.who;
 					if(V.size()==0)
 						buf.append("Nobody!");
 					else
 					for(int v=0;v<V.size();v++)
 					{
-						Vector V2=(Vector)V.elementAt(v);
-						String nom = fixColors((String)V2.elementAt(0));
+						final Vector V2=(Vector)V.elementAt(v);
+						final String nom = fixColors((String)V2.elementAt(0));
 						int idle=0;
 						if(V2.elementAt(1) instanceof Integer)
 							idle = ((Integer)V2.elementAt(1)).intValue();
-						String xtra = fixColors((String)V2.elementAt(2));
+						final String xtra = fixColors((String)V2.elementAt(2));
 						buf.append("["+CMStrings.padRight(nom,20)+"] "+xtra+" ("+idle+")\n\r");
 					}
 					smob.session().wraplessPrintln(buf.toString());
@@ -477,18 +477,18 @@ public class IMudInterface implements ImudServices, Serializable
 		case Packet.CHAN_WHO_REP:
 			{
 				lastPacketReceivedTime=System.currentTimeMillis();
-				ChannelWhoReply wk=(ChannelWhoReply)packet;
-				MOB smob=findSessMob(wk.target_name);
+				final ChannelWhoReply wk=(ChannelWhoReply)packet;
+				final MOB smob=findSessMob(wk.target_name);
 				if(smob!=null)
 				{
-					StringBuffer buf=new StringBuffer("\n\rListening on "+wk.channel+"@"+fixColors(wk.sender_mud)+":\n\r");
-					Vector V=wk.who;
+					final StringBuffer buf=new StringBuffer("\n\rListening on "+wk.channel+"@"+fixColors(wk.sender_mud)+":\n\r");
+					final Vector V=wk.who;
 					if(V.size()==0)
 						buf.append("Nobody!");
 					else
 					for(int v=0;v<V.size();v++)
 					{
-						String nom = fixColors((String)V.elementAt(v));
+						final String nom = fixColors((String)V.elementAt(v));
 						buf.append("["+CMStrings.padRight(nom,20)+"]\n\r");
 					}
 					smob.session().wraplessPrintln(buf.toString());
@@ -500,16 +500,16 @@ public class IMudInterface implements ImudServices, Serializable
 		case Packet.CHAN_WHO_REQ:
 			{
 				lastPacketReceivedTime=System.currentTimeMillis();
-				ChannelWhoRequest wk=(ChannelWhoRequest)packet;
-				ChannelWhoReply wkr=new ChannelWhoReply();
+				final ChannelWhoRequest wk=(ChannelWhoRequest)packet;
+				final ChannelWhoReply wkr=new ChannelWhoReply();
 				wkr.target_name=wk.sender_name;
 				wkr.target_mud=wk.sender_mud;
 				wkr.channel=wk.channel;
-				int channelInt=CMLib.channels().getChannelIndex(wk.channel);
-				Vector whoV=new Vector();
-				for(Session S : CMLib.sessions().localOnlineIterable())
+				final int channelInt=CMLib.channels().getChannelIndex(wk.channel);
+				final Vector whoV=new Vector();
+				for(final Session S : CMLib.sessions().localOnlineIterable())
 				{
-					MOB M=S.mob();
+					final MOB M=S.mob();
 					if((CMLib.channels().mayReadThisChannel(M,false,S,channelInt))
 					&&(M!=null)
 					&&(!CMLib.flags().isCloaked(M)))
@@ -519,18 +519,18 @@ public class IMudInterface implements ImudServices, Serializable
 				try
 				{
 				wkr.send();
-				}catch(Exception e){Log.errOut("IMudClient",e);}
+				}catch(final Exception e){Log.errOut("IMudClient",e);}
 			}
 			break;
 		case Packet.CHAN_USER_REQ:
 			{
 				lastPacketReceivedTime=System.currentTimeMillis();
-				ChannelUserRequest wk=(ChannelUserRequest)packet;
-				ChannelUserReply wkr=new ChannelUserReply();
+				final ChannelUserRequest wk=(ChannelUserRequest)packet;
+				final ChannelUserReply wkr=new ChannelUserReply();
 				wkr.target_name=wk.sender_name;
 				wkr.target_mud=wk.sender_mud;
 				wkr.userRequested=wk.userToRequest;
-				MOB M=CMLib.players().getLoadPlayer(wk.userToRequest);
+				final MOB M=CMLib.players().getLoadPlayer(wk.userToRequest);
 				if(M!=null)
 				{
 					wkr.userVisibleName = M.name();
@@ -538,20 +538,20 @@ public class IMudInterface implements ImudServices, Serializable
 					try
 					{
 						wkr.send();
-					}catch(Exception e){Log.errOut("IMudClient",e);}
+					}catch(final Exception e){Log.errOut("IMudClient",e);}
 				}
 			}
 			break;
 		case Packet.WHO_REQUEST:
 			{
 				lastPacketReceivedTime=System.currentTimeMillis();
-				WhoPacket wk=(WhoPacket)packet;
-				WhoPacket wkr=new WhoPacket();
+				final WhoPacket wk=(WhoPacket)packet;
+				final WhoPacket wkr=new WhoPacket();
 				wkr.type=Packet.WHO_REPLY;
 				wkr.target_name=wk.sender_name;
 				wkr.target_mud=wk.sender_mud;
-				Vector whoV=new Vector();
-				for(Session S : CMLib.sessions().localOnlineIterable())
+				final Vector whoV=new Vector();
+				for(final Session S : CMLib.sessions().localOnlineIterable())
 				{
 					MOB smob=S.mob();
 					if((smob!=null)&&(smob.soulMate()!=null))
@@ -561,7 +561,7 @@ public class IMudInterface implements ImudServices, Serializable
 					&&(CMLib.flags().isInTheGame(smob,true))
 					&&(!CMLib.flags().isCloaked(smob)))
 					{
-						Vector whoV2=new Vector();
+						final Vector whoV2=new Vector();
 						whoV2.addElement(smob.name());
 						whoV2.addElement(Integer.valueOf((int)(S.getIdleMillis()/1000)));
 						whoV2.addElement(smob.charStats().displayClassLevel(smob,true));
@@ -572,18 +572,18 @@ public class IMudInterface implements ImudServices, Serializable
 				try
 				{
 				wkr.send();
-				}catch(Exception e){Log.errOut("IMudClient",e);}
+				}catch(final Exception e){Log.errOut("IMudClient",e);}
 			}
 			break;
 		case Packet.TELL:
 			{
 				lastPacketReceivedTime=System.currentTimeMillis();
-				TellPacket tk=(TellPacket)packet;
-				MOB smob=findSessMob(tk.target_name);
+				final TellPacket tk=(TellPacket)packet;
+				final MOB smob=findSessMob(tk.target_name);
 				if(smob!=null)
 				{
 					MOB mob=null;
-					PlayerStats pstats=smob.playerStats();
+					final PlayerStats pstats=smob.playerStats();
 					if(pstats!=null)
 					{
 						if((pstats.getReplyToMOB()!=null)&&(pstats.getReplyToMOB().Name().indexOf('@')>=0))
@@ -613,8 +613,8 @@ public class IMudInterface implements ImudServices, Serializable
 	@Override
 	public java.util.Enumeration getChannels()
 	{
-		Vector V=new Vector();
-		for(CMChannel chan : channels)
+		final Vector V=new Vector();
+		for(final CMChannel chan : channels)
 			V.addElement(chan.i3name);
 		return V.elements();
 	}
@@ -669,7 +669,7 @@ public class IMudInterface implements ImudServices, Serializable
 	@Override
 	public String getLocalChannel(String str)
 	{
-		for(CMChannel chan : channels)
+		for(final CMChannel chan : channels)
 			if(chan.i3name.equalsIgnoreCase(str))
 				return chan.name;
 		return "";
@@ -688,7 +688,7 @@ public class IMudInterface implements ImudServices, Serializable
 	 */
 	public String getLocalMask(String str)
 	{
-		for(CMChannel chan : channels)
+		for(final CMChannel chan : channels)
 			if(chan.name.equalsIgnoreCase(str))
 				return chan.mask;
 		return "";
@@ -744,7 +744,7 @@ public class IMudInterface implements ImudServices, Serializable
 	@Override
 	public String getRemoteMask(String str)
 	{
-		for(CMChannel chan : channels)
+		for(final CMChannel chan : channels)
 			if(chan.i3name.equalsIgnoreCase(str))
 				return chan.mask;
 		return "";
@@ -763,7 +763,7 @@ public class IMudInterface implements ImudServices, Serializable
 	@Override
 	public String getRemoteChannel(String str)
 	{
-		for(CMChannel chan : channels)
+		for(final CMChannel chan : channels)
 			if(chan.name.equalsIgnoreCase(str))
 				return chan.i3name;
 		return "";

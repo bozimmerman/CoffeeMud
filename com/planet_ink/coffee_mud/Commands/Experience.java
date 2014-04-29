@@ -34,7 +34,7 @@ public class Experience extends StdCommand
 
 	public StringBuffer getScore(MOB mob)
 	{
-		StringBuffer msg=new StringBuffer("^N");
+		final StringBuffer msg=new StringBuffer("^N");
 
 		if(CMProps.getBoolVar(CMProps.Bool.ACCOUNTEXPIRATION)&&(mob.playerStats()!=null))
 			msg.append("Your account is Registered and Active until: "+CMLib.time().date2String(mob.playerStats().getAccountExpiration())+"!\n\r");
@@ -67,7 +67,7 @@ public class Experience extends StdCommand
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		StringBuffer msg=getScore(mob);
+		final StringBuffer msg=getScore(mob);
 		if(commands.size()==0)
 		{
 			commands.addElement(msg);

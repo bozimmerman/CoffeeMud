@@ -50,7 +50,7 @@ public class Thiefness extends CombatAbilities
 	{
 		super.startBehavior(forMe);
 		if(!(forMe instanceof MOB)) return;
-		MOB mob=(MOB)forMe;
+		final MOB mob=(MOB)forMe;
 		combatMode=COMBAT_RANDOM;
 		makeClass(mob,getParmsMinusCombatMode(),"Thief");
 		newCharacter(mob);
@@ -70,7 +70,7 @@ public class Thiefness extends CombatAbilities
 		if(tickID!=Tickable.TICKID_MOB) return true;
 		if(!canActAtAll(ticking)) return true;
 		if(!(ticking instanceof MOB)) return true;
-		MOB mob=(MOB)ticking;
+		final MOB mob=(MOB)ticking;
 		if((--tickDown)<=0)
 		if((CMLib.dice().rollPercentage()<10)&&(mob.location()!=null))
 		{
@@ -81,7 +81,7 @@ public class Thiefness extends CombatAbilities
 			else
 			for(int i=0;i<mob.location().numInhabitants();i++)
 			{
-				MOB potentialVictim=mob.location().fetchInhabitant(i);
+				final MOB potentialVictim=mob.location().fetchInhabitant(i);
 				if((potentialVictim!=null)
 				&&(potentialVictim!=mob)
 				&&(!potentialVictim.isMonster())
@@ -92,8 +92,8 @@ public class Thiefness extends CombatAbilities
 			&&(!CMSecurity.isAllowed(victim,victim.location(),CMSecurity.SecFlag.CMDROOMS))
 			&&(!CMSecurity.isAllowed(victim,victim.location(),CMSecurity.SecFlag.ORDER)))
 			{
-				Vector V=new Vector();
-				Ability A=mob.fetchAbility((CMLib.dice().rollPercentage()>50)?(mob.isInCombat()?"Thief_Mug":"Thief_Steal"):"Thief_Swipe");
+				final Vector V=new Vector();
+				final Ability A=mob.fetchAbility((CMLib.dice().rollPercentage()>50)?(mob.isInCombat()?"Thief_Mug":"Thief_Steal"):"Thief_Swipe");
 				if(A!=null)
 				{
 					if(!A.ID().equalsIgnoreCase("Thief_Swipe"))
@@ -101,7 +101,7 @@ public class Thiefness extends CombatAbilities
 						Item I=null;
 						for(int i=0;i<victim.numItems();i++)
 						{
-							Item potentialI=victim.getItem(i);
+							final Item potentialI=victim.getItem(i);
 							if((potentialI!=null)
 							&&(potentialI.amWearingAt(Wearable.IN_INVENTORY))
 							&&(CMLib.flags().canBeSeenBy(potentialI,mob)))

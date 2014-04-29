@@ -43,7 +43,7 @@ public class Trap_Boomerang extends StdTrap
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
-		boolean wasSprung = sprung;
+		final boolean wasSprung = sprung;
 		super.executeMsg(myHost, msg);
 		if((!wasSprung)&&(sprung))
 		{
@@ -57,7 +57,7 @@ public class Trap_Boomerang extends StdTrap
 	{
 		if((target!=invoker())&&(target.location()!=null))
 		{
-			boolean ok=((invoker()!=null)&&(invoker().location()!=null));
+			final boolean ok=((invoker()!=null)&&(invoker().location()!=null));
 			if((!ok)||(doesSaveVsTraps(target)))
 				target.location().show(target,null,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,"<S-NAME> foil(s) a trap on "+affected.name()+"!");
 			else

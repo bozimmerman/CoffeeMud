@@ -40,29 +40,29 @@ public class PollData extends StdWebMacro
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
-		java.util.Map<String,String> parms=parseParms(parm);
+		final java.util.Map<String,String> parms=parseParms(parm);
 		String last=httpReq.getUrlParameter("POLL");
 		if((last==null)&&(!parms.containsKey("EDIT"))) return " @break@";
 
 
-		String replaceCommand=httpReq.getUrlParameter("REPLACE");
+		final String replaceCommand=httpReq.getUrlParameter("REPLACE");
 		if((replaceCommand != null)
 		&& (replaceCommand.length()>0)
 		&& (replaceCommand.indexOf('=')>0))
 		{
-			int eq=replaceCommand.indexOf('=');
-			String field=replaceCommand.substring(0,eq);
-			String value=replaceCommand.substring(eq+1);
+			final int eq=replaceCommand.indexOf('=');
+			final String field=replaceCommand.substring(0,eq);
+			final String value=replaceCommand.substring(eq+1);
 			httpReq.addFakeUrlParameter(field, value);
 			httpReq.addFakeUrlParameter("REPLACE","");
 		}
 
 		if(parms.containsKey("EDIT"))
 		{
-			MOB M = Authenticate.getAuthenticatedMob(httpReq);
+			final MOB M = Authenticate.getAuthenticatedMob(httpReq);
 			if(M==null) return "[authentication error]";
 			if(!CMSecurity.isAllowed(M,M.location(),CMSecurity.SecFlag.POLLS)) return "[authentication error]";
-			String newTitle=httpReq.getUrlParameter("TITLE");
+			final String newTitle=httpReq.getUrlParameter("TITLE");
 			if((newTitle==null)||(newTitle.length()==0))
 				return "[missing data error]";
 
@@ -145,11 +145,11 @@ public class PollData extends StdWebMacro
 		else
 		if(parms.containsKey("DELETE"))
 		{
-			MOB M = Authenticate.getAuthenticatedMob(httpReq);
+			final MOB M = Authenticate.getAuthenticatedMob(httpReq);
 			if(M==null) return "[authentication error]";
 			if(!CMSecurity.isAllowed(M,M.location(),CMSecurity.SecFlag.POLLS)) return "[authentication error]";
 			if(last==null) return " @break@";
-			Poll P=CMLib.polls().getPoll(last);
+			final Poll P=CMLib.polls().getPoll(last);
 			if(P==null)
 				return "Unknown poll!";
 			CMLib.polls().deletePoll(P);
@@ -161,7 +161,7 @@ public class PollData extends StdWebMacro
 			if(last==null) return " @break@";
 			if(last.length()>0)
 			{
-				String newPollID=httpReq.getUrlParameter("NEWPOLL");
+				final String newPollID=httpReq.getUrlParameter("NEWPOLL");
 				Poll P=(Poll)httpReq.getRequestObjects().get("POLL-"+last);
 				if((P==null)
 				&&(newPollID!=null)
@@ -183,8 +183,8 @@ public class PollData extends StdWebMacro
 					return ""+(CMLib.polls().loadPollByName(last)==null);
 				if(P!=null)
 				{
-					StringBuffer str=new StringBuffer("");
-					boolean input=parms.containsKey("INPUT");
+					final StringBuffer str=new StringBuffer("");
+					final boolean input=parms.containsKey("INPUT");
 					if(parms.containsKey("TITLE"))
 					{
 						String old=httpReq.getUrlParameter("TITLE");
@@ -279,7 +279,7 @@ public class PollData extends StdWebMacro
 								AP="PM";
 							}
 
-							String date=(CMath.s_int(httpReq.getUrlParameter("MONTH"))+1)
+							final String date=(CMath.s_int(httpReq.getUrlParameter("MONTH"))+1)
 									   +"/"+httpReq.getUrlParameter("DAY")
 									   +"/"+httpReq.getUrlParameter("YEAR")
 									   +" "+hr
@@ -309,7 +309,7 @@ public class PollData extends StdWebMacro
 							str.append("</SELECT>");
 							str.append("/");
 							str.append("<SELECT NAME=DAY>");
-							int days = exp.getActualMaximum(Calendar.DAY_OF_MONTH); // 28
+							final int days = exp.getActualMaximum(Calendar.DAY_OF_MONTH); // 28
 							for(int d=1;d<=days;d++)
 							{
 								str.append("<OPTION VALUE=\""+d+"\"");
@@ -323,7 +323,7 @@ public class PollData extends StdWebMacro
 							int year=Calendar.getInstance().get(Calendar.YEAR);
 							if((exp.get(Calendar.YEAR)>1900)&&(exp.get(Calendar.YEAR)<year))
 								year=exp.get(Calendar.YEAR);
-							int doneYear=Calendar.getInstance().get(Calendar.YEAR)+10;
+							final int doneYear=Calendar.getInstance().get(Calendar.YEAR)+10;
 							for(int y=year;y<=doneYear;y++)
 							{
 								str.append("<OPTION VALUE=\""+y+"\"");
@@ -367,7 +367,7 @@ public class PollData extends StdWebMacro
 						{
 							for(int v=0;v<P.getOptions().size();v++)
 							{
-								Poll.PollOption O=P.getOptions().get(v);
+								final Poll.PollOption O=P.getOptions().get(v);
 								httpReq.addFakeUrlParameter("OPTION"+(v+1),O.text);
 							}
 						}
@@ -379,7 +379,7 @@ public class PollData extends StdWebMacro
 							sfont="<BR>";
 						else
 						{
-							String s=sfont.toUpperCase().trim();
+							final String s=sfont.toUpperCase().trim();
 							if(s.indexOf("<I>")>=0) efont+="</I>";
 							if(s.indexOf("<B>")>=0) efont+="</B>";
 							if(s.indexOf("<FONT")>=0) efont+="</FONT>";
@@ -390,7 +390,7 @@ public class PollData extends StdWebMacro
 
 						while(httpReq.isUrlParameter("OPTION"+(++num)))
 						{
-							String option=httpReq.getUrlParameter("OPTION"+num);
+							final String option=httpReq.getUrlParameter("OPTION"+num);
 							if((option.length()>0)
 							&&((which<0)||(which==showNum)))
 							{
@@ -409,12 +409,12 @@ public class PollData extends StdWebMacro
 					}
 					if(parms.containsKey("RESULTS"))
 					{
-						List<Poll.PollOption> options=P.getOptions();
-						List<PollResult> results=P.getResults();
+						final List<Poll.PollOption> options=P.getOptions();
+						final List<PollResult> results=P.getResults();
 						int which=-1;
 						if(parms.containsKey("NUM"))
 							which=CMath.s_int(parms.get("NUM"));
-						int[] votes=new int[options.size()+(CMath.bset(P.getFlags(),Poll.FLAG_ABSTAIN)?1:0)];
+						final int[] votes=new int[options.size()+(CMath.bset(P.getFlags(),Poll.FLAG_ABSTAIN)?1:0)];
 						PollResult R=null;
 						int choice=0;
 						int total=0;
@@ -438,7 +438,7 @@ public class PollData extends StdWebMacro
 							sfont="<BR>";
 						else
 						{
-							String s=sfont.toUpperCase().trim();
+							final String s=sfont.toUpperCase().trim();
 							if(s.indexOf("<I>")>=0) efont+="</I>";
 							if(s.indexOf("<B>")>=0) efont+="</B>";
 							if(s.indexOf("<FONT")>=0) efont+="</FONT>";
@@ -446,8 +446,8 @@ public class PollData extends StdWebMacro
 							if(s.indexOf("<TD")>=0) efont+="</TD>";
 							if(s.indexOf("<TR")>=0) efont+="</TR>";
 						}
-						boolean pct=parms.containsKey("PCT")||parms.containsKey("PERCENT");
-						boolean showNum=(!pct)||parms.containsKey("VOTES")||parms.containsKey("VOTE")||parms.containsKey("COUNT");
+						final boolean pct=parms.containsKey("PCT")||parms.containsKey("PERCENT");
+						final boolean showNum=(!pct)||parms.containsKey("VOTES")||parms.containsKey("VOTE")||parms.containsKey("COUNT");
 						for(int o=0;o<options.size();o++)
 						{
 							if((which<0)||(which==(o+1)))

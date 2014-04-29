@@ -55,12 +55,12 @@ public class Spell_LightenItem extends Spell
 		if(canBeUninvoked())
 		if((affected!=null)&&(affected instanceof Item))
 		{
-			Item item=(Item)affected;
+			final Item item=(Item)affected;
 			if((item.owner()!=null)
 			&&(item.owner() instanceof MOB)
 			&&(((MOB)item.owner()).isMine(item)))
 			{
-				MOB mob=(MOB)item.owner();
+				final MOB mob=(MOB)item.owner();
 				mob.tell(item.name()+" grows heavy again.");
 				if((mob.phyStats().weight()+item.basePhyStats().weight())>mob.maxCarry())
 				{
@@ -77,10 +77,10 @@ public class Spell_LightenItem extends Spell
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		Item target=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_ANY);
+		final Item target=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_ANY);
 		if(target==null)
 		{
-			String str=CMParms.combine(commands,0).toUpperCase();
+			final String str=CMParms.combine(commands,0).toUpperCase();
 			if(str.equals("MONEY")||str.equals("GOLD")||str.equals("COINS"))
 				mob.tell("You can't cast this spell on your own coins.");
 			return false;
@@ -95,11 +95,11 @@ public class Spell_LightenItem extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAMESELF>, incanting.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAMESELF>, incanting.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

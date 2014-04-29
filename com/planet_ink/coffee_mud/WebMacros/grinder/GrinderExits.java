@@ -48,7 +48,7 @@ public class GrinderExits
 		P.basePhyStats().setDisposition(0);
 		for(int d=0;d<PhyStats.IS_CODES.length;d++)
 		{
-			String parm=httpReq.getUrlParameter(PhyStats.IS_CODES[d]);
+			final String parm=httpReq.getUrlParameter(PhyStats.IS_CODES[d]);
 			if((parm!=null)&&(parm.equals("on")))
 			   P.basePhyStats().setDisposition(P.basePhyStats().disposition()|(1<<d));
 		}
@@ -64,7 +64,7 @@ public class GrinderExits
 			if(X==null) return "No Exit to edit?!";
 
 			// important generic<->non generic swap!
-			String newClassID=httpReq.getUrlParameter("CLASSES");
+			final String newClassID=httpReq.getUrlParameter("CLASSES");
 			if((newClassID!=null)&&(!CMClass.classID(X).equals(newClassID)))
 			{
 				X=CMClass.getExit(newClassID);
@@ -181,16 +181,16 @@ public class GrinderExits
 				X.setDoorsNLocks(false,true,false,false,false,false);
 
 			CMLib.database().DBUpdateExits(R);
-			String makeSame=httpReq.getUrlParameter("MAKESAME");
+			final String makeSame=httpReq.getUrlParameter("MAKESAME");
 			if((makeSame!=null)&&(makeSame.equalsIgnoreCase("on")))
 			{
-				Room R2=R.rawDoors()[dir];
+				final Room R2=R.rawDoors()[dir];
 				Exit E2=null;
 				if((R2!=null)&&(R2.rawDoors()[Directions.getOpDirectionCode(dir)]==R))
 					E2=R2.getRawExit(Directions.getOpDirectionCode(dir));
 				if(E2!=null)
 				{
-					Exit oldE2=E2;
+					final Exit oldE2=E2;
 					E2=(Exit)X.copyOf();
 					E2.setDisplayText(oldE2.displayText());
 					if(R2!=null)

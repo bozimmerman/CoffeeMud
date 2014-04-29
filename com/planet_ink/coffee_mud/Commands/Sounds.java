@@ -48,17 +48,17 @@ public class Sounds extends StdCommand
 		{
 			boolean force=false;
 			if(commands != null)
-				for(Object o : commands)
+				for(final Object o : commands)
 					if(o.toString().equalsIgnoreCase("force"))
 						force=true;
-			Session session=mob.session();
+			final Session session=mob.session();
 			if((!CMath.bset(mob.getBitmap(),MOB.ATT_SOUND))
 			||(!session.getClientTelnetMode(Session.TELNET_MSP)))
 			{
 				session.changeTelnetMode(Session.TELNET_MSP,true);
 				for(int i=0;((i<5)&&(!session.getClientTelnetMode(Session.TELNET_MSP)));i++)
 				{
-					try{mob.session().prompt("",500);}catch(Exception e){}
+					try{mob.session().prompt("",500);}catch(final Exception e){}
 				}
 				if(session.getClientTelnetMode(Session.TELNET_MSP))
 				{

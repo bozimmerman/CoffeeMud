@@ -39,15 +39,15 @@ public class ComponentPieceData extends StdWebMacro
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
-		java.util.Map<String,String> parms=parseParms(parm);
-		String compID=httpReq.getUrlParameter("COMPONENT");
+		final java.util.Map<String,String> parms=parseParms(parm);
+		final String compID=httpReq.getUrlParameter("COMPONENT");
 		if(compID==null) return " @break@";
-		String last=httpReq.getUrlParameter("COMPONENTPIECE");
+		final String last=httpReq.getUrlParameter("COMPONENTPIECE");
 		if(last==null) return " @break@";
 		if(last.length()>0)
 		{
-			String fixedCompID=compID.replace(' ','_').toUpperCase();
-			StringBuilder str=new StringBuilder("");
+			final String fixedCompID=compID.replace(' ','_').toUpperCase();
+			final StringBuilder str=new StringBuilder("");
 			if(parms.containsKey("MASK")||parms.containsKey("MASKEDIT"))
 			{
 				String s=httpReq.getUrlParameter(fixedCompID+"_PIECE_MASK_"+last);
@@ -56,9 +56,9 @@ public class ComponentPieceData extends StdWebMacro
 			}
 			if(parms.containsKey("STRING"))
 			{
-				String type=httpReq.getUrlParameter(fixedCompID+"_PIECE_TYPE_"+last);
-				String strType=httpReq.getUrlParameter(fixedCompID+"_PIECE_STRING_"+last);
-				AbilityComponent.CompType C=(AbilityComponent.CompType)CMath.s_valueOf(AbilityComponent.CompType.values(), type);
+				final String type=httpReq.getUrlParameter(fixedCompID+"_PIECE_TYPE_"+last);
+				final String strType=httpReq.getUrlParameter(fixedCompID+"_PIECE_STRING_"+last);
+				final AbilityComponent.CompType C=(AbilityComponent.CompType)CMath.s_valueOf(AbilityComponent.CompType.values(), type);
 				if((C==null)||(C==AbilityComponent.CompType.STRING)||(!CMath.isNumber(strType)))
 					str.append(strType);
 				else
@@ -66,10 +66,10 @@ public class ComponentPieceData extends StdWebMacro
 			}
 			if(parms.containsKey("STRINGEDIT"))
 			{
-				String type=httpReq.getUrlParameter(fixedCompID+"_PIECE_TYPE_"+last);
+				final String type=httpReq.getUrlParameter(fixedCompID+"_PIECE_TYPE_"+last);
 				String strType=httpReq.getUrlParameter(fixedCompID+"_PIECE_STRING_"+last);
 				if(strType==null) strType="item name";
-				AbilityComponent.CompType C=(AbilityComponent.CompType)CMath.s_valueOf(AbilityComponent.CompType.values(), type);
+				final AbilityComponent.CompType C=(AbilityComponent.CompType)CMath.s_valueOf(AbilityComponent.CompType.values(), type);
 				if((C==null)||(C==AbilityComponent.CompType.STRING))
 				{
 					str.append("<INPUT TYPE=TEXT NAME=\""+fixedCompID+"_PIECE_STRING_"+last+"\" VALUE=\"");
@@ -81,7 +81,7 @@ public class ComponentPieceData extends StdWebMacro
 					str.append("<SELECT NAME=\""+fixedCompID+"_PIECE_STRING_"+last+"\">");
 					if(C==AbilityComponent.CompType.MATERIAL)
 					{
-						for(RawMaterial.Material m : RawMaterial.Material.values())
+						for(final RawMaterial.Material m : RawMaterial.Material.values())
 						{
 							str.append("<OPTION VALUE="+m.desc());
 							if(m.mask()==CMath.s_long(strType))
@@ -111,7 +111,7 @@ public class ComponentPieceData extends StdWebMacro
 			}
 			if(parms.containsKey("CONSUMED"))
 			{
-				String consumed=httpReq.getUrlParameter(fixedCompID+"_PIECE_CONSUMED_"+last);
+				final String consumed=httpReq.getUrlParameter(fixedCompID+"_PIECE_CONSUMED_"+last);
 				if((consumed!=null)&&(consumed.equalsIgnoreCase("on")||consumed.equalsIgnoreCase("checked")))
 					str.append("consumed");
 				else
@@ -119,7 +119,7 @@ public class ComponentPieceData extends StdWebMacro
 			}
 			if(parms.containsKey("CONSUMEDEDIT"))
 			{
-				String consumed=httpReq.getUrlParameter(fixedCompID+"_PIECE_CONSUMED_"+last);
+				final String consumed=httpReq.getUrlParameter(fixedCompID+"_PIECE_CONSUMED_"+last);
 				if((consumed!=null)&&(consumed.equalsIgnoreCase("on")||consumed.equalsIgnoreCase("checked")))
 					str.append("checked");
 				else
@@ -130,7 +130,7 @@ public class ComponentPieceData extends StdWebMacro
 			if(parms.containsKey("CONNECTOREDIT"))
 			{
 				str.append("<OPTION VALUE=\"DELETE\">Delete Component");
-				for(AbilityComponent.CompConnector conn : AbilityComponent.CompConnector.values())
+				for(final AbilityComponent.CompConnector conn : AbilityComponent.CompConnector.values())
 				{
 					str.append("<OPTION VALUE=\""+conn.toString()+"\" ");
 					if(conn.toString().equalsIgnoreCase(httpReq.getUrlParameter(fixedCompID+"_PIECE_CONNECTOR_"+last)))
@@ -142,7 +142,7 @@ public class ComponentPieceData extends StdWebMacro
 				str.append(httpReq.getUrlParameter(fixedCompID+"_PIECE_TYPE_"+last));
 			if(parms.containsKey("TYPEEDIT"))
 			{
-				for(AbilityComponent.CompType conn : AbilityComponent.CompType.values())
+				for(final AbilityComponent.CompType conn : AbilityComponent.CompType.values())
 				{
 					str.append("<OPTION VALUE=\""+conn.toString()+"\" ");
 					if(conn.toString().equalsIgnoreCase(httpReq.getUrlParameter(fixedCompID+"_PIECE_TYPE_"+last)))
@@ -154,7 +154,7 @@ public class ComponentPieceData extends StdWebMacro
 				str.append(httpReq.getUrlParameter(fixedCompID+"_PIECE_LOCATION_"+last));
 			if(parms.containsKey("LOCATIONEDIT"))
 			{
-				for(AbilityComponent.CompLocation conn : AbilityComponent.CompLocation.values())
+				for(final AbilityComponent.CompLocation conn : AbilityComponent.CompLocation.values())
 				{
 					str.append("<OPTION VALUE=\""+conn.toString()+"\" ");
 					if(conn.toString().equalsIgnoreCase(httpReq.getUrlParameter(fixedCompID+"_PIECE_LOCATION_"+last)))

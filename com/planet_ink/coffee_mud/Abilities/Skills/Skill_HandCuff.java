@@ -64,7 +64,7 @@ public class Skill_HandCuff extends StdSkill
 		if(!(affected instanceof MOB))
 			return true;
 
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		// when this spell is on a MOBs Affected list,
 		// it should consistantly prevent the mob
 		// from trying to do ANYTHING except sleep
@@ -146,7 +146,7 @@ public class Skill_HandCuff extends StdSkill
 		// undo the affects of this spell
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		super.unInvoke();
 		if(canBeUninvoked())
@@ -190,9 +190,9 @@ public class Skill_HandCuff extends StdSkill
 		if((commands.size()>0)&&((String)commands.firstElement()).equalsIgnoreCase("UNTIE"))
 		{
 			commands.removeElementAt(0);
-			MOB target=super.getTarget(mob,commands,givenTarget,false,true);
+			final MOB target=super.getTarget(mob,commands,givenTarget,false,true);
 			if(target==null) return false;
-			Ability A=target.fetchEffect(ID());
+			final Ability A=target.fetchEffect(ID());
 			if(A!=null)
 			{
 				if(mob.location().show(mob,target,null,CMMsg.MSG_HANDS,"<S-NAME> attempt(s) to unbind <T-NAMESELF>."))
@@ -205,7 +205,7 @@ public class Skill_HandCuff extends StdSkill
 			mob.tell(target.name(mob)+" doesn't appear to be handcuffed.");
 			return false;
 		}
-		MOB target=getTarget(mob,commands,givenTarget);
+		final MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
 		if(Skill_Arrest.getWarrantsOf(target, CMLib.law().getLegalObject(mob.location().getArea())).size()==0)
@@ -229,13 +229,13 @@ public class Skill_HandCuff extends StdSkill
 
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_NOISYMOVEMENT|(auto?CMMsg.MASK_ALWAYS:CMMsg.MASK_MALICIOUS),"<S-NAME> handcuff(s) <T-NAME>.");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_NOISYMOVEMENT|(auto?CMMsg.MASK_ALWAYS:CMMsg.MASK_MALICIOUS),"<S-NAME> handcuff(s) <T-NAME>.");
 			if((mob.location().okMessage(mob,msg))&&(target.fetchEffect(this.ID())==null))
 			{
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
-					int amountToRemain=adjustedLevel(mob,asLevel)*300;
+					final int amountToRemain=adjustedLevel(mob,asLevel)*300;
 					amountRemaining=amountToRemain;
 					if(target.location()==mob.location())
 					{
@@ -254,7 +254,7 @@ public class Skill_HandCuff extends StdSkill
 							oldGuard=CMath.bset(target.getBitmap(),MOB.ATT_AUTOASSIST);
 							if(oldGuard)
 								target.setBitmap(CMath.unsetb(target.getBitmap(),MOB.ATT_AUTOGUARD));
-							boolean oldNOFOL=CMath.bset(target.getBitmap(),MOB.ATT_NOFOLLOW);
+							final boolean oldNOFOL=CMath.bset(target.getBitmap(),MOB.ATT_NOFOLLOW);
 							if(target.numFollowers()>0)
 								CMLib.commands().forceStandardCommand(target,"NoFollow",new XVector("UNFOLLOW","QUIETLY"));
 							target.setBitmap(CMath.unsetb(target.getBitmap(),MOB.ATT_NOFOLLOW));

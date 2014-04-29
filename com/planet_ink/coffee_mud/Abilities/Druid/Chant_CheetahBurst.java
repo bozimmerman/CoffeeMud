@@ -65,7 +65,7 @@ public class Chant_CheetahBurst extends Chant
 		// undo the affects of this spell
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		super.unInvoke();
 
 		if(canBeUninvoked())
@@ -78,7 +78,7 @@ public class Chant_CheetahBurst extends Chant
 		if(!super.tick(ticking,tickID)) return false;
 		if(!(affected instanceof MOB))
 			return true;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		if((--cheetahTick)==0)
 		{
 			mob.recoverPhyStats();
@@ -111,7 +111,7 @@ public class Chant_CheetahBurst extends Chant
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
@@ -120,7 +120,7 @@ public class Chant_CheetahBurst extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> chant(s) and snarl(s)!^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> chant(s) and snarl(s)!^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -128,7 +128,7 @@ public class Chant_CheetahBurst extends Chant
 				{
 					target.location().show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> gain(s) cheetah-like reflexes!");
 					beneficialAffect(mob,target,asLevel,0);
-					Chant_CheetahBurst A=(Chant_CheetahBurst)target.fetchEffect(ID());
+					final Chant_CheetahBurst A=(Chant_CheetahBurst)target.fetchEffect(ID());
 					if(A!=null) A.cheetahTick=3;
 				}
 			}

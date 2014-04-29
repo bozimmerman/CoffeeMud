@@ -46,7 +46,7 @@ public class Chant_SpeedBirth extends Chant
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		MOB target=this.getTarget(mob,commands,givenTarget);
+		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
 		Ability A=target.fetchEffect("Pregnancy");
@@ -57,16 +57,16 @@ public class Chant_SpeedBirth extends Chant
 		String rest=null;
 		if(A!=null)
 		{
-			int x=A.text().indexOf('/');
+			final int x=A.text().indexOf('/');
 			if(x>0)
 			{
-				int y=A.text().indexOf('/',x+1);
+				final int y=A.text().indexOf('/',x+1);
 				if(y>x)
 				{
 					start=CMath.s_long(A.text().substring(0,x));
 					end=CMath.s_long(A.text().substring(x+1,y));
 					remain=end-System.currentTimeMillis();
-					long divisor=CMProps.getTickMillis()*CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY);
+					final long divisor=CMProps.getTickMillis()*CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY);
 					days=remain/divisor; // down to days;
 					rest=A.text().substring(y);
 				}
@@ -80,14 +80,14 @@ public class Chant_SpeedBirth extends Chant
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 		if((success)&&(A!=null)&&(remain>0))
 		{
 			// it worked, so build a copy of this ability,
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> chant(s) to <T-NAMESELF>.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> chant(s) to <T-NAMESELF>.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

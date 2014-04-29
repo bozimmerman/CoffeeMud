@@ -60,13 +60,13 @@ public class Prop_RideSpellCast extends Prop_HaveSpellCast
 		processing=true;
 		if(affected instanceof Rideable)
 		{
-			Rideable RI=(Rideable)affected;
+			final Rideable RI=(Rideable)affected;
 			for(int r=0;r<RI.numRiders();r++)
 			{
-				Rider R=RI.fetchRider(r);
+				final Rider R=RI.fetchRider(r);
 				if(R instanceof MOB)
 				{
-					MOB M=(MOB)R;
+					final MOB M=(MOB)R;
 					if((!lastRiders.contains(M))&&(RI.amRiding(M)))
 					{
 						if(addMeIfNeccessary(M,M,true,0,maxTicks))
@@ -76,7 +76,7 @@ public class Prop_RideSpellCast extends Prop_HaveSpellCast
 			}
 			for(int i=lastRiders.size()-1;i>=0;i--)
 			{
-				MOB M=(MOB)lastRiders.elementAt(i);
+				final MOB M=(MOB)lastRiders.elementAt(i);
 				if(!RI.amRiding(M))
 				{
 					removeMyAffectsFrom(M);

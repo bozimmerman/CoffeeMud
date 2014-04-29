@@ -60,11 +60,11 @@ public class NiceAbilities extends ActiveTicker
 		super.tick(ticking,tickID);
 		if((canAct(ticking,tickID))&&(ticking instanceof MOB))
 		{
-			MOB mob=(MOB)ticking;
-			Room thisRoom=mob.location();
+			final MOB mob=(MOB)ticking;
+			final Room thisRoom=mob.location();
 			if(thisRoom==null) return true;
 
-			double aChance=CMath.div(mob.curState().getMana(),mob.maxState().getMana());
+			final double aChance=CMath.div(mob.curState().getMana(),mob.maxState().getMana());
 			if((Math.random()>aChance)||(mob.curState().getMana()<50))
 				return true;
 
@@ -83,9 +83,9 @@ public class NiceAbilities extends ActiveTicker
 					{
 						numAllSkills=mob.numAbilities();
 						mySkills=new ArrayList<Ability>();
-						for(Enumeration<Ability> e=mob.allAbilities(); e.hasMoreElements();)
+						for(final Enumeration<Ability> e=mob.allAbilities(); e.hasMoreElements();)
 						{
-							Ability tryThisOne=e.nextElement();
+							final Ability tryThisOne=e.nextElement();
 							if((tryThisOne!=null)
 							&&(tryThisOne.abstractQuality()==Ability.QUALITY_BENEFICIAL_OTHERS)
 							&&(((tryThisOne.classificationCode()&Ability.ALL_ACODES)!=Ability.ACODE_PRAYER)
@@ -97,12 +97,12 @@ public class NiceAbilities extends ActiveTicker
 					}
 					if(mySkills.size()>0)
 					{
-						Ability tryThisOne=mySkills.get(CMLib.dice().roll(1, mySkills.size(), -1));
+						final Ability tryThisOne=mySkills.get(CMLib.dice().roll(1, mySkills.size(), -1));
 						if((mob.fetchEffect(tryThisOne.ID())==null)
 						&&(tryThisOne.castingQuality(mob,target)==Ability.QUALITY_BENEFICIAL_OTHERS))
 						{
 							tryThisOne.setProficiency(CMLib.ableMapper().getMaxProficiency(mob,true,tryThisOne.ID()));
-							Vector V=new XVector("$"+target.Name()+"$");
+							final Vector V=new XVector("$"+target.Name()+"$");
 							V.addElement(target.name());
 							tryThisOne.invoke(mob,V,target,false,0);
 						}

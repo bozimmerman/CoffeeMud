@@ -48,7 +48,7 @@ public class Prayer_Divorce extends Prayer
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		MOB target=getTarget(mob,commands,givenTarget);
+		final MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 		if(!target.isMarriedToLiege())
 		{
@@ -64,10 +64,10 @@ public class Prayer_Divorce extends Prayer
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> divorce(s) <T-NAMESELF> from "+target.getLiegeID()+".^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> divorce(s) <T-NAMESELF> from "+target.getLiegeID()+".^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				if((!target.isMonster())&&(target.soulMate()==null))
@@ -80,18 +80,18 @@ public class Prayer_Divorce extends Prayer
 					femaleName=target.Name();
 					maleName=target.getLiegeID();
 				}
-				List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.DIVORCES);
+				final List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.DIVORCES);
 				for(int i=0;i<channels.size();i++)
 					CMLib.commands().postChannel(channels.get(i),mob.clans(),maleName+" and "+femaleName+" are now divorced.",true);
-				MOB M=CMLib.players().getPlayer(target.getLiegeID());
+				final MOB M=CMLib.players().getPlayer(target.getLiegeID());
 				if(M!=null) M.setLiegeID("");
 				target.setLiegeID("");
 				try
 				{
-					for(Enumeration e=CMLib.map().rooms();e.hasMoreElements();)
+					for(final Enumeration e=CMLib.map().rooms();e.hasMoreElements();)
 					{
-						Room R=(Room)e.nextElement();
-						LandTitle T=CMLib.law().getLandTitle(R);
+						final Room R=(Room)e.nextElement();
+						final LandTitle T=CMLib.law().getLandTitle(R);
 						if((T!=null)&&(T.getOwnerName().equals(maleName)))
 						{
 							T.setOwnerName(femaleName);
@@ -99,15 +99,15 @@ public class Prayer_Divorce extends Prayer
 						}
 						for(int i=0;i<R.numInhabitants();i++)
 						{
-							MOB M2=R.fetchInhabitant(i);
+							final MOB M2=R.fetchInhabitant(i);
 							if((M2!=null)&&(M2 instanceof Banker))
 							{
-								Banker B=(Banker)M2;
-								List<Item> V=B.getDepositedItems(maleName);
+								final Banker B=(Banker)M2;
+								final List<Item> V=B.getDepositedItems(maleName);
 								Item coins=B.findDepositInventory(femaleName,""+Integer.MAX_VALUE);
 								for(int v=0;v<V.size();v++)
 								{
-									Item I=V.get(v);
+									final Item I=V.get(v);
 									if(I==null) break;
 									B.delDepositInventory(maleName,I);
 									if(I instanceof Coins)
@@ -127,7 +127,7 @@ public class Prayer_Divorce extends Prayer
 							}
 						}
 					}
-				}catch(NoSuchElementException e){}
+				}catch(final NoSuchElementException e){}
 			}
 		}
 		else

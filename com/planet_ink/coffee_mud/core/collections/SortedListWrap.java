@@ -86,7 +86,7 @@ public class SortedListWrap<T extends Comparable<T>> implements List<T>
 	public synchronized boolean addAll(Collection<? extends T> arg0)
 	{
 		boolean tf=true;
-		for(T t : arg0)
+		for(final T t : arg0)
 			tf=tf&&add(t);
 		return tf;
 	}
@@ -112,7 +112,7 @@ public class SortedListWrap<T extends Comparable<T>> implements List<T>
 	@Override
 	public boolean containsAll(Collection<?> arg0)
 	{
-		for(Object o : arg0)
+		for(final Object o : arg0)
 			if(!contains(o))
 				return false;
 		return true;
@@ -132,8 +132,8 @@ public class SortedListWrap<T extends Comparable<T>> implements List<T>
 		int end=list.size()-1;
 		while(start<=end)
 		{
-			int mid=(end+start)/2;
-			int comp=compareTo(list.get(mid),arg0);
+			final int mid=(end+start)/2;
+			final int comp=compareTo(list.get(mid),arg0);
 			if(comp==0)
 				return mid;
 			else

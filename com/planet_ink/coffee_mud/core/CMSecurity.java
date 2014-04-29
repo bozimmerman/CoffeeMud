@@ -73,7 +73,7 @@ public class CMSecurity
 	public CMSecurity()
 	{
 		super();
-		char c=Thread.currentThread().getThreadGroup().getName().charAt(0);
+		final char c=Thread.currentThread().getThreadGroup().getName().charAt(0);
 		if(secs[c]==null) secs[c]=this;
 	}
 
@@ -122,27 +122,26 @@ public class CMSecurity
 	{
 		clearGroups();
 		if(page==null) return;
-		List<Pair<String,String>> allGroups=new LinkedList<Pair<String,String>>();
-		for(Enumeration<Object> e=page.keys();e.hasMoreElements();)
+		final List<Pair<String,String>> allGroups=new LinkedList<Pair<String,String>>();
+		for(final Enumeration<Object> e=page.keys();e.hasMoreElements();)
 		{
-			String key=(String)e.nextElement();
+			final String key=(String)e.nextElement();
 			if(key.startsWith("GROUP_"))
 			{
-				String groupName=key.substring(6).trim().toUpperCase();
+				final String groupName=key.substring(6).trim().toUpperCase();
 				allGroups.add(new Pair<String,String>(groupName,(String)page.get(key)));
 				addGroup(groupName,"");
 			}
 		}
-		for(Iterator<Pair<String,String>> i=allGroups.iterator(); i.hasNext();)
+		for (final Pair<String, String> p : allGroups)
 		{
-			final Pair<String,String> p=i.next();
 			addGroup(p.first,p.second);
 		}
 	}
 
 	public Object parseSecurityFlag(String s)
 	{
-		SecGroup group=groups.get(s);
+		final SecGroup group=groups.get(s);
 		if(group != null)
 			return group;
 		else
@@ -206,8 +205,8 @@ public class CMSecurity
 		final Set<String> 	 newJFlags=new HashSet<String>();
 		for(int v=0;v<set.size();v++)
 		{
-			String s=set.get(v).trim().toUpperCase();
-			Object o=this.parseSecurityFlag(s);
+			final String s=set.get(v).trim().toUpperCase();
+			final Object o=this.parseSecurityFlag(s);
 			if(o==null)
 				Log.errOut("CMSecurity","Unknown security flag: "+s+" in group "+name);
 			else
@@ -240,8 +239,8 @@ public class CMSecurity
 
 	private static final void addGroup(String name, final String set)
 	{
-		SecGroup newGroup=instance().createGroup(name,CMParms.parseCommas(set,true));
-		SecGroup group=i().groups.get(name);
+		final SecGroup newGroup=instance().createGroup(name,CMParms.parseCommas(set,true));
+		final SecGroup group=i().groups.get(name);
 		if(group == null)
 			i().groups.put(name,newGroup);
 		else
@@ -283,12 +282,12 @@ public class CMSecurity
 		if((mob.playerStats()==null)
 		||((mob.soulMate()!=null)&&(!CMath.bset(mob.soulMate().getBitmap(),MOB.ATT_SYSOPMSGS))))
 			return DIRSV;
-		boolean subop=((room!=null)&&(room.getArea()!=null)&&(room.getArea().amISubOp(mob.Name())));
-		Iterator[] allGroups={mob.playerStats().getSecurityFlags().paths(),
+		final boolean subop=((room!=null)&&(room.getArea()!=null)&&(room.getArea().amISubOp(mob.Name())));
+		final Iterator[] allGroups={mob.playerStats().getSecurityFlags().paths(),
 				 mob.baseCharStats().getCurrentClass().getSecurityFlags(mob.baseCharStats().getCurrentClassLevel()).paths()};
-		for(Iterator<SecPath> g=new MultiIterator<SecPath>(allGroups);g.hasNext();)
+		for(final Iterator<SecPath> g=new MultiIterator<SecPath>(allGroups);g.hasNext();)
 		{
-			SecPath p=g.next();
+			final SecPath p=g.next();
 			if((!p.isAreaOnly)||(subop))
 				DIRSV.add((p.isVfs?"::":"//")+p.path);
 		}
@@ -305,7 +304,7 @@ public class CMSecurity
 				while(dir.length()>0)
 				{
 					while(dir.startsWith("/")) dir=dir.substring(1);
-					int x=dir.indexOf('/');
+					final int x=dir.indexOf('/');
 					subPath=dir;
 					if(x>0)
 					{
@@ -317,16 +316,16 @@ public class CMSecurity
 						subPath=dir.trim();
 						dir="";
 					}
-					CMFile F=new CMFile(path,null,CMFile.FLAG_LOGERRORS);
+					final CMFile F=new CMFile(path,null,CMFile.FLAG_LOGERRORS);
 					if((F.exists())&&(F.canRead())&&(F.isDirectory()))
 					{
-						String[] files=F.list();
-						for(int f=0;f<files.length;f++)
-							if(files[f].equalsIgnoreCase(subPath))
+						final String[] files=F.list();
+						for (final String file : files)
+							if(file.equalsIgnoreCase(subPath))
 							{
 								if(path.length()>0)
 									path+="/";
-								path+=files[f];
+								path+=file;
 								break;
 							}
 					}
@@ -347,9 +346,9 @@ public class CMSecurity
 		final boolean subop=((room!=null)&&(room.getArea()!=null)&&(room.getArea().amISubOp(mob.Name())));
 		final Iterator[] allGroups={mob.playerStats().getSecurityFlags().paths(),
 				 mob.baseCharStats().getCurrentClass().getSecurityFlags(mob.baseCharStats().getCurrentClassLevel()).paths()};
-		for(Iterator<SecPath> g=new MultiIterator<SecPath>(allGroups);g.hasNext();)
+		for(final Iterator<SecPath> g=new MultiIterator<SecPath>(allGroups);g.hasNext();)
 		{
-			SecPath p=g.next();
+			final SecPath p=g.next();
 			if((!p.isAreaOnly)||(subop))
 				return true;
 		}
@@ -366,12 +365,12 @@ public class CMSecurity
 		path=CMFile.vfsifyFilename(path.trim()).toUpperCase();
 		if(path.equals("/")||path.equals(".")) path="";
 		final String pathSlash=path+"/";
-		boolean subop=((room!=null)&&(room.getArea()!=null)&&(room.getArea().amISubOp(mob.Name())));
-		Iterator[] allGroups={mob.playerStats().getSecurityFlags().paths(),
+		final boolean subop=((room!=null)&&(room.getArea()!=null)&&(room.getArea().amISubOp(mob.Name())));
+		final Iterator[] allGroups={mob.playerStats().getSecurityFlags().paths(),
 				 mob.baseCharStats().getCurrentClass().getSecurityFlags(mob.baseCharStats().getCurrentClassLevel()).paths()};
-		for(Iterator<SecPath> g=new MultiIterator<SecPath>(allGroups);g.hasNext();)
+		for(final Iterator<SecPath> g=new MultiIterator<SecPath>(allGroups);g.hasNext();)
 		{
-			SecPath p=g.next();
+			final SecPath p=g.next();
 			if((!p.isAreaOnly)||(subop))
 			{
 				if(p.path.startsWith(pathSlash)
@@ -393,11 +392,11 @@ public class CMSecurity
 		path=CMFile.vfsifyFilename(path.trim()).toUpperCase();
 		if(path.equals("/")||path.equals(".")) path="";
 		final boolean subop=((room!=null)&&(room.getArea()!=null)&&(room.getArea().amISubOp(mob.Name())));
-		Iterator[] allGroups={mob.playerStats().getSecurityFlags().paths(),
+		final Iterator[] allGroups={mob.playerStats().getSecurityFlags().paths(),
 				 mob.baseCharStats().getCurrentClass().getSecurityFlags(mob.baseCharStats().getCurrentClassLevel()).paths()};
-		for(Iterator<SecPath> g=new MultiIterator<SecPath>(allGroups);g.hasNext();)
+		for(final Iterator<SecPath> g=new MultiIterator<SecPath>(allGroups);g.hasNext();)
 		{
-			SecPath p=g.next();
+			final SecPath p=g.next();
 			if(((!p.isAreaOnly)||(subop))
 			&&(!p.isVfs || isVFS))
 			{
@@ -418,7 +417,7 @@ public class CMSecurity
 		final List<SecFlag> flags=new ArrayList<SecFlag>();
 		for(;it.hasNext();)
 		{
-			SecFlag flag=it.next();
+			final SecFlag flag=it.next();
 			if((flag.areaAlias!=flag)||subop)
 				flags.add(flag);
 		}
@@ -448,7 +447,7 @@ public class CMSecurity
 		if((mob.playerStats()==null)
 		||((mob.soulMate()!=null)&&(!CMath.bset(mob.soulMate().getBitmap(),MOB.ATT_SYSOPMSGS))))
 			return false;
-		boolean subop=((room!=null)&&(room.getArea()!=null)&&(room.getArea().amISubOp(mob.Name())));
+		final boolean subop=((room!=null)&&(room.getArea()!=null)&&(room.getArea().amISubOp(mob.Name())));
 		if(mob.playerStats().getSecurityFlags().containsAny(secGroup, subop))
 			return true;
 		if(mob.baseCharStats().getCurrentClass().getSecurityFlags(mob.baseCharStats().getCurrentClassLevel()).containsAny(secGroup, subop))
@@ -478,7 +477,7 @@ public class CMSecurity
 		if((mob.playerStats()==null)
 		||((mob.soulMate()!=null)&&(!CMath.bset(mob.soulMate().getBitmap(),MOB.ATT_SYSOPMSGS))))
 			return false;
-		for(Enumeration<Area> e=CMLib.map().areas();e.hasMoreElements();)
+		for(final Enumeration<Area> e=CMLib.map().areas();e.hasMoreElements();)
 		{
 			final boolean subop=e.nextElement().amISubOp(mob.Name());
 			if(subop)
@@ -553,7 +552,7 @@ public class CMSecurity
 		final StringBuffer newApproved=new StringBuffer("");
 		for(final Long L : approved.keySet())
 		{
-			Object O=approved.get(L);
+			final Object O=approved.get(L);
 			if(O instanceof String)
 				newApproved.append(L.toString()+"="+((String)O)+"\n");
 		}
@@ -567,13 +566,13 @@ public class CMSecurity
 		{
 			approved=new Hashtable<Long,String>();
 			Resources.submitResource("APPROVEDJSCRIPTS",approved);
-			List<String> jscripts=Resources.getFileLineVector(Resources.getFileResource("jscripts.ini",false));
+			final List<String> jscripts=Resources.getFileLineVector(Resources.getFileResource("jscripts.ini",false));
 			if((jscripts!=null)&&(jscripts.size()>0))
 			{
 				for(int i=0;i<jscripts.size();i++)
 				{
-					String s=jscripts.get(i);
-					int x=s.indexOf('=');
+					final String s=jscripts.get(i);
+					final int x=s.indexOf('=');
 					if(x>0)
 						approved.put(Long.valueOf(CMath.s_long(s.substring(0,x))),s.substring(x+1));
 				}
@@ -588,7 +587,7 @@ public class CMSecurity
 			return true;
 		if(CMProps.getIntVar(CMProps.Int.JSCRIPTS)==0)
 			return false;
-		Map<Long,String> approved=CMSecurity.getApprovedJScriptTable();
+		final Map<Long,String> approved=CMSecurity.getApprovedJScriptTable();
 		final Long hashCode=Long.valueOf(script.toString().hashCode());
 		final Object approver=approved.get(hashCode);
 		if(approver==null)
@@ -628,8 +627,8 @@ public class CMSecurity
 
 	public static final DbgFlag setDebugVar(final String anyFlag, final boolean delete)
 	{
-		String flag = anyFlag.toUpperCase().trim();
-		DbgFlag dbgFlag = (DbgFlag)CMath.s_valueOf(CMSecurity.DbgFlag.values(), flag);
+		final String flag = anyFlag.toUpperCase().trim();
+		final DbgFlag dbgFlag = (DbgFlag)CMath.s_valueOf(CMSecurity.DbgFlag.values(), flag);
 		if(dbgFlag!=null)
 			return setDebugVar(dbgFlag,delete);
 		return null;
@@ -639,7 +638,7 @@ public class CMSecurity
 	{
 		final List<String> V=CMParms.parseCommas(vars.toUpperCase(),true);
 		dbgVars.clear();
-		for(String var : V)
+		for(final String var : V)
 		{
 			final DbgFlag flag=(DbgFlag)CMath.s_valueOf(DbgFlag.values(),var);
 			if(flag==null)
@@ -680,7 +679,7 @@ public class CMSecurity
 			flag=flag.substring(flag.indexOf('_')+1);
 		else
 		{
-			DisFlag disFlag = (DisFlag)CMath.s_valueOf(CMSecurity.DisFlag.values(), flag);
+			final DisFlag disFlag = (DisFlag)CMath.s_valueOf(CMSecurity.DisFlag.values(), flag);
 			if(disFlag!=null) return isDisabled(disFlag);
 		}
 		if(CMClass.getCommand(flag)!=null)
@@ -700,7 +699,7 @@ public class CMSecurity
 	{
 		final List<String> V=CMParms.parseCommas(vars.toUpperCase(),true);
 		disVars.clear();
-		for(String var : V)
+		for(final String var : V)
 		{
 			if(var.startsWith("COMMAND_"))
 				cmdDisVars.add(var.substring(8));
@@ -729,7 +728,7 @@ public class CMSecurity
 			flag=flag.substring(flag.indexOf('_')+1);
 		else
 		{
-			DisFlag disFlag = (DisFlag)CMath.s_valueOf(CMSecurity.DisFlag.values(), flag);
+			final DisFlag disFlag = (DisFlag)CMath.s_valueOf(CMSecurity.DisFlag.values(), flag);
 			if(disFlag!=null)
 			{
 				setDisableVar(disFlag,delete);
@@ -794,7 +793,7 @@ public class CMSecurity
 		if((banned!=null)&&(banned.size()>0))
 		for(int b=0;b<banned.size();b++)
 		{
-			String str=banned.get(b);
+			final String str=banned.get(b);
 			if(str.length()>0)
 			{
 				if(str.equals("*")||((str.indexOf('*')<0))&&(str.equals(uplogin))) return true;
@@ -820,7 +819,7 @@ public class CMSecurity
 		{
 			for(int b=0;b<banned.size();b++)
 			{
-				String B=banned.get(b);
+				final String B=banned.get(b);
 				if((!B.equals(unBanMe))&&(B.trim().length()>0))
 					newBanned.append(B+"\n");
 			}
@@ -836,7 +835,7 @@ public class CMSecurity
 		{
 			for(int b=0;b<banned.size();b++)
 			{
-				String B=banned.get(b);
+				final String B=banned.get(b);
 				if(((b+1)!=unBanMe)&&(B.trim().length()>0))
 					newBanned.append(B+"\n");
 			}
@@ -852,7 +851,7 @@ public class CMSecurity
 		if((banned!=null)&&(banned.size()>0))
 		for(int b=0;b<banned.size();b++)
 		{
-			String B=banned.get(b);
+			final String B=banned.get(b);
 			if(B.equals(banMe))
 				return b;
 		}
@@ -917,10 +916,10 @@ public class CMSecurity
 
 	public static class SecPath
 	{
-		private String	path;
+		private final String	path;
 		private String  slashPath;
-		private boolean	isVfs;
-		private boolean	isAreaOnly;
+		private final boolean	isVfs;
+		private final boolean	isAreaOnly;
 		public SecPath(String path, boolean isVfs, boolean isAreaOnly)
 		{
 			this.path=path.trim();
@@ -940,7 +939,7 @@ public class CMSecurity
 
 	public static class SecGroup
 	{
-		private String				name;
+		private final String				name;
 		private Set<SecFlag> 		flags;
 		private List<SecGroup>		groups;
 		private List<SecPath>		paths;
@@ -973,14 +972,14 @@ public class CMSecurity
 			this.paths=paths;
 			this.jFlags=jFlags;
 			numAllFlags+=paths.size();
-			for(SecGroup g : groups) this.numAllFlags+= g.size();
+			for(final SecGroup g : groups) this.numAllFlags+= g.size();
 		}
 		//public SecGroup copyOf() // NOT ALLOWED -- flags are ok, but groups MUST be unmutable for internal changes!!
 		public boolean contains(String journalFlag)
 		{
 			if(jFlags.contains(journalFlag))
 				return true;
-			for(SecGroup group : groups)
+			for(final SecGroup group : groups)
 				if(group.contains(journalFlag))
 					return true;
 			return false;
@@ -991,20 +990,20 @@ public class CMSecurity
 				return true;
 			if(isSubOp && flags.contains(flag.getAreaAlias()))
 				return true;
-			for(SecGroup group : groups)
+			for(final SecGroup group : groups)
 				if(group.contains(flag, isSubOp))
 					return true;
 			return false;
 		}
 		public boolean containsAny(SecGroup group, boolean isSubOp)
 		{
-			for(SecFlag flag : group.flags)
+			for(final SecFlag flag : group.flags)
 				if(contains(flag, isSubOp))
 					return true;
-			for(String jflag : group.jFlags)
+			for(final String jflag : group.jFlags)
 				if(contains(jflag))
 					return true;
-			for(SecGroup g : group.groups)
+			for(final SecGroup g : group.groups)
 				if(g.containsAny(group, isSubOp))
 					return true;
 			return false;
@@ -1024,14 +1023,14 @@ public class CMSecurity
 		}
 		public String toString(char separatorChar)
 		{
-			StringBuilder str=new StringBuilder("");
-			for(SecFlag flag : flags)
+			final StringBuilder str=new StringBuilder("");
+			for(final SecFlag flag : flags)
 				str.append(flag.name()).append(separatorChar);
-			for(SecGroup grp : groups)
+			for(final SecGroup grp : groups)
 				str.append(grp.name).append(separatorChar);
-			for(SecPath path : paths)
+			for(final SecPath path : paths)
 				str.append(path.toString()).append(separatorChar);
-			for(String flag : jFlags)
+			for(final String flag : jFlags)
 				str.append(flag).append(separatorChar);
 			if(str.length()>0)
 				return str.toString().substring(0,str.length()-1);

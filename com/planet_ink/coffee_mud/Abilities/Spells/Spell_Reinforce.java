@@ -44,7 +44,7 @@ public class Spell_Reinforce extends Spell
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		Item target=getTarget(mob,null,givenTarget,commands,Wearable.FILTER_ANY);
+		final Item target=getTarget(mob,null,givenTarget,commands,Wearable.FILTER_ANY);
 		if(target==null) return false;
 		if(!target.subjectToWearAndTear())
 		{	mob.tell(target.name(mob)+" cannot be reinforced."); return false;}
@@ -55,10 +55,10 @@ public class Spell_Reinforce extends Spell
 		if(!super.invoke(mob,commands, givenTarget, auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,(((mob.phyStats().level()+(2*getXLEVELLevel(mob)))-target.phyStats().level())*5),auto);
+		final boolean success=proficiencyCheck(mob,(((mob.phyStats().level()+(2*getXLEVELLevel(mob)))-target.phyStats().level())*5),auto);
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),
 									(auto?"<T-NAME> begins to shimmer!"
 										 :"^S<S-NAME> incant(s) at <T-NAMESELF>!^?"));
 			if(mob.location().okMessage(mob,msg))

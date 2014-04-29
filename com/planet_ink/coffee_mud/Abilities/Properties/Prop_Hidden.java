@@ -53,7 +53,7 @@ public class Prop_Hidden extends Property
 		if(!(affected instanceof MOB))
 			return;
 
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		if(msg.amISource(mob))
 		{
@@ -81,7 +81,7 @@ public class Prop_Hidden extends Property
 		super.setMiscText(text);
 		if(!(affected instanceof MOB))
 		{
-			Vector parms=CMParms.parse(text.toUpperCase());
+			final Vector parms=CMParms.parse(text.toUpperCase());
 			unLocatable=parms.contains("UNLOCATABLE");
 		}
 	}

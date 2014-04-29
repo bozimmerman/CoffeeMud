@@ -39,15 +39,15 @@ public class BehaviorData extends StdWebMacro
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
-		java.util.Map<String,String> parms=parseParms(parm);
-		String last=httpReq.getUrlParameter("BEHAVIOR");
+		final java.util.Map<String,String> parms=parseParms(parm);
+		final String last=httpReq.getUrlParameter("BEHAVIOR");
 		if(last==null) return " @break@";
 		if(last.length()>0)
 		{
-			Behavior B=CMClass.getBehavior(last);
+			final Behavior B=CMClass.getBehavior(last);
 			if(B!=null)
 			{
-				StringBuffer str=new StringBuffer("");
+				final StringBuffer str=new StringBuffer("");
 				if(parms.containsKey("HELP"))
 				{
 					StringBuilder s=CMLib.help().getHelpText("BEHAVIOR_"+B.ID(),null,true);

@@ -14,7 +14,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 
@@ -48,7 +47,7 @@ public class Song_Flight extends Song
 		if(!super.tick(ticking,tickID))
 			return false;
 
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		if(mob==null) return false;
 		if(mob==invoker) return true;
 		if(mob.amFollowing()!=invoker)
@@ -69,7 +68,7 @@ public class Song_Flight extends Song
 			return false;
 		}
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 		unsingAllByThis(mob,mob);
 		if(success)
 		{
@@ -82,17 +81,17 @@ public class Song_Flight extends Song
 
 			for(int v=0;v<commonRoomSet.size();v++)
 			{
-				Room R=(Room)commonRoomSet.elementAt(v);
-				String msgStr=getCorrectMsgString(R,str,v);
-				CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),msgStr);
+				final Room R=(Room)commonRoomSet.elementAt(v);
+				final String msgStr=getCorrectMsgString(R,str,v);
+				final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),msgStr);
 				if(R.okMessage(mob,msg))
 				{
-					Set<MOB> h=sendMsgAndGetTargets(mob, R, msg, givenTarget, auto);
+					final Set<MOB> h=sendMsgAndGetTargets(mob, R, msg, givenTarget, auto);
 					if(h==null) continue;
 
-					for(Iterator f=h.iterator();f.hasNext();)
+					for (final Object element : h)
 					{
-						MOB follower=(MOB)f.next();
+						final MOB follower=(MOB)element;
 						// malicious songs must not affect the invoker!
 						int affectType=CMMsg.MSG_CAST_VERBAL_SPELL;
 						if((castingQuality(mob,follower)==Ability.QUALITY_MALICIOUS)&&(follower!=mob))
@@ -101,7 +100,7 @@ public class Song_Flight extends Song
 
 						if((CMLib.flags().canBeHeardSpeakingBy(invoker,follower)&&(follower.fetchEffect(this.ID())==null)))
 						{
-							CMMsg msg2=CMClass.getMsg(mob,follower,this,affectType,null);
+							final CMMsg msg2=CMClass.getMsg(mob,follower,this,affectType,null);
 							if(R.okMessage(mob,msg2))
 							{
 								follower.location().send(mob,msg2);
@@ -111,7 +110,7 @@ public class Song_Flight extends Song
 									String direction="";
 									for(int d=0;d<7;d++)
 									{
-										Exit thisExit=follower.location().getExitInDir(d);
+										final Exit thisExit=follower.location().getExitInDir(d);
 										if(thisExit!=null)
 										{
 											if(thisExit.isOpen())

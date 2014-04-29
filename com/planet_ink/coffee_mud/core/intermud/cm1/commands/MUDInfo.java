@@ -68,7 +68,7 @@ public class MUDInfo extends CM1Command
 			else
 				req.sendMsg("[FAIL "+getHelp(req.getUser(), null, null)+"]");
 		}
-		catch(java.io.IOException ioe)
+		catch(final java.io.IOException ioe)
 		{
 			Log.errOut(className,ioe);
 			req.close();

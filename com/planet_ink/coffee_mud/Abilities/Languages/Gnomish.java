@@ -46,12 +46,12 @@ public class Gnomish extends StdLanguage
 	{
 		if(wordLists==null)
 		{
-			String[] one={"y"};
-			String[] two={"te","it","at","to"};
-			String[] three={"nep","tem","tit","nip","pop","pon","upo","wip","pin"};
-			String[] four={"peep","meep","neep","pein","nopo","popo","woop","weep","teep","teet"};
-			String[] five={"whemp","thwam","nippo","punno","upoon","teepe","tunno","ponno","twano","ywhap"};
-			String[] six={"tawhag","ponsol","paleep","ponpopol","niptittle","minwap","tinmipmip","niptemtem","wipwippoo"};
+			final String[] one={"y"};
+			final String[] two={"te","it","at","to"};
+			final String[] three={"nep","tem","tit","nip","pop","pon","upo","wip","pin"};
+			final String[] four={"peep","meep","neep","pein","nopo","popo","woop","weep","teep","teet"};
+			final String[] five={"whemp","thwam","nippo","punno","upoon","teepe","tunno","ponno","twano","ywhap"};
+			final String[] six={"tawhag","ponsol","paleep","ponpopol","niptittle","minwap","tinmipmip","niptemtem","wipwippoo"};
 			wordLists=new Vector<String[]>();
 			wordLists.add(one);
 			wordLists.add(two);

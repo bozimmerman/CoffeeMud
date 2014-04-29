@@ -50,7 +50,7 @@ public class Chant_SummonCold extends Chant
 	{
 		if(mob!=null)
 		{
-			Room R=mob.location();
+			final Room R=mob.location();
 			if(R!=null)
 			{
 				if(CMath.bset(weatherQue(R),WEATHERQUE_COLD))
@@ -74,15 +74,15 @@ public class Chant_SummonCold extends Chant
 		int size=mob.location().getArea().numberOfProperIDedRooms();
 		size=size/(mob.phyStats().level()+(2*super.getXLEVELLevel(mob)));
 		if(size<0) size=0;
-		boolean success=proficiencyCheck(mob,-size,auto);
+		final boolean success=proficiencyCheck(mob,-size,auto);
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"^JThe sky changes color!^?":"^S<S-NAME> chant(s) into the sky for cold!^?");
+			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"^JThe sky changes color!^?":"^S<S-NAME> chant(s) into the sky for cold!^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				Climate C=mob.location().getArea().getClimateObj();
-				Climate oldC=(Climate)C.copyOf();
+				final Climate C=mob.location().getArea().getClimateObj();
+				final Climate oldC=(Climate)C.copyOf();
 				switch(C.weatherType(mob.location()))
 				{
 				case Climate.WEATHER_BLIZZARD:

@@ -62,7 +62,7 @@ public class Thief_Shadowstrike extends ThiefSkill
 			{
 				if(CMLib.flags().canBeSeenBy(mob,(MOB)target))
 					return Ability.QUALITY_INDIFFERENT;
-				Item w=mob.fetchWieldedItem();
+				final Item w=mob.fetchWieldedItem();
 				if((w==null)||(w.minRange()>0)||(w.maxRange()>0))
 					return Ability.QUALITY_INDIFFERENT;
 				return Ability.QUALITY_MALICIOUS;
@@ -79,7 +79,7 @@ public class Thief_Shadowstrike extends ThiefSkill
 			mob.tell("Not while in combat!");
 			return false;
 		}
-		MOB target=getTarget(mob,commands,givenTarget);
+		final MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
 		if(CMLib.flags().isSitting(mob))
@@ -94,7 +94,7 @@ public class Thief_Shadowstrike extends ThiefSkill
 			mob.tell(target.name(mob)+" is watching you too closely.");
 			return false;
 		}
-		Item w=mob.fetchWieldedItem();
+		final Item w=mob.fetchWieldedItem();
 		if((w==null)||(w.minRange()>0)||(w.maxRange()>0))
 		{
 			mob.tell("You need a close melee weapon to shadowstrike.");
@@ -104,15 +104,15 @@ public class Thief_Shadowstrike extends ThiefSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
-		int code=CMMsg.MASK_MALICIOUS|CMMsg.MSG_THIEF_ACT;
-		String str=auto?"":"<S-NAME> strike(s) <T-NAMESELF> from the shadows!";
-		int otherCode=success?code:CMMsg.NO_EFFECT;
-		String otherStr=success?str:null;
-		CMMsg msg=CMClass.getMsg(mob,target,this,code,str,otherCode,otherStr,otherCode,otherStr);
+		final boolean success=proficiencyCheck(mob,0,auto);
+		final int code=CMMsg.MASK_MALICIOUS|CMMsg.MSG_THIEF_ACT;
+		final String str=auto?"":"<S-NAME> strike(s) <T-NAMESELF> from the shadows!";
+		final int otherCode=success?code:CMMsg.NO_EFFECT;
+		final String otherStr=success?str:null;
+		final CMMsg msg=CMClass.getMsg(mob,target,this,code,str,otherCode,otherStr,otherCode,otherStr);
 		if(mob.location().okMessage(mob,msg))
 		{
-			boolean alwaysInvis=CMath.bset(mob.basePhyStats().disposition(),PhyStats.IS_INVISIBLE);
+			final boolean alwaysInvis=CMath.bset(mob.basePhyStats().disposition(),PhyStats.IS_INVISIBLE);
 			if(!alwaysInvis) mob.basePhyStats().setDisposition(mob.basePhyStats().disposition()|PhyStats.IS_INVISIBLE);
 			mob.recoverPhyStats();
 			mob.location().send(mob,msg);
@@ -121,13 +121,13 @@ public class Thief_Shadowstrike extends ThiefSkill
 			mob.recoverPhyStats();
 			if(success)
 			{
-				MOB oldVictim=target.getVictim();
-				MOB oldVictim2=mob.getVictim();
+				final MOB oldVictim=target.getVictim();
+				final MOB oldVictim2=mob.getVictim();
 				if(oldVictim==mob) target.makePeace();
 				if(oldVictim2==target) mob.makePeace();
 				if(mob.fetchEffect("Thief_Hide")==null)
 				{
-					Ability hide=mob.fetchAbility("Thief_Hide");
+					final Ability hide=mob.fetchAbility("Thief_Hide");
 					if(hide!=null) hide.invoke(mob,null,false,asLevel);
 
 					mob.location().recoverRoomStats();

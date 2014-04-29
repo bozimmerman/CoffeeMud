@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 
@@ -51,32 +50,32 @@ public class Chant_SenseSentience extends Chant
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":"^S<S-NAME> chant(s) softly to <S-HIM-HERSELF>!^?");
+			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":"^S<S-NAME> chant(s) softly to <S-HIM-HERSELF>!^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				StringBuffer lines=new StringBuffer("^x");
+				final StringBuffer lines=new StringBuffer("^x");
 				lines.append(CMStrings.padRight("Name",25)+"| ");
 				lines.append(CMStrings.padRight("Location",17)+"^.^N\n\r");
 				TrackingLibrary.TrackingFlags flags;
 				flags = new TrackingLibrary.TrackingFlags()
 						.plus(TrackingLibrary.TrackingFlag.AREAONLY);
-				List<Room> checkSet=CMLib.tracking().getRadiantRooms(mob.location(),flags,50);
+				final List<Room> checkSet=CMLib.tracking().getRadiantRooms(mob.location(),flags,50);
 				if(!checkSet.contains(mob.location())) checkSet.add(mob.location());
-				for(Iterator<Room> r=checkSet.iterator();r.hasNext();)
+				for (final Room room : checkSet)
 				{
-					Room R=CMLib.map().getRoom(r.next());
+					final Room R=CMLib.map().getRoom(room);
 					if((((R.domainType()&Room.INDOORS)==0)
 						&&(R.domainType()!=Room.DOMAIN_OUTDOORS_CITY)
 						&&(R.domainType()!=Room.DOMAIN_OUTDOORS_SPACEPORT))
 					||(R==mob.location()))
 					for(int m=0;m<R.numInhabitants();m++)
 					{
-						MOB M=R.fetchInhabitant(m);
+						final MOB M=R.fetchInhabitant(m);
 						if((M!=null)&&(M.charStats().getStat(CharStats.STAT_INTELLIGENCE)>=2))
 						{
 							lines.append("^!"+CMStrings.padRight(M.name(mob),25)+"^?| ");

@@ -44,14 +44,14 @@ public class Prayer_MoralBalance extends Prayer
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		MOB target=this.getTarget(mob,commands,givenTarget);
+		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 		CMMsg msg2=null;
 		if((mob!=target)&&(!mob.getGroupMembers(new HashSet<MOB>()).contains(target)))
 			msg2=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto)|CMMsg.MASK_MALICIOUS,"<T-NAME> do(es) not seem to like <S-NAME> messing with <T-HIS-HER> head.");
@@ -62,7 +62,7 @@ public class Prayer_MoralBalance extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),(auto?"<T-NAME> feel(s) completely different about the world.":"^S<S-NAME> "+prayWord(mob)+" to bring balance to <T-NAMESELF>!^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),(auto?"<T-NAME> feel(s) completely different about the world.":"^S<S-NAME> "+prayWord(mob)+" to bring balance to <T-NAMESELF>!^?"));
 			if((mob.location().okMessage(mob,msg))
 			&&((msg2==null)||(mob.location().okMessage(mob,msg2))))
 			{
@@ -70,14 +70,14 @@ public class Prayer_MoralBalance extends Prayer
 				if((msg.value()<=0)&&((msg2==null)||(msg2.value()<=0)))
 				{
 					target.tell("Your views on the world suddenly change.");
-					Faction F=CMLib.factions().getFaction(CMLib.factions().AlignID());
+					final Faction F=CMLib.factions().getFaction(CMLib.factions().AlignID());
 					if(F!=null)
 					{
-					 	int bredth=F.maximum()-F.minimum();
-						int midpoint=F.minimum()+(bredth/2);
-						int distance=midpoint-target.fetchFaction(F.factionID());
-						int amt=target.fetchFaction(F.factionID())+(distance/8);
-						int change=amt-target.fetchFaction(F.factionID());
+					 	final int bredth=F.maximum()-F.minimum();
+						final int midpoint=F.minimum()+(bredth/2);
+						final int distance=midpoint-target.fetchFaction(F.factionID());
+						final int amt=target.fetchFaction(F.factionID())+(distance/8);
+						final int change=amt-target.fetchFaction(F.factionID());
 						CMLib.factions().postFactionChange(target,this, CMLib.factions().AlignID(),change);
 					}
 				}

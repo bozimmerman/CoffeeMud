@@ -48,8 +48,8 @@ public class RequestHandler implements CMRunnable
 	private final SocketChannel  chan;
 	private String				 user = null;
 	private PhysicalAgent		 target = null;
-	private SLinkedList<ByteBuffer>workingBuffers = new SLinkedList<ByteBuffer>();
-	private Map<String,Object> 	 dependents = new STreeMap<String,Object>();
+	private final SLinkedList<ByteBuffer>workingBuffers = new SLinkedList<ByteBuffer>();
+	private final Map<String,Object> 	 dependents = new STreeMap<String,Object>();
 	private byte[][]			 markBlocks = DEFAULT_MARK_BLOCKS;
 	private long				 MAX_IDLE_MILLIS = 10 * 60 * 1000;
 	private static final int 	 BUFFER_SIZE=4096;
@@ -73,23 +73,23 @@ public class RequestHandler implements CMRunnable
 	{
 		if((msg.startsWith("[OK")||msg.startsWith("[FAIL")||msg.startsWith("[MESSAGE")))
 			msg = CMStrings.replaceAllofAny(msg,DEFAULT_CRLF,' ');
-		byte[] bytes = (msg+"\r\n").getBytes();
-		ByteBuffer buf = ByteBuffer.wrap(bytes);
-		while(chan.isConnected() && chan.isOpen() && (chan.write(buf)>0))try{Thread.sleep(1);}catch(Exception e){}
+		final byte[] bytes = (msg+"\r\n").getBytes();
+		final ByteBuffer buf = ByteBuffer.wrap(bytes);
+		while(chan.isConnected() && chan.isOpen() && (chan.write(buf)>0))try{Thread.sleep(1);}catch(final Exception e){}
 	}
 
 	public void close()
 	{
 		closeMe=true;
-		try {chan.close();}catch(Exception e){}
+		try {chan.close();}catch(final Exception e){}
 	}
 
 	public void shutdown()
 	{
-		long time = System.currentTimeMillis();
-		try {chan.close();}catch(Exception e){}
+		final long time = System.currentTimeMillis();
+		try {chan.close();}catch(final Exception e){}
 		while((System.currentTimeMillis()-time<30000) && (isRunning))
-			try {Thread.sleep(1000);}catch(Exception e){}
+			try {Thread.sleep(1000);}catch(final Exception e){}
 	}
 
 	public void login(MOB M) { user=M.Name(); target=M; }
@@ -138,11 +138,11 @@ public class RequestHandler implements CMRunnable
 					for(int i=0;i<buffer.limit();i++)
 						if((containIndex=CMParms.containIndex(buffer, markBlocks, i))>=0)
 						{
-							int containIndexLength = markBlocks[containIndex].length;
+							final int containIndexLength = markBlocks[containIndex].length;
 							workingBuffers.remove(buffer);
 							if(i>0)
 							{
-								ByteBuffer prevBuf = ByteBuffer.allocate(BUFFER_SIZE);
+								final ByteBuffer prevBuf = ByteBuffer.allocate(BUFFER_SIZE);
 								prevBuf.put(buffer.array(),0,i);
 								prevBuf.flip();
 								workingBuffers.add(prevBuf);
@@ -163,10 +163,10 @@ public class RequestHandler implements CMRunnable
 							buffer.flip();
 
 							int fullSize = 0;
-							for(ByteBuffer buf : workingBuffers)
+							for(final ByteBuffer buf : workingBuffers)
 								fullSize += buf.limit();
-							ByteBuffer finalBuf=ByteBuffer.allocate(fullSize);
-							for(ByteBuffer buf : workingBuffers)
+							final ByteBuffer finalBuf=ByteBuffer.allocate(fullSize);
+							for(final ByteBuffer buf : workingBuffers)
 							{
 								buf.rewind();
 								finalBuf.put(buf);
@@ -193,13 +193,13 @@ public class RequestHandler implements CMRunnable
 					}
 				}
 				buffer.flip();
-				try{Thread.sleep(1);}catch(Exception e){}
+				try{Thread.sleep(1);}catch(final Exception e){}
 			}
-			catch(IOException ioe)
+			catch(final IOException ioe)
 			{
 				Log.errOut("CM1Hndlr",runnableName+": "+ioe.getMessage());
 			}
-			catch(Exception e)
+			catch(final Exception e)
 			{
 				Log.errOut("CM1Hndlr",runnableName+": "+e.getMessage());
 				Log.errOut("CM1Hndlr",e);
@@ -217,9 +217,9 @@ public class RequestHandler implements CMRunnable
 	{
 		synchronized(this)
 		{
-			byte[][] newBlocks=new byte[msgs.length][];
+			final byte[][] newBlocks=new byte[msgs.length][];
 			int i=0;
-			for(String s : msgs)
+			for(final String s : msgs)
 				newBlocks[i++]=s.getBytes();
 			markBlocks=newBlocks;
 		}

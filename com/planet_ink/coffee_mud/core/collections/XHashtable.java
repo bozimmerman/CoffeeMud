@@ -56,7 +56,7 @@ public class XHashtable<K,V> extends Hashtable<K,V>
 	public synchronized void removeAll(List<K> E)
 	{
 		if(E!=null)
-			for(K o : E)
+			for(final K o : E)
 				remove(o);
 	}
 }

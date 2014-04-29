@@ -46,7 +46,7 @@ public class Chant_GrowForest extends Chant
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		int type=mob.location().domainType();
+		final int type=mob.location().domainType();
 		if(((type&Room.INDOORS)>0)
 			||(type==Room.DOMAIN_OUTDOORS_AIR)
 			||(type==Room.DOMAIN_OUTDOORS_CITY)
@@ -59,15 +59,15 @@ public class Chant_GrowForest extends Chant
 		}
 
 		int material=-1;
-		Vector choices=new Vector();
-		String s=CMParms.combine(commands,0);
+		final Vector choices=new Vector();
+		final String s=CMParms.combine(commands,0);
 
-		List<Integer> codes = RawMaterial.CODES.COMPOSE_RESOURCES(RawMaterial.MATERIAL_WOODEN);
-		for(Integer code : codes)
+		final List<Integer> codes = RawMaterial.CODES.COMPOSE_RESOURCES(RawMaterial.MATERIAL_WOODEN);
+		for(final Integer code : codes)
 			if(code.intValue()!=RawMaterial.RESOURCE_WOOD)
 			{
 				choices.addElement(code);
-				String desc=RawMaterial.CODES.NAME(code.intValue());
+				final String desc=RawMaterial.CODES.NAME(code.intValue());
 				if((s.length()>0)&&(CMLib.english().containsString(desc,s)))
 					material=code.intValue();
 			}
@@ -82,16 +82,16 @@ public class Chant_GrowForest extends Chant
 
 		if(material<0) return false;
 
-		String shortName=RawMaterial.CODES.NAME(material);
+		final String shortName=RawMaterial.CODES.NAME(material);
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		// now see if it worked
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":"^S<S-NAME> chant(s) to the ground.^?");
+			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":"^S<S-NAME> chant(s) to the ground.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

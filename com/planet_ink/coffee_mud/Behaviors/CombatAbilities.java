@@ -94,8 +94,8 @@ public class CombatAbilities extends StdBehavior
 			}
 			return;
 		}
-		Vector<String> V=CMParms.parse(theParms.trim());
-		Vector classes=new Vector();
+		final Vector<String> V=CMParms.parse(theParms.trim());
+		final Vector classes=new Vector();
 		for(int v=0;v<V.size();v++)
 		{
 			C=CMClass.findCharClass(V.elementAt(v));
@@ -123,10 +123,10 @@ public class CombatAbilities extends StdBehavior
 
 	protected String getParmsMinusCombatMode()
 	{
-		Vector<String> V=CMParms.parse(getParms());
+		final Vector<String> V=CMParms.parse(getParms());
 		for(int v=V.size()-1;v>=0;v--)
 		{
-			String s=V.elementAt(v).toUpperCase();
+			final String s=V.elementAt(v).toUpperCase();
 			for(int i=0;i<names.length;i++)
 				if(names[i].startsWith(s))
 				{
@@ -139,13 +139,13 @@ public class CombatAbilities extends StdBehavior
 
 	protected void newCharacter(MOB mob)
 	{
-		Set<Ability> oldAbilities=new HashSet<Ability>();
-		for(Enumeration<Ability> a=mob.allAbilities();a.hasMoreElements();)
+		final Set<Ability> oldAbilities=new HashSet<Ability>();
+		for(final Enumeration<Ability> a=mob.allAbilities();a.hasMoreElements();)
 		{
-			Ability A=a.nextElement();
+			final Ability A=a.nextElement();
 			if(A!=null)
 			{
-				int proficiency=CMLib.ableMapper().getMaxProficiency(mob,true,A.ID())/2;
+				final int proficiency=CMLib.ableMapper().getMaxProficiency(mob,true,A.ID())/2;
 				if(A.proficiency()<proficiency)
 					A.setProficiency(proficiency);
 				oldAbilities.add(A);
@@ -154,7 +154,7 @@ public class CombatAbilities extends StdBehavior
 		mob.charStats().getCurrentClass().startCharacter(mob,true,false);
 		for(int a=0;a<mob.numAllAbilities();a++)
 		{
-			Ability newOne=mob.fetchAbility(a);
+			final Ability newOne=mob.fetchAbility(a);
 			if((newOne!=null)&&(!oldAbilities.contains(newOne)))
 			{
 				if(!CMLib.ableMapper().qualifiesByLevel(mob,newOne))
@@ -171,7 +171,7 @@ public class CombatAbilities extends StdBehavior
 						newOne.setProficiency(newProf);
 						if(newOne.isAutoInvoked())
 						{
-							Ability newAffect=mob.fetchEffect(newOne.ID());
+							final Ability newAffect=mob.fetchEffect(newOne.ID());
 							if(newAffect!=null)
 								newAffect.setProficiency(newProf);
 						}
@@ -223,7 +223,7 @@ public class CombatAbilities extends StdBehavior
 				final CharClass C=mob.charStats().getCurrentClass();
 				final int[] stats=C.maxStatAdjustments();
 				int numStats=0;
-				for(int stat : CharStats.CODES.BASE())
+				for(final int stat : CharStats.CODES.BASE())
 					if(stats[stat]!=0)
 						numStats++;
 				if(numStats==0) return;
@@ -231,8 +231,8 @@ public class CombatAbilities extends StdBehavior
 				if(mob.phyStats().level()>5)
 					numPoints=5+((mob.phyStats().level()-5)/8);
 				numPoints=numPoints/numStats;
-				StringBuilder parm=new StringBuilder("");
-				for(int stat : CharStats.CODES.BASE())
+				final StringBuilder parm=new StringBuilder("");
+				for(final int stat : CharStats.CODES.BASE())
 					if(stats[stat]!=0)
 						parm.append(CMStrings.limit(CharStats.CODES.NAME(stat),3)).append("=").append(numPoints).append(" ");
 				if(parm.length()>0)
@@ -260,12 +260,12 @@ public class CombatAbilities extends StdBehavior
 				aggro.put(attackerM, I);
 			}
 			I[0]+=amt;
-			MOB curVictim=hostM.getVictim();
+			final MOB curVictim=hostM.getVictim();
 			if((curVictim==attackerM)
 			||(curVictim==null)
 			||(!aggro.containsKey(curVictim)))
 				return;
-			int vicAmt=aggro.get(curVictim)[0];
+			final int vicAmt=aggro.get(curVictim)[0];
 			if((I[0]>(vicAmt*1.5))
 			&&(I[0]>hostM.maxState().getHitPoints()/10)
 			&&(!attackerM.amDead())
@@ -277,10 +277,10 @@ public class CombatAbilities extends StdBehavior
 				else
 				{
 					hostM.setVictim(attackerM);
-					for(MOB M : aggro.keySet())
+					for(final MOB M : aggro.keySet())
 					if(M!=attackerM)
 					{
-						int[] set=aggro.get(M);
+						final int[] set=aggro.get(M);
 						set[0]=set[0]/2;
 					}
 				}
@@ -293,10 +293,10 @@ public class CombatAbilities extends StdBehavior
 	{
 		if(host instanceof MOB)
 		{
-			MOB mob=(MOB)host;
+			final MOB mob=(MOB)host;
 			if(mob.isInCombat())
 			{
-				MOB victim=mob.getVictim();
+				final MOB victim=mob.getVictim();
 				if(victim==null){}else
 				if((msg.targetMinor()==CMMsg.TYP_DAMAGE)
 				&&(msg.value()>0)
@@ -358,7 +358,7 @@ public class CombatAbilities extends StdBehavior
 		skillsNever=null;
 		wandUseCheck[0]=false;
 		proficient=false;
-		Vector<String> V=CMParms.parse(getParms());
+		final Vector<String> V=CMParms.parse(getParms());
 		String s=null;
 		Ability A=null;
 		for(int v=0;v<V.size();v++)
@@ -392,7 +392,7 @@ public class CombatAbilities extends StdBehavior
 	{
 		// insures we only try this once!
 		Behavior B;
-		for(Enumeration<Behavior> e=mob.behaviors();e.hasMoreElements();)
+		for(final Enumeration<Behavior> e=mob.behaviors();e.hasMoreElements();)
 		{
 			B=e.nextElement();
 			if((B==null)||(B==this))
@@ -530,7 +530,7 @@ public class CombatAbilities extends StdBehavior
 				tryA.setProficiency(100);
 			else
 			{
-				int qualLevel=CMLib.ableMapper().qualifyingLevel(mob,tryA);
+				final int qualLevel=CMLib.ableMapper().qualifyingLevel(mob,tryA);
 				if(qualLevel<=0)
 					tryA.setProficiency(75);
 				else
@@ -600,7 +600,7 @@ public class CombatAbilities extends StdBehavior
 				{
 					useSkill(mob,null,null);
 				}
-				catch(CMException cme){}
+				catch(final CMException cme){}
 			}
 			return true;
 		}
@@ -621,7 +621,7 @@ public class CombatAbilities extends StdBehavior
 		if(!wandUseCheck[0])
 		{
 			wandUseCheck[0]=true;
-			Ability wandUse=mob.fetchAbility("Skill_WandUse");
+			final Ability wandUse=mob.fetchAbility("Skill_WandUse");
 			wandUseCheck[1]=false;
 			if(wandUse!=null)
 			{
@@ -716,7 +716,7 @@ public class CombatAbilities extends StdBehavior
 				int winAmt=0;
 				MOB winMOB = null;
 				int vicAmt=0;
-				int minAmt=mob.maxState().getHitPoints()/10;
+				final int minAmt=mob.maxState().getHitPoints()/10;
 				if(aggro.containsKey(victim))
 					vicAmt = aggro.get(victim)[0];
 				int[] amt = null;
@@ -752,7 +752,7 @@ public class CombatAbilities extends StdBehavior
 		{
 			skillUsed=useSkill(mob, victim, leader)!=null;
 		}
-		catch(CMException cme) { return true;}
+		catch(final CMException cme) { return true;}
 
 		Ability A=null;
 		// if a skill use failed, take a stab at wanding
@@ -764,7 +764,7 @@ public class CombatAbilities extends StdBehavior
 		{
 			if((weaponSet.wand==null)&&(weaponSet.offHandWand!=null)&&(weaponSet.offHandWand.canWear(mob,Wearable.WORN_HELD)))
 			{
-				Vector V=new Vector();
+				final Vector V=new Vector();
 				V.addElement("hold");
 				V.addElement(weaponSet.offHandWand.name());
 				mob.doCommand(V,Command.METAFLAG_FORCED);
@@ -788,7 +788,7 @@ public class CombatAbilities extends StdBehavior
 						target=null;
 					if(target!=null)
 					{
-						Vector V=new Vector();
+						final Vector V=new Vector();
 						V.addElement("sayto");
 						V.addElement(target.name());
 						V.addElement(((Wand)weaponSet.wand).magicWord());
@@ -807,7 +807,7 @@ public class CombatAbilities extends StdBehavior
 	{
 		if(CombatAbilities.CODES==null)
 		{
-			String[] superCodes=super.getStatCodes();
+			final String[] superCodes=super.getStatCodes();
 			CODES=new String[superCodes.length+8];
 			for(int c=0;c<superCodes.length;c++)
 				CODES[c]=superCodes[c];
@@ -825,7 +825,7 @@ public class CombatAbilities extends StdBehavior
 	@Override
 	protected int getCodeNum(String code)
 	{
-		String[] CODES=getStatCodes();
+		final String[] CODES=getStatCodes();
 		for(int i=0;i<CODES.length;i++)
 			if(code.equalsIgnoreCase(CODES[i])) return i;
 		return -1;

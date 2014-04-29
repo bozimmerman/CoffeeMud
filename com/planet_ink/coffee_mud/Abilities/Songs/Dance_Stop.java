@@ -53,7 +53,7 @@ public class Dance_Stop extends Dance
 		boolean foundOne=false;
 		for(int a=0;a<mob.numEffects();a++) // personal affects
 		{
-			Ability A=mob.fetchEffect(a);
+			final Ability A=mob.fetchEffect(a);
 			if((A!=null)&&(A instanceof Dance))
 				foundOne=true;
 		}

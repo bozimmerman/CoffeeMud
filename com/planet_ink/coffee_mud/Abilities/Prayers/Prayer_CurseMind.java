@@ -54,10 +54,10 @@ public class Prayer_CurseMind extends Prayer
 
 		if(!super.tick(ticking,tickID))
 			return false;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		if(mob.isInCombat())
 		{
-			MOB newvictim=mob.location().fetchRandomInhabitant();
+			final MOB newvictim=mob.location().fetchRandomInhabitant();
 			if(newvictim!=mob) mob.setVictim(newvictim);
 		}
 		return super.tick(ticking,tickID);
@@ -69,7 +69,7 @@ public class Prayer_CurseMind extends Prayer
 		// undo the affects of this spell
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		super.unInvoke();
 		if(canBeUninvoked())
@@ -87,7 +87,7 @@ public class Prayer_CurseMind extends Prayer
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		MOB target=this.getTarget(mob,commands,givenTarget);
+		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
 		// the invoke method for spells receives as
@@ -97,7 +97,7 @@ public class Prayer_CurseMind extends Prayer
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		int adjustment=target.phyStats().level()-(mob.phyStats().level()+super.getXLEVELLevel(mob));
+		final int adjustment=target.phyStats().level()-(mob.phyStats().level()+super.getXLEVELLevel(mob));
 		boolean success=proficiencyCheck(mob,-adjustment,auto);
 
 		if(success)
@@ -107,8 +107,8 @@ public class Prayer_CurseMind extends Prayer
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> feel(s) <T-HIS-HER> mind become cursed!":"^S<S-NAME> "+prayForWord(mob)+" to curse the mind of <T-NAMESELF>!^?");
-			CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_MIND|(auto?CMMsg.MASK_ALWAYS:0),null);
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> feel(s) <T-HIS-HER> mind become cursed!":"^S<S-NAME> "+prayForWord(mob)+" to curse the mind of <T-NAMESELF>!^?");
+			final CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_MIND|(auto?CMMsg.MASK_ALWAYS:0),null);
 			if((mob.location().okMessage(mob,msg))&&(mob.location().okMessage(mob,msg2)))
 			{
 				mob.location().send(mob,msg);

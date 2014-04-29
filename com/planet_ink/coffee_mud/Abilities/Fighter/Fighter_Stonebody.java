@@ -55,7 +55,7 @@ public class Fighter_Stonebody extends FighterSkill
 		if(!(affected instanceof MOB))
 			return true;
 
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		if(msg.amITarget(mob)
 		&&(CMLib.flags().aliveAwakeMobile(mob,true))
 		&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
@@ -65,8 +65,8 @@ public class Fighter_Stonebody extends FighterSkill
 		&&(mob.rangeToTarget()==0)
 		&&((mob.fetchAbility(ID())==null)||proficiencyCheck(null,-85+mob.charStats().getStat(CharStats.STAT_CONSTITUTION),false)))
 		{
-			float f=getXLEVELLevel(mob);
-			int regain=(int)Math.round(CMath.mul(CMath.div(proficiency(),100.0),2.0+(0.15*f)));
+			final float f=getXLEVELLevel(mob);
+			final int regain=(int)Math.round(CMath.mul(CMath.div(proficiency(),100.0),2.0+(0.15*f)));
 			msg.setValue(msg.value()-regain);
 		}
 		return true;
@@ -80,7 +80,7 @@ public class Fighter_Stonebody extends FighterSkill
 		if(!(affected instanceof MOB))
 			return;
 
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		if((msg.amITarget(mob))
 		&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
 		&&(regain>0))

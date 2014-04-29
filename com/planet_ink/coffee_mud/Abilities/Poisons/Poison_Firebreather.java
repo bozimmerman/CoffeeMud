@@ -52,8 +52,8 @@ public class Poison_Firebreather extends Poison_Liquor
 		if((affected==null)||(invoker==null)) return false;
 		if(!(affected instanceof MOB)) return super.tick(ticking,tickID);
 
-		MOB mob=(MOB)affected;
-		Room room=mob.location();
+		final MOB mob=(MOB)affected;
+		final Room room=mob.location();
 		if((CMLib.dice().rollPercentage()<drunkness)&&(CMLib.flags().aliveAwakeMobile(mob,true))&&(room!=null))
 		{
 			if(CMLib.dice().rollPercentage()<40)
@@ -61,13 +61,13 @@ public class Poison_Firebreather extends Poison_Liquor
 				room.show(mob,null,this,CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> belch(es) fire!"+CMLib.protocol().msp("fireball.wav",20));
 				for(int i=0;i<room.numInhabitants();i++)
 				{
-					MOB target=room.fetchInhabitant(i);
+					final MOB target=room.fetchInhabitant(i);
 
 					// it worked, so build a copy of this ability,
 					// and add it to the affects list of the
 					// affected MOB.  Then tell everyone else
 					// what happened.
-					CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_FIRE,null);
+					final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_FIRE,null);
 					if((mob!=target)&&(mob.mayPhysicallyAttack(target))&&(room.okMessage(mob,msg)))
 					{
 						room.send(mob,msg);

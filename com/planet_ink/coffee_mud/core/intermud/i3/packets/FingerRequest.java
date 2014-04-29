@@ -48,7 +48,7 @@ public class FingerRequest extends Packet
 			target_mud=(String)v.elementAt(4);
 			target_name=(String)v.elementAt(6);
 		}
-		catch( ClassCastException e )
+		catch( final ClassCastException e )
 		{
 			throw new InvalidPacketException();
 		}
@@ -66,7 +66,7 @@ public class FingerRequest extends Packet
 	@Override
 	public String toString()
 	{
-		String str="({\"finger-req\",5,\"" + I3Server.getMudName() +
+		final String str="({\"finger-req\",5,\"" + I3Server.getMudName() +
 			   "\",\"" + sender_name + "\",\"" + target_mud + "\",0,\"" + target_name + "\",})";
 		return str;
 	}

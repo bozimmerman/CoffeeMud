@@ -54,7 +54,7 @@ public class Fire extends StdCommand
 			mob.tell("Fire whom?");
 		else
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,null,CMMsg.MSG_SPEAK,"^T<S-NAME> say(s) to <T-NAMESELF> 'You are fired!'^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,null,CMMsg.MSG_SPEAK,"^T<S-NAME> say(s) to <T-NAMESELF> 'You are fired!'^?");
 			if(mob.location().okMessage(mob,msg))
 				mob.location().send(mob,msg);
 		}

@@ -60,7 +60,7 @@ public class Fighter_ImprovedShieldDefence extends FighterSkill
 		if(!(affected instanceof MOB))
 			return;
 
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		if((msg.amITarget(mob))
 		&&(msg.targetMinor()==CMMsg.TYP_WEAPONATTACK)
@@ -82,7 +82,7 @@ public class Fighter_ImprovedShieldDefence extends FighterSkill
 		if((amountOfShieldArmor<0)&&(tickID==Tickable.TICKID_MOB)&&(ticking instanceof MOB))
 		{
 			amountOfShieldArmor=0;
-			for(Enumeration<Item> i=((MOB)ticking).items(); i.hasMoreElements(); )
+			for(final Enumeration<Item> i=((MOB)ticking).items(); i.hasMoreElements(); )
 			{
 				final Item I=i.nextElement();
 				if((I instanceof Shield)

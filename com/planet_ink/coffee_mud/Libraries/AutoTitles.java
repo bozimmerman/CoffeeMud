@@ -47,15 +47,15 @@ public class AutoTitles extends StdLibrary implements AutoTitlesLibrary
 		while((x>=1)&&(row.charAt(x-1)=='\\')) x=row.indexOf('=',x+1);
 		if(x<0)
 			return "Error: Invalid line! Not comment, whitespace, and does not contain an = sign!";
-		String title=row.substring(0,x).trim();
-		String mask=row.substring(x+1).trim();
+		final String title=row.substring(0,x).trim();
+		final String mask=row.substring(x+1).trim();
 
 		if(title.length()==0)return "Error: Blank title: "+title+"="+mask+"!";
 		if(mask.length()==0)return "Error: Blank mask: "+title+"="+mask+"!";
 		if(addIfPossible)
 		{
 			if(autoTitles==null) reloadAutoTitles();
-			for(Triad<String,String,MaskingLibrary.CompiledZapperMask> triad : autoTitles)
+			for(final Triad<String,String,MaskingLibrary.CompiledZapperMask> triad : autoTitles)
 				if(triad.first.equalsIgnoreCase(title))
 					return "Error: Duplicate title: "+title+"="+mask+"!";
 			autoTitles.add(new Triad<String,String,MaskingLibrary.CompiledZapperMask>(title,mask,CMLib.masking().maskCompile(mask)));
@@ -67,7 +67,7 @@ public class AutoTitles extends StdLibrary implements AutoTitlesLibrary
 	{
 		if(autoTitles==null) reloadAutoTitles();
 		title=title.trim();
-		for(Triad<String,String,MaskingLibrary.CompiledZapperMask> triad : autoTitles)
+		for(final Triad<String,String,MaskingLibrary.CompiledZapperMask> triad : autoTitles)
 			if(triad.first.equalsIgnoreCase(title))
 				return true;
 		return false;
@@ -84,7 +84,7 @@ public class AutoTitles extends StdLibrary implements AutoTitlesLibrary
 	public String getAutoTitleMask(String title)
 	{
 		if(autoTitles==null) reloadAutoTitles();
-		for(Triad<String,String,MaskingLibrary.CompiledZapperMask> triad : autoTitles)
+		for(final Triad<String,String,MaskingLibrary.CompiledZapperMask> triad : autoTitles)
 			if(triad.first.equalsIgnoreCase(title))
 				return triad.second;
 		return "";
@@ -94,32 +94,32 @@ public class AutoTitles extends StdLibrary implements AutoTitlesLibrary
 	public boolean evaluateAutoTitles(MOB mob)
 	{
 		if(mob==null) return false;
-		PlayerStats P=mob.playerStats();
+		final PlayerStats P=mob.playerStats();
 		if(P==null) return false;
 		if(autoTitles==null) reloadAutoTitles();
 		String title=null;
 		MaskingLibrary.CompiledZapperMask mask=null;
 		int pdex=0;
-		List<String> ptV=P.getTitles();
+		final List<String> ptV=P.getTitles();
 		boolean somethingDone=false;
 		synchronized(ptV)
 		{
-			for(Triad<String,String,MaskingLibrary.CompiledZapperMask> triad : autoTitles)
+			for(final Triad<String,String,MaskingLibrary.CompiledZapperMask> triad : autoTitles)
 			{
 				mask=triad.third;
 				title=triad.first;
 				pdex=ptV.indexOf(title);
 				if(pdex<0)
 				{
-					String fixedTitle = CMStrings.removeColors(title).replace('\'', '`');
+					final String fixedTitle = CMStrings.removeColors(title).replace('\'', '`');
 					for(int p=ptV.size()-1;p>=0;p--)
 					{
 						try
 						{
-							String tit=CMStrings.removeColors(ptV.get(p)).replace('\'', '`');
+							final String tit=CMStrings.removeColors(ptV.get(p)).replace('\'', '`');
 							if(tit.equalsIgnoreCase(fixedTitle))
 							{ pdex=p; break;}
-						}catch(java.lang.IndexOutOfBoundsException ioe){}
+						}catch(final java.lang.IndexOutOfBoundsException ioe){}
 					}
 				}
 
@@ -148,14 +148,14 @@ public class AutoTitles extends StdLibrary implements AutoTitlesLibrary
 	@Override
 	public void dispossesTitle(String title)
 	{
-		List<String> list=CMLib.database().getUserList();
-		String fixedTitle = CMStrings.removeColors(title).replace('\'', '`');
-		for(String playerName : list)
+		final List<String> list=CMLib.database().getUserList();
+		final String fixedTitle = CMStrings.removeColors(title).replace('\'', '`');
+		for(final String playerName : list)
 		{
-			MOB M=CMLib.players().getLoadPlayer(playerName);
+			final MOB M=CMLib.players().getLoadPlayer(playerName);
 			if(M.playerStats()!=null)
 			{
-				List<String> ptV=M.playerStats().getTitles();
+				final List<String> ptV=M.playerStats().getTitles();
 				synchronized(ptV)
 				{
 					int pdex=ptV.indexOf(title);
@@ -165,10 +165,10 @@ public class AutoTitles extends StdLibrary implements AutoTitlesLibrary
 						{
 							try
 							{
-								String tit=CMStrings.removeColors(ptV.get(p)).replace('\'', '`');
+								final String tit=CMStrings.removeColors(ptV.get(p)).replace('\'', '`');
 								if(tit.equalsIgnoreCase(fixedTitle))
 								{ pdex=p; break;}
-							}catch(java.lang.IndexOutOfBoundsException ioe){}
+							}catch(final java.lang.IndexOutOfBoundsException ioe){}
 						}
 					}
 					if(pdex>=0)
@@ -186,19 +186,19 @@ public class AutoTitles extends StdLibrary implements AutoTitlesLibrary
 	public void reloadAutoTitles()
 	{
 		autoTitles=new TriadSVector<String,String,MaskingLibrary.CompiledZapperMask>();
-		List<String> V=Resources.getFileLineVector(Resources.getFileResource("titles.txt",true));
+		final List<String> V=Resources.getFileLineVector(Resources.getFileResource("titles.txt",true));
 		String WKID=null;
 		for(int v=0;v<V.size();v++)
 		{
-			String row=V.get(v);
+			final String row=V.get(v);
 			WKID=evaluateAutoTitle(row,true);
 			if(WKID==null) continue;
 			if(WKID.startsWith("Error: "))
 				Log.errOut("CharCreation",WKID);
 		}
-		for(Enumeration<MOB> e=CMLib.players().players();e.hasMoreElements();)
+		for(final Enumeration<MOB> e=CMLib.players().players();e.hasMoreElements();)
 		{
-			MOB M=e.nextElement();
+			final MOB M=e.nextElement();
 			if(M.playerStats()!=null)
 			{
 				if((evaluateAutoTitles(M))&&(!CMLib.flags().isInTheGame(M,true)))

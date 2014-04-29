@@ -37,7 +37,7 @@ public class Kitten extends StdMOB
 	public Kitten()
 	{
 		super();
-		Random randomizer = new Random(System.currentTimeMillis());
+		final Random randomizer = new Random(System.currentTimeMillis());
 
 		username="a kitten";
 		setDescription("It\\`s small, cute, and furry with four legs, and a long fluffy tail.");

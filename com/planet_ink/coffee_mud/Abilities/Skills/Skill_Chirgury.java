@@ -71,7 +71,7 @@ public class Skill_Chirgury extends StdSkill
 			return false;
 
 		}
-		String part=(String)commands.firstElement();
+		final String part=(String)commands.firstElement();
 		commands.removeElementAt(0);
 		int partCode=-1;
 		Object[] partSet=new Object[1];
@@ -86,13 +86,13 @@ public class Skill_Chirgury extends StdSkill
 		}
 		if(partCode<0)
 		{
-			StringBuilder str=new StringBuilder("");
-			for(Object[] o : parts)
+			final StringBuilder str=new StringBuilder("");
+			for(final Object[] o : parts)
 				str.append(", ").append(o[0].toString());
 			mob.tell("'"+part+"' is not a valid part to remove.  Try one of these: "+str.toString().substring(2));
 			return false;
 		}
-		Physical target=getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_UNWORNONLY,false,true);
+		final Physical target=getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_UNWORNONLY,false,true);
 		if(target==null) return false;
 
 		CharStats C=null;
@@ -107,7 +107,7 @@ public class Skill_Chirgury extends StdSkill
 		}
 
 		if(C!=null)
-			for(String raceCat : badRaceCats)
+			for(final String raceCat : badRaceCats)
 				if(C.getMyRace().racialCategory().equalsIgnoreCase(raceCat))
 				{
 					mob.tell(target.name(mob)+" doesn't have a "+part);
@@ -139,7 +139,7 @@ public class Skill_Chirgury extends StdSkill
 			return false;
 		}
 
-		Item w=mob.fetchWieldedItem();
+		final Item w=mob.fetchWieldedItem();
 		Weapon ww=null;
 		if((w==null)||(!(w instanceof Weapon)))
 		{
@@ -163,7 +163,7 @@ public class Skill_Chirgury extends StdSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
@@ -171,7 +171,7 @@ public class Skill_Chirgury extends StdSkill
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT|(auto?CMMsg.MASK_ALWAYS:0),auto?"":"^S<S-NAME> carefully perform(s) chirurgy upon <T-NAME>.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT|(auto?CMMsg.MASK_ALWAYS:0),auto?"":"^S<S-NAME> carefully perform(s) chirurgy upon <T-NAME>.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -224,13 +224,13 @@ public class Skill_Chirgury extends StdSkill
 				}
 				else
 				{
-					Ability preg=target.fetchEffect("Pregnancy");
+					final Ability preg=target.fetchEffect("Pregnancy");
 					if(preg!=null)
 					{
 						preg.unInvoke();
 						target.delEffect(preg);
 						preg.setAffectedOne(null);
-						DeadBody baby=(DeadBody)CMClass.getItem("GenCorpse");
+						final DeadBody baby=(DeadBody)CMClass.getItem("GenCorpse");
 						baby.setName(target.Name()+"'s bloody fetus");
 						baby.setDisplayText(target.Name()+"'s bloody fetus is lying here.");
 						baby.setTimeOfDeath(System.currentTimeMillis());
@@ -243,9 +243,9 @@ public class Skill_Chirgury extends StdSkill
 						baby.setPlayerCorpse(false);
 						baby.basePhyStats().setWeight(1);
 						baby.charStats().setStat(CharStats.STAT_GENDER,(CMLib.dice().rollPercentage()>50)?'F':'M');
-						for(int i: CharStats.CODES.BASE())
+						for(final int i: CharStats.CODES.BASE())
 							baby.charStats().setStat(i,1);
-						for(int i: CharStats.CODES.MAX())
+						for(final int i: CharStats.CODES.MAX())
 							baby.charStats().setStat(i,1);
 						baby.charStats().setMyRace(((MOB)target).charStats().getMyRace());
 						baby.recoverPhyStats();

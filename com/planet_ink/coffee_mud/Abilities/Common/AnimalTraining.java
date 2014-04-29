@@ -59,7 +59,7 @@ public class AnimalTraining extends CommonSkill
 		&&(affected instanceof MOB)
 		&&(tickID==Tickable.TICKID_MOB))
 		{
-			MOB mob=(MOB)affected;
+			final MOB mob=(MOB)affected;
 			if((taming==null)||(mob.location()==null))
 			{
 				messedUp=true;
@@ -86,7 +86,7 @@ public class AnimalTraining extends CommonSkill
 		{
 			if((affected!=null)&&(affected instanceof MOB))
 			{
-				MOB mob=(MOB)affected;
+				final MOB mob=(MOB)affected;
 				if((taming!=null)&&(!aborted))
 				{
 					MOB animal=null;
@@ -103,7 +103,7 @@ public class AnimalTraining extends CommonSkill
 							commonTell(mob,taming.name()+" is already tame.");
 						else
 						{
-							String s=" to "+skillto;
+							final String s=" to "+skillto;
 							mob.location().show(mob,null,getActivityMessageType(),"<S-NAME> manage(s) to train "+animal.name()+" "+s+".");
 							if(skill instanceof Behavior)
 								animal.addBehavior((Behavior)skill);
@@ -139,14 +139,14 @@ public class AnimalTraining extends CommonSkill
 		verb="training";
 		taming=null;
 		Item cage=null;
-		String[] skills={"WANDER", //0
+		final String[] skills={"WANDER", //0
 						 "HUNT", //1
 						 "KILL", //2
 						 "DOORGUARD" //3
 		};
 		String valid="Skills include:";
-		for(int i=0;i<skills.length;i++)
-			valid+=" "+skills[i];
+		for (final String skill2 : skills)
+			valid+=" "+skill2;
 		valid+=".";
 		if(commands.size()<2)
 		{
@@ -154,7 +154,7 @@ public class AnimalTraining extends CommonSkill
 			return false;
 		}
 		skill=null;
-		String what=(String)commands.lastElement();
+		final String what=(String)commands.lastElement();
 		commands.removeElementAt(commands.size()-1);
 		for(int i=0;i<skills.length;i++)
 		{
@@ -185,7 +185,7 @@ public class AnimalTraining extends CommonSkill
 			return false;
 		}
 
-		String str=CMParms.combine(commands,0);
+		final String str=CMParms.combine(commands,0);
 		MOB M=mob.location().fetchInhabitant(str);
 		taming=null;
 		if(M!=null)
@@ -212,7 +212,7 @@ public class AnimalTraining extends CommonSkill
 		{
 			for(int i=0;i<mob.location().numItems();i++)
 			{
-				Item I=mob.location().getItem(i);
+				final Item I=mob.location().getItem(i);
 				if((I!=null)
 				&&(I instanceof Container)
 				&&((((Container)I).containTypes()&Container.CONTAIN_CAGED)==Container.CONTAIN_CAGED))
@@ -220,8 +220,8 @@ public class AnimalTraining extends CommonSkill
 			}
 			if(commands.size()>0)
 			{
-				String last=(String)commands.lastElement();
-				Item I=mob.location().findItem(null,last);
+				final String last=(String)commands.lastElement();
+				final Item I=mob.location().findItem(null,last);
 				if((I!=null)
 				&&(I instanceof Container)
 				&&((((Container)I).containTypes()&Container.CONTAIN_CAGED)==Container.CONTAIN_CAGED))
@@ -256,9 +256,9 @@ public class AnimalTraining extends CommonSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 		messedUp=!proficiencyCheck(mob,-taming.phyStats().level()+(2*getXLEVELLevel(mob)),auto);
-		int duration=getDuration(35,mob,taming.phyStats().level(),10);
+		final int duration=getDuration(35,mob,taming.phyStats().level(),10);
 		verb="training "+M.name();
-		CMMsg msg=CMClass.getMsg(mob,null,this,getActivityMessageType(),"<S-NAME> start(s) training "+M.name()+".");
+		final CMMsg msg=CMClass.getMsg(mob,null,this,getActivityMessageType(),"<S-NAME> start(s) training "+M.name()+".");
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

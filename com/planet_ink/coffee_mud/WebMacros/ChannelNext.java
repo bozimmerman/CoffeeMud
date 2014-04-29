@@ -40,14 +40,14 @@ public class ChannelNext extends StdWebMacro
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
-		java.util.Map<String,String> parms=parseParms(parm);
+		final java.util.Map<String,String> parms=parseParms(parm);
 		String last=httpReq.getUrlParameter("CHANNEL");
 		if(parms.containsKey("RESET"))
 		{
 			if(last!=null) httpReq.removeUrlParameter("CHANNEL");
 			return "";
 		}
-		MOB mob = Authenticate.getAuthenticatedMob(httpReq);
+		final MOB mob = Authenticate.getAuthenticatedMob(httpReq);
 		boolean allChannels=false;
 		if((Thread.currentThread() instanceof MWThread)
 		&&CMath.s_bool(((MWThread)Thread.currentThread()).getConfig().getMiscProp("ADMIN"))
@@ -56,7 +56,7 @@ public class ChannelNext extends StdWebMacro
 		String lastID="";
 		for(int i=0;i<CMLib.channels().getNumChannels();i++)
 		{
-			String name=CMLib.channels().getChannel(i).name;
+			final String name=CMLib.channels().getChannel(i).name;
 			if((last==null)
 			||((last.length()>0)&&(last.equals(lastID))&&(!name.equals(lastID))))
 			{

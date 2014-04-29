@@ -40,8 +40,8 @@ public class Expire extends StdCommand
 	{
 		if(stats instanceof PlayerStats)
 		{
-			PlayerStats P=(PlayerStats)stats;
-			List<String> secFlags=CMParms.parseSemicolons(P.getSetSecurityFlags(null),true);
+			final PlayerStats P=(PlayerStats)stats;
+			final List<String> secFlags=CMParms.parseSemicolons(P.getSetSecurityFlags(null),true);
 			if(secFlags.contains(CMSecurity.SecFlag.NOEXPIRE.name()))
 			{
 				secFlags.remove(CMSecurity.SecFlag.NOEXPIRE.name());
@@ -51,7 +51,7 @@ public class Expire extends StdCommand
 		else
 		if(stats instanceof PlayerAccount)
 		{
-			PlayerAccount A=(PlayerAccount)stats;
+			final PlayerAccount A=(PlayerAccount)stats;
 			A.setFlag(PlayerAccount.FLAG_NOEXPIRE, false);
 		}
 	}
@@ -75,7 +75,7 @@ public class Expire extends StdCommand
 		else
 		if(commands.size()==1)
 		{
-			String playerName=CMStrings.capitalizeAndLower((String)commands.elementAt(0));
+			final String playerName=CMStrings.capitalizeAndLower((String)commands.elementAt(0));
 			if(CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)>1)
 				stats = CMLib.players().getLoadAccount(playerName);
 			else
@@ -91,7 +91,7 @@ public class Expire extends StdCommand
 				return false;
 			}
 			unprotect(stats);
-			long timeLeft=stats.getAccountExpiration()-System.currentTimeMillis();
+			final long timeLeft=stats.getAccountExpiration()-System.currentTimeMillis();
 			if(timeLeft<=0)
 				mob.tell("Player/Account '"+playerName+"' is now expired.");
 			else
@@ -101,7 +101,7 @@ public class Expire extends StdCommand
 		else
 		{
 			long days;
-			String howLong=(String)commands.elementAt(1);
+			final String howLong=(String)commands.elementAt(1);
 			if(howLong.equalsIgnoreCase("never"))
 				days=Long.MAX_VALUE;
 			else
@@ -115,7 +115,7 @@ public class Expire extends StdCommand
 			}
 			else
 				days=CMath.s_long(howLong)*1000*60*60*24;
-			String playerName=CMStrings.capitalizeAndLower((String)commands.elementAt(0));
+			final String playerName=CMStrings.capitalizeAndLower((String)commands.elementAt(0));
 			if(CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)>1)
 				stats = CMLib.players().getLoadAccount(playerName);
 			else
@@ -135,8 +135,8 @@ public class Expire extends StdCommand
 			{
 				if(stats instanceof PlayerStats)
 				{
-					PlayerStats P=(PlayerStats)stats;
-					List<String> secFlags=CMParms.parseSemicolons(P.getSetSecurityFlags(null),true);
+					final PlayerStats P=(PlayerStats)stats;
+					final List<String> secFlags=CMParms.parseSemicolons(P.getSetSecurityFlags(null),true);
 					if(!secFlags.contains(CMSecurity.SecFlag.NOEXPIRE.name()))
 					{
 						secFlags.add(CMSecurity.SecFlag.NOEXPIRE.name());
@@ -146,7 +146,7 @@ public class Expire extends StdCommand
 				else
 				if(stats instanceof PlayerAccount)
 				{
-					PlayerAccount A=(PlayerAccount)stats;
+					final PlayerAccount A=(PlayerAccount)stats;
 					A.setFlag(PlayerAccount.FLAG_NOEXPIRE, true);
 				}
 				mob.tell("Player/Account '"+playerName+"' is now protected from expiration.");
@@ -155,7 +155,7 @@ public class Expire extends StdCommand
 			{
 				unprotect(stats);
 				stats.setAccountExpiration(days+System.currentTimeMillis());
-				long timeLeft=stats.getAccountExpiration()-System.currentTimeMillis();
+				final long timeLeft=stats.getAccountExpiration()-System.currentTimeMillis();
 				if(timeLeft<=0)
 					mob.tell("Player/Account '"+playerName+"' is now expired.");
 				else

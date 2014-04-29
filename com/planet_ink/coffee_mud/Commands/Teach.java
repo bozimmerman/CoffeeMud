@@ -55,7 +55,7 @@ public class Teach extends StdCommand
 		commands.removeElementAt(0);
 
 
-		MOB student=mob.location().fetchInhabitant((String)commands.elementAt(0));
+		final MOB student=mob.location().fetchInhabitant((String)commands.elementAt(0));
 		if((student==null)||(!CMLib.flags().canBeSeenBy(student,mob)))
 		{
 			mob.tell("That person doesn't seem to be here.");
@@ -64,8 +64,8 @@ public class Teach extends StdCommand
 		commands.removeElementAt(0);
 
 
-		String abilityName=CMParms.combine(commands,0);
-		Ability realAbility=CMClass.findAbility(abilityName,student.charStats());
+		final String abilityName=CMParms.combine(commands,0);
+		final Ability realAbility=CMClass.findAbility(abilityName,student.charStats());
 		Ability myAbility=null;
 		if(realAbility!=null)
 			myAbility=mob.fetchAbility(realAbility.ID());
@@ -74,24 +74,24 @@ public class Teach extends StdCommand
 		if(myAbility==null)
 		{
 			ExpertiseLibrary.ExpertiseDefinition theExpertise=null;
-			List<ExpertiseDefinition> V=CMLib.expertises().myListableExpertises(mob);
-			for(Enumeration<String> exi=mob.expertises();exi.hasMoreElements();)
+			final List<ExpertiseDefinition> V=CMLib.expertises().myListableExpertises(mob);
+			for(final Enumeration<String> exi=mob.expertises();exi.hasMoreElements();)
 			{
-				Pair<String,Integer> e=mob.fetchExpertise(exi.nextElement());
-				List<String> codes = CMLib.expertises().getStageCodes(e.getKey());
+				final Pair<String,Integer> e=mob.fetchExpertise(exi.nextElement());
+				final List<String> codes = CMLib.expertises().getStageCodes(e.getKey());
 				if((codes==null)||(codes.size()==0))
 					V.add(CMLib.expertises().getDefinition(e.getKey()));
 				else
-				for(String ID : codes)
+				for(final String ID : codes)
 				{
-					ExpertiseLibrary.ExpertiseDefinition def=CMLib.expertises().getDefinition(ID);
+					final ExpertiseLibrary.ExpertiseDefinition def=CMLib.expertises().getDefinition(ID);
 					if((def != null) && (!V.contains(def)))
 						V.add(def);
 				}
 			}
 			for(int v=0;v<V.size();v++)
 			{
-				ExpertiseLibrary.ExpertiseDefinition def=V.get(v);
+				final ExpertiseLibrary.ExpertiseDefinition def=V.get(v);
 				if((def.name.equalsIgnoreCase(abilityName))
 				&&(theExpertise==null))
 					theExpertise=def;
@@ -99,7 +99,7 @@ public class Teach extends StdCommand
 			if(theExpertise==null)
 				for(int v=0;v<V.size();v++)
 				{
-					ExpertiseLibrary.ExpertiseDefinition def=V.get(v);
+					final ExpertiseLibrary.ExpertiseDefinition def=V.get(v);
 					if((CMLib.english().containsString(def.name,abilityName)
 					&&(theExpertise==null)))
 						theExpertise=def;

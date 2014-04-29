@@ -14,7 +14,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /**
@@ -36,7 +35,6 @@ import java.util.*;
  * @author FR - Jeremy Vyska; CM - Bo Zimmerman
  * @version 1.0.0.0
  */
-@SuppressWarnings("rawtypes")
 public class TargetPlayer extends ActiveTicker
 {
 	@Override public String ID(){return "TargetPlayer";}
@@ -60,14 +58,14 @@ public class TargetPlayer extends ActiveTicker
 	{
 		if(canAct(ticking,tickID))
 		{
-			MOB mob = (MOB) ticking;
+			final MOB mob = (MOB) ticking;
 			if (mob.getVictim() != null)
 			{
-				Set<MOB> theBadGuys = mob.getVictim().getGroupMembers(new HashSet<MOB>());
+				final Set<MOB> theBadGuys = mob.getVictim().getGroupMembers(new HashSet<MOB>());
 				MOB shouldFight = null;
-				for (Iterator e = theBadGuys.iterator(); e.hasNext(); )
+				for (final Object element : theBadGuys)
 				{
-					MOB consider = (MOB) e.next();
+					final MOB consider = (MOB) element;
 					if (consider.isMonster())
 						continue;
 					if (shouldFight == null)

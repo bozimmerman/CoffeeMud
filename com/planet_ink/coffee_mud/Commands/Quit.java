@@ -47,7 +47,7 @@ public class Quit extends StdCommand
 			mob.tell("Huh?");
 			return;
 		}
-		CMMsg msg=CMClass.getMsg(mob, CMMsg.MSG_DISPOSSESS, "^H<S-YOUPOSS> spirit has returned to <S-YOUPOSS> body...\n\r\n\r^N");
+		final CMMsg msg=CMClass.getMsg(mob, CMMsg.MSG_DISPOSSESS, "^H<S-YOUPOSS> spirit has returned to <S-YOUPOSS> body...\n\r\n\r^N");
 		final Room room=mob.location();
 		if((room==null)||(room.okMessage(mob, msg))||force)
 		{
@@ -87,8 +87,8 @@ public class Quit extends StdCommand
 					{
 						if(this.confirmed)
 						{
-							CMMsg msg=CMClass.getMsg(mob,null,CMMsg.MSG_QUIT,null);
-							Room R=mob.location();
+							final CMMsg msg=CMClass.getMsg(mob,null,CMMsg.MSG_QUIT,null);
+							final Room R=mob.location();
 							if((R!=null)&&(R.okMessage(mob,msg)))
 							{
 								CMLib.map().sendGlobalMessage(mob,CMMsg.TYP_QUIT, CMClass.getMsg(mob,null,CMMsg.MSG_QUIT,null));

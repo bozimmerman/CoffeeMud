@@ -54,7 +54,7 @@ public class Skill_ScrollCopy extends StdSkill
 			mob.tell("Memorize what from what?");
 			return false;
 		}
-		Item target=mob.fetchItem(null,Wearable.FILTER_UNWORNONLY,CMParms.combine(commands,1));
+		final Item target=mob.fetchItem(null,Wearable.FILTER_UNWORNONLY,CMParms.combine(commands,1));
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
 			mob.tell("You don't see '"+CMParms.combine(commands,1)+"' here.");
@@ -73,11 +73,11 @@ public class Skill_ScrollCopy extends StdSkill
 			return false;
 		}
 
-		List<Ability> theSpells=((Scroll)target).getSpells();
+		final List<Ability> theSpells=((Scroll)target).getSpells();
 		Ability thisSpell=null;
 		for(int a=0;a<theSpells.size();a++)
 		{
-			Ability A=theSpells.get(a);
+			final Ability A=theSpells.get(a);
 			if(CMLib.english().containsString(A.name(),((String)commands.elementAt(0))))
 			{
 				thisSpell=A;
@@ -92,7 +92,7 @@ public class Skill_ScrollCopy extends StdSkill
 		}
 
 		thisSpell=(Ability)thisSpell.copyOf();
-		MOB T=CMClass.getMOB("Teacher");
+		final MOB T=CMClass.getMOB("Teacher");
 		T.setName(target.name());
 		T.charStats().setStat(CharStats.STAT_GENDER,'N');
 		T.delAllAbilities();
@@ -104,7 +104,7 @@ public class Skill_ScrollCopy extends StdSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
@@ -115,7 +115,7 @@ public class Skill_ScrollCopy extends StdSkill
 				&&(CMLib.ableMapper().qualifyingClassLevel(mob,this)>=0)
 				&&(CMLib.ableMapper().qualifyingClassLevel(mob,thisSpell)>=0))
 				{
-					int xp=(int)Math.round(100.0*CMath.div(CMLib.ableMapper().lowestQualifyingLevel(thisSpell.ID()),CMLib.ableMapper().qualifyingClassLevel(mob,this)));
+					final int xp=(int)Math.round(100.0*CMath.div(CMLib.ableMapper().lowestQualifyingLevel(thisSpell.ID()),CMLib.ableMapper().qualifyingClassLevel(mob,this)));
 					if(xp>=0)
 						CMLib.leveler().postExperience(mob,null,null,xp,false);
 				}

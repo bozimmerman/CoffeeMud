@@ -61,7 +61,7 @@ public class Thief_SlipItem extends ThiefSkill
 			{
 				if((((MOB)target).amDead())||(!CMLib.flags().canBeSeenBy(target,mob)))
 					return Ability.QUALITY_INDIFFERENT;
-				Item w=mob.fetchWieldedItem();
+				final Item w=mob.fetchWieldedItem();
 				if((w==null)||(w.minRange()>0)||(w.maxRange()>0))
 					return Ability.QUALITY_INDIFFERENT;
 			}
@@ -108,7 +108,7 @@ public class Thief_SlipItem extends ThiefSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		Item stolen=target.fetchItem(null,Wearable.FILTER_WORNONLY,itemToSteal);
+		final Item stolen=target.fetchItem(null,Wearable.FILTER_WORNONLY,itemToSteal);
 		if((stolen==null)||(!CMLib.flags().canBeSeenBy(stolen,mob)))
 		{
 			mob.tell(target.name(mob)+" doesn't seem to be wearing '"+itemToSteal+"'.");
@@ -132,13 +132,13 @@ public class Thief_SlipItem extends ThiefSkill
 			levelDiff=-(levelDiff*((!CMLib.flags().canBeSeenBy(mob,target))?5:15));
 		else
 			levelDiff=-(levelDiff*((!CMLib.flags().canBeSeenBy(mob,target))?1:2));
-		boolean success=proficiencyCheck(mob,levelDiff,auto);
+		final boolean success=proficiencyCheck(mob,levelDiff,auto);
 
 		if(!success)
 		{
 			if(CMLib.dice().rollPercentage()>discoverChance)
 			{
-				CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_NOISYMOVEMENT,auto?"":"You fumble the attempt to slip "+stolen.name()+" off <T-NAME>; <T-NAME> spots you!",CMMsg.MSG_NOISYMOVEMENT,auto?"":"<S-NAME> tries to slip "+stolen.name()+" off you and fails!",CMMsg.MSG_NOISYMOVEMENT,auto?"":"<S-NAME> tries to slip "+stolen.name()+" off <T-NAME> and fails!");
+				final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_NOISYMOVEMENT,auto?"":"You fumble the attempt to slip "+stolen.name()+" off <T-NAME>; <T-NAME> spots you!",CMMsg.MSG_NOISYMOVEMENT,auto?"":"<S-NAME> tries to slip "+stolen.name()+" off you and fails!",CMMsg.MSG_NOISYMOVEMENT,auto?"":"<S-NAME> tries to slip "+stolen.name()+" off <T-NAME> and fails!");
 				if(mob.location().okMessage(mob,msg))
 					mob.location().send(mob,msg);
 			}
@@ -154,7 +154,7 @@ public class Thief_SlipItem extends ThiefSkill
 				else
 					str="<S-NAME> attempt(s) to slip "+stolen.name()+" off <T-HIM-HER>, but it doesn't appear "+target.charStats().heshe()+" has that in <T-HIS-HER> inventory!";
 
-			boolean alreadyFighting=(mob.getVictim()==target)||(target.getVictim()==mob);
+			final boolean alreadyFighting=(mob.getVictim()==target)||(target.getVictim()==mob);
 			String hisStr=str;
 			int hisCode=CMMsg.MSG_THIEF_ACT;
 			if(CMLib.dice().rollPercentage()<discoverChance)

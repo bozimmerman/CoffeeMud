@@ -82,12 +82,12 @@ public class Disease extends StdAbility implements DiseaseAffect
 		{
 			if(target instanceof MOB)
 			{
-				MOB targetMOB=(MOB)target;
+				final MOB targetMOB=(MOB)target;
 				if((CMLib.dice().rollPercentage()>targetMOB.charStats().getSave(CharStats.STAT_SAVE_DISEASE))
 				&&(targetMOB.location()!=null))
 				{
-					MOB following=targetMOB.amFollowing();
-					boolean doMe=invoke(diseased,targetMOB,true,0);
+					final MOB following=targetMOB.amFollowing();
+					final boolean doMe=invoke(diseased,targetMOB,true,0);
 					if(targetMOB.amFollowing()!=following)
 						targetMOB.setFollowing(following);
 					return doMe;
@@ -106,7 +106,7 @@ public class Disease extends StdAbility implements DiseaseAffect
 	{
 		if(mob==null) return false;
 		if(mob.location()==null) return false;
-		MOB target=mob.location().fetchRandomInhabitant();
+		final MOB target=mob.location().fetchRandomInhabitant();
 		return catchIt(mob,target);
 	}
 
@@ -117,7 +117,7 @@ public class Disease extends StdAbility implements DiseaseAffect
 			return;
 		if(affected instanceof MOB)
 		{
-			MOB mob=(MOB)affected;
+			final MOB mob=(MOB)affected;
 
 			super.unInvoke();
 			if(canBeUninvoked())
@@ -137,7 +137,7 @@ public class Disease extends StdAbility implements DiseaseAffect
 		if(affected==null) return;
 		if(affected instanceof MOB)
 		{
-			MOB mob=(MOB)affected;
+			final MOB mob=(MOB)affected;
 
 			// when this spell is on a MOBs Affected list,
 			// it should consistantly prevent the mob
@@ -177,7 +177,7 @@ public class Disease extends StdAbility implements DiseaseAffect
 		{
 			if(!processing)
 			{
-				Item myItem=(Item)affected;
+				final Item myItem=(Item)affected;
 				if(myItem.owner()==null) return;
 				processing=true;
 				switch(msg.sourceMinor())
@@ -222,7 +222,7 @@ public class Disease extends StdAbility implements DiseaseAffect
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		MOB target=this.getTarget(mob,commands,givenTarget);
+		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -230,10 +230,10 @@ public class Disease extends StdAbility implements DiseaseAffect
 		boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			MOB mvictim=mob.getVictim();
-			MOB tvictim=target.getVictim();
-			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_HANDS|(auto?CMMsg.MASK_ALWAYS:0)|CMMsg.MASK_MALICIOUS|CMMsg.TYP_DISEASE,"");
-			Room R=target.location();
+			final MOB mvictim=mob.getVictim();
+			final MOB tvictim=target.getVictim();
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_HANDS|(auto?CMMsg.MASK_ALWAYS:0)|CMMsg.MASK_MALICIOUS|CMMsg.TYP_DISEASE,"");
+			final Room R=target.location();
 			if((R!=null)&&(R.okMessage(target,msg)))
 			{
 				R.send(target,msg);

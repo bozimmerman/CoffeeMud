@@ -50,9 +50,9 @@ public class Chant_Feralness extends Chant
 		super.affectPhyStats(affected,affectableStats);
 		if((affected instanceof MOB)&&(((MOB)affected).charStats().getMyRace()!=((MOB)affected).baseCharStats().getMyRace()))
 		{
-			int adjLvl=adjustedLevel(invoker(),0);
-			int xlvl=getXLEVELLevel(invoker());
-			double bonus=CMath.mul(0.1,xlvl);
+			final int adjLvl=adjustedLevel(invoker(),0);
+			final int xlvl=getXLEVELLevel(invoker());
+			final double bonus=CMath.mul(0.1,xlvl);
 			if((((MOB)affected).fetchWieldedItem()==null))
 			{
 				affectableStats.setAttackAdjustment(affectableStats.attackAdjustment() + (2*adjLvl));
@@ -88,8 +88,8 @@ public class Chant_Feralness extends Chant
 		// undo the affects of this spell
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
-		int lostpoints=mob.maxState().getHitPoints()-mob.curState().getHitPoints();
+		final MOB mob=(MOB)affected;
+		final int lostpoints=mob.maxState().getHitPoints()-mob.curState().getHitPoints();
 		super.unInvoke();
 		if(canBeUninvoked())
 		{
@@ -144,13 +144,13 @@ public class Chant_Feralness extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"<T-NAME> go(es) feral!":"^S<S-NAME> chant(s) to <S-NAMESELF> and become(s) feral!^?");
+			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"<T-NAME> go(es) feral!":"^S<S-NAME> chant(s) to <S-NAMESELF> and become(s) feral!^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(!Druid_ShapeShift.isShapeShifted(mob))
 				{
-					Ability A=mob.fetchAbility("Druid_ShapeShift");
+					final Ability A=mob.fetchAbility("Druid_ShapeShift");
 					if(A!=null) A.invoke(mob,new Vector(),null,false,asLevel);
 				}
 				if(!Druid_ShapeShift.isShapeShifted(mob))

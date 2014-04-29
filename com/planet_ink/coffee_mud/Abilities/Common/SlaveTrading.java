@@ -47,7 +47,7 @@ public class SlaveTrading extends CommonSkill
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		commands.insertElementAt("SELL",0);
-		Environmental shopkeeper=CMLib.english().parseShopkeeper(mob,commands,"Sell whom to whom?");
+		final Environmental shopkeeper=CMLib.english().parseShopkeeper(mob,commands,"Sell whom to whom?");
 		if(shopkeeper==null) return false;
 		if(commands.size()==0)
 		{
@@ -55,8 +55,8 @@ public class SlaveTrading extends CommonSkill
 			return false;
 		}
 
-		String str=CMParms.combine(commands,0);
-		MOB M=mob.location().fetchInhabitant(str);
+		final String str=CMParms.combine(commands,0);
+		final MOB M=mob.location().fetchInhabitant(str);
 		if(M!=null)
 		{
 			if(!CMLib.flags().canBeSeenBy(M,mob))
@@ -85,7 +85,7 @@ public class SlaveTrading extends CommonSkill
 			return false;
 		if(proficiencyCheck(mob,0,auto))
 		{
-			CMMsg msg=CMClass.getMsg(mob,shopkeeper,M,CMMsg.MSG_SELL,"<S-NAME> sell(s) <O-NAME> to <T-NAME>.");
+			final CMMsg msg=CMClass.getMsg(mob,shopkeeper,M,CMMsg.MSG_SELL,"<S-NAME> sell(s) <O-NAME> to <T-NAME>.");
 			if(mob.location().okMessage(mob,msg))
 				mob.location().send(mob,msg);
 		}

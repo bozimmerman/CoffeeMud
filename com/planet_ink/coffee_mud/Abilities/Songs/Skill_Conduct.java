@@ -65,7 +65,7 @@ public class Skill_Conduct extends BardSkill
 		if((!auto)&&(!CMLib.flags().aliveAwakeMobileUnbound(mob,false)))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 		new Play().unplayAll(mob,mob);
 		if(success)
 		{
@@ -73,26 +73,26 @@ public class Skill_Conduct extends BardSkill
 			if((!auto)&&(mob.fetchEffect(this.ID())!=null))
 				str="^S<S-NAME> start(s) conducting the symphony over again.^?";
 
-			CMMsg msg=CMClass.getMsg(mob,null,this,(auto?CMMsg.MASK_ALWAYS:0)|CMMsg.MSG_CAST_SOMANTIC_SPELL,str);
+			final CMMsg msg=CMClass.getMsg(mob,null,this,(auto?CMMsg.MASK_ALWAYS:0)|CMMsg.MSG_CAST_SOMANTIC_SPELL,str);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				invoker=mob;
 
-				Set<MOB> h=properTargets(mob,givenTarget,auto);
+				final Set<MOB> h=properTargets(mob,givenTarget,auto);
 				if(h==null) return false;
 				if(!h.contains(mob)) h.add(mob);
 
-				for(Iterator f=h.iterator();f.hasNext();)
+				for (final Object element : h)
 				{
-					MOB follower=(MOB)f.next();
+					final MOB follower=(MOB)element;
 
 					// malicious songs must not affect the invoker!
 					int affectType=CMMsg.MSG_CAST_SOMANTIC_SPELL;
 					if(auto) affectType=affectType|CMMsg.MASK_ALWAYS;
 					if(CMLib.flags().canBeSeenBy(invoker,follower))
 					{
-						CMMsg msg2=CMClass.getMsg(mob,follower,this,affectType,null);
+						final CMMsg msg2=CMClass.getMsg(mob,follower,this,affectType,null);
 						if(mob.location().okMessage(mob,msg2))
 						{
 							follower.location().send(follower,msg2);

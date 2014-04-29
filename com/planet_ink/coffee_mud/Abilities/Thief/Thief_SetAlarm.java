@@ -93,28 +93,28 @@ public class Thief_SetAlarm extends ThiefSkill implements Trap
 			return false;
 		if(sprung)
 		{
-			Vector rooms=new Vector();
+			final Vector rooms=new Vector();
 			TrackingLibrary.TrackingFlags flags;
 			flags = new TrackingLibrary.TrackingFlags()
 					.plus(TrackingLibrary.TrackingFlag.OPENONLY)
 					.plus(TrackingLibrary.TrackingFlag.AREAONLY);
 			CMLib.tracking().getRadiantRooms(room1,rooms,flags,null,10+(getXLEVELLevel(invoker())*2),null);
 			CMLib.tracking().getRadiantRooms(room2,rooms,flags,null,10+(getXLEVELLevel(invoker())*2),null);
-			Vector mobsDone=new Vector();
+			final Vector mobsDone=new Vector();
 			room1.showHappens(CMMsg.MSG_NOISE,"A horrible alarm is going off here.");
 			room2.showHappens(CMMsg.MSG_NOISE,"A horrible alarm is going off here.");
 			for(int r=0;r<rooms.size();r++)
 			{
-				Room R=(Room)rooms.elementAt(r);
+				final Room R=(Room)rooms.elementAt(r);
 				if((R!=room1)&&(R!=room2))
 				{
-					int dir=CMLib.tracking().radiatesFromDir(R,rooms);
+					final int dir=CMLib.tracking().radiatesFromDir(R,rooms);
 					if(dir>=0)
 					{
 						R.showHappens(CMMsg.MSG_NOISE,"You hear a loud alarm "+Directions.getInDirectionName(dir)+".");
 						for(int i=0;i<R.numInhabitants();i++)
 						{
-							MOB M=R.fetchInhabitant(i);
+							final MOB M=R.fetchInhabitant(i);
 							if((M!=null)
 							&&(M.isMonster())
 							&&(!M.isInCombat())
@@ -139,9 +139,9 @@ public class Thief_SetAlarm extends ThiefSkill implements Trap
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		String whatToalarm=CMParms.combine(commands,0);
+		final String whatToalarm=CMParms.combine(commands,0);
 		Exit alarmThis=null;
-		int dirCode=Directions.getGoodDirectionCode(whatToalarm);
+		final int dirCode=Directions.getGoodDirectionCode(whatToalarm);
 		if(dirCode>=0)
 			alarmThis=mob.location().getExitInDir(dirCode);
 		if((alarmThis==null)||(!alarmThis.hasADoor()))
@@ -153,9 +153,9 @@ public class Thief_SetAlarm extends ThiefSkill implements Trap
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
-		CMMsg msg=CMClass.getMsg(mob,alarmThis,this,auto?CMMsg.MSG_OK_ACTION:CMMsg.MSG_THIEF_ACT,CMMsg.MASK_ALWAYS|CMMsg.MSG_THIEF_ACT,CMMsg.MSG_OK_ACTION,(auto?alarmThis.name()+" begins to glow!":"<S-NAME> attempt(s) to lay a trap on "+alarmThis.name()+"."));
+		final CMMsg msg=CMClass.getMsg(mob,alarmThis,this,auto?CMMsg.MSG_OK_ACTION:CMMsg.MSG_THIEF_ACT,CMMsg.MASK_ALWAYS|CMMsg.MSG_THIEF_ACT,CMMsg.MSG_OK_ACTION,(auto?alarmThis.name()+" begins to glow!":"<S-NAME> attempt(s) to lay a trap on "+alarmThis.name()+"."));
 		if(mob.location().okMessage(mob,msg))
 		{
 			invoker=mob;
@@ -174,7 +174,7 @@ public class Thief_SetAlarm extends ThiefSkill implements Trap
 				{
 					beneficialAffect(mob,alarmThis,asLevel,0);
 					mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> trigger(s) the alarm on accident!");
-					Trap T=(Trap)alarmThis.fetchEffect(ID());
+					final Trap T=(Trap)alarmThis.fetchEffect(ID());
 					if(T!=null) T.spring(mob);
 				}
 				else

@@ -42,11 +42,11 @@ public class CharClassData extends StdWebMacro
 
 	private String classDropDown(String old)
 	{
-		StringBuffer str=new StringBuffer("");
+		final StringBuffer str=new StringBuffer("");
 		str.append("<OPTION VALUE=\"\" "+((old.length()==0)?"SELECTED":"")+">None");
 		CharClass C2=null;
 		String C2ID=null;
-		for(Enumeration e=CMClass.charClasses();e.hasMoreElements();)
+		for(final Enumeration e=CMClass.charClasses();e.hasMoreElements();)
 		{
 			C2=(CharClass)e.nextElement();
 			C2ID="com.planet_ink.coffee_mud.CharClasses."+C2.ID();
@@ -67,11 +67,11 @@ public class CharClassData extends StdWebMacro
 
 	public static StringBuffer cabilities(MOB mob, CharClass E, HTTPRequest httpReq, java.util.Map<String,String> parms, int borderSize, String font)
 	{
-		StringBuffer str=new StringBuffer("");
-		DVector theclasses=new DVector(9);
-		boolean showPreReqs=httpReq.isUrlParameter("SHOWPREREQS")&&httpReq.getUrlParameter("SHOWPREREQS").equalsIgnoreCase("on");
-		boolean showMasks=httpReq.isUrlParameter("SHOWMASKS")&&httpReq.getUrlParameter("SHOWMASKS").equalsIgnoreCase("on");
-		boolean showParms=httpReq.isUrlParameter("SHOWPARMS")&&httpReq.getUrlParameter("SHOWPARMS").equalsIgnoreCase("on");
+		final StringBuffer str=new StringBuffer("");
+		final DVector theclasses=new DVector(9);
+		final boolean showPreReqs=httpReq.isUrlParameter("SHOWPREREQS")&&httpReq.getUrlParameter("SHOWPREREQS").equalsIgnoreCase("on");
+		final boolean showMasks=httpReq.isUrlParameter("SHOWMASKS")&&httpReq.getUrlParameter("SHOWMASKS").equalsIgnoreCase("on");
+		final boolean showParms=httpReq.isUrlParameter("SHOWPARMS")&&httpReq.getUrlParameter("SHOWPARMS").equalsIgnoreCase("on");
 		if(httpReq.isUrlParameter("CABLES1"))
 		{
 			int num=1;
@@ -104,15 +104,15 @@ public class CharClassData extends StdWebMacro
 		}
 		else
 		{
-			List<AbilityMapper.AbilityMapping> data1=CMLib.ableMapper().getUpToLevelListings(E.ID(),Integer.MAX_VALUE,true,false);
-			DVector sortedData1=new DVector(2);
+			final List<AbilityMapper.AbilityMapping> data1=CMLib.ableMapper().getUpToLevelListings(E.ID(),Integer.MAX_VALUE,true,false);
+			final DVector sortedData1=new DVector(2);
 			String aID=null;
 			int minLvl=Integer.MAX_VALUE;
 			int maxLvl=Integer.MIN_VALUE;
-			for(AbilityMapper.AbilityMapping able : data1)
+			for(final AbilityMapper.AbilityMapping able : data1)
 			{
 				aID=able.abilityID;
-				int qlvl=CMLib.ableMapper().getQualifyingLevel(E.ID(), false, aID);
+				final int qlvl=CMLib.ableMapper().getQualifyingLevel(E.ID(), false, aID);
 				if(qlvl>maxLvl) maxLvl=qlvl;
 				if(qlvl<minLvl) minLvl=qlvl;
 				sortedData1.addElement(aID,Integer.valueOf(qlvl));
@@ -141,8 +141,8 @@ public class CharClassData extends StdWebMacro
 		}
 		if(font==null) font="<FONT COLOR=WHITE><B>";
 		str.append("<TABLE WIDTH=100% BORDER="+borderSize+" CELLSPACING=0 CELLPADDING=0>");
-		String sfont=(parms.containsKey("FONT"))?("<FONT "+(parms.get("FONT"))+">"):"";
-		String efont=(parms.containsKey("FONT"))?"</FONT>":"";
+		final String sfont=(parms.containsKey("FONT"))?("<FONT "+(parms.get("FONT"))+">"):"";
+		final String efont=(parms.containsKey("FONT"))?"</FONT>":"";
 		if(parms.containsKey("HEADERCOL1")
 		||parms.containsKey("HEADERCOL2")
 		||parms.containsKey("HEADERCOL3")
@@ -166,10 +166,10 @@ public class CharClassData extends StdWebMacro
 				str.append(sfont + (parms.get("HEADERCOL5")) + efont);
 			str.append("</TD></TR>");
 		}
-		HashSet used=new HashSet();
+		final HashSet used=new HashSet();
 		for(int i=0;i<theclasses.size();i++)
 		{
-			String theclass=(String)theclasses.elementAt(i,1);
+			final String theclass=(String)theclasses.elementAt(i,1);
 			used.add(theclass);
 			str.append("<TR><TD WIDTH=40%>");
 			str.append("<SELECT ONCHANGE=\"EditAffect(this);\" NAME=CABLES"+(i+1)+">");
@@ -207,12 +207,12 @@ public class CharClassData extends StdWebMacro
 		str.append("<TR><TD WIDTH=40%>");
 		str.append("<SELECT ONCHANGE=\"AddAffect(this);\" NAME=CABLES"+(theclasses.size()+1)+">");
 		str.append("<OPTION SELECTED VALUE=\"\">Select an Ability");
-		for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
+		for(final Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 		{
-			Ability A=a.nextElement();
+			final Ability A=a.nextElement();
 			if(((A.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_ARCHON)&&(!CMSecurity.isASysOp(mob)))
 				continue;
-			String ID=A.ID();
+			final String ID=A.ID();
 			if(!used.contains(ID))
 				str.append("<OPTION VALUE=\""+ID+"\">"+A.Name());
 		}
@@ -245,16 +245,16 @@ public class CharClassData extends StdWebMacro
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
-		java.util.Map<String,String> parms=parseParms(parm);
-		MOB mob=Authenticate.getAuthenticatedMob(httpReq);
-		String replaceCommand=httpReq.getUrlParameter("REPLACE");
+		final java.util.Map<String,String> parms=parseParms(parm);
+		final MOB mob=Authenticate.getAuthenticatedMob(httpReq);
+		final String replaceCommand=httpReq.getUrlParameter("REPLACE");
 		if((replaceCommand != null)
 		&& (replaceCommand.length()>0)
 		&& (replaceCommand.indexOf('=')>0))
 		{
-			int eq=replaceCommand.indexOf('=');
-			String field=replaceCommand.substring(0,eq);
-			String value=replaceCommand.substring(eq+1);
+			final int eq=replaceCommand.indexOf('=');
+			final String field=replaceCommand.substring(0,eq);
+			final String value=replaceCommand.substring(eq+1);
 			httpReq.addFakeUrlParameter(field, value);
 			httpReq.addFakeUrlParameter("REPLACE","");
 		}
@@ -266,11 +266,11 @@ public class CharClassData extends StdWebMacro
 		{
 			if(parms.containsKey("ISGENERIC"))
 			{
-				CharClass C2=CMClass.getCharClass(last);
+				final CharClass C2=CMClass.getCharClass(last);
 				return ""+((C2!=null)&&(C2.isGeneric()));
 			}
 
-			String newClassID=httpReq.getUrlParameter("NEWCLASS");
+			final String newClassID=httpReq.getUrlParameter("NEWCLASS");
 			CharClass C=(CharClass)httpReq.getRequestObjects().get("CLASS-"+last);
 			if((C==null)
 			&&(newClassID!=null)
@@ -288,7 +288,7 @@ public class CharClassData extends StdWebMacro
 				return ""+(CMClass.getCharClass(last)==null);
 			if(C!=null)
 			{
-				StringBuffer str=new StringBuffer("");
+				final StringBuffer str=new StringBuffer("");
 				if(parms.containsKey("NAME"))
 				{
 					String old=httpReq.getUrlParameter("NAME");
@@ -302,8 +302,8 @@ public class CharClassData extends StdWebMacro
 				}
 				if(parms.containsKey("NAMES"))
 				{
-					String old=httpReq.getUrlParameter("NAME1");
-					DVector nameSet=new DVector(2);
+					final String old=httpReq.getUrlParameter("NAME1");
+					final DVector nameSet=new DVector(2);
 					int numNames=0;
 					boolean cSrc=false;
 					if(old==null)
@@ -323,11 +323,11 @@ public class CharClassData extends StdWebMacro
 					else
 					for(int i=0;i<numNames;i++)
 					{
-						String lvlStr=cSrc?C.getStat("NAMELEVEL"+i):httpReq.getUrlParameter("NAMELEVEL"+(i+1));
+						final String lvlStr=cSrc?C.getStat("NAMELEVEL"+i):httpReq.getUrlParameter("NAMELEVEL"+(i+1));
 						if(CMath.isInteger(lvlStr))
 						{
-							int minLevel = CMath.s_int(lvlStr);
-							String name=cSrc?C.getStat("NAME"+i):httpReq.getUrlParameter("NAME"+(i+1));
+							final int minLevel = CMath.s_int(lvlStr);
+							final String name=cSrc?C.getStat("NAME"+i):httpReq.getUrlParameter("NAME"+(i+1));
 							if((name!=null)&&(name.length()>0))
 							{
 								if(nameSet.size()==0)
@@ -358,10 +358,10 @@ public class CharClassData extends StdWebMacro
 						nameSet.addElement(Integer.valueOf(0),C.name());
 					else
 						nameSet.setElementAt(0,1,Integer.valueOf(0));
-					int borderSize=1;
+					final int borderSize=1;
 					str.append("<TABLE WIDTH=100% BORDER=\""+borderSize+"\" CELLSPACING=0 CELLPADDING=0>");
-					String sfont=(parms.containsKey("FONT"))?("<FONT "+(parms.get("FONT"))+">"):"";
-					String efont=(parms.containsKey("FONT"))?"</FONT>":"";
+					final String sfont=(parms.containsKey("FONT"))?("<FONT "+(parms.get("FONT"))+">"):"";
+					final String efont=(parms.containsKey("FONT"))?"</FONT>":"";
 					if(parms.containsKey("HEADERCOL1")||parms.containsKey("HEADERCOL2"))
 					{
 						str.append("<TR><TD WIDTH=20%>");
@@ -374,8 +374,8 @@ public class CharClassData extends StdWebMacro
 					}
 					for(int i=0;i<nameSet.size();i++)
 					{
-						Integer lvl=(Integer)nameSet.elementAt(i,1);
-						String name=(String)nameSet.elementAt(i,2);
+						final Integer lvl=(Integer)nameSet.elementAt(i,1);
+						final String name=(String)nameSet.elementAt(i,2);
 						str.append("<TR><TD WIDTH=20%>");
 						str.append("<INPUT TYPE=TEXT SIZE=5 NAME=NAMELEVEL"+(i+1)+" VALUE=\""+lvl.toString()+"\">");
 						str.append("</TD><TD WIDTH=80%>");
@@ -434,7 +434,7 @@ public class CharClassData extends StdWebMacro
 					String old=httpReq.getUrlParameter("ATTATT");
 					if(old==null) old=""+C.getAttackAttribute();
 					if(CMath.s_int(old)<0) old="0";
-					for(int i : CharStats.CODES.BASE())
+					for(final int i : CharStats.CODES.BASE())
 						str.append("<OPTION VALUE=\""+i+"\""+((CMath.s_int(old)==i)?" SELECTED":"")+">"+CMStrings.capitalizeAndLower(CharStats.CODES.DESC(i)));
 					str.append(", ");
 				}
@@ -537,7 +537,7 @@ public class CharClassData extends StdWebMacro
 						C=C.makeGenCharClass();
 						old=""+C.getStat("SUBRUL");
 					}
-					for(CharClass.SubClassRule rule : CharClass.SubClassRule.values())
+					for(final CharClass.SubClassRule rule : CharClass.SubClassRule.values())
 						str.append("<OPTION VALUE=\""+rule.toString()+"\""+((rule.toString().equalsIgnoreCase(old))?" SELECTED":"")+">"+CMStrings.capitalizeAndLower(rule.toString()));
 					str.append(", ");
 				}
@@ -565,7 +565,7 @@ public class CharClassData extends StdWebMacro
 				}
 				if(parms.containsKey("PLAYER"))
 				{
-					String old=httpReq.getUrlParameter("PLAYER");
+					final String old=httpReq.getUrlParameter("PLAYER");
 					long mask=0;
 					if(old==null)
 						mask=C.availabilityCode();
@@ -581,48 +581,48 @@ public class CharClassData extends StdWebMacro
 
 					if(parms.containsKey("ESTATS"))
 					{
-						String eStats=C.getStat("ESTATS");
-						PhyStats adjPStats=(PhyStats)CMClass.getCommon("DefaultPhyStats"); adjPStats.setAllValues(0);
+						final String eStats=C.getStat("ESTATS");
+						final PhyStats adjPStats=(PhyStats)CMClass.getCommon("DefaultPhyStats"); adjPStats.setAllValues(0);
 						if(eStats.length()>0){ CMLib.coffeeMaker().setPhyStats(adjPStats,eStats);}
 						str.append(RaceData.estats(adjPStats,'E',httpReq,parms,0)+", ");
 					}
 					if(parms.containsKey("CSTATS"))
 					{
-						CharStats setStats=(CharStats)CMClass.getCommon("DefaultCharStats"); setStats.setAllValues(0);
-						String cStats=C.getStat("CSTATS");
+						final CharStats setStats=(CharStats)CMClass.getCommon("DefaultCharStats"); setStats.setAllValues(0);
+						final String cStats=C.getStat("CSTATS");
 						if(cStats.length()>0){  CMLib.coffeeMaker().setCharStats(setStats,cStats);}
 						str.append(RaceData.cstats(setStats,'S',httpReq,parms,0)+", ");
 					}
 					if(parms.containsKey("ASTATS"))
 					{
-						CharStats adjStats=(CharStats)CMClass.getCommon("DefaultCharStats"); adjStats.setAllValues(0);
-						String cStats=C.getStat("ASTATS");
+						final CharStats adjStats=(CharStats)CMClass.getCommon("DefaultCharStats"); adjStats.setAllValues(0);
+						final String cStats=C.getStat("ASTATS");
 						if(cStats.length()>0){  CMLib.coffeeMaker().setCharStats(adjStats,cStats);}
 						str.append(RaceData.cstats(adjStats,'A',httpReq,parms,0)+", ");
 					}
 					if(parms.containsKey("ASTATE"))
 					{
-						CharState adjState=(CharState)CMClass.getCommon("DefaultCharState"); adjState.setAllValues(0);
-						String aState=C.getStat("ASTATE");
+						final CharState adjState=(CharState)CMClass.getCommon("DefaultCharState"); adjState.setAllValues(0);
+						final String aState=C.getStat("ASTATE");
 						if(aState.length()>0){  CMLib.coffeeMaker().setCharState(adjState,aState);}
 						str.append(RaceData.cstate(adjState,'A',httpReq,parms,0)+", ");
 					}
 					if(parms.containsKey("STARTASTATE"))
 					{
-						CharState startAdjState=(CharState)CMClass.getCommon("DefaultCharState"); startAdjState.setAllValues(0);
-						String saState=C.getStat("STARTASTATE");
+						final CharState startAdjState=(CharState)CMClass.getCommon("DefaultCharState"); startAdjState.setAllValues(0);
+						final String saState=C.getStat("STARTASTATE");
 						if(saState.length()>0){ CMLib.coffeeMaker().setCharState(startAdjState,saState);}
 						str.append(RaceData.cstate(startAdjState,'S',httpReq,parms,0)+", ");
 					}
 				}
 				if(parms.containsKey("NOWEAPS"))
 				{
-					String old=httpReq.getUrlParameter("NOWEAPS");
+					final String old=httpReq.getUrlParameter("NOWEAPS");
 					List<String> set=null;
 					if(old==null)
 					{
 						C=C.makeGenCharClass();
-						String weapList=C.getStat("GETWEP");
+						final String weapList=C.getStat("GETWEP");
 						set=CMParms.parseCommas(weapList,true);
 					}
 					else
@@ -642,11 +642,11 @@ public class CharClassData extends StdWebMacro
 				}
 				if(parms.containsKey("MINSTAT"))
 				{
-					List<Pair<String,Integer>> minStats=new LinkedList<Pair<String,Integer>>();
-					String old=httpReq.getUrlParameter("MINSTAT0");
+					final List<Pair<String,Integer>> minStats=new LinkedList<Pair<String,Integer>>();
+					final String old=httpReq.getUrlParameter("MINSTAT0");
 					if(old==null)
 					{
-						for(Pair<String,Integer> P : C.getMinimumStatRequirements())
+						for(final Pair<String,Integer> P : C.getMinimumStatRequirements())
 							minStats.add(P);
 					}
 					else
@@ -654,8 +654,8 @@ public class CharClassData extends StdWebMacro
 						int x=0;
 						while(httpReq.getUrlParameter("MINSTAT"+x)!=null)
 						{
-							String minStat=httpReq.getUrlParameter("MINSTAT"+x);
-							String statMin=httpReq.getUrlParameter("STATMIN"+x);
+							final String minStat=httpReq.getUrlParameter("MINSTAT"+x);
+							final String statMin=httpReq.getUrlParameter("STATMIN"+x);
 							if((minStat!=null)&&(minStat.length()>0)&&(CMath.isInteger(statMin)))
 								minStats.add(new Pair<String,Integer>(minStat,Integer.valueOf(CMath.s_int(statMin))));
 							x++;
@@ -663,7 +663,7 @@ public class CharClassData extends StdWebMacro
 					}
 					for(int p=0;p<minStats.size();p++)
 					{
-						Pair<String,Integer> P=minStats.get(p);
+						final Pair<String,Integer> P=minStats.get(p);
 						str.append("<SELECT NAME=MINSTAT").append(p).append(">");
 						str.append("<OPTION VALUE=\"\">Delete");
 						str.append("<OPTION SELECTED VALUE=\"").append(P.first).append("\">"+P.first);
@@ -671,7 +671,7 @@ public class CharClassData extends StdWebMacro
 						str.append("<BR>");
 					}
 					str.append("<SELECT NAME=MINSTAT").append(minStats.size()).append(">");
-					for(String statName : CharStats.CODES.BASENAMES())
+					for(final String statName : CharStats.CODES.BASENAMES())
 						str.append("<OPTION VALUE=\"").append(CMStrings.capitalizeAndLower(statName)).append("\">").append(CMStrings.capitalizeAndLower(statName));
 					str.append("</SELECT> Min Value: <INPUT NAME=STATMIN").append(minStats.size()).append(" VALUE=\"\">");
 					str.append("<INPUT TYPE=BUTTON NAME=ADDSTATMIN VALUE=Add ONCLICK=\"ReShow();\">");
@@ -685,7 +685,7 @@ public class CharClassData extends StdWebMacro
 						C=C.makeGenCharClass();
 						httpReq.addFakeUrlParameter("DISFLAGS",C.getStat("DISFLAGS"));
 					}
-					int flags=CMath.s_int(httpReq.getUrlParameter("DISFLAGS"));
+					final int flags=CMath.s_int(httpReq.getUrlParameter("DISFLAGS"));
 					for(int i=0;i<CharClass.GENFLAG_DESCS.length;i++)
 					{
 						str.append("<OPTION VALUE="+CMath.pow(2,i));
@@ -697,8 +697,8 @@ public class CharClassData extends StdWebMacro
 				}
 				if(parms.containsKey("SECURITYSETS"))
 				{
-					String old=httpReq.getUrlParameter("SSET1");
-					DVector sSet=new DVector(2);
+					final String old=httpReq.getUrlParameter("SSET1");
+					final DVector sSet=new DVector(2);
 					int numSSet=0;
 					boolean cSrc=false;
 					if(old==null)
@@ -715,15 +715,15 @@ public class CharClassData extends StdWebMacro
 					}
 					for(int i=0;i<numSSet;i++)
 					{
-						String lvlStr=cSrc?C.getStat("SSETLEVEL"+i):httpReq.getUrlParameter("SSETLEVEL"+(i+1));
+						final String lvlStr=cSrc?C.getStat("SSETLEVEL"+i):httpReq.getUrlParameter("SSETLEVEL"+(i+1));
 						if(CMath.isInteger(lvlStr))
 						{
-							int minLevel = CMath.s_int(lvlStr);
+							final int minLevel = CMath.s_int(lvlStr);
 							String sec = null;
 							if(cSrc)
 							{
 								sec=C.getStat("SSET"+i);
-								Vector<String> V=CMParms.parse(sec);
+								final Vector<String> V=CMParms.parse(sec);
 								sec=CMParms.combineWithX(V,",",0);
 							}
 							else
@@ -755,10 +755,10 @@ public class CharClassData extends StdWebMacro
 							}
 						}
 					}
-					int borderSize=1;
+					final int borderSize=1;
 					str.append("<TABLE WIDTH=100% BORDER=\""+borderSize+"\" CELLSPACING=0 CELLPADDING=0>");
-					String sfont=(parms.containsKey("FONT"))?("<FONT "+(parms.get("FONT"))+">"):"";
-					String efont=(parms.containsKey("FONT"))?"</FONT>":"";
+					final String sfont=(parms.containsKey("FONT"))?("<FONT "+(parms.get("FONT"))+">"):"";
+					final String efont=(parms.containsKey("FONT"))?"</FONT>":"";
 					if(parms.containsKey("HEADERCOL1")||parms.containsKey("HEADERCOL2"))
 					{
 						str.append("<TR><TD WIDTH=20%>");
@@ -771,8 +771,8 @@ public class CharClassData extends StdWebMacro
 					}
 					for(int i=0;i<sSet.size();i++)
 					{
-						Integer lvl=(Integer)sSet.elementAt(i,1);
-						String sec=(String)sSet.elementAt(i,2);
+						final Integer lvl=(Integer)sSet.elementAt(i,1);
+						final String sec=(String)sSet.elementAt(i,2);
 						str.append("<TR><TD WIDTH=20%>");
 						str.append("<INPUT TYPE=TEXT SIZE=5 NAME=SSETLEVEL"+(i+1)+" VALUE=\""+lvl.toString()+"\">");
 						str.append("</TD><TD WIDTH=80%>");
@@ -790,12 +790,12 @@ public class CharClassData extends StdWebMacro
 
 				if(parms.containsKey("WEAPMATS"))
 				{
-					String old=httpReq.getUrlParameter("WEAPMATS");
+					final String old=httpReq.getUrlParameter("WEAPMATS");
 					List<String> set=null;
 					if(old==null)
 					{
 						C=C.makeGenCharClass();
-						String matList=C.getStat("GETWMAT");
+						final String matList=C.getStat("GETWMAT");
 						set=CMParms.parseCommas(matList,true);
 					}
 					else
@@ -809,7 +809,7 @@ public class CharClassData extends StdWebMacro
 					str.append("<OPTION VALUE=\"*\"");
 					if(set.size()==0) str.append(" SELECTED");
 					str.append(">ANY");
-					for(RawMaterial.Material m : RawMaterial.Material.values())
+					for(final RawMaterial.Material m : RawMaterial.Material.values())
 					{
 						str.append("<OPTION VALUE="+m.mask());
 						if(set.contains(""+m.mask())) str.append(" SELECTED");
@@ -819,7 +819,7 @@ public class CharClassData extends StdWebMacro
 				}
 				if(parms.containsKey("ARMORMINOR"))
 				{
-					String old=httpReq.getUrlParameter("ARMORMINOR");
+					final String old=httpReq.getUrlParameter("ARMORMINOR");
 					int armorMinor=-1;
 					if(old==null)
 					{
@@ -892,10 +892,10 @@ public class CharClassData extends StdWebMacro
 					str.append(C.getDamageDesc()+", ");
 				if(parms.containsKey("QUALDOMAINLIST"))
 				{
-					Hashtable domains=new Hashtable();
+					final Hashtable domains=new Hashtable();
 					Ability A=null;
 					String domain=null;
-					for(Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
+					for(final Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
 					{
 						A=e.nextElement();
 						if(CMLib.ableMapper().getQualifyingLevel(C.ID(),true,A.ID())>0)
@@ -918,7 +918,7 @@ public class CharClassData extends StdWebMacro
 					{
 						winner=null;
 						winnerI=null;
-						for(Enumeration e=domains.keys();e.hasMoreElements();)
+						for(final Enumeration e=domains.keys();e.hasMoreElements();)
 						{
 							domain=(String)e.nextElement();
 							I=(Integer)domains.get(domain);
@@ -943,18 +943,18 @@ public class CharClassData extends StdWebMacro
 
 				if(parms.containsKey("AVGHITPOINTS"))
 				{
-					int sh=CMProps.getIntVar(CMProps.Int.STARTHP);
+					final int sh=CMProps.getIntVar(CMProps.Int.STARTHP);
 					if(parms.containsKey("AVGBASE"))
 					{
 						int num=0;
-						long[][] avgs=new long[3][3];
-						for(Enumeration<CharClass> c=CMClass.charClasses();c.hasMoreElements();)
+						final long[][] avgs=new long[3][3];
+						for(final Enumeration<CharClass> c=CMClass.charClasses();c.hasMoreElements();)
 						{
-							CharClass C1=c.nextElement();
+							final CharClass C1=c.nextElement();
 							if(C1.baseClass().equals(C.baseClass()))
 							{
-								int maxCon=18+C1.maxStatAdjustments()[CharStats.STAT_CONSTITUTION];
-								String f=C1.getHitPointsFormula();
+								final int maxCon=18+C1.maxStatAdjustments()[CharStats.STAT_CONSTITUTION];
+								final String f=C1.getHitPointsFormula();
 								num++;
 								avgs[0][0]+=avgMath(10,10,sh,f);
 								avgs[0][1]+=avgMath(18,10,sh,f);
@@ -975,8 +975,8 @@ public class CharClassData extends StdWebMacro
 					}
 					else
 					{
-						int maxCon=18+C.maxStatAdjustments()[CharStats.STAT_CONSTITUTION];
-						String f=C.getHitPointsFormula();
+						final int maxCon=18+C.maxStatAdjustments()[CharStats.STAT_CONSTITUTION];
+						final String f=C.getHitPointsFormula();
 						str.append("("+avgMath(10,10,sh,f)+"/"+avgMath(18,10,sh,f)+"/"+avgMath(maxCon,10,sh,f)+") ");
 						str.append("("+avgMath(10,50,sh,f)+"/"+avgMath(18,50,sh,f)+"/"+avgMath(maxCon,50,sh,f)+") ");
 						str.append("("+avgMath(10,90,sh,f)+"/"+avgMath(18,90,sh,f)+"/"+avgMath(maxCon,90,sh,f)+") ");
@@ -985,18 +985,18 @@ public class CharClassData extends StdWebMacro
 
 				if(parms.containsKey("AVGMANA"))
 				{
-					int sm=CMProps.getIntVar(CMProps.Int.STARTMANA);
+					final int sm=CMProps.getIntVar(CMProps.Int.STARTMANA);
 					if(parms.containsKey("AVGBASE"))
 					{
 						int num=0;
-						long[][] avgs=new long[3][3];
-						for(Enumeration<CharClass> c=CMClass.charClasses();c.hasMoreElements();)
+						final long[][] avgs=new long[3][3];
+						for(final Enumeration<CharClass> c=CMClass.charClasses();c.hasMoreElements();)
 						{
-							CharClass C1=c.nextElement();
+							final CharClass C1=c.nextElement();
 							if(C1.baseClass().equals(C.baseClass()))
 							{
-								int maxInt=18+C1.maxStatAdjustments()[CharStats.STAT_INTELLIGENCE];
-								String f=C1.getManaFormula();
+								final int maxInt=18+C1.maxStatAdjustments()[CharStats.STAT_INTELLIGENCE];
+								final String f=C1.getManaFormula();
 								num++;
 								avgs[0][0]+=avgMath(10,10,sm,f);
 								avgs[0][1]+=avgMath(18,10,sm,f);
@@ -1017,8 +1017,8 @@ public class CharClassData extends StdWebMacro
 					}
 					else
 					{
-						int maxInt=18+C.maxStatAdjustments()[CharStats.STAT_INTELLIGENCE];
-						String f=C.getManaFormula();
+						final int maxInt=18+C.maxStatAdjustments()[CharStats.STAT_INTELLIGENCE];
+						final String f=C.getManaFormula();
 						str.append("("+avgMath(10,10,sm,f)+"/"+avgMath(18,10,sm,f)+"/"+avgMath(maxInt,10,sm,f)+") ");
 						str.append("("+avgMath(10,50,sm,f)+"/"+avgMath(18,50,sm,f)+"/"+avgMath(maxInt,50,sm,f)+") ");
 						str.append("("+avgMath(10,90,sm,f)+"/"+avgMath(18,90,sm,f)+"/"+avgMath(maxInt,90,sm,f)+") ");
@@ -1026,18 +1026,18 @@ public class CharClassData extends StdWebMacro
 				}
 				if(parms.containsKey("AVGMOVEMENT"))
 				{
-					int sm=CMProps.getIntVar(CMProps.Int.STARTMOVE);
+					final int sm=CMProps.getIntVar(CMProps.Int.STARTMOVE);
 					if(parms.containsKey("AVGBASE"))
 					{
 						int num=0;
-						long[][] avgs=new long[3][3];
-						for(Enumeration<CharClass> c=CMClass.charClasses();c.hasMoreElements();)
+						final long[][] avgs=new long[3][3];
+						for(final Enumeration<CharClass> c=CMClass.charClasses();c.hasMoreElements();)
 						{
-							CharClass C1=c.nextElement();
+							final CharClass C1=c.nextElement();
 							if(C1.baseClass().equals(C.baseClass()))
 							{
-								String f=C1.getMovementFormula();
-								int maxStrength=18+C1.maxStatAdjustments()[CharStats.STAT_STRENGTH];
+								final String f=C1.getMovementFormula();
+								final int maxStrength=18+C1.maxStatAdjustments()[CharStats.STAT_STRENGTH];
 								num++;
 								avgs[0][0]+=avgMath(10,10,sm,f);
 								avgs[0][1]+=avgMath(18,10,sm,f);
@@ -1058,8 +1058,8 @@ public class CharClassData extends StdWebMacro
 					}
 					else
 					{
-						String f=C.getMovementFormula();
-						int maxStrength=18+C.maxStatAdjustments()[CharStats.STAT_STRENGTH];
+						final String f=C.getMovementFormula();
+						final int maxStrength=18+C.maxStatAdjustments()[CharStats.STAT_STRENGTH];
 						str.append("("+avgMath(10,10,sm,f)+"/"+avgMath(18,10,sm,f)+"/"+avgMath(maxStrength,10,sm,f)+") ");
 						str.append("("+avgMath(10,50,sm,f)+"/"+avgMath(18,50,sm,f)+"/"+avgMath(maxStrength,50,sm,f)+") ");
 						str.append("("+avgMath(10,90,sm,f)+"/"+avgMath(18,90,sm,f)+"/"+avgMath(maxStrength,90,sm,f)+") ");
@@ -1084,7 +1084,7 @@ public class CharClassData extends StdWebMacro
 						str.append("Any, ");
 				if(parms.containsKey("LIMITS"))
 				{
-					StringBuffer limits = new StringBuffer("");
+					final StringBuffer limits = new StringBuffer("");
 					if(C.getOtherLimitsDesc().length()>0)
 						limits.append("  "+C.getOtherLimitsDesc());
 					if(C.getLevelCap()>0)
@@ -1104,9 +1104,9 @@ public class CharClassData extends StdWebMacro
 						str.append(C.getStatQualDesc()+", ");
 				if(parms.containsKey("STARTINGEQ"))
 				{
-					List<Item> items=C.outfit(null);
+					final List<Item> items=C.outfit(null);
 					if(items !=null)
-					for(Item I : items)
+					for(final Item I : items)
 						if(I!=null)
 							str.append(I.name()+", ");
 				}
@@ -1123,22 +1123,22 @@ public class CharClassData extends StdWebMacro
 
 	public String balanceChart(CharClass C)
 	{
-		MOB M=CMClass.getFactoryMOB();
+		final MOB M=CMClass.getFactoryMOB();
 		M.basePhyStats().setLevel(1);
 		M.baseCharStats().setCurrentClass(C);
 		M.recoverCharStats();
 		C.startCharacter(M,false,false);
-		HashSet seenBefore=new HashSet();
+		final HashSet seenBefore=new HashSet();
 		int totalgained=0;
 		int totalqualified=0;
 		int uniqueClassSkills=0;
-		List<String> uniqueClassSkillsV=new LinkedList<String>();
+		final List<String> uniqueClassSkillsV=new LinkedList<String>();
 		int uniqueClassSkillsGained=0;
 		int uncommonClassSkills=0;
-		List<String> uncommonClassSkillsV=new LinkedList<String>();
+		final List<String> uncommonClassSkillsV=new LinkedList<String>();
 		int uncommonClassSkillsGained=0;
 		int totalCrossClassSkills=0;
-		List<String> totalCrossClassSkillsV=new LinkedList<String>();
+		final List<String> totalCrossClassSkillsV=new LinkedList<String>();
 		int totalCrossClassLevelDiffs=0;
 		int maliciousSkills=0;
 		int maliciousSkillsGained=0;
@@ -1146,10 +1146,10 @@ public class CharClassData extends StdWebMacro
 		int beneficialSkillsGained=0;
 		for(int l=1;l<=30;l++)
 		{
-			List<String> set=CMLib.ableMapper().getLevelListings(C.ID(),true,l);
+			final List<String> set=CMLib.ableMapper().getLevelListings(C.ID(),true,l);
 			for(int s=0;s<set.size();s++)
 			{
-				String able=set.get(s);
+				final String able=set.get(s);
 				if(able.equalsIgnoreCase("Skill_Recall")) continue;
 				if(able.equalsIgnoreCase("Skill_Write")) continue;
 				if(able.equalsIgnoreCase("Skill_Swim")) continue;
@@ -1160,9 +1160,9 @@ public class CharClassData extends StdWebMacro
 				int numOutsiders=0;
 				int thisCrossClassLevelDiffs=0;
 				int tlvl=0;
-				for(Enumeration c=CMClass.charClasses();c.hasMoreElements();)
+				for(final Enumeration c=CMClass.charClasses();c.hasMoreElements();)
 				{
-					CharClass C2=(CharClass)c.nextElement();
+					final CharClass C2=(CharClass)c.nextElement();
 					if(C2==C) continue;
 					if(!CMProps.isTheme(C2.availabilityCode())) continue;
 					if(C2.baseClass().equals(C.baseClass()))
@@ -1207,7 +1207,7 @@ public class CharClassData extends StdWebMacro
 					totalCrossClassSkills++;
 					totalCrossClassSkillsV.add(able+"("+l+")");
 				}
-				boolean gained=(M.fetchAbility(able)!=null);
+				final boolean gained=(M.fetchAbility(able)!=null);
 				if(gained)
 				{
 					totalgained++;
@@ -1217,7 +1217,7 @@ public class CharClassData extends StdWebMacro
 				}
 				else
 					totalqualified++;
-				Ability A=CMClass.getAbility(able);
+				final Ability A=CMClass.getAbility(able);
 				if(A==null) continue;
 				if((A.abstractQuality()==Ability.QUALITY_BENEFICIAL_OTHERS)
 				   ||(A.abstractQuality()==Ability.QUALITY_BENEFICIAL_SELF))
@@ -1233,7 +1233,7 @@ public class CharClassData extends StdWebMacro
 			}
 			CMLib.leveler().level(M);
 		}
-		StringBuffer str=new StringBuffer("");
+		final StringBuffer str=new StringBuffer("");
 		str.append("<BR>Rule#1: Avg gained skill/level: "+CMath.div(Math.round(100.0*CMath.div(totalgained,30)),(long)100));
 		str.append("<BR>Rule#2: Avg qualified skill/level: "+CMath.div(Math.round(100.0*CMath.div(totalqualified,30)),(long)100));
 		str.append("<BR>Rule#3: Unique class skills gained: "+uniqueClassSkillsGained+"/"+uniqueClassSkills);
@@ -1251,7 +1251,7 @@ public class CharClassData extends StdWebMacro
 
 	public int avgMath(int stat, int level, int add, String formula)
 	{
-		double[] variables={
+		final double[] variables={
 				level,
 				stat,
 				(double)stat+7,

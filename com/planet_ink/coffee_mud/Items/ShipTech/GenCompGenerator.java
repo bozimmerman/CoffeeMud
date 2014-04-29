@@ -83,7 +83,7 @@ public class GenCompGenerator extends StdCompGenerator
 		case 4: return ""+powerCapacity();
 		case 5:
 		{
-			StringBuilder str=new StringBuilder("");
+			final StringBuilder str=new StringBuilder("");
 			for(int i=0;i<getConsumedFuelTypes().length;i++)
 			{
 				if(i>0) str.append(", ");
@@ -114,11 +114,11 @@ public class GenCompGenerator extends StdCompGenerator
 		case 3: setContainTypes(CMath.s_parseBitLongExpression(Container.CONTAIN_DESCS,val)); break;
 		case 4: setPowerCapacity(CMath.s_parseLongExpression(val)); break;
 		case 5:{
-				List<String> mats = CMParms.parseCommas(val,true);
-				int[] newMats = new int[mats.size()];
+				final List<String> mats = CMParms.parseCommas(val,true);
+				final int[] newMats = new int[mats.size()];
 				for(int x=0;x<mats.size();x++)
 				{
-					int rsccode = RawMaterial.CODES.FIND_CaseSensitive(mats.get(x).trim());
+					final int rsccode = RawMaterial.CODES.FIND_CaseSensitive(mats.get(x).trim());
 					if(rsccode > 0)
 						newMats[x] = rsccode;
 				}
@@ -147,8 +147,8 @@ public class GenCompGenerator extends StdCompGenerator
 	public String[] getStatCodes()
 	{
 		if(codes!=null) return codes;
-		String[] MYCODES=CMProps.getStatCodesList(GenCompGenerator.MYCODES,this);
-		String[] superCodes=GenericBuilder.GENITEMCODES;
+		final String[] MYCODES=CMProps.getStatCodesList(GenCompGenerator.MYCODES,this);
+		final String[] superCodes=GenericBuilder.GENITEMCODES;
 		codes=new String[superCodes.length+MYCODES.length];
 		int i=0;
 		for(;i<superCodes.length;i++)
@@ -161,7 +161,7 @@ public class GenCompGenerator extends StdCompGenerator
 	public boolean sameAs(Environmental E)
 	{
 		if(!(E instanceof GenCompGenerator)) return false;
-		String[] theCodes=getStatCodes();
+		final String[] theCodes=getStatCodes();
 		for(int i=0;i<theCodes.length;i++)
 			if(!E.getStat(theCodes[i]).equals(getStat(theCodes[i])))
 				return false;

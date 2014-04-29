@@ -53,10 +53,10 @@ public class Trap_Popper extends StdTrap
 			if(target.location().show(target,target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,"<S-NAME> set(s) off a **POP** trap!"))
 			{
 				super.spring(target);
-				Area A=target.location().getArea();
-				for(Enumeration e=A.getMetroMap();e.hasMoreElements();)
+				final Area A=target.location().getArea();
+				for(final Enumeration e=A.getMetroMap();e.hasMoreElements();)
 				{
-					Room R=(Room)e.nextElement();
+					final Room R=(Room)e.nextElement();
 					if(R!=target.location())
 						R.showHappens(CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,"You hear a loud **POP** coming from somewhere.");
 				}

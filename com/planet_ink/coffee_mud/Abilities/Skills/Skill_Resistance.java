@@ -48,7 +48,7 @@ public class Skill_Resistance extends StdSkill
 	{
 		super.setMiscText(newText);
 		resistanceCode=0;
-		for(int i : CharStats.CODES.SAVING_THROWS())
+		for(final int i : CharStats.CODES.SAVING_THROWS())
 			if(newText.equalsIgnoreCase(CharStats.CODES.NAME(i))||newText.equalsIgnoreCase(CharStats.CODES.DESC(i)))
 				resistanceCode=i;
 		if(resistanceCode>0)
@@ -60,11 +60,11 @@ public class Skill_Resistance extends StdSkill
 	{
 		super.affectCharStats(affected,affectableStats);
 		if(invoker==null) return;
-		int amount=(int)Math.round(CMath.mul(CMath.div(proficiency(),100.0),affected.phyStats().level()));
+		final int amount=(int)Math.round(CMath.mul(CMath.div(proficiency(),100.0),affected.phyStats().level()));
 		if(resistanceCode>0)
 			affectableStats.setStat(resistanceCode,affectableStats.getStat(resistanceCode)+amount);
 		else
-		for(int i : CharStats.CODES.SAVING_THROWS())
+		for(final int i : CharStats.CODES.SAVING_THROWS())
 			affectableStats.setStat(i,affectableStats.getStat(i)+amount);
 	}
 }

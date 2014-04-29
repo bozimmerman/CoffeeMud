@@ -63,7 +63,7 @@ public class Skill_ArrestingSap extends StdSkill implements HealthCondition
 		if(!(affected instanceof MOB))
 			return true;
 
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		// when this spell is on a MOBs Affected list,
 		// it should consistantly prevent the mob
@@ -114,7 +114,7 @@ public class Skill_ArrestingSap extends StdSkill implements HealthCondition
 		if((mob!=null)&&(target!=null))
 		{
 			if(!(target instanceof MOB)) return Ability.QUALITY_INDIFFERENT;
-			MOB targetM=(MOB)target;
+			final MOB targetM=(MOB)target;
 			if(mob.baseWeight()<(targetM.baseWeight()-450))
 				return Ability.QUALITY_INDIFFERENT;
 			if(Skill_Arrest.getWarrantsOf(targetM, CMLib.law().getLegalObject(mob.location().getArea())).size()==0)
@@ -130,7 +130,7 @@ public class Skill_ArrestingSap extends StdSkill implements HealthCondition
 		// undo the affects of this spell
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		super.unInvoke();
 
@@ -151,11 +151,11 @@ public class Skill_ArrestingSap extends StdSkill implements HealthCondition
 	public void makeMyPeace(MOB target)
 	{
 		target.makePeace();
-		Room R=target.location();
+		final Room R=target.location();
 		if(R!=null)
 			for(int i=0;i<R.numInhabitants();i++)
 			{
-				MOB M=R.fetchInhabitant(i);
+				final MOB M=R.fetchInhabitant(i);
 				if((M!=null)&&(M.getVictim()==target))
 					M.setVictim(null);
 			}
@@ -185,7 +185,7 @@ public class Skill_ArrestingSap extends StdSkill implements HealthCondition
 			}
 		}
 
-		MOB target=this.getTarget(mob,commands,givenTarget);
+		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
 		// the invoke method for spells receives as
@@ -224,7 +224,7 @@ public class Skill_ArrestingSap extends StdSkill implements HealthCondition
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_NOISYMOVEMENT|(auto?CMMsg.MASK_ALWAYS:CMMsg.MASK_MALICIOUS),(mob==target)?"<T-NAME> hit(s) the floor!":"^F^<FIGHT^><S-NAME> rear(s) back and sap(s) <T-NAMESELF>, knocking <T-HIM-HER> out!^</FIGHT^>^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_NOISYMOVEMENT|(auto?CMMsg.MASK_ALWAYS:CMMsg.MASK_MALICIOUS),(mob==target)?"<T-NAME> hit(s) the floor!":"^F^<FIGHT^><S-NAME> rear(s) back and sap(s) <T-NAMESELF>, knocking <T-HIM-HER> out!^</FIGHT^>^?");
 			CMLib.color().fixSourceFightColor(msg);
 			if(target.riding()!=null)
 				msg.addTrailerMsg(CMClass.getMsg(target,target.riding(),CMMsg.TYP_DISMOUNT,null));
@@ -235,7 +235,7 @@ public class Skill_ArrestingSap extends StdSkill implements HealthCondition
 					target.setRiding(null);
 				success=maliciousAffect(mob,target,asLevel,ticks,-1);
 				if(mob.getVictim()==target) mob.setVictim(null);
-				Skill_ArrestingSap A=(Skill_ArrestingSap)target.fetchEffect(ID());
+				final Skill_ArrestingSap A=(Skill_ArrestingSap)target.fetchEffect(ID());
 				if(A!=null) A.utterSafety=safety;
 				if(safety) makeMyPeace(target);
 			}

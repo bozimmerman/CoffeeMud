@@ -14,7 +14,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -53,7 +52,7 @@ public class DoorwayGuardian extends StdBehavior
 	public void setParms(String parms)
 	{
 		super.setParms(parms);
-		int x=parms.indexOf(';');
+		final int x=parms.indexOf(';');
 		if(x>=0)
 		{
 			message=parms.substring(x+1);
@@ -61,14 +60,14 @@ public class DoorwayGuardian extends StdBehavior
 		}
 		else
 			message=DEFAULT_MESSAGE;
-		Vector<String> V=CMParms.parse(parms);
+		final Vector<String> V=CMParms.parse(parms);
 		nosneak=false;
 		always=false;
 		mask=null;
 		dirs.clear();
 		for(int v=V.size()-1;v>=0;v--)
 		{
-			String s=V.elementAt(v);
+			final String s=V.elementAt(v);
 			if(s.equalsIgnoreCase("NOSNEAK"))
 			{
 				nosneak=true;
@@ -82,7 +81,7 @@ public class DoorwayGuardian extends StdBehavior
 			}
 			else
 			{
-				int dir=Directions.getGoodDirectionCode(s);
+				final int dir=Directions.getGoodDirectionCode(s);
 				if(dir>=0)
 				{
 					dirs.addElement(Integer.valueOf(dir));
@@ -99,23 +98,23 @@ public class DoorwayGuardian extends StdBehavior
 		if(monster==null) return null;
 		if(monster.location()==null) return null;
 		if(getParms().length()==0) return null;
-		Room room=monster.location();
+		final Room room=monster.location();
 		if(dirs!=null)
-		for(Enumeration<Integer> dirE=dirs.elements();dirE.hasMoreElements();)
-		{
-			int dir=dirE.nextElement().intValue();
-			if(room.getExitInDir(dir)!=null)
+			for (final Integer integer : dirs)
 			{
-				Exit[] exits={room.getExitInDir(dir),room.getReverseExit(dir)};
-				return exits;
+				final int dir=integer.intValue();
+				if(room.getExitInDir(dir)!=null)
+				{
+					final Exit[] exits={room.getExitInDir(dir),room.getReverseExit(dir)};
+					return exits;
+				}
 			}
-		}
 		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 		{
-			Exit E=room.getExitInDir(d);
+			final Exit E=room.getExitInDir(d);
 			if((E!=null)&&(E.hasADoor()))
 			{
-				Exit[] exits={E,room.getReverseExit(d)};
+				final Exit[] exits={E,room.getReverseExit(d)};
 				return exits;
 			}
 		}
@@ -127,7 +126,7 @@ public class DoorwayGuardian extends StdBehavior
 	public boolean okMessage(Environmental oking, CMMsg msg)
 	{
 		if(!super.okMessage(oking,msg)) return false;
-		MOB mob=msg.source();
+		final MOB mob=msg.source();
 		if(always)
 		{
 			if(!canActAtAll(oking)) return true;
@@ -135,7 +134,7 @@ public class DoorwayGuardian extends StdBehavior
 		else
 		if(!canFreelyBehaveNormal(oking))
 			return true;
-		MOB monster=(MOB)oking;
+		final MOB monster=(MOB)oking;
 		if((mob.location()==monster.location())
 		&&(mob!=monster)
 		&&(msg.target()!=null)
@@ -144,8 +143,8 @@ public class DoorwayGuardian extends StdBehavior
 		{
 			if(msg.target() instanceof Exit)
 			{
-				Exit exit=(Exit)msg.target();
-				Exit texit[]=getParmExits(monster);
+				final Exit exit=(Exit)msg.target();
+				final Exit texit[]=getParmExits(monster);
 				if((texit!=null)
 				&&(texit[0]!=exit)
 				&&(texit[1]!=exit))
@@ -155,7 +154,7 @@ public class DoorwayGuardian extends StdBehavior
 				&&(msg.targetMinor()!=CMMsg.TYP_LOCK)
 				&&((mask==null)||CMLib.masking().maskCheck(mask,mob,false)))
 				{
-					CMMsg msgs=CMClass.getMsg(monster,mob,CMMsg.MSG_NOISYMOVEMENT,message);
+					final CMMsg msgs=CMClass.getMsg(monster,mob,CMMsg.MSG_NOISYMOVEMENT,message);
 					if(monster.location().okMessage(monster,msgs))
 					{
 						monster.location().send(monster,msgs);
@@ -169,14 +168,14 @@ public class DoorwayGuardian extends StdBehavior
 			&&(msg.tool() instanceof Exit)
 			&&((mask==null)||CMLib.masking().maskCheck(mask,mob,false)))
 			{
-				Exit exit=(Exit)msg.tool();
-				Exit texit[]=getParmExits(monster);
+				final Exit exit=(Exit)msg.tool();
+				final Exit texit[]=getParmExits(monster);
 				if((texit!=null)
 				&&(texit[0]!=exit)
 				&&(texit[1]!=exit))
 					return true;
 
-				CMMsg msgs=CMClass.getMsg(monster,mob,CMMsg.MSG_NOISYMOVEMENT,message);
+				final CMMsg msgs=CMClass.getMsg(monster,mob,CMMsg.MSG_NOISYMOVEMENT,message);
 				if(monster.location().okMessage(monster,msgs))
 				{
 					monster.location().send(monster,msgs);

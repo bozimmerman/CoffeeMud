@@ -44,18 +44,18 @@ public class Expertises extends StdCommand
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		StringBuffer msg=new StringBuffer("");
+		final StringBuffer msg=new StringBuffer("");
 		msg.append("\n\r^HYour expertises:^? \n\r");
 		int col=0;
 		final int COL_LEN=ListingLibrary.ColFixer.fixColWidth(25.0,mob);
-		XVector<String> expers=new XVector<String>();
-		for(Enumeration<String> e=mob.expertises();e.hasMoreElements();)
+		final XVector<String> expers=new XVector<String>();
+		for(final Enumeration<String> e=mob.expertises();e.hasMoreElements();)
 		{
-			String exper=e.nextElement();
-			ExpertiseLibrary.ExpertiseDefinition def=CMLib.expertises().getDefinition(exper);
+			final String exper=e.nextElement();
+			final ExpertiseLibrary.ExpertiseDefinition def=CMLib.expertises().getDefinition(exper);
 			if(def==null)
 			{
-				Pair<String,Integer> p=mob.fetchExpertise(exper);
+				final Pair<String,Integer> p=mob.fetchExpertise(exper);
 				if(p==null)
 					expers.add("?"+CMStrings.capitalizeAllFirstLettersAndLower(exper));
 				else
@@ -68,7 +68,7 @@ public class Expertises extends StdCommand
 				expers.add(def.name);
 		}
 		expers.sort();
-		for(String expName : expers)
+		for(final String expName : expers)
 		{
 			if(expName.startsWith("?"))
 			{
@@ -83,7 +83,7 @@ public class Expertises extends StdCommand
 					col=0;
 				}
 				msg.append(CMStrings.padRightPreserve("^<HELP^>"+expName+"^</HELP^>",COL_LEN));
-				int spaces=(COL_LEN*2)-expName.length();
+				final int spaces=(COL_LEN*2)-expName.length();
 				for(int i=0;i<spaces;i++) msg.append(" ");
 				col++;
 			}

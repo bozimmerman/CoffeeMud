@@ -59,15 +59,15 @@ public class Prayer_Resurrect extends Prayer implements MendingSkill
 		boolean playerCorpse=false;
 		if((body==null)&&(CMSecurity.isASysOp(mob)))
 		{
-			List<PlayerData> V=CMLib.database().DBReadData("HEAVEN");
-			Vector<Physical> allObjs=new Vector<Physical>();
-			Vector allDataPs=new Vector();
+			final List<PlayerData> V=CMLib.database().DBReadData("HEAVEN");
+			final Vector<Physical> allObjs=new Vector<Physical>();
+			final Vector allDataPs=new Vector();
 			if((V!=null)&&(V.size()>0))
 			for(int v=0;v<V.size();v++)
 			{
-				DatabaseEngine.PlayerData dataP=V.get(v);
-				String data=dataP.xml;
-				PhysicalAgent obj=parseHeavenlyData(data);
+				final DatabaseEngine.PlayerData dataP=V.get(v);
+				final String data=dataP.xml;
+				final PhysicalAgent obj=parseHeavenlyData(data);
 				if(obj!=null)
 				{
 					allDataPs.addElement(dataP);
@@ -75,7 +75,7 @@ public class Prayer_Resurrect extends Prayer implements MendingSkill
 				}
 			}
 			if(allObjs.size()==0) return false;
-			String name=CMParms.combine(commands,0);
+			final String name=CMParms.combine(commands,0);
 			if(name.equalsIgnoreCase("list"))
 			{
 				mob.tell("^x"+CMStrings.padRight("Guardian",15)
@@ -84,7 +84,7 @@ public class Prayer_Resurrect extends Prayer implements MendingSkill
 				for(int i=0;i<allObjs.size();i++)
 				{
 					body=allObjs.elementAt(i);
-					Ability age=body.fetchEffect("Age");
+					final Ability age=body.fetchEffect("Age");
 					mob.tell(CMStrings.padRight(((DatabaseEngine.PlayerData)allDataPs.elementAt(i)).who,15)
 							+CMStrings.padRight(body.name(),45)
 							+CMStrings.padRight(((age==null)?"":CMLib.time().date2String(CMath.s_long(age.text()))),16)+"\n\r"+CMStrings.padRight("",15)+body.description());
@@ -114,7 +114,7 @@ public class Prayer_Resurrect extends Prayer implements MendingSkill
 			playerCorpse=((DeadBody)body).playerCorpse();
 			if(!playerCorpse)
 			{
-				Ability AGE=body.fetchEffect("Age");
+				final Ability AGE=body.fetchEffect("Age");
 				if((AGE!=null)&&(CMath.isLong(AGE.text()))&&(CMath.s_long(AGE.text())>Short.MAX_VALUE))
 				{
 					MOB M=null;
@@ -123,7 +123,7 @@ public class Prayer_Resurrect extends Prayer implements MendingSkill
 						M=mob.location().fetchInhabitant(i);
 						if((M!=null)&&(!M.isMonster()))
 						{
-							List<PlayerData> V=CMLib.database().DBReadData(M.Name(),"HEAVEN",M.Name()+"/HEAVEN/"+AGE.text());
+							final List<PlayerData> V=CMLib.database().DBReadData(M.Name(),"HEAVEN",M.Name()+"/HEAVEN/"+AGE.text());
 							if((V!=null)&&(V.size()>0))
 							{
 								nonPlayerData=V.get(0);
@@ -155,7 +155,7 @@ public class Prayer_Resurrect extends Prayer implements MendingSkill
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			CMMsg msg=CMClass.getMsg(mob,body,this,verbalCastCode(mob,body,auto),auto?"<T-NAME> is resurrected!":"^S<S-NAME> resurrect(s) <T-NAMESELF>!^?");
+			final CMMsg msg=CMClass.getMsg(mob,body,this,verbalCastCode(mob,body,auto),auto?"<T-NAME> is resurrected!":"^S<S-NAME> resurrect(s) <T-NAMESELF>!^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				invoker=mob;
@@ -165,8 +165,8 @@ public class Prayer_Resurrect extends Prayer implements MendingSkill
 				else
 				if((nonPlayerData!=null) && (body != null))
 				{
-					String data=nonPlayerData.xml;
-					Environmental object=parseHeavenlyData(data);
+					final String data=nonPlayerData.xml;
+					final Environmental object=parseHeavenlyData(data);
 					if(object==null)
 						mob.location().show(mob,body,CMMsg.MSG_OK_VISUAL,"<T-NAME> twitch(es) for a moment, but the spirit is too far gone.");
 					else
@@ -178,7 +178,7 @@ public class Prayer_Resurrect extends Prayer implements MendingSkill
 					}
 					else
 					{
-						MOB rejuvedMOB=(MOB)object;
+						final MOB rejuvedMOB=(MOB)object;
 						rejuvedMOB.recoverCharStats();
 						rejuvedMOB.recoverMaxState();
 						body.delEffect(body.fetchEffect("Age")); // so misskids doesn't record it

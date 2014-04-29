@@ -46,12 +46,12 @@ public class Song_Revelation extends Song
 		{
 			if(target instanceof MOB)
 			{
-				Room R=((MOB)target).location();
+				final Room R=((MOB)target).location();
 				boolean found=false;
 				if(R!=null)
 					for(int r=0;r<R.numInhabitants();r++)
 					{
-						MOB M=R.fetchInhabitant(r);
+						final MOB M=R.fetchInhabitant(r);
 						if((M!=null)&&(M!=mob)&&(M!=target)
 						&&(CMLib.flags().isHidden(M)||CMLib.flags().isInvisible(M)))
 						{ found=true; break;}

@@ -72,7 +72,7 @@ public class Prayer_Forgive extends Prayer
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
@@ -80,13 +80,13 @@ public class Prayer_Forgive extends Prayer
 				beneficialWordsFizzle(mob,null,"<S-NAME> "+prayForWord(mob)+" to forgive "+name+" for no reason at all.");
 			else
 			{
-				CMMsg msg=CMClass.getMsg(mob,mob.location(),this,verbalCastCode(mob,mob.location(),auto),auto?"":"^S<S-NAME> "+prayForWord(mob)+" to forgive "+name+".^?");
+				final CMMsg msg=CMClass.getMsg(mob,mob.location(),this,verbalCastCode(mob,mob.location(),auto),auto?"":"^S<S-NAME> "+prayForWord(mob)+" to forgive "+name+".^?");
 				if(mob.location().okMessage(mob,msg))
 				{
 					mob.location().send(mob,msg);
 					for(int i=0;i<warrants.size();i++)
 					{
-						LegalWarrant W=warrants.get(i);
+						final LegalWarrant W=warrants.get(i);
 						W.setCrime("pardoned");
 						W.setOffenses(0);
 					}

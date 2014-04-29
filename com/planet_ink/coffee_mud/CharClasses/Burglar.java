@@ -38,7 +38,7 @@ public class Burglar extends Thief
 	@Override public String name(){return "Burglar";}
 	@Override public int availabilityCode(){return Area.THEME_FANTASY;}
 	@Override public int allowedWeaponLevel(){return CharClass.WEAPONS_BURGLAR;}
-	private HashSet disallowedWeapons=buildDisallowedWeaponClasses();
+	private final HashSet disallowedWeapons=buildDisallowedWeaponClasses();
 	@Override protected HashSet disallowedWeaponClasses(MOB mob){return disallowedWeapons;}
 
 	public Burglar()

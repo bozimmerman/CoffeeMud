@@ -40,7 +40,7 @@ public class GiantScorpion extends StdMOB
 	public GiantScorpion()
 	{
 		super();
-		Random randomizer = new Random(System.currentTimeMillis());
+		final Random randomizer = new Random(System.currentTimeMillis());
 
 		username="a Giant Scorpion";
 		setDescription("The giant scorpion has a green carapace and yellowish green legs and pincers. The segmented tail is black, with a vicious stinger on the end.");
@@ -94,22 +94,22 @@ public class GiantScorpion extends StdMOB
 		if (CMLib.flags().aliveAwakeMobileUnbound(this,true)&&
 			(CMLib.flags().canHear(this)||CMLib.flags().canSee(this)||CMLib.flags().canSmell(this)))
 		{
-			MOB target = getVictim();
+			final MOB target = getVictim();
 			// ===== if it is less than three so roll for it
-			int roll = (int)Math.round(Math.random()*99);
+			final int roll = (int)Math.round(Math.random()*99);
 
 			// ===== check the result
 			if (roll<20)
 			{
 				// Sting was successful
- 				CMMsg msg=CMClass.getMsg(this, target, null, CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_POISON, "^F^<FIGHT^><S-NAME> sting(s) <T-NAMESELF>!^</FIGHT^>^?");
+ 				final CMMsg msg=CMClass.getMsg(this, target, null, CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_POISON, "^F^<FIGHT^><S-NAME> sting(s) <T-NAMESELF>!^</FIGHT^>^?");
 				CMLib.color().fixSourceFightColor(msg);
 				if(location().okMessage(target,msg))
 				{
 					this.location().send(target,msg);
 					if(msg.value()<=0)
 					{
-						Ability poison = CMClass.getAbility("Poison");
+						final Ability poison = CMClass.getAbility("Poison");
 						if(poison!=null) poison.invoke(this, target, true,0);
 					}
 				}

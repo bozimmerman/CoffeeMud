@@ -62,7 +62,7 @@ public class Thief_ConcealItem extends ThiefSkill
 		if((msg.target()==affected)
 		&&((msg.targetMinor()==CMMsg.TYP_GET)||(msg.targetMinor()==CMMsg.TYP_PUSH)||(msg.targetMinor()==CMMsg.TYP_PULL)))
 		{
-			Physical P=affected;
+			final Physical P=affected;
 			unInvoke();
 			P.delEffect(this);
 			P.recoverPhyStats();
@@ -77,7 +77,7 @@ public class Thief_ConcealItem extends ThiefSkill
 			mob.tell("What item would you like to conceal?");
 			return false;
 		}
-		Item item=super.getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_UNWORNONLY);
+		final Item item=super.getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_UNWORNONLY);
 		if(item==null) return false;
 
 		if((!auto)&&(item.phyStats().weight()>((adjustedLevel(mob,asLevel)*2))))
@@ -98,18 +98,18 @@ public class Thief_ConcealItem extends ThiefSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,item,this,CMMsg.MSG_THIEF_ACT,"<S-NAME> conceal(s) <T-NAME>.",CMMsg.MSG_THIEF_ACT,null,CMMsg.MSG_THIEF_ACT,null);
+			final CMMsg msg=CMClass.getMsg(mob,item,this,CMMsg.MSG_THIEF_ACT,"<S-NAME> conceal(s) <T-NAME>.",CMMsg.MSG_THIEF_ACT,null,CMMsg.MSG_THIEF_ACT,null);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				Ability A=(Ability)super.copyOf();
+				final Ability A=(Ability)super.copyOf();
 				A.setInvoker(mob);
 				A.setAbilityCode((adjustedLevel(mob,asLevel)*2)-item.phyStats().level());
-				Room R=mob.location();
+				final Room R=mob.location();
 				if(CMLib.law().doesOwnThisProperty(mob,R))
 					item.addNonUninvokableEffect(A);
 				else

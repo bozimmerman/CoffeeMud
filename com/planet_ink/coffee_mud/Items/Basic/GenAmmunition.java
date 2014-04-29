@@ -76,7 +76,7 @@ public class GenAmmunition extends StdItem implements Ammunition
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
-		MOB mob=msg.source();
+		final MOB mob=msg.source();
 		if(!msg.amITarget(this))
 			return super.okMessage(myHost,msg);
 		else

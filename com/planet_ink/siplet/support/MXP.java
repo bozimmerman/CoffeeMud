@@ -39,18 +39,18 @@ public class MXP
 	public static final int MODE_LINE_ROOMEXITS=12;
 	public static final int MODE_LINE_WELCOME=19;
 
-	private Hashtable elements=new Hashtable();
-	private Hashtable tags=new Hashtable();
-	private Hashtable entities=new Hashtable();
-	private Vector openElements=new Vector();
+	private final Hashtable elements=new Hashtable();
+	private final Hashtable tags=new Hashtable();
+	private final Hashtable entities=new Hashtable();
+	private final Vector openElements=new Vector();
 	public String lastForeground="WH";
 	public String lastBackground="WH";
 	private boolean eatTextUntilEOLN=false;
 	private boolean eatNextEOLN=false;
 	private boolean eatAllEOLN=false;
-	private StringBuffer responses=new StringBuffer("");
-	private StringBuffer jscriptBuffer=new StringBuffer("");
-	private Vector gauges=new Vector();
+	private final StringBuffer responses=new StringBuffer("");
+	private final StringBuffer jscriptBuffer=new StringBuffer("");
+	private final Vector gauges=new Vector();
 
 	public MXP()
 	{
@@ -136,7 +136,7 @@ public class MXP
 		synchronized(responses)
 		{
 			if(responses.length()==0) return "";
-			String s=responses.toString();
+			final String s=responses.toString();
 			responses.setLength(0);
 			return s;
 		}
@@ -147,7 +147,7 @@ public class MXP
 		synchronized(jscriptBuffer)
 		{
 			if(jscriptBuffer.length()==0) return "";
-			String s=jscriptBuffer.toString();
+			final String s=jscriptBuffer.toString();
 			jscriptBuffer.setLength(0);
 			return s;
 		}
@@ -197,7 +197,7 @@ public class MXP
 		{
 		case MODE_LINE_OPEN:
 		{
-			int ret=closeAllTags(buf,i);
+			final int ret=closeAllTags(buf,i);
 			setModeAndExecute(defaultMode,buf,i);
 			return ret;
 		}
@@ -205,7 +205,7 @@ public class MXP
 		case MODE_LINE_LOCKED:
 		case MODE_TEMP_SECURE:
 		{
-			int ret=closeAllTags(buf,i);
+			final int ret=closeAllTags(buf,i);
 			setModeAndExecute(defaultMode,buf,i);
 			return ret;
 		}
@@ -222,7 +222,7 @@ public class MXP
 			E=(MXPElement)openElements.elementAt(x);
 			if(E.isOpen())
 			{
-				String close=closeTag(E);
+				final String close=closeTag(E);
 				if(close.length()>0)
 					buf.insert(i,close+">");
 				openElements.removeElementAt(x);
@@ -247,8 +247,8 @@ public class MXP
 
 	private String closeTag(MXPElement E)
 	{
-		Vector endTags=E.getCloseTags(E.getDefinition());
-		StringBuffer newEnd=new StringBuffer("");
+		final Vector endTags=E.getCloseTags(E.getDefinition());
+		final StringBuffer newEnd=new StringBuffer("");
 		for(int e=endTags.size()-1;e>=0;e--)
 			if(elements.containsKey((((String)endTags.elementAt(e))).toUpperCase().trim()))
 				newEnd.append("</"+((String)endTags.elementAt(e)).toUpperCase().trim());
@@ -260,7 +260,7 @@ public class MXP
 		if(escapeString.endsWith("z")||escapeString.endsWith("Z"))
 		{
 			buf.delete(i,i+escapeString.length()+2);
-			int code=Util.s0_int(escapeString.substring(0,escapeString.length()-1));
+			final int code=Util.s0_int(escapeString.substring(0,escapeString.length()-1));
 			if(code<20)
 			{
 				setModeAndExecute(code,buf,i);
@@ -269,7 +269,7 @@ public class MXP
 			else
 			if(code<100)
 			{
-				MXPElement replace=(MXPElement)tags.get(Integer.valueOf(code));
+				final MXPElement replace=(MXPElement)tags.get(Integer.valueOf(code));
 				if((replace!=null)&&(!replace.isDisabled()))
 				{
 					buf.insert(i,replace.getFoldedDefinition(""));
@@ -293,7 +293,7 @@ public class MXP
 			{
 			case '&':
 			{
-				 int x=processEntity(buf,i,currentElement,false);
+				 final int x=processEntity(buf,i,currentElement,false);
 				 if(x==Integer.MAX_VALUE) return;
 				 i+=x;
 				 break;
@@ -328,9 +328,9 @@ public class MXP
 		// first step is to parse the motherfather
 		// if we can't parse it, we convert the < char at i into &lt;
 		// remember, incomplete tags should nodify the main filterdude
-		Vector parts=new Vector();
+		final Vector parts=new Vector();
 		int oldI=i;
-		int oldOldI=i;
+		final int oldOldI=i;
 		char lastC=' ';
 		char quotes='\0';
 		StringBuffer bit=new StringBuffer("");
@@ -447,13 +447,13 @@ public class MXP
 			if(tagDebug){System.out.println("/TAG*/****/Tag is unclosed!!!!"); System.out.flush();}
 			return Integer.MAX_VALUE;
 		}
-		int endI=i+1;
+		final int endI=i+1;
 
 		//nothing doin
 		String tag=(parts.size()>0)?((String)parts.firstElement()).toUpperCase().trim():"";
-		String oldString=buf.substring(oldI,endI);
+		final String oldString=buf.substring(oldI,endI);
 		if(tag.startsWith("!")) tag=tag.substring(1);
-		boolean endTag=tag.startsWith("/");
+		final boolean endTag=tag.startsWith("/");
 		if(endTag)tag=tag.substring(1);
 		tag=tag.toUpperCase().trim();
 		if((tag.length()==0)||(!elements.containsKey(tag)))
@@ -493,7 +493,7 @@ public class MXP
 			//**INTERIOR** needstext element
 			if(troubleE!=null)
 				openElements.removeElement(troubleE);
-			String close=closeTag(E);
+			final String close=closeTag(E);
 			if(tagDebug){System.out.println("/TAG/ENDENTITY="+E.name()+"/CLOSE="+close); System.out.flush();}
 			if(close.length()>0)
 				buf.insert(oldI,close+">");
@@ -564,7 +564,7 @@ public class MXP
 				return -1; // we want it to continue to look for closing tag
 			}
 		}
-		String totalDefinition=E.getFoldedDefinition(text);
+		final String totalDefinition=E.getFoldedDefinition(text);
 		if((endTag)&&(!E.isCommand())&&(E.getFlag()!=null)&&(E.getFlag().length()>0))
 		{
 			String f=E.getFlag().trim();
@@ -588,7 +588,7 @@ public class MXP
 			if(tagDebug){ System.out.println("/TAG*/THEEND1/"+substr(buf,(oldOldI+(totalDefinition.length()-1))+1,oldOldI+80)); System.out.flush();}
 			return totalDefinition.length()-1;
 		}
-		StringBuffer def=new StringBuffer(totalDefinition);
+		final StringBuffer def=new StringBuffer(totalDefinition);
 		processAnyEntities(def,E);
 		buf.insert(oldI,def.toString());
 		if(tagDebugLong){System.out.println("/TAG/"+substr(buf,0,buf.length())); System.out.flush();}
@@ -622,10 +622,10 @@ public class MXP
 		if(E.name().equals("FONT"))
 		{
 			String style=E.getAttributeValue("STYLE");
-			String color=E.getAttributeValue("COLOR");
-			String back=E.getAttributeValue("BACK");
-			String face=E.getAttributeValue("FACE");
-			String size=E.getAttributeValue("SIZE");
+			final String color=E.getAttributeValue("COLOR");
+			final String back=E.getAttributeValue("BACK");
+			final String face=E.getAttributeValue("FACE");
+			final String size=E.getAttributeValue("SIZE");
 			if((style!=null)
 			&&(color==null)
 			&&(back==null)
@@ -636,7 +636,7 @@ public class MXP
 				String v=null;
 				while(style.length()>0)
 				{
-					int x=style.indexOf(';');
+					final int x=style.indexOf(';');
 					if(x>=0)
 					{
 						s=style.substring(0,x).trim();
@@ -647,7 +647,7 @@ public class MXP
 						s=style.trim();
 						style="";
 					}
-					int y=s.indexOf(':');
+					final int y=s.indexOf(':');
 					if(y>=0)
 					{
 						v=s.substring(y+1);
@@ -702,8 +702,8 @@ public class MXP
 			E.setAttributeValue("ONCLICK","");
 			E.setAttributeValue("HREF","");
 			E.setAttributeValue("HINT","");
-			Vector hrefV=Util.parsePipes(href,true);
-			Vector hintV=Util.parsePipes(hint,true);
+			final Vector hrefV=Util.parsePipes(href,true);
+			final Vector hintV=Util.parsePipes(hint,true);
 			if(hrefV.size()==1)
 			{
 				href=Util.replaceAll(((String)hrefV.firstElement()),"'","\\'");
@@ -717,7 +717,7 @@ public class MXP
 				E.setAttributeValue("HINT",((String)hintV.firstElement()));
 				hintV.removeElementAt(0);
 				E.setAttributeValue("HREF","javascript:goDefault(0);");
-				StringBuffer newHint=new StringBuffer("");
+				final StringBuffer newHint=new StringBuffer("");
 				for(int i=0;i<hintV.size();i++)
 				{
 					newHint.append((String)hintV.elementAt(i));
@@ -739,14 +739,14 @@ public class MXP
 		else
 		if(E.name().equals("ELEMENT")||E.name().equals("EL"))
 		{
-			String name=E.getAttributeValue("NAME");
+			final String name=E.getAttributeValue("NAME");
 			String definition=E.getAttributeValue("DEFINITION");
 			String attributes=E.getAttributeValue("ATT");
-			String tag=E.getAttributeValue("TAG");
-			String flags=E.getAttributeValue("FLAG");
-			String OPEN=E.getAttributeValue("OPEN");
-			String DELETE=E.getAttributeValue("DELETE");
-			String EMPTY=E.getAttributeValue("EMPTY");
+			final String tag=E.getAttributeValue("TAG");
+			final String flags=E.getAttributeValue("FLAG");
+			final String OPEN=E.getAttributeValue("OPEN");
+			final String DELETE=E.getAttributeValue("DELETE");
+			final String EMPTY=E.getAttributeValue("EMPTY");
 			if(name==null) return;
 			if((DELETE!=null)&&(elements.containsKey(name)))
 			{
@@ -760,13 +760,13 @@ public class MXP
 			int bitmap=0;
 			if(OPEN!=null) bitmap|=MXPElement.BIT_OPEN;
 			if(EMPTY!=null) bitmap|=MXPElement.BIT_COMMAND;
-			MXPElement L=new MXPElement(name.toUpperCase().trim(),definition,attributes,flags,bitmap);
+			final MXPElement L=new MXPElement(name.toUpperCase().trim(),definition,attributes,flags,bitmap);
 			L.setNotBasicElement();
 			elements.remove(L.name());
 			elements.put(L.name(),L);
 			if((tag!=null)&&(Util.isInteger(tag))&&(Util.s_int(tag)>19)&&(Util.s_int(tag)<100))
 			{
-				int tagNum=Util.s_int(tag);
+				final int tagNum=Util.s_int(tag);
 				if(tags.containsKey(Integer.valueOf(tagNum))) tags.remove(Integer.valueOf(tagNum));
 				tags.put(Integer.valueOf(tagNum),L);
 			}
@@ -775,14 +775,14 @@ public class MXP
 		else
 		if(E.name().equals("ENTITY")||E.name().equals("EN"))
 		{
-			String name=E.getAttributeValue("NAME");
-			String value=E.getAttributeValue("VALUE");
+			final String name=E.getAttributeValue("NAME");
+			final String value=E.getAttributeValue("VALUE");
 			//String desc=E.getAttributeValue("DESC");
 			//String PRIVATE=E.getAttributeValue("PRIVATE");
 			//String PUBLISH=E.getAttributeValue("PUBLISH");
-			String DELETE=E.getAttributeValue("DELETE");
-			String REMOVE=E.getAttributeValue("REMOVE");
-			String ADD=E.getAttributeValue("ADD");
+			final String DELETE=E.getAttributeValue("DELETE");
+			final String REMOVE=E.getAttributeValue("REMOVE");
+			final String ADD=E.getAttributeValue("ADD");
 			if((name==null)||(name.length()==0)) return;
 			if(DELETE!=null)
 			{
@@ -805,14 +805,14 @@ public class MXP
 		else
 		if((E.name().equals("VAR")||E.name().equals("V"))&&(endTag))
 		{
-			String name=E.getAttributeValue("NAME");
+			final String name=E.getAttributeValue("NAME");
 			//String PRIVATE=E.getAttributeValue("PRIVATE");
 			//String PUBLISH=E.getAttributeValue("PUBLISH");
-			String DELETE=E.getAttributeValue("DELETE");
-			String REMOVE=E.getAttributeValue("REMOVE");
+			final String DELETE=E.getAttributeValue("DELETE");
+			final String REMOVE=E.getAttributeValue("REMOVE");
 			String VALUE=E.getAttributeValue("TEXT");
 			if(VALUE==null) VALUE="";
-			String ADD=E.getAttributeValue("ADD");
+			final String ADD=E.getAttributeValue("ADD");
 			if((name==null)||(name.length()==0)) return;
 			if(DELETE!=null)
 			{
@@ -847,11 +847,11 @@ public class MXP
 			if(CAPTION==null) CAPTION="";
 			String COLOR=E.getAttributeValue("COLOR");
 			if(COLOR==null) COLOR="WHITE";
-			String initEntity=getEntityValue(ENTITY,null);
+			final String initEntity=getEntityValue(ENTITY,null);
 			int initValue=0;
 			if((initEntity!=null)&&(Util.isInteger(initEntity)))
 				initValue=Util.s_int(initEntity);
-			String maxEntity=getEntityValue(MAX,null);
+			final String maxEntity=getEntityValue(MAX,null);
 			int maxValue=100;
 			if((maxEntity!=null)&&(Util.isInteger(maxEntity)))
 				maxValue=Util.s_int(maxEntity);
@@ -860,7 +860,7 @@ public class MXP
 			synchronized(jscriptBuffer)
 			{
 				jscriptBuffer.append("createGauge('"+ENTITY+"','"+CAPTION+"','"+COLOR+"',"+initValue+","+maxValue+");");
-				String[] gauge=new String[2];
+				final String[] gauge=new String[2];
 				gauge[0]=ENTITY;
 				gauge[1]=MAX;
 				gauges.addElement(gauge);
@@ -869,25 +869,25 @@ public class MXP
 		else
 		if(E.name().equalsIgnoreCase("ATTLIST")||E.name().equalsIgnoreCase("ATT"))
 		{
-			String name=E.getAttributeValue("NAME");
-			String value=E.getAttributeValue("ATT");
+			final String name=E.getAttributeValue("NAME");
+			final String value=E.getAttributeValue("ATT");
 			if((name==null)||(value==null)) return;
-			MXPElement E2=(MXPElement)elements.get(name.toUpperCase().trim());
+			final MXPElement E2=(MXPElement)elements.get(name.toUpperCase().trim());
 			if(E2==null) return;
 			E2.setAttributes(value);
 		}
 		else
 		if(E.name().equalsIgnoreCase("SUPPORT"))
 		{
-			StringBuffer supportResponse=new StringBuffer("");
-			List<String> V=E.getUserParms();
+			final StringBuffer supportResponse=new StringBuffer("");
+			final List<String> V=E.getUserParms();
 			if((V==null)||(V.size()==0))
 			{
-				for(Enumeration e=elements.elements();e.hasMoreElements();)
+				for(final Enumeration e=elements.elements();e.hasMoreElements();)
 				{
-					MXPElement E2=(MXPElement)e.nextElement();
+					final MXPElement E2=(MXPElement)e.nextElement();
 					if(!E2.isBasicElement()) continue;
-					Vector unsupportedParms=E2.getUnsupportedParms();
+					final Vector unsupportedParms=E2.getUnsupportedParms();
 					if(!E2.isGenerallySupported())
 						supportResponse.append(" -"+E2.name());
 					else
@@ -909,7 +909,7 @@ public class MXP
 				if(request.endsWith("\"")) request=request.substring(0,request.length()-1).trim();
 				if(request.startsWith("\'")) request=request.substring(1).trim();
 				if(request.endsWith("\'")) request=request.substring(0,request.length()-1).trim();
-				int x=request.indexOf('.');
+				final int x=request.indexOf('.');
 				String tag=request;
 				String parm="";
 				if(x>0)
@@ -917,7 +917,7 @@ public class MXP
 					tag=request.substring(0,x).trim();
 					parm=request.substring(x+1).trim();
 				}
-				MXPElement RE=(MXPElement)elements.get(tag);
+				final MXPElement RE=(MXPElement)elements.get(tag);
 				if((RE==null)
 				||(!RE.isGenerallySupported()))
 				{
@@ -932,13 +932,13 @@ public class MXP
 					supportResponse.append(" +"+tag);
 					continue;
 				}
-				Vector unsupportedParms=RE.getUnsupportedParms();
-				Vector allAttributes=RE.getParsedAttributes();
+				final Vector unsupportedParms=RE.getUnsupportedParms();
+				final Vector allAttributes=RE.getParsedAttributes();
 				if(parm.equals("*"))
 				{
 					for(int a=0;a<allAttributes.size();a++)
 					{
-						String att=(String)allAttributes.elementAt(a);
+						final String att=(String)allAttributes.elementAt(a);
 						if(!unsupportedParms.contains(att))
 							supportResponse.append(" +"+tag+"."+att);
 					}
@@ -957,18 +957,18 @@ public class MXP
 		{
 			addElement(new MXPElement("TAG","","INDEX WINDOWNAME FORE BACK GAG ENABLE DISABLE","",MXPElement.BIT_SPECIAL|MXPElement.BIT_COMMAND));
 			//String window=E.getAttributeValue("WINDOWNAME");
-			String index=E.getAttributeValue("INDEX");
+			final String index=E.getAttributeValue("INDEX");
 			if(!Util.isNumber(index)) return;
-			int number=Util.s_int(index);
+			final int number=Util.s_int(index);
 			if((number<20)||(number>99)) return;
 			String foreColor=E.getAttributeValue("FORE");
 			if(foreColor==null) foreColor="";
 			String backColor=E.getAttributeValue("BACK");
 			if(backColor==null) backColor="";
-			String gag=E.getAttributeValue("GAG");
-			String enable=E.getAttributeValue("ENABLE");
-			String disable=E.getAttributeValue("DISABLE");
-			StringBuffer parms=new StringBuffer("");
+			final String gag=E.getAttributeValue("GAG");
+			final String enable=E.getAttributeValue("ENABLE");
+			final String disable=E.getAttributeValue("DISABLE");
+			final StringBuffer parms=new StringBuffer("");
 			if((foreColor.length()>0)||(backColor.length()>0))
 			{
 				parms.append("<FONT ");
@@ -976,7 +976,7 @@ public class MXP
 				if(backColor.length()>0) parms.append(" BACK="+backColor);
 				parms.append(">");
 			}
-			MXPElement L=(MXPElement)tags.get(Integer.valueOf(number));
+			final MXPElement L=(MXPElement)tags.get(Integer.valueOf(number));
 			if(L==null) return;
 			int newBitmap=L.getBitmap();
 			if(gag!=null)
@@ -990,7 +990,7 @@ public class MXP
 			L.setBitmap(newBitmap);
 			if(parms.length()>0)
 			{
-				String definition=Util.stripBadHTMLTags(L.getDefinition());
+				final String definition=Util.stripBadHTMLTags(L.getDefinition());
 				L.setDefinition(definition+parms.toString());
 			}
 			return;
@@ -1008,21 +1008,21 @@ public class MXP
 		{
 			for(int x=openElements.size()-1;x>=0;x--)
 			{
-				MXPElement E=(MXPElement)openElements.elementAt(x);
+				final MXPElement E=(MXPElement)openElements.elementAt(x);
 				val=E.getAttributeValue(tag);
 				if(val!=null) break;
 			}
 			if(val==null)
 				for(int x=openElements.size()-1;x>=0;x--)
 				{
-					MXPElement E=(MXPElement)openElements.elementAt(x);
+					final MXPElement E=(MXPElement)openElements.elementAt(x);
 					val=E.getAttributeValue(tag.toLowerCase());
 					if(val!=null) break;
 				}
 			if(val==null)
 				for(int x=openElements.size()-1;x>=0;x--)
 				{
-					MXPElement E=(MXPElement)openElements.elementAt(x);
+					final MXPElement E=(MXPElement)openElements.elementAt(x);
 					val=E.getAttributeValue(tag.toUpperCase());
 					if(val!=null) break;
 				}
@@ -1060,11 +1060,11 @@ public class MXP
 			if((gauge[0].equalsIgnoreCase(name))
 			||(gauge[1].equalsIgnoreCase(name)))
 			{
-				String initEntity=getEntityValue(gauge[0],null);
+				final String initEntity=getEntityValue(gauge[0],null);
 				int initValue=0;
 				if((initEntity!=null)&&(Util.isInteger(initEntity)))
 					initValue=Util.s_int(initEntity);
-				String maxEntity=getEntityValue(gauge[1],null);
+				final String maxEntity=getEntityValue(gauge[1],null);
 				int maxValue=100;
 				if((maxEntity!=null)&&(Util.isInteger(maxEntity)))
 					maxValue=Util.s_int(maxEntity);
@@ -1107,8 +1107,8 @@ public class MXP
 		if((mode()==MXP.MODE_LINE_LOCKED)||(mode()==MXP.MODE_LOCK_LOCKED))
 			return 0;
 		boolean convertIt=false;
-		int oldI=i;
-		StringBuffer content=new StringBuffer("");
+		final int oldI=i;
+		final StringBuffer content=new StringBuffer("");
 		if((i<buf.length()-3)&&(buf.charAt(i+1)=='#')&&(Character.isDigit(buf.charAt(i+2))))
 		{
 			i++; // skip to the hash, the next line will skip to the digit
@@ -1165,9 +1165,9 @@ public class MXP
 			}
 			return 0;
 		}
-		String tag=content.toString().trim();
-		String val=getEntityValue(tag,currentE);
-		String oldValue=buf.substring(oldI,i+1);
+		final String tag=content.toString().trim();
+		final String val=getEntityValue(tag,currentE);
+		final String oldValue=buf.substring(oldI,i+1);
 		if(entityDebug) System.out.println("entity="+tag+", val="+val);
 		buf.delete(oldI,i+1);
 		if(val!=null)

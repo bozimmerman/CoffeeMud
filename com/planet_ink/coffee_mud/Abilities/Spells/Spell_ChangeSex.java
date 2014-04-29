@@ -114,17 +114,17 @@ public class Spell_ChangeSex extends Spell
 		// undo the affects of this spell
 		if(affected instanceof CagedAnimal)
 		{
-			CagedAnimal target=(CagedAnimal)affected;
-			MOB mob=target.unCageMe();
+			final CagedAnimal target=(CagedAnimal)affected;
+			final MOB mob=target.unCageMe();
 			super.unInvoke();
 			if(canBeUninvoked())
 			{
-				Ability A=mob.fetchEffect(ID());
+				final Ability A=mob.fetchEffect(ID());
 				if(A!=null) mob.delEffect(A);
 				mob.recoverCharStats();
 				mob.recoverPhyStats();
 				setChildStuff(mob, target);
-				Room R=CMLib.map().roomLocation(target);
+				final Room R=CMLib.map().roomLocation(target);
 				if(R!=null)
 					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> feel(s) like <S-HIS-HER> old self again.");
 
@@ -134,7 +134,7 @@ public class Spell_ChangeSex extends Spell
 		else
 		if(affected instanceof MOB)
 		{
-			MOB mob=(MOB)affected;
+			final MOB mob=(MOB)affected;
 			super.unInvoke();
 			if(canBeUninvoked())
 				if((mob.location()!=null)&&(!mob.amDead()))
@@ -147,7 +147,7 @@ public class Spell_ChangeSex extends Spell
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		Physical target=getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_UNWORNONLY);
+		final Physical target=getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_UNWORNONLY);
 		if(target==null) return false;
 		if(target instanceof Item)
 		{
@@ -180,7 +180,7 @@ public class Spell_ChangeSex extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> sing(s) a spell to <T-NAMESELF>.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> sing(s) a spell to <T-NAMESELF>.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

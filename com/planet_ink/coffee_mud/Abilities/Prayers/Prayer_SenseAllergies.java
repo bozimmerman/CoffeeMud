@@ -45,13 +45,13 @@ public class Prayer_SenseAllergies extends Prayer
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		MOB target=this.getTarget(mob,commands,givenTarget);
+		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
@@ -59,26 +59,26 @@ public class Prayer_SenseAllergies extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),
 					auto?"":(mob==target)?"^S<S-NAME> close(s) <T-HIS-HER> eyes and peer(s) into <T-HIS-HER> own nostrils.^?":"^S<S-NAME> peer(s) into the nostrils of <T-NAMESELF>.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				Ability A=target.fetchEffect("Allergies");
+				final Ability A=target.fetchEffect("Allergies");
 				if(A==null)
 					mob.tell(mob,target,null,"<T-NAME> seem(s) like <T-HE-SHE> is not allergic to anything.");
 				else
 				{
 
-					Vector allergies=new Vector();
-					Vector<String> V=CMParms.parse(A.text().toUpperCase().trim());
+					final Vector allergies=new Vector();
+					final Vector<String> V=CMParms.parse(A.text().toUpperCase().trim());
 					for(int i=0;i<V.size();i++)
 					{
 						if(CMParms.contains(RawMaterial.CODES.NAMES(), V.elementAt(i)))
 							allergies.addElement(V.elementAt(i).toLowerCase());
 						else
 						{
-							Race R=CMClass.getRace(V.elementAt(i));
+							final Race R=CMClass.getRace(V.elementAt(i));
 							if(R!=null)
 								allergies.addElement(R.name());
 						}

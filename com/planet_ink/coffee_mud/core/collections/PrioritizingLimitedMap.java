@@ -95,7 +95,7 @@ public class PrioritizingLimitedMap<T extends Comparable<T>, K> implements Map<T
 	@Override
 	public K get(Object key)
 	{
-		LinkedEntry<T,K> p=map.get(key);
+		final LinkedEntry<T,K> p=map.get(key);
 		if(p!=null)
 		{
 			markFoundAgain(p);
@@ -131,7 +131,7 @@ public class PrioritizingLimitedMap<T extends Comparable<T>, K> implements Map<T
 			{
 				if(ptr!=null)
 				{
-					 T elem=ptr.first;
+					 final T elem=ptr.first;
 					 ptr=ptr.next;
 					 return elem;
 				}
@@ -143,7 +143,7 @@ public class PrioritizingLimitedMap<T extends Comparable<T>, K> implements Map<T
 	@Override
 	public synchronized boolean containsValue(Object arg0)
 	{
-		for(LinkedEntry<T,K> p : map.values())
+		for(final LinkedEntry<T,K> p : map.values())
 			if(p.first==arg0)
 				return true;
 		return false;
@@ -153,7 +153,7 @@ public class PrioritizingLimitedMap<T extends Comparable<T>, K> implements Map<T
 	public synchronized Set<java.util.Map.Entry<T, K>> entrySet()
 	{
 		final Set<java.util.Map.Entry<T, K>> c= new TreeSet<java.util.Map.Entry<T, K>>();
-		for(T t : map.keySet())
+		for(final T t : map.keySet())
 			c.add(new Pair<T,K>(t,map.get(t).second));
 		return c;
 	}
@@ -169,8 +169,8 @@ public class PrioritizingLimitedMap<T extends Comparable<T>, K> implements Map<T
 		LinkedEntry<T,K> pp=p.prev;
 		while((pp!=null) && (p.priority > pp.priority))
 		{
-			LinkedEntry<T,K> pn=p.next;
-			int ppIndex=pp.index;
+			final LinkedEntry<T,K> pn=p.next;
+			final int ppIndex=pp.index;
 			pp.index=p.index;
 			p.index=ppIndex;
 			p.prev=pp.prev;
@@ -254,7 +254,7 @@ public class PrioritizingLimitedMap<T extends Comparable<T>, K> implements Map<T
 	@Override
 	public synchronized void putAll(Map<? extends T, ? extends K> arg0)
 	{
-		for(T t : arg0.keySet())
+		for(final T t : arg0.keySet())
 			put(t,arg0.get(t));
 	}
 
@@ -294,7 +294,7 @@ public class PrioritizingLimitedMap<T extends Comparable<T>, K> implements Map<T
 	public synchronized Collection<K> values()
 	{
 		final Collection<K> c= new Vector<K>(map.size());
-		for(T t : map.keySet())
+		for(final T t : map.keySet())
 			c.add(map.get(t).second);
 		return c;
 	}

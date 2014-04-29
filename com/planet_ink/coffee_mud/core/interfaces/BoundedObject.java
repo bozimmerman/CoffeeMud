@@ -87,12 +87,12 @@ public interface BoundedObject
 
 		public BoundedCube expand(double[] direction, long distance)
 		{
-			BoundedCube cube=new BoundedCube(this);
-			double x1=Math.cos(direction[0])*Math.sin(direction[1]);
-			double y1=Math.sin(direction[0])*Math.sin(direction[1]);
-			double z1=Math.cos(direction[1]);
-			long[] oldCenter=new long[]{((lx+rx)/2),((ty+rx)/2),((iz+oz)/2)};
-			long[] newCenter=new long[]{
+			final BoundedCube cube=new BoundedCube(this);
+			final double x1=Math.cos(direction[0])*Math.sin(direction[1]);
+			final double y1=Math.sin(direction[0])*Math.sin(direction[1]);
+			final double z1=Math.cos(direction[1]);
+			final long[] oldCenter=new long[]{((lx+rx)/2),((ty+rx)/2),((iz+oz)/2)};
+			final long[] newCenter=new long[]{
 					oldCenter[0]+Math.round(CMath.mul(distance,x1)),
 					oldCenter[1]+Math.round(CMath.mul(distance,y1)),
 					oldCenter[2]+Math.round(CMath.mul(distance,z1))};

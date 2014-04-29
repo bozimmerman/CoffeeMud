@@ -42,7 +42,7 @@ public class Bomb_Smoke extends StdBomb
 	@Override
 	public List<Item> getTrapComponents()
 	{
-		Vector V=new Vector();
+		final Vector V=new Vector();
 		V.addElement(CMLib.materials().makeItemResource(RawMaterial.RESOURCE_WOOD));
 		return V;
 	}
@@ -74,7 +74,7 @@ public class Bomb_Smoke extends StdBomb
 			if(target.location().show(invoker(),target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,affected.name()+" explodes smoke into <T-YOUPOSS> eyes!"))
 			{
 				super.spring(target);
-				Ability A=CMClass.getAbility("Spell_Blindness");
+				final Ability A=CMClass.getAbility("Spell_Blindness");
 				if(A!=null) A.invoke(target,target,true,0);
 			}
 		}

@@ -57,15 +57,15 @@ public class Eat extends StdCommand
 			mob.tell("You don't see '"+CMParms.combine(commands,0)+"' here.");
 			return false;
 		}
-		boolean hasHands=mob.charStats().getBodyPart(Race.BODY_HAND)>0;
+		final boolean hasHands=mob.charStats().getBodyPart(Race.BODY_HAND)>0;
 		if((thisThang instanceof Food)&&(!mob.isMine(thisThang))&&(hasHands))
 		{
 			mob.tell("You don't seem to have '"+CMParms.combine(commands,0)+"'.");
 			return false;
 		}
-		String eatSound=CMLib.protocol().msp("gulp.wav",10);
-		String eatMsg="<S-NAME> eat(s) <T-NAMESELF>."+eatSound;
-		CMMsg newMsg=CMClass.getMsg(mob,thisThang,null,hasHands?CMMsg.MSG_EAT:CMMsg.MSG_EAT_GROUND,eatMsg);
+		final String eatSound=CMLib.protocol().msp("gulp.wav",10);
+		final String eatMsg="<S-NAME> eat(s) <T-NAMESELF>."+eatSound;
+		final CMMsg newMsg=CMClass.getMsg(mob,thisThang,null,hasHands?CMMsg.MSG_EAT:CMMsg.MSG_EAT_GROUND,eatMsg);
 		if(mob.location().okMessage(mob,newMsg))
 		{
 			if((thisThang instanceof Food)
@@ -76,7 +76,7 @@ public class Eat extends StdCommand
 			&&(newMsg.sourceMessage().equalsIgnoreCase(newMsg.othersMessage()))
 			&&(newMsg.targetMessage().equalsIgnoreCase(newMsg.othersMessage())))
 			{
-				String biteMsg="<S-NAME> take(s) a bite of <T-NAMESELF>."+eatSound;
+				final String biteMsg="<S-NAME> take(s) a bite of <T-NAMESELF>."+eatSound;
 				newMsg.setSourceMessage(biteMsg);
 				newMsg.setTargetMessage(biteMsg);
 				newMsg.setOthersMessage(biteMsg);

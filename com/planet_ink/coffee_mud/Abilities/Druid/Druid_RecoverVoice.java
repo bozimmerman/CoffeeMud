@@ -49,12 +49,12 @@ public class Druid_RecoverVoice extends StdAbility
 
 	public List<Ability> returnOffensiveAffects(MOB caster, Physical fromMe)
 	{
-		MOB newMOB=CMClass.getFactoryMOB();
-		Vector offenders=new Vector(1);
+		final MOB newMOB=CMClass.getFactoryMOB();
+		final Vector offenders=new Vector(1);
 
 		for(int a=0;a<fromMe.numEffects();a++) // personal
 		{
-			Ability A=fromMe.fetchEffect(a);
+			final Ability A=fromMe.fetchEffect(a);
 			if(A!=null)
 			{
 				newMOB.recoverPhyStats();
@@ -89,14 +89,14 @@ public class Druid_RecoverVoice extends StdAbility
 	{
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
-		List<Ability> offensiveAffects=returnOffensiveAffects(mob,mob);
+		final List<Ability> offensiveAffects=returnOffensiveAffects(mob,mob);
 		if((!success)||(offensiveAffects.size()==0))
 			mob.tell("You failed in your vocal meditation.");
 		else
 		{
-			CMMsg msg=CMClass.getMsg(mob,null,null,CMMsg.TYP_GENERAL|CMMsg.MASK_ALWAYS|CMMsg.MASK_MAGIC,null);
+			final CMMsg msg=CMClass.getMsg(mob,null,null,CMMsg.TYP_GENERAL|CMMsg.MASK_ALWAYS|CMMsg.MASK_MAGIC,null);
 			if(mob.location().okMessage(mob,msg))
 			{
 				for(int a=offensiveAffects.size()-1;a>=0;a--)

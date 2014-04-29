@@ -44,7 +44,7 @@ public class Minotaur extends Cow
 	@Override public long forbiddenWornBits(){return Wearable.WORN_HEAD;}
 	@Override public String racialCategory(){return "Bovine";}
 
-	private int[] agingChart={0,1,3,15,35,53,70,74,78};
+	private final int[] agingChart={0,1,3,15,35,53,70,74,78};
 	@Override public int[] getAgingChart(){return agingChart;}
 
 	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi

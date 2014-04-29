@@ -41,22 +41,22 @@ public class AbilityRaceNext extends StdWebMacro
 		if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
 			return CMProps.getVar(CMProps.Str.MUDSTATUS);
 
-		java.util.Map<String,String> parms=parseParms(parm);
-		String last=httpReq.getUrlParameter("ABILITY");
+		final java.util.Map<String,String> parms=parseParms(parm);
+		final String last=httpReq.getUrlParameter("ABILITY");
 		if(parms.containsKey("RESET"))
 		{
 			if(last!=null) httpReq.removeUrlParameter("ABILITY");
 			return "";
 		}
-		String ableType=httpReq.getUrlParameter("ABILITYTYPE");
+		final String ableType=httpReq.getUrlParameter("ABILITYTYPE");
 		if((ableType!=null)&&(ableType.length()>0))
 			parms.put(ableType,ableType);
-		String domainType=httpReq.getUrlParameter("DOMAIN");
+		final String domainType=httpReq.getUrlParameter("DOMAIN");
 		if((domainType!=null)&&(domainType.length()>0))
 			parms.put("DOMAIN",domainType);
 
 		String lastID="";
-		String raceID=httpReq.getUrlParameter("RACE");
+		final String raceID=httpReq.getUrlParameter("RACE");
 		Race R=null;
 		if((raceID!=null)&&(raceID.length()>0))
 			R=CMClass.getRace(raceID);
@@ -67,15 +67,15 @@ public class AbilityRaceNext extends StdWebMacro
 			return " @break@";
 		}
 
-		for(Ability A : R.racialAbilities(null))
+		for(final Ability A : R.racialAbilities(null))
 		{
 			boolean okToShow=true;
-			int level=CMLib.ableMapper().getQualifyingLevel(R.ID(),false,A.ID());
+			final int level=CMLib.ableMapper().getQualifyingLevel(R.ID(),false,A.ID());
 			if(level<0)
 				okToShow=false;
 			else
 			{
-				String levelName=httpReq.getUrlParameter("LEVEL");
+				final String levelName=httpReq.getUrlParameter("LEVEL");
 				if((levelName!=null)&&(levelName.length()>0)&&(CMath.s_int(levelName)!=level))
 					okToShow=false;
 			}

@@ -39,25 +39,25 @@ public class GrinderComponent
 
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
-		String last=httpReq.getUrlParameter("COMPONENT");
+		final String last=httpReq.getUrlParameter("COMPONENT");
 		if(last==null) return " @break@";
 		if(last.length()>0)
 		{
-			String fixedCompID=last.replace(' ','_').toUpperCase();
-			List<AbilityComponent> set=new Vector<AbilityComponent>();
+			final String fixedCompID=last.replace(' ','_').toUpperCase();
+			final List<AbilityComponent> set=new Vector<AbilityComponent>();
 			int posDex=1;
 			while(httpReq.isUrlParameter(fixedCompID+"_PIECE_CONNECTOR_"+posDex) && httpReq.getUrlParameter(fixedCompID+"_PIECE_CONNECTOR_"+posDex).trim().length()>0)
 			{
-				String mask=httpReq.getUrlParameter(fixedCompID+"_PIECE_MASK_"+posDex);
-				String str=httpReq.getUrlParameter(fixedCompID+"_PIECE_STRING_"+posDex);
-				String amt=httpReq.getUrlParameter(fixedCompID+"_PIECE_AMOUNT_"+posDex);
-				String conn=httpReq.getUrlParameter(fixedCompID+"_PIECE_CONNECTOR_"+posDex);
-				String loc=httpReq.getUrlParameter(fixedCompID+"_PIECE_LOCATION_"+posDex);
-				String type=httpReq.getUrlParameter(fixedCompID+"_PIECE_TYPE_"+posDex);
-				String consumed=httpReq.getUrlParameter(fixedCompID+"_PIECE_CONSUMED_"+posDex);
+				final String mask=httpReq.getUrlParameter(fixedCompID+"_PIECE_MASK_"+posDex);
+				final String str=httpReq.getUrlParameter(fixedCompID+"_PIECE_STRING_"+posDex);
+				final String amt=httpReq.getUrlParameter(fixedCompID+"_PIECE_AMOUNT_"+posDex);
+				final String conn=httpReq.getUrlParameter(fixedCompID+"_PIECE_CONNECTOR_"+posDex);
+				final String loc=httpReq.getUrlParameter(fixedCompID+"_PIECE_LOCATION_"+posDex);
+				final String type=httpReq.getUrlParameter(fixedCompID+"_PIECE_TYPE_"+posDex);
+				final String consumed=httpReq.getUrlParameter(fixedCompID+"_PIECE_CONSUMED_"+posDex);
 				if(!conn.equalsIgnoreCase("DELETE"))
 				{
-					AbilityComponent able=(AbilityComponent)CMClass.getCommon("DefaultAbilityComponent");
+					final AbilityComponent able=(AbilityComponent)CMClass.getCommon("DefaultAbilityComponent");
 					able.setAmount(CMath.s_int(amt));
 					if(posDex==1)
 						able.setConnector(AbilityComponent.CompConnector.AND);
@@ -74,7 +74,7 @@ public class GrinderComponent
 
 			if(CMLib.ableMapper().getAbilityComponentMap().containsKey(last.toUpperCase().trim()))
 			{
-				List<AbilityComponent> xset=CMLib.ableMapper().getAbilityComponentMap().get(last.toUpperCase().trim());
+				final List<AbilityComponent> xset=CMLib.ableMapper().getAbilityComponentMap().get(last.toUpperCase().trim());
 				xset.clear();
 				xset.addAll(set);
 			}

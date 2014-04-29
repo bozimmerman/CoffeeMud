@@ -93,7 +93,7 @@ public class CMColor extends StdLibrary implements ColorLibrary
 		if(code.indexOf('|')>0) return code;
 		String code1=null;
 		String code2=null;
-		boolean bold=(code.indexOf(";1;")>0)||(code.indexOf("[1;")>0);
+		final boolean bold=(code.indexOf(";1;")>0)||(code.indexOf("[1;")>0);
 		for(int i=0;i<COLOR_CODELETTERSINCARDINALORDER.length;i++)
 		{
 			if((code1==null)&&(code.indexOf(""+(40+i))>0))
@@ -208,14 +208,14 @@ public class CMColor extends StdLibrary implements ColorLibrary
 			htlookup[COLORCODE_MOVES]=HTTAG_LIGHTCYAN;
 			htlookup[COLORCODE_UNEXPDIRECTION]=mixHTMLCodes(HTTAG_CYAN,HTTAG_BGBLUE);
 			htlookup[COLORCODE_UNEXPDOORDESC]=HTTAG_LIGHTBLUE;
-			List<String> schemeSettings=CMParms.parseCommas(CMProps.getVar(CMProps.Str.COLORSCHEME),true);
+			final List<String> schemeSettings=CMParms.parseCommas(CMProps.getVar(CMProps.Str.COLORSCHEME),true);
 			for(int i=0;i<schemeSettings.size();i++)
 			{
-				String s=schemeSettings.get(i);
+				final String s=schemeSettings.get(i);
 				int x=s.indexOf('=');
 				if(x>0)
 				{
-					String key=s.substring(0,x).trim();
+					final String key=s.substring(0,x).trim();
 					String value=s.substring(x+1).trim();
 					char codeChar=' ';
 					for(int ii=0;ii<COLORCODE_ALLCODENAMES.length;ii++)
@@ -259,7 +259,7 @@ public class CMColor extends StdLibrary implements ColorLibrary
 
 			for(int i=0;i<htlookup.length;i++)
 			{
-				String s=htlookup[i];
+				final String s=htlookup[i];
 				if((s!=null)&&(s.startsWith("^"))&&(s.length()>1))
 					htlookup[i]=htlookup[s.charAt(1)];
 			}
@@ -318,14 +318,14 @@ public class CMColor extends StdLibrary implements ColorLibrary
 			clookup[COLORCODE_MOVES]=COLOR_LIGHTCYAN;
 			clookup[COLORCODE_UNEXPDIRECTION]=mixColorCodes(COLOR_CYAN,COLOR_BGBLUE);
 			clookup[COLORCODE_UNEXPDOORDESC]=COLOR_LIGHTBLUE;
-			List<String> schemeSettings=CMParms.parseCommas(CMProps.getVar(CMProps.Str.COLORSCHEME),true);
+			final List<String> schemeSettings=CMParms.parseCommas(CMProps.getVar(CMProps.Str.COLORSCHEME),true);
 			for(int i=0;i<schemeSettings.size();i++)
 			{
-				String s=schemeSettings.get(i);
+				final String s=schemeSettings.get(i);
 				int x=s.indexOf('=');
 				if(x>0)
 				{
-					String key=s.substring(0,x).trim();
+					final String key=s.substring(0,x).trim();
 					String value=s.substring(x+1).trim();
 					char codeChar=' ';
 					for(int ii=0;ii<COLORCODE_ALLCODENAMES.length;ii++)
@@ -374,7 +374,7 @@ public class CMColor extends StdLibrary implements ColorLibrary
 
 			for(int i=0;i<clookup.length;i++)
 			{
-				String s=clookup[i];
+				final String s=clookup[i];
 				if((s!=null)&&(s.startsWith("^"))&&(s.length()>1))
 					clookup[i]=clookup[s.charAt(1)];
 			}

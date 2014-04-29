@@ -46,7 +46,7 @@ public class Dance_CanCan extends Dance
 		if(!super.tick(ticking,tickID))
 			return false;
 
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		if(mob==null)
 			return false;
 
@@ -57,7 +57,7 @@ public class Dance_CanCan extends Dance
 				kick=CMClass.getAbility("Fighter_Kick");
 				kick.setProficiency(100);
 			}
-			int oldMana=mob.curState().getMana();
+			final int oldMana=mob.curState().getMana();
 			kick.invoke(mob,mob.getVictim(),false,adjustedLevel(invoker(),0));
 			mob.curState().setMana(oldMana);
 		}

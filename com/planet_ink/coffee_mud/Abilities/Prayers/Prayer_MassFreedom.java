@@ -45,30 +45,30 @@ public class Prayer_MassFreedom extends Prayer implements MendingSkill
 	public boolean supportsMending(Physical item)
 	{
 		if(!(item instanceof MOB)) return false;
-		MOB caster=CMClass.getFactoryMOB();
+		final MOB caster=CMClass.getFactoryMOB();
 		caster.basePhyStats().setLevel(CMProps.getIntVar(CMProps.Int.LASTPLAYERLEVEL));
 		caster.phyStats().setLevel(CMProps.getIntVar(CMProps.Int.LASTPLAYERLEVEL));
-		boolean canMend=returnOffensiveAffects(caster,item).size()>0;
+		final boolean canMend=returnOffensiveAffects(caster,item).size()>0;
 		caster.destroy();
 		return canMend;
 	}
 
 	public List<Ability> returnOffensiveAffects(MOB caster, Physical fromMe)
 	{
-		MOB newMOB=CMClass.getFactoryMOB();
-		Vector offenders=new Vector(1);
+		final MOB newMOB=CMClass.getFactoryMOB();
+		final Vector offenders=new Vector(1);
 
-		CMMsg msg=CMClass.getMsg(newMOB,null,null,CMMsg.MSG_SIT,null);
+		final CMMsg msg=CMClass.getMsg(newMOB,null,null,CMMsg.MSG_SIT,null);
 		for(int a=0;a<fromMe.numEffects();a++) // personal
 		{
-			Ability A=fromMe.fetchEffect(a);
+			final Ability A=fromMe.fetchEffect(a);
 			if(A!=null)
 			{
 				try
 				{
 					newMOB.recoverPhyStats();
 					A.affectPhyStats(newMOB,newMOB.phyStats());
-					int clas=A.classificationCode()&Ability.ALL_ACODES;
+					final int clas=A.classificationCode()&Ability.ALL_ACODES;
 					if((!CMLib.flags().aliveAwakeMobileUnbound(newMOB,true))
 					   ||(CMath.bset(A.flags(),Ability.FLAG_BINDING))
 					   ||(!A.okMessage(newMOB,msg)))
@@ -78,7 +78,7 @@ public class Prayer_MassFreedom extends Prayer implements MendingSkill
 					   &&(A.invoker().phyStats().level()<=(caster.phyStats().level()+1+(2*super.getXLEVELLevel(caster))))))
 					 	offenders.addElement(A);
 				}
-				catch(Exception e)
+				catch(final Exception e)
 				{}
 			}
 		}
@@ -106,20 +106,20 @@ public class Prayer_MassFreedom extends Prayer implements MendingSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"A feeling of freedom flows through the air":"^S<S-NAME> "+prayWord(mob)+" for freedom, and the area begins to fill with divine glory.^?");
-			Room room=mob.location();
+			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"A feeling of freedom flows through the air":"^S<S-NAME> "+prayWord(mob)+" for freedom, and the area begins to fill with divine glory.^?");
+			final Room room=mob.location();
 			if((room!=null)&&(room.okMessage(mob,msg)))
 			{
 				room.send(mob,msg);
 				for(int i=0;i<room.numInhabitants();i++)
 				{
-					MOB target=room.fetchInhabitant(i);
+					final MOB target=room.fetchInhabitant(i);
 					if(target==null) break;
 
-					List<Ability> offensiveAffects=returnOffensiveAffects(mob,target);
+					final List<Ability> offensiveAffects=returnOffensiveAffects(mob,target);
 
 					if(offensiveAffects.size()>0)
 					{

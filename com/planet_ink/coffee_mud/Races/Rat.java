@@ -69,12 +69,12 @@ public class Rat extends Rodent
 					("some "+name().toLowerCase()+" blood",RawMaterial.RESOURCE_BLOOD));
 			}
 		}
-		Vector<RawMaterial> rsc=new XVector<RawMaterial>(resources);
-		RawMaterial meat=makeResource
+		final Vector<RawMaterial> rsc=new XVector<RawMaterial>(resources);
+		final RawMaterial meat=makeResource
 		("some "+name().toLowerCase()+" flesh",RawMaterial.RESOURCE_MEAT);
 		if((CMLib.dice().rollPercentage()<10)&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.AUTODISEASE)))
 		{
-			Ability A=CMClass.getAbility("Disease_SARS");
+			final Ability A=CMClass.getAbility("Disease_SARS");
 			if(A!=null)	meat.addNonUninvokableEffect(A);
 		}
 		rsc.addElement(meat);

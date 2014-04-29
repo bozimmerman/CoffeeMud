@@ -48,7 +48,7 @@ public class Spell_Blur extends Spell
 		if(!(affected instanceof MOB))
 			return true;
 
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		if((msg.amITarget(mob))
 		&&(mob!=msg.source())
@@ -59,10 +59,10 @@ public class Spell_Blur extends Spell
 		&&(invoker!=null)
 		&&(msg.tool() instanceof Ability))
 		{
-			int pctDodge=invoker.charStats().getStat(CharStats.STAT_INTELLIGENCE);
+			final int pctDodge=invoker.charStats().getStat(CharStats.STAT_INTELLIGENCE);
 			if(CMLib.dice().rollPercentage()<(pctDodge*2))
 			{
-				CMMsg msg2=CMClass.getMsg(mob,msg.source(),null,CMMsg.MSG_OK_VISUAL,"<T-NAME> can't seem to focus on <S-NAME>.");
+				final CMMsg msg2=CMClass.getMsg(mob,msg.source(),null,CMMsg.MSG_OK_VISUAL,"<T-NAME> can't seem to focus on <S-NAME>.");
 				if(mob.location().okMessage(mob,msg2))
 					mob.location().send(mob,msg2);
 				return false;
@@ -84,7 +84,7 @@ public class Spell_Blur extends Spell
 		// undo the affects of this spell
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		super.unInvoke();
 
 		if(canBeUninvoked())
@@ -97,7 +97,7 @@ public class Spell_Blur extends Spell
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		MOB target=this.getTarget(mob,commands,givenTarget);
+		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
 		// the invoke method for spells receives as
@@ -107,7 +107,7 @@ public class Spell_Blur extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
@@ -116,7 +116,7 @@ public class Spell_Blur extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> invoke(s) a spell.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> invoke(s) a spell.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

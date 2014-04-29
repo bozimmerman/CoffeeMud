@@ -54,7 +54,7 @@ public class Spell_Delirium extends Spell
 			int tries=0;
 			while((++tries)<1000)
 			{
-				Room R=invoker.location().getArea().getRandomProperRoom();
+				final Room R=invoker.location().getArea().getRandomProperRoom();
 				if(!R.displayText().equals(likeThisOne.displayText()))
 					return R;
 			}
@@ -65,10 +65,10 @@ public class Spell_Delirium extends Spell
 			int tries=0;
 			while((++tries)<1000)
 			{
-				Room R=invoker.location().getArea().getRandomProperRoom();
+				final Room R=invoker.location().getArea().getRandomProperRoom();
 				for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 				{
-					Exit x=R.getExitInDir(d);
+					final Exit x=R.getExitInDir(d);
 					if((x!=null)&&(!x.name().equals(likeThisOne.name())))
 						return x;
 				}
@@ -80,10 +80,10 @@ public class Spell_Delirium extends Spell
 			int tries=0;
 			while((++tries)<1000)
 			{
-				Room R=invoker.location().getArea().getRandomProperRoom();
+				final Room R=invoker.location().getArea().getRandomProperRoom();
 				if((R!=null)&&(R.numInhabitants()>0))
 				{
-					MOB possible=R.fetchRandomInhabitant();
+					final MOB possible=R.fetchRandomInhabitant();
 					if((possible!=null)&&(!possible.name().equalsIgnoreCase(likeThisOne.name())))
 						return possible;
 				}
@@ -95,19 +95,19 @@ public class Spell_Delirium extends Spell
 			int tries=0;
 			while((++tries)<1000)
 			{
-				Room R=invoker.location().getArea().getRandomProperRoom();
+				final Room R=invoker.location().getArea().getRandomProperRoom();
 				if(R.numItems()>0)
 				{
-					Item possible=R.getRandomItem();
+					final Item possible=R.getRandomItem();
 					if((possible!=null)&&(!possible.name().equalsIgnoreCase(likeThisOne.name())))
 						return possible;
 				}
 				if(R.numInhabitants()>0)
 				{
-					MOB owner=R.fetchRandomInhabitant();
+					final MOB owner=R.fetchRandomInhabitant();
 					if((owner!=null)&&(owner.numItems()>0))
 					{
-						Item possible=owner.getRandomItem();
+						final Item possible=owner.getRandomItem();
 						if((possible!=null)&&(!possible.name().equalsIgnoreCase(likeThisOne.name())))
 							return possible;
 					}
@@ -119,7 +119,7 @@ public class Spell_Delirium extends Spell
 
 	protected String getRand(Environmental likeThis)
 	{
-		Environmental E=this.getRandomOtherName(likeThis);
+		final Environmental E=this.getRandomOtherName(likeThis);
 		if(E==null)
 		{
 			if(likeThis instanceof MOB)
@@ -158,7 +158,7 @@ public class Spell_Delirium extends Spell
 		x=str.toUpperCase().indexOf(" "+mob.name().toUpperCase()+" ");
 		if(x>=0)
 			str=str.substring(0,x)+" "+getRand(mob)+" "+str.substring(x+(" "+mob.name().toUpperCase()+" ").length());
-		MOB victim=mob.getVictim();
+		final MOB victim=mob.getVictim();
 		if(victim!=null)
 		{
 			x=str.toUpperCase().indexOf(" "+victim.name().toUpperCase()+" ");
@@ -175,7 +175,7 @@ public class Spell_Delirium extends Spell
 		&&(affected!=null)
 		&&(affected instanceof MOB))
 		{
-			MOB mob=(MOB)affected;
+			final MOB mob=(MOB)affected;
 			amountRemaining-=mob.charStats().getStat(CharStats.STAT_INTELLIGENCE);
 			if(amountRemaining<0)
 				unInvoke();
@@ -190,9 +190,9 @@ public class Spell_Delirium extends Spell
 		if(!(affected instanceof MOB))
 			return true;
 
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
-		String othersMessage=msg.othersMessage();
+		final String othersMessage=msg.othersMessage();
 		String sourceMessage=msg.sourceMessage();
 		String targetMessage=msg.targetMessage();
 		if((msg.amITarget(mob))&&(targetMessage!=null))
@@ -216,7 +216,7 @@ public class Spell_Delirium extends Spell
 		// undo the affects of this spell
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		super.unInvoke();
 
 			if((mob.location()!=null)&&(!mob.amDead()))
@@ -240,7 +240,7 @@ public class Spell_Delirium extends Spell
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		MOB target=this.getTarget(mob,commands,givenTarget);
+		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
 		// the invoke method for spells receives as
@@ -251,7 +251,7 @@ public class Spell_Delirium extends Spell
 			return false;
 
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
@@ -260,8 +260,8 @@ public class Spell_Delirium extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> whisper(s) to <T-NAMESELF>.^?");
-			CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_MIND|(auto?CMMsg.MASK_ALWAYS:0),null);
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> whisper(s) to <T-NAMESELF>.^?");
+			final CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_MIND|(auto?CMMsg.MASK_ALWAYS:0),null);
 			if((mob.location().okMessage(mob,msg))||(mob.location().okMessage(mob,msg2)))
 			{
 				mob.location().send(mob,msg);

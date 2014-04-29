@@ -51,7 +51,7 @@ public class Thief_IdentifyBombs extends ThiefSkill
 	{
 		if(P!=null)
 		{
-			Trap T=CMLib.utensils().fetchMyTrap(P);
+			final Trap T=CMLib.utensils().fetchMyTrap(P);
 			if((T!=null)&&(T.isABomb()))
 			{
 				if(CMLib.dice().rollPercentage()==1)
@@ -67,15 +67,15 @@ public class Thief_IdentifyBombs extends ThiefSkill
 
 	public String trapHere(MOB mob, Physical P)
 	{
-		StringBuffer msg=new StringBuffer("");
+		final StringBuffer msg=new StringBuffer("");
 		if(P==null) return msg.toString();
 		if((P instanceof Room)&&(CMLib.flags().canBeSeenBy(P,mob)))
 			msg.append(trapCheck(mob.location()));
 		else
 		if((P instanceof Container)&&(CMLib.flags().canBeSeenBy(P,mob)))
 		{
-			Container C=(Container)P;
-			List<Item> V=C.getContents();
+			final Container C=(Container)P;
+			final List<Item> V=C.getContents();
 			for(int v=0;v<V.size();v++)
 				if(trapCheck(V.get(v)).length()>0)
 				{
@@ -93,14 +93,14 @@ public class Thief_IdentifyBombs extends ThiefSkill
 		else
 		if((P instanceof Exit)&&(CMLib.flags().canBeSeenBy(P,mob)))
 		{
-			Room room=mob.location();
+			final Room room=mob.location();
 			if(room!=null)
 			for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 			{
 				if(room.getExitInDir(d)==P)
 				{
-					Exit E2=room.getReverseExit(d);
-					Room R2=room.getRoomInDir(d);
+					final Exit E2=room.getReverseExit(d);
+					final Room R2=room.getRoomInDir(d);
 					msg.append(trapCheck(P));
 					msg.append(trapCheck(E2));
 					msg.append(trapCheck(R2));
@@ -113,7 +113,7 @@ public class Thief_IdentifyBombs extends ThiefSkill
 		{
 			for(int i=0;i<((MOB)P).numItems();i++)
 			{
-				Item I=((MOB)P).getItem(i);
+				final Item I=((MOB)P).getItem(i);
 				if(trapCheck(I).length()>0)
 				{
 					if(CMLib.dice().rollPercentage()==1)
@@ -124,12 +124,12 @@ public class Thief_IdentifyBombs extends ThiefSkill
 					return P.name()+" is carrying a bomb.";
 				}
 			}
-			ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(P);
+			final ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(P);
 			if(SK!=null)
 			{
-				for(Iterator<Environmental> i=SK.getShop().getStoreInventory();i.hasNext();)
+				for(final Iterator<Environmental> i=SK.getShop().getStoreInventory();i.hasNext();)
 				{
-					Environmental E2=i.next();
+					final Environmental E2=i.next();
 					if(E2 instanceof Item)
 						if(trapCheck((Item)E2).length()>0)
 						{
@@ -158,7 +158,7 @@ public class Thief_IdentifyBombs extends ThiefSkill
 		{
 			if((msg.tool()!=null)&&(msg.tool().ID().equals(ID())))
 			{
-				String str=trapHere((MOB)affected,(Physical)msg.target());
+				final String str=trapHere((MOB)affected,(Physical)msg.target());
 				if(str.length()>0)
 					((MOB)affected).tell(str);
 			}
@@ -166,7 +166,7 @@ public class Thief_IdentifyBombs extends ThiefSkill
 			if((trapHere((MOB)affected,(Physical)msg.target()).length()>0)
 			&&(msg.source()!=msg.target()))
 			{
-				CMMsg msg2=CMClass.getMsg(msg.source(),msg.target(),this,CMMsg.MSG_LOOK,CMMsg.NO_EFFECT,CMMsg.NO_EFFECT,null);
+				final CMMsg msg2=CMClass.getMsg(msg.source(),msg.target(),this,CMMsg.MSG_LOOK,CMMsg.NO_EFFECT,CMMsg.NO_EFFECT,null);
 				msg.addTrailerMsg(msg2);
 			}
 		}

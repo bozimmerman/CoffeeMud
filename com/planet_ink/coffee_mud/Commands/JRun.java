@@ -51,25 +51,25 @@ public class JRun extends StdCommand
 		}
 		commands.removeElementAt(0);
 
-		String fn = (String)commands.elementAt(0);
-		StringBuffer ft = new CMFile(fn,mob,CMFile.FLAG_LOGERRORS).text();
+		final String fn = (String)commands.elementAt(0);
+		final StringBuffer ft = new CMFile(fn,mob,CMFile.FLAG_LOGERRORS).text();
 		if((ft==null)||(ft.length()==0))
 		{
 			mob.tell("File '"+fn+"' could not be found.");
 			return false;
 		}
 		commands.removeElementAt(0);
-		Context cx = Context.enter();
+		final Context cx = Context.enter();
 		try
 		{
-			JScriptWindow scope = new JScriptWindow(mob,commands);
+			final JScriptWindow scope = new JScriptWindow(mob,commands);
 			cx.initStandardObjects(scope);
 			scope.defineFunctionProperties(JScriptWindow.functions,
 										   JScriptWindow.class,
 										   ScriptableObject.DONTENUM);
 			cx.evaluateString(scope, ft.toString(),"<cmd>", 1, null);
 		}
-		catch(Exception e)
+		catch(final Exception e)
 		{
 			mob.tell("JavaScript error: "+e.getMessage());
 		}

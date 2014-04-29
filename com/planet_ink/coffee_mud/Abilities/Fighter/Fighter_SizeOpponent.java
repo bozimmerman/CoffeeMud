@@ -47,7 +47,7 @@ public class Fighter_SizeOpponent extends FighterSkill
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		MOB target=getTarget(mob,commands,givenTarget);
+		final MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
 		// the invoke method for spells receives as
@@ -58,15 +58,15 @@ public class Fighter_SizeOpponent extends FighterSkill
 			return false;
 
 		// now see if it worked
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
 			invoker=mob;
-			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_LOOK|(auto?CMMsg.MASK_ALWAYS:0),"<S-NAME> size(s) up <T-NAMESELF> with <S-HIS-HER> eyes.");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_LOOK|(auto?CMMsg.MASK_ALWAYS:0),"<S-NAME> size(s) up <T-NAMESELF> with <S-HIS-HER> eyes.");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				StringBuffer buf=new StringBuffer(target.name(mob)+" looks to have "+target.curState().getHitPoints()+" out of "+target.maxState().getHitPoints()+" hit points.\n\r");
+				final StringBuffer buf=new StringBuffer(target.name(mob)+" looks to have "+target.curState().getHitPoints()+" out of "+target.maxState().getHitPoints()+" hit points.\n\r");
 				buf.append(target.charStats().HeShe()+" looks like "+target.charStats().heshe()+" is "
 						+CMStrings.removeColors(CMLib.combat().fightingProwessStr(target))
 						+" and is "+CMStrings.removeColors(CMLib.combat().armorStr(target))+".");

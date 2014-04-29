@@ -47,13 +47,13 @@ public class Spell_ChainLightening extends Spell
 		Set<MOB> h=properTargets(mob,givenTarget,auto);
 		if(h==null) h=new HashSet<MOB>();
 
-		Set<MOB> myGroup=mob.getGroupMembers(new HashSet<MOB>());
-		Vector targets=new Vector(h);
-		for(Iterator e=h.iterator();e.hasNext();)
-			targets.addElement(e.next());
-		for(Iterator e=myGroup.iterator();e.hasNext();)
+		final Set<MOB> myGroup=mob.getGroupMembers(new HashSet<MOB>());
+		final Vector targets=new Vector(h);
+		for (final Object element : h)
+			targets.addElement(element);
+		for (final Object element : myGroup)
 		{
-			MOB M=(MOB)e.next();
+			final MOB M=(MOB)element;
 			if((M!=mob)&&(!targets.contains(M))) targets.addElement(M);
 		}
 		if(!targets.contains(mob))
@@ -66,26 +66,26 @@ public class Spell_ChainLightening extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		int maxDie=(adjustedLevel(mob,asLevel)+(2*super.getX1Level(mob)))/2;
+		final int maxDie=(adjustedLevel(mob,asLevel)+(2*super.getX1Level(mob)))/2;
 		int damage = CMLib.dice().roll(maxDie,8,maxDie);
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
 			if(mob.location().show(mob,null,this,verbalCastCode(mob,null,auto),(auto?"A thunderous crack of lightning erupts!":"^S<S-NAME> invoke(s) a thunderous crack of lightning.^?")+CMLib.protocol().msp("lightning.wav",40)))
 			{
 				while(damage>0)
 				{
-					int oldDamage=damage;
+					final int oldDamage=damage;
 					for(int i=0;i<targets.size();i++)
 					{
-						MOB target=(MOB)targets.elementAt(i);
+						final MOB target=(MOB)targets.elementAt(i);
 						if(target.amDead()||(target.location()!=mob.location()))
 						{
 							int count=0;
 							for(int i2=0;i2<targets.size();i2++)
 							{
-								MOB M2=(MOB)targets.elementAt(i2);
+								final MOB M2=(MOB)targets.elementAt(i2);
 								if((!M2.amDead())
 								   &&(mob.location()!=null)
 								   &&(mob.location().isInhabitant(M2))
@@ -101,11 +101,11 @@ public class Spell_ChainLightening extends Spell
 						// and add it to the affects list of the
 						// affected MOB.  Then tell everyone else
 						// what happened.
-						boolean oldAuto=auto;
+						final boolean oldAuto=auto;
 						if((target==mob)||(myGroup.contains(target)))
 						   auto=true;
-						CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),null);
-						CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_ELECTRIC|(auto?CMMsg.MASK_ALWAYS:0),null);
+						final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),null);
+						final CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_ELECTRIC|(auto?CMMsg.MASK_ALWAYS:0),null);
 						auto=oldAuto;
 						if((mob.location().okMessage(mob,msg))&&((mob.location().okMessage(mob,msg2))))
 						{

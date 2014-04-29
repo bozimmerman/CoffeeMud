@@ -46,7 +46,7 @@ public class EvilExecutioner  extends StdBehavior
 	{
 		super.setParms(newParms);
 		newParms=newParms.toUpperCase();
-		Vector<String> V=CMParms.parse(newParms);
+		final Vector<String> V=CMParms.parse(newParms);
 		doPlayers=V.contains("PLAYERS")||V.contains("PLAYER");
 	}
 
@@ -63,9 +63,9 @@ public class EvilExecutioner  extends StdBehavior
 		if(CMLib.flags().isBoundOrHeld(M)) return false;
 		if((!M.isMonster())&&(!doPlayers))
 			return false;
-		for(Enumeration<Behavior> e=M.behaviors();e.hasMoreElements();)
+		for(final Enumeration<Behavior> e=M.behaviors();e.hasMoreElements();)
 		{
-			Behavior B=e.nextElement();
+			final Behavior B=e.nextElement();
 			if((B!=null)&&(B.grantsAggressivenessTo(M)))
 				return true;
 		}
@@ -76,7 +76,7 @@ public class EvilExecutioner  extends StdBehavior
 	public void executeMsg(Environmental affecting, CMMsg msg)
 	{
 		super.executeMsg(affecting,msg);
-		MOB source=msg.source();
+		final MOB source=msg.source();
 		if(!canFreelyBehaveNormal(affecting))
 		{
 			deepBreath=System.currentTimeMillis();
@@ -86,16 +86,16 @@ public class EvilExecutioner  extends StdBehavior
 		{
 			noRecurse=true;
 			deepBreath=0;
-			MOB observer=(MOB)affecting;
+			final MOB observer=(MOB)affecting;
 			// base 90% chance not to be executed
 			if((source.isMonster()||doPlayers)&&(source!=observer)&&(grantsAggressivenessTo(source)))
 			{
 				String reason="GOOD";
 				if(source.baseCharStats().getCurrentClass().baseClass().equalsIgnoreCase("Paladin"))
 					reason="A PALADIN";
-				MOB oldFollowing=source.amFollowing();
+				final MOB oldFollowing=source.amFollowing();
 				source.setFollowing(null);
-				boolean yep=Aggressive.startFight(observer,source,true,false,source.name().toUpperCase()+" IS "+reason+", AND MUST BE DESTROYED!");
+				final boolean yep=Aggressive.startFight(observer,source,true,false,source.name().toUpperCase()+" IS "+reason+", AND MUST BE DESTROYED!");
 				if(!yep)
 				if(oldFollowing!=null)
 					source.setFollowing(oldFollowing);

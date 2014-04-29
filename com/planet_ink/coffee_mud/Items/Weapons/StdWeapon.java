@@ -133,14 +133,14 @@ public class StdWeapon extends StdItem implements Weapon, AmmunitionWeapon
 						howMuchToTake=I.usesRemaining();
 					setAmmoRemaining(howMuchToTake);
 					I.setUsesRemaining(I.usesRemaining()-howMuchToTake);
-					LinkedList<Ability> removeThese=new LinkedList<Ability>();
+					final LinkedList<Ability> removeThese=new LinkedList<Ability>();
 					for(final Enumeration<Ability> a=effects();a.hasMoreElements();)
 					{
 						final Ability A=a.nextElement();
 						if((A!=null)&&(!A.isSavable())&&(A.invoker()==null))
 							removeThese.add(A);
 					}
-					for(Ability A : removeThese)
+					for(final Ability A : removeThese)
 						delEffect(A);
 					for(final Enumeration<Ability> a=I.effects();a.hasMoreElements();)
 					{
@@ -193,9 +193,9 @@ public class StdWeapon extends StdItem implements Weapon, AmmunitionWeapon
 		&&(owner() instanceof MOB)
 		&&(msg.amISource((MOB)owner())))
 		{
-			MOB ownerM=(MOB)owner();
-			int hurt=(msg.value());
-			MOB tmob=(MOB)msg.target();
+			final MOB ownerM=(MOB)owner();
+			final int hurt=(msg.value());
+			final MOB tmob=(MOB)msg.target();
 			if((hurt>(tmob.maxState().getHitPoints()/10)||(hurt>50))
 			&&(tmob.curState().getHitPoints()>hurt))
 			{

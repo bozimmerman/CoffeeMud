@@ -60,7 +60,7 @@ public class Prayer_AuraHarm extends Prayer
 		// undo the affects of this spell
 		if((affected==null)||(!(affected instanceof Room)))
 			return;
-		Room R=(Room)affected;
+		final Room R=(Room)affected;
 
 		super.unInvoke();
 
@@ -83,20 +83,20 @@ public class Prayer_AuraHarm extends Prayer
 			H=new HashSet();
 			invoker().getGroupMembers(H);
 		}
-		Room R=(Room)affected;
+		final Room R=(Room)affected;
 		for(int i=0;i<R.numInhabitants();i++)
 		{
-			MOB M=R.fetchInhabitant(i);
+			final MOB M=R.fetchInhabitant(i);
 			if((M!=null)&&((H==null)||(!H.contains(M))))
 			{
 				if(invoker()!=null)
 				{
-					int harming=CMLib.dice().roll(1,adjustedLevel(invoker(),0)/3,1);
+					final int harming=CMLib.dice().roll(1,adjustedLevel(invoker(),0)/3,1);
 					CMLib.combat().postDamage(invoker(),M,this,harming,CMMsg.MASK_MALICIOUS|CMMsg.TYP_UNDEAD,Weapon.TYPE_BURSTING,"The unholy aura <DAMAGE> <T-NAME>!");
 				}
 				else
 				{
-					int harming=CMLib.dice().roll(1,CMLib.ableMapper().lowestQualifyingLevel(ID())/3,1);
+					final int harming=CMLib.dice().roll(1,CMLib.ableMapper().lowestQualifyingLevel(ID())/3,1);
 					CMLib.combat().postDamage(M,M,this,harming,CMMsg.MASK_MALICIOUS|CMMsg.TYP_UNDEAD,Weapon.TYPE_BURSTING,"The unholy aura <DAMAGE> <T-NAME>!");
 				}
 				if((!M.isInCombat())&&(M.isMonster())&&(M!=invoker)&&(invoker!=null)&&(M.location()==invoker.location())&&(M.location().isInhabitant(invoker))&&(CMLib.flags().canBeSeenBy(invoker,M)))
@@ -126,7 +126,7 @@ public class Prayer_AuraHarm extends Prayer
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		Room target=mob.location();
+		final Room target=mob.location();
 		if(target==null) return false;
 		if(target.fetchEffect(ID())!=null)
 		{
@@ -142,7 +142,7 @@ public class Prayer_AuraHarm extends Prayer
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
@@ -150,7 +150,7 @@ public class Prayer_AuraHarm extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> "+prayWord(mob)+" for all to feel pain.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> "+prayWord(mob)+" for all to feel pain.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

@@ -54,13 +54,13 @@ public class Dance_Tarantella extends Dance
 		if(!super.tick(ticking,tickID))
 			return false;
 
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		if(mob==null)
 			return false;
 
 		if((++ticks)>=(15-getXLEVELLevel(invoker())))
 		{
-			List<Ability> offenders=CMLib.flags().flaggedAffects(mob,Ability.ACODE_POISON);
+			final List<Ability> offenders=CMLib.flags().flaggedAffects(mob,Ability.ACODE_POISON);
 			if(offenders!=null)
 				for(int a=0;a<offenders.size();a++)
 					offenders.get(a).unInvoke();

@@ -105,11 +105,11 @@ public class StdClanSpecialItem extends StdClanItem
 			{
 			case ClanItem.CI_SPECIALSCAVENGER:
 				{
-					MOB mob=(MOB)owner();
-					Room R=((MOB)owner()).location();
+					final MOB mob=(MOB)owner();
+					final Room R=((MOB)owner()).location();
 					if(R!=null)
 					{
-						Item I=R.getRandomItem();
+						final Item I=R.getRandomItem();
 						if((I!=null)&&(I.container()==null))
 							CMLib.commands().postGet(mob,null,I,false);
 					}

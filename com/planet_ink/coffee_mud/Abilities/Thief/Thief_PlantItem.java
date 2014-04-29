@@ -56,7 +56,7 @@ public class Thief_PlantItem extends ThiefSkill
 			mob.tell("What would you like to plant on whom?");
 			return false;
 		}
-		MOB target=mob.location().fetchInhabitant((String)commands.lastElement());
+		final MOB target=mob.location().fetchInhabitant((String)commands.lastElement());
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
 			mob.tell("You don't see '"+(String)commands.lastElement()+"' here.");
@@ -69,7 +69,7 @@ public class Thief_PlantItem extends ThiefSkill
 		}
 		commands.removeElement(commands.lastElement());
 
-		Item item=super.getTarget(mob,null,givenTarget,commands,Wearable.FILTER_UNWORNONLY);
+		final Item item=super.getTarget(mob,null,givenTarget,commands,Wearable.FILTER_UNWORNONLY);
 		if(item==null) return false;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -78,11 +78,11 @@ public class Thief_PlantItem extends ThiefSkill
 		int levelDiff=target.phyStats().level()-(mob.phyStats().level()+abilityCode()+(getXLEVELLevel(mob)*2));
 		if(levelDiff<0) levelDiff=0;
 		levelDiff*=5;
-		boolean success=proficiencyCheck(mob,-levelDiff,auto);
+		final boolean success=proficiencyCheck(mob,-levelDiff,auto);
 
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,item,CMMsg.MSG_GIVE,"<S-NAME> plant(s) <O-NAME> on <T-NAMESELF>.",CMMsg.MASK_ALWAYS|CMMsg.MSG_GIVE,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_GIVE,null);
+			final CMMsg msg=CMClass.getMsg(mob,target,item,CMMsg.MSG_GIVE,"<S-NAME> plant(s) <O-NAME> on <T-NAMESELF>.",CMMsg.MASK_ALWAYS|CMMsg.MSG_GIVE,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_GIVE,null);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

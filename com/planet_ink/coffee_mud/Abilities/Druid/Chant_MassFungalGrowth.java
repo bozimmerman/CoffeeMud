@@ -49,7 +49,7 @@ public class Chant_MassFungalGrowth extends Chant_SummonFungus
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		Vector V=new Vector();
+		final Vector V=new Vector();
 		TrackingLibrary.TrackingFlags flags;
 		flags = new TrackingLibrary.TrackingFlags()
 				.plus(TrackingLibrary.TrackingFlag.OPENONLY)
@@ -60,7 +60,7 @@ public class Chant_MassFungalGrowth extends Chant_SummonFungus
 		CMLib.tracking().getRadiantRooms(mob.location(),V,flags,null,adjustedLevel(mob,asLevel),null);
 		for(int v=V.size()-1;v>=0;v--)
 		{
-			Room R=(Room)V.elementAt(v);
+			final Room R=(Room)V.elementAt(v);
 			if((R.domainType()!=Room.DOMAIN_INDOORS_CAVE)
 			||(R==mob.location()))
 				V.removeElementAt(v);
@@ -71,7 +71,7 @@ public class Chant_MassFungalGrowth extends Chant_SummonFungus
 			int done=0;
 			for(int v=0;v<V.size();v++)
 			{
-				Room R=(Room)V.elementAt(v);
+				final Room R=(Room)V.elementAt(v);
 				if(R==mob.location()) continue;
 				buildMyThing(mob,R);
 				if((done++)==adjustedLevel(mob,asLevel))

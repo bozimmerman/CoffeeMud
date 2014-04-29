@@ -50,7 +50,7 @@ public class Spell_Torture extends Spell
 		// undo the affects of this spell
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		super.unInvoke();
 		if(canBeUninvoked())
@@ -62,7 +62,7 @@ public class Spell_Torture extends Spell
 	{
 		if((text().length()>0)&&(!text().equalsIgnoreCase("HITONLY")))
 		{
-			for(Session S : CMLib.sessions().localOnlineIterable())
+			for(final Session S : CMLib.sessions().localOnlineIterable())
 				if(S.mob()!=null)
 					S.println(mob,null,null,text());
 			setMiscText("");
@@ -72,7 +72,7 @@ public class Spell_Torture extends Spell
 		boolean someoneelse=false;
 		for(int i=0;i<mob.location().numInhabitants();i++)
 		{
-			MOB M=mob.location().fetchInhabitant(i);
+			final MOB M=mob.location().fetchInhabitant(i);
 			if((M!=null)&&(!M.isMonster())&&(M!=mob))
 				someoneelse=true;
 		}
@@ -95,11 +95,11 @@ public class Spell_Torture extends Spell
 			else
 			{
 				int numClans=0;
-				for(@SuppressWarnings("unused") Pair<Clan,Integer> p : mob.clans())
+				for(@SuppressWarnings("unused") final Pair<Clan,Integer> p : mob.clans())
 					numClans++;
 				int clanNum=CMLib.dice().roll(1,numClans,-1);
 				Clan C=null;
-				for(Pair<Clan,Integer> p : mob.clans())
+				for(final Pair<Clan,Integer> p : mob.clans())
 				{
 					if(clanNum==0)
 					{
@@ -113,10 +113,10 @@ public class Spell_Torture extends Spell
 					roll=CMLib.dice().roll(1,10,0);
 				else
 				{
-					List<MemberRecord> V=C.getMemberList();
+					final List<MemberRecord> V=C.getMemberList();
 					if(V.size()>0)
 					{
-						String name=V.get(CMLib.dice().roll(1,V.size(),-1)).name;
+						final String name=V.get(CMLib.dice().roll(1,V.size(),-1)).name;
 						if(name.equals(mob.Name()))
 							roll=CMLib.dice().roll(1,10,0);
 						else
@@ -133,11 +133,11 @@ public class Spell_Torture extends Spell
 			else
 			{
 				int numClans=0;
-				for(@SuppressWarnings("unused") Pair<Clan,Integer> p : mob.clans())
+				for(@SuppressWarnings("unused") final Pair<Clan,Integer> p : mob.clans())
 					numClans++;
 				int clanNum=CMLib.dice().roll(1,numClans,-1);
 				Clan C=null;
-				for(Pair<Clan,Integer> p : mob.clans())
+				for(final Pair<Clan,Integer> p : mob.clans())
 				{
 					if(clanNum==0)
 					{
@@ -163,9 +163,9 @@ public class Spell_Torture extends Spell
 			break;
 		case 15:
 		{
-			StringBuffer str=new StringBuffer("");
-			Command C=CMClass.getCommand("Affect");
-			try{str.append(C.executeInternal(mob,0,mob).toString());}catch(Exception e){}
+			final StringBuffer str=new StringBuffer("");
+			final Command C=CMClass.getCommand("Affect");
+			try{str.append(C.executeInternal(mob,0,mob).toString());}catch(final Exception e){}
 			mob.location().show(mob,null,CMMsg.MSG_SPEAK,
 			"<S-NAME> says OK! I am affected by:\n\r"+str.toString());
 			break;
@@ -175,7 +175,7 @@ public class Spell_Torture extends Spell
 				roll=CMLib.dice().roll(1,10,0);
 			else
 			{
-			   Ability A=mob.fetchRandomAbility();
+			   final Ability A=mob.fetchRandomAbility();
 				mob.location().show(mob,null,CMMsg.MSG_SPEAK,
 				"<S-NAME> admit(s) that <S-HE-SHE> knows "+A.name()+" at "+A.proficiency()+"%.");
 			}
@@ -230,7 +230,7 @@ public class Spell_Torture extends Spell
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		MOB target=this.getTarget(mob,commands,givenTarget);
+		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
 		// the invoke method for spells receives as
@@ -241,7 +241,7 @@ public class Spell_Torture extends Spell
 			return false;
 
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
@@ -250,8 +250,8 @@ public class Spell_Torture extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> whisper(s) a torturous spell to <T-NAMESELF>.^?");
-			CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_MIND|(auto?CMMsg.MASK_ALWAYS:0),null);
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> whisper(s) a torturous spell to <T-NAMESELF>.^?");
+			final CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_MIND|(auto?CMMsg.MASK_ALWAYS:0),null);
 			if((mob.location().okMessage(mob,msg))||(mob.location().okMessage(mob,msg2)))
 			{
 				mob.location().send(mob,msg);

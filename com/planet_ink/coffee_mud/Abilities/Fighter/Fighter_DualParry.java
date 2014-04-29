@@ -52,7 +52,7 @@ public class Fighter_DualParry extends FighterSkill
 		if(!(affected instanceof MOB))
 			return true;
 
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		if(msg.amITarget(mob)
 		   &&(CMLib.flags().aliveAwakeMobileUnbound(mob,true))
@@ -61,8 +61,8 @@ public class Fighter_DualParry extends FighterSkill
 		{
 			if((msg.tool()!=null)&&(msg.tool() instanceof Item))
 			{
-				Item attackerWeapon=(Item)msg.tool();
-				Item myOtherWeapon=mob.fetchHeldItem();
+				final Item attackerWeapon=(Item)msg.tool();
+				final Item myOtherWeapon=mob.fetchHeldItem();
 				if((myOtherWeapon!=null)
 				&&(attackerWeapon!=null)
 				&&(myOtherWeapon instanceof Weapon)
@@ -78,7 +78,7 @@ public class Fighter_DualParry extends FighterSkill
 				&&(((Weapon)attackerWeapon).weaponClassification()!=Weapon.CLASS_RANGED)
 				&&(((Weapon)attackerWeapon).weaponClassification()!=Weapon.CLASS_THROWN))
 				{
-					CMMsg msg2=CMClass.getMsg(mob,msg.source(),this,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> parr(ys) "+attackerWeapon.name()+" attack with "+myOtherWeapon.name()+"!");
+					final CMMsg msg2=CMClass.getMsg(mob,msg.source(),this,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> parr(ys) "+attackerWeapon.name()+" attack with "+myOtherWeapon.name()+"!");
 					if((proficiencyCheck(null,mob.charStats().getStat(CharStats.STAT_DEXTERITY)-90+(2*getXLEVELLevel(mob)),false))
 					&&(!lastTime)
 					&&(mob.location().okMessage(mob,msg2)))

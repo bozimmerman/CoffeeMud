@@ -51,7 +51,7 @@ public class Fighter_WeaponCatch extends FighterSkill
 		if(!(affected instanceof MOB))
 			return true;
 
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		if(msg.amITarget(mob)
 		&&(CMLib.flags().aliveAwakeMobileUnbound(mob,true))
@@ -60,7 +60,7 @@ public class Fighter_WeaponCatch extends FighterSkill
 		&&((mob.fetchAbility(ID())==null)||proficiencyCheck(mob,0,false))
 		&&(mob.rangeToTarget()==0))
 		{
-			CMMsg msg2=CMClass.getMsg(mob,msg.source(),this,CMMsg.MSG_NOISYMOVEMENT,
+			final CMMsg msg2=CMClass.getMsg(mob,msg.source(),this,CMMsg.MSG_NOISYMOVEMENT,
 					"<T-NAME> disarms <S-NAMESELF>, but <S-NAME> catch the weapon!",
 					"<T-NAME> disarm <S-NAMESELF>, but <S-NAME> catches the weapon!",
 					"<T-NAME> disarms <S-NAMESELF>, but <S-NAME> catches the weapon!"

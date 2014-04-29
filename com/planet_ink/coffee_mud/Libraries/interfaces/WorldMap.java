@@ -198,7 +198,7 @@ public interface WorldMap extends CMLibrary
 		public String destRoomID="";
 		public boolean out=false;
 		public static CrossExit make(int xx, int xy, int xdir, String xdestRoomID, boolean xout)
-		{   CrossExit EX=new CrossExit();
+		{   final CrossExit EX=new CrossExit();
 			EX.x=xx;EX.y=xy;EX.dir=xdir;EX.destRoomID=xdestRoomID;EX.out=xout;
 			return EX;
 		}
@@ -215,7 +215,7 @@ public interface WorldMap extends CMLibrary
 			if((roomIDEnumerator==null)||(!roomIDEnumerator.hasMoreElements()))
 				while(areaEnumerator.hasMoreElements())
 				{
-					Area A=areaEnumerator.nextElement();
+					final Area A=areaEnumerator.nextElement();
 					roomIDEnumerator=A.getProperRoomnumbers().getRoomIDs();
 					if(roomIDEnumerator.hasMoreElements()) return true;
 				}

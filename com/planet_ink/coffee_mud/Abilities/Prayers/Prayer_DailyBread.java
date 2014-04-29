@@ -48,7 +48,7 @@ public class Prayer_DailyBread extends Prayer
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		MOB target=this.getTarget(mob,commands,givenTarget);
+		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -56,12 +56,12 @@ public class Prayer_DailyBread extends Prayer
 
 		int levelDiff=target.phyStats().level()-(mob.phyStats().level()+(2*getXLEVELLevel(mob)));
 		if(levelDiff<0) levelDiff=0;
-		boolean success=proficiencyCheck(mob,-(levelDiff*25),auto);
+		final boolean success=proficiencyCheck(mob,-(levelDiff*25),auto);
 		Item Bread=null;
 		Item BreadContainer=null;
 		for(int i=0;i<target.numItems();i++)
 		{
-			Item I=target.getItem(i);
+			final Item I=target.getItem(i);
 			if((I!=null)&&(I instanceof Food))
 			{
 				if(I.container()!=null)
@@ -81,12 +81,12 @@ public class Prayer_DailyBread extends Prayer
 			CMLib.commands().postGet(target,BreadContainer,Bread,false);
 		if(Bread==null)
 		{
-			ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(target);
+			final ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(target);
 			if(SK!=null)
 			{
-				for(Iterator<Environmental> i=SK.getShop().getStoreInventory();i.hasNext();)
+				for(final Iterator<Environmental> i=SK.getShop().getStoreInventory();i.hasNext();)
 				{
-					Environmental E2=i.next();
+					final Environmental E2=i.next();
 					if((E2!=null)&&(E2 instanceof Food))
 					{
 						Bread=(Item)E2.copyOf();
@@ -103,7 +103,7 @@ public class Prayer_DailyBread extends Prayer
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),"^S<S-NAME> "+prayWord(mob)+" for <T-NAMESELF> to provide <S-HIS-HER> daily bread!^?");
-			CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_MIND|(auto?CMMsg.MASK_ALWAYS:0),null);
+			final CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_MIND|(auto?CMMsg.MASK_ALWAYS:0),null);
 			if((mob.location().okMessage(mob,msg))&&(mob.location().okMessage(mob,msg2)))
 			{
 				mob.location().send(mob,msg);

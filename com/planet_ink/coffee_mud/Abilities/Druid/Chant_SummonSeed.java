@@ -53,17 +53,17 @@ public class Chant_SummonSeed extends Chant
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		String s=CMParms.combine(commands,0);
-		StringBuffer buf=new StringBuffer("Seed types known:\n\r");
+		final String s=CMParms.combine(commands,0);
+		final StringBuffer buf=new StringBuffer("Seed types known:\n\r");
 		int material=0;
 		String foundShortName=null;
 		int col=0;
-		List<Integer> codes = RawMaterial.CODES.COMPOSE_RESOURCES(RawMaterial.MATERIAL_VEGETATION);
-		for(Integer code : codes)
+		final List<Integer> codes = RawMaterial.CODES.COMPOSE_RESOURCES(RawMaterial.MATERIAL_VEGETATION);
+		for(final Integer code : codes)
 		{
 			if(!CMParms.contains(Chant_SummonSeed.NON_SEEDS,code))
 			{
-				String str=RawMaterial.CODES.NAME(code.intValue());
+				final String str=RawMaterial.CODES.NAME(code.intValue());
 				if(str.toUpperCase().equalsIgnoreCase(s))
 				{
 					material=code.intValue();
@@ -95,16 +95,16 @@ public class Chant_SummonSeed extends Chant
 			return false;
 
 		// now see if it worked
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":"^S<S-NAME> chant(s) to <S-HIS-HER> hands.^?");
+			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":"^S<S-NAME> chant(s) to <S-HIS-HER> hands.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				for(int i=2;i<(2+(adjustedLevel(mob,asLevel)/4));i++)
 				{
-					Item newItem=CMClass.getBasicItem("GenResource");
+					final Item newItem=CMClass.getBasicItem("GenResource");
 					String name=foundShortName.toLowerCase();
 					if(name.endsWith("ies")) name=name.substring(0,name.length()-3)+"y";
 					if(name.endsWith("s")) name=name.substring(0,name.length()-1);

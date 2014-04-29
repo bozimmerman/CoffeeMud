@@ -48,7 +48,7 @@ public class Spell_ReadMagic extends Spell
 		// first, using the commands vector, determine
 		// the target of the spell.  If no target is specified,
 		// the system will assume your combat target.
-		Physical target=getTarget(mob,null,givenTarget,commands,Wearable.FILTER_ANY);
+		final Physical target=getTarget(mob,null,givenTarget,commands,Wearable.FILTER_ANY);
 		if(target==null) return false;
 
 		// the invoke method for spells receives as
@@ -59,10 +59,10 @@ public class Spell_ReadMagic extends Spell
 			return false;
 
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 		if((success)&&(mob.fetchEffect(this.ID())==null))
 		{
-			Ability thisNewOne=(Ability)this.copyOf();
+			final Ability thisNewOne=(Ability)this.copyOf();
 			mob.addEffect(thisNewOne);
 			CMLib.commands().forceStandardCommand(mob,"Read",new XVector("READ",target));
 			mob.delEffect(thisNewOne);

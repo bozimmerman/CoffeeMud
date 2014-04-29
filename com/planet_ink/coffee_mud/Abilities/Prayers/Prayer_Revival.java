@@ -49,7 +49,7 @@ public class Prayer_Revival extends Prayer
 		// undo the affects of this spell
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		if(canBeUninvoked())
 			mob.tell("Your part in the revival is over.");
 		super.unInvoke();
@@ -65,15 +65,15 @@ public class Prayer_Revival extends Prayer
 		&&(affected instanceof MOB)
 		&&(((MOB)affected).location()!=null))
 		{
-			MOB mob=(MOB)affected;
-			Room R=mob.location();
+			final MOB mob=(MOB)affected;
+			final Room R=mob.location();
 			int levels=0;
-			Vector inhabs=new Vector();
-			Vector clerics=new Vector();
-			int bonus=(2*super.getXLEVELLevel(invoker()));
+			final Vector inhabs=new Vector();
+			final Vector clerics=new Vector();
+			final int bonus=(2*super.getXLEVELLevel(invoker()));
 			for(int i=0;i<R.numInhabitants();i++)
 			{
-				MOB M=R.fetchInhabitant(i);
+				final MOB M=R.fetchInhabitant(i);
 				if(M!=null)
 				{
 					if(mob.getWorshipCharID().equals(M.getWorshipCharID()))
@@ -89,7 +89,7 @@ public class Prayer_Revival extends Prayer
 						inhabs.addElement(M);
 				}
 			}
-			Deity D=CMLib.map().getDeity(mob.getWorshipCharID());
+			final Deity D=CMLib.map().getDeity(mob.getWorshipCharID());
 			if((D!=null)&&(CMLib.dice().rollPercentage()<50))
 			switch(CMLib.dice().roll(1,13,0))
 			{
@@ -101,7 +101,7 @@ public class Prayer_Revival extends Prayer
 			case 6:	CMLib.commands().postSay(mob,null,"Exalt the name of "+D.name()+"!",false,false); break;
 			case 7:	if(clerics.size()>1)
 					{
-						MOB M=(MOB)clerics.elementAt(CMLib.dice().roll(1,clerics.size(),-1));
+						final MOB M=(MOB)clerics.elementAt(CMLib.dice().roll(1,clerics.size(),-1));
 						if(M!=mob)
 							CMLib.commands().postSay(mob,null,"Preach it "+M.name(mob)+"!",false,false);
 						else
@@ -121,19 +121,19 @@ public class Prayer_Revival extends Prayer
 			{
 				levels=levels/clerics.size();
 				levels=levels+((clerics.size()-3)*5);
-				MOB M=(MOB)inhabs.elementAt(CMLib.dice().roll(1,inhabs.size(),-1));
+				final MOB M=(MOB)inhabs.elementAt(CMLib.dice().roll(1,inhabs.size(),-1));
 				if((M!=null)&&(levels>=(M.phyStats().level()+bonus)))
 				{
-					MOB vic1=mob.getVictim();
-					MOB vic2=M.getVictim();
+					final MOB vic1=mob.getVictim();
+					final MOB vic2=M.getVictim();
 					if(M.getWorshipCharID().length()>0)
 					{
-						Ability A=CMClass.getAbility("Prayer_Faithless");
+						final Ability A=CMClass.getAbility("Prayer_Faithless");
 						if(A!=null) A.invoke(mob,M,true,0);
 					}
 					if(M.getWorshipCharID().length()==0)
 					{
-						Ability A=CMClass.getAbility("Prayer_UndeniableFaith");
+						final Ability A=CMClass.getAbility("Prayer_UndeniableFaith");
 						if(A!=null)
 							if(A.invoke(mob,M,true,0))
 							{
@@ -141,7 +141,7 @@ public class Prayer_Revival extends Prayer
 								{
 									for(int c=0;c<clerics.size();c++)
 									{
-										MOB M2=(MOB)clerics.elementAt(c);
+										final MOB M2=(MOB)clerics.elementAt(c);
 										if(M2!=mob)
 											CMLib.leveler().postExperience(M2,M,null,25,false);
 									}
@@ -177,10 +177,10 @@ public class Prayer_Revival extends Prayer
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> start(s) a revival!":"^S<S-NAME> "+prayWord(mob)+" for successful revival, and then start(s) MOVING!^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> start(s) a revival!":"^S<S-NAME> "+prayWord(mob)+" for successful revival, and then start(s) MOVING!^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

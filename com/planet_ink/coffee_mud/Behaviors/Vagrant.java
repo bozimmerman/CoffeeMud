@@ -50,7 +50,7 @@ public class Vagrant extends StdBehavior
 	{
 		if((oking==null)||(!(oking instanceof MOB)))
 		   return super.okMessage(oking,msg);
-		MOB mob=(MOB)oking;
+		final MOB mob=(MOB)oking;
 		if(msg.amITarget(mob)
 		   &&(((msg.sourceMajor()&CMMsg.MASK_MOVE)>0)||((msg.sourceMajor()&CMMsg.MASK_HANDS)>0)))
 		{
@@ -72,7 +72,7 @@ public class Vagrant extends StdBehavior
 		super.tick(ticking,tickID);
 
 		if(tickID!=Tickable.TICKID_MOB) return true;
-		MOB mob=(MOB)ticking;
+		final MOB mob=(MOB)ticking;
 		if((wakeForTicks<=0)&&(sleepForTicks<=0))
 		{
 			if((CMLib.dice().rollPercentage()>50)||(mob.isInCombat()))

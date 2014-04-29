@@ -71,8 +71,8 @@ public class Thief_KillLog extends ThiefSkill
 	@Override
 	public String text()
 	{
-		StringBuffer str=new StringBuffer("<MOBS>");
-		for(String[] one : theList.values())
+		final StringBuffer str=new StringBuffer("<MOBS>");
+		for(final String[] one : theList.values())
 		{
 			str.append("<MOB>");
 			str.append(CMLib.xml().convertXMLtoTag("NAME",one[0]));
@@ -88,7 +88,7 @@ public class Thief_KillLog extends ThiefSkill
 	@Override
 	public CMObject copyOf()
 	{
-		Thief_KillLog obj=(Thief_KillLog)super.copyOf();
+		final Thief_KillLog obj=(Thief_KillLog)super.copyOf();
 		obj.theList=new Hashtable<String,String[]>();
 		obj.theList.putAll(theList);
 		return obj;
@@ -109,7 +109,7 @@ public class Thief_KillLog extends ThiefSkill
 				set[2]="1";
 				set[3]="0";
 				theList.put(mark.Name(),set);
-				MOB mob=(MOB)affected;
+				final MOB mob=(MOB)affected;
 				mob.tell("Ah, a new one for your kill log.");
 				CMLib.leveler().postExperience(mob,null,null,mark.phyStats().level(),false);
 			}
@@ -118,7 +118,7 @@ public class Thief_KillLog extends ThiefSkill
 			mark=null;
 			if((affected!=null)&&(affected instanceof MOB))
 			{
-				Ability A=((MOB)affected).fetchAbility(ID());
+				final Ability A=((MOB)affected).fetchAbility(ID());
 				if(A!=null)	A.setMiscText(text());
 			}
 		}
@@ -131,15 +131,15 @@ public class Thief_KillLog extends ThiefSkill
 		theList.clear();
 		if((str.trim().length()>0)&&(str.trim().startsWith("<MOBS>")))
 		{
-			List<XMLLibrary.XMLpiece> buf=CMLib.xml().parseAllXML(str);
-			List<XMLLibrary.XMLpiece> V=CMLib.xml().getContentsFromPieces(buf,"MOBS");
+			final List<XMLLibrary.XMLpiece> buf=CMLib.xml().parseAllXML(str);
+			final List<XMLLibrary.XMLpiece> V=CMLib.xml().getContentsFromPieces(buf,"MOBS");
 			if(V!=null)
 			for(int i=0;i<V.size();i++)
 			{
-				XMLLibrary.XMLpiece ablk=V.get(i);
+				final XMLLibrary.XMLpiece ablk=V.get(i);
 				if(ablk.tag.equalsIgnoreCase("MOB"))
 				{
-					String[] one=new String[4];
+					final String[] one=new String[4];
 					one[0]=CMLib.xml().getValFromPieces(ablk.contents,"NAME");
 					one[1]=CMLib.xml().getValFromPieces(ablk.contents,"LEVEL");
 					one[2]=CMLib.xml().getValFromPieces(ablk.contents,"TOTAL");
@@ -155,8 +155,8 @@ public class Thief_KillLog extends ThiefSkill
 	{
 		if(!(affected instanceof MOB))
 			return super.tick(ticking,tickID);
-		MOB mob=(MOB)affected;
-		MOB m=getMark(mob);
+		final MOB mob=(MOB)affected;
+		final MOB m=getMark(mob);
 		if(m!=mark)
 		{
 			mark=m;
@@ -175,7 +175,7 @@ public class Thief_KillLog extends ThiefSkill
 				set[2]=Integer.toString(CMath.s_int(set[2])+1);
 				if((affected!=null)&&(affected instanceof MOB))
 				{
-					Ability A=((MOB)affected).fetchAbility(ID());
+					final Ability A=((MOB)affected).fetchAbility(ID());
 					if(A!=null)	A.setMiscText(text());
 				}
 			}
@@ -190,20 +190,20 @@ public class Thief_KillLog extends ThiefSkill
 			return false;
 		if(proficiencyCheck(mob,0,auto))
 		{
-			StringBuffer str=new StringBuffer("");
-			int[] cols={
+			final StringBuffer str=new StringBuffer("");
+			final int[] cols={
 					ListingLibrary.ColFixer.fixColWidth(20,mob.session()),
 					ListingLibrary.ColFixer.fixColWidth(6,mob.session())
 				};
 			str.append(CMStrings.padRight("Name",cols[0])+CMStrings.padRight("Level",cols[1])+"Kill Pct.\n\r");
-			Vector<String[]> order=new Vector<String[]>();
+			final Vector<String[]> order=new Vector<String[]>();
 			int lowLevel=Integer.MIN_VALUE;
 			String[] addOne=null;
 			while(theList.size()>order.size())
 			{
 				addOne=null;
 				lowLevel=Integer.MIN_VALUE;
-				for(String[] one : theList.values())
+				for(final String[] one : theList.values())
 				{
 					if((CMath.s_int(one[1])>=lowLevel)
 					&&(!order.contains(one)))
@@ -218,10 +218,10 @@ public class Thief_KillLog extends ThiefSkill
 			}
 			for(int i=0;i<order.size();i++)
 			{
-				String[] one=order.elementAt(i);
+				final String[] one=order.elementAt(i);
 				int pct=0;
-				int total=CMath.s_int(one[2]);
-				int kills=CMath.s_int(one[3]);
+				final int total=CMath.s_int(one[2]);
+				final int kills=CMath.s_int(one[3]);
 				if(total>0)
 					pct=(int)Math.round((CMath.div(kills,total)*100.0));
 				str.append(CMStrings.padRight(one[0],cols[0])+CMStrings.padRight(one[1],cols[1])+pct+"%\n\r");

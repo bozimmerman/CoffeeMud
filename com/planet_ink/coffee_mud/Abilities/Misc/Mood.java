@@ -16,7 +16,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -107,7 +106,7 @@ public class Mood extends StdAbility
 			moodCode=-1;
 			if(CMath.isInteger(newText))
 			{
-				int x=CMath.s_int(newText);
+				final int x=CMath.s_int(newText);
 				if((x>=0)&&(x<MOODS.length))
 				{
 					moodCode=x;
@@ -146,9 +145,9 @@ public class Mood extends StdAbility
 	private String changeSay(String msg, String to)
 	{
 		if(msg==null) return null;
-		int x=msg.indexOf('\'');
+		final int x=msg.indexOf('\'');
 		if(x<0) return msg;
-		int y=msg.indexOf("say(s)");
+		final int y=msg.indexOf("say(s)");
 		if((y>=0)&&(y<x))
 			return msg.substring(0,y)+to+msg.substring(y+6);
 		return msg;
@@ -164,7 +163,7 @@ public class Mood extends StdAbility
 	{
 		if(target instanceof MOB) return (MOB)target;
 		if(mob==null) return null;
-		Room R=mob.location();
+		final Room R=mob.location();
 		if(R==null) return null;
 		if(R.numInhabitants()==1) return null;
 		if(R.numInhabitants()==2)
@@ -173,8 +172,8 @@ public class Mood extends StdAbility
 				return R.fetchInhabitant(r);
 		if((lastOne instanceof MOB)&&(R.isInhabitant((MOB)lastOne)))
 			return (MOB)lastOne;
-		Vector players=new Vector();
-		Vector mobs=new Vector();
+		final Vector players=new Vector();
+		final Vector mobs=new Vector();
 		MOB M=null;
 		for(int r=0;r<R.numInhabitants();r++)
 		{
@@ -214,14 +213,14 @@ public class Mood extends StdAbility
 				if(str==null) str=CMStrings.getSayFromMessage(msg.targetMessage());
 				if(str!=null)
 				{
-					MOB M=target(msg.source(),msg.target());
+					final MOB M=target(msg.source(),msg.target());
 					if(CMath.bset(msg.sourceMajor(),CMMsg.MASK_CHANNEL))
 					{
 						final String[] tags={"<S-NAME>","You"};
 						String tag=null;
-						for(int i=0;i<tags.length;i++)
+						for (final String tag2 : tags)
 						{
-							tag=tags[i];
+							tag=tag2;
 							if((msg.othersMessage()!=null)&&(msg.othersMessage().indexOf(MOODS[moodCode][3])<0))
 								msg.setOthersMessage(CMStrings.replaceFirst(msg.othersMessage(),tag,tag+" "+MOODS[moodCode][3]));
 							if((msg.targetMessage()!=null)&&(msg.targetMessage().indexOf(MOODS[moodCode][3])<0))
@@ -230,7 +229,7 @@ public class Mood extends StdAbility
 								msg.setSourceMessage(CMStrings.replaceFirst(msg.sourceMessage(),tag,tag+" "+MOODS[moodCode][3]));
 						}
 					}
-					String oldStr=str;
+					final String oldStr=str;
 					switch(moodCode)
 					{
 					case 0: // formal
@@ -506,7 +505,7 @@ public class Mood extends StdAbility
 						default:
 							break;
 						}
-						int rand=CMLib.dice().roll(1,20,0);
+						final int rand=CMLib.dice().roll(1,20,0);
 						if(rand<5)
 							str="Hey "+uglyPhrases[CMLib.dice().roll(1,uglyPhrases.length,-1)]+", "+str;
 						else
@@ -586,7 +585,7 @@ public class Mood extends StdAbility
 							break;
 						}
 						while(str.endsWith(".")) str=str.substring(0,str.length()-1);
-						int num=CMLib.dice().roll(1,10,3);
+						final int num=CMLib.dice().roll(1,10,3);
 						for(int i=0;i<num;i++)
 							str+="!";
 						str=str.toUpperCase();
@@ -671,7 +670,7 @@ public class Mood extends StdAbility
 				lastOne=msg.source();
 				int channelIndex=-1;
 				int channelC=-1;
-				String[] CHANNELS=CMLib.channels().getChannelNames();
+				final String[] CHANNELS=CMLib.channels().getChannelNames();
 				for(int c=0;c<CHANNELS.length;c++)
 					if(CMStrings.contains(BOAST_CHANNELS,CHANNELS[c]))
 					{
@@ -709,7 +708,7 @@ public class Mood extends StdAbility
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		String entered=CMParms.combine(commands,0);
-		String origEntered=CMParms.combine(commands,0);
+		final String origEntered=CMParms.combine(commands,0);
 		MOB target=mob;
 		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
 			target=(MOB)givenTarget;
@@ -723,7 +722,7 @@ public class Mood extends StdAbility
 		}
 		String moodCode = MOOD.text();
 		if(moodCode.trim().length()==0) moodCode="NORMAL";
-		String moodName = CMLib.english().startWithAorAn(moodCode.toLowerCase());
+		final String moodName = CMLib.english().startWithAorAn(moodCode.toLowerCase());
 		if(entered.trim().length()==0)
 		{
 			mob.tell("You are currently in "+moodName+" mood.");
@@ -731,7 +730,7 @@ public class Mood extends StdAbility
 		}
 		if(entered.equalsIgnoreCase("RANDOM"))
 		{
-			int rand=CMLib.dice().roll(1,MOODS.length+3,-1);
+			final int rand=CMLib.dice().roll(1,MOODS.length+3,-1);
 			if(rand>=MOODS.length)
 				entered="NORMAL";
 			else
@@ -742,29 +741,29 @@ public class Mood extends StdAbility
 		if(entered.equalsIgnoreCase("NORMAL"))
 			choice="NORMAL";
 		else
-		for(int i=0;i<MOODS.length;i++)
-			if(MOODS[i][0].equalsIgnoreCase(entered))
-			{
-				choice=MOODS[i][0];
-				mask=MOODS[i][1];
-			}
+			for (final String[] element : MOODS)
+				if(element[0].equalsIgnoreCase(entered))
+				{
+					choice=element[0];
+					mask=element[1];
+				}
 		if((choice==null)&&(entered.length()>0)&&(Character.isLetter(entered.charAt(0))))
 		{
 			if("NORMAL".startsWith(entered.toUpperCase()))
 				choice="NORMAL";
 			else
-			for(int i=0;i<MOODS.length;i++)
-			if(MOODS[i][0].startsWith(entered.toUpperCase()))
-			{
-				choice=MOODS[i][0];
-				mask=MOODS[i][1];
-			}
+				for (final String[] element : MOODS)
+					if(element[0].startsWith(entered.toUpperCase()))
+					{
+						choice=element[0];
+						mask=element[1];
+					}
 		}
 		if((choice==null)||(entered.equalsIgnoreCase("list")))
 		{
 			String choices=", NORMAL";
-			for(int i=0;i<MOODS.length;i++)
-				choices+=", "+MOODS[i][0];
+			for (final String[] element : MOODS)
+				choices+=", "+element[0];
 			if(entered.equalsIgnoreCase("LIST"))
 				mob.tell("Mood choices include: "+choices.substring(2));
 			else
@@ -789,10 +788,10 @@ public class Mood extends StdAbility
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_OK_VISUAL,"<T-NAME> appear(s) to be in "+CMLib.english().startWithAorAn(choice.toLowerCase())+" mood.");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_OK_VISUAL,"<T-NAME> appear(s) to be in "+CMLib.english().startWithAorAn(choice.toLowerCase())+" mood.");
 			if(target.location()!=null)
 			{
 				if(target.location().okMessage(target,msg))

@@ -109,7 +109,7 @@ public class Spell_WardArea extends Spell implements Trap
 			mob.location().show(mob,affected,this,CMMsg.MSG_OK_ACTION,"<S-NAME> avoid(s) a magical ward trap.");
 		else
 		{
-			MOB newCaster=CMClass.getMOB("StdMOB");
+			final MOB newCaster=CMClass.getMOB("StdMOB");
 			newCaster.setName("the thin air");
 			newCaster.setDescription(" ");
 			newCaster.setDisplayText(" ");
@@ -126,7 +126,7 @@ public class Spell_WardArea extends Spell implements Trap
 			{
 				shooter.invoke(newCaster,parameters,mob,true,0);
 			}
-			catch(Exception e){Log.errOut("WARD/"+CMParms.combine(parameters,0),e);}
+			catch(final Exception e){Log.errOut("WARD/"+CMParms.combine(parameters,0),e);}
 			newCaster.setLocation(null);
 			newCaster.destroy();
 		}
@@ -197,17 +197,17 @@ public class Spell_WardArea extends Spell implements Trap
 		if(shooter.enchantQuality()==Ability.QUALITY_MALICIOUS)
 		for(int m=0;m<mob.location().numInhabitants();m++)
 		{
-			MOB M=mob.location().fetchInhabitant(m);
+			final MOB M=mob.location().fetchInhabitant(m);
 			if((M!=null)&&(M!=mob)&&(!M.mayIFight(mob)))
 			{
 				mob.tell("You cannot set that spell here -- there are other players present!");
 				return false;
 			}
 		}
-		Physical target = mob.location();
+		final Physical target = mob.location();
 		if((target.fetchEffect(this.ID())!=null)||(givenTarget!=null))
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"A ward trap has already been set here!");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"A ward trap has already been set here!");
 			if(mob.location().okMessage(mob,msg))
 				mob.location().send(mob,msg);
 			return false;
@@ -219,7 +219,7 @@ public class Spell_WardArea extends Spell implements Trap
 		// and added as String objects to a vector.
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
@@ -228,7 +228,7 @@ public class Spell_WardArea extends Spell implements Trap
 			// affected MOB.  Then tell everyone else
 			// what happened.
 
-			CMMsg msg = CMClass.getMsg(mob, target, this, verbalCastCode(mob,target,auto), auto?"":"^S<S-NAME> set(s) a magical trap.^?");
+			final CMMsg msg = CMClass.getMsg(mob, target, this, verbalCastCode(mob,target,auto), auto?"":"^S<S-NAME> set(s) a magical trap.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

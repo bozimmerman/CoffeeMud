@@ -37,20 +37,20 @@ public class NoChannel extends StdCommand
 {
 	public NoChannel(){}
 
-	private String[] access=null;
+	private final String[] access=null;
 	@Override public String[] getAccessWords(){return access;}
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		PlayerStats pstats=mob.playerStats();
+		final PlayerStats pstats=mob.playerStats();
 		if(pstats==null) return false;
 		String channelName=((String)commands.elementAt(0)).toUpperCase().trim().substring(2);
 		commands.removeElementAt(0);
 		int channelNum=-1;
 		for(int c=0;c<CMLib.channels().getNumChannels();c++)
 		{
-			ChannelsLibrary.CMChannel chan=CMLib.channels().getChannel(c);
+			final ChannelsLibrary.CMChannel chan=CMLib.channels().getChannel(c);
 			if(chan.name.equalsIgnoreCase(channelName))
 			{
 				channelNum=c;
@@ -60,7 +60,7 @@ public class NoChannel extends StdCommand
 		if(channelNum<0)
 		for(int c=0;c<CMLib.channels().getNumChannels();c++)
 		{
-			ChannelsLibrary.CMChannel chan=CMLib.channels().getChannel(c);
+			final ChannelsLibrary.CMChannel chan=CMLib.channels().getChannel(c);
 			if(chan.name.toUpperCase().startsWith(channelName))
 			{
 				channelNum=c;

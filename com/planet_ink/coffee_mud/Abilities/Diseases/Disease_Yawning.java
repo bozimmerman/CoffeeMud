@@ -64,7 +64,7 @@ public class Disease_Yawning extends Disease
 		if(!(affected instanceof MOB))
 			return true;
 
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		MOB diseaser=invoker;
 		if(diseaser==null) diseaser=mob;
 		if((getTickDownRemaining()==1)
@@ -73,7 +73,7 @@ public class Disease_Yawning extends Disease
 		&&(CMLib.dice().rollPercentage()>mob.charStats().getSave(CharStats.STAT_SAVE_DISEASE)))
 		{
 			mob.delEffect(this);
-			Ability A=CMClass.getAbility("Disease_Yawning");
+			final Ability A=CMClass.getAbility("Disease_Yawning");
 			A.invoke(diseaser,mob,true,0);
 		}
 		else
@@ -82,7 +82,7 @@ public class Disease_Yawning extends Disease
 		&&(!CMLib.flags().isSleeping(mob)))
 		{
 			diseaseTick=DISEASE_DELAY();
-			CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_NOISE,DISEASE_AFFECT()+CMLib.protocol().msp("yawn.wav",40));
+			final CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_NOISE,DISEASE_AFFECT()+CMLib.protocol().msp("yawn.wav",40));
 			if((mob.location()!=null)&&(mob.location().okMessage(mob,msg)))
 				mob.location().send(mob,msg);
 			catchIt(mob);

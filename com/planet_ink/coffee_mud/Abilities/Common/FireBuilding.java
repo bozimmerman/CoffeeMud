@@ -55,14 +55,14 @@ public class FireBuilding extends CommonSkill
 		{
 			if((affected!=null)&&(affected instanceof MOB)&&(!aborted)&&(!helping))
 			{
-				MOB mob=(MOB)affected;
+				final MOB mob=(MOB)affected;
 				if(failed)
 					commonTell(mob,"You failed to get the fire started.");
 				else
 				{
 					if(lighting==null)
 					{
-						Item I=CMClass.getItem("GenItem");
+						final Item I=CMClass.getItem("GenItem");
 						I.basePhyStats().setWeight(50);
 						I.setName("a roaring campfire");
 						I.setDisplayText("A roaring campfire has been built here.");
@@ -72,7 +72,7 @@ public class FireBuilding extends CommonSkill
 						mob.location().addItem(I);
 						lighting=I;
 					}
-					Ability B=CMClass.getAbility("Burning");
+					final Ability B=CMClass.getAbility("Burning");
 					B.invoke(mob,lighting,true,durationOfBurn);
 				}
 				lighting=null;
@@ -85,7 +85,7 @@ public class FireBuilding extends CommonSkill
 	{
 		for(int i=0;i<R.numItems();i++)
 		{
-			Item I2=R.getItem(i);
+			final Item I2=R.getItem(i);
 			if((I2!=null)&&(I2.container()==null)&&(CMLib.flags().isOnFire(I2)))
 				return true;
 		}
@@ -94,10 +94,10 @@ public class FireBuilding extends CommonSkill
 
 	public Vector resourceHere(Room R, int material)
 	{
-		Vector here=new Vector();
+		final Vector here=new Vector();
 		for(int i=0;i<R.numItems();i++)
 		{
-			Item I2=R.getItem(i);
+			final Item I2=R.getItem(i);
 			if((I2!=null)
 			&&(I2.container()==null)
 			&&(I2 instanceof RawMaterial)
@@ -133,7 +133,7 @@ public class FireBuilding extends CommonSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		String name=CMParms.combine(commands,0);
+		final String name=CMParms.combine(commands,0);
 		int proficiencyAdjustment=0;
 		int duration=6;
 		if(name.equalsIgnoreCase("fire"))
@@ -174,7 +174,7 @@ public class FireBuilding extends CommonSkill
 			}
 			if(lighting instanceof Light)
 			{
-				Light l=(Light)lighting;
+				final Light l=(Light)lighting;
 				if(l.isLit())
 				{
 					commonTell(mob,l.name()+" is already lit!");
@@ -192,7 +192,7 @@ public class FireBuilding extends CommonSkill
 			}
 			if(!(lighting instanceof RawMaterial))
 			{
-				LandTitle t=CMLib.law().getLandTitle(mob.location());
+				final LandTitle t=CMLib.law().getLandTitle(mob.location());
 				if((t!=null)&&(!CMLib.law().doesHavePriviledgesHere(mob,mob.location())))
 				{
 					mob.tell("You are not allowed to burn anything here.");
@@ -245,12 +245,12 @@ public class FireBuilding extends CommonSkill
 		durationOfBurn=durationOfBurn*abilityCode();
 		if(duration<4) duration=4;
 
-		CMMsg msg=CMClass.getMsg(mob,null,this,getActivityMessageType(),auto?"":"<S-NAME> start(s) building a fire.");
+		final CMMsg msg=CMClass.getMsg(mob,null,this,getActivityMessageType(),auto?"":"<S-NAME> start(s) building a fire.");
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
 			beneficialAffect(mob,mob,asLevel,duration);
-			FireBuilding fireBuild = (FireBuilding)mob.fetchEffect(ID());
+			final FireBuilding fireBuild = (FireBuilding)mob.fetchEffect(ID());
 			if(fireBuild!=null)
 				fireBuild.durationOfBurn = this.durationOfBurn;
 

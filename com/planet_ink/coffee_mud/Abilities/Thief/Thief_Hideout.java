@@ -68,7 +68,7 @@ public class Thief_Hideout extends ThiefSkill
 	{
 		if(!(affected instanceof MOB))
 			return;
-		MOB M=(MOB)affected;
+		final MOB M=(MOB)affected;
 
 		if(canBeUninvoked())
 		{
@@ -76,15 +76,15 @@ public class Thief_Hideout extends ThiefSkill
 				shelter=M.location();
 			Room backToRoom=M.getStartRoom();
 			int i=0;
-			LinkedList<MOB> mobs=new LinkedList<MOB>();
-			for(Enumeration<MOB> m=shelter.inhabitants();m.hasMoreElements();)
+			final LinkedList<MOB> mobs=new LinkedList<MOB>();
+			for(final Enumeration<MOB> m=shelter.inhabitants();m.hasMoreElements();)
 				mobs.add(m.nextElement());
-			for(MOB mob : mobs)
+			for(final MOB mob : mobs)
 			{
 				if(mob==null) break;
 				mob.tell("You slip back onto the streets.");
 
-				CMMsg enterMsg=CMClass.getMsg(mob,previousLocation,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,"<S-NAME> walk(s) in out of nowhere.");
+				final CMMsg enterMsg=CMClass.getMsg(mob,previousLocation,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,"<S-NAME> walk(s) in out of nowhere.");
 				backToRoom=getPreviousLocation(mob);
 				if(backToRoom==null)
 					backToRoom=mob.getStartRoom();
@@ -92,10 +92,10 @@ public class Thief_Hideout extends ThiefSkill
 				backToRoom.send(mob,enterMsg);
 				CMLib.commands().postLook(mob,true);
 			}
-			LinkedList<Item> items=new LinkedList<Item>();
-			for(Enumeration<Item> e=shelter.items();e.hasMoreElements();)
+			final LinkedList<Item> items=new LinkedList<Item>();
+			for(final Enumeration<Item> e=shelter.items();e.hasMoreElements();)
 				items.add(e.nextElement());
-			for(Item I : items)
+			for(final Item I : items)
 			{
 				if(I.container()==null)
 					backToRoom.moveItemTo(I, Expire.Player_Drop, Move.Followers);
@@ -103,7 +103,7 @@ public class Thief_Hideout extends ThiefSkill
 			i=0;
 			while(i<shelter.numItems())
 			{
-				Item I=shelter.getItem(i);
+				final Item I=shelter.getItem(i);
 				backToRoom.moveItemTo(I, Expire.Player_Drop, Move.Followers);
 				if(shelter.isContent(I))
 					i++;
@@ -150,7 +150,7 @@ public class Thief_Hideout extends ThiefSkill
 			return false;
 		}
 
-		Room thisRoom=mob.location();
+		final Room thisRoom=mob.location();
 		if(thisRoom.domainType()!=Room.DOMAIN_OUTDOORS_CITY)
 		{
 			mob.tell("You must be on the streets to enter your hideout.");
@@ -160,8 +160,8 @@ public class Thief_Hideout extends ThiefSkill
 		flags = new TrackingLibrary.TrackingFlags()
 				.plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS)
 				.plus(TrackingLibrary.TrackingFlag.NOAIR);
-		List<Room> nearbyRooms=CMLib.tracking().getRadiantRooms(thisRoom, flags, 2);
-		for(Room room : nearbyRooms)
+		final List<Room> nearbyRooms=CMLib.tracking().getRadiantRooms(thisRoom, flags, 2);
+		for(final Room room : nearbyRooms)
 		{
 			switch(room.domainType())
 			{
@@ -176,22 +176,22 @@ public class Thief_Hideout extends ThiefSkill
 			}
 		}
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
 			previousLocation=thisRoom;
 			shelter=CMClass.getLocale("HideoutShelter");
-			Exit E=CMClass.getExit("OpenDescriptable");
+			final Exit E=CMClass.getExit("OpenDescriptable");
 			E.setDisplayText("The way back to "+thisRoom.displayText(mob));
-			int dir=CMLib.dice().roll(1, 4, -1);
+			final int dir=CMLib.dice().roll(1, 4, -1);
 			shelter.setRawExit(dir, E);
 			shelter.rawDoors()[dir]=thisRoom;
-			Room newRoom=shelter;
+			final Room newRoom=shelter;
 			shelter.setArea(mob.location().getArea());
 			miscText=CMLib.map().getExtendedRoomID(thisRoom);
 
-			CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_THIEF_ACT,auto?"":"<S-NAME> slip(s) away.");
-			CMMsg enterMsg=CMClass.getMsg(mob,newRoom,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,"<S-NAME> duck(s) into the hideout.");
+			final CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_THIEF_ACT,auto?"":"<S-NAME> slip(s) away.");
+			final CMMsg enterMsg=CMClass.getMsg(mob,newRoom,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,"<S-NAME> duck(s) into the hideout.");
 			if(thisRoom.okMessage(mob,msg) && newRoom.okMessage(mob,enterMsg))
 			{
 				if(mob.isInCombat())

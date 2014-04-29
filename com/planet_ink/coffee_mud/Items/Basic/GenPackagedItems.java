@@ -73,7 +73,7 @@ public class GenPackagedItems extends GenItem implements PackagedItems
 		basePhyStats().setHeight(I.basePhyStats().height());
 		setMaterial(I.material());
 		setBaseValue(I.baseGoldValue()*number);
-		StringBuffer itemstr=new StringBuffer("");
+		final StringBuffer itemstr=new StringBuffer("");
 		itemstr.append("<PAKITEM>");
 		itemstr.append(CMLib.xml().convertXMLtoTag("PICLASS",CMClass.classID(I)));
 		itemstr.append(CMLib.xml().convertXMLtoTag("PIDATA",CMLib.coffeeMaker().getPropertiesStr(I,true)));
@@ -91,7 +91,7 @@ public class GenPackagedItems extends GenItem implements PackagedItems
 		if(V.size()==0) return false;
 		for(int v1=0;v1<V.size();v1++)
 		{
-			Item I=V.get(v1);
+			final Item I=V.get(v1);
 			for(int v2=v1+1;v2<V.size();v2++)
 				if(!V.get(v2).sameAs(I))
 					return false;
@@ -103,21 +103,21 @@ public class GenPackagedItems extends GenItem implements PackagedItems
 	public Item getItem()
 	{
 		if(packageText().length()==0) return null;
-		List<XMLLibrary.XMLpiece> buf=CMLib.xml().parseAllXML(packageText());
+		final List<XMLLibrary.XMLpiece> buf=CMLib.xml().parseAllXML(packageText());
 		if(buf==null)
 		{
 			Log.errOut("Packaged","Error parsing 'PAKITEM'.");
 			return null;
 		}
-		XMLLibrary.XMLpiece iblk=CMLib.xml().getPieceFromPieces(buf,"PAKITEM");
+		final XMLLibrary.XMLpiece iblk=CMLib.xml().getPieceFromPieces(buf,"PAKITEM");
 		if((iblk==null)||(iblk.contents==null))
 		{
 			Log.errOut("Packaged","Error parsing 'PAKITEM'.");
 			return null;
 		}
-		String itemi=CMLib.xml().getValFromPieces(iblk.contents,"PICLASS");
-		Environmental newOne=CMClass.getItem(itemi);
-		List<XMLLibrary.XMLpiece> idat=CMLib.xml().getContentsFromPieces(iblk.contents,"PIDATA");
+		final String itemi=CMLib.xml().getValFromPieces(iblk.contents,"PICLASS");
+		final Environmental newOne=CMClass.getItem(itemi);
+		final List<XMLLibrary.XMLpiece> idat=CMLib.xml().getContentsFromPieces(iblk.contents,"PIDATA");
 		if((idat==null)||(newOne==null)||(!(newOne instanceof Item)))
 		{
 			Log.errOut("Packaged","Error parsing 'PAKITEM' data.");
@@ -130,14 +130,14 @@ public class GenPackagedItems extends GenItem implements PackagedItems
 	@Override
 	public List<Item> unPackage(int number)
 	{
-		Vector V=new Vector();
+		final Vector V=new Vector();
 		if(number>=numberOfItemsInPackage())
 			number=numberOfItemsInPackage();
 		if(number<=0)
 			return V;
-		int itemWeight=basePhyStats().weight()/numberOfItemsInPackage();
-		int itemValue=baseGoldValue()/numberOfItemsInPackage();
-		Item I=getItem();
+		final int itemWeight=basePhyStats().weight()/numberOfItemsInPackage();
+		final int itemValue=baseGoldValue()/numberOfItemsInPackage();
+		final Item I=getItem();
 		if(I==null) return V;
 		I.recoverPhyStats();
 		for(int i=0;i<number;i++)

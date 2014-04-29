@@ -61,11 +61,11 @@ public class Chant_AcidRain extends Chant
 			return false;
 		if((affected!=null)&&(affected instanceof Room))
 		{
-			Room R=(Room)affected;
+			final Room R=(Room)affected;
 			if(isRaining(R))
 			for(int i=0;i<R.numInhabitants();i++)
 			{
-				MOB M=R.fetchInhabitant(i);
+				final MOB M=R.fetchInhabitant(i);
 				if(M!=null)
 				{
 					if(CMLib.dice().rollPercentage()>M.charStats().getSave(CharStats.STAT_SAVE_ACID))
@@ -96,7 +96,7 @@ public class Chant_AcidRain extends Chant
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		Room target=mob.location();
+		final Room target=mob.location();
 		if(target==null) return false;
 		if(!isRaining(target))
 		{
@@ -110,7 +110,7 @@ public class Chant_AcidRain extends Chant
 		// and added as String objects to a vector.
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
@@ -119,7 +119,7 @@ public class Chant_AcidRain extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":"^S<S-NAME> chant(s) to the rain.^?");
+			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":"^S<S-NAME> chant(s) to the rain.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -127,7 +127,7 @@ public class Chant_AcidRain extends Chant
 				{
 					for(int i=0;i<target.numInhabitants();i++)
 					{
-						MOB M=target.fetchInhabitant(i);
+						final MOB M=target.fetchInhabitant(i);
 						if((M!=null)&&(mob!=M))
 							mob.location().show(mob,M,CMMsg.MASK_MALICIOUS|CMMsg.TYP_OK_VISUAL,null);
 					}

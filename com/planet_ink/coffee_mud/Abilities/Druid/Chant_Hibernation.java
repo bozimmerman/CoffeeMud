@@ -51,7 +51,7 @@ public class Chant_Hibernation extends Chant
 	{
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		super.unInvoke();
 		if(canBeUninvoked())
 		{
@@ -71,7 +71,7 @@ public class Chant_Hibernation extends Chant
 		super.executeMsg(myHost,msg);
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		if((msg.amISource(mob))
 		&&(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_CHANNEL))
@@ -85,7 +85,7 @@ public class Chant_Hibernation extends Chant
 	{
 		if(!(affected instanceof MOB))
 			return super.okMessage(myHost,msg);
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		if((msg.amISource(mob)
 		&&(!msg.sourceMajor(CMMsg.MASK_ALWAYS))
@@ -107,7 +107,7 @@ public class Chant_Hibernation extends Chant
 		if(!(affected instanceof MOB))
 			return super.tick(ticking,tickID);
 
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		if(tickID!=Tickable.TICKID_MOB) return true;
 		if(!proficiencyCheck(null,0,false)) return true;
@@ -116,17 +116,17 @@ public class Chant_Hibernation extends Chant
 		&&(CMLib.flags().isSleeping(mob)))
 		{
 			roundsHibernating++;
-			double man = ( ( mob.charStats().getStat( CharStats.STAT_INTELLIGENCE ) + mob.charStats().getStat( CharStats.STAT_WISDOM ) ) );
+			final double man = ( ( mob.charStats().getStat( CharStats.STAT_INTELLIGENCE ) + mob.charStats().getStat( CharStats.STAT_WISDOM ) ) );
 			mob.curState().adjMana( (int)Math.round( ( man * .1 ) + ( ( mob.phyStats().level() + ( 2.0 * super.getXLEVELLevel( invoker() ) )  ) / 2.0 ) ),
 									mob.maxState() );
 			mob.curState().setHunger(oldState.getHunger());
 			mob.curState().setThirst(oldState.getThirst());
-			double move = mob.charStats().getStat( CharStats.STAT_STRENGTH );
+			final double move = mob.charStats().getStat( CharStats.STAT_STRENGTH );
 			mob.curState().adjMovement( (int)Math.round( ( move * .1 ) + ( ( mob.phyStats().level() + ( 2.0 * super.getXLEVELLevel( invoker() ) )  ) / 2.0 ) ),
 										mob.maxState() );
 			if(!CMLib.flags().isGolem(mob))
 			{
-				double hp=mob.charStats().getStat( CharStats.STAT_CONSTITUTION );
+				final double hp=mob.charStats().getStat( CharStats.STAT_CONSTITUTION );
 				if(!CMLib.combat().postHealing( mob,
 												mob,
 												this,
@@ -158,7 +158,7 @@ public class Chant_Hibernation extends Chant
 			return false;
 		}
 		// now see if it worked
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
 			// it worked, so build a copy of this ability,
@@ -166,7 +166,7 @@ public class Chant_Hibernation extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_SLEEP|CMMsg.MASK_MAGIC,"<S-NAME> begin(s) to hibernate...");
+			final CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_SLEEP|CMMsg.MASK_MAGIC,"<S-NAME> begin(s) to hibernate...");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

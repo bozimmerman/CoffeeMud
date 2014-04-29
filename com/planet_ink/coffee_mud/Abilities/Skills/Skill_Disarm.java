@@ -50,7 +50,7 @@ public class Skill_Disarm extends StdSkill
 	{
 		if((mob!=null)&&(target!=null))
 		{
-			MOB victim=mob.getVictim();
+			final MOB victim=mob.getVictim();
 			if(victim==null)
 				return Ability.QUALITY_INDIFFERENT;
 			if(mob.isInCombat()&&(mob.rangeToTarget()>0))
@@ -75,7 +75,7 @@ public class Skill_Disarm extends StdSkill
 			mob.tell("You must be in combat to do this!");
 			return false;
 		}
-		MOB victim=super.getTarget(mob, commands, givenTarget);
+		final MOB victim=super.getTarget(mob, commands, givenTarget);
 		if(victim==null) return false;
 		if(((victim==mob.getVictim())&&(mob.rangeToTarget()>0))
 		||((victim.getVictim()==mob)&&(victim.rangeToTarget()>0)))
@@ -106,15 +106,15 @@ public class Skill_Disarm extends StdSkill
 			levelDiff=levelDiff*5;
 		else
 			levelDiff=0;
-		boolean hit=(auto)||CMLib.combat().rollToHit(mob,victim);
-		boolean success=proficiencyCheck(mob,-levelDiff,auto)&&(hit);
+		final boolean hit=(auto)||CMLib.combat().rollToHit(mob,victim);
+		final boolean success=proficiencyCheck(mob,-levelDiff,auto)&&(hit);
 		if((success)
 		   &&((hisWeapon.fitsOn(Wearable.WORN_WIELD))
 			  ||hisWeapon.fitsOn(Wearable.WORN_WIELD|Wearable.WORN_HELD)))
 		{
 			if(mob.location().show(mob,victim,this,CMMsg.MSG_NOISYMOVEMENT,null))
 			{
-				CMMsg msg=CMClass.getMsg(victim,hisWeapon,null,CMMsg.MSG_DROP,null);
+				final CMMsg msg=CMClass.getMsg(victim,hisWeapon,null,CMMsg.MSG_DROP,null);
 				if(mob.location().okMessage(mob,msg))
 				{
 					mob.location().send(victim,msg);

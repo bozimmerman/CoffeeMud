@@ -15,6 +15,7 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /*
@@ -51,26 +52,26 @@ public class FileNext extends StdWebMacro
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
-		java.util.Map<String,String> parms=parseParms(parm);
+		final java.util.Map<String,String> parms=parseParms(parm);
 		String path=httpReq.getUrlParameter("PATH");
 		if(path==null) path="";
-		String last=httpReq.getUrlParameter("FILE");
-		MOB M = Authenticate.getAuthenticatedMob(httpReq);
+		final String last=httpReq.getUrlParameter("FILE");
+		final MOB M = Authenticate.getAuthenticatedMob(httpReq);
 		if(M==null) return "[authentication error]";
 		if(parms.containsKey("RESET"))
 		{
 			if(last!=null) httpReq.removeUrlParameter("FILE");
 			return "";
 		}
-		String fileKey="CMFSFILE_"+trimSlash(path);
-		String pathKey="DIRECTORYFILES_"+trimSlash(path);
+		final String fileKey="CMFSFILE_"+trimSlash(path);
+		final String pathKey="DIRECTORYFILES_"+trimSlash(path);
 		CMFile directory=(CMFile)httpReq.getRequestObjects().get(fileKey);
 		if(directory==null)
 		{
 			directory=new CMFile(path,M);
 			httpReq.getRequestObjects().put(fileKey, directory);
 		}
-		XVector fileList=new XVector();
+		final XVector fileList=new XVector();
 		if((directory.canRead())&&(directory.isDirectory()))
 		{
 			httpReq.addFakeUrlParameter("PATH",directory.getVFSPathAndName());
@@ -79,20 +80,20 @@ public class FileNext extends StdWebMacro
 			{
 				dirs=CMFile.getFileList(path,M,false,true);
 				httpReq.getRequestObjects().put(pathKey, dirs);
-				for(CMFile file : dirs)
+				for(final CMFile file : dirs)
 				{
-					String filepath=path.endsWith("/")?path+file.getName():path+"/"+file.getName();
+					final String filepath=path.endsWith("/")?path+file.getName():path+"/"+file.getName();
 					httpReq.getRequestObjects().put("CMFSFILE_"+trimSlash(filepath), file);
 				}
 			}
-			for(int d=0;d<dirs.length;d++)
-				fileList.addElement(dirs[d].getName());
+			for (final CMFile dir : dirs)
+				fileList.addElement(dir.getName());
 		}
 		fileList.sort();
 		String lastID="";
 		for(int q=0;q<fileList.size();q++)
 		{
-			String name=(String)fileList.elementAt(q);
+			final String name=(String)fileList.elementAt(q);
 			if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!name.equals(lastID))))
 			{
 				httpReq.addFakeUrlParameter("FILE",name);

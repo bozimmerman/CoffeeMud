@@ -45,7 +45,7 @@ public class TrailTo extends StdCommand
 	{
 		int radius=Integer.MAX_VALUE;
 		HashSet<Room> ignoreRooms=null;
-		TrackingLibrary.TrackingFlags flags = new TrackingLibrary.TrackingFlags();
+		final TrackingLibrary.TrackingFlags flags = new TrackingLibrary.TrackingFlags();
 		for(int c=0;c<commands.size();c++)
 		{
 			String s=(String)commands.elementAt(c);
@@ -64,11 +64,11 @@ public class TrailTo extends StdCommand
 				if(!s.startsWith("=")) continue;
 				s=s.substring(1);
 				commands.removeElementAt(c);
-				List<String> roomList=CMParms.parseCommas(s,true);
+				final List<String> roomList=CMParms.parseCommas(s,true);
 				ignoreRooms=new HashSet<Room>();
 				for(int v=0;v<roomList.size();v++)
 				{
-					Room R=CMLib.map().getRoom(roomList.get(v));
+					final Room R=CMLib.map().getRoom(roomList.get(v));
 					if(R==null){ return "Ignored room "+roomList.get(v)+" is unknown!";}
 					if(!ignoreRooms.contains(R))ignoreRooms.add(R);
 				}
@@ -101,17 +101,17 @@ public class TrailTo extends StdCommand
 			where=where.substring(0,where.length()-9).trim();
 			confirm=true;
 		}
-		Vector<Room> set=new Vector<Room>();
+		final Vector<Room> set=new Vector<Room>();
 		CMLib.tracking().getRadiantRooms(R1,set,flags,null,radius,ignoreRooms);
 		if(where.equalsIgnoreCase("everyarea"))
 		{
-			StringBuffer str=new StringBuffer("");
-			for(Enumeration<Area> a=CMLib.map().areas();a.hasMoreElements();)
+			final StringBuffer str=new StringBuffer("");
+			for(final Enumeration<Area> a=CMLib.map().areas();a.hasMoreElements();)
 			{
-				Area A=a.nextElement();
+				final Area A=a.nextElement();
 				if(!(A instanceof SpaceObject))
 				{
-					String trail = CMLib.tracking().getTrailToDescription(R1,set,A.name(),areaNames,confirm,radius,ignoreRooms,5);
+					final String trail = CMLib.tracking().getTrailToDescription(R1,set,A.name(),areaNames,confirm,radius,ignoreRooms,5);
 					str.append(CMStrings.padRightPreserve(A.name(),30)+": "+trail+"\n\r");
 				}
 			}
@@ -121,19 +121,19 @@ public class TrailTo extends StdCommand
 		else
 		if(where.equalsIgnoreCase("everyroom"))
 		{
-			StringBuffer str=new StringBuffer("");
+			final StringBuffer str=new StringBuffer("");
 			try
 			{
-				for(Enumeration<Room> r=CMLib.map().rooms();r.hasMoreElements();)
+				for(final Enumeration<Room> r=CMLib.map().rooms();r.hasMoreElements();)
 				{
-					Room R=r.nextElement();
+					final Room R=r.nextElement();
 					if((R!=R1)&&(R.roomID().length()>0))
 					{
-						String trail = CMLib.tracking().getTrailToDescription(R1,set,R.roomID(),areaNames,confirm,radius,ignoreRooms,5);
+						final String trail = CMLib.tracking().getTrailToDescription(R1,set,R.roomID(),areaNames,confirm,radius,ignoreRooms,5);
 						str.append(CMStrings.padRightPreserve(R.roomID(),30)+": "+trail+"\n\r");
 					}
 				}
-			}catch(NoSuchElementException nse){}
+			}catch(final NoSuchElementException nse){}
 			if(confirm) Log.rawSysOut(str.toString());
 			return str.toString();
 		}

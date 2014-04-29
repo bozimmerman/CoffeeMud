@@ -63,12 +63,12 @@ public class Herbology extends CommonSkill
 		{
 			if((affected!=null)&&(affected instanceof MOB)&&(!aborted)&&(!helping))
 			{
-				MOB mob=(MOB)affected;
+				final MOB mob=(MOB)affected;
 				if(messedUp)
 					commonTell(mob,"You lose your concentration on "+found.name()+".");
 				else
 				{
-					List<String> herbList=Resources.getFileLineVector(Resources.getFileResource("skills/herbology.txt",true));
+					final List<String> herbList=Resources.getFileLineVector(Resources.getFileResource("skills/herbology.txt",true));
 					String herb=null;
 					while((herbList.size()>2)&&((herb==null)||(herb.trim().length()==0)))
 						herb=herbList.get(CMLib.dice().roll(1,herbList.size(),-1)).trim().toLowerCase();
@@ -106,7 +106,7 @@ public class Herbology extends CommonSkill
 			commonTell(mob,"You must specify what herb you want to identify.");
 			return false;
 		}
-		Item target=mob.fetchItem(null,Wearable.FILTER_UNWORNONLY,CMParms.combine(commands,0));
+		final Item target=mob.fetchItem(null,Wearable.FILTER_UNWORNONLY,CMParms.combine(commands,0));
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
 			commonTell(mob,"You don't seem to have a '"+((String)commands.firstElement())+"'.");
@@ -130,8 +130,8 @@ public class Herbology extends CommonSkill
 		found=target;
 		messedUp=false;
 		if(!proficiencyCheck(mob,0,auto)) messedUp=true;
-		int duration=getDuration(15,mob,1,2);
-		CMMsg msg=CMClass.getMsg(mob,null,this,getActivityMessageType(),"<S-NAME> stud(ys) "+target.name()+".");
+		final int duration=getDuration(15,mob,1,2);
+		final CMMsg msg=CMClass.getMsg(mob,null,this,getActivityMessageType(),"<S-NAME> stud(ys) "+target.name()+".");
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

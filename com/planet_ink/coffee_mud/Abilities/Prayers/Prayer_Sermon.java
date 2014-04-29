@@ -64,7 +64,7 @@ public class Prayer_Sermon extends Prayer
 		// undo the affects of this spell
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		super.unInvoke();
 
@@ -84,7 +84,7 @@ public class Prayer_Sermon extends Prayer
 		if(!(affected instanceof MOB))
 			return true;
 
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		// when this spell is on a MOBs Affected list,
 		// it should consistantly prevent the mob
@@ -128,10 +128,10 @@ public class Prayer_Sermon extends Prayer
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 
-		Hashtable h=new Hashtable();
+		final Hashtable h=new Hashtable();
 		for(int i=0;i<mob.location().numInhabitants();i++)
 		{
-			MOB M=mob.location().fetchInhabitant(i);
+			final MOB M=mob.location().fetchInhabitant(i);
 			if((M!=null)&&(CMLib.flags().canBeSeenBy(M,mob))&&(M!=mob)
 			&&(M.charStats().getStat(CharStats.STAT_INTELLIGENCE)>4))
 				h.put(M,M);
@@ -155,9 +155,9 @@ public class Prayer_Sermon extends Prayer
 		if(success)
 		{
 			if(mob.location().show(mob,null,this,verbalCastCode(mob,null,auto),auto?"":"^S<S-NAME> begin(s) sermonizing on the wonders of "+hisHerDiety(mob)+".^?"))
-			for(Enumeration f=h.elements();f.hasMoreElements();)
+			for(final Enumeration f=h.elements();f.hasMoreElements();)
 			{
-				MOB target=(MOB)f.nextElement();
+				final MOB target=(MOB)f.nextElement();
 
 				if((CMLib.flags().canBeHeardSpeakingBy(mob,target))&&(mob.mayIFight(target)))
 				{
@@ -165,7 +165,7 @@ public class Prayer_Sermon extends Prayer
 					// and add it to the affects list of the
 					// affected MOB.  Then tell everyone else
 					// what happened.
-					CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),null);
+					final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),null);
 					if((mob.location().okMessage(mob,msg))&&(target.fetchEffect(this.ID())==null))
 					{
 						mob.location().send(mob,msg);

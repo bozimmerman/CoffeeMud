@@ -72,11 +72,11 @@ public class Wimpy extends StdBehavior
 		if(((--tickDown)<0)&&(ticking instanceof MOB))
 		{
 			tickDown=tickWait;
-			MOB monster=(MOB)ticking;
+			final MOB monster=(MOB)ticking;
 			if(monster.location()!=null)
 			for(int m=0;m<monster.location().numInhabitants();m++)
 			{
-				MOB M=monster.location().fetchInhabitant(m);
+				final MOB M=monster.location().fetchInhabitant(m);
 				if((M!=null)&&(M!=monster)&&(CMLib.masking().maskCheck(getParms(),M,false)))
 				{
 					if(M.getVictim()==monster)
@@ -87,9 +87,9 @@ public class Wimpy extends StdBehavior
 					else
 					if((veryWimpy)&&(!monster.isInCombat()))
 					{
-						Room oldRoom=monster.location();
-						List<Behavior> V=CMLib.flags().flaggedBehaviors(monster,Behavior.FLAG_MOBILITY);
-						for(Behavior B : V)
+						final Room oldRoom=monster.location();
+						final List<Behavior> V=CMLib.flags().flaggedBehaviors(monster,Behavior.FLAG_MOBILITY);
+						for(final Behavior B : V)
 						{
 							int tries=0;
 							while(((++tries)<100)&&(oldRoom==monster.location()))

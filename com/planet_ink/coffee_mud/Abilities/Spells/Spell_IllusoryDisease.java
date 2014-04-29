@@ -66,7 +66,7 @@ public class Spell_IllusoryDisease extends Spell implements DiseaseAffect
 		if(!super.tick(ticking,tickID))	return false;
 		if((affected==null)||(invoker==null)) return false;
 
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		if((--diseaseTick)<=0)
 		{
 			diseaseTick=5;
@@ -102,7 +102,7 @@ public class Spell_IllusoryDisease extends Spell implements DiseaseAffect
 		// undo the affects of this spell
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		super.unInvoke();
 
 		if(canBeUninvoked())
@@ -114,7 +114,7 @@ public class Spell_IllusoryDisease extends Spell implements DiseaseAffect
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		MOB target=this.getTarget(mob,commands,givenTarget);
+		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
 		// the invoke method for spells receives as
@@ -133,7 +133,7 @@ public class Spell_IllusoryDisease extends Spell implements DiseaseAffect
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> incant(s) at <T-NAMESELF>.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> incant(s) at <T-NAMESELF>.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

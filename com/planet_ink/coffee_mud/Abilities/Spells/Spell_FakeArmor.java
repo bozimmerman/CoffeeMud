@@ -76,7 +76,7 @@ public class Spell_FakeArmor extends Spell
 		super.unInvoke();
 		if(canBeUninvoked())
 		{
-			Item item=myItem;
+			final Item item=myItem;
 			myItem=null;
 			item.destroy();
 		}
@@ -85,8 +85,8 @@ public class Spell_FakeArmor extends Spell
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		String[] choices={"plate","chain","leather", "studded"};
-		String[] choices2={"helmet","shirt","leggings", "sleeves","boots"};
+		final String[] choices={"plate","chain","leather", "studded"};
+		final String[] choices2={"helmet","shirt","leggings", "sleeves","boots"};
 		int choice=-1;
 		int choice2=-1;
 		if(commands.size()>1)
@@ -111,14 +111,14 @@ public class Spell_FakeArmor extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,null,this,somanticCastCode(mob,null,auto),auto?"":"^S<S-NAME> wave(s) <S-HIS-HER> arms around dramatically.^?");
+			final CMMsg msg=CMClass.getMsg(mob,null,this,somanticCastCode(mob,null,auto),auto?"":"^S<S-NAME> wave(s) <S-HIS-HER> arms around dramatically.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				Armor armor=(Armor)CMClass.getItem("GenArmor");
+				final Armor armor=(Armor)CMClass.getItem("GenArmor");
 				armor.basePhyStats().setArmor(0);
 				armor.basePhyStats().setDisposition(armor.basePhyStats().disposition()|PhyStats.IS_BONUS);
 				armor.setMaterial(RawMaterial.RESOURCE_COTTON);

@@ -48,10 +48,10 @@ public class Whisper extends StdCommand
 			return false;
 		}
 		Environmental target=null;
-		Room R = mob.location();
+		final Room R = mob.location();
 		if(commands.size()>2)
 		{
-			String possibleTarget=(String)commands.elementAt(1);
+			final String possibleTarget=(String)commands.elementAt(1);
 			target=R.fetchFromRoomFavorMOBs(null,possibleTarget);
 			if((target!=null)&&(!target.name().equalsIgnoreCase(possibleTarget))&&(possibleTarget.length()<4))
 			   target=null;
@@ -65,11 +65,11 @@ public class Whisper extends StdCommand
 		}
 		for(int i=1;i<commands.size();i++)
 		{
-			String s=(String)commands.elementAt(i);
+			final String s=(String)commands.elementAt(i);
 			if(s.indexOf(' ')>=0)
 				commands.setElementAt("\""+s+"\"",i);
 		}
-		String combinedCommands=CMParms.combine(commands,1);
+		final String combinedCommands=CMParms.combine(commands,1);
 		if(combinedCommands.equals(""))
 		{
 			mob.tell("Whisper what?");
@@ -79,7 +79,7 @@ public class Whisper extends StdCommand
 		CMMsg msg=null;
 		if(target==null)
 		{
-			Rideable riddenR=mob.riding();
+			final Rideable riddenR=mob.riding();
 			if(riddenR==null)
 			{
 				msg=CMClass.getMsg(mob,null,null,CMMsg.MSG_SPEAK,"^T<S-NAME> whisper(s) to <S-HIM-HERSELF> '"+combinedCommands+"'.^?"+CMLib.protocol().msp("whisper.wav",40),
@@ -96,12 +96,11 @@ public class Whisper extends StdCommand
 				if(R.okMessage(mob,msg))
 				{
 					R.send(mob,msg);
-					Vector<Environmental> targets = new Vector<Environmental>();
+					final Vector<Environmental> targets = new Vector<Environmental>();
 					for(int i=0;i<R.numInhabitants();i++)
 						targets.addElement(R.fetchInhabitant(i));
-					for(Enumeration<Environmental> e = targets.elements();e.hasMoreElements();)
+					for (final Environmental E : targets)
 					{
-						Environmental E=e.nextElement();
 						if(E!=null)
 						{
 							if( (E instanceof MOB) && riddenR.amRiding((MOB)E))

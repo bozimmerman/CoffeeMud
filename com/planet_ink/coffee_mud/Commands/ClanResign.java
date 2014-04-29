@@ -45,10 +45,10 @@ public class ClanResign extends StdCommand
 	public boolean execute(final MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		String clanName=(commands.size()>1)?CMParms.combine(commands,1,commands.size()):"";
+		final String clanName=(commands.size()>1)?CMParms.combine(commands,1,commands.size()):"";
 
 		Clan chkC=null;
-		for(Pair<Clan,Integer> c : mob.clans())
+		for(final Pair<Clan,Integer> c : mob.clans())
 			if((clanName.length()==0)||(CMLib.english().containsString(c.first.getName(), clanName)))
 			{	chkC=c.first; break; }
 
@@ -67,19 +67,19 @@ public class ClanResign extends StdCommand
 				@Override public void timedOut() { }
 				@Override public void callBack()
 				{
-					String check=this.input;
+					final String check=this.input;
 					if(check.equalsIgnoreCase("Y"))
 					{
 						if(C.getGovernment().getExitScript().trim().length()>0)
 						{
-							Pair<Clan,Integer> curClanRole=mob.getClanRole(C.clanID());
+							final Pair<Clan,Integer> curClanRole=mob.getClanRole(C.clanID());
 							if(curClanRole!=null)
 								mob.setClan(C.clanID(), curClanRole.second.intValue());
-							ScriptingEngine S=(ScriptingEngine)CMClass.getCommon("DefaultScriptingEngine");
+							final ScriptingEngine S=(ScriptingEngine)CMClass.getCommon("DefaultScriptingEngine");
 							S.setSavable(false);
 							S.setVarScope("*");
 							S.setScript(C.getGovernment().getExitScript());
-							CMMsg msg2=CMClass.getMsg(mob,mob,null,CMMsg.MSG_OK_VISUAL,null,null,"CLANEXIT");
+							final CMMsg msg2=CMClass.getMsg(mob,mob,null,CMMsg.MSG_OK_VISUAL,null,null,"CLANEXIT");
 							S.executeMsg(mob, msg2);
 							S.dequeResponses();
 							S.tick(mob,Tickable.TICKID_MOB);

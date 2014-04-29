@@ -51,12 +51,12 @@ public class Fey extends StdLanguage
 	{
 		if(wordLists==null)
 		{
-			String[] one={"se","rh","al","o","na","e","ce","uu","si","lag"};
-			String[] two={"ta","Sha","rha","den","oc","han","mij","ma","ke","isc","ga","en","di","de","an","brois","ajet","ev","ba","eh","bas"};
-			String[] three={"vav","set","sav","sen","rhig","viy","ok","nash","mik","kiy","hask","tal","gha","dos","diy","ceg","dak","aeln","huu","beksi","bat","bal","aghblajliyookuu","agluef"};
-			String[] four={"tath","pehm","nith","nana","jaath","isc","glou","gafr","dost","daes","ciel","cahve","begm","braup","blom","belag","abrol","adeci","agehr","ajet","basacont"};
-			String[] five={"shasy","rewist","pae","nuwan","noest","nafozdomuu","kreet","jaas","guhnt","glaa","caebiste","abdist","afosk","belguu","andenav","asatehrh"};
-			String[] six={"sats","retas","pokat","os","mieplust-eh","iha","hosh","griste","fot","begmevrhe","abdisem","soufuuwh","aelnebaduuu"};
+			final String[] one={"se","rh","al","o","na","e","ce","uu","si","lag"};
+			final String[] two={"ta","Sha","rha","den","oc","han","mij","ma","ke","isc","ga","en","di","de","an","brois","ajet","ev","ba","eh","bas"};
+			final String[] three={"vav","set","sav","sen","rhig","viy","ok","nash","mik","kiy","hask","tal","gha","dos","diy","ceg","dak","aeln","huu","beksi","bat","bal","aghblajliyookuu","agluef"};
+			final String[] four={"tath","pehm","nith","nana","jaath","isc","glou","gafr","dost","daes","ciel","cahve","begm","braup","blom","belag","abrol","adeci","agehr","ajet","basacont"};
+			final String[] five={"shasy","rewist","pae","nuwan","noest","nafozdomuu","kreet","jaas","guhnt","glaa","caebiste","abdist","afosk","belguu","andenav","asatehrh"};
+			final String[] six={"sats","retas","pokat","os","mieplust-eh","iha","hosh","griste","fot","begmevrhe","abdisem","soufuuwh","aelnebaduuu"};
 			wordLists=new Vector<String[]>();
 			wordLists.add(one);
 			wordLists.add(two);

@@ -60,7 +60,7 @@ public class Spell_SlowProjectiles extends Spell
 				msg.source().location().show(msg.source(),null,msg.tool(),CMMsg.MSG_OK_VISUAL,"<O-NAME> flies slowly by.");
 			else
 				msg.source().location().show(msg.source(),null,CMMsg.MSG_OK_VISUAL,"The shot from "+msg.tool().name()+" flies slowly by.");
-			int damage=(msg.value())/2;
+			final int damage=(msg.value())/2;
 			msg.setValue(damage);
 		}
 		return super.okMessage(myHost,msg);
@@ -70,7 +70,7 @@ public class Spell_SlowProjectiles extends Spell
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		Room target=mob.location();
+		final Room target=mob.location();
 		if(target==null) return false;
 
 		if(target.fetchEffect(this.ID())!=null)
@@ -81,10 +81,10 @@ public class Spell_SlowProjectiles extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> incant(s) slowly.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> incant(s) slowly.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

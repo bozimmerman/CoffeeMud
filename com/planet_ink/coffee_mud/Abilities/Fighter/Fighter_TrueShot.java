@@ -49,13 +49,13 @@ public class Fighter_TrueShot extends FighterSkill
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		if(!(affected instanceof MOB)) return;
-		Item w=((MOB)affected).fetchWieldedItem();
+		final Item w=((MOB)affected).fetchWieldedItem();
 		if((w==null)||(!(w instanceof Weapon))) return;
 		if((((Weapon)w).weaponClassification()==Weapon.CLASS_RANGED)
 		||(((Weapon)w).weaponClassification()==Weapon.CLASS_THROWN))
 		{
 			gettingBonus=true;
-			int bonus=(int)Math.round(CMath.mul(affectableStats.attackAdjustment(),(CMath.div(proficiency(),200.0-(10*getXLEVELLevel(invoker()))))));
+			final int bonus=(int)Math.round(CMath.mul(affectableStats.attackAdjustment(),(CMath.div(proficiency(),200.0-(10*getXLEVELLevel(invoker()))))));
 			affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+bonus);
 		}
 		else
@@ -69,7 +69,7 @@ public class Fighter_TrueShot extends FighterSkill
 		if(!(affected instanceof MOB))
 			return;
 
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		if((msg.amISource(mob))
 		&&(gettingBonus)

@@ -57,7 +57,7 @@ public class ManualClasses extends StdItem implements MiscMagic,ArchonOnly
 	{
 		if(msg.amITarget(this))
 		{
-			MOB mob=msg.source();
+			final MOB mob=msg.source();
 			switch(msg.targetMinor())
 			{
 			case CMMsg.TYP_READ:
@@ -73,9 +73,9 @@ public class ManualClasses extends StdItem implements MiscMagic,ArchonOnly
 							mob.tell("The manual glows softly, enveloping you in its wisdom.");
 							CharClass lastC=null;
 							CharClass thisC=null;
-							for(Enumeration c=CMClass.charClasses();c.hasMoreElements();)
+							for(final Enumeration c=CMClass.charClasses();c.hasMoreElements();)
 							{
-								CharClass C=(CharClass)c.nextElement();
+								final CharClass C=(CharClass)c.nextElement();
 								if(thisC==null) thisC=C;
 								if((lastC!=null)&&(thisC==mob.charStats().getCurrentClass()))
 								{

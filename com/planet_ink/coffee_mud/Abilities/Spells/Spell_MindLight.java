@@ -51,7 +51,7 @@ public class Spell_MindLight extends Spell
 			return;
 		if(!(affected instanceof Room))
 			return;
-		Room room=(Room)affected;
+		final Room room=(Room)affected;
 		super.unInvoke();
 		if(canBeUninvoked())
 		{
@@ -64,7 +64,7 @@ public class Spell_MindLight extends Spell
 	{
 		if(!super.tick(ticking,tickID)) return false;
 		if(!(affected instanceof Room)) return true;
-		Room R=(Room)affected;
+		final Room R=(Room)affected;
 		if((invoker()!=null)&&(canBeUninvoked()))
 		{
 			if(!R.isInhabitant(invoker()))
@@ -73,7 +73,7 @@ public class Spell_MindLight extends Spell
 		}
 		for(int m=0;m<R.numInhabitants();m++)
 		{
-			MOB M=R.fetchInhabitant(m);
+			final MOB M=R.fetchInhabitant(m);
 			if(M!=null)
 			{
 				if(invoker()!=null)
@@ -96,7 +96,7 @@ public class Spell_MindLight extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		Physical target = mob.location();
+		final Physical target = mob.location();
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
@@ -105,7 +105,7 @@ public class Spell_MindLight extends Spell
 		}
 
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
@@ -114,7 +114,7 @@ public class Spell_MindLight extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 
-			CMMsg msg = CMClass.getMsg(mob, target, this, verbalCastCode(mob,target,auto), (auto?"T":"^S<S-NAME> incant(s) and gesture(s) and t")+"he mind light envelopes everyone.^?");
+			final CMMsg msg = CMClass.getMsg(mob, target, this, verbalCastCode(mob,target,auto), (auto?"T":"^S<S-NAME> incant(s) and gesture(s) and t")+"he mind light envelopes everyone.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

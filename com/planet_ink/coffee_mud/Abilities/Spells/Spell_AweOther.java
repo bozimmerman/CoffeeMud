@@ -51,7 +51,7 @@ public class Spell_AweOther extends Spell
 		&&(msg.target()!=null)
 		&&(msg.target().Name().equalsIgnoreCase(text())))
 		{
-			MOB target=(MOB)msg.target();
+			final MOB target=(MOB)msg.target();
 			if((!target.isInCombat())
 			&&(msg.source().getVictim()!=target)
 			&&(msg.source().location()==target.location()))
@@ -88,7 +88,7 @@ public class Spell_AweOther extends Spell
 		// undo the affects of this spell
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		super.unInvoke();
 
 		if(canBeUninvoked())
@@ -106,8 +106,8 @@ public class Spell_AweOther extends Spell
 			mob.tell("Invoke awe on whom and of whom?");
 			return false;
 		}
-		String aweWhom=CMParms.combine(commands,1);
-		MOB target=getTarget(mob,new XVector(commands.firstElement()),givenTarget);
+		final String aweWhom=CMParms.combine(commands,1);
+		final MOB target=getTarget(mob,new XVector(commands.firstElement()),givenTarget);
 		if(target==null) return false;
 		Room R=CMLib.map().roomLocation(target);
 		if(R==null) R=mob.location();
@@ -119,7 +119,7 @@ public class Spell_AweOther extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
@@ -128,13 +128,13 @@ public class Spell_AweOther extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> invoke(s) a spell on <T-NAMESELF>.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> invoke(s) a spell on <T-NAMESELF>.^?");
 			if(R.okMessage(mob,msg))
 			{
 				R.send(mob,msg);
 				if(maliciousAffect(mob,target,asLevel,0,-1))
 				{
-					Ability A=target.fetchEffect(ID());
+					final Ability A=target.fetchEffect(ID());
 					if(A!=null)
 					{
 						A.setMiscText(CMStrings.capitalizeAndLower(aweWhom));

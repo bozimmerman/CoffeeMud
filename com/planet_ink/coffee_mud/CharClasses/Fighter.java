@@ -161,13 +161,13 @@ public class Fighter extends StdCharClass
 		super.grantAbilities(mob,isBorrowedClass);
 		if(mob.playerStats()==null)
 		{
-			List<AbilityMapper.AbilityMapping> V=CMLib.ableMapper().getUpToLevelListings(ID(),
+			final List<AbilityMapper.AbilityMapping> V=CMLib.ableMapper().getUpToLevelListings(ID(),
 															 mob.charStats().getClassLevel(ID()),
 															 false,
 															 false);
-			for(AbilityMapper.AbilityMapping able : V)
+			for(final AbilityMapper.AbilityMapping able : V)
 			{
-				Ability A=CMClass.getAbility(able.abilityID);
+				final Ability A=CMClass.getAbility(able.abilityID);
 				if((A!=null)
 				&&(!CMLib.ableMapper().getAllQualified(ID(),true,A.ID()))
 				&&(!CMLib.ableMapper().getDefaultGain(ID(),true,A.ID())))
@@ -189,7 +189,7 @@ public class Fighter extends StdCharClass
 		&&(((MOB)host).getClanRole(msg.source().Name())!=null)
 		)
 		{
-			Area A=(Area)msg.target();
+			final Area A=(Area)msg.target();
 			int xp=(int)Math.round(50.0*CMath.div(A.getAreaIStats()[Area.Stats.AVG_LEVEL.ordinal()],((MOB)host).phyStats().level()));
 			if(xp>500) xp=500;
 			if(xp>0)
@@ -206,7 +206,7 @@ public class Fighter extends StdCharClass
 		if(outfitChoices==null)
 		{
 			outfitChoices=new Vector();
-			Weapon w=CMClass.getWeapon("Shortsword");
+			final Weapon w=CMClass.getWeapon("Shortsword");
 			outfitChoices.add(w);
 		}
 		return outfitChoices;

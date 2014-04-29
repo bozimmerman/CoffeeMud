@@ -49,7 +49,7 @@ public class Reset extends StdCommand
 		int nochange=0;
 		if(I instanceof AmmunitionWeapon)
 		{
-			AmmunitionWeapon W=(AmmunitionWeapon)I;
+			final AmmunitionWeapon W=(AmmunitionWeapon)I;
 			if((W.requiresAmmunition())&&(W.ammunitionCapacity()>0))
 			{
 				String str=mob.session().prompt(lead+I.Name()+" requires ("+W.ammunitionType()+"): ");
@@ -69,7 +69,7 @@ public class Reset extends StdCommand
 				}
 			}
 		}
-		Integer IT=(Integer)rememberI.get(I.Name());
+		final Integer IT=(Integer)rememberI.get(I.Name());
 		if(IT!=null)
 		{
 			if(IT.intValue()==I.material())
@@ -83,7 +83,7 @@ public class Reset extends StdCommand
 		}
 		while(true)
 		{
-			String str=mob.session().prompt(lead+I.Name()+"/"+RawMaterial.CODES.NAME(I.material()),"");
+			final String str=mob.session().prompt(lead+I.Name()+"/"+RawMaterial.CODES.NAME(I.material()),"");
 			if(str.equalsIgnoreCase("delete"))
 				return -1;
 			else
@@ -96,7 +96,7 @@ public class Reset extends StdCommand
 				mob.tell(I.Name()+"/"+I.displayText()+"/"+I.description());
 			else
 			{
-				int material=RawMaterial.CODES.FIND_CaseSensitive(str.toUpperCase());
+				final int material=RawMaterial.CODES.FIND_CaseSensitive(str.toUpperCase());
 				if(material>=0)
 				{
 					I.setMaterial(RawMaterial.CODES.GET(material));
@@ -104,12 +104,12 @@ public class Reset extends StdCommand
 					rememberI.put(I.Name(),Integer.valueOf(I.material()));
 					return 1;
 				}
-				int possMat=RawMaterial.CODES.FIND_StartsWith(str);
+				final int possMat=RawMaterial.CODES.FIND_StartsWith(str);
 				String poss;
 				if(possMat<0)
 				{
 					poss="?";
-					for(String mat : RawMaterial.CODES.NAMES())
+					for(final String mat : RawMaterial.CODES.NAMES())
 						if(mat.indexOf(str.toUpperCase())>=0)
 						   poss=mat;
 				}
@@ -166,8 +166,8 @@ public class Reset extends StdCommand
 	{
 		if((I!=null)&&(I.description().trim().length()>0))
 		{
-			int x=I.description().trim().indexOf(' ');
-			int y=I.description().trim().lastIndexOf(' ');
+			final int x=I.description().trim().indexOf(' ');
+			final int y=I.description().trim().lastIndexOf(' ');
 			if((x<0)||((x>0)&&(y==x)))
 			{
 				String s=I.description().trim().toLowerCase();
@@ -181,11 +181,11 @@ public class Reset extends StdCommand
 					return -1;
 				}
 				int rightMat=-1;
-				for(int i=0;i<Import.objDescs.length;i++)
+				for (final String[] objDesc : Import.objDescs)
 				{
-					if(Import.objDescs[i][0].equals(s))
+					if(objDesc[0].equals(s))
 					{
-						rightMat=CMath.s_int(Import.objDescs[i][1]);
+						rightMat=CMath.s_int(objDesc[1]);
 						break;
 					}
 				}
@@ -230,9 +230,9 @@ public class Reset extends StdCommand
 	public String resetWarning(MOB mob, Area A)
 	{
 		Room R=null;
-		StringBuffer warning=new StringBuffer("");
+		final StringBuffer warning=new StringBuffer("");
 		String roomWarning=null;
-		for(Enumeration<Room> e=A.getProperMap();e.hasMoreElements();)
+		for(final Enumeration<Room> e=A.getProperMap();e.hasMoreElements();)
 		{
 			R=e.nextElement();
 			roomWarning=resetWarning(mob,R);
@@ -245,8 +245,8 @@ public class Reset extends StdCommand
 	public String resetWarning(MOB mob, Room R)
 	{
 		if((mob==null)||(R==null)) return null;
-		StringBuffer warning=new StringBuffer("");
-		for(Session S : CMLib.sessions().localOnlineIterable())
+		final StringBuffer warning=new StringBuffer("");
+		for(final Session S : CMLib.sessions().localOnlineIterable())
 			if((S!=null)&&(S.mob()!=null)&&(S.mob()!=mob)&&(S.mob().location()==R))
 				warning.append("A player, '"+S.mob().Name()+"' is in "+CMLib.map().getExtendedRoomID(R)+"\n\r");
 		Item I=null;
@@ -259,10 +259,10 @@ public class Reset extends StdCommand
 		}
 		if(R instanceof GridLocale)
 		{
-			List<Room> rooms=((GridLocale)R).getAllRooms();
+			final List<Room> rooms=((GridLocale)R).getAllRooms();
 			for(int r=0;r<rooms.size();r++)
 			{
-				String s=resetWarning(mob,rooms.get(r));
+				final String s=resetWarning(mob,rooms.get(r));
 				if(s!=null) warning.append(s);
 			}
 		}
@@ -283,13 +283,13 @@ public class Reset extends StdCommand
 
 	public boolean fixMob(MOB M, StringBuffer recordedChanges)
 	{
-		MOB M2 = CMLib.leveler().fillOutMOB(M.baseCharStats().getCurrentClass(),M.basePhyStats().level());
+		final MOB M2 = CMLib.leveler().fillOutMOB(M.baseCharStats().getCurrentClass(),M.basePhyStats().level());
 		if((M.basePhyStats().attackAdjustment() != M2.basePhyStats().attackAdjustment())
 		||(M.basePhyStats().armor() != M2.basePhyStats().armor())
 		||(M.basePhyStats().damage() != M2.basePhyStats().damage())
 		||(M.basePhyStats().speed() != M2.basePhyStats().speed()))
 		{
-			MOB oldM=M;
+			final MOB oldM=M;
 			if(recordedChanges!=null) M=(MOB)M.copyOf();
 			M.basePhyStats().setAttackAdjustment(M2.basePhyStats().attackAdjustment());
 			M.basePhyStats().setArmor(M2.basePhyStats().armor());
@@ -339,8 +339,8 @@ public class Reset extends StdCommand
 			else
 			if(s.equalsIgnoreCase("area"))
 			{
-				Area A=mob.location().getArea();
-				for(Enumeration<Room> e=A.getProperMap();e.hasMoreElements();)
+				final Area A=mob.location().getArea();
+				for(final Enumeration<Room> e=A.getProperMap();e.hasMoreElements();)
 					CMLib.threads().rejuv(e.nextElement(),tickID);
 				mob.tell("Done.");
 			}
@@ -353,10 +353,10 @@ public class Reset extends StdCommand
 		else
 		if(s.equalsIgnoreCase("room"))
 		{
-			String warning=resetWarning(mob, mob.location());
+			final String warning=resetWarning(mob, mob.location());
 			if((mob.session()==null)||(warning==null)||(mob.session().confirm(warning + "\n\rReset the contents of the room '"+mob.location().displayText(mob)+"', OK (Y/n)?","Y")))
 			{
-				for(Session S : CMLib.sessions().localOnlineIterable())
+				for(final Session S : CMLib.sessions().localOnlineIterable())
 					if((S!=null)&&(S.mob()!=null)&&(S.mob().location()!=null)&&(S.mob().location()==mob.location()))
 						S.mob().tell(mob,null,null,"<S-NAME> order(s) this room to normalcy.");
 				CMLib.map().resetRoom(mob.location(), true);
@@ -375,14 +375,14 @@ public class Reset extends StdCommand
 		else
 		if(s.equalsIgnoreCase("area"))
 		{
-			Area A=mob.location().getArea();
+			final Area A=mob.location().getArea();
 			if(A!=null)
 			{
-				String warning=resetWarning(mob, A);
+				final String warning=resetWarning(mob, A);
 				if(warning!=null) mob.tell(warning);
 				if((mob.session()==null)||(mob.session().confirm("Reset the contents of the area '"+A.name()+"', OK (Y/n)?","Y")))
 				{
-					for(Session S : CMLib.sessions().localOnlineIterable())
+					for(final Session S : CMLib.sessions().localOnlineIterable())
 						if((S!=null)&&(S.mob()!=null)&&(S.mob().location()!=null)&&(A.inMyMetroArea(S.mob().location().getArea())))
 							S.mob().tell(mob,null,null,"<S-NAME> order(s) this area to normalcy.");
 					CMLib.map().resetArea(A);
@@ -395,7 +395,7 @@ public class Reset extends StdCommand
 		else
 		if(CMLib.players().getPlayer(s)!=null)
 		{
-			MOB M=CMLib.players().getPlayer(s);
+			final MOB M=CMLib.players().getPlayer(s);
 			String what="";
 			if(commands.size()>0)
 				what=CMParms.combine(commands,1).toUpperCase();
@@ -410,9 +410,9 @@ public class Reset extends StdCommand
 		else
 		if(s.equalsIgnoreCase("arearoomids")&&(CMSecurity.isAllowed(mob, mob.location(), CMSecurity.SecFlag.CMDROOMS)))
 		{
-			Area A=mob.location().getArea();
+			final Area A=mob.location().getArea();
 			boolean somethingDone=false;
-			for(Enumeration e=A.getCompleteMap();e.hasMoreElements();)
+			for(final Enumeration e=A.getCompleteMap();e.hasMoreElements();)
 			{
 				Room R=(Room)e.nextElement();
 				synchronized(("SYNC"+R.roomID()).intern())
@@ -422,12 +422,12 @@ public class Reset extends StdCommand
 					&&(R.roomID().indexOf('#')>0)
 					&&(!R.roomID().startsWith(A.Name())))
 					{
-						String oldID=R.roomID();
+						final String oldID=R.roomID();
 						R.setRoomID(R.getArea().getNewRoomID(R,-1));
 						CMLib.database().DBReCreate(R,oldID);
 						try
 						{
-							for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
+							for(final Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 							{
 								Room R2=(Room)r.nextElement();
 								R2=CMLib.map().getRoom(R2);
@@ -439,7 +439,7 @@ public class Reset extends StdCommand
 										break;
 									}
 							}
-						}catch(NoSuchElementException nse){}
+						}catch(final NoSuchElementException nse){}
 						if(R instanceof GridLocale)
 							R.getArea().fillInAreaRoom(R);
 						somethingDone=true;
@@ -463,7 +463,7 @@ public class Reset extends StdCommand
 		{
 			Room R=null;
 			LandTitle T=null;
-			for(Enumeration e=CMLib.map().rooms();e.hasMoreElements();)
+			for(final Enumeration e=CMLib.map().rooms();e.hasMoreElements();)
 			{
 				R=(Room)e.nextElement();
 				synchronized(("SYNC"+R.roomID()).intern())
@@ -483,16 +483,16 @@ public class Reset extends StdCommand
 		else
 		if(s.equalsIgnoreCase("racestatgains")&&(CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDRACES)))
 		{
-			for(Enumeration e=CMClass.races();e.hasMoreElements();)
+			for(final Enumeration e=CMClass.races();e.hasMoreElements();)
 			{
-				Race R=(Race)e.nextElement();
+				final Race R=(Race)e.nextElement();
 				if(R.isGeneric())
 				{
-					CharStats ADJSTAT1=(CharStats)CMClass.getCommon("DefaultCharStats");
+					final CharStats ADJSTAT1=(CharStats)CMClass.getCommon("DefaultCharStats");
 					ADJSTAT1.setAllValues(0);
 					CMLib.coffeeMaker().setCharStats(ADJSTAT1,R.getStat("ASTATS"));
 					boolean save=false;
-					for(int i: CharStats.CODES.BASE())
+					for(final int i: CharStats.CODES.BASE())
 					{
 						if(ADJSTAT1.getStat(i)>5)
 						{
@@ -513,12 +513,12 @@ public class Reset extends StdCommand
 		else
 		if(s.equalsIgnoreCase("genraceagingcharts")&&(CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDRACES)))
 		{
-			for(Enumeration e=CMClass.races();e.hasMoreElements();)
+			for(final Enumeration e=CMClass.races();e.hasMoreElements();)
 			{
-				Race R=(Race)e.nextElement();
-				Vector racesToBaseFrom=new Vector();
-				Race human=CMClass.getRace("Human");
-				Race halfling=CMClass.getRace("Halfling");
+				final Race R=(Race)e.nextElement();
+				final Vector racesToBaseFrom=new Vector();
+				final Race human=CMClass.getRace("Human");
+				final Race halfling=CMClass.getRace("Halfling");
 				if((R.isGeneric())&&(R.ID().length()>1)&&(!R.ID().endsWith("Race"))&&(Character.isUpperCase(R.ID().charAt(0))))
 				{
 					int lastStart=0;
@@ -529,7 +529,7 @@ public class Reset extends StdCommand
 						{
 							if((lastStart==0)&&(c==R.ID().length())&&(!R.ID().endsWith("ling"))&&(!R.ID().startsWith("Half")))
 								break;
-							String partial=R.ID().substring(lastStart,c);
+							final String partial=R.ID().substring(lastStart,c);
 							if(partial.equals("Half")&&(!racesToBaseFrom.contains(human)))
 							{
 								racesToBaseFrom.add(human);
@@ -559,16 +559,16 @@ public class Reset extends StdCommand
 						}
 						c++;
 					}
-					StringBuffer answer=new StringBuffer(R.ID()+": ");
+					final StringBuffer answer=new StringBuffer(R.ID()+": ");
 					for(int i=0;i<racesToBaseFrom.size();i++)
 						answer.append(((Race)racesToBaseFrom.elementAt(i)).ID()+" ");
 					mob.tell(answer.toString());
 					if(racesToBaseFrom.size()>0)
 					{
-						long[] ageChart=new long[Race.AGE_ANCIENT+1];
+						final long[] ageChart=new long[Race.AGE_ANCIENT+1];
 						for(int i=0;i<racesToBaseFrom.size();i++)
 						{
-							Race R2=(Race)racesToBaseFrom.elementAt(i);
+							final Race R2=(Race)racesToBaseFrom.elementAt(i);
 							int lastVal=0;
 							for(int x=0;x<ageChart.length;x++)
 							{
@@ -600,22 +600,22 @@ public class Reset extends StdCommand
 		else
 		if(s.equalsIgnoreCase("bankdata")&&(CMSecurity.isASysOp(mob)))
 		{
-			String bank=CMParms.combine(commands,1);
+			final String bank=CMParms.combine(commands,1);
 			if(bank.length()==0)
 			{
 				mob.tell("Which bank?");
 				return false;
 			}
-			List<JournalsLibrary.JournalEntry> V=CMLib.database().DBReadJournalMsgs(bank);
+			final List<JournalsLibrary.JournalEntry> V=CMLib.database().DBReadJournalMsgs(bank);
 			for(int v=0;v<V.size();v++)
 			{
-				JournalsLibrary.JournalEntry V2=V.get(v);
-				String name=V2.from;
-				String ID=V2.subj;
+				final JournalsLibrary.JournalEntry V2=V.get(v);
+				final String name=V2.from;
+				final String ID=V2.subj;
 				String classID=V2.to;
-				String data=V2.msg;
+				final String data=V2.msg;
 				if(ID.equalsIgnoreCase("COINS")) classID="COINS";
-				Item I=(Item)CMClass.getItem("GenItem").copyOf();
+				final Item I=(Item)CMClass.getItem("GenItem").copyOf();
 				CMLib.database().DBCreateData(name,bank,""+I,classID+";"+data);
 			}
 			CMLib.database().DBDeleteJournal(bank,null); // banks are no longer journaled
@@ -635,7 +635,7 @@ public class Reset extends StdCommand
 					recordedChanges=new StringBuffer("");
 					break;
 				}
-			Vector rooms=new Vector();
+			final Vector rooms=new Vector();
 			if(s.toUpperCase().startsWith("ROOM"))
 				rooms.addElement(mob.location());
 			else
@@ -643,35 +643,34 @@ public class Reset extends StdCommand
 			{
 				try
 				{
-					for(Enumeration e=mob.location().getArea().getCompleteMap();e.hasMoreElements();)
+					for(final Enumeration e=mob.location().getArea().getCompleteMap();e.hasMoreElements();)
 						rooms.addElement(e.nextElement());
-				}catch(NoSuchElementException nse){}
+				}catch(final NoSuchElementException nse){}
 			}
 			else
 			if(s.toUpperCase().startsWith("CATALOG"))
 			{
 				try
 				{
-					MOB[] mobs=CMLib.catalog().getCatalogMobs();
-					for(int m=0;m<mobs.length;m++)
+					final MOB[] mobs=CMLib.catalog().getCatalogMobs();
+					for (final MOB M : mobs)
 					{
-						MOB M=mobs[m];
 						if(fixMob(M,recordedChanges))
 						{
 							mob.tell("Catalog mob "+M.Name()+" done.");
 							CMLib.catalog().updateCatalog(M);
 						}
 					}
-				}catch(NoSuchElementException nse){}
+				}catch(final NoSuchElementException nse){}
 			}
 			else
 			if(s.toUpperCase().startsWith("WORLD"))
 			{
 				try
 				{
-					for(Enumeration e=CMLib.map().areas();e.hasMoreElements();)
+					for(final Enumeration e=CMLib.map().areas();e.hasMoreElements();)
 					{
-						Area A=(Area)e.nextElement();
+						final Area A=(Area)e.nextElement();
 						boolean skip=false;
 						for(int i=1;i<commands.size();i++)
 							if(((String)commands.elementAt(i)).equalsIgnoreCase(A.Name())||rest.equalsIgnoreCase(A.Name()))
@@ -680,10 +679,10 @@ public class Reset extends StdCommand
 								break;
 							}
 						if(skip) continue;
-						for(Enumeration r=A.getCompleteMap();r.hasMoreElements();)
+						for(final Enumeration r=A.getCompleteMap();r.hasMoreElements();)
 							rooms.addElement(r.nextElement());
 					}
-				}catch(NoSuchElementException nse){}
+				}catch(final NoSuchElementException nse){}
 			}
 			else
 			{
@@ -692,7 +691,7 @@ public class Reset extends StdCommand
 			}
 			if(recordedChanges!=null)
 				mob.session().println(".");
-			for(Enumeration r=rooms.elements();r.hasMoreElements();)
+			for(final Enumeration r=rooms.elements();r.hasMoreElements();)
 			{
 				Room R=CMLib.map().getRoom((Room)r.nextElement());
 				if(R!=null)
@@ -710,7 +709,7 @@ public class Reset extends StdCommand
 					boolean somethingDone=false;
 					for(int m=0;m<R.numInhabitants();m++)
 					{
-						MOB M=R.fetchInhabitant(m);
+						final MOB M=R.fetchInhabitant(m);
 						if((M.isSavable())
 						&&(!CMLib.flags().isCataloged(M))
 						&&(M.getStartRoom()==R))
@@ -738,14 +737,14 @@ public class Reset extends StdCommand
 			mob.session().print("working...");
 			try
 			{
-				for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
+				for(final Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 				{
-					Room R=(Room)r.nextElement();
+					final Room R=(Room)r.nextElement();
 					boolean changed=false;
 					if(R.roomID().length()>0)
 					for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 					{
-						Exit E=R.getRawExit(d);
+						final Exit E=R.getRawExit(d);
 						if((E!=null)&&E.hasADoor()&&E.name().equalsIgnoreCase("the ground"))
 						{
 							E.setName("a door");
@@ -760,7 +759,7 @@ public class Reset extends StdCommand
 					}
 					mob.session().print(".");
 				}
-			}catch(NoSuchElementException nse){}
+			}catch(final NoSuchElementException nse){}
 			mob.session().println("done!");
 		}
 		else
@@ -768,11 +767,11 @@ public class Reset extends StdCommand
 		{
 			if(mob.session()==null) return false;
 			mob.session().print("working...");
-			for(Enumeration a=CMLib.map().areas();a.hasMoreElements();)
+			for(final Enumeration a=CMLib.map().areas();a.hasMoreElements();)
 			{
-				Area A=(Area)a.nextElement();
+				final Area A=(Area)a.nextElement();
 				A.setAreaState(Area.State.FROZEN);
-				for(Enumeration r=A.getCompleteMap();r.hasMoreElements();)
+				for(final Enumeration r=A.getCompleteMap();r.hasMoreElements();)
 				{
 					Room R=(Room)r.nextElement();
 					if(R.roomID().length()==0) continue;
@@ -783,12 +782,12 @@ public class Reset extends StdCommand
 						boolean didSomething=false;
 						for(int i=0;i<R.numInhabitants();i++)
 						{
-							MOB M=R.fetchInhabitant(i);
+							final MOB M=R.fetchInhabitant(i);
 							if((M.isMonster())
 							&&(M.getStartRoom()==R)
 							&&(M.basePhyStats().armor()==((100-(M.basePhyStats().level()*7)))))
 							{
-								int oldArmor=M.basePhyStats().armor();
+								final int oldArmor=M.basePhyStats().armor();
 								M.basePhyStats().setArmor(CMLib.leveler().getLevelMOBArmor(M));
 								M.recoverPhyStats();
 								Log.sysOut("Reset","Updated "+M.name()+" in room "+R.roomID()+" from "+oldArmor+" to "+M.basePhyStats().armor()+".");
@@ -812,11 +811,11 @@ public class Reset extends StdCommand
 		{
 			if(mob.session()==null) return false;
 			mob.session().print("working...");
-			for(Enumeration a=CMLib.map().areas();a.hasMoreElements();)
+			for(final Enumeration a=CMLib.map().areas();a.hasMoreElements();)
 			{
-				Area A=(Area)a.nextElement();
+				final Area A=(Area)a.nextElement();
 				A.setAreaState(Area.State.FROZEN);
-				for(Enumeration r=A.getCompleteMap();r.hasMoreElements();)
+				for(final Enumeration r=A.getCompleteMap();r.hasMoreElements();)
 				{
 					Room R=(Room)r.nextElement();
 					if(R.roomID().length()==0) continue;
@@ -827,7 +826,7 @@ public class Reset extends StdCommand
 						boolean didSomething=false;
 						for(int i=0;i<R.numInhabitants();i++)
 						{
-							MOB M=R.fetchInhabitant(i);
+							final MOB M=R.fetchInhabitant(i);
 							if((M.isMonster())
 							&&(M.getStartRoom()==R)
 							&&(CMLib.beanCounter().getMoney(M)>(M.basePhyStats().level()+1)))
@@ -856,7 +855,7 @@ public class Reset extends StdCommand
 				mob.tell("You need to specify a property or behavior to install.");
 				return false;
 			}
-			String ID=(String)commands.elementAt(1);
+			final String ID=(String)commands.elementAt(1);
 			Object O=CMClass.getAbility(ID);
 			if(O==null) O=CMClass.getBehavior(ID);
 			if(O==null)
@@ -866,9 +865,9 @@ public class Reset extends StdCommand
 			}
 
 			mob.session().print("working...");
-			for(Enumeration a=CMLib.map().areas();a.hasMoreElements();)
+			for(final Enumeration a=CMLib.map().areas();a.hasMoreElements();)
 			{
-				Area A=(Area)a.nextElement();
+				final Area A=(Area)a.nextElement();
 				boolean changed=false;
 				if((O instanceof Behavior))
 				{
@@ -918,11 +917,11 @@ public class Reset extends StdCommand
 		{
 			if(mob.session()==null) return false;
 			mob.session().print("working...");
-			for(Enumeration a=CMLib.map().areas();a.hasMoreElements();)
+			for(final Enumeration a=CMLib.map().areas();a.hasMoreElements();)
 			{
-				Area A=(Area)a.nextElement();
+				final Area A=(Area)a.nextElement();
 				A.setAreaState(Area.State.FROZEN);
-				for(Enumeration r=A.getCompleteMap();r.hasMoreElements();)
+				for(final Enumeration r=A.getCompleteMap();r.hasMoreElements();)
 				{
 					Room R=(Room)r.nextElement();
 					if(R.roomID().length()>0)
@@ -937,27 +936,27 @@ public class Reset extends StdCommand
 								changedItems=changedItems||(rightImportMat(null,R.getItem(i),false)>=0);
 							for(int m=0;m<R.numInhabitants();m++)
 							{
-								MOB M=R.fetchInhabitant(m);
+								final MOB M=R.fetchInhabitant(m);
 								if(M==mob) continue;
 								if(!M.isSavable()) continue;
 								for(int i=0;i<M.numItems();i++)
 									changedMOBS=changedMOBS||(rightImportMat(null,M.getItem(i),false)>=0);
-								ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(M);
+								final ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(M);
 								if(SK!=null)
 								{
-									for(Iterator<Environmental> i=SK.getShop().getStoreInventory();i.hasNext();)
+									for(final Iterator<Environmental> i=SK.getShop().getStoreInventory();i.hasNext();)
 									{
-										Environmental E=i.next();
+										final Environmental E=i.next();
 										if(E instanceof Item)
 										{
-											Item I=(Item)E;
+											final Item I=(Item)E;
 											boolean didSomething=false;
 											didSomething=rightImportMat(null,I,false)>=0;
 											changedMOBS=changedMOBS||didSomething;
 											if(didSomething)
 											{
-												int numInStock=SK.getShop().numberInStock(I);
-												int stockPrice=SK.getShop().stockPrice(I);
+												final int numInStock=SK.getShop().numberInStock(I);
+												final int stockPrice=SK.getShop().stockPrice(I);
 												SK.getShop().delAllStoreInventory(I);
 												SK.getShop().addStoreInventory(I,numInStock,stockPrice);
 											}
@@ -994,7 +993,7 @@ public class Reset extends StdCommand
 					break;
 				}
 
-			Vector rooms=new Vector();
+			final Vector rooms=new Vector();
 			if(s.toUpperCase().startsWith("ROOM"))
 				rooms.addElement(mob.location());
 			else
@@ -1002,35 +1001,34 @@ public class Reset extends StdCommand
 			{
 				try
 				{
-					for(Enumeration e=mob.location().getArea().getCompleteMap();e.hasMoreElements();)
+					for(final Enumeration e=mob.location().getArea().getCompleteMap();e.hasMoreElements();)
 						rooms.addElement(e.nextElement());
-				}catch(NoSuchElementException nse){}
+				}catch(final NoSuchElementException nse){}
 			}
 			else
 			if(s.toUpperCase().startsWith("CATALOG"))
 			{
 				try
 				{
-					Item[] items=CMLib.catalog().getCatalogItems();
-					for(int i=0;i<items.length;i++)
+					final Item[] items=CMLib.catalog().getCatalogItems();
+					for (final Item I : items)
 					{
-						Item I=items[i];
 						if(CMLib.itemBuilder().itemFix(I,-1,recordedChanges))
 						{
 							mob.tell("Catalog item "+I.Name()+" done.");
 							CMLib.catalog().updateCatalog(I);
 						}
 					}
-				}catch(NoSuchElementException nse){}
+				}catch(final NoSuchElementException nse){}
 			}
 			else
 			if(s.toUpperCase().startsWith("WORLD"))
 			{
 				try
 				{
-					for(Enumeration e=CMLib.map().areas();e.hasMoreElements();)
+					for(final Enumeration e=CMLib.map().areas();e.hasMoreElements();)
 					{
-						Area A=(Area)e.nextElement();
+						final Area A=(Area)e.nextElement();
 						boolean skip=false;
 						for(int i=1;i<commands.size();i++)
 							if(((String)commands.elementAt(i)).equalsIgnoreCase(A.Name())||rest.equalsIgnoreCase(A.Name()))
@@ -1040,10 +1038,10 @@ public class Reset extends StdCommand
 								break;
 							}
 						if(skip) continue;
-						for(Enumeration r=A.getCompleteMap();r.hasMoreElements();)
+						for(final Enumeration r=A.getCompleteMap();r.hasMoreElements();)
 							rooms.addElement(r.nextElement());
 					}
-				}catch(NoSuchElementException nse){}
+				}catch(final NoSuchElementException nse){}
 			}
 			else
 			{
@@ -1052,11 +1050,11 @@ public class Reset extends StdCommand
 			}
 			if(recordedChanges!=null)
 				mob.session().println(".");
-			for(Enumeration r=rooms.elements();r.hasMoreElements();)
+			for(final Enumeration r=rooms.elements();r.hasMoreElements();)
 			{
 				Room R=CMLib.map().getRoom((Room)r.nextElement());
 				if((R==null)||(R.getArea()==null)||(R.roomID().length()==0)) continue;
-				Area A=R.getArea();
+				final Area A=R.getArea();
 				A.setAreaState(Area.State.FROZEN);
 				if((recordedChanges!=null)&&(recordedChanges.length()>0))
 				{
@@ -1072,18 +1070,18 @@ public class Reset extends StdCommand
 					boolean changedItems=false;
 					for(int i=0;i<R.numItems();i++)
 					{
-						Item I=R.getItem(i);
+						final Item I=R.getItem(i);
 						if(CMLib.itemBuilder().itemFix(I,-1,recordedChanges))
 							changedItems=true;
 					}
 					for(int m=0;m<R.numInhabitants();m++)
 					{
-						MOB M=R.fetchInhabitant(m);
+						final MOB M=R.fetchInhabitant(m);
 						if((M==mob)||(!M.isMonster())) continue;
 						if(!M.isSavable()) continue;
 						for(int i=0;i<M.numItems();i++)
 						{
-							Item I=M.getItem(i);
+							final Item I=M.getItem(i);
 							int lvl=-1;
 							if((I.basePhyStats().level()>M.basePhyStats().level())
 							||((I.basePhyStats().level()>91)&&((I.basePhyStats().level() + (I.basePhyStats().level()/10))<M.basePhyStats().level())))
@@ -1091,22 +1089,22 @@ public class Reset extends StdCommand
 							if(CMLib.itemBuilder().itemFix(I,lvl,recordedChanges))
 								changedMOBS=true;
 						}
-						ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(M);
+						final ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(M);
 						if(SK!=null)
 						{
-							for(Iterator<Environmental> i=SK.getShop().getStoreInventory();i.hasNext();)
+							for(final Iterator<Environmental> i=SK.getShop().getStoreInventory();i.hasNext();)
 							{
-								Environmental E=i.next();
+								final Environmental E=i.next();
 								if(E instanceof Item)
 								{
-									Item I=(Item)E;
+									final Item I=(Item)E;
 									boolean didSomething=false;
 									didSomething=CMLib.itemBuilder().itemFix(I,-1,recordedChanges);
 									changedMOBS=changedMOBS||didSomething;
 									if(didSomething)
 									{
-										int numInStock=SK.getShop().numberInStock(I);
-										int stockPrice=SK.getShop().stockPrice(I);
+										final int numInStock=SK.getShop().numberInStock(I);
+										final int stockPrice=SK.getShop().stockPrice(I);
 										SK.getShop().delAllStoreInventory(I);
 										SK.getShop().addStoreInventory(I,numInStock,stockPrice);
 									}
@@ -1149,7 +1147,7 @@ public class Reset extends StdCommand
 					area=true;
 					if(commands.size()>2) s=(String)commands.elementAt(2);
 				}
-				MOB M=CMLib.players().getLoadPlayer(s);
+				final MOB M=CMLib.players().getLoadPlayer(s);
 				if((M!=null)&&(M.playerStats()!=null))
 				{
 					if(area)
@@ -1157,20 +1155,20 @@ public class Reset extends StdCommand
 					else
 						M.playerStats().unVisit(M.location());
 				}
-			}catch(NoSuchElementException nse){}
+			}catch(final NoSuchElementException nse){}
 		}
 		else
 		if(s.equalsIgnoreCase("arearacemat")&&(CMSecurity.isASysOp(mob)))
 		{
 			// this is just utility code and will change frequently
-			Area A=mob.location().getArea();
+			final Area A=mob.location().getArea();
 			CMLib.map().resetArea(A);
 			A.setAreaState(Area.State.FROZEN);
-			Hashtable rememberI=new Hashtable();
-			Hashtable rememberM=new Hashtable();
+			final Hashtable rememberI=new Hashtable();
+			final Hashtable rememberM=new Hashtable();
 			try
 			{
-			for(Enumeration r=A.getCompleteMap();r.hasMoreElements();)
+			for(final Enumeration r=A.getCompleteMap();r.hasMoreElements();)
 			{
 				Room R=(Room)r.nextElement();
 				if(R.roomID().length()>0)
@@ -1182,9 +1180,9 @@ public class Reset extends StdCommand
 					mob.tell(R.roomID()+"/"+R.name()+"/"+R.displayText()+"--------------------");
 					for(int i=R.numItems()-1;i>=0;i--)
 					{
-						Item I=R.getItem(i);
+						final Item I=R.getItem(i);
 						if(I.ID().equalsIgnoreCase("GenWallpaper")) continue;
-						int returned=resetAreaOramaManaI(mob,I,rememberI," ");
+						final int returned=resetAreaOramaManaI(mob,I,rememberI," ");
 						if(returned<0)
 						{
 							R.delItem(I);
@@ -1200,7 +1198,7 @@ public class Reset extends StdCommand
 					somethingDone=false;
 					for(int m=0;m<R.numInhabitants();m++)
 					{
-						MOB M=R.fetchInhabitant(m);
+						final MOB M=R.fetchInhabitant(m);
 						if(M==mob) continue;
 						if(!M.isSavable()) continue;
 						Race R2=(Race)rememberM.get(M.Name());
@@ -1221,7 +1219,7 @@ public class Reset extends StdCommand
 						else
 						while(true)
 						{
-							String str=mob.session().prompt(" "+M.Name()+"/"+M.charStats().getMyRace().ID(),"");
+							final String str=mob.session().prompt(" "+M.Name()+"/"+M.charStats().getMyRace().ID(),"");
 							if(str.length()==0)
 							{
 								rememberM.put(M.name(),M.baseCharStats().getMyRace());
@@ -1236,30 +1234,30 @@ public class Reset extends StdCommand
 								{
 									String poss="";
 									if(poss.length()==0)
-									for(Enumeration e=CMClass.races();e.hasMoreElements();)
+									for(final Enumeration e=CMClass.races();e.hasMoreElements();)
 									{
-										Race R3=(Race)e.nextElement();
+										final Race R3=(Race)e.nextElement();
 										if(R3.ID().toUpperCase().startsWith(str.toUpperCase()))
 										   poss=R3.name();
 									}
 									if(poss.length()==0)
-									for(Enumeration e=CMClass.races();e.hasMoreElements();)
+									for(final Enumeration e=CMClass.races();e.hasMoreElements();)
 									{
-										Race R3=(Race)e.nextElement();
+										final Race R3=(Race)e.nextElement();
 										if(R3.ID().toUpperCase().indexOf(str.toUpperCase())>=0)
 										   poss=R3.name();
 									}
 									if(poss.length()==0)
-									for(Enumeration e=CMClass.races();e.hasMoreElements();)
+									for(final Enumeration e=CMClass.races();e.hasMoreElements();)
 									{
-										Race R3=(Race)e.nextElement();
+										final Race R3=(Race)e.nextElement();
 										if(R3.name().toUpperCase().startsWith(str.toUpperCase()))
 										   poss=R3.name();
 									}
 									if(poss.length()==0)
-									for(Enumeration e=CMClass.races();e.hasMoreElements();)
+									for(final Enumeration e=CMClass.races();e.hasMoreElements();)
 									{
-										Race R3=(Race)e.nextElement();
+										final Race R3=(Race)e.nextElement();
 										if(R3.name().toUpperCase().indexOf(str.toUpperCase())>=0)
 										   poss=R3.name();
 									}
@@ -1278,8 +1276,8 @@ public class Reset extends StdCommand
 						}
 						for(int i=M.numItems()-1;i>=0;i--)
 						{
-							Item I=M.getItem(i);
-							int returned=resetAreaOramaManaI(mob,I,rememberI,"   ");
+							final Item I=M.getItem(i);
+							final int returned=resetAreaOramaManaI(mob,I,rememberI,"   ");
 							if(returned<0)
 							{
 								M.delItem(I);
@@ -1290,16 +1288,16 @@ public class Reset extends StdCommand
 							if(returned>0)
 								somethingDone=true;
 						}
-						ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(M);
+						final ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(M);
 						if(SK!=null)
 						{
-							for(Iterator<Environmental> i=SK.getShop().getStoreInventory();i.hasNext();)
+							for(final Iterator<Environmental> i=SK.getShop().getStoreInventory();i.hasNext();)
 							{
-								Environmental E=i.next();
+								final Environmental E=i.next();
 								if(E instanceof Item)
 								{
-									Item I=(Item)E;
-									int returned=resetAreaOramaManaI(mob,I,rememberI," - ");
+									final Item I=(Item)E;
+									final int returned=resetAreaOramaManaI(mob,I,rememberI," - ");
 									if(returned<0)
 									{
 										SK.getShop().delAllStoreInventory(I);
@@ -1310,8 +1308,8 @@ public class Reset extends StdCommand
 									if(returned>0)
 									{
 										somethingDone=true;
-										int numInStock=SK.getShop().numberInStock(I);
-										int stockPrice=SK.getShop().stockPrice(I);
+										final int numInStock=SK.getShop().numberInStock(I);
+										final int stockPrice=SK.getShop().stockPrice(I);
 										SK.getShop().delAllStoreInventory(I);
 										SK.getShop().addStoreInventory(I,numInStock,stockPrice);
 									}
@@ -1323,9 +1321,9 @@ public class Reset extends StdCommand
 							somethingDone=true;
 							M.delAbility(M.fetchAbility("Chopping"));
 						}
-						for(Enumeration<Behavior> e=M.behaviors();e.hasMoreElements();)
+						for(final Enumeration<Behavior> e=M.behaviors();e.hasMoreElements();)
 						{
-							Behavior B=e.nextElement();
+							final Behavior B=e.nextElement();
 							if((B.ID().equalsIgnoreCase("Mobile"))
 							&&(B.getParms().trim().length()>0))
 							{
@@ -1339,7 +1337,7 @@ public class Reset extends StdCommand
 				}
 			}
 			}
-			catch(java.io.IOException e){}
+			catch(final java.io.IOException e){}
 			if(A.getAreaState()!=Area.State.ACTIVE)
 				A.setAreaState(Area.State.ACTIVE);
 			mob.tell("Done.");
@@ -1349,8 +1347,8 @@ public class Reset extends StdCommand
 		{
 			TechType[] types;
 			String[] names;
-			List<Manufacturer> m=new XVector<Manufacturer>(CMLib.tech().manufacterers());
-			for(Manufacturer M : m)
+			final List<Manufacturer> m=new XVector<Manufacturer>(CMLib.tech().manufacterers());
+			for(final Manufacturer M : m)
 				CMLib.tech().delManufacturer(M);
 			types=new TechType[]{TechType.SHIP_SOFTWARE};
 			names=new String[]{

@@ -43,15 +43,15 @@ public class Activate extends StdCommand
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		Room R=mob.location();
+		final Room R=mob.location();
 		if((commands.size()<2)||(R==null))
 		{
 			mob.tell("Activate what?");
 			return false;
 		}
 		commands.removeElementAt(0);
-		String what=(String)commands.lastElement();
-		String whole=CMParms.combine(commands,0);
+		final String what=(String)commands.lastElement();
+		final String whole=CMParms.combine(commands,0);
 		Item item=null;
 		Environmental E=mob.location().fetchFromMOBRoomFavorsItems(mob,null,whole,Wearable.FILTER_ANY);
 		if((!(E instanceof Electronics))||(E instanceof Software))
@@ -59,7 +59,7 @@ public class Activate extends StdCommand
 		if(E==null)
 			for(int i=0;i<R.numItems();i++)
 			{
-				Item I=R.getItem(i);
+				final Item I=R.getItem(i);
 				if((I instanceof Electronics.ElecPanel)
 				&&(((Electronics.ElecPanel)I).isOpen()))
 				{
@@ -83,7 +83,7 @@ public class Activate extends StdCommand
 			if(E==null)
 				for(int i=0;i<R.numItems();i++)
 				{
-					Item I=R.getItem(i);
+					final Item I=R.getItem(i);
 					if((I instanceof Electronics.ElecPanel)
 					&&(((Electronics.ElecPanel)I).isOpen()))
 					{
@@ -117,8 +117,8 @@ public class Activate extends StdCommand
 			return false;
 		}
 
-		String rest=CMParms.combine(commands,0);
-		CMMsg newMsg=CMClass.getMsg(mob,item,null,CMMsg.MSG_ACTIVATE,null,CMMsg.MSG_ACTIVATE,(rest.length()==0)?null:rest,CMMsg.MSG_ACTIVATE,null);
+		final String rest=CMParms.combine(commands,0);
+		final CMMsg newMsg=CMClass.getMsg(mob,item,null,CMMsg.MSG_ACTIVATE,null,CMMsg.MSG_ACTIVATE,(rest.length()==0)?null:rest,CMMsg.MSG_ACTIVATE,null);
 		if(R.okMessage(mob,newMsg))
 			R.send(mob,newMsg);
 		return false;

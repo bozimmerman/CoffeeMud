@@ -47,6 +47,7 @@ public class Quad<T,K,L,M> extends Triad<T,K,L>
 		if(o instanceof Quad)
 		{
 			@SuppressWarnings("rawtypes")
+			final
 			Quad p=(Quad)o;
 			return ((p.first==first)||((p.first!=null)&&(p.first.equals(first))))
 					&&((p.second==second)||((p.second!=null)&&(p.second.equals(second))))

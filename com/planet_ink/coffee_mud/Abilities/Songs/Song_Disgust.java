@@ -46,14 +46,14 @@ public class Song_Disgust extends Song
 		if(!super.tick(ticking,tickID))
 			return false;
 
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		if(mob==null) return true;
 		if(mob==invoker) return true;
 		if(invoker==null) return true;
-		Room room=invoker.location();
+		final Room room=invoker.location();
 		if((!mob.isInCombat())&&(room!=null))
 		{
-			MOB newMOB=room.fetchRandomInhabitant();
+			final MOB newMOB=room.fetchRandomInhabitant();
 			if(newMOB!=mob)
 			{
 				room.show(mob,newMOB,CMMsg.MSG_OK_ACTION,"<S-NAME> appear(s) disgusted with <T-NAMESELF>.");

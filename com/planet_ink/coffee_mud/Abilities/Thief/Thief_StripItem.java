@@ -97,7 +97,7 @@ public class Thief_StripItem extends ThiefSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		Item stolen=target.fetchItem(null,Wearable.FILTER_WORNONLY,itemToSteal);
+		final Item stolen=target.fetchItem(null,Wearable.FILTER_WORNONLY,itemToSteal);
 		if((stolen==null)||(!CMLib.flags().canBeSeenBy(stolen,mob)))
 		{
 			mob.tell(target.name(mob)+" doesn't seem to be wearing '"+itemToSteal+"'.");
@@ -113,12 +113,12 @@ public class Thief_StripItem extends ThiefSkill
 			levelDiff=-(levelDiff*((!CMLib.flags().canBeSeenBy(mob,target))?5:15));
 		else
 			levelDiff=-(levelDiff*((!CMLib.flags().canBeSeenBy(mob,target))?1:2));
-		boolean success=proficiencyCheck(mob,levelDiff,auto);
+		final boolean success=proficiencyCheck(mob,levelDiff,auto);
 
 		if(!success)
 		{
 			if((target.isMonster())&&(mob.getVictim()==null)) mob.setVictim(target);
-			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_NOISYMOVEMENT,auto?"":"You fumble the attempt to strip "+stolen.name()+" off <T-NAME>; <T-NAME> spots you!",CMMsg.MSG_NOISYMOVEMENT,auto?"":"<S-NAME> tries to strip "+stolen.name()+" off you and fails!",CMMsg.MSG_NOISYMOVEMENT,auto?"":"<S-NAME> tries to strip "+stolen.name()+" off <T-NAME> and fails!");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_NOISYMOVEMENT,auto?"":"You fumble the attempt to strip "+stolen.name()+" off <T-NAME>; <T-NAME> spots you!",CMMsg.MSG_NOISYMOVEMENT,auto?"":"<S-NAME> tries to strip "+stolen.name()+" off you and fails!",CMMsg.MSG_NOISYMOVEMENT,auto?"":"<S-NAME> tries to strip "+stolen.name()+" off <T-NAME> and fails!");
 			if(mob.location().okMessage(mob,msg))
 				mob.location().send(mob,msg);
 		}
@@ -127,9 +127,9 @@ public class Thief_StripItem extends ThiefSkill
 			String str=null;
 			if(!auto) str="<S-NAME> strip(s) "+stolen.name()+" off <T-NAMESELF>.";
 
-			boolean alreadyFighting=(mob.getVictim()==target)||(target.getVictim()==mob);
-			String hisStr=str;
-			int hisCode=CMMsg.MSG_THIEF_ACT | ((target.mayIFight(mob))?CMMsg.MASK_MALICIOUS:0);
+			final boolean alreadyFighting=(mob.getVictim()==target)||(target.getVictim()==mob);
+			final String hisStr=str;
+			final int hisCode=CMMsg.MSG_THIEF_ACT | ((target.mayIFight(mob))?CMMsg.MASK_MALICIOUS:0);
 
 			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_THIEF_ACT,str,hisCode,hisStr,CMMsg.NO_EFFECT,null);
 			if(mob.location().okMessage(mob,msg))

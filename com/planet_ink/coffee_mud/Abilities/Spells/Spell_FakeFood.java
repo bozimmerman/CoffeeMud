@@ -46,15 +46,15 @@ public class Spell_FakeFood extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":"^S<S-NAME> invoke(s) a spell dramatically.^?");
+			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":"^S<S-NAME> invoke(s) a spell dramatically.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				Food F=(Food)CMClass.getItem("GenFood");
+				final Food F=(Food)CMClass.getItem("GenFood");
 				switch(CMLib.dice().roll(1,5,0))
 				{
 				case 1: F.setName("a shiny apple");
@@ -82,7 +82,7 @@ public class Spell_FakeFood extends Spell
 				F.setBaseValue(0);
 				for(int f=0;f<5;f++)
 				{
-					Food F2=(Food)F.copyOf();
+					final Food F2=(Food)F.copyOf();
 					F2.recoverPhyStats();
 					mob.location().addItem(F2,ItemPossessor.Expire.Resource);
 					mob.location().show(mob,null,F2,CMMsg.MSG_OK_VISUAL,"<O-NAME> appears!");

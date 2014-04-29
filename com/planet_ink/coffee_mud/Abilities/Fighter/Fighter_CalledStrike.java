@@ -59,7 +59,7 @@ public class Fighter_CalledStrike extends FighterSkill
 
 	protected boolean amputate()
 	{
-		MOB mob=target;
+		final MOB mob=target;
 		if(mob==null) return false;
 		Amputator A=(Amputator)mob.fetchEffect("Amputation");
 		if(A==null)	A=(Amputator)CMClass.getAbility("Amputation");
@@ -77,13 +77,13 @@ public class Fighter_CalledStrike extends FighterSkill
 	{
 		if((affected==null)||(!(affected instanceof MOB))||(target==null))
 		   return super.okMessage(myHost,msg);
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		if(msg.amISource(mob)
 		&&(msg.amITarget(target))
 		&&(msg.targetMinor()==CMMsg.TYP_DAMAGE))
 		{
 			int hurtAmount=msg.value();
-			int reqDivisor=hpReq+getXLEVELLevel(invoker());
+			final int reqDivisor=hpReq+getXLEVELLevel(invoker());
 			if(hurtAmount>=(target.baseState().getHitPoints()/reqDivisor))
 			{
 				hurtAmount=(target.baseState().getHitPoints()/reqDivisor);
@@ -106,14 +106,14 @@ public class Fighter_CalledStrike extends FighterSkill
 			return false;
 		}
 
-		Item w=mob.fetchWieldedItem();
+		final Item w=mob.fetchWieldedItem();
 		if((w==null)||(!(w instanceof Weapon)))
 		{
 			if(!quiet)
 			mob.tell("You need a weapon to perform a called strike!");
 			return false;
 		}
-		Weapon wp=(Weapon)w;
+		final Weapon wp=(Weapon)w;
 		if(wp.weaponType()!=Weapon.TYPE_SLASHING)
 		{
 			if(!quiet)
@@ -145,7 +145,7 @@ public class Fighter_CalledStrike extends FighterSkill
 
 		if(commands.size()>0)
 		{
-			String s=(String)commands.firstElement();
+			final String s=(String)commands.firstElement();
 			if(mob.location().fetchInhabitant(s)!=null)
 				target=mob.location().fetchInhabitant(s);
 			if((target!=null)&&(!CMLib.flags().canBeSeenBy(target,mob)))
@@ -172,7 +172,7 @@ public class Fighter_CalledStrike extends FighterSkill
 		Amputator A=(Amputator)target.fetchEffect("Amputation");
 		if(A==null)	A=(Amputator)CMClass.getAbility("Amputation");
 
-		List<String> remainingLimbList=A.remainingLimbNameSet(target);
+		final List<String> remainingLimbList=A.remainingLimbNameSet(target);
 		if(remainingLimbList.size()==0)
 		{
 			if(!auto)
@@ -185,7 +185,7 @@ public class Fighter_CalledStrike extends FighterSkill
 		if(commands.size()<=0)
 		{
 			mob.tell("You must specify a body part to cut off.");
-			StringBuffer str=new StringBuffer("Parts include: ");
+			final StringBuffer str=new StringBuffer("Parts include: ");
 			for(int i=0;i<remainingLimbList.size();i++)
 				str.append((remainingLimbList.get(i))+", ");
 			mob.tell(str.toString().substring(0,str.length()-2)+".");
@@ -193,7 +193,7 @@ public class Fighter_CalledStrike extends FighterSkill
 		}
 		else
 		{
-			String off=CMParms.combine(commands,0);
+			final String off=CMParms.combine(commands,0);
 			if((off.equalsIgnoreCase("head"))
 			&&(target.charStats().getBodyPart(Race.BODY_HEAD)>=0))
 			{
@@ -210,7 +210,7 @@ public class Fighter_CalledStrike extends FighterSkill
 			if(gone.length()==0)
 			{
 				mob.tell("'"+off+"' is not a valid body part.");
-				StringBuffer str=new StringBuffer("Parts include: ");
+				final StringBuffer str=new StringBuffer("Parts include: ");
 				for(int i=0;i<remainingLimbList.size();i++)
 					str.append((remainingLimbList.get(i))+", ");
 				mob.tell(str.toString().substring(0,str.length()-2)+".");
@@ -226,17 +226,17 @@ public class Fighter_CalledStrike extends FighterSkill
 			return false;
 
 		// now see if it worked
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 		if((success)&&(gone.length()>0))
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,(auto?CMMsg.MASK_ALWAYS:0)|CMMsg.MASK_MALICIOUS|CMMsg.MSG_NOISYMOVEMENT,"^F^<FIGHT^><S-NAME> call(s) '"+gone+"'!^</FIGHT^>^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,(auto?CMMsg.MASK_ALWAYS:0)|CMMsg.MASK_MALICIOUS|CMMsg.MSG_NOISYMOVEMENT,"^F^<FIGHT^><S-NAME> call(s) '"+gone+"'!^</FIGHT^>^?");
 			CMLib.color().fixSourceFightColor(msg);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				invoker=mob;
 				beneficialAffect(mob,mob,asLevel,2);
-				Ability A2=target.fetchEffect("Injury");
+				final Ability A2=target.fetchEffect("Injury");
 				if(A2!=null) A2.setMiscText(mob.Name()+"/"+gone);
 				mob.recoverPhyStats();
 			}

@@ -53,7 +53,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 	{
 		if(mob.numItems()>0)
 		{
-			Item I = mob.getItem(0);
+			final Item I = mob.getItem(0);
 			if(I!=null) return I;
 		}
 		if(nonCrashingItem!=null)
@@ -71,8 +71,8 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 	{
 		if(savedClassUpdateTime==CMClass.getLastClassUpdatedTime())
 			return;
-		List<SavedClass> tempSavedCharClasses=new LinkedList<SavedClass>();
-		List<SavedRace> tempSavedRaces=new LinkedList<SavedRace>();
+		final List<SavedClass> tempSavedCharClasses=new LinkedList<SavedClass>();
+		final List<SavedRace> tempSavedRaces=new LinkedList<SavedRace>();
 		for(final Enumeration<CharClass> c=CMClass.charClasses();c.hasMoreElements();)
 		{
 			final CharClass C=c.nextElement();
@@ -331,10 +331,10 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 	protected Object makeSkillFlagObject(final String str)
 	{
 		Object o=null;
-		int x=str.indexOf('&');
+		final int x=str.indexOf('&');
 		if(x>=0)
 		{
-			Vector<Object> V=new Vector<Object>();
+			final Vector<Object> V=new Vector<Object>();
 			V.addAll(CMParms.parseAny(str,'&',true));
 			String s=null;
 			for(int v=0;v<V.size();v++)
@@ -347,7 +347,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					v++;
 				}
 			}
-			Object[] o2=new Object[V.size()];
+			final Object[] o2=new Object[V.size()];
 			for(int v=0;v<V.size();v++)
 				if(V.elementAt(v) instanceof String)
 					o2[v]=makeSkillFlagObject((String)V.elementAt(v));
@@ -425,7 +425,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 			else
 			if(o instanceof Long)
 			{
-				long val=((Long)o).longValue();
+				final long val=((Long)o).longValue();
 				if((A.flags()&val)==val)
 					return true;
 			}
@@ -515,7 +515,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 	{
 		str=str.toUpperCase().trim();
 		if(str.length()==0) return -1;
-		TimeClock.Season season=(TimeClock.Season)CMath.s_valueOf(TimeClock.Season.class, str);
+		final TimeClock.Season season=(TimeClock.Season)CMath.s_valueOf(TimeClock.Season.class, str);
 		if(season != null)
 			return season.ordinal();
 		for(int i=0;i<TimeClock.Season.values().length;i++)
@@ -674,7 +674,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				case 2: // -Race
 					{
 						buf.append(skipFirstWord?"Only ":"Allows only ");
-						LinkedList<String> cats=new LinkedList<String>();
+						final LinkedList<String> cats=new LinkedList<String>();
 						for(final SavedRace R : races())
 						{
 							if((!cats.contains(R.name)
@@ -857,7 +857,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 								break;
 							if(str2.startsWith("+"))
 							{
-								ExpertiseLibrary.ExpertiseDefinition E=CMLib.expertises().getDefinition(str2.substring(1).toUpperCase().trim());
+								final ExpertiseLibrary.ExpertiseDefinition E=CMLib.expertises().getDefinition(str2.substring(1).toUpperCase().trim());
 								if(E!=null) buf.append(E.name+", ");
 							}
 						}
@@ -876,7 +876,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 								break;
 							if(str2.startsWith("-"))
 							{
-								ExpertiseLibrary.ExpertiseDefinition E=CMLib.expertises().getDefinition(str2.substring(1).toUpperCase().trim());
+								final ExpertiseLibrary.ExpertiseDefinition E=CMLib.expertises().getDefinition(str2.substring(1).toUpperCase().trim());
 								if(E!=null) buf.append(E.name+", ");
 							}
 						}
@@ -895,7 +895,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 								break;
 							if(str2.startsWith("+"))
 							{
-								List<String> V3=CMParms.parseAny(str2.substring(1),'&',true);
+								final List<String> V3=CMParms.parseAny(str2.substring(1),'&',true);
 								String str3=null;
 								for(int v3=0;v3<V3.size();v3++)
 								{
@@ -928,7 +928,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 							{
 								int prof=0;
 								str2=str2.substring(1);
-								int x=str2.indexOf('(');
+								final int x=str2.indexOf('(');
 								if(x>0)
 								{
 									if(str2.endsWith(")"))
@@ -962,7 +962,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 							{
 								int prof=0;
 								str2=str2.substring(1);
-								int x=str2.indexOf('(');
+								final int x=str2.indexOf('(');
 								if(x>0)
 								{
 									if(str2.endsWith(")"))
@@ -994,7 +994,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 								break;
 							if(str2.startsWith("-"))
 							{
-								List<String> V3=CMParms.parseAny(str2.substring(1),'&',true);
+								final List<String> V3=CMParms.parseAny(str2.substring(1),'&',true);
 								String str3=null;
 								for(int v3=0;v3<V3.size();v3++)
 								{
@@ -1097,7 +1097,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 								break;
 							if(str2.startsWith("+"))
 							{
-								long code=Wearable.CODES.FIND_endsWith(str2.substring(1));
+								final long code=Wearable.CODES.FIND_endsWith(str2.substring(1));
 								if(code>=0)
 									buf.append(Wearable.CODES.NAME(code)+", ");
 							}
@@ -1117,7 +1117,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 								break;
 							if(str2.startsWith("-"))
 							{
-								long code=Wearable.CODES.FIND_endsWith(str2.substring(1));
+								final long code=Wearable.CODES.FIND_endsWith(str2.substring(1));
 								if(code>=0)
 									buf.append(Wearable.CODES.NAME(code)+", ");
 							}
@@ -1210,13 +1210,13 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 							if(str2.startsWith("-"))
 								if(CMath.isInteger(str2.substring(1).trim()))
 								{
-									int season=CMath.s_int(str2.substring(1).trim());
+									final int season=CMath.s_int(str2.substring(1).trim());
 									if((season>=0)&&(season<TimeClock.Season.values().length))
 										buf.append(TimeClock.Season.values()[season].toString()+", ");
 								}
 								else
 								{
-									int season=determineSeasonCode(str2.substring(1).trim());
+									final int season=determineSeasonCode(str2.substring(1).trim());
 									if((season>=0)&&(season<TimeClock.Season.values().length))
 										buf.append(TimeClock.Season.values()[season].toString()+", ");
 								}
@@ -1237,13 +1237,13 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 							if(str2.startsWith("+"))
 								if(CMath.isInteger(str2.substring(1).trim()))
 								{
-									int season=CMath.s_int(str2.substring(1).trim());
+									final int season=CMath.s_int(str2.substring(1).trim());
 									if((season>=0)&&(season<TimeClock.Season.values().length))
 										buf.append(TimeClock.Season.values()[season].toString()+", ");
 								}
 								else
 								{
-									int season=determineSeasonCode(str2.substring(1).trim());
+									final int season=determineSeasonCode(str2.substring(1).trim());
 									if((season>=0)&&(season<TimeClock.Season.values().length))
 										buf.append(TimeClock.Season.values()[season].toString()+", ");
 								}
@@ -1265,13 +1265,13 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 						if(str2.startsWith("-"))
 							if(CMath.isInteger(str2.substring(1).trim()))
 							{
-								int weather=CMath.s_int(str2.substring(1).trim());
+								final int weather=CMath.s_int(str2.substring(1).trim());
 								if((weather>=0)&&(weather<Climate.WEATHER_DESCS.length))
 									buf.append(CMStrings.capitalizeAndLower(Climate.WEATHER_DESCS[weather])+", ");
 							}
 							else
 							{
-								int weather=CMParms.indexOf(Climate.WEATHER_DESCS,str2.substring(1).toUpperCase().trim());
+								final int weather=CMParms.indexOf(Climate.WEATHER_DESCS,str2.substring(1).toUpperCase().trim());
 								if((weather>=0)&&(weather<Climate.WEATHER_DESCS.length))
 									buf.append(CMStrings.capitalizeAndLower(Climate.WEATHER_DESCS[weather])+", ");
 							}
@@ -1292,13 +1292,13 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 						if(str2.startsWith("+"))
 							if(CMath.isInteger(str2.substring(1).trim()))
 							{
-								int weather=CMath.s_int(str2.substring(1).trim());
+								final int weather=CMath.s_int(str2.substring(1).trim());
 								if((weather>=0)&&(weather<Climate.WEATHER_DESCS.length))
 									buf.append(CMStrings.capitalizeAndLower(Climate.WEATHER_DESCS[weather])+", ");
 							}
 							else
 							{
-								int weather=CMParms.indexOf(Climate.WEATHER_DESCS,str2.substring(1).toUpperCase().trim());
+								final int weather=CMParms.indexOf(Climate.WEATHER_DESCS,str2.substring(1).toUpperCase().trim());
 								if((weather>=0)&&(weather<Climate.WEATHER_DESCS.length))
 									buf.append(CMStrings.capitalizeAndLower(Climate.WEATHER_DESCS[weather])+", ");
 							}
@@ -1602,7 +1602,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 								break;
 							if(str2.startsWith("+"))
 							{
-								Quest Q=CMLib.quests().fetchQuest(str2.substring(1));
+								final Quest Q=CMLib.quests().fetchQuest(str2.substring(1));
 								if(Q==null)
 									buf.append(str2.substring(1)+", ");
 								else
@@ -1627,7 +1627,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 								break;
 							if(str2.startsWith("-"))
 							{
-								Quest Q=CMLib.quests().fetchQuest(str2.substring(1));
+								final Quest Q=CMLib.quests().fetchQuest(str2.substring(1));
 								if(Q==null)
 									buf.append(str2.substring(1)+", ");
 								else
@@ -2004,10 +2004,10 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 							break;
 						if(str2.startsWith("+"))
 						{
-							Faction.FRange FR=getRange(str2.substring(1).toUpperCase().trim());
+							final Faction.FRange FR=getRange(str2.substring(1).toUpperCase().trim());
 							if(FR!=null)
 							{
-								String desc=CMLib.factions().rangeDescription(FR,"or ");
+								final String desc=CMLib.factions().rangeDescription(FR,"or ");
 								if(desc.length()>0) buf.append(desc+"; ");
 							}
 						}
@@ -2050,7 +2050,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				case 117: // +baseclass
 				{
 					buf.append("Disallows the following types"+(multipleQuals(V,v,"-")?"s":"")+": ");
-					HashSet<String> seenBase=new HashSet<String>();
+					final HashSet<String> seenBase=new HashSet<String>();
 					for(final SavedClass C : charClasses())
 					{
 						if(!seenBase.contains(C.baseClass))
@@ -2097,8 +2097,8 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				buf.append(levelHelp(str,'-',"Disallows "));
 				if(str.startsWith("-"))
 				{
-					Faction.FRange FR=getRange(str.substring(1));
-					String desc=CMLib.factions().rangeDescription(FR,"and ");
+					final Faction.FRange FR=getRange(str.substring(1));
+					final String desc=CMLib.factions().rangeDescription(FR,"and ");
 					if(desc.length()>0) buf.append("Disallows "+desc);
 				}
 			}
@@ -2112,11 +2112,11 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 	public boolean syntaxCheck(final String mask, final List<String> errorSink)
 	{
 		if(mask.trim().length()==0) return true;
-		Vector<String> V=CMParms.parse(mask.toUpperCase());
+		final Vector<String> V=CMParms.parse(mask.toUpperCase());
 		for(int v=0;v<V.size();v++)
 		{
-			String str=V.elementAt(v);
-			Map<String,Integer> zapCodes=getMaskCodes();
+			final String str=V.elementAt(v);
+			final Map<String,Integer> zapCodes=getMaskCodes();
 			if(zapCodes.containsKey(str)) return true;
 			for(final SavedClass C : charClasses())
 			{
@@ -2177,7 +2177,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 								break;
 							if(str2.startsWith("+"))
 							{
-								ExpertiseLibrary.ExpertiseDefinition E=CMLib.expertises().getDefinition(str2.substring(1).toUpperCase().trim());
+								final ExpertiseLibrary.ExpertiseDefinition E=CMLib.expertises().getDefinition(str2.substring(1).toUpperCase().trim());
 								if(E!=null) preReqs.addElement(E.ID);
 							}
 						}
@@ -2193,7 +2193,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 							if(str2.startsWith("+"))
 							{
 								str2=str2.substring(1);
-								int x=str2.indexOf('(');
+								final int x=str2.indexOf('(');
 								if(x>0) str2=str2.substring(0,x);
 								final Ability A=CMClass.getAbility(str2);
 								if((A!=null)&&(!preReqs.contains(A.ID())))
@@ -2546,7 +2546,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 						else
 						if(str2.startsWith(plusMinus))
 						{
-							CMSecurity.SecFlag flag=(CMSecurity.SecFlag)CMath.s_valueOf(CMSecurity.SecFlag.class,str2.substring(1).toUpperCase().trim().replace(' ','_'));
+							final CMSecurity.SecFlag flag=(CMSecurity.SecFlag)CMath.s_valueOf(CMSecurity.SecFlag.class,str2.substring(1).toUpperCase().trim().replace(' ','_'));
 							if(flag == null)
 								Log.errOut("MUDZapper","Illegal security flag '"+str2);
 							else
@@ -2604,7 +2604,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 						if(str2.startsWith(plusMinus))
 						{
 							final String str3=str2.substring(1).toUpperCase().trim();
-							Faction.FRange FR=getRange(str3);
+							final Faction.FRange FR=getRange(str3);
 							if(FR!=null)
 								parms.addElement(str3);
 						}
@@ -2660,7 +2660,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 							{
 								str2=str2.substring(1);
 								int prof=0;
-								int x=str2.indexOf('(');
+								final int x=str2.indexOf('(');
 								if(x>0)
 								{
 									if(str2.endsWith(")"))
@@ -2838,7 +2838,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 									parms.addElement(Integer.valueOf(CMath.s_int(str2.substring(1).trim())));
 								else
 								{
-									int seasonCode=determineSeasonCode(str2.substring(1).trim());
+									final int seasonCode=determineSeasonCode(str2.substring(1).trim());
 									if(seasonCode>=0)
 										parms.addElement(Integer.valueOf(seasonCode));
 								}
@@ -3042,19 +3042,19 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 							}
 							else
 							{
-								ScriptingEngine SE = (ScriptingEngine)CMClass.getCommon("DefaultScriptingEngine");
+								final ScriptingEngine SE = (ScriptingEngine)CMClass.getCommon("DefaultScriptingEngine");
 								SE.setSavable(false);
 								SE.setVarScope("*");
 								try
 								{
-									String[] tt = SE.parseEval(str2);
+									final String[] tt = SE.parseEval(str2);
 									parms.addElement(SE);
-									String[][] EVAL={tt};
+									final String[][] EVAL={tt};
 									parms.addElement(EVAL); // the compiled eval
-									Object[] tmp = new Object[ScriptingEngine.SPECIAL_NUM_OBJECTS];
+									final Object[] tmp = new Object[ScriptingEngine.SPECIAL_NUM_OBJECTS];
 									parms.addElement(tmp);
 								}
-								catch(ScriptParseException spe)
+								catch(final ScriptParseException spe)
 								{
 									Log.errOut("MUDZapper","Script parse Exception for "+str2);
 									Log.errOut("MUDZapper",spe);
@@ -3259,7 +3259,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				}
 				if(!found)
 				{
-					CompiledZapperMaskEntry entry=levelCompiledHelper(str,'-');
+					final CompiledZapperMaskEntry entry=levelCompiledHelper(str,'-');
 					if(entry!=null)
 						buf.addElement(entry);
 				}
@@ -3304,7 +3304,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 		final Physical P = (E instanceof Physical)?(Physical)E:null;
 		if((mob==null)||(flags[0]&&(item==null)))
 			return false;
-		for(CompiledZapperMaskEntry entry : cset.entries)
+		for(final CompiledZapperMaskEntry entry : cset.entries)
 		{
 			try
 			{
@@ -3408,7 +3408,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 			case 6: // -classlevel
 				{
 					boolean found=false;
-					int cl=actual?mob.baseCharStats().getClassLevel(mob.baseCharStats().getCurrentClass())
+					final int cl=actual?mob.baseCharStats().getClassLevel(mob.baseCharStats().getCurrentClass())
 								 :mob.charStats().getClassLevel(mob.charStats().getCurrentClass());
 					for(int v=0;v<entry.parms.length-1;v+=2)
 						switch(((Integer)entry.parms[v]).intValue())
@@ -3690,7 +3690,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					}
 					else
 					if(E instanceof MOB)
-						for(Pair<Clan,Integer> c : ((MOB)E).clans())
+						for(final Pair<Clan,Integer> c : ((MOB)E).clans())
 						{
 							for(final Object o : entry.parms)
 								if(c.first.clanID().equalsIgnoreCase((String)o))
@@ -3709,7 +3709,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				}
 				else
 				if(E instanceof MOB)
-					for(Pair<Clan,Integer> c : ((MOB)E).clans())
+					for(final Pair<Clan,Integer> c : ((MOB)E).clans())
 					{
 						for(final Object o : entry.parms)
 							if(c.first.clanID().equalsIgnoreCase((String)o))
@@ -3942,7 +3942,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					boolean found=false;
 					for(final Object o : entry.parms)
 					{
-						Faction.FRange FR=getRange((String)o);
+						final Faction.FRange FR=getRange((String)o);
 						if((FR!=null)&&(CMLib.factions().isFactionedThisWay(mob,FR)))
 						{
 							found=true;
@@ -3956,7 +3956,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				{
 					for(final Object o : entry.parms)
 					{
-						Faction.FRange FR=getRange((String)o);
+						final Faction.FRange FR=getRange((String)o);
 						if((FR!=null)&&(CMLib.factions().isFactionedThisWay(mob,FR)))
 							return false;
 					}
@@ -4334,7 +4334,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					break;
 				}
 			}
-			}catch(NullPointerException n){}
+			}catch(final NullPointerException n){}
 		}
 		return true;
 	}
@@ -4347,7 +4347,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 		if((cset==null)||(cset.empty)||(cset.entries.length<1)) return true;
 		getMaskCodes();
 		//boolean[] flags=(boolean[])cset.firstElement();
-		for(CompiledZapperMaskEntry entry : cset.entries)
+		for(final CompiledZapperMaskEntry entry : cset.entries)
 		{
 			try
 			{
@@ -4660,7 +4660,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				break;
 			}
 			}
-			}catch(NullPointerException n){}
+			}catch(final NullPointerException n){}
 		}
 		return true;
 	}

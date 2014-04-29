@@ -56,7 +56,7 @@ public class Fighter_Berzerk extends FighterSkill
 		   invoker=(MOB)affected;
 		if(invoker!=null)
 		{
-			int xlvl=getXLEVELLevel(invoker());
+			final int xlvl=getXLEVELLevel(invoker());
 			affectableStats.setDamage(affectableStats.damage()+(int)Math.round(CMath.div(affectableStats.damage(),6.0-CMath.mul(0.2,xlvl))));
 			affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+(int)Math.round(CMath.div(affectableStats.attackAdjustment(),6.0-CMath.mul(0.2,xlvl))));
 			affectableStats.setArmor(affectableStats.armor()+20+(2*xlvl));
@@ -76,7 +76,7 @@ public class Fighter_Berzerk extends FighterSkill
 	{
 		if(affecting() instanceof MOB)
 		{
-			MOB mob=(MOB)affecting();
+			final MOB mob=(MOB)affecting();
 
 			super.unInvoke();
 
@@ -125,10 +125,10 @@ public class Fighter_Berzerk extends FighterSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_QUIETMOVEMENT,"<T-NAME> get(s) a wild look in <T-HIS-HER> eyes!");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_QUIETMOVEMENT,"<T-NAME> get(s) a wild look in <T-HIS-HER> eyes!");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

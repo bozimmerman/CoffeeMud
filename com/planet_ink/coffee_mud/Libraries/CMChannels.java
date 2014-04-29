@@ -77,13 +77,13 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 									  boolean offlineOK)
 	{
 		if((sender==null)||(M==null)) return false;
-		PlayerStats pstats=M.playerStats();
+		final PlayerStats pstats=M.playerStats();
 		if(pstats==null) return false;
-		Room R=M.location();
+		final Room R=M.location();
 		if(((!offlineOK))
 		&&((M.amDead())||(R==null)))
 			return false;
-		CMChannel chan=getChannel(i);
+		final CMChannel chan=getChannel(i);
 		if(chan==null) return false;
 		if(chan.flags.contains(ChannelFlag.CLANONLY)||chan.flags.contains(ChannelFlag.CLANALLYONLY))
 		{
@@ -113,19 +113,19 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 	{
 		if(ses==null)
 			return false;
-		MOB M=ses.mob();
+		final MOB M=ses.mob();
 
 		if((sender==null)
 		||(M==null)
 		||(M.amDead())
 		||(M.location()==null))
 			return false;
-		PlayerStats pstats=M.playerStats();
+		final PlayerStats pstats=M.playerStats();
 		if(pstats==null) return false;
 		String senderName=sender.Name();
-		int x=senderName.indexOf('@');
+		final int x=senderName.indexOf('@');
 		if(x>0) senderName=senderName.substring(0,x);
-		CMChannel chan=getChannel(i);
+		final CMChannel chan=getChannel(i);
 		if(chan==null) return false;
 		if(chan.flags.contains(ChannelFlag.CLANONLY)||chan.flags.contains(ChannelFlag.CLANALLYONLY))
 		{
@@ -138,7 +138,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 				return false;
 		}
 
-		Room R=M.location();
+		final Room R=M.location();
 		if((!ses.isStopped())
 		&&(R!=null)
 		&&(!pstats.getIgnored().contains(senderName))
@@ -159,7 +159,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 		if(i>=getNumChannels())
 			return false;
 
-		CMChannel chan=getChannel(i);
+		final CMChannel chan=getChannel(i);
 		if(chan==null) return false;
 		if((chan.flags.contains(ChannelFlag.CLANONLY)||chan.flags.contains(ChannelFlag.CLANALLYONLY))
 		&&(!CMLib.clans().checkClanPrivilege(M, Clan.Function.CHANNEL)))
@@ -176,7 +176,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 	public void channelQueUp(int i, CMMsg msg)
 	{
 		CMLib.map().sendGlobalMessage(msg.source(),CMMsg.TYP_CHANNEL,msg);
-		List<ChannelMsg> q=getChannelQue(i);
+		final List<ChannelMsg> q=getChannelQue(i);
 		synchronized(q)
 		{
 			if(q.size()>=QUEUE_SIZE)
@@ -218,7 +218,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 	@Override
 	public List<String> getFlaggedChannelNames(ChannelFlag flag)
 	{
-		List<String> channels=new Vector<String>();
+		final List<String> channels=new Vector<String>();
 		for(int c=0;c<channelList.size();c++)
 			if(channelList.get(c).flags.contains(flag))
 				channels.add(channelList.get(c).name.toUpperCase());
@@ -228,13 +228,13 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 	@Override
 	public String getExtraChannelDesc(String channelName)
 	{
-		StringBuilder str=new StringBuilder("");
-		int dex = getChannelIndex(channelName);
+		final StringBuilder str=new StringBuilder("");
+		final int dex = getChannelIndex(channelName);
 		if(dex >= 0)
 		{
-			CMChannel chan=getChannel(dex);
-			Set<ChannelFlag> flags = chan.flags;
-			String mask = chan.mask;
+			final CMChannel chan=getChannel(dex);
+			final Set<ChannelFlag> flags = chan.flags;
+			final String mask = chan.mask;
 			if(flags.contains(ChannelFlag.CLANALLYONLY))
 				str.append(" This is a channel for clans and their allies.");
 			if(flags.contains(ChannelFlag.CLANONLY))
@@ -264,7 +264,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 	@Override
 	public List<CMChannel> getIMC2ChannelsList()
 	{
-		List<CMChannel> list=new Vector<CMChannel>();
+		final List<CMChannel> list=new Vector<CMChannel>();
 		for(int i=0;i<channelList.size();i++)
 			if((channelList.get(i).imc2Name!=null)
 			&&(channelList.get(i).imc2Name.length()>0))
@@ -275,7 +275,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 	@Override
 	public List<CMChannel> getI3ChannelsList()
 	{
-		List<CMChannel> list=new Vector<CMChannel>();
+		final List<CMChannel> list=new Vector<CMChannel>();
 		for(int i=0;i<channelList.size();i++)
 			if((channelList.get(i).i3name!=null)
 			&&(channelList.get(i).i3name.length()>0))
@@ -295,7 +295,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 		List<Session> invalid=null;
 		if(mySession!=null)
 		{
-			for(Session S : CMLib.sessions().allIterable())
+			for(final Session S : CMLib.sessions().allIterable())
 			{
 				if((S!=mySession)
 				&&(S.mob()!=null)
@@ -321,10 +321,10 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 
 	public String parseOutFlags(String mask, Set<ChannelFlag> flags, String[] colorOverride)
 	{
-		List<String> V=CMParms.parseSpaces(mask,true);
+		final List<String> V=CMParms.parseSpaces(mask,true);
 		for(int v=V.size()-1;v>=0;v--)
 		{
-			String s=V.get(v).toUpperCase();
+			final String s=V.get(v).toUpperCase();
 			if(CMParms.contains(CMParms.toStringArray(ChannelFlag.values()), s))
 			{
 				V.remove(v);
@@ -332,7 +332,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 			}
 			else
 			{
-				int colorNum=CMParms.indexOf(ColorLibrary.COLOR_ALLCOLORNAMES, s);
+				final int colorNum=CMParms.indexOf(ColorLibrary.COLOR_ALLCOLORNAMES, s);
 				if(colorNum>=0)
 				{
 					V.remove(v);
@@ -370,10 +370,10 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 				list=list.substring(x+1);
 			}
 			x=item.indexOf(' ');
-			CMChannel chan=new CMChannel();
+			final CMChannel chan=new CMChannel();
 			if(x>0)
 			{
-				String[] colorOverride=new String[]{"",""};
+				final String[] colorOverride=new String[]{"",""};
 				chan.mask=parseOutFlags(item.substring(x+1).trim(),chan.flags,colorOverride);
 				chan.colorOverride=colorOverride[0];
 				chan.colorOverrideStr=colorOverride[1];
@@ -384,7 +384,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 		}
 		while(ilist.length()>0)
 		{
-			int x=ilist.indexOf(',');
+			final int x=ilist.indexOf(',');
 
 			String item=null;
 			if(x<0)
@@ -397,15 +397,15 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 				item=ilist.substring(0,x).trim();
 				ilist=ilist.substring(x+1);
 			}
-			int y1=item.indexOf(' ');
-			int y2=item.lastIndexOf(' ');
+			final int y1=item.indexOf(' ');
+			final int y2=item.lastIndexOf(' ');
 			if((y1<0)||(y2<=y1)) continue;
-			CMChannel chan=new CMChannel();
-			String lvl=item.substring(y1+1,y2).trim();
-			String ichan=item.substring(y2+1).trim();
+			final CMChannel chan=new CMChannel();
+			final String lvl=item.substring(y1+1,y2).trim();
+			final String ichan=item.substring(y2+1).trim();
 			item=item.substring(0,y1);
 			chan.name=item.toUpperCase().trim();
-			String[] colorOverride=new String[]{""};
+			final String[] colorOverride=new String[]{""};
 			chan.mask=parseOutFlags(lvl,chan.flags,colorOverride);
 			chan.colorOverride=colorOverride[0];
 			chan.i3name=ichan;
@@ -413,7 +413,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 		}
 		while(imc2list.length()>0)
 		{
-			int x=imc2list.indexOf(',');
+			final int x=imc2list.indexOf(',');
 
 			String item=null;
 			if(x<0)
@@ -426,15 +426,15 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 				item=imc2list.substring(0,x).trim();
 				imc2list=imc2list.substring(x+1);
 			}
-			int y1=item.indexOf(' ');
-			int y2=item.lastIndexOf(' ');
+			final int y1=item.indexOf(' ');
+			final int y2=item.lastIndexOf(' ');
 			if((y1<0)||(y2<=y1)) continue;
-			CMChannel chan=new CMChannel();
-			String lvl=item.substring(y1+1,y2).trim();
-			String ichan=item.substring(y2+1).trim();
+			final CMChannel chan=new CMChannel();
+			final String lvl=item.substring(y1+1,y2).trim();
+			final String ichan=item.substring(y2+1).trim();
 			item=item.substring(0,y1);
 			chan.name=item.toUpperCase().trim();
-			String[] colorOverride=new String[]{""};
+			final String[] colorOverride=new String[]{""};
 			chan.mask=parseOutFlags(lvl,chan.flags,colorOverride);
 			chan.colorOverride=colorOverride[0];
 			chan.imc2Name=ichan;
@@ -445,7 +445,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 			baseChannelNames[i]=channelList.get(i).name;
 		if(!CMSecurity.isDisabled(CMSecurity.DisFlag.CHANNELAUCTION))
 		{
-			CMChannel chan=new CMChannel();
+			final CMChannel chan=new CMChannel();
 			chan.name="AUCTION";
 			channelList.add(chan);
 		}
@@ -472,7 +472,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 			didIt=true;
 			if(msg.trailerMsgs()!=null)
 			{
-				for(CMMsg msg2 : msg.trailerMsgs())
+				for(final CMMsg msg2 : msg.trailerMsgs())
 					if((msg!=msg2)&&(R.okMessage(M,msg2)))
 						M.executeMsg(M,msg2);
 				msg.trailerMsgs().clear();
@@ -484,14 +484,14 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 	@Override
 	public void reallyChannel(MOB mob, String channelName, String message, boolean systemMsg)
 	{
-		int channelInt=getChannelIndex(channelName);
+		final int channelInt=getChannelIndex(channelName);
 		if(channelInt<0) return;
 
 		final PlayerStats pStats=mob.playerStats();
 
 		message=CMProps.applyINIFilter(message,CMProps.Str.CHANNELFILTER);
-		CMChannel chan=getChannel(channelInt);
-		Set<ChannelFlag> flags=chan.flags;
+		final CMChannel chan=getChannel(channelInt);
+		final Set<ChannelFlag> flags=chan.flags;
 		channelName=chan.name;
 		String channelColor=chan.colorOverride;
 		if(channelColor.length()==0)
@@ -512,7 +512,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 			&&(Character.isLetter(message.charAt(1))||message.charAt(1)==' ')))
 		{
 			String msgstr=message.substring(1);
-			Vector<String> V=CMParms.parse(msgstr);
+			final Vector<String> V=CMParms.parse(msgstr);
 			Social S=CMLib.socials().fetchSocial(V,true,false);
 			if(S==null) S=CMLib.socials().fetchSocial(V,false,false);
 			if(S!=null)
@@ -524,8 +524,8 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 					msgstr=msgstr.trim();
 				else
 					msgstr=" "+msgstr.trim();
-				String srcstr="^<CHANNEL \""+channelName+"\"^>["+channelName+"] "+mob.name()+msgstr+"^</CHANNEL^>^N^.";
-				String reststr="^<CHANNEL \""+channelName+"\"^>["+channelName+"] <S-NAME>"+msgstr+"^</CHANNEL^>^N^.";
+				final String srcstr="^<CHANNEL \""+channelName+"\"^>["+channelName+"] "+mob.name()+msgstr+"^</CHANNEL^>^N^.";
+				final String reststr="^<CHANNEL \""+channelName+"\"^>["+channelName+"] <S-NAME>"+msgstr+"^</CHANNEL^>^N^.";
 				msg=CMClass.getMsg(mob,null,null,CMMsg.MASK_CHANNEL|CMMsg.MASK_ALWAYS|CMMsg.MSG_SPEAK,channelColor+""+srcstr,CMMsg.NO_EFFECT,null,CMMsg.MASK_CHANNEL|(CMMsg.TYP_CHANNEL+channelInt),channelColor+reststr);
 			}
 		}
@@ -536,7 +536,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 		&&(pStats.getAccount()!=null)
 		&&(msg.source()==mob))
 		{
-			String accountName=pStats.getAccount().getAccountName();
+			final String accountName=pStats.getAccount().getAccountName();
 			if(msg.sourceMessage()!=null)
 				msg.setSourceMessage(CMStrings.replaceAll(msg.sourceMessage(), "<S-NAME>", accountName));
 			if(msg.targetMessage()!=null)
@@ -549,9 +549,9 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 		if((R!=null)
 		&&((!R.isInhabitant(mob))||(R.okMessage(mob,msg))))
 		{
-			boolean areareq=flags.contains(ChannelsLibrary.ChannelFlag.SAMEAREA);
+			final boolean areareq=flags.contains(ChannelsLibrary.ChannelFlag.SAMEAREA);
 			channelQueUp(channelInt,msg);
-			for(Session S : CMLib.sessions().localOnlineIterable())
+			for(final Session S : CMLib.sessions().localOnlineIterable())
 				channelTo(S,areareq,channelInt,msg,mob);
 		}
 		if((CMLib.intermud().i3online()&&(CMLib.intermud().isI3channel(channelName)))

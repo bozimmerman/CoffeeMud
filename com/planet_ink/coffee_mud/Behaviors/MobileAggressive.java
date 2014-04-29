@@ -68,7 +68,7 @@ public class MobileAggressive extends Mobile
 		attackMsg=CMParms.getParmStr(newParms,"MESSAGE",null);
 		tickDown=tickWait;
 		aggressiveTickDown=tickWait;
-		Vector<String> V=CMParms.parse(newParms.toUpperCase());
+		final Vector<String> V=CMParms.parse(newParms.toUpperCase());
 		mobkill=V.contains("MOBKILL");
 		misbehave=V.contains("MISBEHAVE");
 	}

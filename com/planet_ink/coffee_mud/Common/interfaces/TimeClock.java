@@ -436,7 +436,7 @@ public interface TimeClock extends Tickable, CMCommon
 		}
 		public long nextPeriod()
 		{
-			Calendar calendar=Calendar.getInstance();
+			final Calendar calendar=Calendar.getInstance();
 			calendar.add(Calendar.MILLISECOND, -calendar.get(Calendar.MILLISECOND));
 			calendar.add(Calendar.SECOND, -calendar.get(Calendar.SECOND));
 			calendar.add(Calendar.MINUTE, -calendar.get(Calendar.MINUTE));

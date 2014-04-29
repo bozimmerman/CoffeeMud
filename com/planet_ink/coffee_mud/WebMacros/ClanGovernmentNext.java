@@ -39,15 +39,15 @@ public class ClanGovernmentNext extends StdWebMacro
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
-		java.util.Map<String,String> parms=parseParms(parm);
-		String last=httpReq.getUrlParameter("GOVERNMENT");
+		final java.util.Map<String,String> parms=parseParms(parm);
+		final String last=httpReq.getUrlParameter("GOVERNMENT");
 		if(parms.containsKey("RESET"))
 		{
 			if(last!=null) httpReq.removeUrlParameter("GOVERNMENT");
 			return "";
 		}
 		int lastID=-1;
-		for(ClanGovernment G : CMLib.clans().getStockGovernments())
+		for(final ClanGovernment G : CMLib.clans().getStockGovernments())
 		{
 			if((last==null)||((last.length()>0)&&(CMath.s_int(last)==lastID)&&(G.getID()!=lastID)))
 			{

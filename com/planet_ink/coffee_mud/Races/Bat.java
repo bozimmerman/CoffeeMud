@@ -46,10 +46,10 @@ public class Bat extends StdRace
 	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
 	@Override public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
 	@Override public String racialCategory(){return "Pteropine";}
-	private String[]racialAbilityNames={"WingFlying"};
-	private int[]racialAbilityLevels={1};
-	private int[]racialAbilityProficiencies={100};
-	private boolean[]racialAbilityQuals={false};
+	private final String[]racialAbilityNames={"WingFlying"};
+	private final int[]racialAbilityLevels={1};
+	private final int[]racialAbilityProficiencies={100};
+	private final boolean[]racialAbilityQuals={false};
 	@Override protected String[] racialAbilityNames(){return racialAbilityNames;}
 	@Override protected int[] racialAbilityLevels(){return racialAbilityLevels;}
 	@Override protected int[] racialAbilityProficiencies(){return racialAbilityProficiencies;}
@@ -59,7 +59,7 @@ public class Bat extends StdRace
 	private static final int[] parts={0 ,2 ,2 ,1 ,0 ,0 ,0 ,1 ,2 ,2 ,1 ,0 ,1 ,0 ,1 ,2 };
 	@Override public int[] bodyMask(){return parts;}
 
-	private int[] agingChart={0,1,2,4,7,15,20,21,22};
+	private final int[] agingChart={0,1,2,4,7,15,20,21,22};
 	@Override public int[] getAgingChart(){return agingChart;}
 
 	@Override
@@ -109,7 +109,7 @@ public class Bat extends StdRace
 	@Override
 	public String healthText(MOB viewer, MOB mob)
 	{
-		double pct=(CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));
+		final double pct=(CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));
 
 		if(pct<.10)
 			return "^r" + mob.name(viewer) + "^r is fluttering around dripping blood everywhere!^N";

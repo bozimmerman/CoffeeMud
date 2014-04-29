@@ -41,12 +41,12 @@ public class AccountData extends StdWebMacro
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
-		java.util.Map<String,String> parms=parseParms(parm);
-		String last=httpReq.getUrlParameter("ACCOUNT");
+		final java.util.Map<String,String> parms=parseParms(parm);
+		final String last=httpReq.getUrlParameter("ACCOUNT");
 		if(last==null) return "";
 		if(last.length()>0)
 		{
-			PlayerAccount A = CMLib.players().getLoadAccount(last);
+			final PlayerAccount A = CMLib.players().getLoadAccount(last);
 			if(A==null) return "";
 			if(parms.containsKey("NAME")||parms.containsKey("ACCOUNT"))
 				return clearWebMacros(A.getAccountName());
@@ -66,16 +66,16 @@ public class AccountData extends StdWebMacro
 					return "Never";
 				return ""+CMLib.time().date2String(A.getAccountExpiration());
 			}
-			for(String flag : PlayerAccount.FLAG_DESCS)
+			for(final String flag : PlayerAccount.FLAG_DESCS)
 				if(parms.containsKey("IS"+flag))
 					return ""+A.isSet(flag);
 			if(parms.containsKey("FLAGS"))
 			{
-				String old=httpReq.getUrlParameter("FLAGS");
+				final String old=httpReq.getUrlParameter("FLAGS");
 				List<String> set=null;
 				if(old==null)
 				{
-					String matList=A.getStat("FLAG");
+					final String matList=A.getStat("FLAG");
 					set=CMParms.parseCommas(matList,true);
 				}
 				else
@@ -85,12 +85,12 @@ public class AccountData extends StdWebMacro
 					for(int i=0;httpReq.isUrlParameter("FLAG"+id);id=""+(++i))
 						set.add(httpReq.getUrlParameter("FLAG"+id));
 				}
-				StringBuffer str=new StringBuffer("");
-				for(int i=0;i<PlayerAccount.FLAG_DESCS.length;i++)
+				final StringBuffer str=new StringBuffer("");
+				for (final String element : PlayerAccount.FLAG_DESCS)
 				{
-					str.append("<OPTION VALUE=\""+PlayerAccount.FLAG_DESCS[i]+"\"");
-					if(set.contains(PlayerAccount.FLAG_DESCS[i])) str.append(" SELECTED");
-					str.append(">"+CMStrings.capitalizeAndLower(PlayerAccount.FLAG_DESCS[i]));
+					str.append("<OPTION VALUE=\""+element+"\"");
+					if(set.contains(element)) str.append(" SELECTED");
+					str.append(">"+CMStrings.capitalizeAndLower(element));
 				}
 				str.append(", ");
 			}

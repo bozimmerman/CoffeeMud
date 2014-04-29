@@ -86,14 +86,14 @@ import com.planet_ink.coffee_mud.core.exceptions.HTTPServerException;
 		{
 			while(verSet.size()>1000)
 				verSet.removeFirst();
-			for(Iterator<ImgCacheEntry> i=verSet.iterator();i.hasNext();)
+			for(final Iterator<ImgCacheEntry> i=verSet.iterator();i.hasNext();)
 			{
-				ImgCacheEntry I=i.next();
+				final ImgCacheEntry I=i.next();
 				if((System.currentTimeMillis()-I.createdTimeMillis)>(20 * 60 * 60 * 1000))
 					i.remove();
 			}
 		}
-		catch(Exception e)
+		catch(final Exception e)
 		{
 
 		}
@@ -103,7 +103,7 @@ import com.planet_ink.coffee_mud.core.exceptions.HTTPServerException;
 	 @Override
 	public String getFilename(HTTPRequest httpReq, String filename)
 	 {
-		 String foundFilename=httpReq.getUrlParameter("FILENAME");
+		 final String foundFilename=httpReq.getUrlParameter("FILENAME");
 		 if((foundFilename!=null)&&(foundFilename.length()>0))
 			 return foundFilename;
 		 return filename;
@@ -112,21 +112,21 @@ import com.planet_ink.coffee_mud.core.exceptions.HTTPServerException;
 	 @Override
 	public byte[] runBinaryMacro(HTTPRequest httpReq, String parm) throws HTTPServerException
 	 {
-		 ByteArrayOutputStream bout=new ByteArrayOutputStream();
+		 final ByteArrayOutputStream bout=new ByteArrayOutputStream();
 		 try
 		 {
 			 synchronized(sync)
 			 {
-				 boolean imageRequest=httpReq.isUrlParameter("IMAGE");
-				 SLinkedList<ImgCacheEntry> cache = getVerifyCache();
+				 final boolean imageRequest=httpReq.isUrlParameter("IMAGE");
+				 final SLinkedList<ImgCacheEntry> cache = getVerifyCache();
 				 String value=null;
 				 String key=null;
 				 final String hisIp=httpReq.getClientAddress().getHostAddress();
 				 if(imageRequest)
 				 {
-		 		   	for(Iterator<ImageVerificationImage.ImgCacheEntry> p =cache.descendingIterator();p.hasNext();)
+		 		   	for(final Iterator<ImageVerificationImage.ImgCacheEntry> p =cache.descendingIterator();p.hasNext();)
 				   	{
-				   		 ImageVerificationImage.ImgCacheEntry entry=p.next();
+				   		 final ImageVerificationImage.ImgCacheEntry entry=p.next();
 						 if(entry.ip.equalsIgnoreCase(hisIp))
 						 {
 							 value=entry.value;
@@ -135,12 +135,12 @@ import com.planet_ink.coffee_mud.core.exceptions.HTTPServerException;
 						 }
 				   	}
 				 }
-				 ImageVerificationImage  img=new ImageVerificationImage(value,bout);
+				 final ImageVerificationImage  img=new ImageVerificationImage(value,bout);
 				 if(key==null)
 					 key=Long.toHexString(Math.round(Math.abs(rand.nextDouble() * (Long.MAX_VALUE/2.0))));
 				 if(value==null)
 				 {
-					 ImgCacheEntry entry=new ImgCacheEntry();
+					 final ImgCacheEntry entry=new ImgCacheEntry();
 					 entry.ip=hisIp;
 					 entry.key=key;
 					 entry.value=img.getVerificationValue();
@@ -154,7 +154,7 @@ import com.planet_ink.coffee_mud.core.exceptions.HTTPServerException;
 				 httpReq.addFakeUrlParameter("IMGVERKEY", key);
 			 }
 		 }
-		 catch(IOException ioe)
+		 catch(final IOException ioe)
 		 {
 			 Log.errOut("ImgVerWM",ioe);
 		 }
@@ -174,11 +174,11 @@ import com.planet_ink.coffee_mud.core.exceptions.HTTPServerException;
 
 	 public ImageVerificationImage (int height, int width, String oldValue, OutputStream out) throws IOException
 	 {
-		 BufferedImage bimage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
-		 Random rand=new Random(System.currentTimeMillis());
-		 Graphics2D g = bimage.createGraphics();
+		 final BufferedImage bimage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+		 final Random rand=new Random(System.currentTimeMillis());
+		 final Graphics2D g = bimage.createGraphics();
 		 // create a random color
-		 Color color = new Color(rand.nextInt(255), rand.nextInt(255), rand.nextInt(255));
+		 final Color color = new Color(rand.nextInt(255), rand.nextInt(255), rand.nextInt(255));
 		 // the the background to the random color to fill the
 		 // background and make it darker
 		 g.setColor(color.darker());
@@ -190,9 +190,9 @@ import com.planet_ink.coffee_mud.core.exceptions.HTTPServerException;
 			 this.value = oldValue;
 		 else
 			 this.value = UUID.randomUUID().toString().replace("-","").substring(0,5);
-		 int w = (g.getFontMetrics()).stringWidth(value);
-		 int d = (g.getFontMetrics()).getDescent();
-		 int a = (g.getFontMetrics()).getMaxAscent();
+		 final int w = (g.getFontMetrics()).stringWidth(value);
+		 final int d = (g.getFontMetrics()).getDescent();
+		 final int a = (g.getFontMetrics()).getMaxAscent();
 		 int x = 0, y =0;
 		 // randomly set the color and draw some straight lines through it
 		 for (int i = 0; i < height; i += 5)
@@ -215,18 +215,18 @@ import com.planet_ink.coffee_mud.core.exceptions.HTTPServerException;
 		 x = width/2 - w/2;
 		 y = height/2 + a/2 - 2;
 		 // affine transform is used to rock the text a bit
-		 AffineTransform fontAT = new AffineTransform();
+		 final AffineTransform fontAT = new AffineTransform();
 		 int xp = x-2;
 		 // walk through each character and rotate it randomly
 		 for (int c=0;c<value.length();c++)
 		 {
 			 // apply a random radian either left or right (left is half since it's too far back)
-			 int rotate = rand.nextInt(20);
+			 final int rotate = rand.nextInt(20);
 			 fontAT.rotate(rand.nextBoolean() ? Math.toRadians(rotate) : -Math.toRadians(rotate/2));
-			 Font fx = new Font("arial", Font.BOLD, 24).deriveFont(fontAT);
+			 final Font fx = new Font("arial", Font.BOLD, 24).deriveFont(fontAT);
 			 g.setFont(fx);
-			 String ch = String.valueOf(value.charAt(c));
-			 int ht = rand.nextInt(3);
+			 final String ch = String.valueOf(value.charAt(c));
+			 final int ht = rand.nextInt(3);
 			 // draw the string and move the y either up or down slightly
 			 g.drawString(ch, xp, y + (rand.nextBoolean()?-ht:ht));
 			 // move our pointer

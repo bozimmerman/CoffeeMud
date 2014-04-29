@@ -57,11 +57,11 @@ public class WaterCurrents extends ActiveTicker
 	public void setParms(String newParms)
 	{
 		super.setParms(newParms);
-		Vector<String> V=CMParms.parse(newParms);
+		final Vector<String> V=CMParms.parse(newParms);
 		dirs="";
 		for(int v=0;v<V.size();v++)
 		{
-			int dir=Directions.getGoodDirectionCode(V.elementAt(v));
+			final int dir=Directions.getGoodDirectionCode(V.elementAt(v));
 			if(dir>=0) dirs=dirs+Directions.getDirectionChar(dir);
 		}
 		if(dirs.length()==0)
@@ -69,7 +69,7 @@ public class WaterCurrents extends ActiveTicker
 	}
 	public void applyCurrents(Room R, Vector done)
 	{
-		Vector todo=new Vector();
+		final Vector todo=new Vector();
 		if((R!=null)&&(R.numInhabitants()>0))
 		{
 			MOB M=null;
@@ -143,7 +143,7 @@ public class WaterCurrents extends ActiveTicker
 					if(todo.elementAt(m) instanceof MOB)
 					{
 						M=(MOB)todo.elementAt(m);
-						CMMsg themsg=CMClass.getMsg(M,M,new AWaterCurrent(),CMMsg.MSG_OK_VISUAL,"<S-NAME> <S-IS-ARE> swept "+Directions.getDirectionName(dir).toLowerCase()+" by the current.");
+						final CMMsg themsg=CMClass.getMsg(M,M,new AWaterCurrent(),CMMsg.MSG_OK_VISUAL,"<S-NAME> <S-IS-ARE> swept "+Directions.getDirectionName(dir).toLowerCase()+" by the current.");
 						if(R.okMessage(M,themsg))
 						{
 							R.send(M,themsg);
@@ -171,21 +171,20 @@ public class WaterCurrents extends ActiveTicker
 		super.tick(ticking,tickID);
 		if(canAct(ticking,tickID))
 		{
-			Vector sweeps=new Vector();
+			final Vector sweeps=new Vector();
 			if(ticking instanceof Room)
 			{
-				Room R=(Room)ticking;
+				final Room R=(Room)ticking;
 				applyCurrents(R,sweeps);
-				Room below=R.rawDoors()[Directions.DOWN];
+				final Room below=R.rawDoors()[Directions.DOWN];
 				if((below!=null)
 				&&(below.roomID().length()==0)
 				&&(below instanceof GridLocale)
 				&&((below.domainType()==Room.DOMAIN_INDOORS_UNDERWATER)
 				   ||(below.domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)))
 				{
-					for(Iterator<Room> i=((GridLocale)below).getAllRooms().iterator(); i.hasNext();)
+					for (final Room R2 : ((GridLocale)below).getAllRooms())
 					{
-						Room R2=i.next();
 						applyCurrents(R2,sweeps);
 					}
 				}
@@ -193,9 +192,9 @@ public class WaterCurrents extends ActiveTicker
 			else
 			if(ticking instanceof Area)
 			{
-				for(Enumeration r=((Area)ticking).getMetroMap();r.hasMoreElements();)
+				for(final Enumeration r=((Area)ticking).getMetroMap();r.hasMoreElements();)
 				{
-					Room R=(Room)r.nextElement();
+					final Room R=(Room)r.nextElement();
 					if((R.domainType()==Room.DOMAIN_INDOORS_UNDERWATER)
 					||(R.domainType()==Room.DOMAIN_INDOORS_WATERSURFACE)
 					||(R.domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)
@@ -307,7 +306,7 @@ public class WaterCurrents extends ActiveTicker
 			{
 				return this.getClass().newInstance();
 			}
-			catch(Exception e)
+			catch(final Exception e)
 			{
 				Log.errOut(ID(),e);
 			}
@@ -346,7 +345,7 @@ public class WaterCurrents extends ActiveTicker
 		public boolean sameAs(Environmental E)
 		{
 			if(!(E instanceof AWaterCurrent)) return false;
-			String[] codes=getStatCodes();
+			final String[] codes=getStatCodes();
 			for(int i=0;i<codes.length;i++)
 				if(!E.getStat(codes[i]).equals(getStat(codes[i])))
 					return false;
@@ -359,13 +358,13 @@ public class WaterCurrents extends ActiveTicker
 		{
 			try
 			{
-				AWaterCurrent E=(AWaterCurrent)this.clone();
+				final AWaterCurrent E=(AWaterCurrent)this.clone();
 				//CMClass.bumpCounter(E,CMClass.CMObjectType.ABILITY);//removed for mem & perf
 				E.cloneFix(this);
 				return E;
 
 			}
-			catch(CloneNotSupportedException e)
+			catch(final CloneNotSupportedException e)
 			{
 				return this.newInstance();
 			}

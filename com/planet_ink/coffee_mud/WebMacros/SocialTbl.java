@@ -41,11 +41,11 @@ public class SocialTbl extends StdWebMacro
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
-		StringBuffer TBL=(StringBuffer)Resources.getResource("WEB SOCIALS TBL");
+		final StringBuffer TBL=(StringBuffer)Resources.getResource("WEB SOCIALS TBL");
 		if(TBL!=null) return TBL.toString();
 
-		List<String> socialVec=CMLib.socials().getSocialsList();
-		StringBuffer msg=new StringBuffer("\n\r");
+		final List<String> socialVec=CMLib.socials().getSocialsList();
+		final StringBuffer msg=new StringBuffer("\n\r");
 		int col=0;
 		int percent = 100/AT_MAX_COL;
 		for(int i=0;i<socialVec.size();i++)

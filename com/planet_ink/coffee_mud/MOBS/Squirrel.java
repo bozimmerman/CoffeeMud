@@ -37,7 +37,7 @@ public class Squirrel extends StdMOB
 	public Squirrel()
 	{
 		super();
-		Random randomizer = new Random(System.currentTimeMillis());
+		final Random randomizer = new Random(System.currentTimeMillis());
 
 		username="a squirrel";
 		setDescription("It\\`s small, cute, and quick with a big expressive tail.");

@@ -60,7 +60,7 @@ public class Prop_NoSummon extends Property
 		&&((!nonAggroOK)||(!(msg.target() instanceof MOB))||(!CMLib.flags().isAggressiveTo((MOB)msg.target(),null)))
 		&&(CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_SUMMONING)))
 		{
-			Ability A=(Ability)msg.tool();
+			final Ability A=(Ability)msg.tool();
 			if(((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_CHANT)
 			||((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SPELL)
 			||((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PRAYER)

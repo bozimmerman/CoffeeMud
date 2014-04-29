@@ -56,7 +56,7 @@ public class Spell_Slow extends Spell
 		// undo the affects of this spell
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		super.unInvoke();
 
 		if(canBeUninvoked())
@@ -68,7 +68,7 @@ public class Spell_Slow extends Spell
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		MOB target=this.getTarget(mob,commands,givenTarget);
+		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 		Room R=CMLib.map().roomLocation(target);
 		if(R==null) R=mob.location();
@@ -89,14 +89,14 @@ public class Spell_Slow extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> cast(s) a spell on <T-NAMESELF>.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> cast(s) a spell on <T-NAMESELF>.^?");
 			if(R.okMessage(mob,msg))
 			{
 				R.send(mob,msg);
 				if(msg.value()<=0)
 				{
 					R.show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> slow(s) down!");
-					Ability A=target.fetchEffect("Spell_MassSlow");
+					final Ability A=target.fetchEffect("Spell_MassSlow");
 					if(A!=null)A.unInvoke();
 					success=maliciousAffect(mob,target,asLevel,0,-1);
 				}

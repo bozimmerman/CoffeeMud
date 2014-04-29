@@ -51,9 +51,9 @@ public class AreaXML extends StdWebMacro
 	@Override
 	public String getFilename(HTTPRequest httpReq, String filename)
 	{
-		MOB mob = Authenticate.getAuthenticatedMob(httpReq);
+		final MOB mob = Authenticate.getAuthenticatedMob(httpReq);
 		if(mob==null) return "area.xml";
-		Area pickedA=getLoggedArea(httpReq,mob);
+		final Area pickedA=getLoggedArea(httpReq,mob);
 		if(pickedA==null) return "area.xml";
 		String fileName="";
 		if(pickedA.getArchivePath().length()>0)
@@ -67,10 +67,10 @@ public class AreaXML extends StdWebMacro
 
 	protected Area getLoggedArea(HTTPRequest httpReq, MOB mob)
 	{
-		String AREA=httpReq.getUrlParameter("AREA");
+		final String AREA=httpReq.getUrlParameter("AREA");
 		if(AREA==null) return null;
 		if(AREA.length()==0) return null;
-		Area A=CMLib.map().getArea(AREA);
+		final Area A=CMLib.map().getArea(AREA);
 		if(A==null) return null;
 		if(CMSecurity.isASysOp(mob)||A.amISubOp(mob.Name()))
 			return A;
@@ -80,18 +80,18 @@ public class AreaXML extends StdWebMacro
 	@Override
 	public byte[] runBinaryMacro(HTTPRequest httpReq, String parm) throws HTTPServerException
 	{
-		MOB mob = Authenticate.getAuthenticatedMob(httpReq);
+		final MOB mob = Authenticate.getAuthenticatedMob(httpReq);
 		if(mob==null) return null;
-		Area pickedA=getLoggedArea(httpReq,mob);
+		final Area pickedA=getLoggedArea(httpReq,mob);
 		if(pickedA==null) return null;
-		Command C=CMClass.getCommand("Export");
+		final Command C=CMClass.getCommand("Export");
 		if(C==null) return null;
 		Object resultO=null;
 		try
 		{
 			resultO=C.executeInternal(mob,0,"AREA","DATA","MEMORY",Integer.valueOf(4),null,pickedA,mob.location());
 		}
-		catch(Exception e)
+		catch(final Exception e)
 		{
 			return null;
 		}

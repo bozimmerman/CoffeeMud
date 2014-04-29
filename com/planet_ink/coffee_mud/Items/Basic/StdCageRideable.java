@@ -60,13 +60,13 @@ public class StdCageRideable extends StdRideable
 		{
 			synchronized(this)
 			{
-				boolean wasOpen=isOpen;
+				final boolean wasOpen=isOpen;
 				isOpen=true;
 				CMLib.commands().handleBeingLookedAt(msg);
 				isOpen=wasOpen;
 			}
 			if(behaviors!=null)
-				for(Behavior B : behaviors)
+				for(final Behavior B : behaviors)
 					if(B!=null)
 						B.executeMsg(this,msg);
 

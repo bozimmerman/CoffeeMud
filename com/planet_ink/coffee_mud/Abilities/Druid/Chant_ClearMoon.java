@@ -48,7 +48,7 @@ public class Chant_ClearMoon extends Chant
 		if(P!=null)
 		for(int a=P.numEffects()-1;a>=0;a--) // personal and reverse enumeration
 		{
-			Ability A=P.fetchEffect(a);
+			final Ability A=P.fetchEffect(a);
 			if((A!=null)
 			&&(((A.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_MOONALTERING)
 			   ||((A.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_MOONSUMMONING)))
@@ -63,26 +63,26 @@ public class Chant_ClearMoon extends Chant
 			return false;
 
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(!success)
 			this.beneficialVisualFizzle(mob,null,"<S-NAME> chant(s) for a clear moon, but the magic fades.");
 		else
 		{
-			CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),"^S<S-NAME> chant(s) for a clear moon.^?");
+			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),"^S<S-NAME> chant(s) for a clear moon.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				Room thatRoom=mob.location();
+				final Room thatRoom=mob.location();
 				clearMoons(thatRoom);
 				for(int i=0;i<thatRoom.numInhabitants();i++)
 				{
-					MOB M=thatRoom.fetchInhabitant(i);
+					final MOB M=thatRoom.fetchInhabitant(i);
 					clearMoons(M);
 				}
 				for(int i=0;i<thatRoom.numItems();i++)
 				{
-					Item I=thatRoom.getItem(i);
+					final Item I=thatRoom.getItem(i);
 					clearMoons(I);
 				}
 			}

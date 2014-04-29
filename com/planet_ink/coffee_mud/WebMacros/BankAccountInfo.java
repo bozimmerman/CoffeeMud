@@ -54,7 +54,7 @@ public class BankAccountInfo extends StdWebMacro
 		}
 		else
 		{
-			Double bal=Double.valueOf(B.getBalance(playerM.Name())); // this works for clans because name==clan name
+			final Double bal=Double.valueOf(B.getBalance(playerM.Name())); // this works for clans because name==clan name
 			info.balance=bal.doubleValue();
 			info.debt=B.getDebtInfo(playerM.Name());
 			info.items=B.getDepositedItems(playerM.Name());
@@ -71,22 +71,22 @@ public class BankAccountInfo extends StdWebMacro
 		boolean destroyPlayer=false;
 		try
 		{
-		java.util.Map<String,String> parms=parseParms(parm);
-		String last=httpReq.getUrlParameter("BANKCHAIN");
+		final java.util.Map<String,String> parms=parseParms(parm);
+		final String last=httpReq.getUrlParameter("BANKCHAIN");
 		if(last==null) return " @break@";
-		MOB M = Authenticate.getAuthenticatedMob(httpReq);
+		final MOB M = Authenticate.getAuthenticatedMob(httpReq);
 		if(M==null) return " @break@";
 		String player=httpReq.getUrlParameter("PLAYER");
 		if((player==null)||(player.length()==0))
 			player=httpReq.getUrlParameter("CLAN");
-		Banker B=CMLib.map().getBank(last,last);
+		final Banker B=CMLib.map().getBank(last,last);
 		if(B==null) return "BANKER not found?!";
 		if((player!=null)&&(player.length()>0))
 		{
 			if((!M.Name().equalsIgnoreCase(player))
 			&&(!CMSecurity.isAllowedEverywhere(M,CMSecurity.SecFlag.CMDPLAYERS)))
 				return "";
-			Clan C=CMLib.clans().getClan(player);
+			final Clan C=CMLib.clans().getClan(player);
 			if(C!=null)
 			{
 				playerM=CMClass.getFactoryMOB();
@@ -115,8 +115,8 @@ public class BankAccountInfo extends StdWebMacro
 		}
 		else
 			return "PLAYER not set!";
-		BankAccountStuff acct=BankAccountInfo.getMakeAccountInfo(httpReq,B,playerM);
-		double balance=acct.balance;
+		final BankAccountStuff acct=BankAccountInfo.getMakeAccountInfo(httpReq,B,playerM);
+		final double balance=acct.balance;
 		if(parms.containsKey("HASACCT"))
 			return (balance>0.0)?"true":"false";
 		if(balance<=0.0) return "";
@@ -127,24 +127,24 @@ public class BankAccountInfo extends StdWebMacro
 		||(parms.containsKey("DEBTDUE"))
 		||(parms.containsKey("DEBTINT")))
 		{
-			MoneyLibrary.DebtItem debt=acct.debt;
+			final MoneyLibrary.DebtItem debt=acct.debt;
 			if((debt==null)||(debt.amt==0.0)) return "N/A";
-			double amt=debt.amt;
-			String reason=debt.reason;
-			String intRate=CMath.div((int)Math.round(debt.interest*10000.0),100.0)+"%";
-			long dueLong=debt.due;
-			long timeRemaining=System.currentTimeMillis()-dueLong;
+			final double amt=debt.amt;
+			final String reason=debt.reason;
+			final String intRate=CMath.div((int)Math.round(debt.interest*10000.0),100.0)+"%";
+			final long dueLong=debt.due;
+			final long timeRemaining=System.currentTimeMillis()-dueLong;
 			String dueDate="";
 			if(timeRemaining<0)
 				dueDate="Past due.";
 			else
 			{
-				int mudHoursToGo=(int)(timeRemaining/CMProps.getMillisPerMudHour());
+				final int mudHoursToGo=(int)(timeRemaining/CMProps.getMillisPerMudHour());
 				if(playerA.getTimeObj()==null)
 					dueDate="Not available";
 				else
 				{
-					TimeClock T=(TimeClock)playerA.getTimeObj().copyOf();
+					final TimeClock T=(TimeClock)playerA.getTimeObj().copyOf();
 					T.tickTock(mudHoursToGo);
 					dueDate=T.getShortTimeDescription();
 				}
@@ -158,10 +158,10 @@ public class BankAccountInfo extends StdWebMacro
 		if(parms.containsKey("ITEMSWORTH")) return CMLib.beanCounter().nameCurrencyLong(playerM,B.totalItemsWorth(playerM.Name()));
 		if(parms.containsKey("ITEMSLIST"))
 		{
-			List<Item> items=acct.items;
+			final List<Item> items=acct.items;
 			if(items != null)
 			{
-				StringBuffer list=new StringBuffer("");
+				final StringBuffer list=new StringBuffer("");
 				for(int v=0;v<items.size();v++)
 					if(!(items.get(v) instanceof Coins))
 					{

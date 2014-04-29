@@ -45,7 +45,7 @@ public class Play_Harmony extends Play
 	@Override
 	protected void inpersistantAffect(MOB mob)
 	{
-		MOB victim=mob.getVictim();
+		final MOB victim=mob.getVictim();
 		if(victim!=null) victim.makePeace();
 		mob.makePeace();
 	}

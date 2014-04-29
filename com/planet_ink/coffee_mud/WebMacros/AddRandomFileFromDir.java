@@ -43,25 +43,25 @@ public class AddRandomFileFromDir extends StdWebMacro
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
-		java.util.Map<String,String> parms=parseParms(parm);
+		final java.util.Map<String,String> parms=parseParms(parm);
 		if((parms==null)||(parms.size()==0)) return "";
-		StringBuffer buf=new StringBuffer("");
-		Vector fileList=new Vector();
+		final StringBuffer buf=new StringBuffer("");
+		final Vector fileList=new Vector();
 		boolean LINKONLY=false;
-		for(String val : parms.values())
+		for(final String val : parms.values())
 			if(val.equalsIgnoreCase("LINKONLY"))
 				LINKONLY=true;
 		for(String filePath : parms.values())
 		{
 			if(filePath.equalsIgnoreCase("LINKONLY")) continue;
-			File directory=grabFile(httpReq,filePath);
+			final File directory=grabFile(httpReq,filePath);
 			if((!filePath.endsWith("/"))&&(!filePath.endsWith("/")))
 				filePath+="/";
 			if((directory!=null)&&(directory.canRead())&&(directory.isDirectory()))
 			{
-				String[] list=directory.list();
-				for(int l=0;l<list.length;l++)
-					fileList.addElement(filePath+list[l]);
+				final String[] list=directory.list();
+				for (final String element : list)
+					fileList.addElement(filePath+element);
 			}
 			else
 				Log.sysOut("AddRFDir","Directory error: "+filePath);
@@ -76,7 +76,7 @@ public class AddRandomFileFromDir extends StdWebMacro
 			else
 				buf.append(new String(getHTTPFileData(httpReq,(String)fileList.elementAt(CMLib.dice().roll(1,fileList.size(),-1)))));
 		}
-		catch(HTTPException e)
+		catch(final HTTPException e)
 		{
 			Log.warnOut("Failed "+name()+" "+(String)fileList.elementAt(CMLib.dice().roll(1,fileList.size(),-1)));
 		}

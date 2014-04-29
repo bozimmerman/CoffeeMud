@@ -44,7 +44,7 @@ public class Skeleton extends Undead
 		setMoney(0);
 		basePhyStats.setWeight(30);
 
-		Weapon sword=CMClass.getWeapon("Longsword");
+		final Weapon sword=CMClass.getWeapon("Longsword");
 		if(sword!=null)
 		{
 			sword.wearAt(Wearable.WORN_WIELD);

@@ -14,12 +14,12 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.*;
 
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.MoneyLibrary.MoneyDenomination;
 
 /*
    Copyright 2000-2014 Bo Zimmerman
@@ -58,7 +58,7 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 		 ||helpStr.startsWith("SKILL_")
 		 ||helpStr.startsWith("PLAY_"))
 			return true;
-		String thisTag=getHelpFile().getProperty(helpStr);
+		final String thisTag=getHelpFile().getProperty(helpStr);
 		if((thisTag!=null)
 		&&(thisTag.startsWith("<ABILITY>")||thisTag.startsWith("<EXPERTISE>")))
 			return true;
@@ -100,7 +100,7 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 	@Override
 	public List<String> getTopics(boolean archonHelp, boolean standardHelp)
 	{
-		Vector<String> reverseList=new Vector<String>();
+		final Vector<String> reverseList=new Vector<String>();
 		Properties rHelpFile=null;
 		if(archonHelp)
 			rHelpFile=getArcHelpFile();
@@ -110,10 +110,10 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 				rHelpFile=getHelpFile();
 			else
 			{
-				for(Enumeration<Object> e=rHelpFile.keys();e.hasMoreElements();)
+				for(final Enumeration<Object> e=rHelpFile.keys();e.hasMoreElements();)
 				{
-					String ptop = (String)e.nextElement();
-					String thisTag=rHelpFile.getProperty(ptop);
+					final String ptop = (String)e.nextElement();
+					final String thisTag=rHelpFile.getProperty(ptop);
 					if ((thisTag==null)||(thisTag.length()==0)||(thisTag.length()>=35)
 						|| (rHelpFile.getProperty(thisTag)== null) )
 							reverseList.addElement(ptop);
@@ -122,10 +122,10 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 			}
 		}
 		if(rHelpFile!=null)
-		for(Enumeration<Object> e=rHelpFile.keys();e.hasMoreElements();)
+		for(final Enumeration<Object> e=rHelpFile.keys();e.hasMoreElements();)
 		{
-			String ptop = (String)e.nextElement();
-			String thisTag=rHelpFile.getProperty(ptop);
+			final String ptop = (String)e.nextElement();
+			final String thisTag=rHelpFile.getProperty(ptop);
 			if ((thisTag==null)||(thisTag.length()==0)||(thisTag.length()>=35)
 				|| (rHelpFile.getProperty(thisTag)== null) )
 					reverseList.addElement(ptop);
@@ -152,7 +152,7 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 			if(myA!=null) A=myA;
 		}
 
-		int[] consumption=A.usageCost(forMOB,true);
+		final int[] consumption=A.usageCost(forMOB,true);
 		int whichConsumed=consumption[0];
 		switch(which)
 		{
@@ -176,8 +176,8 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 
 	private void appendAllowed(StringBuilder prepend, String ID)
 	{
-		List<String> allows=new SVector<String>();
-		for(Iterator<String> i=CMLib.ableMapper().getAbilityAllowsList(ID);i.hasNext();)
+		final List<String> allows=new SVector<String>();
+		for(final Iterator<String> i=CMLib.ableMapper().getAbilityAllowsList(ID);i.hasNext();)
 			allows.add(i.next());
 		ExpertiseLibrary.ExpertiseDefinition def=null;
 		Ability A=null;
@@ -212,7 +212,7 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 			int lastLine=11;
 			for(int a=0;a<allows.size();a++)
 			{
-				String allowStr=allows.get(a);
+				final String allowStr=allows.get(a);
 				def=CMLib.expertises().getDefinition(allowStr);
 				if(def!=null)
 				{
@@ -243,9 +243,9 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 
 	protected String columnHelper(String word, String msg, int wrap)
 	{
-		StringBuilder prepend = new StringBuilder("");
-		String[] maxStats = CMLib.coffeeFilter().wrapOnlyFilter(msg,wrap-12);
-		for(String s : maxStats)
+		final StringBuilder prepend = new StringBuilder("");
+		final String[] maxStats = CMLib.coffeeFilter().wrapOnlyFilter(msg,wrap-12);
+		for(final String s : maxStats)
 		{
 			prepend.append(CMStrings.padRight(word, 12)).append(s).append("\n\r");
 			word=" ";
@@ -260,25 +260,24 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 		if(str.startsWith("<CURRENCY>")||worldCurrency)
 		{
 			str=str.substring(worldCurrency?12:10);
-			Vector<String> currencies=new Vector<String>();
+			final Vector<String> currencies=new Vector<String>();
 			if((forMOB==null)||(forMOB.location()==null)||(worldCurrency))
 			{
 				worldCurrency=true;
-				for(Enumeration<Area> e=CMLib.map().areas();e.hasMoreElements();)
+				for(final Enumeration<Area> e=CMLib.map().areas();e.hasMoreElements();)
 				{
-					String currency=CMLib.beanCounter().getCurrency(e.nextElement());
+					final String currency=CMLib.beanCounter().getCurrency(e.nextElement());
 					if(!currencies.contains(currency))
 						currencies.addElement(currency);
 				}
 			}
 			else
 				currencies.addElement(CMLib.beanCounter().getCurrency(forMOB.location()));
-			StringBuilder help=new StringBuilder("");
+			final StringBuilder help=new StringBuilder("");
 			if(worldCurrency)
 				help.append("\n\r"+CMStrings.padRight("World Currencies",20)+":");
-			for(Enumeration<String> e=currencies.elements();e.hasMoreElements();)
+			for (final String currency : currencies)
 			{
-				String currency=e.nextElement();
 				if(worldCurrency)
 					help.append("\n\r"+CMStrings.padRight("Currency",20)+":");
 				else
@@ -287,17 +286,17 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 					help.append("default");
 				else
 					help.append(CMStrings.capitalizeAndLower(currency));
-				MoneyLibrary.MoneyDenomination denoms[]=CMLib.beanCounter().getCurrencySet(currency);
-				for(int d=0;d<denoms.length;d++)
+				final MoneyLibrary.MoneyDenomination denoms[]=CMLib.beanCounter().getCurrencySet(currency);
+				for (final MoneyDenomination denom : denoms)
 				{
-					if(denoms[d].abbr.length()>0)
-						help.append("\n\r"+CMStrings.padRight(denoms[d].name+" ("+denoms[d].abbr+")",20)+":");
+					if(denom.abbr.length()>0)
+						help.append("\n\r"+CMStrings.padRight(denom.name+" ("+denom.abbr+")",20)+":");
 					else
-						help.append("\n\r"+CMStrings.padRight(denoms[d].name,20)+":");
-					if(denoms[d].value==CMLib.beanCounter().getLowestDenomination(currency))
-						help.append(" (exchange rate is "+denoms[d].value+" of base)");
+						help.append("\n\r"+CMStrings.padRight(denom.name,20)+":");
+					if(denom.value==CMLib.beanCounter().getLowestDenomination(currency))
+						help.append(" (exchange rate is "+denom.value+" of base)");
 					else
-						help.append(" "+CMLib.beanCounter().getConvertableDescription(currency,denoms[d].value));
+						help.append(" "+CMLib.beanCounter().getConvertableDescription(currency,denom.value));
 				}
 				help.append("\n\r");
 			}
@@ -309,12 +308,12 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 		{
 			str=str.substring(11);
 			ExpertiseLibrary.ExpertiseDefinition def=null;
-			for(Enumeration<ExpertiseLibrary.ExpertiseDefinition> e=CMLib.expertises().definitions();e.hasMoreElements();)
+			for(final Enumeration<ExpertiseLibrary.ExpertiseDefinition> e=CMLib.expertises().definitions();e.hasMoreElements();)
 			{
 				def=e.nextElement();
 				if(def.name.toUpperCase().replace(' ','_').equals(tag.toUpperCase()))
 				{
-					StringBuilder prepend=new StringBuilder("");
+					final StringBuilder prepend=new StringBuilder("");
 					prepend.append("\n\rExpertise: "+def.name);
 					prepend.append("\n\rRequires : "+CMLib.masking().maskDesc(def.allRequirements(),true));
 					appendAllowed(prepend,def.ID);
@@ -329,7 +328,7 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 			if(C==null) C=CMClass.findCharClass(tag.replace('_',' '));
 			if(C!=null)
 			{
-				StringBuilder prepend=new StringBuilder("");
+				final StringBuilder prepend=new StringBuilder("");
 				int wrap = 0;
 				if((forMOB!=null)&&(forMOB.session()!=null))
 					wrap=forMOB.session().getWrap();
@@ -368,7 +367,7 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 			if(R==null) R=CMClass.findRace(tag.replace('_',' '));
 			if(R!=null)
 			{
-				StringBuilder prepend=new StringBuilder("");
+				final StringBuilder prepend=new StringBuilder("");
 				int wrap = 0;
 				if((forMOB!=null)&&(forMOB.session()!=null))
 					wrap=forMOB.session().getWrap();
@@ -442,24 +441,24 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 				name=name.substring(5);
 			}
 			name=name.replace('_',' ');
-			Vector<Ability> helpedPreviously=new Vector<Ability>();
+			final Vector<Ability> helpedPreviously=new Vector<Ability>();
 			String subTag=tag;
 			while(subTag.indexOf('_')!=subTag.lastIndexOf('_'))
 			{
-				int x=subTag.lastIndexOf('_');
+				final int x=subTag.lastIndexOf('_');
 				subTag=subTag.substring(0,x)+subTag.substring(x+1);
 			}
 
-			for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
+			for(final Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 			{
-				Ability A=a.nextElement();
+				final Ability A=a.nextElement();
 				if(((A.ID().equalsIgnoreCase(tag)||A.ID().equalsIgnoreCase(subTag))
 						&&((type<0)||(type==(A.classificationCode()&Ability.ALL_ACODES)))
 					||(A.name().equalsIgnoreCase(name)))
 				&&(!helpedPreviously.contains(A)))
 				{
 					helpedPreviously.addElement(A);
-					StringBuilder prepend=new StringBuilder("");
+					final StringBuilder prepend=new StringBuilder("");
 					type=(A.classificationCode()&Ability.ALL_ACODES);
 					prepend.append("\n\r");
 					switch(type)
@@ -486,21 +485,21 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 					prepend.append(": "+A.name());
 					if((forMOB!=null)&&(forMOB.session()!=null)&&(!forMOB.session().isStopped()))
 					{
-						Ability A2=forMOB.fetchAbility(A.ID());
+						final Ability A2=forMOB.fetchAbility(A.ID());
 						if(A2!=null) prepend.append("   (Proficiency: "+A2.proficiency()+"%)");
 					}
 					if((A.classificationCode()&Ability.ALL_DOMAINS)>0)
 					{
 						prepend.append("\n\rDomain   : ");
-						int school=(A.classificationCode()&Ability.ALL_DOMAINS)>>5;
+						final int school=(A.classificationCode()&Ability.ALL_DOMAINS)>>5;
 						prepend.append(CMStrings.capitalizeAndLower(Ability.DOMAIN_DESCS[school].replace('_',' ')));
 					}
-					Vector<String> avail=new Vector<String>();
-					Hashtable<Integer,int[]> sortedByLevel=new Hashtable<Integer,int[]>();
-					for(Enumeration<CharClass> c=CMClass.charClasses();c.hasMoreElements();)
+					final Vector<String> avail=new Vector<String>();
+					final Hashtable<Integer,int[]> sortedByLevel=new Hashtable<Integer,int[]>();
+					for(final Enumeration<CharClass> c=CMClass.charClasses();c.hasMoreElements();)
 					{
-						CharClass C=c.nextElement();
-						int lvl=CMLib.ableMapper().getQualifyingLevel(C.ID(),true,A.ID());
+						final CharClass C=c.nextElement();
+						final int lvl=CMLib.ableMapper().getQualifyingLevel(C.ID(),true,A.ID());
 						if((!C.ID().equalsIgnoreCase("Archon"))
 						&&(lvl>=0)
 						&&(C.availabilityCode()!=0)
@@ -512,10 +511,10 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 							avail.addElement(C.name(lvl)+"("+lvl+")");
 						}
 					}
-					for(Enumeration<Integer> e=sortedByLevel.keys();e.hasMoreElements();)
+					for(final Enumeration<Integer> e=sortedByLevel.keys();e.hasMoreElements();)
 					{
-						Integer I=e.nextElement();
-						int[] count=sortedByLevel.get(I);
+						final Integer I=e.nextElement();
+						final int[] count=sortedByLevel.get(I);
 						if(count[0]>2)
 						{
 							String s=null;
@@ -546,19 +545,19 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 						preReqs=CMLib.ableMapper().getCommonPreRequisites(forMOB,A);
 					if(preReqs.size()>0)
 					{
-						String names=CMLib.ableMapper().formatPreRequisites(preReqs);
+						final String names=CMLib.ableMapper().formatPreRequisites(preReqs);
 						prepend.append("\n\rRequires : "+names);
 					}
-					String mask=CMLib.ableMapper().getCommonExtraMask(A);
+					final String mask=CMLib.ableMapper().getCommonExtraMask(A);
 					if((mask!=null)&&(mask.length()>0))
 						prepend.append("\n\rRequires : "+CMLib.masking().maskDesc(mask,true));
 					appendAllowed(prepend,A.ID());
 					if(type==Ability.ACODE_PRAYER)
 					{
 						String rangeDescs=null;
-						for(Enumeration<Faction> e=CMLib.factions().factions();e.hasMoreElements();)
+						for(final Enumeration<Faction> e=CMLib.factions().factions();e.hasMoreElements();)
 						{
-							Faction F=e.nextElement();
+							final Faction F=e.nextElement();
 							rangeDescs=F.usageFactorRangeDescription(A);
 							if(rangeDescs.length()>0)
 								prepend.append("\n\r"+CMStrings.capitalizeAndLower(F.name())+": "+rangeDescs);
@@ -567,7 +566,7 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 
 					if(!A.isAutoInvoked())
 					{
-						Vector<AbilityComponent> components=(Vector<AbilityComponent>)CMLib.ableMapper().getAbilityComponentMap().get(A.ID().toUpperCase());
+						final Vector<AbilityComponent> components=(Vector<AbilityComponent>)CMLib.ableMapper().getAbilityComponentMap().get(A.ID().toUpperCase());
 						if(components!=null)
 						{
 							prepend.append("\n\rComponent: ");
@@ -630,8 +629,8 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 						||(A.abstractQuality()==Ability.QUALITY_OK_SELF))
 							prepend.append("Caster, or others");
 						prepend.append("\n\rRange    : ");
-						int min=A.minRange();
-						int max=A.maxRange();
+						final int min=A.minRange();
+						final int max=A.maxRange();
 						if(min+max==0)
 							prepend.append("Touch, or not applicable");
 						else
@@ -665,7 +664,7 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 		{
 			if(str!=null)
 				return CMLib.webMacroFilter().virtualPageFilter(str);
-		}catch(com.planet_ink.coffee_mud.core.exceptions.HTTPRedirectException x){}
+		}catch(final com.planet_ink.coffee_mud.core.exceptions.HTTPRedirectException x){}
 		return str;
 	}
 
@@ -683,10 +682,10 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 			helpStr=helpStr.replace(' ','_');
 		String thisTag=null;
 
-		CharClass C=CMClass.findCharClass(helpStr.toUpperCase());
+		final CharClass C=CMClass.findCharClass(helpStr.toUpperCase());
 		if((C!=null)&&(C.isGeneric()))
 			thisTag="<CHARCLASS>"+C.getStat("HELP");
-		Race R=CMClass.findRace(helpStr.toUpperCase());
+		final Race R=CMClass.findRace(helpStr.toUpperCase());
 		if((R!=null)&&(R.isGeneric()))
 			thisTag="<RACE>"+R.getStat("HELP");
 
@@ -723,7 +722,7 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 					thisTag=rHelpFile.getProperty("CHANNEL");
 				thisTag=CMStrings.replaceAll(thisTag,"[CHANNEL]",s.toUpperCase());
 				thisTag=CMStrings.replaceAll(thisTag,"[channel]",s.toLowerCase());
-				String extra = no?"":CMLib.channels().getExtraChannelDesc(s);
+				final String extra = no?"":CMLib.channels().getExtraChannelDesc(s);
 				thisTag=CMStrings.replaceAll(thisTag,"[EXTRA]",extra);
 				return new StringBuilder(thisTag);
 			}
@@ -734,9 +733,9 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 		{
 			String ahelpStr=helpStr.replaceAll("_"," ").trim();
 			if(areaTag) ahelpStr=ahelpStr.substring(9);
-			for(Enumeration<Area> e=CMLib.map().areas();e.hasMoreElements();)
+			for(final Enumeration<Area> e=CMLib.map().areas();e.hasMoreElements();)
 			{
-				Area A=e.nextElement();
+				final Area A=e.nextElement();
 				if(A.name().equalsIgnoreCase(ahelpStr))
 				{
 					helpStr=A.name();
@@ -749,10 +748,10 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 
 		if((!areaTag)&&(!found))
 		{
-			String ahelpStr=helpStr.replaceAll("_"," ").trim();
+			final String ahelpStr=helpStr.replaceAll("_"," ").trim();
 			if(!found)
 			{
-				String s=CMLib.socials().getSocialsHelp(forMOB,helpStr.toUpperCase(), true);
+				final String s=CMLib.socials().getSocialsHelp(forMOB,helpStr.toUpperCase(), true);
 				if(s!=null)
 				{
 					thisTag=s;
@@ -762,7 +761,7 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 			}
 			if(!found)
 			{
-				String s=CMLib.clans().getGovernmentHelp(forMOB,helpStr.toUpperCase(), true);
+				final String s=CMLib.clans().getGovernmentHelp(forMOB,helpStr.toUpperCase(), true);
 				if(s!=null)
 				{
 					thisTag=s;
@@ -772,7 +771,7 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 			}
 			if(!found)
 			{
-				Ability A=CMClass.findAbility(helpStr.toUpperCase(),-1,-1,true);
+				final Ability A=CMClass.findAbility(helpStr.toUpperCase(),-1,-1,true);
 				if((A!=null)&&(A.isGeneric()))
 				{
 					thisTag=A.getStat("HELP");
@@ -781,7 +780,7 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 			}
 			if(!found)
 			{
-				String s=CMLib.expertises().getExpertiseHelp(helpStr.toUpperCase(),true);
+				final String s=CMLib.expertises().getExpertiseHelp(helpStr.toUpperCase(),true);
 				if(s!=null)
 				{
 					thisTag=s;
@@ -791,23 +790,23 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 			}
 			if(!found)
 			{
-				Deity D = CMLib.map().getDeity(helpStr);
+				final Deity D = CMLib.map().getDeity(helpStr);
 				if(D != null)
 				{
-					Command CMD=CMClass.getCommand("Deities");
+					final Command CMD=CMClass.getCommand("Deities");
 					try
 					{
 						thisTag=(String)CMD.executeInternal(forMOB, Command.METAFLAG_FORCED, D);
 						helpStr = D.Name().toUpperCase();
-					}catch(Exception e){}
+					}catch(final Exception e){}
 				}
 
 			}
 			// INEXACT searches start here
 			if(!found)
-				for(Enumeration<Object> e=rHelpFile.keys();e.hasMoreElements();)
+				for(final Enumeration<Object> e=rHelpFile.keys();e.hasMoreElements();)
 				{
-					String key=((String)e.nextElement()).toUpperCase();
+					final String key=((String)e.nextElement()).toUpperCase();
 					if(key.startsWith(helpStr))
 					{
 						thisTag=rHelpFile.getProperty(key);
@@ -818,13 +817,13 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 				}
 			if(!found)
 			{
-				String currency=CMLib.english().matchAnyCurrencySet(ahelpStr);
+				final String currency=CMLib.english().matchAnyCurrencySet(ahelpStr);
 				if(currency!=null)
 				{
-					double denom=CMLib.english().matchAnyDenomination(currency,ahelpStr);
+					final double denom=CMLib.english().matchAnyDenomination(currency,ahelpStr);
 					if(denom>0.0)
 					{
-						Coins C2=CMLib.beanCounter().makeCurrency(currency,denom,1);
+						final Coins C2=CMLib.beanCounter().makeCurrency(currency,denom,1);
 						if((C2!=null)&&(C2.description().length()>0))
 							return new StringBuilder(C2.name()+" is "+C2.description().toLowerCase());
 					}
@@ -832,9 +831,9 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 			}
 
 			if(!found)
-				for(Enumeration<Object> e=rHelpFile.keys();e.hasMoreElements();)
+				for(final Enumeration<Object> e=rHelpFile.keys();e.hasMoreElements();)
 				{
-					String key=((String)e.nextElement()).toUpperCase();
+					final String key=((String)e.nextElement()).toUpperCase();
 					if(CMLib.english().containsString(key,helpStr))
 					{
 						thisTag=rHelpFile.getProperty(key);
@@ -846,7 +845,7 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 
 			if(!found)
 			{
-				String s=CMLib.socials().getSocialsHelp(forMOB,helpStr.toUpperCase(), false);
+				final String s=CMLib.socials().getSocialsHelp(forMOB,helpStr.toUpperCase(), false);
 				if(s!=null)
 				{
 					thisTag=s;
@@ -857,7 +856,7 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 
 			if(!found)
 			{
-				String s=CMLib.clans().getGovernmentHelp(forMOB,helpStr.toUpperCase(), false);
+				final String s=CMLib.clans().getGovernmentHelp(forMOB,helpStr.toUpperCase(), false);
 				if(s!=null)
 				{
 					thisTag=s;
@@ -868,7 +867,7 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 
 			if(!found)
 			{
-				Ability A=CMClass.findAbility(helpStr.toUpperCase(),-1,-1,false);
+				final Ability A=CMClass.findAbility(helpStr.toUpperCase(),-1,-1,false);
 				if((A!=null)&&(A.isGeneric()))
 				{
 					thisTag=A.getStat("HELP");
@@ -877,9 +876,9 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 			}
 
 			if(!found)
-				for(Enumeration<Area> e=CMLib.map().areas();e.hasMoreElements();)
+				for(final Enumeration<Area> e=CMLib.map().areas();e.hasMoreElements();)
 				{
-					Area A=e.nextElement();
+					final Area A=e.nextElement();
 					if(CMLib.english().containsString(A.name(),ahelpStr))
 					{
 						helpStr=A.name();
@@ -888,7 +887,7 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 				}
 			if(!found)
 			{
-				String s=CMLib.expertises().getExpertiseHelp(helpStr.toUpperCase(),false);
+				final String s=CMLib.expertises().getExpertiseHelp(helpStr.toUpperCase(),false);
 				if(s!=null)
 				{
 					thisTag=s;
@@ -899,7 +898,7 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 		}
 		while((thisTag!=null)&&(thisTag.length()>0)&&(thisTag.length()<31)&&(!areaTag))
 		{
-			String thisOtherTag=rHelpFile.getProperty(thisTag);
+			final String thisOtherTag=rHelpFile.getProperty(thisTag);
 			if((thisOtherTag!=null)&&(thisOtherTag.equals(thisTag)))
 				thisTag=null;
 			else
@@ -938,7 +937,7 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 				{
 					thisTag=CMStrings.replaceAll(thisTag,"[CHANNEL]",s.toUpperCase());
 					thisTag=CMStrings.replaceAll(thisTag,"[channel]",s.toLowerCase());
-					String extra = no?"":CMLib.channels().getExtraChannelDesc(s);
+					final String extra = no?"":CMLib.channels().getExtraChannelDesc(s);
 					thisTag=CMStrings.replaceAll(thisTag,"[EXTRA]",extra);
 					return new StringBuilder(thisTag);
 				}
@@ -971,20 +970,20 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 		helpStr=helpStr.toUpperCase().trim();
 		if(helpStr.indexOf(' ')>=0)
 			helpStr=helpStr.replace(' ','_');
-		List<String> matches=new Vector<String>();
+		final List<String> matches=new Vector<String>();
 
-		for(Enumeration<Object> e=rHelpFile1.keys();e.hasMoreElements();)
+		for(final Enumeration<Object> e=rHelpFile1.keys();e.hasMoreElements();)
 		{
-			String key=(String)e.nextElement();
-			String prop=rHelpFile1.getProperty(key,"");
+			final String key=(String)e.nextElement();
+			final String prop=rHelpFile1.getProperty(key,"");
 			if((key.toUpperCase().indexOf(helpStr)>=0)||(CMLib.english().containsString(prop,helpStr)))
 				matches.add(key.toUpperCase());
 		}
 		if(rHelpFile2!=null)
-		for(Enumeration<Object> e=rHelpFile2.keys();e.hasMoreElements();)
+		for(final Enumeration<Object> e=rHelpFile2.keys();e.hasMoreElements();)
 		{
-			String key=(String)e.nextElement();
-			String prop=rHelpFile1.getProperty(key,"");
+			final String key=(String)e.nextElement();
+			final String prop=rHelpFile1.getProperty(key,"");
 			if((key.toUpperCase().indexOf(helpStr)>=0)||(CMLib.english().containsString(prop,helpStr)))
 				matches.add(key.toUpperCase());
 		}
@@ -1002,24 +1001,23 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 			if(arcHelpFile==null)
 			{
 				arcHelpFile=new Properties();
-				CMFile directory=new CMFile(Resources.buildResourcePath("help"),null,CMFile.FLAG_LOGERRORS);
+				final CMFile directory=new CMFile(Resources.buildResourcePath("help"),null,CMFile.FLAG_LOGERRORS);
 				if((directory.canRead())&&(directory.isDirectory()))
 				{
-					String[] list=directory.list();
-					for(int l=0;l<list.length;l++)
+					final String[] list=directory.list();
+					for (final String item : list)
 					{
-						String item=list[l];
 						if((item!=null)
 						&&(item.length()>0)
 						&&item.toUpperCase().endsWith(".INI")
 						&&(item.toUpperCase().startsWith("ARC_")))
 						{
-							Properties local=new Properties();
+							final Properties local=new Properties();
 							local.load(new ByteArrayInputStream(new CMFile(Resources.buildResourcePath("help")+item,null,CMFile.FLAG_LOGERRORS).raw()));
 							arcHelpFile.putAll(local);
-							for(Object key : local.keySet())
+							for(final Object key : local.keySet())
 							{
-								String keyStr=key.toString();
+								final String keyStr=key.toString();
 								for(int i=0;i<keyStr.length();i++)
 									if(Character.isLetter(keyStr.charAt(i))&&Character.isLowerCase(keyStr.charAt(i)))
 										Log.debugOut("Lower key in "+item+": "+key+": "+local.getProperty(keyStr));
@@ -1027,17 +1025,17 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 						}
 					}
 				}
-				for(Enumeration<Object> e=arcHelpFile.keys();e.hasMoreElements();)
+				for(final Enumeration<Object> e=arcHelpFile.keys();e.hasMoreElements();)
 				{
-					String key=(String)e.nextElement();
+					final String key=(String)e.nextElement();
 					String entry=(String)arcHelpFile.get(key);
-					int x=entry.indexOf("<ZAP=");
+					final int x=entry.indexOf("<ZAP=");
 					if(x>=0)
 					{
-						int y=entry.indexOf('>',x);
+						final int y=entry.indexOf('>',x);
 						if(y>(x+5))
 						{
-							String word=entry.substring(x+5,y).trim();
+							final String word=entry.substring(x+5,y).trim();
 							entry=entry.substring(0,x)+CMLib.masking().maskHelp("\n\r",word)+entry.substring(y+1);
 							arcHelpFile.remove(key);
 							arcHelpFile.put(key,entry);
@@ -1048,7 +1046,7 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 			}
 			return arcHelpFile;
 		}
-		catch(IOException e)
+		catch(final IOException e)
 		{
 			Log.errOut("MUDHelp",e);
 		}
@@ -1064,24 +1062,24 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 			if(helpFile==null)
 			{
 				helpFile=new Properties();
-				CMFile directory=new CMFile(Resources.buildResourcePath("help"),null,CMFile.FLAG_LOGERRORS);
+				final CMFile directory=new CMFile(Resources.buildResourcePath("help"),null,CMFile.FLAG_LOGERRORS);
 				if((directory.canRead())&&(directory.isDirectory()))
 				{
-					String[] list=directory.list();
-					for(int l=0;l<list.length;l++)
+					final String[] list=directory.list();
+					for (final String element : list)
 					{
-						String item=list[l];
+						final String item=element;
 						if((item!=null)
 						&&(item.length()>0)
 						&&item.toUpperCase().endsWith(".INI")
 						&&(!item.toUpperCase().startsWith("ARC_")))
 						{
-							Properties local=new Properties();
+							final Properties local=new Properties();
 							local.load(new ByteArrayInputStream(new CMFile(Resources.buildResourcePath("help")+item,null,CMFile.FLAG_LOGERRORS).raw()));
 							helpFile.putAll(local);
-							for(Object key : local.keySet())
+							for(final Object key : local.keySet())
 							{
-								String keyStr=key.toString();
+								final String keyStr=key.toString();
 								for(int i=0;i<keyStr.length();i++)
 									if(Character.isLetter(keyStr.charAt(i))&&Character.isLowerCase(keyStr.charAt(i)))
 										Log.debugOut("Lower key in "+item+": "+key+": "+local.getProperty(keyStr));
@@ -1093,7 +1091,7 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 			}
 			return helpFile;
 		}
-		catch(IOException e)
+		catch(final IOException e)
 		{
 			Log.errOut("MUDHelp",e);
 		}
@@ -1141,14 +1139,14 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 			Resources.removeResource("ARCHON HELP FILE");
 
 		// also the intro page
-		CMFile introDir=new CMFile(Resources.makeFileResourceName("text"),null,CMFile.FLAG_FORCEALLOW);
+		final CMFile introDir=new CMFile(Resources.makeFileResourceName("text"),null,CMFile.FLAG_FORCEALLOW);
 		if(introDir.isDirectory())
 		{
-			CMFile[] files=introDir.listFiles();
-			for(int f=0;f<files.length;f++)
-				if(files[f].getName().toLowerCase().startsWith("intro")
-				&&files[f].getName().toLowerCase().endsWith(".txt"))
-					Resources.removeResource("text/"+files[f].getName());
+			final CMFile[] files=introDir.listFiles();
+			for (final CMFile file : files)
+				if(file.getName().toLowerCase().startsWith("intro")
+				&&file.getName().toLowerCase().endsWith(".txt"))
+					Resources.removeResource("text/"+file.getName());
 		}
 
 		if(Resources.getResource("text/offline.txt")!=null)

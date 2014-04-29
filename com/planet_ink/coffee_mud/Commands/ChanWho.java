@@ -49,12 +49,12 @@ public class ChanWho extends StdCommand
 			mob.tell("You must specify a channel name. Try CHANNELS for a list.");
 			return false;
 		}
-		int x=channel.indexOf('@');
+		final int x=channel.indexOf('@');
 		String mud=null;
 		if(x>0)
 		{
 			mud=channel.substring(x+1);
-			int channelInt=CMLib.channels().getChannelIndex(channel.substring(0,x).toUpperCase());
+			final int channelInt=CMLib.channels().getChannelIndex(channel.substring(0,x).toUpperCase());
 			channel=CMLib.channels().getChannel(channelInt).name.toUpperCase();
 			if((channel.length()==0)||(channelInt<0))
 			{
@@ -64,17 +64,17 @@ public class ChanWho extends StdCommand
 			CMLib.intermud().i3chanwho(mob,channel,mud);
 			return false;
 		}
-		int channelInt=CMLib.channels().getChannelIndex(channel.toUpperCase());
+		final int channelInt=CMLib.channels().getChannelIndex(channel.toUpperCase());
 		channel=CMLib.channels().getChannel(channelInt).name;
 		if(channelInt<0)
 		{
 			mob.tell("You must specify a valid channel name. Try CHANNELS for a list.");
 			return false;
 		}
-		String head="^x\n\rListening on "+channel+":^?^.^N\n\r";
-		StringBuffer buf=new StringBuffer("");
-		boolean areareq=CMLib.channels().getChannel(channelInt).flags.contains(ChannelsLibrary.ChannelFlag.SAMEAREA);
-		for(Session S : CMLib.sessions().localOnlineIterable())
+		final String head="^x\n\rListening on "+channel+":^?^.^N\n\r";
+		final StringBuffer buf=new StringBuffer("");
+		final boolean areareq=CMLib.channels().getChannel(channelInt).flags.contains(ChannelsLibrary.ChannelFlag.SAMEAREA);
+		for(final Session S : CMLib.sessions().localOnlineIterable())
 		{
 			MOB mob2=S.mob();
 			if((mob2!=null)&&(mob2.soulMate()!=null))

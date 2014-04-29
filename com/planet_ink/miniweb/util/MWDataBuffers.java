@@ -52,7 +52,7 @@ public class MWDataBuffers implements DataBuffers
 	}
 
 	private LinkedList<FileEntry> list;
-	private LinkedList<Closeable> closers;
+	private final LinkedList<Closeable> closers;
 	private byte[]						   buffer=null;
 	private long						   length=0;
 	private long						   lastModifiedTime=0;
@@ -88,11 +88,11 @@ public class MWDataBuffers implements DataBuffers
 		if(list.size()==0)
 			return null;
 		accessed();
-		FileEntry p=list.getFirst();
+		final FileEntry p=list.getFirst();
 		final Object o=p.data;
 		if(o instanceof ByteBuffer)
 		{
-			ByteBuffer b=(ByteBuffer)o;
+			final ByteBuffer b=(ByteBuffer)o;
 			if(p.startPos!=null)
 			{
 				b.rewind();
@@ -112,7 +112,7 @@ public class MWDataBuffers implements DataBuffers
 		else
 		if(o instanceof RandomAccessFile)
 		{
-			RandomAccessFile r=(RandomAccessFile)o;
+			final RandomAccessFile r=(RandomAccessFile)o;
 			if(p.length<=0)
 			{
 				closers.add(r);
@@ -121,7 +121,7 @@ public class MWDataBuffers implements DataBuffers
 			}
 			if(p.startPos!=null)
 			{
-				try { r.seek(p.startPos.longValue()); } catch(Exception e){}
+				try { r.seek(p.startPos.longValue()); } catch(final Exception e){}
 				p.startPos=null;
 			}
 			if(buffer==null)
@@ -131,11 +131,11 @@ public class MWDataBuffers implements DataBuffers
 				int len=buffer.length;
 				if(len > p.length)
 					len=(int)p.length;
-				int amountRead=r.read(buffer,0,len);
+				final int amountRead=r.read(buffer,0,len);
 				if(amountRead<0)
 					throw new java.io.IOException();
 				p.length=p.length-amountRead;
-				ByteBuffer b=ByteBuffer.wrap(buffer,0,amountRead);
+				final ByteBuffer b=ByteBuffer.wrap(buffer,0,amountRead);
 				if(p.length<=0)
 				{
 					closers.add(r);
@@ -144,7 +144,7 @@ public class MWDataBuffers implements DataBuffers
 				list.addFirst(new FileEntry(b,b.limit()));
 				return b;
 			}
-			catch (IOException e)
+			catch (final IOException e)
 			{
 				closers.add(r);
 				length-=p.length;
@@ -173,9 +173,9 @@ public class MWDataBuffers implements DataBuffers
 		if(this.length>0)
 		{
 			System.err.println("^^^^^^^^^^^^^^^^^^^^^^^\n\rMWDataBuffer Not Closed!\n\r"+this.length+" bytes stranded in "+((list!=null)?list.size():0)+" items.\n\rFirst stack trace:");
-			if(createdStackTrace!=null) for(StackTraceElement f : createdStackTrace) System.err.println("  "+f.toString());
+			if(createdStackTrace!=null) for(final StackTraceElement f : createdStackTrace) System.err.println("  "+f.toString());
 			System.err.println("Last stack trace:");
-			if(lastStackTrace!=null) for(StackTraceElement f : lastStackTrace) System.err.println(f.toString());
+			if(lastStackTrace!=null) for(final StackTraceElement f : lastStackTrace) System.err.println(f.toString());
 			System.err.println("vvvvvvvvvvvvvvvvvvvvvvv");
 		}
 	}
@@ -194,11 +194,11 @@ public class MWDataBuffers implements DataBuffers
 	@Override
 	public void close()
 	{
-		for(Closeable o : closers)
-			try{ o.close(); } catch(Exception e){}
-		for(Object o : list)
+		for(final Closeable o : closers)
+			try{ o.close(); } catch(final Exception e){}
+		for(final Object o : list)
 			if(o instanceof Closeable)
-				try{ ((Closeable)o).close(); } catch(Exception e){}
+				try{ ((Closeable)o).close(); } catch(final Exception e){}
 		list.clear();
 		length=0;
 	}
@@ -229,7 +229,7 @@ public class MWDataBuffers implements DataBuffers
 			if((lastModifiedTime != this.lastModifiedTime) && (lastModifiedTime > 0))
 				this.lastModifiedTime=lastModifiedTime;
 		}
-		catch(IOException e){ }
+		catch(final IOException e){ }
 	}
 	@Override
 	public void insertTop(final RandomAccessFile file, final long lastModifiedTime)
@@ -241,7 +241,7 @@ public class MWDataBuffers implements DataBuffers
 			if((lastModifiedTime != this.lastModifiedTime) && (lastModifiedTime > 0))
 				this.lastModifiedTime=lastModifiedTime;
 		}
-		catch(IOException e){ }
+		catch(final IOException e){ }
 	}
 	@Override
 	public void insertTop(final ByteBuffer buf, final long lastModifiedTime)
@@ -263,7 +263,7 @@ public class MWDataBuffers implements DataBuffers
 	public void addFlush(final MWDataBuffers buffers)
 	{
 		this.length += buffers.getLength();
-		for(FileEntry o : buffers.list)
+		for(final FileEntry o : buffers.list)
 			list.add(o);
 		buffers.list.clear();
 		buffers.length=0;
@@ -276,14 +276,14 @@ public class MWDataBuffers implements DataBuffers
 	{
 		if((list.size()==1)&&(list.getFirst().data instanceof ByteBuffer))
 		{
-			ByteBuffer b=(ByteBuffer)list.getFirst().data;
+			final ByteBuffer b=(ByteBuffer)list.getFirst().data;
 			close();
 			return b;
 		}
-		ByteArrayOutputStream bout=new ByteArrayOutputStream();
+		final ByteArrayOutputStream bout=new ByteArrayOutputStream();
 		while(hasNext())
 		{
-			ByteBuffer buf=next();
+			final ByteBuffer buf=next();
 			if(buf.hasRemaining())
 			{
 				bout.write(buf.array(),buf.position(),buf.limit());
@@ -310,20 +310,20 @@ public class MWDataBuffers implements DataBuffers
 		final LinkedList<FileEntry> ranged=new LinkedList<FileEntry>();
 		final HashSet<Object> usedObjs=new HashSet<Object>();
 		long newLen=0;
-		for(long[] range : ranges)
+		for(final long[] range : ranges)
 		{
 			long pos=0;
 			Object startObj=null;
-			for(FileEntry p : list)
+			for(final FileEntry p : list)
 			{
 				if((startObj==null)&&(pos+p.length>=range[0]))
 				{
 					startObj=p.data;
-					Long startPos=Long.valueOf(range[0]-pos);
+					final Long startPos=Long.valueOf(range[0]-pos);
 					usedObjs.add(p.data);
 					if(pos+p.endPos>=range[1])
 					{
-						Long endPos=Long.valueOf(range[1]-pos);
+						final Long endPos=Long.valueOf(range[1]-pos);
 						ranged.add(new FileEntry(p.data,startPos.longValue(),endPos.longValue()));
 						newLen=endPos.longValue()-startPos.longValue();
 						break; // totally done with this range iteration
@@ -341,7 +341,7 @@ public class MWDataBuffers implements DataBuffers
 				else
 				if(pos+p.endPos>=range[1])
 				{
-					Long endPos=Long.valueOf(range[1]-pos);
+					final Long endPos=Long.valueOf(range[1]-pos);
 					newLen+=endPos.longValue();
 					usedObjs.add(p.data);
 					ranged.add(new FileEntry(p.data,0,endPos.longValue()));
@@ -355,9 +355,9 @@ public class MWDataBuffers implements DataBuffers
 				}
 			}
 		}
-		for(FileEntry p : list)
+		for(final FileEntry p : list)
 			if((p.data instanceof Closeable) && (!usedObjs.contains(p.data)))
-				try{ ((Closeable)p.data).close(); } catch(IOException e){}
+				try{ ((Closeable)p.data).close(); } catch(final IOException e){}
 		this.length=newLen;
 		list=ranged;
 	}

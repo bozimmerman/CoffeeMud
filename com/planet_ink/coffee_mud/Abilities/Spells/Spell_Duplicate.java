@@ -46,7 +46,7 @@ public class Spell_Duplicate extends Spell
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		Item target=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_UNWORNONLY);
+		final Item target=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_UNWORNONLY);
 		if(target==null) return false;
 
 		if(!mob.isMine(target))
@@ -65,7 +65,7 @@ public class Spell_Duplicate extends Spell
 			return false;
 		}
 
-		int value=(target instanceof Coins)?(int)Math.round(((Coins)target).getTotalValue()):target.value();
+		final int value=(target instanceof Coins)?(int)Math.round(((Coins)target).getTotalValue()):target.value();
 		int multiPlier=5+(((target.phyStats().weight())+value)/2);
 		multiPlier+=(target.numEffects()*10);
 		multiPlier+=(target instanceof Potion)?10:0;
@@ -87,15 +87,15 @@ public class Spell_Duplicate extends Spell
 		mob.tell("You lose "+(-expLoss)+" experience points.");
 		CMLib.leveler().postExperience(mob,null,null,expLoss,false);
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> hold(s) <T-NAMESELF> and cast(s) a spell.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> hold(s) <T-NAMESELF> and cast(s) a spell.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				Item newTarget=(Item)target.copyOf();
+				final Item newTarget=(Item)target.copyOf();
 				mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,target.name()+" blurs and divides into two!");
 				CMLib.utensils().disenchantItem(newTarget);
 				if(newTarget.amDestroyed())

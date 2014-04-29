@@ -55,14 +55,14 @@ public class Chant_Nectar extends Chant
 			super.unInvoke();
 		else
 		{
-			Item littleSpring=(Item)affected;
-			Room SpringLocation=CMLib.map().roomLocation(littleSpring);
+			final Item littleSpring=(Item)affected;
+			final Room SpringLocation=CMLib.map().roomLocation(littleSpring);
 			if(canBeUninvoked())
 				SpringLocation.showHappens(CMMsg.MSG_OK_VISUAL,littleSpring.name()+" dries up.");
 			super.unInvoke();
 			if(canBeUninvoked())
 			{
-				Item spring=littleSpring; // protects against uninvoke loops!
+				final Item spring=littleSpring; // protects against uninvoke loops!
 				spring.destroy();
 				SpringLocation.recoverRoomStats();
 			}
@@ -75,8 +75,8 @@ public class Chant_Nectar extends Chant
 		if(!super.tick(ticking,tickID)) return false;
 		if(affected==null) return false;
 		if(!(affected instanceof Item)) return false;
-		Item littleSpring=(Item)affected;
-		Room R=CMLib.map().roomLocation(affected);
+		final Item littleSpring=(Item)affected;
+		final Room R=CMLib.map().roomLocation(affected);
 		if(R==null) return false;
 		if(lastNum!=R.numInhabitants())
 		{
@@ -84,14 +84,14 @@ public class Chant_Nectar extends Chant
 			return true;
 		}
 		if(lastNum<1) return true;
-		MOB M=R.fetchInhabitant(CMLib.dice().roll(1,lastNum,-1));
+		final MOB M=R.fetchInhabitant(CMLib.dice().roll(1,lastNum,-1));
 		if(M==null) return true;
 		if(drank==null) drank=new Vector();
 		if(drank.contains(M)) return true;
 		drank.addElement(M);
 		if(CMLib.dice().rollPercentage()>M.charStats().getSave(CharStats.STAT_SAVE_MIND))
 		{
-			Vector commands=new Vector();
+			final Vector commands=new Vector();
 			commands.addElement("DRINK");
 			commands.addElement(R.getContextName(littleSpring));
 			M.enqueCommand(commands,Command.METAFLAG_FORCED,0);
@@ -109,12 +109,12 @@ public class Chant_Nectar extends Chant
 			{
 			case CMMsg.TYP_DRINK:
 				{
-					MOB M=msg.source();
-					int hp=CMLib.dice().roll(1,M.charStats().getStat(CharStats.STAT_CONSTITUTION)+super.getX1Level(invoker())+super.getXLEVELLevel(invoker()),0);
+					final MOB M=msg.source();
+					final int hp=CMLib.dice().roll(1,M.charStats().getStat(CharStats.STAT_CONSTITUTION)+super.getX1Level(invoker())+super.getXLEVELLevel(invoker()),0);
 					CMLib.combat().postHealing(M,M,this,CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,hp,null);
-					int mana=CMLib.dice().roll(1,((M.charStats().getStat(CharStats.STAT_WISDOM)+M.charStats().getStat(CharStats.STAT_INTELLIGENCE))/2)+super.getX1Level(invoker())+super.getXLEVELLevel(invoker()),0);
+					final int mana=CMLib.dice().roll(1,((M.charStats().getStat(CharStats.STAT_WISDOM)+M.charStats().getStat(CharStats.STAT_INTELLIGENCE))/2)+super.getX1Level(invoker())+super.getXLEVELLevel(invoker()),0);
 					M.curState().adjMana(mana,M.maxState());
-					int move=CMLib.dice().roll(1,((M.charStats().getStat(CharStats.STAT_WISDOM)+M.charStats().getStat(CharStats.STAT_INTELLIGENCE))/2)+super.getX1Level(invoker())+super.getXLEVELLevel(invoker()),0);
+					final int move=CMLib.dice().roll(1,((M.charStats().getStat(CharStats.STAT_WISDOM)+M.charStats().getStat(CharStats.STAT_INTELLIGENCE))/2)+super.getX1Level(invoker())+super.getXLEVELLevel(invoker()),0);
 					M.curState().adjMovement(move,M.maxState());
 				}
 				break;
@@ -151,18 +151,18 @@ public class Chant_Nectar extends Chant
 			return false;
 
 		// now see if it worked
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":"^S<S-NAME> chant(s) for nectar.^?");
+			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":"^S<S-NAME> chant(s) for nectar.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				Item newItem=CMClass.getItem("Spring");
+				final Item newItem=CMClass.getItem("Spring");
 				newItem.setName("an enormous flower");
 				newItem.setDisplayText("an enormous flower is dripping with nectar");
 				newItem.setDescription("The closer you look, the more illusive the flower becomes.  There must be druid magic at work here!");
-				Ability A=CMClass.getAbility("Poison_Liquor");
+				final Ability A=CMClass.getAbility("Poison_Liquor");
 				if(A!=null) newItem.addNonUninvokableEffect(A);
 
 				mob.location().addItem(newItem);

@@ -49,7 +49,7 @@ public class Inventory extends StdCommand
 
 	public static InventoryList fetchInventory(MOB seer, MOB mob)
 	{
-		InventoryList lst = new InventoryList();
+		final InventoryList lst = new InventoryList();
 		Vector<Coins> coinsV=null;
 		int insertAt=-1;
 		CMLib.beanCounter().getTotalAbsoluteNativeValue(mob);
@@ -89,15 +89,15 @@ public class Inventory extends StdCommand
 
 	protected static String getShowableMoney(InventoryList list)
 	{
-		StringBuilder msg=new StringBuilder("");
+		final StringBuilder msg=new StringBuilder("");
 		if(list.moneyItems.size()>0)
 		{
 			msg.append("\n\r^HMoney:^N\n\r");
 			Item I=null;
-			for(Enumeration e=list.moneyItems.keys();e.hasMoreElements();)
+			for(final Enumeration e=list.moneyItems.keys();e.hasMoreElements();)
 			{
-				String key=(String)e.nextElement();
-				Vector<Coins> V=list.moneyItems.get(key);
+				final String key=(String)e.nextElement();
+				final Vector<Coins> V=list.moneyItems.get(key);
 				double totalValue=0.0;
 				for(int v=0;v<V.size();v++)
 				{
@@ -119,8 +119,8 @@ public class Inventory extends StdCommand
 
 	public static StringBuilder getInventory(MOB seer, MOB mob, String mask)
 	{
-		StringBuilder msg=new StringBuilder("");
-		InventoryList list = fetchInventory(seer,mob);
+		final StringBuilder msg=new StringBuilder("");
+		final InventoryList list = fetchInventory(seer,mob);
 		if(((list.viewItems.size()>0)||(list.moneyItems.size()>0))
 		&&(!list.foundAndSeen))
 		{
@@ -133,7 +133,7 @@ public class Inventory extends StdCommand
 		{
 			mask=mask.trim().toUpperCase();
 			if(!mask.startsWith("all")) mask="all "+mask;
-			Vector<Item> V=(Vector<Item>)list.viewItems.clone();
+			final Vector<Item> V=(Vector<Item>)list.viewItems.clone();
 			list.viewItems.clear();
 			Item I=(V.size()>0)?(Item)V.firstElement():null;
 			while(I!=null)
@@ -175,7 +175,7 @@ public class Inventory extends StdCommand
 			commands.addElement(getInventory((MOB)commands.firstElement(),mob,null));
 			return true;
 		}
-		StringBuilder msg=getInventory(mob,mob,CMParms.combine(commands,1));
+		final StringBuilder msg=getInventory(mob,mob,CMParms.combine(commands,1));
 		if(msg.length()==0)
 			mob.tell("^HYou are carrying:\n\r^!Nothing!^?\n\r");
 		else

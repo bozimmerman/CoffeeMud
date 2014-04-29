@@ -45,7 +45,7 @@ import java.util.NoSuchElementException;
 public class PersistenceException extends Exception
 {
 	public static final long serialVersionUID=0;
-	private Exception prior;
+	private final Exception prior;
 
 	public PersistenceException()
 	{

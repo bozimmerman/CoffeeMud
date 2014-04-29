@@ -29,21 +29,21 @@ public class MazeLayout extends AbstractLayout
 
 	public void fillMaze(LayoutSet lSet, LayoutNode p, int width, int height)
 	{
-		Vector<Integer> dirs = new Vector<Integer>();
+		final Vector<Integer> dirs = new Vector<Integer>();
 		for(int i=0;i<4;i++)
 			dirs.add(Integer.valueOf(i));
-		Vector<Integer> rdirs = new Vector<Integer>();
+		final Vector<Integer> rdirs = new Vector<Integer>();
 		while(dirs.size()>0)
 		{
-			int x = r.nextInt(dirs.size());
-			Integer dir = dirs.elementAt(x);
+			final int x = r.nextInt(dirs.size());
+			final Integer dir = dirs.elementAt(x);
 			dirs.removeElementAt(x);
 			rdirs.addElement(dir);
 		}
 		for(int r=0;r<rdirs.size();r++)
 		{
-			Integer dir = rdirs.elementAt(r);
-			LayoutNode p2 = lSet.makeNextNode(p, dir.intValue());
+			final Integer dir = rdirs.elementAt(r);
+			final LayoutNode p2 = lSet.makeNextNode(p, dir.intValue());
 			if((!lSet.isUsed(p2.coord()))
 			&&(p2.coord()[0]>=0)
 			&&(p2.coord()[1]<=0)
@@ -61,11 +61,11 @@ public class MazeLayout extends AbstractLayout
 	@Override
 	public List<LayoutNode> generate(int num, int dir)
 	{
-		Vector<LayoutNode> set = new Vector<LayoutNode>();
-		int diameter = (int)Math.round(Math.sqrt(num));
-		int plusX = (diff(diameter,diameter,num) > diff(diameter+1,diameter,num)) ? 1 : 0;
+		final Vector<LayoutNode> set = new Vector<LayoutNode>();
+		final int diameter = (int)Math.round(Math.sqrt(num));
+		final int plusX = (diff(diameter,diameter,num) > diff(diameter+1,diameter,num)) ? 1 : 0;
 
-		LayoutSet lSet = new LayoutSet(set,num);
+		final LayoutSet lSet = new LayoutSet(set,num);
 		LayoutNode n = null;
 		switch(dir)
 		{

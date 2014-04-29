@@ -40,18 +40,18 @@ public class CharClassNext extends StdWebMacro
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
-		java.util.Map<String,String> parms=parseParms(parm);
-		String last=httpReq.getUrlParameter("CLASS");
-		String base=httpReq.getUrlParameter("BASECLASS");
+		final java.util.Map<String,String> parms=parseParms(parm);
+		final String last=httpReq.getUrlParameter("CLASS");
+		final String base=httpReq.getUrlParameter("BASECLASS");
 		if(parms.containsKey("RESET"))
 		{
 			if(last!=null) httpReq.removeUrlParameter("CLASS");
 			return "";
 		}
 		String lastID="";
-		for(Enumeration c=CMClass.charClasses();c.hasMoreElements();)
+		for(final Enumeration c=CMClass.charClasses();c.hasMoreElements();)
 		{
-			CharClass C=(CharClass)c.nextElement();
+			final CharClass C=(CharClass)c.nextElement();
 			if(((CMProps.isTheme(C.availabilityCode()))||(parms.containsKey("ALL")))
 			&&((base==null)||(base.length()==0)||(C.baseClass().equalsIgnoreCase(base))))
 			{

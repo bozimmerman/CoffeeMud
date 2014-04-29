@@ -47,7 +47,7 @@ public class Bardness extends CombatAbilities
 	{
 		super.startBehavior(forMe);
 		if(!(forMe instanceof MOB)) return;
-		MOB mob=(MOB)forMe;
+		final MOB mob=(MOB)forMe;
 		combatMode=COMBAT_RANDOM;
 		makeClass(mob,getParmsMinusCombatMode(),"Bard");
 		newCharacter(mob);

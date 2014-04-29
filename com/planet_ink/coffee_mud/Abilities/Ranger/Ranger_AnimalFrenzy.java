@@ -65,10 +65,10 @@ public class Ranger_AnimalFrenzy extends StdAbility
 
 		if(rangersGroup!=null)
 		{
-			Set<MOB> H=invoker.getGroupMembers(new HashSet<MOB>());
-			for(Iterator e=H.iterator();e.hasNext();)
+			final Set<MOB> H=invoker.getGroupMembers(new HashSet<MOB>());
+			for (final Object element : H)
 			{
-				MOB mob=(MOB)e.next();
+				final MOB mob=(MOB)element;
 				if((!rangersGroup.contains(mob))
 				&&(mob!=invoker)
 				&&(mob.location()==invoker.location())
@@ -76,7 +76,7 @@ public class Ranger_AnimalFrenzy extends StdAbility
 				{
 					rangersGroup.addElement(mob);
 					mob.addNonUninvokableEffect((Ability)this.copyOf());
-					Ability A=mob.fetchEffect(ID());
+					final Ability A=mob.fetchEffect(ID());
 					if(A!=null)A.setSavable(false);
 				}
 			}
@@ -84,17 +84,17 @@ public class Ranger_AnimalFrenzy extends StdAbility
 			{
 				try
 				{
-					MOB mob=(MOB)rangersGroup.elementAt(i);
+					final MOB mob=(MOB)rangersGroup.elementAt(i);
 					if((!H.contains(mob))
 					||(mob.location()!=invoker.location()))
 					{
-						Ability A=mob.fetchEffect(this.ID());
+						final Ability A=mob.fetchEffect(this.ID());
 						if((A!=null)&&(A.invoker()==invoker))
 							mob.delEffect(A);
 						rangersGroup.removeElement(mob);
 					}
 				}
-				catch(java.lang.ArrayIndexOutOfBoundsException e)
+				catch(final java.lang.ArrayIndexOutOfBoundsException e)
 				{
 				}
 			}
@@ -112,9 +112,9 @@ public class Ranger_AnimalFrenzy extends StdAbility
 		super.affectPhyStats(affected,affectableStats);
 		if((invoker!=null)&&(affected!=invoker)&&(invoker.isInCombat()))
 		{
-			float f=super.getXLEVELLevel(invoker());
-			int invoAtt=(int)Math.round(CMath.mul(CMath.div(proficiency(),100.0-(f*5.0)),invoker.phyStats().attackAdjustment()));
-			int damBonus=(int)Math.round(CMath.mul(affectableStats.damage(),(CMath.div(proficiency(),100.0-(f*5.0))*4.0)));
+			final float f=super.getXLEVELLevel(invoker());
+			final int invoAtt=(int)Math.round(CMath.mul(CMath.div(proficiency(),100.0-(f*5.0)),invoker.phyStats().attackAdjustment()));
+			final int damBonus=(int)Math.round(CMath.mul(affectableStats.damage(),(CMath.div(proficiency(),100.0-(f*5.0))*4.0)));
 			affectableStats.setDamage(affectableStats.damage()+damBonus);
 			if(affectableStats.attackAdjustment()<invoAtt)
 				affectableStats.setAttackAdjustment(invoAtt);

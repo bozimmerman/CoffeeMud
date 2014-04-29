@@ -66,16 +66,16 @@ public class BardMap extends GenMap
 	@Override
 	public Hashtable makeMapRooms(int width)
 	{
-		String newText=getMapArea();
-		List<String> mapAreas=CMParms.parseSemicolons(newText,true);
-		Hashtable mapRooms=new Hashtable();
+		final String newText=getMapArea();
+		final List<String> mapAreas=CMParms.parseSemicolons(newText,true);
+		final Hashtable mapRooms=new Hashtable();
 		for(int a=0;a<mapAreas.size();a++)
 		{
-			String area=mapAreas.get(a);
-			Room room=CMLib.map().getRoom(area);
+			final String area=mapAreas.get(a);
+			final Room room=CMLib.map().getRoom(area);
 			if(room!=null)
 			{
-				MapRoom mr=new MapRoom();
+				final MapRoom mr=new MapRoom();
 				mr.r=room;
 				mapRooms.put(room,mr);
 			}

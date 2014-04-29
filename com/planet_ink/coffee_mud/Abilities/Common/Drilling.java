@@ -64,7 +64,7 @@ public class Drilling extends GatheringSkill
 	{
 		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Tickable.TICKID_MOB))
 		{
-			MOB mob=(MOB)affected;
+			final MOB mob=(MOB)affected;
 			if(tickUp==6)
 			{
 				if(found!=null)
@@ -76,8 +76,8 @@ public class Drilling extends GatheringSkill
 				}
 				else
 				{
-					StringBuffer str=new StringBuffer("You can't seem to find anything worth drilling around here.\n\r");
-					int d=lookingFor(RawMaterial.MATERIAL_LIQUID,mob.location());
+					final StringBuffer str=new StringBuffer("You can't seem to find anything worth drilling around here.\n\r");
+					final int d=lookingFor(RawMaterial.MATERIAL_LIQUID,mob.location());
 					if(d<0)
 						str.append("You might try elsewhere.");
 					else
@@ -98,7 +98,7 @@ public class Drilling extends GatheringSkill
 		{
 			if((affected!=null)&&(affected instanceof MOB))
 			{
-				MOB mob=(MOB)affected;
+				final MOB mob=(MOB)affected;
 				if((found!=null)&&(!aborted))
 				{
 					int amount=((found.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_CLOTH)?
@@ -113,8 +113,8 @@ public class Drilling extends GatheringSkill
 					mob.location().show(mob,null,getActivityMessageType(),"<S-NAME> manage(s) to drill out "+amount+" pound"+s+" of "+foundShortName+".");
 					for(int i=0;i<amount;i++)
 					{
-						Item newFound=(Item)found.copyOf();
-						Room R=mob.location();
+						final Item newFound=(Item)found.copyOf();
+						final Room R=mob.location();
 						if(R==null) break;
 						R.addItem(newFound,ItemPossessor.Expire.Player_Drop);
 						if((container!=null)
@@ -154,7 +154,7 @@ public class Drilling extends GatheringSkill
 			return false;
 		}
 
-		Item I=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_ANY);
+		final Item I=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_ANY);
 		if(I==null) return false;
 		if((!(I instanceof Container))
 		||(((Container)I).capacity()<=((Container)I).phyStats().weight()))
@@ -162,18 +162,18 @@ public class Drilling extends GatheringSkill
 			commonTell(mob,I.name(mob)+" doesn't look like it can hold anything.");
 			return false;
 		}
-		int resourceType=mob.location().myResource();
+		final int resourceType=mob.location().myResource();
 		if((!(I instanceof Drink))||((I.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LIQUID))
 		{
 			commonTell(mob,I.name(mob)+" doesn't look like it can hold a liquid.");
 			return false;
 		}
-		List<Item> V=((Container)I).getContents();
+		final List<Item> V=((Container)I).getContents();
 		if(((Drink)I).containsDrink())
 		{
 			for(int v=0;v<V.size();v++)
 			{
-				Item I2=V.get(v);
+				final Item I2=V.get(v);
 				if((I2.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LIQUID)
 				{
 					if(I2.material()!=resourceType)
@@ -208,8 +208,8 @@ public class Drilling extends GatheringSkill
 			if(found!=null)
 				foundShortName=RawMaterial.CODES.NAME(found.material()).toLowerCase();
 		}
-		int duration=getDuration(mob,1);
-		CMMsg msg=CMClass.getMsg(mob,found,this,getActivityMessageType(),"<S-NAME> start(s) drilling.");
+		final int duration=getDuration(mob,1);
+		final CMMsg msg=CMClass.getMsg(mob,found,this,getActivityMessageType(),"<S-NAME> start(s) drilling.");
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

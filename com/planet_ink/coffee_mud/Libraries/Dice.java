@@ -89,9 +89,9 @@ public class Dice extends StdLibrary implements DiceLibrary
 		//	return 10 +(int)Math.round(CMath.mul(level*level,0.85)) +(roll(level,code,0)*mul);
 
 		// new style
-		int r=code>>23;
-		int d=(code-(r<<23))>>15;
-		int p=(((code-(r<<23))-(d<<15)));
+		final int r=code>>23;
+		final int d=(code-(r<<23))>>15;
+		final int p=(((code-(r<<23))-(d<<15)));
 		return roll(r,d,p);
 	}
 
@@ -120,7 +120,7 @@ public class Dice extends StdLibrary implements DiceLibrary
 			if(set[1].equals( not ))
 				return set[0];
 		}
-		XVector<Object> newList = new XVector<Object>(set);
+		final XVector<Object> newList = new XVector<Object>(set);
 		newList.remove( not );
 		return pick(newList.toArray(new Object[0]));
 	}
@@ -135,9 +135,9 @@ public class Dice extends StdLibrary implements DiceLibrary
 	{
 		if(CMParms.indexOf( set, not ) >=0)
 		{
-			int[] newSet = new int[set.length];
+			final int[] newSet = new int[set.length];
 			int numGood = 0;
-			for(int x : set)
+			for(final int x : set)
 				if(x != not)
 					newSet[numGood++] = x;
 			return pick(Arrays.copyOf( newSet, numGood ));
@@ -198,7 +198,7 @@ public class Dice extends StdLibrary implements DiceLibrary
 	{
 		int i=str.indexOf('d');
 		if(i<0) return 11;
-		int roll=CMath.s_int(str.substring(0,i).trim());
+		final int roll=CMath.s_int(str.substring(0,i).trim());
 		str=str.substring(i+1).trim();
 
 		i=str.indexOf('+');
@@ -231,13 +231,13 @@ public class Dice extends StdLibrary implements DiceLibrary
 
 		if(roll>255)
 		{
-			int diff=roll-255;
+			final int diff=roll-255;
 			roll=255;
 			plus+=(diff*dice)/2;
 		}
 		if(dice>255)
 		{
-			int diff=dice-255;
+			final int diff=dice-255;
 			dice=255;
 			plus+=(diff*roll)/2;
 		}
@@ -260,7 +260,7 @@ public class Dice extends StdLibrary implements DiceLibrary
 			code=code*-1;
 			mul=-1;
 		}
-		int stuff[]=new int[3];
+		final int stuff[]=new int[3];
 		// old style
 		if(code<32768)
 		{
@@ -271,9 +271,9 @@ public class Dice extends StdLibrary implements DiceLibrary
 		else
 		{
 			// new style
-			int r=code>>23;
-			int d=(code-(r<<23))>>15;
-			int p=(((code-(r<<23))-(d<<15)))*mul;
+			final int r=code>>23;
+			final int d=(code-(r<<23))>>15;
+			final int p=(((code-(r<<23))-(d<<15)))*mul;
 			stuff[0]=r;
 			stuff[1]=d;
 			stuff[2]=p;

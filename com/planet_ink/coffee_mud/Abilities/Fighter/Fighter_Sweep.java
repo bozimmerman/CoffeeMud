@@ -14,7 +14,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -50,7 +49,7 @@ public class Fighter_Sweep extends FighterSkill
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 
-		float f=(float)CMath.mul(0.1,(float)getXLEVELLevel(invoker()));
+		final float f=(float)CMath.mul(0.1,(float)getXLEVELLevel(invoker()));
 		affectableStats.setAttackAdjustment((int)Math.round(CMath.div(affectableStats.attackAdjustment(),2.0-f)));
 		affectableStats.setDamage((int)Math.round(CMath.div(affectableStats.damage(),3.0-f)));
 	}
@@ -59,9 +58,9 @@ public class Fighter_Sweep extends FighterSkill
 	{
 		if((mob!=null)&&(target!=null))
 		{
-			Set<MOB> h=properTargets(mob,target,false);
+			final Set<MOB> h=properTargets(mob,target,false);
 			if(h.size()<2) return Ability.QUALITY_INDIFFERENT;
-			for(MOB M : h)
+			for(final MOB M : h)
 				if((M.rangeToTarget()<0)||(M.rangeToTarget()>0))
 					h.remove(M);
 			if(h.size()<2) return Ability.QUALITY_INDIFFERENT;
@@ -82,8 +81,8 @@ public class Fighter_Sweep extends FighterSkill
 			mob.tell("You must be in combat to sweep!");
 			return false;
 		}
-		Set<MOB> h=properTargets(mob,givenTarget,false);
-		for(MOB M : h)
+		final Set<MOB> h=properTargets(mob,givenTarget,false);
+		for(final MOB M : h)
 			if((M.rangeToTarget()<0)||(M.rangeToTarget()>0))
 				h.remove(M);
 
@@ -93,13 +92,13 @@ public class Fighter_Sweep extends FighterSkill
 			return false;
 		}
 
-		Item w=mob.fetchWieldedItem();
+		final Item w=mob.fetchWieldedItem();
 		if((w==null)||(!(w instanceof Weapon)))
 		{
 			mob.tell("You need a weapon to sweep!");
 			return false;
 		}
-		Weapon wp=(Weapon)w;
+		final Weapon wp=(Weapon)w;
 		if(wp.weaponType()!=Weapon.TYPE_SLASHING)
 		{
 			mob.tell("You cannot sweep with "+wp.name()+"!");
@@ -114,7 +113,7 @@ public class Fighter_Sweep extends FighterSkill
 			return false;
 
 		// now see if it worked
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
 			CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,"^F^<FIGHT^><S-NAME> sweep(s)!^</FIGHT^>^?");
@@ -125,9 +124,9 @@ public class Fighter_Sweep extends FighterSkill
 				invoker=mob;
 				mob.addEffect(this);
 				mob.recoverPhyStats();
-				for(Iterator e=h.iterator();e.hasNext();)
+				for (final Object element : h)
 				{
-					MOB target=(MOB)e.next();
+					final MOB target=(MOB)element;
 					// it worked, so build a copy of this ability,
 					// and add it to the affects list of the
 					// affected MOB.  Then tell everyone else

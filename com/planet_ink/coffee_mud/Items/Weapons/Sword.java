@@ -63,11 +63,11 @@ public class Sword extends StdWeapon
 			{
 				return this.getClass().newInstance();
 			}
-			catch(Exception e){}
+			catch(final Exception e){}
 			return new Sword();
 		}
-		Random randomizer = new Random(System.currentTimeMillis());
-		int swordType = Math.abs(randomizer.nextInt() % 6);
+		final Random randomizer = new Random(System.currentTimeMillis());
+		final int swordType = Math.abs(randomizer.nextInt() % 6);
 		switch (swordType)
 		{
 			case 0:  return new Rapier();
@@ -81,7 +81,7 @@ public class Sword extends StdWeapon
 				{
 					return this.getClass().newInstance();
 				}
-				catch(Exception e){}
+				catch(final Exception e){}
 				return new Sword();
 		}
 

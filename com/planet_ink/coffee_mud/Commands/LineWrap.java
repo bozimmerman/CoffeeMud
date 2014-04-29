@@ -48,11 +48,11 @@ public class LineWrap extends StdCommand
 
 		if(commands.size()<2)
 		{
-			String wrap=(mob.playerStats().getWrap()!=0)?(""+mob.playerStats().getWrap()):"Disabled";
+			final String wrap=(mob.playerStats().getWrap()!=0)?(""+mob.playerStats().getWrap()):"Disabled";
 			mob.tell("Change your line wrap to what? Your current line wrap setting is: "+wrap+". Enter a number larger than 10 or 'disable'.");
 			return false;
 		}
-		String newWrap=CMParms.combine(commands,1);
+		final String newWrap=CMParms.combine(commands,1);
 		int newVal=mob.playerStats().getWrap();
 		if((CMath.isInteger(newWrap))&&(CMath.s_int(newWrap)>10))
 			newVal=CMath.s_int(newWrap);
@@ -65,7 +65,7 @@ public class LineWrap extends StdCommand
 			return false;
 		}
 		mob.playerStats().setWrap(newVal);
-		String wrap=(mob.playerStats().getWrap()!=0)?(""+mob.playerStats().getWrap()):"Disabled";
+		final String wrap=(mob.playerStats().getWrap()!=0)?(""+mob.playerStats().getWrap()):"Disabled";
 		mob.tell("Your new line wrap setting is: "+wrap+".");
 		return false;
 	}

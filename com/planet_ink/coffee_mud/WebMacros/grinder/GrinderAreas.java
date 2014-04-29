@@ -37,12 +37,12 @@ public class GrinderAreas
 {
 	public static String getAreaList(Enumeration<Area> a, Area pickedA, MOB mob, boolean noInstances)
 	{
-		StringBuffer AreaList=new StringBuffer("");
-		boolean anywhere=(CMSecurity.isAllowedAnywhere(mob,CMSecurity.SecFlag.CMDROOMS)||CMSecurity.isAllowedAnywhere(mob,CMSecurity.SecFlag.CMDAREAS));
-		boolean everywhere=(CMSecurity.isASysOp(mob)||CMSecurity.isAllowedEverywhere(mob,CMSecurity.SecFlag.CMDROOMS)||CMSecurity.isAllowedEverywhere(mob,CMSecurity.SecFlag.CMDAREAS));
+		final StringBuffer AreaList=new StringBuffer("");
+		final boolean anywhere=(CMSecurity.isAllowedAnywhere(mob,CMSecurity.SecFlag.CMDROOMS)||CMSecurity.isAllowedAnywhere(mob,CMSecurity.SecFlag.CMDAREAS));
+		final boolean everywhere=(CMSecurity.isASysOp(mob)||CMSecurity.isAllowedEverywhere(mob,CMSecurity.SecFlag.CMDROOMS)||CMSecurity.isAllowedEverywhere(mob,CMSecurity.SecFlag.CMDAREAS));
 		for(;a.hasMoreElements();)
 		{
-			Area A=a.nextElement();
+			final Area A=a.nextElement();
 			if((everywhere||(A.amISubOp(mob.Name())&&anywhere))
 			&&((!noInstances)||(!CMath.bset(A.flags(), Area.FLAG_INSTANCE_CHILD))))
 				if((pickedA!=null)&&(pickedA==A))
@@ -65,7 +65,7 @@ public class GrinderAreas
 			{
 				if(behav.length()>0)
 				{
-					Behavior B=CMClass.getBehavior(behav);
+					final Behavior B=CMClass.getBehavior(behav);
 					if(B==null) return "Unknown behavior '"+behav+"'.";
 					B.setParms(theparm);
 					E.addBehavior(B);
@@ -91,7 +91,7 @@ public class GrinderAreas
 			{
 				if(aff.length()>0)
 				{
-					Ability B=CMClass.getAbility(aff);
+					final Ability B=CMClass.getAbility(aff);
 					if(B==null) return "Unknown Effect '"+aff+"'.";
 					B.setMiscText(theparm);
 					P.addNonUninvokableEffect(B);
@@ -106,8 +106,8 @@ public class GrinderAreas
 
 	public static String modifyArea(HTTPRequest httpReq, java.util.Map<String,String> parms)
 	{
-		Vector areasNeedingUpdates=new Vector();
-		String last=httpReq.getUrlParameter("AREA");
+		final Vector areasNeedingUpdates=new Vector();
+		final String last=httpReq.getUrlParameter("AREA");
 		if((last==null)||(last.length()==0)) return "Old area name not defined!";
 		Area A=CMLib.map().getArea(last);
 		if(A==null) return "Old Area not defined!";
@@ -118,15 +118,15 @@ public class GrinderAreas
 		String oldName=null;
 
 		// class!
-		String className=httpReq.getUrlParameter("CLASSES");
+		final String className=httpReq.getUrlParameter("CLASSES");
 		if((className==null)||(className.length()==0))
 			return "Please select a class type for this area.";
 		if(!className.equalsIgnoreCase(CMClass.classID(A)))
 		{
 			allMyDamnRooms=new Vector();
-			for(Enumeration<Room> r=A.getProperMap();r.hasMoreElements();)
+			for(final Enumeration<Room> r=A.getProperMap();r.hasMoreElements();)
 				allMyDamnRooms.addElement(r.nextElement());
-			Area oldA=A;
+			final Area oldA=A;
 			A=CMClass.getAreaType(className);
 			if(A==null)
 				return "The class you chose does not exist.  Choose another.";
@@ -148,7 +148,7 @@ public class GrinderAreas
 			if(CMLib.map().getArea(name)!=null)
 				return "The name you chose is already in use.  Please enter another.";
 			allMyDamnRooms=new Vector();
-			for(Enumeration r=A.getCompleteMap();r.hasMoreElements();)
+			for(final Enumeration r=A.getCompleteMap();r.hasMoreElements();)
 				allMyDamnRooms.addElement(r.nextElement());
 			CMLib.map().delArea(A);
 			oldName=A.Name();
@@ -170,7 +170,7 @@ public class GrinderAreas
 				for(int i=1;;i++)
 					if(httpReq.isUrlParameter("CLIMATE"+(Integer.toString(i))))
 					{
-						int newVal=CMath.s_int(httpReq.getUrlParameter("CLIMATE"+(Integer.toString(i))));
+						final int newVal=CMath.s_int(httpReq.getUrlParameter("CLIMATE"+(Integer.toString(i))));
 						if(newVal<0)
 						{
 							climate=-1;
@@ -195,7 +195,7 @@ public class GrinderAreas
 			A.setTheme(CMath.s_int(httpReq.getUrlParameter("THEME")));
 
 		// modify subop list
-		for(Enumeration<String> s=A.subOps();s.hasMoreElements();)
+		for(final Enumeration<String> s=A.subOps();s.hasMoreElements();)
 			A.delSubOp(s.nextElement());
 		for(int i=1;;i++)
 			if(httpReq.isUrlParameter("SUBOP"+(Integer.toString(i))))
@@ -206,7 +206,7 @@ public class GrinderAreas
 		int num=1;
 		if(httpReq.isUrlParameter("BLURBFLAG1"))
 		{
-			Vector prics=new Vector();
+			final Vector prics=new Vector();
 			String DOUBLE=httpReq.getUrlParameter("BLURBFLAG"+num);
 			String MASK=httpReq.getUrlParameter("BLURB"+num);
 			while((DOUBLE!=null)&&(MASK!=null))
@@ -217,7 +217,7 @@ public class GrinderAreas
 				DOUBLE=httpReq.getUrlParameter("BLURBFLAG"+num);
 				MASK=httpReq.getUrlParameter("BLURB"+num);
 			}
-			for(Enumeration<String> f=A.areaBlurbFlags();f.hasMoreElements();)
+			for(final Enumeration<String> f=A.areaBlurbFlags();f.hasMoreElements();)
 				A.delBlurbFlag(f.nextElement());
 			for(int v=0;v<prics.size();v++)
 				A.addBlurbFlag((String)prics.elementAt(v));
@@ -233,11 +233,11 @@ public class GrinderAreas
 		A.setImage(CMLib.coffeeFilter().safetyFilter(img));
 
 		// gridy
-		String gridy=httpReq.getUrlParameter("GRIDY");
+		final String gridy=httpReq.getUrlParameter("GRIDY");
 		if((gridy!=null)&&(A instanceof GridZones))
 			((GridZones)A).setYGridSize(CMath.s_int(gridy));
 		// gridx
-		String gridx=httpReq.getUrlParameter("GRIDX");
+		final String gridx=httpReq.getUrlParameter("GRIDX");
 		if((gridx!=null)&&(A instanceof GridZones))
 			((GridZones)A).setXGridSize(CMath.s_int(gridx));
 
@@ -292,7 +292,7 @@ public class GrinderAreas
 		num=1;
 		if(httpReq.isUrlParameter("IPRIC1"))
 		{
-			Vector prics=new Vector();
+			final Vector prics=new Vector();
 			String DOUBLE=httpReq.getUrlParameter("IPRIC"+num);
 			String MASK=httpReq.getUrlParameter("IPRICM"+num);
 			while((DOUBLE!=null)&&(MASK!=null))
@@ -313,7 +313,7 @@ public class GrinderAreas
 		for(int i=1;;i++)
 			if(httpReq.isUrlParameter("PARENT"+(Integer.toString(i))))
 			{
-				Area parent=CMLib.map().getArea(httpReq.getUrlParameter("PARENT"+(Integer.toString(i))));
+				final Area parent=CMLib.map().getArea(httpReq.getUrlParameter("PARENT"+(Integer.toString(i))));
 				if(parent!=null)
 				{
 					if(A.canParent(parent))
@@ -335,7 +335,7 @@ public class GrinderAreas
 		for(int i=1;;i++)
 		  if(httpReq.isUrlParameter("CHILDREN"+(Integer.toString(i))))
 		  {
-			  Area child=CMLib.map().getArea(httpReq.getUrlParameter("CHILDREN"+(Integer.toString(i))));
+			  final Area child=CMLib.map().getArea(httpReq.getUrlParameter("CHILDREN"+(Integer.toString(i))));
 			  if(child!=null)
 			  {
 				  if(A.canChild(child))
@@ -361,7 +361,7 @@ public class GrinderAreas
 
 		for(int i=0;i<areasNeedingUpdates.size();i++) // will always include A
 		{
-			Area A2=(Area)areasNeedingUpdates.elementAt(i);
+			final Area A2=(Area)areasNeedingUpdates.elementAt(i);
 			CMLib.database().DBUpdateArea(A2.Name(),A2);
 			CMLib.coffeeMaker().addAutoPropsToAreaIfNecessary(A2);
 		}

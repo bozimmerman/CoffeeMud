@@ -50,7 +50,7 @@ public class Apprentice extends StdCharClass
 	@Override public SubClassRule getSubClassRule() { return SubClassRule.ANY; }
 	@Override public int allowedArmorLevel(){return CharClass.ARMOR_CLOTH;}
 	@Override public int allowedWeaponLevel(){return CharClass.WEAPONS_DAGGERONLY;}
-	private HashSet disallowedWeapons=buildDisallowedWeaponClasses();
+	private final HashSet disallowedWeapons=buildDisallowedWeaponClasses();
 	@Override protected HashSet disallowedWeaponClasses(MOB mob){return disallowedWeapons;}
 	protected HashSet currentApprentices=new HashSet();
 
@@ -105,7 +105,7 @@ public class Apprentice extends StdCharClass
 		if(outfitChoices==null)
 		{
 			outfitChoices=new Vector();
-			Weapon w=CMClass.getWeapon("Dagger");
+			final Weapon w=CMClass.getWeapon("Dagger");
 			outfitChoices.add(w);
 		}
 		return outfitChoices;

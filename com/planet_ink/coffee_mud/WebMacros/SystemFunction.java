@@ -41,18 +41,18 @@ public class SystemFunction extends StdWebMacro
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
-		java.util.Map<String,String> parms=parseParms(parm);
+		final java.util.Map<String,String> parms=parseParms(parm);
 		if(parms.get("ANNOUNCE")!=null)
 		{
-			String s=httpReq.getUrlParameter("TEXT");
+			final String s=httpReq.getUrlParameter("TEXT");
 			if((s!=null)&&(s.length()>0))
 			{
-				MOB M=((MOB)CMClass.sampleMOB().copyOf());
-				Command C=CMClass.getCommand("Announce");
+				final MOB M=((MOB)CMClass.sampleMOB().copyOf());
+				final Command C=CMClass.getCommand("Announce");
 				try
 				{
 					C.execute(M,CMParms.parse("all "+s.trim()),0);
-				}catch(Exception e){}
+				}catch(final Exception e){}
 			}
 		}
 		if(parms.get("SHUTDOWN")!=null)

@@ -44,12 +44,12 @@ public class Ogre extends Humanoid
 	@Override public int weightVariance(){return 90;}
 	@Override public long forbiddenWornBits(){return 0;}
 	@Override public String racialCategory(){return "Giant-kin";}
-	private String[]culturalAbilityNames={"Gigantic","Orcish","Butchering"};
-	private int[]culturalAbilityProficiencies={100,50,75};
+	private final String[]culturalAbilityNames={"Gigantic","Orcish","Butchering"};
+	private final int[]culturalAbilityProficiencies={100,50,75};
 	@Override public String[] culturalAbilityNames(){return culturalAbilityNames;}
 	@Override public int[] culturalAbilityProficiencies(){return culturalAbilityProficiencies;}
 
-	private int[] agingChart={0,2,6,30,69,104,136,142,148};
+	private final int[] agingChart={0,2,6,30,69,104,136,142,148};
 	@Override public int[] getAgingChart(){return agingChart;}
 
 	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi
@@ -92,19 +92,19 @@ public class Ogre extends Humanoid
 		{
 			outfitChoices=new Vector();
 			// Have to, since it requires use of special constructor
-			Armor s1=CMClass.getArmor("GenShirt");
+			final Armor s1=CMClass.getArmor("GenShirt");
 			s1.setName("a large patchy tunic");
 			s1.setDisplayText("a large patchy tunic is crumpled up here.");
 			s1.setDescription("It is a large ragged patchy nasty sweat-stained tunic.");
 			s1.text();
 			outfitChoices.add(s1);
-			Armor p1=CMClass.getArmor("GenPants");
+			final Armor p1=CMClass.getArmor("GenPants");
 			p1.setName("some torn leggings");
 			p1.setDisplayText("some torn leggings lie here.");
 			p1.setDescription("They appear made for a large person with poor taste in clothing.");
 			p1.text();
 			outfitChoices.add(p1);
-			Armor s3=CMClass.getArmor("GenBelt");
+			final Armor s3=CMClass.getArmor("GenBelt");
 			outfitChoices.add(s3);
 		}
 		return outfitChoices;

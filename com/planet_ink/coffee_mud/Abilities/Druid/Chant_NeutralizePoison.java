@@ -47,17 +47,17 @@ public class Chant_NeutralizePoison extends Chant implements MendingSkill
 	public boolean supportsMending(Physical item)
 	{
 		if(!(item instanceof MOB)) return false;
-		boolean canMend=returnOffensiveAffects(item).size()>0;
+		final boolean canMend=returnOffensiveAffects(item).size()>0;
 		return canMend;
 	}
 
 	public List<Ability> returnOffensiveAffects(Physical fromMe)
 	{
-		Vector offenders=new Vector();
+		final Vector offenders=new Vector();
 
 		for(int a=0;a<fromMe.numEffects();a++) // personal
 		{
-			Ability A=fromMe.fetchEffect(a);
+			final Ability A=fromMe.fetchEffect(a);
 			if((A!=null)&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_POISON))
 				offenders.addElement(A);
 		}
@@ -71,7 +71,7 @@ public class Chant_NeutralizePoison extends Chant implements MendingSkill
 		{
 			if(target instanceof MOB)
 			{
-				List<Ability> offensiveAffects=returnOffensiveAffects(target);
+				final List<Ability> offensiveAffects=returnOffensiveAffects(target);
 				if(offensiveAffects.size()==0)
 					return Ability.QUALITY_INDIFFERENT;
 			}
@@ -82,14 +82,14 @@ public class Chant_NeutralizePoison extends Chant implements MendingSkill
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		Physical target=getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_UNWORNONLY);
+		final Physical target=getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_UNWORNONLY);
 		if(target==null) return false;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
-		List<Ability> offensiveAffects=returnOffensiveAffects(target);
+		final boolean success=proficiencyCheck(mob,0,auto);
+		final List<Ability> offensiveAffects=returnOffensiveAffects(target);
 
 		if((success)&&((offensiveAffects.size()>0)
 					   ||((target instanceof Drink)&&(((Drink)target).liquidType()==RawMaterial.RESOURCE_POISON))))
@@ -98,7 +98,7 @@ public class Chant_NeutralizePoison extends Chant implements MendingSkill
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> look(s) cleansed of any poisons.":"^S<S-NAME> chant(s) for <T-NAME> to be cleansed of poisons.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> look(s) cleansed of any poisons.":"^S<S-NAME> chant(s) for <T-NAME> to be cleansed of poisons.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

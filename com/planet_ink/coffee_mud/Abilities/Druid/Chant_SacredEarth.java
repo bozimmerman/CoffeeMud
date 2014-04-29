@@ -50,7 +50,7 @@ public class Chant_SacredEarth extends Chant
 		// undo the affects of this spell
 		if((affected==null)||(!(affected instanceof Room)))
 			return;
-		Room R=(Room)affected;
+		final Room R=(Room)affected;
 		if(canBeUninvoked())
 			R.showHappens(CMMsg.MSG_OK_VISUAL,"The sacred earth charm is ended.");
 
@@ -76,7 +76,7 @@ public class Chant_SacredEarth extends Chant
 		&&((((MOB)msg.target()).charStats().getMyRace().racialCategory().equals("Vegetation"))
 		||(((MOB)msg.target()).charStats().getMyRace().racialCategory().equals("Earth Elemental"))))
 		{
-			int recovery=(int)Math.round(CMath.div((msg.value()),2.0));
+			final int recovery=(int)Math.round(CMath.div((msg.value()),2.0));
 			msg.setValue(msg.value()-recovery);
 		}
 		return true;
@@ -87,7 +87,7 @@ public int castingQuality(MOB mob, Physical target)
    {
 		if(mob!=null)
 		{
-			Room R=mob.location();
+			final Room R=mob.location();
 			if(R!=null)
 			{
 				if(((R.domainType()&Room.INDOORS)>0)
@@ -99,7 +99,7 @@ public int castingQuality(MOB mob, Physical target)
 
 			if(mob.isInCombat())
 			{
-				MOB victim=mob.getVictim();
+				final MOB victim=mob.getVictim();
 				if(victim!=null)
 				{
 					if(((victim.charStats().getMyRace().racialCategory().equals("Vegetation"))
@@ -117,7 +117,7 @@ public int castingQuality(MOB mob, Physical target)
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		Room target=mob.location();
+		final Room target=mob.location();
 		if(target==null) return false;
 		if(target.fetchEffect(ID())!=null)
 		{
@@ -141,7 +141,7 @@ public int castingQuality(MOB mob, Physical target)
 		// and added as String objects to a vector.
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
@@ -150,7 +150,7 @@ public int castingQuality(MOB mob, Physical target)
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> chant(s) to the ground.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> chant(s) to the ground.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -160,7 +160,7 @@ public int castingQuality(MOB mob, Physical target)
 					beneficialAffect(mob,target,asLevel,0);
 					for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 					{
-						Room R=mob.location().getRoomInDir(d);
+						final Room R=mob.location().getRoomInDir(d);
 						if((R!=null)
 						&&(R.fetchEffect(ID())==null)
 						&&((R.domainType()&Room.INDOORS)==0)

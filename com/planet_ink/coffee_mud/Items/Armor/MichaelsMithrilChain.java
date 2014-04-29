@@ -58,7 +58,7 @@ public class MichaelsMithrilChain extends StdArmor
 		if((msg.target()==null)||(!(msg.target() instanceof MOB)))
 			return true;
 
-		MOB mob=(MOB)msg.target();
+		final MOB mob=(MOB)msg.target();
 		if((msg.targetMinor()==CMMsg.TYP_ELECTRIC)
 		&&(!this.amWearingAt(Wearable.IN_INVENTORY))
 		&&(!this.amWearingAt(Wearable.WORN_HELD))

@@ -55,7 +55,7 @@ public class Thief_Squatting extends ThiefSkill
 	{
 		if(affected instanceof MOB)
 		{
-			MOB mob=(MOB)affected;
+			final MOB mob=(MOB)affected;
 			if(msg.source()==mob)
 			{
 				if((msg.target()==mob.location()) && (msg.targetMinor()==CMMsg.TYP_LEAVE))
@@ -86,7 +86,7 @@ public class Thief_Squatting extends ThiefSkill
 		// undo the affects of this spell
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		super.unInvoke();
 
 		if((canBeUninvoked())&&(mob.location()!=null))
@@ -133,7 +133,7 @@ public class Thief_Squatting extends ThiefSkill
 			mob.tell("This is your place already!");
 			return false;
 		}
-		LandTitle T=CMLib.law().getLandTitle(mob.location());
+		final LandTitle T=CMLib.law().getLandTitle(mob.location());
 		boolean confirmed=false;
 		for(final Enumeration<Ability> a=mob.location().effects();a.hasMoreElements();)
 		{
@@ -149,16 +149,16 @@ public class Thief_Squatting extends ThiefSkill
 		MOB warnMOB=null;
 		if(T.getOwnerName().length()>0)
 		{
-			Clan C=CMLib.clans().getClan(T.getOwnerName());
+			final Clan C=CMLib.clans().getClan(T.getOwnerName());
 			if(C==null)
 			{
-				MOB M=CMLib.players().getLoadPlayer(T.getOwnerName());
+				final MOB M=CMLib.players().getLoadPlayer(T.getOwnerName());
 				if(M!=null)
 					warnMOB=M;
 			}
 			else
 			{
-				for(Session S : CMLib.sessions().localOnlineIterable())
+				for(final Session S : CMLib.sessions().localOnlineIterable())
 				{
 					if((S.mob()!=null)
 					&&(S.mob()!=mob)
@@ -183,9 +183,9 @@ public class Thief_Squatting extends ThiefSkill
 			return false;
 		}
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
-		CMMsg msg=CMClass.getMsg(mob,null,this,auto?CMMsg.MASK_ALWAYS:CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,auto?"":"<S-NAME> start(s) squatting.");
+		final CMMsg msg=CMClass.getMsg(mob,null,this,auto?CMMsg.MASK_ALWAYS:CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,auto?"":"<S-NAME> start(s) squatting.");
 		if(!success)
 			return beneficialVisualFizzle(mob,null,auto?"":"<S-NAME> can't seem to get comfortable here.");
 		else

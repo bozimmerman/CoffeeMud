@@ -53,7 +53,7 @@ public class Drunken extends StdLanguage
 
 	protected Vector<Integer> getSChoices(StringBuffer word)
 	{
-		Vector<Integer> V=new Vector<Integer>();
+		final Vector<Integer> V=new Vector<Integer>();
 		int x=word.toString().toUpperCase().indexOf('S');
 		while(x>=0)
 		{
@@ -66,7 +66,7 @@ public class Drunken extends StdLanguage
 
 	protected Vector<Integer> getVChoices(StringBuffer word)
 	{
-		Vector<Integer> V=new Vector<Integer>();
+		final Vector<Integer> V=new Vector<Integer>();
 		for(int x=0;x<word.length();x++)
 		{
 			if(("AEIOU").indexOf(Character.toUpperCase(word.charAt(x)))>=0)
@@ -82,7 +82,7 @@ public class Drunken extends StdLanguage
 	@Override
 	public String translate(String language, String word)
 	{
-		StringBuffer sbw=new StringBuffer(word);
+		final StringBuffer sbw=new StringBuffer(word);
 		Vector<Integer> V=getSChoices(sbw);
 		if(V.size()>0)
 			sbw.insert(V.elementAt(CMLib.dice().roll(1,V.size(),-1)).intValue()+1,'h');
@@ -95,21 +95,21 @@ public class Drunken extends StdLanguage
 		{
 		case 1:
 			{
-				int x=V.elementAt(CMLib.dice().roll(1,V.size(),-1)).intValue();
+				final int x=V.elementAt(CMLib.dice().roll(1,V.size(),-1)).intValue();
 				for(int i=0;i<CMLib.dice().roll(1,5,0);i++)
 					sbw.insert(x+1,sbw.charAt(x));
 				break;
 			}
 		case 2:
 			{
-				int x=V.elementAt(CMLib.dice().roll(1,V.size(),-1)).intValue();
+				final int x=V.elementAt(CMLib.dice().roll(1,V.size(),-1)).intValue();
 				for(int i=0;i<CMLib.dice().roll(1,5,0);i++)
 					sbw.insert(x+1,"-"+sbw.charAt(x));
 				break;
 			}
 		case 3:
 			{
-				int x=V.elementAt(CMLib.dice().roll(1,V.size(),-1)).intValue();
+				final int x=V.elementAt(CMLib.dice().roll(1,V.size(),-1)).intValue();
 				sbw.insert(x+1,"sh");
 				break;
 			}

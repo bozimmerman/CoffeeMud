@@ -55,7 +55,7 @@ public class FightFlee extends ActiveTicker
 		super.tick(ticking,tickID);
 		if((canAct(ticking,tickID))&&(ticking instanceof MOB))
 		{
-			MOB mob=(MOB)ticking;
+			final MOB mob=(MOB)ticking;
 			if(mob.isInCombat()
 			   &&(mob.getVictim()!=null)
 			   &&(mob.getVictim().getVictim()==mob))

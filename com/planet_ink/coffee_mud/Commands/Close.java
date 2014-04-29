@@ -42,7 +42,7 @@ public class Close extends StdCommand
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		String whatToClose=CMParms.combine(commands,1);
+		final String whatToClose=CMParms.combine(commands,1);
 		if(whatToClose.length()==0)
 		{
 			mob.tell("Close what?");
@@ -63,10 +63,10 @@ public class Close extends StdCommand
 		final boolean useShipDirs=(mob.location() instanceof SpaceShip)||(mob.location().getArea() instanceof SpaceShip);
 		final String closeWord=(!(closeThis instanceof Exit))?"close":((Exit)closeThis).closeWord();
 		final String closeMsg="<S-NAME> "+closeWord+"(s) <T-NAMESELF>."+CMLib.protocol().msp("dooropen.wav",10);
-		CMMsg msg=CMClass.getMsg(mob,closeThis,null,CMMsg.MSG_CLOSE,closeMsg,whatToClose,closeMsg);
+		final CMMsg msg=CMClass.getMsg(mob,closeThis,null,CMMsg.MSG_CLOSE,closeMsg,whatToClose,closeMsg);
 		if(closeThis instanceof Exit)
 		{
-			boolean open=((Exit)closeThis).isOpen();
+			final boolean open=((Exit)closeThis).isOpen();
 			if((mob.location().okMessage(msg.source(),msg))
 			&&(open))
 			{
@@ -78,14 +78,14 @@ public class Close extends StdCommand
 
 				if((dirCode>=0)&&(mob.location().getRoomInDir(dirCode)!=null))
 				{
-					Room opR=mob.location().getRoomInDir(dirCode);
-					Exit opE=mob.location().getPairedExit(dirCode);
+					final Room opR=mob.location().getRoomInDir(dirCode);
+					final Exit opE=mob.location().getPairedExit(dirCode);
 					if(opE!=null)
 					{
-						CMMsg altMsg=CMClass.getMsg(msg.source(),opE,msg.tool(),msg.sourceCode(),null,msg.targetCode(),null,msg.othersCode(),null);
+						final CMMsg altMsg=CMClass.getMsg(msg.source(),opE,msg.tool(),msg.sourceCode(),null,msg.targetCode(),null,msg.othersCode(),null);
 						opE.executeMsg(msg.source(),altMsg);
 					}
-					int opCode=Directions.getOpDirectionCode(dirCode);
+					final int opCode=Directions.getOpDirectionCode(dirCode);
 					if((opE!=null)
 					&&(!opE.isOpen())
 					&&(!((Exit)closeThis).isOpen()))

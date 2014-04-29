@@ -53,7 +53,7 @@ public class MOTD extends StdCommand
 		String what="MOTD";
 		if((commands!=null)&&(commands.size()>0))
 		{
-			String firstWord=((String)commands.firstElement()).toUpperCase();
+			final String firstWord=((String)commands.firstElement()).toUpperCase();
 			if(CMParms.indexOf(this.getAccessWords(), firstWord)>0)
 				what=firstWord;
 			if((((String)commands.lastElement()).equalsIgnoreCase("PAUSE")))
@@ -68,11 +68,11 @@ public class MOTD extends StdCommand
 		}
 		else
 			commands=DEFAULT_CMD;
-		String parm=CMParms.combine(commands,1);
+		final String parm=CMParms.combine(commands,1);
 		if((mob.playerStats()!=null)
 		&&(parm.equalsIgnoreCase("AGAIN")||parm.equalsIgnoreCase("NEW")))
 		{
-			StringBuffer buf=new StringBuffer("");
+			final StringBuffer buf=new StringBuffer("");
 			try
 			{
 				String msg = new CMFile(Resources.buildResourcePath("text")+"motd.txt",null).text().toString();
@@ -83,18 +83,18 @@ public class MOTD extends StdCommand
 					buf.append(msg+"\n\r--------------------------------------\n\r");
 				}
 
-				List<JournalsLibrary.JournalEntry> journal=new LinkedList<JournalsLibrary.JournalEntry>();
+				final List<JournalsLibrary.JournalEntry> journal=new LinkedList<JournalsLibrary.JournalEntry>();
 				journal.addAll(CMLib.database().DBReadJournalMsgs("CoffeeMud News")); // deprecated
 				journal.addAll(CMLib.database().DBReadJournalMsgs("SYSTEM_NEWS"));
 				for(int which=0;which<journal.size();which++)
 				{
-					JournalsLibrary.JournalEntry entry=journal.get(which);
-					String from=entry.from;
-					long last=entry.date;
+					final JournalsLibrary.JournalEntry entry=journal.get(which);
+					final String from=entry.from;
+					final long last=entry.date;
 					String to=entry.to;
-					String subject=entry.subj;
+					final String subject=entry.subj;
 					String message=entry.msg;
-					long compdate=entry.update;
+					final long compdate=entry.update;
 					if(compdate>mob.playerStats().getLastDateTime())
 					{
 						boolean allMine=to.equalsIgnoreCase(mob.Name())
@@ -113,10 +113,10 @@ public class MOTD extends StdCommand
 						}
 					}
 				}
-				Vector postalChains=new Vector();
-				Vector postalBranches=new Vector();
+				final Vector postalChains=new Vector();
+				final Vector postalBranches=new Vector();
 				PostOffice P=null;
-				for(Enumeration e=CMLib.map().postOffices();e.hasMoreElements();)
+				for(final Enumeration e=CMLib.map().postOffices();e.hasMoreElements();)
 				{
 					P=(PostOffice)e.nextElement();
 					if(!postalChains.contains(P.postalChain()))
@@ -127,19 +127,19 @@ public class MOTD extends StdCommand
 				if((postalChains.size()>0)&&(P!=null))
 				{
 					List<PlayerData> V=CMLib.database().DBReadData(mob.Name(),postalChains);
-					Map<PostOffice,int[]> res=getPostalResults(V,mob.playerStats().getLastDateTime());
-					for(Iterator<PostOffice> e=res.keySet().iterator();e.hasNext();)
+					final Map<PostOffice,int[]> res=getPostalResults(V,mob.playerStats().getLastDateTime());
+					for(final Iterator<PostOffice> e=res.keySet().iterator();e.hasNext();)
 					{
 						P=e.next();
-						int[] ct=res.get(P);
+						final int[] ct=res.get(P);
 						buf.append("\n\r"+report("You have",P,ct));
 					}
-					Map<PostOffice,int[]> res2=new Hashtable();
-					for(Pair<Clan,Integer> clanPair : CMLib.clans().findPrivilegedClans(mob, Clan.Function.WITHDRAW))
+					final Map<PostOffice,int[]> res2=new Hashtable();
+					for(final Pair<Clan,Integer> clanPair : CMLib.clans().findPrivilegedClans(mob, Clan.Function.WITHDRAW))
 					{
 						if(clanPair!=null)
 						{
-							Clan C=clanPair.first;
+							final Clan C=clanPair.first;
 							if(C.getAuthority(clanPair.second.intValue(),Clan.Function.WITHDRAW)!=Clan.Authority.CAN_NOT_DO)
 							{
 								V=CMLib.database().DBReadData(C.name(),postalChains);
@@ -148,10 +148,10 @@ public class MOTD extends StdCommand
 									res2.putAll(getPostalResults(V,mob.playerStats().getLastDateTime()));
 								}
 							}
-							for(Iterator<PostOffice> e=res2.keySet().iterator();e.hasNext();)
+							for(final Iterator<PostOffice> e=res2.keySet().iterator();e.hasNext();)
 							{
 								P=e.next();
-								int[] ct=res2.get(P);
+								final int[] ct=res2.get(P);
 								buf.append("\n\r"+report("Your "+C.getGovernmentName()+" "+C.getName()+" has",P,ct));
 							}
 						}
@@ -160,10 +160,10 @@ public class MOTD extends StdCommand
 						buf.append("\n\r--------------------------------------\n\r");
 				}
 
-				Vector<JournalsLibrary.CommandJournal> myEchoableCommandJournals=new Vector<JournalsLibrary.CommandJournal>();
-				for(Enumeration<JournalsLibrary.CommandJournal> e=CMLib.journals().commandJournals();e.hasMoreElements();)
+				final Vector<JournalsLibrary.CommandJournal> myEchoableCommandJournals=new Vector<JournalsLibrary.CommandJournal>();
+				for(final Enumeration<JournalsLibrary.CommandJournal> e=CMLib.journals().commandJournals();e.hasMoreElements();)
 				{
-					JournalsLibrary.CommandJournal CMJ=e.nextElement();
+					final JournalsLibrary.CommandJournal CMJ=e.nextElement();
 					if((CMJ.getFlag(JournalsLibrary.CommandJournalFlags.ADMINECHO)!=null)
 					&&((CMSecurity.isJournalAccessAllowed(mob,CMJ.NAME()))
 						||CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.LISTADMIN)))
@@ -172,15 +172,15 @@ public class MOTD extends StdCommand
 				boolean CJseparator=false;
 				for(int cj=0;cj<myEchoableCommandJournals.size();cj++)
 				{
-					JournalsLibrary.CommandJournal CMJ=myEchoableCommandJournals.elementAt(cj);
-					List<JournalsLibrary.JournalEntry> items=CMLib.database().DBReadJournalMsgs("SYSTEM_"+CMJ.NAME()+"S");
+					final JournalsLibrary.CommandJournal CMJ=myEchoableCommandJournals.elementAt(cj);
+					final List<JournalsLibrary.JournalEntry> items=CMLib.database().DBReadJournalMsgs("SYSTEM_"+CMJ.NAME()+"S");
 					if(items!=null)
 					for(int i=0;i<items.size();i++)
 					{
-						JournalsLibrary.JournalEntry entry=items.get(i);
-						String from=entry.from;
-						String message=entry.msg;
-						long compdate=entry.update;
+						final JournalsLibrary.JournalEntry entry=items.get(i);
+						final String from=entry.from;
+						final String message=entry.msg;
+						final long compdate=entry.update;
 						if(compdate>mob.playerStats().getLastDateTime())
 						{
 							buf.append("\n\rNEW "+CMJ.NAME()+" from "+from+": "+message+"\n\r");
@@ -194,12 +194,12 @@ public class MOTD extends StdCommand
 				if((!CMath.bset(mob.getBitmap(),MOB.ATT_AUTOFORWARD))
 				&&(CMProps.getVar(CMProps.Str.MAILBOX).length()>0))
 				{
-					List<JournalsLibrary.JournalEntry> msgs=CMLib.database().DBReadJournalMsgs(CMProps.getVar(CMProps.Str.MAILBOX));
+					final List<JournalsLibrary.JournalEntry> msgs=CMLib.database().DBReadJournalMsgs(CMProps.getVar(CMProps.Str.MAILBOX));
 					int mymsgs=0;
 					for(int num=0;num<msgs.size();num++)
 					{
-						JournalsLibrary.JournalEntry thismsg=msgs.get(num);
-						String to=thismsg.to;
+						final JournalsLibrary.JournalEntry thismsg=msgs.get(num);
+						final String to=thismsg.to;
 						if(to.equalsIgnoreCase("all")
 						||to.equalsIgnoreCase(mob.Name())
 						||(to.toUpperCase().trim().startsWith("MASK=")&&CMLib.masking().maskCheck(to.trim().substring(5),mob,true)))
@@ -212,7 +212,7 @@ public class MOTD extends StdCommand
 				if((CMSecurity.isAllowed(mob, mob.location(), CMSecurity.SecFlag.CMDPLAYERS))
 				&&(CMProps.getBoolVar(CMProps.Bool.ACCOUNTEXPIRATION)))
 				{
-					List<String> l=CMLib.login().getExpiredList();
+					final List<String> l=CMLib.login().getExpiredList();
 					if(l.size()>0)
 					{
 						buf.append("\n\r^XThere are currently "+l.size()+" expired "+((CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)>1)?"accounts":"characters"));
@@ -220,7 +220,7 @@ public class MOTD extends StdCommand
 					}
 				}
 
-				List<Quest> qQVec=CMLib.quests().getPlayerPersistantQuests(mob);
+				final List<Quest> qQVec=CMLib.quests().getPlayerPersistantQuests(mob);
 				if(mob.session()!=null)
 					if(buf.length()>0)
 					{
@@ -236,7 +236,7 @@ public class MOTD extends StdCommand
 					if(CMParms.combine(commands,1).equalsIgnoreCase("AGAIN"))
 						mob.session().println("No "+what+" to re-read.");
 			}
-			catch(HTTPRedirectException e){}
+			catch(final HTTPRedirectException e){}
 			return false;
 		}
 		if(parm.equalsIgnoreCase("ON"))
@@ -278,7 +278,7 @@ public class MOTD extends StdCommand
 			branchName=((MOB)P).getStartRoom().getArea().Name();
 		else
 		{
-			int x=branchName.indexOf('#');
+			final int x=branchName.indexOf('#');
 			if(x>=0) branchName=branchName.substring(0,x);
 		}
 		if(ct[0]>0)
@@ -288,19 +288,19 @@ public class MOTD extends StdCommand
 
 	private Map<PostOffice,int[]> getPostalResults(List<PlayerData> mailData, long newTimeDate)
 	{
-		Hashtable<PostOffice,int[]> results=new Hashtable<PostOffice,int[]>();
+		final Hashtable<PostOffice,int[]> results=new Hashtable<PostOffice,int[]>();
 		PostOffice P=null;
 		for(int i=0;i<mailData.size();i++)
 		{
-			DatabaseEngine.PlayerData letter=mailData.get(i);
-			String chain=letter.section;
+			final DatabaseEngine.PlayerData letter=mailData.get(i);
+			final String chain=letter.section;
 			String branch=letter.key;
-			int x=branch.indexOf(';');
+			final int x=branch.indexOf(';');
 			if(x<0) continue;
 			branch=branch.substring(0,x);
 			P=CMLib.map().getPostOffice(chain,branch);
 			if(P==null) continue;
-			PostOffice.MailPiece pieces=P.parsePostalItemData(letter.xml);
+			final PostOffice.MailPiece pieces=P.parsePostalItemData(letter.xml);
 			int[] ct=results.get(P);
 			if(ct==null)
 			{

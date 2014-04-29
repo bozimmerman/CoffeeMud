@@ -180,7 +180,7 @@ public class StdExit implements Exit
 		{
 			return this.getClass().newInstance();
 		}
-		catch(Exception e)
+		catch(final Exception e)
 		{
 			Log.errOut(ID(),e);
 		}
@@ -196,15 +196,15 @@ public class StdExit implements Exit
 		affects=null;
 		behaviors=null;
 		scripts=null;
-		for(Enumeration<Behavior> e=X.behaviors();e.hasMoreElements();)
+		for(final Enumeration<Behavior> e=X.behaviors();e.hasMoreElements();)
 		{
-			Behavior B=e.nextElement();
+			final Behavior B=e.nextElement();
 			if(B!=null)
 				addBehavior((Behavior)B.copyOf());
 		}
-		for(Enumeration<ScriptingEngine> e=X.scripts();e.hasMoreElements();)
+		for(final Enumeration<ScriptingEngine> e=X.scripts();e.hasMoreElements();)
 		{
-			ScriptingEngine SE=e.nextElement();
+			final ScriptingEngine SE=e.nextElement();
 			if(SE!=null) addScript((ScriptingEngine)SE.copyOf());
 		}
 	}
@@ -213,13 +213,13 @@ public class StdExit implements Exit
 	{
 		try
 		{
-			StdExit E=(StdExit)this.clone();
+			final StdExit E=(StdExit)this.clone();
 			//CMClass.bumpCounter(this,CMClass.CMObjectType.EXIT);//removed for mem & perf
 			E.cloneFix(this);
 			return E;
 
 		}
-		catch(CloneNotSupportedException e)
+		catch(final CloneNotSupportedException e)
 		{
 			return this.newInstance();
 		}
@@ -241,7 +241,7 @@ public class StdExit implements Exit
 		if(mob.riding()!=null) return null;
 		for(int i=0;i<room.numItems();i++)
 		{
-			Item I=room.getItem(i);
+			final Item I=room.getItem(i);
 			if((I!=null)
 			   &&(I instanceof Rideable)
 			   &&(CMLib.flags().canBeSeenBy(I,mob))
@@ -253,8 +253,8 @@ public class StdExit implements Exit
 
 	protected void mountLadder(MOB mob, Rideable ladder)
 	{
-		String mountStr=ladder.mountString(CMMsg.TYP_MOUNT,mob);
-		CMMsg msg=CMClass.getMsg(mob,ladder,null,CMMsg.MSG_MOUNT,"<S-NAME> "+mountStr+" <T-NAMESELF>.");
+		final String mountStr=ladder.mountString(CMMsg.TYP_MOUNT,mob);
+		final CMMsg msg=CMClass.getMsg(mob,ladder,null,CMMsg.MSG_MOUNT,"<S-NAME> "+mountStr+" <T-NAMESELF>.");
 		Room room=(Room)((Item)ladder).owner();
 		if(mob.location()==room) room=null;
 		if((mob.location().okMessage(mob,msg))
@@ -311,7 +311,7 @@ public class StdExit implements Exit
 				return false;
 		}
 
-		MOB mob=msg.source();
+		final MOB mob=msg.source();
 		if((!msg.amITarget(this))&&(msg.tool()!=this))
 			return true;
 		else
@@ -462,7 +462,7 @@ public class StdExit implements Exit
 				{
 					for(int i=0;i<mob.numItems();i++)
 					{
-						Item item=mob.getItem(i);
+						final Item item=mob.getItem(i);
 						if((item!=null)
 						&&(item instanceof DoorKey)
 						&&((DoorKey)item).getKey().equals(keyName())
@@ -491,7 +491,7 @@ public class StdExit implements Exit
 	@Override
 	public StringBuilder viewableText(MOB mob, Room room)
 	{
-		StringBuilder Say=new StringBuilder("");
+		final StringBuilder Say=new StringBuilder("");
 		if(CMath.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS))
 		{
 			if(room==null)
@@ -539,7 +539,7 @@ public class StdExit implements Exit
 			A.executeMsg(me,msg);
 		}});
 
-		MOB mob=msg.source();
+		final MOB mob=msg.source();
 		if((!msg.amITarget(this))&&(msg.tool()!=this))
 			return;
 		switch(msg.targetMinor())
@@ -667,7 +667,7 @@ public class StdExit implements Exit
 	{
 		if(miscText.startsWith("{#"))
 		{
-			int x=miscText.indexOf("#}");
+			final int x=miscText.indexOf("#}");
 			if(x>=0)
 				return miscText.substring(2,x);
 		}
@@ -678,14 +678,14 @@ public class StdExit implements Exit
 	{
 		if(link.startsWith("{{#"))
 		{
-			int x=link.indexOf("#}}");
+			final int x=link.indexOf("#}}");
 			if(x>=0)
 				lastRoomID=link.substring(3,x);
 			return;
 		}
 		if(miscText.startsWith("{#"))
 		{
-			int x=miscText.indexOf("#}");
+			final int x=miscText.indexOf("#}");
 			if(x>=0)
 				miscText=miscText.substring(x+2);
 		}
@@ -733,16 +733,16 @@ public class StdExit implements Exit
 				if(A!=null) applier.apply(A);
 			}
 		}
-		catch(ArrayIndexOutOfBoundsException e){}
+		catch(final ArrayIndexOutOfBoundsException e){}
 	}
 	@Override
 	public void delAllEffects(boolean unInvoke)
 	{
-		SVector<Ability> affects=this.affects;
+		final SVector<Ability> affects=this.affects;
 		if(affects==null) return;
 		for(int a=numEffects()-1;a>=0;a--)
 		{
-			Ability A=fetchEffect(a);
+			final Ability A=fetchEffect(a);
 			if(A!=null)
 			{
 				if(unInvoke) A.unInvoke();
@@ -769,7 +769,7 @@ public class StdExit implements Exit
 		{
 			return affects.elementAt(index);
 		}
-		catch(java.lang.ArrayIndexOutOfBoundsException x){}
+		catch(final java.lang.ArrayIndexOutOfBoundsException x){}
 		return null;
 	}
 	@Override
@@ -793,7 +793,7 @@ public class StdExit implements Exit
 		if(behaviors==null)
 			behaviors=new SVector<Behavior>(1);
 		if(to==null) return;
-		for(Behavior B : behaviors)
+		for(final Behavior B : behaviors)
 			if((B!=null)&&(B.ID().equals(to.ID())))
 				return;
 		// first one! so start ticking...
@@ -813,7 +813,7 @@ public class StdExit implements Exit
 	@Override
 	public void delAllBehaviors()
 	{
-		boolean didSomething=(behaviors!=null)&&(behaviors.size()>0);
+		final boolean didSomething=(behaviors!=null)&&(behaviors.size()>0);
 		if(didSomething) behaviors.clear();
 		behaviors=null;
 		if(didSomething && ((scripts==null)||(scripts.size()==0)))
@@ -837,7 +837,7 @@ public class StdExit implements Exit
 		{
 			return behaviors.elementAt(index);
 		}
-		catch(java.lang.ArrayIndexOutOfBoundsException x){}
+		catch(final java.lang.ArrayIndexOutOfBoundsException x){}
 		return null;
 	}
 	@Override
@@ -845,7 +845,7 @@ public class StdExit implements Exit
 	{
 		if(behaviors==null)
 			return null;
-		for(Behavior B : behaviors)
+		for(final Behavior B : behaviors)
 			if((B!=null)&&(B.ID().equalsIgnoreCase(ID)))
 				return B;
 		return null;
@@ -863,7 +863,7 @@ public class StdExit implements Exit
 				if(B!=null) applier.apply(B);
 			}
 		}
-		catch(ArrayIndexOutOfBoundsException e){}
+		catch(final ArrayIndexOutOfBoundsException e){}
 	}
 
 	/** Manipulation of the scripts list */
@@ -903,7 +903,7 @@ public class StdExit implements Exit
 	@Override
 	public void delAllScripts()
 	{
-		boolean didSomething=(scripts!=null)&&(scripts.size()>0);
+		final boolean didSomething=(scripts!=null)&&(scripts.size()>0);
 		if(didSomething) scripts.clear();
 		scripts=null;
 		if(didSomething && ((behaviors==null)||(behaviors.size()==0)))
@@ -913,7 +913,7 @@ public class StdExit implements Exit
 	@Override
 	@SuppressWarnings("unchecked")
 	public Enumeration<ScriptingEngine> scripts() { return (scripts==null)?EmptyEnumeration.INSTANCE:scripts.elements();}
-	@Override public ScriptingEngine fetchScript(int x){try{return scripts.elementAt(x);}catch(Exception e){} return null;}
+	@Override public ScriptingEngine fetchScript(int x){try{return scripts.elementAt(x);}catch(final Exception e){} return null;}
 	@Override
 	public void eachScript(final EachApplicable<ScriptingEngine> applier)
 	{
@@ -927,7 +927,7 @@ public class StdExit implements Exit
 				if(S!=null) applier.apply(S);
 			}
 		}
-		catch(ArrayIndexOutOfBoundsException e){}
+		catch(final ArrayIndexOutOfBoundsException e){}
 	}
 
 	@Override public int openDelayTicks()    { return 45;}
@@ -967,7 +967,7 @@ public class StdExit implements Exit
 	public boolean sameAs(Environmental E)
 	{
 		if(!(E instanceof StdExit)) return false;
-		String[] codes=getStatCodes();
+		final String[] codes=getStatCodes();
 		for(int i=0;i<codes.length;i++)
 			if(!E.getStat(codes[i]).equals(getStat(codes[i])))
 				return false;

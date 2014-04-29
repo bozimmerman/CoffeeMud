@@ -57,7 +57,7 @@ public class Spell_AlterSubstance extends Spell
 	{
 		if((affected!=null)&&(affected instanceof Item))
 		{
-			Item I=(Item)affected;
+			final Item I=(Item)affected;
 			I.setMaterial(oldMaterial);
 			if(I.owner() instanceof Room)
 				((Room)I.owner()).showHappens(CMMsg.MSG_OK_VISUAL,I.name()+" reverts to its natural form.");
@@ -77,14 +77,14 @@ public class Spell_AlterSubstance extends Spell
 			material=(String)commands.lastElement();
 			commands.removeElement(material);
 		}
-		Item target=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_UNWORNONLY);
+		final Item target=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_UNWORNONLY);
 		if(target==null) return false;
 		RawMaterial.Material m=RawMaterial.Material.findIgnoreCase(material);
 		if(m==null) m=RawMaterial.Material.startsWithIgnoreCase(material);
 		int newMaterial=(m==null)?-1:m.mask();
 		if((newMaterial>=0)&&(m!=null))
 		{
-			List<Integer> rscs = RawMaterial.CODES.COMPOSE_RESOURCES(newMaterial);
+			final List<Integer> rscs = RawMaterial.CODES.COMPOSE_RESOURCES(newMaterial);
 			if(rscs.size()>0)
 			{
 				newMaterial=rscs.get(0).intValue();
@@ -113,11 +113,11 @@ public class Spell_AlterSubstance extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAMESELF>, incanting.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAMESELF>, incanting.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -125,14 +125,14 @@ public class Spell_AlterSubstance extends Spell
 				mob.location().show(mob,target,CMMsg.MSG_OK_ACTION,"<T-NAME> change(s) into "+material+"!");
 				oldMaterial=target.material();
 				target.setMaterial(newMaterial);
-				String oldResourceName=RawMaterial.CODES.NAME(oldMaterial);
-				String oldMaterialName=RawMaterial.Material.findByMask(oldMaterial&RawMaterial.MATERIAL_MASK).desc();
+				final String oldResourceName=RawMaterial.CODES.NAME(oldMaterial);
+				final String oldMaterialName=RawMaterial.Material.findByMask(oldMaterial&RawMaterial.MATERIAL_MASK).desc();
 				String oldName=target.name().toUpperCase();
 				oldName=CMStrings.replaceAll(oldName,oldResourceName,material);
 				oldName=CMStrings.replaceAll(oldName,oldMaterialName,material);
 				if(oldName.indexOf(material)<0)
 				{
-					int x=oldName.lastIndexOf(' ');
+					final int x=oldName.lastIndexOf(' ');
 					if(x<0)
 						oldName=material+" "+oldName;
 					else

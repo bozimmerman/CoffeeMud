@@ -58,7 +58,7 @@ public class Drowness extends StdBehavior
 	{
 		super.startBehavior(forMe);
 		if(!(forMe instanceof MOB)) return;
-		MOB mob=(MOB)forMe;
+		final MOB mob=(MOB)forMe;
 
 		mob.baseCharStats().setStat(CharStats.STAT_STRENGTH,12 + CMLib.dice().roll(1,6,0));
 		mob.baseCharStats().setStat(CharStats.STAT_INTELLIGENCE,14 + CMLib.dice().roll(1,6,0));
@@ -88,81 +88,81 @@ public class Drowness extends StdBehavior
 
 	public void addFemaleNaturalAbilities(MOB mob)
 	{
-		Weapon mainWeapon = CMClass.getWeapon("Mace");
+		final Weapon mainWeapon = CMClass.getWeapon("Mace");
 		mainWeapon.wearAt(Wearable.WORN_WIELD);
 		mob.addItem(mainWeapon);
 
-		Ability dark=CMClass.getAbility("Spell_Darkness");
+		final Ability dark=CMClass.getAbility("Spell_Darkness");
 		dark.setProficiency(100);
 		dark.setSavable(false);
 		mob.addAbility(dark);
 
-		Ability p1 = CMClass.getAbility("Prayer_ProtGood");
+		final Ability p1 = CMClass.getAbility("Prayer_ProtGood");
 		p1.setProficiency(CMLib.dice().roll(5, 10, 50));
 		p1.setSavable(false);
 		mob.addAbility(p1);
 
-		Ability p2 = CMClass.getAbility("Prayer_CauseLight");
+		final Ability p2 = CMClass.getAbility("Prayer_CauseLight");
 		p2.setProficiency(CMLib.dice().roll(5, 10, 50));
 		p2.setSavable(false);
 		mob.addAbility(p2);
 
-		Ability p3 = CMClass.getAbility("Prayer_CauseSerious");
+		final Ability p3 = CMClass.getAbility("Prayer_CauseSerious");
 		p3.setProficiency(CMLib.dice().roll(5, 10, 50));
 		p3.setSavable(false);
 		mob.addAbility(p3);
 
-		Ability p4 = CMClass.getAbility("Prayer_Curse");
+		final Ability p4 = CMClass.getAbility("Prayer_Curse");
 		p4.setProficiency(CMLib.dice().roll(5, 10, 50));
 		p4.setSavable(false);
 		mob.addAbility(p4);
 
-		Ability p5 = CMClass.getAbility("Prayer_Paralyze");
+		final Ability p5 = CMClass.getAbility("Prayer_Paralyze");
 		p5.setProficiency(CMLib.dice().roll(5, 10, 50));
 		p5.setSavable(false);
 		mob.addAbility(p5);
 
-		Ability p6 = CMClass.getAbility("Prayer_DispelGood");
+		final Ability p6 = CMClass.getAbility("Prayer_DispelGood");
 		p6.setProficiency(CMLib.dice().roll(5, 10, 50));
 		p6.setSavable(false);
 		mob.addAbility(p6);
 
-		Ability p7 = CMClass.getAbility("Prayer_Plague");
+		final Ability p7 = CMClass.getAbility("Prayer_Plague");
 		p7.setProficiency(CMLib.dice().roll(5, 10, 50));
 		p7.setSavable(false);
 		mob.addAbility(p7);
 
-		Ability p8 = CMClass.getAbility("Prayer_CauseCritical");
+		final Ability p8 = CMClass.getAbility("Prayer_CauseCritical");
 		p8.setProficiency(CMLib.dice().roll(5, 10, 50));
 		p8.setSavable(false);
 		mob.addAbility(p8);
 
-		Ability p9 = CMClass.getAbility("Prayer_Blindness");
+		final Ability p9 = CMClass.getAbility("Prayer_Blindness");
 		p9.setProficiency(CMLib.dice().roll(5, 10, 50));
 		p9.setSavable(false);
 		mob.addAbility(p9);
 
-		Ability p10 = CMClass.getAbility("Prayer_BladeBarrier");
+		final Ability p10 = CMClass.getAbility("Prayer_BladeBarrier");
 		p10.setProficiency(CMLib.dice().roll(5, 10, 50));
 		p10.setSavable(false);
 		mob.addAbility(p10);
 
-		Ability p11 = CMClass.getAbility("Prayer_Hellfire");
+		final Ability p11 = CMClass.getAbility("Prayer_Hellfire");
 		p11.setProficiency(CMLib.dice().roll(5, 10, 50));
 		p11.setSavable(false);
 		mob.addAbility(p11);
 
-		Ability p12 = CMClass.getAbility("Prayer_UnholyWord");
+		final Ability p12 = CMClass.getAbility("Prayer_UnholyWord");
 		p12.setProficiency(CMLib.dice().roll(5, 10, 50));
 		p12.setSavable(false);
 		mob.addAbility(p12);
 
-		Ability p13 = CMClass.getAbility("Prayer_Deathfinger");
+		final Ability p13 = CMClass.getAbility("Prayer_Deathfinger");
 		p13.setProficiency(CMLib.dice().roll(5, 10, 50));
 		p13.setSavable(false);
 		mob.addAbility(p13);
 
-		Ability p14 = CMClass.getAbility("Prayer_Harm");
+		final Ability p14 = CMClass.getAbility("Prayer_Harm");
 		p14.setProficiency(CMLib.dice().roll(5, 10, 50));
 		p14.setSavable(false);
 		mob.addAbility(p14);
@@ -171,14 +171,14 @@ public class Drowness extends StdBehavior
 
 	public void addMaleNaturalAbilities(MOB mob)
 	{
-		Armor chainMail = CMClass.getArmor("DrowChainMailArmor");
+		final Armor chainMail = CMClass.getArmor("DrowChainMailArmor");
 		chainMail.wearAt(Wearable.WORN_TORSO);
 		mob.addItem(chainMail);
 
 		Weapon mainWeapon = null;
 		Weapon secondWeapon = null;
 
-		int weaponry = CMLib.dice().roll(1,4,0);
+		final int weaponry = CMLib.dice().roll(1,4,0);
 		if(mob.fetchWieldedItem()==null)
 		switch(weaponry)
 		{
@@ -229,77 +229,77 @@ public class Drowness extends StdBehavior
 				break;
 		}
 
-		Ability dark=CMClass.getAbility("Spell_Darkness");
+		final Ability dark=CMClass.getAbility("Spell_Darkness");
 		dark.setProficiency(100);
 		dark.setSavable(false);
 		mob.addAbility(dark);
 
-		Ability p1 = CMClass.getAbility("Prayer_ProtGood");
+		final Ability p1 = CMClass.getAbility("Prayer_ProtGood");
 		p1.setProficiency(CMLib.dice().roll(5, 10, 50));
 		p1.setSavable(false);
 		mob.addAbility(p1);
 
-		Ability p2 = CMClass.getAbility("Prayer_CauseLight");
+		final Ability p2 = CMClass.getAbility("Prayer_CauseLight");
 		p2.setProficiency(CMLib.dice().roll(5, 10, 50));
 		p2.setSavable(false);
 		mob.addAbility(p2);
 
-		Ability p3 = CMClass.getAbility("Prayer_CauseSerious");
+		final Ability p3 = CMClass.getAbility("Prayer_CauseSerious");
 		p3.setProficiency(CMLib.dice().roll(5, 10, 50));
 		p3.setSavable(false);
 		mob.addAbility(p3);
 
-		Ability p4 = CMClass.getAbility("Prayer_Curse");
+		final Ability p4 = CMClass.getAbility("Prayer_Curse");
 		p4.setProficiency(CMLib.dice().roll(5, 10, 50));
 		p4.setSavable(false);
 		mob.addAbility(p4);
 
-		Ability p5 = CMClass.getAbility("Prayer_Paralyze");
+		final Ability p5 = CMClass.getAbility("Prayer_Paralyze");
 		p5.setProficiency(CMLib.dice().roll(5, 10, 50));
 		p5.setSavable(false);
 		mob.addAbility(p5);
 
-		Ability p6 = CMClass.getAbility("Prayer_DispelGood");
+		final Ability p6 = CMClass.getAbility("Prayer_DispelGood");
 		p6.setProficiency(CMLib.dice().roll(5, 10, 50));
 		p6.setSavable(false);
 		mob.addAbility(p6);
 
-		Ability p7 = CMClass.getAbility("Prayer_Plague");
+		final Ability p7 = CMClass.getAbility("Prayer_Plague");
 		p7.setProficiency(CMLib.dice().roll(5, 10, 50));
 		p7.setSavable(false);
 		mob.addAbility(p7);
 
-		Ability p8 = CMClass.getAbility("Prayer_CauseCritical");
+		final Ability p8 = CMClass.getAbility("Prayer_CauseCritical");
 		p8.setProficiency(CMLib.dice().roll(5, 10, 50));
 		p8.setSavable(false);
 		mob.addAbility(p8);
 
-		Ability p9 = CMClass.getAbility("Prayer_Blindness");
+		final Ability p9 = CMClass.getAbility("Prayer_Blindness");
 		p9.setProficiency(CMLib.dice().roll(5, 10, 50));
 		p9.setSavable(false);
 		mob.addAbility(p9);
 
-		Ability p10 = CMClass.getAbility("Prayer_BladeBarrier");
+		final Ability p10 = CMClass.getAbility("Prayer_BladeBarrier");
 		p10.setProficiency(CMLib.dice().roll(5, 10, 50));
 		p10.setSavable(false);
 		mob.addAbility(p10);
 
-		Ability p11 = CMClass.getAbility("Prayer_Hellfire");
+		final Ability p11 = CMClass.getAbility("Prayer_Hellfire");
 		p11.setProficiency(CMLib.dice().roll(5, 10, 50));
 		p11.setSavable(false);
 		mob.addAbility(p11);
 
-		Ability p12 = CMClass.getAbility("Prayer_UnholyWord");
+		final Ability p12 = CMClass.getAbility("Prayer_UnholyWord");
 		p12.setProficiency(CMLib.dice().roll(5, 10, 50));
 		p12.setSavable(false);
 		mob.addAbility(p12);
 
-		Ability p13 = CMClass.getAbility("Prayer_Deathfinger");
+		final Ability p13 = CMClass.getAbility("Prayer_Deathfinger");
 		p13.setProficiency(CMLib.dice().roll(5, 10, 50));
 		p13.setSavable(false);
 		mob.addAbility(p13);
 
-		Ability p14 = CMClass.getAbility("Prayer_Harm");
+		final Ability p14 = CMClass.getAbility("Prayer_Harm");
 		p14.setProficiency(CMLib.dice().roll(5, 10, 50));
 		p14.setSavable(false);
 		mob.addAbility(p14);
@@ -340,8 +340,8 @@ public class Drowness extends StdBehavior
 		if(oking==null) return super.okMessage(oking,msg);
 		if(!(oking instanceof MOB)) return super.okMessage(oking,msg);
 
-		boolean retval = super.okMessage(oking, msg);
-		MOB mob=(MOB)oking;
+		final boolean retval = super.okMessage(oking, msg);
+		final MOB mob=(MOB)oking;
 		if((msg.amITarget(mob))
 		&&(CMath.bset(msg.targetMajor(),CMMsg.MASK_MALICIOUS))
 		&&(msg.targetMinor()==CMMsg.TYP_CAST_SPELL))
@@ -361,7 +361,7 @@ public class Drowness extends StdBehavior
 		if(ticking!=null)
 		if(ticking instanceof MOB)
 		{
-			MOB mob=(MOB)ticking;
+			final MOB mob=(MOB)ticking;
 			if((!mob.amDead())&&(tickID==Tickable.TICKID_MOB))
 			{
 				if(mob.baseCharStats().getStat(CharStats.STAT_GENDER)=='F')

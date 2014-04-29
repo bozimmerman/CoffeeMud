@@ -124,11 +124,11 @@ public class GenRace extends StdRace
 		xtraValues=CMProps.getExtraStatCodesHolder(this);
 	}
 
-	@Override public CMObject newInstance(){try{return getClass().newInstance();}catch(Exception e){return new GenRace();}}
+	@Override public CMObject newInstance(){try{return getClass().newInstance();}catch(final Exception e){return new GenRace();}}
 	@Override
 	public CMObject copyOf()
 	{
-		GenRace E=new GenRace();
+		final GenRace E=new GenRace();
 		E.setRacialParms(racialParms());
 		return E;
 	}
@@ -182,10 +182,10 @@ public class GenRace extends StdRace
 	public void affectCharStats(MOB affectedMob, CharStats affectableStats)
 	{
 		if(adjStats!=null)
-			for(int i: CharStats.CODES.ALL())
+			for(final int i: CharStats.CODES.ALL())
 				affectableStats.setStat(i,affectableStats.getStat(i)+adjStats.getStat(i));
 		if(setStats!=null)
-			for(int i: CharStats.CODES.ALL())
+			for(final int i: CharStats.CODES.ALL())
 				if(setStats.getStat(i)!=0)
 					affectableStats.setRacialStat(i,setStats.getStat(i));
 	}
@@ -222,7 +222,7 @@ public class GenRace extends StdRace
 	@Override
 	public String racialParms()
 	{
-		StringBuffer str=new StringBuffer("");
+		final StringBuffer str=new StringBuffer("");
 		str.append("<RACE><ID>"+ID()+"</ID>");
 		str.append(CMLib.xml().convertXMLtoTag("NAME",name()));
 		str.append(CMLib.xml().convertXMLtoTag("CAT",racialCategory()));
@@ -234,7 +234,7 @@ public class GenRace extends StdRace
 		str.append(CMLib.xml().convertXMLtoTag("WEAR",""+forbiddenWornBits()));
 		str.append(CMLib.xml().convertXMLtoTag("AVAIL",""+availability));
 		str.append(CMLib.xml().convertXMLtoTag("DESTROYBODY",""+destroyBodyAfterUse()));
-		StringBuffer bbody=new StringBuffer("");
+		final StringBuffer bbody=new StringBuffer("");
 		for(int i=0;i<bodyMask().length;i++)
 			bbody.append((""+bodyMask()[i])+";");
 		str.append(CMLib.xml().convertXMLtoTag("BODY",bbody.toString()));
@@ -266,7 +266,7 @@ public class GenRace extends StdRace
 		else
 		{
 			str.append("<RESOURCES>");
-			for(RawMaterial I : myResources())
+			for(final RawMaterial I : myResources())
 			{
 				str.append("<RSCITEM>");
 				str.append(CMLib.xml().convertXMLtoTag("ICLASS",CMClass.classID(I)));
@@ -279,7 +279,7 @@ public class GenRace extends StdRace
 		else
 		{
 			str.append("<OUTFIT>");
-			for(Item I : outfit(null))
+			for(final Item I : outfit(null))
 			{
 				str.append("<OFTITEM>");
 				str.append(CMLib.xml().convertXMLtoTag("OFCLASS",CMClass.classID(I)));
@@ -360,15 +360,15 @@ public class GenRace extends StdRace
 			Log.errOut("GenRace","Unable to parse empty xml");
 			return;
 		}
-		List<XMLLibrary.XMLpiece> xml=CMLib.xml().parseAllXML(parms);
+		final List<XMLLibrary.XMLpiece> xml=CMLib.xml().parseAllXML(parms);
 		if(xml==null)
 		{
 			Log.errOut("GenRace","Unable to parse xml: "+parms);
 			return;
 		}
-		List<XMLLibrary.XMLpiece> raceData=CMLib.xml().getContentsFromPieces(xml,"RACE");
+		final List<XMLLibrary.XMLpiece> raceData=CMLib.xml().getContentsFromPieces(xml,"RACE");
 		if(raceData==null){	Log.errOut("GenRace","Unable to get RACE data: ("+parms.length()+"): "+CMStrings.padRight(parms,30)+"."); return;}
-		String id=CMLib.xml().getValFromPieces(raceData,"ID");
+		final String id=CMLib.xml().getValFromPieces(raceData,"ID");
 		if(id.length()==0)
 		{
 			Log.errOut("GenRace","Unable to parse: "+parms);
@@ -397,7 +397,7 @@ public class GenRace extends StdRace
 		shortestFemale=CMLib.xml().getIntFromPieces(raceData,"FHEIGHT");
 		shortestMale=CMLib.xml().getIntFromPieces(raceData,"MHEIGHT");
 		helpEntry=CMLib.xml().restoreAngleBrackets(CMLib.xml().getValFromPieces(raceData,"HELP"));
-		String playerval=CMLib.xml().getValFromPieces(raceData,"PLAYER").trim().toUpperCase();
+		final String playerval=CMLib.xml().getValFromPieces(raceData,"PLAYER").trim().toUpperCase();
 		if(playerval.length()>0)
 		{
 			if(playerval.startsWith("T"))
@@ -413,7 +413,7 @@ public class GenRace extends StdRace
 			case 2: availability=0; break;
 			}
 		}
-		String avail=CMLib.xml().getValFromPieces(raceData,"AVAIL").trim().toUpperCase();
+		final String avail=CMLib.xml().getValFromPieces(raceData,"AVAIL").trim().toUpperCase();
 		if((avail!=null)&&(avail.length()>0)&&(CMath.isNumber(avail)))
 			availability=CMath.s_int(avail);
 		destroyBodyAfterUse=CMLib.xml().getBoolFromPieces(raceData,"DESTROYBODY");
@@ -422,29 +422,29 @@ public class GenRace extends StdRace
 		setStat("HEALTHRACE",CMLib.xml().getValFromPieces(raceData,"HEALTHRACE"));
 		setStat("EVENTRACE",CMLib.xml().getValFromPieces(raceData,"EVENTRACE"));
 		setStat("WEAPONRACE",CMLib.xml().getValFromPieces(raceData,"WEAPONRACE"));
-		String body=CMLib.xml().getValFromPieces(raceData,"BODY");
-		List<String> V=CMParms.parseSemicolons(body,false);
+		final String body=CMLib.xml().getValFromPieces(raceData,"BODY");
+		final List<String> V=CMParms.parseSemicolons(body,false);
 		for(int v=0;v<V.size();v++)
 			if(v<bodyMask().length)
 				bodyMask()[v]=CMath.s_int(V.get(v));
 		adjPStats=null;
-		String eStats=CMLib.xml().getValFromPieces(raceData,"ESTATS");
+		final String eStats=CMLib.xml().getValFromPieces(raceData,"ESTATS");
 		if(eStats.length()>0){ adjPStats=(PhyStats)CMClass.getCommon("DefaultPhyStats"); adjPStats.setAllValues(0); CMLib.coffeeMaker().setPhyStats(adjPStats,eStats);}
 		adjStats=null;
-		String aStats=CMLib.xml().getValFromPieces(raceData,"ASTATS");
+		final String aStats=CMLib.xml().getValFromPieces(raceData,"ASTATS");
 		if(aStats.length()>0){ adjStats=(CharStats)CMClass.getCommon("DefaultCharStats"); adjStats.setAllValues(0); CMLib.coffeeMaker().setCharStats(adjStats,aStats);}
 		setStats=null;
-		String cStats=CMLib.xml().getValFromPieces(raceData,"CSTATS");
+		final String cStats=CMLib.xml().getValFromPieces(raceData,"CSTATS");
 		if(cStats.length()>0){ setStats=(CharStats)CMClass.getCommon("DefaultCharStats"); setStats.setAllValues(0); CMLib.coffeeMaker().setCharStats(setStats,cStats);}
 		adjState=null;
-		String aState=CMLib.xml().getValFromPieces(raceData,"ASTATE");
+		final String aState=CMLib.xml().getValFromPieces(raceData,"ASTATE");
 		if(aState.length()>0){ adjState=(CharState)CMClass.getCommon("DefaultCharState"); adjState.setAllValues(0); CMLib.coffeeMaker().setCharState(adjState,aState);}
 		startAdjState=null;
 		disableFlags=CMLib.xml().getIntFromPieces(raceData,"DISFLAGS");
-		String saState=CMLib.xml().getValFromPieces(raceData,"STARTASTATE");
+		final String saState=CMLib.xml().getValFromPieces(raceData,"STARTASTATE");
 		if(saState.length()>0){ startAdjState=(CharState)CMClass.getCommon("DefaultCharState"); startAdjState.setAllValues(0); CMLib.coffeeMaker().setCharState(startAdjState,saState);}
-		String aging=CMLib.xml().getValFromPieces(raceData,"AGING");
-		List<String> aV=CMParms.parseCommas(aging,true);
+		final String aging=CMLib.xml().getValFromPieces(raceData,"AGING");
+		final List<String> aV=CMParms.parseCommas(aging,true);
 		for(int v=0;v<aV.size();v++)
 			getAgingChart()[v]=CMath.s_int(aV.get(v));
 		clrStatChgDesc();
@@ -456,14 +456,14 @@ public class GenRace extends StdRace
 			resourceChoices=new Vector();
 			for(int x=0;x<xV.size();x++)
 			{
-				XMLLibrary.XMLpiece iblk=xV.get(x);
+				final XMLLibrary.XMLpiece iblk=xV.get(x);
 				if((!iblk.tag.equalsIgnoreCase("RSCITEM"))||(iblk.contents==null))
 					continue;
-				Item I=CMClass.getItem(CMLib.xml().getValFromPieces(iblk.contents,"ICLASS"));
+				final Item I=CMClass.getItem(CMLib.xml().getValFromPieces(iblk.contents,"ICLASS"));
 				if(I instanceof RawMaterial)
 				{
-					RawMaterial newOne=(RawMaterial)I;
-					String idat=CMLib.xml().getValFromPieces(iblk.contents,"IDATA");
+					final RawMaterial newOne=(RawMaterial)I;
+					final String idat=CMLib.xml().getValFromPieces(iblk.contents,"IDATA");
 					newOne.setMiscText(CMLib.xml().restoreAngleBrackets(idat));
 					newOne.recoverPhyStats();
 					resourceChoices.add(newOne);
@@ -472,20 +472,20 @@ public class GenRace extends StdRace
 		}
 
 		// now OUTFIT!
-		List<XMLLibrary.XMLpiece> oV=CMLib.xml().getContentsFromPieces(raceData,"OUTFIT");
+		final List<XMLLibrary.XMLpiece> oV=CMLib.xml().getContentsFromPieces(raceData,"OUTFIT");
 		outfitChoices=null;
 		if((oV!=null)&&(oV.size()>0))
 		{
 			outfitChoices=new Vector();
 			for(int x=0;x<oV.size();x++)
 			{
-				XMLLibrary.XMLpiece iblk=oV.get(x);
+				final XMLLibrary.XMLpiece iblk=oV.get(x);
 				if((!iblk.tag.equalsIgnoreCase("OFTITEM"))||(iblk.contents==null))
 					continue;
-				Item newOne=CMClass.getItem(CMLib.xml().getValFromPieces(iblk.contents,"OFCLASS"));
+				final Item newOne=CMClass.getItem(CMLib.xml().getValFromPieces(iblk.contents,"OFCLASS"));
 				if(newOne != null)
 				{
-					String idat=CMLib.xml().getValFromPieces(iblk.contents,"OFDATA");
+					final String idat=CMLib.xml().getValFromPieces(iblk.contents,"OFDATA");
 					newOne.setMiscText(CMLib.xml().restoreAngleBrackets(idat));
 					newOne.recoverPhyStats();
 					outfitChoices.add(newOne);
@@ -496,11 +496,11 @@ public class GenRace extends StdRace
 		}
 
 		naturalWeapon=null;
-		List<XMLLibrary.XMLpiece> wblk=CMLib.xml().getContentsFromPieces(raceData,"WEAPON");
+		final List<XMLLibrary.XMLpiece> wblk=CMLib.xml().getContentsFromPieces(raceData,"WEAPON");
 		if(wblk!=null)
 		{
 			naturalWeapon=CMClass.getWeapon(CMLib.xml().getValFromPieces(wblk,"ICLASS"));
-			String idat=CMLib.xml().getValFromPieces(wblk,"IDATA");
+			final String idat=CMLib.xml().getValFromPieces(wblk,"IDATA");
 			if((idat!=null)&&(naturalWeapon!=null))
 			{
 				naturalWeapon.setMiscText(CMLib.xml().restoreAngleBrackets(idat));
@@ -520,7 +520,7 @@ public class GenRace extends StdRace
 			racialAbilityLevels=new int[xV.size()];
 			for(int x=0;x<xV.size();x++)
 			{
-				XMLLibrary.XMLpiece iblk=xV.get(x);
+				final XMLLibrary.XMLpiece iblk=xV.get(x);
 				if((!iblk.tag.equalsIgnoreCase("RABILITY"))||(iblk.contents==null))
 					continue;
 				racialAbilityNames[x]=CMLib.xml().getValFromPieces(iblk.contents,"RCLASS");
@@ -544,7 +544,7 @@ public class GenRace extends StdRace
 			racialEffectLevels=new int[xV.size()];
 			for(int x=0;x<xV.size();x++)
 			{
-				XMLLibrary.XMLpiece iblk=xV.get(x);
+				final XMLLibrary.XMLpiece iblk=xV.get(x);
 				if((!iblk.tag.equalsIgnoreCase("REFFECT"))||(iblk.contents==null))
 					continue;
 				racialEffectNames[x]=CMLib.xml().getValFromPieces(iblk.contents,"RFCLASS");
@@ -563,7 +563,7 @@ public class GenRace extends StdRace
 			culturalAbilityProficiencies=new int[xV.size()];
 			for(int x=0;x<xV.size();x++)
 			{
-				XMLLibrary.XMLpiece iblk=xV.get(x);
+				final XMLLibrary.XMLpiece iblk=xV.get(x);
 				if((!iblk.tag.equalsIgnoreCase("CABILITY"))||(iblk.contents==null))
 					continue;
 				culturalAbilityNames[x]=CMLib.xml().getValFromPieces(iblk.contents,"CCLASS");
@@ -616,7 +616,7 @@ public class GenRace extends StdRace
 		case 12: return getRaceLocatorID(healthBuddy);
 		case 13:
 		{
-			StringBuffer bbody=new StringBuffer("");
+			final StringBuffer bbody=new StringBuffer("");
 			for(int i=0;i<bodyMask().length;i++)
 				bbody.append((""+bodyMask()[i])+";");
 			return bbody.toString();
@@ -729,12 +729,12 @@ public class GenRace extends StdRace
 			{
 				if(healthBuddy==null)
 					healthBuddy=(Race)CMClass.getLoadNewClassInstance(CMObjectType.RACE,val,true);
-			}catch(Exception e){}
+			}catch(final Exception e){}
 			break;
 		}
 		case 13:
 		{
-			List<String> V=CMParms.parseSemicolons(val,false);
+			final List<String> V=CMParms.parseSemicolons(val,false);
 			for(int v=0;v<V.size();v++)
 				if(v<bodyMask().length)
 					bodyMask()[v]=CMath.s_int(V.get(v));
@@ -746,7 +746,7 @@ public class GenRace extends StdRace
 		case 17: adjState=null;clrStatChgDesc();if(val.length()>0){adjState=(CharState)CMClass.getCommon("DefaultCharState"); adjState.setAllValues(0); CMLib.coffeeMaker().setCharState(adjState,val);}break;
 		case 18: if(CMath.s_int(val)==0) resourceChoices=null; else resourceChoices=new Vector(CMath.s_int(val)); break;
 		case 19: {   if(resourceChoices==null) resourceChoices=new Vector();
-					 Item I=CMClass.getItem(val);
+					 final Item I=CMClass.getItem(val);
 					 if(I instanceof RawMaterial)
 					 {
 						 if(num>=resourceChoices.size())
@@ -759,7 +759,7 @@ public class GenRace extends StdRace
 		case 20: {
 					 if((resourceChoices!=null)&&(num<resourceChoices.size()))
 					 {
-						Item I=resourceChoices.elementAt(num);
+						final Item I=resourceChoices.elementAt(num);
 						I.setMiscText(val);
 						I.recoverPhyStats();
 					 }
@@ -835,7 +835,7 @@ public class GenRace extends StdRace
 				 }
 		case 33: {   if((outfitChoices!=null)&&(num<outfitChoices.size()))
 					 {
-						Item I=outfitChoices.get(num);
+						final Item I=outfitChoices.get(num);
 						I.setMiscText(val);
 						I.recoverPhyStats();
 					 }
@@ -869,10 +869,10 @@ public class GenRace extends StdRace
 					 break;
 				 }
 		case 39: {
-					List<String> aV=CMParms.parseCommas(val,true);
+					final List<String> aV=CMParms.parseCommas(val,true);
 					for(int v=0;v<aV.size();v++)
 					{
-						int x=CMath.s_int(aV.get(v));
+						final int x=CMath.s_int(aV.get(v));
 						if(x<0)
 							getAgingChart()[v]=Integer.MAX_VALUE;
 						else

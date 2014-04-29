@@ -43,7 +43,7 @@ public class Chant_FindOre extends Chant_FindPlant
 	@Override public long flags(){return Ability.FLAG_TRACKING;}
 	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
 
-	private int[] myMats={RawMaterial.MATERIAL_ROCK, // mithril omitted
+	private final int[] myMats={RawMaterial.MATERIAL_ROCK, // mithril omitted
 						  RawMaterial.MATERIAL_METAL};
 	@Override protected int[] okMaterials(){	return myMats;}
 	@Override protected int[] okResources(){	return null;}

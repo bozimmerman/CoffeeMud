@@ -71,7 +71,7 @@ public class VeryAggressive extends Aggressive
 	{
 		if(tickID!=Tickable.TICKID_MOB) return;
 		if(!canFreelyBehaveNormal(ticking)) return;
-		MOB mob=(MOB)ticking;
+		final MOB mob=(MOB)ticking;
 		if(CMLib.flags().isATrackingMonster(mob)) return;
 
 		// ridden things dont wander!
@@ -86,10 +86,10 @@ public class VeryAggressive extends Aggressive
 		// let's not do this 100%
 		if(CMLib.dice().rollPercentage()>15) return;
 
-		Room thisRoom=mob.location();
+		final Room thisRoom=mob.location();
 		for(int m=0;m<thisRoom.numInhabitants();m++)
 		{
-			MOB inhab=thisRoom.fetchInhabitant(m);
+			final MOB inhab=thisRoom.fetchInhabitant(m);
 			if((inhab!=null)
 			&&(CMSecurity.isAllowed(inhab,thisRoom,CMSecurity.SecFlag.ORDER))
 			&&(CMSecurity.isAllowed(inhab,thisRoom,CMSecurity.SecFlag.CMDROOMS)))
@@ -99,8 +99,8 @@ public class VeryAggressive extends Aggressive
 		int dirCode=-1;
 		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 		{
-			Room room=thisRoom.getRoomInDir(d);
-			Exit exit=thisRoom.getExitInDir(d);
+			final Room room=thisRoom.getRoomInDir(d);
+			final Exit exit=thisRoom.getExitInDir(d);
 			if((room!=null)
 			   &&(exit!=null)
 			   &&(wander||room.getArea().Name().equals(thisRoom.getArea().Name())))
@@ -109,7 +109,7 @@ public class VeryAggressive extends Aggressive
 				{
 					for(int i=0;i<room.numInhabitants();i++)
 					{
-						MOB inhab=room.fetchInhabitant(i);
+						final MOB inhab=room.fetchInhabitant(i);
 						if((inhab!=null)
 						&&((!inhab.isMonster())||(mobKiller))
 						&&(CMLib.flags().canSenseEnteringLeaving(inhab,mob))

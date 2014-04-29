@@ -63,18 +63,18 @@ public class Prayer_SeekersPrayer extends Prayer
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,null,auto),auto?"":"^S<T-NAME> "+prayWord(mob)+" for knowledge of seekers.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,null,auto),auto?"":"^S<T-NAME> "+prayWord(mob)+" for knowledge of seekers.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				int numSeekers=super.getXLEVELLevel(mob) + 2;
 				if(CMLib.ableMapper().qualifyingLevel(mob, this)>1)
 					numSeekers += (super.adjustedLevel(mob, 0) / CMLib.ableMapper().qualifyingLevel(mob, this));
-				List<Quest> seeks=new Vector<Quest>();
-				for(Enumeration<Quest> q = CMLib.quests().enumQuests(); q.hasMoreElements();)
+				final List<Quest> seeks=new Vector<Quest>();
+				for(final Enumeration<Quest> q = CMLib.quests().enumQuests(); q.hasMoreElements();)
 				{
 					final Quest Q = q.nextElement();
 					final MOB M=Q.getQuestMob(1);

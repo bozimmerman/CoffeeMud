@@ -58,14 +58,14 @@ public class Embroidering extends CommonSkill
 		{
 			if((affected!=null)&&(affected instanceof MOB)&&(!aborted)&&(!helping))
 			{
-				MOB mob=(MOB)affected;
+				final MOB mob=(MOB)affected;
 				if(writing.length()==0)
 					commonTell(mob,"You mess up your embroidery.");
 				else
 				{
 					String desc=found.description();
-					int x=desc.indexOf(" Embroidered on it are the words `");
-					int y=desc.lastIndexOf('`');
+					final int x=desc.indexOf(" Embroidered on it are the words `");
+					final int y=desc.lastIndexOf('`');
 					if((x>=0)&&(y>x))
 						desc=desc.substring(0,x);
 					found.setDescription(desc+" Embroidered on it are the words `"+writing+"`.");
@@ -85,7 +85,7 @@ public class Embroidering extends CommonSkill
 			commonTell(mob,"You must specify what you want to embroider onto, and what words to embroider on it.");
 			return false;
 		}
-		Item target=mob.fetchItem(null,Wearable.FILTER_UNWORNONLY,(String)commands.firstElement());
+		final Item target=mob.fetchItem(null,Wearable.FILTER_UNWORNONLY,(String)commands.firstElement());
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
 			commonTell(mob,"You don't seem to have a '"+((String)commands.firstElement())+"'.");
@@ -93,7 +93,7 @@ public class Embroidering extends CommonSkill
 		}
 		commands.remove(commands.firstElement());
 
-		Ability write=mob.fetchAbility("Skill_Write");
+		final Ability write=mob.fetchAbility("Skill_Write");
 		if(write==null)
 		{
 			commonTell(mob,"You must know how to write to embroider.");
@@ -115,8 +115,8 @@ public class Embroidering extends CommonSkill
 		found=target;
 		if((!proficiencyCheck(mob,0,auto))||(!write.proficiencyCheck(mob,0,auto)))
 			writing="";
-		int duration=getDuration(30,mob,1,3);
-		CMMsg msg=CMClass.getMsg(mob,target,this,getActivityMessageType(),"<S-NAME> start(s) embroidering on <T-NAME>.");
+		final int duration=getDuration(30,mob,1,3);
+		final CMMsg msg=CMClass.getMsg(mob,target,this,getActivityMessageType(),"<S-NAME> start(s) embroidering on <T-NAME>.");
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

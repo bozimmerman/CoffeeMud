@@ -74,11 +74,11 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.Items.i
 	@Override
 	public void doMapArea()
 	{
-		List<String> V=CMParms.parseSemicolons(getMapArea(),true);
+		final List<String> V=CMParms.parseSemicolons(getMapArea(),true);
 		String newName="";
 		for(int v=0;v<V.size();v++)
 		{
-			String areaName=V.get(v);
+			final String areaName=V.get(v);
 			if(areaName.length()>0)
 			{
 				if(newName.length()==0)
@@ -101,9 +101,9 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.Items.i
 		// build grid!
 		int xoffset=0;
 		int yoffset=0;
-		for(Enumeration e=areaMap.elements();e.hasMoreElements();)
+		for(final Enumeration e=areaMap.elements();e.hasMoreElements();)
 		{
-			MapRoom mr=(MapRoom)e.nextElement();
+			final MapRoom mr=(MapRoom)e.nextElement();
 			if(mr.x<xoffset) xoffset=mr.x;
 			if(mr.y<yoffset) yoffset=mr.y;
 		}
@@ -113,9 +113,9 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.Items.i
 
 		int Xbound=0;
 		int Ybound=0;
-		for(Enumeration e=areaMap.elements();e.hasMoreElements();)
+		for(final Enumeration e=areaMap.elements();e.hasMoreElements();)
 		{
-			MapRoom room=(MapRoom)e.nextElement();
+			final MapRoom room=(MapRoom)e.nextElement();
 			room.x=room.x+xoffset;
 			if(room.x>Xbound)
 				Xbound=room.x;
@@ -123,10 +123,10 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.Items.i
 			if(room.y>Ybound)
 				Ybound=room.y;
 		}
-		MapRoom[][] grid=new MapRoom[Xbound+1][Ybound+1];
-		for(Enumeration e=areaMap.elements();e.hasMoreElements();)
+		final MapRoom[][] grid=new MapRoom[Xbound+1][Ybound+1];
+		for(final Enumeration e=areaMap.elements();e.hasMoreElements();)
 		{
-			MapRoom room=(MapRoom)e.nextElement();
+			final MapRoom room=(MapRoom)e.nextElement();
 			grid[room.x][room.y]=room;
 		}
 
@@ -137,7 +137,7 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.Items.i
 		for(int x=0;x<grid.length;x++)
 			for(int y=0;y<grid[0].length;y++)
 			{
-				MapRoom room=grid[x][y];
+				final MapRoom room=grid[x][y];
 				if(room!=null)
 				{
 					if(
@@ -167,24 +167,24 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.Items.i
 
 	public void clearTheSkys(Hashtable mapRooms)
 	{
-		for(Enumeration e=mapRooms.keys();e.hasMoreElements();)
+		for(final Enumeration e=mapRooms.keys();e.hasMoreElements();)
 		{
-			Room R=(Room)e.nextElement();
-			Room UP=R.rawDoors()[Directions.UP];
+			final Room R=(Room)e.nextElement();
+			final Room UP=R.rawDoors()[Directions.UP];
 			if((UP!=null)
 			&&(UP.roomID().length()==0)
 			&&(UP instanceof GridLocale))
 			{
-				List<Room> V=((GridLocale)UP).getAllRooms();
+				final List<Room> V=((GridLocale)UP).getAllRooms();
 				for(int v=0;v<V.size();v++)
 					mapRooms.remove(V.get(v));
 			}
-			Room DOWN=R.rawDoors()[Directions.DOWN];
+			final Room DOWN=R.rawDoors()[Directions.DOWN];
 			if((DOWN!=null)
 			&&(DOWN.roomID().length()==0)
 			&&(DOWN instanceof GridLocale))
 			{
-				List<Room> V=((GridLocale)DOWN).getAllRooms();
+				final List<Room> V=((GridLocale)DOWN).getAllRooms();
 				for(int v=0;v<V.size();v++)
 					mapRooms.remove(V.get(v));
 			}
@@ -193,16 +193,16 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.Items.i
 
 	public Hashtable makeMapRooms(int width)
 	{
-		List<String> mapAreas=CMParms.parseSemicolons(getMapArea(),true);
-		Hashtable mapRooms=new Hashtable();
+		final List<String> mapAreas=CMParms.parseSemicolons(getMapArea(),true);
+		final Hashtable mapRooms=new Hashtable();
 		for(int a=0;a<mapAreas.size();a++)
 		{
-			Area A=CMLib.map().getArea(mapAreas.get(a));
+			final Area A=CMLib.map().getArea(mapAreas.get(a));
 			if(A!=null)
-			for(Enumeration r=A.getCompleteMap();r.hasMoreElements();)
+			for(final Enumeration r=A.getCompleteMap();r.hasMoreElements();)
 			{
-				Room R=(Room)r.nextElement();
-				MapRoom mr=new MapRoom();
+				final Room R=(Room)r.nextElement();
+				final MapRoom mr=new MapRoom();
 				mr.r=R;
 				mapRooms.put(R,mr);
 			}
@@ -214,18 +214,18 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.Items.i
 
 	public StringBuffer[][] finishMapMaking(int width)
 	{
-		Hashtable mapRooms=makeMapRooms(width);
+		final Hashtable mapRooms=makeMapRooms(width);
 		StringBuffer[][] map=new StringBuffer[0][0];
 		if(mapRooms.size()>0)
 		{
 			placeRooms(mapRooms);
-			MapRoom[][] grid=rebuildGrid(mapRooms);
+			final MapRoom[][] grid=rebuildGrid(mapRooms);
 			if((grid.length==0)||(grid[0].length==0))
 				return map;
-			int numXSquares=(int)Math.round(Math.floor(CMath.div(width-6,8)));
-			int numYSquares=((numXSquares/2)+1);
-			int xsize=grid.length/numXSquares;
-			int ysize=grid[0].length/numYSquares;
+			final int numXSquares=(int)Math.round(Math.floor(CMath.div(width-6,8)));
+			final int numYSquares=((numXSquares/2)+1);
+			final int xsize=grid.length/numXSquares;
+			final int ysize=grid[0].length/numYSquares;
 			if((xsize<0)||(ysize<0))
 			{
 				Log.errOut("StdMap","Error finishing " + xsize +"/"+ ysize+"/"+width);
@@ -235,7 +235,7 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.Items.i
 			map=new StringBuffer[xsize+1][ysize+1];
 			for(int y=0;y<grid[0].length;y++)
 			{
-				int ycoord=y/numYSquares;
+				final int ycoord=y/numYSquares;
 				int lastX=-1;
 				String line1="";
 				String line2="";
@@ -263,7 +263,7 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.Items.i
 						line5="";
 						line6="";
 					}
-					MapRoom room=grid[x][y];
+					final MapRoom room=grid[x][y];
 					if(room==null)
 					{
 						line1+="        ";
@@ -275,7 +275,7 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.Items.i
 					}
 					else
 					{
-						String paddedName=CMStrings.padRight(room.r.displayText().trim(),30);
+						final String paddedName=CMStrings.padRight(room.r.displayText().trim(),30);
 						line1+="---"+dirChar(Directions.NORTH,grid,x,y,'-')+"----";
 						line2+="|"+paddedName.substring(0,6)+"|";
 						line3+=dirChar(Directions.WEST,grid,x,y,'|')+paddedName.substring(6,12)+dirChar(Directions.EAST,grid,x,y,'|');
@@ -326,7 +326,7 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.Items.i
 
 	public char dirChar(int dirCode, MapRoom[][] grid, int x, int y, char wall)
 	{
-		MapRoom room=grid[x][y];
+		final MapRoom room=grid[x][y];
 		if(room==null)
 			return ' ';
 		switch(dirCode)
@@ -348,7 +348,7 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.Items.i
 		MapRoom nextRoom=null;
 		try
 		{	nextRoom=grid[x][y];	}
-		catch(Exception t){}
+		catch(final Exception t){}
 
 		if(nextRoom==null)
 		{
@@ -393,9 +393,9 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.Items.i
 
 	public MapRoom getProcessedRoomAt(Hashtable processed, int x, int y)
 	{
-		for(Enumeration e=processed.elements();e.hasMoreElements();)
+		for(final Enumeration e=processed.elements();e.hasMoreElements();)
 		{
-			MapRoom room=(MapRoom)e.nextElement();
+			final MapRoom room=(MapRoom)e.nextElement();
 			if((room.x==x)&&(room.y==y))
 				return room;
 		}
@@ -411,9 +411,9 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.Items.i
 
 	public boolean isEmptyCluster(Hashtable processed, int x, int y)
 	{
-		for(Enumeration e=processed.elements();e.hasMoreElements();)
+		for(final Enumeration e=processed.elements();e.hasMoreElements();)
 		{
-			MapRoom room=(MapRoom)e.nextElement();
+			final MapRoom room=(MapRoom)e.nextElement();
 			if((((room.x>x-CLUSTERSIZE)&&(room.x<x+CLUSTERSIZE))
 			&&((room.y>y-CLUSTERSIZE)&&(room.y<y+CLUSTERSIZE)))
 			||((room.x==x)&&(room.y==y)))
@@ -424,8 +424,8 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.Items.i
 
 	public void findEmptyCluster(Hashtable processed, Vector XY)
 	{
-		int x=((Integer)XY.elementAt(0)).intValue();
-		int y=((Integer)XY.elementAt(1)).intValue();
+		final int x=((Integer)XY.elementAt(0)).intValue();
+		final int y=((Integer)XY.elementAt(1)).intValue();
 		int spacing=CLUSTERSIZE;
 		while(true)
 		{
@@ -457,7 +457,7 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.Items.i
 
 	public boolean anythingThatDirection(MapRoom room, int direction)
 	{
-		Room D=room.r.getRoomInDir(direction);
+		final Room D=room.r.getRoomInDir(direction);
 		if(D==null)
 			return false;
 		return true;
@@ -476,7 +476,7 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.Items.i
 		boolean ok=false;
 		for(int d=0;d<Directions.NUM_DIRECTIONS()-1;d++)
 		{
-			Exit E=room.r.getExitInDir(d);
+			final Exit E=room.r.getExitInDir(d);
 			if(E!=null)
 			{
 				if(phyStats().level()<2)
@@ -510,31 +510,31 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.Items.i
 		if(areaMap==null) return;
 		if(areaMap.size()==0) return;
 
-		for(Enumeration e=areaMap.elements();e.hasMoreElements();)
+		for(final Enumeration e=areaMap.elements();e.hasMoreElements();)
 		{
-			MapRoom room=(MapRoom)e.nextElement();
+			final MapRoom room=(MapRoom)e.nextElement();
 			room.x=0;
 			room.y=0;
 			for(int d=0;d<Directions.NUM_DIRECTIONS()-1;d++)
 			{
-				Room dir=room.r.getRoomInDir(d);
+				final Room dir=room.r.getRoomInDir(d);
 				if(dir!=null)
 				{
-					MapRoom rm=getRoom(areaMap,dir);
+					final MapRoom rm=getRoom(areaMap,dir);
 					if(rm!=null)
 						rm.positionedAlready=false;
 				}
 			}
 		}
 
-		Hashtable processed=new Hashtable();
+		final Hashtable processed=new Hashtable();
 		boolean doneSomething=true;
 		while((areaMap.size()>processed.size())&&(doneSomething))
 		{
 			doneSomething=false;
-			for(Enumeration e=areaMap.elements();e.hasMoreElements();)
+			for(final Enumeration e=areaMap.elements();e.hasMoreElements();)
 			{
-				MapRoom room=(MapRoom)e.nextElement();
+				final MapRoom room=(MapRoom)e.nextElement();
 				if((processed.get(room.r)==null)&&(okToPlace(room)))
 				{
 					placeRoom(room,areaMap,0,0,processed,true,true,0);
@@ -547,7 +547,7 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.Items.i
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
-		MOB mob=msg.source();
+		final MOB mob=msg.source();
 		if(!msg.amITarget(this))
 			super.executeMsg(myHost,msg);
 		else
@@ -565,7 +565,7 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.Items.i
 					else
 						cols += 2;
 				}
-				StringBuffer map[][]=getMyMappedRoom(cols);
+				final StringBuffer map[][]=getMyMappedRoom(cols);
 				if((isReadable())
 				&&(map!=null)
 				&&(map.length>0)
@@ -581,7 +581,7 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.Items.i
 						boolean trans=false;
 						for(int i=0;i<msg.targetMessage().length();i++)
 						{
-							char c=msg.targetMessage().charAt(i);
+							final char c=msg.targetMessage().charAt(i);
 							if(Character.isDigit(c))
 							{
 								trans=true;
@@ -638,28 +638,28 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.Items.i
 	{
 		if(room==null) return;
 		if(depth>500) return;
-		MapRoom anythingAt=getProcessedRoomAt(processed,favoredX,favoredY);
+		final MapRoom anythingAt=getProcessedRoomAt(processed,favoredX,favoredY);
 		if(anythingAt!=null)
 		{
 			// maybe someone else will take care of it?
 			if(!doNotDefer)
-				for(Enumeration e=areaMap.elements();e.hasMoreElements();)
+				for(final Enumeration e=areaMap.elements();e.hasMoreElements();)
 				{
-					MapRoom roomToBlame=(MapRoom)e.nextElement();
+					final MapRoom roomToBlame=(MapRoom)e.nextElement();
 					if(roomToBlame!=room)
 						for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 						{
-							Room RD=roomToBlame.r.getRoomInDir(d);
+							final Room RD=roomToBlame.r.getRoomInDir(d);
 							if((RD!=null)&&(RD==room.r))
 							{
-								MapRoom MR=getRoom(areaMap,RD);
+								final MapRoom MR=getRoom(areaMap,RD);
 								if((MR!=null)&&(!MR.positionedAlready))
 									return;
 							}
 						}
 				}
 			// nope; nobody can.  It's up to this!
-			Vector XY=new Vector();
+			final Vector XY=new Vector();
 			XY.addElement(Integer.valueOf(0));
 			XY.addElement(Integer.valueOf(0));
 			findEmptyCluster(processed,XY);

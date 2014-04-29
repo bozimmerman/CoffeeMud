@@ -50,13 +50,13 @@ public class Chant_Earthpocket extends Chant
 		// undo the affects of this spell
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		super.unInvoke();
 
 		if(canBeUninvoked())
 		{
 			mob.tell("Your earthpocket fades away, dumping its contents into your inventory!");
-			List<Item> V=pocket.getContents();
+			final List<Item> V=pocket.getContents();
 			for(int v=0;v<V.size();v++)
 			{
 				V.get(v).setContainer(null);
@@ -163,7 +163,7 @@ public class Chant_Earthpocket extends Chant
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
@@ -172,7 +172,7 @@ public class Chant_Earthpocket extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> chant(s) for a connection with a mystical dimension!^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> chant(s) for a connection with a mystical dimension!^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

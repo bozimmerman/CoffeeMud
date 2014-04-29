@@ -60,21 +60,21 @@ public class Thief_SilentGold extends ThiefSkill
 			&&(msg.source().location()==((MOB)affected).location()))
 			{
 				lastMsg=msg;
-				double money=CMLib.beanCounter().getTotalAbsoluteNativeValue(msg.source());
-				double exper=getXLEVELLevel((MOB)affected);
-				double gold=money/10.0*((2.0+exper)/2);
+				final double money=CMLib.beanCounter().getTotalAbsoluteNativeValue(msg.source());
+				final double exper=getXLEVELLevel((MOB)affected);
+				final double gold=money/10.0*((2.0+exper)/2);
 				if(gold>0.0)
 				{
-					Coins C=CMLib.beanCounter().makeBestCurrency(msg.source(),gold);
+					final Coins C=CMLib.beanCounter().makeBestCurrency(msg.source(),gold);
 					if((C!=null)&&(C.getNumberOfCoins()>0))
 					{
 						CMLib.beanCounter().subtractMoney(msg.source(),C.getTotalValue());
-						MOB mob=(MOB)affected;
+						final MOB mob=(MOB)affected;
 						mob.location().addItem(C,ItemPossessor.Expire.Monster_EQ);
 						mob.location().recoverRoomStats();
-						MOB victim=mob.getVictim();
+						final MOB victim=mob.getVictim();
 						mob.setVictim(null);
-						CMMsg msg2=CMClass.getMsg(mob,C,this,CMMsg.MSG_THIEF_ACT,"You silently loot <T-NAME> from the corpse of "+msg.source().name(mob),CMMsg.MSG_THIEF_ACT,null,CMMsg.NO_EFFECT,null);
+						final CMMsg msg2=CMClass.getMsg(mob,C,this,CMMsg.MSG_THIEF_ACT,"You silently loot <T-NAME> from the corpse of "+msg.source().name(mob),CMMsg.MSG_THIEF_ACT,null,CMMsg.NO_EFFECT,null);
 						if(mob.location().okMessage(mob,msg2))
 						{
 							mob.location().send(mob,msg2);
@@ -99,13 +99,13 @@ public class Thief_SilentGold extends ThiefSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
 			mob.tell("You will now automatically loot gold from corpses silently.");
 			beneficialAffect(mob,mob,asLevel,0);
-			Ability A=mob.fetchEffect(ID());
+			final Ability A=mob.fetchEffect(ID());
 			if(A!=null) A.makeLongLasting();
 		}
 		else

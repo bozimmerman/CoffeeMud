@@ -14,7 +14,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 
@@ -61,7 +60,7 @@ public class Play_Dirge extends Play
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		timeOut=0;
-		Item target=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_UNWORNONLY);
+		final Item target=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_UNWORNONLY);
 		if(target==null) return false;
 
 		if((!(target instanceof DeadBody))||(target.rawSecretIdentity().toUpperCase().indexOf("FAKE")>=0))
@@ -78,7 +77,7 @@ public class Play_Dirge extends Play
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 		unplayAll(mob,mob);
 		if(success)
 		{
@@ -91,23 +90,23 @@ public class Play_Dirge extends Play
 
 			for(int v=0;v<commonRoomSet.size();v++)
 			{
-				Room R=(Room)commonRoomSet.elementAt(v);
-				String msgStr=getCorrectMsgString(R,str,v);
-				CMMsg msg=CMClass.getMsg(mob,null,this,somanticCastCode(mob,null,auto),msgStr);
+				final Room R=(Room)commonRoomSet.elementAt(v);
+				final String msgStr=getCorrectMsgString(R,str,v);
+				final CMMsg msg=CMClass.getMsg(mob,null,this,somanticCastCode(mob,null,auto),msgStr);
 				if(R.okMessage(mob,msg))
 				{
-					Set<MOB> h=super.sendMsgAndGetTargets(mob, R, msg, givenTarget, auto);
+					final Set<MOB> h=super.sendMsgAndGetTargets(mob, R, msg, givenTarget, auto);
 					if(h==null) continue;
 
-					for(Iterator f=h.iterator();f.hasNext();)
+					for (final Object element : h)
 					{
-						MOB follower=(MOB)f.next();
+						final MOB follower=(MOB)element;
 
 						double exp=10.0;
-						int levelLimit=CMProps.getIntVar(CMProps.Int.EXPRATE);
-						int levelDiff=follower.phyStats().level()-target.phyStats().level();
+						final int levelLimit=CMProps.getIntVar(CMProps.Int.EXPRATE);
+						final int levelDiff=follower.phyStats().level()-target.phyStats().level();
 						if(levelDiff>levelLimit) exp=0.0;
-						int expGained=(int)Math.round(exp);
+						final int expGained=(int)Math.round(exp);
 
 						// malicious songs must not affect the invoker!
 						if(CMLib.flags().canBeHeardSpeakingBy(invoker,follower)&&(expGained>0))

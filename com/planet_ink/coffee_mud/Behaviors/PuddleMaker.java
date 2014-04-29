@@ -106,14 +106,14 @@ public class PuddleMaker extends StdBehavior
 	{
 		for(int i=0;i<R.numItems();i++)
 		{
-			Item I=R.getItem(i);
+			final Item I=R.getItem(i);
 			if((I instanceof Drink)
 			   &&(!CMLib.flags().isGettable(I))
 			   &&((I.name().toLowerCase().indexOf("puddle")>=0)
 				  ||(I.name().toLowerCase().indexOf("snow")>=0)))
 					return;
 		}
-		Item I=CMClass.getItem("GenLiquidResource");
+		final Item I=CMClass.getItem("GenLiquidResource");
 		CMLib.flags().setGettable(I,false);
 		((Drink)I).setLiquidHeld(100);
 		((Drink)I).setLiquidRemaining(100);
@@ -149,8 +149,8 @@ public class PuddleMaker extends StdBehavior
 		{
 			if(ticking instanceof Room)
 			{
-				Room R=(Room)ticking;
-				Area A=R.getArea();
+				final Room R=(Room)ticking;
+				final Area A=R.getArea();
 				if((!anyWetWeather(A.getClimateObj().weatherType(R)))
 				&&(!dryWeather(A.getClimateObj().weatherType(R)))
 				&&(CMLib.dice().rollPercentage()<pct()))
@@ -159,12 +159,12 @@ public class PuddleMaker extends StdBehavior
 			else
 			if(ticking instanceof Area)
 			{
-				Area A=(Area)ticking;
+				final Area A=(Area)ticking;
 				if((!anyWetWeather(A.getClimateObj().weatherType(null)))
 				&&(!dryWeather(A.getClimateObj().weatherType(null))))
-					for(Enumeration<Room> e=A.getProperMap();e.hasMoreElements();)
+					for(final Enumeration<Room> e=A.getProperMap();e.hasMoreElements();)
 					{
-						Room R=e.nextElement();
+						final Room R=e.nextElement();
 						if(((R.domainType()&Room.INDOORS)==0)
 						&&(R.domainType()!=Room.DOMAIN_OUTDOORS_AIR)
 						&&(R.domainType()!=Room.DOMAIN_OUTDOORS_UNDERWATER)

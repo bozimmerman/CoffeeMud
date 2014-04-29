@@ -64,9 +64,9 @@ public class Dig extends StdCommand
 	public boolean isOccupiedWithOtherWork(MOB mob)
 	{
 		if(mob==null) return false;
-		for(Enumeration<Ability> a=mob.effects();a.hasMoreElements();)
+		for(final Enumeration<Ability> a=mob.effects();a.hasMoreElements();)
 		{
-			Ability A=a.nextElement();
+			final Ability A=a.nextElement();
 			if((A!=null)
 			&&(!A.isAutoInvoked())
 			&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_COMMON_SKILL))
@@ -87,10 +87,10 @@ public class Dig extends StdCommand
 				return false;
 			}
 
-			String msgStr="<S-NAME> start(s) digging a hole with <O-NAME>.";
+			final String msgStr="<S-NAME> start(s) digging a hole with <O-NAME>.";
 			Item I=mob.fetchWieldedItem();
 			if(I==null)  I=mob.myNaturalWeapon();
-			CMMsg msg=CMClass.getMsg(mob,mob.location(),I,CMMsg.MSG_DIG,msgStr);
+			final CMMsg msg=CMClass.getMsg(mob,mob.location(),I,CMMsg.MSG_DIG,msgStr);
 			msg.setValue(1);
 			if(mob.location().okMessage(mob,msg))
 				mob.location().send(mob,msg);
@@ -100,10 +100,10 @@ public class Dig extends StdCommand
 		else
 		if((secondsElapsed % 8)==0)
 		{
-			String msgStr="<S-NAME> continue(s) digging a hole with <O-NAME>.";
+			final String msgStr="<S-NAME> continue(s) digging a hole with <O-NAME>.";
 			Item I=mob.fetchWieldedItem();
 			if(I==null)  I=mob.myNaturalWeapon();
-			CMMsg msg=CMClass.getMsg(mob,mob.location(),I,CMMsg.MSG_DIG,msgStr);
+			final CMMsg msg=CMClass.getMsg(mob,mob.location(),I,CMMsg.MSG_DIG,msgStr);
 			msg.setValue(getDiggingDepth(I));
 			if(mob.location().okMessage(mob,msg))
 				mob.location().send(mob,msg);
@@ -117,7 +117,7 @@ public class Dig extends StdCommand
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		CMMsg msg=CMClass.getMsg(mob,null,null,CMMsg.MSG_OK_ACTION,"<S-NAME> stop(s) digging.");
+		final CMMsg msg=CMClass.getMsg(mob,null,null,CMMsg.MSG_OK_ACTION,"<S-NAME> stop(s) digging.");
 		if(mob.location().okMessage(mob,msg))
 			mob.location().send(mob,msg);
 		return false;

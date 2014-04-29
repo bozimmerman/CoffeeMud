@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -54,17 +53,17 @@ public class Prayer_MassCureDisease extends Prayer implements MendingSkill
 	public boolean supportsMending(Physical item)
 	{
 		if(!(item instanceof MOB)) return false;
-		boolean canMend=returnOffensiveAffects(item).size()>0;
+		final boolean canMend=returnOffensiveAffects(item).size()>0;
 		return canMend;
 	}
 
 	public List<Ability> returnOffensiveAffects(Physical fromMe)
 	{
-		Vector offenders=new Vector();
+		final Vector offenders=new Vector();
 
 		for(int a=0;a<fromMe.numEffects();a++) // personal
 		{
-			Ability A=fromMe.fetchEffect(a);
+			final Ability A=fromMe.fetchEffect(a);
 			if((A!=null)&&(A instanceof DiseaseAffect))
 				offenders.addElement(A);
 		}
@@ -91,7 +90,7 @@ public class Prayer_MassCureDisease extends Prayer implements MendingSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
@@ -99,28 +98,28 @@ public class Prayer_MassCureDisease extends Prayer implements MendingSkill
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			CMMsg msg=CMClass.getMsg(mob,mob.location(),this,verbalCastCode(mob,mob.location(),auto),auto?"A healing glow surrounds this place.":"^S<S-NAME> "+prayWord(mob)+" to cure disease here.^?");
+			final CMMsg msg=CMClass.getMsg(mob,mob.location(),this,verbalCastCode(mob,mob.location(),auto),auto?"A healing glow surrounds this place.":"^S<S-NAME> "+prayWord(mob)+" to cure disease here.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				boolean worked=false;
-				TrackingLibrary.TrackingFlags flags=new TrackingLibrary.TrackingFlags();
-				List<Room> checkSet=CMLib.tracking().getRadiantRooms(mob.location(),flags,100);
-				for(Iterator<Room> r=checkSet.iterator();r.hasNext();)
+				final TrackingLibrary.TrackingFlags flags=new TrackingLibrary.TrackingFlags();
+				final List<Room> checkSet=CMLib.tracking().getRadiantRooms(mob.location(),flags,100);
+				for (final Room room : checkSet)
 				{
-					Room R=CMLib.map().getRoom(r.next());
+					final Room R=CMLib.map().getRoom(room);
 					for(int m=0;m<R.numInhabitants();m++)
 					{
-						MOB target=R.fetchInhabitant(m);
+						final MOB target=R.fetchInhabitant(m);
 						if(target!=null)
 						{
-							List<Ability> offensiveAffects=returnOffensiveAffects(target);
+							final List<Ability> offensiveAffects=returnOffensiveAffects(target);
 							if(offensiveAffects.size()>0)
 							{
 								boolean badOnes=false;
 								for(int a=offensiveAffects.size()-1;a>=0;a--)
 								{
-									Ability A=(offensiveAffects.get(a));
+									final Ability A=(offensiveAffects.get(a));
 									if(A instanceof DiseaseAffect)
 									{
 										if((A.invoker()!=mob)

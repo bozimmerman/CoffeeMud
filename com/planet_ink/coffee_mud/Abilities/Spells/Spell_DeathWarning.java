@@ -49,7 +49,7 @@ public class Spell_DeathWarning extends Spell
 	{
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		super.unInvoke();
 		if(canBeUninvoked())
@@ -66,10 +66,10 @@ public class Spell_DeathWarning extends Spell
 		&&(msg.amISource((MOB)affected))
 		&&(msg.sourceMinor()==CMMsg.TYP_DEATH))
 		{
-			MOB mob=(MOB)affected;
-			int hitPoints=mob.curState().getHitPoints();
+			final MOB mob=(MOB)affected;
+			final int hitPoints=mob.curState().getHitPoints();
 			mob.curState().setHitPoints(1);
-			Room room=mob.location();
+			final Room room=mob.location();
 			mob.tell("^SYou receive a warning of your impending death!!^N");
 			mob.doCommand(commands,0);
 			if(mob.location()!=room)
@@ -110,16 +110,16 @@ public class Spell_DeathWarning extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> begin(s) listening for a death's warning!":"^S<S-NAME> incant(s) coldly, and begin(s) listening for death's warning!^?");
+			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> begin(s) listening for a death's warning!":"^S<S-NAME> incant(s) coldly, and begin(s) listening for death's warning!^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				beneficialAffect(mob,target,asLevel,0);
-				Spell_DeathWarning A=(Spell_DeathWarning)target.fetchEffect(ID());
+				final Spell_DeathWarning A=(Spell_DeathWarning)target.fetchEffect(ID());
 				if(A!=null) A.commands=commands;
 			}
 		}

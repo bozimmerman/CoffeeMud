@@ -75,7 +75,7 @@ public class Prayer_Bury extends Prayer
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
@@ -83,22 +83,22 @@ public class Prayer_Bury extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"^S<T-NAME> bur(ys) <T-HIM-HERSELF>.^?":"^S<S-NAME> bur(ys) <T-NAMESELF> in the name of "+hisHerDiety(mob)+".^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"^S<T-NAME> bur(ys) <T-HIM-HERSELF>.^?":"^S<S-NAME> bur(ys) <T-NAMESELF> in the name of "+hisHerDiety(mob)+".^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(CMLib.flags().isNeutral(mob))
 				{
 					double exp=5.0;
-					int levelLimit=CMProps.getIntVar(CMProps.Int.EXPRATE);
-					int levelDiff=mob.phyStats().level()-target.phyStats().level();
+					final int levelLimit=CMProps.getIntVar(CMProps.Int.EXPRATE);
+					final int levelDiff=mob.phyStats().level()-target.phyStats().level();
 					if(levelDiff>levelLimit) exp=0.0;
 					if(exp>0.0)
 						CMLib.leveler().postExperience(mob,null,null,(int)Math.round(exp)+super.getXPCOSTLevel(mob),false);
 				}
 				if(hole==null)
 				{
-					CMMsg holeMsg=CMClass.getMsg(mob, mob.location(),null,CMMsg.MSG_DIG|CMMsg.MASK_ALWAYS, null);
+					final CMMsg holeMsg=CMClass.getMsg(mob, mob.location(),null,CMMsg.MSG_DIG|CMMsg.MASK_ALWAYS, null);
 					mob.location().send(mob,holeMsg);
 					hole=mob.location().findItem("HoleInTheGround");
 				}

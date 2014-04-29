@@ -59,7 +59,7 @@ public class ClanTax extends StdCommand
 		if(skipChecks) chkC=mob.getClanRole(mob.Name()).first;
 
 		if(chkC==null)
-		for(Pair<Clan,Integer> c : mob.clans())
+		for(final Pair<Clan,Integer> c : mob.clans())
 			if((clanName.length()==0)||(CMLib.english().containsString(c.first.getName(), clanName))
 			&&(c.first.getAuthority(c.second.intValue(), Clan.Function.TAX)!=Authority.CAN_NOT_DO))
 			{	chkC=c.first; break; }
@@ -105,14 +105,14 @@ public class ClanTax extends StdCommand
 	{
 		if(t.length()==0)
 			return;
-		int intt=CMath.s_int(t);
+		final int intt=CMath.s_int(t);
 		if((intt<0)||(intt>25))
 		{
 			if(mob.session()!=null)
 				mob.session().println("'"+t+"' is not a valid value.  Try 0-25.");
 			return;
 		}
-		Vector commands=new Vector();
+		final Vector commands=new Vector();
 		commands.addElement(getAccessWords()[0]);
 		commands.addElement(t);
 		setClanTaxRate(mob, C, skipChecks,commands,CMath.div(CMath.s_int(t),100));

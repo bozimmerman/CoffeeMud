@@ -104,7 +104,7 @@ public class HTTPReqProcessor implements HTTPFileGetter
 		if(gzipPreference==0.0)
 			gzipPreference = request.getSpecialEncodingAcceptability("x-gzip");
 
-		double nonzipPreference = request.getSpecialEncodingAcceptability("*");
+		final double nonzipPreference = request.getSpecialEncodingAcceptability("*");
 
 		if((deflatePreference==0.0) && (gzipPreference==0.0))
 		{
@@ -186,11 +186,11 @@ public class HTTPReqProcessor implements HTTPFileGetter
 		final List<long[]> rangeXYSets = request.getRangeAZ();
 		if((rangeXYSets!=null)&&(rangeXYSets.size()>0))
 		{
-			List<long[]> ranges=new LinkedList<long[]>();
+			final List<long[]> ranges=new LinkedList<long[]>();
 			final long[] fullRange=new long[]{buffers.getLength(),0};
-			for(long[] range : rangeXYSets)
+			for(final long[] range : rangeXYSets)
 			{
-				long[] newRange = checkRangeRequest(range,buffers.getLength());
+				final long[] newRange = checkRangeRequest(range,buffers.getLength());
 				if(newRange[0] < fullRange[0])
 					fullRange[0]=newRange[0];
 				if(newRange[1] > fullRange[1])
@@ -217,10 +217,10 @@ public class HTTPReqProcessor implements HTTPFileGetter
 	 */
 	private ByteBuffer generateStandardHeaderResponse(HTTPRequest request, HTTPStatus status, Map<HTTPHeader,String> headers, DataBuffers response) throws HTTPException
 	{
-		StringBuilder str=new StringBuilder("");
+		final StringBuilder str=new StringBuilder("");
 		str.append("HTTP/").append(request.getHttpVer()).append(" ").append(status.getStatusCode()).append(" ").append(status.description());
 		str.append(EOLN);
-		for(HTTPHeader header : headers.keySet())
+		for(final HTTPHeader header : headers.keySet())
 			str.append(header.makeLine(headers.get(header)));
 		if(response != null)
 			str.append(HTTPHeader.CONTENT_LENGTH.makeLine(response.getLength()));
@@ -252,7 +252,7 @@ public class HTTPReqProcessor implements HTTPFileGetter
 	 */
 	private DataBuffers generateStandardResponse(HTTPRequest request, HTTPStatus status, Map<HTTPHeader,String> headers, DataBuffers response) throws HTTPException
 	{
-		ByteBuffer header=generateStandardHeaderResponse(request, status, headers, response);
+		final ByteBuffer header=generateStandardHeaderResponse(request, status, headers, response);
 		if((response != null) && (response.getLength() > 0))
 		{
 			response.insertTop(header, 0);
@@ -273,12 +273,12 @@ public class HTTPReqProcessor implements HTTPFileGetter
 	 */
 	private void confirmMimeType(HTTPRequest request, final MIMEType mimeType) throws HTTPException
 	{
-		String mimeMaskStr = request.getHeader(HTTPHeader.ACCEPT.lowerCaseName());
+		final String mimeMaskStr = request.getHeader(HTTPHeader.ACCEPT.lowerCaseName());
 		if(mimeMaskStr!=null)
 		{
-			String[] mimeMasks = mimeMaskStr.split(",");
+			final String[] mimeMasks = mimeMaskStr.split(",");
 			boolean matchedOne=false;
-			for(String mimeMask : mimeMasks)
+			for(final String mimeMask : mimeMasks)
 			{
 				if(mimeType.matches(mimeMask))
 				{
@@ -303,10 +303,10 @@ public class HTTPReqProcessor implements HTTPFileGetter
 	public File assembleFileRequest(HTTPRequest request)
 	{
 		final String[] url = request.getUrlPath().split("/");
-		StringBuilder fullPath = new StringBuilder("/");
+		final StringBuilder fullPath = new StringBuilder("/");
 		if(url.length > 1)
 		{
-			List<String> fixedUrl=new ArrayList<String>(url.length-1);
+			final List<String> fixedUrl=new ArrayList<String>(url.length-1);
 			for(int i=1;i<url.length;i++)
 				if(url[i].equals(".."))
 				{
@@ -325,11 +325,11 @@ public class HTTPReqProcessor implements HTTPFileGetter
 		}
 		final String fullPathStr=fullPath.toString();
 		String host=request.getHost();
-		int x=host.indexOf(':');
+		final int x=host.indexOf(':');
 		if(x>0) host=host.substring(0, x); // we only care about the host, we KNOW the port.
 		final Pair<String,String> newPath=config.getMount(host,request.getClientPort(),fullPathStr);
 		File finalFile;
-		FileManager mgr=config.getFileManager();
+		final FileManager mgr=config.getFileManager();
 		if(newPath == null)
 			finalFile = mgr.createFileFromPath(fullPathStr.replace('/', mgr.getFileSeparator()));
 		else
@@ -375,7 +375,7 @@ public class HTTPReqProcessor implements HTTPFileGetter
 	private SimpleServletSession getServletSession(HTTPRequest request, MWServletResponse servletResponse)
 	{
 		SimpleServletSession session;
-		String oldSessionID=request.getCookie("mwsessid");
+		final String oldSessionID=request.getCookie("mwsessid");
 		if(oldSessionID == null)
 		{
 			session = config.getSessions().createSession(request);
@@ -401,17 +401,17 @@ public class HTTPReqProcessor implements HTTPFileGetter
 	private DataBuffers executeServlet(HTTPRequest request, final Class<? extends SimpleServlet> servletClass) throws HTTPException
 	{
 		// servlet found -- full stream ahead </pun>
-		MWServletResponse servletResponse = new MWServletResponse(); // generate a response object
-		SimpleServletSession session=getServletSession(request, servletResponse); // get or create a session object
-		SimpleServletRequest servletRequest = new MWServletRequest(session, request);
+		final MWServletResponse servletResponse = new MWServletResponse(); // generate a response object
+		final SimpleServletSession session=getServletSession(request, servletResponse); // get or create a session object
+		final SimpleServletRequest servletRequest = new MWServletRequest(session, request);
 		try
 		{
-			MWRequestStats stats = config.getServletMan().getServletStats(servletClass);
-			long startTime = System.nanoTime(); // for stat keeping
+			final MWRequestStats stats = config.getServletMan().getServletStats(servletClass);
+			final long startTime = System.nanoTime(); // for stat keeping
 			try
 			{
 				stats.startProcessing(); // synchronization is not required, so long as endProcessing is always called
-				SimpleServlet servletInstance = servletClass.newInstance(); // instantiate a new servlet instance!
+				final SimpleServlet servletInstance = servletClass.newInstance(); // instantiate a new servlet instance!
 				if(request.getMethod() == HTTPMethod.GET)
 					servletInstance.doGet(servletRequest, servletResponse);
 				else
@@ -427,11 +427,11 @@ public class HTTPReqProcessor implements HTTPFileGetter
 				lastHttpStatusCode=servletResponse.getStatusCode();
 			}
 		}
-		catch (HTTPException e)
+		catch (final HTTPException e)
 		{
 			throw e;
 		}
-		catch (Exception e)
+		catch (final Exception e)
 		{
 			config.getLogger().throwing("", "", e);
 			throw HTTPException.standardException(HTTPStatus.S500_INTERNAL_ERROR);
@@ -457,8 +457,8 @@ public class HTTPReqProcessor implements HTTPFileGetter
 				if(sinceDate >= lastModDate)
 					throw HTTPException.standardException(HTTPStatus.S304_NOT_MODIFIED);
 			}
-			catch(ParseException e) { }
-			catch(NumberFormatException e) { }
+			catch(final ParseException e) { }
+			catch(final NumberFormatException e) { }
 		}
 	}
 
@@ -475,11 +475,11 @@ public class HTTPReqProcessor implements HTTPFileGetter
 	public DataBuffers getFileData(HTTPRequest request) throws HTTPException
 	{
 		// split the uri by slashes -- the first char is always /!!
-		String[] url = request.getUrlPath().split("/");
+		final String[] url = request.getUrlPath().split("/");
 		// first thing is to check for servlets
 		if(url.length > 1)
 		{
-			Class<? extends SimpleServlet> servletClass = config.getServletMan().findServlet(url[1]);
+			final Class<? extends SimpleServlet> servletClass = config.getServletMan().findServlet(url[1]);
 			if(servletClass != null)
 			{
 				return executeServlet(request,servletClass);
@@ -496,7 +496,7 @@ public class HTTPReqProcessor implements HTTPFileGetter
 		try
 		{
 			buffers = new MWDataBuffers(); // before forming output, process range request
-			Class<? extends HTTPOutputConverter> converterClass=config.getConverters().findConverter(mimeType);
+			final Class<? extends HTTPOutputConverter> converterClass=config.getConverters().findConverter(mimeType);
 			if(converterClass != null)
 			{
 				buffers=config.getFileCache().getFileData(pageFile, null);
@@ -506,7 +506,7 @@ public class HTTPReqProcessor implements HTTPFileGetter
 					converter = converterClass.newInstance();
 					return new MWDataBuffers(converter.convertOutput(config, request, pageFile, HTTPStatus.S200_OK, buffers.flushToBuffer()), System.currentTimeMillis());
 				}
-				catch (Exception e) { }
+				catch (final Exception e) { }
 				return buffers;
 			}
 			else
@@ -514,7 +514,7 @@ public class HTTPReqProcessor implements HTTPFileGetter
 				return config.getFileCache().getFileData(pageFile, null);
 			}
 		}
-		catch(HTTPException e)
+		catch(final HTTPException e)
 		{
 			buffers.close();
 			throw e;
@@ -538,7 +538,7 @@ public class HTTPReqProcessor implements HTTPFileGetter
 	{
 		if(request.getUrlPath().length()>1)
 		{
-			Class<? extends SimpleServlet> servletClass = config.getServletMan().findServlet(request.getUrlPath().substring(1));
+			final Class<? extends SimpleServlet> servletClass = config.getServletMan().findServlet(request.getUrlPath().substring(1));
 			if(servletClass != null)
 			{
 				return executeServlet(request,servletClass);
@@ -549,7 +549,7 @@ public class HTTPReqProcessor implements HTTPFileGetter
 		final File pageFile = assembleFileRequest(request);
 		if(pageFile.isDirectory()) //TODO: support directory browsing someday
 		{
-			HTTPException movedException=HTTPException.standardException(HTTPStatus.S301_MOVED_PERMANENTLY);
+			final HTTPException movedException=HTTPException.standardException(HTTPStatus.S301_MOVED_PERMANENTLY);
 			movedException.getErrorHeaders().put(HTTPHeader.LOCATION, request.getFullHost() + request.getUrlPath() + "/");
 			throw movedException;
 		}
@@ -570,7 +570,7 @@ public class HTTPReqProcessor implements HTTPFileGetter
 			case GET:
 			case POST:
 			{
-				Class<? extends HTTPOutputConverter> converterClass=config.getConverters().findConverter(mimeType);
+				final Class<? extends HTTPOutputConverter> converterClass=config.getConverters().findConverter(mimeType);
 				if(converterClass != null)
 				{
 					buffers=config.getFileCache().getFileData(pageFile, null);
@@ -585,7 +585,7 @@ public class HTTPReqProcessor implements HTTPFileGetter
 						buffers=new MWDataBuffers(converter.convertOutput(config, request, pageFile, HTTPStatus.S200_OK, buffers.flushToBuffer()), dateTime);
 						buffers = handleEncodingRequest(request, null, buffers, extraHeaders);
 					}
-					catch (Exception e)
+					catch (final Exception e)
 					{
 						config.getLogger().throwing("", "", e);
 						throw HTTPException.standardException(HTTPStatus.S500_INTERNAL_ERROR);
@@ -623,7 +623,7 @@ public class HTTPReqProcessor implements HTTPFileGetter
 			switch(request.getMethod())
 			{
 			case HEAD:
-				MWDataBuffers header=new MWDataBuffers(generateStandardHeaderResponse(request, responseStatus, extraHeaders, buffers), buffers.getLastModified().getTime());
+				final MWDataBuffers header=new MWDataBuffers(generateStandardHeaderResponse(request, responseStatus, extraHeaders, buffers), buffers.getLastModified().getTime());
 				buffers.close();
 				return header;
 			case GET:
@@ -637,7 +637,7 @@ public class HTTPReqProcessor implements HTTPFileGetter
 			}
 			}
 		}
-		catch(HTTPException e)
+		catch(final HTTPException e)
 		{
 			if(buffers!=null)
 				buffers.close();

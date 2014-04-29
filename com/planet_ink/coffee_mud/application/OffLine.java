@@ -109,7 +109,7 @@ public class OffLine extends Thread implements MudHost
 
 		while (!serverIsRunning && isOK)
 		{
-			try{Thread.sleep(1000);}catch(Exception e){}
+			try{Thread.sleep(1000);}catch(final Exception e){}
 		}
 		if (!isOK)
 		{
@@ -141,7 +141,7 @@ public class OffLine extends Thread implements MudHost
 			out=null;
 			sock=null;
 		}
-		catch(IOException e)
+		catch(final IOException e)
 		{
 		}
 	}
@@ -160,7 +160,7 @@ public class OffLine extends Thread implements MudHost
 					offLineText.append((char)fin.read());
 				Resources.submitResource(fileName,offLineText);
 			}
-			catch(Exception e){e.printStackTrace();}
+			catch(final Exception e){e.printStackTrace();}
 			finally
 			{
 				try
@@ -190,16 +190,16 @@ public class OffLine extends Thread implements MudHost
 		if (acceptConnections)
 		{
 			String address="unknown";
-			try{address=sock.getInetAddress().getHostAddress().trim();}catch(Exception e){}
+			try{address=sock.getInetAddress().getHostAddress().trim();}catch(final Exception e){}
 			System.out.println("Connection from "+address+": "+port);
 			// now see if they are banned!
 			int proceed=0;
 
 			int numAtThisAddress=0;
-			long ConnectionWindow=(180*1000);
-			long LastConnectionDelay=(5*60*1000);
+			final long ConnectionWindow=(180*1000);
+			final long LastConnectionDelay=(5*60*1000);
 			boolean anyAtThisAddress=false;
-			int maxAtThisAddress=6;
+			final int maxAtThisAddress=6;
 			try
 			{
 				for(int a=accessed.size()-1;a>=0;a--)
@@ -227,13 +227,13 @@ public class OffLine extends Thread implements MudHost
 					autoblocked.addElement(address.toUpperCase());
 					proceed=2;
 				}
-			}catch(java.lang.ArrayIndexOutOfBoundsException e){}
+			}catch(final java.lang.ArrayIndexOutOfBoundsException e){}
 
 			accessed.addElement(address,Long.valueOf(System.currentTimeMillis()));
 			if(proceed!=0)
 			{
 				System.out.println("Blocking a connection from "+address+" on port "+port);
-				PrintWriter out = new PrintWriter(sock.getOutputStream());
+				final PrintWriter out = new PrintWriter(sock.getOutputStream());
 				out.println("\n\rOFFLINE: Blocked\n\r");
 				out.flush();
 				if(proceed==2)
@@ -247,13 +247,13 @@ public class OffLine extends Thread implements MudHost
 			else
 			{
 				state=2;
-				String fileName="resources"+File.separator+"text"+File.separator+"down.txt";
-				StringBuffer offLineText=getFile(fileName);
+				final String fileName="resources"+File.separator+"text"+File.separator+"down.txt";
+				final StringBuffer offLineText=getFile(fileName);
 				try
 				{
 					sock.setSoTimeout(300);
-					OutputStream rawout=sock.getOutputStream();
-					InputStream rawin=sock.getInputStream();
+					final OutputStream rawout=sock.getOutputStream();
+					final InputStream rawin=sock.getInputStream();
 					rawout.write('\n');
 					rawout.write('\n');
 					rawout.flush();
@@ -268,13 +268,13 @@ public class OffLine extends Thread implements MudHost
 
 					if(offLineText!=null) out.print(offLineText);
 					out.flush();
-					try{Thread.sleep(250);}catch(Exception e){}
+					try{Thread.sleep(250);}catch(final Exception e){}
 					closeSocks(sock,in,out);
 				}
-				catch(SocketException e)
+				catch(final SocketException e)
 				{
 				}
-				catch(IOException e)
+				catch(final IOException e)
 				{
 				}
 				closeSocks(sock,null,null);
@@ -283,14 +283,14 @@ public class OffLine extends Thread implements MudHost
 		}
 		else
 		{
-			String fileName="resources"+File.separator+"text"+File.separator+"offline.txt";
-			StringBuffer rejectText=getFile(fileName);
-			PrintWriter out = new PrintWriter(sock.getOutputStream());
+			final String fileName="resources"+File.separator+"text"+File.separator+"offline.txt";
+			final StringBuffer rejectText=getFile(fileName);
+			final PrintWriter out = new PrintWriter(sock.getOutputStream());
 			out.flush();
 			out.println(rejectText);
 			out.flush();
 			out.close();
-			try{Thread.sleep(250);}catch(Exception e){}
+			try{Thread.sleep(250);}catch(final Exception e){}
 			sock = null;
 		}
 	}
@@ -298,7 +298,7 @@ public class OffLine extends Thread implements MudHost
 	@Override
 	public void run()
 	{
-		int q_len = 6;
+		final int q_len = 6;
 		Socket sock=null;
 		serverIsRunning = false;
 		CMLib.initialize(); // forces this thread to HAVE a library
@@ -317,7 +317,7 @@ public class OffLine extends Thread implements MudHost
 			{
 				bindAddr = InetAddress.getByName(bind);
 			}
-			catch (UnknownHostException e)
+			catch (final UnknownHostException e)
 			{
 				System.err.println("ERROR: MUD Server could not bind to address " + bind);
 			}
@@ -339,7 +339,7 @@ public class OffLine extends Thread implements MudHost
 					sock=servsock.accept();
 					acceptConnection(sock);
 				}
-				catch(Exception t)
+				catch(final Exception t)
 				{
 					if((!(t instanceof java.net.SocketException))
 					||(t.getMessage()==null)
@@ -350,7 +350,7 @@ public class OffLine extends Thread implements MudHost
 				}
 			}
 		}
-		catch(Exception t)
+		catch(final Exception t)
 		{
 			t.printStackTrace(System.err);
 			if (!serverIsRunning)
@@ -366,7 +366,7 @@ public class OffLine extends Thread implements MudHost
 			if(sock!=null)
 				sock.close();
 		}
-		catch(IOException e)
+		catch(final IOException e)
 		{
 		}
 
@@ -397,7 +397,7 @@ public class OffLine extends Thread implements MudHost
 				servsock.close();
 				servsock = null;
 			}
-			catch(IOException e)
+			catch(final IOException e)
 			{
 			}
 		}
@@ -423,13 +423,13 @@ public class OffLine extends Thread implements MudHost
 		String iniFile="coffeemud.ini";
 		if(a.length>0)
 		{
-			for(int i=0;i<a.length;i++)
-				nameID+=" "+a[i];
+			for (final String element : a)
+				nameID+=" "+element;
 			nameID=nameID.trim();
-			List<String> V=CMParms.paramParse(nameID);
+			final List<String> V=CMParms.paramParse(nameID);
 			for(int v=0;v<V.size();v++)
 			{
-				String s=V.get(v);
+				final String s=V.get(v);
 				if(s.toUpperCase().startsWith("BOOT=")&&(s.length()>5))
 				{
 					iniFile=s.substring(5);
@@ -467,7 +467,7 @@ public class OffLine extends Thread implements MudHost
 					int pdex=ports.indexOf(',');
 					while(pdex>0)
 					{
-						OffLine mud=new OffLine();
+						final OffLine mud=new OffLine();
 						mud.acceptConnections=false;
 						mud.port=CMath.s_int(ports.substring(0,pdex));
 						ports=ports.substring(pdex+1);
@@ -475,17 +475,17 @@ public class OffLine extends Thread implements MudHost
 						mudThreads.addElement(mud);
 						pdex=ports.indexOf(',');
 					}
-					OffLine mud=new OffLine();
+					final OffLine mud=new OffLine();
 					mud.acceptConnections=false;
 					mud.port=CMath.s_int(ports);
 					mud.start();
 					mudThreads.addElement(mud);
 				}
 
-				StringBuffer str=new StringBuffer("");
+				final StringBuffer str=new StringBuffer("");
 				for(int m=0;m<mudThreads.size();m++)
 				{
-					MudHost mud=mudThreads.elementAt(m);
+					final MudHost mud=mudThreads.elementAt(m);
 					str.append(" "+mud.getPort());
 				}
 				ports=str.toString();
@@ -498,7 +498,7 @@ public class OffLine extends Thread implements MudHost
 
 			}
 		}
-		catch(InterruptedException e)
+		catch(final InterruptedException e)
 		{
 			e.printStackTrace();
 		}

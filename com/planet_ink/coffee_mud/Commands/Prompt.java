@@ -43,15 +43,15 @@ public class Prompt extends StdCommand
 		throws java.io.IOException
 	{
 		if(mob.session()==null) return false;
-		PlayerStats pstats=mob.playerStats();
-		Session sess=mob.session();
+		final PlayerStats pstats=mob.playerStats();
+		final Session sess=mob.session();
 		if(pstats==null) return false;
 
 		if(commands.size()==1)
 			sess.rawPrintln("Your prompt is currently set at:\n\r"+pstats.getPrompt());
 		else
 		{
-			String str=CMParms.combine(commands,1);
+			final String str=CMParms.combine(commands,1);
 			if(("DEFAULT").startsWith(str.toUpperCase()))
 				pstats.setPrompt("");
 			else

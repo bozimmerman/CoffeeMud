@@ -53,19 +53,19 @@ public class Skill_JailKey extends StdSkill
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		String whatTounlock=CMParms.combine(commands,0);
+		final String whatTounlock=CMParms.combine(commands,0);
 		Exit unlockThis=null;
-		int dirCode=Directions.getGoodDirectionCode(whatTounlock);
+		final int dirCode=Directions.getGoodDirectionCode(whatTounlock);
 		if((dirCode>=0)&&(mob.location()!=null))
 		{
 			unlockThis=mob.location().getExitInDir(dirCode);
-			Room unlockThat=mob.location().getRoomInDir(dirCode);
+			final Room unlockThat=mob.location().getRoomInDir(dirCode);
 			if(unlockThat==null) unlockThis=null;
 			if(unlockThis!=null)
 			{
 				LegalBehavior B=null;
 
-				Area legalA=CMLib.law().getLegalObject(mob.location());
+				final Area legalA=CMLib.law().getLegalObject(mob.location());
 				if(legalA!=null) B=CMLib.law().getLegalBehavior(legalA);
 				if(B==null)
 					unlockThis=null;
@@ -81,7 +81,7 @@ public class Skill_JailKey extends StdSkill
 				mob.tell("You should specify a direction.");
 			else
 			{
-				Exit E=mob.location().getExitInDir(dirCode);
+				final Exit E=mob.location().getExitInDir(dirCode);
 				if(E==null)
 					mob.tell("You must specify a jail door direction.");
 				else
@@ -114,7 +114,7 @@ public class Skill_JailKey extends StdSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(!success)
 			beneficialVisualFizzle(mob,null,"<S-NAME> attempt(s) <S-HIS-HER> jailkey on "+unlockThis.name()+" and fail(s).");

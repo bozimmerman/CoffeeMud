@@ -43,7 +43,7 @@ public class HelloWorldServlet implements SimpleServlet
 			response.setMimeType(MIMEType.html.getType());
 			response.getOutputStream().write(helloResponse.getBytes());
 		}
-		catch (IOException e)
+		catch (final IOException e)
 		{
 			response.setStatusCode(500);
 		}
@@ -52,9 +52,9 @@ public class HelloWorldServlet implements SimpleServlet
 	@Override
 	public void doPost(SimpleServletRequest request, SimpleServletResponse response)
 	{
-		for(String cookieName : request.getCookieNames())
+		for(final String cookieName : request.getCookieNames())
 			response.setCookie(cookieName, request.getCookie(cookieName));
-		for(String field : request.getUrlParameters())
+		for(final String field : request.getUrlParameters())
 			response.setHeader("X-"+field, request.getUrlParameter(field));
 		response.setStatusCode(HTTPStatus.S204_NO_CONTENT.getStatusCode());
 	}

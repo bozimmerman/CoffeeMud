@@ -50,18 +50,18 @@ public class Read extends StdCommand
 		}
 		if(thisThang instanceof Item)
 		{
-			Item thisItem=(Item)thisThang;
+			final Item thisItem=(Item)thisThang;
 			if((CMLib.flags().isGettable(thisItem))&&(!mob.isMine(thisItem)))
 			{
 				mob.tell("You don't seem to be carrying that.");
 				return false;
 			}
 		}
-		String srcMsg="<S-NAME> read(s) <T-NAMESELF>.";
-		String soMsg=(mob.isMine(thisThang)?srcMsg:null);
+		final String srcMsg="<S-NAME> read(s) <T-NAMESELF>.";
+		final String soMsg=(mob.isMine(thisThang)?srcMsg:null);
 		String tMsg=theRest;
 		if((tMsg==null)||(tMsg.trim().length()==0)||(thisThang instanceof MOB)) tMsg=soMsg;
-		CMMsg newMsg=CMClass.getMsg(mob,thisThang,null,CMMsg.MSG_READ,quiet?srcMsg:null,CMMsg.MSG_READ,tMsg,CMMsg.MSG_READ,quiet?null:soMsg);
+		final CMMsg newMsg=CMClass.getMsg(mob,thisThang,null,CMMsg.MSG_READ,quiet?srcMsg:null,CMMsg.MSG_READ,tMsg,CMMsg.MSG_READ,quiet?null:soMsg);
 		if(mob.location().okMessage(mob,newMsg))
 		{
 			mob.location().send(mob,newMsg);
@@ -86,7 +86,7 @@ public class Read extends StdCommand
 			return false;
 		}
 
-		int dir=Directions.getGoodDirectionCode(CMParms.combine(commands,0));
+		final int dir=Directions.getGoodDirectionCode(CMParms.combine(commands,0));
 		Environmental thisThang=null;
 		if(dir>=0)	thisThang=mob.location().getExitInDir(dir);
 		thisThang=mob.location().fetchFromMOBRoomFavorsItems(mob,null,(String)commands.lastElement(), StdCommand.noCoinFilter);

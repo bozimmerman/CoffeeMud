@@ -49,9 +49,9 @@ public class Boot extends StdCommand
 			mob.tell("Boot out who?");
 			return false;
 		}
-		String whom=CMParms.combine(commands,0);
+		final String whom=CMParms.combine(commands,0);
 		boolean boot=false;
-		for(Session S : CMLib.sessions().allIterable())
+		for(final Session S : CMLib.sessions().allIterable())
 		{
 			if(((S.mob()!=null)&&(CMLib.english().containsString(S.mob().name(),whom)))
 			||(S.getAddress().equalsIgnoreCase(whom)))

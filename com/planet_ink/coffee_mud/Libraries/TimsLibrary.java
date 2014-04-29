@@ -39,18 +39,18 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 	@Override
 	public int timsLevelCalculator(Item I)
 	{
-		int[] castMul=new int[1];
-		Ability[] RET=getTimsAdjResCast(I,castMul);
-		Ability ADJ=RET[0];
-		Ability RES=RET[1];
-		Ability CAST=RET[2];
+		final int[] castMul=new int[1];
+		final Ability[] RET=getTimsAdjResCast(I,castMul);
+		final Ability ADJ=RET[0];
+		final Ability RES=RET[1];
+		final Ability CAST=RET[2];
 		return timsLevelCalculator(I,ADJ,RES,CAST,castMul[0]);
 	}
 	@Override
 	public int timsLevelCalculator(Item I, Ability ADJ, Ability RES, Ability CAST, int castMul)
 	{
 		int level=0;
-		Item savedI=(Item)I.copyOf();
+		final Item savedI=(Item)I.copyOf();
 		savedI.recoverPhyStats();
 		I=(Item)I.copyOf();
 		I.recoverPhyStats();
@@ -63,20 +63,20 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 			otherAtt=CMParms.getParmPlus(ADJ.text(),"att");
 			otherDam=CMParms.getParmPlus(ADJ.text(),"dam");
 		}
-		int curArmor=savedI.basePhyStats().armor()+otherArm;
-		double curAttack=savedI.basePhyStats().attackAdjustment()+otherAtt;
-		double curDamage=savedI.basePhyStats().damage()+otherDam;
-		Wearable.CODES codes = Wearable.CODES.instance();
+		final int curArmor=savedI.basePhyStats().armor()+otherArm;
+		final double curAttack=savedI.basePhyStats().attackAdjustment()+otherAtt;
+		final double curDamage=savedI.basePhyStats().damage()+otherDam;
+		final Wearable.CODES codes = Wearable.CODES.instance();
 		if(I instanceof Weapon)
 		{
 			double weight=8;
 			if(weight<1.0) weight=1.0;
-			double range=savedI.maxRange();
+			final double range=savedI.maxRange();
 			level=(int)Math.round(Math.floor((2.0*curDamage/(2.0*(I.rawLogicalAnd()?2.0:1.0)+1.0)+(curAttack-weight)/5.0+range)*(range/weight+2.0)))+1;
 		}
 		else
 		{
-			long worndata=savedI.rawProperLocationBitmap();
+			final long worndata=savedI.rawProperLocationBitmap();
 			double weightpts=0;
 			for(int i=0;i<codes.location_strength_points().length-1;i++)
 			{
@@ -86,10 +86,10 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 					if(!I.rawLogicalAnd()) break;
 				}
 			}
-			int[] leatherPoints={ 0, 0, 1, 5,10,16,23,31,40,49,58,67,76,85,94};
-			int[] clothPoints=  { 0, 3, 7,12,18,25,33,42,52,62,72,82,92,102};
-			int[] metalPoints=  { 0, 0, 0, 0, 1, 3, 5, 8,12,17,23,30,38,46,54,62,70,78,86,94};
-			int materialCode=savedI.material()&RawMaterial.MATERIAL_MASK;
+			final int[] leatherPoints={ 0, 0, 1, 5,10,16,23,31,40,49,58,67,76,85,94};
+			final int[] clothPoints=  { 0, 3, 7,12,18,25,33,42,52,62,72,82,92,102};
+			final int[] metalPoints=  { 0, 0, 0, 0, 1, 3, 5, 8,12,17,23,30,38,46,54,62,70,78,86,94};
+			final int materialCode=savedI.material()&RawMaterial.MATERIAL_MASK;
 			int[] useArray=null;
 			switch(materialCode)
 			{
@@ -120,14 +120,14 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 		level+=I.basePhyStats().ability()*5;
 		if(CAST!=null)
 		{
-			String ID=CAST.ID().toUpperCase();
-			Vector<Ability> theSpells=new Vector<Ability>();
+			final String ID=CAST.ID().toUpperCase();
+			final Vector<Ability> theSpells=new Vector<Ability>();
 			String names=CAST.text();
 			int del=names.indexOf(';');
 			while(del>=0)
 			{
-				String thisOne=names.substring(0,del);
-				Ability A=CMClass.getAbility(thisOne);
+				final String thisOne=names.substring(0,del);
+				final Ability A=CMClass.getAbility(thisOne);
 				if(A!=null)	theSpells.addElement(A);
 				names=names.substring(del+1);
 				del=names.indexOf(';');
@@ -147,11 +147,11 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 		}
 		if(ADJ!=null)
 		{
-			String newText=ADJ.text();
-			int ab=CMParms.getParmPlus(newText,"abi");
-			int arm=CMParms.getParmPlus(newText,"arm")*-1;
-			int att=CMParms.getParmPlus(newText,"att");
-			int dam=CMParms.getParmPlus(newText,"dam");
+			final String newText=ADJ.text();
+			final int ab=CMParms.getParmPlus(newText,"abi");
+			final int arm=CMParms.getParmPlus(newText,"arm")*-1;
+			final int att=CMParms.getParmPlus(newText,"att");
+			final int dam=CMParms.getParmPlus(newText,"dam");
 			if(savedI instanceof Weapon)
 				level+=(arm*2);
 			else
@@ -163,22 +163,22 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 			level+=ab*5;
 
 
-			int dis=CMParms.getParmPlus(newText,"dis");
+			final int dis=CMParms.getParmPlus(newText,"dis");
 			if(dis!=0) level+=5;
-			int sen=CMParms.getParmPlus(newText,"sen");
+			final int sen=CMParms.getParmPlus(newText,"sen");
 			if(sen!=0) level+=5;
 			level+=(int)Math.round(5.0*CMParms.getParmDoublePlus(newText,"spe"));
-			for(int i : CharStats.CODES.BASE())
+			for(final int i : CharStats.CODES.BASE())
 			{
-				int stat=CMParms.getParmPlus(newText,CMStrings.limit(CharStats.CODES.NAME(i),3).toLowerCase());
-				int max=CMParms.getParmPlus(newText,("max"+(CMStrings.limit(CharStats.CODES.NAME(i),3).toLowerCase())));
+				final int stat=CMParms.getParmPlus(newText,CMStrings.limit(CharStats.CODES.NAME(i),3).toLowerCase());
+				final int max=CMParms.getParmPlus(newText,("max"+(CMStrings.limit(CharStats.CODES.NAME(i),3).toLowerCase())));
 				level+=(stat*10);
 				level+=(max*15);
 			}
 
-			int hit=CMParms.getParmPlus(newText,"hit");
-			int man=CMParms.getParmPlus(newText,"man");
-			int mv=CMParms.getParmPlus(newText,"mov");
+			final int hit=CMParms.getParmPlus(newText,"hit");
+			final int man=CMParms.getParmPlus(newText,"man");
+			final int mv=CMParms.getParmPlus(newText,"mov");
 			level+=(hit/5);
 			level+=(man/5);
 			level+=(mv/5);
@@ -207,7 +207,7 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 	public Ability[] getTimsAdjResCast(Item I, int[] castMul)
 	{
 		Ability A;
-		Ability[] RET=new Ability[3]; // adj, res, cast
+		final Ability[] RET=new Ability[3]; // adj, res, cast
 		castMul[0]=1;
 		for(int i=0;i<I.numEffects();i++)
 		{
@@ -239,12 +239,12 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 	private void reportChangesDestroyOldI(Item oldI, Item newI, StringBuffer changes,int OTLVL, int TLVL)
 	{
 		if((changes == null)||(oldI==null)) return;
-		Ability[] RET=getTimsAdjResCast(newI,new int[1]);
-		Ability ADJ=RET[0];
-		Ability RES=RET[1];
-		Ability CAST=RET[2];
-		int[] LVLS=getItemLevels(newI,ADJ,RES,CAST);
-		int TLVL2=totalLevels(LVLS);
+		final Ability[] RET=getTimsAdjResCast(newI,new int[1]);
+		final Ability ADJ=RET[0];
+		final Ability RES=RET[1];
+		final Ability CAST=RET[2];
+		final int[] LVLS=getItemLevels(newI,ADJ,RES,CAST);
+		final int TLVL2=totalLevels(LVLS);
 
 		changes.append(newI.name()+":"+newI.basePhyStats().level()+"("+OTLVL+")=>"+TLVL2+"("+TLVL+"), ");
 		for(int i=0;i<oldI.getStatCodes().length;i++)
@@ -258,7 +258,7 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 	@SuppressWarnings("unchecked")
 	public boolean itemFix(Item I, int lvlOr0, StringBuffer changes)
 	{
-		Item oldI = (changes!=null)?(Item)I.copyOf():null;
+		final Item oldI = (changes!=null)?(Item)I.copyOf():null;
 
 		if((I instanceof SpellHolder)
 		||((I instanceof Wand)&&(lvlOr0<=0)))
@@ -272,9 +272,9 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 			if(spells.size()==0) return false;
 			int levels=0;
 			spells=(Vector<Ability>)spells.clone();
-			for(Enumeration<Ability> e=spells.elements();e.hasMoreElements();)
-				levels+=CMLib.ableMapper().lowestQualifyingLevel(e.nextElement().ID());
-			int level=(int)Math.round(CMath.div(levels, spells.size()));
+			for (final Ability ability : spells)
+				levels+=CMLib.ableMapper().lowestQualifyingLevel(ability.ID());
+			final int level=(int)Math.round(CMath.div(levels, spells.size()));
 			if(level==I.basePhyStats().level()) return false;
 			I.basePhyStats().setLevel(level);
 			I.phyStats().setLevel(level);
@@ -290,13 +290,13 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 			if(lvl <=0) lvl=I.basePhyStats().level();
 			I.basePhyStats().setLevel(lvl);
 			I.phyStats().setLevel(lvl);
-			Ability[] RET=getTimsAdjResCast(I,new int[1]);
-			Ability ADJ=RET[0];
-			Ability RES=RET[1];
-			Ability CAST=RET[2];
+			final Ability[] RET=getTimsAdjResCast(I,new int[1]);
+			final Ability ADJ=RET[0];
+			final Ability RES=RET[1];
+			final Ability CAST=RET[2];
 			int[] LVLS=getItemLevels(I,ADJ,RES,CAST);
 			int TLVL=totalLevels(LVLS);
-			int OTLVL=TLVL;
+			final int OTLVL=TLVL;
 			if(lvl<0)
 			{
 				if(TLVL<=0)
@@ -314,7 +314,7 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 			if((TLVL>0)&&(TLVL>Math.round(CMath.mul(lvl,1.1))))
 			{
 				//int FTLVL=TLVL;
-				Vector<Integer> illegalNums=new Vector<Integer>();
+				final Vector<Integer> illegalNums=new Vector<Integer>();
 				//Log.sysOut("Reset",I.name()+"("+I.basePhyStats().level()+") "+TLVL+", "+I.basePhyStats().armor()+"/"+I.basePhyStats().attackAdjustment()+"/"+I.basePhyStats().damage()+"/"+((ADJ!=null)?ADJ.text():"null"));
 				while((TLVL>Math.round(CMath.mul(lvl,1.1)))&&(illegalNums.size()<4))
 				{
@@ -329,9 +329,9 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 					case 0:
 						if(I instanceof Weapon)
 						{
-							String s=(ADJ!=null)?ADJ.text():"";
-							int oldAtt=I.basePhyStats().attackAdjustment();
-							int oldDam=I.basePhyStats().damage();
+							final String s=(ADJ!=null)?ADJ.text():"";
+							final int oldAtt=I.basePhyStats().attackAdjustment();
+							final int oldDam=I.basePhyStats().damage();
 							toneDownWeapon((Weapon)I,ADJ);
 							if((I.basePhyStats().attackAdjustment()==oldAtt)
 							&&(I.basePhyStats().damage()==oldDam)
@@ -340,8 +340,8 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 						}
 						else
 						{
-							String s=(ADJ!=null)?ADJ.text():"";
-							int oldArm=I.basePhyStats().armor();
+							final String s=(ADJ!=null)?ADJ.text():"";
+							final int oldArm=I.basePhyStats().armor();
 							toneDownArmor((Armor)I,ADJ);
 							if((I.basePhyStats().armor()==oldArm)
 							&&((ADJ==null)||(ADJ.text().equals(s))))
@@ -363,7 +363,7 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 							illegalNums.addElement(Integer.valueOf(3));
 						else
 						{
-							String oldTxt=ADJ.text();
+							final String oldTxt=ADJ.text();
 							toneDownAdjuster(I,ADJ);
 							if(ADJ.text().equals(oldTxt))
 								illegalNums.addElement(Integer.valueOf(3));
@@ -406,8 +406,8 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 		else
 		if(!(I instanceof Armor))
 			return false;
-		Map<String,String> H=timsItemAdjustments(I,I.phyStats().level(),I.material(),hands,weaponClass,I.maxRange(),I.rawProperLocationBitmap());
-		int newValue=CMath.s_int(H.get("VALUE"));
+		final Map<String,String> H=timsItemAdjustments(I,I.phyStats().level(),I.material(),hands,weaponClass,I.maxRange(),I.rawProperLocationBitmap());
+		final int newValue=CMath.s_int(H.get("VALUE"));
 		if((I.baseGoldValue()>newValue)&&(newValue>0))
 		{
 			I.setBaseValue(newValue);
@@ -426,7 +426,7 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 			hands=I.rawLogicalAnd()?2:1;
 			weaponClass=((Weapon)I).weaponClassification();
 		}
-		Map<String,String> H=timsItemAdjustments(I,I.basePhyStats().level(),I.material(),hands,weaponClass,I.maxRange(),I.rawProperLocationBitmap());
+		final Map<String,String> H=timsItemAdjustments(I,I.basePhyStats().level(),I.material(),hands,weaponClass,I.maxRange(),I.rawProperLocationBitmap());
 		if(I instanceof Weapon)
 		{
 			I.basePhyStats().setDamage(CMath.s_int(H.get("DAMAGE")));
@@ -453,12 +453,12 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 										 int reach,
 										 long worndata)
 	{
-		Hashtable<String,String> vals=new Hashtable<String,String>();
-		int materialvalue=RawMaterial.CODES.VALUE(material);
-		int[] castMul=new int[1];
-		Ability[] RET=getTimsAdjResCast(I,castMul);
-		Ability ADJ=RET[0];
-		Ability CAST=RET[2];
+		final Hashtable<String,String> vals=new Hashtable<String,String>();
+		final int materialvalue=RawMaterial.CODES.VALUE(material);
+		final int[] castMul=new int[1];
+		final Ability[] RET=getTimsAdjResCast(I,castMul);
+		final Ability ADJ=RET[0];
+		final Ability CAST=RET[2];
 		level-=levelsFromAbility(I);
 		level-=levelsFromAdjuster(I,ADJ);
 		level-=levelsFromCaster(I,CAST);
@@ -491,7 +491,7 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 				basereach=reach;
 
 			int damage=(int)Math.round(((level-1.0)/(((double)reach/(double)weight)+2.0) + ((double)weight-(double)baseattack)/5.0 -reach)*(((hands*2.0)+1.0)/2.0));
-			int cost=(int)Math.round(2.0*(((double)weight*(double)materialvalue)+((2.0*damage)+baseattack+(reach*10.0))*damage)/(hands+1.0));
+			final int cost=(int)Math.round(2.0*(((double)weight*(double)materialvalue)+((2.0*damage)+baseattack+(reach*10.0))*damage)/(hands+1.0));
 
 			if(basematerial==RawMaterial.MATERIAL_METAL)
 			{
@@ -627,12 +627,12 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 		else
 		if(I instanceof Armor)
 		{
-			int[] leatherPoints={ 0, 0, 1, 5,10,16,23,31,40,49,58,67,76,85,94};
-			int[] clothPoints=  { 0, 3, 7,12,18,25,33,42,52,62,72,82,92,102};
-			int[] metalPoints=  { 0, 0, 0, 0, 1, 3, 5, 8,12,17,23,30,38,46,54,62,70,78,86,94};
+			final int[] leatherPoints={ 0, 0, 1, 5,10,16,23,31,40,49,58,67,76,85,94};
+			final int[] clothPoints=  { 0, 3, 7,12,18,25,33,42,52,62,72,82,92,102};
+			final int[] metalPoints=  { 0, 0, 0, 0, 1, 3, 5, 8,12,17,23,30,38,46,54,62,70,78,86,94};
 			double pts=0.0;
 			if(level<0) level=0;
-			int materialCode=material&RawMaterial.MATERIAL_MASK;
+			final int materialCode=material&RawMaterial.MATERIAL_MASK;
 			int[] useArray=null;
 			switch(materialCode)
 			{
@@ -658,7 +658,7 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 			else
 			for(int i=0;i<useArray.length;i++)
 			{
-				int lvl=useArray[i];
+				final int lvl=useArray[i];
 				if(lvl>level)
 				{
 					pts=i-1;
@@ -669,7 +669,7 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 			double totalpts=0.0;
 			double weightpts=0.0;
 			double wornweights=0.0;
-			Wearable.CODES codes = Wearable.CODES.instance();
+			final Wearable.CODES codes = Wearable.CODES.instance();
 			for(int i=0;i<codes.location_strength_points().length-1;i++)
 			{
 				if(CMath.isSet(worndata,i))
@@ -699,7 +699,7 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 					if(hands==1) break;
 				}
 			}
-			int cost=(int)Math.round(((pts*pts) + materialvalue)
+			final int cost=(int)Math.round(((pts*pts) + materialvalue)
 									 * ( weightpts / 2.0));
 			int armor=(int)Math.round(totalpts);
 			switch(material)
@@ -739,10 +739,10 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 		boolean fixatt=true;
 		if((ADJ!=null)&&(ADJ.text().toUpperCase().indexOf("DAMAGE+")>=0))
 		{
-			int a=ADJ.text().toUpperCase().indexOf("DAMAGE+");
+			final int a=ADJ.text().toUpperCase().indexOf("DAMAGE+");
 			int a2=ADJ.text().toUpperCase().indexOf(' ',a+4);
 			if(a2<0) a2=ADJ.text().length();
-			int num=CMath.s_int(ADJ.text().substring(a+7,a2));
+			final int num=CMath.s_int(ADJ.text().substring(a+7,a2));
 			int newNum = (int)Math.round(CMath.mul(num,0.9));
 			if((newNum == num) && (newNum > 1))
 				newNum--;
@@ -754,10 +754,10 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 		}
 		if((ADJ!=null)&&(ADJ.text().toUpperCase().indexOf("ATTACK+")>=0))
 		{
-			int a=ADJ.text().toUpperCase().indexOf("ATTACK+");
+			final int a=ADJ.text().toUpperCase().indexOf("ATTACK+");
 			int a2=ADJ.text().toUpperCase().indexOf(' ',a+4);
 			if(a2<0) a2=ADJ.text().length();
-			int num=CMath.s_int(ADJ.text().substring(a+7,a2));
+			final int num=CMath.s_int(ADJ.text().substring(a+7,a2));
 			int newNum = (int)Math.round(CMath.mul(num,0.9));
 			if((newNum == num) && (newNum > 1))
 				newNum--;
@@ -785,10 +785,10 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 		boolean fixit=true;
 		if((ADJ!=null)&&(ADJ.text().toUpperCase().indexOf("ARMOR-")>=0))
 		{
-			int a=ADJ.text().toUpperCase().indexOf("ARMOR-");
+			final int a=ADJ.text().toUpperCase().indexOf("ARMOR-");
 			int a2=ADJ.text().toUpperCase().indexOf(' ',a+4);
 			if(a2<0) a2=ADJ.text().length();
-			int num=CMath.s_int(ADJ.text().substring(a+6,a2));
+			final int num=CMath.s_int(ADJ.text().substring(a+6,a2));
 			int newNum = (int)Math.round(CMath.mul(num,0.9));
 			if((newNum == num) && (newNum > 1))
 				newNum--;
@@ -820,16 +820,16 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 			if(spaceafter<0) spaceafter=s.length();
 			if(spaceafter>plusminus)
 			{
-				String number=s.substring(plusminus+1,spaceafter).trim();
+				final String number=s.substring(plusminus+1,spaceafter).trim();
 				if(CMath.isNumber(number))
 				{
-					int num=CMath.s_int(number);
+					final int num=CMath.s_int(number);
 					int spacebefore=s.lastIndexOf(' ',plusminus);
 					if(spacebefore<0) spacebefore=0;
 					if(spacebefore<plusminus)
 					{
 						boolean proceed=true;
-						String wd=s.substring(spacebefore,plusminus).trim().toUpperCase();
+						final String wd=s.substring(spacebefore,plusminus).trim().toUpperCase();
 						if(wd.startsWith("DIS"))
 							proceed=false;
 						else
@@ -874,7 +874,7 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 
 	public int[] getItemLevels(Item I, Ability ADJ, Ability RES, Ability CAST)
 	{
-		int[] LVLS=new int[4];
+		final int[] LVLS=new int[4];
 		LVLS[0]=timsBaseLevel(I,ADJ);
 		LVLS[1]=levelsFromAbility(I);
 		LVLS[2]=levelsFromCaster(I,CAST);
@@ -893,7 +893,7 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 	@Override
 	public int timsBaseLevel(Item I)
 	{
-		Ability[] RET=getTimsAdjResCast(I,new int[1]);
+		final Ability[] RET=getTimsAdjResCast(I,new int[1]);
 		return timsBaseLevel(I,RET[0]);
 	}
 
@@ -909,21 +909,21 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 			otherAtt=CMParms.getParmPlus(ADJ.text(),"att");
 			otherDam=CMParms.getParmPlus(ADJ.text(),"dam");
 		}
-		int curArmor=I.basePhyStats().armor()+otherArm;
-		double curAttack=I.basePhyStats().attackAdjustment()+otherAtt;
-		double curDamage=I.basePhyStats().damage()+otherDam;
+		final int curArmor=I.basePhyStats().armor()+otherArm;
+		final double curAttack=I.basePhyStats().attackAdjustment()+otherAtt;
+		final double curDamage=I.basePhyStats().damage()+otherDam;
 		if(I instanceof Weapon)
 		{
 			double weight=8;
 			if(weight<1.0) weight=1.0;
-			double range=(I.maxRange());
+			final double range=(I.maxRange());
 			level=(int)Math.round(Math.floor((2.0*curDamage/(2.0*(I.rawLogicalAnd()?2.0:1.0)+1.0)+(curAttack-weight)/5.0+range)*(range/weight+2.0)))+1;
 		}
 		else
 		{
-			long worndata=I.rawProperLocationBitmap();
+			final long worndata=I.rawProperLocationBitmap();
 			double weightpts=0;
-			Wearable.CODES codes = Wearable.CODES.instance();
+			final Wearable.CODES codes = Wearable.CODES.instance();
 			for(int i=0;i<codes.location_strength_points().length-1;i++)
 			{
 				if(CMath.isSet(worndata,i))
@@ -932,10 +932,10 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 					if(!I.rawLogicalAnd()) break;
 				}
 			}
-			int[] leatherPoints={ 0, 0, 1, 5,10,16,23,31,40,49,58,67,76,85,94};
-			int[] clothPoints=  { 0, 3, 7,12,18,25,33,42,52,62,72,82,92,102};
-			int[] metalPoints=  { 0, 0, 0, 0, 1, 3, 5, 8,12,17,23,30,38,46,54,62,70,78,86,94};
-			int materialCode=I.material()&RawMaterial.MATERIAL_MASK;
+			final int[] leatherPoints={ 0, 0, 1, 5,10,16,23,31,40,49,58,67,76,85,94};
+			final int[] clothPoints=  { 0, 3, 7,12,18,25,33,42,52,62,72,82,92,102};
+			final int[] metalPoints=  { 0, 0, 0, 0, 1, 3, 5, 8,12,17,23,30,38,46,54,62,70,78,86,94};
+			final int materialCode=I.material()&RawMaterial.MATERIAL_MASK;
 			int[] useArray=null;
 			switch(materialCode)
 			{
@@ -976,11 +976,11 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 		int level=0;
 		if(ADJ!=null)
 		{
-			String newText=ADJ.text();
-			int ab=CMParms.getParmPlus(newText,"abi");
-			int arm=CMParms.getParmPlus(newText,"arm")*-1;
-			int att=CMParms.getParmPlus(newText,"att");
-			int dam=CMParms.getParmPlus(newText,"dam");
+			final String newText=ADJ.text();
+			final int ab=CMParms.getParmPlus(newText,"abi");
+			final int arm=CMParms.getParmPlus(newText,"arm")*-1;
+			final int att=CMParms.getParmPlus(newText,"att");
+			final int dam=CMParms.getParmPlus(newText,"dam");
 			if(savedI instanceof Weapon)
 				level+=arm;
 			else
@@ -990,22 +990,22 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 				level+=(dam*3);
 			}
 			level+=ab*5;
-			int dis=CMParms.getParmPlus(newText,"dis");
+			final int dis=CMParms.getParmPlus(newText,"dis");
 			if(dis!=0) level+=10;
-			int sen=CMParms.getParmPlus(newText,"sen");
+			final int sen=CMParms.getParmPlus(newText,"sen");
 			if(sen!=0) level+=10;
 			level+=(int)Math.round(5.0*CMParms.getParmDoublePlus(newText,"spe"));
-			for(int i: CharStats.CODES.BASE())
+			for(final int i: CharStats.CODES.BASE())
 			{
-				int stat=CMParms.getParmPlus(newText,CMStrings.limit(CharStats.CODES.NAME(i),3).toLowerCase());
-				int max=CMParms.getParmPlus(newText,("max"+(CMStrings.limit(CharStats.CODES.NAME(i),3).toLowerCase())));
+				final int stat=CMParms.getParmPlus(newText,CMStrings.limit(CharStats.CODES.NAME(i),3).toLowerCase());
+				final int max=CMParms.getParmPlus(newText,("max"+(CMStrings.limit(CharStats.CODES.NAME(i),3).toLowerCase())));
 				level+=(stat*10);
 				level+=(max*15);
 			}
 
-			int hit=CMParms.getParmPlus(newText,"hit");
-			int man=CMParms.getParmPlus(newText,"man");
-			int mv=CMParms.getParmPlus(newText,"mov");
+			final int hit=CMParms.getParmPlus(newText,"hit");
+			final int man=CMParms.getParmPlus(newText,"man");
+			final int mv=CMParms.getParmPlus(newText,"mov");
 			level+=(hit/5);
 			level+=(man/5);
 			level+=(mv/5);
@@ -1019,14 +1019,14 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 		int level=0;
 		if(CAST!=null)
 		{
-			String ID=CAST.ID().toUpperCase();
-			Vector<Ability> theSpells=new Vector<Ability>();
+			final String ID=CAST.ID().toUpperCase();
+			final Vector<Ability> theSpells=new Vector<Ability>();
 			String names=CAST.text();
 			int del=names.indexOf(';');
 			while(del>=0)
 			{
-				String thisOne=names.substring(0,del);
-				Ability A=CMClass.getAbility(thisOne);
+				final String thisOne=names.substring(0,del);
+				final Ability A=CMClass.getAbility(thisOne);
 				if(A!=null)	theSpells.addElement(A);
 				names=names.substring(del+1);
 				del=names.indexOf(';');
@@ -1055,12 +1055,12 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 		{
 			spellSet=new Vector<Ability>();
 			Ability A=null;
-			for(Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
+			for(final Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
 			{
 				A=e.nextElement();
 				if(((A.classificationCode()&(Ability.ALL_ACODES))==Ability.ACODE_SPELL))
 				{
-					int lowLevel=CMLib.ableMapper().lowestQualifyingLevel(A.ID());
+					final int lowLevel=CMLib.ableMapper().lowestQualifyingLevel(A.ID());
 					if((lowLevel>0)&&(lowLevel<25))
 						spellSet.add(A);
 				}
@@ -1072,11 +1072,11 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 
 	public Ability getCombatSpell(boolean malicious)
 	{
-		List<Ability> spellSet=getCombatSpellSet();
+		final List<Ability> spellSet=getCombatSpellSet();
 		int tries=0;
 		while(((++tries)<1000))
 		{
-			Ability A=spellSet.get(CMLib.dice().roll(1,spellSet.size(),-1));
+			final Ability A=spellSet.get(CMLib.dice().roll(1,spellSet.size(),-1));
 			if(((malicious)&&(A.canTarget(Ability.CAN_MOBS))&&(A.enchantQuality()==Ability.QUALITY_MALICIOUS)))
 				return A;
 			if((!malicious)
@@ -1107,7 +1107,7 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 			{
 			case 1:
 			{
-				Ability A=CMClass.getAbility("Prop_WearAdjuster");
+				final Ability A=CMClass.getAbility("Prop_WearAdjuster");
 				if(A==null) return I;
 				A.setMiscText("att"+((bump<0)?"":"+")+(bump*5)+" dam="+((bump<0)?"":"+")+bump);
 				I.addNonUninvokableEffect(A);
@@ -1124,7 +1124,7 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 					if(A!=null)
 					for(int a=0;a<bump;a++)
 					{
-						Ability A2=getCombatSpell(true);
+						final Ability A2=getCombatSpell(true);
 						if(A2!=null) A.setMiscText(A.text()+";"+A2.ID());
 					}
 				}
@@ -1156,7 +1156,7 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 					if(A!=null)
 					for(int a=0;a<bump;a++)
 					{
-						Ability A2=getCombatSpell(true);
+						final Ability A2=getCombatSpell(true);
 						if(A2!=null) A.setMiscText(A.text()+";"+A2.ID());
 					}
 					I.basePhyStats().setLevel(I.basePhyStats().level()+levelsFromCaster(I,A));
@@ -1189,7 +1189,7 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 					if(A!=null)
 					for(int a=0;a<bump;a++)
 					{
-						Ability A2=getCombatSpell(false);
+						final Ability A2=getCombatSpell(false);
 						if(A2!=null) A.setMiscText(A.text()+";"+A2.ID());
 					}
 					I.basePhyStats().setLevel(I.basePhyStats().level()+levelsFromCaster(I,A));

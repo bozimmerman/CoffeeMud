@@ -42,7 +42,7 @@ public class Lock extends StdCommand
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		String whatTolock=CMParms.combine(commands,1);
+		final String whatTolock=CMParms.combine(commands,1);
 		if(whatTolock.length()==0)
 		{
 			mob.tell("Lock what?");
@@ -61,10 +61,10 @@ public class Lock extends StdCommand
 			return false;
 		}
 		final String lockMsg="<S-NAME> lock(s) <T-NAMESELF>."+CMLib.protocol().msp("doorlock.wav",10);
-		CMMsg msg=CMClass.getMsg(mob,lockThis,null,CMMsg.MSG_LOCK,lockMsg,whatTolock,lockMsg);
+		final CMMsg msg=CMClass.getMsg(mob,lockThis,null,CMMsg.MSG_LOCK,lockMsg,whatTolock,lockMsg);
 		if(lockThis instanceof Exit)
 		{
-			boolean locked=((Exit)lockThis).isLocked();
+			final boolean locked=((Exit)lockThis).isLocked();
 			if((mob.location().okMessage(msg.source(),msg))
 			&&(!locked))
 			{
@@ -76,14 +76,14 @@ public class Lock extends StdCommand
 
 				if((dirCode>=0)&&(mob.location().getRoomInDir(dirCode)!=null))
 				{
-					Room opR=mob.location().getRoomInDir(dirCode);
-					Exit opE=mob.location().getPairedExit(dirCode);
+					final Room opR=mob.location().getRoomInDir(dirCode);
+					final Exit opE=mob.location().getPairedExit(dirCode);
 					if(opE!=null)
 					{
-						CMMsg altMsg=CMClass.getMsg(msg.source(),opE,msg.tool(),msg.sourceCode(),null,msg.targetCode(),null,msg.othersCode(),null);
+						final CMMsg altMsg=CMClass.getMsg(msg.source(),opE,msg.tool(),msg.sourceCode(),null,msg.targetCode(),null,msg.othersCode(),null);
 						opE.executeMsg(msg.source(),altMsg);
 					}
-					int opCode=Directions.getOpDirectionCode(dirCode);
+					final int opCode=Directions.getOpDirectionCode(dirCode);
 					if((opE!=null)
 					&&(opE.isLocked())
 					&&(((Exit)lockThis).isLocked()))

@@ -83,15 +83,15 @@ public class Spell_DispelMagic extends Spell
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		Physical target=getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_ANY);
+		final Physical target=getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_ANY);
 		if(target==null) return false;
 
 		Ability revokeThis=null;
 		boolean foundSomethingAtLeast=false;
-		boolean admin=CMSecurity.isASysOp(mob);
+		final boolean admin=CMSecurity.isASysOp(mob);
 		for(int a=0;a<target.numEffects();a++)
 		{
-			Ability A=target.fetchEffect(a);
+			final Ability A=target.fetchEffect(a);
 			if((A!=null)
 			&&(A.canBeUninvoked())
 			&&(((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SPELL)
@@ -129,7 +129,7 @@ public class Spell_DispelMagic extends Spell
 		if(diff<0) diff=0;
 		else diff=diff*-20;
 
-		boolean success=proficiencyCheck(mob,diff,auto);
+		final boolean success=proficiencyCheck(mob,diff,auto);
 		if(success)
 		{
 			int affectType=verbalCastCode(mob,target,auto);
@@ -139,7 +139,7 @@ public class Spell_DispelMagic extends Spell
 				affectType=CMMsg.MSG_CAST_VERBAL_SPELL;
 			if(auto) affectType=affectType|CMMsg.MASK_ALWAYS;
 
-			CMMsg msg=CMClass.getMsg(mob,target,this,affectType,auto?revokeThis.name()+" is dispelled from <T-NAME>.":"^S<S-NAME> dispel(s) "+revokeThis.name()+" from <T-NAMESELF>.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,affectType,auto?revokeThis.name()+" is dispelled from <T-NAME>.":"^S<S-NAME> dispel(s) "+revokeThis.name()+" from <T-NAMESELF>.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

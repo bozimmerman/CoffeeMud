@@ -54,7 +54,7 @@ public class AnimalTrading extends CommonSkill
 		Item cage=null;
 
 		commands.insertElementAt("SELL",0);
-		Environmental shopkeeper=CMLib.english().parseShopkeeper(mob,commands,"Sell what to whom?");
+		final Environmental shopkeeper=CMLib.english().parseShopkeeper(mob,commands,"Sell what to whom?");
 		if(shopkeeper==null) return false;
 		if(commands.size()==0)
 		{
@@ -62,7 +62,7 @@ public class AnimalTrading extends CommonSkill
 			return false;
 		}
 
-		String str=CMParms.combine(commands,0);
+		final String str=CMParms.combine(commands,0);
 		MOB M=mob.location().fetchInhabitant(str);
 		if(M!=null)
 		{
@@ -88,7 +88,7 @@ public class AnimalTrading extends CommonSkill
 		{
 			for(int i=0;i<mob.location().numItems();i++)
 			{
-				Item I=mob.location().getItem(i);
+				final Item I=mob.location().getItem(i);
 				if((I!=null)
 				&&(I instanceof Container)
 				&&((((Container)I).containTypes()&Container.CONTAIN_CAGED)==Container.CONTAIN_CAGED))
@@ -97,7 +97,7 @@ public class AnimalTrading extends CommonSkill
 			if(cage==null)
 			for(int i=0;i<mob.numItems();i++)
 			{
-				Item I=mob.getItem(i);
+				final Item I=mob.getItem(i);
 				if((I!=null)
 				&&(I instanceof Container)
 				&&((((Container)I).containTypes()&Container.CONTAIN_CAGED)==Container.CONTAIN_CAGED))
@@ -105,8 +105,8 @@ public class AnimalTrading extends CommonSkill
 			}
 			if(commands.size()>0)
 			{
-				String last=(String)commands.lastElement();
-				Environmental E=mob.location().fetchFromMOBRoomFavorsItems(mob,null,last,Wearable.FILTER_ANY);
+				final String last=(String)commands.lastElement();
+				final Environmental E=mob.location().fetchFromMOBRoomFavorsItems(mob,null,last,Wearable.FILTER_ANY);
 				if((E!=null)
 				&&(E instanceof Item)
 				&&(E instanceof Container)
@@ -136,8 +136,8 @@ public class AnimalTrading extends CommonSkill
 			return false;
 		if(proficiencyCheck(mob,0,auto))
 		{
-			CMMsg msg=CMClass.getMsg(mob,shopkeeper,M,CMMsg.MSG_SELL,"<S-NAME> sell(s) <O-NAME> to <T-NAME>.");
-			CMMsg msg2=CMClass.getMsg(mob,M,this,getActivityMessageType(),null);
+			final CMMsg msg=CMClass.getMsg(mob,shopkeeper,M,CMMsg.MSG_SELL,"<S-NAME> sell(s) <O-NAME> to <T-NAME>.");
+			final CMMsg msg2=CMClass.getMsg(mob,M,this,getActivityMessageType(),null);
 			if(!recentlyTraded.contains(mob.Name()))
 			{
 				while(recentlyTraded.size()>30)

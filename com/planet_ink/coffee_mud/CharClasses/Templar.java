@@ -40,7 +40,7 @@ public class Templar extends Cleric
 	@Override public String baseClass(){return "Cleric";}
 	@Override public int getAttackAttribute(){return CharStats.STAT_WISDOM;}
 	@Override public int allowedWeaponLevel(){return CharClass.WEAPONS_ANY;}
-	private HashSet disallowedWeapons=buildDisallowedWeaponClasses();
+	private final HashSet disallowedWeapons=buildDisallowedWeaponClasses();
 	@Override protected HashSet disallowedWeaponClasses(MOB mob){return disallowedWeapons;}
 	@Override protected int alwaysFlunksThisQuality(){return 1000;}
 
@@ -151,13 +151,13 @@ public class Templar extends Cleric
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!(ticking instanceof MOB)) return super.tick(ticking,tickID);
-		MOB myChar=(MOB)ticking;
+		final MOB myChar=(MOB)ticking;
 		if((tickID==Tickable.TICKID_MOB)&&((--tickDown)<=0))
 		{
 			tickDown=5;
 			if(myChar.fetchEffect("Prayer_AuraStrife")==null)
 			{
-				Ability A=CMClass.getAbility("Prayer_AuraStrife");
+				final Ability A=CMClass.getAbility("Prayer_AuraStrife");
 				if(A!=null) A.invoke(myChar,myChar,true,0);
 			}
 		}
@@ -182,7 +182,7 @@ public class Templar extends Cleric
 		if(outfitChoices==null)
 		{
 			outfitChoices=new Vector();
-			Weapon w=CMClass.getWeapon("Shortsword");
+			final Weapon w=CMClass.getWeapon("Shortsword");
 			outfitChoices.add(w);
 		}
 		return outfitChoices;

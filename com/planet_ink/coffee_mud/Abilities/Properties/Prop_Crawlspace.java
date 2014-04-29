@@ -80,7 +80,7 @@ public class Prop_Crawlspace extends Property
 				{
 					if(CMLib.flags().isSleeping(msg.source()))
 					{
-						MOB mob=msg.source();
+						final MOB mob=msg.source();
 						int oldDisposition = mob.basePhyStats().disposition();
 						oldDisposition=oldDisposition&(~(PhyStats.IS_SLEEPING|PhyStats.IS_SNEAKING|PhyStats.IS_SITTING));
 						mob.basePhyStats().setDisposition(oldDisposition|PhyStats.IS_SITTING);

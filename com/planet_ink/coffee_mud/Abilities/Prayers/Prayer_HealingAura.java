@@ -14,7 +14,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -33,7 +32,6 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings("rawtypes")
 public class Prayer_HealingAura extends Prayer
 {
 	@Override public String ID() { return "Prayer_HealingAura"; }
@@ -68,14 +66,14 @@ public class Prayer_HealingAura extends Prayer
 		if(!(affected instanceof MOB))
 		   return false;
 		if(tickID!=Tickable.TICKID_MOB) return true;
-		MOB myChar=(MOB)affected;
+		final MOB myChar=(MOB)affected;
 		if(((--fiveDown)>0)&&((--tenDown)>0)&&((--twentyDown)>0)) return true;
 
-		Set<MOB> followers=myChar.getGroupMembers(new HashSet<MOB>());
+		final Set<MOB> followers=myChar.getGroupMembers(new HashSet<MOB>());
 		if(myChar.location()!=null)
 			for(int i=0;i<myChar.location().numInhabitants();i++)
 			{
-				MOB M=myChar.location().fetchInhabitant(i);
+				final MOB M=myChar.location().fetchInhabitant(i);
 				if((M!=null)
 				&&((M.getVictim()==null)||(!followers.contains(M.getVictim()))))
 					followers.add(M);
@@ -83,26 +81,26 @@ public class Prayer_HealingAura extends Prayer
 		if((fiveDown)<=0)
 		{
 			fiveDown=5;
-			Ability A=CMClass.getAbility("Prayer_CureLight");
+			final Ability A=CMClass.getAbility("Prayer_CureLight");
 			if(A!=null)
-			for(Iterator e=followers.iterator();e.hasNext();)
-				A.invoke(myChar,((MOB)e.next()),true,0);
+				for (final Object element : followers)
+					A.invoke(myChar,((MOB)element),true,0);
 		}
 		if((tenDown)<=0)
 		{
 			tenDown=10;
-			Ability A=CMClass.getAbility("Prayer_RemovePoison");
+			final Ability A=CMClass.getAbility("Prayer_RemovePoison");
 			if(A!=null)
-			for(Iterator e=followers.iterator();e.hasNext();)
-				A.invoke(myChar,((MOB)e.next()),true,0);
+				for (final Object element : followers)
+					A.invoke(myChar,((MOB)element),true,0);
 		}
 		if((twentyDown)<=0)
 		{
 			twentyDown=20;
-			Ability A=CMClass.getAbility("Prayer_CureDisease");
+			final Ability A=CMClass.getAbility("Prayer_CureDisease");
 			if(A!=null)
-			for(Iterator e=followers.iterator();e.hasNext();)
-				A.invoke(myChar,((MOB)e.next()),true,0);
+				for (final Object element : followers)
+					A.invoke(myChar,((MOB)element),true,0);
 		}
 		return true;
 	}

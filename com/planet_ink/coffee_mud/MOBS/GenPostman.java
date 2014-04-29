@@ -133,8 +133,8 @@ public class GenPostman extends StdPostman
 	public String[] getStatCodes()
 	{
 		if(codes!=null) return codes;
-		String[] MYCODES=CMProps.getStatCodesList(GenPostman.MYCODES,this);
-		String[] superCodes=GenericBuilder.GENMOBCODES;
+		final String[] MYCODES=CMProps.getStatCodesList(GenPostman.MYCODES,this);
+		final String[] superCodes=GenericBuilder.GENMOBCODES;
 		codes=new String[superCodes.length+MYCODES.length];
 		int i=0;
 		for(;i<superCodes.length;i++)
@@ -147,7 +147,7 @@ public class GenPostman extends StdPostman
 	public boolean sameAs(Environmental E)
 	{
 		if(!(E instanceof GenPostman)) return false;
-		String[] codes=getStatCodes();
+		final String[] codes=getStatCodes();
 		for(int i=0;i<codes.length;i++)
 			if(!E.getStat(codes[i]).equals(getStat(codes[i])))
 				return false;

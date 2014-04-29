@@ -14,7 +14,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -40,12 +39,12 @@ public class Skill_Disguise extends BardSkill
 	@Override
 	public String description()
 	{
-		StringBuffer ret=new StringBuffer("");
-		for(int i=0;i<whats.length;i++)
-			if(whats[i]==null)
+		final StringBuffer ret=new StringBuffer("");
+		for (final String what : whats)
+			if(what==null)
 				ret.append(". ");
 			else
-				ret.append(whats[i]+" ");
+				ret.append(what+" ");
 		return ret.toString();
 	}
 	@Override public String displayText(){ return "(In Disguise)";}
@@ -103,7 +102,7 @@ public class Skill_Disguise extends BardSkill
 		if(!super.okMessage(myHost,msg)) return false;
 		if((myHost==null)||(!(myHost instanceof MOB)))
 		   return true;
-		MOB mob=(MOB)myHost;
+		final MOB mob=(MOB)myHost;
 		if(msg.amITarget(mob)
 		&&(CMLib.flags().canBeSeenBy(mob,msg.source()))
 		&&((msg.targetMinor()==CMMsg.TYP_LOOK)||(msg.targetMinor()==CMMsg.TYP_EXAMINE))
@@ -128,16 +127,16 @@ public class Skill_Disguise extends BardSkill
 		super.executeMsg(myHost,msg);
 		if((myHost==null)||(!(myHost instanceof MOB)))
 		   return;
-		MOB mob=(MOB)myHost;
+		final MOB mob=(MOB)myHost;
 		if(msg.amITarget(this)
 		&&(CMLib.flags().canBeSeenBy(mob,msg.source()))
 		&&((msg.targetMinor()==CMMsg.TYP_LOOK)||(msg.targetMinor()==CMMsg.TYP_EXAMINE))
 		&&((values[0]!=null)||(values[4]!=null)))
 		{
-			StringBuffer myDescription=new StringBuffer("");
+			final StringBuffer myDescription=new StringBuffer("");
 			if(!mob.isMonster())
 			{
-				String levelStr=mob.charStats().displayClassLevel(mob,false);
+				final String levelStr=mob.charStats().displayClassLevel(mob,false);
 				myDescription.append(mob.name(msg.source())+" the "+mob.charStats().raceName()+" is a "+levelStr+".\n\r");
 			}
 			int height=mob.phyStats().height();
@@ -162,7 +161,7 @@ public class Skill_Disguise extends BardSkill
 		Skill_Disguise A=(Skill_Disguise)mob.fetchEffect("Skill_Disguise");
 		if(A==null) A=(Skill_Disguise)mob.fetchEffect("Skill_MarkDisguise");
 
-		String validChoices="Weight, sex, race, height, age, name, level, class, or alignment";
+		final String validChoices="Weight, sex, race, height, age, name, level, class, or alignment";
 		if(commands.size()==0)
 		{
 			if(A==null)
@@ -174,7 +173,7 @@ public class Skill_Disguise extends BardSkill
 			mob.tell("You remove your disguise.");
 			return true;
 		}
-		String what=(String)commands.firstElement();
+		final String what=(String)commands.firstElement();
 		int which=-1;
 		for(int i=0;i<whats.length;i++)
 			if(whats[i].startsWith(what.toUpperCase()))
@@ -324,11 +323,11 @@ public class Skill_Disguise extends BardSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,adjustment,auto);
+		final boolean success=proficiencyCheck(mob,adjustment,auto);
 
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,mob,null,CMMsg.MSG_DELICATE_HANDS_ACT|(auto?CMMsg.MASK_ALWAYS:0),"<S-NAME> turn(s) away for a second.");
+			final CMMsg msg=CMClass.getMsg(mob,mob,null,CMMsg.MSG_DELICATE_HANDS_ACT|(auto?CMMsg.MASK_ALWAYS:0),"<S-NAME> turn(s) away for a second.");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

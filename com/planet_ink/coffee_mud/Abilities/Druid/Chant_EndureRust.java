@@ -63,7 +63,7 @@ public class Chant_EndureRust extends Chant
 		{
 			if(!dontbother.contains(msg.target()))
 			{
-				Room R=CMLib.map().roomLocation(affected);
+				final Room R=CMLib.map().roomLocation(affected);
 				dontbother.add(msg.target());
 				if(R!=null)
 					R.show(msg.source(),affected,CMMsg.MSG_OK_VISUAL,"<T-NAME> resist(s) the oxidizing affects.");
@@ -76,7 +76,7 @@ public class Chant_EndureRust extends Chant
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		Physical target=this.getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_ANY);
+		final Physical target=this.getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_ANY);
 		if(target==null) return false;
 		if(target instanceof Item)
 		{
@@ -95,13 +95,13 @@ public class Chant_EndureRust extends Chant
 			return false;
 
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(!success)
 		{
 			return beneficialWordsFizzle(mob,target,"<S-NAME> chant(s) to <T-NAMESELF>, but fail(s).");
 		}
-		CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> chant(s) to <T-NAMESELF>, causing a rust proof film to envelope <T-HIM-HER>!^?");
+		final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> chant(s) to <T-NAMESELF>, causing a rust proof film to envelope <T-HIM-HER>!^?");
 		if(mob.location().okMessage(mob,msg))
 		{
 			dontbother.clear();

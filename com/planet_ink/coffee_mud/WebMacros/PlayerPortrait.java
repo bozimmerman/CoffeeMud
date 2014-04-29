@@ -45,7 +45,7 @@ public class PlayerPortrait extends StdWebMacro
 	@Override
 	public String getFilename(HTTPRequest httpReq, String filename)
 	{
-		String foundFilename=httpReq.getUrlParameter("FILENAME");
+		final String foundFilename=httpReq.getUrlParameter("FILENAME");
 		if((foundFilename!=null)&&(foundFilename.length()>0))
 			return foundFilename;
 		return filename;
@@ -54,7 +54,7 @@ public class PlayerPortrait extends StdWebMacro
 	@Override
 	public byte[] runBinaryMacro(HTTPRequest httpReq, String parm) throws HTTPServerException
 	{
-		String last=httpReq.getUrlParameter("PLAYER");
+		final String last=httpReq.getUrlParameter("PLAYER");
 		if(last==null) return null; // for binary macros, null is BREAK
 		byte[] img=null;
 		if(last.length()>0)
@@ -62,10 +62,10 @@ public class PlayerPortrait extends StdWebMacro
 			img=(byte[])Resources.getResource("CMPORTRAIT-"+last);
 			if(img==null)
 			{
-				List<PlayerData> data=CMLib.database().DBReadData(last,"CMPORTRAIT");
+				final List<PlayerData> data=CMLib.database().DBReadData(last,"CMPORTRAIT");
 				if((data!=null)&&(data.size()>0))
 				{
-					String encoded=data.get(0).xml;
+					final String encoded=data.get(0).xml;
 					img=B64Encoder.B64decode(encoded);
 					if(img!=null)
 						Resources.submitResource("CMPORTRAIT-"+last,img);

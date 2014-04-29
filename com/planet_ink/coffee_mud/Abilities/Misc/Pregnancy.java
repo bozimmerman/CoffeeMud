@@ -45,15 +45,15 @@ public class Pregnancy extends StdAbility implements HealthCondition
 	@Override
 	public String getHealthConditionDesc()
 	{
-		int x=text().indexOf('/');
+		final int x=text().indexOf('/');
 		if(x>0)
 		{
-			int y=text().indexOf('/',x+1);
+			final int y=text().indexOf('/',x+1);
 			if(y<0) return "";
-			long start=CMath.s_long(text().substring(0,x));
-			long divisor=CMProps.getTickMillis()*CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY);
-			long days=(System.currentTimeMillis()-start)/divisor; // down to days;
-			long months=days/CMLib.time().globalClock().getDaysInMonth();
+			final long start=CMath.s_long(text().substring(0,x));
+			final long divisor=CMProps.getTickMillis()*CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY);
+			final long days=(System.currentTimeMillis()-start)/divisor; // down to days;
+			final long months=days/CMLib.time().globalClock().getDaysInMonth();
 			if(days<1)
 				return "less than 1 day pregnant";
 			else
@@ -68,7 +68,7 @@ public class Pregnancy extends StdAbility implements HealthCondition
 	@Override
 	public String displayText()
 	{
-		String text=getHealthConditionDesc();
+		final String text=getHealthConditionDesc();
 		if(text.length()>0)
 			return "(is "+text+")";
 		return "";
@@ -117,7 +117,7 @@ public class Pregnancy extends StdAbility implements HealthCondition
 			if((R!=null)&&(!R.ID().toUpperCase().startsWith("HALF")))
 			{
 				halfRace="Half"+CMStrings.capitalizeAndLower(R.ID().toLowerCase());
-				Race testR=CMClass.getRace(halfRace);
+				final Race testR=CMClass.getRace(halfRace);
 				if(testR!=null)
 					R=testR;
 				else
@@ -139,7 +139,7 @@ public class Pregnancy extends StdAbility implements HealthCondition
 			if((R!=null)&&(!R.ID().endsWith("ling")))
 			{
 				halfRace=R.ID()+"ling";
-				Race testR=CMClass.getRace(halfRace);
+				final Race testR=CMClass.getRace(halfRace);
 				if(testR!=null)
 					R=testR;
 				else
@@ -163,11 +163,11 @@ public class Pregnancy extends StdAbility implements HealthCondition
 				first=race1;
 			else
 				first=race2;
-			String second=(first.equals(race1)?race2:race1);
-			String halfRace=(race1.compareToIgnoreCase(race2)<0)?race1+race2:race2+race1;
-			Race testR=CMClass.getRace(halfRace);
-			Race FIRSTR=CMClass.getRace(first);
-			Race SECONDR=CMClass.getRace(second);
+			final String second=(first.equals(race1)?race2:race1);
+			final String halfRace=(race1.compareToIgnoreCase(race2)<0)?race1+race2:race2+race1;
+			final Race testR=CMClass.getRace(halfRace);
+			final Race FIRSTR=CMClass.getRace(first);
+			final Race SECONDR=CMClass.getRace(second);
 			if(testR!=null)
 				R=testR;
 			else
@@ -192,21 +192,21 @@ public class Pregnancy extends StdAbility implements HealthCondition
 		&&(affected instanceof MOB)
 		&&(CMLib.flags().isInTheGame((MOB)affected,true)))
 		{
-			MOB mob=(MOB)affected;
-			int x=text().indexOf('/');
+			final MOB mob=(MOB)affected;
+			final int x=text().indexOf('/');
 			if(x>0)
 			{
-				int y=text().indexOf('/',x+1);
+				final int y=text().indexOf('/',x+1);
 				if(y>x)
 				{
-					int z=text().indexOf('/',y+1);
-					long end=CMath.s_long(text().substring(x+1,y));
-					long divisor=CMProps.getTickMillis()*CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY);
+					final int z=text().indexOf('/',y+1);
+					final long end=CMath.s_long(text().substring(x+1,y));
+					final long divisor=CMProps.getTickMillis()*CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY);
 					daysRemaining=(end-System.currentTimeMillis())/divisor; // down to days
 					monthsRemaining=daysRemaining/CMLib.time().globalClock().getDaysInMonth(); // down to months
 					if(CMLib.dice().roll(1,200,0)==1)
 					{
-						Ability A=CMClass.getAbility("Mood");
+						final Ability A=CMClass.getAbility("Mood");
 						if(A!=null) A.invoke(mob,new XVector("RANDOM"),mob,true,0);
 					}
 					if(daysRemaining<7) // BIRTH!
@@ -219,10 +219,10 @@ public class Pregnancy extends StdAbility implements HealthCondition
 						if(ticksInLabor>=45)
 						{
 							ticksInLabor=0;
-							String race1=mob.baseCharStats().getMyRace().ID();
+							final String race1=mob.baseCharStats().getMyRace().ID();
 							char gender='F';
 							String sondat="daughter";
-							MOB babe=CMClass.getMOB("GenMOB");
+							final MOB babe=CMClass.getMOB("GenMOB");
 							if(CMLib.dice().rollPercentage()>50)
 							{
 								gender='M';
@@ -266,7 +266,7 @@ public class Pregnancy extends StdAbility implements HealthCondition
 							String name=CMLib.english().startWithAorAn(R.makeMobName(gender, 2)).toLowerCase();
 							babe.setName(name);
 							CMLib.factions().setAlignment(babe,Faction.Align.GOOD);
-							for(Pair<Clan,Integer> p : CMLib.clans().findRivalrousClans(mob))
+							for(final Pair<Clan,Integer> p : CMLib.clans().findRivalrousClans(mob))
 								babe.setClan(p.first.clanID(),p.first.getAutoPosition());
 							babe.setLiegeID(mob.getLiegeID());
 							babe.setDescription(desc);
@@ -303,17 +303,17 @@ public class Pregnancy extends StdAbility implements HealthCondition
 										if(A!=null) A.invoke(babe,babe,true,0);
 									}
 								}
-								Ability STAT=CMClass.getAbility("Prop_StatTrainer");
+								final Ability STAT=CMClass.getAbility("Prop_StatTrainer");
 								if(STAT!=null)
 								{
 									STAT.setMiscText("CHA=10 CON=6 DEX=2 INT=2 STR=1 WIS=1");
 									babe.addNonUninvokableEffect(STAT);
 								}
 							}
-							Ability SAFE=CMClass.getAbility("Prop_SafePet");
+							final Ability SAFE=CMClass.getAbility("Prop_SafePet");
 							if(SAFE!=null)
 								babe.addNonUninvokableEffect(SAFE);
-							Ability AGE=CMClass.getAbility("Age");
+							final Ability AGE=CMClass.getAbility("Age");
 							if(AGE!=null)
 							{
 								AGE.setMiscText(""+System.currentTimeMillis());
@@ -323,7 +323,7 @@ public class Pregnancy extends StdAbility implements HealthCondition
 							babe.recoverPhyStats();
 							babe.recoverMaxState();
 							babe.resetToMaxState();
-							Item I=CMClass.getItem("GenCaged");
+							final Item I=CMClass.getItem("GenCaged");
 							((CagedAnimal)I).cageMe(babe);
 							I.basePhyStats().setAbility(CagedAnimal.ABILITY_MOBPROGRAMMATICALLY);
 							if(AGE != null)
@@ -333,7 +333,7 @@ public class Pregnancy extends StdAbility implements HealthCondition
 							I.setDisplayText(name+" is here.");
 							I.recoverPhyStats();
 							mob.location().addItem(I);
-							Behavior B=CMClass.getBehavior("Emoter");
+							final Behavior B=CMClass.getBehavior("Emoter");
 							B.setParms(Age.happyBabyEmoter);
 							I.addBehavior(B);
 							I.text();
@@ -341,14 +341,14 @@ public class Pregnancy extends StdAbility implements HealthCondition
 							{
 								if((CMLib.dice().rollPercentage()<20)&&(mob.fetchEffect("Disease_Depression")==null))
 								{
-									Ability A=CMClass.getAbility("Disease_Depression");
+									final Ability A=CMClass.getAbility("Disease_Depression");
 									if(A!=null) A.invoke(mob,mob,true,0);
 								}
 							}
 							if((mob.playerStats()!=null)||((otherParentM!=null)&&(otherParentM.playerStats()!=null)))
 							{
 								CMLib.coffeeTables().bump(mob,CoffeeTableRow.STAT_BIRTHS);
-								List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.BIRTHS);
+								final List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.BIRTHS);
 								for(int i=0;i<channels.size();i++)
 									CMLib.commands().postChannel(mob,channels.get(i),mob.name()+" has just given birth to "+I.name()+"!",true);
 								String parent=mob.Name();
@@ -394,19 +394,19 @@ public class Pregnancy extends StdAbility implements HealthCondition
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		MOB target=getTarget(mob,commands,givenTarget);
+		final MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 		long start=System.currentTimeMillis();
-		Race R=target.charStats().getMyRace();
+		final Race R=target.charStats().getMyRace();
 		long tickspermudmonth=CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY);
 		tickspermudmonth=tickspermudmonth*CMLib.time().globalClock().getDaysInMonth();
 		int birthmonths=(int)Math.round(CMath.mul((R.getAgingChart()[1]-R.getAgingChart()[0])*CMLib.time().globalClock().getMonthsInYear(),0.75));
 		if(birthmonths<=0) birthmonths=5;
-		long ticksperbirthperiod=tickspermudmonth*birthmonths;
-		long millisperbirthperiod=ticksperbirthperiod*CMProps.getTickMillis();
+		final long ticksperbirthperiod=tickspermudmonth*birthmonths;
+		final long millisperbirthperiod=ticksperbirthperiod*CMProps.getTickMillis();
 
 		long end=start+millisperbirthperiod;
 		if(success)
@@ -419,7 +419,7 @@ public class Pregnancy extends StdAbility implements HealthCondition
 			if(mob.location().show(mob,target,this,CMMsg.TYP_GENERAL,auto?null:"<S-NAME> imgregnate(s) <T-NAMESELF>."))
 			{
 				setMiscText(start+"/"+end+"/"+mob.Name()+"/"+mob.charStats().getMyRace().ID());
-				List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.CONCEPTIONS);
+				final List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.CONCEPTIONS);
 				for(int i=0;i<channels.size();i++)
 					CMLib.commands().postChannel(channels.get(i),mob.clans(),target.name()+" is now in a 'family way'.",true);
 				target.addNonUninvokableEffect((Ability)copyOf());

@@ -42,13 +42,13 @@ public class Prayers extends Skills
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		StringBuffer msg=new StringBuffer("");
-		String qual=CMParms.combine(commands,1).toUpperCase();
+		final StringBuffer msg=new StringBuffer("");
+		final String qual=CMParms.combine(commands,1).toUpperCase();
 		if(parsedOutIndividualSkill(mob,qual,Ability.ACODE_PRAYER))
 			return true;
-		int[] level=new int[1];
-		int[] domain=new int[1];
-		String[] domainName=new String[1];
+		final int[] level=new int[1];
+		final int[] domain=new int[1];
+		final String[] domainName=new String[1];
 		domainName[0]="";
 		level[0]=-1;
 		parseDomainInfo(mob,commands,new XVector<Integer>(Integer.valueOf(Ability.ACODE_PRAYER)),level,domain,domainName);

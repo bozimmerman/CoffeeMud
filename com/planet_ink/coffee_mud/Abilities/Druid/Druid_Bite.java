@@ -80,7 +80,7 @@ public class Druid_Bite extends StdAbility
 			return false;
 		}
 
-		MOB target=this.getTarget(mob,commands,givenTarget);
+		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
 		// the invoke method for spells receives as
@@ -91,7 +91,7 @@ public class Druid_Bite extends StdAbility
 			return false;
 
 		// now see if it worked
-		boolean success=proficiencyCheck(mob,mob.charStats().getStat(CharStats.STAT_STRENGTH)-target.charStats().getStat(CharStats.STAT_STRENGTH)-10,auto);
+		final boolean success=proficiencyCheck(mob,mob.charStats().getStat(CharStats.STAT_STRENGTH)-target.charStats().getStat(CharStats.STAT_STRENGTH)-10,auto);
 		if(success)
 		{
 			// it worked, so build a copy of this ability,
@@ -99,9 +99,9 @@ public class Druid_Bite extends StdAbility
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			int topDamage=adjustedLevel(mob,asLevel)+2+getX2Level(mob);
+			final int topDamage=adjustedLevel(mob,asLevel)+2+getX2Level(mob);
 			int damage=CMLib.dice().roll(1,topDamage,0);
-			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),null);
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),null);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

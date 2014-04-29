@@ -42,7 +42,7 @@ public class CMLister extends StdLibrary implements ListingLibrary
 	protected static final Filterer<Object>[] NO_FILTER=new Filterer[0];
 	protected static class LikeRoomFilter implements Filterer<Object>
 	{
-		private Room likeRoom;
+		private final Room likeRoom;
 		public LikeRoomFilter(Room R)
 		{
 			likeRoom=R;
@@ -61,7 +61,7 @@ public class CMLister extends StdLibrary implements ListingLibrary
 
 	protected static class AbilityTypeFilter implements Filterer<Object>
 	{
-		private int ofType;
+		private final int ofType;
 		public AbilityTypeFilter(int typ)
 		{
 			ofType=typ;
@@ -121,7 +121,7 @@ public class CMLister extends StdLibrary implements ListingLibrary
 					   boolean useName,
 					   boolean longLook)
 	{
-		String str=itemSeenString(viewerM,item,useName,longLook,false);
+		final String str=itemSeenString(viewerM,item,useName,longLook,false);
 		String str2=null;
 		int reps=0;
 		int here=0;
@@ -167,7 +167,7 @@ public class CMLister extends StdLibrary implements ListingLibrary
 
 	public String summarizeTheRest(MOB viewerM, List<? extends Environmental> things, boolean compress)
 	{
-		Vector<String> restV=new Vector<String>();
+		final Vector<String> restV=new Vector<String>();
 		Item I=null;
 		String name="";
 		boolean otherItemsHere=false;
@@ -189,7 +189,7 @@ public class CMLister extends StdLibrary implements ListingLibrary
 		}
 		if((restV.size()==0)&&(!otherItemsHere)) return "";
 		if(otherItemsHere) restV.addElement("other");
-		StringBuilder theRest=new StringBuilder("");
+		final StringBuilder theRest=new StringBuilder("");
 		for(int o=0;o<restV.size();o++)
 		{
 			theRest.append(restV.elementAt(o));
@@ -210,12 +210,12 @@ public class CMLister extends StdLibrary implements ListingLibrary
 								boolean longLook,
 								boolean compress)
 	{
-		boolean nameTagParm=((tagParm!=null)&&(tagParm.indexOf('*')>=0));
-		StringBuilder say=new StringBuilder("");
+		final boolean nameTagParm=((tagParm!=null)&&(tagParm.indexOf('*')>=0));
+		final StringBuilder say=new StringBuilder("");
 		Environmental item=null;
-		boolean sysmsgs=(viewerM!=null)?CMath.bset(viewerM.getBitmap(),MOB.ATT_SYSOPMSGS):false;
+		final boolean sysmsgs=(viewerM!=null)?CMath.bset(viewerM.getBitmap(),MOB.ATT_SYSOPMSGS):false;
 		int numShown=0;
-		int maxToShow=CMProps.getIntVar(CMProps.Int.MAXITEMSHOWN);
+		final int maxToShow=CMProps.getIntVar(CMProps.Int.MAXITEMSHOWN);
 		while(items.size()>0)
 		{
 			if((maxToShow>0)&&(!longLook)&&(!sysmsgs)&&(!useName)&&(numShown>=maxToShow))
@@ -226,8 +226,8 @@ public class CMLister extends StdLibrary implements ListingLibrary
 			}
 			item=items.get(0);
 			items.remove(item);
-			int reps=getReps(viewerM,item,items,useName,longLook);
-			String displayText=(item instanceof Physical)?((Physical)item).displayText(viewerM):item.displayText();
+			final int reps=getReps(viewerM,item,items,useName,longLook);
+			final String displayText=(item instanceof Physical)?((Physical)item).displayText(viewerM):item.displayText();
 			if(CMLib.flags().canBeSeenBy(item,viewerM)
 			&&((displayText.length()>0)
 				||sysmsgs
@@ -263,7 +263,7 @@ public class CMLister extends StdLibrary implements ListingLibrary
 				&&(!((Container)item).hasALid())
 				&&(!CMLib.flags().canBarelyBeSeenBy(item,viewerM)))
 				{
-					List<Item> V=new Vector<Item>();
+					final List<Item> V=new Vector<Item>();
 					V.addAll(((Container)item).getContents());
 					Item item2=null;
 					if(compress&&V.size()>0) say.append("{");
@@ -271,7 +271,7 @@ public class CMLister extends StdLibrary implements ListingLibrary
 					{
 						item2=V.get(0);
 						V.remove(0);
-						int reps2=getReps(viewerM,item2,V,useName,false);
+						final int reps2=getReps(viewerM,item2,V,useName,false);
 						if(CMLib.flags().canBeSeenBy(item2,viewerM)
 						&&((item2.displayText(viewerM).length()>0)
 							||sysmsgs
@@ -353,16 +353,16 @@ public class CMLister extends StdLibrary implements ListingLibrary
 	public StringBuilder reallyList(MOB viewerM, Map<String,? extends Object> these, Filterer<Object>[] filters, ListStringer stringer)
 	{
 		if(stringer==null) stringer=CMLister.stringer;
-		StringBuilder lines=new StringBuilder("");
+		final StringBuilder lines=new StringBuilder("");
 		if(these.size()==0) return lines;
 		int column=0;
-		int COL_LEN=ListingLibrary.ColFixer.fixColWidth(24.0, viewerM);
-		for(String key : these.keySet())
+		final int COL_LEN=ListingLibrary.ColFixer.fixColWidth(24.0, viewerM);
+		for(final String key : these.keySet())
 		{
-			Object thisThang=these.get(key);
+			final Object thisThang=these.get(key);
 			String list=stringer.stringify(thisThang);
 			if(filters!=null)
-				for(Filterer<Object> F : filters)
+				for(final Filterer<Object> F : filters)
 					if(!F.passesFilter(thisThang))
 						list=null;
 			if(list!=null)
@@ -393,16 +393,16 @@ public class CMLister extends StdLibrary implements ListingLibrary
 	public StringBuilder reallyList(MOB viewerM, Enumeration<? extends Object> these, Filterer<Object>[] filters, ListStringer stringer)
 	{
 		if(stringer==null) stringer=CMLister.stringer;
-		StringBuilder lines=new StringBuilder("");
+		final StringBuilder lines=new StringBuilder("");
 		if(!these.hasMoreElements()) return lines;
 		int column=0;
-		int COL_LEN=ListingLibrary.ColFixer.fixColWidth(24.0, viewerM);
-		for(Enumeration<? extends Object> e=these;e.hasMoreElements();)
+		final int COL_LEN=ListingLibrary.ColFixer.fixColWidth(24.0, viewerM);
+		for(final Enumeration<? extends Object> e=these;e.hasMoreElements();)
 		{
-			Object thisThang=e.nextElement();
+			final Object thisThang=e.nextElement();
 			String list=stringer.stringify(thisThang);
 			if(filters!=null)
-				for(Filterer<Object> F : filters)
+				for(final Filterer<Object> F : filters)
 					if(!F.passesFilter(thisThang))
 						list=null;
 			if(list!=null)
@@ -429,16 +429,16 @@ public class CMLister extends StdLibrary implements ListingLibrary
 	public StringBuilder reallyList2Cols(MOB viewerM, Enumeration<? extends Object> these, Filterer<Object>[] filters, ListStringer stringer)
 	{
 		if(stringer==null) stringer=CMLister.stringer;
-		StringBuilder lines=new StringBuilder("");
+		final StringBuilder lines=new StringBuilder("");
 		if(!these.hasMoreElements()) return lines;
 		int column=0;
-		int COL_LEN=ListingLibrary.ColFixer.fixColWidth(37.0, viewerM);
-		for(Enumeration<? extends Object> e=these;e.hasMoreElements();)
+		final int COL_LEN=ListingLibrary.ColFixer.fixColWidth(37.0, viewerM);
+		for(final Enumeration<? extends Object> e=these;e.hasMoreElements();)
 		{
-			Object thisThang=e.nextElement();
+			final Object thisThang=e.nextElement();
 			String list=stringer.stringify(thisThang);
 			if(filters!=null)
-				for(Filterer<Object> F : filters)
+				for(final Filterer<Object> F : filters)
 					if(!F.passesFilter(thisThang))
 						list=null;
 			if(list!=null)
@@ -482,10 +482,10 @@ public class CMLister extends StdLibrary implements ListingLibrary
 	@Override
 	public StringBuilder makeColumns(MOB viewerM, List<String> reverseList, String tag, int numCols)
 	{
-		StringBuilder topicBuffer=new StringBuilder("");
+		final StringBuilder topicBuffer=new StringBuilder("");
 		int col=0;
 		String s=null;
-		int colSize = ListingLibrary.ColFixer.fixColWidth(72.0,viewerM) / numCols;
+		final int colSize = ListingLibrary.ColFixer.fixColWidth(72.0,viewerM) / numCols;
 		for(int i=0;i<reverseList.size();i++)
 		{
 			if((++col)>numCols)

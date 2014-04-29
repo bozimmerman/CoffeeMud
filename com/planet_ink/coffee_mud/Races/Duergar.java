@@ -9,15 +9,15 @@ public class Duergar extends Dwarf
 {
 	@Override public String ID(){	return "Duergar"; }
 	@Override public String name(){ return "Duergar"; }
-	private String[]culturalAbilityNames={"Dwarven","Mining","Undercommon","Spell_Invisibility","Spell_Grow"};
-	private int[]culturalAbilityProficiencies={100,50,25,25,25};
+	private final String[]culturalAbilityNames={"Dwarven","Mining","Undercommon","Spell_Invisibility","Spell_Grow"};
+	private final int[]culturalAbilityProficiencies={100,50,25,25,25};
 	@Override public String[] culturalAbilityNames(){return culturalAbilityNames;}
 	@Override public int[] culturalAbilityProficiencies(){return culturalAbilityProficiencies;}
 
 	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		int senses=affectableStats.sensesMask();
+		final int senses=affectableStats.sensesMask();
 		super.affectPhyStats(affected,affectableStats);
 		affectableStats.setSensesMask(senses|PhyStats.CAN_SEE_DARK);
 	}

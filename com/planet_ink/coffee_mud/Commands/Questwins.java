@@ -47,19 +47,19 @@ public class Questwins extends StdCommand
 
 		if((commands.size()>1)&&(((String)commands.lastElement()).equalsIgnoreCase("WON")))
 		{
-			Vector qVec=new Vector();
+			final Vector qVec=new Vector();
 			for(int q=0;q<CMLib.quests().numQuests();q++)
 			{
-				Quest Q=CMLib.quests().fetchQuest(q);
+				final Quest Q=CMLib.quests().fetchQuest(q);
 				if(Q.wasWinner(mob.Name()))
 				{
-					String name=Q.displayName().trim().length()>0?Q.displayName():Q.name();
+					final String name=Q.displayName().trim().length()>0?Q.displayName():Q.name();
 					if(!qVec.contains(name))
 						qVec.addElement(name);
 				}
 			}
 			Collections.sort(qVec);
-			StringBuffer msg=new StringBuffer("^HQuests you are listed as having won:^?^N\n\r");
+			final StringBuffer msg=new StringBuffer("^HQuests you are listed as having won:^?^N\n\r");
 			for(int i=0;i<qVec.size();i++)
 				msg.append(((String)qVec.elementAt(i))+"^N\n\r");
 			if(!mob.isMonster())
@@ -69,9 +69,9 @@ public class Questwins extends StdCommand
 		if((commands.size()>2)&&(((String)commands.elementAt(1)).equalsIgnoreCase("DROP")))
 		{
 			ScriptingEngine foundS=null;
-			for(Enumeration<ScriptingEngine> e=mob.scripts();e.hasMoreElements();)
+			for(final Enumeration<ScriptingEngine> e=mob.scripts();e.hasMoreElements();)
 			{
-				ScriptingEngine SE=e.nextElement();
+				final ScriptingEngine SE=e.nextElement();
 				if(SE==null) continue;
 				if((SE.defaultQuestName().length()>0)
 				&&(CMLib.quests().findQuest(SE.defaultQuestName())==null))
@@ -81,16 +81,16 @@ public class Questwins extends StdCommand
 				mob.delScript(foundS);
 			foundS=null;
 
-			String rest=CMParms.combine(commands,2);
-			Quest Q=CMLib.quests().findQuest(rest);
+			final String rest=CMParms.combine(commands,2);
+			final Quest Q=CMLib.quests().findQuest(rest);
 			if(Q==null)
 			{
 				mob.tell("There is no such quest as '"+rest+"'.");
 				return false;
 			}
-			for(Enumeration<ScriptingEngine> e=mob.scripts();e.hasMoreElements();)
+			for(final Enumeration<ScriptingEngine> e=mob.scripts();e.hasMoreElements();)
 			{
-				ScriptingEngine SE=e.nextElement();
+				final ScriptingEngine SE=e.nextElement();
 				if(SE==null) continue;
 				if((SE.defaultQuestName().length()>0)
 				&&(SE.defaultQuestName().equalsIgnoreCase(Q.name())))
@@ -112,16 +112,16 @@ public class Questwins extends StdCommand
 		else
 		if(commands.size()==1)
 		{
-			List<Quest> qQVec=CMLib.quests().getPlayerPersistantQuests(mob);
-			Vector<String> qVec = new Vector<String>();
-			for(Quest Q : qQVec)
+			final List<Quest> qQVec=CMLib.quests().getPlayerPersistantQuests(mob);
+			final Vector<String> qVec = new Vector<String>();
+			for(final Quest Q : qQVec)
 			{
-				String name=Q.displayName().trim().length()>0?Q.displayName():Q.name();
+				final String name=Q.displayName().trim().length()>0?Q.displayName():Q.name();
 				if(!qVec.contains(name))
 					qVec.addElement(name);
 			}
 			Collections.sort(qVec);
-			StringBuffer msg=new StringBuffer("^HQuests you are listed as having accepted:^?^N\n\r");
+			final StringBuffer msg=new StringBuffer("^HQuests you are listed as having accepted:^?^N\n\r");
 			for(int i=0;i<qVec.size();i++)
 				msg.append((qVec.elementAt(i))+"^N\n\r");
 			if(!mob.isMonster())
@@ -130,17 +130,17 @@ public class Questwins extends StdCommand
 		}
 		else
 		{
-			String rest=CMParms.combine(commands,1);
-			Quest Q=CMLib.quests().findQuest(rest);
+			final String rest=CMParms.combine(commands,1);
+			final Quest Q=CMLib.quests().findQuest(rest);
 			if(Q==null)
 			{
 				mob.tell("There is no such quest as '"+rest+"'.");
 				return false;
 			}
 			ScriptingEngine foundS=null;
-			for(Enumeration<ScriptingEngine> e=mob.scripts();e.hasMoreElements();)
+			for(final Enumeration<ScriptingEngine> e=mob.scripts();e.hasMoreElements();)
 			{
-				ScriptingEngine SE=e.nextElement();
+				final ScriptingEngine SE=e.nextElement();
 				if(SE==null) continue;
 				if((SE.defaultQuestName().length()>0)
 				&&(SE.defaultQuestName().equalsIgnoreCase(Q.name())))
@@ -163,7 +163,7 @@ public class Questwins extends StdCommand
 			String timeRemaining=foundS.getVar("*","TIME_REMAINING");
 			if((timeRemaining!=null)&&(timeRemaining.length()>0))
 			{
-				String timeRemainingType=foundS.getVar("*","TIME_REMAINING_TYPE");
+				final String timeRemainingType=foundS.getVar("*","TIME_REMAINING_TYPE");
 				if(((timeRemainingType.equalsIgnoreCase("TICKS")||(timeRemainingType.length()==0))
 				&&(CMath.isInteger(timeRemaining))))
 				{
@@ -178,7 +178,7 @@ public class Questwins extends StdCommand
 				if(timeRemainingType.length()>0)
 					timeRemaining+=" "+timeRemainingType;
 			}
-			String progress=foundS.getVar("*","PROGRESS");
+			final String progress=foundS.getVar("*","PROGRESS");
 			mob.tell("^w"+instructions+"^N");
 			if((timeRemaining!=null)&&(timeRemaining.length()>0))
 				mob.tell("\n\r^yTime Remaining: ^w"+timeRemaining+"^N");

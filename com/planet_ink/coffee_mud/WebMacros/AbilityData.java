@@ -42,17 +42,17 @@ public class AbilityData extends StdWebMacro
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
-		java.util.Map<String,String> parms=parseParms(parm);
-		MOB mob=Authenticate.getAuthenticatedMob(httpReq);
+		final java.util.Map<String,String> parms=parseParms(parm);
+		final MOB mob=Authenticate.getAuthenticatedMob(httpReq);
 
-		String replaceCommand=httpReq.getUrlParameter("REPLACE");
+		final String replaceCommand=httpReq.getUrlParameter("REPLACE");
 		if((replaceCommand != null)
 		&& (replaceCommand.length()>0)
 		&& (replaceCommand.indexOf('=')>0))
 		{
-			int eq=replaceCommand.indexOf('=');
-			String field=replaceCommand.substring(0,eq);
-			String value=replaceCommand.substring(eq+1);
+			final int eq=replaceCommand.indexOf('=');
+			final String field=replaceCommand.substring(0,eq);
+			final String value=replaceCommand.substring(eq+1);
 			httpReq.addFakeUrlParameter(field, value);
 			httpReq.addFakeUrlParameter("REPLACE","");
 		}
@@ -60,9 +60,9 @@ public class AbilityData extends StdWebMacro
 		String last=httpReq.getUrlParameter("ABILITY");
 		if(last==null) return " @break@";
 		Ability A=null;
-		String newAbilityID=httpReq.getUrlParameter("NEWABILITY");
-		String newLanguageID=httpReq.getUrlParameter("NEWLANGUAGE");
-		String newCraftSkillID=httpReq.getUrlParameter("NEWCRAFTSKILL");
+		final String newAbilityID=httpReq.getUrlParameter("NEWABILITY");
+		final String newLanguageID=httpReq.getUrlParameter("NEWLANGUAGE");
+		final String newCraftSkillID=httpReq.getUrlParameter("NEWCRAFTSKILL");
 		A=(Ability)httpReq.getRequestObjects().get("ABILITY-"+last);
 		if((A==null)
 		&&(newAbilityID!=null)
@@ -102,10 +102,10 @@ public class AbilityData extends StdWebMacro
 				return ""+(CMClass.getAbility(last)==null);
 			if(A!=null)
 			{
-				StringBuffer str=new StringBuffer("");
+				final StringBuffer str=new StringBuffer("");
 				if(parms.containsKey("ISGENERIC"))
 				{
-					Ability A2=CMClass.getAbility(A.ID());
+					final Ability A2=CMClass.getAbility(A.ID());
 					return ""+((A2!=null)&&(A2.isGeneric()));
 				}
 				if(parms.containsKey("ISLANGUAGE"))
@@ -167,11 +167,11 @@ public class AbilityData extends StdWebMacro
 						if(parms.containsKey("NEXT"))
 						{
 							String lastID="";
-							String lastNum = httpReq.getUrlParameter("WORDLISTNUM");
+							final String lastNum = httpReq.getUrlParameter("WORDLISTNUM");
 							String nextName = "WORDLIST1";
 							for(int i=0;i<wordLists.size();i++)
 							{
-								String thisName="WORDLIST"+Integer.toString(i+1);
+								final String thisName="WORDLIST"+Integer.toString(i+1);
 								nextName="WORDLIST"+Integer.toString(i+2);
 								if((lastNum==null)||((lastNum.length()>0)&&(lastNum.equals(lastID))&&(!thisName.equals(lastID))))
 								{
@@ -198,8 +198,8 @@ public class AbilityData extends StdWebMacro
 							int x=1;
 							while(httpReq.isUrlParameter("HASHWORD"+x))
 							{
-								String word=httpReq.getUrlParameter("HASHWORD"+x).toUpperCase().trim();
-								String def=httpReq.getUrlParameter("HASHWORDDEF"+x);
+								final String word=httpReq.getUrlParameter("HASHWORD"+x).toUpperCase().trim();
+								final String def=httpReq.getUrlParameter("HASHWORDDEF"+x);
 								if((def!=null)&&(def.length()>0)&&(word.length()>0))
 									hashWords.put(word,def);
 								x++;
@@ -208,7 +208,7 @@ public class AbilityData extends StdWebMacro
 						else
 						{
 							int x=1;
-							for(String key : hashWords.keySet())
+							for(final String key : hashWords.keySet())
 							{
 								httpReq.addFakeUrlParameter("HASHWORD"+x, key);
 								httpReq.addFakeUrlParameter("HASHWORDDEF"+x, hashWords.get(key));
@@ -230,13 +230,13 @@ public class AbilityData extends StdWebMacro
 						if(parms.containsKey("NEXT"))
 						{
 							String lastID="";
-							String lastNum = httpReq.getUrlParameter("HASHWORDNUM");
+							final String lastNum = httpReq.getUrlParameter("HASHWORDNUM");
 							String nextName = "HASHWORD1";
 							String nextDefName = "HASHWORDDEF1";
 							for(int i=1;i<=hashWords.keySet().size();i++)
 							{
-								String thisName="HASHWORD"+Integer.toString(i);
-								String thisDefName="HASHWORDDEF"+Integer.toString(i);
+								final String thisName="HASHWORD"+Integer.toString(i);
+								final String thisDefName="HASHWORDDEF"+Integer.toString(i);
 								nextName="HASHWORD"+Integer.toString(i+1);
 								nextDefName="HASHWORDDEF"+Integer.toString(i+1);
 								if((lastNum==null)||((lastNum.length()>0)&&(lastNum.equals(lastID))&&(!thisName.equals(lastID))))
@@ -366,15 +366,15 @@ public class AbilityData extends StdWebMacro
 					}
 					else
 						list=CMParms.parseCommas(A.getStat("FLAGS"),true);
-					for(int i=0;i<Ability.FLAG_DESCS.length;i++)
-						str.append("<OPTION VALUE=\""+Ability.FLAG_DESCS[i]+"\""+(list.contains(Ability.FLAG_DESCS[i])?" SELECTED":"")+">"+CMStrings.capitalizeAndLower(Ability.FLAG_DESCS[i]));
+					for (final String element : Ability.FLAG_DESCS)
+						str.append("<OPTION VALUE=\""+element+"\""+(list.contains(element)?" SELECTED":"")+">"+CMStrings.capitalizeAndLower(element));
 					str.append(", ");
 				}
 				if(parms.containsKey("CUSTOMOVERRIDEMANA"))
 				{
 					String old=httpReq.getUrlParameter("OVERRIDEMANA");
 					if(old==null) old=""+A.getStat("OVERRIDEMANA");
-					int x=CMath.s_int(old);
+					final int x=CMath.s_int(old);
 					if((x>0) && (x<Ability.COST_PCT))
 						str.append(old+", ");
 				}
@@ -382,7 +382,7 @@ public class AbilityData extends StdWebMacro
 				{
 					String old=httpReq.getUrlParameter("OVERRIDEMANA");
 					if(old==null) old=""+A.getStat("OVERRIDEMANA");
-					int o=CMath.s_int(old);
+					final int o=CMath.s_int(old);
 					str.append("<OPTION VALUE=\"-1\""+((o==-1)?" SELECTED":"")+">Use Default");
 					str.append("<OPTION VALUE=\"0\""+((o==0)?" SELECTED":"")+">None (free skill)");
 					str.append("<OPTION VALUE=\"\""+(((o>0)&&(o<Ability.COST_PCT))?" SELECTED":"")+"\">Custom Value");
@@ -405,8 +405,8 @@ public class AbilityData extends StdWebMacro
 					}
 					else
 						list=CMParms.parseCommas(A.getStat("USAGEMASK"),true);
-					for(int i=0;i<Ability.USAGE_DESCS.length;i++)
-						str.append("<OPTION VALUE=\""+Ability.USAGE_DESCS[i]+"\""+(list.contains(Ability.USAGE_DESCS[i])?" SELECTED":"")+">"+CMStrings.capitalizeAndLower(Ability.USAGE_DESCS[i]));
+					for (final String element : Ability.USAGE_DESCS)
+						str.append("<OPTION VALUE=\""+element+"\""+(list.contains(element)?" SELECTED":"")+">"+CMStrings.capitalizeAndLower(element));
 					str.append(", ");
 				}
 				if(parms.containsKey("CANAFFECTMASK"))
@@ -421,8 +421,8 @@ public class AbilityData extends StdWebMacro
 					}
 					else
 						list=CMParms.parseCommas(A.getStat("CANAFFECTMASK"),true);
-					for(int i=0;i<Ability.CAN_DESCS.length;i++)
-						str.append("<OPTION VALUE=\""+Ability.CAN_DESCS[i]+"\""+(list.contains(Ability.CAN_DESCS[i])?" SELECTED":"")+">"+CMStrings.capitalizeAndLower(Ability.CAN_DESCS[i]));
+					for (final String element : Ability.CAN_DESCS)
+						str.append("<OPTION VALUE=\""+element+"\""+(list.contains(element)?" SELECTED":"")+">"+CMStrings.capitalizeAndLower(element));
 					str.append(", ");
 				}
 				if(parms.containsKey("CANTARGETMASK"))
@@ -437,8 +437,8 @@ public class AbilityData extends StdWebMacro
 					}
 					else
 						list=CMParms.parseCommas(A.getStat("CANTARGETMASK"),true);
-					for(int i=0;i<Ability.CAN_DESCS.length;i++)
-						str.append("<OPTION VALUE=\""+Ability.CAN_DESCS[i]+"\""+(list.contains(Ability.CAN_DESCS[i])?" SELECTED":"")+">"+CMStrings.capitalizeAndLower(Ability.CAN_DESCS[i]));
+					for (final String element : Ability.CAN_DESCS)
+						str.append("<OPTION VALUE=\""+element+"\""+(list.contains(element)?" SELECTED":"")+">"+CMStrings.capitalizeAndLower(element));
 					str.append(", ");
 				}
 				if(parms.containsKey("VQUALITY")) //QUALITY
@@ -572,7 +572,7 @@ public class AbilityData extends StdWebMacro
 					}
 					else
 						list=CMParms.parseCommas(A.getStat("MATLIST"),true);
-					for(RawMaterial.Material m : RawMaterial.Material.values())
+					for(final RawMaterial.Material m : RawMaterial.Material.values())
 						str.append("<OPTION VALUE=\""+m.name()+"\""+(list.contains(m.name())?" SELECTED":"")+">"+m.noun());
 					for(int i=0;i<RawMaterial.CODES.NAMES().length;i++)
 						str.append("<OPTION VALUE=\""+RawMaterial.CODES.NAMES()[i]+"\""+(list.contains(RawMaterial.CODES.NAMES()[i])?" SELECTED":"")+">"+CMStrings.capitalizeAndLower(RawMaterial.CODES.NAMES()[i]));
@@ -591,13 +591,13 @@ public class AbilityData extends StdWebMacro
 					}
 					else
 						list=CMParms.parseSemicolons(A.getStat("POSTCASTAFFECT").toUpperCase(),true);
-					for(Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
+					for(final Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
 					{
-						Ability A2=e.nextElement();
+						final Ability A2=e.nextElement();
 						if(((A2.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_ARCHON)&&(!CMSecurity.isASysOp(mob)))
 							continue;
-						String AID=A2.ID();
-						String ANAME=A2.name();
+						final String AID=A2.ID();
+						final String ANAME=A2.name();
 						str.append("<OPTION VALUE=\""+AID+"\""+(list.contains(AID.toUpperCase())?" SELECTED":"")+">"+ANAME);
 					}
 					str.append(", ");
@@ -614,13 +614,13 @@ public class AbilityData extends StdWebMacro
 					}
 					else
 						list=CMParms.parseSemicolons(A.getStat("POSTCASTABILITY").toUpperCase(),true);
-					for(Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
+					for(final Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
 					{
-						Ability A2=e.nextElement();
+						final Ability A2=e.nextElement();
 						if(((A.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_ARCHON)&&(!CMSecurity.isASysOp(mob)))
 							continue;
-						String AID=A2.ID();
-						String ANAME=A2.name();
+						final String AID=A2.ID();
+						final String ANAME=A2.name();
 						str.append("<OPTION VALUE=\""+AID+"\""+(list.contains(AID.toUpperCase())?" SELECTED":"")+">"+ANAME);
 					}
 					str.append(", ");
@@ -654,8 +654,8 @@ public class AbilityData extends StdWebMacro
 				}
 				if(parms.containsKey("RANGES"))
 				{
-					int min=A.minRange();
-					int max=A.maxRange();
+					final int min=A.minRange();
+					final int max=A.maxRange();
 					if(min+max==0)
 						str.append("Touch, or not applicable, ");
 					else
@@ -720,9 +720,9 @@ public class AbilityData extends StdWebMacro
 				if(parms.containsKey("ALIGNMENT"))
 				{
 					String rangeDesc=null;
-					for(Enumeration<Faction> e=CMLib.factions().factions();e.hasMoreElements();)
+					for(final Enumeration<Faction> e=CMLib.factions().factions();e.hasMoreElements();)
 					{
-						Faction F=e.nextElement();
+						final Faction F=e.nextElement();
 						rangeDesc=F.usageFactorRangeDescription(A);
 						if(rangeDesc.length()>0)
 							str.append(rangeDesc+", ");
@@ -732,9 +732,9 @@ public class AbilityData extends StdWebMacro
 				{
 					Ability A2=null;
 					ExpertiseLibrary.ExpertiseDefinition def=null;
-					for(Iterator<String> i=CMLib.ableMapper().getAbilityAllowsList(A.ID());i.hasNext();)
+					for(final Iterator<String> i=CMLib.ableMapper().getAbilityAllowsList(A.ID());i.hasNext();)
 					{
-						String allowStr=i.next();
+						final String allowStr=i.next();
 						def=CMLib.expertises().getDefinition(allowStr);
 						if(def!=null)
 							str.append(def.name+", ");
@@ -748,7 +748,7 @@ public class AbilityData extends StdWebMacro
 				}
 				if(parms.containsKey("DOMAIN"))
 				{
-					StringBuffer thang=new StringBuffer("");
+					final StringBuffer thang=new StringBuffer("");
 					if((A.classificationCode()&Ability.ALL_DOMAINS)!=0)
 					{
 						int domain=A.classificationCode()&Ability.ALL_DOMAINS;
@@ -761,14 +761,14 @@ public class AbilityData extends StdWebMacro
 					{
 						thang.setCharAt(0,Character.toUpperCase(thang.charAt(0)));
 
-						int x=thang.toString().indexOf('/');
+						final int x=thang.toString().indexOf('/');
 						if(x>0) thang.setCharAt(x+1,Character.toUpperCase(thang.charAt(x+1)));
 						str.append(thang.toString()+", ");
 					}
 				}
 				if(parms.containsKey("TYPENDOMAIN"))
 				{
-					StringBuffer thang=new StringBuffer("");
+					final StringBuffer thang=new StringBuffer("");
 					thang.append(CMStrings.capitalizeAndLower(Ability.ACODE_DESCS[A.classificationCode()&Ability.ALL_ACODES]));
 					if((A.classificationCode()&Ability.ALL_DOMAINS)!=0)
 					{
@@ -792,7 +792,7 @@ public class AbilityData extends StdWebMacro
 				}
 				if(parms.containsKey("QLEVEL"))
 				{
-					String className=httpReq.getUrlParameter("CLASS");
+					final String className=httpReq.getUrlParameter("CLASS");
 					int level=0;
 					if((className!=null)&&(className.length()>0))
 						level=CMLib.ableMapper().getQualifyingLevel(className,true,A.ID());
@@ -802,10 +802,10 @@ public class AbilityData extends StdWebMacro
 				}
 				if(parms.containsKey("QUALIFYQ")&&(httpReq.isUrlParameter("CLASS")))
 				{
-					String className=httpReq.getUrlParameter("CLASS");
+					final String className=httpReq.getUrlParameter("CLASS");
 					if((className!=null)&&(className.length()>0))
 					{
-						boolean defaultGain=CMLib.ableMapper().getDefaultGain(className,true,A.ID());
+						final boolean defaultGain=CMLib.ableMapper().getDefaultGain(className,true,A.ID());
 						if(!defaultGain)
 							str.append("(Qualify), ");
 					}

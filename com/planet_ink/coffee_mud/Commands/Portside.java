@@ -45,7 +45,7 @@ public class Portside extends Go
 		int direction=Directions.WEST;
 		if((commands!=null)&&(commands.size()>1))
 		{
-			int nextDir=Directions.getDirectionCode((String)commands.get(2));
+			final int nextDir=Directions.getDirectionCode((String)commands.get(2));
 			if(nextDir == Directions.NORTH)
 				direction=Directions.NORTHWEST;
 			else

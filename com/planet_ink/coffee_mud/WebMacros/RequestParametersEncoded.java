@@ -41,7 +41,7 @@ public class RequestParametersEncoded extends StdWebMacro
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 
-		StringBuilder str=new StringBuilder();
+		final StringBuilder str=new StringBuilder();
 		try
 		{
 			for(final String key : httpReq.getUrlParameters())
@@ -52,7 +52,7 @@ public class RequestParametersEncoded extends StdWebMacro
 				str.append(URLEncoder.encode(key,"UTF-8")).append("=").append(URLEncoder.encode(value,"UTF-8"));
 			}
 		}
-		catch(java.io.UnsupportedEncodingException e)
+		catch(final java.io.UnsupportedEncodingException e)
 		{
 			Log.errOut(name(),e);
 		}

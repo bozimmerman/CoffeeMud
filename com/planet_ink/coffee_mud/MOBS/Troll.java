@@ -49,7 +49,7 @@ public class Troll extends StdMOB
 		basePhyStats.setWeight(350);
 		setWimpHitPoint(0);
 
-		int addedInt = (int)Math.round(Math.random() * 3.0);
+		final int addedInt = (int)Math.round(Math.random() * 3.0);
 		baseCharStats().setStat(CharStats.STAT_INTELLIGENCE,8 + addedInt);
 		baseCharStats().setStat(CharStats.STAT_CHARISMA,2);
 		baseCharStats().setMyRace(CMClass.getRace("Troll"));

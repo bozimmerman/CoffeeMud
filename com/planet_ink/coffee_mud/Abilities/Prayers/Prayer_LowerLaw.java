@@ -64,21 +64,21 @@ public class Prayer_LowerLaw extends Prayer
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":"^S<S-NAME> "+prayWord(mob)+" for knowledge of the lower law here.^?");
+			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":"^S<S-NAME> "+prayWord(mob)+" for knowledge of the lower law here.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				Area O=CMLib.law().getLegalObject(mob.location());
-				LegalBehavior B=CMLib.law().getLegalBehavior(mob.location());
+				final Area O=CMLib.law().getLegalObject(mob.location());
+				final LegalBehavior B=CMLib.law().getLegalBehavior(mob.location());
 				if((B==null)||(O==null))
 					mob.tell("No lower law is established here.");
 				else
 				{
-					Law L=B.legalInfo(O);
-					Vector<String> crimes=new Vector<String>();
+					final Law L=B.legalInfo(O);
+					final Vector<String> crimes=new Vector<String>();
 					possiblyAddLaw(L,crimes,"TRESPASSING");
 					possiblyAddLaw(L,crimes,"ASSAULT");
 					possiblyAddLaw(L,crimes,"MURDER");
@@ -86,7 +86,7 @@ public class Prayer_LowerLaw extends Prayer
 					possiblyAddLaw(L,crimes,"ARMED");
 					possiblyAddLaw(L,crimes,"RESISTINGARREST");
 					possiblyAddLaw(L,crimes,"PROPERTYROB");
-					for(String key : L.abilityCrimes().keySet())
+					for(final String key : L.abilityCrimes().keySet())
 						if(key.startsWith("$"))
 							crimes.add(key.substring(1));
 					if(L.taxLaws().containsKey("TAXEVASION"))

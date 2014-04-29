@@ -38,8 +38,8 @@ public class Sasquatch extends Gorilla
 	@Override public String name(){ return "Sasquatch"; }
 	@Override public long forbiddenWornBits(){return 0;}
 	@Override public String racialCategory(){return "Primate";}
-	private String[]culturalAbilityNames={"Gigantic"};
-	private int[]culturalAbilityProficiencies={100};
+	private final String[]culturalAbilityNames={"Gigantic"};
+	private final int[]culturalAbilityProficiencies={100};
 	@Override public String[] culturalAbilityNames(){return culturalAbilityNames;}
 	@Override public int[] culturalAbilityProficiencies(){return culturalAbilityProficiencies;}
 

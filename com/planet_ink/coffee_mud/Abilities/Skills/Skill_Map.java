@@ -53,7 +53,7 @@ public class Skill_Map extends StdSkill
 		// undo the affects of this spell
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		super.unInvoke();
 
 		if(canBeUninvoked())
@@ -66,7 +66,7 @@ public class Skill_Map extends StdSkill
 	{
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		if((map.owner()==null)
 		||(map.owner()!=mob))
 			unInvoke();
@@ -93,7 +93,7 @@ public class Skill_Map extends StdSkill
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		Ability A=mob.fetchEffect(ID());
+		final Ability A=mob.fetchEffect(ID());
 		if(A!=null)
 		{
 			A.unInvoke();
@@ -104,7 +104,7 @@ public class Skill_Map extends StdSkill
 			mob.tell("You are too stupid to actually make a map.");
 			return false;
 		}
-		Item target=getTarget(mob,null,givenTarget,commands,Wearable.FILTER_UNWORNONLY);
+		final Item target=getTarget(mob,null,givenTarget,commands,Wearable.FILTER_UNWORNONLY);
 		if(target==null)return false;
 
 		Item item=target;
@@ -138,17 +138,17 @@ public class Skill_Map extends StdSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_WRITE,"<S-NAME> start(s) mapping on <T-NAMESELF>.",CMMsg.MSG_WRITE,";",CMMsg.MSG_WRITE,"<S-NAME> start(s) mapping on <T-NAMESELF>.");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_WRITE,"<S-NAME> start(s) mapping on <T-NAMESELF>.",CMMsg.MSG_WRITE,";",CMMsg.MSG_WRITE,"<S-NAME> start(s) mapping on <T-NAMESELF>.");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(!item.ID().equals("BardMap"))
 				{
-					Item B=CMClass.getItem("BardMap");
+					final Item B=CMClass.getItem("BardMap");
 					B.setContainer(item.container());
 					B.setName(item.Name());
 					B.setBasePhyStats(item.basePhyStats());
@@ -177,8 +177,8 @@ public class Skill_Map extends StdSkill
 				int x=rooms.indexOf(';');
 				while(x>=0)
 				{
-					String roomID=rooms.substring(0,x);
-					Room room=CMLib.map().getRoom(roomID);
+					final String roomID=rooms.substring(0,x);
+					final Room room=CMLib.map().getRoom(roomID);
 					if(room!=null)
 						if(!roomsMappedAlready.contains(room))
 							roomsMappedAlready.addElement(room);

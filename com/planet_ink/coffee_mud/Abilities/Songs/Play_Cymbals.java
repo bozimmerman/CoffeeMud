@@ -52,16 +52,16 @@ public class Play_Cymbals extends Play_Instrument
 	{
 		if(getSpell()!=null)
 		{
-			Room R=mob.location();
+			final Room R=mob.location();
 			if(R!=null)
 			{
-				List<Physical> knockables=new LinkedList<Physical>();
+				final List<Physical> knockables=new LinkedList<Physical>();
 				int dirCode=-1;
 				if(mob==invoker())
 				{
 					for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 					{
-						Exit e=R.getExitInDir(d);
+						final Exit e=R.getExitInDir(d);
 						if((e!=null)&&(e.hasADoor())&&(e.hasALock())&&(e.isLocked()))
 						{
 							knockables.add(e);
@@ -70,10 +70,10 @@ public class Play_Cymbals extends Play_Instrument
 					}
 					for(int i=0;i<R.numItems();i++)
 					{
-						Item I=R.getItem(i);
+						final Item I=R.getItem(i);
 						if((I!=null)&&(I instanceof Container)&&(I.container()==null))
 						{
-							Container C=(Container)I;
+							final Container C=(Container)I;
 							if(C.hasALid()&&C.hasALock()&&C.isLocked())
 								knockables.add(C);
 						}
@@ -81,15 +81,15 @@ public class Play_Cymbals extends Play_Instrument
 				}
 				for(int i=0;i<mob.numItems();i++)
 				{
-					Item I=mob.getItem(i);
+					final Item I=mob.getItem(i);
 					if((I!=null)&&(I instanceof Container)&&(I.container()==null))
 					{
-						Container C=(Container)I;
+						final Container C=(Container)I;
 						if(C.hasALid()&&C.hasALock()&&C.isLocked())
 							knockables.add(C);
 					}
 				}
-				for(Physical P : knockables)
+				for(final Physical P : knockables)
 				{
 					int levelDiff=P.phyStats().level()-(mob.phyStats().level()+(2*super.getXLEVELLevel(mob)));
 					if(levelDiff<0) levelDiff=0;

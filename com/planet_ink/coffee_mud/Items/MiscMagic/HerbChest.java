@@ -42,7 +42,7 @@ public class HerbChest extends BagOfHolding {
 		capacity=500;
 		baseGoldValue=0;
 		material=RawMaterial.RESOURCE_REDWOOD;
-		Ability A=CMClass.getAbility("Prop_HaveZapper");
+		final Ability A=CMClass.getAbility("Prop_HaveZapper");
 		if(A!=null)
 		{
 			A.setMiscText("+SYSOP -MOB -anyclass +alchemist");

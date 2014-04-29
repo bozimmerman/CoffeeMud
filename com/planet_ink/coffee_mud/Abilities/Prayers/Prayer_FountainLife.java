@@ -59,7 +59,7 @@ public class Prayer_FountainLife extends Prayer
 		super.unInvoke();
 		if(canBeUninvoked())
 		{
-			Item spring=littleSpring; // protects against uninvoke loops!
+			final Item spring=littleSpring; // protects against uninvoke loops!
 			littleSpring=null;
 			spring.destroy();
 			SpringLocation.recoverRoomStats();
@@ -75,16 +75,16 @@ public class Prayer_FountainLife extends Prayer
 
 
 		// now see if it worked
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":"^S<S-NAME> "+prayWord(mob)+" for the fountain of life.^?");
+			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":"^S<S-NAME> "+prayWord(mob)+" for the fountain of life.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				String itemID = "LifeFountain";
+				final String itemID = "LifeFountain";
 
-				Item newItem=CMClass.getMiscMagic(itemID);
+				final Item newItem=CMClass.getMiscMagic(itemID);
 
 				if(newItem==null)
 				{

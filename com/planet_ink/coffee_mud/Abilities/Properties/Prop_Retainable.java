@@ -92,7 +92,7 @@ public class Prop_Retainable extends Property
 
 		if((affected!=null)&&(affected instanceof MOB))
 		{
-			MOB mob=(MOB)affected;
+			final MOB mob=(MOB)affected;
 			if(mob.location()!=null)
 			{
 				if((lastMoveIn>0)&&((System.currentTimeMillis()-lastMoveIn)>4))
@@ -122,7 +122,7 @@ public class Prop_Retainable extends Property
 					{
 						lastPayDayTimestamp=System.currentTimeMillis();
 						miscText=payAmountPerPayPeriod+";"+payPeriodLengthInMudDays+";"+lastPayDayTimestamp;
-						LandTitle t=CMLib.law().getLandTitle(mob.location());
+						final LandTitle t=CMLib.law().getLandTitle(mob.location());
 						String owner="";
 						if(mob.amFollowing()!=null)
 						{
@@ -151,7 +151,7 @@ public class Prop_Retainable extends Property
 							mob.destroy();
 							return false;
 						}
-						boolean paid=CMLib.beanCounter().modifyLocalBankGold(mob.location().getArea(),
+						final boolean paid=CMLib.beanCounter().modifyLocalBankGold(mob.location().getArea(),
 								owner,
 								CMLib.utensils().getFormattedDate(mob)+": Withdrawal of "+CMLib.beanCounter().nameCurrencyShort(mob,payAmountPerPayPeriod)+": Payroll: "+Name(),
 								CMLib.beanCounter().getCurrency(mob),
@@ -175,12 +175,12 @@ public class Prop_Retainable extends Property
 
 	public void tellSkills(MOB me, MOB toMe)
 	{
-		StringBuffer skills = new StringBuffer("");
+		final StringBuffer skills = new StringBuffer("");
 		if(me instanceof ShopKeeper)
 			skills.append(", selling "+CMLib.coffeeShops().storeKeeperString(((ShopKeeper)me).getShop()).toLowerCase());
-		for(Enumeration<Ability> a=me.allAbilities();a.hasMoreElements();)
+		for(final Enumeration<Ability> a=me.allAbilities();a.hasMoreElements();)
 		{
-			Ability A=a.nextElement();
+			final Ability A=a.nextElement();
 			if(A!=null)
 			{
 				if(A.proficiency() == 0)
@@ -200,7 +200,7 @@ public class Prop_Retainable extends Property
 		super.executeMsg(myHost,msg);
 		if((affected!=null)&&(affected instanceof MOB))
 		{
-			MOB mob=(MOB)affected;
+			final MOB mob=(MOB)affected;
 			if(mob.location()!=null)
 			{
 				if((msg.tool()==affected)
@@ -217,7 +217,7 @@ public class Prop_Retainable extends Property
 				else
 				if(mob.amFollowing()!=null)
 				{
-					Room room=mob.location();
+					final Room room=mob.location();
 					if((room!=lastRoom)
 					&&(CMLib.law().doesHavePriviledgesHere(mob.amFollowing(),room))
 					&&(room.isInhabitant(mob)))

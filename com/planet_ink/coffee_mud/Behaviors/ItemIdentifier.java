@@ -48,7 +48,7 @@ public class ItemIdentifier extends StdBehavior
 	{
 		if(costFormula != null)
 		{
-			double[] vars = {item.phyStats().level(), item.value(), item.usesRemaining(), CMLib.flags().isABonusItems(item)?1.0:0.0,item.basePhyStats().level(), item.baseGoldValue(),0,0,0,0,0};
+			final double[] vars = {item.phyStats().level(), item.value(), item.usesRemaining(), CMLib.flags().isABonusItems(item)?1.0:0.0,item.basePhyStats().level(), item.baseGoldValue(),0,0,0,0,0};
 			return CMath.parseMathExpression(costFormula, vars, 0.0);
 		}
 		else
@@ -59,7 +59,7 @@ public class ItemIdentifier extends StdBehavior
 	public void setParms(String parms)
 	{
 		super.setParms(parms);
-		String formulaString = CMParms.getParmStr(parms,"COST","500 + (@x1 * 20)");
+		final String formulaString = CMParms.getParmStr(parms,"COST","500 + (@x1 * 20)");
 		costFormula = null;
 		if(formulaString.trim().length()>0)
 		{
@@ -67,7 +67,7 @@ public class ItemIdentifier extends StdBehavior
 			{
 				costFormula = CMath.compileMathExpression(formulaString);
 			}
-			catch(Exception e)
+			catch(final Exception e)
 			{
 				Log.errOut(ID(),"Error compiling formula: " + formulaString);
 			}
@@ -79,10 +79,10 @@ public class ItemIdentifier extends StdBehavior
 	{
 		if(!super.okMessage(affecting,msg))
 			return false;
-		MOB source=msg.source();
+		final MOB source=msg.source();
 		if(!canFreelyBehaveNormal(affecting))
 			return true;
-		MOB observer=(MOB)affecting;
+		final MOB observer=(MOB)affecting;
 		if((source!=observer)
 		&&(msg.amITarget(observer))
 		&&(msg.targetMinor()==CMMsg.TYP_GIVE)
@@ -91,10 +91,10 @@ public class ItemIdentifier extends StdBehavior
 		&&(msg.tool()!=null)
 		&&(msg.tool() instanceof Item))
 		{
-			double cost=cost((Item)msg.tool());
+			final double cost=cost((Item)msg.tool());
 			if(CMLib.beanCounter().getTotalAbsoluteShopKeepersValue(msg.source(),observer)<(cost))
 			{
-				String costStr=CMLib.beanCounter().nameCurrencyShort(observer,cost);
+				final String costStr=CMLib.beanCounter().nameCurrencyShort(observer,cost);
 				CMLib.commands().postSay(observer,source,"You'll need "+costStr+" for me to identify that.",true,false);
 				return false;
 			}
@@ -109,8 +109,8 @@ public class ItemIdentifier extends StdBehavior
 		super.executeMsg(affecting,msg);
 		if(!canFreelyBehaveNormal(affecting))
 			return;
-		MOB observer=(MOB)affecting;
-		MOB source=msg.source();
+		final MOB observer=(MOB)affecting;
+		final MOB source=msg.source();
 
 		if((source!=observer)
 		&&(msg.amITarget(observer))
@@ -120,26 +120,26 @@ public class ItemIdentifier extends StdBehavior
 		&&(msg.tool()!=null)
 		&&(msg.tool() instanceof Item))
 		{
-			Item I = (Item)msg.tool();
-			double cost=cost(I);
+			final Item I = (Item)msg.tool();
+			final double cost=cost(I);
 			CMLib.beanCounter().subtractMoney(source,CMLib.beanCounter().getCurrency(observer),cost);
-			String costStr=CMLib.beanCounter().nameCurrencyLong(observer,cost);
+			final String costStr=CMLib.beanCounter().nameCurrencyLong(observer,cost);
 			source.recoverPhyStats();
 			CMMsg newMsg=CMClass.getMsg(msg.source(),observer,null,CMMsg.MSG_OK_ACTION,"<S-NAME> give(s) "+costStr+" to <T-NAMESELF>.");
 			msg.addTrailerMsg(newMsg);
 			newMsg=CMClass.getMsg(observer,I,null,CMMsg.MSG_EXAMINE,"<S-NAME> examine(s) <T-NAME> very closely.");
 			msg.addTrailerMsg(newMsg);
-			StringBuffer up=new StringBuffer(I.name(observer)+" is made of "+RawMaterial.CODES.NAME(I.material()).toLowerCase()+".\n\r");
+			final StringBuffer up=new StringBuffer(I.name(observer)+" is made of "+RawMaterial.CODES.NAME(I.material()).toLowerCase()+".\n\r");
 			if((I instanceof Armor)&&(((Armor)I).phyStats().height()>0))
 				up.append("It is a size "+((Armor)I).phyStats().height()+".\n\r");
-			int weight=I.phyStats().weight();
+			final int weight=I.phyStats().weight();
 			if((weight!=I.basePhyStats().weight())&&(I instanceof Container))
 				up.append("It weighs "+I.basePhyStats().weight()+" pounds empty and "+weight+" pounds right now.\n\r");
 			else
 				up.append("It weighs "+weight+" pounds.\n\r");
 			if(I instanceof Weapon)
 			{
-				Weapon w=(Weapon)I;
+				final Weapon w=(Weapon)I;
 				up.append("It is a "+Weapon.CLASS_DESCS[w.weaponClassification()].toLowerCase()+" weapon.\n\r");
 				up.append("It does "+Weapon.TYPE_DESCS[w.weaponType()].toLowerCase()+" damage.\n\r");
 			}

@@ -54,7 +54,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 	@Override
 	public int getTickStatus()
 	{
-		Tickable T=engine();
+		final Tickable T=engine();
 		if(T!=null) return T.getTickStatus();
 		return Tickable.STATUS_NOT;
 	}
@@ -79,12 +79,12 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 	{
 		try
 		{
-			Scriptable B=(Scriptable)this.clone();
+			final Scriptable B=(Scriptable)this.clone();
 			if(B.engine!=null)
 				B.engine=(ScriptingEngine)engine.copyOf();
 			return B;
 		}
-		catch(CloneNotSupportedException e)
+		catch(final CloneNotSupportedException e)
 		{
 			return new Scriptable();
 		}

@@ -138,14 +138,14 @@ public class Addictions extends StdAbility
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		Physical target=givenTarget;
+		final Physical target=givenTarget;
 
 		if(target==null) return false;
 		if(target.fetchEffect(ID())!=null) return false;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
 			String addiction=target.Name().toUpperCase();
@@ -157,20 +157,20 @@ public class Addictions extends StdAbility
 				addiction=addiction.substring(3);
 			if(addiction.toUpperCase().startsWith("SOME "))
 				addiction=addiction.substring(5);
-			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_OK_VISUAL,"");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_OK_VISUAL,"");
 			if(mob.location()!=null)
 			{
 				if(mob.location().okMessage(mob,msg))
 				{
 					mob.location().send(mob,msg);
-					Ability A=(Ability)copyOf();
+					final Ability A=(Ability)copyOf();
 					A.setMiscText(addiction.trim());
 					mob.addNonUninvokableEffect(A);
 				}
 			}
 			else
 			{
-				Ability A=(Ability)copyOf();
+				final Ability A=(Ability)copyOf();
 				A.setMiscText(addiction.trim());
 				mob.addNonUninvokableEffect(A);
 			}

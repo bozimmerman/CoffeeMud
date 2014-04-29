@@ -44,7 +44,7 @@ public class Deities extends StdCommand
 
 	public String getDeityInformation(MOB mob, Deity D)
 	{
-		StringBuffer msg = new StringBuffer("");
+		final StringBuffer msg = new StringBuffer("");
 		msg.append("\n\r^x"+D.name()+"^.^?\n\r");
 		msg.append(D.description()+"\n\r\n\r");
 		if((mob==null)||(CMSecurity.isASysOp(mob)))
@@ -112,17 +112,17 @@ public class Deities extends StdCommand
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		String str=CMParms.combine(commands,1).toUpperCase();
-		StringBuffer msg=new StringBuffer("");
+		final String str=CMParms.combine(commands,1).toUpperCase();
+		final StringBuffer msg=new StringBuffer("");
 		if(str.length()==0)
 			msg.append("\n\r^xThe known deities:^.^? \n\r\n\r");
 		else
 			msg.append("\n\r^HThe known deities named '"+str+"':^? \n\r");
 		int col=0;
-		int colWidth=ListingLibrary.ColFixer.fixColWidth(18,mob.session());
-		for(Enumeration d=CMLib.map().deities();d.hasMoreElements();)
+		final int colWidth=ListingLibrary.ColFixer.fixColWidth(18,mob.session());
+		for(final Enumeration d=CMLib.map().deities();d.hasMoreElements();)
 		{
-			Deity D=(Deity)d.nextElement();
+			final Deity D=(Deity)d.nextElement();
 			if((str.length()>0)&&(CMLib.english().containsString(D.name(),str)))
 				msg.append(this.getDeityInformation(mob, D));
 			else

@@ -48,11 +48,11 @@ public class Play_LoveSong extends Play
 		if(affected==null) return false;
 		if(affected instanceof MOB)
 		{
-			MOB mob=(MOB)affected;
-			Vector choices=new Vector();
+			final MOB mob=(MOB)affected;
+			final Vector choices=new Vector();
 			for(int i=0;i<mob.location().numInhabitants();i++)
 			{
-				MOB M=mob.location().fetchInhabitant(i);
+				final MOB M=mob.location().fetchInhabitant(i);
 				if((M!=null)
 				&&(M!=mob)
 				&&(CMLib.flags().canBeSeenBy(M,mob))
@@ -63,7 +63,7 @@ public class Play_LoveSong extends Play
 			}
 			if(choices.size()>0)
 			{
-				MOB M=(MOB)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1));
+				final MOB M=(MOB)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1));
 				try
 				{
 				if(CMLib.dice().rollPercentage()<=1)
@@ -94,7 +94,7 @@ public class Play_LoveSong extends Play
 						mob.tell("You feel lovingly towards "+M.name(mob)+".");
 						break;
 					}
-				}catch(Exception e){}
+				}catch(final Exception e){}
 			}
 		}
 		return true;

@@ -40,18 +40,18 @@ public class BaseCharClassNext extends StdWebMacro
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
-		java.util.Map<String,String> parms=parseParms(parm);
-		String last=httpReq.getUrlParameter("BASECLASS");
+		final java.util.Map<String,String> parms=parseParms(parm);
+		final String last=httpReq.getUrlParameter("BASECLASS");
 		if(parms.containsKey("RESET"))
 		{
 			if(last!=null) httpReq.removeUrlParameter("BASECLASS");
 			return "";
 		}
 		String lastID="";
-		Vector baseClasses=new Vector();
-		for(Enumeration c=CMClass.charClasses();c.hasMoreElements();)
+		final Vector baseClasses=new Vector();
+		for(final Enumeration c=CMClass.charClasses();c.hasMoreElements();)
 		{
-			CharClass C=(CharClass)c.nextElement();
+			final CharClass C=(CharClass)c.nextElement();
 			if((CMProps.isTheme(C.availabilityCode()))||(parms.containsKey("ALL")))
 			{
 				if(!baseClasses.contains(C.baseClass()))
@@ -60,7 +60,7 @@ public class BaseCharClassNext extends StdWebMacro
 		}
 		for(int i=0;i<baseClasses.size();i++)
 		{
-			String C=(String)baseClasses.elementAt(i);
+			final String C=(String)baseClasses.elementAt(i);
 			if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!C.equals(lastID))))
 			{
 				httpReq.addFakeUrlParameter("BASECLASS",C);

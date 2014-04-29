@@ -50,19 +50,19 @@ public class Spell_AnimateItem extends Spell
 			mob.tell("You must specify what to cast this on, and then what you want it to emote.");
 			return false;
 		}
-		Vector V=new Vector();
+		final Vector V=new Vector();
 		V.addElement(commands.elementAt(0));
-		Item target=getTarget(mob,mob.location(),givenTarget,V,Wearable.FILTER_ANY);
+		final Item target=getTarget(mob,mob.location(),givenTarget,V,Wearable.FILTER_ANY);
 		if(target==null) return false;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),null);
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),null);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

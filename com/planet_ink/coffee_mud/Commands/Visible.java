@@ -42,11 +42,11 @@ public class Visible extends StdCommand
 
 	public static java.util.List<Ability> returnOffensiveAffects(Physical fromMe)
 	{
-		MOB newMOB=CMClass.getFactoryMOB();
-		Vector offenders=new Vector();
+		final MOB newMOB=CMClass.getFactoryMOB();
+		final Vector offenders=new Vector();
 		for(int a=0;a<fromMe.numEffects();a++) // personal
 		{
-			Ability A=fromMe.fetchEffect(a);
+			final Ability A=fromMe.fetchEffect(a);
 			if((A!=null)&&(A.canBeUninvoked()))
 			{
 				try
@@ -56,7 +56,7 @@ public class Visible extends StdCommand
 					if(CMLib.flags().isInvisible(newMOB)||CMLib.flags().isHidden(newMOB))
 					  offenders.addElement(A);
 				}
-				catch(Exception e)
+				catch(final Exception e)
 				{}
 			}
 		}
@@ -68,19 +68,19 @@ public class Visible extends StdCommand
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		String str="Prop_WizInvis";
-		Ability A=mob.fetchEffect(str);
+		final String str="Prop_WizInvis";
+		final Ability A=mob.fetchEffect(str);
 		boolean didSomething=false;
 		if(A!=null)
 		{
-			Command C=CMClass.getCommand("WizInv");
+			final Command C=CMClass.getCommand("WizInv");
 			if((C!=null)&&(C.securityCheck(mob)))
 			{
 				didSomething=true;
 				C.execute(mob,new XVector("WIZINV","OFF"),metaFlags);
 			}
 		}
-		java.util.List V=returnOffensiveAffects(mob);
+		final java.util.List V=returnOffensiveAffects(mob);
 		if(V.size()==0)
 		{
 			if(!didSomething)

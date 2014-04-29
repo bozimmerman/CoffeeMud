@@ -63,7 +63,7 @@ public class Thief_Mug extends ThiefSkill
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		MOB target=mob.getVictim();
+		final MOB target=mob.getVictim();
 		if(!mob.isInCombat())
 		{
 			mob.tell("You can only mug someone you are fighting!");
@@ -79,20 +79,20 @@ public class Thief_Mug extends ThiefSkill
 			}
 			itemToSteal=CMParms.combine(commands,0);
 		}
-		int levelDiff=target.phyStats().level()-(mob.phyStats().level()+abilityCode()+(getXLEVELLevel(mob)*2));
+		final int levelDiff=target.phyStats().level()-(mob.phyStats().level()+abilityCode()+(getXLEVELLevel(mob)*2));
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		Item stolen=target.fetchItem(null,Wearable.FILTER_UNWORNONLY,itemToSteal);
+		final Item stolen=target.fetchItem(null,Wearable.FILTER_UNWORNONLY,itemToSteal);
 		if(stolen instanceof Coins)
 		{
 			mob.tell("You can not mug that from "+target.name(mob)+".");
 			return false;
 		}
-		boolean success=proficiencyCheck(mob,levelDiff,auto);
+		final boolean success=proficiencyCheck(mob,levelDiff,auto);
 		if(!success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_NOISYMOVEMENT,auto?"":"You fumble the attempt to mug <T-NAME>!",CMMsg.MSG_NOISYMOVEMENT,auto?"":"<S-NAME> tries to mug you and fails!",CMMsg.MSG_NOISYMOVEMENT,auto?"":"<S-NAME> tries to mug <T-NAME> and fails!");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_NOISYMOVEMENT,auto?"":"You fumble the attempt to mug <T-NAME>!",CMMsg.MSG_NOISYMOVEMENT,auto?"":"<S-NAME> tries to mug you and fails!",CMMsg.MSG_NOISYMOVEMENT,auto?"":"<S-NAME> tries to mug <T-NAME> and fails!");
 			if(mob.location().okMessage(mob,msg))
 				mob.location().send(mob,msg);
 		}

@@ -47,7 +47,7 @@ public class Trap_Snare extends StdTrap
 		if(P==null) return null;
 		if(mob!=null)
 		{
-			Item I=findMostOfMaterial(mob.location(),RawMaterial.MATERIAL_CLOTH);
+			final Item I=findMostOfMaterial(mob.location(),RawMaterial.MATERIAL_CLOTH);
 			if(I!=null)
 				super.destroyResources(mob.location(),I.material(),5);
 		}
@@ -57,7 +57,7 @@ public class Trap_Snare extends StdTrap
 	@Override
 	public List<Item> getTrapComponents()
 	{
-		Vector V=new Vector();
+		final Vector V=new Vector();
 		for(int i=0;i<5;i++)
 			V.addElement(CMLib.materials().makeItemResource(RawMaterial.RESOURCE_COTTON));
 		return V;
@@ -68,7 +68,7 @@ public class Trap_Snare extends StdTrap
 		if(!super.canSetTrapOn(mob,P)) return false;
 		if(mob!=null)
 		{
-			Item I=findMostOfMaterial(mob.location(),RawMaterial.MATERIAL_CLOTH);
+			final Item I=findMostOfMaterial(mob.location(),RawMaterial.MATERIAL_CLOTH);
 			if((I==null)
 			||(findNumberOfResource(mob.location(),I.material())<5))
 			{
@@ -96,8 +96,8 @@ public class Trap_Snare extends StdTrap
 				super.spring(target);
 				target.basePhyStats().setDisposition(target.basePhyStats().disposition()|PhyStats.IS_SITTING);
 				target.recoverPhyStats();
-				Ability A=CMClass.getAbility("Thief_Bind");
-				Item I=CMClass.getItem("StdItem");
+				final Ability A=CMClass.getAbility("Thief_Bind");
+				final Item I=CMClass.getItem("StdItem");
 				I.setName("the snare");
 				A.setAffectedOne(I);
 				A.invoke(invoker(),target,true,0);

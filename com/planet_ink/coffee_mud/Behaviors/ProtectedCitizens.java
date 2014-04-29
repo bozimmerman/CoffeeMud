@@ -78,10 +78,10 @@ public class ProtectedCitizens extends ActiveTicker
 	public MaskingLibrary.CompiledZapperMask getProtectedZapper()
 	{
 		if(citizenZapper!=null) return citizenZapper;
-		String s=getParmsNoTicks();
+		final String s=getParmsNoTicks();
 		if(s.length()==0){ citizenZapper=MaskingLibrary.CompiledZapperMask.EMPTY(); return citizenZapper;}
-		char c=';';
-		int x=s.indexOf(c);
+		final char c=';';
+		final int x=s.indexOf(c);
 		if(x<0){ citizenZapper=MaskingLibrary.CompiledZapperMask.EMPTY(); return citizenZapper;}
 		citizenZapper=CMLib.masking().getPreCompiledMask(s.substring(0,x));
 		return citizenZapper;
@@ -92,7 +92,7 @@ public class ProtectedCitizens extends ActiveTicker
 		if(helperZapper!=null) return helperZapper;
 		String s=getParmsNoTicks();
 		if(s.length()==0){ helperZapper=MaskingLibrary.CompiledZapperMask.EMPTY(); return helperZapper;}
-		char c=';';
+		final char c=';';
 		int x=s.indexOf(c);
 		if(x<0){ helperZapper=MaskingLibrary.CompiledZapperMask.EMPTY(); return helperZapper;}
 		s=s.substring(x+1).trim();
@@ -109,7 +109,7 @@ public class ProtectedCitizens extends ActiveTicker
 		if(s.length()==0)
 		{ claims=defclaims; return claims;}
 
-		char c=';';
+		final char c=';';
 		int x=s.indexOf(c);
 		if(x<0)	{ claims=defclaims; return claims;}
 		s=s.substring(x+1).trim();
@@ -118,11 +118,11 @@ public class ProtectedCitizens extends ActiveTicker
 		s=s.substring(x+1).trim();
 		if(s.length()==0)
 		{ claims=defclaims; return claims;}
-		Vector V=new Vector();
+		final Vector V=new Vector();
 		x=s.indexOf(c);
 		while(x>=0)
 		{
-			String str=s.substring(0,x).trim();
+			final String str=s.substring(0,x).trim();
 			s=s.substring(x+1).trim();
 			if(str.length()>0)V.addElement(str);
 			x=s.indexOf(c);
@@ -155,7 +155,7 @@ public class ProtectedCitizens extends ActiveTicker
 		int assistance=0;
 		for(int i=0;i<mob.location().numInhabitants();i++)
 		{
-			MOB M=mob.location().fetchInhabitant(i);
+			final MOB M=mob.location().fetchInhabitant(i);
 			if((M!=null)
 			&&(M!=mob)
 			&&(M.getVictim()==mob.getVictim()))
@@ -164,14 +164,14 @@ public class ProtectedCitizens extends ActiveTicker
 		if(assistance>=maxAssistance)
 			return true;
 
-		String claim=getClaims()[CMLib.dice().roll(1,getClaims().length,-1)].trim();
+		final String claim=getClaims()[CMLib.dice().roll(1,getClaims().length,-1)].trim();
 		if(claim.startsWith(","))
 			mob.doCommand(CMParms.parse("EMOTE \""+claim.substring(1).trim()+"\""),Command.METAFLAG_FORCED);
 		else
 			mob.doCommand(CMParms.parse("YELL \""+claim+"\""),Command.METAFLAG_FORCED);
 
-		Room thisRoom=mob.location();
-		Vector rooms=new Vector();
+		final Room thisRoom=mob.location();
+		final Vector rooms=new Vector();
 		List<MOB> assMOBS=assisters.get(mob);
 		if(assMOBS==null)
 		{
@@ -180,7 +180,7 @@ public class ProtectedCitizens extends ActiveTicker
 		}
 		for(int a=0;a<assMOBS.size();a++)
 		{
-			MOB M=assMOBS.get(a);
+			final MOB M=assMOBS.get(a);
 			if((M!=null)
 			&&(M.mayIFight(mob.getVictim()))
 			&&(M!=mob.getVictim())
@@ -196,7 +196,7 @@ public class ProtectedCitizens extends ActiveTicker
 					CMLib.combat().postAttack(M,mob.getVictim(),M.fetchWieldedItem());
 				else
 				{
-					int dir=CMLib.tracking().radiatesFromDir(M.location(),rooms);
+					final int dir=CMLib.tracking().radiatesFromDir(M.location(),rooms);
 					if(dir>=0)
 						CMLib.tracking().walk(M,dir,false,false);
 				}
@@ -214,11 +214,11 @@ public class ProtectedCitizens extends ActiveTicker
 		CMLib.tracking().getRadiantRooms(thisRoom,rooms,flags,null,radius,null);
 		for(int r=0;r<rooms.size();r++)
 		{
-			Room R=(Room)rooms.elementAt(r);
+			final Room R=(Room)rooms.elementAt(r);
 			if(R.getArea().Name().equals(thisRoom.getArea().Name()))
 				for(int i=0;i<R.numInhabitants();i++)
 				{
-					MOB M=R.fetchInhabitant(i);
+					final MOB M=R.fetchInhabitant(i);
 					if((M!=null)
 					&&(M.mayIFight(mob.getVictim()))
 					&&(M!=mob.getVictim())
@@ -233,9 +233,9 @@ public class ProtectedCitizens extends ActiveTicker
 					&&(CMLib.flags().canHear(M))))
 					{
 						boolean notAllowed=false;
-						for(MOB hostM : assisters.keySet())
+						for(final MOB hostM : assisters.keySet())
 						{
-							List<MOB> assers = assisters.get(hostM);
+							final List<MOB> assers = assisters.get(hostM);
 							if(assers.contains(M))
 							{ notAllowed=true; break;}
 						}
@@ -246,7 +246,7 @@ public class ProtectedCitizens extends ActiveTicker
 								CMLib.combat().postAttack(M,mob.getVictim(),M.fetchWieldedItem());
 							else
 							{
-								int dir=CMLib.tracking().radiatesFromDir(M.location(),rooms);
+								final int dir=CMLib.tracking().radiatesFromDir(M.location(),rooms);
 								if(dir>=0)
 									CMLib.tracking().walk(M,dir,false,false);
 							}
@@ -274,9 +274,9 @@ public class ProtectedCitizens extends ActiveTicker
 					assistMOB(((Room)ticking).fetchInhabitant(i));
 			else
 			if(ticking instanceof Area)
-				for(Enumeration r=((Area)ticking).getMetroMap();r.hasMoreElements();)
+				for(final Enumeration r=((Area)ticking).getMetroMap();r.hasMoreElements();)
 				{
-					Room R=(Room)r.nextElement();
+					final Room R=(Room)r.nextElement();
 					for(int i=0;i<R.numInhabitants();i++)
 						assistMOB(R.fetchInhabitant(i));
 				}

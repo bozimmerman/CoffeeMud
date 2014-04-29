@@ -49,7 +49,7 @@ public class Chant_Bury extends Chant
 		if(R!=null)
 		for(int i=0;i<R.numItems();i++)
 		{
-			Item I=R.getItem(i);
+			final Item I=R.getItem(i);
 			if((I!=null)
 			&&(I instanceof DeadBody)
 			&&(!((DeadBody)I).playerCorpse())
@@ -107,7 +107,7 @@ public class Chant_Bury extends Chant
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
@@ -115,7 +115,7 @@ public class Chant_Bury extends Chant
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> bur(ys) <T-HIM-HERSELF>.":"^S<S-NAME> chant(s) to <T-NAMESELF>, returning dust to dust.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> bur(ys) <T-HIM-HERSELF>.":"^S<S-NAME> chant(s) to <T-NAMESELF>, returning dust to dust.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -123,7 +123,7 @@ public class Chant_Bury extends Chant
 					mob.curState().adjMana(3*target.phyStats().level()+(3*target.phyStats().level()*super.getXLEVELLevel(mob)),mob.maxState());
 				if(hole==null)
 				{
-					CMMsg holeMsg=CMClass.getMsg(mob, mob.location(),null,CMMsg.MSG_DIG|CMMsg.MASK_ALWAYS, null);
+					final CMMsg holeMsg=CMClass.getMsg(mob, mob.location(),null,CMMsg.MSG_DIG|CMMsg.MASK_ALWAYS, null);
 					mob.location().send(mob,holeMsg);
 					hole=mob.location().findItem("HoleInTheGround");
 				}

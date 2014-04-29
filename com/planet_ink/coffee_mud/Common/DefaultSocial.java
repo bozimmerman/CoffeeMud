@@ -53,7 +53,7 @@ public class DefaultSocial implements Social
 	@Override
 	public String baseName()
 	{
-		int x=name().indexOf(' ');
+		final int x=name().indexOf(' ');
 		if(x<0) return name();
 		return name().substring(0,x);
 	}
@@ -87,7 +87,7 @@ public class DefaultSocial implements Social
 			return name().endsWith(" <T-NAME>");
 		if((E instanceof Item)&&(((Item)E).container()==null))
 		{
-			Item I=(Item)E;
+			final Item I=(Item)E;
 			if(I.owner() instanceof Room)
 				return name().endsWith(" <I-NAME>");
 			if(I.owner() instanceof MOB)
@@ -122,12 +122,12 @@ public class DefaultSocial implements Social
 			else
 			if((targetE!=null)&&(!targetable(targetE)))
 			{
-				Social S=CMLib.socials().fetchSocial(baseName(),targetE, true);
+				final Social S=CMLib.socials().fetchSocial(baseName(),targetE, true);
 				if(S!=null) return S.invoke(mob, commands, targetE, auto);
 			}
 		}
 
-		String mspFile=((MSPfile!=null)&&(MSPfile.length()>0))?CMLib.protocol().msp(MSPfile,10):"";
+		final String mspFile=((MSPfile!=null)&&(MSPfile.length()>0))?CMLib.protocol().msp(MSPfile,10):"";
 
 		String You_see=You_see();
 		if((You_see!=null)&&(You_see.trim().length()==0))
@@ -146,26 +146,26 @@ public class DefaultSocial implements Social
 
 		if(((targetE==null)&&(targetable(null)))||((targetE!=null)&&(!targetable(targetE))))
 		{
-			CMMsg msg=CMClass.getMsg(mob,null,this,(auto?CMMsg.MASK_ALWAYS:0)|sourceCode(),See_when_no_target,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);
+			final CMMsg msg=CMClass.getMsg(mob,null,this,(auto?CMMsg.MASK_ALWAYS:0)|sourceCode(),See_when_no_target,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);
 			if(mob.location().okMessage(mob,msg))
 				mob.location().send(mob,msg);
 		}
 		else
 		if(targetE==null)
 		{
-			CMMsg msg=CMClass.getMsg(mob,null,this,(auto?CMMsg.MASK_ALWAYS:0)|sourceCode(),(You_see==null)?null:You_see+mspFile,CMMsg.NO_EFFECT,null,othersCode(),(Third_party_sees==null)?null:Third_party_sees+mspFile);
+			final CMMsg msg=CMClass.getMsg(mob,null,this,(auto?CMMsg.MASK_ALWAYS:0)|sourceCode(),(You_see==null)?null:You_see+mspFile,CMMsg.NO_EFFECT,null,othersCode(),(Third_party_sees==null)?null:Third_party_sees+mspFile);
 			if(mob.location().okMessage(mob,msg))
 				mob.location().send(mob,msg);
 		}
 		else
 		{
-			CMMsg msg=CMClass.getMsg(mob,targetE,this,(auto?CMMsg.MASK_ALWAYS:0)|sourceCode(),(You_see==null)?null:You_see+mspFile,targetCode(),(Target_sees==null)?null:Target_sees+mspFile,othersCode(),(Third_party_sees==null)?null:Third_party_sees+mspFile);
+			final CMMsg msg=CMClass.getMsg(mob,targetE,this,(auto?CMMsg.MASK_ALWAYS:0)|sourceCode(),(You_see==null)?null:You_see+mspFile,targetCode(),(Target_sees==null)?null:Target_sees+mspFile,othersCode(),(Third_party_sees==null)?null:Third_party_sees+mspFile);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(target instanceof MOB)
 				{
-					MOB tmob=(MOB)target;
+					final MOB tmob=(MOB)target;
 					if((name().toUpperCase().startsWith("SMILE"))
 					&&(mob.charStats().getStat(CharStats.STAT_CHARISMA)>=16)
 					&&(mob.charStats().getMyRace().ID().equals(tmob.charStats().getMyRace().ID()))
@@ -175,7 +175,7 @@ public class DefaultSocial implements Social
 					&&(mob.charStats().getStat(CharStats.STAT_GENDER)!=tmob.charStats().getStat(CharStats.STAT_GENDER))
 					&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.AUTODISEASE)))
 					{
-						Ability A=CMClass.getAbility("Disease_Smiles");
+						final Ability A=CMClass.getAbility("Disease_Smiles");
 						if((A!=null)&&(target.fetchEffect(A.ID())==null))
 							A.invoke(tmob,tmob,true,0);
 					}
@@ -195,8 +195,8 @@ public class DefaultSocial implements Social
 		String channelColor=CMLib.channels().getChannel(channelInt).colorOverride;
 		if(channelColor.length()==0)
 			channelColor="^Q";
-		String str=makeTarget?"":(channelColor+"^<CHANNEL \""+channelName+"\"^>["+channelName+"] ");
-		String end=makeTarget?"":"^</CHANNEL^>^N^.";
+		final String str=makeTarget?"":(channelColor+"^<CHANNEL \""+channelName+"\"^>["+channelName+"] ");
+		final String end=makeTarget?"":"^</CHANNEL^>^N^.";
 		return makeMessage(mob,str,end,CMMsg.MASK_CHANNEL,CMMsg.MASK_CHANNEL|(CMMsg.TYP_CHANNEL+channelInt),commands,channelName,makeTarget);
 	}
 	@Override
@@ -225,10 +225,10 @@ public class DefaultSocial implements Social
 				target=CMLib.players().getPlayer(targetStr);
 				if((target==null)&&(!makeTarget))
 				{
-					MOB possTarget=CMLib.catalog().getCatalogMob(targetStr);
+					final MOB possTarget=CMLib.catalog().getCatalogMob(targetStr);
 					if(possTarget!=null)
 					{
-						CatalogLibrary.CataData data=CMLib.catalog().getCatalogData(possTarget);
+						final CatalogLibrary.CataData data=CMLib.catalog().getCatalogData(possTarget);
 						if(data!=null)
 							target=data.getLiveReference();
 					}
@@ -349,7 +349,7 @@ public class DefaultSocial implements Social
 	public boolean sameAs(Environmental E)
 	{
 		if(!(E instanceof Social)) return false;
-		String name=Social_name.toUpperCase().trim();
+		final String name=Social_name.toUpperCase().trim();
 		if(!(((Social)E).name().toUpperCase().equals(name.trim())))
 		   return false;
 		if(((You_see == null)!=(((Social)E).You_see() == null))
@@ -382,12 +382,12 @@ public class DefaultSocial implements Social
 	{
 		try
 		{
-			DefaultSocial E=(DefaultSocial)this.clone();
+			final DefaultSocial E=(DefaultSocial)this.clone();
 			E.cloneFix(this);
 			return E;
 
 		}
-		catch(CloneNotSupportedException e)
+		catch(final CloneNotSupportedException e)
 		{
 			return this.newInstance();
 		}

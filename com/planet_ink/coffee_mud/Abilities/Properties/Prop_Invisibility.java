@@ -47,7 +47,7 @@ public class Prop_Invisibility extends Property
 		super.executeMsg(myHost,msg);
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		if((msg.amISource(mob))&&(CMath.bset(msg.sourceMajor(),CMMsg.MASK_MALICIOUS)))
 		{

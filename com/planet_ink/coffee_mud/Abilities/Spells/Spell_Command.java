@@ -43,14 +43,14 @@ public class Spell_Command extends Spell
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		Vector V=new Vector();
+		final Vector V=new Vector();
 		if(commands.size()>0)
 		{
 			V.addElement(commands.elementAt(0));
 			commands.removeElementAt(0);
 		}
 
-		MOB target=getTarget(mob,V,givenTarget);
+		final MOB target=getTarget(mob,V,givenTarget);
 		if(target==null) return false;
 
 		if(commands.size()==0)
@@ -106,7 +106,7 @@ public class Spell_Command extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
@@ -114,9 +114,9 @@ public class Spell_Command extends Spell
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> command(s) <T-NAMESELF> to '"+CMParms.combine(commands,0)+"'.^?");
-			CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_MIND|(auto?CMMsg.MASK_ALWAYS:0),null);
-			CMMsg omsg=CMClass.getMsg(mob,target,null,CMMsg.MSG_ORDER,null);
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> command(s) <T-NAMESELF> to '"+CMParms.combine(commands,0)+"'.^?");
+			final CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_MIND|(auto?CMMsg.MASK_ALWAYS:0),null);
+			final CMMsg omsg=CMClass.getMsg(mob,target,null,CMMsg.MSG_ORDER,null);
 			if((mob.location().okMessage(mob,msg))
 			&&((mob.location().okMessage(mob,msg2)))
 			&&(mob.location().okMessage(mob, omsg)))

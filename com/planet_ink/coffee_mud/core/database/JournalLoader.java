@@ -56,7 +56,7 @@ public class JournalLoader
 			try
 			{
 				D=DB.DBFetch();
-				ResultSet R=D.query("SELECT CMFROM,CMTONM FROM CMJRNL WHERE CMJRNL='"+Journal+"'");
+				final ResultSet R=D.query("SELECT CMFROM,CMTONM FROM CMJRNL WHERE CMJRNL='"+Journal+"'");
 				while(R.next())
 				{
 					if((from!=null)&&(!from.equalsIgnoreCase(DBConnections.getRes(R,"CMFROM"))))
@@ -66,7 +66,7 @@ public class JournalLoader
 					ct++;
 				}
 			}
-			catch(Exception sqle)
+			catch(final Exception sqle)
 			{
 				Log.errOut("Journal",sqle);
 				return ct;
@@ -90,7 +90,7 @@ public class JournalLoader
 		try
 		{
 			D=DB.DBFetch(); // add unique
-			ResultSet R=D.query("SELECT CMJRNL FROM CMJRNL WHERE CMJRNL='"+possibleName+"'");
+			final ResultSet R=D.query("SELECT CMJRNL FROM CMJRNL WHERE CMJRNL='"+possibleName+"'");
 			if(R.next())
 			{
 				realName=DBConnections.getRes(R,"CMJRNL");
@@ -100,7 +100,7 @@ public class JournalLoader
 				}
 			}
 		}
-		catch(Exception sqle)
+		catch(final Exception sqle)
 		{
 			Log.errOut("Journal",sqle);
 		}
@@ -117,22 +117,22 @@ public class JournalLoader
 		to = DB.injectionClean(to);
 
 		DBConnection D=null;
-		long[] newest=new long[]{0,0};
+		final long[] newest=new long[]{0,0};
 		try
 		{
 			D=DB.DBFetch(); // add max and count to fakedb
 			String str="SELECT CMUPTM FROM CMJRNL WHERE CMJRNL='"+Journal+"' AND CMUPTM > " + olderTime;
 			if(to != null) str +=" AND CMTONM='"+to+"'";
-			ResultSet R=D.query(str);
+			final ResultSet R=D.query(str);
 			while(R.next())
 			{
 				newest[1]++;
-				long date=R.getLong("CMUPTM");
+				final long date=R.getLong("CMUPTM");
 				if(date>newest[0])
 					newest[0]=date;
 			}
 		}
-		catch(Exception sqle)
+		catch(final Exception sqle)
 		{
 			Log.errOut("Journal",sqle);
 		}
@@ -146,15 +146,15 @@ public class JournalLoader
 	public synchronized List<String> DBReadJournals()
 	{
 		DBConnection D=null;
-		HashSet<String> journalsH = new HashSet<String>();
-		Vector<String> journals=new Vector<String>();
+		final HashSet<String> journalsH = new HashSet<String>();
+		final Vector<String> journals=new Vector<String>();
 		try
 		{
 			D=DB.DBFetch();
-			ResultSet R=D.query("SELECT CMJRNL FROM CMJRNL"); // add unique to fakedb
+			final ResultSet R=D.query("SELECT CMJRNL FROM CMJRNL"); // add unique to fakedb
 			while(R.next())
 			{
-				String which=DBConnections.getRes(R,"CMJRNL");
+				final String which=DBConnections.getRes(R,"CMJRNL");
 				if(!journalsH.contains(which))
 				{
 					journalsH.add(which);
@@ -162,7 +162,7 @@ public class JournalLoader
 				}
 			}
 		}
-		catch(Exception sqle)
+		catch(final Exception sqle)
 		{
 			Log.errOut("Journal",sqle);
 			return null;
@@ -176,10 +176,10 @@ public class JournalLoader
 
 	protected JournalsLibrary.JournalEntry DBReadJournalEntry(ResultSet R)
 	{
-		JournalsLibrary.JournalEntry entry=new JournalsLibrary.JournalEntry();
+		final JournalsLibrary.JournalEntry entry=new JournalsLibrary.JournalEntry();
 		entry.key=DBConnections.getRes(R,"CMJKEY");
 		entry.from=DBConnections.getRes(R,"CMFROM");
-		String dateStr = DBConnections.getRes(R,"CMDATE");
+		final String dateStr = DBConnections.getRes(R,"CMDATE");
 		entry.to=DBConnections.getRes(R,"CMTONM");
 		entry.subj=DBConnections.getRes(R,"CMSUBJ");
 		entry.parent=DBConnections.getRes(R,"CMPART");
@@ -191,7 +191,7 @@ public class JournalLoader
 		entry.replies=CMath.s_int(DBConnections.getRes(R, "CMREPL"));
 		entry.msg=DBConnections.getRes(R,"CMMSGT");
 
-		int datestrdex=dateStr.indexOf('/');
+		final int datestrdex=dateStr.indexOf('/');
 		if(datestrdex>=0)
 		{
 			entry.update=CMath.s_long(dateStr.substring(datestrdex+1));
@@ -204,12 +204,12 @@ public class JournalLoader
 				entry.update=entry.date;
 		}
 
-		String subject=entry.subj.toUpperCase();
+		final String subject=entry.subj.toUpperCase();
 		if((subject.startsWith("MOTD"))
 		||(subject.startsWith("MOTM"))
 		||(subject.startsWith("MOTY")))
 		{
-			char c=subject.charAt(3);
+			final char c=subject.charAt(3);
 			entry.subj=entry.subj.substring(4);
 			long last=entry.date;
 			if(c=='D') last=last+TimeManager.MILI_DAY;
@@ -227,9 +227,9 @@ public class JournalLoader
 		Journal = DB.injectionClean(Journal);
 		parent = DB.injectionClean(parent);
 		searchStr = DB.injectionClean(searchStr);
-		boolean searching=((searchStr!=null)&&(searchStr.length()>0));
+		final boolean searching=((searchStr!=null)&&(searchStr.length()>0));
 
-		Vector<JournalsLibrary.JournalEntry> journal=new Vector<JournalsLibrary.JournalEntry>();
+		final Vector<JournalsLibrary.JournalEntry> journal=new Vector<JournalsLibrary.JournalEntry>();
 		DBConnection D=null;
 		try
 		{
@@ -255,10 +255,10 @@ public class JournalLoader
 			else
 				str += " DESC";
 
-			ResultSet R=D.query(str);
+			final ResultSet R=D.query(str);
 			int cardinal=0;
 			JournalsLibrary.JournalEntry entry;
-			Map<String,JournalsLibrary.JournalEntry> parentKeysDone=new HashMap<String,JournalsLibrary.JournalEntry>();
+			final Map<String,JournalsLibrary.JournalEntry> parentKeysDone=new HashMap<String,JournalsLibrary.JournalEntry>();
 			while(((cardinal < limit)||(limit==0)) && R.next())
 			{
 				entry = DBReadJournalEntry(R);
@@ -266,8 +266,8 @@ public class JournalLoader
 					continue;
 				if(searching)
 				{
-					long updated=entry.update;
-					String parentKey=((entry.parent!=null)&&(entry.parent.length()>0))?entry.parent:entry.key;
+					final long updated=entry.update;
+					final String parentKey=((entry.parent!=null)&&(entry.parent.length()>0))?entry.parent:entry.key;
 					if(parentKeysDone.containsKey(parentKey))
 					{
 						parentKeysDone.get(parentKey).update=updated;
@@ -292,7 +292,7 @@ public class JournalLoader
 				journal.lastElement().isLastEntry=true;
 				while(R.next())
 				{
-					long attributes=R.getLong("CMATTR");
+					final long attributes=R.getLong("CMATTR");
 					if(CMath.bset(attributes,JournalsLibrary.JournalEntry.ATTRIBUTE_STUCKY))
 						continue;
 					journal.lastElement().isLastEntry=false;
@@ -303,7 +303,7 @@ public class JournalLoader
 			if((journal.size()>0)&&(!R.next()))
 				journal.lastElement().isLastEntry=true;
 		}
-		catch(Exception sqle)
+		catch(final Exception sqle)
 		{
 			Log.errOut("Journal",sqle);
 			return null;
@@ -319,7 +319,7 @@ public class JournalLoader
 	{
 		Journal = DB.injectionClean(Journal);
 		searchStr = DB.injectionClean(searchStr);
-		Vector<JournalsLibrary.JournalEntry> journal=new Vector<JournalsLibrary.JournalEntry>();
+		final Vector<JournalsLibrary.JournalEntry> journal=new Vector<JournalsLibrary.JournalEntry>();
 		DBConnection D=null;
 		try
 		{
@@ -329,7 +329,7 @@ public class JournalLoader
 			str += " ORDER BY CMUPTM";
 			str += " ASC";
 
-			ResultSet R=D.query(str);
+			final ResultSet R=D.query(str);
 			int cardinal=0;
 			JournalsLibrary.JournalEntry entry;
 			while(R.next())
@@ -342,7 +342,7 @@ public class JournalLoader
 			if((journal.size()>0)&&(!R.next()))
 				journal.lastElement().isLastEntry=true;
 		}
-		catch(Exception sqle)
+		catch(final Exception sqle)
 		{
 			Log.errOut("Journal",sqle);
 			return null;
@@ -359,7 +359,7 @@ public class JournalLoader
 		Journal = DB.injectionClean(Journal);
 		to = DB.injectionClean(to);
 
-		Vector<JournalsLibrary.JournalEntry> journal=new Vector<JournalsLibrary.JournalEntry>();
+		final Vector<JournalsLibrary.JournalEntry> journal=new Vector<JournalsLibrary.JournalEntry>();
 		DBConnection D=null;
 		try
 		{
@@ -367,16 +367,16 @@ public class JournalLoader
 			String str="SELECT * FROM CMJRNL WHERE CMUPTM > " + olderDate;
 			if(Journal!=null) str +=" AND CMJRNL='"+Journal+"'";
 			if(to != null) str +=" AND CMTONM='"+to+"'";
-			ResultSet R=D.query(str);
+			final ResultSet R=D.query(str);
 			int cardinal=0;
 			while(R.next())
 			{
-				JournalsLibrary.JournalEntry entry = DBReadJournalEntry(R);
+				final JournalsLibrary.JournalEntry entry = DBReadJournalEntry(R);
 				entry.cardinal = ++cardinal;
 				journal.addElement(entry);
 			}
 		}
-		catch(Exception sqle)
+		catch(final Exception sqle)
 		{
 			Log.errOut("Journal",sqle);
 			return null;
@@ -396,23 +396,23 @@ public class JournalLoader
 		if(Journal==null) return new Vector<JournalsLibrary.JournalEntry>();
 		synchronized(Journal.toUpperCase().intern())
 		{
-			Vector<JournalsLibrary.JournalEntry> journal=new Vector<JournalsLibrary.JournalEntry>();
+			final Vector<JournalsLibrary.JournalEntry> journal=new Vector<JournalsLibrary.JournalEntry>();
 			//Resources.submitResource("JOURNAL_"+Journal);
 			DBConnection D=null;
 			try
 			{
 				D=DB.DBFetch();
-				String str="SELECT * FROM CMJRNL WHERE CMJRNL='"+Journal+"'";
-				ResultSet R=D.query(str);
+				final String str="SELECT * FROM CMJRNL WHERE CMJRNL='"+Journal+"'";
+				final ResultSet R=D.query(str);
 				int cardinal=0;
 				while(R.next())
 				{
-					JournalsLibrary.JournalEntry entry = DBReadJournalEntry(R);
+					final JournalsLibrary.JournalEntry entry = DBReadJournalEntry(R);
 					entry.cardinal = ++cardinal;
 					journal.addElement(entry);
 				}
 			}
-			catch(Exception sqle)
+			catch(final Exception sqle)
 			{
 				Log.errOut("Journal",sqle);
 				return null;
@@ -438,15 +438,15 @@ public class JournalLoader
 			try
 			{
 				D=DB.DBFetch();
-				String str="SELECT * FROM CMJRNL WHERE CMJKEY='"+Key+"' AND CMJRNL='"+Journal+"'";
-				ResultSet R=D.query(str);
+				final String str="SELECT * FROM CMJRNL WHERE CMJKEY='"+Key+"' AND CMJRNL='"+Journal+"'";
+				final ResultSet R=D.query(str);
 				if(R.next())
 				{
-					JournalsLibrary.JournalEntry entry = DBReadJournalEntry(R);
+					final JournalsLibrary.JournalEntry entry = DBReadJournalEntry(R);
 					return entry;
 				}
 			}
-			catch(Exception sqle)
+			catch(final Exception sqle)
 			{
 				Log.errOut("Journal",sqle);
 				return null;
@@ -468,7 +468,7 @@ public class JournalLoader
 		if(journal==null) return -1;
 		for(int i=0;i<journal.size();i++)
 		{
-			JournalsLibrary.JournalEntry E=journal.get(i);
+			final JournalsLibrary.JournalEntry E=journal.get(i);
 			if((from!=null)&&(!(E.from).equalsIgnoreCase(from)))
 				continue;
 			if((to!=null)&&(!(E.to).equalsIgnoreCase(to)))
@@ -486,7 +486,7 @@ public class JournalLoader
 		subject = DB.injectionClean(subject);
 		msg = DB.injectionClean(msg);
 
-		String sql="UPDATE CMJRNL SET CMSUBJ=?, CMMSGT=?, CMATTR="+newAttributes+" WHERE CMJKEY='"+key+"'";
+		final String sql="UPDATE CMJRNL SET CMSUBJ=?, CMMSGT=?, CMATTR="+newAttributes+" WHERE CMJKEY='"+key+"'";
 		if(CMSecurity.isDebugging(CMSecurity.DbgFlag.CMJRNL)) Log.debugOut("JournalLoader",sql);
 		DB.updateWithClobs(sql,subject,msg);
 	}
@@ -534,7 +534,7 @@ public class JournalLoader
 	public void DBTouchJournalMessage(String key, long newDate)
 	{
 		key = DB.injectionClean(key);
-		String sql="UPDATE CMJRNL SET CMUPTM="+newDate+" WHERE CMJKEY='"+key+"'";
+		final String sql="UPDATE CMJRNL SET CMUPTM="+newDate+" WHERE CMJKEY='"+key+"'";
 		if(CMSecurity.isDebugging(CMSecurity.DbgFlag.CMJRNL)) Log.debugOut("JournalLoader",sql);
 		DB.update(sql);
 	}
@@ -542,7 +542,7 @@ public class JournalLoader
 	public void DBUpdateMessageReplies(String key, int numReplies)
 	{
 		key = DB.injectionClean(key);
-		String sql="UPDATE CMJRNL SET CMUPTM="+System.currentTimeMillis()+", CMREPL="+numReplies+" WHERE CMJKEY='"+key+"'";
+		final String sql="UPDATE CMJRNL SET CMUPTM="+System.currentTimeMillis()+", CMREPL="+numReplies+" WHERE CMJKEY='"+key+"'";
 		if(CMSecurity.isDebugging(CMSecurity.DbgFlag.CMJRNL)) Log.debugOut("JournalLoader",sql);
 		DB.update(sql);
 	}
@@ -550,7 +550,7 @@ public class JournalLoader
 	public void DBViewJournalMessage(String key, int views)
 	{
 		key = DB.injectionClean(key);
-		String sql="UPDATE CMJRNL SET CMVIEW="+views+" WHERE CMJKEY='"+key+"'";
+		final String sql="UPDATE CMJRNL SET CMVIEW="+views+" WHERE CMJKEY='"+key+"'";
 		if(CMSecurity.isDebugging(CMSecurity.DbgFlag.CMJRNL)) Log.debugOut("JournalLoader",sql);
 		DB.update(sql);
 	}
@@ -562,36 +562,36 @@ public class JournalLoader
 		try
 		{
 			D=DB.DBFetch();
-			Vector<String> deletableEntriesV=new Vector<String>();
-			Vector<String[]> notifiableParentsV=new Vector<String[]>();
+			final Vector<String> deletableEntriesV=new Vector<String>();
+			final Vector<String[]> notifiableParentsV=new Vector<String[]>();
 			//Resources.submitResource("JOURNAL_"+Journal);
-			String str="SELECT * FROM CMJRNL WHERE CMTONM='"+name+"'";
-			ResultSet R=D.query(str);
+			final String str="SELECT * FROM CMJRNL WHERE CMTONM='"+name+"'";
+			final ResultSet R=D.query(str);
 			while(R.next())
 			{
-				String journalName=R.getString("CMJRNL");
+				final String journalName=R.getString("CMJRNL");
 				if((CMLib.journals().getForumJournal(journalName)!=null)
 				||(CMLib.journals().getCommandJournal(journalName)!=null))
 					continue;
-				String key=R.getString("CMJKEY");
-				String parent=R.getString("CMPART");
+				final String key=R.getString("CMJKEY");
+				final String parent=R.getString("CMPART");
 				if((parent!=null)&&(parent.length()>0))
 					notifiableParentsV.add(new String[]{journalName,parent});
 				deletableEntriesV.add(key);
 			}
-			for(String[] parentKey : notifiableParentsV)
+			for(final String[] parentKey : notifiableParentsV)
 			{
 				if(!deletableEntriesV.contains(parentKey[0]))
 				{
-					JournalsLibrary.JournalEntry parentEntry=DBReadJournalEntry(parentKey[0], parentKey[1]);
+					final JournalsLibrary.JournalEntry parentEntry=DBReadJournalEntry(parentKey[0], parentKey[1]);
 					if(parentEntry!=null)
 						DBUpdateMessageReplies(parentEntry.key,parentEntry.replies-1);
 				}
 			}
-			for(String s : deletableEntriesV)
+			for(final String s : deletableEntriesV)
 				D.update("DELETE FROM CMJRNL WHERE CMJKEY='"+s+"' OR CMPART='"+s+"'",0);
 		}
-		catch(Exception sqle)
+		catch(final Exception sqle)
 		{
 			Log.errOut("Journal",sqle);
 		}
@@ -614,7 +614,7 @@ public class JournalLoader
 		try
 		{
 			D=DB.DBFetch();
-			ResultSet R=D.query("SELECT * FROM CMJRNL WHERE CMJRNL='"+stats.name+"' AND CMTONM='JOURNALINTRO'");
+			final ResultSet R=D.query("SELECT * FROM CMJRNL WHERE CMJRNL='"+stats.name+"' AND CMTONM='JOURNALINTRO'");
 			JournalsLibrary.JournalEntry entry = null;
 			if(R.next())
 				entry = this.DBReadJournalEntry(R);
@@ -643,7 +643,7 @@ public class JournalLoader
 				this.DBWrite(Journal, entry);
 			}
 		}
-		catch(Exception sqle)
+		catch(final Exception sqle)
 		{
 			Log.errOut("JournalLoader",sqle.getMessage());
 		}
@@ -666,14 +666,14 @@ public class JournalLoader
 		try
 		{
 			D=DB.DBFetch();
-			ResultSet R=D.query("SELECT * FROM CMJRNL WHERE CMJRNL='"+stats.name+"' AND CMTONM='ALL' AND CMPART=''");
+			final ResultSet R=D.query("SELECT * FROM CMJRNL WHERE CMJRNL='"+stats.name+"' AND CMTONM='ALL' AND CMPART=''");
 			long topTime = 0;
 			while(R.next())
 			{
-				String key=R.getString("CMJKEY");
-				long updateTime=R.getLong("CMUPTM");
-				long attributes=R.getLong("CMATTR");
-				int replies=R.getInt("CMREPL");
+				final String key=R.getString("CMJKEY");
+				final long updateTime=R.getLong("CMUPTM");
+				final long attributes=R.getLong("CMATTR");
+				final int replies=R.getInt("CMREPL");
 				stats.posts++;
 				stats.threads++;
 				stats.posts+=replies;
@@ -691,7 +691,7 @@ public class JournalLoader
 			}
 			R.close();
 		}
-		catch(Exception sqle)
+		catch(final Exception sqle)
 		{
 			Log.errOut("JournalLoader",sqle.getMessage());
 		}
@@ -706,10 +706,10 @@ public class JournalLoader
 		{
 			if(D==null)
 				D=DB.DBFetch();
-			ResultSet R=D.query("SELECT * FROM CMJRNL WHERE CMJRNL='"+stats.name+"' AND CMTONM='JOURNALINTRO'");
+			final ResultSet R=D.query("SELECT * FROM CMJRNL WHERE CMJRNL='"+stats.name+"' AND CMTONM='JOURNALINTRO'");
 			if(R.next())
 			{
-				JournalsLibrary.JournalEntry entry = this.DBReadJournalEntry(R);
+				final JournalsLibrary.JournalEntry entry = this.DBReadJournalEntry(R);
 				if(entry != null)
 				{
 					stats.introKey=entry.key;
@@ -720,7 +720,7 @@ public class JournalLoader
 			}
 			R.close();
 		}
-		catch(Exception sqle)
+		catch(final Exception sqle)
 		{
 			Log.errOut("JournalLoader",sqle.getMessage());
 		}
@@ -770,16 +770,16 @@ public class JournalLoader
 		if(Journal==null) return;
 		synchronized(Journal.toUpperCase().intern())
 		{
-			JournalsLibrary.JournalEntry entry=DBReadJournalEntry(Journal, key);
+			final JournalsLibrary.JournalEntry entry=DBReadJournalEntry(Journal, key);
 			if(entry==null) return;
-			long now=System.currentTimeMillis();
-			String oldkey=entry.key;
-			String oldmsg=entry.msg;
-			int replies = entry.replies+1;
+			final long now=System.currentTimeMillis();
+			final String oldkey=entry.key;
+			final String oldmsg=entry.msg;
+			final int replies = entry.replies+1;
 			message=oldmsg+JournalsLibrary.JOURNAL_BOUNDARY
 			 +"^yReply from^N: "+from+"    ^yDate/Time ^N: "+CMLib.time().date2String(now)+"%0D"
 			 +message;
-			String sql="UPDATE CMJRNL SET CMUPTM="+now+", CMMSGT=?, CMREPL="+replies+" WHERE CMJKEY='"+oldkey+"'";
+			final String sql="UPDATE CMJRNL SET CMUPTM="+now+", CMMSGT=?, CMREPL="+replies+" WHERE CMJKEY='"+oldkey+"'";
 			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.CMJRNL)) Log.debugOut("JournalLoader",sql);
 			DB.updateWithClobs(sql,message);
 		}
@@ -804,7 +804,7 @@ public class JournalLoader
 		message = DB.injectionClean(message);
 		journalSource = DB.injectionClean(journalSource);
 
-		JournalsLibrary.JournalEntry entry = new JournalsLibrary.JournalEntry();
+		final JournalsLibrary.JournalEntry entry = new JournalsLibrary.JournalEntry();
 		entry.key=null;
 		entry.data=journalSource;
 		entry.from=from;
@@ -832,7 +832,7 @@ public class JournalLoader
 		if(Journal==null) return;
 		synchronized(Journal.toUpperCase().intern())
 		{
-			long now=System.currentTimeMillis();
+			final long now=System.currentTimeMillis();
 			if(entry.subj.length()>255)
 				entry.subj=entry.subj.substring(0,255);
 			if(entry.key==null)
@@ -841,7 +841,7 @@ public class JournalLoader
 				entry.date=now;
 			if(entry.update==0)
 				entry.update=now;
-			String sql = "INSERT INTO CMJRNL ("
+			final String sql = "INSERT INTO CMJRNL ("
 				+"CMJKEY, "
 				+"CMJRNL, "
 				+"CMFROM, "
@@ -876,12 +876,12 @@ public class JournalLoader
 			if((entry.parent!=null)&&(entry.parent.length()>0))
 			{
 				// this constitutes a threaded reply -- update the counter
-				JournalsLibrary.JournalEntry parentEntry=DBReadJournalEntry(Journal, entry.parent);
+				final JournalsLibrary.JournalEntry parentEntry=DBReadJournalEntry(Journal, entry.parent);
 				if(parentEntry!=null)
 					DBUpdateMessageReplies(parentEntry.key,parentEntry.replies+1);
 			}
 			if(System.currentTimeMillis()==now) // ensures unique keys.
-				try{Thread.sleep(1);}catch(Exception e){}
+				try{Thread.sleep(1);}catch(final Exception e){}
 		}
 	}
 }

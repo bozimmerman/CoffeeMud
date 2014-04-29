@@ -57,7 +57,7 @@ public class Disease_Smiles extends Disease
 		if(affected==null) return false;
 		if(!(affected instanceof MOB)) return true;
 
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		if((getTickDownRemaining()==1)
 		&&(!mob.amDead())
 		&&(CMLib.dice().rollPercentage()>mob.charStats().getSave(CharStats.STAT_SAVE_DISEASE)))
@@ -65,14 +65,14 @@ public class Disease_Smiles extends Disease
 			MOB diseaser=invoker;
 			if(diseaser==null) diseaser=mob;
 			mob.delEffect(this);
-			Ability A=CMClass.getAbility("Disease_Giggles");
+			final Ability A=CMClass.getAbility("Disease_Giggles");
 			A.invoke(diseaser,mob,true,0);
 		}
 		else
 		if((!mob.amDead())&&((--diseaseTick)<=0))
 		{
 			diseaseTick=DISEASE_DELAY();
-			CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_QUIETMOVEMENT,DISEASE_AFFECT());
+			final CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_QUIETMOVEMENT,DISEASE_AFFECT());
 			if((mob.location()!=null)&&(mob.location().okMessage(mob,msg)))
 				mob.location().send(mob,msg);
 			catchIt(mob);

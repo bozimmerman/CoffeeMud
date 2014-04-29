@@ -14,6 +14,7 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import com.planet_ink.miniweb.interfaces.*;
+
 import java.util.*;
 
 /*
@@ -42,22 +43,22 @@ public class AbilityPlayerNext extends StdWebMacro
 		if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
 			return CMProps.getVar(CMProps.Str.MUDSTATUS);
 
-		java.util.Map<String,String> parms=parseParms(parm);
-		String last=httpReq.getUrlParameter("ABILITY");
+		final java.util.Map<String,String> parms=parseParms(parm);
+		final String last=httpReq.getUrlParameter("ABILITY");
 		if(parms.containsKey("RESET"))
 		{
 			if(last!=null) httpReq.removeUrlParameter("ABILITY");
 			return "";
 		}
-		String ableType=httpReq.getUrlParameter("ABILITYTYPE");
+		final String ableType=httpReq.getUrlParameter("ABILITYTYPE");
 		if((ableType!=null)&&(ableType.length()>0))
 			parms.put(ableType,ableType);
-		String domainType=httpReq.getUrlParameter("DOMAIN");
+		final String domainType=httpReq.getUrlParameter("DOMAIN");
 		if((domainType!=null)&&(domainType.length()>0))
 			parms.put("DOMAIN",domainType);
 
 		String lastID="";
-		String playerName=httpReq.getUrlParameter("PLAYER");
+		final String playerName=httpReq.getUrlParameter("PLAYER");
 		MOB M=null;
 		if((playerName!=null)&&(playerName.length()>0))
 			M=CMLib.players().getLoadPlayer(playerName);
@@ -68,11 +69,11 @@ public class AbilityPlayerNext extends StdWebMacro
 			return " @break@";
 		}
 
-		Vector abilities=new Vector();
+		final Vector abilities=new Vector();
 		HashSet foundIDs=new HashSet();
-		for(Enumeration<Ability> a=M.allAbilities();a.hasMoreElements();)
+		for(final Enumeration<Ability> a=M.allAbilities();a.hasMoreElements();)
 		{
-			Ability A=a.nextElement();
+			final Ability A=a.nextElement();
 			if((A!=null)&&(!foundIDs.contains(A.ID())))
 			{
 				foundIDs.add(A.ID());
@@ -83,31 +84,31 @@ public class AbilityPlayerNext extends StdWebMacro
 		foundIDs=null;
 		for(int a=0;a<abilities.size();a++)
 		{
-			Ability A=(Ability)abilities.elementAt(a);
+			final Ability A=(Ability)abilities.elementAt(a);
 			boolean okToShow=true;
-			int classType=A.classificationCode()&Ability.ALL_ACODES;
-			String className=httpReq.getUrlParameter("CLASS");
+			final int classType=A.classificationCode()&Ability.ALL_ACODES;
+			final String className=httpReq.getUrlParameter("CLASS");
 
 			if((className!=null)&&(className.length()>0))
 			{
-				int level=CMLib.ableMapper().getQualifyingLevel(className,true,A.ID());
+				final int level=CMLib.ableMapper().getQualifyingLevel(className,true,A.ID());
 				if(level<0)
 					okToShow=false;
 				else
 				{
-					String levelName=httpReq.getUrlParameter("LEVEL");
+					final String levelName=httpReq.getUrlParameter("LEVEL");
 					if((levelName!=null)&&(levelName.length()>0)&&(CMath.s_int(levelName)!=level))
 						okToShow=false;
 				}
 			}
 			else
 			{
-				int level=CMLib.ableMapper().getQualifyingLevel("Archon",true,A.ID());
+				final int level=CMLib.ableMapper().getQualifyingLevel("Archon",true,A.ID());
 				if(level<0)
 					okToShow=false;
 				else
 				{
-					String levelName=httpReq.getUrlParameter("LEVEL");
+					final String levelName=httpReq.getUrlParameter("LEVEL");
 					if((levelName!=null)&&(levelName.length()>0)&&(CMath.s_int(levelName)!=level))
 						okToShow=false;
 				}
@@ -116,15 +117,15 @@ public class AbilityPlayerNext extends StdWebMacro
 			{
 				if(parms.containsKey("DOMAIN")&&(classType==Ability.ACODE_SPELL))
 				{
-					String domain=parms.get("DOMAIN");
+					final String domain=parms.get("DOMAIN");
 					if(!domain.equalsIgnoreCase(Ability.DOMAIN_DESCS[(A.classificationCode()&Ability.ALL_DOMAINS)>>5]))
 					   okToShow=false;
 				}
 				else
 				{
 					boolean containsOne=false;
-					for(int i=0;i<Ability.ACODE_DESCS.length;i++)
-						if(parms.containsKey(Ability.ACODE_DESCS[i]))
+					for (final String element : Ability.ACODE_DESCS)
+						if(parms.containsKey(element))
 						{ containsOne=true; break;}
 					if(containsOne&&(!parms.containsKey(Ability.ACODE_DESCS[classType])))
 						okToShow=false;

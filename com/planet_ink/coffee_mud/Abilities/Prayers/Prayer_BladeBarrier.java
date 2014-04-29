@@ -59,7 +59,7 @@ public class Prayer_BladeBarrier extends Prayer
 		// undo the affects of this spell
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		super.unInvoke();
 
@@ -82,9 +82,9 @@ public class Prayer_BladeBarrier extends Prayer
 			&&((msg.targetMajor(CMMsg.MASK_HANDS))
 			   ||(msg.targetMajor(CMMsg.MASK_MOVE))))
 			{
-				MOB meM=(MOB)msg.target();
-				int damage = CMLib.dice().roll(1,(int)Math.round(adjustedLevel(meM,0)/5.0),1);
-				StringBuffer hitWord=new StringBuffer(CMLib.combat().standardHitWord(-1,damage));
+				final MOB meM=(MOB)msg.target();
+				final int damage = CMLib.dice().roll(1,(int)Math.round(adjustedLevel(meM,0)/5.0),1);
+				final StringBuffer hitWord=new StringBuffer(CMLib.combat().standardHitWord(-1,damage));
 				if(hitWord.charAt(hitWord.length()-1)==')')
 					hitWord.deleteCharAt(hitWord.length()-1);
 				if(hitWord.charAt(hitWord.length()-2)=='(')
@@ -121,7 +121,7 @@ public class Prayer_BladeBarrier extends Prayer
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
@@ -129,7 +129,7 @@ public class Prayer_BladeBarrier extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),(auto?"":"^S<S-NAME> "+prayWord(mob)+" for divine protection!  ")+startStr());
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),(auto?"":"^S<S-NAME> "+prayWord(mob)+" for divine protection!  ")+startStr());
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

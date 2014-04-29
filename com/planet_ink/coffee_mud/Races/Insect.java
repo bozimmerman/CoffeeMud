@@ -48,7 +48,7 @@ public class Insect extends StdRace
 	private static final int[] parts={2 ,2 ,0 ,1 ,1 ,0 ,0 ,1 ,2 ,2 ,0 ,0 ,1 ,0 ,0 ,0 };
 	@Override public int[] bodyMask(){return parts;}
 
-	private int[] agingChart={0,0,0,1,1,1,1,2,2};
+	private final int[] agingChart={0,0,0,1,1,1,1,2,2};
 	@Override public int[] getAgingChart(){return agingChart;}
 
 	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
@@ -64,7 +64,7 @@ public class Insect extends StdRace
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
-		MOB mob=(MOB)myHost;
+		final MOB mob=(MOB)myHost;
 		if(msg.amISource(mob)
 		&&(!msg.amITarget(mob))
 		&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
@@ -77,7 +77,7 @@ public class Insect extends StdRace
 		&&(((msg.value())>(((MOB)msg.target()).maxState().getHitPoints()/20)))
 		&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.AUTODISEASE)))
 		{
-			Ability A=CMClass.getAbility("Disease_Lyme");
+			final Ability A=CMClass.getAbility("Disease_Lyme");
 			if((A!=null)&&(((MOB)msg.target()).fetchEffect(A.ID())==null))
 				A.invoke(mob,(MOB)msg.target(),true,0);
 		}

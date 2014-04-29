@@ -44,24 +44,24 @@ public class Equipment extends StdCommand
 
 	public static StringBuilder getEquipment(MOB seer, MOB mob, boolean allPlaces)
 	{
-		StringBuilder msg=new StringBuilder("");
+		final StringBuilder msg=new StringBuilder("");
 		if(CMLib.flags().isSleeping(seer))
 			return new StringBuilder("(nothing you can see right now)");
 
-		int wrap=ListingLibrary.ColFixer.fixColWidth(74,seer.session());
-		int shortWrap=ListingLibrary.ColFixer.fixColWidth(50,seer.session());
-		int headWrap=26;
+		final int wrap=ListingLibrary.ColFixer.fixColWidth(74,seer.session());
+		final int shortWrap=ListingLibrary.ColFixer.fixColWidth(50,seer.session());
+		final int headWrap=26;
 
 		long wornCode=0;
 		String header=null;
 		String wornName=null;
 		Item thisItem=null;
 		String tat=null;
-		boolean paragraphView=(CMProps.getIntVar(CMProps.Int.EQVIEW)>1)
+		final boolean paragraphView=(CMProps.getIntVar(CMProps.Int.EQVIEW)>1)
 							||((seer!=mob)&&(CMProps.getIntVar(CMProps.Int.EQVIEW)>0))
 							||CMath.bset(seer.getBitmap(),MOB.ATT_COMPRESS);
-		HashSet alreadyDone=new HashSet();
-		Wearable.CODES codes = Wearable.CODES.instance();
+		final HashSet alreadyDone=new HashSet();
+		final Wearable.CODES codes = Wearable.CODES.instance();
 		for(int l=0;l<codes.all_ordered().length;l++)
 		{
 			wornCode=codes.all_ordered()[l];
@@ -73,14 +73,14 @@ public class Equipment extends StdCommand
 				header="^N(^H"+wornName+"^?)";
 				header+=CMStrings.SPACES.substring(0,headWrap-header.length())+": ^!";
 			}
-			List<Item> wornHere=mob.fetchWornItems(wornCode,(short)(Short.MIN_VALUE+1),(short)0);
+			final List<Item> wornHere=mob.fetchWornItems(wornCode,(short)(Short.MIN_VALUE+1),(short)0);
 			int shownThisLoc=0;
 			int numLocations=mob.getWearPositions(wornCode);
 			if(numLocations==0) numLocations=1;
 			int emptySlots=numLocations;
 			if(wornHere.size()>0)
 			{
-				List<List<Item>> sets=new Vector<List<Item>>(numLocations);
+				final List<List<Item>> sets=new Vector<List<Item>>(numLocations);
 				for(int i=0;i<numLocations;i++)
 					sets.add(new Vector<Item>());
 				Item I=null;
@@ -232,16 +232,16 @@ public class Equipment extends StdCommand
 			{
 				double numTattoosTotal=0;
 				wornName=wornName.toUpperCase();
-				for(Enumeration<MOB.Tattoo> e=mob.tattoos();e.hasMoreElements();)
+				for(final Enumeration<MOB.Tattoo> e=mob.tattoos();e.hasMoreElements();)
 				{
-					MOB.Tattoo T = e.nextElement();
+					final MOB.Tattoo T = e.nextElement();
 					if(T.tattooName.startsWith(wornName+":"))
 						numTattoosTotal+=1.0;
 				}
 				int numTattoosToShow=(int)Math.round(Math.ceil(CMath.mul(numTattoosTotal,CMath.div(emptySlots,numLocations))));
-				for(Enumeration<MOB.Tattoo> e=mob.tattoos();e.hasMoreElements();)
+				for(final Enumeration<MOB.Tattoo> e=mob.tattoos();e.hasMoreElements();)
 				{
-					MOB.Tattoo T = e.nextElement();
+					final MOB.Tattoo T = e.nextElement();
 					if((T.tattooName.startsWith(wornName+":"))
 					&&((--numTattoosToShow)>=0))
 					{
@@ -291,10 +291,10 @@ public class Equipment extends StdCommand
 
 	private void viewEquipment(MOB mob, boolean longView)
 	{
-		Session session=mob.session();
+		final Session session=mob.session();
 		if(session!=null)
 		{
-			boolean paragraphView=(CMProps.getIntVar(CMProps.Int.EQVIEW)==2);
+			final boolean paragraphView=(CMProps.getIntVar(CMProps.Int.EQVIEW)==2);
 			if(paragraphView)
 			{
 				if(longView)

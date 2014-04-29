@@ -63,12 +63,12 @@ public class Prayer_Calm extends Prayer
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		boolean someoneIsFighting=false;
 		for(int i=0;i<mob.location().numInhabitants();i++)
 		{
-			MOB inhab=mob.location().fetchInhabitant(i);
+			final MOB inhab=mob.location().fetchInhabitant(i);
 			if((inhab!=null)&&(inhab.isInCombat()))
 				someoneIsFighting=true;
 		}
@@ -79,13 +79,13 @@ public class Prayer_Calm extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"A feeling of calmness descends.":"^S<S-NAME> "+prayWord(mob)+" for calmness.^?");
+			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"A feeling of calmness descends.":"^S<S-NAME> "+prayWord(mob)+" for calmness.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				for(int i=0;i<mob.location().numInhabitants();i++)
 				{
-					MOB inhab=mob.location().fetchInhabitant(i);
+					final MOB inhab=mob.location().fetchInhabitant(i);
 					if((inhab!=null)&&(inhab.isInCombat()))
 					{
 						inhab.tell("You feel at peace.");

@@ -50,7 +50,7 @@ public class Spell_DetectUndead extends Spell
 	{
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		lastRoom=null;
 		super.unInvoke();
 		if(canBeUninvoked())
@@ -70,7 +70,7 @@ public class Spell_DetectUndead extends Spell
 			lastRoom=((MOB)affected).location();
 			for(int i=0;i<lastRoom.numInhabitants();i++)
 			{
-				MOB mob=lastRoom.fetchInhabitant(i);
+				final MOB mob=lastRoom.fetchInhabitant(i);
 				if((mob!=null)&&(mob!=affected)&&(mob.charStats()!=null)&&(mob.charStats().getMyRace()!=null)&&(mob.charStats().getMyRace().racialCategory().equalsIgnoreCase("Undead")))
 					((MOB)affected).tell(mob,null,null,"<S-NAME> gives off a cold dark vibe.");
 			}
@@ -107,11 +107,11 @@ public class Spell_DetectUndead extends Spell
 			return false;
 
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> gain(s) dark cold senses!":"^S<S-NAME> incant(s) softly, and gain(s) dark cold senses!^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> gain(s) dark cold senses!":"^S<S-NAME> incant(s) softly, and gain(s) dark cold senses!^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

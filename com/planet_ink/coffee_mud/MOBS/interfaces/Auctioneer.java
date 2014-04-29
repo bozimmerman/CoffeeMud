@@ -110,7 +110,7 @@ public interface Auctioneer extends ShopKeeper
 		public int minDays=0;
 		public AuctionRates()
 		{
-			List<String> ratesV=CMParms.parseCommas(CMProps.getVar(CMProps.Str.AUCTIONRATES),true);
+			final List<String> ratesV=CMParms.parseCommas(CMProps.getVar(CMProps.Str.AUCTIONRATES),true);
 			while(ratesV.size()<7)
 				ratesV.add("0");
 			liveListPrice=CMath.s_double(ratesV.get(0));
@@ -126,7 +126,7 @@ public interface Auctioneer extends ShopKeeper
 		public AuctionRates(Auctioneer A)
 		{
 			if(A==null) return;
-			AuctionRates base=new AuctionRates();
+			final AuctionRates base=new AuctionRates();
 			liveListPrice=base.liveListPrice;
 			timeListPrice=A.timedListingPrice()<0.0?base.timeListPrice:A.timedListingPrice();
 			timeListPct=A.timedListingPct()<0.0?base.timeListPct:A.timedListingPct();

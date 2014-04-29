@@ -800,12 +800,12 @@ public interface CharStats extends CMCommon, Modifiable
 		public CODES()
 		{
 			super();
-			char c=Thread.currentThread().getThreadGroup().getName().charAt(0);
+			final char c=Thread.currentThread().getThreadGroup().getName().charAt(0);
 			if(insts==null) insts=new CODES[256];
 			if(insts[c]==null) insts[c]=this;
 
-			String[][] addExtra = CMProps.instance().getStrsStarting("ADDCHARSTAT_");
-			String[][] repExtra = CMProps.instance().getStrsStarting("REPLACECHARSTAT_");
+			final String[][] addExtra = CMProps.instance().getStrsStarting("ADDCHARSTAT_");
+			final String[][] repExtra = CMProps.instance().getStrsStarting("REPLACECHARSTAT_");
 			for(int i=0;i<6;i++)
 				addBaseStat(DEFAULT_STAT_ABBR[i],DEFAULT_STAT_DESCS[i],DEFAULT_STAT_NAMES[i],DEFAULT_STAT_DESC_ATTS[i],DEFAULT_STAT_MSG_MAP[i]);
 			addAllStat(DEFAULT_STAT_ABBR[6],DEFAULT_STAT_DESCS[6],DEFAULT_STAT_NAMES[6],DEFAULT_STAT_DESC_ATTS[6],DEFAULT_STAT_MSG_MAP[6],false);
@@ -821,11 +821,11 @@ public interface CharStats extends CMCommon, Modifiable
 				addAllStat(DEFAULT_STAT_ABBR[i],DEFAULT_STAT_DESCS[i],DEFAULT_STAT_NAMES[i],DEFAULT_STAT_DESC_ATTS[i],DEFAULT_STAT_MSG_MAP[i],false);
 			for(int i=0;i<addExtra.length+repExtra.length;i++)
 			{
-				String[] array = (i>=addExtra.length)?repExtra[i-addExtra.length]:addExtra[i];
-				boolean replace = i>=addExtra.length;
+				final String[] array = (i>=addExtra.length)?repExtra[i-addExtra.length]:addExtra[i];
+				final boolean replace = i>=addExtra.length;
 				String stat = array[0].toUpperCase().trim();
-				String p=array[1];
-				List<String> V=CMParms.parseCommas(p, false);
+				final String p=array[1];
+				final List<String> V=CMParms.parseCommas(p, false);
 				if(V.size()!=4)
 				{
 					Log.errOut("CharStats","Bad coffeemud.ini charstat row, requires 4 ; separated entries: "+p);
@@ -835,7 +835,7 @@ public interface CharStats extends CMCommon, Modifiable
 				int oldStatCode=-1;
 				if(replace)
 				{
-					String repStat=stat;
+					final String repStat=stat;
 					stat=type;
 					oldStatCode=CMParms.indexOf(DEFAULT_STAT_NAMES, repStat);
 					if(oldStatCode<0) oldStatCode=CMParms.indexOf(DEFAULT_STAT_DESCS, repStat);
@@ -847,13 +847,13 @@ public interface CharStats extends CMCommon, Modifiable
 						continue;
 					}
 				}
-				String abbr=V.get(1);
-				String desc=V.get(2).toUpperCase();
-				String adj=V.get(3).toUpperCase();
+				final String abbr=V.get(1);
+				final String desc=V.get(2).toUpperCase();
+				final String adj=V.get(3).toUpperCase();
 				if(type.equalsIgnoreCase("BASE"))
 				{
 					addBaseStat(abbr, desc, stat, adj, -1);
-					int baseStatCode=allStatCodes.length-1;
+					final int baseStatCode=allStatCodes.length-1;
 					addMaxStat(baseStatCode, "m"+abbr, "MAX "+stat+" ADJ.", "MAX"+stat, "POTENTIALLY "+adj, -1);
 				}
 				else
@@ -927,7 +927,7 @@ public interface CharStats extends CMCommon, Modifiable
 		 */
 		public static int toMAXBASE(int max)
 		{
-			CODES c = c();
+			final CODES c = c();
 			if(max<c.MaxBaseCrossCodes.length)
 				return c.MaxBaseCrossCodes[max];
 			return -1;
@@ -1129,7 +1129,7 @@ public interface CharStats extends CMCommon, Modifiable
 		public void addMaxStat(int baseCode, String abbr, String desc, String name, String attDesc, int cmmsgMap)
 		{
 			maxStatCodes=Arrays.copyOf(maxStatCodes, maxStatCodes.length+1);
-			int maxCode = allStatCodes.length;
+			final int maxCode = allStatCodes.length;
 			maxStatCodes[maxStatCodes.length-1]=maxCode;
 
 			addAllStat(abbr,desc,name,attDesc,cmmsgMap,false);

@@ -64,20 +64,20 @@ public class ManualArchon extends StdItem implements MiscMagic,ArchonOnly
 	{
 		if(msg.amITarget(this))
 		{
-			MOB mob=msg.source();
+			final MOB mob=msg.source();
 			switch(msg.targetMinor())
 			{
 			case CMMsg.TYP_READ:
 				if(mob.isMine(this))
 				{
 					mob.tell("The manual glows softly, enveloping you in its magical energy.");
-					Session session=mob.session();
-					CharClass newClass=CMClass.getCharClass("Archon");
+					final Session session=mob.session();
+					final CharClass newClass=CMClass.getCharClass("Archon");
 					if((session!=null)&&(newClass!=null))
 					{
 						mob.setSession(null);
 
-						for(int i : CharStats.CODES.BASE())
+						for(final int i : CharStats.CODES.BASE())
 							mob.baseCharStats().setStat(i,25);
 						if((!mob.isMonster())&&(mob.soulMate()==null))
 							CMLib.coffeeTables().bump(mob,CoffeeTableRow.STAT_CLASSCHANGE);
@@ -88,7 +88,7 @@ public class ManualArchon extends StdItem implements MiscMagic,ArchonOnly
 						&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.LEVELS)))
 						while(mob.basePhyStats().level()<100)
 						{
-							int oldLevel = mob.basePhyStats().level();
+							final int oldLevel = mob.basePhyStats().level();
 							if((mob.getExpNeededLevel()==Integer.MAX_VALUE)
 							||(mob.charStats().getCurrentClass().expless())
 							||(mob.charStats().getMyRace().expless()))

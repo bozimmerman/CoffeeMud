@@ -49,11 +49,11 @@ public class Skill_Recall extends StdSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean group=false;//"GROUP".startsWith(CMParms.combine(commands,0).toUpperCase());
-		boolean success=(!mob.isInCombat())||proficiencyCheck(mob,getXLEVELLevel(mob)*10,auto);
+		final boolean group=false;//"GROUP".startsWith(CMParms.combine(commands,0).toUpperCase());
+		final boolean success=(!mob.isInCombat())||proficiencyCheck(mob,getXLEVELLevel(mob)*10,auto);
 		if(success)
 		{
-			Room recalledRoom=mob.location();
+			final Room recalledRoom=mob.location();
 			if(recalledRoom == null) return false;
 			Room recallRoom=CMLib.map().getStartRoom(mob);
 			if((recallRoom==null)&&(!mob.isMonster()))
@@ -85,7 +85,7 @@ public class Skill_Recall extends StdSkill
 				}
 				for(int f=0;f<mob.numFollowers();f++)
 				{
-					MOB follower=mob.fetchFollower(f);
+					final MOB follower=mob.fetchFollower(f);
 
 					if((follower!=null)
 					&&(follower.isMonster())

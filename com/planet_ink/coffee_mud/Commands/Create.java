@@ -58,7 +58,7 @@ public class Create extends StdCommand
 			return;
 		}
 
-		int direction=Directions.getGoodDirectionCode(((String)commands.elementAt(2)));
+		final int direction=Directions.getGoodDirectionCode(((String)commands.elementAt(2)));
 		if(direction<0)
 		{
 			mob.tell("You have failed to specify a direction.  Try "+Directions.LETTERS()+".\n\r");
@@ -66,7 +66,7 @@ public class Create extends StdCommand
 			return;
 		}
 
-		String Locale=(String)commands.elementAt(3);
+		final String Locale=(String)commands.elementAt(3);
 		Exit thisExit=CMClass.getExit(Locale);
 		if(thisExit==null)
 		{
@@ -75,8 +75,8 @@ public class Create extends StdCommand
 			return;
 		}
 
-		Exit opExit=mob.location().getRawExit(direction);
-		Room opRoom=mob.location().rawDoors()[direction];
+		final Exit opExit=mob.location().getRawExit(direction);
+		final Room opRoom=mob.location().rawDoors()[direction];
 
 		Exit reverseExit=null;
 		if(opRoom!=null)
@@ -99,7 +99,7 @@ public class Create extends StdCommand
 		CMLib.database().DBUpdateExits(mob.location());
 		if((reverseExit!=null)&&(opExit!=null)&&(opRoom!=null))
 		{
-			int revDirCode=Directions.getOpDirectionCode(direction);
+			final int revDirCode=Directions.getOpDirectionCode(direction);
 			if(opRoom.getRawExit(revDirCode)==reverseExit)
 			{
 				opRoom.setRawExit(revDirCode,(Exit)thisExit.copyOf());
@@ -109,7 +109,7 @@ public class Create extends StdCommand
 		else
 		if((reverseExit==null)&&(opExit==null)&&(opRoom!=null))
 		{
-			int revDirCode=Directions.getOpDirectionCode(direction);
+			final int revDirCode=Directions.getOpDirectionCode(direction);
 			if((opRoom.getRawExit(revDirCode)==null)&&(opRoom.rawDoors()[revDirCode]==mob.location()))
 			{
 				opRoom.setRawExit(revDirCode,(Exit)thisExit.copyOf());
@@ -138,18 +138,18 @@ public class Create extends StdCommand
 		String itemID=CMParms.combine(commands,2);
 		Environmental dest=mob.location();
 		Container setContainer=null;
-		int x=itemID.indexOf('@');
+		final int x=itemID.indexOf('@');
 		if(x>0)
 		{
-			String rest=itemID.substring(x+1).trim();
+			final String rest=itemID.substring(x+1).trim();
 			itemID=itemID.substring(0,x).trim();
 			if((!rest.equalsIgnoreCase("room"))
 			&&(rest.length()>0))
 			{
-				MOB M=mob.location().fetchInhabitant(rest);
+				final MOB M=mob.location().fetchInhabitant(rest);
 				if(M==null)
 				{
-					Item I = mob.location().findItem(null, rest);
+					final Item I = mob.location().findItem(null, rest);
 					if(I instanceof Container)
 						setContainer=(Container)I;
 					else
@@ -166,9 +166,9 @@ public class Create extends StdCommand
 		Item newItem=CMClass.getItem(itemID);
 		if((newItem==null)&&(CMLib.english().numPossibleGold(null,itemID)>0))
 		{
-			long numCoins=CMLib.english().numPossibleGold(null,itemID);
-			String currency=CMLib.english().numPossibleGoldCurrency(mob,itemID);
-			double denom=CMLib.english().numPossibleGoldDenomination(mob,currency,itemID);
+			final long numCoins=CMLib.english().numPossibleGold(null,itemID);
+			final String currency=CMLib.english().numPossibleGoldCurrency(mob,itemID);
+			final double denom=CMLib.english().numPossibleGoldDenomination(mob,currency,itemID);
 			if((numCoins>0)&&(denom>0.0))
 				newItem=CMLib.beanCounter().makeCurrency(currency,denom,numCoins);
 		}
@@ -225,8 +225,8 @@ public class Create extends StdCommand
 			return;
 		}
 
-		String manufacturerID=CMParms.combine(commands,2);
-		Manufacturer manufacturer=(Manufacturer)CMClass.getCommon("DefaultManufacturer");
+		final String manufacturerID=CMParms.combine(commands,2);
+		final Manufacturer manufacturer=(Manufacturer)CMClass.getCommon("DefaultManufacturer");
 		if(manufacturer==null)
 		{
 			mob.tell("DefaultManufacturer not found.");
@@ -235,7 +235,7 @@ public class Create extends StdCommand
 			return;
 		}
 
-		Manufacturer manuCheck=CMLib.tech().getManufacturer(manufacturerID);
+		final Manufacturer manuCheck=CMLib.tech().getManufacturer(manufacturerID);
 		if(((manuCheck!=null)&&(manuCheck!=CMLib.tech().getDefaultManufacturer()))
 		||manufacturerID.equalsIgnoreCase("RANDOM"))
 		{
@@ -300,7 +300,7 @@ public class Create extends StdCommand
 			return;
 		}
 
-		int direction=Directions.getGoodDirectionCode(((String)commands.elementAt(2)));
+		final int direction=Directions.getGoodDirectionCode(((String)commands.elementAt(2)));
 		if(direction<0)
 		{
 			mob.tell("You have failed to specify a direction.  Try "+Directions.LETTERS()+".\n\r");
@@ -309,7 +309,7 @@ public class Create extends StdCommand
 		}
 
 		Room thisRoom=null;
-		String Locale=(String)commands.elementAt(3);
+		final String Locale=(String)commands.elementAt(3);
 		thisRoom=CMClass.getLocale(Locale);
 		if(thisRoom==null)
 		{
@@ -317,7 +317,7 @@ public class Create extends StdCommand
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
 			return;
 		}
-		Room room=mob.location();
+		final Room room=mob.location();
 		thisRoom.setRoomID(room.getArea().getNewRoomID(room,direction));
 		thisRoom.setArea(room.getArea());
 		if(thisRoom.roomID().length()==0)
@@ -351,8 +351,8 @@ public class Create extends StdCommand
 		}
 
 		PlayerAccount thisAcct=null;
-		String AcctName=CMStrings.capitalizeAndLower((String)commands.elementAt(2));
-		String password=CMStrings.capitalizeAndLower(CMParms.combine(commands,3));
+		final String AcctName=CMStrings.capitalizeAndLower((String)commands.elementAt(2));
+		final String password=CMStrings.capitalizeAndLower(CMParms.combine(commands,3));
 		thisAcct=CMLib.players().getLoadAccount(AcctName);
 		if(thisAcct!=null)
 		{
@@ -387,7 +387,7 @@ public class Create extends StdCommand
 		if(newMOB!=null)
 		{
 			newMOB=(MOB)newMOB.copyOf();
-			try { CMLib.catalog().changeCatalogUsage(newMOB,true);} catch(Exception t){}
+			try { CMLib.catalog().changeCatalogUsage(newMOB,true);} catch(final Exception t){}
 			newMOB.text();
 		}
 		return newMOB;
@@ -399,7 +399,7 @@ public class Create extends StdCommand
 		if(newItem!=null)
 		{
 			newItem=(Item)newItem.copyOf();
-			try { CMLib.catalog().changeCatalogUsage(newItem,true);} catch(Exception t){}
+			try { CMLib.catalog().changeCatalogUsage(newItem,true);} catch(final Exception t){}
 			newItem.text();
 		}
 		return newItem;
@@ -415,7 +415,7 @@ public class Create extends StdCommand
 			return;
 		}
 
-		String mobID=CMParms.combine(commands,2);
+		final String mobID=CMParms.combine(commands,2);
 		MOB newMOB=CMClass.getMOB(mobID);
 
 		boolean doGenerica=true;
@@ -463,7 +463,7 @@ public class Create extends StdCommand
 			return;
 		}
 		String raceID=CMParms.combine(commands,2);
-		Race R=CMClass.getRace(raceID);
+		final Race R=CMClass.getRace(raceID);
 		if((R!=null)&&(R.isGeneric()))
 		{
 			mob.tell("This generic race already exists.. perhaps you might modify it?");
@@ -510,7 +510,7 @@ public class Create extends StdCommand
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 			return;
 		}
-		String areaName=CMParms.combine(commands,2);
+		final String areaName=CMParms.combine(commands,2);
 		Area A=CMLib.map().getArea(areaName);
 		if(A!=null)
 		{
@@ -536,7 +536,7 @@ public class Create extends StdCommand
 		CMLib.map().addArea(A);
 		CMLib.database().DBCreateArea(A);
 
-		Room R=CMClass.getLocale("StdRoom");
+		final Room R=CMClass.getLocale("StdRoom");
 		R.setRoomID(A.getNewRoomID(R,-1));
 		R.setArea(A);
 		R.setDisplayText(CMClass.classID(R)+"-"+R.roomID());
@@ -558,7 +558,7 @@ public class Create extends StdCommand
 			return;
 		}
 		String skillID=CMParms.combine(commands,2);
-		Ability A=CMClass.getAbility(skillID);
+		final Ability A=CMClass.getAbility(skillID);
 		if(A==null)
 		{
 			mob.tell("'"+skillID+"' is not a proper skill/spell ID.  Try LIST ABILITIES.");
@@ -572,12 +572,12 @@ public class Create extends StdCommand
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 			return;
 		}
-		Vector<AbilityComponent> DV=new Vector<AbilityComponent>();
+		final Vector<AbilityComponent> DV=new Vector<AbilityComponent>();
 		CMLib.ableMapper().getAbilityComponentMap().put(skillID.toUpperCase().trim(),DV);
 		DV.add(CMLib.ableMapper().createBlankAbilityComponent());
 		CMLib.genEd().modifyComponents(mob,skillID);
-		String parms=CMLib.ableMapper().getAbilityComponentCodedString(skillID);
-		String error=CMLib.ableMapper().addAbilityComponent(parms,CMLib.ableMapper().getAbilityComponentMap());
+		final String parms=CMLib.ableMapper().getAbilityComponentCodedString(skillID);
+		final String error=CMLib.ableMapper().addAbilityComponent(parms,CMLib.ableMapper().getAbilityComponentMap());
 		if(error!=null)
 		{
 			mob.tell(error);
@@ -593,8 +593,8 @@ public class Create extends StdCommand
 		if((commands.size()<3)||(CMParms.combine(commands,1).indexOf('=')<0))
 		{
 			mob.tell("You have failed to specify the proper fields.\n\rFormat: CREATE EXPERTISE [EXPERTISE ID]=[PARAMETERS] as follows: \n\r");
-			StringBuffer buf=new CMFile(Resources.makeFileResourceName("skills/expertises.txt"),null,CMFile.FLAG_LOGERRORS).text();
-			StringBuffer inst=new StringBuffer("");
+			final StringBuffer buf=new CMFile(Resources.makeFileResourceName("skills/expertises.txt"),null,CMFile.FLAG_LOGERRORS).text();
+			final StringBuffer inst=new StringBuffer("");
 			List<String> V=new Vector();
 			if(buf!=null) V=Resources.getFileLineVector(buf);
 			for(int v=0;v<V.size();v++)
@@ -607,8 +607,8 @@ public class Create extends StdCommand
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 			return;
 		}
-		String parms=CMParms.combineWithQuotes(commands,2);
-		String skillID=parms.substring(0,parms.indexOf('='));
+		final String parms=CMParms.combineWithQuotes(commands,2);
+		final String skillID=parms.substring(0,parms.indexOf('='));
 		if(skillID.indexOf(' ')>=0)
 		{
 			mob.tell("Spaces are not allowed in expertise codes.");
@@ -623,14 +623,14 @@ public class Create extends StdCommand
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 			return;
 		}
-		String error=CMLib.expertises().confirmExpertiseLine(parms,null,false);
+		final String error=CMLib.expertises().confirmExpertiseLine(parms,null,false);
 		if(error!=null)
 		{
 			mob.tell(error);
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 			return;
 		}
-		CMFile F=new CMFile(Resources.makeFileResourceName("skills/expertises.txt"),null,CMFile.FLAG_LOGERRORS);
+		final CMFile F=new CMFile(Resources.makeFileResourceName("skills/expertises.txt"),null,CMFile.FLAG_LOGERRORS);
 		F.saveText("\n"+parms,true);
 		Resources.removeResource("skills/expertises.txt");
 		CMLib.expertises().recompileExpertises();
@@ -642,8 +642,8 @@ public class Create extends StdCommand
 		if((commands.size()<3)||(CMParms.combine(commands,1).indexOf('=')<0))
 		{
 			mob.tell("You have failed to specify the proper fields.\n\rFormat: CREATE TITLE [TITLE]=[ZAPPER MASK] as follows: \n\r");
-			StringBuffer buf=new CMFile(Resources.makeFileResourceName("titles.txt"),null,CMFile.FLAG_LOGERRORS).text();
-			StringBuffer inst=new StringBuffer("");
+			final StringBuffer buf=new CMFile(Resources.makeFileResourceName("titles.txt"),null,CMFile.FLAG_LOGERRORS).text();
+			final StringBuffer inst=new StringBuffer("");
 			List<String> V=new Vector();
 			if(buf!=null) V=Resources.getFileLineVector(buf);
 			for(int v=0;v<V.size();v++)
@@ -656,22 +656,22 @@ public class Create extends StdCommand
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 			return;
 		}
-		String parms=CMParms.combineWithQuotes(commands,2);
-		String skillID=parms.substring(0,parms.indexOf('='));
+		final String parms=CMParms.combineWithQuotes(commands,2);
+		final String skillID=parms.substring(0,parms.indexOf('='));
 		if(CMLib.titles().isExistingAutoTitle(skillID))
 		{
 			mob.tell("'"+skillID+"' already exists, you'll need to destroy it first.");
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 			return;
 		}
-		String error=CMLib.titles().evaluateAutoTitle(parms,false);
+		final String error=CMLib.titles().evaluateAutoTitle(parms,false);
 		if(error!=null)
 		{
 			mob.tell(error);
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 			return;
 		}
-		CMFile F=new CMFile(Resources.makeFileResourceName("titles.txt"),null,CMFile.FLAG_LOGERRORS);
+		final CMFile F=new CMFile(Resources.makeFileResourceName("titles.txt"),null,CMFile.FLAG_LOGERRORS);
 		F.saveText("\n"+parms,true);
 		Resources.removeResource("titles.txt");
 		CMLib.titles().reloadAutoTitles();
@@ -687,8 +687,8 @@ public class Create extends StdCommand
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 			return;
 		}
-		String classD=CMParms.combine(commands,2);
-		Ability A=CMClass.getAbility(classD);
+		final String classD=CMParms.combine(commands,2);
+		final Ability A=CMClass.getAbility(classD);
 		if((A!=null)&&(A.isGeneric()))
 		{
 			mob.tell("A generic ability with the ID '"+A.ID()+"' already exists!");
@@ -701,7 +701,7 @@ public class Create extends StdCommand
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 			return;
 		}
-		Ability CR=(Ability)CMClass.getAbility("GenAbility").copyOf();
+		final Ability CR=(Ability)CMClass.getAbility("GenAbility").copyOf();
 		CR.setStat("CLASS",classD);
 		CMLib.genEd().modifyGenAbility(mob,CR);
 		CMLib.database().DBCreateAbility(CR.ID(),"GenAbility",CR.getStat("ALLXML"));
@@ -717,8 +717,8 @@ public class Create extends StdCommand
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 			return;
 		}
-		String classD=CMParms.combine(commands,2);
-		Ability A=CMClass.getAbility(classD);
+		final String classD=CMParms.combine(commands,2);
+		final Ability A=CMClass.getAbility(classD);
 		if((A!=null)&&(A.isGeneric()))
 		{
 			mob.tell("A generic ability with the ID '"+A.ID()+"' already exists!");
@@ -731,7 +731,7 @@ public class Create extends StdCommand
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 			return;
 		}
-		Language CR=(Language)CMClass.getAbility("GenLanguage").copyOf();
+		final Language CR=(Language)CMClass.getAbility("GenLanguage").copyOf();
 		CR.setStat("CLASS",classD);
 		CMLib.genEd().modifyGenLanguage(mob,CR);
 		CMLib.database().DBCreateAbility(CR.ID(),"GenLanguage",CR.getStat("ALLXML"));
@@ -747,8 +747,8 @@ public class Create extends StdCommand
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 			return;
 		}
-		String classD=CMParms.combine(commands,2);
-		Ability A=CMClass.getAbility(classD);
+		final String classD=CMParms.combine(commands,2);
+		final Ability A=CMClass.getAbility(classD);
 		if((A!=null)&&(A.isGeneric()))
 		{
 			mob.tell("A generic ability with the ID '"+A.ID()+"' already exists!");
@@ -761,7 +761,7 @@ public class Create extends StdCommand
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 			return;
 		}
-		Ability CR=(Ability)CMClass.getAbility("GenCraftSkill").copyOf();
+		final Ability CR=(Ability)CMClass.getAbility("GenCraftSkill").copyOf();
 		CR.setStat("CLASS",classD);
 		CMLib.genEd().modifyGenCraftSkill(mob,CR);
 		CMLib.database().DBCreateAbility(CR.ID(),"GenCraftSkill",CR.getStat("ALLXML"));
@@ -777,15 +777,15 @@ public class Create extends StdCommand
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 			return;
 		}
-		String eachOrAll=(String)commands.get(2);
+		final String eachOrAll=(String)commands.get(2);
 		if((!eachOrAll.equalsIgnoreCase("each"))&&(!eachOrAll.equalsIgnoreCase("all")))
 		{
 			mob.tell("You have failed to specify the proper fields.\n\rThe format is CREATE ALLQUALIFY EACH/ALL [SKILL ID]\n\r");
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 			return;
 		}
-		String classD=CMParms.combine(commands,3);
-		Ability A=CMClass.getAbility(classD);
+		final String classD=CMParms.combine(commands,3);
+		final Ability A=CMClass.getAbility(classD);
 		if(A==null)
 		{
 			mob.tell("Ability with the ID '"+classD+"' does not exist! Try LIST ABILITIES.");
@@ -800,7 +800,7 @@ public class Create extends StdCommand
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 			return;
 		}
-		AbilityMapper.AbilityMapping mapped = CMLib.genEd().modifyAllQualifyEntry(mob,eachOrAll.toUpperCase().trim(),A);
+		final AbilityMapper.AbilityMapping mapped = CMLib.genEd().modifyAllQualifyEntry(mob,eachOrAll.toUpperCase().trim(),A);
 		map=CMLib.ableMapper().getAllQualifiesMap(null);
 		subMap=map.get(eachOrAll.toUpperCase().trim());
 		subMap.put(A.ID().toUpperCase().trim(), mapped);
@@ -818,7 +818,7 @@ public class Create extends StdCommand
 			return;
 		}
 		String classD=CMParms.combine(commands,2);
-		CharClass C=CMClass.getCharClass(classD);
+		final CharClass C=CMClass.getCharClass(classD);
 		if((C!=null)&&(C.isGeneric()))
 		{
 			mob.tell("A generic class with the ID '"+C.ID()+"' already exists!");
@@ -869,7 +869,7 @@ public class Create extends StdCommand
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
 			return;
 		}
-		String stuff=CMParms.combine(commands,2);
+		final String stuff=CMParms.combine(commands,2);
 		if(CMLib.socials().fetchSocial(stuff,false)!=null)
 		{
 			mob.tell("The social '"+stuff+"' already exists.");
@@ -1002,7 +1002,7 @@ public class Create extends StdCommand
 		{
 			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.LISTADMIN))
 				return errorOut(mob);
-			String named=CMParms.combine(commands,2);
+			final String named=CMParms.combine(commands,2);
 			if(CMSecurity.isDisabledSearch(named.toUpperCase()))
 				mob.tell("'"+named+"' is already disabled");
 			else
@@ -1017,8 +1017,8 @@ public class Create extends StdCommand
 		{
 			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.LISTADMIN))
 				return errorOut(mob);
-			String named=CMParms.combine(commands,2);
-			CMSecurity.DbgFlag flag = (CMSecurity.DbgFlag)CMath.s_valueOf(CMSecurity.DbgFlag.values(), named.toUpperCase().trim());
+			final String named=CMParms.combine(commands,2);
+			final CMSecurity.DbgFlag flag = (CMSecurity.DbgFlag)CMath.s_valueOf(CMSecurity.DbgFlag.values(), named.toUpperCase().trim());
 			if(flag==null)
 			{
 				mob.tell("'"+named+"' is not a valid flag.  Try: "+CMParms.toStringList(CMSecurity.DbgFlag.values()));
@@ -1045,7 +1045,7 @@ public class Create extends StdCommand
 		if(commandType.equals("HOLIDAY"))
 		{
 			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDQUESTS)) return errorOut(mob);
-			String named=CMParms.combine(commands,2);
+			final String named=CMParms.combine(commands,2);
 			if(named.trim().length()==0)
 			{
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
@@ -1053,7 +1053,7 @@ public class Create extends StdCommand
 				mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 				return false;
 			}
-			String err=CMLib.quests().createHoliday(named,mob.location().getArea().name(),true);
+			final String err=CMLib.quests().createHoliday(named,mob.location().getArea().name(),true);
 			if(err.length()>0)
 			{
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
@@ -1076,7 +1076,7 @@ public class Create extends StdCommand
 			}
 			else
 			{
-				String name=CMParms.combine(commands,2);
+				final String name=CMParms.combine(commands,2);
 				if((name.indexOf(' ')>=0)||(name.length()==0))
 				{
 					mob.tell("That name is not allowed. No spaces!");
@@ -1093,7 +1093,7 @@ public class Create extends StdCommand
 				if((!mob.isMonster())&&(mob.session().confirm("Create a new faction with ID/filename: 'resources/"+name+"' (N/y)? ","N")))
 				{
 					//name=Resources.buildResourcePath("")+name;
-					StringBuffer template=new CMFile(Resources.buildResourcePath("examples")+"factiontemplate.ini",null,CMFile.FLAG_LOGERRORS).text();
+					final StringBuffer template=new CMFile(Resources.buildResourcePath("examples")+"factiontemplate.ini",null,CMFile.FLAG_LOGERRORS).text();
 					if((template==null)||(template.length()==0))
 					{
 						mob.tell("The file 'resources/examples/factiontemplate.ini' could not be located and is required for command line faction creation.");
@@ -1122,10 +1122,10 @@ public class Create extends StdCommand
 		{
 			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.JOURNALS)) return errorOut(mob);
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
-			Item I=CMClass.getItem("StdJournal");
+			final Item I=CMClass.getItem("StdJournal");
 			I.setName("SYSTEM_NEWS");
 			I.setDescription("Enter `LIST NEWS [NUMBER]` to read an entry.%0D%0AEnter CREATE NEWS to add new entries. ");
-			CMMsg newMsg=CMClass.getMsg(mob,I,null,CMMsg.MSG_WRITE|CMMsg.MASK_ALWAYS,null,CMMsg.MSG_WRITE|CMMsg.MASK_ALWAYS,CMParms.combine(commands,2),CMMsg.MSG_WRITE|CMMsg.MASK_ALWAYS,null);
+			final CMMsg newMsg=CMClass.getMsg(mob,I,null,CMMsg.MSG_WRITE|CMMsg.MASK_ALWAYS,null,CMMsg.MSG_WRITE|CMMsg.MASK_ALWAYS,CMParms.combine(commands,2),CMMsg.MSG_WRITE|CMMsg.MASK_ALWAYS,null);
 			if(mob.location().okMessage(mob,newMsg)&&I.okMessage(mob, newMsg))
 			{
 				mob.location().send(mob,newMsg);
@@ -1147,7 +1147,7 @@ public class Create extends StdCommand
 		{
 			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.POLLS)) return errorOut(mob);
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
-			Poll P=(Poll)CMClass.getCommon("DefaultPoll");
+			final Poll P=(Poll)CMClass.getCommon("DefaultPoll");
 			while(CMLib.polls().getPoll(P.getName())!=null)
 				P.setName(P.getName()+"!");
 			P.setFlags(Poll.FLAG_ACTIVE);
@@ -1173,8 +1173,8 @@ public class Create extends StdCommand
 			}
 			else
 			{
-				String script=CMParms.combine(commands,2);
-				Quest Q=(Quest)CMClass.getCommon("DefaultQuest");
+				final String script=CMParms.combine(commands,2);
+				final Quest Q=(Quest)CMClass.getCommon("DefaultQuest");
 				Q.setAuthor(mob.Name());
 				Q.setScript(script,true);
 				if((Q.name().trim().length()==0)||(Q.duration()<0))
@@ -1206,8 +1206,8 @@ public class Create extends StdCommand
 			}
 			else
 			{
-				String name=CMParms.combine(commands,2);
-				Clan C=(Clan)CMClass.getCommon("DefaultClan");
+				final String name=CMParms.combine(commands,2);
+				final Clan C=(Clan)CMClass.getCommon("DefaultClan");
 				C.setName(name);
 				if(C.name().trim().length()==0)
 				{
@@ -1242,8 +1242,8 @@ public class Create extends StdCommand
 			}
 			else
 			{
-				String name=CMParms.combine(commands,2);
-				ClanGovernment G=CMLib.clans().createGovernment(name);
+				final String name=CMParms.combine(commands,2);
+				final ClanGovernment G=CMLib.clans().createGovernment(name);
 				if(G==null)
 				{
 					mob.tell("You must specify an unused government name.");
@@ -1338,8 +1338,8 @@ public class Create extends StdCommand
 				else
 				if(CMath.isInteger(firstWord)&&(lastWord!=null))
 				{
-					int num=CMath.s_int(firstWord);
-					String theRest=CMParms.combine(commands,2);
+					final int num=CMath.s_int(firstWord);
+					final String theRest=CMParms.combine(commands,2);
 					int matCode=RawMaterial.CODES.FIND_IgnoreCase(theRest);
 					if(matCode<0)
 						matCode=RawMaterial.CODES.FIND_StartsWith(theRest);
@@ -1351,7 +1351,7 @@ public class Create extends StdCommand
 					}
 					else
 					{
-						Vector V=(Vector)commands.clone();
+						final Vector V=(Vector)commands.clone();
 						V.remove(2);
 						for(int i=0;i<num;i++)
 							if(!execute(mob,V,metaFlags))

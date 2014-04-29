@@ -48,7 +48,7 @@ public class LocateQueryPacket extends Packet {
 			type = Packet.LOCATE_QUERY;
 			user_name = (String)v.elementAt(6);
 		}
-		catch( ClassCastException e )
+		catch( final ClassCastException e )
 		{
 			throw new InvalidPacketException();
 		}
@@ -74,7 +74,7 @@ public class LocateQueryPacket extends Packet {
 	@Override
 	public String toString()
 	{
-		String str="({\"locate-req\",5,\"" + I3Server.getMudName() +
+		final String str="({\"locate-req\",5,\"" + I3Server.getMudName() +
 			   "\",\"" + sender_name + "\",0,0,\"" +
 			   user_name + "\",})";
 		return str;

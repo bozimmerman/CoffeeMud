@@ -47,10 +47,10 @@ public class Play_Ballad extends Play
 		// the sex rules
 		if(!(affected instanceof MOB)) return;
 
-		MOB myChar=(MOB)affected;
+		final MOB myChar=(MOB)affected;
 		if((msg.target()!=null)&&(msg.target() instanceof MOB))
 		{
-			MOB mate=(MOB)msg.target();
+			final MOB mate=(MOB)msg.target();
 			if((msg.amISource(myChar))
 			&&(msg.tool() instanceof Social)
 			&&(msg.tool().Name().equals("MATE <T-NAME>")
@@ -79,7 +79,7 @@ public class Play_Ballad extends Play
 					female=mate;
 					male=myChar;
 				}
-				Ability A=CMClass.getAbility("Pregnancy");
+				final Ability A=CMClass.getAbility("Pregnancy");
 				if((A!=null)
 				&&(female.fetchAbility(A.ID())==null)
 				&&(female.fetchEffect(A.ID())==null))

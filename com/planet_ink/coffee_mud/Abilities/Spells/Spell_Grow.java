@@ -60,7 +60,7 @@ public class Spell_Grow extends Spell
 		super.affectPhyStats(affected,affectableStats);
 		if(affected instanceof MOB)
 		{
-			double aff=1.0 + CMath.mul(0.1,(invoker().phyStats().level()+(2*getXLEVELLevel(invoker()))));
+			final double aff=1.0 + CMath.mul(0.1,(invoker().phyStats().level()+(2*getXLEVELLevel(invoker()))));
 			affectableStats.setHeight((int)Math.round(CMath.mul(affectableStats.height(),aff)));
 		}
 	}
@@ -78,7 +78,7 @@ public class Spell_Grow extends Spell
 	{
 		if(affected instanceof MOB)
 		{
-			MOB mob=(MOB)affected;
+			final MOB mob=(MOB)affected;
 			if(getOldWeight()<1)
 				mob.baseCharStats().getMyRace().setHeightWeight(mob.basePhyStats(),(char)mob.baseCharStats().getStat(CharStats.STAT_GENDER));
 			else
@@ -93,7 +93,7 @@ public class Spell_Grow extends Spell
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		MOB target=getTarget(mob,commands,givenTarget);
+		final MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
 		if(target.fetchEffect(this.ID())!=null)
@@ -105,11 +105,11 @@ public class Spell_Grow extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAMESELF>, incanting.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAMESELF>, incanting.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

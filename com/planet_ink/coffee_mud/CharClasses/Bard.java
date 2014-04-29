@@ -48,7 +48,7 @@ public class Bard extends StdCharClass
 	@Override protected String armorFailMessage(){return "<S-NAME> armor makes <S-HIM-HER> mess up <S-HIS-HER> <SKILL>!";}
 	@Override public int allowedArmorLevel(){return CharClass.ARMOR_NONMETAL;}
 	@Override public int allowedWeaponLevel(){return CharClass.WEAPONS_THIEFLIKE;}
-	private HashSet disallowedWeapons=buildDisallowedWeaponClasses();
+	private final HashSet disallowedWeapons=buildDisallowedWeaponClasses();
 	@Override protected HashSet disallowedWeaponClasses(MOB mob){return disallowedWeapons;}
 
 	public Bard()
@@ -132,11 +132,11 @@ public class Bard extends StdCharClass
 		{
 			if(host == mob)
 			{
-				Set<MOB> H=mob.getGroupMembers(new HashSet<MOB>());
-				double origAmount=theAmount;
-				for(Iterator e=H.iterator();e.hasNext();)
+				final Set<MOB> H=mob.getGroupMembers(new HashSet<MOB>());
+				final double origAmount=theAmount;
+				for (final Object element : H)
 				{
-					MOB mob2=(MOB)e.next();
+					final MOB mob2=(MOB)element;
 					if((mob2!=mob)
 					&&(mob2!=victim)
 					&&(mob2.location()!=null)
@@ -173,14 +173,14 @@ public class Bard extends StdCharClass
 		&&(msg.targetMinor()==CMMsg.TYP_ENTER)
 		&&(msg.source().playerStats()!=null))
 		{
-			Room R=(Room)msg.target();
-			MOB mob=msg.source();
-			Physical hostP=(Physical)host;
+			final Room R=(Room)msg.target();
+			final MOB mob=msg.source();
+			final Physical hostP=(Physical)host;
 			if(((R.roomID().length()>0)
 			||((R.getGridParent()!=null)&&(R.getGridParent().roomID().length()>0)))
 			&&(!msg.source().playerStats().hasVisited(R)))
 			{
-				Area A=R.getArea();
+				final Area A=R.getArea();
 				MOB M=null;
 				boolean pub=false;
 				for(int m=0;m<R.numInhabitants();m++)
@@ -189,10 +189,10 @@ public class Bard extends StdCharClass
 					if((M instanceof ShopKeeper)
 					&&(M.getStartRoom()==R))
 					{
-						List<Ability> V2=new Vector<Ability>();
-						for(Iterator<Environmental> i=((ShopKeeper)M).getShop().getStoreInventory();i.hasNext();)
+						final List<Ability> V2=new Vector<Ability>();
+						for(final Iterator<Environmental> i=((ShopKeeper)M).getShop().getStoreInventory();i.hasNext();)
 						{
-							Environmental O=i.next();
+							final Environmental O=i.next();
 							if(O instanceof Potion)
 							{
 								V2.addAll(((Potion)O).getSpells());
@@ -203,7 +203,7 @@ public class Bard extends StdCharClass
 							if(O instanceof Drink)
 							{
 								V2.addAll(CMLib.flags().domainAffects((Drink)O,Ability.ACODE_POISON));
-								String name=" "+O.Name().toLowerCase();
+								final String name=" "+O.Name().toLowerCase();
 								if(name.endsWith(" beer")
 								||name.endsWith(" liquor")
 								||name.endsWith(" ale")
@@ -232,10 +232,10 @@ public class Bard extends StdCharClass
 				}
 				else
 				{
-					int pctBefore=mob.playerStats().percentVisited((MOB)host,A);
+					final int pctBefore=mob.playerStats().percentVisited((MOB)host,A);
 					if(mob.playerStats().addRoomVisit(R))
 						CMLib.players().bumpPrideStat(mob,AccountStats.PrideStat.ROOMS_EXPLORED,1);
-					int pctAfter=mob.playerStats().percentVisited((MOB)host,A);
+					final int pctAfter=mob.playerStats().percentVisited((MOB)host,A);
 					if((pctBefore<50)&&(pctAfter>=50))
 					{
 						int xp=(int)Math.round(50.0*CMath.div(A.getAreaIStats()[Area.Stats.AVG_LEVEL.ordinal()],hostP.phyStats().level()));
@@ -264,13 +264,13 @@ public class Bard extends StdCharClass
 		super.grantAbilities(mob,isBorrowedClass);
 		if(mob.playerStats()==null)
 		{
-			List<AbilityMapper.AbilityMapping> V=CMLib.ableMapper().getUpToLevelListings(ID(),
+			final List<AbilityMapper.AbilityMapping> V=CMLib.ableMapper().getUpToLevelListings(ID(),
 															 mob.charStats().getClassLevel(ID()),
 															 false,
 															 false);
-			for(AbilityMapper.AbilityMapping able : V)
+			for(final AbilityMapper.AbilityMapping able : V)
 			{
-				Ability A=CMClass.getAbility(able.abilityID);
+				final Ability A=CMClass.getAbility(able.abilityID);
 				if((A!=null)
 				&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SONG)
 				&&(!CMLib.ableMapper().getDefaultGain(ID(),true,A.ID())))
@@ -306,7 +306,7 @@ public class Bard extends StdCharClass
 		if(outfitChoices==null)
 		{
 			outfitChoices=new Vector();
-			Weapon w=CMClass.getWeapon("Shortsword");
+			final Weapon w=CMClass.getWeapon("Shortsword");
 			outfitChoices.add(w);
 		}
 		return outfitChoices;

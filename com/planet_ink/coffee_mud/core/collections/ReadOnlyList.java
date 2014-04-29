@@ -17,7 +17,7 @@ limitations under the License.
 */
 public class ReadOnlyList<K> implements List<K>
 {
-	private List<K> list;
+	private final List<K> list;
 	public ReadOnlyList(List<K> l)
 	{
 		list=l;

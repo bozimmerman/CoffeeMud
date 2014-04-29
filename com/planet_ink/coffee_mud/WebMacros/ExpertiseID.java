@@ -39,11 +39,11 @@ public class ExpertiseID extends StdWebMacro
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
-		String last=httpReq.getUrlParameter("EXPERTISE");
+		final String last=httpReq.getUrlParameter("EXPERTISE");
 		if(last==null) return " @break@";
 		if(last.length()>0)
 		{
-			ExpertiseLibrary.ExpertiseDefinition E=CMLib.expertises().getDefinition(last);
+			final ExpertiseLibrary.ExpertiseDefinition E=CMLib.expertises().getDefinition(last);
 			if(E!=null) return E.ID;
 		}
 		return "";

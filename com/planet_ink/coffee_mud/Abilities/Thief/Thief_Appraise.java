@@ -56,7 +56,7 @@ public class Thief_Appraise extends ThiefSkill
 			mob.tell("What would you like to appraise?");
 			return false;
 		}
-		Item target=mob.fetchItem(null,Wearable.FILTER_UNWORNONLY,(String)commands.elementAt(0));
+		final Item target=mob.fetchItem(null,Wearable.FILTER_UNWORNONLY,(String)commands.elementAt(0));
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
 			mob.tell("You don't see '"+((String)commands.elementAt(0))+"' here.");
@@ -68,9 +68,9 @@ public class Thief_Appraise extends ThiefSkill
 		int levelDiff=target.phyStats().level()-(mob.phyStats().level()+abilityCode()+(2*super.getXLEVELLevel(mob)));
 		if(levelDiff<0) levelDiff=0;
 		levelDiff*=5;
-		boolean success=proficiencyCheck(mob,-levelDiff,auto);
+		final boolean success=proficiencyCheck(mob,-levelDiff,auto);
 
-		CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,"<S-NAME> appraise(s) <T-NAMESELF>.");
+		final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,"<S-NAME> appraise(s) <T-NAMESELF>.");
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
@@ -85,14 +85,14 @@ public class Thief_Appraise extends ThiefSkill
 			int allWeight=target.phyStats().weight();
 			if(!success)
 			{
-				double deviance=CMath.div(CMLib.dice().roll(1,100,0)+50,100);
+				final double deviance=CMath.div(CMLib.dice().roll(1,100,0)+50,100);
 				realValue=CMath.mul(realValue,deviance);
 				materialCode=CMLib.dice().roll(1,RawMaterial.CODES.TOTAL(),-1);
 				weight=(int)Math.round(CMath.mul(weight,deviance));
 				height=(int)Math.round(CMath.mul(height,deviance));
 				allWeight=(int)Math.round(CMath.mul(allWeight,deviance));
 			}
-			StringBuffer str=new StringBuffer("");
+			final StringBuffer str=new StringBuffer("");
 			str.append(target.name(mob)+" is made of "+RawMaterial.CODES.NAME(materialCode));
 			str.append(" is worth about "+CMLib.beanCounter().nameCurrencyShort(mob,realValue)+".");
 			if(target instanceof Armor)

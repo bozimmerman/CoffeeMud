@@ -164,17 +164,17 @@ public class Barbarian extends StdCharClass
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!(myHost instanceof MOB)) return super.okMessage(myHost,msg);
-		MOB myChar=(MOB)myHost;
+		final MOB myChar=(MOB)myHost;
 
 		if((msg.amITarget(myChar))
 		   &&(msg.tool()!=null)
 		   &&(msg.tool() instanceof Weapon)
 		   &&(msg.targetMinor()==CMMsg.TYP_DAMAGE))
 		{
-			int classLevel=myChar.charStats().getClassLevel(this);
+			final int classLevel=myChar.charStats().getClassLevel(this);
 			int recovery=(classLevel/5);
-			double minPct=.10+((classLevel>33)?((classLevel-30)*.0025):0);
-			int minAmount=(int)Math.round(CMath.mul(msg.value(), minPct));
+			final double minPct=.10+((classLevel>33)?((classLevel-30)*.0025):0);
+			final int minAmount=(int)Math.round(CMath.mul(msg.value(), minPct));
 			if(recovery < minAmount)
 				recovery=minAmount;
 			msg.setValue(msg.value()-recovery);
@@ -202,13 +202,13 @@ public class Barbarian extends StdCharClass
 		super.grantAbilities(mob,isBorrowedClass);
 		if(mob.playerStats()==null)
 		{
-			List<AbilityMapper.AbilityMapping> V=CMLib.ableMapper().getUpToLevelListings(ID(),
+			final List<AbilityMapper.AbilityMapping> V=CMLib.ableMapper().getUpToLevelListings(ID(),
 															  mob.charStats().getClassLevel(ID()),
 															  false,
 															  false);
-			for(AbilityMapper.AbilityMapping able : V)
+			for(final AbilityMapper.AbilityMapping able : V)
 			{
-				Ability A=CMClass.getAbility(able.abilityID);
+				final Ability A=CMClass.getAbility(able.abilityID);
 				if((A!=null)
 				&&(!CMLib.ableMapper().getAllQualified(ID(),true,A.ID()))
 				&&(!CMLib.ableMapper().getDefaultGain(ID(),true,A.ID())))
@@ -223,7 +223,7 @@ public class Barbarian extends StdCharClass
 		if(outfitChoices==null)
 		{
 			outfitChoices=new Vector();
-			Weapon w=CMClass.getWeapon("Shortsword");
+			final Weapon w=CMClass.getWeapon("Shortsword");
 			outfitChoices.add(w);
 		}
 		return outfitChoices;

@@ -135,7 +135,7 @@ public class StdComputerConsole extends StdRideable implements ShipComponent, El
 		{
 			final List<Item> list=getContents();
 			final LinkedList<Software> softwareList=new LinkedList<Software>();
-			for(Item I : list)
+			for(final Item I : list)
 				if(I instanceof Software)
 				{
 					((Software)I).setCircuitKey(circuitKey);
@@ -201,7 +201,7 @@ public class StdComputerConsole extends StdRideable implements ShipComponent, El
 	@Override
 	public List<MOB> getCurrentReaders()
 	{
-		List<MOB> readers=new LinkedList<MOB>();
+		final List<MOB> readers=new LinkedList<MOB>();
 		if(amDestroyed())
 			return readers;
 		final MOB lastReader=this.lastReader;
@@ -213,7 +213,7 @@ public class StdComputerConsole extends StdRideable implements ShipComponent, El
 			else
 				this.lastReader=null;
 		}
-		for(Rider R : riders)
+		for(final Rider R : riders)
 			if(R instanceof MOB)
 				readers.add((MOB)R);
 		return readers;
@@ -284,7 +284,7 @@ public class StdComputerConsole extends StdRideable implements ShipComponent, El
 				if(msg.targetMessage()!=null)
 				{
 					final List<Software> software=getSoftware();
-					List<CMMsg> msgs=new LinkedList<CMMsg>();
+					final List<CMMsg> msgs=new LinkedList<CMMsg>();
 					synchronized(software)
 					{
 						for(final Software S : software)
@@ -315,14 +315,14 @@ public class StdComputerConsole extends StdRideable implements ShipComponent, El
 					if(msgs.size()==0)
 						M.location().show(M, this, null, CMMsg.MASK_ALWAYS|CMMsg.TYP_OK_VISUAL, CMMsg.NO_EFFECT, CMMsg.NO_EFFECT, "<T-NAME> says '^N\n\rUnknown command. Please read the screen for a menu.\n\r^.^N'");
 					else
-					for(CMMsg msg2 : msgs)
+					for(final CMMsg msg2 : msgs)
 					{
 						if(msg2.target().okMessage(M, msg2))
 						{
 							msg2.target().executeMsg(M, msg2);
 							if(msg2.target() instanceof Software)
 							{
-								Software sw=(Software)msg2.target();
+								final Software sw=(Software)msg2.target();
 								if(msg2.targetMinor()==CMMsg.TYP_ACTIVATE)
 								{
 									setActiveMenu(sw.getInternalName());
@@ -372,7 +372,7 @@ public class StdComputerConsole extends StdRideable implements ShipComponent, El
 				if((msg.targetMessage()!=null)&&(activated()))
 				{
 					final List<Software> software=getSoftware();
-					List<CMMsg> msgs=new LinkedList<CMMsg>();
+					final List<CMMsg> msgs=new LinkedList<CMMsg>();
 					synchronized(software)
 					{
 						for(final Software S : software)
@@ -383,12 +383,12 @@ public class StdComputerConsole extends StdRideable implements ShipComponent, El
 							}
 						}
 					}
-					boolean readFlag=false;
+					final boolean readFlag=false;
 					final MOB M=msg.source();
 					if(msgs.size()==0)
 						M.location().show(M, this, null, CMMsg.MASK_ALWAYS|CMMsg.TYP_OK_VISUAL, CMMsg.NO_EFFECT, CMMsg.NO_EFFECT, "<T-NAME> says '^N\n\rUnknown activation command. Please read the screen for a menu of TYPEable commands.\n\r^.^N'");
 					else
-					for(CMMsg msg2 : msgs)
+					for(final CMMsg msg2 : msgs)
 						if(msg2.target().okMessage(M, msg2))
 							msg2.target().executeMsg(M, msg2);
 					if(readFlag)
@@ -399,7 +399,7 @@ public class StdComputerConsole extends StdRideable implements ShipComponent, El
 				if((msg.targetMessage()!=null)&&(activated()))
 				{
 					final List<Software> software=getSoftware();
-					List<CMMsg> msgs=new LinkedList<CMMsg>();
+					final List<CMMsg> msgs=new LinkedList<CMMsg>();
 					synchronized(software)
 					{
 						for(final Software S : software)
@@ -410,12 +410,12 @@ public class StdComputerConsole extends StdRideable implements ShipComponent, El
 							}
 						}
 					}
-					boolean readFlag=false;
+					final boolean readFlag=false;
 					final MOB M=msg.source();
 					if(msgs.size()==0)
 						M.location().show(M, this, null, CMMsg.MASK_ALWAYS|CMMsg.TYP_OK_VISUAL, CMMsg.NO_EFFECT, CMMsg.NO_EFFECT, "<T-NAME> says '^N\n\rUnknown deactivation command. Please read the screen for a menu of TYPEable commands.\n\r^.^N'");
 					else
-					for(CMMsg msg2 : msgs)
+					for(final CMMsg msg2 : msgs)
 						if(msg2.target().okMessage(M, msg2))
 							msg2.target().executeMsg(M, msg2);
 					if(readFlag)
@@ -444,13 +444,13 @@ public class StdComputerConsole extends StdRideable implements ShipComponent, El
 					if(activated())
 					{
 						final List<Software> software=getSoftware();
-						CMMsg msg2=CMClass.getMsg(msg.source(), null, null, CMMsg.NO_EFFECT,null,CMMsg.MSG_POWERCURRENT,null,CMMsg.NO_EFFECT,null);
+						final CMMsg msg2=CMClass.getMsg(msg.source(), null, null, CMMsg.NO_EFFECT,null,CMMsg.MSG_POWERCURRENT,null,CMMsg.NO_EFFECT,null);
 						synchronized(software)
 						{
 							if((Math.random()<getFinalManufacturer().getReliabilityPct()*getInstalledFactor())
 							&&(subjectToWearAndTear() && (Math.random() < CMath.div(usesRemaining(), 100))))
 							{
-								for(Software sw : software)
+								for(final Software sw : software)
 								{
 									msg2.setTarget(sw);
 									msg2.setValue(((powerToGive>0)?1:0)+(this.getActiveMenu().equals(sw.getInternalName())?1:0));
@@ -461,8 +461,8 @@ public class StdComputerConsole extends StdRideable implements ShipComponent, El
 							else
 							if(Math.random() > 0.99)
 							{
-								List<MOB> readers=getCurrentReaders();
-								for(MOB M : readers)
+								final List<MOB> readers=getCurrentReaders();
+								for(final MOB M : readers)
 									if(CMLib.flags().canBeSeenBy(this, M))
 										M.location().show(M, this, null, CMMsg.MASK_ALWAYS|CMMsg.TYP_OK_VISUAL, CMMsg.NO_EFFECT, CMMsg.NO_EFFECT, "<T-NAME> blue screens!!\n\r^.^N'");
 								deactivateSystem();
@@ -493,12 +493,12 @@ public class StdComputerConsole extends StdRideable implements ShipComponent, El
 			synchronized(software)
 			{
 				final StringBuilder newMsgs=new StringBuilder();
-				for(Software sw : software)
+				for(final Software sw : software)
 					newMsgs.append(sw.getScreenMessage());
 				if(newMsgs.length()>0)
 				{
-					List<MOB> readers=getCurrentReaders();
-					for(MOB M : readers)
+					final List<MOB> readers=getCurrentReaders();
+					for(final MOB M : readers)
 						if(CMLib.flags().canBeSeenBy(this, M))
 							M.location().show(M, this, null, CMMsg.MASK_ALWAYS|CMMsg.TYP_OK_VISUAL, CMMsg.NO_EFFECT, CMMsg.NO_EFFECT, "<T-NAME> says '^N\n\r"+newMsgs.toString()+"\n\r^.^N'");
 				}
@@ -511,8 +511,8 @@ public class StdComputerConsole extends StdRideable implements ShipComponent, El
 	{
 		if(activated())
 		{
-			List<MOB> readers=getCurrentReaders();
-			for(MOB M : readers)
+			final List<MOB> readers=getCurrentReaders();
+			for(final MOB M : readers)
 				CMLib.commands().postRead(M, this, "", true);
 		}
 	}
@@ -548,10 +548,10 @@ public class StdComputerConsole extends StdRideable implements ShipComponent, El
 		{
 			final List<Software> software=getSoftware();
 			final Room locR=CMLib.map().roomLocation(this);
-			CMMsg msg2=CMClass.getMsg(CMLib.map().getFactoryMOB(locR), null, null, CMMsg.NO_EFFECT,null,CMMsg.MSG_DEACTIVATE,null,CMMsg.NO_EFFECT,null);
+			final CMMsg msg2=CMClass.getMsg(CMLib.map().getFactoryMOB(locR), null, null, CMMsg.NO_EFFECT,null,CMMsg.MSG_DEACTIVATE,null,CMMsg.NO_EFFECT,null);
 			synchronized(software)
 			{
-				for(Software sw : software)
+				for(final Software sw : software)
 				{
 					msg2.setTarget(sw);
 					if(sw.okMessage(msg2.source(), msg2))
@@ -560,8 +560,8 @@ public class StdComputerConsole extends StdRideable implements ShipComponent, El
 			}
 			setPowerRemaining(0);
 			activate(false);
-			List<MOB> readers=getCurrentReaders();
-			for(MOB M : readers)
+			final List<MOB> readers=getCurrentReaders();
+			for(final MOB M : readers)
 				if(CMLib.flags().canBeSeenBy(this, M))
 					M.location().show(M, this, null, CMMsg.MASK_ALWAYS|CMMsg.TYP_OK_VISUAL, CMMsg.NO_EFFECT, CMMsg.NO_EFFECT, "The screen on <T-NAME> goes blank.");
 		}

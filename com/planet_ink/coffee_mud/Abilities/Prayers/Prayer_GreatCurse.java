@@ -52,7 +52,7 @@ public class Prayer_GreatCurse extends Prayer
 		if(affected==null) return;
 		if(!(affected instanceof MOB)) return;
 
-		int xlvl=super.getXLEVELLevel(invoker());
+		final int xlvl=super.getXLEVELLevel(invoker());
 		affectableStats.setArmor(affectableStats.armor()+10+(4*xlvl));
 		affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()-10-(2*xlvl));
 	}
@@ -63,7 +63,7 @@ public class Prayer_GreatCurse extends Prayer
 		// undo the affects of this spell
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		super.unInvoke();
 
@@ -75,7 +75,7 @@ public class Prayer_GreatCurse extends Prayer
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		MOB target=this.getTarget(mob,commands,givenTarget);
+		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -89,13 +89,13 @@ public class Prayer_GreatCurse extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto)|CMMsg.MASK_MALICIOUS,auto?"<T-NAME> <T-IS-ARE> horribly cursed!":"^S<S-NAME> curse(s) <T-NAMESELF> horribly.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto)|CMMsg.MASK_MALICIOUS,auto?"<T-NAME> <T-IS-ARE> horribly cursed!":"^S<S-NAME> curse(s) <T-NAMESELF> horribly.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
-					Item I=Prayer_Curse.getSomething(mob,true);
+					final Item I=Prayer_Curse.getSomething(mob,true);
 					if(I!=null)
 					{
 						Prayer_Curse.endLowerBlessings(I,CMLib.ableMapper().lowestQualifyingLevel(ID()));

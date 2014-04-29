@@ -29,11 +29,11 @@ public class DoubleMap<K,F> implements java.util.Map<K,F>, java.io.Serializable
 
 	public synchronized Vector<String> toStringVector(String divider)
 	{
-		Vector<String> V=new Vector<String>(size());
-		for(Object S : keySet())
+		final Vector<String> V=new Vector<String>(size());
+		for(final Object S : keySet())
 			if(S!=null)
 			{
-				Object O = get(S);
+				final Object O = get(S);
 				if(O==null)
 					V.add(S.toString() + divider);
 				else
@@ -110,7 +110,7 @@ public class DoubleMap<K,F> implements java.util.Map<K,F>, java.io.Serializable
 	@Override
 	public synchronized F put(K arg0, F arg1)
 	{
-		F f=H1.put(arg0, arg1);
+		final F f=H1.put(arg0, arg1);
 		if(f!=null)
 			H2.put(arg1, arg0);
 		return f;
@@ -119,7 +119,7 @@ public class DoubleMap<K,F> implements java.util.Map<K,F>, java.io.Serializable
 	@Override
 	public synchronized F remove(Object arg0)
 	{
-		F f=H1.remove(arg0);
+		final F f=H1.remove(arg0);
 		if(f!=null)
 			H2.remove(f);
 		return f;
@@ -148,7 +148,7 @@ public class DoubleMap<K,F> implements java.util.Map<K,F>, java.io.Serializable
 	{
 		if(arg0 != null)
 		{
-			for(java.util.Map.Entry<? extends K, ? extends F> e : arg0.entrySet())
+			for(final java.util.Map.Entry<? extends K, ? extends F> e : arg0.entrySet())
 				put(e.getKey(),e.getValue());
 		}
 	}

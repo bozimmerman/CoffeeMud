@@ -92,9 +92,8 @@ public class Load extends StdCommand
 			final XVector ammoV=new XVector(what);
 			final List<Item> baseAmmoItems=CMLib.english().fetchItemList(mob,mob,null,ammoV,Wearable.FILTER_UNWORNONLY,false);
 			final List<Ammunition> ammos=new XVector<Ammunition>();
-			for(final Iterator<Item> i=baseAmmoItems.iterator();i.hasNext();)
+			for (Item I : baseAmmoItems)
 			{
-				final Item I=i.next();
 				if(I instanceof Ammunition)
 				{
 					ammos.add((Ammunition)I);
@@ -110,9 +109,8 @@ public class Load extends StdCommand
 				commands.removeElementAt(0);
 				final List<Item> baseItems=CMLib.english().fetchItemList(mob,mob,null,commands,Wearable.FILTER_ANY,false);
 				final List<AmmunitionWeapon> items=new XVector<AmmunitionWeapon>();
-				for(final Iterator<Item> i=baseItems.iterator();i.hasNext();)
+				for (Item I : baseItems)
 				{
-					final Item I=i.next();
 					if((I instanceof AmmunitionWeapon)&&((AmmunitionWeapon)I).requiresAmmunition())
 						items.add((AmmunitionWeapon)I);
 				}
@@ -134,7 +132,7 @@ public class Load extends StdCommand
 					while((ammunition != null)
 					&&((W.ammunitionRemaining() < W.ammunitionCapacity())||(!doneOne)))
 					{
-						CMMsg newMsg=CMClass.getMsg(mob,W,ammunition,CMMsg.MSG_RELOAD,"<S-NAME> reload(s) <T-NAME> with <O-NAME>.");
+						final CMMsg newMsg=CMClass.getMsg(mob,W,ammunition,CMMsg.MSG_RELOAD,"<S-NAME> reload(s) <T-NAME> with <O-NAME>.");
 						if(mob.location().okMessage(mob,newMsg))
 						{
 							doneOne=true;
@@ -152,7 +150,7 @@ public class Load extends StdCommand
 			if((what.equalsIgnoreCase("FACTION"))
 			&&(CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDFACTIONS)))
 			{
-				Faction F=CMLib.factions().getFaction(name);
+				final Faction F=CMLib.factions().getFaction(name);
 				if(F==null)
 					mob.tell("Faction file '"+name+"' was not found.");
 				else
@@ -162,12 +160,12 @@ public class Load extends StdCommand
 			else
 			if(what.equalsIgnoreCase("RESOURCE"))
 			{
-				CMFile F=new CMFile(name,mob,CMFile.FLAG_LOGERRORS);
+				final CMFile F=new CMFile(name,mob,CMFile.FLAG_LOGERRORS);
 				if((!F.exists())||(!F.canRead()))
 					mob.tell("File '"+name+"' could not be accessed.");
 				else
 				{
-					StringBuffer buf=Resources.getFileResource(name,true); // enforces its own security
+					final StringBuffer buf=Resources.getFileResource(name,true); // enforces its own security
 					if((buf==null)||(buf.length()==0))
 						mob.tell("Resource '"+name+"' was not found.");
 					else
@@ -188,22 +186,22 @@ public class Load extends StdCommand
 						{
 							C=Class.forName("com.sun.tools.javac.Main", true, CMClass.instance());
 							if(C!=null) CO=C.newInstance();
-						}catch(Exception e)
+						}catch(final Exception e)
 						{
 							Log.errOut("Load",e.getMessage());
 						}
-						ByteArrayOutputStream bout=new ByteArrayOutputStream();
-						PrintWriter pout=new PrintWriter(new OutputStreamWriter(bout));
+						final ByteArrayOutputStream bout=new ByteArrayOutputStream();
+						final PrintWriter pout=new PrintWriter(new OutputStreamWriter(bout));
 						if(CO==null)
 						{
 							mob.tell("Unable to instantiate compiler.  You might try including your Java JDK's lib/tools.jar in your classpath next time you boot the mud.");
 							return false;
 						}
-						String[] args=new String[]{name};
+						final String[] args=new String[]{name};
 						if(C!=null)
 						{
-							java.lang.reflect.Method M=C.getMethod("compile",new Class[]{args.getClass(),PrintWriter.class});
-							Object returnVal=M.invoke(CO,new Object[]{args,pout});
+							final java.lang.reflect.Method M=C.getMethod("compile",new Class[]{args.getClass(),PrintWriter.class});
+							final Object returnVal=M.invoke(CO,new Object[]{args,pout});
 							if((returnVal instanceof Integer)&&(((Integer)returnVal).intValue()!=0))
 							{
 								mob.tell("Compile failed:");
@@ -223,19 +221,19 @@ public class Load extends StdCommand
 
 					if(what.equalsIgnoreCase("CLASS"))
 					{
-						Object O=CMClass.getObjectOrPrototype(unloadClassName);
+						final Object O=CMClass.getObjectOrPrototype(unloadClassName);
 						if(O!=null)
 						{
-							CMClass.CMObjectType x=CMClass.getObjectType(O);
+							final CMClass.CMObjectType x=CMClass.getObjectType(O);
 							if(x!=null) what=x.toString();
 						}
 					}
-					CMObjectType whatType=CMClass.findObjectType(what);
+					final CMObjectType whatType=CMClass.findObjectType(what);
 					if(whatType==null)
 						mob.tell("Don't know how to load a '"+what+"'.  Try one of the following: "+CMParms.toStringList(ARCHON_LIST));
 					else
 					{
-						Object O=CMClass.getObjectOrPrototype(unloadClassName);
+						final Object O=CMClass.getObjectOrPrototype(unloadClassName);
 						if((O instanceof CMObject)
 						&&(name.toUpperCase().endsWith(".CLASS"))
 						&&(CMClass.delClass(whatType,(CMObject)O)))
@@ -247,11 +245,11 @@ public class Load extends StdCommand
 						}
 					}
 				}
-				catch(java.lang.Error err)
+				catch(final java.lang.Error err)
 				{
 					mob.tell(err.getMessage());
 				}
-				catch(Exception t)
+				catch(final Exception t)
 				{
 					Log.errOut("Load",t.getClass().getName()+": "+t.getMessage());
 				}

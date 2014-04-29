@@ -70,7 +70,7 @@ public class Prayer_Desecrate extends Prayer
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
@@ -78,15 +78,15 @@ public class Prayer_Desecrate extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> feel(s) desecrated!":"^S<S-NAME> desecrate(s) <T-NAMESELF> before "+hisHerDiety(mob)+".^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> feel(s) desecrated!":"^S<S-NAME> desecrate(s) <T-NAMESELF> before "+hisHerDiety(mob)+".^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(CMLib.flags().isEvil(mob))
 				{
 					double exp=5.0;
-					int levelLimit=CMProps.getIntVar(CMProps.Int.EXPRATE);
-					int levelDiff=(mob.phyStats().level())-target.phyStats().level();
+					final int levelLimit=CMProps.getIntVar(CMProps.Int.EXPRATE);
+					final int levelDiff=(mob.phyStats().level())-target.phyStats().level();
 					if(levelDiff>levelLimit) exp=0.0;
 					if(exp>0.0)
 						CMLib.leveler().postExperience(mob,null,null,(int)Math.round(exp)+super.getXPCOSTLevel(mob),false);

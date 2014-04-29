@@ -61,7 +61,7 @@ public class Prop_EnlargeRoom extends Property
 	{
 		if(text().length()>0)
 		{
-			int weight=affectableStats.weight();
+			final int weight=affectableStats.weight();
 			switch(text().charAt(0))
 			{
 			case '+':

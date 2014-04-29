@@ -50,7 +50,7 @@ public class ROMPatrolman extends StdBehavior
 		MOB victim=null;
 		for(int i=0;i<observer.location().numInhabitants();i++)
 		{
-			MOB inhab=observer.location().fetchInhabitant(i);
+			final MOB inhab=observer.location().fetchInhabitant(i);
 			if((inhab!=null)&&(inhab.isInCombat()))
 			{
 				if(inhab.phyStats().level()>inhab.getVictim().phyStats().level())
@@ -64,9 +64,9 @@ public class ROMPatrolman extends StdBehavior
 		if(victim==null) return;
 		if(BrotherHelper.isBrother(victim,observer,false)) return;
 		observer.location().show(observer,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> blow(s) down hard on <S-HIS-HER> whistle. ***WHEEEEEEEEEEEET***");
-		for(Enumeration r=observer.location().getArea().getMetroMap();r.hasMoreElements();)
+		for(final Enumeration r=observer.location().getArea().getMetroMap();r.hasMoreElements();)
 		{
-			Room R=(Room)r.nextElement();
+			final Room R=(Room)r.nextElement();
 			if((R!=observer.location())&&(R.numPCInhabitants()>0))
 				R.showHappens(CMMsg.MSG_NOISE,"You hear a shrill whistling sound in the distance.");
 		}
@@ -107,21 +107,21 @@ public class ROMPatrolman extends StdBehavior
 
 		if(makePeace)
 		{
-			Room room=observer.location();
+			final Room room=observer.location();
 			for(int i=0;i<room.numInhabitants();i++)
 			{
-				MOB inhab=room.fetchInhabitant(i);
+				final MOB inhab=room.fetchInhabitant(i);
 				if((inhab!=null)
 				&&(inhab.isInCombat())
 				&&(inhab.getVictim().isInCombat())
 				&&((observer.phyStats().level()>(inhab.phyStats().level()+5))
 				&&(!CMLib.flags().isEvil(observer))))
 				{
-					String msg="<S-NAME> stop(s) <T-NAME> from fighting with "+inhab.getVictim().name();
-					CMMsg msgs=CMClass.getMsg(observer,inhab,CMMsg.MSG_NOISYMOVEMENT,msg);
+					final String msg="<S-NAME> stop(s) <T-NAME> from fighting with "+inhab.getVictim().name();
+					final CMMsg msgs=CMClass.getMsg(observer,inhab,CMMsg.MSG_NOISYMOVEMENT,msg);
 					if(observer.location().okMessage(observer,msgs))
 					{
-						MOB ivictim=inhab.getVictim();
+						final MOB ivictim=inhab.getVictim();
 						if(ivictim!=null) ivictim.makePeace();
 					}
 				}
@@ -138,7 +138,7 @@ public class ROMPatrolman extends StdBehavior
 		super.tick(ticking,tickID);
 
 		if(tickID!=Tickable.TICKID_MOB) return true;
-		MOB mob=(MOB)ticking;
+		final MOB mob=(MOB)ticking;
 		tickTock--;
 		if(tickTock<=0)
 		{

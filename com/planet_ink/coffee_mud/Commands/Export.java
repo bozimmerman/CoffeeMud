@@ -102,9 +102,9 @@ public class Export extends StdCommand
 		String commandType="";
 		String fileName="";
 		int fileNameCode=-1; // -1=indetermined, 0=screen, 1=file, 2=path, 3=email
-		Room room=mob.location();
-		Area area=(room!=null)?room.getArea():null;
-		Session S=mob.session();
+		final Room room=mob.location();
+		final Area area=(room!=null)?room.getArea():null;
+		final Session S=mob.session();
 		if(commands.size()>0)
 			commands.removeElementAt(0);
 		if(commands.size()>0)
@@ -145,7 +145,7 @@ public class Export extends StdCommand
 		String subType="DATA";
 		if(commands.size()>0)
 		{
-			String sub=((String)commands.firstElement()).toUpperCase().trim();
+			final String sub=((String)commands.firstElement()).toUpperCase().trim();
 			if((sub.equalsIgnoreCase("ITEMS")
 				||sub.equalsIgnoreCase("MOBS")
 				||sub.equalsIgnoreCase("WEAPONS")
@@ -202,7 +202,7 @@ public class Export extends StdCommand
 					if(S!=null) mob.tell("You are not allowed to export to a file.");
 					return false;
 				}
-				CMFile F=new CMFile(fileName,mob);
+				final CMFile F=new CMFile(fileName,mob);
 				if(F.isDirectory())
 					fileNameCode=2;
 			}
@@ -235,30 +235,30 @@ public class Export extends StdCommand
 		if(!super.checkArguments(internalParameters, args))
 			return null;
 
-		String commandType=(String)args[0];
-		String subType=(String)args[1];
+		final String commandType=(String)args[0];
+		final String subType=(String)args[1];
 		String fileName=(String)args[2];
-		int fileNameCode = ((Integer)args[3]).intValue();
-		Session S = (Session)args[4];
-		Area area = (Area)args[5];
-		Room room = (Room)args[6];
+		final int fileNameCode = ((Integer)args[3]).intValue();
+		final Session S = (Session)args[4];
+		final Area area = (Area)args[5];
+		final Room room = (Room)args[6];
 
-		Set<CMObject> custom=new HashSet<CMObject>();
-		Set<String> files=new HashSet<String>();
+		final Set<CMObject> custom=new HashSet<CMObject>();
+		final Set<String> files=new HashSet<String>();
 
 		String xml="";
 		if(subType.equalsIgnoreCase("DATA"))
 		{
 			if(commandType.equalsIgnoreCase("PLAYER"))
 			{
-				StringBuffer x=new StringBuffer("<PLAYERS>");
+				final StringBuffer x=new StringBuffer("<PLAYERS>");
 				if(S!=null)
 					S.rawPrint("Reading players...");
-				java.util.List<String> V=CMLib.database().getUserList();
-				for(String name : V)
+				final java.util.List<String> V=CMLib.database().getUserList();
+				for(final String name : V)
 				{
 					//if(S!=null) S.rawPrint(".");
-					MOB M=CMLib.players().getLoadPlayer(name);
+					final MOB M=CMLib.players().getLoadPlayer(name);
 					if(M!=null)
 					{
 						x.append("\r\n<PLAYER>");
@@ -274,12 +274,12 @@ public class Export extends StdCommand
 			else
 			if(commandType.equalsIgnoreCase("ACCOUNT"))
 			{
-				StringBuffer x=new StringBuffer("<ACCOUNTS>");
+				final StringBuffer x=new StringBuffer("<ACCOUNTS>");
 				if(S!=null)
 					S.rawPrint("Reading accounts and players...");
-				for(Enumeration<PlayerAccount> a=CMLib.players().accounts("",null);a.hasMoreElements();)
+				for(final Enumeration<PlayerAccount> a=CMLib.players().accounts("",null);a.hasMoreElements();)
 				{
-					PlayerAccount A=a.nextElement();
+					final PlayerAccount A=a.nextElement();
 					//if(S!=null) S.rawPrint(".");
 					x.append("\r\n<ACCOUNT>");
 					x.append(CMLib.coffeeMaker().getAccountXML(A,custom,files));
@@ -321,9 +321,9 @@ public class Export extends StdCommand
 				}
 				StringBuffer buf=new StringBuffer("");
 				if(fileNameCode!=2) buf.append("<AREAS>");
-				for(Enumeration a=CMLib.map().areas();a.hasMoreElements();)
+				for(final Enumeration a=CMLib.map().areas();a.hasMoreElements();)
 				{
-					Area A=(Area)a.nextElement();
+					final Area A=(Area)a.nextElement();
 					if(A!=null)
 					{
 						if(S!=null)
@@ -349,8 +349,8 @@ public class Export extends StdCommand
 		else
 		if(commandType.equalsIgnoreCase("PLAYER"))
 		{
-			StringBuffer x=new StringBuffer("<PLAYERS>");
-			MOB M=CMLib.players().getLoadPlayer(subType);
+			final StringBuffer x=new StringBuffer("<PLAYERS>");
+			final MOB M=CMLib.players().getLoadPlayer(subType);
 			if(M!=null)
 			{
 				x.append("\r\n<PLAYER>");
@@ -363,8 +363,8 @@ public class Export extends StdCommand
 		else
 		if(commandType.equalsIgnoreCase("ACCOUNT"))
 		{
-			StringBuffer x=new StringBuffer("<ACCOUNTS>");
-			PlayerAccount A=CMLib.players().getLoadAccount(subType);
+			final StringBuffer x=new StringBuffer("<ACCOUNTS>");
+			final PlayerAccount A=CMLib.players().getLoadAccount(subType);
 			if(A!=null)
 			{
 				x.append("\r\n<ACCOUNT>");
@@ -378,7 +378,7 @@ public class Export extends StdCommand
 		if(subType.equalsIgnoreCase("MOBS"))
 		{
 			if(fileNameCode==2) fileName=fileName+"/mobs";
-			Hashtable found=new Hashtable();
+			final Hashtable found=new Hashtable();
 			if(commandType.equalsIgnoreCase("ROOM"))
 				xml="<MOBS>"+CMLib.coffeeMaker().getRoomMobs(room,custom,files,found).toString()+"</MOBS>";
 			else
@@ -386,10 +386,10 @@ public class Export extends StdCommand
 			{
 				if(S!=null)
 					S.rawPrint("Reading area mobs '"+area.Name()+"'...");
-				StringBuffer buf=new StringBuffer("<MOBS>");
-				for(Enumeration r=area.getCompleteMap();r.hasMoreElements();)
+				final StringBuffer buf=new StringBuffer("<MOBS>");
+				for(final Enumeration r=area.getCompleteMap();r.hasMoreElements();)
 				{
-					Room R=(Room)r.nextElement();
+					final Room R=(Room)r.nextElement();
 					//if(S!=null) S.rawPrint(".");
 					buf.append(CMLib.coffeeMaker().getRoomMobs(R,custom,files,found).toString());
 				}
@@ -401,16 +401,16 @@ public class Export extends StdCommand
 			{
 				if(S!=null)
 					S.rawPrint("Reading world mobs ...");
-				StringBuffer buf=new StringBuffer("<MOBS>");
+				final StringBuffer buf=new StringBuffer("<MOBS>");
 				try
 				{
-					for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
+					for(final Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 					{
-						Room R=(Room)r.nextElement();
+						final Room R=(Room)r.nextElement();
 						//if(S!=null) S.rawPrint(".");
 						buf.append(CMLib.coffeeMaker().getRoomMobs(R,custom,files,found).toString());
 					}
-				}catch(NoSuchElementException e){}
+				}catch(final NoSuchElementException e){}
 				xml=buf.toString()+"</MOBS>";
 				if(S!=null)
 					S.rawPrintln("!");
@@ -441,7 +441,7 @@ public class Export extends StdCommand
 				fileName=fileName+"/items";
 			}
 
-			Hashtable found=new Hashtable();
+			final Hashtable found=new Hashtable();
 			if(commandType.equalsIgnoreCase("ROOM"))
 				xml="<ITEMS>"+CMLib.coffeeMaker().getRoomItems(room,found,files,type).toString()+"</ITEMS>";
 			else
@@ -449,10 +449,10 @@ public class Export extends StdCommand
 			{
 				if(S!=null)
 					S.rawPrint("Reading area "+subType.toLowerCase()+" '"+area.Name()+"'...");
-				StringBuffer buf=new StringBuffer("<ITEMS>");
-				for(Enumeration r=area.getCompleteMap();r.hasMoreElements();)
+				final StringBuffer buf=new StringBuffer("<ITEMS>");
+				for(final Enumeration r=area.getCompleteMap();r.hasMoreElements();)
 				{
-					Room R=(Room)r.nextElement();
+					final Room R=(Room)r.nextElement();
 					//if(S!=null) S.rawPrint(".");
 					buf.append(CMLib.coffeeMaker().getRoomItems(R,found,files,type).toString());
 				}
@@ -464,16 +464,16 @@ public class Export extends StdCommand
 			{
 				if(S!=null)
 					S.rawPrint("Reading world "+subType.toLowerCase()+" ...");
-				StringBuffer buf=new StringBuffer("<ITEMS>");
+				final StringBuffer buf=new StringBuffer("<ITEMS>");
 				try
 				{
-					for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
+					for(final Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 					{
-						Room R=(Room)r.nextElement();
+						final Room R=(Room)r.nextElement();
 						//if(S!=null) S.rawPrint(".");
 						buf.append(CMLib.coffeeMaker().getRoomItems(R,found,files,type).toString());
 					}
-				}catch(NoSuchElementException e){}
+				}catch(final NoSuchElementException e){}
 				xml=buf.toString()+"</ITEMS>";
 				if(S!=null)
 					S.rawPrintln("!");
@@ -481,10 +481,9 @@ public class Export extends StdCommand
 		}
 		if(custom.size()>0)
 		{
-			StringBuffer str=new StringBuffer("<CUSTOM>");
-			for(Iterator i=custom.iterator();i.hasNext();)
+			final StringBuffer str=new StringBuffer("<CUSTOM>");
+			for (final Object o : custom)
 			{
-				Object o=i.next();
 				if(o instanceof Race)
 					str.append(((Race)o).racialParms());
 				else
@@ -502,12 +501,11 @@ public class Export extends StdCommand
 		}
 		if(files.size()>0)
 		{
-			StringBuffer str=new StringBuffer("<FILES>");
-			for(Iterator i=files.iterator();i.hasNext();)
+			final StringBuffer str=new StringBuffer("<FILES>");
+			for (final Object O : files)
 			{
-				Object O=i.next();
-				String filename=(String)O;
-				StringBuffer buf=new CMFile(Resources.makeFileResourceName(filename),null,CMFile.FLAG_LOGERRORS).text();
+				final String filename=(String)O;
+				final StringBuffer buf=new CMFile(Resources.makeFileResourceName(filename),null,CMFile.FLAG_LOGERRORS).text();
 				if((buf!=null)&&(buf.length()>0))
 				{
 					str.append("<FILE NAME=\""+filename+"\">");

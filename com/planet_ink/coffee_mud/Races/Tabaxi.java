@@ -43,10 +43,10 @@ public class Tabaxi extends GreatCat
 	@Override public int weightVariance(){return 80;}
 	@Override public long forbiddenWornBits(){return 0;}
 	@Override public String racialCategory(){return "Feline";}
-	private String[] racialAbilityNames={"Skill_Hide","Skill_Sneak"};
-	private int[]racialAbilityLevels={4,4};
-	private int[]racialAbilityProficiencies={50,50};
-	private boolean[]racialAbilityQuals={false,false};
+	private final String[] racialAbilityNames={"Skill_Hide","Skill_Sneak"};
+	private final int[]racialAbilityLevels={4,4};
+	private final int[]racialAbilityProficiencies={50,50};
+	private final boolean[]racialAbilityQuals={false,false};
 	@Override public String[] racialAbilityNames(){return racialAbilityNames;}
 	@Override public int[] racialAbilityLevels(){return racialAbilityLevels;}
 	@Override public int[] racialAbilityProficiencies(){return racialAbilityProficiencies;}

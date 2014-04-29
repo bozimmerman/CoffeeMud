@@ -54,11 +54,11 @@ public class FileCmd extends CM1Command
 	{
 		try
 		{
-			String firstWord=CMLib.english().getFirstWord(parameters).toUpperCase().trim();
+			final String firstWord=CMLib.english().getFirstWord(parameters).toUpperCase().trim();
 			if(firstWord.equals("LENGTH"))
 			{
-				String filename= CMStrings.trimQuotes(parameters.substring(7).trim());
-				CMFile f = new CMFile(filename,req.getUser());
+				final String filename= CMStrings.trimQuotes(parameters.substring(7).trim());
+				final CMFile f = new CMFile(filename,req.getUser());
 				if(!f.exists())
 					req.sendMsg("[FAIL FILE NOT FOUND "+filename+"]");
 				else
@@ -67,8 +67,8 @@ public class FileCmd extends CM1Command
 			else
 			if(firstWord.equals("AUTHOR"))
 			{
-				String filename= CMStrings.trimQuotes(parameters.substring(7).trim());
-				CMFile f = new CMFile(filename,req.getUser());
+				final String filename= CMStrings.trimQuotes(parameters.substring(7).trim());
+				final CMFile f = new CMFile(filename,req.getUser());
 				if(!f.exists())
 					req.sendMsg("[FAIL FILE NOT FOUND "+filename+"]");
 				else
@@ -77,8 +77,8 @@ public class FileCmd extends CM1Command
 			else
 			if(firstWord.equals("LASTMODIFIED"))
 			{
-				String filename= CMStrings.trimQuotes(parameters.substring(13).trim());
-				CMFile f = new CMFile(filename,req.getUser());
+				final String filename= CMStrings.trimQuotes(parameters.substring(13).trim());
+				final CMFile f = new CMFile(filename,req.getUser());
 				if(!f.exists())
 					req.sendMsg("[FAIL FILE NOT FOUND "+filename+"]");
 				else
@@ -87,8 +87,8 @@ public class FileCmd extends CM1Command
 			else
 			if(firstWord.equals("DELETE"))
 			{
-				String filename= CMStrings.trimQuotes(parameters.substring(7).trim());
-				CMFile f = new CMFile(filename,req.getUser());
+				final String filename= CMStrings.trimQuotes(parameters.substring(7).trim());
+				final CMFile f = new CMFile(filename,req.getUser());
 				if(!f.exists())
 					req.sendMsg("[FAIL FILE NOT FOUND "+filename+"]");
 				else
@@ -100,15 +100,15 @@ public class FileCmd extends CM1Command
 			else
 			if(firstWord.equals("READ"))
 			{
-				String filename= CMStrings.trimQuotes(parameters.substring(5).trim());
-				CMFile f = new CMFile(filename,req.getUser());
+				final String filename= CMStrings.trimQuotes(parameters.substring(5).trim());
+				final CMFile f = new CMFile(filename,req.getUser());
 				if(!f.exists())
 					req.sendMsg("[FAIL FILE NOT FOUND "+filename+"]");
 				else
 				if(f.isDirectory() && f.canRead())
 				{
-					StringBuilder str=new StringBuilder("");
-					for(CMFile f2 : f.listFiles())
+					final StringBuilder str=new StringBuilder("");
+					for(final CMFile f2 : f.listFiles())
 						str.append(f2.getName()).append(f2.isDirectory()?"/ ":" ");
 					req.sendMsg("[OK "+str.toString().trim()+"]");
 				}
@@ -116,7 +116,7 @@ public class FileCmd extends CM1Command
 				if(f.canRead())
 				{
 					String eob="/BLOCK:"+Math.random();
-					String data=f.textUnformatted().toString();
+					final String data=f.textUnformatted().toString();
 					while(data.indexOf(eob)>=0)
 						eob="/BLOCK:"+Math.random();
 					req.sendMsg("[BLOCK "+eob+"]");
@@ -128,15 +128,15 @@ public class FileCmd extends CM1Command
 			else
 			if(firstWord.equals("READB64"))
 			{
-				String filename= CMStrings.trimQuotes(parameters.substring(5).trim());
-				CMFile f = new CMFile(filename,req.getUser());
+				final String filename= CMStrings.trimQuotes(parameters.substring(5).trim());
+				final CMFile f = new CMFile(filename,req.getUser());
 				if(!f.exists())
 					req.sendMsg("[FAIL FILE NOT FOUND "+filename+"]");
 				else
 				if(f.isDirectory() && f.canRead())
 				{
-					StringBuilder str=new StringBuilder("");
-					for(CMFile f2 : f.listFiles())
+					final StringBuilder str=new StringBuilder("");
+					for(final CMFile f2 : f.listFiles())
 						str.append(f2.getName()).append(f2.isDirectory()?"/ ":" ");
 					req.sendMsg("[OK "+str.toString().trim()+"]");
 				}
@@ -144,7 +144,7 @@ public class FileCmd extends CM1Command
 				if(f.canRead())
 				{
 					String eob="/BLOCK:"+Math.random();
-					String data=B64Encoder.B64encodeBytes(f.raw());
+					final String data=B64Encoder.B64encodeBytes(f.raw());
 					while(data.indexOf(eob)>=0)
 						eob="/BLOCK:"+Math.random();
 					req.sendMsg("[BLOCK "+eob+"]");
@@ -162,7 +162,7 @@ public class FileCmd extends CM1Command
 				CMFile f;
 				if(rest.startsWith("\""))
 				{
-					int x=rest.indexOf("\" ",1);
+					final int x=rest.indexOf("\" ",1);
 					if(x<0)
 						f=null;
 					else
@@ -173,7 +173,7 @@ public class FileCmd extends CM1Command
 				}
 				else
 				{
-					int x=rest.indexOf(' ');
+					final int x=rest.indexOf(' ');
 					if(x<0)
 						f=null;
 					else
@@ -201,7 +201,7 @@ public class FileCmd extends CM1Command
 				CMFile f;
 				if(rest.startsWith("\""))
 				{
-					int x=rest.indexOf("\" ",1);
+					final int x=rest.indexOf("\" ",1);
 					if(x<0)
 						f=null;
 					else
@@ -212,7 +212,7 @@ public class FileCmd extends CM1Command
 				}
 				else
 				{
-					int x=rest.indexOf(' ');
+					final int x=rest.indexOf(' ');
 					if(x<0)
 						f=null;
 					else
@@ -225,7 +225,7 @@ public class FileCmd extends CM1Command
 					req.sendMsg("[FAIL BAD FILENAME]");
 				else
 				{
-					byte[] binData=B64Encoder.B64decode(rest);
+					final byte[] binData=B64Encoder.B64decode(rest);
 					if(f.saveRaw(binData))
 						req.sendMsg("[OK]");
 					else
@@ -235,7 +235,7 @@ public class FileCmd extends CM1Command
 			else
 				req.sendMsg("[FAIL "+getHelp(req.getUser(), null, null)+"]");
 		}
-		catch(java.io.IOException ioe)
+		catch(final java.io.IOException ioe)
 		{
 			Log.errOut(className,ioe);
 			req.close();
@@ -253,7 +253,7 @@ public class FileCmd extends CM1Command
 	@Override
 	public String getHelp(MOB user, PhysicalAgent target, String rest)
 	{
-		String word=CMLib.english().getFirstWord(rest==null?"":rest).toUpperCase().trim();
+		final String word=CMLib.english().getFirstWord(rest==null?"":rest).toUpperCase().trim();
 		if (word.equals("READ"))
 			return "USAGE: "+getCommandWord()+" READ \"<FILENAME>\": returns contents of the file or directory as a block.";
 		else

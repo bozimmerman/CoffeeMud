@@ -104,8 +104,8 @@ public class Spell_FakeWeapon extends Spell
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		String weaponName=CMParms.combine(commands,0);
-		String[] choices={"sword","dagger","mace","staff","axe","hammer", "flail"};
+		final String weaponName=CMParms.combine(commands,0);
+		final String[] choices={"sword","dagger","mace","staff","axe","hammer", "flail"};
 		int choice=-1;
 		for(int i=0;i<choices.length;i++)
 		{
@@ -120,14 +120,14 @@ public class Spell_FakeWeapon extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,null,this,somanticCastCode(mob,null,auto),auto?"":"^S<S-NAME> wave(s) <S-HIS-HER> arms around dramatically.^?");
+			final CMMsg msg=CMClass.getMsg(mob,null,this,somanticCastCode(mob,null,auto),auto?"":"^S<S-NAME> wave(s) <S-HIS-HER> arms around dramatically.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				Weapon weapon=(Weapon)CMClass.getItem("GenWeapon");
+				final Weapon weapon=(Weapon)CMClass.getItem("GenWeapon");
 				weapon.basePhyStats().setAttackAdjustment(100 +(10 * super.getXLEVELLevel(mob)));
 				weapon.basePhyStats().setDamage(75+(3 * super.getXLEVELLevel(mob)));
 				weapon.basePhyStats().setDisposition(weapon.basePhyStats().disposition()|PhyStats.IS_BONUS);

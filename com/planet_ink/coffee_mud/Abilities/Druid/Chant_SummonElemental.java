@@ -54,7 +54,7 @@ public class Chant_SummonElemental extends Chant
 		{
 			if((affected!=null)&&(affected instanceof MOB)&&(invoker!=null))
 			{
-				MOB mob=(MOB)affected;
+				final MOB mob=(MOB)affected;
 				if(((mob.amFollowing()==null)
 				||(mob.amDead())
 				||(mob.location()!=invoker.location())))
@@ -87,7 +87,7 @@ public class Chant_SummonElemental extends Chant
 	{
 		if(mob!=null)
 		{
-			Room R=mob.location();
+			final Room R=mob.location();
 			if(R!=null)
 			{
 				if(CMLib.flags().hasAControlledFollower(mob,this))
@@ -108,16 +108,16 @@ public class Chant_SummonElemental extends Chant
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
 			invoker=mob;
-			CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":"^S<S-NAME> chant(s) and summon(s) help from another Plain.^?");
+			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":"^S<S-NAME> chant(s) and summon(s) help from another Plain.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				MOB target = determineMonster(mob, mob.phyStats().level()+(2*super.getXLEVELLevel(mob)));
+				final MOB target = determineMonster(mob, mob.phyStats().level()+(2*super.getXLEVELLevel(mob)));
 				target.addNonUninvokableEffect((Ability)this.copyOf());
 				if(target.isInCombat()) target.makePeace();
 				CMLib.commands().postFollow(target,mob,true);
@@ -133,7 +133,7 @@ public class Chant_SummonElemental extends Chant
 	}
 	public MOB determineMonster(MOB caster, int level)
 	{
-		MOB newMOB=CMClass.getMOB("GenMOB");
+		final MOB newMOB=CMClass.getMOB("GenMOB");
 		newMOB.basePhyStats().setLevel(adjustedLevel(caster,0));
 		switch(CMLib.dice().roll(1,4,0))
 		{

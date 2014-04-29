@@ -113,7 +113,7 @@ public class LifeScanProgram extends GenSoftware
 				locDesc="outdoors ";
 				d++;
 			}
-			int dir=dirBuilder.charAt(d)-'a';
+			final int dir=dirBuilder.charAt(d)-'a';
 			if(numDone==0)
 				str.append(" ").append(locDesc).append(useShipDirs?Directions.getShipDirectionName(dir):Directions.getDirectionName(dir));
 			else
@@ -133,7 +133,7 @@ public class LifeScanProgram extends GenSoftware
 		final boolean useShipDirs=(R instanceof SpaceShip)||(R.getArea() instanceof SpaceShip);
 		for(int m=0;m<R.numInhabitants();m++)
 		{
-			MOB M=R.fetchInhabitant(m);
+			final MOB M=R.fetchInhabitant(m);
 			if(isAlive(M))
 			{
 				scanMsg.setTarget(M);
@@ -147,10 +147,10 @@ public class LifeScanProgram extends GenSoftware
 			}
 			for(int i=0;i<M.numItems();i++)
 			{
-				Item I=M.getItem(i);
+				final Item I=M.getItem(i);
 				if(I instanceof CagedAnimal)
 				{
-					MOB M2=((CagedAnimal)I).unCageMe();
+					final MOB M2=((CagedAnimal)I).unCageMe();
 					if(isAlive(M2))
 					{
 						numFound++;
@@ -164,10 +164,10 @@ public class LifeScanProgram extends GenSoftware
 		}
 		for(int i=0;i<R.numItems();i++)
 		{
-			Item I=R.getItem(i);
+			final Item I=R.getItem(i);
 			if(I instanceof CagedAnimal)
 			{
-				MOB M=((CagedAnimal)I).unCageMe();
+				final MOB M=((CagedAnimal)I).unCageMe();
 				if(isAlive(M))
 				{
 					numFound++;
@@ -180,14 +180,14 @@ public class LifeScanProgram extends GenSoftware
 			if((I instanceof SpaceShip)&&(depthLeft>0))
 			{
 				Room shipR=null;
-				for(Enumeration<Room> r=((SpaceShip)I).getShipArea().getProperMap(); r.hasMoreElements(); )
+				for(final Enumeration<Room> r=((SpaceShip)I).getShipArea().getProperMap(); r.hasMoreElements(); )
 				{
-					Room R2=r.nextElement();
+					final Room R2=r.nextElement();
 					for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
 					{
 						if(R2.getRoomInDir(d)==R)
 						{
-							Exit E2=R2.getExitInDir(d);
+							final Exit E2=R2.getExitInDir(d);
 							if(E2==null) continue;
 							shipR=R2;
 							break;
@@ -202,15 +202,15 @@ public class LifeScanProgram extends GenSoftware
 		}
 		if(depthLeft>0)
 		{
-			boolean isIndoors=(R.domainType()&Room.INDOORS)==Room.INDOORS;
+			final boolean isIndoors=(R.domainType()&Room.INDOORS)==Room.INDOORS;
 			for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
 			{
-				Room R2=R.getRoomInDir(d);
-				Exit E2=R.getExitInDir(d);
+				final Room R2=R.getRoomInDir(d);
+				final Exit E2=R.getExitInDir(d);
 				if((R2==null)||(E2==null)) continue;
-				boolean willIndoors=(R.domainType()&Room.INDOORS)==Room.INDOORS;
-				boolean willADoor=E2.hasADoor() && !E2.isOpen();
-				String dirBCode=willADoor?"D":
+				final boolean willIndoors=(R.domainType()&Room.INDOORS)==Room.INDOORS;
+				final boolean willADoor=E2.hasADoor() && !E2.isOpen();
+				final String dirBCode=willADoor?"D":
 								(isIndoors && (!willIndoors))?"O":
 								(!isIndoors && (willIndoors))?"I":
 								"";
@@ -224,8 +224,8 @@ public class LifeScanProgram extends GenSoftware
 	{
 		final Room R=CMLib.map().roomLocation(this);
 		if(R==null) return "";
-		StringBuilder str=new StringBuilder("");
-		int numFound=getScanMsg(R,new HashSet<Room>(), "",phyStats().weight()+1,getScanMsg(R),str);
+		final StringBuilder str=new StringBuilder("");
+		final int numFound=getScanMsg(R,new HashSet<Room>(), "",phyStats().weight()+1,getScanMsg(R),str);
 		if(activated)
 			super.setCurrentScreenDisplay("LIFESCAN: Activated: "+numFound+" found last scan.\n\r");
 		else
@@ -290,7 +290,7 @@ public class LifeScanProgram extends GenSoftware
 		this.activated=true;
 		activatedTickdown=AUTO_TICKDOWN;
 		//TODO: lifescan for particular races? Is that a special version of lifescan?
-		String scan=getScanMsg();
+		final String scan=getScanMsg();
 		if(scan.length()>0)
 			super.addScreenMessage(scan);
 	}
@@ -308,7 +308,7 @@ public class LifeScanProgram extends GenSoftware
 	public void onTyping(MOB mob, String message)
 	{
 		super.onTyping(mob, message);
-		String scan=getScanMsg();
+		final String scan=getScanMsg();
 		if(scan.length()>0)
 			super.addScreenMessage(scan);
 	}
@@ -319,7 +319,7 @@ public class LifeScanProgram extends GenSoftware
 		super.onPowerCurrent(value);
 		if((value != 0)&&(activated)&&(--activatedTickdown>=0)) // means there was power to give, 2 means is active menu, which doesn't apply
 		{
-			String scan=getScanMsg();
+			final String scan=getScanMsg();
 			if(scan.length()>0)
 				super.addScreenMessage(scan);
 		}

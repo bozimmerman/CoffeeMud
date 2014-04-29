@@ -116,7 +116,7 @@ public class DBConnector
 			recordCount=R.getRow();
 			R.beforeFirst();
 		}
-		catch(Exception e)
+		catch(final Exception e)
 		{
 			e.printStackTrace();
 		}
@@ -305,7 +305,7 @@ public class DBConnector
 	public StringBuffer errorStatus()
 	{
 		if(dbConnections==null) return new StringBuffer("Not connected.");
-		StringBuffer status=dbConnections.errorStatus();
+		final StringBuffer status=dbConnections.errorStatus();
 		if(status.length()==0)
 			return new StringBuffer("OK! Connections in use="+dbConnections.numInUse()+"/"+dbConnections.numConnectionsMade());
 		return new StringBuffer("<BR>"+status.toString().replaceAll("\n","<BR>")+"Connections in use="+dbConnections.numInUse()+"/"+dbConnections.numConnectionsMade());

@@ -67,7 +67,7 @@ public class OrderedMap<K,J> extends Hashtable<K,J> implements Iterable<J>
 
 	@Override public synchronized void putAll(Map<? extends K, ? extends J> t)
 	{
-		for(Map.Entry<? extends K,? extends J> i : t.entrySet())
+		for(final Map.Entry<? extends K,? extends J> i : t.entrySet())
 			put(i.getKey(),i.getValue());
 	}
 
@@ -76,6 +76,7 @@ public class OrderedMap<K,J> extends Hashtable<K,J> implements Iterable<J>
 		if(super.containsKey(key))
 		{
 			@SuppressWarnings("unchecked")
+			final
 			ArrayList<J> newList=(ArrayList<J>)list.clone();
 			newList.remove(get(key));
 			list=newList;

@@ -81,7 +81,7 @@ public class Chant_BestowName extends Chant
 			return false;
 		}
 
-		MOB target=this.getTarget(mob,commands,givenTarget);
+		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 		if((!CMLib.flags().isAnimalIntelligence(target))||(!target.isMonster())||(!mob.getGroupMembers(new HashSet<MOB>()).contains(target)))
 		{
@@ -101,7 +101,7 @@ public class Chant_BestowName extends Chant
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
@@ -109,11 +109,11 @@ public class Chant_BestowName extends Chant
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> chant(s) to <T-NAMESELF>, bestowing the name '"+myName+"'.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> chant(s) to <T-NAMESELF>, bestowing the name '"+myName+"'.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				Chant_BestowName A=(Chant_BestowName)copyOf();
+				final Chant_BestowName A=(Chant_BestowName)copyOf();
 				A.setMiscText(myName);
 				target.addNonUninvokableEffect(A);
 				mob.location().recoverRoomStats();

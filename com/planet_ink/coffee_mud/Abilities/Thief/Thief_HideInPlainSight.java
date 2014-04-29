@@ -95,7 +95,7 @@ public class Thief_HideInPlainSight extends ThiefSkill
 		if(!(affected instanceof MOB))
 			return;
 
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		if(msg.amISource(mob))
 		{
@@ -155,7 +155,7 @@ public class Thief_HideInPlainSight extends ThiefSkill
 	@Override
 	public void unInvoke()
 	{
-		MOB M=(MOB)affected;
+		final MOB M=(MOB)affected;
 		super.unInvoke();
 		if((M!=null)&&(!M.amDead()))
 			M.tell("You are no longer hiding in plain site.");
@@ -177,10 +177,10 @@ public class Thief_HideInPlainSight extends ThiefSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		MOB highestMOB=getHighestLevelMOB(mob,null);
-		int levelDiff=mob.phyStats().level()-getMOBLevel(highestMOB)-(this.getXLEVELLevel(mob)*2);
+		final MOB highestMOB=getHighestLevelMOB(mob,null);
+		final int levelDiff=mob.phyStats().level()-getMOBLevel(highestMOB)-(this.getXLEVELLevel(mob)*2);
 
-		String str="You step to the side and become totally inconspicuous.";
+		final String str="You step to the side and become totally inconspicuous.";
 
 		boolean success=proficiencyCheck(mob,levelDiff*10,auto);
 
@@ -193,7 +193,7 @@ public class Thief_HideInPlainSight extends ThiefSkill
 		}
 		else
 		{
-			CMMsg msg=CMClass.getMsg(mob,null,this,auto?CMMsg.MSG_OK_ACTION:(CMMsg.MSG_DELICATE_HANDS_ACT|CMMsg.MASK_MOVE),str,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);
+			final CMMsg msg=CMClass.getMsg(mob,null,this,auto?CMMsg.MSG_OK_ACTION:(CMMsg.MSG_DELICATE_HANDS_ACT|CMMsg.MASK_MOVE),str,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

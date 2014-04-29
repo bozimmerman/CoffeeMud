@@ -14,7 +14,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 
@@ -80,11 +79,11 @@ public class Song_Ode extends Song
 		if(trail!=null)
 		{
 			String t=trail.toString();
-			int[] counts=new int[stuff.length];
+			final int[] counts=new int[stuff.length];
 			int x=t.indexOf(';');
 			while(x>=0)
 			{
-				int q=CMath.s_int(t.substring(0,x));
+				final int q=CMath.s_int(t.substring(0,x));
 				t=t.substring(x+1);
 				if(q>=0)
 					for(int i=0;i<stuff.length;i++)
@@ -101,7 +100,7 @@ public class Song_Ode extends Song
 
 			if(wa>=0) counts[wa]=counts[wa]/25;
 
-			Vector V=new Vector();
+			final Vector V=new Vector();
 			while(V.size()<counts.length)
 			{
 				int high=-1;
@@ -117,14 +116,14 @@ public class Song_Ode extends Song
 				if(which>=0)
 					V.addElement(Integer.valueOf(which));
 			}
-			Vector V2=new Vector();
+			final Vector V2=new Vector();
 			for(int i=0;i<3;i++)
 			{
-				Integer ref=(Integer)V.elementAt(i);
+				final Integer ref=(Integer)V.elementAt(i);
 				Integer which=null;
 				while((which==null)||(V2.contains(which)))
 				{
-					Integer w=(Integer)V.elementAt(CMLib.dice().roll(1,V.size(),-1));
+					final Integer w=(Integer)V.elementAt(CMLib.dice().roll(1,V.size(),-1));
 					if(counts[w.intValue()]==counts[ref.intValue()])
 						which=w;
 				}
@@ -140,11 +139,11 @@ public class Song_Ode extends Song
 	{
 		if((whom!=null)&&(song!=null))
 		{
-			Hashtable H=getSongBenefits(song);
-			for(Enumeration e=H.keys();e.hasMoreElements();)
+			final Hashtable H=getSongBenefits(song);
+			for(final Enumeration e=H.keys();e.hasMoreElements();)
 			{
-				Integer I=(Integer)e.nextElement();
-				String[] chk=stuff[I.intValue()];
+				final Integer I=(Integer)e.nextElement();
+				final String[] chk=stuff[I.intValue()];
 				if((chk!=null)&&(chk[1].startsWith("e")))
 				{
 					int ticks=((Integer)H.get(I)).intValue();
@@ -168,17 +167,17 @@ public class Song_Ode extends Song
 	{
 		if((whom!=null)&&(song!=null))
 		{
-			Hashtable H=getSongBenefits(song);
-			for(Enumeration e=H.keys();e.hasMoreElements();)
+			final Hashtable H=getSongBenefits(song);
+			for(final Enumeration e=H.keys();e.hasMoreElements();)
 			{
-				Integer I=(Integer)e.nextElement();
-				String[] chk=stuff[I.intValue()];
+				final Integer I=(Integer)e.nextElement();
+				final String[] chk=stuff[I.intValue()];
 				if((chk!=null)&&(chk[1].startsWith("c")))
 				{
 					int ticks=((Integer)H.get(I)).intValue();
 					if(ticks>50) ticks=50;
 					if(ticks<=0) ticks=1;
-					int stat=CMath.s_int(chk[2]);
+					final int stat=CMath.s_int(chk[2]);
 					if(CharStats.CODES.isBASE(stat))
 						if(ticks>5) ticks=5;
 					affectableStats.setStat(stat,affectableStats.getStat(stat)+ticks+getXLEVELLevel(invoker()));
@@ -192,11 +191,11 @@ public class Song_Ode extends Song
 	{
 		if((whom!=null)&&(song!=null))
 		{
-			Hashtable H=getSongBenefits(song);
-			for(Enumeration e=H.keys();e.hasMoreElements();)
+			final Hashtable H=getSongBenefits(song);
+			for(final Enumeration e=H.keys();e.hasMoreElements();)
 			{
-				Integer I=(Integer)e.nextElement();
-				String[] chk=stuff[I.intValue()];
+				final Integer I=(Integer)e.nextElement();
+				final String[] chk=stuff[I.intValue()];
 				if((chk!=null)&&(chk[1].startsWith("s")))
 				{
 					int ticks=((Integer)H.get(I)).intValue();
@@ -226,8 +225,8 @@ public class Song_Ode extends Song
 		{
 			if(cmds.size()==0)
 			{
-				for(int i=0;i<stuff.length;i++)
-					cmds.put(stuff[i][0],stuff[i]);
+				for (final String[] element : stuff)
+					cmds.put(element[0],element);
 			}
 		}
 	}
@@ -262,7 +261,7 @@ public class Song_Ode extends Song
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		if(mob==null)
 			return false;
 		if(song==null)
@@ -278,12 +277,12 @@ public class Song_Ode extends Song
 		if((whom!=null)&&(song!=null)&&(affected==invoker())
 		   &&(CMLib.dice().rollPercentage()<10))
 		{
-			Hashtable H=getSongBenefits(song);
-			Vector V=new Vector();
-			for(Enumeration e=H.keys();e.hasMoreElements();)
+			final Hashtable H=getSongBenefits(song);
+			final Vector V=new Vector();
+			for(final Enumeration e=H.keys();e.hasMoreElements();)
 				V.addElement(e.nextElement());
-			Integer I=(Integer)V.elementAt(CMLib.dice().roll(1,V.size(),-1));
-			String[] chk=stuff[I.intValue()];
+			final Integer I=(Integer)V.elementAt(CMLib.dice().roll(1,V.size(),-1));
+			final String[] chk=stuff[I.intValue()];
 			invoker().location().show(invoker(),this,whom,CMMsg.MSG_SPEAK,"<S-NAME> sing(s) '"+chk[3]+"'.");
 		}
 
@@ -303,12 +302,12 @@ public class Song_Ode extends Song
 		int x=s.indexOf(';');
 		while(x>=0)
 		{
-			int code=CMath.s_int(s.substring(0,x));
+			final int code=CMath.s_int(s.substring(0,x));
 			s=s.substring(x+1);
 			x=s.indexOf(';');
 			if(x>=0)
 			{
-				int tick=CMath.s_int(s.substring(0,x));
+				final int tick=CMath.s_int(s.substring(0,x));
 				s=s.substring(x+1);
 				benefits.put(Integer.valueOf(code),Integer.valueOf(tick));
 			}
@@ -320,11 +319,11 @@ public class Song_Ode extends Song
 	@Override
 	public String text()
 	{
-		StringBuffer x=new StringBuffer("");
-		for(Enumeration e=getSongs().keys();e.hasMoreElements();)
+		final StringBuffer x=new StringBuffer("");
+		for(final Enumeration e=getSongs().keys();e.hasMoreElements();)
 		{
-			String key=(String)e.nextElement();
-			String notkey=(String)getSongs().get(key);
+			final String key=(String)e.nextElement();
+			final String notkey=(String)getSongs().get(key);
 			x.append(key+"|~|"+notkey+"[|]");
 		}
 		miscText=x.toString();
@@ -339,7 +338,7 @@ public class Song_Ode extends Song
 		songs=new Hashtable();
 		while(x>=0)
 		{
-			String n=t.substring(0,x);
+			final String n=t.substring(0,x);
 			t=t.substring(x+3);
 			x=t.indexOf("[|]");
 			String y="";
@@ -360,14 +359,14 @@ public class Song_Ode extends Song
 		timeOut=0;
 		if(auto) return false;
 
-		Hashtable H=getSongs();
+		final Hashtable H=getSongs();
 		if(commands.size()==0)
 		{
-			Song_Ode A=(Song_Ode)mob.fetchEffect(ID());
+			final Song_Ode A=(Song_Ode)mob.fetchEffect(ID());
 			if((A!=null)&&(A.whom!=null)&&(A.song==null))
 			{
-				String str="^S<S-NAME> finish(es) composing the "+A.songOf()+".^?";
-				CMMsg msg=CMClass.getMsg(mob,null,this,(auto?CMMsg.MASK_ALWAYS:0)|CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,str);
+				final String str="^S<S-NAME> finish(es) composing the "+A.songOf()+".^?";
+				final CMMsg msg=CMClass.getMsg(mob,null,this,(auto?CMMsg.MASK_ALWAYS:0)|CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,str);
 				if(mob.location().okMessage(mob,msg))
 				{
 					mob.location().send(mob,msg);
@@ -379,8 +378,8 @@ public class Song_Ode extends Song
 				return false;
 			}
 
-			StringBuffer str=new StringBuffer("");
-			for(Enumeration e=H.keys();e.hasMoreElements();)
+			final StringBuffer str=new StringBuffer("");
+			for(final Enumeration e=H.keys();e.hasMoreElements();)
 				str.append((String)e.nextElement()+" ");
 			mob.tell("Compose or sing an ode about whom?");
 			if(str.length()>0)
@@ -388,9 +387,9 @@ public class Song_Ode extends Song
 			return false;
 		}
 		String name=CMParms.combine(commands,0);
-		for(Enumeration e=H.keys();e.hasMoreElements();)
+		for(final Enumeration e=H.keys();e.hasMoreElements();)
 		{
-			String key=(String)e.nextElement();
+			final String key=(String)e.nextElement();
 			if(CMLib.english().containsString(key,name))
 			{
 				invoker=mob;
@@ -412,7 +411,7 @@ public class Song_Ode extends Song
 			}
 		}
 
-		MOB target=getTarget(mob,commands,givenTarget);
+		final MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 		if(target==mob)
 		{
@@ -420,7 +419,7 @@ public class Song_Ode extends Song
 			return false;
 		}
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
 			unsingAll(mob,mob);
@@ -428,13 +427,13 @@ public class Song_Ode extends Song
 			originRoom=mob.location();
 			commonRoomSet=getInvokerScopeRoomSet(null);
 			whom=target;
-			String str="^S<S-NAME> begin(s) to compose an "+songOf()+".^?";
-			CMMsg msg=CMClass.getMsg(mob,null,this,(auto?CMMsg.MASK_ALWAYS:0)|CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,str);
+			final String str="^S<S-NAME> begin(s) to compose an "+songOf()+".^?";
+			final CMMsg msg=CMClass.getMsg(mob,null,this,(auto?CMMsg.MASK_ALWAYS:0)|CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,str);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				invoker=mob;
-				Song_Ode newOne=(Song_Ode)copyOf();
+				final Song_Ode newOne=(Song_Ode)copyOf();
 				newOne.whom=target;
 				newOne.trail=new StringBuffer("");
 				newOne.song=null;

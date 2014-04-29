@@ -67,7 +67,7 @@ public class InTheAir extends StdRoom
 		{
 			if(!CMLib.flags().isFalling(P))
 			{
-				Ability falling=CMClass.getAbility("Falling");
+				final Ability falling=CMClass.getAbility("Falling");
 				if(falling!=null)
 				{
 					falling.setProficiency(avg);
@@ -83,15 +83,15 @@ public class InTheAir extends StdRoom
 		if(CMLib.flags().isSleeping(room)) return;
 		boolean foundReversed=false;
 		boolean foundNormal=false;
-		Vector<Physical> needToFall=new Vector<Physical>();
-		Vector<Physical> mightNeedAdjusting=new Vector<Physical>();
+		final Vector<Physical> needToFall=new Vector<Physical>();
+		final Vector<Physical> mightNeedAdjusting=new Vector<Physical>();
 		for(int i=0;i<room.numInhabitants();i++)
 		{
-			MOB mob=room.fetchInhabitant(i);
+			final MOB mob=room.fetchInhabitant(i);
 			if((mob!=null)
 			&&((mob.getStartRoom()==null)||(mob.getStartRoom()!=room)))
 			{
-				Ability A=mob.fetchEffect("Falling");
+				final Ability A=mob.fetchEffect("Falling");
 				if(A!=null)
 				{
 					if(A.proficiency()>=100)
@@ -107,10 +107,10 @@ public class InTheAir extends StdRoom
 		}
 		for(int i=0;i<room.numItems();i++)
 		{
-			Item item=room.getItem(i);
+			final Item item=room.getItem(i);
 			if(item!=null)
 			{
-				Ability A=item.fetchEffect("Falling");
+				final Ability A=item.fetchEffect("Falling");
 				if(A!=null)
 				{
 					if(A.proficiency()>=100)
@@ -125,13 +125,13 @@ public class InTheAir extends StdRoom
 					needToFall.addElement(item);
 			}
 		}
-		int avg=((foundReversed)&&(!foundNormal))?100:0;
-		for(Physical P : mightNeedAdjusting)
+		final int avg=((foundReversed)&&(!foundNormal))?100:0;
+		for(final Physical P : mightNeedAdjusting)
 		{
-			Ability A=P.fetchEffect("Falling");
+			final Ability A=P.fetchEffect("Falling");
 			if(A!=null) A.setProficiency(avg);
 		}
-		for(Physical P : needToFall)
+		for(final Physical P : needToFall)
 			makeFall(P,room,avg);
 	}
 
@@ -162,7 +162,7 @@ public class InTheAir extends StdRoom
 		if((msg.targetMinor()==CMMsg.TYP_ENTER)
 		&&(msg.amITarget(room)))
 		{
-			MOB mob=msg.source();
+			final MOB mob=msg.source();
 			if((!CMLib.flags().isInFlight(mob))&&(!CMLib.flags().isFalling(mob)))
 			{
 				mob.tell("You can't fly.");

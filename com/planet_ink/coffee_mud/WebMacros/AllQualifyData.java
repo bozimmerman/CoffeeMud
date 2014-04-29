@@ -40,15 +40,15 @@ public class AllQualifyData extends StdWebMacro
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
-		java.util.Map<String,String> parms=parseParms(parm);
-		String last=httpReq.getUrlParameter("ALLQUALID");
+		final java.util.Map<String,String> parms=parseParms(parm);
+		final String last=httpReq.getUrlParameter("ALLQUALID");
 		String which=httpReq.getUrlParameter("ALLQUALWHICH");
 		if(parms.containsKey("WHICH"))
 			which=parms.get("WHICH");
-		String origiWhich=which;
+		final String origiWhich=which;
 		if((which==null)||(which.length()==0)) which="ALL";
-		Map<String,Map<String,AbilityMapper.AbilityMapping>> allQualMap=CMLib.ableMapper().getAllQualifiesMap(httpReq.getRequestObjects());
-		Map<String,AbilityMapper.AbilityMapping> map=allQualMap.get(which.toUpperCase().trim());
+		final Map<String,Map<String,AbilityMapper.AbilityMapping>> allQualMap=CMLib.ableMapper().getAllQualifiesMap(httpReq.getRequestObjects());
+		final Map<String,AbilityMapper.AbilityMapping> map=allQualMap.get(which.toUpperCase().trim());
 		if(map==null) return "";
 
 		AbilityMapper.AbilityMapping mapped=map.get(last);
@@ -59,10 +59,10 @@ public class AllQualifyData extends StdWebMacro
 			if(mapped==null)
 				return "";
 		}
-		StringBuilder str=new StringBuilder("");
+		final StringBuilder str=new StringBuilder("");
 		if(parms.containsKey("NAME"))
 		{
-			Ability A=CMClass.getAbility(last);
+			final Ability A=CMClass.getAbility(last);
 			if(A!=null)
 				str.append(A.name()).append(", ");
 		}
@@ -106,17 +106,17 @@ public class AllQualifyData extends StdWebMacro
 			if(!httpReq.isUrlParameter("REQABLE1"))
 			{
 				int pnum=1;
-				for(String s : CMParms.parseCommas(mapped.originalSkillPreReqList,true))
+				for(final String s : CMParms.parseCommas(mapped.originalSkillPreReqList,true))
 				{
 					String ableID=s;
 					String lvl="";
-					int x=s.indexOf('(');
+					final int x=s.indexOf('(');
 					if(s.endsWith(")")&&(x>1))
 					{
 						ableID=s.substring(0,x);
 						lvl=s.substring(x+1,s.length()-1).trim();
 					}
-					Ability A=CMClass.getAbility(ableID);
+					final Ability A=CMClass.getAbility(ableID);
 					if(A!=null)
 					{
 						httpReq.addFakeUrlParameter("REQABLE"+pnum, ableID);
@@ -133,7 +133,7 @@ public class AllQualifyData extends StdWebMacro
 				int curWriteNum=1;
 				while(httpReq.isUrlParameter("REQABLE"+curChkNum))
 				{
-					String curVal=httpReq.getUrlParameter("REQABLE"+curChkNum);
+					final String curVal=httpReq.getUrlParameter("REQABLE"+curChkNum);
 					if(curVal.equals("DEL")||curVal.equals("DELETE")||curVal.trim().length()==0)
 					{
 						curChkNum++;
@@ -162,7 +162,7 @@ public class AllQualifyData extends StdWebMacro
 				int curWriteNum=1;
 				while(httpReq.isUrlParameter("REQABLE"+curChkNum))
 				{
-					String thisName=Integer.toString(curChkNum);
+					final String thisName=Integer.toString(curChkNum);
 					if((lastR==null)||((lastR.length()>0)&&(lastR.equals(lastID))&&(!thisName.equals(lastID))))
 					{
 						httpReq.addFakeUrlParameter("REQUIRESNUM",thisName);
@@ -184,8 +184,8 @@ public class AllQualifyData extends StdWebMacro
 			}
 			if(parms.containsKey("ABLEEDIT"))
 			{
-				String lastR=httpReq.getUrlParameter("REQUIRESNUM");
-				String ableID=httpReq.getUrlParameter("REQABLE"+lastR);
+				final String lastR=httpReq.getUrlParameter("REQUIRESNUM");
+				final String ableID=httpReq.getUrlParameter("REQABLE"+lastR);
 				if((ableID!=null)&&(ableID.length()>0))
 				{
 					str.append("<OPTION VALUE=\"DEL\">Delete!");
@@ -196,7 +196,7 @@ public class AllQualifyData extends StdWebMacro
 				else
 				{
 					str.append("<OPTION VALUE=\"\">Add New");
-					for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
+					for(final Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 					{
 						final Ability A=a.nextElement();
 						if((A.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_ARCHON)

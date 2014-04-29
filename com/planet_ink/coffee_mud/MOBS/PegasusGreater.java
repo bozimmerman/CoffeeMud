@@ -39,7 +39,7 @@ public class PegasusGreater extends StdRideable
 
 		rideBasis = Rideable.RIDEABLE_AIR;
 
-		Random randomizer = new Random(System.currentTimeMillis());
+		final Random randomizer = new Random(System.currentTimeMillis());
 
 		username="a Greater Pegasus";
 		setDescription("a beautiful, white stallion with wings.");

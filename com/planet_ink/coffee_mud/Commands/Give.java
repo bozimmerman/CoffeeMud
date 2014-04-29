@@ -55,7 +55,7 @@ public class Give extends StdCommand
 			return false;
 		}
 
-		MOB recipient=mob.location().fetchInhabitant((String)commands.lastElement());
+		final MOB recipient=mob.location().fetchInhabitant((String)commands.lastElement());
 		if((recipient==null)||(!CMLib.flags().canBeSeenBy(recipient,mob)))
 		{
 			mob.tell("I don't see anyone called "+(String)commands.lastElement()+" here.");
@@ -65,17 +65,17 @@ public class Give extends StdCommand
 		if((commands.size()>0)&&(((String)commands.lastElement()).equalsIgnoreCase("to")))
 			commands.removeElementAt(commands.size()-1);
 
-		int maxToGive=CMLib.english().calculateMaxToGive(mob,commands,true,mob,false);
+		final int maxToGive=CMLib.english().calculateMaxToGive(mob,commands,true,mob,false);
 		if(maxToGive<0) return false;
 
 		String thingToGive=CMParms.combine(commands,0);
 		int addendum=1;
 		String addendumStr="";
-		Vector V=new Vector();
+		final Vector V=new Vector();
 		boolean allFlag=(commands.size()>0)?((String)commands.elementAt(0)).equalsIgnoreCase("all"):false;
 		if(thingToGive.toUpperCase().startsWith("ALL.")){ allFlag=true; thingToGive="ALL "+thingToGive.substring(4);}
 		if(thingToGive.toUpperCase().endsWith(".ALL")){ allFlag=true; thingToGive="ALL "+thingToGive.substring(0,thingToGive.length()-4);}
-		boolean onlyGoldFlag=mob.hasOnlyGoldInInventory();
+		final boolean onlyGoldFlag=mob.hasOnlyGoldInInventory();
 		Item giveThis=CMLib.english().bestPossibleGold(mob,null,thingToGive);
 		if(giveThis!=null)
 		{
@@ -103,7 +103,7 @@ public class Give extends StdCommand
 						mob.tell("You must remove that first.");
 						return false;
 					}
-					CMMsg newMsg=CMClass.getMsg(mob,giveThis,null,CMMsg.MSG_REMOVE,null);
+					final CMMsg newMsg=CMClass.getMsg(mob,giveThis,null,CMMsg.MSG_REMOVE,null);
 					if(mob.location().okMessage(mob,newMsg))
 						mob.location().send(mob,newMsg);
 					else
@@ -127,7 +127,7 @@ public class Give extends StdCommand
 		for(int i=0;i<V.size();i++)
 		{
 			giveThis=(Item)V.elementAt(i);
-			CMMsg newMsg=CMClass.getMsg(mob,recipient,giveThis,CMMsg.MSG_GIVE,"<S-NAME> give(s) <O-NAME> to <T-NAMESELF>.");
+			final CMMsg newMsg=CMClass.getMsg(mob,recipient,giveThis,CMMsg.MSG_GIVE,"<S-NAME> give(s) <O-NAME> to <T-NAMESELF>.");
 			if(mob.location().okMessage(mob,newMsg))
 				mob.location().send(mob,newMsg);
 			if(giveThis instanceof Coins)

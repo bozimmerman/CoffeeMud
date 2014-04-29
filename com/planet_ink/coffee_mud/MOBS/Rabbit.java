@@ -37,7 +37,7 @@ public class Rabbit extends StdMOB
 	public Rabbit()
 	{
 		super();
-		Random randomizer = new Random(System.currentTimeMillis());
+		final Random randomizer = new Random(System.currentTimeMillis());
 
 		username="a rabbit";
 		setDescription("It\\`s small, cute, and fluffy with a cute cotton-ball tail.");

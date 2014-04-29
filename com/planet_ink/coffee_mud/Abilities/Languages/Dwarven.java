@@ -47,12 +47,12 @@ public class Dwarven extends StdLanguage
 	{
 		if(wordLists==null)
 		{
-			String[] one={"o"};
-			String[] two={"`ai","`oi","`ul"};
-			String[] three={"aya","dum","mim","oyo","tum"};
-			String[] four={"menu","bund","ibun","khim","nala","rukhs","dumu","zirik","gunud","gabil","gamil"};
-			String[] five={"kibil","celeb","mahal","narag","zaram","sigin","tarag","uzbad","zigil","zirak","aglab","baraz","baruk","bizar","felak"};
-			String[] six={"azanul","bundushathur","morthond","felagund","gabilan","ganthol","khazad","kheled","khuzud","mazarbul","khuzdul"};
+			final String[] one={"o"};
+			final String[] two={"`ai","`oi","`ul"};
+			final String[] three={"aya","dum","mim","oyo","tum"};
+			final String[] four={"menu","bund","ibun","khim","nala","rukhs","dumu","zirik","gunud","gabil","gamil"};
+			final String[] five={"kibil","celeb","mahal","narag","zaram","sigin","tarag","uzbad","zigil","zirak","aglab","baraz","baruk","bizar","felak"};
+			final String[] six={"azanul","bundushathur","morthond","felagund","gabilan","ganthol","khazad","kheled","khuzud","mazarbul","khuzdul"};
 			wordLists=new Vector<String[]>();
 			wordLists.add(one);
 			wordLists.add(two);

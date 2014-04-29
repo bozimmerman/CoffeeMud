@@ -53,7 +53,7 @@ public class Prop_NoCharm extends Property
 		   ||(msg.target()==affected))
 		&&(CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_CHARMING)))
 		{
-			Ability A=(Ability)msg.tool();
+			final Ability A=(Ability)msg.tool();
 			if(((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_CHANT)
 			||((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SPELL)
 			||((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PRAYER)

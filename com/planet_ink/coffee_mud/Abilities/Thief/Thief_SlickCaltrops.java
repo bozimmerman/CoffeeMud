@@ -49,7 +49,7 @@ public class Thief_SlickCaltrops extends Thief_Caltrops
 		else
 
 		{
-			Ability A=CMClass.getAbility("Slip");
+			final Ability A=CMClass.getAbility("Slip");
 			if((A!=null)&&(A.castingQuality(invoker(),mob)==Ability.QUALITY_MALICIOUS))
 			{
 				mob.location().show(invoker(),mob,this,CMMsg.MSG_OK_ACTION,"The "+caltropTypeName()+"caltrops on the ground cause <T-NAME> to slip!");

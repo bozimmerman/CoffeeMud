@@ -47,7 +47,7 @@ public class Prayer_Anger extends Prayer
 		if(R==null) return false;
 		for(int i=0;i<R.numInhabitants();i++)
 		{
-			MOB inhab=R.fetchInhabitant(i);
+			final MOB inhab=R.fetchInhabitant(i);
 			if((inhab!=null)&&(inhab.isInCombat()))
 				return true;
 		}
@@ -73,9 +73,9 @@ public class Prayer_Anger extends Prayer
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
-		boolean someoneIsFighting=anyoneIsFighting(mob.location());
+		final boolean someoneIsFighting=anyoneIsFighting(mob.location());
 
 		if((success)&&(!someoneIsFighting)&&(mob.location().numInhabitants()>3))
 		{
@@ -83,13 +83,13 @@ public class Prayer_Anger extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"A feeling of anger descends":"^S<S-NAME> rage(s) for anger.^?");
+			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"A feeling of anger descends":"^S<S-NAME> rage(s) for anger.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				for(int i=0;i<mob.location().numInhabitants();i++)
 				{
-					MOB inhab=mob.location().fetchInhabitant(i);
+					final MOB inhab=mob.location().fetchInhabitant(i);
 					if((inhab!=null)&&(inhab!=mob)&&(!inhab.isInCombat()))
 					{
 						int tries=0;
@@ -104,7 +104,7 @@ public class Prayer_Anger extends Prayer
 							}
 							tries++;
 						}
-						CMMsg amsg=CMClass.getMsg(mob,inhab,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_MIND|(auto?CMMsg.MASK_ALWAYS:0),null);
+						final CMMsg amsg=CMClass.getMsg(mob,inhab,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_MIND|(auto?CMMsg.MASK_ALWAYS:0),null);
 						if((target!=null)&&(mob.location().okMessage(mob,amsg)))
 						{
 							inhab.tell("You feel angry.");

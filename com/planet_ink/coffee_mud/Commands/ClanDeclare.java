@@ -49,12 +49,12 @@ public class ClanDeclare extends StdCommand
 			return false;
 		}
 		commands.setElementAt(getAccessWords()[0],0);
-		String rel=((String)commands.lastElement()).toUpperCase();
+		final String rel=((String)commands.lastElement()).toUpperCase();
 		Clan C=null;
 		Clan C2=null;
 		String clanName="";
 
-		boolean skipChecks=mob.getClanRole(mob.Name())!=null;
+		final boolean skipChecks=mob.getClanRole(mob.Name())!=null;
 		if(skipChecks) C=mob.getClanRole(mob.Name()).first;
 
 		String clan2Name=CMParms.combine(commands,1,commands.size()-1);
@@ -67,14 +67,14 @@ public class ClanDeclare extends StdCommand
 
 		if(C==null)
 		{
-			for(Pair<Clan,Integer> c : mob.clans())
+			for(final Pair<Clan,Integer> c : mob.clans())
 				if((clanName.length()==0)||(CMLib.english().containsString(c.first.getName(), clanName))
 				&&(c.first.getAuthority(c.second.intValue(), Clan.Function.DECLARE)!=Authority.CAN_NOT_DO))
 				{	C=c.first; break; }
 		}
 		if(C2==null)
 		{
-			for(Pair<Clan,Integer> c : mob.clans())
+			for(final Pair<Clan,Integer> c : mob.clans())
 				if(CMLib.english().containsString(c.first.getName(), clan2Name))
 				{	C2=c.first; break; }
 		}
@@ -97,7 +97,7 @@ public class ClanDeclare extends StdCommand
 			return false;
 		}
 
-		StringBuffer msg=new StringBuffer("");
+		final StringBuffer msg=new StringBuffer("");
 		if(rel.length()>0)
 		{
 			if(skipChecks||CMLib.clans().goForward(mob,C,commands,Clan.Function.DECLARE,false))

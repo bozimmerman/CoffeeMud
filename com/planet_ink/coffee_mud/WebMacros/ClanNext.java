@@ -40,17 +40,17 @@ public class ClanNext extends StdWebMacro
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
-		java.util.Map<String,String> parms=parseParms(parm);
-		String last=httpReq.getUrlParameter("CLAN");
+		final java.util.Map<String,String> parms=parseParms(parm);
+		final String last=httpReq.getUrlParameter("CLAN");
 		if(parms.containsKey("RESET"))
 		{
 			if(last!=null) httpReq.removeUrlParameter("CLAN");
 			return "";
 		}
 		String lastID="";
-		for(Enumeration c=CMLib.clans().clans();c.hasMoreElements();)
+		for(final Enumeration c=CMLib.clans().clans();c.hasMoreElements();)
 		{
-			Clan C=(Clan)c.nextElement();
+			final Clan C=(Clan)c.nextElement();
 			if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!C.clanID().equals(lastID))))
 			{
 				httpReq.addFakeUrlParameter("CLAN",C.clanID());

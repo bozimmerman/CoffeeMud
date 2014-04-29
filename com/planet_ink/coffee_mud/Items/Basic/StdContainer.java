@@ -73,7 +73,7 @@ public class StdContainer extends StdItem implements Container
 			return false;
 		if(msg.amITarget(this))
 		{
-			MOB mob=msg.source();
+			final MOB mob=msg.source();
 			switch(msg.targetMinor())
 			{
 			case CMMsg.TYP_INSTALL:
@@ -91,7 +91,7 @@ public class StdContainer extends StdItem implements Container
 						mob.tell("You can't seem to let go of "+msg.tool().name()+".");
 						return false;
 					}
-					Item newitem=(Item)msg.tool();
+					final Item newitem=(Item)msg.tool();
 					if(hasALid()&&(!isOpen()))
 					{
 						mob.tell(name()+" is closed.");
@@ -157,7 +157,7 @@ public class StdContainer extends StdItem implements Container
 				if((msg.tool()!=null)
 				&&(msg.tool() instanceof Item))
 				{
-					Item newitem=(Item)msg.tool();
+					final Item newitem=(Item)msg.tool();
 					if(newitem.container()==this)
 					{
 						if((!(CMLib.flags().canBeSeenBy(newitem,mob)||(newitem instanceof Light)))
@@ -221,7 +221,7 @@ public class StdContainer extends StdItem implements Container
 			case CMMsg.TYP_REMOVE:
 				if(msg.tool() instanceof Item)
 				{
-					Item newitem=(Item)msg.tool();
+					final Item newitem=(Item)msg.tool();
 					if(newitem.container()==this)
 					{
 						if((!CMLib.flags().canBeSeenBy(newitem,mob))
@@ -307,7 +307,7 @@ public class StdContainer extends StdItem implements Container
 					{
 						for(int i=0;i<mob.numItems();i++)
 						{
-							Item item=mob.getItem(i);
+							final Item item=mob.getItem(i);
 							if((item!=null)
 							&&(item instanceof DoorKey)
 							&&((DoorKey)item).getKey().equals(keyName())
@@ -345,14 +345,14 @@ public class StdContainer extends StdItem implements Container
 	{
 		if(msg.amITarget(this))
 		{
-			MOB mob=msg.source();
+			final MOB mob=msg.source();
 			switch(msg.targetMinor())
 			{
 			case CMMsg.TYP_PUT:
 				if((msg.tool()!=null)
 				&&(msg.tool() instanceof Item))
 				{
-					Item newitem=(Item)msg.tool();
+					final Item newitem=(Item)msg.tool();
 					newitem.setContainer(this);
 					if(!CMath.bset(msg.targetMajor(),CMMsg.MASK_OPTIMIZE))
 					{
@@ -399,7 +399,7 @@ public class StdContainer extends StdItem implements Container
 		&&(msg.source().isMine(this)))
 		{
 			setContainer(null);
-			Room R=CMLib.map().roomLocation(msg.target());
+			final Room R=CMLib.map().roomLocation(msg.target());
 			if(R!=null)
 			{
 				CMLib.utensils().recursiveDropMOB(msg.source(),R,this,this instanceof DeadBody);
@@ -556,7 +556,7 @@ public class StdContainer extends StdItem implements Container
 			Item I;
 			if(flatten)
 			{
-				List<Item> V=getContents();
+				final List<Item> V=getContents();
 				for(int v=0;v<V.size();v++)
 				{
 					I=V.get(v);
@@ -564,7 +564,7 @@ public class StdContainer extends StdItem implements Container
 				}
 			}
 			else
-			for(Enumeration<Item> e = C.items(); e.hasMoreElements();)
+			for(final Enumeration<Item> e = C.items(); e.hasMoreElements();)
 			{
 				I=e.nextElement();
 				if(I==null) continue;
@@ -595,10 +595,10 @@ public class StdContainer extends StdItem implements Container
 		if(owner()==null) return weight;
 		if(owner() instanceof MOB)
 		{
-			MOB M=(MOB)owner();
+			final MOB M=(MOB)owner();
 			for(int i=0;i<M.numItems();i++)
 			{
-				Item thisItem=M.getItem(i);
+				final Item thisItem=M.getItem(i);
 				if((thisItem!=null)&&(thisItem!=this)&&(thisItem.ultimateContainer(this)==this))
 					weight+=thisItem.phyStats().weight();
 			}
@@ -606,10 +606,10 @@ public class StdContainer extends StdItem implements Container
 		else
 		if(owner() instanceof Room)
 		{
-			Room R=(Room)owner();
+			final Room R=(Room)owner();
 			for(int i=0;i<R.numItems();i++)
 			{
-				Item thisItem=R.getItem(i);
+				final Item thisItem=R.getItem(i);
 				if((thisItem!=null)&&(thisItem!=this)&&(thisItem.ultimateContainer(this)==this))
 					weight+=thisItem.phyStats().weight();
 			}
@@ -620,11 +620,11 @@ public class StdContainer extends StdItem implements Container
 	@Override
 	public ReadOnlyList<Item> getContents()
 	{
-		List<Item> V=new Vector<Item>();
+		final List<Item> V=new Vector<Item>();
 		if(owner()!=null)
 		{
 			Item I;
-			for(Enumeration<Item> e = owner().items(); e.hasMoreElements();)
+			for(final Enumeration<Item> e = owner().items(); e.hasMoreElements();)
 			{
 				I=e.nextElement();
 				if(I==null) continue;

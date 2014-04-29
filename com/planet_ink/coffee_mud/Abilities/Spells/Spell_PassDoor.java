@@ -59,7 +59,7 @@ public class Spell_PassDoor extends Spell
 		// undo the affects of this spell
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> <S-IS-ARE> no longer translucent.");
@@ -78,7 +78,7 @@ public class Spell_PassDoor extends Spell
 			int theDir=-1;
 			for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 			{
-				Exit E=mob.location().getExitInDir(d);
+				final Exit E=mob.location().getExitInDir(d);
 				if((E!=null)
 				&&(!E.isOpen()))
 				{
@@ -89,8 +89,8 @@ public class Spell_PassDoor extends Spell
 			if(theDir>=0)
 				commands.addElement(Directions.getDirectionName(theDir));
 		}
-		String whatToOpen=CMParms.combine(commands,0);
-		int dirCode=Directions.getGoodDirectionCode(whatToOpen);
+		final String whatToOpen=CMParms.combine(commands,0);
+		final int dirCode=Directions.getGoodDirectionCode(whatToOpen);
 		if(!auto)
 		{
 			if(dirCode<0)
@@ -99,8 +99,8 @@ public class Spell_PassDoor extends Spell
 				return false;
 			}
 
-			Exit exit=mob.location().getExitInDir(dirCode);
-			Room room=mob.location().getRoomInDir(dirCode);
+			final Exit exit=mob.location().getExitInDir(dirCode);
+			final Room room=mob.location().getRoomInDir(dirCode);
 
 			if((exit==null)||(room==null)||(!CMLib.flags().canBeSeenBy(exit,mob)))
 			{
@@ -119,7 +119,7 @@ public class Spell_PassDoor extends Spell
 			return false;
 
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if((!success)
 		||(mob.fetchEffect(ID())!=null))
@@ -127,7 +127,7 @@ public class Spell_PassDoor extends Spell
 		else
 		if(auto)
 		{
-			CMMsg msg=CMClass.getMsg(mob,null,null,verbalCastCode(mob,null,auto),"^S<S-NAME> shimmer(s) and turn(s) translucent.^?");
+			final CMMsg msg=CMClass.getMsg(mob,null,null,verbalCastCode(mob,null,auto),"^S<S-NAME> shimmer(s) and turn(s) translucent.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -137,7 +137,7 @@ public class Spell_PassDoor extends Spell
 		}
 		else
 		{
-			CMMsg msg=CMClass.getMsg(mob,null,null,verbalCastCode(mob,null,auto),"^S<S-NAME> shimmer(s) and pass(es) "+Directions.getDirectionName(dirCode)+".^?");
+			final CMMsg msg=CMClass.getMsg(mob,null,null,verbalCastCode(mob,null,auto),"^S<S-NAME> shimmer(s) and pass(es) "+Directions.getDirectionName(dirCode)+".^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

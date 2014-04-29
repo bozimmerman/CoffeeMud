@@ -14,7 +14,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -54,16 +53,16 @@ public class StdCage extends StdContainer
 	{
 		if((tickID==Tickable.TICKID_EXIT_REOPEN)&&(isOpen()))
 		{
-			Room R=CMLib.map().roomLocation(this);
+			final Room R=CMLib.map().roomLocation(this);
 			if((R!=null)&&(owner() instanceof Room)&&(CMLib.flags().isInTheGame(this,true)))
 			{
-				List<Item> mobContents=getContents();
-				for(Iterator<Item> e=mobContents.iterator();e.hasNext();)
+				final List<Item> mobContents=getContents();
+				for (final Item item : mobContents)
 				{
-					Environmental E=e.next();
+					final Environmental E=item;
 					if(E instanceof CagedAnimal)
 					{
-						MOB M=((CagedAnimal)E).unCageMe();
+						final MOB M=((CagedAnimal)E).unCageMe();
 						if(M!=null)
 							M.bringToLife(R,true);
 						R.show(M,null,this,CMMsg.MSG_OK_ACTION,"<S-NAME> escapes from <O-NAME>!");

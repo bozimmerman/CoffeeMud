@@ -59,7 +59,7 @@ public class Prop_ReqTattoo extends Property implements TriggeredAffect
 	public void setMiscText(String newText)
 	{
 		themsg="";
-		int x=newText.indexOf(';');
+		final int x=newText.indexOf(';');
 		if(x<0)
 			super.setMiscText(newText);
 		else
@@ -77,7 +77,7 @@ public class Prop_ReqTattoo extends Property implements TriggeredAffect
 
 	public Vector getMask(boolean[] flags)
 	{
-		Vector<String> V=CMParms.parse(miscText.toUpperCase());
+		final Vector<String> V=CMParms.parse(miscText.toUpperCase());
 		String s=null;
 		for(int v=V.size()-1;v>=1;v--)
 		{
@@ -126,8 +126,8 @@ public class Prop_ReqTattoo extends Property implements TriggeredAffect
 			else
 			if(s.startsWith("+")||s.startsWith("-"))
 			{
-				char c=s.charAt(0);
-				boolean found=((c=='+')||(c=='-'))?
+				final char c=s.charAt(0);
+				final boolean found=((c=='+')||(c=='-'))?
 					(mob.findTattoo(s.substring(1))!=null)
 					:(mob.findTattoo(s)!=null);
 				switch(allFlag)
@@ -182,21 +182,21 @@ public class Prop_ReqTattoo extends Property implements TriggeredAffect
 			if(((msg.target() instanceof Room)&&(msg.targetMinor()==CMMsg.TYP_ENTER))
 			||((msg.target() instanceof Item)&&((msg.targetMinor()==CMMsg.TYP_GET)||(msg.targetMinor()==CMMsg.TYP_SIT))))
 			{
-				boolean[] flags=new boolean[2];
-				Vector V=getMask(flags);
-				HashSet H=new HashSet();
+				final boolean[] flags=new boolean[2];
+				final Vector V=getMask(flags);
+				final HashSet H=new HashSet();
 				if(flags[0])
 					H.add(msg.source());
 				else
 				{
 					msg.source().getGroupMembers(H);
-					HashSet H2=(HashSet)H.clone();
-					for(Iterator e=H2.iterator();e.hasNext();)
+					final HashSet H2=(HashSet)H.clone();
+					for(final Iterator e=H2.iterator();e.hasNext();)
 						((MOB)e.next()).getRideBuddies(H);
 				}
-				for(Iterator e=H.iterator();e.hasNext();)
+				for(final Iterator e=H.iterator();e.hasNext();)
 				{
-					Environmental E=(Environmental)e.next();
+					final Environmental E=(Environmental)e.next();
 					if((E instanceof MOB)
 					&&(passesMuster(V,flags,(MOB)E)))
 						return super.okMessage(myHost,msg);

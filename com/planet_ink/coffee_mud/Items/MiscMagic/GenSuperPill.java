@@ -55,10 +55,10 @@ public class GenSuperPill extends GenPill implements ArchonOnly
 	@Override
 	public String secretIdentity()
 	{
-		String tx=StdScroll.makeSecretIdentity("super pill",super.secretIdentity(),"",getSpells());
+		final String tx=StdScroll.makeSecretIdentity("super pill",super.secretIdentity(),"",getSpells());
 		String id=readableText;
 		int x=id.toUpperCase().indexOf("ARM");
-		for(StringBuffer ID=new StringBuffer(id);((x>0)&&(x<id.length()));x++)
+		for(final StringBuffer ID=new StringBuffer(id);((x>0)&&(x<id.length()));x++)
 			if(id.charAt(x)=='-')
 			{
 				ID.setCharAt(x,'+');
@@ -78,11 +78,11 @@ public class GenSuperPill extends GenPill implements ArchonOnly
 		x=id.toUpperCase().indexOf("DIS");
 		if(x>=0)
 		{
-			long val=CMParms.getParmPlus(id,"dis");
-			int y=id.indexOf(""+val,x);
+			final long val=CMParms.getParmPlus(id,"dis");
+			final int y=id.indexOf(""+val,x);
 			if((val!=0)&&(y>x))
 			{
-				StringBuffer middle=new StringBuffer("");
+				final StringBuffer middle=new StringBuffer("");
 				for(int num=0;num<PhyStats.IS_VERBS.length;num++)
 					if(CMath.bset(val,CMath.pow(2,num)))
 						middle.append(PhyStats.IS_VERBS[num]+" ");
@@ -92,11 +92,11 @@ public class GenSuperPill extends GenPill implements ArchonOnly
 		x=id.toUpperCase().indexOf("SEN");
 		if(x>=0)
 		{
-			long val=CMParms.getParmPlus(id,"sen");
-			int y=id.indexOf(""+val,x);
+			final long val=CMParms.getParmPlus(id,"sen");
+			final int y=id.indexOf(""+val,x);
 			if((val!=0)&&(y>x))
 			{
-				StringBuffer middle=new StringBuffer("");
+				final StringBuffer middle=new StringBuffer("");
 				for(int num=0;num<PhyStats.CAN_SEE_VERBS.length;num++)
 					if(CMath.bset(val,CMath.pow(2,num)))
 						middle.append(PhyStats.CAN_SEE_VERBS[num]+" ");
@@ -119,7 +119,7 @@ public class GenSuperPill extends GenPill implements ArchonOnly
 		mob.basePhyStats().setAttackAdjustment(mob.basePhyStats().attackAdjustment()+CMParms.getParmPlus(readableText,"att"));
 		mob.basePhyStats().setDamage(mob.basePhyStats().damage()+CMParms.getParmPlus(readableText,"dam"));
 		mob.basePhyStats().setDisposition(mob.basePhyStats().disposition()|CMParms.getParmPlus(readableText,"dis"));
-		int levels=CMParms.getParmPlus(readableText,"lev");
+		final int levels=CMParms.getParmPlus(readableText,"lev");
 		for(int i=0;i<levels;i++)
 			CMLib.leveler().level(mob);
 		mob.basePhyStats().setLevel(mob.basePhyStats().level());
@@ -137,7 +137,7 @@ public class GenSuperPill extends GenPill implements ArchonOnly
 		val=CMParms.getParmStr(readableText,"cla","").toUpperCase();
 		if(val.length()>0)
 		{
-			CharClass C=CMClass.findCharClass(val);
+			final CharClass C=CMClass.findCharClass(val);
 			if((C!=null)&&(C.availabilityCode()!=0))
 			{
 				mob.baseCharStats().setCurrentClass(C);
@@ -154,10 +154,10 @@ public class GenSuperPill extends GenPill implements ArchonOnly
 			mob.baseCharStats().setMyRace(CMClass.getRace(val));
 			mob.baseCharStats().getMyRace().startRacing(mob,false);
 		}
-		for(int i : CharStats.CODES.BASE())
+		for(final int i : CharStats.CODES.BASE())
 		{
 			mob.baseCharStats().setStat(i,mob.baseCharStats().getStat(i)+CMParms.getParmPlus(readableText,CMStrings.limit(CharStats.CODES.NAME(i).toLowerCase(),3)));
-			int max = CharStats.CODES.toMAXBASE(i);
+			final int max = CharStats.CODES.toMAXBASE(i);
 			mob.baseCharStats().setStat(max,mob.baseCharStats().getStat(max)+CMParms.getParmPlus(readableText,"max"+CMStrings.limit(CharStats.CODES.NAME(i).toLowerCase(),3)));
 		}
 
@@ -169,14 +169,14 @@ public class GenSuperPill extends GenPill implements ArchonOnly
 
 		mob.setPractices(mob.getPractices()+CMParms.getParmPlus(readableText,"prac"));
 		mob.setTrains(mob.getTrains()+CMParms.getParmPlus(readableText,"trai"));
-		int qp=CMParms.getParmPlus(readableText,"ques");
+		final int qp=CMParms.getParmPlus(readableText,"ques");
 		if(qp!=0)
 			mob.setQuestPoint(mob.getQuestPoint()+qp);
 		if(qp>0)
 			CMLib.players().bumpPrideStat(mob,PrideStat.QUESTPOINTS_EARNED, qp);
-		int newMoney=CMParms.getParmPlus(readableText,"coin");
+		final int newMoney=CMParms.getParmPlus(readableText,"coin");
 		if(newMoney!=0) CMLib.beanCounter().setMoney(mob,CMLib.beanCounter().getMoney(mob)+newMoney);
-		int exp=CMParms.getParmPlus(readableText,"expe");
+		final int exp=CMParms.getParmPlus(readableText,"expe");
 		if(exp!=0) CMLib.leveler().postExperience(mob,null,null,exp,false);
 		mob.recoverCharStats();
 		mob.recoverPhyStats();
@@ -189,7 +189,7 @@ public class GenSuperPill extends GenPill implements ArchonOnly
 	{
 		if(msg.amITarget(this))
 		{
-			MOB mob=msg.source();
+			final MOB mob=msg.source();
 			switch(msg.targetMinor())
 			{
 			case CMMsg.TYP_EAT:

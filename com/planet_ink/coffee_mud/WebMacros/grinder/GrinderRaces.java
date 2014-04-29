@@ -42,7 +42,7 @@ public class GrinderRaces
 	public static String getPStats(char c, HTTPRequest httpReq)
 	{
 		boolean changes = false;
-		PhyStats adjPStats=(PhyStats)CMClass.getCommon("DefaultPhyStats");
+		final PhyStats adjPStats=(PhyStats)CMClass.getCommon("DefaultPhyStats");
 		adjPStats.setAllValues(0);
 		if(httpReq.isUrlParameter(c+"ESTATS1"))
 		{
@@ -72,7 +72,7 @@ public class GrinderRaces
 	public static String getCStats(char c, HTTPRequest httpReq)
 	{
 		boolean changes = false;
-		CharStats adjCStats=(CharStats)CMClass.getCommon("DefaultCharStats");
+		final CharStats adjCStats=(CharStats)CMClass.getCommon("DefaultCharStats");
 		adjCStats.setAllValues(0);
 		if(httpReq.isUrlParameter(c+"CSTATS1"))
 		{
@@ -82,7 +82,7 @@ public class GrinderRaces
 			{
 				if((behav.length()>0) && (new XVector<String>(CharStats.CODES.NAMES()).contains(behav.toUpperCase().trim())))
 				{
-					int val=CMath.s_int(httpReq.getUrlParameter(c+"CSTATSV"+num));
+					final int val=CMath.s_int(httpReq.getUrlParameter(c+"CSTATSV"+num));
 					if(val!=0)
 					{
 						adjCStats.setStat(CMParms.indexOf(CharStats.CODES.NAMES(),behav.toUpperCase().trim()), val);
@@ -101,7 +101,7 @@ public class GrinderRaces
 	public static String getCState(char c, HTTPRequest httpReq)
 	{
 		boolean changes = false;
-		CharState adjCState=(CharState)CMClass.getCommon("DefaultCharState");
+		final CharState adjCState=(CharState)CMClass.getCommon("DefaultCharState");
 		adjCState.setAllValues(0);
 		if(httpReq.isUrlParameter(c+"CSTATE1"))
 		{
@@ -132,14 +132,14 @@ public class GrinderRaces
 	public static List<Item> itemList(List<? extends Item> items, char c, HTTPRequest httpReq, boolean one)
 	{
 		if(items==null) items=new Vector();
-		Vector classes=new Vector();
+		final Vector classes=new Vector();
 		List<Item> itemlist=null;
 		if(httpReq.isUrlParameter(c+"ITEM1"))
 		{
 			itemlist=RoomData.getItemCache();
 			for(int i=1;;i++)
 			{
-				String MATCHING=httpReq.getUrlParameter(c+"ITEM"+i);
+				final String MATCHING=httpReq.getUrlParameter(c+"ITEM"+i);
 				if(MATCHING==null)
 					break;
 				Item I2=RoomData.getItemFromAnywhere(itemlist,MATCHING);
@@ -159,7 +159,7 @@ public class GrinderRaces
 
 	public static void setDynAbilities(Modifiable M, HTTPRequest httpReq)
 	{
-		DVector theclasses=new DVector(4);
+		final DVector theclasses=new DVector(4);
 		if(httpReq.isUrlParameter("RABLES1"))
 		{
 			int num=1;
@@ -192,7 +192,7 @@ public class GrinderRaces
 
 	public static void setDynEffects(Modifiable M, HTTPRequest httpReq)
 	{
-		DVector theclasses=new DVector(3);
+		final DVector theclasses=new DVector(3);
 		if(httpReq.isUrlParameter("REFFS1"))
 		{
 			int num=1;
@@ -223,7 +223,7 @@ public class GrinderRaces
 
 	public static DVector cabilities(HTTPRequest httpReq)
 	{
-		DVector theclasses=new DVector(2);
+		final DVector theclasses=new DVector(2);
 		if(httpReq.isUrlParameter("CABLES1"))
 		{
 			int num=1;
@@ -245,14 +245,14 @@ public class GrinderRaces
 
 	public static String modifyRace(HTTPRequest httpReq, java.util.Map<String,String> parms, Race oldR, Race R)
 	{
-		String replaceCommand=httpReq.getUrlParameter("REPLACE");
+		final String replaceCommand=httpReq.getUrlParameter("REPLACE");
 		if((replaceCommand != null)
 		&& (replaceCommand.length()>0)
 		&& (replaceCommand.indexOf('=')>0))
 		{
-			int eq=replaceCommand.indexOf('=');
-			String field=replaceCommand.substring(0,eq);
-			String value=replaceCommand.substring(eq+1);
+			final int eq=replaceCommand.indexOf('=');
+			final String field=replaceCommand.substring(0,eq);
+			final String value=replaceCommand.substring(eq+1);
 			httpReq.addFakeUrlParameter(field, value);
 			httpReq.addFakeUrlParameter("REPLACE","");
 		}
@@ -284,7 +284,7 @@ public class GrinderRaces
 		R.setStat("EVENTRACE",(old==null)?"EVENTRACE":old);
 		old=httpReq.getUrlParameter("GENHELP");
 		R.setStat("HELP", ((old==null)?"":old));
-		StringBuffer bodyOld=new StringBuffer("");
+		final StringBuffer bodyOld=new StringBuffer("");
 		for(int i=0;i<Race.BODYPARTSTR.length;i++)
 		{
 			old=httpReq.getUrlParameter("BODYPART"+i);
@@ -311,11 +311,11 @@ public class GrinderRaces
 		R.setStat("ASTATS",getCStats('A',httpReq));
 		R.setStat("ASTATE",getCState('A',httpReq));
 		R.setStat("STARTASTATE",getCState('S',httpReq));
-		StringBuffer commaList = new StringBuffer("");
+		final StringBuffer commaList = new StringBuffer("");
 		int val=0;
 		for(int i=0;i<Race.AGE_DESCS.length;i++)
 		{
-			int lastVal=val;
+			final int lastVal=val;
 			val=CMath.s_int(httpReq.getUrlParameter("AGE"+i));
 			if(val<lastVal) val=lastVal;
 			if(i>0) commaList.append(",");
@@ -345,7 +345,7 @@ public class GrinderRaces
 			R.setStat("WEAPONXML",((Environmental)V.get(0)).text());
 		}
 		int breathe=CMath.s_int(httpReq.getUrlParameter("BREATHES"));
-		List<Integer> l=new Vector<Integer>();
+		final List<Integer> l=new Vector<Integer>();
 		if(breathe>=0)
 		{
 			l.add(Integer.valueOf(breathe));

@@ -48,7 +48,7 @@ public class Beggar extends StdBehavior
 	@Override
 	public CMObject copyOf()
 	{
-		Beggar obj=(Beggar)super.copyOf();
+		final Beggar obj=(Beggar)super.copyOf();
 		obj.mobsHitUp=new Vector<MOB>();
 		obj.mobsHitUp.addAll(mobsHitUp);
 		return obj;
@@ -60,7 +60,7 @@ public class Beggar extends StdBehavior
 		super.executeMsg(oking,msg);
 		if((oking==null)||(!(oking instanceof MOB)))
 			return;
-		MOB mob=(MOB)oking;
+		final MOB mob=(MOB)oking;
 		if((msg.amITarget(mob))&&(msg.targetMinor()==CMMsg.TYP_GIVE))
 			msg.addTrailerMsg(CMClass.getMsg(mob,msg.source(),CMMsg.MSG_SPEAK,"^T<S-NAME> say(s) 'Thank you gov'ner!' to <T-NAME> ^?"));
 	}
@@ -76,10 +76,10 @@ public class Beggar extends StdBehavior
 		tickTock++;
 		if(tickTock<5) return true;
 		tickTock=0;
-		MOB mob=(MOB)ticking;
+		final MOB mob=(MOB)ticking;
 		for(int i=0;i<mob.location().numInhabitants();i++)
 		{
-			MOB mob2=mob.location().fetchInhabitant(i);
+			final MOB mob2=mob.location().fetchInhabitant(i);
 			if((mob2!=null)
 			   &&(CMLib.flags().canBeSeenBy(mob2,mob))
 			   &&(mob2!=mob)

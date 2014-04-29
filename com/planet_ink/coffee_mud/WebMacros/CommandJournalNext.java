@@ -41,24 +41,24 @@ public class CommandJournalNext extends StdWebMacro
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
-		java.util.Map<String,String> parms=parseParms(parm);
+		final java.util.Map<String,String> parms=parseParms(parm);
 		String last=httpReq.getUrlParameter("COMMANDJOURNAL");
 		if(parms.containsKey("RESET"))
 		{
 			if(last!=null) httpReq.removeUrlParameter("COMMANDJOURNAL");
 			return "";
 		}
-		MOB mob = Authenticate.getAuthenticatedMob(httpReq);
+		final MOB mob = Authenticate.getAuthenticatedMob(httpReq);
 		String lastID="";
 		boolean allJournals=false;
 		if((Thread.currentThread() instanceof MWThread)
 		&&CMath.s_bool(((MWThread)Thread.currentThread()).getConfig().getMiscProp("ADMIN"))
 		&&parms.containsKey("ALLCOMMANDJOURNALS"))
 			allJournals=true;
-		for(Enumeration<JournalsLibrary.CommandJournal> i=CMLib.journals().commandJournals();i.hasMoreElements();)
+		for(final Enumeration<JournalsLibrary.CommandJournal> i=CMLib.journals().commandJournals();i.hasMoreElements();)
 		{
-			JournalsLibrary.CommandJournal J=i.nextElement();
-			String name=J.NAME();
+			final JournalsLibrary.CommandJournal J=i.nextElement();
+			final String name=J.NAME();
 			if((last==null)
 			||((last.length()>0)&&(last.equals(lastID))&&(!name.equals(lastID))))
 			{

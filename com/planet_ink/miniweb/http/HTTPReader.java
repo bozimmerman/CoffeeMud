@@ -135,7 +135,7 @@ public class HTTPReader implements HTTPIOHandler, Runnable
 			closeMe=true;
 			synchronized(this.writeables)
 			{
-				for(DataBuffers buf : this.writeables)
+				for(final DataBuffers buf : this.writeables)
 					buf.close();
 				this.writeables.clear();
 			}
@@ -144,7 +144,7 @@ public class HTTPReader implements HTTPIOHandler, Runnable
 			try
 			{
 				chan.close();
-			}catch(Exception e){}
+			}catch(final Exception e){}
 			if(forwarder!=null)
 				forwarder.closeChannels();
 		}
@@ -158,10 +158,10 @@ public class HTTPReader implements HTTPIOHandler, Runnable
 	public void closeAndWait()
 	{
 		closeChannels();
-		long time = System.currentTimeMillis();
+		final long time = System.currentTimeMillis();
 		while((System.currentTimeMillis()-time<30000) && (isRunning))
 		{
-			try { Thread.sleep(100); }catch(Exception e){}
+			try { Thread.sleep(100); }catch(final Exception e){}
 		}
 		if(forwarder!=null)
 			forwarder.closeAndWait();
@@ -216,17 +216,17 @@ public class HTTPReader implements HTTPIOHandler, Runnable
 		try
 		{
 
-			SocketChannel forwarderChannel = SocketChannel.open(address.getAddress());
+			final SocketChannel forwarderChannel = SocketChannel.open(address.getAddress());
 			if (forwarderChannel == null)
 				throw new IOException("Unable to create channel.");
 			synchronized(forwarderChannel)
 			{
 				if(!forwarderChannel.finishConnect())
 					throw new HTTPException(HTTPStatus.S500_INTERNAL_ERROR);
-				HTTPForwarder forwarder=new HTTPForwarder(this, server, forwarderChannel);
+				final HTTPForwarder forwarder=new HTTPForwarder(this, server, forwarderChannel);
 				forwarderChannel.configureBlocking (false);
 				final String webContext=address.getContext();
-				StringBuilder urlPage=new StringBuilder("");
+				final StringBuilder urlPage=new StringBuilder("");
 				final String restOfUri=currentReq.getUrlPath().substring(context.length());
 				if(webContext.length()>0)
 					urlPage.append(webContext);
@@ -252,9 +252,9 @@ public class HTTPReader implements HTTPIOHandler, Runnable
 						urlPage.append('/').append(restOfUri);
 				}
 				if(urlPage.length()==0) urlPage.append('/');
-				StringBuilder s=new StringBuilder(currentReq.getMethod().toString()).append(' ').append(urlPage)
+				final StringBuilder s=new StringBuilder(currentReq.getMethod().toString()).append(' ').append(urlPage)
 							.append(" HTTP/").append(currentReq.getHttpVer()).append(EOLN);
-				for(String headerKey : currentReq.getAllHeaderReferences(true))
+				for(final String headerKey : currentReq.getAllHeaderReferences(true))
 					if(headerKey.equalsIgnoreCase(HTTPHeader.HOST.name()))
 						s.append(HTTPHeader.HOST.name()).append(": ").append(address.getHost()).append(':').append(address.getPort()).append(EOLN);
 					else
@@ -266,7 +266,7 @@ public class HTTPReader implements HTTPIOHandler, Runnable
 				return s.toString();
 			}
 		}
-		catch (IOException e)
+		catch (final IOException e)
 		{
 			config.getLogger().throwing("", "", e);
 			throw new HTTPException(HTTPStatus.S500_INTERNAL_ERROR);
@@ -315,7 +315,7 @@ public class HTTPReader implements HTTPIOHandler, Runnable
 				else
 				{
 					buffer.flip(); // turn the writeable buffer into a "readable" one
-					ByteBuffer writeableBuf=ByteBuffer.allocate(buffer.remaining());
+					final ByteBuffer writeableBuf=ByteBuffer.allocate(buffer.remaining());
 					writeableBuf.put(buffer);
 					writeableBuf.flip();
 					forwarder.writeBytesToChannel(new MWDataBuffers(writeableBuf,0));
@@ -341,7 +341,7 @@ public class HTTPReader implements HTTPIOHandler, Runnable
 					{
 						if (c=='\n')
 						{
-							String requestLine = new String(Arrays.copyOfRange(buffer.array(), lastEOLIndex, buffer.position()-2),utf8);
+							final String requestLine = new String(Arrays.copyOfRange(buffer.array(), lastEOLIndex, buffer.position()-2),utf8);
 							lastEOLIndex=buffer.position();
 							state=ParseState.HDR_INLINE;
 							if (requestLine.length()>0)
@@ -376,17 +376,17 @@ public class HTTPReader implements HTTPIOHandler, Runnable
 								state=ParseState.HDR_INLINE;
 								if(host!=null)
 								{
-									int x=host.indexOf(':');
+									final int x=host.indexOf(':');
 									if(x>0) host=host.substring(0, x); // we only care about the host, we KNOW the port.
-									Pair<String,WebAddress> forward=config.getPortForward(host,currentReq.getClientPort(),currentReq.getUrlPath());
+									final Pair<String,WebAddress> forward=config.getPortForward(host,currentReq.getClientPort(),currentReq.getUrlPath());
 									if(forward != null)
 									{
-										String requestLine=startPortForwarding(forward.second, forward.first);
+										final String requestLine=startPortForwarding(forward.second, forward.first);
 										if(forwarder!=null)
 										{
-											DataBuffers out=new MWDataBuffers();
+											final DataBuffers out=new MWDataBuffers();
 											out.add(ByteBuffer.wrap(requestLine.getBytes()),0);
-											ByteBuffer writeableBuf=ByteBuffer.allocate(buffer.remaining());
+											final ByteBuffer writeableBuf=ByteBuffer.allocate(buffer.remaining());
 											writeableBuf.put(buffer);
 											writeableBuf.flip();
 											out.add(writeableBuf,0);
@@ -413,7 +413,7 @@ public class HTTPReader implements HTTPIOHandler, Runnable
 										try
 										{
 											// moment of truth, do we have a body forthcoming?
-											int contentLength = Integer.parseInt(contentLengthStr);
+											final int contentLength = Integer.parseInt(contentLengthStr);
 											if ((contentLength < 0) || (contentLength > config.getRequestMaxBodyBytes())) // illegal request
 											{
 												throw HTTPException.standardException(HTTPStatus.S413_REQUEST_ENTITY_TOO_LARGE);
@@ -438,7 +438,7 @@ public class HTTPReader implements HTTPIOHandler, Runnable
 												}
 											}
 										}
-										catch(NumberFormatException ne)
+										catch(final NumberFormatException ne)
 										{
 											throw HTTPException.standardException(HTTPStatus.S411_LENGTH_REQUIRED);
 										}
@@ -513,7 +513,7 @@ public class HTTPReader implements HTTPIOHandler, Runnable
 			}
 			}
 		}
-		catch(IOException ioe)
+		catch(final IOException ioe)
 		{
 			config.getLogger().throwing("", "", ioe);
 			throw HTTPException.standardException(HTTPStatus.S500_INTERNAL_ERROR);
@@ -557,17 +557,17 @@ public class HTTPReader implements HTTPIOHandler, Runnable
 				bufs=writeables.getFirst();
 				while(bufs.hasNext())
 				{
-					ByteBuffer buffer=buffers.next();
+					final ByteBuffer buffer=buffers.next();
 					while(buffer.remaining()>0)
 					{
-						int bytesWritten=chan.write(buffer);
+						final int bytesWritten=chan.write(buffer);
 						if(bytesWritten>=0)
 						{
 							written+=bytesWritten;
 						}
 						if(buffer.remaining()>0)
 						{
-							try{Thread.sleep(1);}catch(Exception e){}
+							try{Thread.sleep(1);}catch(final Exception e){}
 						}
 					}
 				}
@@ -603,7 +603,7 @@ public class HTTPReader implements HTTPIOHandler, Runnable
 				bufs=writeables.getFirst();
 				while(bufs.hasNext())
 				{
-					ByteBuffer buf=bufs.next();
+					final ByteBuffer buf=bufs.next();
 					chan.write(buf);
 					if(buf.remaining()>0)
 					{
@@ -650,7 +650,7 @@ public class HTTPReader implements HTTPIOHandler, Runnable
 						processBuffer(currentReq.getBuffer()); // process any data received
 						if(currentReq.isFinished()) // if the request was completed, generate output!
 						{
-							HTTPReqProcessor processor = new HTTPReqProcessor(config);
+							final HTTPReqProcessor processor = new HTTPReqProcessor(config);
 							final DataBuffers bufs = processor.generateOutput(currentReq);
 							if(accessLog != null)
 								accessLog.append(Log.makeLogEntry(Log.Type.access, Thread.currentThread().getName(),
@@ -670,7 +670,7 @@ public class HTTPReader implements HTTPIOHandler, Runnable
 						}
 					}
 				}
-				catch(HTTPException me) // if an exception is generated, go ahead and send it out
+				catch(final HTTPException me) // if an exception is generated, go ahead and send it out
 				{
 					final DataBuffers bufs=me.generateOutput(currentReq);
 					writeBytesToChannel(bufs);
@@ -720,13 +720,13 @@ public class HTTPReader implements HTTPIOHandler, Runnable
 				}
 
 			}
-			catch(IOException e)
+			catch(final IOException e)
 			{
 				if(isDebugging) config.getLogger().finer("Closing "+getName()+" due to: "+e.getClass().getName()+": "+e.getMessage());
 				closeChannels();
 				currentState=ParseState.DONE; // a common case when client closes first
 			}
-			catch(Exception e)
+			catch(final Exception e)
 			{
 				closeChannels();
 				currentState=ParseState.DONE;

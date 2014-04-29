@@ -52,11 +52,11 @@ public class Spell_WeaknessAcid extends Spell
 		if(!(affected instanceof MOB))
 			return true;
 
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		if((msg.amITarget(mob))&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
 		   &&(msg.sourceMinor()==CMMsg.TYP_ACID))
 		{
-			int recovery=(int)Math.round(CMath.mul((msg.value()),1.5));
+			final int recovery=(int)Math.round(CMath.mul((msg.value()),1.5));
 			msg.setValue(msg.value()+recovery);
 		}
 		return true;
@@ -68,7 +68,7 @@ public class Spell_WeaknessAcid extends Spell
 		// undo the affects of this spell
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		if(canBeUninvoked())
 			mob.tell("Your acidic weakness is now gone.");
 
@@ -87,7 +87,7 @@ public class Spell_WeaknessAcid extends Spell
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		MOB target=getTarget(mob,commands,givenTarget);
+		final MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -96,7 +96,7 @@ public class Spell_WeaknessAcid extends Spell
 		boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"A shimmering absorbing field appears around <T-NAMESELF>.":"^S<S-NAME> invoke(s) a shimmering absorbing field of weakness around <T-NAMESELF>.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"A shimmering absorbing field appears around <T-NAMESELF>.":"^S<S-NAME> invoke(s) a shimmering absorbing field of weakness around <T-NAMESELF>.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

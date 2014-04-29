@@ -66,7 +66,7 @@ public class Thief_SetDecoys extends ThiefSkill implements Trap
 	public void spring(MOB mob)
 	{
 		if((mob==null)||(invoker()==null)) return;
-		Room R=mob.location();
+		final Room R=mob.location();
 		if(R==null) return;
 		if((!invoker().mayIFight(mob))||(!mob.isInCombat())||(CMLib.dice().rollPercentage()<mob.charStats().getSave(CharStats.STAT_SAVE_TRAPS)-(getXLEVELLevel(invoker())*5)))
 			R.show(mob,affected,this,CMMsg.MSG_OK_ACTION,"A decoy pops up, prompting <S-NAME> to glance toward(s) it, but <S-HE-SHE> <S-IS-ARE> not fooled.");
@@ -74,11 +74,11 @@ public class Thief_SetDecoys extends ThiefSkill implements Trap
 		if(R.show(mob,null,this,CMMsg.MSG_OK_VISUAL,"A decoy pops up, confusing <S-NAME>!"))
 		{
 			int max=R.maxRange();
-			int level=getXLEVELLevel(invoker())+2;
+			final int level=getXLEVELLevel(invoker())+2;
 			if(level<max) max=level;
 			while((mob.isInCombat())&&(mob.rangeToTarget()<max))
 			{
-				int r=mob.rangeToTarget();
+				final int r=mob.rangeToTarget();
 				if(!R.show(mob,mob.getVictim(),null,CMMsg.MSG_RETREAT,"<S-NAME> advance(s) toward(s) the decoy."))
 					break;
 				if(mob.rangeToTarget()==r)
@@ -96,18 +96,18 @@ public class Thief_SetDecoys extends ThiefSkill implements Trap
 		if((--lastSet)<=0)
 		{
 			lastSet=5;
-			MOB mob=invoker();
+			final MOB mob=invoker();
 			if((mob==null)||(!(affected instanceof Room)))
 			{
 				unInvoke();
 				return false;
 			}
-			Room R=(Room)affected;
+			final Room R=(Room)affected;
 			boolean combat=false;
 			int numWhoCanSee=0;
 			for(int m=0;m<R.numInhabitants();m++)
 			{
-				MOB M=R.fetchInhabitant(m);
+				final MOB M=R.fetchInhabitant(m);
 				if(M!=null)
 				{
 					if(CMLib.flags().canBeSeenBy(R,M))
@@ -156,7 +156,7 @@ public class Thief_SetDecoys extends ThiefSkill implements Trap
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		Physical target=(givenTarget!=null)?givenTarget:mob.location();
+		final Physical target=(givenTarget!=null)?givenTarget:mob.location();
 		if(target.fetchEffect(ID())!=null)
 		{
 			mob.tell("Decoys have already been set here.");

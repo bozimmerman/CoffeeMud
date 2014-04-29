@@ -45,23 +45,24 @@ public class MWMimeConverterManager implements MimeConverterManager
 	{
 		converters = new Hashtable<MIMEType,Class<? extends HTTPOutputConverter>>();
 		requestStats = new Hashtable<Class<? extends HTTPOutputConverter>, MWRequestStats>();
-		for(String mimeTypeName : config.getFileConverts().keySet())
+		for(final String mimeTypeName : config.getFileConverts().keySet())
 		{
-			MIMEType mimeType=MIMEType.valueOf(mimeTypeName);
+			final MIMEType mimeType=MIMEType.valueOf(mimeTypeName);
 			String className=config.getFileConverts().get(mimeTypeName);
 			if(className.indexOf('.')<0)
 				className="com.planet_ink.miniweb.converters."+className;
 			try
 			{
 				@SuppressWarnings("unchecked")
+				final
 				Class<? extends HTTPOutputConverter> converterClass=(Class<? extends HTTPOutputConverter>) Class.forName(className);
 				registerConverter(mimeType, converterClass);
 			}
-			catch (ClassNotFoundException e)
+			catch (final ClassNotFoundException e)
 			{
 				config.getLogger().severe("Converter Manager can't load "+className);
 			}
-			catch (Exception e)
+			catch (final Exception e)
 			{
 				config.getLogger().severe("Converter Manager can't converter "+mimeTypeName);
 			}

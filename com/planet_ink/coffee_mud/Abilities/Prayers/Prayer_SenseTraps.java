@@ -51,7 +51,7 @@ public class Prayer_SenseTraps extends Prayer
 	{
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		if(canBeUninvoked())
 			lastRoom=null;
 		super.unInvoke();
@@ -68,17 +68,17 @@ public class Prayer_SenseTraps extends Prayer
 
 	public String trapHere(MOB mob, Physical P)
 	{
-		StringBuffer msg=new StringBuffer("");
+		final StringBuffer msg=new StringBuffer("");
 		if(P==null) return msg.toString();
 		if((P instanceof Room)&&(CMLib.flags().canBeSeenBy(P,mob)))
 		{
 			msg.append(trapCheck(P));
-			Room R=(Room)P;
+			final Room R=(Room)P;
 			for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 			{
 				if(R.getExitInDir(d)==P)
 				{
-					Exit E2=R.getReverseExit(d);
+					final Exit E2=R.getReverseExit(d);
 					msg.append(trapHere(mob,P));
 					msg.append(trapHere(mob,E2));
 					break;
@@ -86,13 +86,13 @@ public class Prayer_SenseTraps extends Prayer
 			}
 			for(int i=0;i<R.numItems();i++)
 			{
-				Item I=R.getItem(i);
+				final Item I=R.getItem(i);
 				if((I!=null)&&(I.container()==null))
 					msg.append(trapHere(mob,I));
 			}
 			for(int m=0;m<R.numInhabitants();m++)
 			{
-				MOB M=R.fetchInhabitant(m);
+				final MOB M=R.fetchInhabitant(m);
 				if((M!=null)&&(M!=mob))
 					msg.append(trapHere(mob,M));
 			}
@@ -100,8 +100,8 @@ public class Prayer_SenseTraps extends Prayer
 		else
 		if((P instanceof Container)&&(CMLib.flags().canBeSeenBy(P,mob)))
 		{
-			Container C=(Container)P;
-			List<Item> V=C.getContents();
+			final Container C=(Container)P;
+			final List<Item> V=C.getContents();
 			for(int v=0;v<V.size();v++)
 				if(trapCheck(V.get(v)).length()>0)
 					msg.append(C.name()+" contains something trapped.\n");
@@ -117,16 +117,16 @@ public class Prayer_SenseTraps extends Prayer
 		{
 			for(int i=0;i<((MOB)P).numItems();i++)
 			{
-				Item I=((MOB)P).getItem(i);
+				final Item I=((MOB)P).getItem(i);
 				if(trapCheck(I).length()>0)
 					return P.name()+" is carrying something trapped.\n";
 			}
-			ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(P);
+			final ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(P);
 			if(SK!=null)
 			{
-				for(Iterator<Environmental> i=SK.getShop().getStoreInventory();i.hasNext();)
+				for(final Iterator<Environmental> i=SK.getShop().getStoreInventory();i.hasNext();)
 				{
-					Environmental E2=i.next();
+					final Environmental E2=i.next();
 					if(E2 instanceof Item)
 						if(trapCheck((Item)E2).length()>0)
 							return P.name()+" has something trapped in stock.\n";
@@ -138,7 +138,7 @@ public class Prayer_SenseTraps extends Prayer
 
 	public void messageTo(MOB mob)
 	{
-		String here=trapHere(mob,mob.location());
+		final String here=trapHere(mob,mob.location());
 		if(here.length()>0)
 			mob.tell(here);
 		else
@@ -147,8 +147,8 @@ public class Prayer_SenseTraps extends Prayer
 			String dirs="";
 			for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 			{
-				Room R=mob.location().getRoomInDir(d);
-				Exit E=mob.location().getExitInDir(d);
+				final Room R=mob.location().getRoomInDir(d);
+				final Exit E=mob.location().getExitInDir(d);
 				if((R!=null)&&(E!=null)&&(trapHere(mob,R).length()>0))
 				{
 					if(last.length()>0)
@@ -195,11 +195,11 @@ public class Prayer_SenseTraps extends Prayer
 			mob.tell(target,null,null,"<S-NAME> <S-IS-ARE> already sensing traps.");
 			return false;
 		}
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> gain(s) trap sensitivities!":"^S<S-NAME> "+prayWord(mob)+", and gain(s) sensitivity to traps!^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> gain(s) trap sensitivities!":"^S<S-NAME> "+prayWord(mob)+", and gain(s) sensitivity to traps!^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

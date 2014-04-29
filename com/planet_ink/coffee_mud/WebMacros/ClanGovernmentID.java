@@ -39,13 +39,13 @@ public class ClanGovernmentID extends StdWebMacro
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
-		String last=httpReq.getUrlParameter("GOVERNMENT");
+		final String last=httpReq.getUrlParameter("GOVERNMENT");
 		if(last==null) return " @break@";
 		if(last.length()>0)
 		{
 			if(CMath.isInteger(last))
 			{
-				ClanGovernment G=CMLib.clans().getStockGovernment(CMath.s_int(last));
+				final ClanGovernment G=CMLib.clans().getStockGovernment(CMath.s_int(last));
 				if(G!=null)
 					return clearWebMacros(Integer.toString(G.getID()));
 			}

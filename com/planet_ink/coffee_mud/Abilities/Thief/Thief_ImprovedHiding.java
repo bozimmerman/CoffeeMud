@@ -47,7 +47,7 @@ public class Thief_ImprovedHiding extends ThiefSkill
 
 	public void improve(MOB mob, boolean yesorno)
 	{
-		Ability A=mob.fetchEffect("Thief_Hide");
+		final Ability A=mob.fetchEffect("Thief_Hide");
 		if(A!=null)
 		{
 			if(yesorno)
@@ -63,7 +63,7 @@ public class Thief_ImprovedHiding extends ThiefSkill
 		if(!(affected instanceof MOB))
 			return super.okMessage(myHost,msg);
 
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		if((!CMLib.flags().isHidden(mob))&&(active))
 		{
 			active=false;

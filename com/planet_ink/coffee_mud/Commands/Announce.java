@@ -42,7 +42,7 @@ public class Announce extends StdCommand
 
 	public void sendAnnounce(MOB from, String announcement, Session S)
 	{
-	  	StringBuffer Message=new StringBuffer("");
+	  	final StringBuffer Message=new StringBuffer("");
 		if((from!=null)&&(from.playerStats()!=null)&&(from.playerStats().getAnnounceMessage().length()>0))
 			Message.append(from.playerStats().getAnnounceMessage()+" '"+announcement+"'.^.^N");
 		else
@@ -79,9 +79,9 @@ public class Announce extends StdCommand
 		&&(!cmd.equalsIgnoreCase("ANNOUNCETO"))
 		&&(!cmd.equalsIgnoreCase("ANNOUNCE")))
 		{
-			boolean cmdm="ANNOUNCEMSG".toUpperCase().startsWith(cmd);
-			boolean cmdt="ANNOUNCETO".toUpperCase().startsWith(cmd);
-			boolean cmd1="ANNOUNCE".toUpperCase().startsWith(cmd);
+			final boolean cmdm="ANNOUNCEMSG".toUpperCase().startsWith(cmd);
+			final boolean cmdt="ANNOUNCETO".toUpperCase().startsWith(cmd);
+			final boolean cmd1="ANNOUNCE".toUpperCase().startsWith(cmd);
 			if(cmdm&&(!cmdt)&&(!cmd1))
 				cmd="ANNOUNCEMSG";
 			else
@@ -93,7 +93,7 @@ public class Announce extends StdCommand
 		}
 		if(cmd.equalsIgnoreCase("ANNOUNCEMSG"))
 		{
-			String s=CMParms.combine(commands,1);
+			final String s=CMParms.combine(commands,1);
 			if(s.length()==0)
 				mob.tell("Your announce message is currently: "+mob.playerStats().getAnnounceMessage());
 			else
@@ -115,7 +115,7 @@ public class Announce extends StdCommand
 				else
 					text=CMParms.combine(commands,1);
 
-				for(Session S : CMLib.sessions().localOnlineIterable())
+				for(final Session S : CMLib.sessions().localOnlineIterable())
 				{
 					if((S.mob()!=null)
 					&&(S.mob().location()!=null)
@@ -126,8 +126,8 @@ public class Announce extends StdCommand
 			else
 			{
 				boolean found=false;
-				String name=(String)commands.elementAt(1);
-				for(Session S : CMLib.sessions().localOnlineIterable())
+				final String name=(String)commands.elementAt(1);
+				for(final Session S : CMLib.sessions().localOnlineIterable())
 				{
 					if((S.mob()!=null)
 					&&(S.mob().location()!=null)

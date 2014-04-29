@@ -41,20 +41,20 @@ public class CheckAuthCode extends StdWebMacro
 	{
 		if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
 			return null;
-		MOB mob = Authenticate.getAuthenticatedMob(httpReq);
+		final MOB mob = Authenticate.getAuthenticatedMob(httpReq);
 		if(mob==null) return null;
 		Hashtable auths=(Hashtable)httpReq.getRequestObjects().get("AUTHS_"+mob.Name().toUpperCase().trim());
 		if(auths==null)
 		{
 			auths=new Hashtable();
 			boolean subOp=false;
-			boolean sysop=CMSecurity.isASysOp(mob);
+			final boolean sysop=CMSecurity.isASysOp(mob);
 
-			String AREA=httpReq.getUrlParameter("AREA");
+			final String AREA=httpReq.getUrlParameter("AREA");
 			Room R=null;
-			for(Enumeration a=CMLib.map().areas();a.hasMoreElements();)
+			for(final Enumeration a=CMLib.map().areas();a.hasMoreElements();)
 			{
-				Area A=(Area)a.nextElement();
+				final Area A=(Area)a.nextElement();
 				if((AREA==null)||(AREA.length()==0)||(AREA.equals(A.Name())))
 					if(A.amISubOp(mob.Name()))
 					{
@@ -78,7 +78,7 @@ public class CheckAuthCode extends StdWebMacro
 						maxLen=dirs.get(v).length();
 						maxOne=v;
 					}
-				String winner=dirs.get(maxOne);
+				final String winner=dirs.get(maxOne);
 				httpReq.addFakeUrlParameter("BESTFILEBROWSE",winner);
 			}
 			else
@@ -86,7 +86,7 @@ public class CheckAuthCode extends StdWebMacro
 			auths.put("SYSOP",""+sysop);
 			auths.put("SUBOP",""+(sysop||subOp));
 
-			for(Iterator<CMSecurity.SecFlag> i = CMSecurity.getSecurityCodes(mob,R);i.hasNext();)
+			for(final Iterator<CMSecurity.SecFlag> i = CMSecurity.getSecurityCodes(mob,R);i.hasNext();)
 				auths.put("AUTH_"+i.next().toString(),"true");
 			httpReq.getRequestObjects().put("AUTHS_"+mob.Name().toUpperCase().trim(),auths);
 		}
@@ -96,14 +96,14 @@ public class CheckAuthCode extends StdWebMacro
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
-		java.util.Map<String,String> parms=parseParms(parm);
+		final java.util.Map<String,String> parms=parseParms(parm);
 		boolean finalCondition=false;
-		Hashtable auths=getAuths(httpReq);
+		final Hashtable auths=getAuths(httpReq);
 		if(auths==null) return "false";
-		boolean sysop=((String)auths.get("SYSOP")).equalsIgnoreCase("true");
+		final boolean sysop=((String)auths.get("SYSOP")).equalsIgnoreCase("true");
 		for(String key : parms.keySet())
 		{
-			String equals=parms.get(key);
+			final String equals=parms.get(key);
 			boolean not=false;
 			boolean thisCondition=true;
 			if(key.startsWith("||")) key=key.substring(2);
@@ -112,7 +112,7 @@ public class CheckAuthCode extends StdWebMacro
 				key=key.substring(1);
 				not=true;
 			}
-			String check=sysop?"true":(String)auths.get(key);
+			final String check=sysop?"true":(String)auths.get(key);
 			if(not)
 			{
 				if((check==null)&&(equals.length()==0))

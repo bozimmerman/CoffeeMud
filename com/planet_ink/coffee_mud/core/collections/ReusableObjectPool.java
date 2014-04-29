@@ -64,9 +64,9 @@ public class ReusableObjectPool<T extends CMObject>
 		{
 			Runtime.getRuntime().runFinalization();
 			System.gc();
-			try{Thread.sleep(100);}catch(Exception e){}
+			try{Thread.sleep(100);}catch(final Exception e){}
 			Runtime.getRuntime().runFinalization();
-			try{Thread.sleep(100);}catch(Exception e){}
+			try{Thread.sleep(100);}catch(final Exception e){}
 			System.gc();
 		}
 

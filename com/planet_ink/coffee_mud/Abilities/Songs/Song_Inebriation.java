@@ -62,7 +62,7 @@ public class Song_Inebriation extends Song
 
 	public void show(MOB mob, int code, String text)
 	{
-		CMMsg msg=CMClass.getMsg(mob,null,this,code,code,code,text);
+		final CMMsg msg=CMClass.getMsg(mob,null,this,code,code,code,text);
 		if((mob.location()!=null)&&(mob.location().okMessage(mob,msg)))
 			mob.location().send(mob,msg);
 	}
@@ -73,7 +73,7 @@ public class Song_Inebriation extends Song
 		if(!super.tick(ticking,tickID))
 			return false;
 
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		if(mob==null) return true;
 		if(mob==invoker) return true;
 		if((CMLib.dice().rollPercentage()<25)&&(CMLib.flags().canMove(mob)))
@@ -115,7 +115,7 @@ public class Song_Inebriation extends Song
 		   ||(msg.sourceMinor()==CMMsg.TYP_TELL)
 		   ||(CMath.bset(msg.sourceMajor(),CMMsg.MASK_CHANNEL))))
 		{
-			Ability A=CMClass.getAbility("Drunken");
+			final Ability A=CMClass.getAbility("Drunken");
 			if(A!=null)
 			{
 				A.setProficiency(100);
@@ -129,7 +129,7 @@ public class Song_Inebriation extends Song
 		if((!msg.targetMajor(CMMsg.MASK_ALWAYS))
 		&&(msg.targetMajor()>0))
 		{
-			MOB newTarget=msg.source().location().fetchRandomInhabitant();
+			final MOB newTarget=msg.source().location().fetchRandomInhabitant();
 			if(newTarget!=null)
 				msg.modify(msg.source(),newTarget,msg.tool(),msg.sourceCode(),msg.sourceMessage(),msg.targetCode(),msg.targetMessage(),msg.othersCode(),msg.othersMessage());
 		}

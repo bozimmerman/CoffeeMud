@@ -14,7 +14,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -52,7 +51,7 @@ public class Spell_Repulsion extends Spell
 		if(!(affected instanceof MOB))
 			return true;
 
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		// when this spell is on a MOBs Affected list,
 		// it should consistantly prevent the mob
@@ -78,7 +77,7 @@ public class Spell_Repulsion extends Spell
 	{
 		if(tickID == Tickable.TICKID_MOB)
 		{
-			Room R=CMLib.map().roomLocation(affected);
+			final Room R=CMLib.map().roomLocation(affected);
 			if((R!=null)
 			&&(invoker!=null)
 			&&((!R.isInhabitant(invoker))||(!invoker.isInCombat())))
@@ -96,7 +95,7 @@ public class Spell_Repulsion extends Spell
 		// undo the affects of this spell
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		super.unInvoke();
 		if(canBeUninvoked())
@@ -109,7 +108,7 @@ public class Spell_Repulsion extends Spell
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		Set<MOB> h=properTargets(mob,givenTarget,auto);
+		final Set<MOB> h=properTargets(mob,givenTarget,auto);
 		if((h==null)||(h.size()==0))
 		{
 			mob.tell("There doesn't appear to be anyone here worth repelling.");
@@ -128,44 +127,44 @@ public class Spell_Repulsion extends Spell
 		if(success)
 		{
 			if(mob.location().show(mob,null,this,somanticCastCode(mob,null,auto),auto?"":"^S<S-NAME> wave(s) <S-HIS-HER> arms and cast(s) a spell.^?"))
-			for(Iterator f=h.iterator();f.hasNext();)
-			{
-				MOB target=(MOB)f.next();
-
-				// it worked, so build a copy of this ability,
-				// and add it to the affects list of the
-				// affected MOB.  Then tell everyone else
-				// what happened.
-				CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),null);
-				if((mob.location().okMessage(mob,msg))&&(target.fetchEffect(this.ID())==null))
+				for (final Object element : h)
 				{
-					mob.location().send(mob,msg);
-					if(msg.value()<=0)
+					final MOB target=(MOB)element;
+
+					// it worked, so build a copy of this ability,
+					// and add it to the affects list of the
+					// affected MOB.  Then tell everyone else
+					// what happened.
+					final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),null);
+					if((mob.location().okMessage(mob,msg))&&(target.fetchEffect(this.ID())==null))
 					{
-						amountRemaining=130;
-						if(target.location()==mob.location())
+						mob.location().send(mob,msg);
+						if(msg.value()<=0)
 						{
-							success=maliciousAffect(mob,target,asLevel,((mob.phyStats().level()+(2*getXLEVELLevel(mob)))*10),-1);
-							int level=2;
-							if((CMLib.ableMapper().qualifyingClassLevel(mob,this)>0)&&((adjustedLevel(mob,asLevel)-CMLib.ableMapper().qualifyingClassLevel(mob,this))>10))
-								level+=((adjustedLevel(mob,asLevel)-CMLib.ableMapper().qualifyingClassLevel(mob,this))-10)/10;
-							if(level<2) level=2;
-							target.location().show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> become(s) repelled!");
-							if((target.getVictim()!=null)&&(target.rangeToTarget()>0))
-								target.setAtRange(target.rangeToTarget());
-							else
-							if(target.location().maxRange()<level)
-								target.setAtRange(target.location().maxRange());
-							else
-								target.setAtRange(level);
-							if(target.getVictim()!=null)
-								target.getVictim().setAtRange(target.rangeToTarget());
-							if(mob.getVictim()==null) mob.setVictim(null); // correct range
-							if(target.getVictim()==null) target.setVictim(null); // correct range
+							amountRemaining=130;
+							if(target.location()==mob.location())
+							{
+								success=maliciousAffect(mob,target,asLevel,((mob.phyStats().level()+(2*getXLEVELLevel(mob)))*10),-1);
+								int level=2;
+								if((CMLib.ableMapper().qualifyingClassLevel(mob,this)>0)&&((adjustedLevel(mob,asLevel)-CMLib.ableMapper().qualifyingClassLevel(mob,this))>10))
+									level+=((adjustedLevel(mob,asLevel)-CMLib.ableMapper().qualifyingClassLevel(mob,this))-10)/10;
+								if(level<2) level=2;
+								target.location().show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> become(s) repelled!");
+								if((target.getVictim()!=null)&&(target.rangeToTarget()>0))
+									target.setAtRange(target.rangeToTarget());
+								else
+								if(target.location().maxRange()<level)
+									target.setAtRange(target.location().maxRange());
+								else
+									target.setAtRange(level);
+								if(target.getVictim()!=null)
+									target.getVictim().setAtRange(target.rangeToTarget());
+								if(mob.getVictim()==null) mob.setVictim(null); // correct range
+								if(target.getVictim()==null) target.setVictim(null); // correct range
+							}
 						}
 					}
 				}
-			}
 		}
 		else
 			return maliciousFizzle(mob,null,"<S-NAME> wave(s) <S-HIS-HER> arms, but the spell fizzles.");

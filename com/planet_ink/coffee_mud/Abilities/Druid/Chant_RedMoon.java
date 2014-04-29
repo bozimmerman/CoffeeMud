@@ -50,7 +50,7 @@ public class Chant_RedMoon extends Chant
 		// undo the affects of this spell
 		if((affected==null)||(!(affected instanceof Room)))
 			return;
-		Room R=(Room)affected;
+		final Room R=(Room)affected;
 		if(canBeUninvoked())
 			R.showHappens(CMMsg.MSG_OK_VISUAL,"The red moon sets.");
 
@@ -67,7 +67,7 @@ public class Chant_RedMoon extends Chant
 		   &&(msg.target()!=null)
 		   &&(msg.target() instanceof MOB))
 		{
-			MOB mob=(MOB)msg.target();
+			final MOB mob=(MOB)msg.target();
 			int recovery=(int)Math.round(CMath.div((msg.value()),2.0));
 			if(CMLib.flags().isEvil(mob)) recovery=recovery*-1;
 			msg.setValue(msg.value()+recovery);
@@ -82,7 +82,7 @@ public class Chant_RedMoon extends Chant
 		if(affected==null) return false;
 		if(affected instanceof Room)
 		{
-			Room R=(Room)affected;
+			final Room R=(Room)affected;
 			if(!R.getArea().getClimateObj().canSeeTheMoon(R,this))
 				unInvoke();
 		}
@@ -98,7 +98,7 @@ public class Chant_RedMoon extends Chant
 				return Ability.QUALITY_INDIFFERENT;
 			if((mob.isInCombat())&&CMLib.flags().isEvil(mob.getVictim()))
 				return Ability.QUALITY_INDIFFERENT;
-			Room R=mob.location();
+			final Room R=mob.location();
 			if(R!=null)
 			{
 				if(!R.getArea().getClimateObj().canSeeTheMoon(R,null))
@@ -121,7 +121,7 @@ public class Chant_RedMoon extends Chant
   	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		Room target=mob.location();
+		final Room target=mob.location();
 		if(target==null) return false;
 		if(!target.getArea().getClimateObj().canSeeTheMoon(target,null))
 		{
@@ -151,7 +151,7 @@ public class Chant_RedMoon extends Chant
 		// and added as String objects to a vector.
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
@@ -160,7 +160,7 @@ public class Chant_RedMoon extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> chant(s) to the sky.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> chant(s) to the sky.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

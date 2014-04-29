@@ -56,15 +56,15 @@ public class Thief_Snatch extends ThiefSkill
 				return Ability.QUALITY_INDIFFERENT;
 			if(mob.isInCombat()&&(mob.rangeToTarget()>0))
 				return Ability.QUALITY_INDIFFERENT;
-			Item weapon=mob.fetchWieldedItem();
+			final Item weapon=mob.fetchWieldedItem();
 			if(weapon==null)
 				return Ability.QUALITY_INDIFFERENT;
 			if(mob.freeWearPositions(Wearable.WORN_HELD,(short)0,(short)0)>0)
 				return Ability.QUALITY_INDIFFERENT;
 			if(target instanceof MOB)
 			{
-				MOB targetM=(MOB)target;
-				Item hisItem=targetM.fetchWieldedItem();
+				final MOB targetM=(MOB)target;
+				final Item hisItem=targetM.fetchWieldedItem();
 				if((hisItem==null)
 				||(!(hisItem instanceof Weapon))
 				||((((Weapon)hisItem).weaponClassification()==Weapon.CLASS_NATURAL)))
@@ -79,7 +79,7 @@ public class Thief_Snatch extends ThiefSkill
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		MOB target=(auto&&(givenTarget instanceof MOB))?(MOB)givenTarget:mob.getVictim();
+		final MOB target=(auto&&(givenTarget instanceof MOB))?(MOB)givenTarget:mob.getVictim();
 		if((!mob.isInCombat())||(target==null))
 		{
 			mob.tell("You must be in combat to do this!");
@@ -90,7 +90,7 @@ public class Thief_Snatch extends ThiefSkill
 			mob.tell("You are too far away to disarm!");
 			return false;
 		}
-		Item weapon=mob.fetchWieldedItem();
+		final Item weapon=mob.fetchWieldedItem();
 		if(weapon==null)
 		{
 			mob.tell("You need a weapon to disarm someone!");
@@ -103,7 +103,7 @@ public class Thief_Snatch extends ThiefSkill
 			return false;
 		}
 
-		Item hisItem=target.fetchWieldedItem();
+		final Item hisItem=target.fetchWieldedItem();
 		if((hisItem==null)
 		||(!(hisItem instanceof Weapon))
 		||((((Weapon)hisItem).weaponClassification()==Weapon.CLASS_NATURAL)))
@@ -117,7 +117,7 @@ public class Thief_Snatch extends ThiefSkill
 			mob.tell("You can't snatch a two-handed weapon!");
 			return false;
 		}
-		Weapon hisWeapon=(Weapon)hisItem;
+		final Weapon hisWeapon=(Weapon)hisItem;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
@@ -127,14 +127,14 @@ public class Thief_Snatch extends ThiefSkill
 			levelDiff=levelDiff*6;
 		else
 			levelDiff=0;
-		boolean hit=(auto)||CMLib.combat().rollToHit(mob,target);
-		boolean success=proficiencyCheck(mob,-levelDiff,auto)&&(hit);
+		final boolean hit=(auto)||CMLib.combat().rollToHit(mob,target);
+		final boolean success=proficiencyCheck(mob,-levelDiff,auto)&&(hit);
 		if((success)
 		&&((hisWeapon.rawProperLocationBitmap()==Wearable.WORN_WIELD)
 			||(hisWeapon.rawProperLocationBitmap()==Wearable.WORN_WIELD+Wearable.WORN_HELD)))
 		{
 			CMMsg msg=CMClass.getMsg(target,hisWeapon,null,CMMsg.MSG_DROP,null);
-			CMMsg msg2=CMClass.getMsg(mob,null,this,CMMsg.MSG_THIEF_ACT,null);
+			final CMMsg msg2=CMClass.getMsg(mob,null,this,CMMsg.MSG_THIEF_ACT,null);
 			if((mob.location().okMessage(mob,msg))&&(mob.location().okMessage(mob,msg2)))
 			{
 				mob.location().send(target,msg);

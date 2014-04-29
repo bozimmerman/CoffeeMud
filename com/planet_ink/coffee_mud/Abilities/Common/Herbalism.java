@@ -65,7 +65,7 @@ public class Herbalism extends SpellCraftingSkill implements ItemCraftor
 	{
 		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Tickable.TICKID_MOB))
 		{
-			MOB mob=(MOB)affected;
+			final MOB mob=(MOB)affected;
 			if((buildingI==null)
 			||(theSpell==null))
 			{
@@ -104,19 +104,19 @@ public class Herbalism extends SpellCraftingSkill implements ItemCraftor
 			return false;
 		if(I instanceof Drink)
 		{
-			Drink D=(Drink)I;
+			final Drink D=(Drink)I;
 			if((D.liquidType()==RawMaterial.RESOURCE_LIQUOR)
 			||(D.liquidType()==RawMaterial.RESOURCE_POISON))
 				return false;
 		}
 		if(I instanceof Potion)
 		{
-			Potion P=(Potion)I;
-			List<Ability> spells=P.getSpells();
+			final Potion P=(Potion)I;
+			final List<Ability> spells=P.getSpells();
 			if((spells == null)||(spells.size()==0))
 				return false;
 			boolean chantCheck=false;
-			for(Ability A : spells)
+			for(final Ability A : spells)
 				switch(A.classificationCode()&Ability.ALL_ACODES)
 				{
 				case Ability.ACODE_CHANT: chantCheck=true; break;
@@ -129,11 +129,11 @@ public class Herbalism extends SpellCraftingSkill implements ItemCraftor
 		{
 			for(int i=0;i<I.numEffects();i++)
 			{
-				Ability A=I.fetchEffect(i);
+				final Ability A=I.fetchEffect(i);
 				if(A instanceof AbilityContainer)
 				{
 					boolean chantCheck=false;
-					for(Enumeration<Ability> a=((AbilityContainer)A).abilities();a.hasMoreElements();)
+					for(final Enumeration<Ability> a=((AbilityContainer)A).abilities();a.hasMoreElements();)
 						switch(a.nextElement().classificationCode()&Ability.ALL_ACODES)
 						{
 						case Ability.ACODE_CHANT: chantCheck=true; break;
@@ -157,7 +157,7 @@ public class Herbalism extends SpellCraftingSkill implements ItemCraftor
 		{
 			if((affected!=null)&&(affected instanceof MOB))
 			{
-				MOB mob=(MOB)affected;
+				final MOB mob=(MOB)affected;
 				if((buildingI!=null)&&(!aborted))
 				{
 					if(messedUp)
@@ -207,11 +207,11 @@ public class Herbalism extends SpellCraftingSkill implements ItemCraftor
 			return true;
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,-1);
 
-		CraftParms parsedVars=super.parseAutoGenerate(auto,givenTarget,commands);
+		final CraftParms parsedVars=super.parseAutoGenerate(auto,givenTarget,commands);
 		givenTarget=parsedVars.givenTarget;
 		if(parsedVars.autoGenerate>0)
 		{
-			Ability theSpell=super.getCraftableSpellRecipeSpell(commands);
+			final Ability theSpell=super.getCraftableSpellRecipeSpell(commands);
 			if(theSpell==null) return false;
 			int level=super.getCraftableSpellLevel(commands);
 			if(level<0) level=1;
@@ -224,8 +224,8 @@ public class Herbalism extends SpellCraftingSkill implements ItemCraftor
 			commonTell(mob,"Brew what? Enter \"hbrew list\" for a list, \"hbrew learn <item>\" to learn recipes, or \"hbrew stop\" to cancel.");
 			return false;
 		}
-		List<List<String>> recipes=addRecipes(mob,loadRecipes());
-		String pos=(String)commands.lastElement();
+		final List<List<String>> recipes=addRecipes(mob,loadRecipes());
+		final String pos=(String)commands.lastElement();
 		if((commands.firstElement() instanceof String)&&(((String)commands.firstElement()).equalsIgnoreCase("LIST")))
 		{
 			String mask=CMParms.combine(commands,1);
@@ -235,21 +235,21 @@ public class Herbalism extends SpellCraftingSkill implements ItemCraftor
 				allFlag=true;
 				mask="";
 			}
-			StringBuffer buf=new StringBuffer("Potions you know how to brew:\n\r");
-			int[] cols={
+			final StringBuffer buf=new StringBuffer("Potions you know how to brew:\n\r");
+			final int[] cols={
 					ListingLibrary.ColFixer.fixColWidth(20,mob.session()),
 					ListingLibrary.ColFixer.fixColWidth(5,mob.session())
 				};
 			buf.append(CMStrings.padRight("Chant",cols[0])+" "+CMStrings.padRight("Level",cols[1])+" Ingredients\n\r");
-			boolean fillUsage=(usage.size()==0);
+			final boolean fillUsage=(usage.size()==0);
 			for(int r=0;r<recipes.size();r++)
 			{
-				List<String> V=recipes.get(r);
+				final List<String> V=recipes.get(r);
 				if(V.size()>0)
 				{
-					String spell=V.get(RCP_FINALNAME);
-					int level=CMath.s_int(V.get(RCP_LEVEL));
-					Ability A=mob.fetchAbility(spell);
+					final String spell=V.get(RCP_FINALNAME);
+					final int level=CMath.s_int(V.get(RCP_LEVEL));
+					final Ability A=mob.fetchAbility(spell);
 					if((A!=null)
 					&&(level>=0)
 					&&((level<=xlevel(mob))||allFlag))
@@ -321,18 +321,18 @@ public class Herbalism extends SpellCraftingSkill implements ItemCraftor
 				commonTell(mob,"The "+buildingI.name(mob)+" contains no liquid base.  Water is probably fine.");
 				return false;
 			}
-			String recipeName=CMParms.combine(commands,0);
+			final String recipeName=CMParms.combine(commands,0);
 			theSpell=null;
 			int theLevel=-1;
 			List<String> recipe=null;
 			for(int r=0;r<recipes.size();r++)
 			{
-				List<String> V=recipes.get(r);
+				final List<String> V=recipes.get(r);
 				if(V.size()>0)
 				{
-					String spell=V.get(RCP_FINALNAME);
-					int level=CMath.s_int(V.get(RCP_LEVEL));
-					Ability A=mob.fetchAbility(spell);
+					final String spell=V.get(RCP_FINALNAME);
+					final int level=CMath.s_int(V.get(RCP_LEVEL));
+					final Ability A=mob.fetchAbility(spell);
 					if((A!=null)
 					&&(xlevel(mob)>=level)
 					&&(A.name().equalsIgnoreCase(recipeName)))
@@ -355,17 +355,17 @@ public class Herbalism extends SpellCraftingSkill implements ItemCraftor
 				experienceToLose-=CMLib.ableMapper().qualifyingClassLevel(mob,theSpell)*5;
 			}
 
-			List<Item> V=((Container)buildingI).getContents();
+			final List<Item> V=((Container)buildingI).getContents();
 			// first check for all the right stuff
 			for(int i=2;i<recipe.size();i++)
 			{
-				String ingredient=recipe.get(i).trim();
+				final String ingredient=recipe.get(i).trim();
 				if(ingredient.length()>0)
 				{
 					boolean ok=false;
 					for(int v=0;v<V.size();v++)
 					{
-						Item I=V.get(v);
+						final Item I=V.get(v);
 						if(CMLib.english().containsString(I.Name(),ingredient)
 						||(RawMaterial.CODES.NAME(I.material()).equalsIgnoreCase(ingredient)))
 						{ ok=true; break;}
@@ -380,11 +380,11 @@ public class Herbalism extends SpellCraftingSkill implements ItemCraftor
 			// now check for unnecessary stuff
 			for(int v=0;v<V.size();v++)
 			{
-				Item I=V.get(v);
+				final Item I=V.get(v);
 				boolean ok=false;
 				for(int i=2;i<recipe.size();i++)
 				{
-					String ingredient=recipe.get(i).trim();
+					final String ingredient=recipe.get(i).trim();
 					if(ingredient.length()>0)
 						if(CMLib.english().containsString(I.Name(),ingredient)
 						||(RawMaterial.CODES.NAME(I.material()).equalsIgnoreCase(ingredient)))
@@ -414,7 +414,7 @@ public class Herbalism extends SpellCraftingSkill implements ItemCraftor
 			if(duration<10) duration=10;
 
 			messedUp=!proficiencyCheck(mob,0,auto);
-			CMMsg msg=CMClass.getMsg(mob,buildingI,this,getActivityMessageType(),null);
+			final CMMsg msg=CMClass.getMsg(mob,buildingI,this,getActivityMessageType(),null);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

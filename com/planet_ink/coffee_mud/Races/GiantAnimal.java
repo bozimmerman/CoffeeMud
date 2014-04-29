@@ -48,7 +48,7 @@ public class GiantAnimal extends StdRace
 	private static final int[] parts={0 ,2 ,2 ,1 ,1 ,0 ,0 ,1 ,4 ,4 ,1 ,0 ,1 ,1 ,1 ,0 };
 	@Override public int[] bodyMask(){return parts;}
 
-	private int[] agingChart={0,2,4,8,14,30,40,42,44};
+	private final int[] agingChart={0,2,4,8,14,30,40,42,44};
 	@Override public int[] getAgingChart(){return agingChart;}
 
 	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();

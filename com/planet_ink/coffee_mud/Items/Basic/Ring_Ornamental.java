@@ -57,7 +57,7 @@ public class Ring_Ornamental extends Ring
 	{
 		super();
 
-		int ringType = CMLib.dice().roll(1,14,-1);
+		final int ringType = CMLib.dice().roll(1,14,-1);
 		this.basePhyStats.setLevel(ringType);
 		setItemDescription(this.basePhyStats.level());
 		lastLevel=ringType;

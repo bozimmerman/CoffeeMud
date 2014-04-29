@@ -49,7 +49,7 @@ public class SpacePort extends StdRoom implements LocationRoom
 	@Override
 	public long[] coordinates()
 	{
-		SpaceObject planet=CMLib.map().getSpaceObject(this,true);
+		final SpaceObject planet=CMLib.map().getSpaceObject(this,true);
 		if(planet!=null)
 			return CMLib.map().getLocation(planet.coordinates(),dirFromCore,planet.radius());
 		return new long[]{0,0,0};

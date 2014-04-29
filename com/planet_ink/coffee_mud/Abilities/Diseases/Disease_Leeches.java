@@ -56,11 +56,11 @@ public class Disease_Leeches extends Disease
 
 	public List<Ability> returnOffensiveAffects(Physical fromMe)
 	{
-		Vector offenders=new Vector();
+		final Vector offenders=new Vector();
 
 		for(int a=0;a<fromMe.numEffects();a++) // personal
 		{
-			Ability A=fromMe.fetchEffect(a);
+			final Ability A=fromMe.fetchEffect(a);
 			if((A!=null)&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_POISON))
 				offenders.addElement(A);
 		}
@@ -74,11 +74,11 @@ public class Disease_Leeches extends Disease
 		if(affected==null) return false;
 		if(!(affected instanceof MOB)) return true;
 
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		if((!mob.amDead())&&((--diseaseTick)<=0))
 		{
 			diseaseTick=DISEASE_DELAY();
-			List<Ability> offensiveEffects=returnOffensiveAffects(mob);
+			final List<Ability> offensiveEffects=returnOffensiveAffects(mob);
 			for(int a=offensiveEffects.size()-1;a>=0;a--)
 				offensiveEffects.get(a).unInvoke();
 			mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,DISEASE_AFFECT());

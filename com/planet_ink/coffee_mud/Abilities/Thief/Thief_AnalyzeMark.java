@@ -46,14 +46,14 @@ public class Thief_AnalyzeMark extends ThiefSkill
 
 	public MOB getMark(MOB mob)
 	{
-		Thief_Mark A=(Thief_Mark)mob.fetchEffect("Thief_Mark");
+		final Thief_Mark A=(Thief_Mark)mob.fetchEffect("Thief_Mark");
 		if(A!=null)
 			return A.mark;
 		return null;
 	}
 	public int getMarkTicks(MOB mob)
 	{
-		Thief_Mark A=(Thief_Mark)mob.fetchEffect("Thief_Mark");
+		final Thief_Mark A=(Thief_Mark)mob.fetchEffect("Thief_Mark");
 		if((A!=null)&&(A.mark!=null))
 			return A.ticks;
 		return -1;
@@ -64,7 +64,7 @@ public class Thief_AnalyzeMark extends ThiefSkill
 	{
 		if((affected!=null)&&(affected instanceof MOB))
 		{
-			MOB mob=(MOB)affected;
+			final MOB mob=(MOB)affected;
 			if(msg.amISource(mob)
 			&&((msg.targetMinor()==CMMsg.TYP_LOOK)||(msg.targetMinor()==CMMsg.TYP_EXAMINE))
 			&&(msg.target()!=null)
@@ -73,7 +73,7 @@ public class Thief_AnalyzeMark extends ThiefSkill
 			&&((mob.fetchAbility(ID())==null)||proficiencyCheck(mob,0,false)))
 			{
 				if(CMLib.dice().rollPercentage()>50) helpProficiency((MOB)affected, 0);
-				StringBuilder str=CMLib.commands().getScore((MOB)msg.target());
+				final StringBuilder str=CMLib.commands().getScore((MOB)msg.target());
 				if(!mob.isMonster())
 					mob.session().wraplessPrintln(str.toString());
 			}

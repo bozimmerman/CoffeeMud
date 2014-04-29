@@ -62,7 +62,7 @@ public class Skill_Dirt extends StdSkill
 		if(!(affected instanceof MOB))
 			return true;
 
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		if((doneTicking)&&(msg.amISource(mob)))
 			unInvoke();
@@ -74,7 +74,7 @@ public class Skill_Dirt extends StdSkill
 	{
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		super.unInvoke();
 
@@ -107,7 +107,7 @@ public class Skill_Dirt extends StdSkill
 
 	public boolean hereOK(MOB mob)
 	{
-		Room R=mob.location();
+		final Room R=mob.location();
 		if(R==null) return false;
 		if(CMath.bset(R.getClimateType(),Places.CLIMASK_WET)
 		 ||(R.domainType()==Room.DOMAIN_OUTDOORS_AIR)
@@ -131,7 +131,7 @@ public class Skill_Dirt extends StdSkill
 	@SuppressWarnings("unchecked")
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		MOB target=this.getTarget(mob,commands,givenTarget);
+		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
 
@@ -174,11 +174,11 @@ public class Skill_Dirt extends StdSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,-(target.charStats().getStat(CharStats.STAT_DEXTERITY)*3)+(2*getXLEVELLevel(mob)),auto);
+		final boolean success=proficiencyCheck(mob,-(target.charStats().getStat(CharStats.STAT_DEXTERITY)*3)+(2*getXLEVELLevel(mob)),auto);
 
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),auto?"Dirt flies at <T-NAME>!":"^F^<FIGHT^><S-NAME> kick(s) dirt at <T-NAMESELF>.^</FIGHT^>^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),auto?"Dirt flies at <T-NAME>!":"^F^<FIGHT^><S-NAME> kick(s) dirt at <T-NAMESELF>.^</FIGHT^>^?");
 			CMLib.color().fixSourceFightColor(msg);
 			if(mob.location().okMessage(mob,msg))
 			{

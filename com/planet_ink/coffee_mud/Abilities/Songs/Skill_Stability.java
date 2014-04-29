@@ -52,7 +52,7 @@ public class Skill_Stability extends BardSkill
 		if(!(affected instanceof MOB))
 			return true;
 
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		if((msg.tool()!=null)
 		&&(msg.tool() instanceof Ability)
 		&&(msg.amITarget(affected))

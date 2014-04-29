@@ -53,13 +53,13 @@ public class Chant_DistantFungalGrowth extends Chant
 			return false;
 		}
 
-		String areaName=CMParms.combine(commands,0).trim().toUpperCase();
+		final String areaName=CMParms.combine(commands,0).trim().toUpperCase();
 		Room anyRoom=null;
 		Room newRoom=null;
 		try
 		{
-			List<Room> rooms=CMLib.map().findRooms(CMLib.map().rooms(), mob, areaName, true, 10);
-			for(Room R : rooms)
+			final List<Room> rooms=CMLib.map().findRooms(CMLib.map().rooms(), mob, areaName, true, 10);
+			for(final Room R : rooms)
 			{
 				anyRoom=R;
 				if(R.domainType()==Room.DOMAIN_INDOORS_CAVE)
@@ -68,7 +68,7 @@ public class Chant_DistantFungalGrowth extends Chant
 					break;
 				}
 			}
-		}catch(NoSuchElementException e){}
+		}catch(final NoSuchElementException e){}
 
 		if(newRoom==null)
 		{
@@ -89,15 +89,15 @@ public class Chant_DistantFungalGrowth extends Chant
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),"^S<S-NAME> chant(s) about a far away place.^?");
+			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),"^S<S-NAME> chant(s) about a far away place.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				Item newItem=Chant_SummonFungus.buildFungus(mob,newRoom);
+				final Item newItem=Chant_SummonFungus.buildFungus(mob,newRoom);
 				mob.tell("You feel a distant connection with "+newItem.name());
 			}
 		}

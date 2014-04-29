@@ -50,27 +50,27 @@ public class Thief_MakeBomb extends ThiefSkill
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Trap theTrap=null;
-		Vector traps=new Vector();
-		int qualifyingClassLevel=CMLib.ableMapper().qualifyingClassLevel(mob,this)+(getXLEVELLevel(mob));
-		for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
+		final Vector traps=new Vector();
+		final int qualifyingClassLevel=CMLib.ableMapper().qualifyingClassLevel(mob,this)+(getXLEVELLevel(mob));
+		for(final Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 		{
-			Ability A=a.nextElement();
+			final Ability A=a.nextElement();
 			if((A instanceof Trap)
 			   &&(((Trap)A).isABomb())
 			   &&(((Trap)A).maySetTrap(mob,qualifyingClassLevel)))
 				traps.addElement(A);
 		}
-		int colWidth=ListingLibrary.ColFixer.fixColWidth(15,mob.session());
+		final int colWidth=ListingLibrary.ColFixer.fixColWidth(15,mob.session());
 		Physical trapThis=givenTarget;
 		if(trapThis!=null)
 			theTrap=(Trap)traps.elementAt(CMLib.dice().roll(1,traps.size(),-1));
 		else
 		if(CMParms.combine(commands,0).equalsIgnoreCase("list"))
 		{
-			StringBuffer buf=new StringBuffer(CMStrings.padRight("Bomb Name",colWidth)+" Requires\n\r");
+			final StringBuffer buf=new StringBuffer(CMStrings.padRight("Bomb Name",colWidth)+" Requires\n\r");
 			for(int r=0;r<traps.size();r++)
 			{
-				Trap T=(Trap)traps.elementAt(r);
+				final Trap T=(Trap)traps.elementAt(r);
 				buf.append(CMStrings.padRight(T.name(),colWidth)+" ");
 				buf.append(T.requiresToSet()+"\n\r");
 			}
@@ -84,11 +84,11 @@ public class Thief_MakeBomb extends ThiefSkill
 				mob.tell("Make a bomb from what, with what kind of bomb? Use bomb list for a list.");
 				return false;
 			}
-			String name=(String)commands.lastElement();
+			final String name=(String)commands.lastElement();
 			commands.removeElementAt(commands.size()-1);
 			for(int r=0;r<traps.size();r++)
 			{
-				Trap T=(Trap)traps.elementAt(r);
+				final Trap T=(Trap)traps.elementAt(r);
 				if(CMLib.english().containsString(T.name(),name))
 					theTrap=T;
 			}
@@ -109,7 +109,7 @@ public class Thief_MakeBomb extends ThiefSkill
 
 		boolean success=proficiencyCheck(mob,+((mob.phyStats().level()+(getXLEVELLevel(mob)*3)
 											 -trapThis.phyStats().level())*3),auto);
-		Trap theOldTrap=CMLib.utensils().fetchMyTrap(trapThis);
+		final Trap theOldTrap=CMLib.utensils().fetchMyTrap(trapThis);
 		if(theOldTrap!=null)
 		{
 			if(theOldTrap.disabled())
@@ -121,7 +121,7 @@ public class Thief_MakeBomb extends ThiefSkill
 			}
 		}
 
-		CMMsg msg=CMClass.getMsg(mob,trapThis,this,auto?CMMsg.MSG_OK_ACTION:CMMsg.MSG_THIEF_ACT,CMMsg.MASK_ALWAYS|CMMsg.MSG_THIEF_ACT,CMMsg.MSG_OK_ACTION,(auto?trapThis.name()+" begins to glow!":"<S-NAME> attempt(s) to make a bomb out of <T-NAMESELF>."));
+		final CMMsg msg=CMClass.getMsg(mob,trapThis,this,auto?CMMsg.MSG_OK_ACTION:CMMsg.MSG_THIEF_ACT,CMMsg.MASK_ALWAYS|CMMsg.MSG_THIEF_ACT,CMMsg.MSG_OK_ACTION,(auto?trapThis.name()+" begins to glow!":"<S-NAME> attempt(s) to make a bomb out of <T-NAMESELF>."));
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
@@ -134,7 +134,7 @@ public class Thief_MakeBomb extends ThiefSkill
 			{
 				if(CMLib.dice().rollPercentage()>50)
 				{
-					Trap T=theTrap.setTrap(mob,trapThis,getXLEVELLevel(mob),adjustedLevel(mob,asLevel),false);
+					final Trap T=theTrap.setTrap(mob,trapThis,getXLEVELLevel(mob),adjustedLevel(mob,asLevel),false);
 					mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> set(s) the bomb off on accident!");
 					T.spring(mob);
 				}

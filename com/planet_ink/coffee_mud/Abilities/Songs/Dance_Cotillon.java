@@ -65,12 +65,12 @@ public class Dance_Cotillon extends Dance
 				whichLast=invoker();
 			else
 			{
-				MOB M=(MOB)affected;
+				final MOB M=(MOB)affected;
 				boolean pass=false;
 				boolean found=false;
 				for(int i=0;i<M.location().numInhabitants();i++)
 				{
-					MOB M2=M.location().fetchInhabitant(i);
+					final MOB M2=M.location().fetchInhabitant(i);
 					if(M2==whichLast)
 						found=true;
 					else

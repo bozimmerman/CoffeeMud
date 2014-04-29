@@ -60,7 +60,7 @@ public class GenMirror extends GenItem
 		if((owner==null)||(!(owner instanceof MOB))||(amWearingAt(Wearable.IN_INVENTORY)))
 			return super.okMessage(myHost,msg);
 
-		MOB mob=(MOB)owner;
+		final MOB mob=(MOB)owner;
 		if((msg.amITarget(mob))
 		&&(!oncePerRound)
 		&&(msg.tool() instanceof Ability)
@@ -71,7 +71,7 @@ public class GenMirror extends GenItem
 		{
 			oncePerRound=true;
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,name()+" reflects the vicious magic!");
-			Ability A=(Ability)msg.tool();
+			final Ability A=(Ability)msg.tool();
 			A.invoke(mob,msg.source(),true,phyStats().level());
 			return false;
 		}

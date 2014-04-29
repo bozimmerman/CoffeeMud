@@ -40,15 +40,15 @@ public class AutoAffects extends StdCommand
 
 	public String getAutoAffects(MOB viewerMOB, Physical P)
 	{
-		StringBuffer msg=new StringBuffer("");
-		int NUM_COLS=2;
+		final StringBuffer msg=new StringBuffer("");
+		final int NUM_COLS=2;
 		final int COL_LEN=ListingLibrary.ColFixer.fixColWidth(25.0,viewerMOB);
 		int colnum=NUM_COLS;
 		for(final Enumeration<Ability> a=P.effects();a.hasMoreElements();)
 		{
 			final Ability A=a.nextElement();
 			if(A==null) continue;
-			String disp=A.name();
+			final String disp=A.name();
 			if((A.displayText().length()==0)
 			&&((!(P instanceof MOB))||(((MOB)P).fetchAbility(A.ID())!=null))
 			&&(A.isAutoInvoked()))
@@ -95,17 +95,17 @@ public class AutoAffects extends StdCommand
 		{
 			if(CMSecurity.isAllowed(mob, mob.location(),CMSecurity.SecFlag.CMDMOBS))
 			{
-				String name=CMParms.combine(commands,1);
+				final String name=CMParms.combine(commands,1);
 				if(name.length()>0)
 				{
-					Physical P=mob.location().fetchFromMOBRoomFavorsItems(mob,null,name,Wearable.FILTER_ANY);
+					final Physical P=mob.location().fetchFromMOBRoomFavorsItems(mob,null,name,Wearable.FILTER_ANY);
 					if(P==null)
 						S.colorOnlyPrint("You don't see "+name+" here.");
 					else
 					{
 						if(S==mob.session())
 							S.colorOnlyPrint(" \n\r^!"+P.name()+" is affected by: ^?");
-						String msg=getAutoAffects(mob,P);
+						final String msg=getAutoAffects(mob,P);
 						if(msg.length()<5)
 							S.colorOnlyPrintln("Nothing!\n\r^N");
 						else
@@ -117,7 +117,7 @@ public class AutoAffects extends StdCommand
 			}
 			if(S==mob.session())
 				S.colorOnlyPrint(" \n\r^!Your auto-invoked skills are:^?");
-			String msg=getAutoAffects(mob,mob);
+			final String msg=getAutoAffects(mob,mob);
 			if(msg.length()<5)
 				S.colorOnlyPrintln(" Non-existant!\n\r^N");
 			else

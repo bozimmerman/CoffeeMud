@@ -119,7 +119,7 @@ public class Spell_Timeport extends Spell
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		MOB target=getTarget(mob,commands,givenTarget);
+		final MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
 		// the invoke method for spells receives as
@@ -129,7 +129,7 @@ public class Spell_Timeport extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
@@ -138,22 +138,22 @@ public class Spell_Timeport extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 
-			CMMsg msg = CMClass.getMsg(mob, target, this,verbalCastCode(mob,target,auto),(auto?"":"^S<S-NAME> speak(s) and gesture(s)")+"!^?");
+			final CMMsg msg = CMClass.getMsg(mob, target, this,verbalCastCode(mob,target,auto),(auto?"":"^S<S-NAME> speak(s) and gesture(s)")+"!^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				Room room=mob.location();
+				final Room room=mob.location();
 				target.makePeace();
 				for(int i=0;i<room.numInhabitants();i++)
 				{
-					MOB M=room.fetchInhabitant(i);
+					final MOB M=room.fetchInhabitant(i);
 					if((M!=null)&&(M.getVictim()==target))
 						M.makePeace();
 				}
 				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> vanish(es)!");
 				CMLib.threads().suspendTicking(target,-1);
 				beneficialAffect(mob,target,asLevel,3);
-				Ability A=target.fetchEffect(ID());
+				final Ability A=target.fetchEffect(ID());
 				if(A!=null)	CMLib.threads().startTickDown(A,Tickable.TICKID_MOB,1);
 			}
 		}

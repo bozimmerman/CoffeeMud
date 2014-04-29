@@ -49,7 +49,7 @@ public class Skill_Revoke extends StdSkill
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 
-		String whatToRevoke=CMParms.combine(commands,0);
+		final String whatToRevoke=CMParms.combine(commands,0);
 
 		Physical target=null;
 		if((whatToRevoke.length()==0)
@@ -63,7 +63,7 @@ public class Skill_Revoke extends StdSkill
 			target=mob;
 		else
 		{
-			int dir=Directions.getGoodDirectionCode(whatToRevoke);
+			final int dir=Directions.getGoodDirectionCode(whatToRevoke);
 			if(dir>=0)
 				target=mob.location().getExitInDir(dir);
 			else
@@ -83,7 +83,7 @@ public class Skill_Revoke extends StdSkill
 		Ability revokeThis=null;
 		for(int a=0;a<target.numEffects();a++)
 		{
-			Ability A=target.fetchEffect(a);
+			final Ability A=target.fetchEffect(a);
 			if((A!=null)
 			&&(A.invoker()==mob)
 			&&(((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SPELL)
@@ -107,10 +107,10 @@ public class Skill_Revoke extends StdSkill
 			return false;
 
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_HANDS,"<S-NAME> revoke(s) "+revokeThis.name()+" from "+target.name());
+			final CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_HANDS,"<S-NAME> revoke(s) "+revokeThis.name()+" from "+target.name());
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

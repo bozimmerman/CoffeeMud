@@ -48,7 +48,7 @@ public class Enter extends Go
 			return false;
 		}
 		Environmental enterThis=null;
-		String enterWhat=CMParms.combine(commands,1);
+		final String enterWhat=CMParms.combine(commands,1);
 		int dir=Directions.getGoodDirectionCode(enterWhat.toUpperCase());
 		if(dir<0)
 		{
@@ -57,7 +57,7 @@ public class Enter extends Go
 			{
 				if(enterThis instanceof Rideable)
 				{
-					Command C=CMClass.getCommand("Sit");
+					final Command C=CMClass.getCommand("Sit");
 					if(C!=null) return C.execute(mob,commands,metaFlags);
 				}
 				else
@@ -65,8 +65,8 @@ public class Enter extends Go
 				&&(mob.phyStats().height()<=0)
 				&&(mob.phyStats().weight()<=0))
 				{
-					String enterStr="<S-NAME> enter(s) <T-NAME>.";
-					CMMsg msg=CMClass.getMsg(mob,enterThis,null,CMMsg.MSG_SIT,enterStr);
+					final String enterStr="<S-NAME> enter(s) <T-NAME>.";
+					final CMMsg msg=CMClass.getMsg(mob,enterThis,null,CMMsg.MSG_SIT,enterStr);
 					if(mob.location().okMessage(mob,msg))
 						mob.location().send(mob,msg);
 					return true;

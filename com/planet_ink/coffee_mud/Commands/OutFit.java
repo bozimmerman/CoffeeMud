@@ -58,14 +58,14 @@ public class OutFit extends StdCommand
 	{
 		if(mob==null) return false;
 		if(mob.charStats()==null) return false;
-		CharClass C=mob.charStats().getCurrentClass();
-		Race R=mob.charStats().getMyRace();
+		final CharClass C=mob.charStats().getCurrentClass();
+		final Race R=mob.charStats().getMyRace();
 		if(C!=null)
 			CMLib.utensils().outfit(mob,C.outfit(mob));
 		if(R!=null)
 			CMLib.utensils().outfit(mob,R.outfit(mob));
 		mob.tell("\n\r");
-		Command C2=CMClass.getCommand("Equipment");
+		final Command C2=CMClass.getCommand("Equipment");
 		if(C2!=null) C2.executeInternal(mob, metaFlags);
 		mob.tell("\n\rUseful equipment appears mysteriously out of the Java Plane.");
 		mob.recoverCharStats();

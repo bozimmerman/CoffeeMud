@@ -49,7 +49,7 @@ public class Gaian extends StdCharClass
 	@Override protected String armorFailMessage(){return "<S-NAME> watch(es) <S-HIS-HER> armor absorb <S-HIS-HER> magical energy!";}
 	@Override public int allowedArmorLevel(){return CharClass.ARMOR_NONMETAL;}
 	@Override public int allowedWeaponLevel(){return CharClass.WEAPONS_NATURAL;}
-	private HashSet requiredWeaponMaterials=buildRequiredWeaponMaterials();
+	private final HashSet requiredWeaponMaterials=buildRequiredWeaponMaterials();
 	@Override protected HashSet requiredWeaponMaterials(){return requiredWeaponMaterials;}
 	@Override public int requiredArmorSourceMinor(){return CMMsg.TYP_CAST_SPELL;}
 
@@ -241,7 +241,7 @@ public class Gaian extends StdCharClass
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!(myHost instanceof MOB)) return super.okMessage(myHost,msg);
-		MOB myChar=(MOB)myHost;
+		final MOB myChar=(MOB)myHost;
 		if(!super.okMessage(myChar, msg))
 			return false;
 
@@ -268,9 +268,9 @@ public class Gaian extends StdCharClass
 		super.affectPhyStats(affected,affectableStats);
 		if((affected instanceof MOB)&&(((MOB)affected).location()!=null))
 		{
-			MOB mob=(MOB)affected;
-			Room room=mob.location();
-			int classLevel=mob.charStats().getClassLevel(this);
+			final MOB mob=(MOB)affected;
+			final Room room=mob.location();
+			final int classLevel=mob.charStats().getClassLevel(this);
 			if((CMLib.flags().isHidden(mob))
 			&&(classLevel>=30)
 			&&((room.domainType()&Room.INDOORS)==0)
@@ -308,7 +308,7 @@ public class Gaian extends StdCharClass
 		if(outfitChoices==null)
 		{
 			outfitChoices=new Vector();
-			Weapon w=CMClass.getWeapon("Quarterstaff");
+			final Weapon w=CMClass.getWeapon("Quarterstaff");
 			outfitChoices.add(w);
 		}
 		return outfitChoices;
@@ -321,13 +321,13 @@ public class Gaian extends StdCharClass
 		super.grantAbilities(mob,isBorrowedClass);
 		if(mob.playerStats()==null)
 		{
-			List<AbilityMapper.AbilityMapping> V=CMLib.ableMapper().getUpToLevelListings(ID(),
+			final List<AbilityMapper.AbilityMapping> V=CMLib.ableMapper().getUpToLevelListings(ID(),
 												mob.charStats().getClassLevel(ID()),
 												false,
 												false);
-			for(AbilityMapper.AbilityMapping able : V)
+			for(final AbilityMapper.AbilityMapping able : V)
 			{
-				Ability A=CMClass.getAbility(able.abilityID);
+				final Ability A=CMClass.getAbility(able.abilityID);
 				if((A!=null)
 				&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_CHANT)
 				&&(!CMLib.ableMapper().getDefaultGain(ID(),true,A.ID())))

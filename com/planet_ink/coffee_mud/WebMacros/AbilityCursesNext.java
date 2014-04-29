@@ -41,8 +41,8 @@ public class AbilityCursesNext extends StdWebMacro
 		if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
 			return " @break@";
 
-		java.util.Map<String,String> parms=parseParms(parm);
-		String last=httpReq.getUrlParameter("ABILITY");
+		final java.util.Map<String,String> parms=parseParms(parm);
+		final String last=httpReq.getUrlParameter("ABILITY");
 		if(parms.containsKey("RESET"))
 		{
 			if(last!=null) httpReq.removeUrlParameter("ABILITY");
@@ -50,7 +50,7 @@ public class AbilityCursesNext extends StdWebMacro
 		}
 
 		String lastID="";
-		String deityName=httpReq.getUrlParameter("DEITY");
+		final String deityName=httpReq.getUrlParameter("DEITY");
 		Deity D=null;
 		if((deityName!=null)&&(deityName.length()>0))
 			D=CMLib.map().getDeity(deityName);
@@ -62,7 +62,7 @@ public class AbilityCursesNext extends StdWebMacro
 		}
 		for(int a=0;a<D.numCurses();a++)
 		{
-			Ability A=D.fetchCurse(a);
+			final Ability A=D.fetchCurse(a);
 			if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!A.ID().equals(lastID))))
 			{
 				httpReq.addFakeUrlParameter("ABILITY",A.ID());

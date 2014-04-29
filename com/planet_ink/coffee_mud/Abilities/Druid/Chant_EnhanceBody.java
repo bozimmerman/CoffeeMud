@@ -50,7 +50,7 @@ public class Chant_EnhanceBody extends Chant
 		if((affected instanceof MOB)
 		&&(((MOB)affected).fetchWieldedItem()==null))
 		{
-			int xlvl=getXLEVELLevel(invoker());
+			final int xlvl=getXLEVELLevel(invoker());
 			affectableStats.setAttackAdjustment(affectableStats.attackAdjustment() + (5*((affected.phyStats().level()+(2*xlvl))/10)));
 			affectableStats.setDamage(affectableStats.damage() + 1+((affected.phyStats().level()+(2*xlvl))/10));
 		}
@@ -62,7 +62,7 @@ public class Chant_EnhanceBody extends Chant
 		// undo the affects of this spell
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		super.unInvoke();
 		if(canBeUninvoked())
 			mob.tell("Your body doesn't feel quite so enhanced.");
@@ -89,7 +89,7 @@ public class Chant_EnhanceBody extends Chant
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
@@ -98,7 +98,7 @@ public class Chant_EnhanceBody extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"<T-NAME> go(es) feral!":"^S<S-NAME> chant(s) to <S-NAMESELF> and <S-HIS-HER> body become(s) enhanced!^?");
+			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"<T-NAME> go(es) feral!":"^S<S-NAME> chant(s) to <S-NAMESELF> and <S-HIS-HER> body become(s) enhanced!^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

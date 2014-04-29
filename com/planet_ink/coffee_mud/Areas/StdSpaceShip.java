@@ -142,24 +142,24 @@ public class StdSpaceShip implements Area, SpaceShip
 	@Override
 	public long getMass()
 	{
-		long mass=this.mass;
+		final long mass=this.mass;
 		if(mass<0)
 		{
 			int newMass=phyStats().weight();
-			for(Enumeration<Room> r=getProperMap(); r.hasMoreElements();)
+			for(final Enumeration<Room> r=getProperMap(); r.hasMoreElements();)
 			{
-				Room R=r.nextElement();
+				final Room R=r.nextElement();
 				if(R!=null)
 				{
 					for(int i=0;i<R.numItems();i++)
 					{
-						Item I=R.getItem(i);
+						final Item I=R.getItem(i);
 						if(I!=null)
 							newMass += I.phyStats().weight();
 					}
 					for(int i=0;i<R.numInhabitants();i++)
 					{
-						MOB M=R.fetchInhabitant(i);
+						final MOB M=R.fetchInhabitant(i);
 						if(M!=null)
 							newMass += M.phyStats().weight();
 					}
@@ -225,7 +225,7 @@ public class StdSpaceShip implements Area, SpaceShip
 	@Override
 	public void renameSpaceShip(String newName)
 	{
-		String oldName=Name();
+		final String oldName=Name();
 		setName(newName);
 		if(myRooms.size()>0)
 			CMLib.map().renameRooms(this, oldName, this.myRooms);
@@ -294,7 +294,7 @@ public class StdSpaceShip implements Area, SpaceShip
 		{
 			return this.getClass().newInstance();
 		}
-		catch(Exception e)
+		catch(final Exception e)
 		{
 			Log.errOut(ID(),e);
 		}
@@ -312,9 +312,9 @@ public class StdSpaceShip implements Area, SpaceShip
 		scripts=new SVector<ScriptingEngine>(1);
 		parents=new SLinkedList<Area>();
 		parents.addAll(ship.parents);
-		for(Enumeration<Behavior> e=ship.behaviors();e.hasMoreElements();)
+		for(final Enumeration<Behavior> e=ship.behaviors();e.hasMoreElements();)
 		{
-			Behavior B=e.nextElement();
+			final Behavior B=e.nextElement();
 			if(B!=null)
 				behaviors.addElement(B);
 		}
@@ -325,7 +325,7 @@ public class StdSpaceShip implements Area, SpaceShip
 				affects.addElement((Ability)A.copyOf());
 		}
 		ScriptingEngine SE=null;
-		for(Enumeration<ScriptingEngine> e=ship.scripts();e.hasMoreElements();)
+		for(final Enumeration<ScriptingEngine> e=ship.scripts();e.hasMoreElements();)
 		{
 			SE=e.nextElement();
 			if(SE!=null)
@@ -338,14 +338,14 @@ public class StdSpaceShip implements Area, SpaceShip
 	{
 		try
 		{
-			StdSpaceShip E=(StdSpaceShip)this.clone();
+			final StdSpaceShip E=(StdSpaceShip)this.clone();
 			//CMClass.bumpCounter(E,CMClass.CMObjectType.AREA);//removed for mem & perf
 			E.xtraValues=(xtraValues==null)?null:(String[])xtraValues.clone();
 			E.cloneFix(this);
 			return E;
 
 		}
-		catch(CloneNotSupportedException e)
+		catch(final CloneNotSupportedException e)
 		{
 			return this.newInstance();
 		}
@@ -435,8 +435,8 @@ public class StdSpaceShip implements Area, SpaceShip
 
 	protected Enumeration<String> allBlurbFlags()
 	{
-		MultiEnumeration<String> multiEnum = new MultiEnumeration<String>(areaBlurbFlags());
-		for(Iterator<Area> i=getParentsIterator();i.hasNext();)
+		final MultiEnumeration<String> multiEnum = new MultiEnumeration<String>(areaBlurbFlags());
+		for(final Iterator<Area> i=getParentsIterator();i.hasNext();)
 			multiEnum.addEnumeration(i.next().areaBlurbFlags());
 		return multiEnum;
 	}
@@ -453,7 +453,7 @@ public class StdSpaceShip implements Area, SpaceShip
 	public int numAllBlurbFlags()
 	{
 		int num=numBlurbFlags();
-		for(Iterator<Area> i=getParentsIterator();i.hasNext();)
+		for(final Iterator<Area> i=getParentsIterator();i.hasNext();)
 			num += i.next().numAllBlurbFlags();
 		return num;
 	}
@@ -469,7 +469,7 @@ public class StdSpaceShip implements Area, SpaceShip
 		if(flagPlusDesc==null) return;
 		flagPlusDesc=flagPlusDesc.trim();
 		if(flagPlusDesc.length()==0) return;
-		int x=flagPlusDesc.indexOf(' ');
+		final int x=flagPlusDesc.indexOf(' ');
 		String flag=null;
 		if(x>=0)
 		{
@@ -518,27 +518,27 @@ public class StdSpaceShip implements Area, SpaceShip
 		{
 			if((msg.targetMinor()==CMMsg.TYP_ACTIVATE)&&(CMath.bset(msg.targetMajor(), CMMsg.MASK_CNTRLMSG)))
 			{
-				String[] parts=msg.targetMessage().split(" ");
-				TechCommand command=TechCommand.findCommand(parts);
+				final String[] parts=msg.targetMessage().split(" ");
+				final TechCommand command=TechCommand.findCommand(parts);
 				if(command!=null)
 				{
-					Object[] parms=command.confirmAndTranslate(parts);
+					final Object[] parms=command.confirmAndTranslate(parts);
 					if(parms!=null)
 					{
 						if((command==Technical.TechCommand.AIRREFRESH)&&(staleAirList.size()>0))
 						{
-							double pct=((Double)parms[0]).doubleValue();
-							int atmoResource=((Integer)parms[1]).intValue();
+							final double pct=((Double)parms[0]).doubleValue();
+							final int atmoResource=((Integer)parms[1]).intValue();
 							int numToClear=(int)Math.round(CMath.mul(staleAirList.size(),pct));
 							while((numToClear>0)&&(staleAirList.size()>0))
 							{
-								String roomID=staleAirList.iterator().next();
+								final String roomID=staleAirList.iterator().next();
 								staleAirList.remove(roomID);
 								changeRoomAir(getRoom(roomID),null,atmoResource);
 								numToClear--;
 							}
 							changeRoomAir(getRandomMetroRoom(),null,atmoResource);
-							for(Pair<Room,Integer> p  : shipExitCache)
+							for(final Pair<Room,Integer> p  : shipExitCache)
 								changeRoomAir(p.first,null,atmoResource);
 						}
 					}
@@ -554,7 +554,7 @@ public class StdSpaceShip implements Area, SpaceShip
 	{
 		if(one.length!=two.length)
 			return one;
-		int[] returnable=new int[one.length];
+		final int[] returnable=new int[one.length];
 		for(int o=0;o<one.length;o++)
 			returnable[o]=one[o]+two[o];
 		return returnable;
@@ -591,19 +591,19 @@ public class StdSpaceShip implements Area, SpaceShip
 
 	protected void moveAtmosphereOut(Set<Room> doneRooms, Room startRoom, int atmo)
 	{
-		LinkedList<Room> toDoRooms=new LinkedList<Room>();
+		final LinkedList<Room> toDoRooms=new LinkedList<Room>();
 		toDoRooms.add(startRoom);
 		while(toDoRooms.size()>0)
 		{
-			Room R=toDoRooms.removeFirst();
+			final Room R=toDoRooms.removeFirst();
 			doneRooms.add(R);
 			staleAirList.remove(R.roomID());
 			if(changeRoomAir(R,startRoom,atmo))
 				break;
 			for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
 			{
-				Room R2=R.getRoomInDir(d);
-				Exit E2=R.getExitInDir(d);
+				final Room R2=R.getRoomInDir(d);
+				final Exit E2=R.getExitInDir(d);
 				if((R2!=null)&&(R2.getArea()==R.getArea())&&(E2!=null)&&(E2.isOpen())&&(!doneRooms.contains(R2)))
 					toDoRooms.add(R2);
 			}
@@ -612,34 +612,34 @@ public class StdSpaceShip implements Area, SpaceShip
 
 	protected void doAtmosphereChanges()
 	{
-		Set<Room> doneRooms=new HashSet<Room>();
-		for(Pair<Room,Integer> p : shipExitCache)
+		final Set<Room> doneRooms=new HashSet<Room>();
+		for(final Pair<Room,Integer> p : shipExitCache)
 		{
-			Room R=p.first;
-			Exit E=R.getExitInDir(p.second.intValue());
+			final Room R=p.first;
+			final Exit E=R.getExitInDir(p.second.intValue());
 			if((E!=null)&&(E.isOpen()))
 			{
-				Room exitRoom=R;
-				Room otherRoom=R.getRoomInDir(p.second.intValue());
-				int atmo=otherRoom.getAtmosphere();
+				final Room exitRoom=R;
+				final Room otherRoom=R.getRoomInDir(p.second.intValue());
+				final int atmo=otherRoom.getAtmosphere();
 				moveAtmosphereOut(doneRooms,exitRoom,atmo);
 			}
 		}
 		if((System.currentTimeMillis() > nextStaleWarn)&&(staleAirList.size()>0))
 		{
 			nextStaleWarn = System.currentTimeMillis() + (60 * 1000);
-			for(Enumeration<Room> r=getProperMap();r.hasMoreElements();)
+			for(final Enumeration<Room> r=getProperMap();r.hasMoreElements();)
 			{
-				Room R=r.nextElement();
+				final Room R=r.nextElement();
 				if((staleAirList.contains(R.roomID()))
 				&&(R.numInhabitants()>0)
 				&&(R.numPCInhabitants()>0))
 				{
-					int atmo=R.getAtmosphere();
+					final int atmo=R.getAtmosphere();
 					if(atmo>0)
 					for(int i=0;i<R.numInhabitants();i++)
 					{
-						MOB M=R.fetchInhabitant(i);
+						final MOB M=R.fetchInhabitant(i);
 						if((M!=null)
 						&&(!M.isMonster())
 						&&(!CMLib.flags().canBreatheThis(M,RawMaterial.RESOURCE_NOTHING)))
@@ -651,9 +651,9 @@ public class StdSpaceShip implements Area, SpaceShip
 		if(System.currentTimeMillis() >= nextStaleCheck)
 		{
 			nextStaleCheck=System.currentTimeMillis()+STALE_AIR_INTERVAL;
-			for(Enumeration<Room> r=getProperMap();r.hasMoreElements();)
+			for(final Enumeration<Room> r=getProperMap();r.hasMoreElements();)
 			{
-				Room R=r.nextElement();
+				final Room R=r.nextElement();
 				if(!staleAirList.contains(R.roomID()))
 					staleAirList.add(R.roomID());
 				else
@@ -701,7 +701,7 @@ public class StdSpaceShip implements Area, SpaceShip
 	{
 		if(phyStats().sensesMask()>0)
 			affectableStats.setSensesMask(affectableStats.sensesMask()|phyStats().sensesMask());
-		int disposition=phyStats().disposition()
+		final int disposition=phyStats().disposition()
 			&((~(PhyStats.IS_SLEEPING|PhyStats.IS_HIDDEN)));
 		if(disposition>0)
 			affectableStats.setDisposition(affectableStats.disposition()|disposition);
@@ -735,7 +735,7 @@ public class StdSpaceShip implements Area, SpaceShip
 	@Override
 	public void delEffect(Ability to)
 	{
-		int size=affects.size();
+		final int size=affects.size();
 		affects.removeElement(to);
 		if(affects.size()<size)
 			to.setAffectedOne(null);
@@ -753,14 +753,14 @@ public class StdSpaceShip implements Area, SpaceShip
 				if(A!=null) applier.apply(A);
 			}
 		}
-		catch(ArrayIndexOutOfBoundsException e){}
+		catch(final ArrayIndexOutOfBoundsException e){}
 	}
 	@Override
 	public void delAllEffects(boolean unInvoke)
 	{
 		for(int a=numEffects()-1;a>=0;a--)
 		{
-			Ability A=fetchEffect(a);
+			final Ability A=fetchEffect(a);
 			if(A!=null)
 			{
 				if(unInvoke) A.unInvoke();
@@ -784,7 +784,7 @@ public class StdSpaceShip implements Area, SpaceShip
 		{
 			return affects.elementAt(index);
 		}
-		catch(java.lang.ArrayIndexOutOfBoundsException x){}
+		catch(final java.lang.ArrayIndexOutOfBoundsException x){}
 		return null;
 	}
 	@Override
@@ -815,9 +815,9 @@ public class StdSpaceShip implements Area, SpaceShip
 		savedDock=roomR;
 		CMLib.map().delObjectInSpace(getShipSpaceObject());
 		shipExitCache.clear();
-		for(Enumeration<Room> r=getProperMap();r.hasMoreElements();)
+		for(final Enumeration<Room> r=getProperMap();r.hasMoreElements();)
 		{
-			Room R=r.nextElement();
+			final Room R=r.nextElement();
 			for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
 				if((R.getRawExit(d)!=null)
 				&&((R.rawDoors()[d]==null)||(R.rawDoors()[d].getArea()!=this)))
@@ -831,16 +831,16 @@ public class StdSpaceShip implements Area, SpaceShip
 	public void unDock(boolean toSpace)
 	{
 		if(getIsDocked()==null) return;
-		Room dock=getIsDocked();
+		final Room dock=getIsDocked();
 		for(int i=0;i<dock.numItems();i++)
 		{
-			Item I=dock.getItem(i);
+			final Item I=dock.getItem(i);
 			if(I.Name().equals(Name()))
 				I.destroy();
 		}
-		for(Enumeration<Room> e=getProperMap();e.hasMoreElements();)
+		for(final Enumeration<Room> e=getProperMap();e.hasMoreElements();)
 		{
-			Room R=e.nextElement();
+			final Room R=e.nextElement();
 			if(R!=null)
 			for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 			{
@@ -861,7 +861,7 @@ public class StdSpaceShip implements Area, SpaceShip
 	@Override
 	public RoomnumberSet getCachedRoomnumbers()
 	{
-		RoomnumberSet set=(RoomnumberSet)CMClass.getCommon("DefaultRoomnumberSet");
+		final RoomnumberSet set=(RoomnumberSet)CMClass.getCommon("DefaultRoomnumberSet");
 		synchronized(myRooms)
 		{
 			Room R=null;
@@ -887,15 +887,15 @@ public class StdSpaceShip implements Area, SpaceShip
 	{
 		int highest=Integer.MIN_VALUE;
 		int lowest=Integer.MAX_VALUE;
-		CMIntegerGrouper set=(CMIntegerGrouper)CMClass.getCommon("DefaultCMIntegerGrouper");
+		final CMIntegerGrouper set=(CMIntegerGrouper)CMClass.getCommon("DefaultCMIntegerGrouper");
 		try
 		{
 			String roomID=null;
 			int newnum=0;
-			String name=Name().toUpperCase();
+			final String name=Name().toUpperCase();
 			if(!CMLib.flags().isSavable(this))
 			{
-				for(Enumeration<String> i=getProperRoomnumbers().getRoomIDs();i.hasMoreElements();)
+				for(final Enumeration<String> i=getProperRoomnumbers().getRoomIDs();i.hasMoreElements();)
 				{
 					roomID=i.nextElement();
 					if((roomID.length()>0)&&(roomID.startsWith(name+"#")))
@@ -914,7 +914,7 @@ public class StdSpaceShip implements Area, SpaceShip
 					}
 				}
 			}
-			for(Enumeration i=CMLib.map().roomIDs();i.hasMoreElements();)
+			for(final Enumeration i=CMLib.map().roomIDs();i.hasMoreElements();)
 			{
 				roomID=(String)i.nextElement();
 				if((roomID.length()>0)&&(roomID.startsWith(name+"#")))
@@ -932,7 +932,7 @@ public class StdSpaceShip implements Area, SpaceShip
 					}
 				}
 			}
-		}catch(NoSuchElementException e){}
+		}catch(final NoSuchElementException e){}
 		if(highest<0)
 		{
 			if(!CMLib.flags().isSavable(this))
@@ -979,7 +979,7 @@ public class StdSpaceShip implements Area, SpaceShip
 		if(to==null) return;
 		for(int b=0;b<numBehaviors();b++)
 		{
-			Behavior B=fetchBehavior(b);
+			final Behavior B=fetchBehavior(b);
 			if((B!=null)&&(B.ID().equals(to.ID())))
 				return;
 		}
@@ -993,7 +993,7 @@ public class StdSpaceShip implements Area, SpaceShip
 	@Override
 	public void delAllBehaviors()
 	{
-		boolean didSomething=(behaviors!=null)&&(behaviors.size()>0);
+		final boolean didSomething=(behaviors!=null)&&(behaviors.size()>0);
 		if(didSomething) behaviors.clear();
 		behaviors=null;
 		if(didSomething && ((scripts==null)||(scripts.size()==0)))
@@ -1018,7 +1018,7 @@ public class StdSpaceShip implements Area, SpaceShip
 		{
 			return behaviors.elementAt(index);
 		}
-		catch(java.lang.ArrayIndexOutOfBoundsException x){}
+		catch(final java.lang.ArrayIndexOutOfBoundsException x){}
 		return null;
 	}
 	@Override
@@ -1026,7 +1026,7 @@ public class StdSpaceShip implements Area, SpaceShip
 	{
 		for(int b=0;b<numBehaviors();b++)
 		{
-			Behavior B=fetchBehavior(b);
+			final Behavior B=fetchBehavior(b);
 			if((B!=null)&&(B.ID().equalsIgnoreCase(ID)))
 				return B;
 		}
@@ -1045,7 +1045,7 @@ public class StdSpaceShip implements Area, SpaceShip
 				if(B!=null) applier.apply(B);
 			}
 		}
-		catch(ArrayIndexOutOfBoundsException e){}
+		catch(final ArrayIndexOutOfBoundsException e){}
 	}
 
 	/** Manipulation of the scripts list */
@@ -1055,7 +1055,7 @@ public class StdSpaceShip implements Area, SpaceShip
 		if(S==null) return;
 		if(!scripts.contains(S))
 		{
-			for(ScriptingEngine S2 : scripts)
+			for(final ScriptingEngine S2 : scripts)
 				if((S2!=null)&&(S2.getScript().equalsIgnoreCase(S.getScript())))
 					return;
 			scripts.addElement(S);
@@ -1069,7 +1069,7 @@ public class StdSpaceShip implements Area, SpaceShip
 	@Override
 	public void delAllScripts()
 	{
-		boolean didSomething=(scripts!=null)&&(scripts.size()>0);
+		final boolean didSomething=(scripts!=null)&&(scripts.size()>0);
 		if(didSomething) scripts.clear();
 		scripts=null;
 		if(didSomething && ((behaviors==null)||(behaviors.size()==0)))
@@ -1077,7 +1077,7 @@ public class StdSpaceShip implements Area, SpaceShip
 	}
 	@Override public int numScripts(){return (scripts==null)?0:scripts.size();}
 	@Override public Enumeration<ScriptingEngine> scripts() { return (scripts==null)?EmptyEnumeration.INSTANCE:scripts.elements();}
-	@Override public ScriptingEngine fetchScript(int x){try{return scripts.elementAt(x);}catch(Exception e){} return null;}
+	@Override public ScriptingEngine fetchScript(int x){try{return scripts.elementAt(x);}catch(final Exception e){} return null;}
 	@Override
 	public void eachScript(final EachApplicable<ScriptingEngine> applier)
 	{
@@ -1091,7 +1091,7 @@ public class StdSpaceShip implements Area, SpaceShip
 				if(S!=null) applier.apply(S);
 			}
 		}
-		catch(ArrayIndexOutOfBoundsException e){}
+		catch(final ArrayIndexOutOfBoundsException e){}
 	}
 
 	@Override
@@ -1170,8 +1170,8 @@ public class StdSpaceShip implements Area, SpaceShip
 			int end=myRooms.size()-1;
 			while(start<=end)
 			{
-				int mid=(end+start)/2;
-				int comp=myRooms.elementAt(mid).roomID().compareToIgnoreCase(roomID);
+				final int mid=(end+start)/2;
+				final int comp=myRooms.elementAt(mid).roomID().compareToIgnoreCase(roomID);
 				if(comp==0)
 					return myRooms.elementAt(mid);
 				else
@@ -1198,9 +1198,9 @@ public class StdSpaceShip implements Area, SpaceShip
 	public int numberOfProperIDedRooms()
 	{
 		int num=0;
-		for(Enumeration<Room> e=getProperMap();e.hasMoreElements();)
+		for(final Enumeration<Room> e=getProperMap();e.hasMoreElements();)
 		{
-			Room R=e.nextElement();
+			final Room R=e.nextElement();
 			if(R.roomID().length()>0)
 				if(R instanceof GridLocale)
 					num+=((GridLocale)R).xGridSize()*((GridLocale)R).yGridSize();
@@ -1216,7 +1216,7 @@ public class StdSpaceShip implements Area, SpaceShip
 		synchronized(myRooms)
 		{
 			if(properSize()==0) return null;
-			Room R=myRooms.elementAt(CMLib.dice().roll(1,properSize(),-1));
+			final Room R=myRooms.elementAt(CMLib.dice().roll(1,properSize(),-1));
 			if(R instanceof GridLocale) return ((GridLocale)R).getRandomGridChild();
 			return R;
 		}
@@ -1254,7 +1254,7 @@ public class StdSpaceShip implements Area, SpaceShip
 		final SLinkedList<Area> finalSet = new SLinkedList<Area>();
 		for (final String areaName : loadableSet)
 		{
-			Area A = CMLib.map().getArea(areaName);
+			final Area A = CMLib.map().getArea(areaName);
 			if (A == null)
 				continue;
 			finalSet.add(A);
@@ -1426,10 +1426,10 @@ public class StdSpaceShip implements Area, SpaceShip
 			else
 			{
 				blurbFlags=new STreeMap<String,String>();
-				List<String> V=CMLib.xml().parseXMLList(val);
-				for(String s : V)
+				final List<String> V=CMLib.xml().parseXMLList(val);
+				for(final String s : V)
 				{
-					int x=s.indexOf(' ');
+					final int x=s.indexOf(' ');
 					if(x<0)
 						blurbFlags.put(s,"");
 					else
@@ -1446,7 +1446,7 @@ public class StdSpaceShip implements Area, SpaceShip
 	public boolean sameAs(Environmental E)
 	{
 		if(!(E instanceof StdSpaceShip)) return false;
-		String[] codes=getStatCodes();
+		final String[] codes=getStatCodes();
 		for(int i=0;i<codes.length;i++)
 			if(!E.getStat(codes[i]).equals(getStat(codes[i])))
 				return false;

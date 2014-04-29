@@ -47,20 +47,20 @@ public class GrinderMap extends GrinderFlatMap
 	{
 		areaMap = new Vector();
 		hashRooms = new Hashtable();
-		for (Enumeration q = CMLib.map().areas(); q.hasMoreElements(); )
+		for (final Enumeration q = CMLib.map().areas(); q.hasMoreElements(); )
 		{
-			Area A = (Area) q.nextElement();
+			final Area A = (Area) q.nextElement();
 			// for now, skip hidden areas.  Areas are often hidden if they aren't linked
 			// to the world (ie under construction or Archon only)
 			if ((CMLib.flags().isHidden(A))
 			||(CMath.bset(A.flags(),Area.FLAG_INSTANCE_CHILD)))
 					continue;
-			for (Enumeration r = A.getProperRoomnumbers().getRoomIDs(); r.hasMoreElements(); )
+			for (final Enumeration r = A.getProperRoomnumbers().getRoomIDs(); r.hasMoreElements(); )
 			{
-				String roomID=(String)r.nextElement();
+				final String roomID=(String)r.nextElement();
 				if((roomID.length() > 0)&&(roomID.indexOf("#(")<0))
 				{
-					GrinderRoom GR = new GrinderRoom(roomID);
+					final GrinderRoom GR = new GrinderRoom(roomID);
 					areaMap.add(GR);
 					hashRooms.put(GR.roomID, GR);
 				}
@@ -93,7 +93,7 @@ public class GrinderMap extends GrinderFlatMap
 
 		for (int x = 0; x < areaMap.size(); x++)
 		{
-			GrinderRoom GR =  areaMap.get(x);
+			final GrinderRoom GR =  areaMap.get(x);
 			if (GR.xy[0] < xoffset)
 			{
 				xoffset = GR.xy[0];
@@ -114,7 +114,7 @@ public class GrinderMap extends GrinderFlatMap
 		Ybound = 0;
 		for (int x = 0; x < areaMap.size(); x++)
 		{
-			GrinderRoom room = areaMap.get(x);
+			final GrinderRoom room = areaMap.get(x);
 			room.xy[0] = room.xy[0] + xoffset;
 			if (room.xy[0] > Xbound) Xbound = room.xy[0];
 			room.xy[1] = room.xy[1] + yoffset;
@@ -126,7 +126,7 @@ public class GrinderMap extends GrinderFlatMap
 							  (Xbound + 1) + "," + (Ybound + 1) + "," + (maxZ + 1));
 		for (int y = 0; y < areaMap.size(); y++)
 		{
-			GrinderRoom room = areaMap.get(y);
+			final GrinderRoom room = areaMap.get(y);
 			// this was hardcoded to look for below zero, but my zFix math
 			// often ended up with minZ >= 1
 			if(room.z<minZ)
@@ -146,9 +146,9 @@ public class GrinderMap extends GrinderFlatMap
 
 	protected GrinderRoom getProcessedRoomAt(Hashtable processed, int x, int y, int z)
 	{
-		for (Enumeration e = processed.elements(); e.hasMoreElements(); )
+		for (final Enumeration e = processed.elements(); e.hasMoreElements(); )
 		{
-			GrinderRoom room = (GrinderRoom) e.nextElement();
+			final GrinderRoom room = (GrinderRoom) e.nextElement();
 			if ( (room.xy[0] == x) && (room.xy[1] == y) && (room.z == z))
 				return room;
 		}
@@ -165,7 +165,7 @@ public class GrinderMap extends GrinderFlatMap
 		{
 			for (int r = 0; r < areaMap.size(); r++)
 			{
-				GrinderRoom room = areaMap.get(r);
+				final GrinderRoom room = areaMap.get(r);
 				if (room.roomID.equalsIgnoreCase(ID))
 					return room;
 			}
@@ -175,9 +175,9 @@ public class GrinderMap extends GrinderFlatMap
 
 	protected boolean isEmptyCluster(Hashtable processed, int x, int y, int z)
 	{
-		for (Enumeration e = processed.elements(); e.hasMoreElements(); )
+		for (final Enumeration e = processed.elements(); e.hasMoreElements(); )
 		{
-			GrinderRoom room = (GrinderRoom) e.nextElement();
+			final GrinderRoom room = (GrinderRoom) e.nextElement();
 			if ( ( ( (room.xy[0] > x - CLUSTERSIZE) && (room.xy[0] < x + CLUSTERSIZE))
 				  && ( (room.xy[1] > y - CLUSTERSIZE) && (room.xy[1] < y + CLUSTERSIZE)))
 				|| ( (room.xy[0] == x) && (room.xy[1] == y)) && (room.z == z))
@@ -188,9 +188,9 @@ public class GrinderMap extends GrinderFlatMap
 
 	protected void findEmptyCluster(Hashtable processed, Vector XYZ)
 	{
-		int x = ( (Integer) XYZ.elementAt(0)).intValue();
-		int y = ( (Integer) XYZ.elementAt(1)).intValue();
-		int z = ( (Integer) XYZ.elementAt(2)).intValue();
+		final int x = ( (Integer) XYZ.elementAt(0)).intValue();
+		final int y = ( (Integer) XYZ.elementAt(1)).intValue();
+		final int z = ( (Integer) XYZ.elementAt(2)).intValue();
 		int spacing = CLUSTERSIZE;
 		while (true)
 		{
@@ -253,17 +253,17 @@ public class GrinderMap extends GrinderFlatMap
 
 		for (int i = 0; i < areaMap.size(); i++)
 		{
-			GrinderRoom room = areaMap.get(i);
+			final GrinderRoom room = areaMap.get(i);
 			room.xy=new int[2];
 			for (int d = 0; d < Directions.NUM_DIRECTIONS(); d++)
 			{
-				GrinderDir dir = room.doors[d];
+				final GrinderDir dir = room.doors[d];
 				if (dir != null)
 				  dir.positionedAlready = false;
 			}
 		}
 
-		Hashtable processed = new Hashtable();
+		final Hashtable processed = new Hashtable();
 		boolean doneSomething = true;
 
 		while ( (areaMap.size() > processed.size()) && (doneSomething))
@@ -271,7 +271,7 @@ public class GrinderMap extends GrinderFlatMap
 			doneSomething = false;
 			for (int i = 0; i < areaMap.size(); i++)
 			{
-				GrinderRoom room = areaMap.get(i);
+				final GrinderRoom room = areaMap.get(i);
 				if (!processed.containsKey(room.roomID))
 				{
 					placeRoom(room, 0, 0, processed, true, true, 0, 0);
@@ -284,7 +284,7 @@ public class GrinderMap extends GrinderFlatMap
 		// some overhead, but worthwhile
 		for (int x = 0; x < areaMap.size(); x++)
 		{
-			GrinderRoom GR = areaMap.get(x);
+			final GrinderRoom GR = areaMap.get(x);
 			if(GR.xy==null) Log.errOut("GrinderMap",GR.roomID+" not assigned an XY!");
 			if (GR.z < minZ)
 			{
@@ -307,8 +307,8 @@ public class GrinderMap extends GrinderFlatMap
 		int updatedCount = 0;
 		for (int x = 0; x < areaMap.size(); x++)
 		{
-			GrinderRoom GR = areaMap.get(x);
-			int oldZ = GR.z;
+			final GrinderRoom GR = areaMap.get(x);
+			final int oldZ = GR.z;
 			GR.z += zFix;
 			areaMap.set(x,GR);
 			if (GR.z!=oldZ) updatedCount++;
@@ -328,7 +328,7 @@ public class GrinderMap extends GrinderFlatMap
 	@Override
 	public StringBuffer getHTMLTable(HTTPRequest httpReq)
 	{
-		StringBuffer buf = new StringBuffer("");
+		final StringBuffer buf = new StringBuffer("");
 		// For now, we will populate the SELECT element prior to the
 		// map layers, but for our cool hover list, we make it a DIV
 		buf.append("<DIV id=\"layersMenu\" style=\"position:absolute; width:110px; "
@@ -366,7 +366,7 @@ public class GrinderMap extends GrinderFlatMap
 					{
 						if ((debug) && ((z > maxZ) || (z < minZ)))
 							Log.sysOut("GR-HTML", "z error     : " + z + " outside " + maxZ + "-" + minZ);
-						GrinderRoom GR = grid[x][y][z];
+						final GrinderRoom GR = grid[x][y][z];
 						if (GR == null)
 							buf.append("<TD COLSPAN=5"+((boundsXYXY!=null)?" ID=X"+(x+boundsXYXY[0])+"_"+(y+boundsXYXY[1]):"")+"><BR></TD>");
 						else
@@ -408,7 +408,7 @@ public class GrinderMap extends GrinderFlatMap
 									  + "');\"><FONT SIZE=-1><B>" + roomID +
 									  "</B></FONT></a><BR>");
 								}
-								catch (java.io.UnsupportedEncodingException e)
+								catch (final java.io.UnsupportedEncodingException e)
 								{
 								  Log.errOut("GrinderMap", "Wrong Encoding");
 								}
@@ -472,7 +472,7 @@ public class GrinderMap extends GrinderFlatMap
 	@Override
 	public StringBuffer getHTMLMap(HTTPRequest httpReq, int roomSize)
 	{
-		StringBuffer buf = new StringBuffer("");
+		final StringBuffer buf = new StringBuffer("");
 		// For now, we will populate the SELECT element prior to the
 		// map layers, but for our cool hover list, we make it a DIV
 		buf.append("<DIV id=\"layersMenu\" style=\"position:absolute; width:110px; "
@@ -514,8 +514,8 @@ public class GrinderMap extends GrinderFlatMap
 					if ( (debug) && ( (z > maxZ) || (z < minZ)))
 						Log.sysOut("GR-HTML",
 								   "z error     : " + z + " outside " + maxZ + "-" + minZ);
-					GrinderRoom GR = grid[x][y][z];
-					String tdins=(boundsXYXY!=null)?" ID=X"+(x+boundsXYXY[0])+"_"+(y+boundsXYXY[1]):"";
+					final GrinderRoom GR = grid[x][y][z];
+					final String tdins=(boundsXYXY!=null)?" ID=X"+(x+boundsXYXY[0])+"_"+(y+boundsXYXY[1]):"";
 					if (GR == null)
 						buf.append("<TD"+tdins+"></TD>");
 					  else
@@ -600,7 +600,7 @@ public class GrinderMap extends GrinderFlatMap
 		if (depth > 500)
 		  return;
 
-		GrinderRoom anythingAt = getProcessedRoomAt(processed, favoredX, favoredY, zLevel);
+		final GrinderRoom anythingAt = getProcessedRoomAt(processed, favoredX, favoredY, zLevel);
 		if (anythingAt != null)
 		{
 			// maybe someone else will take care of it?
@@ -608,12 +608,12 @@ public class GrinderMap extends GrinderFlatMap
 			{
 				for (int r = 0; r < areaMap.size(); r++)
 				{
-					GrinderRoom roomToBlame = areaMap.get(r);
+					final GrinderRoom roomToBlame = areaMap.get(r);
 					if (roomToBlame != room)
 					{
 						for (int rd = 0; rd < Directions.NUM_DIRECTIONS(); rd++)
 						{
-						  GrinderDir RD = roomToBlame.doors[rd];
+						  final GrinderDir RD = roomToBlame.doors[rd];
 						  if ( (RD != null)
 							  && (RD.room != null)
 							  && (!RD.positionedAlready)
@@ -624,7 +624,7 @@ public class GrinderMap extends GrinderFlatMap
 				}
 			}
 			// nope; nobody can.  It's up to this!
-			Vector XYZ = new Vector();
+			final Vector XYZ = new Vector();
 			XYZ.addElement(Integer.valueOf(0));
 			XYZ.addElement(Integer.valueOf(0));
 			XYZ.addElement(Integer.valueOf(0));
@@ -655,7 +655,7 @@ public class GrinderMap extends GrinderFlatMap
 			&& (processed.get(roomID) == null)
 			&& (passTwo || ( (d != Directions.UP) && (d != Directions.DOWN))))
 			{
-				GrinderRoom nextRoom = getRoom(roomID);
+				final GrinderRoom nextRoom = getRoom(roomID);
 				if (nextRoom != null)
 				{
 					int newFavoredX = room.xy[0];

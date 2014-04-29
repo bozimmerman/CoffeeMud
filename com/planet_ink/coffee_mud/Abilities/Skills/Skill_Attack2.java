@@ -66,7 +66,7 @@ public class Skill_Attack2 extends StdSkill
 		if(!(affected instanceof MOB))
 			return;
 
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		if((msg.amISource(mob))
 		&&(msg.targetMinor()==CMMsg.TYP_WEAPONATTACK)

@@ -48,9 +48,9 @@ public class Spell_MarkerSummoning extends Spell
 		Room oldRoom=null;
 		try
 		{
-			for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
+			for(final Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 			{
-				Room R=(Room)r.nextElement();
+				final Room R=(Room)r.nextElement();
 				if(CMLib.flags().canAccess(mob,R))
 					for(final Enumeration<Ability> a=R.effects();a.hasMoreElements();)
 					{
@@ -67,13 +67,13 @@ public class Spell_MarkerSummoning extends Spell
 					}
 				if(oldRoom!=null) break;
 			}
-		}catch(NoSuchElementException nse){}
+		}catch(final NoSuchElementException nse){}
 		if(oldRoom==null)
 		{
 			mob.tell("You can't seem to focus on your marker.  Are you sure you've already summoned it?");
 			return false;
 		}
-		Room newRoom=mob.location();
+		final Room newRoom=mob.location();
 		if(oldRoom==newRoom)
 		{
 			mob.tell("But your marker is HERE!");
@@ -84,33 +84,33 @@ public class Spell_MarkerSummoning extends Spell
 			return false;
 
 
-		Vector inhabs=new Vector();
+		final Vector inhabs=new Vector();
 		int profNeg=0;
 		for(int m=0;m<oldRoom.numInhabitants();m++)
 		{
-			MOB M=oldRoom.fetchInhabitant(m);
+			final MOB M=oldRoom.fetchInhabitant(m);
 			if(M!=null)
 			{
 				inhabs.addElement(M);
-				int adjustment=M.phyStats().level()-(mob.phyStats().level()+(2*getXLEVELLevel(mob)));
+				final int adjustment=M.phyStats().level()-(mob.phyStats().level()+(2*getXLEVELLevel(mob)));
 				profNeg+=adjustment;
 			}
 		}
 		profNeg+=newRoom.numItems();
 
-		boolean success=proficiencyCheck(mob,-(profNeg/2),auto);
+		final boolean success=proficiencyCheck(mob,-(profNeg/2),auto);
 
 		if((success)&&(inhabs.size()>0))
 		{
-			CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MASK_MOVE|verbalCastCode(mob,null,auto),auto?"":"^S<S-NAME> summon(s) the power of <S-HIS-HER> marker energy!^?");
+			final CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MASK_MOVE|verbalCastCode(mob,null,auto),auto?"":"^S<S-NAME> summon(s) the power of <S-HIS-HER> marker energy!^?");
 			if((mob.location().okMessage(mob,msg))&&(oldRoom.okMessage(mob,msg)))
 			{
 				mob.location().send(mob,msg);
 				for(int i=0;i<inhabs.size();i++)
 				{
-					MOB follower=(MOB)inhabs.elementAt(i);
-					CMMsg enterMsg=CMClass.getMsg(follower,newRoom,this,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,"<S-NAME> appear(s) in a burst of light.");
-					CMMsg leaveMsg=CMClass.getMsg(follower,oldRoom,this,CMMsg.MSG_LEAVE|CMMsg.MASK_MAGIC,"<S-NAME> disappear(s) in a great summoning swirl.");
+					final MOB follower=(MOB)inhabs.elementAt(i);
+					final CMMsg enterMsg=CMClass.getMsg(follower,newRoom,this,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,"<S-NAME> appear(s) in a burst of light.");
+					final CMMsg leaveMsg=CMClass.getMsg(follower,oldRoom,this,CMMsg.MSG_LEAVE|CMMsg.MASK_MAGIC,"<S-NAME> disappear(s) in a great summoning swirl.");
 					if(oldRoom.okMessage(follower,leaveMsg)&&newRoom.okMessage(follower,enterMsg))
 					{
 						follower.makePeace();
@@ -121,15 +121,15 @@ public class Spell_MarkerSummoning extends Spell
 						CMLib.commands().postLook(follower,true);
 					}
 				}
-				Vector items=new Vector();
+				final Vector items=new Vector();
 				for(int i=oldRoom.numItems()-1;i>=0;i--)
 				{
-					Item I=oldRoom.getItem(i);
+					final Item I=oldRoom.getItem(i);
 					if(I!=null) items.addElement(I);
 				}
 				for(int i=0;i<items.size();i++)
 				{
-					Item I=(Item)items.elementAt(i);
+					final Item I=(Item)items.elementAt(i);
 					oldRoom.showHappens(CMMsg.MSG_OK_VISUAL,I.name()+" disappears in a summoning swirl!");
 					newRoom.moveItemTo(I);
 					newRoom.showHappens(CMMsg.MSG_OK_VISUAL,I.name()+" appears in a burst of light!");

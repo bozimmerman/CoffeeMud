@@ -52,7 +52,7 @@ public class Prayer_Prophecy extends Prayer
 			super.unInvoke();
 			return;
 		}
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		if((mob.amDead())||(this.tickDown>0)||(mob.isInCombat()))
 		{
 			if(mob.location()!=null)
@@ -64,10 +64,10 @@ public class Prayer_Prophecy extends Prayer
 		int numProphesies=super.getXLEVELLevel(mob) + 2;
 		if(CMLib.ableMapper().qualifyingLevel(mob, this)>1)
 			numProphesies += (super.adjustedLevel(mob, 0) / CMLib.ableMapper().qualifyingLevel(mob, this));
-		List<Pair<Integer,Quest>> prophesies=new Vector<Pair<Integer,Quest>>();
-		for(Enumeration<Quest> q = CMLib.quests().enumQuests(); q.hasMoreElements();)
+		final List<Pair<Integer,Quest>> prophesies=new Vector<Pair<Integer,Quest>>();
+		for(final Enumeration<Quest> q = CMLib.quests().enumQuests(); q.hasMoreElements();)
 		{
-			Quest Q = q.nextElement();
+			final Quest Q = q.nextElement();
 			if( Q.isCopy() || (Q.duration()==0) ||(Q.name().equalsIgnoreCase("holidays")))
 			{
 				continue;
@@ -93,7 +93,7 @@ public class Prayer_Prophecy extends Prayer
 				else
 				{
 					Pair<Integer,Quest> highP=null;
-					for(Pair<Integer,Quest> P : prophesies)
+					for(final Pair<Integer,Quest> P : prophesies)
 						if((highP==null)||(P.first.intValue()>highP.first.intValue()))
 							highP=P;
 					if((highP==null)||(highP.first.intValue() > ticksRemaining))
@@ -108,7 +108,7 @@ public class Prayer_Prophecy extends Prayer
 			mob.tell("You receive no prophetic visions.");
 		else
 		{
-			TimeClock clock =CMLib.time().localClock(mob);
+			final TimeClock clock =CMLib.time().localClock(mob);
 			String starting;
 			switch(CMLib.dice().roll(1, 10, 0))
 			{
@@ -126,8 +126,8 @@ public class Prayer_Prophecy extends Prayer
 			final StringBuilder message=new StringBuilder(starting);
 			for(int p=0;p<prophesies.size();p++)
 			{
-				Pair<Integer,Quest> P=prophesies.get(p);
-				Quest Q=P.second;
+				final Pair<Integer,Quest> P=prophesies.get(p);
+				final Quest Q=P.second;
 				String name=Q.name();
 				final long timeTil= P.first.longValue() * CMProps.getTickMillis();
 				final String timeTilDesc = clock.deriveEllapsedTimeString(timeTil);
@@ -135,7 +135,7 @@ public class Prayer_Prophecy extends Prayer
 				if(possibleBetterName.length()>0)
 					name=possibleBetterName;
 				name=name.replace('_',' ');
-				List<String> V=CMParms.parseSpaces(name,true);
+				final List<String> V=CMParms.parseSpaces(name,true);
 				for(int v=V.size()-1;v>=0;v--)
 				{
 					if(CMath.isNumber(V.get(v)))
@@ -166,7 +166,7 @@ public class Prayer_Prophecy extends Prayer
 		if(!(affected instanceof MOB))
 			return;
 
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		if(msg.amISource(mob))
 		{
@@ -231,10 +231,10 @@ public class Prayer_Prophecy extends Prayer
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,null,auto),auto?"":"^S<T-NAME> "+prayWord(mob)+", entering a divine trance.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,null,auto),auto?"":"^S<T-NAME> "+prayWord(mob)+", entering a divine trance.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

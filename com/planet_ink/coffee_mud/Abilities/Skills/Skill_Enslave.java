@@ -75,7 +75,7 @@ public class Skill_Enslave extends StdSkill
 			{
 				oldLeige=masterMOB.getLiegeID();
 				oldClans=new Vector<Pair<Clan,Integer>>();
-				for(Pair<Clan,Integer> p : masterMOB.clans())
+				for(final Pair<Clan,Integer> p : masterMOB.clans())
 					oldClans.add(p);
 			}
 		}
@@ -88,7 +88,7 @@ public class Skill_Enslave extends StdSkill
 		{
 			mob.setLiegeID(oldLeige);
 			mob.setClan("", Integer.MIN_VALUE);
-			for(Pair<Clan,Integer> p : oldClans)
+			for(final Pair<Clan,Integer> p : oldClans)
 				mob.setClan(p.first.clanID(),p.second.intValue());
 		}
 	}
@@ -99,7 +99,7 @@ public class Skill_Enslave extends StdSkill
 		// undo the affects of this spell
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		if((msg.amITarget(mob))
 		&&(msg.tool() instanceof Social)
 		&&(msg.tool().Name().equals("WHIP <T-NAME>")
@@ -122,13 +122,13 @@ public class Skill_Enslave extends StdSkill
 			{
 				if((msg.target()==null)||(msg.target() instanceof MOB))
 				{
-					String response=CMStrings.getSayFromMessage(msg.sourceMessage());
+					final String response=CMStrings.getSayFromMessage(msg.sourceMessage());
 					if(response!=null)
 					{
 						if((msg.target()==mob)
 						&&(msg.source().Name().equals(mob.getLiegeID())))
 						{
-							Vector<String> V=CMParms.parse(response.toUpperCase());
+							final Vector<String> V=CMParms.parse(response.toUpperCase());
 							if(V.contains("STOP")||V.contains("CANCEL"))
 							{
 								CMLib.commands().postSay(mob,msg.source(),"Yes master.",false,false);
@@ -150,7 +150,7 @@ public class Skill_Enslave extends StdSkill
 				{
 					if(!msg.source().Name().equals(mob.getLiegeID()))
 					{
-						String response=CMStrings.getSayFromMessage(msg.sourceMessage());
+						final String response=CMStrings.getSayFromMessage(msg.sourceMessage());
 						if(response!=null)
 						{
 							if((response.toUpperCase().startsWith("I COMMAND YOU TO "))
@@ -193,7 +193,7 @@ public class Skill_Enslave extends StdSkill
 		else
 		if((mob.location()!=null)&&(getMaster()!=null))
 		{
-			Room room=mob.location();
+			final Room room=mob.location();
 			if((room!=lastRoom)
 			&&(CMLib.law().doesHavePriviledgesHere(getMaster(),room))
 			&&(room.isInhabitant(mob)))
@@ -217,12 +217,12 @@ public class Skill_Enslave extends StdSkill
 			return super.tick(ticking,tickID);
 		if(tickID==Tickable.TICKID_MOB)
 		{
-			MOB mob=(MOB)ticking;
+			final MOB mob=(MOB)ticking;
 			if((speedDown>-500)&&((--speedDown)>=0))
 			{
 				for(int a=mob.numEffects()-1;a>=0;a--) // personal
 				{
-					Ability A=mob.fetchEffect(a);
+					final Ability A=mob.fetchEffect(a);
 					if((A!=null)&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_COMMON_SKILL))
 						if(!A.tick(ticking,tickID))
 							mob.delEffect(A);
@@ -234,11 +234,11 @@ public class Skill_Enslave extends StdSkill
 				CMLib.combat().expendEnergy(mob,false);
 				if((!mob.isInCombat())&&(CMLib.dice().rollPercentage()==1)&&(CMLib.dice().rollPercentage()<(masterAnger/10)))
 				{
-					MOB myMaster=getMaster();
+					final MOB myMaster=getMaster();
 					if((myMaster!=null)&&(mob.location().isInhabitant(myMaster)))
 					{
 						mob.location().show(mob,myMaster,null,CMMsg.MSG_OK_ACTION,"<S-NAME> rebel(s) against <T-NAMESELF>!");
-						MOB master=getMaster();
+						final MOB master=getMaster();
 						unMaster(mob);
 						setMiscText("");
 						mob.recoverCharStats();
@@ -259,7 +259,7 @@ public class Skill_Enslave extends StdSkill
 					Food f=null;
 					for(int i=0;i<mob.numItems();i++)
 					{
-						Item I=mob.getItem(i);
+						final Item I=mob.getItem(i);
 						if(I instanceof Food)
 						{ f=(Food)I; break;}
 					}
@@ -267,8 +267,8 @@ public class Skill_Enslave extends StdSkill
 						CMLib.commands().postSay(mob,null,"I am hungry.",false,false);
 					else
 					{
-						Command C=CMClass.getCommand("Eat");
-						try{C.execute(mob,CMParms.parse("EAT \""+f.Name()+"$\""),Command.METAFLAG_ORDER);}catch(Exception e){}
+						final Command C=CMClass.getCommand("Eat");
+						try{C.execute(mob,CMParms.parse("EAT \""+f.Name()+"$\""),Command.METAFLAG_ORDER);}catch(final Exception e){}
 					}
 				}
 				if(mob.curState().getThirst()<=0)
@@ -276,7 +276,7 @@ public class Skill_Enslave extends StdSkill
 					Drink d=null;
 					for(int i=0;i<mob.numItems();i++)
 					{
-						Item I=mob.getItem(i);
+						final Item I=mob.getItem(i);
 						if(I instanceof Drink)
 						{ d=(Drink)I; break;}
 					}
@@ -284,18 +284,18 @@ public class Skill_Enslave extends StdSkill
 						CMLib.commands().postSay(mob,null,"I am thirsty.",false,false);
 					else
 					{
-						Command C=CMClass.getCommand("Drink");
-						try{C.execute(mob,CMParms.parse("DRINK \""+d.Name()+"$\""),Command.METAFLAG_ORDER);}catch(Exception e){}
+						final Command C=CMClass.getCommand("Drink");
+						try{C.execute(mob,CMParms.parse("DRINK \""+d.Name()+"$\""),Command.METAFLAG_ORDER);}catch(final Exception e){}
 					}
 				}
 			}
 			if(!mob.getLiegeID().equals(masterName))
 			{
 				mob.setLiegeID(masterName);
-				MOB myMaster=getMaster();
+				final MOB myMaster=getMaster();
 				if(myMaster!=null)
 				{
-					for(Pair<Clan,Integer> p : CMLib.clans().findRivalrousClans(myMaster))
+					for(final Pair<Clan,Integer> p : CMLib.clans().findRivalrousClans(myMaster))
 						mob.setClan(p.first.clanID(),p.first.getGovernment().getAcceptPos());
 				}
 			}
@@ -350,7 +350,7 @@ public class Skill_Enslave extends StdSkill
 			mob.tell("You need to specify a target to enslave.");
 			return false;
 		}
-		MOB target=getTarget(mob,commands,givenTarget,false,true);
+		final MOB target=getTarget(mob,commands,givenTarget,false,true);
 		if(target==null) return false;
 		if(target.charStats().getStat(CharStats.STAT_INTELLIGENCE)<5)
 		{
@@ -367,14 +367,14 @@ public class Skill_Enslave extends StdSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
 			invoker=mob;
-			boolean peace1=!mob.isInCombat();
-			boolean peace2=!target.isInCombat();
-			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_NOISE|CMMsg.MASK_MALICIOUS,auto?"":"^S<S-NAME> enslave(s) <T-NAMESELF>!^?");
+			final boolean peace1=!mob.isInCombat();
+			final boolean peace2=!target.isInCombat();
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_NOISE|CMMsg.MASK_MALICIOUS,auto?"":"^S<S-NAME> enslave(s) <T-NAMESELF>!^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

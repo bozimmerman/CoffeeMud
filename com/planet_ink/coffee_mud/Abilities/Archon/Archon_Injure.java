@@ -70,11 +70,11 @@ public class Archon_Injure extends ArchonSkill
 			part=CMParms.combine(commands,2).toUpperCase();
 			commands.remove(1);
 		}
-		MOB target=getTargetAnywhere(mob,commands,givenTarget,false,true,true);
+		final MOB target=getTargetAnywhere(mob,commands,givenTarget,false,true,true);
 		if(target==null) return false;
 		Amputator A=(Amputator)target.fetchEffect("Amputation");
 		if(A==null) A=(Amputator)CMClass.getAbility("Amputation");
-		List<String> remainingLimbList=A.remainingLimbNameSet(target);
+		final List<String> remainingLimbList=A.remainingLimbNameSet(target);
 		if(target.charStats().getBodyPart(Race.BODY_HEAD)>0)
 			remainingLimbList.add("head");
 		if(target.charStats().getBodyPart(Race.BODY_TORSO)>0)
@@ -98,10 +98,10 @@ public class Archon_Injure extends ArchonSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),auto?"A stink cloud surrounds <T-NAME>!":"^F<S-NAME> injure(s) <T-YOUPOSS> "+gone.toLowerCase()+".^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),auto?"A stink cloud surrounds <T-NAME>!":"^F<S-NAME> injure(s) <T-YOUPOSS> "+gone.toLowerCase()+".^?");
 			CMLib.color().fixSourceFightColor(msg);
 			if(mob.location().okMessage(mob,msg))
 			{
@@ -110,7 +110,7 @@ public class Archon_Injure extends ArchonSkill
 				Ability A2=CMClass.getAbility("Injury");
 				if(A2!=null)
 				{
-					int percentOff=target.maxState().getHitPoints()/5;
+					final int percentOff=target.maxState().getHitPoints()/5;
 					if(target.curState().getHitPoints()>(target.curState().getHitPoints()-percentOff))
 						target.curState().setHitPoints(target.curState().getHitPoints()-percentOff);
 					A2.invoke(mob,new XVector(),target,true,0);

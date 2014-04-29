@@ -54,7 +54,7 @@ public interface Technical
 		SHIP_GENERATOR("Ship Power Generator"),SHIP_DAMPENER("Ship Inertial Dampener"),
 		SHIP_TRACTOR("Ship Tractor"),SHIP_REPLICATOR("Ship Food Replicator")
 		;
-		private String friendlyName;
+		private final String friendlyName;
 		private TechType(String name)
 		{
 			this.friendlyName=name;
@@ -77,7 +77,7 @@ public interface Technical
 		COMPONANTFAILURE(Technical.TechType.class, String[].class),
 		AIRREFRESH(Double.class,Integer.class),
 		;
-		private Class<?>[] parms;
+		private final Class<?>[] parms;
 		private TechCommand(Class<?>... parms )
 		{
 			this.parms=parms;
@@ -88,7 +88,7 @@ public interface Technical
 		{
 			if((parts==null)||(parts.length!=parms.length))
 				return "";
-			StringBuilder str=new StringBuilder(toString());
+			final StringBuilder str=new StringBuilder(toString());
 			for(int i=0;i<parms.length;i++)
 				if(parts[i]==null)
 					return "";
@@ -112,7 +112,7 @@ public interface Technical
 		{
 			if(parts.length!=parms.length+1)
 				return null;
-			Object[] resp=new Object[parts.length-1];
+			final Object[] resp=new Object[parts.length-1];
 			for(int i=0;i<parms.length;i++)
 				if(parms[i].isEnum())
 				{
@@ -155,7 +155,7 @@ public interface Technical
 				else
 				if(String[].class.isAssignableFrom(parms[i]))
 				{
-					StringBuilder rebuilt=new StringBuilder(parts[i+1]);
+					final StringBuilder rebuilt=new StringBuilder(parts[i+1]);
 					for(i=i+2;i<parts.length;i++)
 						rebuilt.append(" ").append(parts[i]);
 					resp[i]=rebuilt.toString();

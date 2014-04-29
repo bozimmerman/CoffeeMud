@@ -49,7 +49,7 @@ public class Trap_FloodRoom extends StdTrap
 		int num=0;
 		for(int i=0;i<mob.location().numItems();i++)
 		{
-			Item I=mob.location().getItem(i);
+			final Item I=mob.location().getItem(i);
 			if((I instanceof Drink)&&(((Drink)I).containsDrink()))
 				num++;
 		}
@@ -59,7 +59,7 @@ public class Trap_FloodRoom extends StdTrap
 	@Override
 	public List<Item> getTrapComponents()
 	{
-		Vector V=new Vector();
+		final Vector V=new Vector();
 		for(int i=0;i<100;i++)
 			V.addElement(CMLib.materials().makeItemResource(RawMaterial.RESOURCE_STONE));
 		for(int i=0;i<10;i++)
@@ -75,7 +75,7 @@ public class Trap_FloodRoom extends StdTrap
 		int i=0;
 		while((num>0)&&(i<mob.location().numItems()))
 		{
-			Item I=mob.location().getItem(i);
+			final Item I=mob.location().getItem(i);
 			if((I instanceof Drink)&&(((Drink)I).containsDrink()))
 			{
 				if(I instanceof RawMaterial)
@@ -113,7 +113,7 @@ public class Trap_FloodRoom extends StdTrap
 		if(!super.canSetTrapOn(mob,P)) return false;
 		if(mob!=null)
 		{
-			Item I=findMostOfMaterial(mob.location(),RawMaterial.MATERIAL_ROCK);
+			final Item I=findMostOfMaterial(mob.location(),RawMaterial.MATERIAL_ROCK);
 			if((I==null)
 			||(super.findNumberOfResource(mob.location(),I.material())<100))
 			{
@@ -128,7 +128,7 @@ public class Trap_FloodRoom extends StdTrap
 		}
 		if(P instanceof Room)
 		{
-			Room R=(Room)P;
+			final Room R=(Room)P;
 			if((R.domainType()&Room.INDOORS)==0)
 			{
 				if(mob!=null)
@@ -194,7 +194,7 @@ public class Trap_FloodRoom extends StdTrap
 			&&(!disabled())
 			&&(tickDown>=0))
 			{
-				Room R=(Room)affected;
+				final Room R=(Room)affected;
 				if(tickDown>13)
 				{
 					R.showHappens(CMMsg.MSG_OK_VISUAL,"Water is filling up the room!");

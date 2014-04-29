@@ -42,7 +42,7 @@ public class Disease_Obesity extends Disease
 	@Override
 	public String displayText()
 	{
-		int amount=amountOfFat();
+		final int amount=amountOfFat();
 		if(amount<20)
 			return "(Chubby)";
 		else
@@ -109,7 +109,7 @@ public class Disease_Obesity extends Disease
 	public void affectCharState(MOB affected, CharState affectableState)
 	{
 		super.affectCharState(affected,affectableState);
-		int oldMovement=affectableState.getMovement();
+		final int oldMovement=affectableState.getMovement();
 		affectableState.setMovement(affectableState.getMovement()-(int)Math.round(CMath.mul(affectableState.getMovement(),CMath.div(CMath.s_int(text()),100.0))));
 		if((affectableState.getMovement()<20)&&(oldMovement>20)) affectableState.setMovement(20);
 	}
@@ -119,13 +119,13 @@ public class Disease_Obesity extends Disease
 	{
 		if((ticking==affected)&&(tickID==Tickable.TICKID_MOB)&&(affected instanceof MOB))
 		{
-			MOB mob=(MOB)affected;
+			final MOB mob=(MOB)affected;
 			if((mob.curState().getMovement()<mob.maxState().getMovement()/10)
 			&&((lastLoss<0)||((System.currentTimeMillis()-lastLoss)>10000)))
 			{
 				lastLoss=System.currentTimeMillis();
-				int change=CMLib.dice().roll(1,10,0);
-				int fat=amountOfFat();
+				final int change=CMLib.dice().roll(1,10,0);
+				final int fat=amountOfFat();
 				if(fat>=0)
 				{
 					if(fat<change)
@@ -159,7 +159,7 @@ public class Disease_Obesity extends Disease
 		&&(CMLib.flags().canBeSeenBy(affected,msg.source()))
 		&&(affected instanceof MOB))
 		{
-			int amount=amountOfFat();
+			final int amount=amountOfFat();
 			String str="";
 			if(amount<20)
 				str="a bit chubby";
@@ -182,12 +182,12 @@ public class Disease_Obesity extends Disease
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		MOB target=this.getTarget(mob,commands,givenTarget);
+		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
 		if(super.invoke(mob,commands,givenTarget,auto,asLevel))
 		{
-			Ability A=target.fetchEffect(ID());
+			final Ability A=target.fetchEffect(ID());
 			if(A!=null) A.setMiscText(""+CMLib.dice().roll(1,5,0));
 			return true;
 		}

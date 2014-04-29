@@ -84,20 +84,20 @@ public class StdNet extends StdWeapon
 		&&(((MOB)msg.target()).isMine(this))
 		&&(msg.sourceMessage()==null))
 		{
-			MOB M=(MOB)msg.target();
-			Set<MOB> H=msg.source().getGroupMembers(new HashSet<MOB>());
+			final MOB M=(MOB)msg.target();
+			final Set<MOB> H=msg.source().getGroupMembers(new HashSet<MOB>());
 			if(H.contains(M)) H.remove(M);
 
 			for(int i=0;i<M.location().numInhabitants();i++)
 			{
-				MOB M2=M.location().fetchInhabitant(i);
+				final MOB M2=M.location().fetchInhabitant(i);
 				if((M2!=null)
 				&&(M2!=msg.source())
 				&&(!H.contains(M2))
 				&&(M2.getVictim()==M.getVictim())
 				&&(M2.rangeToTarget()==M.rangeToTarget()))
 				{
-					Ability A=CMClass.getAbility("Thief_Bind");
+					final Ability A=CMClass.getAbility("Thief_Bind");
 					if(A!=null)
 					{
 						A.setAffectedOne(this);

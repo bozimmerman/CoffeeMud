@@ -58,7 +58,7 @@ public class Fighter_Shrug extends FighterSkill
 		&&(msg.tool()!=null)
 		&&(msg.tool() instanceof Weapon))
 		{
-			MOB mob=(MOB)affected;
+			final MOB mob=(MOB)affected;
 			if(mob.location().show(mob,msg.source(),this,CMMsg.MSG_OK_ACTION,"<S-NAME> shrug(s) off the attack from <T-NAME>."))
 			{
 				unInvoke();
@@ -100,14 +100,14 @@ public class Fighter_Shrug extends FighterSkill
 			return false;
 
 		// now see if it worked
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
 			// it worked, so build a copy of this ability,
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_QUIETMOVEMENT,auto?"<T-NAME> is braced for an attack!":"<S-NAME> brace(s) for an attack!");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_QUIETMOVEMENT,auto?"<T-NAME> is braced for an attack!":"<S-NAME> brace(s) for an attack!");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

@@ -63,7 +63,7 @@ public class Foraging extends GatheringSkill
 	{
 		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Tickable.TICKID_MOB))
 		{
-			MOB mob=(MOB)affected;
+			final MOB mob=(MOB)affected;
 			if(tickUp==6)
 			{
 				if(found!=null)
@@ -74,8 +74,8 @@ public class Foraging extends GatheringSkill
 				}
 				else
 				{
-					StringBuffer str=new StringBuffer("You can't seem to find anything worth foraging around here.\n\r");
-					int d=lookingFor(RawMaterial.MATERIAL_VEGETATION,mob.location());
+					final StringBuffer str=new StringBuffer("You can't seem to find anything worth foraging around here.\n\r");
+					final int d=lookingFor(RawMaterial.MATERIAL_VEGETATION,mob.location());
 					if(d<0)
 						str.append("You might try elsewhere.");
 					else
@@ -96,10 +96,10 @@ public class Foraging extends GatheringSkill
 		{
 			if((affected!=null)&&(affected instanceof MOB))
 			{
-				MOB mob=(MOB)affected;
+				final MOB mob=(MOB)affected;
 				if((found!=null)&&(!aborted))
 				{
-					int amount=((found.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_CLOTH)?
+					final int amount=((found.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_CLOTH)?
 							   (CMLib.dice().roll(1,10,0)*(abilityCode())):
 							   (CMLib.dice().roll(1,3,0)*(abilityCode()));
 					String s="s";
@@ -107,7 +107,7 @@ public class Foraging extends GatheringSkill
 					mob.location().show(mob,null,getActivityMessageType(),"<S-NAME> manage(s) to gather "+amount+" pound"+s+" of "+foundShortName+".");
 					for(int i=0;i<amount;i++)
 					{
-						Item newFound=(Item)found.copyOf();
+						final Item newFound=(Item)found.copyOf();
 						mob.location().addItem(newFound,ItemPossessor.Expire.Player_Drop);
 						CMLib.commands().postGet(mob,null,newFound,true);
 					}
@@ -145,7 +145,7 @@ public class Foraging extends GatheringSkill
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
-		int resourceType=mob.location().myResource();
+		final int resourceType=mob.location().myResource();
 		if((proficiencyCheck(mob,0,auto))
 		   &&(((resourceType&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_VEGETATION)
 			  ||(resourceType==RawMaterial.RESOURCE_HEMP)
@@ -157,8 +157,8 @@ public class Foraging extends GatheringSkill
 			if(found!=null)
 				foundShortName=RawMaterial.CODES.NAME(found.material()).toLowerCase();
 		}
-		int duration=getDuration(mob,1);
-		CMMsg msg=CMClass.getMsg(mob,found,this,getActivityMessageType(),"<S-NAME> start(s) foraging.");
+		final int duration=getDuration(mob,1);
+		final CMMsg msg=CMClass.getMsg(mob,found,this,getActivityMessageType(),"<S-NAME> start(s) foraging.");
 		if(mob.location().okMessage(mob,msg))
 		{
 			// herb/locale customisation for jeremy
@@ -167,28 +167,28 @@ public class Foraging extends GatheringSkill
 			&&((found.Name().toUpperCase().endsWith(" HERBS"))
 			   ||(found.Name().equalsIgnoreCase("herbs"))))
 			{
-				Map<String,List<String>> H=Resources.getCachedMultiLists("skills/herbs.txt",false);
+				final Map<String,List<String>> H=Resources.getCachedMultiLists("skills/herbs.txt",false);
 				if(H!=null)
 				{
-					List<String> V=H.get(mob.location().ID());
+					final List<String> V=H.get(mob.location().ID());
 					if((V!=null)&&(V.size()>0))
 					{
 						int total=0;
 						for(int i=0;i<V.size();i++)
 						{
-							String s=V.get(i);
-							int x=s.indexOf(' ');
+							final String s=V.get(i);
+							final int x=s.indexOf(' ');
 							if((x>=0)&&(CMath.isNumber(s.substring(0,x).trim())))
 								total+=CMath.s_int(s.substring(0,x).trim());
 							else
 								total+=10;
 						}
-						int choice=CMLib.dice().roll(1,total,-1);
+						final int choice=CMLib.dice().roll(1,total,-1);
 						total=0;
 						for(int i=0;i<V.size();i++)
 						{
-							String s=V.get(i);
-							int x=s.indexOf(' ');
+							final String s=V.get(i);
+							final int x=s.indexOf(' ');
 							if((x>=0)&&(CMath.isNumber(s.substring(0,x).trim())))
 							{
 								total+=CMath.s_int(s.substring(0,x).trim());

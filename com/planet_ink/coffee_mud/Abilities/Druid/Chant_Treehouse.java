@@ -52,21 +52,21 @@ public class Chant_Treehouse extends Chant
 			return;
 		if(!(affected instanceof Room))
 			return;
-		Room room=(Room)affected;
+		final Room room=(Room)affected;
 		if(canBeUninvoked())
 		{
-			Room R=room.getRoomInDir(Directions.UP);
+			final Room R=room.getRoomInDir(Directions.UP);
 			if((R!=null)&&(R.roomID().equalsIgnoreCase("")))
 			{
 				R.showHappens(CMMsg.MSG_OK_VISUAL,"The treehouse fades away...");
 				while(R.numInhabitants()>0)
 				{
-					MOB M=R.fetchInhabitant(0);
+					final MOB M=R.fetchInhabitant(0);
 					if(M!=null)	room.bringMobHere(M,false);
 				}
 				while(R.numItems()>0)
 				{
-					Item I=R.getItem(0);
+					final Item I=R.getItem(0);
 					if(I!=null) room.moveItemTo(I);
 				}
 				R.destroy();
@@ -81,7 +81,7 @@ public class Chant_Treehouse extends Chant
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		Physical target = mob.location();
+		final Physical target = mob.location();
 		if(target.fetchEffect(ID())!=null)
 		{
 			mob.tell("There is already a treehouse above here!");
@@ -89,7 +89,7 @@ public class Chant_Treehouse extends Chant
 		}
 		boolean isATree=((mob.location().domainType()==Room.DOMAIN_OUTDOORS_WOODS)
 					   ||(mob.location().domainType()!=Room.DOMAIN_OUTDOORS_JUNGLE));
-		Item myPlant=Druid_MyPlants.myPlant(mob.location(),mob,0);
+		final Item myPlant=Druid_MyPlants.myPlant(mob.location(),mob,0);
 		if((myPlant != null) &&((myPlant.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_WOODEN))
 			isATree=true;
 		if((mob.location().myResource()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_WOODEN)
@@ -118,7 +118,7 @@ public class Chant_Treehouse extends Chant
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
@@ -127,13 +127,13 @@ public class Chant_Treehouse extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 
-			CMMsg msg = CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto), auto?"":"^S<S-NAME> chant(s) for a treehouse!^?");
+			final CMMsg msg = CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto), auto?"":"^S<S-NAME> chant(s) for a treehouse!^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				mob.location().showHappens(CMMsg.MSG_OK_VISUAL,"A treehouse appears up in a nearby tree!");
 				mob.location().clearSky();
-				Room newRoom=CMClass.getLocale("WoodRoom");
+				final Room newRoom=CMClass.getLocale("WoodRoom");
 				newRoom.setDisplayText("A treehouse");
 				newRoom.setDescription("You are up in the treehouse. The view is great from up here!");
 				newRoom.setArea(mob.location().getArea());
@@ -158,7 +158,7 @@ public class Chant_Treehouse extends Chant
 				newRoom.setRawExit(Directions.DOWN,E);
 				for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 				{
-					Room R=mob.location().rawDoors()[d];
+					final Room R=mob.location().rawDoors()[d];
 					if((R!=null)
 					   &&(d!=Directions.DOWN)
 					   &&(d!=Directions.UP)

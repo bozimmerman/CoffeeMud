@@ -43,14 +43,14 @@ public class Avariel extends StdRace
 	@Override public int weightVariance(){return 80;}
 	@Override public long forbiddenWornBits(){return 0;}
 	@Override public String racialCategory(){return "Elf";}
-	private String[]culturalAbilityNames={"Elvish"};
-	private int[]culturalAbilityProficiencies={75};
+	private final String[]culturalAbilityNames={"Elvish"};
+	private final int[]culturalAbilityProficiencies={75};
 	@Override public String[] culturalAbilityNames(){return culturalAbilityNames;}
 	@Override public int[] culturalAbilityProficiencies(){return culturalAbilityProficiencies;}
-	private String[]racialAbilityNames={"WingFlying"};
-	private int[]racialAbilityLevels={1};
-	private int[]racialAbilityProficiencies={100};
-	private boolean[]racialAbilityQuals={false};
+	private final String[]racialAbilityNames={"WingFlying"};
+	private final int[]racialAbilityLevels={1};
+	private final int[]racialAbilityProficiencies={100};
+	private final boolean[]racialAbilityQuals={false};
 	@Override protected String[] racialAbilityNames(){return racialAbilityNames;}
 	@Override protected int[] racialAbilityLevels(){return racialAbilityLevels;}
 	@Override protected int[] racialAbilityProficiencies(){return racialAbilityProficiencies;}
@@ -102,28 +102,28 @@ public class Avariel extends StdRace
 		{
 			outfitChoices=new Vector();
 			// Have to, since it requires use of special constructor
-			Armor s1=CMClass.getArmor("GenShirt");
+			final Armor s1=CMClass.getArmor("GenShirt");
 			s1.setName("a delicate green shirt");
 			s1.setDisplayText("a delicate green shirt sits gracefully here.");
 			s1.setDescription("Obviously fine craftmenship, with sharp folds and intricate designs.");
 			s1.text();
 			outfitChoices.add(s1);
 
-			Armor s2=CMClass.getArmor("GenShoes");
+			final Armor s2=CMClass.getArmor("GenShoes");
 			s2.setName("a pair of sandals");
 			s2.setDisplayText("a pair of sandals lie here.");
 			s2.setDescription("Obviously fine craftmenship, these light leather sandals have tiny woodland drawings in them.");
 			s2.text();
 			outfitChoices.add(s2);
 
-			Armor p1=CMClass.getArmor("GenPants");
+			final Armor p1=CMClass.getArmor("GenPants");
 			p1.setName("some delicate leggings");
 			p1.setDisplayText("a pair delicate brown leggings sit here.");
 			p1.setDescription("Obviously fine craftmenship, with sharp folds and intricate designs.  They look perfect for dancing in!");
 			p1.text();
 			outfitChoices.add(p1);
 
-			Armor s3=CMClass.getArmor("GenBelt");
+			final Armor s3=CMClass.getArmor("GenBelt");
 			outfitChoices.add(s3);
 		}
 		return outfitChoices;
@@ -135,7 +135,7 @@ public class Avariel extends StdRace
 	@Override
 	public String healthText(MOB viewer, MOB mob)
 	{
-		double pct=(CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));
+		final double pct=(CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));
 
 		if(pct<.10)
 			return "^r" + mob.name(viewer) + "^r is facing mortality!^N";

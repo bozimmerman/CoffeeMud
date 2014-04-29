@@ -43,8 +43,8 @@ public class Troll extends StdRace
 	@Override public int weightVariance(){return 200;}
 	@Override public long forbiddenWornBits(){return 0;}
 	@Override public String racialCategory(){return "Troll-kin";}
-	private String[]culturalAbilityNames={"Draconic"};
-	private int[]culturalAbilityProficiencies={50};
+	private final String[]culturalAbilityNames={"Draconic"};
+	private final int[]culturalAbilityProficiencies={50};
 	@Override public String[] culturalAbilityNames(){return culturalAbilityNames;}
 	@Override public int[] culturalAbilityProficiencies(){return culturalAbilityProficiencies;}
 
@@ -52,7 +52,7 @@ public class Troll extends StdRace
 	private static final int[] parts={0 ,2 ,2 ,1 ,1 ,2 ,2 ,1 ,2 ,2 ,1 ,0 ,1 ,1 ,0 ,0 };
 	@Override public int[] bodyMask(){return parts;}
 
-	private int[] agingChart={0,1,5,40,100,150,200,230,260};
+	private final int[] agingChart={0,1,5,40,100,150,200,230,260};
 	@Override public int[] getAgingChart(){return agingChart;}
 
 	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
@@ -74,11 +74,11 @@ public class Troll extends StdRace
 			return false;
 		if(myHost instanceof MOB)
 		{
-			MOB mob=(MOB)myHost;
+			final MOB mob=(MOB)myHost;
 			if((msg.amITarget(mob))&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
 			   &&(msg.sourceMinor()==CMMsg.TYP_FIRE))
 			{
-				int recovery=(int)Math.round(CMath.mul((msg.value()),1.5));
+				final int recovery=(int)Math.round(CMath.mul((msg.value()),1.5));
 				msg.setValue(msg.value()+recovery);
 			}
 		}
@@ -106,21 +106,21 @@ public class Troll extends StdRace
 					case Climate.WEATHER_HEAT_WAVE:
 						if(CMLib.dice().rollPercentage()>M.charStats().getSave(CharStats.STAT_SAVE_FIRE))
 						{
-							int damage=CMLib.dice().roll(1,8,0);
+							final int damage=CMLib.dice().roll(1,8,0);
 							CMLib.combat().postDamage(M,M,null,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,"The scorching heat <DAMAGE> <T-NAME>!");
 						}
 						break;
 					case Climate.WEATHER_DUSTSTORM:
 						if(CMLib.dice().rollPercentage()>M.charStats().getSave(CharStats.STAT_SAVE_FIRE))
 						{
-							int damage=CMLib.dice().roll(1,16,0);
+							final int damage=CMLib.dice().roll(1,16,0);
 							CMLib.combat().postDamage(M,M,null,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,"The burning hot dust <DAMAGE> <T-NAME>!");
 						}
 						break;
 					case Climate.WEATHER_DROUGHT:
 						if(CMLib.dice().rollPercentage()>M.charStats().getSave(CharStats.STAT_SAVE_FIRE))
 						{
-							int damage=CMLib.dice().roll(1,8,0);
+							final int damage=CMLib.dice().roll(1,8,0);
 							CMLib.combat().postDamage(M,M,null,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,"The burning dry heat <DAMAGE> <T-NAME>!");
 						}
 						break;
@@ -159,7 +159,7 @@ public class Troll extends StdRace
 	@Override
 	public String healthText(MOB viewer, MOB mob)
 	{
-		double pct=(CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));
+		final double pct=(CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));
 
 		if(pct<.10)
 			return "^r" + mob.name(viewer) + "^r is near to heartless death!^N";

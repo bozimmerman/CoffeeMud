@@ -101,7 +101,7 @@ public class DefaultPlayerStats implements PlayerStats
 		{
 			return getClass().newInstance();
 		}
-		catch(Exception e)
+		catch(final Exception e)
 		{
 			return new DefaultPlayerStats();
 		}
@@ -114,7 +114,7 @@ public class DefaultPlayerStats implements PlayerStats
 	{
 		try
 		{
-			DefaultPlayerStats O=(DefaultPlayerStats)this.clone();
+			final DefaultPlayerStats O=(DefaultPlayerStats)this.clone();
 			O.levelInfo=levelInfo.copyOf();
 			if(visitedRoomSet!=null)
 				O.visitedRoomSet=(RoomnumberSet)visitedRoomSet.copyOf();
@@ -132,7 +132,7 @@ public class DefaultPlayerStats implements PlayerStats
 			O.extItems=(ItemCollection)extItems.copyOf();
 			return O;
 		}
-		catch(CloneNotSupportedException e)
+		catch(final CloneNotSupportedException e)
 		{
 			return new DefaultPlayerStats();
 		}
@@ -380,7 +380,7 @@ public class DefaultPlayerStats implements PlayerStats
 
 	public SHashSet<String> getHashFrom(String str)
 	{
-		SHashSet<String> h=new SHashSet<String>();
+		final SHashSet<String> h=new SHashSet<String>();
 		if((str==null)||(str.length()==0)) return h;
 		str=CMStrings.replaceAll(str,"<FRIENDS>","");
 		str=CMStrings.replaceAll(str,"<IGNORED>","");
@@ -391,7 +391,7 @@ public class DefaultPlayerStats implements PlayerStats
 		int x=str.indexOf(';');
 		while(x>=0)
 		{
-			String fi=str.substring(0,x).trim();
+			final String fi=str.substring(0,x).trim();
 			if(fi.length()>0) h.add(fi);
 			str=str.substring(x+1);
 			x=str.indexOf(';');
@@ -484,9 +484,9 @@ public class DefaultPlayerStats implements PlayerStats
 	public String getAliasXML()
 	{
 		if(alias.size()==0) return "";
-		StringBuilder str=new StringBuilder("");
+		final StringBuilder str=new StringBuilder("");
 		alias.remove("");
-		for(String key : alias.keySet())
+		for(final String key : alias.keySet())
 			str.append("<ALIAS CMD=\"").append(key).append("\" VAL=\"").append(CMLib.xml().parseOutAngleBracketsAndQuotes(alias.get(key))).append("\" />");
 		return str.toString();
 	}
@@ -494,8 +494,8 @@ public class DefaultPlayerStats implements PlayerStats
 	public String getLegacyXML()
 	{
 		if(legacy.size()==0) return "";
-		StringBuilder str=new StringBuilder("");
-		for(String key : legacy.keySet())
+		final StringBuilder str=new StringBuilder("");
+		for(final String key : legacy.keySet())
 			str.append("<LEGACY CAT=\"").append(key).append("\" LVL=\"").append(legacy.get(key)).append("\" />");
 		return str.toString();
 	}
@@ -504,7 +504,7 @@ public class DefaultPlayerStats implements PlayerStats
 	public String getActiveTitle()
 	{
 		if((titles==null)||(titles.size()==0)) return null;
-		String s=titles.get(0);
+		final String s=titles.get(0);
 		if((s.length()<2)||(s.charAt(0)!='{')||(s.charAt(s.length()-1)!='}'))
 			return s;
 		return s.substring(1,s.length()-1);
@@ -520,13 +520,13 @@ public class DefaultPlayerStats implements PlayerStats
 		if(titles.size()==0) return "";
 		for(int t=titles.size()-1;t>=0;t--)
 		{
-			String s=titles.get(t);
+			final String s=titles.get(t);
 			if(s.length()==0) titles.remove(t);
 		}
-		StringBuilder str=new StringBuilder("");
+		final StringBuilder str=new StringBuilder("");
 		for(int t=0;t<titles.size();t++)
 		{
-			String s=titles.get(t);
+			final String s=titles.get(t);
 			str.append("<TITLE>"+CMLib.xml().parseOutAngleBrackets(CMLib.coffeeFilter().safetyFilter(s))+"</TITLE>");
 		}
 		return str.toString();
@@ -565,7 +565,7 @@ public class DefaultPlayerStats implements PlayerStats
 	public int initializeBirthday(int ageHours, Race R)
 	{
 		birthday=new int[4];
-		TimeClock C=CMLib.time().globalClock();
+		final TimeClock C=CMLib.time().globalClock();
 		birthday[0]=C.getDayOfMonth();
 		birthday[1]=C.getMonth();
 		birthday[2]=C.getYear();
@@ -580,8 +580,8 @@ public class DefaultPlayerStats implements PlayerStats
 			birthday[1]=CMLib.dice().roll(1,C.getMonthsInYear(),0);
 			birthday[0]=CMLib.dice().roll(1,C.getDaysInMonth(),0);
 		}
-		int month=C.getMonth();
-		int day=C.getDayOfMonth();
+		final int month=C.getMonth();
+		final int day=C.getDayOfMonth();
 		if((month<birthday[1])||((month==birthday[1])&&(birthday[0]<day)))
 			return (R.getAgingChart()[Race.AGE_YOUNGADULT]+C.getYear()-birthday[2])-1;
 		return (R.getAgingChart()[Race.AGE_YOUNGADULT]+C.getYear()-birthday[2]);
@@ -590,9 +590,9 @@ public class DefaultPlayerStats implements PlayerStats
 	protected String getPrivateList(Set<String> h)
 	{
 		if((h==null)||(h.size()==0)) return "";
-		StringBuffer list=new StringBuffer("");
-		for(Iterator<String> e=h.iterator();e.hasNext();)
-			list.append((e.next())+";");
+		final StringBuffer list=new StringBuffer("");
+		for (final String string : h)
+			list.append((string)+";");
 		return list.toString();
 	}
 
@@ -601,7 +601,7 @@ public class DefaultPlayerStats implements PlayerStats
 	{
 		final long now=System.currentTimeMillis();
 		if(stat!=null)
-		for(TimeClock.TimePeriod period : TimeClock.TimePeriod.values())
+		for(final TimeClock.TimePeriod period : TimeClock.TimePeriod.values())
 		{
 			if(period==TimeClock.TimePeriod.ALLTIME)
 				prideStats[period.ordinal()][stat.ordinal()]+=amt;
@@ -609,7 +609,7 @@ public class DefaultPlayerStats implements PlayerStats
 			{
 				if(now>prideExpireTime[period.ordinal()])
 				{
-					for(AccountStats.PrideStat stat2 : AccountStats.PrideStat.values())
+					for(final AccountStats.PrideStat stat2 : AccountStats.PrideStat.values())
 						prideStats[period.ordinal()][stat2.ordinal()]=0;
 					prideExpireTime[period.ordinal()]=period.nextPeriod();
 				}
@@ -629,19 +629,19 @@ public class DefaultPlayerStats implements PlayerStats
 	@Override
 	public String getXML()
 	{
-		String f=getPrivateList(getFriends());
-		String i=getPrivateList(getIgnored());
-		String t=getPrivateList(introductions);
-		StringBuffer rest=new StringBuffer("");
-		String[] codes=getStatCodes();
+		final String f=getPrivateList(getFriends());
+		final String i=getPrivateList(getIgnored());
+		final String t=getPrivateList(introductions);
+		final StringBuffer rest=new StringBuffer("");
+		final String[] codes=getStatCodes();
 		for(int x=getSaveStatIndex();x<codes.length;x++)
 		{
-			String code=codes[x].toUpperCase();
+			final String code=codes[x].toUpperCase();
 			rest.append("<"+code+">"+CMLib.xml().parseOutAngleBrackets(getStat(code))+"</"+code+">");
 		}
 		rest.append("<NEXTPRIDEPERIODS>").append(CMParms.toTightStringList(prideExpireTime)).append("</NEXTPRIDEPERIODS>");
 		rest.append("<PRIDESTATS>");
-		for(TimeClock.TimePeriod period : TimeClock.TimePeriod.values())
+		for(final TimeClock.TimePeriod period : TimeClock.TimePeriod.values())
 			rest.append(CMParms.toTightStringList(prideStats[period.ordinal()])).append(";");
 		rest.append("</PRIDESTATS>");
 
@@ -674,13 +674,13 @@ public class DefaultPlayerStats implements PlayerStats
 	{
 		if((bday!=null)&&(bday.length()>0))
 		{
-			List<String> V=CMParms.parseCommas(bday,true);
+			final List<String> V=CMParms.parseCommas(bday,true);
 			birthday=new int[4];
 			for(int v=0;(v<V.size()) && (v<birthday.length);v++)
 				birthday[v]=CMath.s_int(V.get(v));
 			if(V.size()<4)
 			{
-				TimeClock C=CMLib.time().globalClock();
+				final TimeClock C=CMLib.time().globalClock();
 				birthday[3]=C.getYear();
 			}
 		}
@@ -689,13 +689,12 @@ public class DefaultPlayerStats implements PlayerStats
 	private void setAliasXML(List<XMLpiece> xml)
 	{
 		alias.clear();
-		for(Iterator<XMLpiece> p=xml.iterator();p.hasNext();)
+		for (final XMLpiece piece : xml)
 		{
-			XMLpiece piece=p.next();
 			if((piece.tag.equals("ALIAS"))&&(piece.parms!=null))
 			{
-				String command=CMLib.xml().getParmValue(piece.parms, "CMD");
-				String value=CMLib.xml().getParmValue(piece.parms, "VAL");
+				final String command=CMLib.xml().getParmValue(piece.parms, "CMD");
+				final String value=CMLib.xml().getParmValue(piece.parms, "VAL");
 				if((command!=null)&&(value!=null))
 					alias.put(command, CMLib.xml().restoreAngleBrackets(value));
 			}
@@ -703,8 +702,8 @@ public class DefaultPlayerStats implements PlayerStats
 		int a=-1;
 		while((++a)>=0)
 		{
-			String name=CMLib.xml().getValFromPieces(xml,"ALIAS"+a);
-			String value=CMLib.xml().getValFromPieces(xml,"ALIASV"+a);
+			final String name=CMLib.xml().getValFromPieces(xml,"ALIAS"+a);
+			final String value=CMLib.xml().getValFromPieces(xml,"ALIASV"+a);
 			if((name.length()==0)||(value.length()==0))
 				break;
 			alias.put(name.toUpperCase().trim(),CMLib.xml().restoreAngleBrackets(value));
@@ -714,13 +713,12 @@ public class DefaultPlayerStats implements PlayerStats
 	private void setLegacyXML(List<XMLpiece> xml)
 	{
 		legacy.clear();
-		for(Iterator<XMLpiece> p=xml.iterator();p.hasNext();)
+		for (final XMLpiece piece : xml)
 		{
-			XMLpiece piece=p.next();
 			if((piece.tag.equals("LEGACY"))&&(piece.parms!=null))
 			{
-				String category=CMLib.xml().getParmValue(piece.parms, "CAT");
-				String levelStr=CMLib.xml().getParmValue(piece.parms, "LVL");
+				final String category=CMLib.xml().getParmValue(piece.parms, "CAT");
+				final String levelStr=CMLib.xml().getParmValue(piece.parms, "LVL");
 				if((category!=null)&&(levelStr!=null))
 					legacy.put(category, Integer.valueOf(levelStr));
 			}
@@ -730,16 +728,15 @@ public class DefaultPlayerStats implements PlayerStats
 	private void setTitleXML(List<XMLpiece> xml)
 	{
 		titles.clear();
-		for(Iterator<XMLpiece> p=xml.iterator();p.hasNext();)
+		for (final XMLpiece piece : xml)
 		{
-			XMLpiece piece=p.next();
 			if(piece.tag.equals("TITLE"))
 				titles.add(CMLib.xml().restoreAngleBrackets(piece.value));
 		}
 		int t=-1;
 		while((++t)>=0)
 		{
-			String title=CMLib.xml().restoreAngleBrackets(CMLib.xml().getValFromPieces(xml,"TITLE"+t));
+			final String title=CMLib.xml().restoreAngleBrackets(CMLib.xml().getValFromPieces(xml,"TITLE"+t));
 			if(title.length()==0)
 				break;
 			titles.add(title);
@@ -756,7 +753,7 @@ public class DefaultPlayerStats implements PlayerStats
 		final XMLLibrary xmlLib=CMLib.xml();
 		final boolean debug=CMSecurity.isDebugging(CMSecurity.DbgFlag.PLAYERSTATS);
 		if(debug) Log.debugOut("XML="+xmlStr);
-		List<XMLLibrary.XMLpiece> xml = xmlLib.parseAllXML(xmlStr);
+		final List<XMLLibrary.XMLpiece> xml = xmlLib.parseAllXML(xmlStr);
 		String str=xmlLib.getValFromPieces(xml,"FRIENDS");
 		if(debug) Log.debugOut("FRIENDS="+str);
 		friends.clear();
@@ -779,7 +776,7 @@ public class DefaultPlayerStats implements PlayerStats
 			setAccountExpiration(CMath.s_long(str));
 		else
 		{
-			Calendar C=Calendar.getInstance();
+			final Calendar C=Calendar.getInstance();
 			C.add(Calendar.DATE,CMProps.getIntVar(CMProps.Int.TRIALDAYS));
 			setAccountExpiration(C.getTimeInMillis());
 		}
@@ -846,11 +843,11 @@ public class DefaultPlayerStats implements PlayerStats
 		levelInfo.clear();
 		if(str.length()>0)
 		{
-			List<String> sets=CMParms.parseSemicolons(str,true);
+			final List<String> sets=CMParms.parseSemicolons(str,true);
 			for(int ss=0;ss<sets.size();ss++)
 			{
-				String sStr=sets.get(ss);
-				List<String> twin=CMParms.parseCommas(sStr,true);
+				final String sStr=sets.get(ss);
+				final List<String> twin=CMParms.parseCommas(sStr,true);
 				if((twin.size()!=2)&&(twin.size()!=3))  continue;
 				if(CMath.s_int(twin.get(0))>=lastNum)
 				{
@@ -869,7 +866,7 @@ public class DefaultPlayerStats implements PlayerStats
 			roomSet().parseXML("<AREAS>"+str+"</AREAS>");
 		else
 			roomSet().parseXML("<AREAS />");
-		String[] codes=getStatCodes();
+		final String[] codes=getStatCodes();
 		for(int i=getSaveStatIndex();i<codes.length;i++)
 		{
 			str=xmlLib.getValFromPieces(xml,codes[i].toUpperCase());
@@ -878,8 +875,8 @@ public class DefaultPlayerStats implements PlayerStats
 		}
 		final String[] nextPeriods=xmlLib.getValFromPieces(xml, "NEXTPRIDEPERIODS").split(",");
 		final String[] prideStats=xmlLib.getValFromPieces(xml, "PRIDESTATS").split(";");
-		Pair<Long,int[]>[] finalPrideStats = CMLib.players().parsePrideStats(nextPeriods, prideStats);
-		for(TimeClock.TimePeriod period : TimeClock.TimePeriod.values())
+		final Pair<Long,int[]>[] finalPrideStats = CMLib.players().parsePrideStats(nextPeriods, prideStats);
+		for(final TimeClock.TimePeriod period : TimeClock.TimePeriod.values())
 			if(period.ordinal()>finalPrideStats.length)
 			{
 				this.prideExpireTime[period.ordinal()]=finalPrideStats[period.ordinal()].first.longValue();
@@ -899,7 +896,7 @@ public class DefaultPlayerStats implements PlayerStats
 	{
 		if(levelInfo.size()==0)
 			levelInfo.addElement(Integer.valueOf(0),Long.valueOf(System.currentTimeMillis()),"");
-		StringBuffer buf=new StringBuffer("");
+		final StringBuffer buf=new StringBuffer("");
 		for(int ss=0;ss<levelInfo.size();ss++)
 		{
 			buf.append(((Integer)levelInfo.elementAt(ss,1)).intValue()+",");
@@ -998,7 +995,7 @@ public class DefaultPlayerStats implements PlayerStats
 	@Override
 	public boolean hasVisited(Area A)
 	{
-		int numRooms=A.getAreaIStats()[Area.Stats.VISITABLE_ROOMS.ordinal()];
+		final int numRooms=A.getAreaIStats()[Area.Stats.VISITABLE_ROOMS.ordinal()];
 		if(numRooms<=0) return true;
 		return roomSet().roomCount(A.Name())>0;
 	}
@@ -1014,7 +1011,7 @@ public class DefaultPlayerStats implements PlayerStats
 	public void unVisit(Area A)
 	{
 		Room R;
-		for(Enumeration<Room> r=A.getCompleteMap();r.hasMoreElements();)
+		for(final Enumeration<Room> r=A.getCompleteMap();r.hasMoreElements();)
 		{
 			R=r.nextElement();
 			if(roomSet().contains(CMLib.map().getExtendedRoomID(R)))
@@ -1029,13 +1026,13 @@ public class DefaultPlayerStats implements PlayerStats
 		{
 			long totalRooms=0;
 			long totalVisits=0;
-			for(Enumeration<Area> e=CMLib.map().areas();e.hasMoreElements();)
+			for(final Enumeration<Area> e=CMLib.map().areas();e.hasMoreElements();)
 			{
 				A=e.nextElement();
 				if((CMLib.flags().canAccess(mob,A))
 				&&(!CMath.bset(A.flags(),Area.FLAG_INSTANCE_CHILD)))
 				{
-					int[] stats=A.getAreaIStats();
+					final int[] stats=A.getAreaIStats();
 					if(stats[Area.Stats.VISITABLE_ROOMS.ordinal()]>0)
 					{
 						totalRooms+=stats[Area.Stats.VISITABLE_ROOMS.ordinal()];
@@ -1044,12 +1041,12 @@ public class DefaultPlayerStats implements PlayerStats
 				}
 			}
 			if(totalRooms==0) return 100;
-			double pct=CMath.div(totalVisits,totalRooms);
+			final double pct=CMath.div(totalVisits,totalRooms);
 			return (int)Math.round(100.0*pct);
 		}
-		int numRooms=A.getAreaIStats()[Area.Stats.VISITABLE_ROOMS.ordinal()];
+		final int numRooms=A.getAreaIStats()[Area.Stats.VISITABLE_ROOMS.ordinal()];
 		if(numRooms<=0) return 100;
-		double pct=CMath.div(roomSet().roomCount(A.Name()),numRooms);
+		final double pct=CMath.div(roomSet().roomCount(A.Name()),numRooms);
 		return (int)Math.round(100.0*pct);
 	}
 
@@ -1102,7 +1099,7 @@ public class DefaultPlayerStats implements PlayerStats
 	public int getTotalLegacyLevels()
 	{
 		int total=0;
-		for(Integer value : legacy.values())
+		for(final Integer value : legacy.values())
 			total+=value.intValue();
 		return total;
 	}
@@ -1110,7 +1107,7 @@ public class DefaultPlayerStats implements PlayerStats
 	@Override
 	public void addLegacyLevel(String category)
 	{
-		Integer level=legacy.get(category);
+		final Integer level=legacy.get(category);
 		if(level != null)
 			legacy.put(category, Integer.valueOf(level.intValue()+1));
 		else
@@ -1120,7 +1117,7 @@ public class DefaultPlayerStats implements PlayerStats
 	@Override
 	public int getLegacyLevel(String category)
 	{
-		Integer level=legacy.get(category);
+		final Integer level=legacy.get(category);
 		if(level != null) return level.intValue();
 		return 0;
 	}

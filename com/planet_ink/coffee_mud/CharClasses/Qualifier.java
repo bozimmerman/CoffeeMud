@@ -45,7 +45,7 @@ public class Qualifier extends StdCharClass
 	public Qualifier()
 	{
 		super();
-		for(int i: CharStats.CODES.BASE())
+		for(final int i: CharStats.CODES.BASE())
 			maxStatAdj[i]=7;
 	}
 
@@ -66,10 +66,10 @@ public class Qualifier extends StdCharClass
 		if(!loaded())
 		{
 			setLoaded(true);
-			for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
+			for(final Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 			{
-				Ability A=a.nextElement();
-				int lvl=CMLib.ableMapper().lowestQualifyingLevel(A.ID());
+				final Ability A=a.nextElement();
+				final int lvl=CMLib.ableMapper().lowestQualifyingLevel(A.ID());
 				if((lvl>0)&&(!CMLib.ableMapper().classOnly("Archon",A.ID())))
 					CMLib.ableMapper().addCharAbilityMapping(ID(),lvl,A.ID(),false);
 			}
@@ -83,13 +83,13 @@ public class Qualifier extends StdCharClass
 		super.grantAbilities(mob,isBorrowedClass);
 		if(mob.playerStats()==null)
 		{
-			List<AbilityMapper.AbilityMapping> V=CMLib.ableMapper().getUpToLevelListings(ID(),
+			final List<AbilityMapper.AbilityMapping> V=CMLib.ableMapper().getUpToLevelListings(ID(),
 												mob.charStats().getClassLevel(ID()),
 												false,
 												false);
-			for(AbilityMapper.AbilityMapping able : V)
+			for(final AbilityMapper.AbilityMapping able : V)
 			{
-				Ability A=CMClass.getAbility(able.abilityID);
+				final Ability A=CMClass.getAbility(able.abilityID);
 				if((A!=null)
 				&&(!CMLib.ableMapper().getAllQualified(ID(),true,A.ID()))
 				&&(!CMLib.ableMapper().getDefaultGain(ID(),true,A.ID())))

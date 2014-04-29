@@ -52,7 +52,7 @@ public class Spell_Scribe extends Spell
 			mob.tell("Scribe which spell onto what?");
 			return false;
 		}
-		Physical target=mob.location().fetchFromMOBRoomFavorsItems(mob,null,(String)commands.lastElement(),Wearable.FILTER_UNWORNONLY);
+		final Physical target=mob.location().fetchFromMOBRoomFavorsItems(mob,null,(String)commands.lastElement(),Wearable.FILTER_UNWORNONLY);
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
 			mob.tell("You don't see '"+((String)commands.lastElement())+"' here.");
@@ -65,13 +65,13 @@ public class Spell_Scribe extends Spell
 		}
 
 		commands.removeElementAt(commands.size()-1);
-		Scroll scroll=(Scroll)target;
+		final Scroll scroll=(Scroll)target;
 
-		String spellName=CMParms.combine(commands,0).trim();
+		final String spellName=CMParms.combine(commands,0).trim();
 		Spell scrollThis=null;
-		for(Enumeration<Ability> a=mob.allAbilities();a.hasMoreElements();)
+		for(final Enumeration<Ability> a=mob.allAbilities();a.hasMoreElements();)
 		{
-			Ability A=a.nextElement();
+			final Ability A=a.nextElement();
 			if((A!=null)
 			&&(A instanceof Spell)
 			&&(A.name().equalsIgnoreCase(spellName))
@@ -79,9 +79,9 @@ public class Spell_Scribe extends Spell
 				scrollThis=(Spell)A;
 		}
 		if(scrollThis==null)
-			for(Enumeration<Ability> a=mob.allAbilities();a.hasMoreElements();)
+			for(final Enumeration<Ability> a=mob.allAbilities();a.hasMoreElements();)
 			{
-				Ability A=a.nextElement();
+				final Ability A=a.nextElement();
 				if((A!=null)
 				&&(A instanceof Spell)
 				&&(CMLib.english().containsString(A.name(),spellName))
@@ -107,8 +107,8 @@ public class Spell_Scribe extends Spell
 			return false;
 		}
 
-		List<Ability> spells=scroll.getSpells();
-		for(Ability spell: spells)
+		final List<Ability> spells=scroll.getSpells();
+		for(final Ability spell: spells)
 			if(spell.ID().equals(scrollThis.ID()))
 			{
 				mob.tell("That spell is already scribed onto "+scroll.name()+".");
@@ -129,12 +129,12 @@ public class Spell_Scribe extends Spell
 		CMLib.leveler().postExperience(mob,null,null,-experienceToLose,false);
 		mob.tell("You lose "+experienceToLose+" experience points for the effort.");
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
 			setMiscText(scrollThis.ID());
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),"^S<S-NAME> move(s) <S-HIS-HER> fingers around <T-NAMESELF>, incanting softly.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),"^S<S-NAME> move(s) <S-HIS-HER> fingers around <T-NAMESELF>, incanting softly.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

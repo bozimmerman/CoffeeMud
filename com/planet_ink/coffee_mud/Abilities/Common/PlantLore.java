@@ -55,12 +55,12 @@ public class PlantLore extends CommonSkill
 	{
 		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Tickable.TICKID_MOB))
 		{
-			MOB mob=(MOB)affected;
+			final MOB mob=(MOB)affected;
 			if(tickUp==6)
 			{
 				if(success==false)
 				{
-					StringBuffer str=new StringBuffer("Your growth observation attempt failed.\n\r");
+					final StringBuffer str=new StringBuffer("Your growth observation attempt failed.\n\r");
 					commonTell(mob,str.toString());
 					unInvoke();
 				}
@@ -77,14 +77,14 @@ public class PlantLore extends CommonSkill
 		{
 			if((affected!=null)&&(affected instanceof MOB)&&(!helping))
 			{
-				MOB mob=(MOB)affected;
-				Room room=mob.location();
+				final MOB mob=(MOB)affected;
+				final Room room=mob.location();
 				if((success)&&(!aborted)&&(room!=null))
 				{
 					if((room.domainType()&Room.INDOORS)==0)
 					{
-						StringBuffer str=new StringBuffer("");
-						Vector V=new Vector();
+						final StringBuffer str=new StringBuffer("");
+						final Vector V=new Vector();
 						TrackingLibrary.TrackingFlags flags;
 						flags = new TrackingLibrary.TrackingFlags()
 								.plus(TrackingLibrary.TrackingFlag.OPENONLY)
@@ -93,9 +93,9 @@ public class PlantLore extends CommonSkill
 						CMLib.tracking().getRadiantRooms(room,V,flags,null,2+(getXLEVELLevel(mob)/2),null);
 						for(int v=0;v<V.size();v++)
 						{
-							Room R=(Room)V.elementAt(v);
-							int material=R.myResource()&RawMaterial.MATERIAL_MASK;
-							int resource=R.myResource()&RawMaterial.RESOURCE_MASK;
+							final Room R=(Room)V.elementAt(v);
+							final int material=R.myResource()&RawMaterial.MATERIAL_MASK;
+							final int resource=R.myResource()&RawMaterial.RESOURCE_MASK;
 							if(!RawMaterial.CODES.IS_VALID(resource))
 								continue;
 							if((material!=RawMaterial.MATERIAL_VEGETATION)
@@ -104,7 +104,7 @@ public class PlantLore extends CommonSkill
 							&&(resource!=RawMaterial.RESOURCE_SAP)
 							&&(material!=RawMaterial.MATERIAL_WOODEN))
 								continue;
-							String resourceStr=RawMaterial.CODES.NAME(resource);
+							final String resourceStr=RawMaterial.CODES.NAME(resource);
 							if(R==room)
 								str.append("You think this spot would be good for "+resourceStr.toLowerCase()+".\n\r");
 							else
@@ -112,7 +112,7 @@ public class PlantLore extends CommonSkill
 								int isAdjacent=-1;
 								for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 								{
-									Room room2=room.getRoomInDir(d);
+									final Room room2=room.getRoomInDir(d);
 									if(room2==R) isAdjacent=d;
 								}
 								if(isAdjacent>=0)
@@ -151,8 +151,8 @@ public class PlantLore extends CommonSkill
 			return false;
 		if(proficiencyCheck(mob,0,auto))
 			success=true;
-		int duration=getDuration(45,mob,1,5);
-		CMMsg msg=CMClass.getMsg(mob,null,this,getActivityMessageType(),"<S-NAME> start(s) observing the growth in this area.");
+		final int duration=getDuration(45,mob,1,5);
+		final CMMsg msg=CMClass.getMsg(mob,null,this,getActivityMessageType(),"<S-NAME> start(s) observing the growth in this area.");
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

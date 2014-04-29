@@ -46,7 +46,7 @@ public class Empty extends Drop
 	{
 		String whatToDrop=null;
 		Environmental target=mob;
-		Vector V=new Vector();
+		final Vector V=new Vector();
 		if(commands.size()<2)
 		{
 			mob.tell("Empty what where?");
@@ -55,7 +55,7 @@ public class Empty extends Drop
 		commands.removeElementAt(0);
 		if(commands.size()>1)
 		{
-			String s=(String)commands.lastElement();
+			final String s=(String)commands.lastElement();
 			if(s.equalsIgnoreCase("here")) target=mob.location();
 			else
 			if(s.equalsIgnoreCase("me")) target=mob;
@@ -85,7 +85,7 @@ public class Empty extends Drop
 			return false;
 		}
 
-		int maxToDrop=CMLib.english().calculateMaxToGive(mob,commands,true,mob,false);
+		final int maxToDrop=CMLib.english().calculateMaxToGive(mob,commands,true,mob,false);
 		if(maxToDrop<0) return false;
 
 		whatToDrop=CMParms.combine(commands,0);
@@ -113,7 +113,7 @@ public class Empty extends Drop
 						mob.tell("You must remove that first.");
 						return false;
 					}
-					CMMsg newMsg=CMClass.getMsg(mob,dropThis,null,CMMsg.MSG_REMOVE,null);
+					final CMMsg newMsg=CMClass.getMsg(mob,dropThis,null,CMMsg.MSG_REMOVE,null);
 					if(mob.location().okMessage(mob,newMsg))
 						mob.location().send(mob,newMsg);
 					else
@@ -156,16 +156,16 @@ public class Empty extends Drop
 		else
 		for(int v=0;v<V.size();v++)
 		{
-			Container C=(Container)V.elementAt(v);
+			final Container C=(Container)V.elementAt(v);
 			if(C==target) continue;
-			List<Item> V2=C.getContents();
+			final List<Item> V2=C.getContents();
 
 			boolean skipMessage=false;
 			if((C instanceof Drink)&&(((Drink)C).containsDrink()))
 			{
 				if(target instanceof Drink)
 				{
-					Command C2=CMClass.getCommand("Pour");
+					final Command C2=CMClass.getCommand("Pour");
 					C2.execute(mob,new XVector("POUR","$"+C.Name()+"$","$"+target.Name()+"$"),metaFlags);
 					skipMessage=true;
 				}
@@ -176,14 +176,14 @@ public class Empty extends Drop
 						C.destroy();
 				}
 			}
-			CMMsg msg=CMClass.getMsg(mob,C,CMMsg.MSG_QUIETMOVEMENT,str);
-			Room R=mob.location();
+			final CMMsg msg=CMClass.getMsg(mob,C,CMMsg.MSG_QUIETMOVEMENT,str);
+			final Room R=mob.location();
 			if(skipMessage||(R.okMessage(mob,msg)))
 			{
 				if(!skipMessage) R.send(mob,msg);
 				for(int v2=0;v2<V2.size();v2++)
 				{
-					Item I=V2.get(v2);
+					final Item I=V2.get(v2);
 					if(I instanceof Coins) ((Coins)I).setContainer(null);
 					if(((I.container()==null)||(Get.get(mob,C,I,true,null,true)))
 					&&(I.container()==null))
@@ -193,7 +193,7 @@ public class Empty extends Drop
 						else
 						if(target instanceof Container)
 						{
-							CMMsg putMsg=CMClass.getMsg(mob,target,I,CMMsg.MASK_OPTIMIZE|CMMsg.MSG_PUT,null);
+							final CMMsg putMsg=CMClass.getMsg(mob,target,I,CMMsg.MASK_OPTIMIZE|CMMsg.MSG_PUT,null);
 							if(R.okMessage(mob,putMsg))
 								R.send(mob,putMsg);
 						}

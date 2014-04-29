@@ -40,7 +40,7 @@ public class GrinderClasses
 
 	public static DVector cabilities(HTTPRequest httpReq)
 	{
-		DVector theclasses=new DVector(9);
+		final DVector theclasses=new DVector(9);
 		if(httpReq.isUrlParameter("CABLES1"))
 		{
 			int num=1;
@@ -76,14 +76,14 @@ public class GrinderClasses
 
 	public static String modifyCharClass(HTTPRequest httpReq, java.util.Map<String,String> parms, CharClass oldC, CharClass C)
 	{
-		String replaceCommand=httpReq.getUrlParameter("REPLACE");
+		final String replaceCommand=httpReq.getUrlParameter("REPLACE");
 		if((replaceCommand != null)
 		&& (replaceCommand.length()>0)
 		&& (replaceCommand.indexOf('=')>0))
 		{
-			int eq=replaceCommand.indexOf('=');
-			String field=replaceCommand.substring(0,eq);
-			String value=replaceCommand.substring(eq+1);
+			final int eq=replaceCommand.indexOf('=');
+			final String field=replaceCommand.substring(0,eq);
+			final String value=replaceCommand.substring(eq+1);
 			httpReq.addFakeUrlParameter(field, value);
 			httpReq.addFakeUrlParameter("REPLACE","");
 		}
@@ -94,8 +94,8 @@ public class GrinderClasses
 		while(httpReq.isUrlParameter("NAME"+(++num)))
 			if(CMath.isInteger(httpReq.getUrlParameter("NAMELEVEL"+(num))))
 			{
-				int minLevel = CMath.s_int(httpReq.getUrlParameter("NAMELEVEL"+(num)));
-				String name=httpReq.getUrlParameter("NAME"+(num));
+				final int minLevel = CMath.s_int(httpReq.getUrlParameter("NAMELEVEL"+(num)));
+				final String name=httpReq.getUrlParameter("NAME"+(num));
 				if((name!=null)&&(name.length()>0))
 				{
 					if(DV.size()==0)
@@ -189,11 +189,11 @@ public class GrinderClasses
 			V.add(httpReq.getUrlParameter("NOWEAPS"+id));
 		C.setStat("GETWEP",CMParms.toStringList(V));
 		int x=0;
-		List<Pair<String,Integer>> minStats=new LinkedList<Pair<String,Integer>>();
+		final List<Pair<String,Integer>> minStats=new LinkedList<Pair<String,Integer>>();
 		while(httpReq.getUrlParameter("MINSTAT"+x)!=null)
 		{
-			String minStat=httpReq.getUrlParameter("MINSTAT"+x);
-			String statMin=httpReq.getUrlParameter("STATMIN"+x);
+			final String minStat=httpReq.getUrlParameter("MINSTAT"+x);
+			final String statMin=httpReq.getUrlParameter("STATMIN"+x);
 			if((minStat!=null)&&(minStat.length()>0)&&(CMath.isInteger(statMin)))
 				minStats.add(new Pair<String,Integer>(minStat,Integer.valueOf(CMath.s_int(statMin))));
 			x++;
@@ -204,7 +204,7 @@ public class GrinderClasses
 			C.setStat("GETMINSTAT"+m, minStats.get(m).first);
 			C.setStat("GETSTATMIN"+m, minStats.get(m).second.toString());
 		}
-		List<Item> Ivs=GrinderRaces.itemList(oldC.outfit(null),'O',httpReq,false);
+		final List<Item> Ivs=GrinderRaces.itemList(oldC.outfit(null),'O',httpReq,false);
 		C.setStat("NUMOFT",""+Ivs.size());
 		for(int l=0;l<Ivs.size();l++)
 		{
@@ -217,8 +217,8 @@ public class GrinderClasses
 		while(httpReq.isUrlParameter("SSET"+(++num)))
 			if(CMath.isInteger(httpReq.getUrlParameter("SSETLEVEL"+(num))))
 			{
-				int minLevel = CMath.s_int(httpReq.getUrlParameter("SSETLEVEL"+(num)));
-				String name=httpReq.getUrlParameter("SSET"+(num));
+				final int minLevel = CMath.s_int(httpReq.getUrlParameter("SSETLEVEL"+(num)));
+				final String name=httpReq.getUrlParameter("SSET"+(num));
 				if((name!=null)&&(name.length()>0))
 				{
 					if(DV.size()==0)
@@ -247,7 +247,7 @@ public class GrinderClasses
 		C.setStat("NUMSSET",""+DV.size());
 		for(int l=0;l<DV.size();l++)
 		{
-			String sec=(String)DV.elementAt(l,2);
+			final String sec=(String)DV.elementAt(l,2);
 			V=CMParms.parseCommas(sec, true);
 			C.setStat("SSET"+l, CMParms.combineWithQuotes(V,0));
 			C.setStat("SSETLEVEL"+l, ((Integer)DV.elementAt(l,1)).toString());

@@ -66,15 +66,15 @@ public class Chant_SummonFood extends Chant
 			return false;
 
 		// now see if it worked
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":"^S<S-NAME> chant(s) to the ground.^?");
+			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":"^S<S-NAME> chant(s) to the ground.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				Food newItem=null;
-				int berryType=RawMaterial.CODES.BERRIES()[CMLib.dice().roll(1,RawMaterial.CODES.BERRIES().length,-1)];
+				final int berryType=RawMaterial.CODES.BERRIES()[CMLib.dice().roll(1,RawMaterial.CODES.BERRIES().length,-1)];
 				for(int i=0;i<((adjustedLevel(mob,asLevel)/4)+1);i++)
 				{
 					newItem=(Food)CMClass.getBasicItem("GenFoodResource");

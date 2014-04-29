@@ -76,7 +76,7 @@ public class GenAbility extends StdAbility
 	private static final int NUM_VS=30;//S
 	private static final Object[] makeEmpty()
 	{
-		Object[] O=new Object[NUM_VS];
+		final Object[] O=new Object[NUM_VS];
 		O[V_NAME]="an ability";
 		O[V_DISP]="(An Affect)";
 		O[V_TRIG]=new String[]{"CAST","CA","C"};
@@ -112,7 +112,7 @@ public class GenAbility extends StdAbility
 	private static final Object V(String ID, int varNum)
 	{
 		if(vars.containsKey(ID)) return ((Object[])vars.get(ID))[varNum];
-		Object[] O=makeEmpty();
+		final Object[] O=makeEmpty();
 		vars.put(ID,O);
 		return O[varNum];
 	}
@@ -122,7 +122,7 @@ public class GenAbility extends StdAbility
 			((Object[])vars.get(ID))[varNum]=O;
 		else
 		{
-			Object[] O2=makeEmpty();
+			final Object[] O2=makeEmpty();
 			vars.put(ID,O2);
 			O2[varNum]=O;
 		}
@@ -133,7 +133,7 @@ public class GenAbility extends StdAbility
 	{
 		if(((String)V(ID,V_SCRP)).hashCode()!=scriptParmHash)
 		{
-			String parm=(String)V(ID,V_SCRP);
+			final String parm=(String)V(ID,V_SCRP);
 			scriptParmHash=parm.hashCode();
 			if(parm.trim().length()==0)
 				scriptObj=null;
@@ -180,7 +180,7 @@ public class GenAbility extends StdAbility
 	{
 		try
 		{
-			GenAbility A=this.getClass().newInstance();
+			final GenAbility A=this.getClass().newInstance();
 			A.ID=ID;
 			getScripter();
 			A.scriptParmHash=scriptParmHash;
@@ -193,7 +193,7 @@ public class GenAbility extends StdAbility
 				A.scriptObj=null;
 			return A;
 		}
-		catch(Exception e)
+		catch(final Exception e)
 		{
 			Log.errOut(ID(),e);
 		}
@@ -205,7 +205,7 @@ public class GenAbility extends StdAbility
 	{
 		if(E instanceof GenAbility)
 		{
-			GenAbility A=(GenAbility)E;
+			final GenAbility A=(GenAbility)E;
 			A.scriptParmHash=scriptParmHash;
 			if(A.scriptObj!=null)
 			{
@@ -267,9 +267,9 @@ public class GenAbility extends StdAbility
 				break;
 			case Ability.CAN_EXITS:
 			{
-				String whatToOpen=CMParms.combine(commands,0);
+				final String whatToOpen=CMParms.combine(commands,0);
 				Environmental openThis=null;
-				int dirCode=Directions.getGoodDirectionCode(whatToOpen);
+				final int dirCode=Directions.getGoodDirectionCode(whatToOpen);
 				if(dirCode>=0)
 					openThis=mob.location().getExitInDir(dirCode);
 				if(openThis==null)
@@ -384,13 +384,13 @@ public class GenAbility extends StdAbility
 					}
 					setTimeOfNextCast(mob);
 
-					String afterAffect=(String)V(ID,V_PAFF);
+					final String afterAffect=(String)V(ID,V_PAFF);
 					if((afterAffect.length()>0)&&(success[0]))
 					{
-						Ability P=CMClass.getAbility("Prop_SpellAdder");
+						final Ability P=CMClass.getAbility("Prop_SpellAdder");
 						if(P!=null)
 						{
-							Vector V=new XVector(afterAffect);
+							final Vector V=new XVector(afterAffect);
 							P.invoke(mob,V,null,true,asLevel); // spell adder will return addable affects
 							Ability A=null;
 							if(target!=null)
@@ -400,7 +400,7 @@ public class GenAbility extends StdAbility
 								if(target.fetchEffect(A.ID())==null)
 								{
 									A=(Ability)A.copyOf();
-									int tickDown=(abstractQuality()==Ability.QUALITY_MALICIOUS)?
+									final int tickDown=(abstractQuality()==Ability.QUALITY_MALICIOUS)?
 											getMaliciousTickdownTime(mob,target,tickOverride(),asLevel):
 											getBeneficialTickdownTime(mob,target,tickOverride(),asLevel);
 									A.startTickDown(mob,target,tickDown);
@@ -418,7 +418,7 @@ public class GenAbility extends StdAbility
 					@Override
 					public void run()
 					{
-						String DMG=(String)V(ID,V_PDMG);
+						final String DMG=(String)V(ID,V_PDMG);
 						int dmg=0;
 						if(DMG.trim().length()>0)
 							dmg=CMath.parseIntExpression(DMG,
@@ -458,10 +458,10 @@ public class GenAbility extends StdAbility
 							}
 							if(CMLib.flags().isInTheGame(mob,true)&&((finalTarget==null)||CMLib.flags().isInTheGame((MOB)finalTarget,true)))
 							{
-								ScriptingEngine S=getScripter();
+								final ScriptingEngine S=getScripter();
 								if((success[0])&&(S!=null))
 								{
-									CMMsg msg3=CMClass.getMsg(mob,finalTarget,me,CMMsg.MSG_OK_VISUAL,null,null,ID);
+									final CMMsg msg3=CMClass.getMsg(mob,finalTarget,me,CMMsg.MSG_OK_VISUAL,null,null,ID);
 									S.executeMsg(mob, msg3);
 									S.dequeResponses();
 								}
@@ -471,10 +471,10 @@ public class GenAbility extends StdAbility
 						if(((msg.value()<=0)&&((msg2==null)||(msg2.value()<=0)))
 						&&(CMLib.flags().isInTheGame(mob,true)&&((finalTarget==null)||CMLib.flags().isInTheGame(finalTarget,true))))
 						{
-							String afterCast=(String)V(ID,V_PABL);
+							final String afterCast=(String)V(ID,V_PABL);
 							if(afterCast.length()>0)
 							{
-								Ability P=CMClass.getAbility("Prop_SpellAdder");
+								final Ability P=CMClass.getAbility("Prop_SpellAdder");
 								if(P!=null) P.invoke(mob,new XVector(afterCast),finalTarget,true,asLevel);
 							}
 						}
@@ -518,7 +518,7 @@ public class GenAbility extends StdAbility
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
-		ScriptingEngine S=getScripter();
+		final ScriptingEngine S=getScripter();
 		if(S!=null)
 			S.executeMsg(myHost,msg);
 		if(isChannelingSkill()
@@ -570,7 +570,7 @@ public class GenAbility extends StdAbility
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
-		ScriptingEngine S=getScripter();
+		final ScriptingEngine S=getScripter();
 		if(S!=null)
 			if(!S.okMessage(myHost,msg))
 				return false;
@@ -584,7 +584,7 @@ public class GenAbility extends StdAbility
 			return false;
 		if(!super.tick(ticking,tickID))
 			return false;
-		ScriptingEngine S=getScripter();
+		final ScriptingEngine S=getScripter();
 		if(S!=null)
 			if(!S.tick(ticking,tickID))
 				return false;
@@ -696,7 +696,7 @@ public class GenAbility extends StdAbility
 		if(val.trim().length()>0)
 		{
 			V(ID,V_NAME); // force creation, if necc
-			Object[] O=(Object[])vars.get(ID);
+			final Object[] O=(Object[])vars.get(ID);
 			vars.remove(ID);
 			vars.put(val,O);
 			if(num!=9)
@@ -750,7 +750,7 @@ public class GenAbility extends StdAbility
 	{
 		if(mask)
 		{
-			StringBuffer str=new StringBuffer("");
+			final StringBuffer str=new StringBuffer("");
 			for(int i=0;i<options.length;i++)
 				if((val&(1<<i))>0)
 					str.append(options[i]+",");
@@ -772,7 +772,7 @@ public class GenAbility extends StdAbility
 		if(CMath.isInteger(val)) return CMath.s_int(val);
 		int dom=0;
 		int acod=Ability.ACODE_SKILL;
-		List<String> V=CMParms.parseCommas(val,true);
+		final List<String> V=CMParms.parseCommas(val,true);
 		for(int v=0;v<V.size();v++)
 		{
 			val=V.get(v);
@@ -807,8 +807,8 @@ public class GenAbility extends StdAbility
 
 	private String convertClassAndDomain(int val)
 	{
-		int dom=(val&Ability.ALL_DOMAINS)>>5;
-		int acod=val&Ability.ALL_ACODES;
+		final int dom=(val&Ability.ALL_DOMAINS)>>5;
+		final int acod=val&Ability.ALL_ACODES;
 		if((acod>=0)&&(acod<Ability.ACODE_DESCS.length)
 		&&(dom>=0)&&(dom<Ability.DOMAIN_DESCS.length))
 			return Ability.ACODE_DESCS[acod]+","+Ability.DOMAIN_DESCS[dom];
@@ -827,7 +827,7 @@ public class GenAbility extends StdAbility
 				return mask?(1<<i):i;
 		if(mask)
 		{
-			List<String> V=CMParms.parseCommas(val,true);
+			final List<String> V=CMParms.parseCommas(val,true);
 			int num=0;
 			for(int v=0;v<V.size();v++)
 				num=num|(1<<convert(options,V.get(v),false));
@@ -847,7 +847,7 @@ public class GenAbility extends StdAbility
 
 	private void parseAllXML(String xml)
 	{
-		List<XMLLibrary.XMLpiece> V=CMLib.xml().parseAllXML(xml);
+		final List<XMLLibrary.XMLpiece> V=CMLib.xml().parseAllXML(xml);
 		if((V==null)||(V.size()==0)) return;
 		for(int c=0;c<getStatCodes().length;c++)
 			if(getStatCodes()[c].equals("CLASS"))
@@ -858,7 +858,7 @@ public class GenAbility extends StdAbility
 	}
 	private String getAllXML()
 	{
-		StringBuffer str=new StringBuffer("");
+		final StringBuffer str=new StringBuffer("");
 		for(int c=0;c<getStatCodes().length;c++)
 			if(!getStatCodes()[c].equals("TEXT"))
 				str.append("<"+getStatCodes()[c]+">"

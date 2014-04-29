@@ -44,7 +44,7 @@ public class Paladin_PoisonImmunity extends PaladinSkill
 		if(!(affected instanceof MOB))
 			return true;
 
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		if((msg.amITarget(mob))
 		&&(msg.targetMinor()==CMMsg.TYP_POISON)
 		&&(!mob.amDead())

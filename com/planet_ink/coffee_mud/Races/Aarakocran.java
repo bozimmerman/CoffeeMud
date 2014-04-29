@@ -37,10 +37,10 @@ public class Aarakocran extends Harpy
 	@Override public String ID(){	return "Aarakocran"; }
 	@Override public String name(){ return "Aarakocran"; }
 	@Override public long forbiddenWornBits(){return Wearable.WORN_BACK|Wearable.WORN_ABOUT_BODY|Wearable.WORN_FEET;}
-	private String[]racialAbilityNames={"WingFlying"};
-	private int[]racialAbilityLevels={1};
-	private int[]racialAbilityProficiencies={100};
-	private boolean[]racialAbilityQuals={false};
+	private final String[]racialAbilityNames={"WingFlying"};
+	private final int[]racialAbilityLevels={1};
+	private final int[]racialAbilityProficiencies={100};
+	private final boolean[]racialAbilityQuals={false};
 	@Override public String[] racialAbilityNames(){return racialAbilityNames;}
 	@Override public int[] racialAbilityLevels(){return racialAbilityLevels;}
 	@Override public int[] racialAbilityProficiencies(){return racialAbilityProficiencies;}

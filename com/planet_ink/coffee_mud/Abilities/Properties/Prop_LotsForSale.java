@@ -47,10 +47,10 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 		V.add(R);
 		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 		{
-			Room R2=R.getRoomInDir(d);
+			final Room R2=R.getRoomInDir(d);
 			if((R2!=null)&&(R2.roomID().length()>0)&&(!V.contains(R2)))
 			{
-				Ability A=R2.fetchEffect(ID());
+				final Ability A=R2.fetchEffect(ID());
 				if((R2.getArea()==R.getArea())&&(A!=null))
 					fillCluster(R2,V);
 				else
@@ -65,7 +65,7 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 	@Override
 	public List<Room> getConnectedPropertyRooms()
 	{
-		List<Room> V=new ArrayList<Room>();
+		final List<Room> V=new ArrayList<Room>();
 		Room R=null;
 		if(affected instanceof Room)
 			R=(Room)affected;
@@ -77,7 +77,7 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 			String uniqueID="LOTS_PROPERTY_"+this;
 			if(V.size()>0)
 				uniqueID="LOTS_PROPERTY_"+CMLib.map().getExtendedRoomID(V.get(0));
-			for(Iterator<Room> r=V.iterator();r.hasNext();)
+			for(final Iterator<Room> r=V.iterator();r.hasNext();)
 			{
 				Ability A=null;
 				R=r.next();
@@ -102,7 +102,7 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 
 		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 		{
-			Room R=theRoom.rawDoors()[d];
+			final Room R=theRoom.rawDoors()[d];
 			if((R!=null)
 			   &&(R!=fromRoom)
 			   &&(R.roomID().length()>0)
@@ -119,7 +119,7 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 			return "LAND_TITLE_FOR#"+CMLib.map().getExtendedRoomID((Room)affected);
 		else
 		{
-			Room R=CMLib.map().getRoom(landPropertyID());
+			final Room R=CMLib.map().getRoom(landPropertyID());
 			if(R!=null)
 				return "LAND_TITLE_FOR#"+CMLib.map().getExtendedRoomID(R);
 		}
@@ -136,7 +136,7 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 	@Override
 	public void updateLot(List optPlayerList)
 	{
-		Environmental EV=affected;
+		final Environmental EV=affected;
 		if(!(EV instanceof Room)) return;
 		Room R=(Room)EV;
 		boolean didAnything=false;
@@ -155,7 +155,7 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 					{
 						if(d==Directions.GATE)
 							continue;
-						Room R2=R.rawDoors()[d];
+						final Room R2=R.rawDoors()[d];
 						foundOne=foundOne||(R2!=null);
 						Exit E=R.getRawExit(d);
 						if((R2!=null)&&(isCleanRoom(R,R2)))

@@ -57,11 +57,11 @@ public class StdPowder extends StdItem implements MagicDust {
 	@Override
 	public void spreadIfAble(MOB mob, Physical target)
 	{
-		List<Ability> spells = getSpells();
+		final List<Ability> spells = getSpells();
 		if (spells.size() > 0)
 			for (int i = 0; i < spells.size(); i++)
 			{
-				Ability thisOne = (Ability) spells.get(i).copyOf();
+				final Ability thisOne = (Ability) spells.get(i).copyOf();
 				if(thisOne.canTarget(target))
 				{
 					if((malicious(this))||(!(target instanceof MOB)))
@@ -96,8 +96,8 @@ public class StdPowder extends StdItem implements MagicDust {
 
 	public boolean malicious(SpellHolder me)
 	{
-		List<Ability> spells=getSpells();
-		for(Ability checking : spells)
+		final List<Ability> spells=getSpells();
+		for(final Ability checking : spells)
 			if(checking.abstractQuality()==Ability.QUALITY_MALICIOUS)
 				return true;
 		return false;
@@ -105,15 +105,15 @@ public class StdPowder extends StdItem implements MagicDust {
 	@Override
 	public List<Ability> getSpells()
 	{
-		String names=getSpellList();
+		final String names=getSpellList();
 
-		Vector theSpells=new Vector();
-		List<String> parsedSpells=CMParms.parseSemicolons(names, true);
+		final Vector theSpells=new Vector();
+		final List<String> parsedSpells=CMParms.parseSemicolons(names, true);
 		for(String thisOne : parsedSpells)
 		{
 			thisOne=thisOne.trim();
 			String parms="";
-			int x=thisOne.indexOf('(');
+			final int x=thisOne.indexOf('(');
 			if((x>0)&&(thisOne.endsWith(")")))
 			{
 				parms=thisOne.substring(x+1,thisOne.length()-1);

@@ -51,14 +51,14 @@ public class Commands extends StdCommand
 				mob.tell("Command queue cleared.");
 				return false;
 			}
-			StringBuffer commandList=new StringBuffer("");
-			Vector commandSet=new Vector();
+			final StringBuffer commandList=new StringBuffer("");
+			final Vector commandSet=new Vector();
 			int col=0;
-			HashSet done=new HashSet();
-			for(Enumeration e=CMClass.commands();e.hasMoreElements();)
+			final HashSet done=new HashSet();
+			for(final Enumeration e=CMClass.commands();e.hasMoreElements();)
 			{
-				Command C=(Command)e.nextElement();
-				String[] access=C.getAccessWords();
+				final Command C=(Command)e.nextElement();
+				final String[] access=C.getAccessWords();
 				if((access!=null)
 				&&(access.length>0)
 				&&(access[0].length()>0)
@@ -69,9 +69,9 @@ public class Commands extends StdCommand
 					commandSet.add(access[0]);
 				}
 			}
-			for(Enumeration<Ability> a=mob.allAbilities();a.hasMoreElements();)
+			for(final Enumeration<Ability> a=mob.allAbilities();a.hasMoreElements();)
 			{
-				Ability A=a.nextElement();
+				final Ability A=a.nextElement();
 				if((A!=null)&&(A.triggerStrings()!=null)&&(A.triggerStrings().length>0)&&(!done.contains(A.triggerStrings()[0])))
 				{
 					done.add(A.triggerStrings()[0]);
@@ -80,9 +80,9 @@ public class Commands extends StdCommand
 			}
 			Collections.sort(commandSet);
 			final int COL_LEN=ListingLibrary.ColFixer.fixColWidth(19.0,mob);
-			for(Iterator i=commandSet.iterator();i.hasNext();)
+			for(final Iterator i=commandSet.iterator();i.hasNext();)
 			{
-				String s=(String)i.next();
+				final String s=(String)i.next();
 				if(++col>3){ commandList.append("\n\r"); col=0;}
 				commandList.append(CMStrings.padRight("^<HELP^>"+s+"^</HELP^>",COL_LEN));
 			}

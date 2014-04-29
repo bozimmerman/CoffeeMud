@@ -64,7 +64,7 @@ public class Scrapping extends CommonSkill
 		&&(affected instanceof MOB)
 		&&(tickID==Tickable.TICKID_MOB))
 		{
-			MOB mob=(MOB)affected;
+			final MOB mob=(MOB)affected;
 			if((found==null)||(fireRequired&&(getRequiredFire(mob,0)==null)))
 			{
 				messedUp=true;
@@ -81,7 +81,7 @@ public class Scrapping extends CommonSkill
 		{
 			if((affected!=null)&&(affected instanceof MOB))
 			{
-				MOB mob=(MOB)affected;
+				final MOB mob=(MOB)affected;
 				if((found!=null)&&(!aborted))
 				{
 					if(messedUp)
@@ -94,7 +94,7 @@ public class Scrapping extends CommonSkill
 						mob.location().show(mob,null,getActivityMessageType(),"<S-NAME> manage(s) to scrap "+amount+" pound"+s+" of "+foundShortName+".");
 						for(int i=0;i<amount;i++)
 						{
-							Item newFound=(Item)found.copyOf();
+							final Item newFound=(Item)found.copyOf();
 							mob.location().addItem(newFound,ItemPossessor.Expire.Player_Drop);
 							CMLib.commands().postGet(mob,null,newFound,true);
 						}
@@ -112,8 +112,8 @@ public class Scrapping extends CommonSkill
 		if(super.checkStop(mob, commands))
 			return true;
 		verb="scrapping";
-		String str=CMParms.combine(commands,0);
-		Item I=mob.location().findItem(null,str);
+		final String str=CMParms.combine(commands,0);
+		final Item I=mob.location().findItem(null,str);
 		if((I==null)||(!CMLib.flags().canBeSeenBy(I,mob)))
 		{
 			commonTell(mob,"You don't see anything called '"+str+"' here.");
@@ -149,11 +149,11 @@ public class Scrapping extends CommonSkill
 			return false;
 		}
 
-		Vector V=new Vector();
+		final Vector V=new Vector();
 		int totalWeight=0;
 		for(int i=0;i<mob.location().numItems();i++)
 		{
-			Item I2=mob.location().getItem(i);
+			final Item I2=mob.location().getItem(i);
 			if((I2!=null)&&(I2.sameAs(I)))
 			{
 				totalWeight+=I2.phyStats().weight();
@@ -161,7 +161,7 @@ public class Scrapping extends CommonSkill
 			}
 		}
 
-		LandTitle t=CMLib.law().getLandTitle(mob.location());
+		final LandTitle t=CMLib.law().getLandTitle(mob.location());
 		if((t!=null)&&(!CMLib.law().doesHavePriviledgesHere(mob,mob.location())))
 		{
 			mob.tell("You are not allowed to scrap anything here.");
@@ -170,7 +170,7 @@ public class Scrapping extends CommonSkill
 
 		for(int i=0;i<mob.location().numItems();i++)
 		{
-			Item I2=mob.location().getItem(i);
+			final Item I2=mob.location().getItem(i);
 			if((I2.container()!=null)&&(V.contains(I2.container())))
 			{
 				commonTell(mob,"You need to remove the contents of "+I2.name(mob)+" first.");
@@ -189,7 +189,7 @@ public class Scrapping extends CommonSkill
 		||((I.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_SYNTHETIC)
 		||((I.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_MITHRIL))
 		{
-			Item fire=getRequiredFire(mob,0);
+			final Item fire=getRequiredFire(mob,0);
 			fireRequired=true;
 			if(fire==null) return false;
 		}
@@ -204,7 +204,7 @@ public class Scrapping extends CommonSkill
 		playSound="ripping.wav";
 		if(found!=null)
 			foundShortName=RawMaterial.CODES.NAME(found.material()).toLowerCase();
-		CMMsg msg=CMClass.getMsg(mob,I,this,getActivityMessageType(),"<S-NAME> start(s) scrapping "+I.name()+".");
+		final CMMsg msg=CMClass.getMsg(mob,I,this,getActivityMessageType(),"<S-NAME> start(s) scrapping "+I.name()+".");
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

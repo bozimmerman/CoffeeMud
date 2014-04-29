@@ -70,7 +70,7 @@ public class Chant_AnimalSpy extends Chant
 		{
 			if(invoker!=null)
 			{
-				Ability A=invoker.fetchEffect(this.ID());
+				final Ability A=invoker.fetchEffect(this.ID());
 				if(A!=null)
 					invoker.delEffect(A);
 				invoker.tell("Your connection with '"+spy.name()+"' fades.");
@@ -94,7 +94,7 @@ public class Chant_AnimalSpy extends Chant
 			&&((invoker.location()!=spy.location())||(!(msg.target() instanceof Room))))
 			{
 				disable=true;
-				CMMsg newAffect=CMClass.getMsg(invoker,msg.target(),msg.sourceMinor(),null);
+				final CMMsg newAffect=CMClass.getMsg(invoker,msg.target(),msg.sourceMinor(),null);
 				msg.target().executeMsg(invoker,newAffect);
 			}
 			else
@@ -115,7 +115,7 @@ public class Chant_AnimalSpy extends Chant
 			&&(msg.sourceMessage()!=null)
 			&&((msg.sourceMajor()&CMMsg.MASK_MAGIC)==0))
 			{
-				String msg2=CMStrings.getSayFromMessage(msg.sourceMessage());
+				final String msg2=CMStrings.getSayFromMessage(msg.sourceMessage());
 				if((msg2!=null)&&(msg2.length()>0))
 					spy.enqueCommand(CMParms.parse(msg2.trim()),Command.METAFLAG_FORCED,0);
 			}
@@ -140,8 +140,8 @@ public class Chant_AnimalSpy extends Chant
 			mob.tell("Chant to whom?");
 			return false;
 		}
-		String mobName=CMParms.combine(commands,0).trim().toUpperCase();
-		MOB target=getTarget(mob,commands,givenTarget);
+		final String mobName=CMParms.combine(commands,0).trim().toUpperCase();
+		final MOB target=getTarget(mob,commands,givenTarget);
 
 		Room newRoom=mob.location();
 		if(target!=null)
@@ -163,19 +163,19 @@ public class Chant_AnimalSpy extends Chant
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> chant(s) to <T-NAMESELF>, invoking the a mystical connection.^?");
-			CMMsg msg2=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),null);
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> chant(s) to <T-NAMESELF>, invoking the a mystical connection.^?");
+			final CMMsg msg2=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),null);
 			if((mob.location().okMessage(mob,msg))&&((newRoom==mob.location())||(newRoom.okMessage(mob,msg2))))
 			{
 				mob.location().send(mob,msg);
 				if(newRoom!=mob.location()) newRoom.send(target,msg2);
 				spy=target;
 				beneficialAffect(mob,spy,asLevel,0);
-				Ability A=spy.fetchEffect(ID());
+				final Ability A=spy.fetchEffect(ID());
 				if(A!=null)
 				{
 					mob.addNonUninvokableEffect((Ability)A.copyOf());

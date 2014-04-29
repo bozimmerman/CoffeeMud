@@ -53,13 +53,13 @@ public class Thief_Kamikaze extends ThiefSkill
 			return false;
 		if(affected instanceof MOB)
 		{
-			MOB mob=(MOB)affected;
+			final MOB mob=(MOB)affected;
 			for(int i=0;i<mob.numItems();i++)
 			{
-				Item I=mob.getItem(i);
+				final Item I=mob.getItem(i);
 				if((I!=null)&&(I.container()==null))
 				{
-					Trap T=CMLib.utensils().fetchMyTrap(I);
+					final Trap T=CMLib.utensils().fetchMyTrap(I);
 					if((T!=null)&&(T.isABomb()))
 					{
 						if(!I.amWearingAt(Wearable.IN_INVENTORY))
@@ -67,10 +67,10 @@ public class Thief_Kamikaze extends ThiefSkill
 						CMLib.commands().postDrop(mob,I,false,false,false);
 						if(I.owner() instanceof Room)
 						{
-							Room R=(Room)I.owner();
+							final Room R=(Room)I.owner();
 							for(int i2=0;i2<R.numInhabitants();i2++)
 							{
-								MOB M=R.fetchInhabitant(i2);
+								final MOB M=R.fetchInhabitant(i2);
 								if(M!=null)
 									T.spring(M);
 							}
@@ -92,7 +92,7 @@ public class Thief_Kamikaze extends ThiefSkill
 		// undo the affects of this spell
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		super.unInvoke();
 
@@ -114,9 +114,9 @@ public class Thief_Kamikaze extends ThiefSkill
 			mob.tell("You must specify who your kamikaze bomber is, and which direction they should go.");
 			return false;
 		}
-		String s=(String)commands.lastElement();
+		final String s=(String)commands.lastElement();
 		commands.removeElementAt(commands.size()-1);
-		MOB target=getTarget(mob,commands,givenTarget);
+		final MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
 		if((!target.mayIFight(mob))||(target.charStats().getStat(CharStats.STAT_INTELLIGENCE)<3))
@@ -135,9 +135,9 @@ public class Thief_Kamikaze extends ThiefSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		double goldRequired=(( Math.round( ( 100.0 - ( ( mob.charStats().getStat( CharStats.STAT_CHARISMA ) + ( 2.0 * getXLEVELLevel( mob ) ) ) * 2.0 ) ) ) * target.phyStats().level() ) );
-		String localCurrency=CMLib.beanCounter().getCurrency(target);
-		String costWords=CMLib.beanCounter().nameCurrencyShort(localCurrency,goldRequired);
+		final double goldRequired=(( Math.round( ( 100.0 - ( ( mob.charStats().getStat( CharStats.STAT_CHARISMA ) + ( 2.0 * getXLEVELLevel( mob ) ) ) * 2.0 ) ) ) * target.phyStats().level() ) );
+		final String localCurrency=CMLib.beanCounter().getCurrency(target);
+		final String costWords=CMLib.beanCounter().nameCurrencyShort(localCurrency,goldRequired);
 		if(CMLib.beanCounter().getTotalAbsoluteValue(mob,localCurrency)<goldRequired)
 		{
 			mob.tell(target.charStats().HeShe()+" requires "+costWords+" to do this.");
@@ -147,10 +147,10 @@ public class Thief_Kamikaze extends ThiefSkill
 		Trap bombFound=null;
 		for(int i=0;i<target.numItems();i++)
 		{
-			Item I=target.getItem(i);
+			final Item I=target.getItem(i);
 			if((I!=null)&&(I.container()==null))
 			{
-				Trap T=CMLib.utensils().fetchMyTrap(I);
+				final Trap T=CMLib.utensils().fetchMyTrap(I);
 				if((T!=null)&&(T.isABomb()))
 				{
 					bombFound=T;
@@ -164,17 +164,17 @@ public class Thief_Kamikaze extends ThiefSkill
 			return false;
 		}
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(!success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_SPEAK,"^T<S-NAME> attempt(s) to convince <T-NAMESELF> to kamikaze "+s+", but no deal is reached.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_SPEAK,"^T<S-NAME> attempt(s) to convince <T-NAMESELF> to kamikaze "+s+", but no deal is reached.^?");
 			if(mob.location().okMessage(mob,msg))
 				mob.location().send(mob,msg);
 		}
 		else
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_SPEAK,"^T<S-NAME> pay(s) <T-NAMESELF> to Kamikaze "+s+" for "+costWords+".^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_SPEAK,"^T<S-NAME> pay(s) <T-NAMESELF> to Kamikaze "+s+" for "+costWords+".^?");
 
 			CMLib.beanCounter().subtractMoney(mob,localCurrency,goldRequired);
 			mob.recoverPhyStats();

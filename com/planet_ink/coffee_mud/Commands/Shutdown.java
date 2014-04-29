@@ -47,13 +47,13 @@ public class Shutdown extends StdCommand implements Tickable
 
 	protected void showDisplayableShutdownTimeRemaining()
 	{
-		long until = shuttingDownCompletes - System.currentTimeMillis();
+		final long until = shuttingDownCompletes - System.currentTimeMillis();
 		String tm = CMLib.time().date2EllapsedTime(until, TimeUnit.SECONDS, false);
 		if((tm == null)||(tm.trim().length()==0))
 			tm = " now";
 		else
 			tm=" in "+tm;
-		for(Session S : CMLib.sessions().allIterable())
+		for(final Session S : CMLib.sessions().allIterable())
 		  S.colorOnlyPrintln("\n\r\n\r^Z"+CMProps.getVar(CMProps.Str.MUDNAME)+" will be "+(keepItDown?"shutting down":"restarting")+tm+"^.^?\n\r");
 	}
 
@@ -67,7 +67,7 @@ public class Shutdown extends StdCommand implements Tickable
 		boolean keepItDown=true;
 		for(int i=commands.size()-1;i>=1;i--)
 		{
-			String s=(String)commands.elementAt(i);
+			final String s=(String)commands.elementAt(i);
 			if(s.equalsIgnoreCase("RESTART"))
 			{ keepItDown=false; commands.removeElementAt(i);}
 			else
@@ -89,11 +89,11 @@ public class Shutdown extends StdCommand implements Tickable
 			{
 				noPrompt=true;
 				commands.removeElementAt(i);
-				long wait=CMath.s_int((String)commands.get(i));
+				final long wait=CMath.s_int((String)commands.get(i));
 				commands.removeElementAt(i);
-				String multiplier=(String)commands.get(i);
+				final String multiplier=(String)commands.get(i);
 				commands.removeElementAt(i);
-				long timeMultiplier=CMLib.english().getMillisMultiplierByName(multiplier);
+				final long timeMultiplier=CMLib.english().getMillisMultiplierByName(multiplier);
 				if((timeMultiplier<0)||(wait<=0))
 				{
 				   mob.tell("I don't know how to shutdown within the next "+wait+" "+multiplier+"; try `5 minutes` or something similar.");
@@ -133,7 +133,7 @@ public class Shutdown extends StdCommand implements Tickable
 			@Override
 			public void run()
 			{
-				for(Session S : CMLib.sessions().allIterable())
+				for(final Session S : CMLib.sessions().allIterable())
 					S.colorOnlyPrintln("\n\r\n\r^Z"+CMProps.getVar(CMProps.Str.MUDNAME)+" is now "+(keepItDown?"shutting down":"restarting")+"!^.^?\n\r");
 				if(keepItDown)
 					Log.errOut("CommandProcessor",mob.Name()+" starts system shutdown...");

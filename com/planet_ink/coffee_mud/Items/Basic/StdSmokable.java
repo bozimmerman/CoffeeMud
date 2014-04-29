@@ -70,7 +70,7 @@ public class StdSmokable extends StdContainer implements Light
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
-		MOB mob=msg.source();
+		final MOB mob=msg.source();
 
 		if(!msg.amITarget(this))
 			return super.okMessage(myHost,msg);
@@ -89,7 +89,7 @@ public class StdSmokable extends StdContainer implements Light
 				mob.tell(name()+" looks empty.");
 				return false;
 			}
-			Room room=mob.location();
+			final Room room=mob.location();
 			if(room!=null)
 			{
 				if(((LightSource.inTheRain(room)&&(goesOutInTheRain()))
@@ -132,7 +132,7 @@ public class StdSmokable extends StdContainer implements Light
 				&&(owner() instanceof MOB)
 				&&(!amWearingAt(Wearable.IN_INVENTORY)))
 				{
-					MOB mob=(MOB)owner();
+					final MOB mob=(MOB)owner();
 					if((mob.location()!=null)
 					&&(CMLib.flags().aliveAwakeMobile(mob,true)))
 					{
@@ -140,7 +140,7 @@ public class StdSmokable extends StdContainer implements Light
 						mob.location().show(mob,this,this,CMMsg.MSG_HANDS,"<S-NAME> puff(s) on <T-NAME>.");
 						if((CMLib.dice().roll(1,1000,0)==1)&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.AUTODISEASE)))
 						{
-							Ability A=CMClass.getAbility("Disease_Cancer");
+							final Ability A=CMClass.getAbility("Disease_Cancer");
 							if(A!=null) A.invoke(mob,mob,true,0);
 						}
 					}
@@ -151,7 +151,7 @@ public class StdSmokable extends StdContainer implements Light
 			if(owner() instanceof Room)
 			{
 				tickStatus=Tickable.STATUS_CLASS;
-				Room R=(Room)owner;
+				final Room R=(Room)owner;
 				if(R.numInhabitants()>0)
 					R.showHappens(CMMsg.MSG_OK_VISUAL,name()+" burns out.");
 				if(destroyedWhenBurnedOut())
@@ -162,7 +162,7 @@ public class StdSmokable extends StdContainer implements Light
 			if(owner() instanceof MOB)
 			{
 				tickStatus=Tickable.STATUS_DEAD;
-				MOB M=(MOB)owner();
+				final MOB M=(MOB)owner();
 				M.tell(M,null,this,"<O-NAME> burns out.");
 				durationTicks=0;
 				if(destroyedWhenBurnedOut())
@@ -194,9 +194,9 @@ public class StdSmokable extends StdContainer implements Light
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
-		MOB mob=msg.source();
+		final MOB mob=msg.source();
 		if(mob==null) return;
-		Room room=mob.location();
+		final Room room=mob.location();
 		if(room==null) return;
 		if(((LightSource.inTheRain(room)&&goesOutInTheRain())
 		   ||(LightSource.inTheWater(msg.source(),room)))
@@ -231,7 +231,7 @@ public class StdSmokable extends StdContainer implements Light
 				{
 					if(capacity>0)
 					{
-						List<Item> V=getContents();
+						final List<Item> V=getContents();
 						Item I=null;
 						for(int v=0;v<V.size();v++)
 						{
@@ -262,7 +262,7 @@ public class StdSmokable extends StdContainer implements Light
 			{
 				if(msg.source().location()!=null)
 					msg.source().location().recoverRoomStats();
-				Room R=CMLib.map().roomLocation(msg.target());
+				final Room R=CMLib.map().roomLocation(msg.target());
 				if((R!=null)&&(R!=msg.source().location()))
 					R.recoverRoomStats();
 			}
@@ -284,7 +284,7 @@ public class StdSmokable extends StdContainer implements Light
 						msg.source().recoverPhyStats();
 						if(msg.source().location()!=null)
 							msg.source().location().recoverRoomStats();
-						Room R=CMLib.map().roomLocation(msg.tool());
+						final Room R=CMLib.map().roomLocation(msg.tool());
 						if((R!=null)&&(R!=msg.source().location()))
 							R.recoverRoomStats();
 					}

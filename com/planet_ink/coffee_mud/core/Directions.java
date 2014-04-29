@@ -25,7 +25,7 @@ public class Directions
 	public Directions()
 	{
 		super();
-		char c=Thread.currentThread().getThreadGroup().getName().charAt(0);
+		final char c=Thread.currentThread().getThreadGroup().getName().charAt(0);
 		if(dirs[c]==null) dirs[c]=this;
 	}
 	private static Directions d(){ return dirs[Thread.currentThread().getThreadGroup().getName().charAt(0)];}
@@ -115,7 +115,7 @@ public class Directions
 
 	private static <T> T[] concat(T[] first, T[] second)
 	{
-		T[] result = Arrays.copyOf(first, first.length + second.length);
+		final T[] result = Arrays.copyOf(first, first.length + second.length);
 		System.arraycopy(second, 0, result, first.length, second.length);
 		return result;
 	}
@@ -273,10 +273,10 @@ public class Directions
 	{
 		if(theDir.length()==0) return -1;
 		final String upDir=theDir.toUpperCase();
-		for(int i=0;i<DIRECTIONS_FULL_CHART.length;i++)
-			if((DIRECTIONS_FULL_CHART[i][0].toString().startsWith(upDir))
-			&&(((Integer)DIRECTIONS_FULL_CHART[i][1]).intValue()<NUM_DIRECTIONS()))
-				return ((Integer)DIRECTIONS_FULL_CHART[i][1]).intValue();
+		for (final Object[] element : DIRECTIONS_FULL_CHART)
+			if((element[0].toString().startsWith(upDir))
+			&&(((Integer)element[1]).intValue()<NUM_DIRECTIONS()))
+				return ((Integer)element[1]).intValue();
 		return -1;
 	}
 
@@ -284,10 +284,10 @@ public class Directions
 	{
 		if(theDir.length()==0) return -1;
 		final String upDir=theDir.toUpperCase();
-		for(int i=0;i<DIRECTIONS_COMPASS_CHART.length;i++)
-			if((DIRECTIONS_COMPASS_CHART[i][0].toString().startsWith(upDir))
-			&&(((Integer)DIRECTIONS_COMPASS_CHART[i][1]).intValue()<NUM_DIRECTIONS()))
-				return ((Integer)DIRECTIONS_COMPASS_CHART[i][1]).intValue();
+		for (final Object[] element : DIRECTIONS_COMPASS_CHART)
+			if((element[0].toString().startsWith(upDir))
+			&&(((Integer)element[1]).intValue()<NUM_DIRECTIONS()))
+				return ((Integer)element[1]).intValue();
 		return -1;
 	}
 
@@ -295,10 +295,10 @@ public class Directions
 	{
 		if(theDir.length()==0) return -1;
 		final String upDir=theDir.toUpperCase();
-		for(int i=0;i<DIRECTIONS_SHIP_CHART.length;i++)
-			if((DIRECTIONS_SHIP_CHART[i][0].toString().startsWith(upDir))
-			&&(((Integer)DIRECTIONS_SHIP_CHART[i][1]).intValue()<NUM_DIRECTIONS()))
-				return ((Integer)DIRECTIONS_SHIP_CHART[i][1]).intValue();
+		for (final Object[] element : DIRECTIONS_SHIP_CHART)
+			if((element[0].toString().startsWith(upDir))
+			&&(((Integer)element[1]).intValue()<NUM_DIRECTIONS()))
+				return ((Integer)element[1]).intValue();
 		return -1;
 	}
 
@@ -473,7 +473,7 @@ public class Directions
 	}
 	public static final int getOpDirectionCode(final String theDir)
 	{
-		int code=getDirectionCode(theDir);
+		final int code=getDirectionCode(theDir);
 		return getOpDirectionCode(code);
 	}
 

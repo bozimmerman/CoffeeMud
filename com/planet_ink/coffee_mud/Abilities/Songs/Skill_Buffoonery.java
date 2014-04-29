@@ -47,9 +47,9 @@ public class Skill_Buffoonery extends BardSkill
 
 	protected Vector getFreeWearingPositions(MOB target)
 	{
-		Vector V=new Vector();
-		Wearable.CODES codes = Wearable.CODES.instance();
-		boolean[] pos=new boolean[codes.all_ordered().length];
+		final Vector V=new Vector();
+		final Wearable.CODES codes = Wearable.CODES.instance();
+		final boolean[] pos=new boolean[codes.all_ordered().length];
 
 		for(int i=0;i<pos.length;i++)
 			if(target.freeWearPositions(codes.all_ordered()[i],(short)0,(short)0)>0)
@@ -72,7 +72,7 @@ public class Skill_Buffoonery extends BardSkill
 	{
 		for(int i=0;i<mob.numItems();i++)
 		{
-			Item I=mob.getItem(i);
+			final Item I=mob.getItem(i);
 			if((I!=null)
 			&&(CMLib.flags().canBeSeenBy(I,mob))
 			&&(I.amWearingAt(Wearable.IN_INVENTORY))
@@ -85,10 +85,10 @@ public class Skill_Buffoonery extends BardSkill
 
 	public Item targetItem(MOB target)
 	{
-		Vector V=new Vector();
+		final Vector V=new Vector();
 		for(int i=0;i<target.numItems();i++)
 		{
-			Item I2=target.getItem(i);
+			final Item I2=target.getItem(i);
 			if((!I2.amWearingAt(Wearable.IN_INVENTORY))
 			&&(((I2 instanceof Weapon)&&(I2.basePhyStats().damage()>1))
 			   ||((I2 instanceof Armor)&&(I2.basePhyStats().armor()>1)))
@@ -105,12 +105,12 @@ public class Skill_Buffoonery extends BardSkill
 	{
 		if(mob!=null)
 		{
-			String parm=correctItem(mob);
+			final String parm=correctItem(mob);
 			if(parm==null)
 				return Ability.QUALITY_INDIFFERENT;
 			if(target instanceof MOB)
 			{
-				Item targetItem=targetItem((MOB)target);
+				final Item targetItem=targetItem((MOB)target);
 				if(targetItem==null)
 				{
 					if(!freePosition((MOB)target))
@@ -128,7 +128,7 @@ public class Skill_Buffoonery extends BardSkill
 		{
 			if(mob.isMonster()&&(commands.size()==1))
 			{
-				String parm=correctItem(mob);
+				final String parm=correctItem(mob);
 				if(parm!=null)
 					commands.addElement(parm);
 			}
@@ -138,7 +138,7 @@ public class Skill_Buffoonery extends BardSkill
 				return false;
 			}
 		}
-		Item I=mob.findItem(null,(String)commands.lastElement());
+		final Item I=mob.findItem(null,(String)commands.lastElement());
 		if((I==null)||(!CMLib.flags().canBeSeenBy(I,mob)))
 		{
 			mob.tell("You don't seem to have '"+((String)commands.lastElement())+"'.");
@@ -152,10 +152,10 @@ public class Skill_Buffoonery extends BardSkill
 		}
 		commands.removeElementAt(commands.size()-1);
 
-		MOB target=getTarget(mob,commands,givenTarget);
+		final MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
-		Item targetItem=targetItem(target);
+		final Item targetItem=targetItem(target);
 		if(targetItem==null)
 		{
 			if(!freePosition(target))
@@ -170,7 +170,7 @@ public class Skill_Buffoonery extends BardSkill
 
 		int levelDiff=target.phyStats().level()-mob.phyStats().level();
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 		if(levelDiff>0)
 			levelDiff=-(levelDiff*((!CMLib.flags().canBeSeenBy(mob,target))?5:15));
 		else
@@ -178,7 +178,7 @@ public class Skill_Buffoonery extends BardSkill
 
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,(CMMsg.MSG_NOISYMOVEMENT|CMMsg.MASK_DELICATE|CMMsg.MASK_MALICIOUS)|(auto?CMMsg.MASK_ALWAYS:0),auto?"":"<S-NAME> do(es) buffoonery to <T-NAMESELF>.");			if(mob.location().okMessage(mob,msg))
+			final CMMsg msg=CMClass.getMsg(mob,target,this,(CMMsg.MSG_NOISYMOVEMENT|CMMsg.MASK_DELICATE|CMMsg.MASK_MALICIOUS)|(auto?CMMsg.MASK_ALWAYS:0),auto?"":"<S-NAME> do(es) buffoonery to <T-NAMESELF>.");			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				long position=-1;
@@ -189,7 +189,7 @@ public class Skill_Buffoonery extends BardSkill
 				}
 				else
 				{
-					Vector free=getFreeWearingPositions(target);
+					final Vector free=getFreeWearingPositions(target);
 					if(free.size()<1)
 					{
 						mob.tell(target.name(mob)+" has no free wearing positions!");

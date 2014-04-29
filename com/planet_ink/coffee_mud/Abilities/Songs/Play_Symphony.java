@@ -73,7 +73,7 @@ public class Play_Symphony extends Play
 	{
 		if(instrument==null){ toDoCode=-1; return toDoCode;}
 		if(toDoCode>0) return toDoCode;
-		int ilvl=instrument.phyStats().level();
+		final int ilvl=instrument.phyStats().level();
 		switch(instrument.instrumentType())
 		{
 		case 0: //"CLARINETS",
@@ -597,7 +597,7 @@ public class Play_Symphony extends Play
 			if((msg.sourceMinor()==toDoVal)
 			&&(msg.target()==affected))
 			{
-				int dmg=(adjustedLevel(invoker(),0)/5);
+				final int dmg=(adjustedLevel(invoker(),0)/5);
 				msg.setValue(msg.value()-dmg);
 			}
 			break;
@@ -713,11 +713,11 @@ public class Play_Symphony extends Play
 			break;
 		case CODE_REMOVESPELLTYPE:
 			{
-				MOB M=(MOB)affected;
-				List<Ability> V=CMLib.flags().flaggedAffects(M,toDoVal);
+				final MOB M=(MOB)affected;
+				final List<Ability> V=CMLib.flags().flaggedAffects(M,toDoVal);
 				for(int v=0;v<V.size();v++)
 				{
-					Ability A =V.get(v);
+					final Ability A =V.get(v);
 					A.unInvoke();
 					if(M.fetchEffect(A.ID())==null)
 						break;
@@ -726,7 +726,7 @@ public class Play_Symphony extends Play
 			}
 		case CODE_SPEEDCOMMONSKILLS:
 			{
-				MOB M=(MOB)affected;
+				final MOB M=(MOB)affected;
 				for(final Enumeration<Ability> a=M.effects();a.hasMoreElements();)
 				{
 					final Ability A=a.nextElement();
@@ -746,17 +746,17 @@ public class Play_Symphony extends Play
 		{
 		case CODE_CASTMALICIOUSSPELLPER10:
 			{
-				MOB M=(MOB)affected;
-				MOB V=M.getVictim();
-				Ability A=CMClass.getAbility(toDoString);
+				final MOB M=(MOB)affected;
+				final MOB V=M.getVictim();
+				final Ability A=CMClass.getAbility(toDoString);
 				if(A==null) Log.errOut("Symphony","No spell- "+toDoString);
 				else A.invoke(M,V,true,0);
 			}
 			break;
 		default:
 			{
-				MOB M=(MOB)affected;
-				Ability A=CMClass.getAbility(toDoString);
+				final MOB M=(MOB)affected;
+				final Ability A=CMClass.getAbility(toDoString);
 				if(A==null) Log.errOut("Symphony","No spell- "+toDoString);
 				else A.invoke(M,M,true,0);
 			}

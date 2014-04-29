@@ -54,7 +54,7 @@ public class Chant_SummonRockGolem extends Chant
 		{
 			if((affected!=null)&&(affected instanceof MOB)&&(invoker!=null))
 			{
-				MOB mob=(MOB)affected;
+				final MOB mob=(MOB)affected;
 				if(((mob.amFollowing()==null)
 				||(mob.amDead())
 				||(mob.location()!=invoker.location())))
@@ -87,7 +87,7 @@ public class Chant_SummonRockGolem extends Chant
 	{
 		if(mob!=null)
 		{
-			Room R=mob.location();
+			final Room R=mob.location();
 			if(R!=null)
 			{
 				if(R.domainType()!=Room.DOMAIN_INDOORS_CAVE)
@@ -117,16 +117,16 @@ public class Chant_SummonRockGolem extends Chant
 			return false;
 		}
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
 			invoker=mob;
-			CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":"^S<S-NAME> chant(s) and summon(s) help from the earth.^?");
+			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":"^S<S-NAME> chant(s) and summon(s) help from the earth.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				MOB target = determineMonster(mob, mob.phyStats().level()+(2*super.getXLEVELLevel(mob)));
+				final MOB target = determineMonster(mob, mob.phyStats().level()+(2*super.getXLEVELLevel(mob)));
 				target.addNonUninvokableEffect((Ability)this.copyOf());
 			}
 		}
@@ -138,7 +138,7 @@ public class Chant_SummonRockGolem extends Chant
 	}
 	public MOB determineMonster(MOB caster, int level)
 	{
-		MOB newMOB=CMClass.getMOB("GenMOB");
+		final MOB newMOB=CMClass.getMOB("GenMOB");
 		newMOB.basePhyStats().setLevel(adjustedLevel(caster,0));
 		newMOB.setName("an golem of stone");
 		newMOB.setDisplayText("an stone golem lumbers around here.");
@@ -154,7 +154,7 @@ public class Chant_SummonRockGolem extends Chant
 		newMOB.basePhyStats().setDamage(CMLib.leveler().getLevelMOBDamage(newMOB)+20);
 		newMOB.basePhyStats().setSensesMask(newMOB.basePhyStats().sensesMask()|PhyStats.CAN_SEE_DARK);
 		newMOB.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience"));
-		Ability P=CMClass.getAbility("Prop_StatTrainer");
+		final Ability P=CMClass.getAbility("Prop_StatTrainer");
 		if(P!=null)
 		{
 			P.setMiscText("NOTEACH STR=20 INT=1 WIS=10 CON=15 DEX=3 CHA=10");
@@ -173,7 +173,7 @@ public class Chant_SummonRockGolem extends Chant
 		newMOB.bringToLife(caster.location(),true);
 		CMLib.beanCounter().clearZeroMoney(newMOB,null);
 		newMOB.location().showOthers(newMOB,null,CMMsg.MSG_OK_ACTION,"<S-NAME> appears out of the cave walls!");
-		MOB victim=caster.getVictim();
+		final MOB victim=caster.getVictim();
 		newMOB.setStartRoom(null); // keep before postFollow for Conquest
 		CMLib.commands().postFollow(newMOB,caster,true);
 		if(newMOB.amFollowing()!=caster)

@@ -52,7 +52,7 @@ public class Chant_SummonHouseplant extends Chant_SummonPlants
 		&&((msg.targetMinor()==CMMsg.TYP_GET)||(msg.targetMinor()==CMMsg.TYP_PUSH)||(msg.targetMinor()==CMMsg.TYP_PULL)))
 		{
 			processing=true;
-			Ability A=littlePlants.fetchEffect(ID());
+			final Ability A=littlePlants.fetchEffect(ID());
 			if(A!=null)
 			{
 				CMLib.threads().deleteTick(A,-1);
@@ -61,7 +61,7 @@ public class Chant_SummonHouseplant extends Chant_SummonPlants
 			}
 			if(littlePlants.fetchBehavior("Decay")==null)
 			{
-				Behavior B=CMClass.getBehavior("Decay");
+				final Behavior B=CMClass.getBehavior("Decay");
 				B.setParms("min="+CMProps.getIntVar(CMProps.Int.TICKSPERMUDMONTH)+" max="+CMProps.getIntVar(CMProps.Int.TICKSPERMUDMONTH)+" chance=100");
 				littlePlants.addBehavior(B);
 				B.executeMsg(myHost,msg);
@@ -84,7 +84,7 @@ public class Chant_SummonHouseplant extends Chant_SummonPlants
 
 	public static Item buildHouseplant(MOB mob, Room room)
 	{
-		Item newItem=CMClass.getItem("GenItem");
+		final Item newItem=CMClass.getItem("GenItem");
 		newItem.setMaterial(RawMaterial.RESOURCE_GREENS);
 		switch(CMLib.dice().roll(1,7,0))
 		{
@@ -127,7 +127,7 @@ public class Chant_SummonHouseplant extends Chant_SummonPlants
 		newItem.setSecretIdentity(mob.Name());
 		newItem.setMiscText(newItem.text());
 		room.addItem(newItem);
-		Chant_SummonHouseplant newChant=new Chant_SummonHouseplant();
+		final Chant_SummonHouseplant newChant=new Chant_SummonHouseplant();
 		newItem.basePhyStats().setWeight(1);
 		newItem.basePhyStats().setLevel(10+newChant.getX1Level(mob));
 		newItem.setExpirationDate(0);

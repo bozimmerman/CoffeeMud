@@ -58,9 +58,9 @@ public class Prop_ReqEntry extends Property implements TriggeredAffect
 		noSneak=false;
 		maskS=txt;
 		message="";
-		Vector parms=CMParms.parse(txt);
+		final Vector parms=CMParms.parse(txt);
 		String s;
-		for(Enumeration p=parms.elements();p.hasMoreElements();)
+		for(final Enumeration p=parms.elements();p.hasMoreElements();)
 		{
 			s=(String)p.nextElement();
 			if("NOFOLLOW".startsWith(s.toUpperCase()))
@@ -110,17 +110,17 @@ public class Prop_ReqEntry extends Property implements TriggeredAffect
 			&&(!CMLib.flags().isFalling(msg.source()))
 			&&((msg.amITarget(affected))||(msg.tool()==affected)||(affected instanceof Area)))
 			{
-				HashSet H=new HashSet();
+				final HashSet H=new HashSet();
 				if(noFollow)
 					H.add(msg.source());
 				else
 				{
 					msg.source().getGroupMembers(H);
-					HashSet H2=(HashSet)H.clone();
-					for(Iterator e=H2.iterator();e.hasNext();)
+					final HashSet H2=(HashSet)H.clone();
+					for(final Iterator e=H2.iterator();e.hasNext();)
 						((MOB)e.next()).getRideBuddies(H);
 				}
-				for(Iterator e=H.iterator();e.hasNext();)
+				for(final Iterator e=H.iterator();e.hasNext();)
 					if(passesMuster((MOB)e.next()))
 						return super.okMessage(myHost,msg);
 				msg.source().tell((message.length()==0)?"You can not go that way.":message);
@@ -143,14 +143,14 @@ public class Prop_ReqEntry extends Property implements TriggeredAffect
 						else
 						{
 							msg.source().getGroupMembers(H);
-							HashSet H2=(HashSet)H.clone();
-							for(Iterator e=H.iterator();e.hasNext();)
+							final HashSet H2=(HashSet)H.clone();
+							for(final Iterator e=H.iterator();e.hasNext();)
 								((MOB)e.next()).getRideBuddies(H2);
 							H=H2;
 						}
-						for(Iterator e=H.iterator();e.hasNext();)
+						for(final Iterator e=H.iterator();e.hasNext();)
 						{
-							Environmental E=(Environmental)e.next();
+							final Environmental E=(Environmental)e.next();
 							if((E instanceof MOB)
 							&&(passesMuster((MOB)E)))
 								return super.okMessage(myHost,msg);

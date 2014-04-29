@@ -44,15 +44,15 @@ public class WizEmote extends StdCommand
 	{
 		if(commands.size()>2)
 		{
-			String who=(String)commands.elementAt(1);
-			String msg=CMParms.combineWithQuotes(commands,2);
+			final String who=(String)commands.elementAt(1);
+			final String msg=CMParms.combineWithQuotes(commands,2);
 			Room R=CMLib.map().getRoom(who);
 			if(who.toUpperCase().equals("HERE")) R=mob.location();
-			Area A=CMLib.map().findAreaStartsWith(who);
-			Clan C=CMLib.clans().findClan(who);
+			final Area A=CMLib.map().findAreaStartsWith(who);
+			final Clan C=CMLib.clans().findClan(who);
 			if(who.toUpperCase().equals("ALL"))
 			{
-				for(Session S : CMLib.sessions().localOnlineIterable())
+				for(final Session S : CMLib.sessions().localOnlineIterable())
 				{
 					if((S.mob()!=null)
 					&&(S.mob().location()!=null)
@@ -63,7 +63,7 @@ public class WizEmote extends StdCommand
 			else
 			if(R!=null)
 			{
-				for(Session S : CMLib.sessions().localOnlineIterable())
+				for(final Session S : CMLib.sessions().localOnlineIterable())
 				{
 					if((S.mob()!=null)
 					&&(S.mob().location()==R)
@@ -74,7 +74,7 @@ public class WizEmote extends StdCommand
 			else
 			if(A!=null)
 			{
-				for(Session S : CMLib.sessions().localOnlineIterable())
+				for(final Session S : CMLib.sessions().localOnlineIterable())
 				{
 					if((S.mob()!=null)
 					&&(S.mob().location()!=null)
@@ -86,7 +86,7 @@ public class WizEmote extends StdCommand
 			else
 			if(C!=null)
 			{
-				for(Session S : CMLib.sessions().localOnlineIterable())
+				for(final Session S : CMLib.sessions().localOnlineIterable())
 				{
 					if((S.mob()!=null)
 					&&(S.mob().getClanRole(C.clanID())!=null)
@@ -97,7 +97,7 @@ public class WizEmote extends StdCommand
 			else
 			{
 				boolean found=false;
-				for(Session S : CMLib.sessions().localOnlineIterable())
+				for(final Session S : CMLib.sessions().localOnlineIterable())
 				{
 					if((S.mob()!=null)
 					&&(S.mob().location()!=null)

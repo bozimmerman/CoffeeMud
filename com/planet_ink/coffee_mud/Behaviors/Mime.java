@@ -113,7 +113,7 @@ public class Mime extends ActiveTicker
 		||(!canAct(ticking,tickID)))
 			return true;
 		msg=(CMMsg)msg.copyOf();
-		MOB sMOB=msg.source();
+		final MOB sMOB=msg.source();
 		if(msg.sourceMinor()==CMMsg.TYP_EMOTE)
 		{
 			if(ticking instanceof MOB)
@@ -123,7 +123,7 @@ public class Mime extends ActiveTicker
 						   msg.othersCode(),msg.othersMessage());
 			else
 			{
-				MOB newSMOB=CMClass.getFactoryMOB();
+				final MOB newSMOB=CMClass.getFactoryMOB();
 				newSMOB.baseCharStats().setStat(CharStats.STAT_GENDER,'N');
 				newSMOB.setName(ticking.name());
 				newSMOB.recoverCharStats();
@@ -146,7 +146,7 @@ public class Mime extends ActiveTicker
 						   msg.othersCode(),msg.othersMessage());
 			else
 			{
-				MOB newSMOB=CMClass.getFactoryMOB();
+				final MOB newSMOB=CMClass.getFactoryMOB();
 				newSMOB.baseCharStats().setStat(CharStats.STAT_GENDER,'N');
 				newSMOB.setName(ticking.name());
 				newSMOB.recoverCharStats();

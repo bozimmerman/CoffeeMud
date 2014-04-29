@@ -58,15 +58,15 @@ public class Chant_DruidicConnection extends Chant
 			unInvoke();
 			return false;
 		}
-		long ellapsed=System.currentTimeMillis()-lastTime;
+		final long ellapsed=System.currentTimeMillis()-lastTime;
 		if(affected instanceof Area)
 		{
-			int hoursPerDay=((Area)affected).getTimeObj().getHoursInDay();
-			long millisPerHoursPerDay=hoursPerDay*CMProps.getMillisPerMudHour();
+			final int hoursPerDay=((Area)affected).getTimeObj().getHoursInDay();
+			final long millisPerHoursPerDay=hoursPerDay*CMProps.getMillisPerMudHour();
 			if(ellapsed>=millisPerHoursPerDay)
 			{
 				lastTime=System.currentTimeMillis();
-				Vector V=Druid_MyPlants.myAreaPlantRooms(invoker(),(Area)affected);
+				final Vector V=Druid_MyPlants.myAreaPlantRooms(invoker(),(Area)affected);
 				int pct=0;
 				if(((Area)affected).getAreaIStats()[Area.Stats.VISITABLE_ROOMS.ordinal()]>10)
 					pct=(int)Math.round(100.0*CMath.div(V.size(),((Area)affected).getAreaIStats()[Area.Stats.VISITABLE_ROOMS.ordinal()]));
@@ -76,7 +76,7 @@ public class Chant_DruidicConnection extends Chant
 					return false;
 				}
 				invoker.tell("Your prolonged connection to this place fills you with harmony!");
-				int xp=(int)Math.round(5.0*CMath.mul(CMath.div(V.size(),((Area)affected).getAreaIStats()[Area.Stats.VISITABLE_ROOMS.ordinal()])
+				final int xp=(int)Math.round(5.0*CMath.mul(CMath.div(V.size(),((Area)affected).getAreaIStats()[Area.Stats.VISITABLE_ROOMS.ordinal()])
 											,((Area)affected).getAreaIStats()[Area.Stats.AVG_LEVEL.ordinal()]));
 				CMLib.leveler().postExperience(invoker(),null,null,xp,false);
 			}
@@ -90,7 +90,7 @@ public class Chant_DruidicConnection extends Chant
 		super.affectPhyStats(affected,stats);
 		if(affected instanceof MOB)
 		{
-			MOB mob=(MOB)affected;
+			final MOB mob=(MOB)affected;
 			if((mob==invoker())
 			||CMLib.flags().isAnimalIntelligence(mob)
 			||(mob.charStats().getMyRace().racialCategory().equalsIgnoreCase("Vegetation")))
@@ -106,7 +106,7 @@ public class Chant_DruidicConnection extends Chant
 	{
 		if((canBeUninvoked())&&(invoker!=null)&&(affected instanceof Area))
 		{
-			Vector V=Druid_MyPlants.myAreaPlantRooms(invoker,(Area)affected);
+			final Vector V=Druid_MyPlants.myAreaPlantRooms(invoker,(Area)affected);
 			if(V.size()>1)
 				V.removeElementAt(0);
 			for(int v=0;v<V.size();v++)
@@ -123,7 +123,7 @@ public class Chant_DruidicConnection extends Chant
 				}
 			}
 			invoker.tell("You have destroyed your connection with "+affected.name()+"!");
-			for(Enumeration e=((Area)affected).getMetroMap();e.hasMoreElements();)
+			for(final Enumeration e=((Area)affected).getMetroMap();e.hasMoreElements();)
 				((Room)e.nextElement()).recoverRoomStats();
 		}
 		super.unInvoke();
@@ -136,14 +136,14 @@ public class Chant_DruidicConnection extends Chant
 		Area target=mob.location().getArea();
 		if((auto)&&(givenTarget instanceof Area)) target=(Area)givenTarget;
 		if(target==null) return false;
-		boolean quietly=((commands!=null)&&(commands.size()>0)&&(commands.contains("QUIETLY")));
+		final boolean quietly=((commands!=null)&&(commands.size()>0)&&(commands.contains("QUIETLY")));
 		if(target.fetchEffect(ID())!=null)
 		{
 			if(!quietly)
 				mob.tell("This place is already connected to a druid.");
 			return false;
 		}
-		Vector V=Druid_MyPlants.myAreaPlantRooms(mob,target);
+		final Vector V=Druid_MyPlants.myAreaPlantRooms(mob,target);
 		int pct=0;
 		if(target.getAreaIStats()[Area.Stats.VISITABLE_ROOMS.ordinal()]>10)
 			pct=(int)Math.round(100.0*CMath.div(V.size(),target.getAreaIStats()[Area.Stats.VISITABLE_ROOMS.ordinal()]));
@@ -178,18 +178,18 @@ public class Chant_DruidicConnection extends Chant
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"This area seems connected to <S-NAME>.":"^S<S-NAME> chant(s), establishing a natural connection with this area.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"This area seems connected to <S-NAME>.":"^S<S-NAME> chant(s), establishing a natural connection with this area.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				beneficialAffect(mob,target,asLevel,0);
-				Chant_DruidicConnection A=(Chant_DruidicConnection)target.fetchEffect(ID());
+				final Chant_DruidicConnection A=(Chant_DruidicConnection)target.fetchEffect(ID());
 				if(A!=null)
 				{
 					A.setSavable(false);
 					A.makeLongLasting();
 					A.lastTime=System.currentTimeMillis();
-					for(Enumeration e=target.getMetroMap();e.hasMoreElements();)
+					for(final Enumeration e=target.getMetroMap();e.hasMoreElements();)
 						((Room)e.nextElement()).recoverRoomStats();
 				}
 			}

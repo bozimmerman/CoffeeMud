@@ -47,7 +47,7 @@ public class Trap_ElectricShock extends StdTrap
 		if(P==null) return null;
 		if(mob!=null)
 		{
-			Item I=findMostOfMaterial(mob.location(),RawMaterial.MATERIAL_METAL);
+			final Item I=findMostOfMaterial(mob.location(),RawMaterial.MATERIAL_METAL);
 			if(I!=null)
 				super.destroyResources(mob.location(),I.material(),10);
 		}
@@ -57,7 +57,7 @@ public class Trap_ElectricShock extends StdTrap
 	@Override
 	public List<Item> getTrapComponents()
 	{
-		Vector V=new Vector();
+		final Vector V=new Vector();
 		for(int i=0;i<10;i++)
 			V.addElement(CMLib.materials().makeItemResource(RawMaterial.RESOURCE_IRON));
 		return V;
@@ -69,7 +69,7 @@ public class Trap_ElectricShock extends StdTrap
 		if(!super.canSetTrapOn(mob,P)) return false;
 		if(mob!=null)
 		{
-			Item I=findMostOfMaterial(mob.location(),RawMaterial.MATERIAL_METAL);
+			final Item I=findMostOfMaterial(mob.location(),RawMaterial.MATERIAL_METAL);
 			if((I==null)
 			||(super.findNumberOfResource(mob.location(),I.material())<10))
 			{

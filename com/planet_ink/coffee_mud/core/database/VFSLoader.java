@@ -45,7 +45,7 @@ public class VFSLoader
 	public CMFile.CMVFSDir DBReadDirectory()
 	{
 		DBConnection D=null;
-		CMFile.CMVFSDir root=new CMFile.CMVFSDir(null,"");
+		final CMFile.CMVFSDir root=new CMFile.CMVFSDir(null,"");
 		try
 		{
 			D=DB.DBFetch();
@@ -53,17 +53,17 @@ public class VFSLoader
 			{
 				return null;
 			}
-			ResultSet R=D.query("SELECT * FROM CMVFS");
+			final ResultSet R=D.query("SELECT * FROM CMVFS");
 			while(R.next())
 			{
-				String fname = DBConnections.getRes(R,"CMFNAM");
-				int mask = (int)DBConnections.getLongRes(R,"CMDTYP");
-				long time = DBConnections.getLongRes(R,"CMMODD");
-				String author = DBConnections.getRes(R,"CMWHOM");
+				final String fname = DBConnections.getRes(R,"CMFNAM");
+				final int mask = (int)DBConnections.getLongRes(R,"CMDTYP");
+				final long time = DBConnections.getLongRes(R,"CMMODD");
+				final String author = DBConnections.getRes(R,"CMWHOM");
 				root.add(new CMFile.CMVFSFile(fname,mask,time,author));
 			}
 		}
-		catch(Exception sqle)
+		catch(final Exception sqle)
 		{
 			Log.errOut("VFSLoader",sqle);
 			return null;
@@ -83,22 +83,22 @@ public class VFSLoader
 		try
 		{
 			D=DB.DBFetch();
-			ResultSet R=D.query("SELECT * FROM CMVFS WHERE CMFNAM='"+filename+"'");
+			final ResultSet R=D.query("SELECT * FROM CMVFS WHERE CMFNAM='"+filename+"'");
 			if(R.next())
 			{
-				String possFName=DBConnections.getRes(R,"CMFNAM");
+				final String possFName=DBConnections.getRes(R,"CMFNAM");
 				if(possFName.equalsIgnoreCase(filename))
 				{
-					int bits=(int)DBConnections.getLongRes(R,"CMDTYP");
-					long mod=DBConnections.getLongRes(R,"CMMODD");
-					String author = DBConnections.getRes(R,"CMWHOM");
-					String data=DBConnections.getRes(R,"CMDATA");
+					final int bits=(int)DBConnections.getLongRes(R,"CMDTYP");
+					final long mod=DBConnections.getLongRes(R,"CMMODD");
+					final String author = DBConnections.getRes(R,"CMWHOM");
+					final String data=DBConnections.getRes(R,"CMDATA");
 					row = new CMFile.CMVFSFile(filename,bits,mod,author);
 					row.setData(B64Encoder.B64decode(data));
 				}
 			}
 		}
-		catch(Exception sqle)
+		catch(final Exception sqle)
 		{
 			Log.errOut("VFSLoader",sqle);
 		}
@@ -129,7 +129,7 @@ public class VFSLoader
 
 	public void DBCreate(String filename, int bits, String creator, long updateTime, Object data)
 	{
-		String buf=makeVBuf(data);
+		final String buf=makeVBuf(data);
 		if(buf==null)
 		{
 			Log.errOut("VFSLoader","Unable to save "+filename+" due to illegal data type: "+data.getClass().getName());
@@ -157,7 +157,7 @@ public class VFSLoader
 		try
 		{
 			D=DB.DBFetch();
-			ResultSet R=D.query("SELECT CMFNAM FROM CMVFS WHERE CMFNAM='"+filename+"'");
+			final ResultSet R=D.query("SELECT CMFNAM FROM CMVFS WHERE CMFNAM='"+filename+"'");
 			if(!R.next())
 			{
 				R.close();
@@ -168,7 +168,7 @@ public class VFSLoader
 			else
 			{
 				R.close();
-				String buf=makeVBuf(data);
+				final String buf=makeVBuf(data);
 				if(buf==null)
 				{
 					Log.errOut("VFSLoader","Unable to save "+filename+" due to illegal data type: "+data.getClass().getName());
@@ -182,7 +182,7 @@ public class VFSLoader
 						 "CMDATA=? WHERE CMFNAM='"+filename+"'", buf);
 			}
 		}
-		catch(Exception sqle)
+		catch(final Exception sqle)
 		{
 			Log.errOut("VFSLoader",sqle);
 		}
@@ -199,11 +199,11 @@ public class VFSLoader
 		{
 			D=DB.DBFetch();
 			D.update("DELETE FROM CMVFS WHERE CMFNAM='"+filename+"'",0);
-			try{Thread.sleep(500);}catch(Exception e){}
+			try{Thread.sleep(500);}catch(final Exception e){}
 			if(DB.queryRows("SELECT * FROM CMVFS WHERE CMFNAM='"+filename+"'")>0)
 				Log.errOut("Failed to delete virtual file "+filename+".");
 		}
-		catch(Exception sqle)
+		catch(final Exception sqle)
 		{
 			Log.errOut("VFSLoader",sqle);
 		}

@@ -37,7 +37,7 @@ public class DefaultPoll implements Poll
 {
 	@Override public String ID(){return "DefaultPoll";}
 	@Override public String name() { return ID();}
-	@Override public CMObject newInstance(){try{return getClass().newInstance();}catch(Exception e){return new DefaultPoll();}}
+	@Override public CMObject newInstance(){try{return getClass().newInstance();}catch(final Exception e){return new DefaultPoll();}}
 	@Override public void initializeClass(){}
 	@Override public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 	@Override
@@ -47,7 +47,7 @@ public class DefaultPoll implements Poll
 		{
 			return (Poll)this.clone();
 		}
-		catch(CloneNotSupportedException e)
+		catch(final CloneNotSupportedException e)
 		{
 			return newInstance();
 		}
@@ -97,7 +97,7 @@ public class DefaultPoll implements Poll
 	public String getOptionsXML()
 	{
 		if(options.size()==0) return "<OPTIONS />";
-		StringBuffer str=new StringBuffer("<OPTIONS>");
+		final StringBuffer str=new StringBuffer("<OPTIONS>");
 		PollOption PO=null;
 		for(int i=0;i<options.size();i++)
 		{
@@ -114,7 +114,7 @@ public class DefaultPoll implements Poll
 	public String getResultsXML()
 	{
 		if(results.size()==0) return "<RESULTS />";
-		StringBuffer str=new StringBuffer("<RESULTS>");
+		final StringBuffer str=new StringBuffer("<RESULTS>");
 		PollResult PR=null;
 		for(int i=0;i<results.size();i++)
 		{
@@ -135,7 +135,7 @@ public class DefaultPoll implements Poll
 		if(mob==null) return null;
 		CMLib.polls().loadPollIfNecessary(this);
 		PollResult R=null;
-		Session S=mob.session();
+		final Session S=mob.session();
 		for(int r=0;r<results.size();r++)
 		{
 			R=results.get(r);

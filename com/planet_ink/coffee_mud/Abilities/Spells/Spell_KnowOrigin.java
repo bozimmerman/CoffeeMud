@@ -53,17 +53,17 @@ public class Spell_KnowOrigin extends Spell
 		else
 		if(meThang instanceof Item)
 		{
-			Item me=(Item)meThang;
+			final Item me=(Item)meThang;
 			try
 			{
 				// check mobs worn items first!
-				String srchStr="$"+me.Name()+"$";
+				final String srchStr="$"+me.Name()+"$";
 				Environmental E=CMLib.map().findFirstShopStocker(CMLib.map().rooms(), mob, srchStr, 10);
 				if(E!=null) return CMLib.map().getStartRoom(E);
 				E=CMLib.map().findFirstInventory(CMLib.map().rooms(), mob, srchStr, 10);
 				if(E!=null) return CMLib.map().getStartRoom(E);
 				return CMLib.map().findWorldRoomLiberally(mob,srchStr, "I",10,600000);
-			}catch(NoSuchElementException nse){}
+			}catch(final NoSuchElementException nse){}
 		}
 		return null;
 	}
@@ -71,17 +71,17 @@ public class Spell_KnowOrigin extends Spell
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		Physical target=getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_ANY);
+		final Physical target=getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_ANY);
 		if(target==null) return false;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		Room R=origin(mob,target);
-		boolean success=proficiencyCheck(mob,0,auto);
+		final Room R=origin(mob,target);
+		final boolean success=proficiencyCheck(mob,0,auto);
 		if((success)&&(R!=null))
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> incant(s), divining the origin of <T-NAMESELF>.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> incant(s), divining the origin of <T-NAMESELF>.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

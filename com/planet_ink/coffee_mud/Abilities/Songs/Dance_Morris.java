@@ -57,7 +57,7 @@ public class Dance_Morris extends Dance
 			return true;
 		if(affected==invoker) return true;
 
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		// preventing distracting player from doin anything else
 		if(msg.amISource(mob)
 		&&(msg.targetMinor()==CMMsg.TYP_WEAPONATTACK)

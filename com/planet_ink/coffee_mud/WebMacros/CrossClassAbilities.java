@@ -40,29 +40,29 @@ public class CrossClassAbilities extends StdWebMacro
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
-		Vector rowsFavoring=new Vector();
-		Vector allOtherRows=new Vector();
-		String sort=httpReq.getUrlParameter("SORTBY");
+		final Vector rowsFavoring=new Vector();
+		final Vector allOtherRows=new Vector();
+		final String sort=httpReq.getUrlParameter("SORTBY");
 		int sortByClassNum=-1;
 		if((sort!=null)&&(sort.length()>0))
 		{
 			int cnum=0;
-			for(Enumeration c=CMClass.charClasses();c.hasMoreElements();)
+			for(final Enumeration c=CMClass.charClasses();c.hasMoreElements();)
 			{
-				CharClass C=(CharClass)c.nextElement();
+				final CharClass C=(CharClass)c.nextElement();
 				if((C.ID().equals(sort))&&(CMProps.isTheme(C.availabilityCode())))
 					sortByClassNum=cnum;
 				cnum++;
 			}
 		}
-		for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
+		for(final Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 		{
-			Ability A=a.nextElement();
-			StringBuffer buf=new StringBuffer("");
+			final Ability A=a.nextElement();
+			final StringBuffer buf=new StringBuffer("");
 			int numFound=0;
-			for(Enumeration c=CMClass.charClasses();c.hasMoreElements();)
+			for(final Enumeration c=CMClass.charClasses();c.hasMoreElements();)
 			{
-				CharClass C=(CharClass)c.nextElement();
+				final CharClass C=(CharClass)c.nextElement();
 				if(CMProps.isTheme(C.availabilityCode())
 				   &&(CMLib.ableMapper().getQualifyingLevel(C.ID(),true,A.ID())>=0))
 					if((++numFound)>0) break;
@@ -71,12 +71,12 @@ public class CrossClassAbilities extends StdWebMacro
 			{
 				buf.append("<TR><TD><B>"+A.name()+"</B></TD>");
 				int cnum=0;
-				for(Enumeration c=CMClass.charClasses();c.hasMoreElements();)
+				for(final Enumeration c=CMClass.charClasses();c.hasMoreElements();)
 				{
-					CharClass C=(CharClass)c.nextElement();
+					final CharClass C=(CharClass)c.nextElement();
 					if(CMProps.isTheme(C.availabilityCode()))
 					{
-						int qual=CMLib.ableMapper().getQualifyingLevel(C.ID(),true,A.ID());
+						final int qual=CMLib.ableMapper().getQualifyingLevel(C.ID(),true,A.ID());
 						if(qual>=0)
 						{
 							buf.append("<TD>"+qual+"</TD>");
@@ -93,7 +93,7 @@ public class CrossClassAbilities extends StdWebMacro
 				buf.append("</TR>");
 			}
 		}
-		StringBuffer buf=new StringBuffer("");
+		final StringBuffer buf=new StringBuffer("");
 		for(int i=0;i<rowsFavoring.size();i++)
 			buf.append((StringBuffer)rowsFavoring.elementAt(i));
 		for(int i=0;i<allOtherRows.size();i++)

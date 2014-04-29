@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -71,7 +70,7 @@ public class Spell_LocateObject extends Spell
 				else
 				if(s.startsWith("<"))
 					s=s.substring(1);
-				int levelFind=CMath.s_int(s);
+				final int levelFind=CMath.s_int(s);
 
 				if(lt)
 					maxLevel=levelFind;
@@ -84,24 +83,24 @@ public class Spell_LocateObject extends Spell
 				else
 					s="";
 			}
-		String what=CMParms.combine(commands,0);
+		final String what=CMParms.combine(commands,0);
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		int maxFound=1+(super.getXLEVELLevel(mob));
+		final int maxFound=1+(super.getXLEVELLevel(mob));
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":"^S<S-NAME> invoke(s) a divination, shouting '"+what+"'^?.");
+			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":"^S<S-NAME> invoke(s) a divination, shouting '"+what+"'^?.");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				List<String> itemsFound=new Vector<String>();
-				HashSet areas=new HashSet();
-				HashSet areasTried=new HashSet();
+				final List<String> itemsFound=new Vector<String>();
+				final HashSet areas=new HashSet();
+				final HashSet areasTried=new HashSet();
 				Area A=null;
 				int numAreas=(int)Math.round(CMath.mul(CMLib.map().numAreas(),0.90))+1;
 				if(numAreas>CMLib.map().numAreas()) numAreas=CMLib.map().numAreas();
@@ -123,18 +122,18 @@ public class Spell_LocateObject extends Spell
 				Environmental item=null;
 				Room room=null;
 				ShopKeeper SK=null;
-				TrackingLibrary.TrackingFlags flags=new TrackingLibrary.TrackingFlags();
-				List<Room> checkSet=CMLib.tracking().getRadiantRooms(mob.location(),flags,50+adjustedLevel(mob,asLevel));
-				for(Iterator<Room> r=checkSet.iterator();r.hasNext();)
+				final TrackingLibrary.TrackingFlags flags=new TrackingLibrary.TrackingFlags();
+				final List<Room> checkSet=CMLib.tracking().getRadiantRooms(mob.location(),flags,50+adjustedLevel(mob,asLevel));
+				for (final Room room2 : checkSet)
 				{
-					room=CMLib.map().getRoom(r.next());
+					room=CMLib.map().getRoom(room2);
 					if(!CMLib.flags().canAccess(mob,room)) continue;
 
 					item=room.findItem(null,what);
 					if((item!=null)
 					&&(CMLib.flags().canBeLocated((Item)item)))
 					{
-						String str=item.name()+" is in a place called '"+room.displayText(mob)+"'.";
+						final String str=item.name()+" is in a place called '"+room.displayText(mob)+"'.";
 						itemsFound.add(str);
 					}
 					for(int i=0;i<room.numInhabitants();i++)
@@ -151,11 +150,11 @@ public class Spell_LocateObject extends Spell
 						&&(((Item)item).phyStats().level()>minLevel)
 						&&(((Item)item).phyStats().level()<maxLevel))
 						{
-							CMMsg msg2=CMClass.getMsg(mob,inhab,this,verbalCastCode(mob,null,auto),null);
+							final CMMsg msg2=CMClass.getMsg(mob,inhab,this,verbalCastCode(mob,null,auto),null);
 							if(room.okMessage(mob,msg2))
 							{
 								room.send(mob,msg2);
-								String str=item.name()+((!levelAdjust)?"":("("+((Item)item).phyStats().level()+")"))+" is being carried by "+inhab.name()+" in a place called '"+room.displayText(mob)+"'.";
+								final String str=item.name()+((!levelAdjust)?"":("("+((Item)item).phyStats().level()+")"))+" is being carried by "+inhab.name()+" in a place called '"+room.displayText(mob)+"'.";
 								itemsFound.add(str);
 								break;
 							}
@@ -169,7 +168,7 @@ public class Spell_LocateObject extends Spell
 				{
 					while(itemsFound.size()>maxFound)
 						itemsFound.remove(CMLib.dice().roll(1,itemsFound.size(),-1));
-					for(String found : itemsFound)
+					for(final String found : itemsFound)
 						mob.tell(found);
 				}
 			}

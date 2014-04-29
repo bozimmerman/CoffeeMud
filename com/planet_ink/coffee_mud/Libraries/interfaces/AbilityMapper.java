@@ -85,11 +85,11 @@ public interface AbilityMapper extends CMLibrary
 		public AbilityMapping copyOf()
 		{
 			try {
-				AbilityMapping A=(AbilityMapping)this.clone();
+				final AbilityMapping A=(AbilityMapping)this.clone();
 				A.skillPreReqs = skillPreReqs.copyOf();
 				A.costOverrides = costOverrides.clone();
 				return A;
-			}catch(Exception e) { return this;}
+			}catch(final Exception e) { return this;}
 		}
 	}
 

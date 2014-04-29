@@ -55,7 +55,7 @@ public class Prayer_Position extends Prayer
 	}
 	public String trailTo(Room R1, Room R2)
 	{
-		Vector set=new Vector();
+		final Vector set=new Vector();
 		TrackingLibrary.TrackingFlags flags;
 		flags = new TrackingLibrary.TrackingFlags()
 				.plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS);
@@ -63,12 +63,12 @@ public class Prayer_Position extends Prayer
 		int foundAt=-1;
 		for(int i=0;i<set.size();i++)
 		{
-			Room R=(Room)set.elementAt(i);
+			final Room R=(Room)set.elementAt(i);
 			if(R==R2){ foundAt=i; break;}
 		}
 		if(foundAt<0) return "You can't get to '"+R2.roomID()+"' from here.";
 		Room checkR=R2;
-		Vector trailV=new Vector();
+		final Vector trailV=new Vector();
 		trailV.addElement(R2);
 		boolean didSomething=false;
 		while(checkR!=R1)
@@ -76,7 +76,7 @@ public class Prayer_Position extends Prayer
 			didSomething=false;
 			for(int r=0;r<foundAt;r++)
 			{
-				Room R=(Room)set.elementAt(r);
+				final Room R=(Room)set.elementAt(r);
 				if(getRoomDirection(R,checkR,trailV)>=0)
 				{
 					trailV.addElement(R);
@@ -89,20 +89,20 @@ public class Prayer_Position extends Prayer
 			if(!didSomething)
 				return "No trail was found?!";
 		}
-		Vector theDirTrail=new Vector();
-		Vector empty=new ReadOnlyVector();
+		final Vector theDirTrail=new Vector();
+		final Vector empty=new ReadOnlyVector();
 		for(int s=trailV.size()-1;s>=1;s--)
 		{
-			Room R=(Room)trailV.elementAt(s);
-			Room RA=(Room)trailV.elementAt(s-1);
+			final Room R=(Room)trailV.elementAt(s);
+			final Room RA=(Room)trailV.elementAt(s-1);
 			theDirTrail.addElement(Character.toString(Directions.getDirectionName(getRoomDirection(R,RA,empty)).charAt(0))+" ");
 		}
-		StringBuffer theTrail=new StringBuffer("");
+		final StringBuffer theTrail=new StringBuffer("");
 		char lastDir='\0';
 		int lastNum=0;
 		while(theDirTrail.size()>0)
 		{
-			String s=(String)theDirTrail.elementAt(0);
+			final String s=(String)theDirTrail.elementAt(0);
 			if(lastNum==0)
 			{
 				lastDir=s.charAt(0);
@@ -139,10 +139,10 @@ public class Prayer_Position extends Prayer
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":"^S<S-NAME> "+prayWord(mob)+" for a position check.^?");
+			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":"^S<S-NAME> "+prayWord(mob)+" for a position check.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

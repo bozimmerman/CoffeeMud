@@ -56,7 +56,7 @@ public class Prop_TicketTaker extends Property
 	{
 		if(host instanceof Rider)
 		{
-			Rider mob=(Rider)host;
+			final Rider mob=(Rider)host;
 			if(R==mob) return true;
 			if(mob.riding()==null) return false;
 			if(mob.riding()==R) return true;
@@ -78,7 +78,7 @@ public class Prop_TicketTaker extends Property
 		if(((myHost instanceof Rider)&&(((Rider)myHost).riding()!=null))
 		   ||(myHost instanceof Rideable))
 		{
-			MOB mob=msg.source();
+			final MOB mob=msg.source();
 			if((msg.target()!=null)
 			&&(myHost!=mob)
 			&&(!mob.isMonster())
@@ -97,7 +97,7 @@ public class Prop_TicketTaker extends Property
 						currency=CMLib.beanCounter().getCurrency(mob);
 					if(CMLib.beanCounter().getTotalAbsoluteValue(mob,currency)>=cost())
 					{
-						String costStr=CMLib.beanCounter().nameCurrencyShort(currency,cost());
+						final String costStr=CMLib.beanCounter().nameCurrencyShort(currency,cost());
 						mob.location().show(mob,myHost,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> give(s) "+costStr+" to <T-NAME>.");
 						CMLib.beanCounter().subtractMoney(mob,currency,cost());
 					}
@@ -114,7 +114,7 @@ public class Prop_TicketTaker extends Property
 		if(((myHost instanceof Rider)&&(((Rider)myHost).riding()!=null))
 		   ||(myHost instanceof Rideable))
 		{
-			MOB mob=msg.source();
+			final MOB mob=msg.source();
 			if((msg.target()!=null)
 			&&(myHost!=mob)
 			&&(!mob.isMonster())
@@ -132,7 +132,7 @@ public class Prop_TicketTaker extends Property
 						currency=CMLib.beanCounter().getCurrency(mob);
 					if(CMLib.beanCounter().getTotalAbsoluteValue(mob,currency)<cost())
 					{
-						String costStr=CMLib.beanCounter().nameCurrencyLong(currency,cost());
+						final String costStr=CMLib.beanCounter().nameCurrencyLong(currency,cost());
 						if(myHost instanceof MOB)
 							CMLib.commands().postSay((MOB)myHost,mob,"You'll need "+costStr+" to board.",false,false);
 						else

@@ -62,12 +62,12 @@ public class Thief_Trap extends ThiefSkill
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Trap theTrap=null;
-		Vector traps=new Vector();
+		final Vector traps=new Vector();
 		int qualifyingClassLevel=CMLib.ableMapper().qualifyingClassLevel(mob,this)+(getXLEVELLevel(mob))-CMLib.ableMapper().qualifyingLevel(mob,this)+1;
 		if(qualifyingClassLevel>maxLevel()) qualifyingClassLevel=maxLevel();
-		for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
+		for(final Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 		{
-			Ability A=a.nextElement();
+			final Ability A=a.nextElement();
 			if((A instanceof Trap)
 			   &&(!((Trap)A).isABomb())
 			   &&(((Trap)A).maySetTrap(mob,qualifyingClassLevel)))
@@ -87,10 +87,10 @@ public class Thief_Trap extends ThiefSkill
 		else
 		if(CMParms.combine(commands,0).equalsIgnoreCase("list"))
 		{
-			StringBuffer buf=new StringBuffer(CMStrings.padRight("Trap Name",15)+" "+CMStrings.padRight("Affects",17)+" Requires\n\r");
+			final StringBuffer buf=new StringBuffer(CMStrings.padRight("Trap Name",15)+" "+CMStrings.padRight("Affects",17)+" Requires\n\r");
 			for(int r=0;r<traps.size();r++)
 			{
-				Trap T=(Trap)traps.elementAt(r);
+				final Trap T=(Trap)traps.elementAt(r);
 				buf.append(CMStrings.padRight(T.name(),15)+" ");
 				if(T.canAffect(Ability.CAN_ROOMS))
 					buf.append(CMStrings.padRight("Rooms",17)+" ");
@@ -115,7 +115,7 @@ public class Thief_Trap extends ThiefSkill
 				return false;
 			}
 
-			String cmdWord=triggerStrings()[0].toLowerCase();
+			final String cmdWord=triggerStrings()[0].toLowerCase();
 			if(commands.size()<2)
 			{
 				mob.tell("Trap what, with what kind of trap? Use "+cmdWord+" list for a list.");
@@ -135,14 +135,14 @@ public class Thief_Trap extends ThiefSkill
 			}
 			for(int r=0;r<traps.size();r++)
 			{
-				Trap T=(Trap)traps.elementAt(r);
+				final Trap T=(Trap)traps.elementAt(r);
 				if(T.name().equalsIgnoreCase(name))
 					theTrap=T;
 			}
 			if(theTrap==null)
 			for(int r=0;r<traps.size();r++)
 			{
-				Trap T=(Trap)traps.elementAt(r);
+				final Trap T=(Trap)traps.elementAt(r);
 				if(CMLib.english().containsString(T.name(),name))
 					theTrap=T;
 			}
@@ -152,8 +152,8 @@ public class Thief_Trap extends ThiefSkill
 				return false;
 			}
 
-			String whatToTrap=CMParms.combine(commands,0);
-			int dirCode=Directions.getGoodDirectionCode(whatToTrap);
+			final String whatToTrap=CMParms.combine(commands,0);
+			final int dirCode=Directions.getGoodDirectionCode(whatToTrap);
 			if(whatToTrap.equalsIgnoreCase("room")||whatToTrap.equalsIgnoreCase("here"))
 				trapThis=mob.location();
 			if((dirCode>=0)&&(trapThis==null))
@@ -170,7 +170,7 @@ public class Thief_Trap extends ThiefSkill
 
 		boolean success=proficiencyCheck(mob,+((mob.phyStats().level()+(getXLEVELLevel(mob)*2)
 											 -trapThis.phyStats().level())*3),auto);
-		Trap theOldTrap=CMLib.utensils().fetchMyTrap(trapThis);
+		final Trap theOldTrap=CMLib.utensils().fetchMyTrap(trapThis);
 		if(theOldTrap!=null)
 		{
 			if(theOldTrap.disabled())
@@ -182,7 +182,7 @@ public class Thief_Trap extends ThiefSkill
 			}
 		}
 
-		CMMsg msg=CMClass.getMsg(mob,trapThis,this,auto?CMMsg.MSG_OK_ACTION:CMMsg.MSG_THIEF_ACT,CMMsg.MASK_ALWAYS|CMMsg.MSG_THIEF_ACT,CMMsg.MSG_OK_ACTION,(auto?trapThis.name()+" begins to glow!":"<S-NAME> attempt(s) to lay a trap on <T-NAMESELF>."));
+		final CMMsg msg=CMClass.getMsg(mob,trapThis,this,auto?CMMsg.MSG_OK_ACTION:CMMsg.MSG_THIEF_ACT,CMMsg.MASK_ALWAYS|CMMsg.MSG_THIEF_ACT,CMMsg.MSG_OK_ACTION,(auto?trapThis.name()+" begins to glow!":"<S-NAME> attempt(s) to lay a trap on <T-NAMESELF>."));
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
@@ -196,7 +196,7 @@ public class Thief_Trap extends ThiefSkill
 				else
 				if(trapThis instanceof Exit)
 				{
-					Room R=mob.location();
+					final Room R=mob.location();
 					Room R2=null;
 					for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 						if(R.getExitInDir(d)==trapThis)
@@ -216,7 +216,7 @@ public class Thief_Trap extends ThiefSkill
 			{
 				if((CMLib.dice().rollPercentage()>50)&&(theTrap!=null))
 				{
-					Trap T=theTrap.setTrap(mob,trapThis,getXLEVELLevel(mob),adjustedLevel(mob,asLevel),false);
+					final Trap T=theTrap.setTrap(mob,trapThis,getXLEVELLevel(mob),adjustedLevel(mob,asLevel),false);
 					mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> trigger(s) the trap on accident!");
 					T.spring(mob);
 				}

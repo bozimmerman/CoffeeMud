@@ -14,7 +14,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -54,8 +53,8 @@ public class Chant_WindSnatcher extends Chant
 
 	public boolean isSpell(String ID)
 	{
-		for(int i=0;i<windSpells.length;i++)
-			if(windSpells[i].equalsIgnoreCase(ID))
+		for (final String windSpell : windSpells)
+			if(windSpell.equalsIgnoreCase(ID))
 				return true;
 		return false;
 	}
@@ -65,7 +64,7 @@ public class Chant_WindSnatcher extends Chant
 		// undo the affects of this spell
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		super.unInvoke();
 
@@ -80,12 +79,12 @@ public class Chant_WindSnatcher extends Chant
 		{
 			if(target instanceof MOB)
 			{
-				MOB victim=((MOB)target).getVictim();
+				final MOB victim=((MOB)target).getVictim();
 				if(victim!=null)
 				{
 					boolean found=false;
-					for(int i=0;i<windSpells.length;i++)
-						if(victim.fetchAbility(windSpells[i])!=null)
+					for (final String windSpell : windSpells)
+						if(victim.fetchAbility(windSpell)!=null)
 						{ found=true; break;}
 					if(!found) return Ability.QUALITY_INDIFFERENT;
 				}
@@ -126,7 +125,7 @@ public class Chant_WindSnatcher extends Chant
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
@@ -134,7 +133,7 @@ public class Chant_WindSnatcher extends Chant
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> chant(s) for <T-NAMESELF>.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> chant(s) for <T-NAMESELF>.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

@@ -49,7 +49,7 @@ public class As extends StdCommand
 			mob.tell("As whom do what?");
 			return false;
 		}
-		String cmd=(String)commands.firstElement();
+		final String cmd=(String)commands.firstElement();
 		commands.removeElementAt(0);
 		if((!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.AS))||(mob.isMonster()))
 		{
@@ -64,11 +64,11 @@ public class As extends StdCommand
 		{
 			try
 			{
-				List<MOB> targets=CMLib.map().findInhabitants(CMLib.map().rooms(), mob, cmd, 50);
+				final List<MOB> targets=CMLib.map().findInhabitants(CMLib.map().rooms(), mob, cmd, 50);
 				if(targets.size()>0)
 					M=targets.get(CMLib.dice().roll(1,targets.size(),-1));
 			}
-			catch(NoSuchElementException e){}
+			catch(final NoSuchElementException e){}
 		}
 		if(M==null)
 		{
@@ -103,9 +103,9 @@ public class As extends StdCommand
 			M.doCommand(commands,metaFlags|Command.METAFLAG_AS);
 			return false;
 		}
-		Room oldRoom=M.location();
+		final Room oldRoom=M.location();
 		boolean inside=(oldRoom!=null)?oldRoom.isInhabitant(M):false;
-		boolean dead=M.amDead();
+		final boolean dead=M.amDead();
 		final Session hisSession=M.session();
 		synchronized(mySession)
 		{

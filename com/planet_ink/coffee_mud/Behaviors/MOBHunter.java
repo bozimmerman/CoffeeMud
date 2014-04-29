@@ -65,7 +65,7 @@ public class MOBHunter extends ActiveTicker
 
 	protected boolean isHunting(MOB mob)
 	{
-		Ability A=mob.fetchEffect("Thief_Assasinate");
+		final Ability A=mob.fetchEffect("Thief_Assasinate");
 		if(A!=null) return true;
 		return false;
 	}
@@ -79,7 +79,7 @@ public class MOBHunter extends ActiveTicker
 	protected MOB findPrey(MOB mob)
 	{
 		MOB prey=null;
-		Vector rooms=new Vector();
+		final Vector rooms=new Vector();
 		TrackingLibrary.TrackingFlags flags;
 		flags = new TrackingLibrary.TrackingFlags()
 				.plus(TrackingLibrary.TrackingFlag.OPENONLY)
@@ -90,10 +90,10 @@ public class MOBHunter extends ActiveTicker
 		CMLib.tracking().getRadiantRooms(mob.location(),rooms,flags,null,radius,null);
 		for(int r=0;r<rooms.size();r++)
 		{
-			Room R=(Room)rooms.elementAt(r);
+			final Room R=(Room)rooms.elementAt(r);
 			for(int i=0;i<R.numInhabitants();i++)
 			{
-				MOB M=R.fetchInhabitant(i);
+				final MOB M=R.fetchInhabitant(i);
 				if(CMLib.masking().maskCheck(getParms(),M,false))
 				{
 					prey=M;
@@ -110,16 +110,16 @@ public class MOBHunter extends ActiveTicker
 		super.tick(ticking,tickID);
 		if((canAct(ticking,tickID))&&(ticking instanceof MOB))
 		{
-			MOB mob=(MOB)ticking;
+			final MOB mob=(MOB)ticking;
 			if(debug) Log.sysOut("ZAPHUNT", "Tick starting");
 			if(!isHunting(mob))
 			{
 				if(debug) Log.sysOut("ZAPHUNT", "'"+mob.Name()+"' not hunting.");
-				MOB prey=findPrey(mob);
+				final MOB prey=findPrey(mob);
 				if(prey!=null)
 				{
 					if(debug) Log.sysOut("ZAPHUNT", "'"+mob.Name()+"' found prey: '"+prey.Name()+"'");
-					Ability A=CMClass.getAbility("Thief_Assassinate");
+					final Ability A=CMClass.getAbility("Thief_Assassinate");
 					A.setProficiency(100);
 					mob.curState().setMana(mob.maxState().getMana());
 					mob.curState().setMovement(mob.maxState().getMovement());

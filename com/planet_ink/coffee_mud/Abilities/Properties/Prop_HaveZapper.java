@@ -92,7 +92,7 @@ public class Prop_HaveZapper extends Property implements TriggeredAffect
 	{
 		if(affected==null) return false;
 
-		MOB mob=msg.source();
+		final MOB mob=msg.source();
 		if(mob.location()==null)
 			return true;
 

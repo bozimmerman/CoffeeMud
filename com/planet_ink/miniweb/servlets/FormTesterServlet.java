@@ -46,13 +46,13 @@ public class FormTesterServlet implements SimpleServlet
 		{
 			response.setMimeType(MIMEType.html.getType());
 			response.getOutputStream().write("<html><body><h1>Form Field Values</h1><br>".getBytes());
-			for(String cookieName : request.getCookieNames())
+			for(final String cookieName : request.getCookieNames())
 				response.getOutputStream().write(("Cookie \""+cookieName+"\": "+request.getCookie(cookieName)+"<br>").getBytes());
-			for(String field : request.getUrlParameters())
+			for(final String field : request.getUrlParameters())
 				response.getOutputStream().write(("Url Field \""+field+"\": "+request.getUrlParameter(field)+"<br>").getBytes());
 			response.getOutputStream().write("</body></html>".getBytes());
 		}
-		catch (IOException e)
+		catch (final IOException e)
 		{
 			response.setStatusCode(500);
 		}

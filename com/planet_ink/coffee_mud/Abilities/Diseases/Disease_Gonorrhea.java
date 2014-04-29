@@ -57,7 +57,7 @@ public class Disease_Gonorrhea extends Disease
 		if(affected==null) return false;
 		if(!(affected instanceof MOB)) return true;
 
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		if((CMLib.dice().rollPercentage()==1)
 		&&(CMLib.dice().rollPercentage()>mob.charStats().getSave(CharStats.STAT_SAVE_COLD))
 		&&(!mob.amDead())
@@ -65,7 +65,7 @@ public class Disease_Gonorrhea extends Disease
 		{
 			MOB diseaser=invoker;
 			if(diseaser==null) diseaser=mob;
-			Ability A=CMClass.getAbility("Disease_Arthritis");
+			final Ability A=CMClass.getAbility("Disease_Arthritis");
 			A.invoke(diseaser,mob,true,0);
 		}
 		else
@@ -91,7 +91,7 @@ public class Disease_Gonorrhea extends Disease
 		if(affected==null) return super.okMessage(myHost,msg);
 		if(affected instanceof MOB)
 		{
-			MOB mob=(MOB)affected;
+			final MOB mob=(MOB)affected;
 			if(((msg.amITarget(mob))||(msg.amISource(mob)))
 			&&(msg.tool() instanceof Social)
 			&&(msg.tool().Name().equals("MATE <T-NAME>")

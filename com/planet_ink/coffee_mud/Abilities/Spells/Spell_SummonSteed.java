@@ -48,7 +48,7 @@ public class Spell_SummonSteed extends Spell
 	@Override
 	public void unInvoke()
 	{
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		super.unInvoke();
 		if((canBeUninvoked())&&(mob!=null))
 		{
@@ -64,7 +64,7 @@ public class Spell_SummonSteed extends Spell
 		{
 			if((affected!=null)&&(affected instanceof MOB))
 			{
-				MOB mob=(MOB)affected;
+				final MOB mob=(MOB)affected;
 				if(!mob.isInCombat())
 				if(((mob.amFollowing()==null)
 				||(mob.location()==null)
@@ -112,17 +112,17 @@ public class Spell_SummonSteed extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
 			invoker=mob;
-			CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":"^S<S-NAME> call(s) for a loyal steed.^?");
+			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":"^S<S-NAME> call(s) for a loyal steed.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				MOB target = determineMonster(mob, mob.phyStats().level()+((getXLEVELLevel(mob)+getX1Level(mob))/2));
-				MOB squabble = checkPack(target, mob);
+				final MOB target = determineMonster(mob, mob.phyStats().level()+((getXLEVELLevel(mob)+getX1Level(mob))/2));
+				final MOB squabble = checkPack(target, mob);
 				target.addNonUninvokableEffect( (Ability) copyOf());
 				if(squabble==null)
 				{
@@ -149,8 +149,8 @@ public class Spell_SummonSteed extends Spell
 	public MOB determineMonster(MOB caster, int level)
 	{
 
-		MOB newMOB=CMClass.getMOB("GenRideable");
-		Rideable ride=(Rideable)newMOB;
+		final MOB newMOB=CMClass.getMOB("GenRideable");
+		final Rideable ride=(Rideable)newMOB;
 		newMOB.basePhyStats().setAbility(11);
 		newMOB.basePhyStats().setLevel(level);
 		newMOB.basePhyStats().setWeight(500);
@@ -216,7 +216,7 @@ public class Spell_SummonSteed extends Spell
 	{
 		for(int i=0;i<mob.numFollowers();i++)
 		{
-			MOB possibleBitch = mob.fetchFollower(i);
+			final MOB possibleBitch = mob.fetchFollower(i);
 			if(newPackmate.Name().equalsIgnoreCase(possibleBitch.Name())
 			&&(possibleBitch.location()==newPackmate.location())
 			&& (CMLib.dice().rollPercentage()-mob.charStats().getStat(CharStats.STAT_CHARISMA)+newPackmate.phyStats().level() > 75))

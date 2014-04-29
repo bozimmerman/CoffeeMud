@@ -72,7 +72,7 @@ public class DefaultPlayerAccount implements PlayerAccount
 		{
 			return getClass().newInstance();
 		}
-		catch(Exception e)
+		catch(final Exception e)
 		{
 			return new DefaultPlayerStats();
 		}
@@ -85,13 +85,13 @@ public class DefaultPlayerAccount implements PlayerAccount
 	{
 		try
 		{
-			DefaultPlayerAccount O=(DefaultPlayerAccount)this.clone();
+			final DefaultPlayerAccount O=(DefaultPlayerAccount)this.clone();
 			O.friends=friends.copyOf();
 			O.ignored=ignored.copyOf();
 			O.xtraValues=(xtraValues==null)?null:(String[])xtraValues.clone();
 			return O;
 		}
-		catch(CloneNotSupportedException e)
+		catch(final CloneNotSupportedException e)
 		{
 			return new DefaultPlayerStats();
 		}
@@ -185,11 +185,11 @@ public class DefaultPlayerAccount implements PlayerAccount
 
 	protected SHashSet<String> getHashFrom(String str)
 	{
-		SHashSet<String> h=new SHashSet<String>();
+		final SHashSet<String> h=new SHashSet<String>();
 		int x=str.indexOf(';');
 		while(x>=0)
 		{
-			String fi=str.substring(0,x).trim();
+			final String fi=str.substring(0,x).trim();
 			if(fi.length()>0) h.add(fi);
 			str=str.substring(x+1);
 			x=str.indexOf(';');
@@ -216,7 +216,7 @@ public class DefaultPlayerAccount implements PlayerAccount
 	{
 		final long now=System.currentTimeMillis();
 		if(stat!=null)
-		for(TimeClock.TimePeriod period : TimeClock.TimePeriod.values())
+		for(final TimeClock.TimePeriod period : TimeClock.TimePeriod.values())
 		{
 			if(period==TimeClock.TimePeriod.ALLTIME)
 				prideStats[period.ordinal()][stat.ordinal()]+=amt;
@@ -224,7 +224,7 @@ public class DefaultPlayerAccount implements PlayerAccount
 			{
 				if(now>prideExpireTime[period.ordinal()])
 				{
-					for(AccountStats.PrideStat stat2 : AccountStats.PrideStat.values())
+					for(final AccountStats.PrideStat stat2 : AccountStats.PrideStat.values())
 						prideStats[period.ordinal()][stat2.ordinal()]=0;
 					prideExpireTime[period.ordinal()]=period.nextPeriod();
 				}
@@ -264,22 +264,22 @@ public class DefaultPlayerAccount implements PlayerAccount
 	protected String getPrivateList(Set<String> h)
 	{
 		if((h==null)||(h.size()==0)) return "";
-		StringBuffer list=new StringBuffer("");
-		for(Iterator<String> e=h.iterator();e.hasNext();)
-			list.append((e.next())+";");
+		final StringBuffer list=new StringBuffer("");
+		for (final String string : h)
+			list.append((string)+";");
 		return list.toString();
 	}
 
 	@Override
 	public String getXML()
 	{
-		StringBuffer rest=new StringBuffer("");
-		String[] codes=getStatCodes();
-		XMLLibrary libXML = CMLib.xml();
-		for(int x=0;x<codes.length;x++)
+		final StringBuffer rest=new StringBuffer("");
+		final String[] codes=getStatCodes();
+		final XMLLibrary libXML = CMLib.xml();
+		for (final String code2 : codes)
 		{
-			String code=codes[x].toUpperCase();
-			String value = getStat(code);
+			final String code=code2.toUpperCase();
+			final String value = getStat(code);
 			if(value.length()==0)
 				rest.append("<"+code+" />");
 			else
@@ -287,7 +287,7 @@ public class DefaultPlayerAccount implements PlayerAccount
 		}
 		rest.append("<NEXTPRIDEPERIODS>").append(CMParms.toTightStringList(prideExpireTime)).append("</NEXTPRIDEPERIODS>");
 		rest.append("<PRIDESTATS>");
-		for(TimeClock.TimePeriod period : TimeClock.TimePeriod.values())
+		for(final TimeClock.TimePeriod period : TimeClock.TimePeriod.values())
 			rest.append(CMParms.toTightStringList(prideStats[period.ordinal()])).append(";");
 		rest.append("</PRIDESTATS>");
 		return rest.toString();
@@ -296,19 +296,19 @@ public class DefaultPlayerAccount implements PlayerAccount
 	@Override
 	public void setXML(String str)
 	{
-		List<XMLLibrary.XMLpiece> xml = CMLib.xml().parseAllXML(str);
-		XMLLibrary libXML = CMLib.xml();
-		String[] codes=getStatCodes();
-		for(int i=0;i<codes.length;i++)
+		final List<XMLLibrary.XMLpiece> xml = CMLib.xml().parseAllXML(str);
+		final XMLLibrary libXML = CMLib.xml();
+		final String[] codes=getStatCodes();
+		for (final String code : codes)
 		{
-			String val=libXML.getValFromPieces(xml,codes[i].toUpperCase());
+			String val=libXML.getValFromPieces(xml,code.toUpperCase());
 			if(val==null) val="";
-			setStat(codes[i].toUpperCase(),libXML.restoreAngleBrackets(val));
+			setStat(code.toUpperCase(),libXML.restoreAngleBrackets(val));
 		}
 		final String[] nextPeriods=libXML.getValFromPieces(xml, "NEXTPRIDEPERIODS").split(",");
 		final String[] prideStats=libXML.getValFromPieces(xml, "PRIDESTATS").split(";");
-		Pair<Long,int[]>[] finalPrideStats = CMLib.players().parsePrideStats(nextPeriods, prideStats);
-		for(TimeClock.TimePeriod period : TimeClock.TimePeriod.values())
+		final Pair<Long,int[]>[] finalPrideStats = CMLib.players().parsePrideStats(nextPeriods, prideStats);
+		for(final TimeClock.TimePeriod period : TimeClock.TimePeriod.values())
 			if(period.ordinal()>finalPrideStats.length)
 			{
 				this.prideExpireTime[period.ordinal()]=finalPrideStats[period.ordinal()].first.longValue();
@@ -352,11 +352,11 @@ public class DefaultPlayerAccount implements PlayerAccount
 			return;
 		try
 		{
-			for(String name : players)
+			for(final String name : players)
 				if(name.equalsIgnoreCase(mob.Name()))
 					return;
 		}
-		catch(Exception e) {}
+		catch(final Exception e) {}
 		players.add(mob.Name());
 		thinPlayers.clear();
 	}
@@ -377,11 +377,11 @@ public class DefaultPlayerAccount implements PlayerAccount
 		players.remove(name);
 		try
 		{
-			for(String name1 : players)
+			for(final String name1 : players)
 				if(name1.equalsIgnoreCase(name))
 					players.remove(name1);
 		}
-		catch(Exception e) {}
+		catch(final Exception e) {}
 		thinPlayers.clear();
 	}
 
@@ -393,21 +393,21 @@ public class DefaultPlayerAccount implements PlayerAccount
 		players.remove(mob.Name());
 		try
 		{
-			for(String name : players)
+			for(final String name : players)
 				if(name.equalsIgnoreCase(mob.Name()))
 					players.remove(name);
 		}
-		catch(Exception e) {}
+		catch(final Exception e) {}
 		thinPlayers.clear();
 	}
 
 	@Override
 	public Enumeration<MOB> getLoadPlayers()
 	{
-		Vector<MOB> mobs = new Vector<MOB>(players.size());
-		for(Enumeration<String> e=getPlayers();e.hasMoreElements();)
+		final Vector<MOB> mobs = new Vector<MOB>(players.size());
+		for(final Enumeration<String> e=getPlayers();e.hasMoreElements();)
 		{
-			MOB M=CMLib.players().getLoadPlayer(e.nextElement());
+			final MOB M=CMLib.players().getLoadPlayer(e.nextElement());
 			if(M!=null) mobs.addElement(M);
 		}
 		return mobs.elements();
@@ -419,9 +419,9 @@ public class DefaultPlayerAccount implements PlayerAccount
 		synchronized(thinPlayers)
 		{
 			if(thinPlayers.size() != players.size())
-				for(Enumeration<String> e=getPlayers();e.hasMoreElements();)
+				for(final Enumeration<String> e=getPlayers();e.hasMoreElements();)
 				{
-					String name = e.nextElement();
+					final String name = e.nextElement();
 					PlayerLibrary.ThinPlayer tP = CMLib.database().getThinUser(name);
 					if(tP==null){ tP=new PlayerLibrary.ThinPlayer(); tP.name = name;}
 					thinPlayers.add(tP);
@@ -442,9 +442,9 @@ public class DefaultPlayerAccount implements PlayerAccount
 		if(names != null)
 		{
 			players = new SVector<String>(names);
-			for(String name : players)
+			for(final String name : players)
 			{
-				MOB M=CMLib.players().getPlayer(name);
+				final MOB M=CMLib.players().getPlayer(name);
 				if((M!=null)&&(M.playerStats()!=null)&&(M.playerStats().getAccount()==null))
 					M.playerStats().setAccount(this);
 			}

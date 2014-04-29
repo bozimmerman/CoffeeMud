@@ -40,12 +40,12 @@ public class RoomNext extends StdWebMacro
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
-		java.util.Map<String,String> parms=parseParms(parm);
-		String area=httpReq.getUrlParameter("AREA");
+		final java.util.Map<String,String> parms=parseParms(parm);
+		final String area=httpReq.getUrlParameter("AREA");
 		if((area==null)||(CMLib.map().getArea(area)==null))
 			return " @break@";
-		Area A=CMLib.map().getArea(area);
-		String last=httpReq.getUrlParameter("ROOM");
+		final Area A=CMLib.map().getArea(area);
+		final String last=httpReq.getUrlParameter("ROOM");
 		if(parms.containsKey("RESET"))
 		{
 			if(last!=null) httpReq.removeUrlParameter("ROOM");
@@ -53,9 +53,9 @@ public class RoomNext extends StdWebMacro
 		}
 		String lastID="";
 
-		for(Enumeration d=A.getProperRoomnumbers().getRoomIDs();d.hasMoreElements();)
+		for(final Enumeration d=A.getProperRoomnumbers().getRoomIDs();d.hasMoreElements();)
 		{
-			String roomid=(String)d.nextElement();
+			final String roomid=(String)d.nextElement();
 			if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!roomid.equals(lastID))))
 			{
 				httpReq.addFakeUrlParameter("ROOM",roomid);

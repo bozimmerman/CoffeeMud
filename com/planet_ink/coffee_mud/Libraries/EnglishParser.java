@@ -87,8 +87,8 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 	public boolean isAnArticle(String s)
 	{
 		s=s.toLowerCase();
-		for(int a=0;a<articles.length;a++)
-			if(s.equals(articles[a]))
+		for (final String article : articles)
+			if(s.equals(article))
 				return true;
 		return false;
 	}
@@ -115,10 +115,10 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 	@Override
 	public String cleanArticles(String s)
 	{
-		String lowStr=s.toLowerCase();
-		for(int a=0;a<articles.length;a++)
-			if(lowStr.startsWith(articles[a]+" "))
-				return s.substring(articles[a].length()+1);
+		final String lowStr=s.toLowerCase();
+		for (final String article : articles)
+			if(lowStr.startsWith(article+" "))
+				return s.substring(article.length()+1);
 		return s;
 	}
 
@@ -297,7 +297,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 
 		for(int c=0;c<CMLib.channels().getNumChannels();c++)
 		{
-			ChannelsLibrary.CMChannel chan=CMLib.channels().getChannel(c);
+			final ChannelsLibrary.CMChannel chan=CMLib.channels().getChannel(c);
 			if(chan.name.equalsIgnoreCase(firstWord))
 			{
 				C=CMClass.getCommand("Channel");
@@ -311,9 +311,9 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 			}
 		}
 
-		for(Enumeration<JournalsLibrary.CommandJournal> e=CMLib.journals().commandJournals();e.hasMoreElements();)
+		for(final Enumeration<JournalsLibrary.CommandJournal> e=CMLib.journals().commandJournals();e.hasMoreElements();)
 		{
-			JournalsLibrary.CommandJournal CMJ=e.nextElement();
+			final JournalsLibrary.CommandJournal CMJ=e.nextElement();
 			if(CMJ.NAME().equalsIgnoreCase(firstWord))
 			{
 				C=CMClass.getCommand("CommandJournal");
@@ -322,18 +322,18 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		}
 
 		// second, inexacting pass
-		for(Enumeration<Ability> a=mob.allAbilities();a.hasMoreElements();)
+		for(final Enumeration<Ability> a=mob.allAbilities();a.hasMoreElements();)
 		{
 			A=a.nextElement();
-			HashSet<String> tried=new HashSet<String>();
+			final HashSet<String> tried=new HashSet<String>();
 			if((A!=null)&&(A.triggerStrings()!=null))
 				for(int t=0;t<A.triggerStrings().length;t++)
 					if((A.triggerStrings()[t].toUpperCase().startsWith(firstWord))
 					&&(!tried.contains(A.triggerStrings()[t])))
 					{
-						Vector<String> commands2=new XVector<String>(commands);
+						final Vector<String> commands2=new XVector<String>(commands);
 						commands2.setElementAt(A.triggerStrings()[t],0);
-						Ability A2=getToEvoke(mob,commands2);
+						final Ability A2=getToEvoke(mob,commands2);
 						if((A2!=null)&&(!CMSecurity.isAbilityDisabled(A2.ID().toUpperCase())))
 						{
 							commands.set(0,A.triggerStrings()[t]);
@@ -359,7 +359,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 
 		for(int c=0;c<CMLib.channels().getNumChannels();c++)
 		{
-			ChannelsLibrary.CMChannel chan=CMLib.channels().getChannel(c);
+			final ChannelsLibrary.CMChannel chan=CMLib.channels().getChannel(c);
 			if(chan.name.startsWith(firstWord))
 			{
 				commands.set(0,chan.name);
@@ -375,9 +375,9 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 			}
 		}
 
-		for(Enumeration<JournalsLibrary.CommandJournal> e=CMLib.journals().commandJournals();e.hasMoreElements();)
+		for(final Enumeration<JournalsLibrary.CommandJournal> e=CMLib.journals().commandJournals();e.hasMoreElements();)
 		{
-			JournalsLibrary.CommandJournal CMJ=e.nextElement();
+			final JournalsLibrary.CommandJournal CMJ=e.nextElement();
 			if(CMJ.NAME().startsWith(firstWord))
 			{
 				C=CMClass.getCommand("CommandJournal");
@@ -400,7 +400,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 
 	private String collapsedName(Ability thisAbility)
 	{
-		int x=thisAbility.name().indexOf(' ');
+		final int x=thisAbility.name().indexOf(' ');
 		if(x>=0)
 			return CMStrings.replaceAll(thisAbility.name()," ","");
 		return thisAbility.Name();
@@ -426,9 +426,9 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 	{
 		if(mob==null) return null;
 		Ability A=null;
-		HashSet<String[]> done=new HashSet<String[]>();
+		final HashSet<String[]> done=new HashSet<String[]>();
 		word=word.toUpperCase().trim();
-		for(Enumeration<Ability> a=mob.allAbilities();a.hasMoreElements();)
+		for(final Enumeration<Ability> a=mob.allAbilities();a.hasMoreElements();)
 		{
 			A=a.nextElement();
 			if((A!=null)
@@ -447,13 +447,13 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 	@Override
 	public Ability getToEvoke(MOB mob, List<String> commands)
 	{
-		String evokeWord=commands.get(0).toUpperCase();
+		final String evokeWord=commands.get(0).toUpperCase();
 
 		boolean foundMoreThanOne=false;
 		Ability evokableAbility=null;
-		for(Enumeration<Ability> a=mob.allAbilities();a.hasMoreElements();)
+		for(final Enumeration<Ability> a=mob.allAbilities();a.hasMoreElements();)
 		{
-			Ability A=a.nextElement();
+			final Ability A=a.nextElement();
 			if((A!=null)
 			&&(evokedBy(A,evokeWord)))
 			{
@@ -469,7 +469,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 
 		if((evokableAbility!=null)&&(commands.size()>1))
 		{
-			int classCode=evokableAbility.classificationCode()&Ability.ALL_ACODES;
+			final int classCode=evokableAbility.classificationCode()&Ability.ALL_ACODES;
 			switch(classCode)
 			{
 			case Ability.ACODE_SPELL:
@@ -491,10 +491,10 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		{
 			commands.remove(0);
 			foundMoreThanOne=false;
-			String secondWord=commands.get(0).toUpperCase();
-			for(Enumeration<Ability> a=mob.allAbilities();a.hasMoreElements();)
+			final String secondWord=commands.get(0).toUpperCase();
+			for(final Enumeration<Ability> a=mob.allAbilities();a.hasMoreElements();)
 			{
-				Ability A=a.nextElement();
+				final Ability A=a.nextElement();
 				if((A!=null)
 				&&(evokedBy(A,evokeWord,secondWord.toUpperCase())))
 				{
@@ -517,11 +517,11 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 			else
 			if((foundMoreThanOne)&&(commands.size()>1))
 			{
-				String secondAndThirdWord=secondWord+" "+commands.get(1).toUpperCase();
+				final String secondAndThirdWord=secondWord+" "+commands.get(1).toUpperCase();
 
-				for(Enumeration<Ability> a=mob.allAbilities();a.hasMoreElements();)
+				for(final Enumeration<Ability> a=mob.allAbilities();a.hasMoreElements();)
 				{
-					Ability A=a.nextElement();
+					final Ability A=a.nextElement();
 					if((A!=null) && (evokedBy(A,evokeWord,secondAndThirdWord.toUpperCase())))
 					{
 						evokableAbility=A;
@@ -536,9 +536,9 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 			}
 			else
 			{
-				for(Enumeration<Ability> a=mob.allAbilities();a.hasMoreElements();)
+				for(final Enumeration<Ability> a=mob.allAbilities();a.hasMoreElements();)
 				{
-					Ability A=a.nextElement();
+					final Ability A=a.nextElement();
 					if((A!=null)
 					&&(evokedBy(A,evokeWord))
 					&&(A.name().toUpperCase().indexOf(" "+secondWord.toUpperCase())>0))
@@ -557,7 +557,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 	public boolean preEvoke(MOB mob, List<String> commands, int secondsElapsed, double actionsRemaining)
 	{
 		commands=new Vector<String>(commands);
-		Ability evokableAbility=getToEvoke(mob,commands);
+		final Ability evokableAbility=getToEvoke(mob,commands);
 		if(evokableAbility==null)
 		{
 			mob.tell("You don't know how to do that.");
@@ -575,7 +575,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 	@Override
 	public void evoke(MOB mob, Vector<String> commands)
 	{
-		Ability evokableAbility=getToEvoke(mob,commands);
+		final Ability evokableAbility=getToEvoke(mob,commands);
 		if(evokableAbility==null)
 		{
 			mob.tell("You don't know how to do that.");
@@ -595,7 +595,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 	{
 		if(PUNCTUATION_TABLE==null)
 		{
-			boolean[] PUNCTUATION_TEMP_TABLE=new boolean[255];
+			final boolean[] PUNCTUATION_TEMP_TABLE=new boolean[255];
 			for(int c=0;c<255;c++)
 				switch(c)
 				{
@@ -627,8 +627,8 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 				break;
 			}
 		if(!puncFound) return str;
-		char[] strc=str.toCharArray();
-		char[] str2=new char[strc.length];
+		final char[] strc=str.toCharArray();
+		final char[] str2=new char[strc.length];
 		int s=0;
 		for(int x=0;x<strc.length;x++)
 			if(!isPunctuation((byte)strc[x]))
@@ -687,7 +687,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		if((toSrchStr==null)||(srchStr==null)) return false;
 		if((toSrchStr.length()==0)&&(srchStr.length()>0)) return false;
 		char[] srchC=srchStr.toCharArray();
-		char[] toSrchC=toSrchStr.toCharArray();
+		final char[] toSrchC=toSrchStr.toCharArray();
 		for(int c=0;c<srchC.length;c++)
 			srchC[c]=Character.toUpperCase(srchC[c]);
 		for(int c=0;c<toSrchC.length;c++)
@@ -807,7 +807,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 	@Override
 	public String bumpDotNumber(String srchStr)
 	{
-		FetchFlags flags=fetchFlags(srchStr);
+		final FetchFlags flags=fetchFlags(srchStr);
 		if(flags==null) return srchStr;
 		if(flags.allFlag)
 			return srchStr;
@@ -823,7 +823,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 	{
 		if(list==null) return 0;
 		int context=1;
-		for(Object O : list)
+		for(final Object O : list)
 			if((((Environmental)O).Name().equalsIgnoreCase(E.Name()))
 			||(((Environmental)O).name().equalsIgnoreCase(E.name())))
 			{
@@ -838,8 +838,8 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 	}
 	private Collection<? extends Environmental> toCollection(ItemCollection cont)
 	{
-		LinkedList<Item> list=new LinkedList<Item>();
-		for(Enumeration<Item> i=cont.items();i.hasMoreElements();)
+		final LinkedList<Item> list=new LinkedList<Item>();
+		for(final Enumeration<Item> i=cont.items();i.hasMoreElements();)
 			list.add(i.nextElement());
 		return list;
 	}
@@ -851,7 +851,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 	{
 		if(list==null) return 0;
 		int context=1;
-		for(Object O : list)
+		for(final Object O : list)
 			if((((Environmental)O).Name().equalsIgnoreCase(E.Name()))
 			||(((Environmental)O).name().equalsIgnoreCase(E.name())))
 			{
@@ -870,7 +870,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 	public String getContextName(Collection<? extends Environmental> list, Environmental E)
 	{
 		if(list==null) return E.name();
-		int number=getContextNumber(list,E);
+		final int number=getContextNumber(list,E);
 		if(number<0) return null;
 		if(number<2) return E.name();
 		return E.name()+"."+number;
@@ -882,7 +882,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 	public String getContextSameName(Collection<? extends Environmental> list, Environmental E)
 	{
 		if(list==null) return E.name();
-		int number=getContextSameNumber(list,E);
+		final int number=getContextSameNumber(list,E);
 		if(number<0) return null;
 		if(number<2) return E.name();
 		return E.name()+"."+number;
@@ -898,7 +898,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		}
 		commands.remove(0);
 
-		List<Environmental> V=CMLib.coffeeShops().getAllShopkeepers(mob.location(),mob);
+		final List<Environmental> V=CMLib.coffeeShops().getAllShopkeepers(mob.location(),mob);
 		if(V.size()==0)
 		{
 			if(error.length()>0) mob.tell(error);
@@ -911,7 +911,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 				if(error.length()>0) mob.tell(error);
 				return null;
 			}
-			String what=commands.get(commands.size()-1);
+			final String what=commands.get(commands.size()-1);
 
 			Environmental shopkeeper=fetchEnvironmental(V,what,false);
 			if((shopkeeper==null)&&(what.equals("shop")||what.equals("the shop")))
@@ -930,7 +930,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		Environmental shopkeeper=V.get(0);
 		if(commands.size()>1)
 		{
-			MOB M=mob.location().fetchInhabitant(commands.get(commands.size()-1));
+			final MOB M=mob.location().fetchInhabitant(commands.get(commands.size()-1));
 			if((M!=null)&&(CMLib.coffeeShops().getShopKeeper(M)!=null)&&(CMLib.flags().canBeSeenBy(M,mob)))
 			{
 				shopkeeper=M;
@@ -993,7 +993,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 
 		if(wornOnly && (V.size()>0))
 		{
-			Vector<Item> V2=new Vector<Item>();
+			final Vector<Item> V2=new Vector<Item>();
 			short topLayer=0;
 			short curLayer=0;
 			int which=-1;
@@ -1017,7 +1017,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		else
 		if(unwornOnly && (V.size()>0))
 		{
-			Vector<Item> V2=new Vector<Item>();
+			final Vector<Item> V2=new Vector<Item>();
 			short topLayer=0;
 			short curLayer=0;
 			int which=-1;
@@ -1048,7 +1048,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 			itemID=itemID.substring(10);
 		if(CMath.isInteger(itemID))
 		{
-			long num=CMath.s_long(itemID);
+			final long num=CMath.s_long(itemID);
 			if(mine instanceof MOB)
 			{
 				List<Coins> V=CMLib.beanCounter().getStandardCurrency((MOB)mine,CMLib.beanCounter().getCurrency(mine));
@@ -1062,7 +1062,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 			}
 			return CMath.s_long(itemID);
 		}
-		Vector<String> V=CMParms.parse(itemID);
+		final Vector<String> V=CMParms.parse(itemID);
 		if((V.size()>1)
 		&&((CMath.isInteger(V.firstElement()))
 		&&(matchAnyCurrencySet(CMParms.combine(V,1))!=null)))
@@ -1070,13 +1070,13 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		else
 		if((V.size()>1)&&(V.firstElement().equalsIgnoreCase("all")))
 		{
-			String currency=matchAnyCurrencySet(CMParms.combine(V,1));
+			final String currency=matchAnyCurrencySet(CMParms.combine(V,1));
 			if(currency!=null)
 			{
 				if(mine instanceof MOB)
 				{
-					List<Coins> V2=CMLib.beanCounter().getStandardCurrency((MOB)mine,currency);
-					double denomination=matchAnyDenomination(currency,CMParms.combine(V,1));
+					final List<Coins> V2=CMLib.beanCounter().getStandardCurrency((MOB)mine,currency);
+					final double denomination=matchAnyDenomination(currency,CMParms.combine(V,1));
 					Coins C=null;
 					for(int v2=0;v2<V2.size();v2++)
 					{
@@ -1100,7 +1100,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 			itemID=itemID.substring(10);
 		if(CMath.isInteger(itemID))
 		{
-			long num=CMath.s_long(itemID);
+			final long num=CMath.s_long(itemID);
 			if(mine instanceof MOB)
 			{
 				List<Coins> V=CMLib.beanCounter().getStandardCurrency((MOB)mine,CMLib.beanCounter().getCurrency(mine));
@@ -1114,7 +1114,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 			}
 			return CMLib.beanCounter().getCurrency(mine);
 		}
-		Vector<String> V=CMParms.parse(itemID);
+		final Vector<String> V=CMParms.parse(itemID);
 		if((V.size()>1)&&(CMath.isInteger(V.firstElement())))
 			return matchAnyCurrencySet(CMParms.combine(V,1));
 		else
@@ -1158,17 +1158,17 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 			itemID=itemID.substring(10);
 		if(CMath.isInteger(itemID))
 		{
-			long num=CMath.s_long(itemID);
+			final long num=CMath.s_long(itemID);
 			if(mine instanceof MOB)
 			{
-				List<Coins> V=CMLib.beanCounter().getStandardCurrency((MOB)mine,currency);
+				final List<Coins> V=CMLib.beanCounter().getStandardCurrency((MOB)mine,currency);
 				for(int v=0;v<V.size();v++)
 					if(V.get(v).getNumberOfCoins()>=num)
 						return V.get(v).getDenomination();
 			}
 			return CMLib.beanCounter().getLowestDenomination(currency);
 		}
-		Vector<String> V=CMParms.parse(itemID);
+		final Vector<String> V=CMParms.parse(itemID);
 		if((V.size()>1)&&(CMath.isInteger(V.firstElement())))
 			return matchAnyDenomination(currency,CMParms.combine(V,1));
 		else
@@ -1183,7 +1183,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 	@Override
 	public String matchAnyCurrencySet(String itemID)
 	{
-		List<String> V=CMLib.beanCounter().getAllCurrencies();
+		final List<String> V=CMLib.beanCounter().getAllCurrencies();
 		List<String> V2=null;
 		for(int v=0;v<V.size();v++)
 		{
@@ -1203,22 +1203,22 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 	@Override
 	public double matchAnyDenomination(String currency, String itemID)
 	{
-		MoneyLibrary.MoneyDenomination[] DV=CMLib.beanCounter().getCurrencySet(currency);
+		final MoneyLibrary.MoneyDenomination[] DV=CMLib.beanCounter().getCurrencySet(currency);
 		itemID=itemID.toUpperCase();
 		String s=null;
 		if(DV!=null)
-		for(int v2=0;v2<DV.length;v2++)
-		{
-			s=DV[v2].name.toUpperCase();
-			if(s.endsWith("(S)"))
-				s=s.substring(0,s.length()-3)+"S";
-			if(containsString(s,itemID))
-				return DV[v2].value;
-			else
-			if((s.length()>0)
-			&&(containsString(s,itemID)))
-				return DV[v2].value;
-		}
+			for (final MoneyDenomination element : DV)
+			{
+				s=element.name.toUpperCase();
+				if(s.endsWith("(S)"))
+					s=s.substring(0,s.length()-3)+"S";
+				if(containsString(s,itemID))
+					return element.value;
+				else
+				if((s.length()>0)
+				&&(containsString(s,itemID)))
+					return element.value;
+			}
 		return 0.0;
 	}
 
@@ -1235,7 +1235,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		}
 		else
 		{
-			Vector<String> V=CMParms.parse(itemID);
+			final Vector<String> V=CMParms.parse(itemID);
 			if((V.size()>1)&&(CMath.isInteger(V.firstElement())))
 				gold=CMath.s_long(V.firstElement());
 			else
@@ -1246,7 +1246,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		{
 			for(int i=0;i<room.numItems();i++)
 			{
-				Item I=room.getItem(i);
+				final Item I=room.getItem(i);
 				if((I.container()==container)
 				&&(I instanceof Coins)
 				&&(CMLib.flags().canBeSeenBy(I,seer))
@@ -1255,7 +1255,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 					if(((Coins)I).getNumberOfCoins()<=gold)
 						return I;
 					((Coins)I).setNumberOfCoins(((Coins)I).getNumberOfCoins()-gold);
-					Coins C=(Coins)CMClass.getItem("StdCoins");
+					final Coins C=(Coins)CMClass.getItem("StdCoins");
 					C.setCurrency(((Coins)I).getCurrency());
 					C.setNumberOfCoins(gold);
 					C.setDenomination(((Coins)I).getDenomination());
@@ -1281,7 +1281,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		if(CMath.isInteger(itemID))
 		{
 			gold=CMath.s_long(itemID);
-			double totalAmount=CMLib.beanCounter().getTotalAbsoluteValue(mob,currency);
+			final double totalAmount=CMLib.beanCounter().getTotalAbsoluteValue(mob,currency);
 			double bestDenomination=CMLib.beanCounter().getBestDenomination(currency,(int)gold,totalAmount);
 			if(bestDenomination==0.0)
 			{
@@ -1295,12 +1295,12 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		}
 		else
 		{
-			Vector<String> V=CMParms.parse(itemID);
+			final Vector<String> V=CMParms.parse(itemID);
 			if(V.size()<1) return null;
 			if((!CMath.isInteger(V.firstElement()))
 			&&(!V.firstElement().equalsIgnoreCase("all")))
 				V.insertElementAt("1",0);
-			Item I=mob.findItem(container,CMParms.combine(V,1));
+			final Item I=mob.findItem(container,CMParms.combine(V,1));
 			if(I instanceof Coins)
 			{
 				if(V.firstElement().equalsIgnoreCase("all"))
@@ -1315,15 +1315,15 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		}
 		if(gold>0)
 		{
-			double amt = CMLib.beanCounter().getTotalAbsoluteValue(mob, currency);
+			final double amt = CMLib.beanCounter().getTotalAbsoluteValue(mob, currency);
 			if(amt>=CMath.mul(denomination,gold))
 			{
-				double expectedAmt = amt - CMath.mul(denomination,gold);
+				final double expectedAmt = amt - CMath.mul(denomination,gold);
 				CMLib.beanCounter().subtractMoney(mob,currency,denomination,CMath.mul(denomination,gold));
-				double newAmt = CMLib.beanCounter().getTotalAbsoluteValue(mob, currency);
+				final double newAmt = CMLib.beanCounter().getTotalAbsoluteValue(mob, currency);
 				if(newAmt > expectedAmt)
 					CMLib.beanCounter().subtractMoney(mob,currency,(newAmt - expectedAmt));
-				Coins C=(Coins)CMClass.getItem("StdCoins");
+				final Coins C=(Coins)CMClass.getItem("StdCoins");
 				C.setCurrency(currency);
 				C.setDenomination(denomination);
 				C.setNumberOfCoins(gold);
@@ -1332,7 +1332,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 				return C;
 			}
 			mob.tell("You don't have that much "+CMLib.beanCounter().getDenominationName(currency,denomination)+".");
-			List<Coins> V=CMLib.beanCounter().getStandardCurrency(mob,currency);
+			final List<Coins> V=CMLib.beanCounter().getStandardCurrency(mob,currency);
 			for(int v=0;v<V.size();v++)
 				if(V.get(v).getDenomination()==denomination)
 					return V.get(v);
@@ -1343,7 +1343,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 	@Override
 	public List<Container> possibleContainers(MOB mob, List<String> commands, Filterer<Environmental> filter, boolean withContentOnly)
 	{
-		Vector<Container> V=new Vector<Container>();
+		final Vector<Container> V=new Vector<Container>();
 		if(commands.size()==1)
 			return V;
 
@@ -1392,7 +1392,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		while(doBugFix || ((allFlag)&&(addendum<=maxContained)))
 		{
 			doBugFix=false;
-			Environmental E=mob.location().fetchFromMOBRoomFavorsItems(mob,null,possibleContainerID+addendumStr,filter);
+			final Environmental E=mob.location().fetchFromMOBRoomFavorsItems(mob,null,possibleContainerID+addendumStr,filter);
 			if((E!=null)
 			&&(E instanceof Item)
 			&&(((Item)E) instanceof Container)
@@ -1422,7 +1422,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		if(commands.size()==1)
 			return null;
 
-		Room R=(mob==null)?null:mob.location();
+		final Room R=(mob==null)?null:mob.location();
 		if(R==null) return null;
 
 		int fromDex=-1;
@@ -1430,14 +1430,14 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		for(int i=commands.size()-2;i>=1;i--)
 			if(commands.get(i).equalsIgnoreCase("from") || commands.get(i).equalsIgnoreCase("in")|| commands.get(i).equalsIgnoreCase("on"))
 			{ fromDex=i; containerDex=i+1;  break;}
-		String possibleContainerID=CMParms.combine(commands,containerDex);
+		final String possibleContainerID=CMParms.combine(commands,containerDex);
 
 
 		Environmental E=R.fetchFromMOBRoomFavorsItems(mob,null,possibleContainerID,filter);
 		if(E==null)
 			for(int i=0;i<R.numItems();i++)
 			{
-				Item I=R.getItem(i);
+				final Item I=R.getItem(i);
 				if((I instanceof Electronics.ElecPanel)
 				&&(((Electronics.ElecPanel)I).isOpen()))
 				{
@@ -1476,7 +1476,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		long hours=minutes/60;
 		minutes-=(hours*60);
 		if(hours<24) return hours+"h "+minutes+"m "+seconds+"s "+millis+"ms"+avg;
-		long days=hours/24;
+		final long days=hours/24;
 		hours-=(days*24);
 		return days+"d "+hours+"h "+minutes+"m "+seconds+"s "+millis+"ms"+avg;
 	}
@@ -1494,7 +1494,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 			if(myCurrency!=null)
 			{
 				denomination=CMLib.english().numPossibleGoldDenomination(null,correctCurrency,amount);
-				long num=CMLib.english().numPossibleGold(null,amount);
+				final long num=CMLib.english().numPossibleGold(null,amount);
 				b=CMath.mul(denomination,num);
 			}
 			else
@@ -1521,7 +1521,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 					throwError=true;
 					commands.remove(1);
 				}
-				String packCheckName=CMParms.combine(commands,1);
+				final String packCheckName=CMParms.combine(commands,1);
 				Environmental fromWhat=null;
 				if(checkWhat instanceof MOB)
 					fromWhat=mob.findItem(null,packCheckName);
@@ -1537,7 +1537,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 						mob.tell("You can only handle "+max+" at a time.");
 						return -1;
 					}
-					Environmental toWhat=CMLib.materials().unbundle((Item)fromWhat,maxToGive,null);
+					final Environmental toWhat=CMLib.materials().unbundle((Item)fromWhat,maxToGive,null);
 					if(toWhat==null)
 					{
 						if(throwError)
@@ -1557,7 +1557,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 						commands.add(toWhat.name());
 					else
 					{
-						String O=commands.get(0);
+						final String O=commands.get(0);
 						commands.clear();
 						commands.add(O);
 						commands.add(toWhat.name());
@@ -1640,20 +1640,19 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 	@Override
 	public Environmental fetchEnvironmental(Iterable<? extends Environmental> list, String srchStr, boolean exactOnly)
 	{
-		FetchFlags flags=fetchFlags(srchStr);
+		final FetchFlags flags=fetchFlags(srchStr);
 		if(flags==null) return null;
 
 		srchStr=flags.srchStr;
 		int myOccurrance=flags.occurrance;
-		boolean allFlag=flags.allFlag;
+		final boolean allFlag=flags.allFlag;
 		try
 		{
 			if(exactOnly)
 			{
 				srchStr=cleanExtraneousDollarMarkers(srchStr);
-				for(final Iterator<? extends Environmental> e=list.iterator();e.hasNext();)
+				for (final Environmental E : list)
 				{
-					final Environmental E=e.next();
 					if(E!=null)
 						if(E.ID().equalsIgnoreCase(srchStr)
 						   ||E.name().equalsIgnoreCase(srchStr)
@@ -1666,9 +1665,8 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 			else
 			{
 				myOccurrance=flags.occurrance;
-				for(final Iterator<? extends Environmental> e=list.iterator();e.hasNext();)
+				for (final Environmental E : list)
 				{
-					final Environmental E=e.next();
 					if((E!=null)
 					   &&(containsString(E.name(),srchStr)||containsString(E.Name(),srchStr))
 					   &&((!allFlag)||((E.displayText()!=null)&&(E.displayText().length()>0))))
@@ -1676,9 +1674,8 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 							return E;
 				}
 				myOccurrance=flags.occurrance;
-				for(final Iterator<? extends Environmental> e=list.iterator();e.hasNext();)
+				for (final Environmental E : list)
 				{
-					final Environmental E=e.next();
 					if((E!=null)
 					&&(!(E instanceof Ability))
 					&&(containsString(E.displayText(),srchStr)
@@ -1688,29 +1685,28 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 				}
 			}
 		}
-		catch(java.lang.ArrayIndexOutOfBoundsException x){}
+		catch(final java.lang.ArrayIndexOutOfBoundsException x){}
 		return null;
 	}
 
 	@Override
 	public List<Environmental> fetchEnvironmentals(List<? extends Environmental> list, String srchStr, boolean exactOnly)
 	{
-		Vector<Environmental> matches=new Vector<Environmental>(1);
+		final Vector<Environmental> matches=new Vector<Environmental>(1);
 		if(list.size()==0) return matches;
-		FetchFlags flags=fetchFlags(srchStr);
+		final FetchFlags flags=fetchFlags(srchStr);
 		if(flags==null) return matches;
 
 		srchStr=flags.srchStr;
 		int myOccurrance=flags.occurrance;
-		boolean allFlag=flags.allFlag;
+		final boolean allFlag=flags.allFlag;
 		try
 		{
 			if(exactOnly)
 			{
 				srchStr=cleanExtraneousDollarMarkers(srchStr);
-				for(final Iterator<? extends Environmental> e=list.iterator();e.hasNext();)
+				for (final Environmental E : list)
 				{
-					final Environmental E=e.next();
 					if(E!=null)
 						if(E.ID().equalsIgnoreCase(srchStr)
 						   ||E.name().equalsIgnoreCase(srchStr)
@@ -1723,9 +1719,8 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 			else
 			{
 				myOccurrance=flags.occurrance;
-				for(final Iterator<? extends Environmental> e=list.iterator();e.hasNext();)
+				for (final Environmental E : list)
 				{
-					final Environmental E=e.next();
 					if((E!=null)
 					&&(containsString(E.name(),srchStr)||containsString(E.Name(),srchStr))
 					   &&((!allFlag)||((E.displayText()!=null)&&(E.displayText().length()>0))))
@@ -1735,9 +1730,8 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 				if(matches.size()==0)
 				{
 					myOccurrance=flags.occurrance;
-					for(final Iterator<? extends Environmental> e=list.iterator();e.hasNext();)
+					for (final Environmental E : list)
 					{
-						final Environmental E=e.next();
 						if((E!=null)
 						&&(!(E instanceof Ability))
 						&&(containsString(E.displayText(),srchStr)
@@ -1748,7 +1742,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 				}
 			}
 		}
-		catch(java.lang.ArrayIndexOutOfBoundsException x){}
+		catch(final java.lang.ArrayIndexOutOfBoundsException x){}
 		return matches;
 	}
 
@@ -1756,12 +1750,12 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 	public Environmental fetchEnvironmental(Map<String, ? extends Environmental> list, String srchStr, boolean exactOnly)
 	{
 		if(list.size()==0) return null;
-		FetchFlags flags=fetchFlags(srchStr);
+		final FetchFlags flags=fetchFlags(srchStr);
 		if(flags==null) return null;
 
 		srchStr=flags.srchStr;
 		int myOccurrance=flags.occurrance;
-		boolean allFlag=flags.allFlag;
+		final boolean allFlag=flags.allFlag;
 
 		if(list.get(srchStr)!=null)
 			return list.get(srchStr);
@@ -1769,9 +1763,9 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		if(exactOnly)
 		{
 			srchStr=cleanExtraneousDollarMarkers(srchStr);
-			for(Iterator<String> k =list.keySet().iterator();k.hasNext();)
+			for (final String string : list.keySet())
 			{
-				E=list.get(k.next());
+				E=list.get(string);
 				if(E!=null)
 					if(E.ID().equalsIgnoreCase(srchStr)
 					||E.Name().equalsIgnoreCase(srchStr)
@@ -1784,9 +1778,9 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		else
 		{
 			myOccurrance=flags.occurrance;
-			for(Iterator<String> k =list.keySet().iterator();k.hasNext();)
+			for (final String string : list.keySet())
 			{
-				E=list.get(k.next());
+				E=list.get(string);
 				if((E!=null)
 				&&(containsString(E.name(),srchStr)||containsString(E.Name(),srchStr))
 				&&((!allFlag)||((E.displayText()!=null)&&(E.displayText().length()>0))))
@@ -1794,9 +1788,9 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 						return E;
 			}
 			myOccurrance=flags.occurrance;
-			for(Iterator<String> k =list.keySet().iterator();k.hasNext();)
+			for (final String string : list.keySet())
 			{
-				E=list.get(k.next());
+				E=list.get(string);
 				if(E!=null)
 					if((containsString(E.displayText(),srchStr))
 					||((E instanceof MOB)&&containsString(((MOB)E).genericName(),srchStr)))
@@ -1811,20 +1805,19 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 	public Item fetchAvailableItem(List<Item> list, String srchStr, Item goodLocation, Filterer<Environmental> filter, boolean exactOnly)
 	{
 		if(list.size()==0) return null;
-		FetchFlags flags=fetchFlags(srchStr);
+		final FetchFlags flags=fetchFlags(srchStr);
 		if(flags==null) return null;
 
 		srchStr=flags.srchStr;
 		int myOccurrance=flags.occurrance;
-		boolean allFlag=flags.allFlag;
+		final boolean allFlag=flags.allFlag;
 		if(exactOnly)
 		{
 			try
 			{
 				srchStr=cleanExtraneousDollarMarkers(srchStr);
-				for(final Iterator<Item> i=list.iterator();i.hasNext();)
+				for (final Item I : list)
 				{
-					final Item I=i.next();
 					if(I==null) continue;
 					if((I.container()==goodLocation)
 					&&(filter.passesFilter(I))
@@ -1836,15 +1829,14 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 								return I;
 				}
 			}
-			catch(java.lang.ArrayIndexOutOfBoundsException x){}
+			catch(final java.lang.ArrayIndexOutOfBoundsException x){}
 		}
 		else
 		{
 			try
 			{
-				for(final Iterator<Item> i=list.iterator();i.hasNext();)
+				for (final Item I : list)
 				{
-					final Item I=i.next();
 					if((I!=null)
 					&&(I.container()==goodLocation)
 					&&(filter.passesFilter(I))
@@ -1854,13 +1846,12 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 							return I;
 				}
 			}
-			catch(java.lang.ArrayIndexOutOfBoundsException x){}
+			catch(final java.lang.ArrayIndexOutOfBoundsException x){}
 			myOccurrance=flags.occurrance;
 			try
 			{
-				for(final Iterator<Item> i=list.iterator();i.hasNext();)
+				for (final Item I : list)
 				{
-					final Item I=i.next();
 					if((I!=null)
 					&&(I.container()==goodLocation)
 					&&(filter.passesFilter(I))
@@ -1869,7 +1860,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 							return I;
 				}
 			}
-			catch(java.lang.ArrayIndexOutOfBoundsException x){}
+			catch(final java.lang.ArrayIndexOutOfBoundsException x){}
 		}
 		return null;
 	}
@@ -1877,22 +1868,21 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 	@Override
 	public List<Item> fetchAvailableItems(List<Item> list, String srchStr, Item goodLocation, Filterer<Environmental> filter, boolean exactOnly)
 	{
-		Vector<Item> matches=new Vector<Item>(1);
+		final Vector<Item> matches=new Vector<Item>(1);
 		if(list.size()==0) return matches;
-		FetchFlags flags=fetchFlags(srchStr);
+		final FetchFlags flags=fetchFlags(srchStr);
 		if(flags==null) return matches;
 
 		srchStr=flags.srchStr;
 		int myOccurrance=flags.occurrance;
-		boolean allFlag=flags.allFlag;
+		final boolean allFlag=flags.allFlag;
 		try
 		{
 			if(exactOnly)
 			{
 				srchStr=cleanExtraneousDollarMarkers(srchStr);
-				for(final Iterator<Item> i=list.iterator();i.hasNext();)
+				for (final Item I : list)
 				{
-					final Item I=i.next();
 					if(I==null) continue;
 					if((I.container()==goodLocation)
 					&&(filter.passesFilter(I))
@@ -1906,9 +1896,8 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 			}
 			else
 			{
-				for(final Iterator<Item> i=list.iterator();i.hasNext();)
+				for (final Item I : list)
 				{
-					final Item I=i.next();
 					if(I==null) continue;
 					if((I.container()==goodLocation)
 					&&(filter.passesFilter(I))
@@ -1920,9 +1909,8 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 				if(matches.size()==0)
 				{
 					myOccurrance=flags.occurrance;
-					for(final Iterator<Item> i=list.iterator();i.hasNext();)
+					for (final Item I : list)
 					{
-						final Item I=i.next();
 						if(I==null) continue;
 						if((I.container()==goodLocation)
 						&&(filter.passesFilter(I))
@@ -1933,7 +1921,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 				}
 			}
 		}
-		catch(java.lang.ArrayIndexOutOfBoundsException x){}
+		catch(final java.lang.ArrayIndexOutOfBoundsException x){}
 		return matches;
 	}
 
@@ -1941,12 +1929,12 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 	public Environmental fetchAvailable(Collection<? extends Environmental> list, String srchStr, Item goodLocation, Filterer<Environmental> filter, boolean exactOnly)
 	{
 		if(list.size()==0) return null;
-		FetchFlags flags=fetchFlags(srchStr);
+		final FetchFlags flags=fetchFlags(srchStr);
 		if(flags==null) return null;
 
 		srchStr=flags.srchStr;
 		int myOccurrance=flags.occurrance;
-		boolean allFlag=flags.allFlag;
+		final boolean allFlag=flags.allFlag;
 
 		Item I=null;
 		try
@@ -1954,9 +1942,8 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 			if(exactOnly)
 			{
 				srchStr=cleanExtraneousDollarMarkers(srchStr);
-				for(final Iterator<? extends Environmental> e=list.iterator();e.hasNext();)
+				for (final Environmental E : list)
 				{
-					final Environmental E=e.next();
 					if(E instanceof Item)
 					{
 						I=(Item)E;
@@ -1981,9 +1968,8 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 			}
 			else
 			{
-				for(final Iterator<? extends Environmental> e=list.iterator();e.hasNext();)
+				for (final Environmental E : list)
 				{
-					final Environmental E=e.next();
 					if(E instanceof Item)
 					{
 						I=(Item)E;
@@ -2003,9 +1989,8 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 				}
 
 				myOccurrance=flags.occurrance;
-				for(final Iterator<? extends Environmental> e=list.iterator();e.hasNext();)
+				for (final Environmental E : list)
 				{
-					final Environmental E=e.next();
 					if(E instanceof Item)
 					{
 						I=(Item)E;
@@ -2024,7 +2009,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 				}
 			}
 		}
-		catch(java.lang.ArrayIndexOutOfBoundsException x){}
+		catch(final java.lang.ArrayIndexOutOfBoundsException x){}
 		return null;
 	}
 }

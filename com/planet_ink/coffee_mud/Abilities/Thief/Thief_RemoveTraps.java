@@ -56,10 +56,10 @@ public class Thief_RemoveTraps extends ThiefSkill
 			saveTheTrap=((Boolean)commands.lastElement()).booleanValue();
 			commands.removeElementAt(commands.size()-1);
 		}
-		String whatTounlock=CMParms.combine(commands,0);
+		final String whatTounlock=CMParms.combine(commands,0);
 		Physical unlockThis=null;
 		int dirCode=Directions.getGoodDirectionCode(whatTounlock);
-		Room R=mob.location();
+		final Room R=mob.location();
 		Room nextRoom=null;
 		if(dirCode>=0)
 		{
@@ -71,14 +71,14 @@ public class Thief_RemoveTraps extends ThiefSkill
 		if(unlockThis==null)
 			unlockThis=getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_UNWORNONLY);
 		if(unlockThis==null) return false;
-		int oldProficiency=proficiency();
+		final int oldProficiency=proficiency();
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,+(((mob.phyStats().level()+(getXLEVELLevel(mob)*2))
+		final boolean success=proficiencyCheck(mob,+(((mob.phyStats().level()+(getXLEVELLevel(mob)*2))
 											 -unlockThis.phyStats().level())*3),auto);
-		Vector<Physical> permSetV=new Vector<Physical>();
+		final Vector<Physical> permSetV=new Vector<Physical>();
 		Trap theTrap=CMLib.utensils().fetchMyTrap(unlockThis);
 		if(theTrap!=null) permSetV.addElement(unlockThis);
 		Trap opTrap=null;
@@ -98,7 +98,7 @@ public class Thief_RemoveTraps extends ThiefSkill
 				permanent=true;
 			if(dirCode>=0)
 			{
-				Exit exit=R.getReverseExit(dirCode);
+				final Exit exit=R.getReverseExit(dirCode);
 				if(exit!=null)
 					opTrap=CMLib.utensils().fetchMyTrap(exit);
 				if(opTrap!=null) permSetV.addElement(exit);
@@ -118,7 +118,7 @@ public class Thief_RemoveTraps extends ThiefSkill
 			mob.tell("You can't seem to remember how this works.");
 			return false;
 		}
-		CMMsg msg=CMClass.getMsg(mob,unlockThis,this,auto?CMMsg.MSG_OK_ACTION:CMMsg.MSG_DELICATE_HANDS_ACT,CMMsg.MSG_DELICATE_HANDS_ACT,CMMsg.MSG_OK_ACTION,auto?unlockThis.name()+" begins to glow.":"<S-NAME> attempt(s) to safely deactivate a trap on "+unlockThis.name()+".");
+		final CMMsg msg=CMClass.getMsg(mob,unlockThis,this,auto?CMMsg.MSG_OK_ACTION:CMMsg.MSG_DELICATE_HANDS_ACT,CMMsg.MSG_DELICATE_HANDS_ACT,CMMsg.MSG_OK_ACTION,auto?unlockThis.name()+" begins to glow.":"<S-NAME> attempt(s) to safely deactivate a trap on "+unlockThis.name()+".");
 		if((success)&&(!lastDone.contains(""+unlockThis)))
 		{
 			while(lastDone.size()>40) lastDone.removeElementAt(0);

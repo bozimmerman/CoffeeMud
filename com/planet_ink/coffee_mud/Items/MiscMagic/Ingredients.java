@@ -66,7 +66,7 @@ public class Ingredients extends BagOfEndlessness
 		if(I instanceof Decayable)
 		{
 			((Decayable)I).setDecayTime(0);
-			Ability A=I.fetchEffect("Poison_Rotten");
+			final Ability A=I.fetchEffect("Poison_Rotten");
 			if(A!=null) I.delEffect(A);
 		}
 		if(owner() instanceof Room)
@@ -84,7 +84,7 @@ public class Ingredients extends BagOfEndlessness
 		{
 			alreadyFilled=true;
 			if(getContents().size()==0)
-			for(int rsc : RawMaterial.CODES.ALL())
+			for(final int rsc : RawMaterial.CODES.ALL())
 				makeResource(RawMaterial.CODES.NAME(rsc).toLowerCase(),rsc);
 		}
 		else
@@ -95,7 +95,7 @@ public class Ingredients extends BagOfEndlessness
 		&&(((Item)msg.tool()).owner() !=null))
 		{
 			((Decayable)msg.tool()).setDecayTime(0);
-			Ability A=((Item)msg.tool()).fetchEffect("Poison_Rotten");
+			final Ability A=((Item)msg.tool()).fetchEffect("Poison_Rotten");
 			if(A!=null) ((Item)msg.tool()).delEffect(A);
 		}
 		super.executeMsg(myHost,msg);

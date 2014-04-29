@@ -63,7 +63,7 @@ public class EternityQuarterstaff extends Quarterstaff
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
-		MOB mob=msg.source();
+		final MOB mob=msg.source();
 		switch(msg.sourceMinor())
 		{
 		case CMMsg.TYP_SPEAK:
@@ -72,17 +72,17 @@ public class EternityQuarterstaff extends Quarterstaff
 			   &&(msg.target() instanceof MOB)
 			   &&(mob.location().isInhabitant((MOB)msg.target())))
 			{
-				MOB target=(MOB)msg.target();
-				int x=msg.targetMessage().toUpperCase().indexOf("HEAL");
+				final MOB target=(MOB)msg.target();
+				final int x=msg.targetMessage().toUpperCase().indexOf("HEAL");
 				if(x>=0)
 				{
 					if(usesRemaining()>0)
 					{
 						this.setUsesRemaining(this.usesRemaining()-5);
-						CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSG_CAST_VERBAL_SPELL,"<S-NAME> point(s) <S-HIS-HER> quarterstaff at <T-NAMESELF>, and delivers a healing beam of light.");
+						final CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSG_CAST_VERBAL_SPELL,"<S-NAME> point(s) <S-HIS-HER> quarterstaff at <T-NAMESELF>, and delivers a healing beam of light.");
 						if(mob.location().okMessage(mob,msg2))
 						{
-		   					int healing=1+(int)Math.round(CMath.div(phyStats().level(),10.0));
+		   					final int healing=1+(int)Math.round(CMath.div(phyStats().level(),10.0));
 							target.curState().adjHitPoints(healing,target.maxState());
 							target.tell("You feel a little better!");
 							return;

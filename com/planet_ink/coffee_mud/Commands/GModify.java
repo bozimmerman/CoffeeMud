@@ -93,7 +93,7 @@ public class GModify extends StdCommand
 	{
 		if((mob.session()==null)||(mob.session().isStopped()))
 			return false;
-		try{Thread.sleep(1);}catch(Exception e){mob.session().stopSession(false,false,false);return false;}
+		try{Thread.sleep(1);}catch(final Exception e){mob.session().stopSession(false,false,false);return false;}
 		boolean didAnything=false;
 		if(noisy) gmodifydebugtell(mob,E.name()+"/"+CMClass.classID(E));
 		String field=null;
@@ -104,7 +104,7 @@ public class GModify extends StdCommand
 		Pattern pattern=null;
 		boolean checkedOut=true;
 		Matcher M=null;
-		DVector matches=new DVector(3);
+		final DVector matches=new DVector(3);
 		int lastCode=FLAG_AND;
 		for(int i=0;i<onfields.size();i++)
 		{
@@ -117,7 +117,7 @@ public class GModify extends StdCommand
 			int matchStart=-1;
 			int matchEnd=-1;
 			stat=getStat(E,field);
-			Integer EQ=EQUATORS.get(equator);
+			final Integer EQ=EQUATORS.get(equator);
 			if(EQ!=null)
 			switch(EQ.intValue())
 			{
@@ -308,8 +308,8 @@ public class GModify extends StdCommand
 	{
 		for(;e.hasMoreElements();)
 		{
-			Environmental E=e.nextElement();
-			String[] fields=E.getStatCodes();
+			final Environmental E=e.nextElement();
+			final String[] fields=E.getStatCodes();
 			for(int x=0;x<fields.length;x++)
 				if(!allKnownFields.contains(fields[x]))
 				{
@@ -323,9 +323,9 @@ public class GModify extends StdCommand
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		boolean noisy=CMSecurity.isDebugging(CMSecurity.DbgFlag.GMODIFY);
+		final boolean noisy=CMSecurity.isDebugging(CMSecurity.DbgFlag.GMODIFY);
 		Vector placesToDo=new Vector();
-		String whole=CMParms.combine(commands,0);
+		final String whole=CMParms.combine(commands,0);
 		commands.removeElementAt(0);
 		if(commands.size()==0)
 		{
@@ -340,8 +340,8 @@ public class GModify extends StdCommand
 		if((commands.size()>0)&&
 		   ((String)commands.elementAt(0)).equalsIgnoreCase("?"))
 		{
-			StringBuffer allFieldsMsg=new StringBuffer("");
-			Vector allKnownFields=new Vector();
+			final StringBuffer allFieldsMsg=new StringBuffer("");
+			final Vector allKnownFields=new Vector();
 			sortEnumeratedList(CMClass.mobTypes(),allKnownFields,allFieldsMsg);
 			sortEnumeratedList(CMClass.basicItems(),allKnownFields,allFieldsMsg);
 			sortEnumeratedList(CMClass.weapons(),allKnownFields,allFieldsMsg);
@@ -387,11 +387,11 @@ public class GModify extends StdCommand
 		}
 		else
 			placesToDo.addElement(mob.location());
-		DVector changes=new DVector(5);
-		DVector onfields=new DVector(5);
+		final DVector changes=new DVector(5);
+		final DVector onfields=new DVector(5);
 		DVector use=null;
-		Vector allKnownFields=new Vector();
-		StringBuffer allFieldsMsg=new StringBuffer("");
+		final Vector allKnownFields=new Vector();
+		final StringBuffer allFieldsMsg=new StringBuffer("");
 		sortEnumeratedList(CMClass.mobTypes(),allKnownFields,allFieldsMsg);
 		sortEnumeratedList(CMClass.basicItems(),allKnownFields,allFieldsMsg);
 		sortEnumeratedList(CMClass.weapons(),allKnownFields,allFieldsMsg);
@@ -404,7 +404,7 @@ public class GModify extends StdCommand
 		allKnownFields.addElement("REJUV");
 		allFieldsMsg.append("REJUV ");
 		use=onfields;
-		Vector newSet=new Vector();
+		final Vector newSet=new Vector();
 		StringBuffer s=new StringBuffer("");
 		for(int i=0;i<commands.size();i++)
 		{
@@ -472,7 +472,7 @@ public class GModify extends StdCommand
 					mob.tell("String '"+str+"' does not contain an equation divider.  Even CHANGE needs at least an = sign!");
 					return false;
 				}
-				String equator=str.substring(eq,eq+divLen);
+				final String equator=str.substring(eq,eq+divLen);
 				String val=str.substring(eq+divLen);
 				String key=str.substring(0,eq).trim();
 
@@ -500,7 +500,7 @@ public class GModify extends StdCommand
 					str="";
 				else
 				{
-					String attach=val.substring(eq,eq+divBackLen).trim();
+					final String attach=val.substring(eq,eq+divBackLen).trim();
 					if(attach.equals("&&"))
 						code=Integer.valueOf(code.intValue()|FLAG_AND);
 					else
@@ -517,9 +517,9 @@ public class GModify extends StdCommand
 				}
 				while(val.trim().startsWith("["))
 				{
-					int x2=val.indexOf(']');
+					final int x2=val.indexOf(']');
 					if(x2<0) break;
-					String cd=val.trim().substring(1,x2);
+					final String cd=val.trim().substring(1,x2);
 					if(cd.length()!=2)
 						break;
 					if(cd.equalsIgnoreCase("ss"))
@@ -551,9 +551,9 @@ public class GModify extends StdCommand
 			return false;
 		}
 		if(placesToDo.size()==0)
-		for(Enumeration a=CMLib.map().areas();a.hasMoreElements();)
+		for(final Enumeration a=CMLib.map().areas();a.hasMoreElements();)
 		{
-			Area A=(Area)a.nextElement();
+			final Area A=(Area)a.nextElement();
 			if(A.getCompleteMap().hasMoreElements()
 			&&CMSecurity.isAllowed(mob,(A.getCompleteMap().nextElement()),CMSecurity.SecFlag.GMODIFY))
 				placesToDo.addElement(A);
@@ -567,11 +567,11 @@ public class GModify extends StdCommand
 		{
 			if(placesToDo.elementAt(i) instanceof Area)
 			{
-				Area A=(Area)placesToDo.elementAt(i);
+				final Area A=(Area)placesToDo.elementAt(i);
 				placesToDo.removeElement(A);
-				for(Enumeration r=A.getCompleteMap();r.hasMoreElements();)
+				for(final Enumeration r=A.getCompleteMap();r.hasMoreElements();)
 				{
-					Room R=(Room)r.nextElement();
+					final Room R=(Room)r.nextElement();
 					if(CMSecurity.isAllowed(mob,R,CMSecurity.SecFlag.GMODIFY))
 						placesToDo.addElement(R);
 				}
@@ -605,8 +605,8 @@ public class GModify extends StdCommand
 				R=CMLib.map().getRoom(R);
 				if((mob.session()==null)||(mob.session().isStopped())||(R.getArea()==null))
 					return false;
-				Area A=R.getArea();
-				Area.State oldFlag=A.getAreaState();
+				final Area A=R.getArea();
+				final Area.State oldFlag=A.getAreaState();
 				if(changes.size()==0)
 				{
 					R=CMLib.coffeeMaker().makeNewRoomContent(R,false);
@@ -625,32 +625,32 @@ public class GModify extends StdCommand
 					saveroom=true;
 				for(int i=0;i<R.numItems();i++)
 				{
-					Item I=R.getItem(i);
+					final Item I=R.getItem(i);
 					if((I!=null)&&(tryModfy(mob,R,I,changes,onfields,noisy)))
 						saveitems=true;
 				}
 				for(int m=0;m<R.numInhabitants();m++)
 				{
-					MOB M=R.fetchInhabitant(m);
+					final MOB M=R.fetchInhabitant(m);
 					if((M!=null)&&(M.isSavable()))
 					{
 						if(tryModfy(mob,R,M,changes,onfields,noisy))
 							savemobs=true;
 						for(int i=0;i<M.numItems();i++)
 						{
-							Item I=M.getItem(i);
+							final Item I=M.getItem(i);
 							if((I!=null)&&(tryModfy(mob,R,I,changes,onfields,noisy)))
 								savemobs=true;
 						}
-						ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(M);
+						final ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(M);
 						if(SK!=null)
 						{
-							for(Iterator<Environmental> i=SK.getShop().getStoreInventory();i.hasNext();)
+							for(final Iterator<Environmental> i=SK.getShop().getStoreInventory();i.hasNext();)
 							{
-								Environmental E2=i.next();
+								final Environmental E2=i.next();
 								if(E2 instanceof Item)
 								{
-									Item I=(Item)E2;
+									final Item I=(Item)E2;
 									if(tryModfy(mob,R,I,changes,onfields,noisy))
 										savemobs=true;
 								}
@@ -667,7 +667,7 @@ public class GModify extends StdCommand
 				if(changes.size()==0) R.destroy();
 				if(saveroom)
 				{
-					Room realR=CMLib.map().getRoom(R);
+					final Room realR=CMLib.map().getRoom(R);
 					if(realR!=null)
 					{
 						realR.clearSky();

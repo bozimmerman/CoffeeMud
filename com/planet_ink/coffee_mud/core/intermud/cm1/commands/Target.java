@@ -51,7 +51,7 @@ public class Target extends CM1Command
 	{
 		try
 		{
-			PhysicalAgent P=getTarget(parameters);
+			final PhysicalAgent P=getTarget(parameters);
 			if(P!=null)
 			{
 				req.setTarget(P);
@@ -60,7 +60,7 @@ public class Target extends CM1Command
 			}
 			req.sendMsg("[FAIL]");
 		}
-		catch(Exception ioe)
+		catch(final Exception ioe)
 		{
 			Log.errOut(className,ioe);
 			req.close();

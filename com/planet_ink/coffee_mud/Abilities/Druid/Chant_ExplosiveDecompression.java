@@ -67,7 +67,7 @@ public class Chant_ExplosiveDecompression extends Chant
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		Room target=mob.location();
+		final Room target=mob.location();
 		if(target==null) return false;
 		if((!auto)&&((target.domainType()&Room.INDOORS)==0))
 		{
@@ -81,7 +81,7 @@ public class Chant_ExplosiveDecompression extends Chant
 		// and added as String objects to a vector.
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
@@ -90,7 +90,7 @@ public class Chant_ExplosiveDecompression extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":"^S<S-NAME> chant(s) loudly.  A ball of fire forms around <S-NAME>.^?");
+			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":"^S<S-NAME> chant(s) loudly.  A ball of fire forms around <S-NAME>.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -99,15 +99,15 @@ public class Chant_ExplosiveDecompression extends Chant
 					mob.location().showHappens(CMMsg.MSG_OK_VISUAL,"The ball of fire **EXPLODES**!");
 					for(int i=0;i<target.numInhabitants();i++)
 					{
-						MOB M=target.fetchInhabitant(i);
+						final MOB M=target.fetchInhabitant(i);
 						if((M!=null)&&(M!=mob))
 						{
-							CMMsg msg2=CMClass.getMsg(mob,M,this,verbalCastMask(mob,target,auto)|CMMsg.TYP_FIRE,null);
+							final CMMsg msg2=CMClass.getMsg(mob,M,this,verbalCastMask(mob,target,auto)|CMMsg.TYP_FIRE,null);
 							if(mob.location().okMessage(mob,msg2))
 							{
 								mob.location().send(mob,msg2);
 								invoker=mob;
-								int numDice = adjustedLevel(mob,asLevel)+(2*super.getX1Level(mob));
+								final int numDice = adjustedLevel(mob,asLevel)+(2*super.getX1Level(mob));
 								int damage = CMLib.dice().roll(numDice, 5, 25);
 								if(msg2.value()>0)
 									damage = (int)Math.round(CMath.div(damage,2.0));

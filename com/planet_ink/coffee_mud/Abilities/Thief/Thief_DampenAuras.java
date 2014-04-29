@@ -81,7 +81,7 @@ public class Thief_DampenAuras extends ThiefSkill
 	@Override
 	public void unInvoke()
 	{
-		Environmental E=affected;
+		final Environmental E=affected;
 		super.unInvoke();
 		if((E instanceof MOB)&&(!((MOB)E).amDead()))
 			((MOB)E).tell("You noticed the aura dampening is wearing away on "+E.name()+".");
@@ -103,9 +103,9 @@ public class Thief_DampenAuras extends ThiefSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
-		CMMsg msg=CMClass.getMsg(mob,target,this,auto?CMMsg.MASK_ALWAYS:CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,auto?"":"<T-NAME> dampen(s) <T-HIS-HER> auras.");
+		final CMMsg msg=CMClass.getMsg(mob,target,this,auto?CMMsg.MASK_ALWAYS:CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,auto?"":"<T-NAME> dampen(s) <T-HIS-HER> auras.");
 		if(!success)
 			return beneficialVisualFizzle(mob,null,auto?"":"<S-NAME> attempt(s) to dampen <S-HIS-HER> auras, but fail(s).");
 		else
@@ -113,13 +113,13 @@ public class Thief_DampenAuras extends ThiefSkill
 		{
 			mob.location().send(mob,msg);
 			beneficialAffect(mob,target,asLevel,0);
-			Ability A=target.fetchEffect(ID());
+			final Ability A=target.fetchEffect(ID());
 			if(A!=null)
 			{
 				A.tick(target,Tickable.TICKID_MOB);
 				Item I=null;
-				Physical affecting=A.affecting();
-				StringBuffer items=new StringBuffer("");
+				final Physical affecting=A.affecting();
+				final StringBuffer items=new StringBuffer("");
 				for(int i=0;i<target.numItems();i++)
 				{
 					I=target.getItem(i);

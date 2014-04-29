@@ -36,16 +36,16 @@ public class Gargoyle extends StoneGolem
 {
 	@Override public String ID(){	return "Gargoyle"; }
 	@Override public String name(){ return "Gargoyle"; }
-	private String[]racialAbilityNames={"WingFlying"};
-	private int[]racialAbilityLevels={1};
-	private int[]racialAbilityProficiencies={100};
-	private boolean[]racialAbilityQuals={false};
+	private final String[]racialAbilityNames={"WingFlying"};
+	private final int[]racialAbilityLevels={1};
+	private final int[]racialAbilityProficiencies={100};
+	private final boolean[]racialAbilityQuals={false};
 	@Override protected String[] racialAbilityNames(){return racialAbilityNames;}
 	@Override protected int[] racialAbilityLevels(){return racialAbilityLevels;}
 	@Override protected int[] racialAbilityProficiencies(){return racialAbilityProficiencies;}
 	@Override protected boolean[] racialAbilityQuals(){return racialAbilityQuals;}
-	private String[]culturalAbilityNames={"Undercommon"};
-	private int[]culturalAbilityProficiencies={25};
+	private final String[]culturalAbilityNames={"Undercommon"};
+	private final int[]culturalAbilityProficiencies={25};
 	@Override public String[] culturalAbilityNames(){return culturalAbilityNames;}
 	@Override public int[] culturalAbilityProficiencies(){return culturalAbilityProficiencies;}
 

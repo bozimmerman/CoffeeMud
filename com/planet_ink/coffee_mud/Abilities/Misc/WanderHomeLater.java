@@ -47,7 +47,7 @@ public class WanderHomeLater extends StdAbility
 	{
 		if(affected instanceof MOB)
 		{
-			MOB M=(MOB)affected;
+			final MOB M=(MOB)affected;
 			if(M.getStartRoom()==M.location())
 				unInvoke();
 			else

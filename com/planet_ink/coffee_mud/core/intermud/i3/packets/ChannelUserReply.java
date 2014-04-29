@@ -53,16 +53,16 @@ public class ChannelUserReply extends Packet {
 			{
 				userRequested = (String)v.elementAt(6);
 				userVisibleName = (String)v.elementAt(7);
-				int gend = CMath.s_int(v.elementAt(8).toString());
+				final int gend = CMath.s_int(v.elementAt(8).toString());
 				switch(gend)
 				{
 				case 0: gender='M'; break;
 				case 1: gender='F'; break;
 				case 2: gender='N'; break;
 				}
-			}catch(Exception e){}
+			}catch(final Exception e){}
 		}
-		catch( ClassCastException e )
+		catch( final ClassCastException e )
 		{
 			throw new InvalidPacketException();
 		}
@@ -87,7 +87,7 @@ public class ChannelUserReply extends Packet {
 		case 'F': genderCode=1; break;
 		case 'N': genderCode=2; break;
 		}
-		String str="({\"chan-user-req\",5,\"" + I3Server.getMudName() +
+		final String str="({\"chan-user-req\",5,\"" + I3Server.getMudName() +
 		"\",0,\"" + target_mud + "\",0,\"" + userRequested
 		+ "\",\"" + userVisibleName
 		+ "\"," + genderCode + ",})";

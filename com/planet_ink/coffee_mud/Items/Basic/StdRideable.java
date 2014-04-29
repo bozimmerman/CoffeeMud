@@ -57,7 +57,7 @@ public class StdRideable extends StdContainer implements Rideable
 	{
 		while(riders.size()>0)
 		{
-			Rider mob=fetchRider(0);
+			final Rider mob=fetchRider(0);
 			if(mob!=null)
 			{
 				mob.setRiding(null);
@@ -103,7 +103,7 @@ public class StdRideable extends StdContainer implements Rideable
 	public Rider fetchRider(int which)
 	{
 		try	{ return riders.get(which);	}
-		catch(java.lang.ArrayIndexOutOfBoundsException e){}
+		catch(final java.lang.ArrayIndexOutOfBoundsException e){}
 		return null;
 	}
 	@Override
@@ -133,7 +133,7 @@ public class StdRideable extends StdContainer implements Rideable
 		if(list==null) return list;
 		for(int r=0;r<numRiders();r++)
 		{
-			Rider R=fetchRider(r);
+			final Rider R=fetchRider(r);
 			if((R instanceof MOB)
 			&&(!list.contains(R)))
 				list.add((MOB)R);
@@ -279,7 +279,7 @@ public class StdRideable extends StdContainer implements Rideable
 		super.affectPhyStats(affected,affectableStats);
 		if(affected instanceof MOB)
 		{
-			MOB mob=(MOB)affected;
+			final MOB mob=(MOB)affected;
 			if(!CMLib.flags().hasSeenContents(this))
 				affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_NOT_SEEN);
 			if((mob.isInCombat())&&(mob.rangeToTarget()==0)&&(amRiding(mob)))
@@ -305,11 +305,11 @@ public class StdRideable extends StdContainer implements Rideable
  		&&(displayText.length()>0)
  		&&CMLib.flags().hasSeenContents(this))
 		{
-			StringBuffer sendBack=new StringBuffer(name(mob));
+			final StringBuffer sendBack=new StringBuffer(name(mob));
 			sendBack.append(" "+stateStringSubject(this)+" ");
 			for(int r=0;r<numRiders();r++)
 			{
-				Rider rider=fetchRider(r);
+				final Rider rider=fetchRider(r);
 				if(rider!=null)
 				{
 					if(r>0)
@@ -461,7 +461,7 @@ public class StdRideable extends StdContainer implements Rideable
 			}
 			if(msg.amITarget(this))
 			{
-				Rider whoWantsToRide=(msg.tool() instanceof Rider)?(Rider)msg.tool():msg.source();
+				final Rider whoWantsToRide=(msg.tool() instanceof Rider)?(Rider)msg.tool():msg.source();
 				if(amRiding(whoWantsToRide))
 				{
 					msg.source().tell(null,whoWantsToRide,null,"<T-NAME> <T-IS-ARE> "+stateString(msg.source())+" "+name(msg.source())+"!");
@@ -519,8 +519,8 @@ public class StdRideable extends StdContainer implements Rideable
 			&&(msg.target()!=null)
 			&&(msg.target() instanceof Room))
 			{
-				Room sourceRoom=msg.source().location();
-				Room targetRoom=(Room)msg.target();
+				final Room sourceRoom=msg.source().location();
+				final Room targetRoom=(Room)msg.target();
 				if((sourceRoom!=null)&&(!msg.amITarget(sourceRoom)))
 				{
 					boolean ok=((targetRoom.domainType()&Room.INDOORS)==0)
@@ -581,7 +581,7 @@ public class StdRideable extends StdContainer implements Rideable
 		case CMMsg.TYP_GIVE:
 			if(msg.target() instanceof MOB)
 			{
-				MOB tmob=(MOB)msg.target();
+				final MOB tmob=(MOB)msg.target();
 				if((amRiding(tmob))&&(!amRiding(msg.source())))
 				{
 					if(rideBasis()==Rideable.RIDEABLE_ENTERIN)
@@ -668,7 +668,7 @@ public class StdRideable extends StdContainer implements Rideable
 				if((msg.tool()!=null)
 				   &&(msg.tool() instanceof Rider))
 				{
-					Rider R = (Rider)msg.tool();
+					final Rider R = (Rider)msg.tool();
 					R.setRiding(this);
 					if(msg.tool() instanceof MOB)
 					switch(rideBasis())

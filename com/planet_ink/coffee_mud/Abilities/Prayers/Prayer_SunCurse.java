@@ -62,13 +62,13 @@ public class Prayer_SunCurse extends Prayer
 		if(!super.tick(ticking,tickID)) return false;
 		if(!(affected instanceof MOB))
 			return super.tick(ticking,tickID);
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		if((mob.location()!=null)
 		&&(mob.location().getArea().getClimateObj().canSeeTheSun(mob.location()))
 		&&(CMLib.flags().isInTheGame(mob,false)))
 		{
 			mob.tell("\n\r\n\r\n\r\n\r**THE SUN IS BEATING ONTO YOUR SKIN**\n\r\n\r");
-			Ability A=CMClass.getAbility("Spell_FleshStone");
+			final Ability A=CMClass.getAbility("Spell_FleshStone");
 			if(A!=null)	A.invoke(mob,mob,true,0);
 			unInvoke();
 			return false;
@@ -82,7 +82,7 @@ public class Prayer_SunCurse extends Prayer
 		// undo the affects of this spell
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		super.unInvoke();
 
@@ -104,7 +104,7 @@ public class Prayer_SunCurse extends Prayer
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		MOB target=this.getTarget(mob,commands,givenTarget);
+		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
 		if((!auto)
@@ -118,7 +118,7 @@ public class Prayer_SunCurse extends Prayer
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		int adjustment=target.phyStats().level()-((mob.phyStats().level()+super.getXLEVELLevel(mob))/2);
+		final int adjustment=target.phyStats().level()-((mob.phyStats().level()+super.getXLEVELLevel(mob))/2);
 		boolean success=proficiencyCheck(mob,-adjustment,auto);
 		if(success)
 		{
@@ -126,7 +126,7 @@ public class Prayer_SunCurse extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> "+prayWord(mob)+" for an unholy sun curse upon <T-NAMESELF>.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> "+prayWord(mob)+" for an unholy sun curse upon <T-NAMESELF>.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

@@ -53,7 +53,7 @@ public class Thief_Forgery extends ThiefSkill
 			mob.tell("What would you like to forge, and onto what?");
 			return false;
 		}
-		Item target=mob.findItem(null,(String)commands.lastElement());
+		final Item target=mob.findItem(null,(String)commands.lastElement());
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
 			mob.tell("You don't see '"+((String)commands.lastElement())+"' here.");
@@ -79,10 +79,10 @@ public class Thief_Forgery extends ThiefSkill
 		String newDisplay="";
 		String newDescription="";
 		String newSecretIdentity="";
-		Room room=CMLib.map().getRoom(forgeWhat);
+		final Room room=CMLib.map().getRoom(forgeWhat);
 		if(room!=null)
 		{
-			Item I=CMClass.getItem("StdTitle");
+			final Item I=CMClass.getItem("StdTitle");
 			((LandTitle)I).setLandPropertyID(CMLib.map().getExtendedRoomID(room));
 			newName=I.name();
 			newDescription=I.description();
@@ -91,7 +91,7 @@ public class Thief_Forgery extends ThiefSkill
 		}
 		if(newName.length()==0)
 		{
-			Ability A=CMClass.findAbility(forgeWhat);
+			final Ability A=CMClass.findAbility(forgeWhat);
 			if((A!=null)&&((A.classificationCode()&Ability.ALL_ACODES)!=Ability.ACODE_SPELL))
 			{
 				mob.tell("You can't forge '"+A.name()+"'.");
@@ -122,10 +122,10 @@ public class Thief_Forgery extends ThiefSkill
 		}
 		if(newName.length()==0)
 		{
-			MoneyLibrary.MoneyDenomination[] DV=CMLib.beanCounter().getCurrencySet(CMLib.beanCounter().getCurrency(mob));
-			for(int i=0;i<DV.length;i++)
+			final MoneyLibrary.MoneyDenomination[] DV=CMLib.beanCounter().getCurrencySet(CMLib.beanCounter().getCurrency(mob));
+			for (final MoneyDenomination element : DV)
 			{
-				Item note=CMLib.beanCounter().makeBestCurrency(CMLib.beanCounter().getCurrency(mob), DV[i].value);
+				final Item note=CMLib.beanCounter().makeBestCurrency(CMLib.beanCounter().getCurrency(mob), element.value);
 				if((note!=null)&&(CMLib.english().containsString(note.name(),forgeWhat)))
 				{
 					newName=note.name();
@@ -149,11 +149,11 @@ public class Thief_Forgery extends ThiefSkill
 		int levelDiff=(mob.phyStats().level()+(2*getXLEVELLevel(mob)))-target.phyStats().level();
 		if(levelDiff>0) levelDiff=0;
 		levelDiff*=5;
-		boolean success=proficiencyCheck(mob,levelDiff,auto);
+		final boolean success=proficiencyCheck(mob,levelDiff,auto);
 
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_THIEF_ACT,"<S-NAME> forge(s) "+forgeWhat+" on <T-NAMESELF>.");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_THIEF_ACT,"<S-NAME> forge(s) "+forgeWhat+" on <T-NAMESELF>.");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

@@ -52,7 +52,7 @@ public class Skill_Track extends StdSkill
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public int classificationCode(){return Ability.ACODE_SKILL;}
 	@Override public long flags(){return Ability.FLAG_TRACKING;}
-	private Map<String,List<Room>> cachedPaths=new Hashtable<String,List<Room>>();
+	private final Map<String,List<Room>> cachedPaths=new Hashtable<String,List<Room>>();
 	@Override public int getTickStatus(){return tickStatus;}
 	@Override public int abilityCode(){return cacheCode;}
 	@Override public void setAbilityCode(int newCode){cacheCode=newCode;}
@@ -80,7 +80,7 @@ public class Skill_Track extends StdSkill
 			||(!(affected instanceof MOB)))
 				return false;
 
-			MOB mob=(MOB)affected;
+			final MOB mob=(MOB)affected;
 
 			if(nextDirection==999)
 			{
@@ -101,10 +101,10 @@ public class Skill_Track extends StdSkill
 				mob.tell("The trail seems to continue "+Directions.getDirectionName(nextDirection)+".");
 				if((mob.isMonster())&&(mob.location()!=null))
 				{
-					Room oldRoom=mob.location();
-					Room nextRoom=oldRoom.getRoomInDir(nextDirection);
-					Exit nextExit=oldRoom.getExitInDir(nextDirection);
-					int opDirection=Directions.getOpDirectionCode(nextDirection);
+					final Room oldRoom=mob.location();
+					final Room nextRoom=oldRoom.getRoomInDir(nextDirection);
+					final Exit nextExit=oldRoom.getExitInDir(nextDirection);
+					final int opDirection=Directions.getOpDirectionCode(nextDirection);
 					if((nextRoom!=null)&&(nextExit!=null))
 					{
 						boolean reclose=false;
@@ -134,28 +134,28 @@ public class Skill_Track extends StdSkill
 							unInvoke();
 						else
 						{
-							int dir=nextDirection;
+							final int dir=nextDirection;
 							nextDirection=-2;
 							CMLib.tracking().walk(mob,dir,false,false);
 							if(mob.location()==nextRoom)
 							{
 								// backup follower mover for handcuffed followers
 								final LinkedList<MOB> reMoveV=new LinkedList<MOB>();
-								for(Enumeration<Follower> e=mob.followers(); e.hasMoreElements();)
+								for(final Enumeration<Follower> e=mob.followers(); e.hasMoreElements();)
 								{
-									Follower F=e.nextElement();
+									final Follower F=e.nextElement();
 									if((F.follower != null)
 									&&(F.follower != mob)
 									&&(F.follower.location()==oldRoom)
 									&&(F.follower.location()!=nextRoom))
 										reMoveV.add(F.follower);
 								}
-								for(MOB M : reMoveV)
+								for(final MOB M : reMoveV)
 									if(CMLib.flags().isBoundOrHeld(M))
 										CMLib.tracking().walk(M,dir,false,false);
 								if(reclose)
 								{
-									Exit opExit=nextRoom.getExitInDir(opDirection);
+									final Exit opExit=nextRoom.getExitInDir(opDirection);
 									if((opExit!=null)
 									&&(opExit.hasADoor())
 									&&(opExit.isOpen()))
@@ -199,7 +199,7 @@ public class Skill_Track extends StdSkill
 		if(!(affected instanceof MOB))
 			return;
 
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		if((msg.amISource(mob))
 		&&(msg.amITarget(mob.location()))
 		&&(msg.targetMinor()==CMMsg.TYP_LOOK))
@@ -216,10 +216,10 @@ public class Skill_Track extends StdSkill
 			return false;
 		}
 		tickStatus=Tickable.STATUS_MISC6+1;
-		Room thisRoom=mob.location();
+		final Room thisRoom=mob.location();
 
-		List<Ability> V=CMLib.flags().flaggedAffects(mob,Ability.FLAG_TRACKING);
-		for(Ability A : V) A.unInvoke();
+		final List<Ability> V=CMLib.flags().flaggedAffects(mob,Ability.FLAG_TRACKING);
+		for(final Ability A : V) A.unInvoke();
 		if(V.size()>0)
 		{
 			mob.tell("You stop tracking.");
@@ -268,7 +268,7 @@ public class Skill_Track extends StdSkill
 			commands.removeElementAt(commands.size()-1);
 		}
 
-		String mobName=CMParms.combine(commands,0);
+		final String mobName=CMParms.combine(commands,0);
 		if((givenTarget==null)&&(mobName.length()==0))
 		{
 			mob.tell("Track whom?");
@@ -291,7 +291,7 @@ public class Skill_Track extends StdSkill
 			return false;
 		}
 
-		Vector rooms=new Vector();
+		final Vector rooms=new Vector();
 		if(givenTarget instanceof Area)
 			rooms.addElement(((Area)givenTarget).getRandomMetroRoom());
 		else
@@ -303,11 +303,11 @@ public class Skill_Track extends StdSkill
 		else
 		if(mobName.length()>0)
 		{
-			Room R=CMLib.map().getRoom(mobName);
+			final Room R=CMLib.map().getRoom(mobName);
 			if(R!=null) rooms.addElement(R);
 		}
 
-		TrackingLibrary.TrackingFlags flags=new TrackingLibrary.TrackingFlags();
+		final TrackingLibrary.TrackingFlags flags=new TrackingLibrary.TrackingFlags();
 		if(!(allowAir||allowWater)) flags.plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS);
 		if(!allowAir) flags.plus(TrackingLibrary.TrackingFlag.NOAIR);
 		if(!allowWater) flags.plus(TrackingLibrary.TrackingFlag.NOWATER);
@@ -316,19 +316,19 @@ public class Skill_Track extends StdSkill
 		{
 			try
 			{
-				List<Room> checkSet=CMLib.tracking().getRadiantRooms(thisRoom,flags,radius);
-				for(Iterator<Room> r=checkSet.iterator();r.hasNext();)
+				final List<Room> checkSet=CMLib.tracking().getRadiantRooms(thisRoom,flags,radius);
+				for (final Room room : checkSet)
 				{
-					Room R=CMLib.map().getRoom(r.next());
+					final Room R=CMLib.map().getRoom(room);
 					if(R.fetchInhabitant(mobName)!=null)
 						rooms.addElement(R);
 				}
-			}catch(NoSuchElementException nse){}
+			}catch(final NoSuchElementException nse){}
 		}
 		tickStatus=Tickable.STATUS_MISC6+6;
 
 		tickStatus=Tickable.STATUS_MISC6+7;
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 		if(rooms.size()>0)
 		{
 			theTrail=null;
@@ -352,13 +352,13 @@ public class Skill_Track extends StdSkill
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_QUIETMOVEMENT,mob.isMonster()?null:"<S-NAME> begin(s) to track.");
+			final CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_QUIETMOVEMENT,mob.isMonster()?null:"<S-NAME> begin(s) to track.");
 			if(thisRoom.okMessage(mob,msg))
 			{
 				tickStatus=Tickable.STATUS_MISC6+12;
 				thisRoom.send(mob,msg);
 				invoker=mob;
-				Skill_Track newOne=(Skill_Track)copyOf();
+				final Skill_Track newOne=(Skill_Track)copyOf();
 				if(mob.fetchEffect(newOne.ID())==null)
 					mob.addEffect(newOne);
 				mob.recoverPhyStats();

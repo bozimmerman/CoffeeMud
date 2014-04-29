@@ -17,8 +17,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
-
 import java.util.*;
 import java.io.IOException;
 import java.io.ByteArrayInputStream;
@@ -53,8 +51,8 @@ public class Arrest extends StdBehavior implements LegalBehavior
 
 	protected String getLawParms()
 	{
-		String parms=getParms();
-		int x=parms.indexOf(';');
+		final String parms=getParms();
+		final int x=parms.indexOf(';');
 		if(x>=0)
 			return parms.substring(0, x).trim();
 		return parms;
@@ -63,7 +61,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 	public final String getExtraLawString()
 	{
 		final String extraLawString=getParms();
-		int x=extraLawString.indexOf(';');
+		final int x=extraLawString.indexOf(';');
 		if(x>=0)
 		{
 			return extraLawString.substring(x+1).trim();
@@ -88,7 +86,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 
 	public void DebugLogLostConvicts(String lead, LegalWarrant W, MOB officer)
 	{
-		StringBuilder errLogMsg=new StringBuilder("");
+		final StringBuilder errLogMsg=new StringBuilder("");
 		errLogMsg.append(!W.criminal().location().isInhabitant(officer)?"AE1 ":"");
 		errLogMsg.append(W.criminal().amDead()?"AE2 ":"");
 		errLogMsg.append(!CMLib.flags().aliveAwakeMobile(W.criminal(),true)?"AE3 ":"");
@@ -104,7 +102,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 	public boolean frame(Area myArea, MOB accused, MOB framed)
 	{
 		if(!theLawIsEnabled()) return false;
-		Law laws=getLaws(myArea,false);
+		final Law laws=getLaws(myArea,false);
 		LegalWarrant W=null;
 		if(laws!=null)
 			for(int i=0;(W=laws.getWarrant(accused,i))!=null;i++)
@@ -120,8 +118,8 @@ public class Arrest extends StdBehavior implements LegalBehavior
 	public boolean arrest(Area myArea, MOB officer, MOB accused)
 	{
 		if(!theLawIsEnabled()) return false;
-		Law laws=getLaws(myArea,false);
-		LegalWarrant W=(laws!=null)?laws.getWarrant(accused,0):null;
+		final Law laws=getLaws(myArea,false);
+		final LegalWarrant W=(laws!=null)?laws.getWarrant(accused,0):null;
 		if((W!=null)&&((W.arrestingOfficer()==null)||(W.arrestingOfficer().location()!=accused.location())))
 		{
 			W.setArrestingOfficer(myArea,officer);
@@ -145,7 +143,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 	public boolean isElligibleOfficer(Area myArea, MOB mob)
 	{
 		if(!theLawIsEnabled()) return false;
-		Law laws=getLaws(myArea,false);
+		final Law laws=getLaws(myArea,false);
 		if((mob.isMonster())
 		&&(mob.location()!=null)
 		&&(laws!=null)
@@ -158,7 +156,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 	public boolean hasWarrant(Area myArea, MOB accused)
 	{
 		if(!theLawIsEnabled()) return false;
-		Law laws=getLaws(myArea,false);
+		final Law laws=getLaws(myArea,false);
 		return (laws!=null)?((laws.getWarrant(accused,0))!=null):false;
 	}
 
@@ -166,7 +164,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 	public boolean isAnyOfficer(Area myArea, MOB mob)
 	{
 		if(!theLawIsEnabled()) return false;
-		Law laws=getLaws(myArea,false);
+		final Law laws=getLaws(myArea,false);
 		if((mob.isMonster())
 		&&(mob.location()!=null)
 		&&(laws!=null)
@@ -179,7 +177,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 	public boolean isJudge(Area myArea, MOB mob)
 	{
 		if(!theLawIsEnabled()) return false;
-		Law laws=getLaws(myArea,false);
+		final Law laws=getLaws(myArea,false);
 		if((mob.isMonster())
 		&&(mob.location()!=null)
 		&&(laws!=null)
@@ -191,7 +189,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 	@Override
 	public void modifyAssessedFines(double d, MOB mob)
 	{
-		Double D=(Double)finesAssessed.get(mob);
+		final Double D=(Double)finesAssessed.get(mob);
 		if(D!=null) finesAssessed.remove(mob);
 		if(d>0) finesAssessed.put(mob,Double.valueOf(d));
 	}
@@ -200,7 +198,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 	public double finesOwed(MOB mob)
 	{
 		if(!theLawIsEnabled()) return 0.0;
-		Double D=(Double)finesAssessed.get(mob);
+		final Double D=(Double)finesAssessed.get(mob);
 		if(D!=null) return D.doubleValue();
 		return 0.0;
 	}
@@ -209,7 +207,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 	public boolean updateLaw(Area myArea)
 	{
 		if(!theLawIsEnabled()) return false;
-		Law laws=getLaws(myArea,false);
+		final Law laws=getLaws(myArea,false);
 		if(laws!=null)
 		{
 			laws.resetLaw();
@@ -232,11 +230,11 @@ public class Arrest extends StdBehavior implements LegalBehavior
 	@Override
 	public List<MOB> getCriminals(Area myArea, String searchStr)
 	{
-		Vector V=new Vector();
+		final Vector V=new Vector();
 		if(!theLawIsEnabled()) return V;
-		Law laws=getLaws(myArea,false);
-		boolean debugging=CMSecurity.isDebugging(CMSecurity.DbgFlag.ARREST);
-		for(LegalWarrant W : laws.warrants())
+		final Law laws=getLaws(myArea,false);
+		final boolean debugging=CMSecurity.isDebugging(CMSecurity.DbgFlag.ARREST);
+		for(final LegalWarrant W : laws.warrants())
 			if((isStillACrime(W,debugging))
 			&&((searchStr==null)||(CMLib.english().containsString(W.criminal().name(),searchStr)))
 			&&(!V.contains(W.criminal())))
@@ -247,11 +245,11 @@ public class Arrest extends StdBehavior implements LegalBehavior
 	@Override
 	public List<LegalWarrant> getWarrantsOf(Area myArea, MOB accused)
 	{
-		Vector V=new Vector();
+		final Vector V=new Vector();
 		if(!theLawIsEnabled()) return V;
-		Law laws=getLaws(myArea,false);
-		boolean debugging=CMSecurity.isDebugging(CMSecurity.DbgFlag.ARREST);
-		for(LegalWarrant W : laws.warrants())
+		final Law laws=getLaws(myArea,false);
+		final boolean debugging=CMSecurity.isDebugging(CMSecurity.DbgFlag.ARREST);
+		for(final LegalWarrant W : laws.warrants())
 			if((isStillACrime(W,debugging))&&((accused==null)||(W.criminal()==accused)))
 				V.addElement(W);
 		return V;
@@ -268,7 +266,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 				MOB accuser=W.witness();
 				if(accuser==null) accuser=W.victim();
 				if(accuser==null) accuser=W.criminal();
-				CMMsg msg=CMClass.getMsg(accuser, W.criminal(), W.victim(), CMMsg.MASK_ALWAYS|CMMsg.MSG_LEGALWARRANT, CMMsg.MSG_LEGALWARRANT, CMMsg.MSG_LEGALWARRANT, W.crime());
+				final CMMsg msg=CMClass.getMsg(accuser, W.criminal(), W.victim(), CMMsg.MASK_ALWAYS|CMMsg.MSG_LEGALWARRANT, CMMsg.MSG_LEGALWARRANT, CMMsg.MSG_LEGALWARRANT, W.crime());
 				if(R.okMessage(W.criminal(),msg))
 					R.send(W.criminal(), msg);
 				else
@@ -277,7 +275,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 			laws.warrants().add(W);
 			if(W.criminal()!=null)
 			{
-				List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.WARRANTS);
+				final List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.WARRANTS);
 				for(int i=0;i<channels.size();i++)
 					CMLib.commands().postChannel(channels.get(i),null,W.criminal().name()+" has been accused of "+fixCharge(W)+".",true);
 			}
@@ -290,7 +288,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 	public boolean addWarrant(Area myArea, LegalWarrant W)
 	{
 		if(!theLawIsEnabled()) return false;
-		Law laws=getLaws(myArea,false);
+		final Law laws=getLaws(myArea,false);
 		return addWarrant(laws,W);
 	}
 
@@ -298,7 +296,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 	public boolean addWarrant(Area myArea, MOB accused, MOB victim, String crimeLocs, String crimeFlags, String crime, String sentence, String warnMsg)
 	{
 		if(!theLawIsEnabled()) return false;
-		Law laws=getLaws(myArea,false);
+		final Law laws=getLaws(myArea,false);
 		if(laws!=null)
 			return fillOutWarrant(accused,laws,myArea,victim,crimeLocs,crimeFlags,crime,sentence,warnMsg);
 		return false;
@@ -308,7 +306,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 	public boolean deleteWarrant(Area myArea, LegalWarrant W)
 	{
 		if(!theLawIsEnabled()) return false;
-		Law laws=getLaws(myArea,false);
+		final Law laws=getLaws(myArea,false);
 		if((laws!=null)&&(laws.warrants().contains(W)))
 		{
 			laws.warrants().remove(W);
@@ -321,16 +319,15 @@ public class Arrest extends StdBehavior implements LegalBehavior
 	public boolean aquit(Area myArea, MOB accused, String[] acquittableLaws)
 	{
 		if(!theLawIsEnabled()) return false;
-		Law laws=getLaws(myArea,false);
+		final Law laws=getLaws(myArea,false);
 		if(laws!=null)
 		{
-			boolean debugging=CMSecurity.isDebugging(CMSecurity.DbgFlag.ARREST);
+			final boolean debugging=CMSecurity.isDebugging(CMSecurity.DbgFlag.ARREST);
 			String[] info=null;
 			if(acquittableLaws!=null)
 			{
-				for(int v=0;v<acquittableLaws.length;v++)
+				for (final String brokenLaw : acquittableLaws)
 				{
-					String brokenLaw=acquittableLaws[v];
 					if((laws.basicCrimes().containsKey(brokenLaw))&&(laws.basicCrimes().get(brokenLaw) !=null))
 					{   info=laws.basicCrimes().get(brokenLaw);   break; }
 					else
@@ -342,7 +339,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 				}
 				if(info==null) return false;
 			}
-			for(LegalWarrant W : laws.warrants())
+			for(final LegalWarrant W : laws.warrants())
 				if((isStillACrime(W,debugging))
 				&&(W.criminal()==accused)
 				&&((info==null)||(W.crime().equalsIgnoreCase(info[Law.BIT_CRIMENAME]))))
@@ -358,10 +355,10 @@ public class Arrest extends StdBehavior implements LegalBehavior
 	public boolean isJailRoom(Area myArea, List<Room> jails)
 	{
 		if(!theLawIsEnabled()) return false;
-		Law laws=getLaws(myArea,false);
+		final Law laws=getLaws(myArea,false);
 		if(laws!=null)
 		{
-			List<Room> rooms=getRooms(myArea,laws.jailRooms());
+			final List<Room> rooms=getRooms(myArea,laws.jailRooms());
 			boolean answer=false;
 			for(int i=0;i<jails.size();i++)
 				answer=answer||rooms.contains(jails.get(i));
@@ -373,13 +370,12 @@ public class Arrest extends StdBehavior implements LegalBehavior
 	public boolean accuse(Area myArea, MOB accused, MOB victim, String[] accusableLaws)
 	{
 		if(!theLawIsEnabled()) return false;
-		Law laws=getLaws(myArea,false);
+		final Law laws=getLaws(myArea,false);
 		if(laws!=null)
 		{
-			for(int v=0;v<accusableLaws.length;v++)
+			for (final String brokenLaw : accusableLaws)
 			{
 				String[] info=null;
-				String brokenLaw=accusableLaws[v];
 				if((laws.basicCrimes().containsKey(brokenLaw))&&(laws.basicCrimes().get(brokenLaw) !=null))
 					info=laws.basicCrimes().get(brokenLaw);
 				else
@@ -393,7 +389,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 					if((info[Law.BIT_CRIMENAME]!=null)
 					&&(info[Law.BIT_CRIMENAME].length()>0))
 					{
-						boolean kaplah=
+						final boolean kaplah=
 							fillOutWarrant(accused,
 									laws,
 									myArea,
@@ -466,15 +462,15 @@ public class Arrest extends StdBehavior implements LegalBehavior
 
 		if(laws==null)
 		{
-			Properties lawprops=new Properties();
+			final Properties lawprops=new Properties();
 			try
 			{
 				if((lawName.equalsIgnoreCase("custom"))&&(what!=null))
 				{
-					List<PlayerData> data=CMLib.database().DBReadData(what.Name(),"ARREST",what.Name()+"/ARREST");
+					final List<PlayerData> data=CMLib.database().DBReadData(what.Name(),"ARREST",what.Name()+"/ARREST");
 					if((data!=null)&&(data.size()>0))
 					{
-						DatabaseEngine.PlayerData pdata=data.get(0);
+						final DatabaseEngine.PlayerData pdata=data.get(0);
 						String s=CMStrings.replaceAll(pdata.xml,"~","\n");
 						s=CMStrings.replaceAll(s,"`","'");
 						lawprops.load(new ByteArrayInputStream(CMStrings.strToBytes(s)));
@@ -492,7 +488,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 				if(lawprops.isEmpty())
 					lawprops.load(new ByteArrayInputStream(new CMFile(Resources.makeFileResourceName(lawName),null).raw()));
 			}
-			catch(IOException e)
+			catch(final IOException e)
 			{
 				if(!loadAttempt)
 				{
@@ -515,7 +511,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 
 	public void unCuff(MOB mob)
 	{
-		Ability A=mob.fetchEffect("Skill_HandCuff");
+		final Ability A=mob.fetchEffect("Skill_HandCuff");
 		if(A!=null) A.unInvoke();
 	}
 
@@ -536,7 +532,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 		if(R!=null)
 		for(int i=0;i<R.numInhabitants();i++)
 		{
-			MOB M=R.fetchInhabitant(i);
+			final MOB M=R.fetchInhabitant(i);
 			if((M!=null)
 			&&M.isMonster()
 			&&(M!=accused)
@@ -549,7 +545,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 
 	public MOB getWitness(Area A, MOB accused)
 	{
-		Room R=accused.location();
+		final Room R=accused.location();
 
 		if((A!=null)&&(!A.inMyMetroArea(R.getArea())))
 			return null;
@@ -559,7 +555,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 		if(R!=null)
 		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 		{
-			Room R2=R.getRoomInDir(d);
+			final Room R2=R.getRoomInDir(d);
 			M=getAWitnessHere(R2,accused);
 			if(M!=null) return M;
 		}
@@ -607,7 +603,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 		if(R==null) return null;
 		for(int i=0;i<R.numInhabitants();i++)
 		{
-			MOB M=R.fetchInhabitant(i);
+			final MOB M=R.fetchInhabitant(i);
 			if((M!=null)
 			&&(M!=criminal)
 			&&(M.location()!=null)
@@ -625,14 +621,14 @@ public class Arrest extends StdBehavior implements LegalBehavior
 									  MOB criminal,
 									  MOB victim)
 	{
-		Room R=criminal.location();
+		final Room R=criminal.location();
 		if(R==null) return null;
 		if((myArea!=null)&&(!myArea.inMyMetroArea(R.getArea()))) return null;
 		MOB M=getElligibleOfficerHere(laws,myArea,R,criminal,victim);
 		if((M==null)&&(myArea!=null))
-			for(Enumeration e=myArea.getMetroMap();e.hasMoreElements();)
+			for(final Enumeration e=myArea.getMetroMap();e.hasMoreElements();)
 			{
-				Room R2=(Room)e.nextElement();
+				final Room R2=(Room)e.nextElement();
 				M=getElligibleOfficerHere(laws,myArea,R2,criminal,victim);
 				if(M!=null) break;
 			}
@@ -644,20 +640,20 @@ public class Arrest extends StdBehavior implements LegalBehavior
 								   MOB criminal,
 								   MOB victim)
 	{
-		Room R=criminal.location();
+		final Room R=criminal.location();
 		if(R==null) return null;
 		if((myArea!=null)&&(!myArea.inMyMetroArea(R.getArea()))) return null;
 		MOB M=getElligibleOfficerHere(laws,myArea,R,criminal,victim);
 		if(M!=null) return M;
 		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 		{
-			Room R2=R.getRoomInDir(d);
+			final Room R2=R.getRoomInDir(d);
 			if(R2!=null)
 			{
 				M=getElligibleOfficerHere(laws,myArea,R2,criminal,victim);
 				if(M!=null)
 				{
-					int direction=Directions.getOpDirectionCode(d);
+					final int direction=Directions.getOpDirectionCode(d);
 					CMLib.tracking().walk(M,direction,false,false);
 					if(M.location()==R) return M;
 				}
@@ -668,7 +664,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 
 	public boolean canFocusOn(MOB officer, MOB criminal)
 	{
-		CMMsg msg=CMClass.getMsg(officer,criminal,CMMsg.MSG_LOOK,"<S-NAME> look(s) closely at <T-NAME>.");
+		final CMMsg msg=CMClass.getMsg(officer,criminal,CMMsg.MSG_LOOK,"<S-NAME> look(s) closely at <T-NAME>.");
 		if((officer!=null)&&(officer.location()!=null)&&(criminal.location()==officer.location()))
 		{
 			if(!officer.location().okMessage(officer,msg))
@@ -687,7 +683,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 	public boolean isStillACrime(LegalWarrant W, boolean debugging)
 	{
 		// will witness talk, or victim press charges?
-		Set<MOB> H=W.criminal().getGroupMembers(new HashSet<MOB>());
+		final Set<MOB> H=W.criminal().getGroupMembers(new HashSet<MOB>());
 		if((W.witness()!=null)&&W.witness().amDead())
 		{
 			if(debugging) Log.debugOut("ARREST", "Witness is DEAD!");
@@ -722,9 +718,9 @@ public class Arrest extends StdBehavior implements LegalBehavior
 
 	public Vector getRelevantWarrants(List<LegalWarrant> warrants, LegalWarrant W, MOB criminal)
 	{
-		Vector V=new Vector();
+		final Vector V=new Vector();
 		if(W!=null) V.addElement(W);
-		for(LegalWarrant W2 : warrants)
+		for(final LegalWarrant W2 : warrants)
 			if((W2.criminal()==criminal)
 			&&(W2!=W)
 			&&((W==null)
@@ -745,10 +741,10 @@ public class Arrest extends StdBehavior implements LegalBehavior
 			return CMath.s_double(s);
 		}
 		double fine=0.0;
-		Vector V=getRelevantWarrants(laws.warrants(),W,criminal);
+		final Vector V=getRelevantWarrants(laws.warrants(),W,criminal);
 		for(int w2=0;w2<V.size();w2++)
 		{
-			LegalWarrant W2=(LegalWarrant)V.elementAt(w2);
+			final LegalWarrant W2=(LegalWarrant)V.elementAt(w2);
 			if(!CMath.bset(W2.punishment(),Law.PUNISHMENTMASK_SEPARATE))
 			{
 				s=W.getPunishmentParm(Law.PUNISHMENTMASK_FINE);
@@ -769,10 +765,10 @@ public class Arrest extends StdBehavior implements LegalBehavior
 		s=W.getPunishmentParm(Law.PUNISHMENTMASK_DETAIN);
 		if((s==null)||(s.length()==0))
 		{
-			Vector V=getRelevantWarrants(laws.warrants(),W,criminal);
+			final Vector V=getRelevantWarrants(laws.warrants(),W,criminal);
 			for(int w2=0;w2<V.size();w2++)
 			{
-				LegalWarrant W2=(LegalWarrant)V.elementAt(w2);
+				final LegalWarrant W2=(LegalWarrant)V.elementAt(w2);
 				if(!CMath.bset(W2.punishment(),Law.PUNISHMENTMASK_SEPARATE))
 				{
 					s=W.getPunishmentParm(Law.PUNISHMENTMASK_DETAIN);
@@ -789,17 +785,17 @@ public class Arrest extends StdBehavior implements LegalBehavior
 	}
 	protected String getDetainRoom(Law laws, LegalWarrant W, MOB criminal)
 	{
-		String s=getDetainParm(laws,W,criminal);
+		final String s=getDetainParm(laws,W,criminal);
 		if((s==null)||(s.length()==0)) return "";
-		int x=s.indexOf(',');
+		final int x=s.indexOf(',');
 		if((x<0)||(!CMath.isInteger(s.substring(x+1)))) return s;
 		return s.substring(0,x);
 	}
 	protected int getDetainTime(Law laws, LegalWarrant W, MOB criminal)
 	{
-		String s=getDetainParm(laws,W,criminal);
+		final String s=getDetainParm(laws,W,criminal);
 		if((s==null)||(s.length()==0)) return -1;
-		int x=s.indexOf(',');
+		final int x=s.indexOf(',');
 		if((x<0)||(!CMath.isInteger(s.substring(x+1))))
 			return laws.jailTimes()[0].intValue();
 		return CMath.s_int(s.substring(x+1));
@@ -809,10 +805,10 @@ public class Arrest extends StdBehavior implements LegalBehavior
 		int highest=0;
 		if(CMath.bset(W.punishment(),Law.PUNISHMENTMASK_SEPARATE))
 			return W.punishment();
-		Vector V=getRelevantWarrants(laws.warrants(),W,criminal);
+		final Vector V=getRelevantWarrants(laws.warrants(),W,criminal);
 		for(int w2=0;w2<V.size();w2++)
 		{
-			LegalWarrant W2=(LegalWarrant)V.elementAt(w2);
+			final LegalWarrant W2=(LegalWarrant)V.elementAt(w2);
 			if(!CMath.bset(W2.punishment(),Law.PUNISHMENTMASK_SEPARATE))
 			{
 				if(((W2.punishment()&Law.PUNISHMENT_MASK)+W2.offenses())>(highest&Law.PUNISHMENT_MASK))
@@ -821,7 +817,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 		}
 		for(int w2=0;w2<V.size();w2++)
 		{
-			LegalWarrant W2=(LegalWarrant)V.elementAt(w2);
+			final LegalWarrant W2=(LegalWarrant)V.elementAt(w2);
 			if((!CMath.bset(W2.punishment(),Law.PUNISHMENTMASK_SEPARATE))
 			&&(highest<((W2.punishment()&Law.PUNISHMENT_MASK)+4)))
 				highest++;
@@ -835,7 +831,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 
 	public boolean isBusyWithJustice(Law laws, MOB M)
 	{
-		for(LegalWarrant W : laws.warrants())
+		for(final LegalWarrant W : laws.warrants())
 			if(W.arrestingOfficer()!=null)
 			{
 				if(W.criminal()==M) return true;
@@ -848,7 +844,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 	public String fixCharge(LegalWarrant W)
 	{
 		if(W==null) return "";
-		String charge=W.crime();
+		final String charge=W.crime();
 		if(W.victim()==null) return charge;
 		if(charge.indexOf("<T-NAME>")<0) return charge;
 		return charge.replaceFirst("<T-NAME>",W.victim().name());
@@ -856,10 +852,10 @@ public class Arrest extends StdBehavior implements LegalBehavior
 
 	public String restOfCharges(Law laws, MOB mob)
 	{
-		StringBuffer msg=new StringBuffer("");
+		final StringBuffer msg=new StringBuffer("");
 		for(int w=0;(laws.getWarrant(mob,w)!=null);w++)
 		{
-			LegalWarrant W=laws.getWarrant(mob,w);
+			final LegalWarrant W=laws.getWarrant(mob,w);
 			if(W!=null)
 			{
 				if(w==0)
@@ -879,7 +875,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 		if(R==null) return;
 		for(int i=0;i<R.numInhabitants();i++)
 		{
-			MOB inhab=R.fetchInhabitant(i);
+			final MOB inhab=R.fetchInhabitant(i);
 			if((inhab!=null)&&(inhab.isInCombat()))
 				inhab.makePeace();
 		}
@@ -908,7 +904,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 	{
 		for(int i=0;i<R.numInhabitants();i++)
 		{
-			MOB M=R.fetchInhabitant(i);
+			final MOB M=R.fetchInhabitant(i);
 			if(isTheJudge(laws,M))
 				return M;
 		}
@@ -917,12 +913,12 @@ public class Arrest extends StdBehavior implements LegalBehavior
 
 	public Room findTheJudge(Law laws, Area myArea)
 	{
-		for(Enumeration r=myArea.getMetroMap();r.hasMoreElements();)
+		for(final Enumeration r=myArea.getMetroMap();r.hasMoreElements();)
 		{
-			Room R=(Room)r.nextElement();
+			final Room R=(Room)r.nextElement();
 			for(int i=0;i<R.numInhabitants();i++)
 			{
-				MOB M=R.fetchInhabitant(i);
+				final MOB M=R.fetchInhabitant(i);
 				if(isTheJudge(laws,M))
 					return R;
 			}
@@ -933,10 +929,10 @@ public class Arrest extends StdBehavior implements LegalBehavior
 	public boolean trackTheJudge(MOB officer, Area myArea, Law laws)
 	{
 		CMLib.tracking().stopTracking(officer);
-		Ability A=CMClass.getAbility("Skill_Track");
+		final Ability A=CMClass.getAbility("Skill_Track");
 		if(A!=null)
 		{
-			Room R=findTheJudge(laws,myArea);
+			final Room R=findTheJudge(laws,myArea);
 			if(R!=null)
 			{
 				A.invoke(officer,CMParms.parse("\""+CMLib.map().getExtendedRoomID(R)+"\""),R,true,0);
@@ -968,9 +964,9 @@ public class Arrest extends StdBehavior implements LegalBehavior
 	public boolean isTroubleMaker(MOB M)
 	{
 		if(M==null) return false;
-		for(Enumeration<Behavior> e=M.behaviors();e.hasMoreElements();)
+		for(final Enumeration<Behavior> e=M.behaviors();e.hasMoreElements();)
 		{
-			Behavior B=e.nextElement();
+			final Behavior B=e.nextElement();
 			if((B!=null)&&(CMath.bset(B.flags(),Behavior.FLAG_TROUBLEMAKING)))
 				return true;
 		}
@@ -979,12 +975,12 @@ public class Arrest extends StdBehavior implements LegalBehavior
 
 	public List<Room> getRooms(Area A, List<String> V)
 	{
-		Vector finalV=new Vector();
+		final Vector finalV=new Vector();
 		Room jail=null;
 		if(V.size()==0) return finalV;
 		for(int v=0;v<V.size();v++)
 		{
-			String which=V.get(v);
+			final String which=V.get(v);
 			jail=getRoom(A,which);
 			if((jail!=null)
 			&&(!finalV.contains(jail)))
@@ -997,16 +993,16 @@ public class Arrest extends StdBehavior implements LegalBehavior
 		Room jail=null;
 		jail=CMLib.map().getRoom(which);
 		if(jail==null)
-		for(Enumeration r=A.getMetroMap();r.hasMoreElements();)
+		for(final Enumeration r=A.getMetroMap();r.hasMoreElements();)
 		{
-			Room R=(Room)r.nextElement();
+			final Room R=(Room)r.nextElement();
 			if(CMLib.english().containsString(R.displayText(),which))
 			{ jail=R; break; }
 		}
 		if(jail==null)
-		for(Enumeration r=A.getMetroMap();r.hasMoreElements();)
+		for(final Enumeration r=A.getMetroMap();r.hasMoreElements();)
 		{
-			Room R=(Room)r.nextElement();
+			final Room R=(Room)r.nextElement();
 			if(CMLib.english().containsString(R.description(),which))
 			{ jail=R; break; }
 		}
@@ -1015,14 +1011,14 @@ public class Arrest extends StdBehavior implements LegalBehavior
 	public Room getRoom(Area A, List<String> V)
 	{
 		if(V.size()==0) return null;
-		String which=V.get(CMLib.dice().roll(1,V.size(),-1));
+		final String which=V.get(CMLib.dice().roll(1,V.size(),-1));
 		return getRoom(A,which);
 	}
 
 	public void fileAllWarrants(Law laws, LegalWarrant W1, MOB mob)
 	{
 
-		Vector<LegalWarrant> V=new Vector<LegalWarrant>();
+		final Vector<LegalWarrant> V=new Vector<LegalWarrant>();
 		{
 			LegalWarrant W=null;
 			if((W1!=null)&&(CMath.bset(W1.punishment(),Law.PUNISHMENTMASK_SEPARATE)))
@@ -1036,13 +1032,13 @@ public class Arrest extends StdBehavior implements LegalBehavior
 				if(W.criminal()==mob)
 					V.addElement(W);
 		}
-		for(LegalWarrant W : V)
+		for(final LegalWarrant W : V)
 		{
 			laws.warrants().remove(W);
 			if(W.crime()!=null)
 			{
 				boolean found=false;
-				for(LegalWarrant oW : laws.oldWarrants())
+				for(final LegalWarrant oW : laws.oldWarrants())
 					if((oW.criminal()==mob)
 					&&(oW.crime()!=null)
 					&&(oW.crime().equals(W.crime())))
@@ -1068,7 +1064,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 
 	public Room findTheDetentionCenter(MOB mob, Area myArea, Law laws, LegalWarrant W)
 	{
-		String detentionCenter=getDetainRoom(laws,W,W.criminal());
+		final String detentionCenter=getDetainRoom(laws,W,W.criminal());
 		if(detentionCenter.length()==0) return null;
 		Room detainer=getRoom(mob.location().getArea(),detentionCenter);
 		if(detainer==null) detainer=getRoom(myArea,detentionCenter);
@@ -1077,7 +1073,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 
 	public boolean judgeMe(Law laws, MOB judge, MOB officer, MOB criminal, LegalWarrant W, Area A, boolean debugging)
 	{
-		Vector relevantCrimes=getRelevantWarrants(laws.warrants(),W,criminal);
+		final Vector relevantCrimes=getRelevantWarrants(laws.warrants(),W,criminal);
 		if(CMath.bset(W.punishment(),Law.PUNISHMENTMASK_SKIPTRIAL))
 			judge=officer;
 		if(debugging)Log.debugOut("Arrest",criminal.Name()+" judged for "+W.crime()+" has base action "+W.punishment()+", and final judgement "+highestCrimeAction(laws,W,W.criminal()));
@@ -1087,11 +1083,11 @@ public class Arrest extends StdBehavior implements LegalBehavior
 		case Law.PUNISHMENT_WARN:
 			{
 			if((judge==null)&&(officer!=null)) judge=officer;
-			StringBuffer str=new StringBuffer("");
+			final StringBuffer str=new StringBuffer("");
 			str.append(criminal.name()+", you are in trouble for "+restOfCharges(laws,criminal)+".  ");
 			for(int w2=0;w2<relevantCrimes.size();w2++)
 			{
-				LegalWarrant W2=(LegalWarrant)relevantCrimes.elementAt(w2);
+				final LegalWarrant W2=(LegalWarrant)relevantCrimes.elementAt(w2);
 				if(W2.criminal()==criminal)
 				{
 					if(W2.witness()!=null)
@@ -1111,11 +1107,11 @@ public class Arrest extends StdBehavior implements LegalBehavior
 		case Law.PUNISHMENT_THREATEN:
 			{
 			if((judge==null)&&(officer!=null)) judge=officer;
-			StringBuffer str=new StringBuffer("");
+			final StringBuffer str=new StringBuffer("");
 			str.append(criminal.name()+", you are in trouble for "+restOfCharges(laws,criminal)+".  ");
 			for(int w2=0;w2<relevantCrimes.size();w2++)
 			{
-				LegalWarrant W2=(LegalWarrant)relevantCrimes.elementAt(w2);
+				final LegalWarrant W2=(LegalWarrant)relevantCrimes.elementAt(w2);
 				if(W2.criminal()==criminal)
 				{
 					if(W2.witness()!=null)
@@ -1243,7 +1239,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 		}
 		if((totallyDone)&&(CMath.bset(W.punishment(),Law.PUNISHMENTMASK_FINE)))
 		{
-			double fines=getFine(laws,W,criminal);
+			final double fines=getFine(laws,W,criminal);
 			if((judge==null)&&(officer!=null)) judge=officer;
 			if((fines>0.0)&&(judge!=null))
 			{
@@ -1302,7 +1298,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 		}
 
 		// is there a witness
-		MOB witness=getWitness(myArea,mob);
+		final MOB witness=getWitness(myArea,mob);
 		boolean requiresWitness=true;
 
 		// is there a victim (if necessary)
@@ -1318,10 +1314,10 @@ public class Arrest extends StdBehavior implements LegalBehavior
 		// any special circumstances?
 		if(crimeFlags.trim().length()>0)
 		{
-			Vector<String> V=CMParms.parse(crimeFlags.toUpperCase());
+			final Vector<String> V=CMParms.parse(crimeFlags.toUpperCase());
 			for(int v=0;v<V.size();v++)
 			{
-				String str=V.elementAt(v);
+				final String str=V.elementAt(v);
 				if(str.endsWith("WITNESS")&&(str.length()<9))
 				{
 					if(str.startsWith("!"))
@@ -1358,8 +1354,8 @@ public class Arrest extends StdBehavior implements LegalBehavior
 				else
 				if(str.endsWith("RECENTLY")&&(str.length()<10))
 				{
-					LegalWarrant W=laws.getOldWarrant(mob,crime,false);
-					long thisTime=System.currentTimeMillis();
+					final LegalWarrant W=laws.getOldWarrant(mob,crime,false);
+					final long thisTime=System.currentTimeMillis();
 					if((W!=null)&&((thisTime-W.lastOffense())<600000))
 					{
 						if(str.startsWith("!"))
@@ -1390,11 +1386,11 @@ public class Arrest extends StdBehavior implements LegalBehavior
 		if(crimeLocs.trim().length()>0)
 		{
 			boolean aCrime=false;
-			Vector<String> V=CMParms.parse(crimeLocs);
-			String display=mob.location().displayText().toUpperCase().trim();
+			final Vector<String> V=CMParms.parse(crimeLocs);
+			final String display=mob.location().displayText().toUpperCase().trim();
 			for(int v=0;v<V.size();v++)
 			{
-				String str=V.elementAt(v).toUpperCase();
+				final String str=V.elementAt(v).toUpperCase();
 				if(str.endsWith("INDOORS")&&(str.length()<9))
 				{
 					if((mob.location().domainType()&Room.INDOORS)>0)
@@ -1488,12 +1484,12 @@ public class Arrest extends StdBehavior implements LegalBehavior
 		W.setLastOffense(System.currentTimeMillis());
 		W.setWarnMsg(warnMsg);
 		sentence=sentence.trim();
-		Vector sentences=CMParms.parse(sentence);
+		final Vector sentences=CMParms.parse(sentence);
 		W.setPunishment(0);
 		for(int v=0;v<sentences.size();v++)
 		{
 			String s=(String)sentences.elementAt(v);
-			int x=s.indexOf('=');
+			final int x=s.indexOf('=');
 			String parm=null;
 			if(x>0)
 			{
@@ -1566,7 +1562,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 		&&(testMOB.fetchFirstWornItem(Wearable.WORN_ABOUT_BODY)==null)
 		&&(testMOB.getWearPositions(Wearable.WORN_ABOUT_BODY)>0))
 		{
-			String info[]=laws.basicCrimes().get("NUDITY");
+			final String info[]=laws.basicCrimes().get("NUDITY");
 			fillOutWarrant(testMOB,
 							laws,
 						   myArea,
@@ -1591,7 +1587,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 		&&(!CMLib.flags().isHidden(w))
 		&&(!CMLib.flags().isInvisible(w)))
 		{
-			String info[]=laws.basicCrimes().get("ARMED");
+			final String info[]=laws.basicCrimes().get("ARMED");
 			if((testMOB.session()==null)
 			||(((System.currentTimeMillis()-testMOB.session().getLastNPCFight())>30000)
 				&&((System.currentTimeMillis()-testMOB.session().getLastPKFight())>30000)))
@@ -1618,7 +1614,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 						||((!testMOB.amFollowing().isMonster())&&(testMOB.amFollowing().location()==testMOB.location())))
 				&&(!CMLib.masking().maskCheck(laws.getMessage(Law.MSG_PROTECTEDMASK),testMOB,false)))))
 		{
-			String[] info=laws.basicCrimes().get("TRESPASSING");
+			final String[] info=laws.basicCrimes().get("TRESPASSING");
 			fillOutWarrant(testMOB,
 							laws,
 						   myArea,
@@ -1639,8 +1635,8 @@ public class Arrest extends StdBehavior implements LegalBehavior
 		if(!(affecting instanceof Area)) return;
 		if(!theLawIsEnabled()) return;
 
-		Area myArea=(Area)affecting;
-		Law laws=getLaws(affecting,false);
+		final Area myArea=(Area)affecting;
+		final Law laws=getLaws(affecting,false);
 		if(!laws.lawIsActivated()) return;
 		if(msg.source()==null) return;
 
@@ -1649,7 +1645,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 		&&(msg.sourceMessage()!=null)
 		&&(isAnUltimateAuthorityHere(msg.source(),laws)))
 		{
-			int x=msg.sourceMessage().toUpperCase().indexOf("I HEREBY PARDON ");
+			final int x=msg.sourceMessage().toUpperCase().indexOf("I HEREBY PARDON ");
 			if(x>0)
 			{
 				int y=msg.sourceMessage().lastIndexOf('\'');
@@ -1660,11 +1656,11 @@ public class Arrest extends StdBehavior implements LegalBehavior
 				else
 					name=msg.sourceMessage().substring(x+16).trim();
 				if(name.length()>0)
-				for(LegalWarrant W : laws.warrants())
+				for(final LegalWarrant W : laws.warrants())
 				{
 					if((W.criminal()!=null)&&(CMLib.english().containsString(W.criminal().Name(),name)))
 					{
-						Ability A=W.criminal().fetchEffect("Prisoner");
+						final Ability A=W.criminal().fetchEffect("Prisoner");
 						if(A!=null) A.unInvoke();
 						if(W.jail()!=W.criminal().location())
 						{
@@ -1688,8 +1684,8 @@ public class Arrest extends StdBehavior implements LegalBehavior
 		&&(laws.basicCrimes().containsKey("MURDER"))
 		&&((!msg.source().isMonster())||(!isTroubleMaker(msg.source()))))
 		{
-			MOB criminal=(MOB)msg.tool();
-			for(LegalWarrant W : laws.warrants())
+			final MOB criminal=(MOB)msg.tool();
+			for(final LegalWarrant W : laws.warrants())
 			{
 				if((W.victim()!=null)
 				&&(W.criminal()!=null)
@@ -1698,7 +1694,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 				&&(W.criminal()==criminal))
 					laws.warrants().remove(W);
 			}
-			String[] bits=laws.basicCrimes().get("MURDER");
+			final String[] bits=laws.basicCrimes().get("MURDER");
 			fillOutWarrant(criminal,
 						   laws,
 						   myArea,
@@ -1716,7 +1712,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 			if((msg.sourceMinor()==CMMsg.TYP_ENTER)
 			&&(msg.target() instanceof Room))
 			{
-				Room R=(Room)msg.target();
+				final Room R=(Room)msg.target();
 				MOB M=null;
 				for(int m=0;m<R.numInhabitants();m++)
 				{
@@ -1737,7 +1733,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 		if(!CMLib.flags().aliveAwakeMobile(msg.source(),true))
 			return;
 
-		Room R=msg.source().location();
+		final Room R=msg.source().location();
 		if(R==null) return;
 
 		if((msg.tool()!=null)
@@ -1799,7 +1795,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 				if(!msg.source().isMonster())
 				for(int i=0;i<R.numInhabitants();i++)
 				{
-					MOB M=R.fetchInhabitant(i);
+					final MOB M=R.fetchInhabitant(i);
 					if((M!=null)
 					&&(M!=msg.target())
 					&&(M!=msg.source())
@@ -1817,11 +1813,11 @@ public class Arrest extends StdBehavior implements LegalBehavior
 			{
 				boolean justResisting=false;
 				boolean turnAbout=false;
-				boolean targetIsOfficer=isAnyKindOfOfficer(laws,(MOB)msg.target());
-				String[] assaultInfo=laws.basicCrimes().get("ASSAULT");
-				String[] murderInfo=laws.basicCrimes().get("MURDER");
+				final boolean targetIsOfficer=isAnyKindOfOfficer(laws,(MOB)msg.target());
+				final String[] assaultInfo=laws.basicCrimes().get("ASSAULT");
+				final String[] murderInfo=laws.basicCrimes().get("MURDER");
 				if((assaultInfo!=null)&&(murderInfo!=null))
-				for(LegalWarrant W : laws.warrants())
+				for(final LegalWarrant W : laws.warrants())
 					if(targetIsOfficer
 					&&(W.criminal()==msg.source())
 					&&(W.arrestingOfficer()!=null)
@@ -1846,7 +1842,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 				{
 					if(laws.basicCrimes().containsKey("RESISTINGARREST"))
 					{
-						String[] info=laws.basicCrimes().get("RESISTINGARREST");
+						final String[] info=laws.basicCrimes().get("RESISTINGARREST");
 						fillOutWarrant(msg.source(),
 										laws,
 										myArea,
@@ -1881,16 +1877,16 @@ public class Arrest extends StdBehavior implements LegalBehavior
 			&&(msg.target() instanceof Item)
 			&&(laws.bannedSubstances().size()>0))
 			{
-				String rsc=RawMaterial.CODES.NAME(((Item)msg.target()).material()).toUpperCase();
+				final String rsc=RawMaterial.CODES.NAME(((Item)msg.target()).material()).toUpperCase();
 				for(int i=0;i<laws.bannedSubstances().size();i++)
 				{
-					List<String> V=laws.bannedSubstances().get(i);
+					final List<String> V=laws.bannedSubstances().get(i);
 					for(int v=0;v<V.size();v++)
 					{
 						if((CMLib.english().containsString(msg.target().name(),V.get(v)))
 						||rsc.equalsIgnoreCase(V.get(v)))
 						{
-							String[] info=laws.bannedBits().get(i);
+							final String[] info=laws.bannedBits().get(i);
 							fillOutWarrant(msg.source(),
 											laws,
 											myArea,
@@ -1910,12 +1906,12 @@ public class Arrest extends StdBehavior implements LegalBehavior
 
 			for(int i=0;i<laws.otherCrimes().size();i++)
 			{
-				List<String> V=laws.otherCrimes().get(i);
+				final List<String> V=laws.otherCrimes().get(i);
 				for(int v=0;v<V.size();v++)
 				{
 					if(CMLib.english().containsString(msg.othersMessage(),V.get(v)))
 					{
-						String[] info=laws.otherBits().get(i);
+						final String[] info=laws.otherBits().get(i);
 						fillOutWarrant(msg.source(),
 										laws,
 										myArea,
@@ -1935,9 +1931,9 @@ public class Arrest extends StdBehavior implements LegalBehavior
 	{
 		if((mob.isMonster())&&(!CMLib.flags().isSitting(mob))&&(mob.amFollowing()==null)&&(!mob.isInCombat()))
 		{
-			boolean good=CMLib.flags().isGood(mob);
-			boolean evil=CMLib.flags().isEvil(mob);
-			boolean neutral=(!good)&&(!evil);
+			final boolean good=CMLib.flags().isGood(mob);
+			final boolean evil=CMLib.flags().isEvil(mob);
+			final boolean neutral=(!good)&&(!evil);
 			if(evil
 			||(neutral&&(CMLib.dice().rollPercentage()>50))
 			||(CMLib.flags().flaggedBehaviors(mob,Behavior.FLAG_POTENTIALLYAGGRESSIVE).size()>0))
@@ -1971,23 +1967,23 @@ public class Arrest extends StdBehavior implements LegalBehavior
 
 		if(!(ticking instanceof Area)) return true;
 		if(tickID!=Tickable.TICKID_AREA) return true;
-		Area myArea=(Area)ticking;
+		final Area myArea=(Area)ticking;
 
 		if(!theLawIsEnabled())return true;
 
-		Law laws=getLaws(myArea,false);
+		final Law laws=getLaws(myArea,false);
 		if(!laws.lawIsActivated())
 		{
 			laws.warrants().clear();
 			laws.oldWarrants().clear();
 			return true;
 		}
-		boolean debugging=CMSecurity.isDebugging(CMSecurity.DbgFlag.ARREST);
+		final boolean debugging=CMSecurity.isDebugging(CMSecurity.DbgFlag.ARREST);
 
 		laws.propertyTaxTick(myArea,debugging);
 
-		HashSet handled=new HashSet();
-		for(LegalWarrant W : laws.warrants())
+		final HashSet handled=new HashSet();
+		for(final LegalWarrant W : laws.warrants())
 		{
 			if((W.criminal()==null)||(W.criminal().location()==null))
 			{
@@ -2044,7 +2040,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 		{
 			if(laws.basicCrimes().containsKey("RESISTINGARREST"))
 			{
-				String[] info=laws.basicCrimes().get("RESISTINGARREST");
+				final String[] info=laws.basicCrimes().get("RESISTINGARREST");
 				fillOutWarrant(W.criminal(),
 								laws,
 								myArea,
@@ -2118,7 +2114,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 						if(!CMLib.flags().isAnimalIntelligence(W.criminal()))
 						{
 							W.setArrestingOfficer(myArea,officer);
-							LegalWarrant copKillerW=laws.getCopkiller(myArea,this,W.criminal());
+							final LegalWarrant copKillerW=laws.getCopkiller(myArea,this,W.criminal());
 							if(copKillerW!=null)
 							{
 								CMLib.commands().postSay(W.arrestingOfficer(),W.criminal(),laws.getMessage(Law.MSG_COPKILLER),false,false);
@@ -2127,7 +2123,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 								processWarrant(myArea, laws, W, debugging);
 								return;
 							}
-							LegalWarrant lawResistW=laws.getLawResister(myArea,this,W.criminal());
+							final LegalWarrant lawResistW=laws.getLawResister(myArea,this,W.criminal());
 							if(lawResistW!=null)
 							{
 								CMLib.commands().postSay(W.arrestingOfficer(),W.criminal(),laws.getMessage(Law.MSG_RESISTFIGHT),false,false);
@@ -2237,7 +2233,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 						Ability A=CMClass.getAbility("Skill_ArrestingSap");
 						if(A!=null)
 						{
-							int curPoints=(int)Math.round(CMath.div(W.criminal().curState().getHitPoints(),W.criminal().maxState().getHitPoints())*100.0);
+							final int curPoints=(int)Math.round(CMath.div(W.criminal().curState().getHitPoints(),W.criminal().maxState().getHitPoints())*100.0);
 							A.setProficiency(100);
 							A.setAbilityCode(10);
 							if(!A.invoke(officer,W.criminal(),(curPoints<=25),0))
@@ -2253,7 +2249,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 							}
 						}
 					}
-					Ability cuff=W.criminal().fetchEffect("Skill_HandCuff");
+					final Ability cuff=W.criminal().fetchEffect("Skill_HandCuff");
 					if((CMLib.flags().isSitting(W.criminal())||(cuff!=null)||(CMLib.flags().isSleeping(W.criminal())))
 					&&(!W.criminal().amDead())
 					&&(CMLib.flags().isInTheGame(W.criminal(),true)))
@@ -2373,7 +2369,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 				&&(!W.crime().equalsIgnoreCase("pardoned"))
 				&&(CMLib.flags().aliveAwakeMobile(officer,true)))
 				{
-					MOB judge=getTheJudgeHere(laws,officer.location());
+					final MOB judge=getTheJudgeHere(laws,officer.location());
 					if(judge==null)
 					{
 						W.setState(Law.STATE_MOVING);
@@ -2396,10 +2392,10 @@ public class Arrest extends StdBehavior implements LegalBehavior
 						if(Character.toString((char)judge.charStats().getStat(CharStats.STAT_GENDER)).equalsIgnoreCase("F"))
 							sirmaam="Ma'am";
 						CMLib.commands().postSay(officer,judge,sirmaam+", "+W.criminal().name()+" has been arrested "+restOfCharges(laws,W.criminal())+".",false,false);
-						Vector warrants=getRelevantWarrants(laws.warrants(),W,W.criminal());
+						final Vector warrants=getRelevantWarrants(laws.warrants(),W,W.criminal());
 						for(int w2=0;w2<warrants.size();w2++)
 						{
-							LegalWarrant W2=(LegalWarrant)warrants.elementAt(w2);
+							final LegalWarrant W2=(LegalWarrant)warrants.elementAt(w2);
 							if(W2.witness()!=null)
 								CMLib.commands().postSay(officer,judge,"The charge of "+fixCharge(W2)+" was witnessed by "+W2.witness().name()+".",false,false);
 						}
@@ -2407,7 +2403,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 						if((highestCrimeAction(laws,W,W.criminal())==Law.PUNISHMENT_EXECUTE)
 						&&(judge.location()!=null))
 						{
-							List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.EXECUTIONS);
+							final List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.EXECUTIONS);
 							for(int i=0;i<channels.size();i++)
 								CMLib.commands().postChannel(judge,channels.get(i),W.criminal().Name()+" is being executed at "+judge.location().displayText(judge)+" for "+W.criminal().charStats().hisher()+" crimes.",true);
 						}
@@ -2445,7 +2441,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 				&&(!W.crime().equalsIgnoreCase("pardoned"))
 				&&(CMLib.flags().aliveAwakeMobile(officer,true)))
 				{
-					MOB judge=getTheJudgeHere(laws,officer.location());
+					final MOB judge=getTheJudgeHere(laws,officer.location());
 					if(judge==null)
 					{
 						W.setState(Law.STATE_MOVING);
@@ -2507,14 +2503,14 @@ public class Arrest extends StdBehavior implements LegalBehavior
 				&&(!W.crime().equalsIgnoreCase("pardoned"))
 				&&(CMLib.flags().canBeSeenBy(W.criminal(),officer)))
 				{
-					MOB judge=getTheJudgeHere(laws,officer.location());
+					final MOB judge=getTheJudgeHere(laws,officer.location());
 					fileAllWarrants(laws,W,W.criminal());
 					unCuff(W.criminal());
 					if((judge!=null)
 					&&(CMLib.flags().aliveAwakeMobile(judge,true)))
 					{
 						judge.location().show(judge,W.criminal(),CMMsg.MSG_OK_VISUAL,"<S-NAME> put(s) <T-NAME> on parole!");
-						Ability A=CMClass.getAbility("Prisoner");
+						final Ability A=CMClass.getAbility("Prisoner");
 						A.startTickDown(judge,W.criminal(),W.jailTime());
 						W.criminal().recoverPhyStats();
 						W.criminal().recoverCharStats();
@@ -2558,7 +2554,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 				&&(!W.crime().equalsIgnoreCase("pardoned"))
 				&&(CMLib.flags().canBeSeenBy(W.criminal(),officer)))
 				{
-					Room jail=findTheJail(W.criminal(),myArea,laws);
+					final Room jail=findTheJail(W.criminal(),myArea,laws);
 					if(jail!=null)
 					{
 
@@ -2629,8 +2625,8 @@ public class Arrest extends StdBehavior implements LegalBehavior
 				&&(!W.crime().equalsIgnoreCase("pardoned"))
 				&&(CMLib.flags().canBeSeenBy(W.criminal(),officer)))
 				{
-					Room jail=findTheDetentionCenter(W.criminal(),myArea,laws,W);
-					int time=getDetainTime(laws,W,W.criminal());
+					final Room jail=findTheDetentionCenter(W.criminal(),myArea,laws,W);
+					final int time=getDetainTime(laws,W,W.criminal());
 					if((jail!=null)&&(time>=0))
 					{
 						Ability A=W.criminal().fetchEffect("Prisoner");
@@ -2706,16 +2702,16 @@ public class Arrest extends StdBehavior implements LegalBehavior
 				&&(CMLib.flags().canBeSeenBy(W.criminal(),officer))
 				&&(canFocusOn(officer,W.criminal())))
 				{
-					MOB judge=getTheJudgeHere(laws,officer.location());
+					final MOB judge=getTheJudgeHere(laws,officer.location());
 					if((judge!=null)
 					&&(CMLib.flags().aliveAwakeMobile(judge,true))
 					&&(judge.location()==W.criminal().location()))
 					{
 						dismissOfficer(officer);
 						CMLib.commands().postFollow(W.criminal(), null, true);
-						for(Enumeration<MOB.Follower> f=W.criminal().followers();f.hasMoreElements();)
+						for(final Enumeration<MOB.Follower> f=W.criminal().followers();f.hasMoreElements();)
 						{
-							MOB.Follower F=f.nextElement();
+							final MOB.Follower F=f.nextElement();
 							CMLib.commands().postFollow(F.follower, null, true);
 						}
 						Ability A=CMClass.getAbility("Prisoner");
@@ -2782,7 +2778,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 					if(W.jail()==W.criminal().location())
 					{
 						unCuff(W.criminal());
-						Ability A=CMClass.getAbility("Prisoner");
+						final Ability A=CMClass.getAbility("Prisoner");
 						if(A!=null)A.startTickDown(officer,W.criminal(),W.jailTime()+5);
 						W.criminal().recoverPhyStats();
 						W.criminal().recoverCharStats();
@@ -2798,7 +2794,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 					else
 					if(!CMLib.flags().isTracking(officer))
 					{
-						Ability A=CMClass.getAbility("Skill_Track");
+						final Ability A=CMClass.getAbility("Skill_Track");
 						if(A!=null)
 						{
 							CMLib.tracking().stopTracking(officer);
@@ -2849,7 +2845,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 					if(W.jail()==W.criminal().location())
 					{
 						unCuff(W.criminal());
-						Ability A=CMClass.getAbility("Prisoner");
+						final Ability A=CMClass.getAbility("Prisoner");
 						if(A!=null)A.startTickDown(officer,W.criminal(),W.jailTime()+5);
 						W.criminal().recoverPhyStats();
 						W.criminal().recoverCharStats();
@@ -2865,7 +2861,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 					else
 					if(CMLib.flags().flaggedAffects(officer,Ability.FLAG_TRACKING).size()==0)
 					{
-						Ability A=CMClass.getAbility("Skill_Track");
+						final Ability A=CMClass.getAbility("Skill_Track");
 						if(A!=null)
 						{
 							CMLib.tracking().stopTracking(officer);
@@ -2903,7 +2899,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 				if(((W.criminal().fetchEffect("Prisoner")==null)||(W.crime().equalsIgnoreCase("pardoned")))
 				&&(W.jail()!=null))
 				{
-					Ability P=W.criminal().fetchEffect("Prisoner");
+					final Ability P=W.criminal().fetchEffect("Prisoner");
 					if(P!=null) P.unInvoke();
 					if(CMath.bset(highestCrimeAction(laws,W,W.criminal()),Law.PUNISHMENTMASK_NORELEASE))
 					{
@@ -2934,7 +2930,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 							}
 							else
 								W.jail().show(officer,W.criminal(),CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> arrive(s) to release <T-NAME>.");
-							Ability A=CMClass.getAbility("Skill_HandCuff");
+							final Ability A=CMClass.getAbility("Skill_HandCuff");
 							if((A!=null)&&(!CMLib.flags().isBoundOrHeld(W.criminal())))
 								A.invoke(officer,W.criminal(),true,0);
 						}
@@ -2942,7 +2938,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 						W.criminal().makePeace();
 						makePeace(officer.location());
 						CMLib.tracking().stopTracking(officer);
-						Ability A=CMClass.getAbility("Skill_Track");
+						final Ability A=CMClass.getAbility("Skill_Track");
 						if(A!=null)
 						{
 							W.setTravelAttemptTime(System.currentTimeMillis());
@@ -2990,7 +2986,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 								if(W.arrestingOfficer().fetchEffect("Skill_Track")==null)
 								{
 									CMLib.tracking().stopTracking(officer);
-									Ability A=CMClass.getAbility("Skill_Track");
+									final Ability A=CMClass.getAbility("Skill_Track");
 									if(A!=null)    A.invoke(officer,CMParms.parse(CMLib.map().getExtendedRoomID(W.releaseRoom())),W.releaseRoom(),true,0);
 									if(W.arrestingOfficer().fetchEffect("Skill_Track")==null)
 									{

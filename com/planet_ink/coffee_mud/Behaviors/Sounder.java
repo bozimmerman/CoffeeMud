@@ -69,7 +69,7 @@ public class Sounder extends StdBehavior
 	public void setParms(String newParms)
 	{
 		super.setParms(newParms);
-		List<String> emote=CMParms.parseSemicolons(newParms,true);
+		final List<String> emote=CMParms.parseSemicolons(newParms,true);
 		triggers=new int[emote.size()];
 		strings=new String[emote.size()];
 
@@ -94,9 +94,9 @@ public class Sounder extends StdBehavior
 				if(s.toUpperCase().startsWith("SOUND "))
 				{
 					s=s.substring(6).trim();
-					int x=s.indexOf(' ');
+					final int x=s.indexOf(' ');
 					if(x<0) continue;
-					String y=s.substring(0,x);
+					final String y=s.substring(0,x);
 					if(!CMath.isNumber(y)) continue;
 					triggers[v]=TICK_MASK+CMath.s_int(y);
 					s="^E"+s.substring(x+1).trim()+"^?";
@@ -326,14 +326,14 @@ public class Sounder extends StdBehavior
 	protected void emoteHere(Room room, MOB emoter, String emote)
 	{
 		if(room==null) return;
-		Room oldLoc=emoter.location();
+		final Room oldLoc=emoter.location();
 		if(emoter.location()!=room) emoter.setLocation(room);
-		CMMsg msg=CMClass.getMsg(emoter,null,CMMsg.MSG_EMOTE,emote);
+		final CMMsg msg=CMClass.getMsg(emoter,null,CMMsg.MSG_EMOTE,emote);
 		if(room.okMessage(emoter,msg))
 		{
 			for(int i=0;i<room.numInhabitants();i++)
 			{
-				MOB M=room.fetchInhabitant(i);
+				final MOB M=room.fetchInhabitant(i);
 				if((M!=null)
 				&&(!M.isMonster())
 				&&(CMLib.flags().canSenseMoving(emoter,M)))
@@ -354,9 +354,9 @@ public class Sounder extends StdBehavior
 			emoter=CMClass.getMOB("StdMOB");
 			emoter.setName(ticking.name());
 			emoter.charStats().setStat(CharStats.STAT_GENDER,'N');
-			for(Enumeration r=((Area)ticking).getMetroMap();r.hasMoreElements();)
+			for(final Enumeration r=((Area)ticking).getMetroMap();r.hasMoreElements();)
 			{
-				Room R=(Room)r.nextElement();
+				final Room R=(Room)r.nextElement();
 				emoteHere(R,emoter,emote);
 			}
 			emoter.destroy();
@@ -382,7 +382,7 @@ public class Sounder extends StdBehavior
 		{
 			if((ticking instanceof Item)&&(!CMLib.flags().isInTheGame((Item)ticking,false)))
 				return;
-			Room R=getBehaversRoom(ticking);
+			final Room R=getBehaversRoom(ticking);
 			if(R!=null)
 			{
 				emoter=CMClass.getMOB("StdMOB");
@@ -476,7 +476,7 @@ public class Sounder extends StdBehavior
 			break;
 		}
 		lastMsg=msg;
-		Room room=msg.source().location();
+		final Room room=msg.source().location();
 		if((lookFor>=0)
 		&&(room!=null)
 		&&((!(E instanceof MOB))||(lookFor==CMMsg.TYP_WEAPONATTACK)
@@ -488,12 +488,12 @@ public class Sounder extends StdBehavior
 			{
 				if(CMath.bset(triggers[v],ROOM_MASK))
 				{
-					CMMsg msg2=CMClass.getMsg(msg.source(),null,null,CMMsg.NO_EFFECT,CMMsg.NO_EFFECT,CMMsg.MSG_EMOTE,CMStrings.replaceAll(strings[v],"$p",E.name()));
+					final CMMsg msg2=CMClass.getMsg(msg.source(),null,null,CMMsg.NO_EFFECT,CMMsg.NO_EFFECT,CMMsg.MSG_EMOTE,CMStrings.replaceAll(strings[v],"$p",E.name()));
 					msg.addTrailerMsg(msg2);
 				}
 				else
 				{
-					CMMsg msg2=CMClass.getMsg(msg.source(),null,null,CMMsg.MSG_EMOTE,CMMsg.NO_EFFECT,CMMsg.NO_EFFECT,CMStrings.replaceAll(strings[v],"$p",E.name()));
+					final CMMsg msg2=CMClass.getMsg(msg.source(),null,null,CMMsg.MSG_EMOTE,CMMsg.NO_EFFECT,CMMsg.NO_EFFECT,CMStrings.replaceAll(strings[v],"$p",E.name()));
 					msg.addTrailerMsg(msg2);
 				}
 			}

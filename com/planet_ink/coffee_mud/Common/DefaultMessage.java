@@ -13,6 +13,7 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /*
@@ -34,7 +35,7 @@ public class DefaultMessage implements CMMsg
 {
 	@Override public String ID(){return "DefaultMessage";}
 	@Override public String name() { return ID();}
-	@Override public CMObject newInstance(){try{return getClass().newInstance();}catch(Exception e){return new DefaultMessage();}}
+	@Override public CMObject newInstance(){try{return getClass().newInstance();}catch(final Exception e){return new DefaultMessage();}}
 	@Override public void initializeClass(){}
 	@Override public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 
@@ -61,7 +62,7 @@ public class DefaultMessage implements CMMsg
 		{
 			return (DefaultMessage)this.clone();
 		}
-		catch(CloneNotSupportedException e)
+		catch(final CloneNotSupportedException e)
 		{
 			return newInstance();
 		}
@@ -328,13 +329,13 @@ public class DefaultMessage implements CMMsg
 				if(MASK_DESCS[i].startsWith(code2))
 				{ I=Integer.valueOf((int)CMath.pow(2,11+i)); break;}
 			if(I==null)
-			for(int i=0;i<MISC_DESCS.length;i++)
-				if(code2.startsWith((String)MISC_DESCS[i][0]))
-				{ I=(Integer)MISC_DESCS[i][1]; break;}
+				for (final Object[] element : MISC_DESCS)
+					if(code2.startsWith((String)element[0]))
+					{ I=(Integer)element[1]; break;}
 			if(I==null)
-			for(int i=0;i<MISC_DESCS.length;i++)
-				if(((String)MISC_DESCS[i][0]).startsWith(code2))
-				{ I=(Integer)MISC_DESCS[i][1]; break;}
+				for (final Object[] element : MISC_DESCS)
+					if(((String)element[0]).startsWith(code2))
+					{ I=(Integer)element[1]; break;}
 			if(I==null) return false;
 		}
 		return matches(major, minor, I.intValue());
@@ -345,7 +346,7 @@ public class DefaultMessage implements CMMsg
 	{
 		if(o instanceof CMMsg)
 		{
-			CMMsg m=(CMMsg)o;
+			final CMMsg m=(CMMsg)o;
 			return (m.sourceCode()==sourceCode())
 					&&(m.targetCode()==targetCode())
 					&&(m.othersCode()==othersCode())

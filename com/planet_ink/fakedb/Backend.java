@@ -70,7 +70,7 @@ public class Backend
    {
 	   basePath=null;
 	   if(fakeTables!=null)
-		   for(FakeTable R : fakeTables.values())
+		   for(final FakeTable R : fakeTables.values())
 			   R.close();
 	   fakeTables=new HashMap<String,FakeTable>();
    }
@@ -117,8 +117,8 @@ public class Backend
 				   chk=false;
 			   else
 			   {
-				   String s=((String)subKey.getValue()).toLowerCase();
-				   int x=lowStr.indexOf('%');
+				   final String s=((String)subKey.getValue()).toLowerCase();
+				   final int x=lowStr.indexOf('%');
 				   if((x<0)||(lowStr.length()==1))
 					   chk=lowStr.equals(s);
 				   else
@@ -137,7 +137,7 @@ public class Backend
 			   }
 			   return not?!chk:chk;
 		   }
-		   int sc=(lt||gt)?subKey.compareTo(conditionValue):0;
+		   final int sc=(lt||gt)?subKey.compareTo(conditionValue):0;
 		   if(!(((eq)&&(subKey.equals(conditionValue)))
 		   ||((lt)&&(sc<0))
 		   ||((gt)&&(sc>0))))
@@ -230,7 +230,7 @@ public class Backend
 			}
 		}
 		if(conditions.size()==0) return;
-		FakeConditionResponder responder = new FakeConditionResponder()
+		final FakeConditionResponder responder = new FakeConditionResponder()
 		{
 			@Override
 			public void callBack(ComparableValue[] values, RecordInfo info) throws Exception
@@ -242,7 +242,7 @@ public class Backend
 		{
 			fakeTable.recordIterator(conditions,responder);
 		}
-		catch(Exception e)
+		catch(final Exception e)
 		{
 			throw new java.sql.SQLException(e.getMessage());
 		}
@@ -250,8 +250,8 @@ public class Backend
 
 	protected static class IndexedRowMapComparator implements Comparator
 	{
-		private int index;
-		private boolean descending;
+		private final int index;
+		private final boolean descending;
 		public IndexedRowMapComparator(int index, boolean descending)
 		{
 			this.index=index;
@@ -260,8 +260,8 @@ public class Backend
 		@Override
 		public int compare(Object arg0, Object arg1)
 		{
-			RecordInfo inf0=(RecordInfo)arg0;
-			RecordInfo inf1=(RecordInfo)arg1;
+			final RecordInfo inf0=(RecordInfo)arg0;
+			final RecordInfo inf1=(RecordInfo)arg1;
 			if(descending)
 				return inf1.indexedData[index].compareTo(inf0.indexedData[index]);
 			else
@@ -276,7 +276,7 @@ public class Backend
 	*/
    protected static class IndexedRowMap
    {
-	   private Vector<RecordInfo> unsortedRecords=new Vector<RecordInfo>();
+	   private final Vector<RecordInfo> unsortedRecords=new Vector<RecordInfo>();
 	   private List<RecordInfo>[] forwardSorted=null;
 	   private List<RecordInfo>[] reverseSorted=null;
 	   private IndexedRowMapComparator[] forwardComparators=null;
@@ -318,7 +318,7 @@ public class Backend
 			   iter = Arrays.asList(unsortedRecords.toArray()).iterator();
 		   else
 		   {
-			   List<RecordInfo>[] whichList=descending?reverseSorted:forwardSorted;
+			   final List<RecordInfo>[] whichList=descending?reverseSorted:forwardSorted;
 			   if((whichList == null)||(sortIndex<0)||(sortIndex>=whichList.length))
 				   iter=empty.iterator();
 			   else
@@ -328,8 +328,8 @@ public class Backend
 					   iter=whichList[sortIndex].iterator();
 				   else
 				   {
-					   IndexedRowMapComparator comparator=descending?reverseComparators[sortIndex]:forwardComparators[sortIndex];
-					   List<RecordInfo> newList = (List<RecordInfo>)unsortedRecords.clone();
+					   final IndexedRowMapComparator comparator=descending?reverseComparators[sortIndex]:forwardComparators[sortIndex];
+					   final List<RecordInfo> newList = (List<RecordInfo>)unsortedRecords.clone();
 					   Collections.sort(newList,comparator);
 					   whichList[sortIndex]=newList;
 					   iter=newList.iterator();
@@ -346,7 +346,7 @@ public class Backend
    protected static class FakeTable
    {
 	  private File  			  fileName;
-	  private String			  name;
+	  private final String			  name;
 	  private RandomAccessFile    file;
 	  private int   			  fileSize;
 	  private byte[]			  fileBuffer;
@@ -385,8 +385,8 @@ public class Backend
 	  {
 		 if((orderByIndexDex==null)||(orderByIndexDex.length==0))
 			 return rowRecords.iterator(-1,false);
-		 boolean descending = (orderByConditions!=null) && "DESC".equals(orderByConditions[0]);
-		 FakeColumn col = columns[orderByIndexDex[0]];
+		 final boolean descending = (orderByConditions!=null) && "DESC".equals(orderByConditions[0]);
+		 final FakeColumn col = columns[orderByIndexDex[0]];
 		 return rowRecords.iterator(col.indexNumber, descending);
 	  }
 
@@ -427,7 +427,7 @@ public class Backend
 			 {
 				 file.close();
 			 }
-			 catch(Exception e)
+			 catch(final Exception e)
 			 {
 			 }
 			 file=null;
@@ -492,11 +492,11 @@ public class Backend
 			   }
 			   if (ofs+remaining==fileBuffer.length)
 			   {
-				  byte[] newFileBuffer=new byte[fileBuffer.length*2];
+				  final byte[] newFileBuffer=new byte[fileBuffer.length*2];
 				  System.arraycopy(fileBuffer,0,newFileBuffer,0,remaining);
 				  fileBuffer=newFileBuffer;
 			   }
-			   int additional=file.read(fileBuffer,remaining,fileBuffer.length-remaining);
+			   final int additional=file.read(fileBuffer,remaining,fileBuffer.length-remaining);
 			   if (additional<0)
 			   {
 				   valid=false;
@@ -510,8 +510,8 @@ public class Backend
 			{
 			   int current=-1;
 			   FakeColumn col = null;
-			   int[] sub=new int[]{ofs};
-			   ComparableValue[] indexData = new ComparableValue[columnIndexesOfIndexed.length];
+			   final int[] sub=new int[]{ofs};
+			   final ComparableValue[] indexData = new ComparableValue[columnIndexesOfIndexed.length];
 			   for (int index=0;index<columnIndexesOfIndexed.length;index++)
 			   {
 				  while (current<columnIndexesOfIndexed[index])
@@ -523,7 +523,7 @@ public class Backend
 				  col=columns[columnIndexesOfIndexed[index]];
 				  indexData[index]=getNextLine(col.type,fileBuffer,sub);
 			   }
-			   RecordInfo info = new RecordInfo(fileSize,size);
+			   final RecordInfo info = new RecordInfo(fileSize,size);
 			   info.indexedData=indexData;
 			   rowRecords.add(info);
 			}
@@ -545,13 +545,13 @@ public class Backend
 	   */
 	  private void vacuum() throws IOException
 	  {
-		 File tempFileName=new File(fileName.getName()+".tmp");
-		 File tempFileName2=new File(fileName.getName()+".cpy");
-		 RandomAccessFile tempOut=new RandomAccessFile(tempFileName,"rw");
+		 final File tempFileName=new File(fileName.getName()+".tmp");
+		 final File tempFileName2=new File(fileName.getName()+".cpy");
+		 final RandomAccessFile tempOut=new RandomAccessFile(tempFileName,"rw");
 		 int newFileSize=0;
-		 for (Iterator<RecordInfo> iter=rowRecords.iterator(-1,false);iter.hasNext();)
+		 for (final Iterator<RecordInfo> iter=rowRecords.iterator(-1,false);iter.hasNext();)
 		 {
-			RecordInfo info=iter.next();
+			final RecordInfo info=iter.next();
 			file.seek(info.offset);
 			file.readFully(fileBuffer,0,info.size);
 			tempOut.write(fileBuffer,0,info.size);
@@ -580,7 +580,7 @@ public class Backend
 		 {
 			file.seek(info.offset);
 			file.readFully(fileBuffer,0,info.size);
-			int[] ofs=new int[]{0};
+			final int[] ofs=new int[]{0};
 			FakeColumn col=null;
 			for (int index=0;index<columns.length;index++)
 			{
@@ -592,7 +592,7 @@ public class Backend
 			}
 			return true;
 		 }
-		 catch (IOException e)
+		 catch (final IOException e)
 		 {
 			 return false;
 		 }
@@ -611,7 +611,7 @@ public class Backend
 			 return new ComparableValue(null);
 		  else
 		  {
-			 StringBuilder buffer=new StringBuilder("");
+			 final StringBuilder buffer=new StringBuilder("");
 			 for (;;dex[0]++)
 			 {
 				char c=(char)(fileBuffer[dex[0]]&0xFF);
@@ -662,8 +662,8 @@ public class Backend
 	   */
 	  private void increaseBuffer(int required)
 	  {
-		 int newSize=((required+4095)>>>12)<<12;
-		 byte[] newBuffer=new byte[newSize];
+		 final int newSize=((required+4095)>>>12)<<12;
+		 final byte[] newBuffer=new byte[newSize];
 		 System.arraycopy(fileBuffer,0,newBuffer,0,fileBuffer.length);
 		 fileBuffer=newBuffer;
 	  }
@@ -681,64 +681,64 @@ public class Backend
 		 {
 			int ofs=2;
 			fileBuffer[0]=(byte)'-'; fileBuffer[1]=(byte)0x0A;
-			for (int index=0;index<values.length;index++)
-			   if ((values[index]==null)||(values[index].getValue()==null))
-			   {
-				  if (ofs+3>fileBuffer.length) increaseBuffer(ofs+3);
-				  fileBuffer[ofs+0]=(byte)'\\'; fileBuffer[ofs+1]=(byte)'?'; fileBuffer[ofs+2]=(byte)0x0A;
-				  ofs+=3;
-			   }
-			   else
-			   {
-				  int size=0;
-				  String s = values[index].getValue().toString();
-				  for (int sub=0;sub<s.length();sub++)
-				  {
-					 char c=s.charAt(sub);
-					 if (c=='\\')
-						 size+=2;
-					 else
-					 if (c=='\n')
-						 size+=2;
-					 else
-					 if (c>255)
-						 size+=5;
-					 else
-						 size++;
-				  }
-				  if (ofs+size+1>fileBuffer.length)
-					  increaseBuffer(ofs+size+1);
-				  for (int sub=0;sub<s.length();sub++)
-				  {
-					 char c=s.charAt(sub);
-					 if (c=='\\')
-					 {
-						fileBuffer[ofs]=(byte)'\\';
-						fileBuffer[ofs+1]=(byte)'\\';
-						ofs+=2;
-					 }
-					 else
-					 if (c=='\n')
-					 {
-						fileBuffer[ofs]=(byte)'\\';
-						fileBuffer[ofs+1]=(byte)'n';
-						ofs+=2;
-					 }
-					 else
-					 if (c>255)
-					 {
-						fileBuffer[ofs++]=(byte)'\\';
-						for (int i=0;i<4;i++)
-						{
-						   fileBuffer[ofs++]=(byte)("0123456789ABCDEF".charAt(c>>>12));
-						   c<<=4;
-						}
-					 }
-					 else
-						 fileBuffer[ofs++]=(byte)c;
-				  }
-				  fileBuffer[ofs++]=(byte)0x0A;
-			   }
+			for (final ComparableValue value : values)
+				if ((value==null)||(value.getValue()==null))
+				   {
+					  if (ofs+3>fileBuffer.length) increaseBuffer(ofs+3);
+					  fileBuffer[ofs+0]=(byte)'\\'; fileBuffer[ofs+1]=(byte)'?'; fileBuffer[ofs+2]=(byte)0x0A;
+					  ofs+=3;
+				   }
+				   else
+				   {
+					  int size=0;
+					  final String s = value.getValue().toString();
+					  for (int sub=0;sub<s.length();sub++)
+					  {
+						 final char c=s.charAt(sub);
+						 if (c=='\\')
+							 size+=2;
+						 else
+						 if (c=='\n')
+							 size+=2;
+						 else
+						 if (c>255)
+							 size+=5;
+						 else
+							 size++;
+					  }
+					  if (ofs+size+1>fileBuffer.length)
+						  increaseBuffer(ofs+size+1);
+					  for (int sub=0;sub<s.length();sub++)
+					  {
+						 char c=s.charAt(sub);
+						 if (c=='\\')
+						 {
+							fileBuffer[ofs]=(byte)'\\';
+							fileBuffer[ofs+1]=(byte)'\\';
+							ofs+=2;
+						 }
+						 else
+						 if (c=='\n')
+						 {
+							fileBuffer[ofs]=(byte)'\\';
+							fileBuffer[ofs+1]=(byte)'n';
+							ofs+=2;
+						 }
+						 else
+						 if (c>255)
+						 {
+							fileBuffer[ofs++]=(byte)'\\';
+							for (int i=0;i<4;i++)
+							{
+							   fileBuffer[ofs++]=(byte)("0123456789ABCDEF".charAt(c>>>12));
+							   c<<=4;
+							}
+						 }
+						 else
+							 fileBuffer[ofs++]=(byte)c;
+					  }
+					  fileBuffer[ofs++]=(byte)0x0A;
+				   }
 			int recordPos=fileSize;
 			if((prevRecord!=null)
 			&&(prevRecord.size==ofs))
@@ -748,12 +748,12 @@ public class Backend
 			file.seek(recordPos);
 			file.write(fileBuffer,0,ofs);
 			file.getFD().sync();
-			RecordInfo info = new RecordInfo(recordPos,ofs);
+			final RecordInfo info = new RecordInfo(recordPos,ofs);
 			info.indexedData = indexData;
 			rowRecords.add(info);
 			return true;
 		 }
-		 catch (IOException e)
+		 catch (final IOException e)
 		 {
 			 return false;
 		 }
@@ -766,10 +766,10 @@ public class Backend
 	   */
 	  protected synchronized int deleteRecord(List<FakeCondition> conditions)
 	  {
-		 int[] count={0};
+		 final int[] count={0};
 		 try
 		 {
-			FakeConditionResponder responder = new FakeConditionResponder()
+			final FakeConditionResponder responder = new FakeConditionResponder()
 			{
 				public int[] count;
 				public FakeConditionResponder init(int[] c) { count=c; return this;}
@@ -785,7 +785,7 @@ public class Backend
 			}.init(count);
 			recordIterator(conditions,responder);
 		 }
-		 catch (Exception e)
+		 catch (final Exception e)
 		 {
 			 e.printStackTrace(); return -1;
 		 }
@@ -804,15 +804,15 @@ public class Backend
 	  {
 		  boolean lastOne = true;
 		  ConnectorType connector = ConnectorType.AND;
-		  ComparableValue[] rowIndexesData = info.indexedData;
-		  for(FakeCondition cond : conditions)
+		  final ComparableValue[] rowIndexesData = info.indexedData;
+		  for(final FakeCondition cond : conditions)
 		  {
 			  boolean thisOne = false;
 			  if(cond.contains!=null)
 				  thisOne = recordCompare(info,cond.contains,dataLoaded,values);
 			  else
 			  {
-				  FakeColumn column = columns[cond.conditionIndex];
+				  final FakeColumn column = columns[cond.conditionIndex];
 				  if(column.indexNumber>=0)
 					  thisOne = cond.compareValue(rowIndexesData[column.indexNumber]);
 				  else
@@ -847,11 +847,11 @@ public class Backend
 	   */
 	  public void recordIterator(List<FakeCondition> conditions, FakeConditionResponder callBack) throws Exception
 	  {
-		  boolean[] dataLoaded=new boolean[1];
-		  ComparableValue[] values=new ComparableValue[columns.length];
-		  for (Iterator<RecordInfo> iter=rowRecords.iterator(-1,false);iter.hasNext();)
+		  final boolean[] dataLoaded=new boolean[1];
+		  final ComparableValue[] values=new ComparableValue[columns.length];
+		  for (final Iterator<RecordInfo> iter=rowRecords.iterator(-1,false);iter.hasNext();)
 		  {
-			 RecordInfo info=iter.next();
+			 final RecordInfo info=iter.next();
 			 dataLoaded[0]=false;
 			 if(recordCompare(info,conditions,dataLoaded,values))
 			 {
@@ -872,10 +872,10 @@ public class Backend
 	 */
 	  protected synchronized int updateRecord(List<FakeCondition> conditions, int[] columns, ComparableValue[] values)
 	  {
-			int[] count={0};
+			final int[] count={0};
 		 try
 		 {
-			FakeConditionResponder responder = new FakeConditionResponder()
+			final FakeConditionResponder responder = new FakeConditionResponder()
 			{
 				public int[] count;
 				public int[] newCols;
@@ -891,7 +891,7 @@ public class Backend
 				@Override
 				public void callBack(ComparableValue[] values, RecordInfo info) throws Exception
 				{
-					ComparableValue[] rowIndexData=info.indexedData;
+					final ComparableValue[] rowIndexData=info.indexedData;
 					boolean somethingChanged=false;
 					for (int sub=0; sub<newCols.length; sub++)
 					{
@@ -916,7 +916,7 @@ public class Backend
 			}.init(count, columns, values);
 			recordIterator(conditions,responder);
 		 }
-		 catch (Exception e)
+		 catch (final Exception e)
 		 {
 			 e.printStackTrace(); return -1;
 		 }
@@ -932,13 +932,13 @@ public class Backend
 	*/
    private void readSchema(File basePath, File schema) throws IOException
    {
-	  BufferedReader in=new BufferedReader(new FileReader(schema));
+	  final BufferedReader in=new BufferedReader(new FileReader(schema));
 
 	  try
 	  {
 		  while (true)
 		  {
-			 String fakeTableName=in.readLine();
+			 final String fakeTableName=in.readLine();
 			 if (fakeTableName==null)
 				 break;
 			 if (fakeTableName.length()==0)
@@ -946,9 +946,9 @@ public class Backend
 			 if (fakeTables.get(fakeTableName)!=null)
 				 throw new IOException("Can not read schema: tableName is missing: "+fakeTableName);
 
-			 List columns=new Vector();
-			 List keys=new Vector();
-			 List indexes=new Vector();
+			 final List columns=new Vector();
+			 final List keys=new Vector();
+			 final List indexes=new Vector();
 			 while (true)
 			 {
 				String line=in.readLine();
@@ -959,7 +959,7 @@ public class Backend
 				int split=line.indexOf(' ');
 				if (split<0)
 					throw new IOException("Can not read schema: expected space in line '"+line+"'");
-				String columnName=line.substring(0,split);
+				final String columnName=line.substring(0,split);
 				line=line.substring(split+1);
 				split=line.indexOf(' ');
 				String columnType;
@@ -972,15 +972,15 @@ public class Backend
 				else
 				{
 				   columnType=line.substring(0,split);
-				   String lineRes=line.substring(split+1).trim();
-				   int split2=lineRes.indexOf(' ');
+				   final String lineRes=line.substring(split+1).trim();
+				   final int split2=lineRes.indexOf(' ');
 				   if(split2>0)
 					   columnModifiers=new String[]{lineRes.substring(0,split2).trim(),lineRes.substring(split2+1).trim()};
 				   else
 					   columnModifiers=new String[]{lineRes};
 				}
 
-				FakeColumn info=new FakeColumn();
+				final FakeColumn info=new FakeColumn();
 				info.tableName=fakeTableName;
 				info.name=columnName;
 				if (columnType.equals("string"))
@@ -996,7 +996,7 @@ public class Backend
 					info.type=FakeColumn.TYPE_LONG;
 				else
 					throw new IOException("Can not read schema: attributeType '"+columnType+"' is unknown");
-				for(String modifier : columnModifiers)
+				for(final String modifier : columnModifiers)
 				{
 					if (modifier.equals(""))
 						continue;
@@ -1023,19 +1023,19 @@ public class Backend
 				columns.add(info);
 			 }
 
-			 FakeTable fakeTable=new FakeTable(fakeTableName, new File(basePath,"fakedb.data."+fakeTableName));
+			 final FakeTable fakeTable=new FakeTable(fakeTableName, new File(basePath,"fakedb.data."+fakeTableName));
 			 fakeTable.columns=new FakeColumn[columns.size()];
 			 fakeTable.columnHash = new Hashtable<String,Integer>();
 			 int index=0;
-			 for (Iterator iter=columns.iterator();iter.hasNext();++index)
+			 for (final Iterator iter=columns.iterator();iter.hasNext();++index)
 			 {
-				FakeColumn current=(FakeColumn)iter.next();
+				final FakeColumn current=(FakeColumn)iter.next();
 				fakeTable.columns[index]=current;
 				fakeTable.columnHash.put(current.name, Integer.valueOf(index));
 			 }
 			 index=0;
 			 fakeTable.columnIndexesOfIndexed=new int[indexes.size()];
-			 for (Iterator iter=indexes.iterator();iter.hasNext();++index)
+			 for (final Iterator iter=indexes.iterator();iter.hasNext();++index)
 				fakeTable.columnIndexesOfIndexed[index]=fakeTable.findColumn((String)iter.next());
 
 			 fakeTable.open();
@@ -1060,7 +1060,7 @@ public class Backend
 		 readSchema(basePath,new File(basePath,"fakedb.schema"));
 		 return true;
 	  }
-	  catch (IOException e)
+	  catch (final IOException e)
 	  {
 		  e.printStackTrace();
 		  return false;
@@ -1099,7 +1099,7 @@ public class Backend
 	  {
 		  int index = 0;
 		  showCols=new int[cols.size()];
-		  for(String col : cols)
+		  for(final String col : cols)
 		  {
 			  if(col.toLowerCase().startsWith("count("))
 				  showCols[index]=FakeColumn.INDEX_COUNT;
@@ -1113,7 +1113,7 @@ public class Backend
 						  Integer.parseInt(col);
 						  showCols[index]=FakeColumn.INDEX_COUNT;
 					  }
-					  catch(Exception e)
+					  catch(final Exception e)
 					  {
 						  throw new java.sql.SQLException("unknown column "+tableName+"."+col);
 					  }
@@ -1128,13 +1128,13 @@ public class Backend
 	  {
 		 orderDexIndexes=new int[orderVars.length];
 		 int d=0;
-		 for(String var : orderVars)
+		 for(final String var : orderVars)
 		 {
-			 int index=table.findColumn(var);
+			 final int index=table.findColumn(var);
 			 int indexDex=-1;
 			 if (index<0)
 				 throw new java.sql.SQLException("unknown column "+var);
-			 for(int i : table.columnIndexesOfIndexed)
+			 for(final int i : table.columnIndexesOfIndexed)
 				 if(i==index)
 					 indexDex=i;
 			 if (indexDex<0)
@@ -1300,7 +1300,7 @@ public class Backend
 			 default: values[id]=new ComparableValue(sqlValues[index]); break;
 			 }
 		 }
-		 catch(Exception e)
+		 catch(final Exception e)
 		 {
 			 throw new java.sql.SQLException("illegal value '"+sqlValues[index]+"' for column "+col.name);
 		 }
@@ -1308,7 +1308,7 @@ public class Backend
 	  final ComparableValue[] keys=new ComparableValue[fakeTable.columnIndexesOfIndexed.length];
 	  for (int index=0;index<fakeTable.columnIndexesOfIndexed.length;index++)
 	  {
-		 int id=fakeTable.columnIndexesOfIndexed[index];
+		 final int id=fakeTable.columnIndexesOfIndexed[index];
 		 if(values[id]==null)
 			 keys[index]=new ComparableValue(null);
 		 else
@@ -1362,7 +1362,7 @@ public class Backend
 	  final ComparableValue[] values=new ComparableValue[fakeTable.columns.length];
 	  for (int index=0;index<sqlValues.length;index++)
 	  {
-		 FakeColumn col = fakeTable.columns[vars[index]];
+		 final FakeColumn col = fakeTable.columns[vars[index]];
 		 try
 		 {
 			 if((sqlValues[index]==null)||(sqlValues[index].equals("null")))
@@ -1375,7 +1375,7 @@ public class Backend
 			 default: values[index]=new ComparableValue(sqlValues[index]); break;
 			 }
 		 }
-		 catch(Exception e)
+		 catch(final Exception e)
 		 {
 			 throw new java.sql.SQLException("illegal value '"+sqlValues[index]+"' for column "+col.name);
 		 }
@@ -1420,7 +1420,7 @@ public class Backend
 		  try
 		  {
 			  fake.conditionValue = new ComparableValue(Integer.valueOf(value));
-		  }catch(Exception e)
+		  }catch(final Exception e)
 		  {
 			  throw new java.sql.SQLException("can't compare "+value+" to "+tableName+"."+columnName);
 		  }
@@ -1431,7 +1431,7 @@ public class Backend
 		  try
 		  {
 			  fake.conditionValue = new ComparableValue(Long.valueOf(value));
-		  }catch(Exception e)
+		  }catch(final Exception e)
 		  {
 			  throw new java.sql.SQLException("can't compare "+value+" to "+tableName+"."+columnName);
 		  }
@@ -1449,7 +1449,7 @@ public class Backend
 		  fake.like=true;
 	  }
 	  else
-	  for(char c : comparitor.toCharArray())
+	  for(final char c : comparitor.toCharArray())
 		  switch(c)
 		  {
 		  case '!': fake.not=true; break;

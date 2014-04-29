@@ -53,14 +53,14 @@ public class Spell_TeleportObject extends Spell
 				commands.addElement(mob.getRandomItem());
 			commands.addElement(CMLib.map().getRandomArea().Name());
 		}
-		Room oldRoom=mob.location();
+		final Room oldRoom=mob.location();
 		if(commands.size()<2)
 		{
 			mob.tell("Teleport what object to what place or person?");
 			return false;
 		}
-		String objectName=(String)commands.firstElement();
-		Item target=mob.findItem(null,objectName);
+		final String objectName=(String)commands.firstElement();
+		final Item target=mob.findItem(null,objectName);
 		if(target==null)
 		{
 			mob.tell("You don't seem to have an item '"+objectName+"'.");
@@ -74,7 +74,7 @@ public class Spell_TeleportObject extends Spell
 		String searchWhat=null;
 		if(commands.size()>2)
 		{
-			String s=(String)commands.elementAt(1);
+			final String s=(String)commands.elementAt(1);
 			if(s.equalsIgnoreCase("room")) searchWhat="R";
 			if(s.equalsIgnoreCase("area")) searchWhat="E";
 			if(s.equalsIgnoreCase("mob")) searchWhat="M";
@@ -87,8 +87,8 @@ public class Spell_TeleportObject extends Spell
 				commands.removeElementAt(1);
 		}
 		if(searchWhat==null) searchWhat="ERIPM";
-		String destinationString=CMParms.combine(commands,1).trim().toUpperCase();
-		List<Room> candidates=CMLib.map().findWorldRoomsLiberally(mob,destinationString,searchWhat,10,600000);
+		final String destinationString=CMParms.combine(commands,1).trim().toUpperCase();
+		final List<Room> candidates=CMLib.map().findWorldRoomsLiberally(mob,destinationString,searchWhat,10,600000);
 		if(candidates.size()==0)
 		{
 			mob.tell("You don't know of a place called '"+destinationString.toLowerCase()+"'.");
@@ -112,7 +112,7 @@ public class Spell_TeleportObject extends Spell
 				newRoom=null;
 				continue;
 			}
-			CMMsg enterMsg=CMClass.getMsg(mob,newRoom,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null);
+			final CMMsg enterMsg=CMClass.getMsg(mob,newRoom,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null);
 			if(!newRoom.okMessage(mob,enterMsg))
 				newRoom=null;
 			tries++;
@@ -129,7 +129,7 @@ public class Spell_TeleportObject extends Spell
 
 		boolean success=proficiencyCheck(mob,0,auto);
 
-		CMMsg msg=CMClass.getMsg(mob,target,this,somanticCastCode(mob,target,auto),"^S<S-NAME> invoke(s) a teleportation spell upon <T-NAME>.^?");
+		final CMMsg msg=CMClass.getMsg(mob,target,this,somanticCastCode(mob,target,auto),"^S<S-NAME> invoke(s) a teleportation spell upon <T-NAME>.^?");
 		if(oldRoom.okMessage(mob,msg))
 		{
 			oldRoom.send(mob,msg);

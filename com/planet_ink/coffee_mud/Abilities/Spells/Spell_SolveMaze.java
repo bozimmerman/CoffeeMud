@@ -47,14 +47,14 @@ public class Spell_SolveMaze extends Spell
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		Room targetR=mob.location();
+		final Room targetR=mob.location();
 		if((targetR==null) || (targetR.getGridParent()==null))
 		{
 			mob.tell("This spell only works when you are in a maze");
 			return false;
 		}
 
-		GridLocale grid = targetR.getGridParent();
+		final GridLocale grid = targetR.getGridParent();
 
 		int direction=-1;
 		Room outRoom=null;
@@ -64,10 +64,10 @@ public class Spell_SolveMaze extends Spell
 			commands.remove(0);
 		if(commands.size()==0)
 		{
-			List<Integer> list=new Vector<Integer>();
+			final List<Integer> list=new Vector<Integer>();
 			for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
 			{
-				Room R=grid.getRoomInDir(d);
+				final Room R=grid.getRoomInDir(d);
 				if((R!=null)&&(R.roomID().length()>0))
 					list.add(Integer.valueOf(d));
 			}
@@ -75,7 +75,7 @@ public class Spell_SolveMaze extends Spell
 			{
 				for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
 				{
-					Room R=grid.getRoomInDir(d);
+					final Room R=grid.getRoomInDir(d);
 					if(R!=null)
 						list.add(Integer.valueOf(d));
 				}
@@ -96,10 +96,10 @@ public class Spell_SolveMaze extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success && (outRoom !=null) )
 		{
-			CMMsg msg=CMClass.getMsg(mob,targetR,this,somanticCastCode(mob,targetR,auto),auto?"":"^S<S-NAME> wave(s) <S-HIS-HER> hands around, pointing in different directions.^?");
+			final CMMsg msg=CMClass.getMsg(mob,targetR,this,somanticCastCode(mob,targetR,auto),auto?"":"^S<S-NAME> wave(s) <S-HIS-HER> hands around, pointing in different directions.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

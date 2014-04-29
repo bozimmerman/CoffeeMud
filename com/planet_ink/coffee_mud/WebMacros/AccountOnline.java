@@ -44,17 +44,17 @@ public class AccountOnline extends StdWebMacro
 		if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
 			return CMProps.getVar(CMProps.Str.MUDSTATUS);
 
-		String last=httpReq.getUrlParameter("ACCOUNT");
+		final String last=httpReq.getUrlParameter("ACCOUNT");
 		if(last==null) return " @break@";
-		java.util.Map<String,String> parms=parseParms(parm);
+		final java.util.Map<String,String> parms=parseParms(parm);
 		if(last.length()>0)
 		{
 			PlayerAccount A = CMLib.players().getAccount(last);
 			MOB onlineM=null;
 			if(A!=null)
-			for(Enumeration<String> m = A.getPlayers();m.hasMoreElements();)
+			for(final Enumeration<String> m = A.getPlayers();m.hasMoreElements();)
 			{
-				MOB M = CMLib.players().getPlayer(m.nextElement());
+				final MOB M = CMLib.players().getPlayer(m.nextElement());
 				if((M!=null)&&(M.session()!=null))
 					onlineM=M;
 			}
@@ -62,7 +62,7 @@ public class AccountOnline extends StdWebMacro
 				return Boolean.toString(onlineM != null);
 			else
 			{
-				String login=Authenticate.getLogin(httpReq);
+				final String login=Authenticate.getLogin(httpReq);
 				if(Authenticate.authenticated(httpReq,login,Authenticate.getPassword(httpReq)))
 				{
 					if(A==null)
@@ -71,7 +71,7 @@ public class AccountOnline extends StdWebMacro
 					boolean canBan=false;
 					boolean canBoot=false;
 					boolean canModify=false;
-					MOB authM=CMLib.players().getLoadPlayer(login);
+					final MOB authM=CMLib.players().getLoadPlayer(login);
 					if((authM!=null)&&(authM.playerStats()!=null)&&(authM.playerStats().getAccount().getAccountName().equals(A.getAccountName())))
 					{
 						canBan=true;

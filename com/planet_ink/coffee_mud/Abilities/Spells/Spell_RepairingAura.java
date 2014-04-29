@@ -62,7 +62,7 @@ public class Spell_RepairingAura extends Spell
 		if((repairDown<=0)&&(affected instanceof Item))
 		{
 			repairDown=REPAIR_MAX;
-			Item I=(Item)affected;
+			final Item I=(Item)affected;
 			if((I.subjectToWearAndTear())&&(I.usesRemaining()<100))
 			{
 				if(I.owner() instanceof Room)
@@ -80,7 +80,7 @@ public class Spell_RepairingAura extends Spell
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		Physical target=getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_ANY);
+		final Physical target=getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_ANY);
 		if(target==null) return false;
 		if(target.fetchEffect(this.ID())!=null)
 		{
@@ -103,9 +103,9 @@ public class Spell_RepairingAura extends Spell
 		else
 		if(target instanceof MOB)
 		{
-			Vector choices=new Vector();
-			Vector inventory=new Vector();
-			MOB M=(MOB)target;
+			final Vector choices=new Vector();
+			final Vector inventory=new Vector();
+			final MOB M=(MOB)target;
 			Item I=null;
 			for(int i=0;i<M.numItems();i++)
 			{
@@ -131,8 +131,8 @@ public class Spell_RepairingAura extends Spell
 
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAMESELF>, incanting.^?");
-			CMMsg msg2=(target==realTarget)?null:CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),null);
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAMESELF>, incanting.^?");
+			final CMMsg msg2=(target==realTarget)?null:CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),null);
 			if(mob.location().okMessage(mob,msg)
 			&&(realTarget!=null)
 			&&((msg2==null)||mob.location().okMessage(mob,msg2)))
@@ -141,7 +141,7 @@ public class Spell_RepairingAura extends Spell
 				if(msg2!=null) mob.location().send(mob,msg2);
 				mob.location().show(mob,realTarget,CMMsg.MSG_OK_ACTION,"<T-NAME> attain(s) a repairing aura.");
 				beneficialAffect(mob,realTarget,asLevel,0);
-				Spell_RepairingAura A=(Spell_RepairingAura)realTarget.fetchEffect(ID());
+				final Spell_RepairingAura A=(Spell_RepairingAura)realTarget.fetchEffect(ID());
 				if(A!=null) A.adjustedLevel=adjustedLevel(mob,asLevel);
 				realTarget.recoverPhyStats();
 				mob.recoverPhyStats();

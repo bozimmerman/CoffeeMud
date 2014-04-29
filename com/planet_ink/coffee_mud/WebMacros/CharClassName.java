@@ -39,11 +39,11 @@ public class CharClassName extends StdWebMacro
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
-		String last=httpReq.getUrlParameter("CLASS");
+		final String last=httpReq.getUrlParameter("CLASS");
 		if(last==null) return " @break@";
 		if(last.length()>0)
 		{
-			CharClass C=CMClass.getCharClass(last);
+			final CharClass C=CMClass.getCharClass(last);
 			if(C!=null)
 				return clearWebMacros(C.name());
 		}

@@ -74,8 +74,8 @@ public class Logoff extends StdCommand
 						{
 							if(this.confirmed)
 							{
-								CMMsg msg=CMClass.getMsg(mob,null,CMMsg.MSG_QUIT,null);
-								Room R=mob.location();
+								final CMMsg msg=CMClass.getMsg(mob,null,CMMsg.MSG_QUIT,null);
+								final Room R=mob.location();
 								if((R!=null)&&(R.okMessage(mob,msg)))
 								{
 									CMLib.map().sendGlobalMessage(mob,CMMsg.TYP_QUIT, CMClass.getMsg(mob,null,CMMsg.MSG_QUIT,null));
@@ -86,7 +86,7 @@ public class Logoff extends StdCommand
 						}
 					});
 			}
-			catch(Exception e)
+			catch(final Exception e)
 			{
 				Log.errOut("Logoff",e.getMessage());
 			}

@@ -40,14 +40,14 @@ public class QuestMgr extends StdWebMacro
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
-		java.util.Map<String,String> parms=parseParms(parm);
+		final java.util.Map<String,String> parms=parseParms(parm);
 		Quest Q=null;
-		MOB M = Authenticate.getAuthenticatedMob(httpReq);
-		String name=(M==null)?"Someone":M.Name();
+		final MOB M = Authenticate.getAuthenticatedMob(httpReq);
+		final String name=(M==null)?"Someone":M.Name();
 		if(parms.containsKey("CREATE"))
 		{
 			Q=(Quest)CMClass.getCommon("DefaultQuest");
-			String err=populateQuest(httpReq,Q,false);
+			final String err=populateQuest(httpReq,Q,false);
 			if(err.length()>0) return err;
 			CMLib.quests().addQuest(Q);
 			CMLib.quests().save();
@@ -56,14 +56,14 @@ public class QuestMgr extends StdWebMacro
 			return "Quest '"+Q.name()+"' created.";
 		}
 
-		String last=httpReq.getUrlParameter("QUEST");
+		final String last=httpReq.getUrlParameter("QUEST");
 		if(last==null) return "";
 		if(last.length()>0)
 		{
 			Q=CMLib.quests().fetchQuest(last);
 			if(Q==null)
 			{
-				String newLast=CMStrings.replaceAll(last,"*","@");
+				final String newLast=CMStrings.replaceAll(last,"*","@");
 				for(int q=0;q<CMLib.quests().numQuests();q++)
 					if((""+CMLib.quests().fetchQuest(q)).equals(newLast))
 					{ Q=CMLib.quests().fetchQuest(q); break;}
@@ -71,7 +71,7 @@ public class QuestMgr extends StdWebMacro
 			if(Q==null) return "";
 			if(parms.containsKey("MODIFY"))
 			{
-				String err=populateQuest(httpReq,Q,parms.containsKey("REDIRECT"));
+				final String err=populateQuest(httpReq,Q,parms.containsKey("REDIRECT"));
 				if(err.length()>0) return err;
 				httpReq.addFakeUrlParameter("QUEST",Q.name());
 				CMLib.quests().save();
@@ -82,7 +82,7 @@ public class QuestMgr extends StdWebMacro
 				CMLib.quests().delQuest(Q);
 				CMLib.quests().save();
 				httpReq.addFakeUrlParameter("QUEST","");
-				CMFile F=new CMFile(Resources.makeFileResourceName("quests/"+Q.name()+".quest"),M,CMFile.FLAG_FORCEALLOW);
+				final CMFile F=new CMFile(Resources.makeFileResourceName("quests/"+Q.name()+".quest"),M,CMFile.FLAG_FORCEALLOW);
 				if(F.exists())
 				{
 					Log.sysOut("QuestMgr",name+" deleted quest '"+Q.name()+"'");
@@ -138,12 +138,12 @@ public class QuestMgr extends StdWebMacro
 	{
 		Q.script();
 		String script=httpReq.getUrlParameter("RAWTEXT");
-		String unRedirectedScript=script;
+		final String unRedirectedScript=script;
 		CMFile redirectF=null;
 		if(redirect
 		&&(Q.script().toUpperCase().trim().startsWith("LOAD=")))
 		{
-			String fileName=Q.script().trim().substring(5);
+			final String fileName=Q.script().trim().substring(5);
 			redirectF=new CMFile(Resources.makeFileResourceName(fileName),null,CMFile.FLAG_LOGERRORS);
 			if((!redirectF.exists())||(!redirectF.canRead()))
 				return "Unable to load redirected file '"+fileName+"'";
@@ -154,7 +154,7 @@ public class QuestMgr extends StdWebMacro
 		script=CMStrings.replaceAll(script,"&amp;","&");
 
 		String postFix="";
-		int x=script.toUpperCase().indexOf("<?XML");
+		final int x=script.toUpperCase().indexOf("<?XML");
 		if(x>=0)
 		{
 			postFix=script.substring(x);
@@ -192,7 +192,7 @@ public class QuestMgr extends StdWebMacro
 		else
 		for(int q=0;q<CMLib.quests().numQuests();q++)
 		{
-			Quest Q1=CMLib.quests().fetchQuest(q);
+			final Quest Q1=CMLib.quests().fetchQuest(q);
 			if(Q1.name().equalsIgnoreCase(Q.name())&&(Q1!=Q))
 				return "A quest with that name already exists.";
 		}

@@ -67,7 +67,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 	{
 		if(text().length()==0)
 			return 100000;
-		String s=text();
+		final String s=text();
 		int index=s.length();
 		while((--index)>=0)
 		{
@@ -103,9 +103,9 @@ public class Prop_RoomForSale extends Property implements LandTitle
 	@Override
 	public CMObject getOwnerObject()
 	{
-		String owner=getOwnerName();
+		final String owner=getOwnerName();
 		if(owner.length()==0) return null;
-		Clan C=CMLib.clans().getClan(owner);
+		final Clan C=CMLib.clans().getClan(owner);
 		if(C!=null) return C;
 		return CMLib.players().getLoadPlayer(owner);
 	}
@@ -128,7 +128,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 		if(dex<0) return 0;
 		final int x=text().indexOf("TAX",dex);
 		if(x<0) return 0;
-		String s=CMParms.parse(text().substring(x+3)).firstElement();
+		final String s=CMParms.parse(text().substring(x+3)).firstElement();
 		return CMath.s_int(s.substring(0,s.length()-1));
 	}
 	@Override
@@ -166,7 +166,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 			CMLib.database().DBUpdateRoom((Room)affected);
 		else
 		{
-			Room R=CMLib.map().getRoom(landPropertyID());
+			final Room R=CMLib.map().getRoom(landPropertyID());
 			if(R!=null) CMLib.database().DBUpdateRoom(R);
 		}
 	}
@@ -178,7 +178,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 			return "LAND_TITLE_FOR#"+CMLib.map().getExtendedRoomID((Room)affected);
 		else
 		{
-			Room R=CMLib.map().getRoom(landPropertyID());
+			final Room R=CMLib.map().getRoom(landPropertyID());
 			if(R!=null)
 				return "LAND_TITLE_FOR#"+CMLib.map().getExtendedRoomID(R);
 		}
@@ -227,18 +227,18 @@ public class Prop_RoomForSale extends Property implements LandTitle
 			&&(!shopkeeperMobPresent(msg.source().location()))
 			&&(!CMLib.law().doesHavePriviledgesHere(msg.source(),msg.source().location())))
 			{
-				Room R=msg.source().location();
-				LegalBehavior B=CMLib.law().getLegalBehavior(R);
+				final Room R=msg.source().location();
+				final LegalBehavior B=CMLib.law().getLegalBehavior(R);
 				if(B!=null)
 				{
 					for(int m=0;m<R.numInhabitants();m++)
 					{
-						MOB M=R.fetchInhabitant(m);
+						final MOB M=R.fetchInhabitant(m);
 						if(CMLib.law().doesHavePriviledgesHere(M,R))
 							return true;
 					}
 					MOB D=null;
-					Clan C=CMLib.clans().getClan(A.getOwnerName());
+					final Clan C=CMLib.clans().getClan(A.getOwnerName());
 					if(C!=null)
 						D=C.getResponsibleMember();
 					else
@@ -262,7 +262,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 		&&(affected instanceof Room))
 		{
 			updateLot(null);
-			Vector mobs=new Vector();
+			final Vector mobs=new Vector();
 			Room R=(Room)affected;
 			if(R!=null)
 			{
@@ -271,7 +271,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 					R=CMLib.map().getRoom(R);
 					for(int m=0;m<R.numInhabitants();m++)
 					{
-						MOB M=R.fetchInhabitant(m);
+						final MOB M=R.fetchInhabitant(m);
 						if((M!=null)
 						&&(M.isSavable())
 						&&(M.getStartRoom()==R)
@@ -301,8 +301,8 @@ public class Prop_RoomForSale extends Property implements LandTitle
 		synchronized(("SYNC"+R.roomID()).intern())
 		{
 			R=CMLib.map().getRoom(R);
-			String theStr=rental?RENTSTR:SALESTR;
-			String otherStr=rental?SALESTR:RENTSTR;
+			final String theStr=rental?RENTSTR:SALESTR;
+			final String otherStr=rental?SALESTR:RENTSTR;
 			int x=R.description().indexOf(otherStr);
 			while(x>=0)
 			{
@@ -310,7 +310,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 				CMLib.database().DBUpdateRoom(R);
 				x=R.description().indexOf(otherStr);
 			}
-			String oldDescription=R.description();
+			final String oldDescription=R.description();
 			x=R.description().indexOf(theStr.trim());
 			if((x<0)||(reset&&(!R.displayText().equals(CMath.bset(R.domainType(), Room.INDOORS)?INDOORSTR:OUTDOORSTR))))
 			{
@@ -351,12 +351,12 @@ public class Prop_RoomForSale extends Property implements LandTitle
 	@Override
 	public List<Room> getAllTitledRooms()
 	{
-		List<Room> V=new Vector();
+		final List<Room> V=new Vector();
 		if(affected instanceof Room)
 			V.add((Room)affected);
 		else
 		{
-			Room R=CMLib.map().getRoom(landPropertyID());
+			final Room R=CMLib.map().getRoom(landPropertyID());
 			if(R!=null) V.add(R);
 		}
 		return V;
@@ -418,7 +418,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 				}
 				for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 				{
-					Room R2=R.rawDoors()[d];
+					final Room R2=R.rawDoors()[d];
 					Exit E=R.getRawExit(d);
 					if((E!=null)&&(E.hasALock())&&(E.isGeneric()))
 					{
@@ -492,7 +492,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 
 			for(int i=0;i<R.numItems();i++)
 			{
-				Item I=R.getItem(i);
+				final Item I=R.getItem(i);
 				if((I.expirationDate()!=0)
 				&&((I.isSavable())||(I.Name().equalsIgnoreCase("id")))
 				&&((!(I instanceof DeadBody))||(((DeadBody)I).playerCorpse())))
@@ -521,10 +521,10 @@ public class Prop_RoomForSale extends Property implements LandTitle
 	{
 		if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
 			return false;
-		int month=A.getTimeObj().getMonth();
-		int day=A.getTimeObj().getDayOfMonth();
-		int year=A.getTimeObj().getYear();
-		Object O=Resources.getResource("RENTAL INFO/"+owner);
+		final int month=A.getTimeObj().getMonth();
+		final int day=A.getTimeObj().getDayOfMonth();
+		final int year=A.getTimeObj().getYear();
+		final Object O=Resources.getResource("RENTAL INFO/"+owner);
 		List<PlayerData> pDataV=null;
 		if(O instanceof List)
 			pDataV=(List<PlayerData>)O;
@@ -551,7 +551,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 			pData=pDataV.get(0);
 			String parse=pData.xml;
 			int x=parse.indexOf("|~;|");
-			StringBuffer reparse=new StringBuffer("");
+			final StringBuffer reparse=new StringBuffer("");
 			boolean changesMade=false;
 			boolean needsToPay=false;
 			while(x>=0)
@@ -560,12 +560,12 @@ public class Prop_RoomForSale extends Property implements LandTitle
 				if(thisOne.startsWith(ID+"|~>|"))
 				{
 					thisOne=thisOne.substring((ID+"|~>|").length());
-					Vector dateV=CMParms.parse(thisOne);
+					final Vector dateV=CMParms.parse(thisOne);
 					if(dateV.size()==3)
 					{
 						int lastYear=CMath.s_int((String)dateV.lastElement());
 						int lastMonth=CMath.s_int((String)dateV.elementAt(1));
-						int lastDay=CMath.s_int((String)dateV.firstElement());
+						final int lastDay=CMath.s_int((String)dateV.firstElement());
 						while(!needsToPay)
 						{
 							if(lastYear<year)

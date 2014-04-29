@@ -49,12 +49,12 @@ public class Spell_LimbRack extends Spell
 		if(!super.tick(ticking,tickID))
 			return false;
 		if(invoker==null) return false;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		if((mob.location()!=null)
 		&&(mob.charStats().getMyRace().bodyMask()[Race.BODY_ARM]>=0)
 		&&(mob.charStats().getMyRace().bodyMask()[Race.BODY_LEG]>=0))
 		{
-			String str=(text().equalsIgnoreCase("ARMSONLY"))?
+			final String str=(text().equalsIgnoreCase("ARMSONLY"))?
 				"<T-NAME> <T-IS-ARE> having <T-HIS-HER> arms pulled from <T-HIS-HER> body!"
 				:"<T-NAME> <T-IS-ARE> having <T-HIS-HER> arms and legs pulled from <T-HIS-HER> body!";
 			CMLib.combat().postDamage(invoker,mob,this,mob.maxState().getHitPoints()/(10-(getXLEVELLevel(invoker)/2)),CMMsg.MASK_ALWAYS|CMMsg.TYP_JUSTICE,Weapon.TYPE_BURSTING,str);
@@ -69,7 +69,7 @@ public class Spell_LimbRack extends Spell
 		if((affected instanceof MOB)
 		&&(((MOB)affected).amDead()))
 		{
-			MOB mob=(MOB)affected;
+			final MOB mob=(MOB)affected;
 			if((mob.location()!=null)
 			&&(mob.charStats().getMyRace().bodyMask()[Race.BODY_ARM]>0)
 			&&(mob.charStats().getMyRace().bodyMask()[Race.BODY_LEG]>0))
@@ -97,15 +97,15 @@ public class Spell_LimbRack extends Spell
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		MOB target=this.getTarget(mob,commands,givenTarget);
+		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
 		Amputator A=(Amputator)target.fetchEffect("Amputation");
 		if(A==null)	A=(Amputator)CMClass.getAbility("Amputation");
-		List<String> remainingLimbList=A.remainingLimbNameSet(target);
+		final List<String> remainingLimbList=A.remainingLimbNameSet(target);
 		for(int i=remainingLimbList.size()-1;i>=0;i--)
 		{
-			String gone=remainingLimbList.get(i);
+			final String gone=remainingLimbList.get(i);
 			if((!gone.toUpperCase().endsWith(" ARM"))
 			&&(!gone.toUpperCase().endsWith(" LEG")))
 				remainingLimbList.remove(i);
@@ -127,7 +127,7 @@ public class Spell_LimbRack extends Spell
 			return false;
 
 		// now see if it worked
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
@@ -135,14 +135,14 @@ public class Spell_LimbRack extends Spell
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),(auto?"!":"^S<S-NAME> invoke(s) a stretching spell upon <T-NAMESELF>"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),(auto?"!":"^S<S-NAME> invoke(s) a stretching spell upon <T-NAMESELF>"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
 					super.maliciousAffect(mob,target,asLevel,12,-1);
-					Ability A2=target.fetchEffect(ID());
+					final Ability A2=target.fetchEffect(ID());
 					if(A2!=null)
 					{
 						((Spell_LimbRack)A2).limbsToRemove=new Vector<String>();

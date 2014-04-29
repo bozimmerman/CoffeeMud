@@ -51,7 +51,7 @@ public class Spell_Anchor extends Spell
 			super.unInvoke();
 			return;
 		}
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		if(canBeUninvoked())
 			mob.tell("Your anchor has been lifted.");
 
@@ -83,7 +83,7 @@ public class Spell_Anchor extends Spell
 			else
 			if((msg.target()!=null)&&(msg.target() instanceof Item))
 			{
-				Item I=(Item)msg.target();
+				final Item I=(Item)msg.target();
 				if((I.owner()!=null)&&(I.owner() instanceof MOB))
 					roomD=((MOB)((Item)msg.target()).owner()).location();
 				else
@@ -100,7 +100,7 @@ public class Spell_Anchor extends Spell
 			if((roomS!=null)&&(roomD!=null)&&(roomS==roomD))
 				roomD=null;
 
-			Ability A=(Ability)msg.tool();
+			final Ability A=(Ability)msg.tool();
 			if(((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_CHANT)
 			||((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SPELL)
 			||((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PRAYER)
@@ -120,17 +120,17 @@ public class Spell_Anchor extends Spell
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		MOB target=getTarget(mob,commands,givenTarget);
+		final MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),(auto?"An magical anchoring field envelopes <T-NAME>!":"^S<S-NAME> invoke(s) an anchoring field of protection around <T-NAMESELF>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),(auto?"An magical anchoring field envelopes <T-NAME>!":"^S<S-NAME> invoke(s) an anchoring field of protection around <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

@@ -13,8 +13,8 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
 import java.util.Vector;
 
@@ -53,7 +53,7 @@ public class Chant_CloudWalk extends Chant
 		// undo the affects of this spell
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> float(s) down to the ground.");
@@ -77,7 +77,7 @@ public class Chant_CloudWalk extends Chant
 		if(affected==null) return false;
 		if(affected instanceof MOB)
 		{
-			MOB mob=(MOB)affected;
+			final MOB mob=(MOB)affected;
 			if(mob!=invoker)
 			{
 				if((mob.location()==null)||(!mob.location().isInhabitant(invoker)))
@@ -85,10 +85,10 @@ public class Chant_CloudWalk extends Chant
 			}
 			else
 			{
-				Set<MOB> H=mob.getGroupMembers(new HashSet<MOB>());
-				for(Iterator e=H.iterator();e.hasNext();)
+				final Set<MOB> H=mob.getGroupMembers(new HashSet<MOB>());
+				for (final Object element : H)
 				{
-					MOB M=(MOB)e.next();
+					final MOB M=(MOB)element;
 					if((M!=null)
 					   &&(M.location()!=null)
 					   &&(M!=mob)
@@ -123,7 +123,7 @@ public class Chant_CloudWalk extends Chant
 		// and added as String objects to a vector.
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
@@ -132,7 +132,7 @@ public class Chant_CloudWalk extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> chant(s) to the <T-NAMESELF>.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> chant(s) to the <T-NAMESELF>.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

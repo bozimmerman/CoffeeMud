@@ -66,8 +66,8 @@ public class Decay extends ActiveTicker
 	@Override
 	public String getParms()
 	{
-		String s=parms;
-		int x=s.toUpperCase().indexOf("REMAIN=");
+		final String s=parms;
+		final int x=s.toUpperCase().indexOf("REMAIN=");
 		if(x<0) return "remain="+tickDown+" "+s;
 		int y=s.indexOf(' ',x+1);
 		if(y<0) y=s.length();
@@ -83,8 +83,8 @@ public class Decay extends ActiveTicker
 		{
 			if(ticking instanceof MOB)
 			{
-				MOB mob=(MOB)ticking;
-				Room room=mob.location();
+				final MOB mob=(MOB)ticking;
+				final Room room=mob.location();
 				if(room!=null)
 				{
 					if(mob.amDead()) mob.setLocation(null);
@@ -97,10 +97,10 @@ public class Decay extends ActiveTicker
 			else
 			if(ticking instanceof Item)
 			{
-				Item item=(Item)ticking;
-				Environmental E=item.owner();
+				final Item item=(Item)ticking;
+				final Environmental E=item.owner();
 				if(E==null) return true;
-				Room room=getBehaversRoom(ticking);
+				final Room room=getBehaversRoom(ticking);
 				if(room==null) return true;
 				if(answer.trim().length()>0)
 				{

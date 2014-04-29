@@ -54,7 +54,7 @@ public class Alchemy extends SpellCraftingSkill implements ItemCraftor
 	{
 		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Tickable.TICKID_MOB))
 		{
-			MOB mob=(MOB)affected;
+			final MOB mob=(MOB)affected;
 			if((buildingI==null)
 			||((fireRequired)&&(getRequiredFire(mob,0)==null))
 			||(theSpell==null))
@@ -108,14 +108,14 @@ public class Alchemy extends SpellCraftingSkill implements ItemCraftor
 		if(!super.mayBeCrafted(I))
 			return false;
 		if(!(I instanceof Potion)) return false;
-		Potion P=(Potion)I;
+		final Potion P=(Potion)I;
 		if((P.liquidType()==RawMaterial.RESOURCE_LIQUOR)
 		||(P.liquidType()==RawMaterial.RESOURCE_POISON))
 			return false;
-		List<Ability> spells=P.getSpells();
+		final List<Ability> spells=P.getSpells();
 		if((spells == null)||(spells.size()==0))
 			return false;
-		for(Ability A : spells)
+		for(final Ability A : spells)
 			if(((A.classificationCode()&Ability.ALL_ACODES)!=Ability.ACODE_SPELL)
 			&&((A.classificationCode()&Ability.ALL_ACODES)!=Ability.ACODE_PRAYER))
 				return false;
@@ -129,7 +129,7 @@ public class Alchemy extends SpellCraftingSkill implements ItemCraftor
 		{
 			if((affected!=null)&&(affected instanceof MOB))
 			{
-				MOB mob=(MOB)affected;
+				final MOB mob=(MOB)affected;
 				if((buildingI!=null)&&(!aborted))
 				{
 					if(messedUp)
@@ -195,18 +195,18 @@ public class Alchemy extends SpellCraftingSkill implements ItemCraftor
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		CraftParms parsedVars=super.parseAutoGenerate(auto,givenTarget,commands);
+		final CraftParms parsedVars=super.parseAutoGenerate(auto,givenTarget,commands);
 		givenTarget=parsedVars.givenTarget;
 		if(parsedVars.autoGenerate>0)
 		{
-			Ability theSpell=super.getCraftableSpellRecipeSpell(commands);
+			final Ability theSpell=super.getCraftableSpellRecipeSpell(commands);
 			if(theSpell==null) return false;
-			int level=spellLevel(mob,theSpell);
+			final int level=spellLevel(mob,theSpell);
 			buildingI=buildItem(theSpell, level);
 			commands.addElement(buildingI);
 			if(parsedVars.forceLevels)
 			{
-				int minLevel=CMLib.ableMapper().lowestQualifyingLevel(theSpell.ID());
+				final int minLevel=CMLib.ableMapper().lowestQualifyingLevel(theSpell.ID());
 				buildingI.basePhyStats().setLevel(minLevel);
 				buildingI.phyStats().setLevel(buildingI.basePhyStats().level());
 			}
@@ -220,11 +220,11 @@ public class Alchemy extends SpellCraftingSkill implements ItemCraftor
 			commonTell(mob,"Brew what? Enter \"brew list\" for a list, or \"brew stop\" to cancel.");
 			return false;
 		}
-		int[] cols={
+		final int[] cols={
 				ListingLibrary.ColFixer.fixColWidth(25,mob.session()),
 			};
-		List<List<String>> recipes=addRecipes(mob,loadRecipes());
-		String pos=(String)commands.lastElement();
+		final List<List<String>> recipes=addRecipes(mob,loadRecipes());
+		final String pos=(String)commands.lastElement();
 		if((commands.firstElement() instanceof String)&&(((String)commands.firstElement())).equalsIgnoreCase("list"))
 		{
 			String mask=CMParms.combine(commands,1);
@@ -234,17 +234,17 @@ public class Alchemy extends SpellCraftingSkill implements ItemCraftor
 				allFlag=true;
 				mask="";
 			}
-			StringBuffer buf=new StringBuffer("Potions you know how to brew:\n\r");
+			final StringBuffer buf=new StringBuffer("Potions you know how to brew:\n\r");
 			buf.append(CMStrings.padRight("Spell",cols[0])+" "+CMStrings.padRight("Spell",cols[0])+" "+CMStrings.padRight("Spell",cols[0]));
 			int toggler=1;
-			int toggleTop=3;
+			final int toggleTop=3;
 			for(int r=0;r<recipes.size();r++)
 			{
-				List<String> V=recipes.get(r);
+				final List<String> V=recipes.get(r);
 				if(V.size()>0)
 				{
-					String spell=V.get(0);
-					Ability A=mob.fetchAbility(spell);
+					final String spell=V.get(0);
+					final Ability A=mob.fetchAbility(spell);
 					if((A!=null)
 					&&((spellLevel(mob,A)>=0)||(allFlag))
 					&&((xlevel(mob)>=spellLevel(mob,A))||(allFlag))
@@ -296,17 +296,17 @@ public class Alchemy extends SpellCraftingSkill implements ItemCraftor
 				return false;
 			}
 			activity = CraftingActivity.CRAFTING;
-			String recipeName=CMParms.combine(commands,0);
+			final String recipeName=CMParms.combine(commands,0);
 			theSpell=null;
 			int theSpellLevel=1;
 			String ingredient="";
 			for(int r=0;r<recipes.size();r++)
 			{
-				List<String> V=recipes.get(r);
+				final List<String> V=recipes.get(r);
 				if(V.size()>0)
 				{
-					String spell=V.get(0);
-					Ability A=mob.fetchAbility(spell);
+					final String spell=V.get(0);
+					final Ability A=mob.fetchAbility(spell);
 					if((A!=null)
 					&&(xlevel(mob)>=spellLevel(mob,A))
 					&&(A.name().equalsIgnoreCase(recipeName)))
@@ -332,15 +332,15 @@ public class Alchemy extends SpellCraftingSkill implements ItemCraftor
 			else
 			{
 				fireRequired=true;
-				Item fire=getRequiredFire(mob,0);
+				final Item fire=getRequiredFire(mob,0);
 				if(fire==null) return false;
 				experienceToLose+=CMLib.ableMapper().qualifyingLevel(mob,theSpell)*10;
 				experienceToLose-=CMLib.ableMapper().qualifyingClassLevel(mob,theSpell)*5;
 			}
-			int resourceType=RawMaterial.CODES.FIND_IgnoreCase(ingredient);
+			final int resourceType=RawMaterial.CODES.FIND_IgnoreCase(ingredient);
 
 			boolean found=false;
-			List<Item> V=((Container)buildingI).getContents();
+			final List<Item> V=((Container)buildingI).getContents();
 			if(resourceType>0)
 			{
 				if(((Drink)buildingI).liquidType()==resourceType)
@@ -355,7 +355,7 @@ public class Alchemy extends SpellCraftingSkill implements ItemCraftor
 				else
 				for(int i=0;i<V.size();i++)
 				{
-					Item I=V.get(i);
+					final Item I=V.get(i);
 					if(I.material()==resourceType)
 						found=true;
 					else
@@ -388,7 +388,7 @@ public class Alchemy extends SpellCraftingSkill implements ItemCraftor
 			if(duration<10) duration=10;
 			messedUp=!proficiencyCheck(mob,0,auto);
 
-			CMMsg msg=CMClass.getMsg(mob,buildingI,this,getActivityMessageType(),null);
+			final CMMsg msg=CMClass.getMsg(mob,buildingI,this,getActivityMessageType(),null);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

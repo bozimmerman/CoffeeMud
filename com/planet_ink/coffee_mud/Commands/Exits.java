@@ -45,7 +45,7 @@ public class Exits extends StdCommand
 		final Room R=mob.location();
 		if(R!=null)
 		{
-			CMMsg exitMsg=CMClass.getMsg(mob,R,null,CMMsg.MSG_LOOK_EXITS,null);
+			final CMMsg exitMsg=CMClass.getMsg(mob,R,null,CMMsg.MSG_LOOK_EXITS,null);
 			if((commands!=null)&&(commands.size()>1)&&(commands.lastElement() instanceof String)&&(((String)commands.lastElement()).equalsIgnoreCase("SHORT")))
 				exitMsg.setValue(CMMsg.MASK_OPTIMIZE);
 			if(R.okMessage(mob, exitMsg))

@@ -47,7 +47,7 @@ public class Prayer_SenseProfessions extends Prayer
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		MOB target=this.getTarget(mob,commands,givenTarget);
+		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 		if(target==mob)
 		{
@@ -58,7 +58,7 @@ public class Prayer_SenseProfessions extends Prayer
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
@@ -66,14 +66,14 @@ public class Prayer_SenseProfessions extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> "+prayWord(mob)+" and peer(s) at <T-NAMESELF>.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> "+prayWord(mob)+" and peer(s) at <T-NAMESELF>.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				Vector professionsV = new Vector();
-				for(Enumeration<Ability> a=target.allAbilities();a.hasMoreElements();)
+				final Vector professionsV = new Vector();
+				for(final Enumeration<Ability> a=target.allAbilities();a.hasMoreElements();)
 				{
-					Ability A=a.nextElement();
+					final Ability A=a.nextElement();
 					if((A!=null)
 					&& ((A.classificationCode() & Ability.ALL_ACODES)==senseWhat()))
 						professionsV.addElement(A.name() + " ("+A.proficiency()+"%)");

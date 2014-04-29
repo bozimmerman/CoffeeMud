@@ -16,8 +16,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
-
 import java.util.*;
 
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
@@ -81,7 +79,7 @@ public class StdGrid extends StdRoom implements GridLocale
 			String name=ID();
 			if(!name.endsWith("Grid")) return super.newInstance();
 			name=name.substring(0,name.length()-4)+"ThinGrid";
-			Room R=CMClass.getLocale(name);
+			final Room R=CMClass.getLocale(name);
 			if(R==null) return super.newInstance();
 			if(R instanceof StdGrid) return super.newInstance();
 			return R.newInstance();
@@ -94,9 +92,9 @@ public class StdGrid extends StdRoom implements GridLocale
 	{
 		super.destroy();
 		if(subMap!=null)
-			for(int x=0;x<subMap.length;x++)
-				for(int y=0;y<subMap[x].length;y++)
-					if(subMap[x][y]!=null) subMap[x][y].destroy();
+			for (final Room[] element : subMap)
+				for(int y=0;y<element.length;y++)
+					if(element[y]!=null) element[y].destroy();
 		subMap=null;
 		descriptions=null;
 		displayTexts=null;
@@ -111,7 +109,7 @@ public class StdGrid extends StdRoom implements GridLocale
 	@Override
 	public XYVector getRoomXY(String roomID)
 	{
-		Room room=CMLib.map().getRoom(roomID);
+		final Room room=CMLib.map().getRoom(roomID);
 		if(room==null) return null;
 		return getRoomXY(room);
 	}
@@ -119,7 +117,7 @@ public class StdGrid extends StdRoom implements GridLocale
 	@Override
 	public XYVector getRoomXY(Room room)
 	{
-		Room[][] subMap=getBuiltGrid();
+		final Room[][] subMap=getBuiltGrid();
 		if(subMap!=null)
 			for(int x=0;x<subMap.length;x++)
 				for(int y=0;y<subMap[x].length;y++)
@@ -134,7 +132,7 @@ public class StdGrid extends StdRoom implements GridLocale
 	{
 		if(amDestroyed)
 		{
-			Room R=CMLib.map().getRoom(roomID());
+			final Room R=CMLib.map().getRoom(roomID());
 			if(R!=null)
 				return R.prepareRoomInDir(fromRoom,direction);
 			return super.prepareRoomInDir(fromRoom,direction);
@@ -151,11 +149,11 @@ public class StdGrid extends StdRoom implements GridLocale
 	public void setDescription(String newDescription)
 	{
 		super.setDescription(newDescription);
-		Vector<String> descriptions=new Vector<String>();
+		final Vector<String> descriptions=new Vector<String>();
 		int x=newDescription.toUpperCase().indexOf("<P>");
 		while(x>=0)
 		{
-			String s=newDescription.substring(0,x).trim();
+			final String s=newDescription.substring(0,x).trim();
 			if(s.length()>0) descriptions.addElement(s);
 			newDescription=newDescription.substring(x+3).trim();
 			x=newDescription.toUpperCase().indexOf("<P>");
@@ -169,11 +167,11 @@ public class StdGrid extends StdRoom implements GridLocale
 	public void setDisplayText(String newDisplayText)
 	{
 		super.setDisplayText(newDisplayText);
-		Vector<String> displayTexts=new Vector<String>();
+		final Vector<String> displayTexts=new Vector<String>();
 		int x=newDisplayText.toUpperCase().indexOf("<P>");
 		while(x>=0)
 		{
-			String s=newDisplayText.substring(0,x).trim();
+			final String s=newDisplayText.substring(0,x).trim();
 			if(s.length()>0) displayTexts.addElement(s);
 			newDisplayText=newDisplayText.substring(x+3).trim();
 			x=newDisplayText.toUpperCase().indexOf("<P>");
@@ -191,18 +189,18 @@ public class StdGrid extends StdRoom implements GridLocale
 	{
 		if((loc==null)||(direction<0))
 			return null;
-		int opDirection=Directions.getOpDirectionCode(direction);
+		final int opDirection=Directions.getOpDirectionCode(direction);
 
 		getBuiltGrid();
 		Room[][] grid=null;
 		if(gridexits.size()>0)
 		{
 			grid=getBuiltGrid();
-			String roomID=CMLib.map().getExtendedRoomID(loc);
+			final String roomID=CMLib.map().getExtendedRoomID(loc);
 			if(grid!=null)
 				for(int d=0;d<gridexits.size();d++)
 				{
-					WorldMap.CrossExit EX=gridexits.elementAt(d);
+					final WorldMap.CrossExit EX=gridexits.elementAt(d);
 					if((!EX.out)
 					&&(EX.destRoomID.equalsIgnoreCase(roomID))
 					&&(EX.dir==direction)
@@ -212,7 +210,7 @@ public class StdGrid extends StdRoom implements GridLocale
 				}
 		}
 
-		Room oldLoc=loc;
+		final Room oldLoc=loc;
 		if(loc.getGridParent()!=null)
 			loc=loc.getGridParent();
 		if((oldLoc!=loc)&&(loc instanceof GridLocale))
@@ -220,7 +218,7 @@ public class StdGrid extends StdRoom implements GridLocale
 			if(grid==null) grid=getBuiltGrid();
 			if(grid!=null)
 			{
-				XYVector xy=((GridLocale)loc).getRoomXY(oldLoc);
+				final XYVector xy=((GridLocale)loc).getRoomXY(oldLoc);
 				if((xy.x>=0)&&(xy.y>=0))
 				switch(opDirection)
 				{
@@ -264,19 +262,19 @@ public class StdGrid extends StdRoom implements GridLocale
 	@Override
 	public Room getRandomGridChild()
 	{
-		List<Room> V=getAllRooms();
+		final List<Room> V=getAllRooms();
 		if(V.size()==0) return null;
 		return V.get(CMLib.dice().roll(1,V.size(),-1));
 	}
 	@Override
 	public List<Room> getAllRooms()
 	{
-		Vector V=new Vector();
-		Room[][] subMap=getBuiltGrid();
+		final Vector V=new Vector();
+		final Room[][] subMap=getBuiltGrid();
 		if(subMap!=null)
-		for(int x=0;x<subMap.length;x++)
-			for(int y=0;y<subMap[x].length;y++)
-				V.addElement(subMap[x][y]);
+			for (final Room[] element : subMap)
+				for(int y=0;y<element.length;y++)
+					V.addElement(element[y]);
 		return V;
 	}
 	@Override
@@ -309,7 +307,7 @@ public class StdGrid extends StdRoom implements GridLocale
 				public Room next()
 				{
 					setRoom();
-					Room r = R;
+					final Room r = R;
 					y++;
 					R=null;
 					setRoom();
@@ -343,14 +341,14 @@ public class StdGrid extends StdRoom implements GridLocale
 		if((subMap!=null)&&(room.getGridParent()==this)&&(gridexits!=null))
 		for(int d=0;d<gridexits.size();d++)
 		{
-			WorldMap.CrossExit EX=gridexits.elementAt(d);
+			final WorldMap.CrossExit EX=gridexits.elementAt(d);
 			try
 			{
 				if((EX.out)&&(EX.dir==dir)
 				&&(EX.x>=0)&&(EX.y>=0)&&(EX.x<xGridSize())&&(EX.y<yGridSize())
 				&&(subMap[EX.x][EX.y]==room))
 				{
-					Room R=CMLib.map().getRoom(EX.destRoomID);
+					final Room R=CMLib.map().getRoom(EX.destRoomID);
 					if(R!=null)
 					{
 						if(R.getGridParent()!=null)
@@ -358,7 +356,7 @@ public class StdGrid extends StdRoom implements GridLocale
 						return R;
 					}
 				}
-			}catch(Exception e){}
+			}catch(final Exception e){}
 		}
 		return defaultRoom;
 	}
@@ -367,7 +365,7 @@ public class StdGrid extends StdRoom implements GridLocale
 	{
 		if(loc==null) return;
 		if(room==null) return;
-		int opCode=Directions.getOpDirectionCode(dirCode);
+		final int opCode=Directions.getOpDirectionCode(dirCode);
 		if(room.rawDoors()[dirCode]!=null)
 		{
 			if(room.rawDoors()[dirCode].getGridParent()==null)
@@ -394,7 +392,7 @@ public class StdGrid extends StdRoom implements GridLocale
 
 	protected int[] initCenterRoomXY(int dirCode)
 	{
-		int[] xy=new int[2];
+		final int[] xy=new int[2];
 		switch(dirCode)
 		{
 		case Directions.NORTHEAST:
@@ -440,7 +438,7 @@ public class StdGrid extends StdRoom implements GridLocale
 		if((XY_ADJUSTMENT_CHART!=null)&&(dirCode<XY_ADJUSTMENT_CHART.length))
 			return XY_ADJUSTMENT_CHART[dirCode];
 
-		int[][] xy=new int[Directions.NUM_DIRECTIONS()][2];
+		final int[][] xy=new int[Directions.NUM_DIRECTIONS()][2];
 		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 		{
 			switch(d)
@@ -471,10 +469,10 @@ public class StdGrid extends StdRoom implements GridLocale
 
 	protected Room findCenterRoom(int dirCode)
 	{
-		int[] xy=initCenterRoomXY(dirCode);
-		int[] adjXY=initCenterRoomAdjustsXY(dirCode);
+		final int[] xy=initCenterRoomXY(dirCode);
+		final int[] adjXY=initCenterRoomAdjustsXY(dirCode);
 
-		Room returnRoom=null;
+		final Room returnRoom=null;
 		int xadjust=0;
 		int yadjust=0;
 		boolean moveAndCheckAgain=true;
@@ -489,7 +487,7 @@ public class StdGrid extends StdRoom implements GridLocale
 				{
 					if(subMap[xy[0]-xadjust][xy[1]-yadjust]!=null)
 						return subMap[xy[0]-xadjust][xy[1]-yadjust];
-				}catch(Exception e){}
+				}catch(final Exception e){}
 			}
 
 			if(((xy[0]+xadjust)<xGridSize())&&((xy[1]+yadjust)<yGridSize()))
@@ -499,7 +497,7 @@ public class StdGrid extends StdRoom implements GridLocale
 				{
 					if(subMap[xy[0]+xadjust][xy[1]+yadjust]!=null)
 						return subMap[xy[0]+xadjust][xy[1]+yadjust];
-				}catch(Exception e){}
+				}catch(final Exception e){}
 			}
 			if(moveAndCheckAgain)
 			{
@@ -512,11 +510,11 @@ public class StdGrid extends StdRoom implements GridLocale
 
 	protected void buildFinalLinks()
 	{
-		Exit ox=CMClass.getExit("Open");
+		final Exit ox=CMClass.getExit("Open");
 		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 		{
 			if(d==Directions.GATE) continue;
-			Room dirRoom=rawDoors()[d];
+			final Room dirRoom=rawDoors()[d];
 			Exit dirExit=getRawExit(d);
 			if((dirExit==null)||(dirExit.hasADoor()))
 				dirExit=ox;
@@ -527,12 +525,12 @@ public class StdGrid extends StdRoom implements GridLocale
 				switch(d)
 				{
 					case Directions.NORTH:
-						for(int x=0;x<subMap.length;x++)
-							linkRoom(subMap[x][0],dirRoom,d,dirExit,altExit);
+					for (final Room[] element : subMap)
+						linkRoom(element[0],dirRoom,d,dirExit,altExit);
 						break;
 					case Directions.SOUTH:
-						for(int x=0;x<subMap.length;x++)
-							linkRoom(subMap[x][subMap[x].length-1],dirRoom,d,dirExit,altExit);
+					for (final Room[] element : subMap)
+						linkRoom(element[element.length-1],dirRoom,d,dirExit,altExit);
 						break;
 					case Directions.NORTHEAST:
 						linkRoom(subMap[subMap.length-1][0],dirRoom,d,dirExit,altExit);
@@ -555,14 +553,14 @@ public class StdGrid extends StdRoom implements GridLocale
 							linkRoom(subMap[0][y],dirRoom,d,dirExit,altExit);
 						break;
 					case Directions.UP:
-						for(int x=0;x<subMap.length;x++)
-							for(int y=0;y<subMap[x].length;y++)
-								linkRoom(subMap[x][y],dirRoom,d,dirExit,altExit);
+					for (final Room[] element : subMap)
+						for(int y=0;y<element.length;y++)
+							linkRoom(element[y],dirRoom,d,dirExit,altExit);
 						break;
 					case Directions.DOWN:
-						for(int x=0;x<subMap.length;x++)
-							for(int y=0;y<subMap[x].length;y++)
-								linkRoom(subMap[x][y],dirRoom,d,dirExit,altExit);
+					for (final Room[] element : subMap)
+						for(int y=0;y<element.length;y++)
+							linkRoom(element[y],dirRoom,d,dirExit,altExit);
 						break;
 				}
 			}
@@ -594,7 +592,7 @@ public class StdGrid extends StdRoom implements GridLocale
 		if(subMap!=null)
 		for(int d=0;d<gridexits.size();d++)
 		{
-			WorldMap.CrossExit EX=gridexits.elementAt(d);
+			final WorldMap.CrossExit EX=gridexits.elementAt(d);
 			try
 			{
 				if(EX.out)
@@ -633,7 +631,7 @@ public class StdGrid extends StdRoom implements GridLocale
 						tryFillInExtraneousExternal(EX,ox);
 					break;
 				}
-			}catch(Exception e){}
+			}catch(final Exception e){}
 		}
 	}
 
@@ -644,11 +642,11 @@ public class StdGrid extends StdRoom implements GridLocale
 		try
 		{
 			subMap=new Room[xsize][ysize];
-			Exit ox=CMClass.getExit("Open");
+			final Exit ox=CMClass.getExit("Open");
 			for(int x=0;x<subMap.length;x++)
 				for(int y=0;y<subMap[x].length;y++)
 				{
-					Room newRoom=getGridRoom(x,y);
+					final Room newRoom=getGridRoom(x,y);
 					if(newRoom!=null)
 					{
 						if((y>0)&&(subMap[x][y-1]!=null))
@@ -667,7 +665,7 @@ public class StdGrid extends StdRoom implements GridLocale
 			buildFinalLinks();
 			fillInTheExtraneousExternals(subMap,ox);
 		}
-		catch(Exception e)
+		catch(final Exception e)
 		{
 			Log.errOut("StdGrid",e);
 			clearGrid(null);
@@ -676,14 +674,14 @@ public class StdGrid extends StdRoom implements GridLocale
 	@Override
 	public boolean isMyGridChild(Room loc)
 	{
-		Room[][] subMap=getBuiltGrid();
+		final Room[][] subMap=getBuiltGrid();
 		if(subMap!=null)
-		for(int x=0;x<subMap.length;x++)
-			for(int y=0;y<subMap[x].length;y++)
-			{
-				Room room=subMap[x][y];
-				if(room==loc) return true;
-			}
+			for (final Room[] element : subMap)
+				for(int y=0;y<element.length;y++)
+				{
+					final Room room=element[y];
+					if(room==loc) return true;
+				}
 		return false;
 	}
 
@@ -693,73 +691,73 @@ public class StdGrid extends StdRoom implements GridLocale
 		try
 		{
 			if(subMap!=null)
-			for(int x=0;x<subMap.length;x++)
-				for(int y=0;y<subMap[x].length;y++)
-				{
-					Room room=subMap[x][y];
-					if(room!=null)
+				for (final Room[] element : subMap)
+					for(int y=0;y<element.length;y++)
 					{
-						while(room.numInhabitants()>0)
+						final Room room=element[y];
+						if(room!=null)
 						{
-							MOB M=room.fetchInhabitant(0);
-							if(M!=null)
+							while(room.numInhabitants()>0)
 							{
-								if(backHere!=null)
-									backHere.bringMobHere(M,false);
-								else
-								if((M.getStartRoom()==null)
-								||(M.getStartRoom()==room)
-								||(M.getStartRoom().ID().length()==0))
+								final MOB M=room.fetchInhabitant(0);
+								if(M!=null)
 								{
-									if(!M.isMonster())
-										M.destroy();
-								}
-								else
-									M.getStartRoom().bringMobHere(M,false);
-								if(room.isInhabitant(M))
-								{
-									M.destroy();
-									M.setLocation(null);
-									if(room.isInhabitant(M))
-										room.delInhabitant(M);
-								}
-							}
-						}
-						while(room.numItems()>0)
-						{
-							Item I=room.getItem(0);
-							if(I!=null)
-							{
-								if(backHere!=null)
-									backHere.moveItemTo(I,ItemPossessor.Expire.Player_Drop,ItemPossessor.Move.Followers);
-								else
-									I.destroy();
-								if(room.isContent(I))
-								{
-									I.destroy();
-									if(room.isContent(I))
+									if(backHere!=null)
+										backHere.bringMobHere(M,false);
+									else
+									if((M.getStartRoom()==null)
+									||(M.getStartRoom()==room)
+									||(M.getStartRoom().ID().length()==0))
 									{
-										I.setOwner(null);
-										room.delItem(I);
+										if(!M.isMonster())
+											M.destroy();
+									}
+									else
+										M.getStartRoom().bringMobHere(M,false);
+									if(room.isInhabitant(M))
+									{
+										M.destroy();
+										M.setLocation(null);
+										if(room.isInhabitant(M))
+											room.delInhabitant(M);
 									}
 								}
 							}
+							while(room.numItems()>0)
+							{
+								final Item I=room.getItem(0);
+								if(I!=null)
+								{
+									if(backHere!=null)
+										backHere.moveItemTo(I,ItemPossessor.Expire.Player_Drop,ItemPossessor.Move.Followers);
+									else
+										I.destroy();
+									if(room.isContent(I))
+									{
+										I.destroy();
+										if(room.isContent(I))
+										{
+											I.setOwner(null);
+											room.delItem(I);
+										}
+									}
+								}
+							}
+							room.clearSky();
+							room.destroy();
+							room.setGridParent(null);
 						}
-						room.clearSky();
-						room.destroy();
-						room.setGridParent(null);
 					}
-				}
 			subMap=null;
 		}
-		catch(Exception e){}
+		catch(final Exception e){}
 	}
 
 	@Override
 	public String getGridChildCode(Room loc)
 	{
 		if(roomID().length()==0) return "";
-		Room[][] subMap=getBuiltGrid();
+		final Room[][] subMap=getBuiltGrid();
 		if(subMap!=null)
 		for(int x=0;x<subMap.length;x++)
 			for(int y=0;y<subMap[x].length;y++)
@@ -772,7 +770,7 @@ public class StdGrid extends StdRoom implements GridLocale
 	public int getGridChildX(Room loc)
 	{
 		if(roomID().length()==0) return -1;
-		Room[][] subMap=getBuiltGrid();
+		final Room[][] subMap=getBuiltGrid();
 		if(subMap!=null)
 		for(int x=0;x<subMap.length;x++)
 			for(int y=0;y<subMap[x].length;y++)
@@ -784,12 +782,12 @@ public class StdGrid extends StdRoom implements GridLocale
 	public int getGridChildY(Room loc)
 	{
 		if(roomID().length()==0) return -1;
-		Room[][] subMap=getBuiltGrid();
+		final Room[][] subMap=getBuiltGrid();
 		if(subMap!=null)
-		for(int x=0;x<subMap.length;x++)
-			for(int y=0;y<subMap[x].length;y++)
-				if(subMap[x][y]==loc)
-					return y;
+			for (final Room[] element : subMap)
+				for(int y=0;y<element.length;y++)
+					if(element[y]==loc)
+						return y;
 		return -1;
 	}
 	@Override
@@ -799,12 +797,12 @@ public class StdGrid extends StdRoom implements GridLocale
 			return this;
 		if(!childCode.toUpperCase().startsWith(roomID().toUpperCase()+"#("))
 			return null;
-		int len=roomID().length()+2;
-		int comma=childCode.indexOf(',',len);
+		final int len=roomID().length()+2;
+		final int comma=childCode.indexOf(',',len);
 		if(comma<0) return null;
-		Room[][] subMap=getBuiltGrid();
-		int x=CMath.s_int(childCode.substring(len,comma));
-		int y=CMath.s_int(childCode.substring(comma+1,childCode.length()-1));
+		final Room[][] subMap=getBuiltGrid();
+		final int x=CMath.s_int(childCode.substring(len,comma));
+		final int y=CMath.s_int(childCode.substring(comma+1,childCode.length()-1));
 		if(subMap!=null)
 		if((x<subMap.length)&&(y<subMap[x].length))
 			return subMap[x][y];
@@ -826,7 +824,7 @@ public class StdGrid extends StdRoom implements GridLocale
 	{
 		if(subMap==null) subMap=new Room[xsize][ysize];
 		if((x<0)||(y<0)||(y>=subMap[0].length)||(x>=subMap.length)) return null;
-		Room gc=CMClass.getLocale(getGridChildLocaleID());
+		final Room gc=CMClass.getLocale(getGridChildLocaleID());
 		gc.setRoomID("");
 		gc.setGridParent(this);
 		subMap[x][y]=gc;
@@ -851,7 +849,7 @@ public class StdGrid extends StdRoom implements GridLocale
 		for(final Enumeration<Ability> a=effects();a.hasMoreElements();)
 			gc.addEffect((Ability)a.nextElement().copyOf());
 		if(behaviors != null)
-			for(Behavior B : behaviors)
+			for(final Behavior B : behaviors)
 				gc.addBehavior((Behavior)B.copyOf());
 		return gc;
 	}
@@ -865,7 +863,7 @@ public class StdGrid extends StdRoom implements GridLocale
 		if((msg.targetMinor()==CMMsg.TYP_ENTER)
 		&&(msg.target()==this))
 		{
-			MOB mob=msg.source();
+			final MOB mob=msg.source();
 			if((mob.location()!=null)&&(mob.location().roomID().length()>0))
 			{
 				int direction=-1;

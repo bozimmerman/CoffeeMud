@@ -67,8 +67,8 @@ public class SipletInterface extends StdWebMacro
 	private class PipeSocket extends Socket
 	{
 		private boolean 			isClosed = false;
-		private PipedInputStream 	inStream = new PipedInputStream();
-		private PipedOutputStream 	outStream= new PipedOutputStream();
+		private final PipedInputStream 	inStream = new PipedInputStream();
+		private final PipedOutputStream 	outStream= new PipedOutputStream();
 		private InetAddress			addr=null;
 		private PipeSocket 			friendPipe=null;
 		public PipeSocket(InetAddress addr, PipeSocket pipeLocal) throws IOException
@@ -134,7 +134,7 @@ public class SipletInterface extends StdWebMacro
 					{
 						for(final String key : siplets.keySet())
 						{
-							SipletSession p = siplets.get(key);
+							final SipletSession p = siplets.get(key);
 							if((p!=null)&&((System.currentTimeMillis()-p.lastTouched)>(2 * 60 * 1000)))
 							{
 								p.siplet.disconnectFromURL();
@@ -161,28 +161,28 @@ public class SipletInterface extends StdWebMacro
 
 		if(httpReq.isUrlParameter("CONNECT"))
 		{
-			String url=httpReq.getUrlParameter("URL");
-			int port=CMath.s_int(httpReq.getUrlParameter("PORT"));
+			final String url=httpReq.getUrlParameter("URL");
+			final int port=CMath.s_int(httpReq.getUrlParameter("PORT"));
 			String hex="";
-			Siplet sip = new Siplet();
+			final Siplet sip = new Siplet();
 			boolean success=false;
 			if(url!=null)
 			{
 				sip.init();
 				synchronized(sipletConnectSync)
 				{
-					for(MudHost h : CMLib.hosts())
+					for(final MudHost h : CMLib.hosts())
 						if(h.getPort()==port)
 						{
 							try
 							{
-								PipeSocket lsock=new PipeSocket(httpReq.getClientAddress(),null);
-								PipeSocket rsock=new PipeSocket(httpReq.getClientAddress(),lsock);
+								final PipeSocket lsock=new PipeSocket(httpReq.getClientAddress(),null);
+								final PipeSocket rsock=new PipeSocket(httpReq.getClientAddress(),lsock);
 								success=sip.connectToURL(url, port,lsock);
 								sip.setFeatures(true, Siplet.MSPStatus.External, false);
 								h.acceptConnection(rsock);
 							}
-							catch(IOException e)
+							catch(final IOException e)
 							{
 								success=false;
 							}
@@ -211,11 +211,11 @@ public class SipletInterface extends StdWebMacro
 		else
 		if(httpReq.isUrlParameter("DISCONNECT"))
 		{
-			String token=httpReq.getUrlParameter("TOKEN");
+			final String token=httpReq.getUrlParameter("TOKEN");
 			boolean success = false;
 			if(token != null)
 			{
-				SipletSession p = siplets.get(token);
+				final SipletSession p = siplets.get(token);
 				if(p!=null)
 				{
 					siplets.remove(token);
@@ -228,11 +228,11 @@ public class SipletInterface extends StdWebMacro
 		else
 		if(httpReq.isUrlParameter("SENDDATA"))
 		{
-			String token=httpReq.getUrlParameter("TOKEN");
+			final String token=httpReq.getUrlParameter("TOKEN");
 			boolean success = false;
 			if(token != null)
 			{
-				SipletSession p = siplets.get(token);
+				final SipletSession p = siplets.get(token);
 				if(p!=null)
 				{
 					String data=httpReq.getUrlParameter("DATA");

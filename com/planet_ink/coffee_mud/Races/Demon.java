@@ -41,8 +41,8 @@ public class Demon extends Unique
 	@Override public int lightestWeight(){return 100;}
 	@Override public int weightVariance(){return 100;}
 	@Override public long forbiddenWornBits(){return 0;}
-	private String[]culturalAbilityNames={"Undercommon"};
-	private int[]culturalAbilityProficiencies={25};
+	private final String[]culturalAbilityNames={"Undercommon"};
+	private final int[]culturalAbilityProficiencies={25};
 	@Override public String[] culturalAbilityNames(){return culturalAbilityNames;}
 	@Override public int[] culturalAbilityProficiencies(){return culturalAbilityProficiencies;}
 

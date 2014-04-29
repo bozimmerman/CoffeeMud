@@ -59,20 +59,20 @@ public class Prayer_Rot extends Prayer
 				((Decayable)host).setDecayTime(0);
 				if(host instanceof Physical)
 				{
-					Ability A=((Physical)host).fetchEffect("Poison_Rotten");
+					final Ability A=((Physical)host).fetchEffect("Poison_Rotten");
 					if(A!=null) ((Physical)host).delEffect(A);
 				}
 			}
 			else
 			if(host instanceof Container)
 			{
-				List<Item> V=((Container)host).getContents();
+				final List<Item> V=((Container)host).getContents();
 				for(int f=0;f<V.size();f++)
 					if(V.get(f) != null)
 					{
 						if(V.get(f) instanceof Decayable)
 							((Decayable)V.get(f)).setDecayTime(0);
-						Ability A=V.get(f).fetchEffect("Poison_Rotten");
+						final Ability A=V.get(f).fetchEffect("Poison_Rotten");
 						if(A!=null) V.get(f).delEffect(A);
 					}
 			}
@@ -168,7 +168,7 @@ public class Prayer_Rot extends Prayer
 		{
 			if(I.fetchEffect("Poison_Rotten")==null)
 			{
-				Ability A=CMClass.getAbility("Poison_Rotten");
+				final Ability A=CMClass.getAbility("Poison_Rotten");
 				if(A!=null) I.addNonUninvokableEffect(A);
 			}
 			if(I instanceof Food)
@@ -191,7 +191,7 @@ public class Prayer_Rot extends Prayer
 			else
 			if(host instanceof Container)
 			{
-				List<Item> V=((Container)host).getContents();
+				final List<Item> V=((Container)host).getContents();
 				for(int v=0;v<V.size();v++)
 					if(V.get(v) != null)
 						setRot(V.get(v));
@@ -203,7 +203,7 @@ public class Prayer_Rot extends Prayer
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		Item target=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_UNWORNONLY);
+		final Item target=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_UNWORNONLY);
 		if(target==null) return false;
 
 		if((!(target instanceof Food))
@@ -216,7 +216,7 @@ public class Prayer_Rot extends Prayer
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
@@ -224,7 +224,7 @@ public class Prayer_Rot extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),
 									auto?"":"^S<S-NAME> rot <T-NAMESELF>"+inTheNameOf(mob)+".^?",
 									auto?"":"^S<S-NAME> rots <T-NAMESELF>"+inTheNameOf(mob)+".^?",
 									auto?"":"^S<S-NAME> rots <T-NAMESELF>"+inTheNameOf(mob)+".^?");
@@ -237,7 +237,7 @@ public class Prayer_Rot extends Prayer
 					((Drink)target).setLiquidType(RawMaterial.RESOURCE_SALTWATER);
 					doneSomething=true;
 				}
-				Ability A=CMClass.getAbility("Poison_Rotten");
+				final Ability A=CMClass.getAbility("Poison_Rotten");
 				if(A!=null) target.addNonUninvokableEffect(A);
 				if((target instanceof Pill)
 				&&(!((Pill)target).getSpellList().equals("Prayer_DrunkenStupor")))

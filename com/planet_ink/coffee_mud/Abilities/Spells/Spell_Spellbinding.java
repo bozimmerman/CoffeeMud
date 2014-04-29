@@ -48,7 +48,7 @@ public class Spell_Spellbinding extends Spell
 	{
 		if(spellbindings.size()==0)
 			return "";
-		StringBuffer bindings=new StringBuffer("");
+		final StringBuffer bindings=new StringBuffer("");
 		for(int i=0;i<spellbindings.size();i++)
 			bindings.append(" "+((String)spellbindings.elementAt(i,1)));
 		return "(Bindings: "+bindings.toString()+")";
@@ -69,7 +69,7 @@ public class Spell_Spellbinding extends Spell
 		int total=0;
 		for(int i=0;i<spellbindings.size();i++)
 		{
-			DVector V=(DVector)spellbindings.elementAt(i,2);
+			final DVector V=(DVector)spellbindings.elementAt(i,2);
 			for(int x=0;x<V.size();x++)
 				total+=((Integer)V.elementAt(x,2)).intValue();
 		}
@@ -87,11 +87,11 @@ public class Spell_Spellbinding extends Spell
 			return super.text();
 		try
 		{
-			ByteArrayOutputStream bytes=new ByteArrayOutputStream();
+			final ByteArrayOutputStream bytes=new ByteArrayOutputStream();
 			new ObjectOutputStream(bytes).writeObject(spellbindings);
 			return CMParms.toSemicolonList(bytes.toByteArray())+";";
 		}
-		catch(Exception e)
+		catch(final Exception e)
 		{
 			Log.errOut("Spell_Spellbinding","Spell bindings are corrupt for "+((affected!=null)?affected.Name():"someone")+".");
 		}
@@ -107,10 +107,10 @@ public class Spell_Spellbinding extends Spell
 		{
 			try
 			{
-				ByteArrayInputStream bytes=new ByteArrayInputStream(CMParms.fromByteList(text));
+				final ByteArrayInputStream bytes=new ByteArrayInputStream(CMParms.fromByteList(text));
 				spellbindings=(DVector)new ObjectInputStream(bytes).readObject();
 			}
-			catch(Exception e)
+			catch(final Exception e)
 			{
 				Log.errOut("Spell_Spellbinding",e);
 			}
@@ -125,14 +125,14 @@ public class Spell_Spellbinding extends Spell
 		&&(msg.sourceMessage()!=null)
 		&&(msg.sourceMessage().length()>0))
 		{
-			String s=CMStrings.getSayFromMessage(msg.sourceMessage());
+			final String s=CMStrings.getSayFromMessage(msg.sourceMessage());
 			for(int v=0;v<spellbindings.size();v++)
 				if(((String)spellbindings.elementAt(v,1)).equalsIgnoreCase(s))
 				{
 					boolean alreadyWanding=false;
 					final List<CMMsg> trailers =msg.trailerMsgs();
 					if(trailers!=null)
-						for(CMMsg msg2 : trailers)
+						for(final CMMsg msg2 : trailers)
 							if(msg2.targetMinor()==CMMsg.TYP_WAND_USE)
 								alreadyWanding=true;
 					if(!alreadyWanding)
@@ -146,15 +146,15 @@ public class Spell_Spellbinding extends Spell
 		&&(msg.sourceMessage()!=null)
 		&&(msg.sourceMessage().length()>0))
 		{
-			String s=CMStrings.getSayFromMessage(msg.sourceMessage());
+			final String s=CMStrings.getSayFromMessage(msg.sourceMessage());
 			for(int v=spellbindings.size()-1;v>=0;v--)
 				if(((String)spellbindings.elementAt(v,1)).equalsIgnoreCase(s))
 				{
-					DVector V2=(DVector)spellbindings.elementAt(v,2);
+					final DVector V2=(DVector)spellbindings.elementAt(v,2);
 					for(int v2=0;v2<V2.size();v2++)
 					{
-						Ability A=msg.source().fetchAbility((String)V2.elementAt(v2,1));
-						int curMana=msg.source().curState().getMana();
+						final Ability A=msg.source().fetchAbility((String)V2.elementAt(v2,1));
+						final int curMana=msg.source().curState().getMana();
 						msg.source().curState().setMana(1000);
 						if(msg.target()!=null)
 							A.invoke(msg.source(),CMParms.parse(msg.target().Name()),null,false,0);
@@ -181,17 +181,17 @@ public class Spell_Spellbinding extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		MOB target = mob;
+		final MOB target = mob;
 		Spell_Spellbinding priorBinding=(Spell_Spellbinding)target.fetchEffect(ID());
 		if(commands.size()<2)
 		{
 			mob.tell("You must specify your trigger word, followed by a list of spells, seperated by spaces.");
 			return false;
 		}
-		String key=(String)commands.elementAt(0);
+		final String key=(String)commands.elementAt(0);
 		commands.removeElementAt(0);
-		String combined=CMParms.combine(commands,0);
-		DVector V=new DVector(2);
+		final String combined=CMParms.combine(commands,0);
+		final DVector V=new DVector(2);
 		Ability A=mob.fetchAbility(combined);
 		if(A!=null)
 		{
@@ -223,7 +223,7 @@ public class Spell_Spellbinding extends Spell
 		for(int v=0;v<V.size();v++)
 			totalcost+=((Integer)V.elementAt(v,2)).intValue();
 		totalcost=(totalcost+COST_STATIC)*V.size();
-		int curMana=mob.curState().getMana();
+		final int curMana=mob.curState().getMana();
 		if(curMana<totalcost)
 		{
 			mob.tell("You need "+totalcost+" mana to bind those spells.");
@@ -250,7 +250,7 @@ public class Spell_Spellbinding extends Spell
 					return false;
 				}
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(mob.curState().getMana()>(curMana-totalcost))
 			mob.curState().setMana(curMana-totalcost);
@@ -262,7 +262,7 @@ public class Spell_Spellbinding extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 
-			CMMsg msg = CMClass.getMsg(mob, null, this, verbalCastCode(mob,target,auto),(auto?"":"^S<S-NAME> shout(s) the magic of spellbinding!^?"));
+			final CMMsg msg = CMClass.getMsg(mob, null, this, verbalCastCode(mob,target,auto),(auto?"":"^S<S-NAME> shout(s) the magic of spellbinding!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

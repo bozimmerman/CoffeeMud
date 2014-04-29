@@ -66,7 +66,7 @@ public class StdLawBook extends StdItem
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
-		MOB mob=msg.source();
+		final MOB mob=msg.source();
 		if(msg.amITarget(this))
 		switch(msg.targetMinor())
 		{
@@ -76,16 +76,16 @@ public class StdLawBook extends StdItem
 			else
 			if(!mob.isMonster())
 			{
-				Area A=CMLib.map().getArea(readableText());
-				LegalBehavior B=CMLib.law().getLegalBehavior(A);
+				final Area A=CMLib.map().getArea(readableText());
+				final LegalBehavior B=CMLib.law().getLegalBehavior(A);
 				if(B==null)
 				{
 					msg.source().tell("The pages appear blank, and damaged.");
 					return;
 				}
 
-				Area A2=CMLib.law().getLegalObject(A);
-				Law theLaw=B.legalInfo(A2);
+				final Area A2=CMLib.law().getLegalObject(A);
+				final Law theLaw=B.legalInfo(A2);
 				if(theLaw==null)
 				{
 					msg.source().tell("There is no law here.");
@@ -99,12 +99,12 @@ public class StdLawBook extends StdItem
 				boolean allowedToModify=(CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.ABOVELAW));
 				if(A.getMetroMap().hasMoreElements())
 					allowedToModify=(CMSecurity.isAllowed(mob,(A.getMetroMap().nextElement()),CMSecurity.SecFlag.ABOVELAW));
-				String rulingClan=B.rulingOrganization();
+				final String rulingClan=B.rulingOrganization();
 				if((!allowedToModify)
 				&&(rulingClan.length()>0)
 				&&(mob.getClanRole(rulingClan)!=null))
 				{
-					Clan C=CMLib.clans().getClan(rulingClan);
+					final Clan C=CMLib.clans().getClan(rulingClan);
 					if((C!=null)&&(C.getAuthority(mob.getClanRole(rulingClan).second.intValue(),Clan.Function.ORDER_CONQUERED)==Clan.Authority.CAN_DO))
 						allowedToModify=true;
 				}
@@ -118,7 +118,7 @@ public class StdLawBook extends StdItem
 					{
 						if(mob.session()!=null)
 						{
-							StringBuffer str=new StringBuffer();
+							final StringBuffer str=new StringBuffer();
 							str.append("^HLaws of "+A.name()+"^?\n\r\n\r");
 							str.append(getFromTOC("TOC"));
 							mob.session().colorOnlyPrintln(str.toString());
@@ -144,7 +144,7 @@ public class StdLawBook extends StdItem
 					case 12: doBannedSubstances(A,B,theLaw,mob,allowedToModify); break;
 					}
 				}
-				catch(Exception e)
+				catch(final Exception e)
 				{
 					Log.errOut("LawBook",e);
 				}
@@ -153,8 +153,8 @@ public class StdLawBook extends StdItem
 		case CMMsg.TYP_WRITE:
 			try
 			{
-				Area A=CMLib.map().getArea(readableText());
-				Area A2=CMLib.law().getLegalObject(A);
+				final Area A=CMLib.map().getArea(readableText());
+				final Area A2=CMLib.law().getLegalObject(A);
 				if(A2==null)
 				{
 					msg.source().tell("The pages appear blank, and too damaged to write on.");
@@ -162,7 +162,7 @@ public class StdLawBook extends StdItem
 				}
 				return;
 			}
-			catch(Exception e)
+			catch(final Exception e)
 			{
 				Log.errOut("LawBook",e);
 			}
@@ -182,11 +182,11 @@ public class StdLawBook extends StdItem
 				lawProps.load(new ByteArrayInputStream(new CMFile("resources/lawtoc.ini",null).raw()));
 				Resources.submitResource("LAWBOOKTOC",lawProps);
 			}
-			String s=(String)lawProps.get(tag);
+			final String s=(String)lawProps.get(tag);
 			if(s==null) return "\n\r";
 			return s+"\n\r";
 		}
-		catch(Exception e)
+		catch(final Exception e)
 		{
 			Log.errOut("LawBook",e);
 		}
@@ -208,7 +208,7 @@ public class StdLawBook extends StdItem
 	{
 		if((bits==null)||(bits.length<Law.BIT_NUMBITS))
 			return "Not illegal.";
-		String flags=bits[Law.BIT_CRIMEFLAGS]+" "+bits[Law.BIT_CRIMELOCS].trim();
+		final String flags=bits[Law.BIT_CRIMEFLAGS]+" "+bits[Law.BIT_CRIMELOCS].trim();
 		return CMStrings.padRight(bits[Law.BIT_CRIMENAME],19)+" "
 			   +CMStrings.padRight(((flags.length()==0)?"":flags),24)+" "
 			   +bits[Law.BIT_SENTENCE];
@@ -259,7 +259,7 @@ public class StdLawBook extends StdItem
 
 		while((mob.session()!=null)&&(!mob.session().isStopped()))
 		{
-			StringBuffer str=new StringBuffer("Modify Law: "+oldLaw[Law.BIT_CRIMENAME]+"\n\r\n\r");
+			final StringBuffer str=new StringBuffer("Modify Law: "+oldLaw[Law.BIT_CRIMENAME]+"\n\r\n\r");
 			str.append("1. Name          : "+oldLaw[Law.BIT_CRIMENAME]+"\n\r");
 			str.append("2. Flags         : "+oldLaw[Law.BIT_CRIMEFLAGS]+"\n\r");
 			str.append("3. Locations mask: "+oldLaw[Law.BIT_CRIMELOCS]+"\n\r");
@@ -267,8 +267,8 @@ public class StdLawBook extends StdItem
 			str.append("5. Justification : "+oldLaw[Law.BIT_WARNMSG]+"\n\r");
 			str.append("6. DELETE THIS CRIME\n\r");
 			mob.session().colorOnlyPrintln(str.toString());
-			String s=mob.session().choose("Enter a number to modify or RETURN: ","123456\n","\n");
-			int x=CMath.s_int(s);
+			final String s=mob.session().choose("Enter a number to modify or RETURN: ","123456\n","\n");
+			final int x=CMath.s_int(s);
 			if(x==0) return oldLaw;
 			oldLaw=oldLaw.clone();
 			switch(x)
@@ -286,21 +286,20 @@ public class StdLawBook extends StdItem
 			case 4:
 				{
 					StringBuffer msg=new StringBuffer("Sentences ( ");
-					for(int i=0;i<Law.PUNISHMENT_DESCS.length;i++)
+					for (final String sentence : Law.PUNISHMENT_DESCS)
 					{
-						String sentence=Law.PUNISHMENT_DESCS[i];
 						msg.append(sentence.toLowerCase()+" ");
 					}
 					String oldSentence="";
-					Vector<String> V=CMParms.parse(oldLaw[Law.BIT_SENTENCE]);
-					DVector V2=new DVector(2);
+					final Vector<String> V=CMParms.parse(oldLaw[Law.BIT_SENTENCE]);
+					final DVector V2=new DVector(2);
 					for(int v=0;v<V.size();v++)
 					{
-						String t=V.elementAt(v);
+						final String t=V.elementAt(v);
 						boolean sent=false;
-						for(int i=0;i<Law.PUNISHMENT_DESCS.length;i++)
+						for (final String element : Law.PUNISHMENT_DESCS)
 						{
-							if(Law.PUNISHMENT_DESCS[i].startsWith(t.toUpperCase()))
+							if(element.startsWith(t.toUpperCase()))
 							{
 								oldSentence=t.toLowerCase();
 								sent=true;
@@ -310,15 +309,15 @@ public class StdLawBook extends StdItem
 						}
 						if(!sent)
 						{
-							for(int i=0;i<Law.PUNISHMENTMASK_DESCS.length;i++)
+							for (final String element : Law.PUNISHMENTMASK_DESCS)
 							{
-								if(t.toUpperCase().startsWith(Law.PUNISHMENTMASK_DESCS[i]))
+								if(t.toUpperCase().startsWith(element))
 								{
-									int x1=t.indexOf('=');
+									final int x1=t.indexOf('=');
 									if(x1>0)
-										V2.addElement(Law.PUNISHMENTMASK_DESCS[i].toLowerCase(),t.substring(x1+1));
+										V2.addElement(element.toLowerCase(),t.substring(x1+1));
 									else
-										V2.addElement(Law.PUNISHMENTMASK_DESCS[i].toLowerCase(),"");
+										V2.addElement(element.toLowerCase(),"");
 									break;
 								}
 							}
@@ -326,12 +325,12 @@ public class StdLawBook extends StdItem
 					}
 					msg.append("\n\rSelect a sentence ("+oldSentence+"): ");
 					String t=mob.session().prompt(msg.toString(),oldSentence);
-					for(int i=0;i<Law.PUNISHMENT_DESCS.length;i++)
+					for (final String element : Law.PUNISHMENT_DESCS)
 					{
-						if(Law.PUNISHMENT_DESCS[i].startsWith(t.toUpperCase()))
+						if(element.startsWith(t.toUpperCase()))
 						{
-							int x1=V2.indexOf(oldSentence);
-							oldSentence=Law.PUNISHMENT_DESCS[i].toLowerCase();
+							final int x1=V2.indexOf(oldSentence);
+							oldSentence=element.toLowerCase();
 							V2.setElementAt(x1,1,oldSentence);
 							V2.setElementAt(x1,2,"");
 							t=null;
@@ -343,13 +342,13 @@ public class StdLawBook extends StdItem
 						while(t==null)
 						{
 							msg=new StringBuffer("Sentence Flags ( ");
-							for(int i=0;i<Law.PUNISHMENTMASK_DESCS.length;i++)
+							for (final String element : Law.PUNISHMENTMASK_DESCS)
 							{
-								String sentence=Law.PUNISHMENTMASK_DESCS[i];
+								String sentence=element;
 								if(sentence.indexOf('=')>0) sentence=sentence.substring(0,sentence.indexOf('='));
 								msg.append(sentence.toLowerCase()+" ");
 							}
-							StringBuffer oldFlags=new StringBuffer("");
+							final StringBuffer oldFlags=new StringBuffer("");
 							for(int v=0;v<V2.size();v++)
 							{
 								t=(String)V2.elementAt(v,1);
@@ -393,7 +392,7 @@ public class StdLawBook extends StdItem
 										else
 										if(mob.session().confirm("Add this room as a new detention center room (y/N)? ","N"))
 										{
-											String time=mob.session().prompt("Enter the amount of time before they are released: ","");
+											final String time=mob.session().prompt("Enter the amount of time before they are released: ","");
 											if((time.length()==0)||(!CMath.isInteger(time))||(CMath.s_int(time)<0)||(CMath.s_int(time)>10000))
 											{
 												mob.tell("Invalid entry.  Aborted.");
@@ -407,7 +406,7 @@ public class StdLawBook extends StdItem
 										break;
 									case Law.PUNISHMENTMASK_FINE:
 									{
-										String fine=mob.session().prompt("Enter the amount of the fine in base-gold value: ","");
+										final String fine=mob.session().prompt("Enter the amount of the fine in base-gold value: ","");
 										if((fine.length()==0)||(!CMath.isNumber(fine))||(CMath.s_double(fine)<0)||(CMath.s_double(fine)>100000.0))
 										{
 											mob.tell("Invalid entry.  Aborted.");
@@ -430,11 +429,11 @@ public class StdLawBook extends StdItem
 							else
 								mob.tell("'"+t+"' is not a valid flag.  Unchanged.");
 						}
-						StringBuffer newSentence=new StringBuffer("");
+						final StringBuffer newSentence=new StringBuffer("");
 						for(int v2=0;v2<V2.size();v2++)
 						{
 							t=(String)V2.elementAt(v2,1);
-							String p=(String)V2.elementAt(v2,2);
+							final String p=(String)V2.elementAt(v2,2);
 							if(p.indexOf(' ')>0)
 								newSentence.append("\""+t+p+"\" ");
 							else
@@ -448,23 +447,23 @@ public class StdLawBook extends StdItem
 				break;
 			case 3:
 				{
-					StringBuffer s2=new StringBuffer("");
-					String oldVal=oldLaw[Law.BIT_CRIMELOCS].toUpperCase();
+					final StringBuffer s2=new StringBuffer("");
+					final String oldVal=oldLaw[Law.BIT_CRIMELOCS].toUpperCase();
 					String lastOle="";
 					boolean lastAnswer=false;
-					Vector allloca1=CMParms.parse(oldVal);
-					Vector allloca2=CMParms.parse(oldVal.toUpperCase());
-					for(int i=0;i<locflags.length;i++)
+					final Vector allloca1=CMParms.parse(oldVal);
+					final Vector allloca2=CMParms.parse(oldVal.toUpperCase());
+					for (final String[] locflag : locflags)
 					{
-						int dex=allloca2.indexOf(locflags[i][1].toUpperCase());
+						final int dex=allloca2.indexOf(locflag[1].toUpperCase());
 						if(dex>=0)
 						{
 							allloca1.removeElementAt(dex);
 							allloca2.removeElementAt(dex);
 						}
 						if(lastAnswer
-						&&((("!"+lastOle).equals(locflags[i][1]))
-							||(lastOle.equals("!"+locflags[i][1]))))
+						&&((("!"+lastOle).equals(locflag[1]))
+							||(lastOle.equals("!"+locflag[1]))))
 						{
 							lastAnswer=false;
 							lastOle="";
@@ -472,12 +471,12 @@ public class StdLawBook extends StdItem
 						}
 
 						boolean there=false;
-						if(oldVal.startsWith(locflags[i][1].toUpperCase())
-						||(oldVal.indexOf(" "+locflags[i][1].toUpperCase())>=0))
+						if(oldVal.startsWith(locflag[1].toUpperCase())
+						||(oldVal.indexOf(" "+locflag[1].toUpperCase())>=0))
 							there=true;
 						lastAnswer=false;
-						lastOle=locflags[i][1];
-						if(mob.session().confirm(locflags[i][0]
+						lastOle=locflag[1];
+						if(mob.session().confirm(locflag[0]
 												 +" "
 												 +(there?"(Y/n)":"(y/N)")
 												 +"?",
@@ -494,15 +493,15 @@ public class StdLawBook extends StdItem
 				}
 			case 2:
 				{
-					StringBuffer s2=new StringBuffer("");
-					String oldVal=oldLaw[Law.BIT_CRIMEFLAGS].toUpperCase();
+					final StringBuffer s2=new StringBuffer("");
+					final String oldVal=oldLaw[Law.BIT_CRIMEFLAGS].toUpperCase();
 					String lastOle="";
 					boolean lastAnswer=false;
-					for(int i=0;i<lawflags.length;i++)
+					for (final String[] lawflag : lawflags)
 					{
 						if(lastAnswer
-						&&((("!"+lastOle).equals(lawflags[i][1]))
-							||(lastOle.equals("!"+lawflags[i][1]))))
+						&&((("!"+lastOle).equals(lawflag[1]))
+							||(lastOle.equals("!"+lawflag[1]))))
 						{
 							lastAnswer=false;
 							lastOle="";
@@ -510,12 +509,12 @@ public class StdLawBook extends StdItem
 						}
 
 						boolean there=false;
-						if(oldVal.startsWith(lawflags[i][1].toUpperCase())
-						||(oldVal.indexOf(" "+lawflags[i][1].toUpperCase())>=0))
+						if(oldVal.startsWith(lawflag[1].toUpperCase())
+						||(oldVal.indexOf(" "+lawflag[1].toUpperCase())>=0))
 							there=true;
 						lastAnswer=false;
-						lastOle=lawflags[i][1];
-						if(mob.session().confirm(lawflags[i][0]
+						lastOle=lawflag[1];
+						if(mob.session().confirm(lawflag[0]
 												 +" "
 												 +(there?"(Y/n)":"(y/N)")
 												 +"?",
@@ -540,12 +539,12 @@ public class StdLawBook extends StdItem
 		mob.tell(getFromTOC("P10"+(theLaw.hasModifiableLaws()?"MOD":"")));
 		while((mob.session()!=null)&&(!mob.session().isStopped()))
 		{
-			StringBuffer str=new StringBuffer("");
+			final StringBuffer str=new StringBuffer("");
 			str.append(CMStrings.padRight("#  Words",20)+" "+shortLawHeader()+"\n\r");
 			for(int x=0;x<theLaw.otherCrimes().size();x++)
 			{
-				String crime=CMParms.combineWithQuotes(theLaw.otherCrimes().get(x),0);
-				String[] set=theLaw.otherBits().get(x);
+				final String crime=CMParms.combineWithQuotes(theLaw.otherCrimes().get(x),0);
+				final String[] set=theLaw.otherBits().get(x);
 				str.append(CMStrings.padRight(""+(x+1)+". "+crime,20)+" "+shortLawDesc(set)+"\n\r");
 			}
 			str.append("A. ADD A NEW ONE\n\r");
@@ -561,10 +560,10 @@ public class StdLawBook extends StdItem
 				s=mob.session().prompt("\n\rEnter some key words to make illegal: ","");
 				if(s.length()>0)
 				{
-					String[] newValue=modifyLaw(A,B,theLaw,mob,null);
+					final String[] newValue=modifyLaw(A,B,theLaw,mob,null);
 					if(newValue!=null)
 					{
-						StringBuffer s2=new StringBuffer(s+";");
+						final StringBuffer s2=new StringBuffer(s+";");
 						for(int i=0;i<newValue.length;i++)
 						{
 							s2.append(newValue[i]);
@@ -578,12 +577,12 @@ public class StdLawBook extends StdItem
 			}
 			else
 			{
-				int x=CMath.s_int(s);
+				final int x=CMath.s_int(s);
 				if((x>0)&&(x<=theLaw.otherCrimes().size()))
 				{
-					String[] crimeSet=theLaw.otherBits().get(x-1);
-					String[] oldLaw=crimeSet;
-					String[] newValue=modifyLaw(A,B,theLaw,mob,crimeSet);
+					final String[] crimeSet=theLaw.otherBits().get(x-1);
+					final String[] oldLaw=crimeSet;
+					final String[] newValue=modifyLaw(A,B,theLaw,mob,crimeSet);
 					if(newValue!=oldLaw)
 					{
 						if(newValue!=null)
@@ -593,12 +592,12 @@ public class StdLawBook extends StdItem
 							theLaw.otherCrimes().remove(x-1);
 							theLaw.otherBits().remove(x-1);
 						}
-						String[] newBits=new String[theLaw.otherBits().size()];
+						final String[] newBits=new String[theLaw.otherBits().size()];
 						for(int c=0;c<theLaw.otherCrimes().size();c++)
 						{
-							String crimeWords=CMParms.combineWithQuotes(theLaw.otherCrimes().get(c),0);
-							String[] thisLaw=theLaw.otherBits().get(c);
-							StringBuffer s2=new StringBuffer("");
+							final String crimeWords=CMParms.combineWithQuotes(theLaw.otherCrimes().get(c),0);
+							final String[] thisLaw=theLaw.otherBits().get(c);
+							final StringBuffer s2=new StringBuffer("");
 							for(int i=0;i<thisLaw.length;i++)
 							{
 								s2.append(thisLaw[i]);
@@ -629,12 +628,12 @@ public class StdLawBook extends StdItem
 		mob.tell(getFromTOC("P10"+(theLaw.hasModifiableLaws()?"MOD":"")));
 		while((mob.session()!=null)&&(!mob.session().isStopped()))
 		{
-			StringBuffer str=new StringBuffer("");
+			final StringBuffer str=new StringBuffer("");
 			str.append(CMStrings.padRight("#  Items",20)+" "+shortLawHeader()+"\n\r");
 			for(int x=0;x<theLaw.bannedSubstances().size();x++)
 			{
-				String crime=CMParms.combineWithQuotes(theLaw.bannedSubstances().get(x),0);
-				String[] set=theLaw.bannedBits().get(x);
+				final String crime=CMParms.combineWithQuotes(theLaw.bannedSubstances().get(x),0);
+				final String[] set=theLaw.bannedBits().get(x);
 				str.append(CMStrings.padRight(""+(x+1)+". "+crime,20)+" "+shortLawDesc(set)+"\n\r");
 			}
 			str.append("A. ADD A NEW ONE\n\r");
@@ -654,13 +653,13 @@ public class StdLawBook extends StdItem
 				if(s.length()>0)
 				{
 					s=s.toUpperCase();
-					boolean resource=RawMaterial.CODES.FIND_CaseSensitive(s)>=0;
+					final boolean resource=RawMaterial.CODES.FIND_CaseSensitive(s)>=0;
 					if(resource||mob.session().confirm("'"+s+"' is not a known resource.  Add as a key word anyway (y/N)?","N"))
 					{
-						String[] newValue=modifyLaw(A,B,theLaw,mob,null);
+						final String[] newValue=modifyLaw(A,B,theLaw,mob,null);
 						if(newValue!=null)
 						{
-							StringBuffer s2=new StringBuffer(s+";");
+							final StringBuffer s2=new StringBuffer(s+";");
 							for(int i=0;i<newValue.length;i++)
 							{
 								s2.append(newValue[i]);
@@ -675,12 +674,12 @@ public class StdLawBook extends StdItem
 			}
 			else
 			{
-				int x=CMath.s_int(s);
+				final int x=CMath.s_int(s);
 				if((x>0)&&(x<=theLaw.bannedSubstances().size()))
 				{
-					String[] crimeSet=theLaw.bannedBits().get(x-1);
-					String[] oldLaw=crimeSet;
-					String[] newValue=modifyLaw(A,B,theLaw,mob,crimeSet);
+					final String[] crimeSet=theLaw.bannedBits().get(x-1);
+					final String[] oldLaw=crimeSet;
+					final String[] newValue=modifyLaw(A,B,theLaw,mob,crimeSet);
 					if(newValue!=oldLaw)
 					{
 						if(newValue!=null)
@@ -690,12 +689,12 @@ public class StdLawBook extends StdItem
 							theLaw.bannedSubstances().remove(x-1);
 							theLaw.bannedBits().remove(x-1);
 						}
-						String[] newBits=new String[theLaw.bannedBits().size()];
+						final String[] newBits=new String[theLaw.bannedBits().size()];
 						for(int c=0;c<theLaw.bannedSubstances().size();c++)
 						{
-							String crimeWords=CMParms.combineWithQuotes(theLaw.bannedSubstances().get(c),0);
-							String[] thisLaw=theLaw.bannedBits().get(c);
-							StringBuffer s2=new StringBuffer("");
+							final String crimeWords=CMParms.combineWithQuotes(theLaw.bannedSubstances().get(c),0);
+							final String[] thisLaw=theLaw.bannedBits().get(c);
+							final StringBuffer s2=new StringBuffer("");
 							for(int i=0;i<thisLaw.length;i++)
 							{
 								s2.append(thisLaw[i]);
@@ -726,14 +725,14 @@ public class StdLawBook extends StdItem
 		mob.tell(getFromTOC("P9"+(theLaw.hasModifiableLaws()?"MOD":"")));
 		while((mob.session()!=null)&&(!mob.session().isStopped()))
 		{
-			StringBuffer str=new StringBuffer("");
+			final StringBuffer str=new StringBuffer("");
 			str.append(CMStrings.padRight("#  Ability",20)+" "+shortLawHeader()+"\n\r");
-			Hashtable filteredTable=new Hashtable();
-			for(String key : theLaw.abilityCrimes().keySet())
+			final Hashtable filteredTable=new Hashtable();
+			for(final String key : theLaw.abilityCrimes().keySet())
 			{
-				String[] set=theLaw.abilityCrimes().get(key);
+				final String[] set=theLaw.abilityCrimes().get(key);
 				if(key.startsWith("$")) continue;
-				Ability AB=CMClass.getAbility(key);
+				final Ability AB=CMClass.getAbility(key);
 				if(((AB==null)
 					&&(CMLib.flags().getAbilityType(key)<0)
 					&&(CMLib.flags().getAbilityDomain(key)<0))
@@ -743,12 +742,12 @@ public class StdLawBook extends StdItem
 				filteredTable.put(key.toUpperCase(),set);
 			}
 			int highest=0;
-			for(Enumeration e=filteredTable.keys();e.hasMoreElements();)
+			for(final Enumeration e=filteredTable.keys();e.hasMoreElements();)
 			{
-				String key=(String)e.nextElement();
-				String[] set=(String[])filteredTable.get(key);
-				Ability AB=CMClass.getAbility(key);
-				String name=(AB!=null)?AB.name():key;
+				final String key=(String)e.nextElement();
+				final String[] set=(String[])filteredTable.get(key);
+				final Ability AB=CMClass.getAbility(key);
+				final String name=(AB!=null)?AB.name():key;
 				str.append(CMStrings.padRight(""+(highest+1)+". "+name,20)+" "+shortLawDesc(set)+"\n\r");
 				highest++;
 			}
@@ -765,7 +764,7 @@ public class StdLawBook extends StdItem
 				s=mob.session().prompt("\n\rEnter a skill name to make illegal: ","");
 				if(s.length()>0)
 				{
-					Ability AB=CMClass.findAbility(s);
+					final Ability AB=CMClass.findAbility(s);
 					if(AB!=null) s=AB.ID();
 					if((AB==null)
 					&&(CMLib.flags().getAbilityType(s)<0)
@@ -776,10 +775,10 @@ public class StdLawBook extends StdItem
 						mob.tell("That skill or skill class is already illegal.");
 					else
 					{
-						String[] newValue=modifyLaw(A,B,theLaw,mob,null);
+						final String[] newValue=modifyLaw(A,B,theLaw,mob,null);
 						if(newValue!=null)
 						{
-							StringBuffer s2=new StringBuffer("");
+							final StringBuffer s2=new StringBuffer("");
 							for(int i=0;i<newValue.length;i++)
 							{
 								s2.append(newValue[i]);
@@ -794,15 +793,15 @@ public class StdLawBook extends StdItem
 			}
 			else
 			{
-				int x=CMath.s_int(s);
+				final int x=CMath.s_int(s);
 				String crimeName="";
 				String[] crimeSet=null;
 				int count=1;
 				if((x>0)&&(x<=highest))
-					for(Enumeration e=filteredTable.keys();e.hasMoreElements();)
+					for(final Enumeration e=filteredTable.keys();e.hasMoreElements();)
 					{
-						String key=(String)e.nextElement();
-						String[] set=(String[])filteredTable.get(key);
+						final String key=(String)e.nextElement();
+						final String[] set=(String[])filteredTable.get(key);
 						if(count==x)
 						{
 							crimeName=key;
@@ -813,11 +812,11 @@ public class StdLawBook extends StdItem
 					}
 				if(crimeName.length()>0)
 				{
-					String[] oldLaw=crimeSet;
-					String[] newValue=modifyLaw(A,B,theLaw,mob,crimeSet);
+					final String[] oldLaw=crimeSet;
+					final String[] newValue=modifyLaw(A,B,theLaw,mob,crimeSet);
 					if(newValue!=oldLaw)
 					{
-						StringBuffer s2=new StringBuffer("");
+						final StringBuffer s2=new StringBuffer("");
 						if(newValue!=null)
 							for(int i=0;i<newValue.length;i++)
 							{
@@ -842,16 +841,16 @@ public class StdLawBook extends StdItem
 		mob.tell(getFromTOC("P11"+(theLaw.hasModifiableLaws()?"MOD":"")));
 		while((mob.session()!=null)&&(!mob.session().isStopped()))
 		{
-			StringBuffer str=new StringBuffer("");
+			final StringBuffer str=new StringBuffer("");
 			str.append("1. PROPERTY TAX   : "+(CMath.s_double(theLaw.getInternalStr("PROPERTYTAX")))+"%\n\r");
 			str.append("2. SALES TAX      : "+(CMath.s_double(theLaw.getInternalStr("SALESTAX")))+"%\n\r");
 			str.append("3. CITIZEN TAX    : "+(CMath.s_double(theLaw.getInternalStr("CITTAX")))+"%\n\r");
 			str.append("4. TAX EVASION    : "+shortLawDesc((String[])theLaw.taxLaws().get("TAXEVASION"))+"\n\r");
 			str.append("5. TREASURY       : ");
-			String S=theLaw.getInternalStr("TREASURY").trim();
+			final String S=theLaw.getInternalStr("TREASURY").trim();
 			String room="*";
 			String item="";
-			List<String> V=CMParms.parseSemicolons(S,false);
+			final List<String> V=CMParms.parseSemicolons(S,false);
 			if((S.length()==0)||(V.size()==0))
 				str.append("Not defined");
 			else
@@ -862,7 +861,7 @@ public class StdLawBook extends StdItem
 					str.append("Any (*)");
 				else
 				{
-					Room R=CMLib.map().getRoom(room);
+					final Room R=CMLib.map().getRoom(room);
 					if(R==null)
 						str.append("Unknown");
 					else
@@ -877,7 +876,7 @@ public class StdLawBook extends StdItem
 			if((!theLaw.hasModifiableLaws())||(!allowedToModify))
 				break;
 			String s=mob.session().prompt("\n\rEnter a number to modify: ","");
-			int x=CMath.s_int(s);
+			final int x=CMath.s_int(s);
 			if(x==0) break;
 			switch(x)
 			{
@@ -907,11 +906,11 @@ public class StdLawBook extends StdItem
 				break;
 			case 4:
 				{
-					String[] oldLaw=(String[])theLaw.taxLaws().get("TAXEVASION");
-					String[] newValue=modifyLaw(A,B,theLaw,mob,oldLaw);
+					final String[] oldLaw=(String[])theLaw.taxLaws().get("TAXEVASION");
+					final String[] newValue=modifyLaw(A,B,theLaw,mob,oldLaw);
 					if(newValue!=oldLaw)
 					{
-						StringBuffer s2=new StringBuffer("");
+						final StringBuffer s2=new StringBuffer("");
 						if(newValue!=null)
 							for(int i=0;i<newValue.length;i++)
 							{
@@ -929,7 +928,7 @@ public class StdLawBook extends StdItem
 					String room2="/";
 					while((room2.equals("/"))||(!room2.equals("*"))&&(room2.length()>0)&&(CMLib.map().getRoom(room2)==null))
 						room2=mob.session().prompt("Enter a new room ID (RETURN="+room+", *=any): ",room);
-					String item2=mob.session().prompt("Enter an optional container name (RETURN="+item+"): ",item);
+					final String item2=mob.session().prompt("Enter an optional container name (RETURN="+item+"): ",item);
 					if((!room.equalsIgnoreCase(room2))||(!item.equalsIgnoreCase(item2)))
 					{
 						changeTheLaw(A,B,mob,theLaw,"TREASURY",""+room2+";"+item2);
@@ -948,14 +947,14 @@ public class StdLawBook extends StdItem
 		mob.tell(getFromTOC("P8"+(theLaw.hasModifiableLaws()?"MOD":"")));
 		while((mob.session()!=null)&&(!mob.session().isStopped()))
 		{
-			StringBuffer str=new StringBuffer("");
+			final StringBuffer str=new StringBuffer("");
 			str.append(CMStrings.padRight("#  Effect",20)+" "+shortLawHeader()+"\n\r");
-			Hashtable filteredTable=new Hashtable();
-			for(String key : theLaw.abilityCrimes().keySet())
+			final Hashtable filteredTable=new Hashtable();
+			for(final String key : theLaw.abilityCrimes().keySet())
 			{
-				String[] set=theLaw.abilityCrimes().get(key);
+				final String[] set=theLaw.abilityCrimes().get(key);
 				if(!key.startsWith("$")) continue;
-				Ability AB=CMClass.getAbility(key.substring(1));
+				final Ability AB=CMClass.getAbility(key.substring(1));
 				if(((AB==null)
 					&&(CMLib.flags().getAbilityType(key.substring(1))<0)
 					&&(CMLib.flags().getAbilityDomain(key.substring(1))<0))
@@ -964,12 +963,12 @@ public class StdLawBook extends StdItem
 				filteredTable.put(key,set);
 			}
 			int highest=0;
-			for(Enumeration e=filteredTable.keys();e.hasMoreElements();)
+			for(final Enumeration e=filteredTable.keys();e.hasMoreElements();)
 			{
-				String key=(String)e.nextElement();
-				String[] set=(String[])filteredTable.get(key);
-				Ability AB=CMClass.getAbility(key.substring(1));
-				String name=(AB!=null)?AB.name():key.substring(1);
+				final String key=(String)e.nextElement();
+				final String[] set=(String[])filteredTable.get(key);
+				final Ability AB=CMClass.getAbility(key.substring(1));
+				final String name=(AB!=null)?AB.name():key.substring(1);
 				str.append(CMStrings.padRight(""+(highest+1)+". "+name,20)+" "+shortLawDesc(set)+"\n\r");
 				highest++;
 			}
@@ -986,7 +985,7 @@ public class StdLawBook extends StdItem
 				s=mob.session().prompt("\n\rEnter a skill name to make an illegal influence: ","");
 				if(s.length()>0)
 				{
-					Ability AB=CMClass.findAbility(s);
+					final Ability AB=CMClass.findAbility(s);
 					if(AB!=null)s=AB.ID();
 					if((AB==null)
 					&&(CMLib.flags().getAbilityType(s)<0)
@@ -997,10 +996,10 @@ public class StdLawBook extends StdItem
 						mob.tell("That skill or skill class is already an illegal influence.");
 					else
 					{
-						String[] newValue=modifyLaw(A,B,theLaw,mob,null);
+						final String[] newValue=modifyLaw(A,B,theLaw,mob,null);
 						if(newValue!=null)
 						{
-							StringBuffer s2=new StringBuffer("");
+							final StringBuffer s2=new StringBuffer("");
 							for(int i=0;i<newValue.length;i++)
 							{
 								s2.append(newValue[i]);
@@ -1015,15 +1014,15 @@ public class StdLawBook extends StdItem
 			}
 			else
 			{
-				int x=CMath.s_int(s);
+				final int x=CMath.s_int(s);
 				String crimeName="";
 				String[] crimeSet=null;
 				int count=1;
 				if((x>0)&&(x<=highest))
-					for(Enumeration e=filteredTable.keys();e.hasMoreElements();)
+					for(final Enumeration e=filteredTable.keys();e.hasMoreElements();)
 					{
-						String key=(String)e.nextElement();
-						String[] set=(String[])filteredTable.get(key);
+						final String key=(String)e.nextElement();
+						final String[] set=(String[])filteredTable.get(key);
 						if(count==x)
 						{
 							crimeName=key;
@@ -1034,11 +1033,11 @@ public class StdLawBook extends StdItem
 					}
 				if(crimeName.length()>0)
 				{
-					String[] oldLaw=crimeSet;
-					String[] newValue=modifyLaw(A,B,theLaw,mob,crimeSet);
+					final String[] oldLaw=crimeSet;
+					final String[] newValue=modifyLaw(A,B,theLaw,mob,crimeSet);
 					if(newValue!=oldLaw)
 					{
-						StringBuffer s2=new StringBuffer("");
+						final StringBuffer s2=new StringBuffer("");
 						if(newValue!=null)
 							for(int i=0;i<newValue.length;i++)
 							{
@@ -1063,7 +1062,7 @@ public class StdLawBook extends StdItem
 		mob.tell(getFromTOC("P6"+(theLaw.hasModifiableLaws()?"MOD":"")));
 		while((mob.session()!=null)&&(!mob.session().isStopped()))
 		{
-			StringBuffer str=new StringBuffer("");
+			final StringBuffer str=new StringBuffer("");
 			str.append(CMStrings.padRight("#  Law Name",20)+" "+shortLawHeader()+"\n\r");
 			str.append("1. ASSAULT           "+shortLawDesc(theLaw.basicCrimes().get("ASSAULT"))+"\n\r");
 			str.append("2. MURDER            "+shortLawDesc(theLaw.basicCrimes().get("MURDER"))+"\n\r");
@@ -1075,8 +1074,8 @@ public class StdLawBook extends StdItem
 			mob.session().colorOnlyPrintln(str.toString());
 			if((!theLaw.hasModifiableLaws())||(!allowedToModify))
 				break;
-			String s=mob.session().prompt("\n\rEnter number to modify or RETURN: ","");
-			int x=CMath.s_int(s);
+			final String s=mob.session().prompt("\n\rEnter number to modify or RETURN: ","");
+			final int x=CMath.s_int(s);
 			String crimeName="";
 			if((x>0)&&(x<=6))
 				switch(x)
@@ -1090,11 +1089,11 @@ public class StdLawBook extends StdItem
 				}
 			if(crimeName.length()>0)
 			{
-				String[] oldLaw=theLaw.basicCrimes().get(crimeName);
-				String[] newValue=modifyLaw(A,B,theLaw,mob,oldLaw);
+				final String[] oldLaw=theLaw.basicCrimes().get(crimeName);
+				final String[] newValue=modifyLaw(A,B,theLaw,mob,oldLaw);
 				if(newValue!=oldLaw)
 				{
-					StringBuffer s2=new StringBuffer("");
+					final StringBuffer s2=new StringBuffer("");
 					if(newValue!=null)
 						for(int i=0;i<newValue.length;i++)
 						{
@@ -1118,7 +1117,7 @@ public class StdLawBook extends StdItem
 		mob.tell(getFromTOC("P5"+(theLaw.hasModifiableLaws()?"MOD":"")));
 		while((mob.session()!=null)&&(!mob.session().isStopped()))
 		{
-			StringBuffer str=new StringBuffer("");
+			final StringBuffer str=new StringBuffer("");
 			str.append("1. LEVEL 1 PAROLE TIME: "+(CMath.s_int(theLaw.getInternalStr("PAROLE1TIME"))*CMProps.getTickMillis()/1000)+" seconds.\n\r");
 			str.append("2. LEVEL 2 PAROLE TIME: "+(CMath.s_int(theLaw.getInternalStr("PAROLE2TIME"))*CMProps.getTickMillis()/1000)+" seconds.\n\r");
 			str.append("3. LEVEL 3 PAROLE TIME: "+(CMath.s_int(theLaw.getInternalStr("PAROLE3TIME"))*CMProps.getTickMillis()/1000)+" seconds.\n\r");
@@ -1130,9 +1129,9 @@ public class StdLawBook extends StdItem
 			int highest=4;
 			for(int v=0;v<V.size();v++)
 			{
-				String s=V.get(v);
+				final String s=V.get(v);
 				highest++;
-				Room R=CMLib.map().getRoom(s);
+				final Room R=CMLib.map().getRoom(s);
 				if(R!=null)
 					str.append((5+v)+". RELEASE ROOM: "+R.displayText(mob)+"\n\r");
 				else
@@ -1156,7 +1155,7 @@ public class StdLawBook extends StdItem
 			}
 			else
 			{
-				int x=CMath.s_int(s);
+				final int x=CMath.s_int(s);
 				if((x>0)&&(x<=highest))
 				{
 					if(x>4)
@@ -1169,7 +1168,7 @@ public class StdLawBook extends StdItem
 					}
 					else
 					{
-						long oldTime=CMath.s_int(theLaw.getInternalStr("PAROLE"+x+"TIME"))*CMProps.getTickMillis()/1000;
+						final long oldTime=CMath.s_int(theLaw.getInternalStr("PAROLE"+x+"TIME"))*CMProps.getTickMillis()/1000;
 						s=mob.session().prompt("Enter a new number of seconds ("+oldTime+"): ",""+oldTime);
 						if((CMath.s_int(s)!=oldTime)&&(CMath.s_int(s)>0))
 						{
@@ -1185,7 +1184,7 @@ public class StdLawBook extends StdItem
 			}
 			if(changed)
 			{
-				StringBuffer s2=new StringBuffer("");
+				final StringBuffer s2=new StringBuffer("");
 				for(int v=0;v<V.size();v++)
 					s2.append((V.get(v))+";");
 				if(s2.length()==0)
@@ -1206,7 +1205,7 @@ public class StdLawBook extends StdItem
 		mob.tell(getFromTOC("P4"+(theLaw.hasModifiableLaws()?"MOD":"")));
 		while((mob.session()!=null)&&(!mob.session().isStopped()))
 		{
-			StringBuffer str=new StringBuffer("");
+			final StringBuffer str=new StringBuffer("");
 			str.append("1. LEVEL 1 JAIL TIME: "+(CMath.s_int(theLaw.getInternalStr("JAIL1TIME"))*CMProps.getTickMillis()/1000)+" seconds.\n\r");
 			str.append("2. LEVEL 2 JAIL TIME: "+(CMath.s_int(theLaw.getInternalStr("JAIL2TIME"))*CMProps.getTickMillis()/1000)+" seconds.\n\r");
 			str.append("3. LEVEL 3 JAIL TIME: "+(CMath.s_int(theLaw.getInternalStr("JAIL3TIME"))*CMProps.getTickMillis()/1000)+" seconds.\n\r");
@@ -1218,9 +1217,9 @@ public class StdLawBook extends StdItem
 			int highest=4;
 			for(int v=0;v<V.size();v++)
 			{
-				String s=V.get(v);
+				final String s=V.get(v);
 				highest++;
-				Room R=CMLib.map().getRoom(s);
+				final Room R=CMLib.map().getRoom(s);
 				if(R!=null)
 					str.append((5+v)+". JAIL ROOM: "+R.displayText(mob)+"\n\r");
 				else
@@ -1244,7 +1243,7 @@ public class StdLawBook extends StdItem
 			}
 			else
 			{
-				int x=CMath.s_int(s);
+				final int x=CMath.s_int(s);
 				if((x>0)&&(x<=highest))
 				{
 					if(x>4)
@@ -1257,7 +1256,7 @@ public class StdLawBook extends StdItem
 					}
 					else
 					{
-						long oldTime=CMath.s_int(theLaw.getInternalStr("JAIL"+x+"TIME"))*CMProps.getTickMillis()/1000;
+						final long oldTime=CMath.s_int(theLaw.getInternalStr("JAIL"+x+"TIME"))*CMProps.getTickMillis()/1000;
 						s=mob.session().prompt("Enter a new number of seconds ("+oldTime+"): ",""+oldTime);
 						if((CMath.s_int(s)!=oldTime)&&(CMath.s_int(s)>0))
 						{
@@ -1273,7 +1272,7 @@ public class StdLawBook extends StdItem
 			}
 			if(changed)
 			{
-				StringBuffer s2=new StringBuffer("");
+				final StringBuffer s2=new StringBuffer("");
 				for(int v=0;v<V.size();v++)
 					s2.append((V.get(v))+";");
 				if(s2.length()==0)
@@ -1298,8 +1297,8 @@ public class StdLawBook extends StdItem
 			mob.tell("2. Law         : "+shortLawDesc(theLaw.basicCrimes().get("TRESPASSING")));
 			if((!theLaw.hasModifiableLaws())||(!allowedToModify))
 				return;
-			String prompt=mob.session().choose("Enter one to change or RETURN: ","12\n","\n");
-			int x=CMath.s_int(prompt);
+			final String prompt=mob.session().choose("Enter one to change or RETURN: ","12\n","\n");
+			final int x=CMath.s_int(prompt);
 			if((x<=0)||(x>2))
 				return;
 			if(x==1)
@@ -1321,11 +1320,11 @@ public class StdLawBook extends StdItem
 			else
 			if(x==2)
 			{
-				String[] oldLaw=theLaw.basicCrimes().get("TRESPASSING");
-				String[] newValue=modifyLaw(A,B,theLaw,mob,oldLaw);
+				final String[] oldLaw=theLaw.basicCrimes().get("TRESPASSING");
+				final String[] newValue=modifyLaw(A,B,theLaw,mob,oldLaw);
 				if(newValue!=oldLaw)
 				{
-					StringBuffer s2=new StringBuffer("");
+					final StringBuffer s2=new StringBuffer("");
 					if(newValue!=null)
 						for(int i=0;i<newValue.length;i++)
 						{
@@ -1375,13 +1374,13 @@ public class StdLawBook extends StdItem
 		if(mob.session()==null) return;
 		mob.tell(getFromTOC("P2"+(theLaw.hasModifiableLaws()?"MOD":"")+(theLaw.hasModifiableNames()?"NAM":"")));
 		String duhJudge="No Judge Found!\n\r";
-		StringBuffer duhOfficers=new StringBuffer("");
-		for(Enumeration e=A.getMetroMap();e.hasMoreElements();)
+		final StringBuffer duhOfficers=new StringBuffer("");
+		for(final Enumeration e=A.getMetroMap();e.hasMoreElements();)
 		{
-			Room R=(Room)e.nextElement();
+			final Room R=(Room)e.nextElement();
 			for(int i=0;i<R.numInhabitants();i++)
 			{
-				MOB M=R.fetchInhabitant(i);
+				final MOB M=R.fetchInhabitant(i);
 				if(M!=null)
 				{
 					Room R2=M.getStartRoom();
@@ -1398,10 +1397,10 @@ public class StdLawBook extends StdItem
 		mob.tell("1. Area Judge: \n\r"+duhJudge+"\n\r2. Area Officers: \n\r"+duhOfficers.toString());
 		if(theLaw.hasModifiableNames()&&theLaw.hasModifiableLaws()&&allowedToModify)
 		{
-			int w=CMath.s_int(mob.session().choose("Enter one to modify, or RETURN to cancel: ","12\n",""));
+			final int w=CMath.s_int(mob.session().choose("Enter one to modify, or RETURN to cancel: ","12\n",""));
 			if(w==0) return;
-			String modifiableTag=(w==1)?"JUDGE":"OFFICERS";
-			String s=mob.session().prompt("Enter key words from officials name(s) ["+theLaw.getInternalStr(modifiableTag)+"]\n\r: ",theLaw.getInternalStr(modifiableTag));
+			final String modifiableTag=(w==1)?"JUDGE":"OFFICERS";
+			final String s=mob.session().prompt("Enter key words from officials name(s) ["+theLaw.getInternalStr(modifiableTag)+"]\n\r: ",theLaw.getInternalStr(modifiableTag));
 			if(!s.equals(theLaw.getInternalStr(modifiableTag)))
 			{
 				changeTheLaw(A,B,mob,theLaw,modifiableTag,s);

@@ -50,7 +50,7 @@ public class Chant_NaturalBalance extends Chant
 	{
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		super.unInvoke();
 		if(canBeUninvoked())
 		{
@@ -70,7 +70,7 @@ public class Chant_NaturalBalance extends Chant
 		super.executeMsg(myHost,msg);
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		if((msg.amISource(mob))
 		&&(msg.tool()!=this)
@@ -85,7 +85,7 @@ public class Chant_NaturalBalance extends Chant
 	{
 		if(!(affected instanceof MOB))
 			return super.okMessage(myHost,msg);
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		if((msg.amISource(mob)
 		&&(!msg.sourceMajor(CMMsg.MASK_ALWAYS))
@@ -101,7 +101,7 @@ public class Chant_NaturalBalance extends Chant
 		if(!(affected instanceof MOB))
 			return super.tick(ticking,tickID);
 
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		if(tickID!=Tickable.TICKID_MOB) return true;
 		if(!mob.isInCombat())
@@ -111,10 +111,10 @@ public class Chant_NaturalBalance extends Chant
 			if(!proficiencyCheck(null,0,false))
 				return true;
 			lastTime=System.currentTimeMillis();
-			Room room=mob.location();
-			int myAlignment=mob.fetchFaction(CMLib.factions().AlignID());
-			int total=CMLib.factions().getTotal(CMLib.factions().AlignID());
-			int oneHalfPct=(int)Math.round(CMath.mul(total,.01))/2;
+			final Room room=mob.location();
+			final int myAlignment=mob.fetchFaction(CMLib.factions().AlignID());
+			final int total=CMLib.factions().getTotal(CMLib.factions().AlignID());
+			final int oneHalfPct=(int)Math.round(CMath.mul(total,.01))/2;
 			if(CMLib.factions().getAlignPurity(myAlignment,Faction.Align.INDIFF)<99)
 			{
 				if(CMLib.factions().getAlignPurity(myAlignment,Faction.Align.EVIL)<CMLib.factions().getAlignPurity(myAlignment,Faction.Align.GOOD))
@@ -168,7 +168,7 @@ public class Chant_NaturalBalance extends Chant
 		}
 
 		// now see if it worked
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
 			// it worked, so build a copy of this ability,
@@ -176,7 +176,7 @@ public class Chant_NaturalBalance extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			CMMsg msg=CMClass.getMsg(mob,null,this,somanticCastCode(mob,null,auto),"^S<S-NAME> begin(s) to commune with the natural balance...^?");
+			final CMMsg msg=CMClass.getMsg(mob,null,this,somanticCastCode(mob,null,auto),"^S<S-NAME> begin(s) to commune with the natural balance...^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

@@ -40,8 +40,8 @@ public class BanListMgr extends StdWebMacro
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
-		java.util.Map<String,String> parms=parseParms(parm);
-		String last=httpReq.getUrlParameter("BANNEDONE");
+		final java.util.Map<String,String> parms=parseParms(parm);
+		final String last=httpReq.getUrlParameter("BANNEDONE");
 		if(parms.containsKey("RESET"))
 		{
 			if(last!=null) httpReq.removeUrlParameter("BANNEDONE");
@@ -51,10 +51,10 @@ public class BanListMgr extends StdWebMacro
 		if(parms.containsKey("NEXT"))
 		{
 			String lastID="";
-			List<String> banned=Resources.getFileLineVector(Resources.getFileResource("banned.ini",false));
+			final List<String> banned=Resources.getFileLineVector(Resources.getFileResource("banned.ini",false));
 			for(int i=0;i<banned.size();i++)
 			{
-				String key=banned.get(i);
+				final String key=banned.get(i);
 				if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!key.equals(lastID))))
 				{
 					httpReq.addFakeUrlParameter("BANNEDONE",key);
@@ -70,7 +70,7 @@ public class BanListMgr extends StdWebMacro
 		else
 		if(parms.containsKey("DELETE"))
 		{
-			String key=httpReq.getUrlParameter("BANNEDONE");
+			final String key=httpReq.getUrlParameter("BANNEDONE");
 			if(key==null) return "";
 			CMSecurity.unban(key);
 			return "'"+key+"' no longer banned.";
@@ -78,7 +78,7 @@ public class BanListMgr extends StdWebMacro
 		else
 		if(parms.containsKey("ADD"))
 		{
-			String key=httpReq.getUrlParameter("NEWBANNEDONE");
+			final String key=httpReq.getUrlParameter("NEWBANNEDONE");
 			if(key==null) return "";
 			CMSecurity.ban(key);
 			return "'"+key+"' is now banned.";

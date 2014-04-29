@@ -50,24 +50,24 @@ public class Thief_DisassembleTrap extends ThiefSkill
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		Ability A=mob.fetchAbility("Thief_RemoveTraps");
-		Hashtable traps=new Hashtable();
+		final Ability A=mob.fetchAbility("Thief_RemoveTraps");
+		final Hashtable traps=new Hashtable();
 		if(A==null)
 		{
 			mob.tell("You don't know how to remove traps.");
 			return false;
 		}
 
-		Vector cmds=new XVector(commands);
+		final Vector cmds=new XVector(commands);
 		cmds.addElement(new Boolean(true));
-		CharState oldState=(CharState)mob.curState().copyOf();
-		boolean worked=A.invoke(mob,cmds,givenTarget,auto,asLevel);
+		final CharState oldState=(CharState)mob.curState().copyOf();
+		final boolean worked=A.invoke(mob,cmds,givenTarget,auto,asLevel);
 		oldState.copyInto(mob.curState());
 		if(!worked) return false;
 		for(int c=0;c<cmds.size();c++)
 			if(cmds.elementAt(c) instanceof Trap)
 			{
-				Trap T=(Trap)cmds.elementAt(c);
+				final Trap T=(Trap)cmds.elementAt(c);
 				if(!traps.containsKey(T.ID()))
 					traps.put(T.ID(),T);
 			}
@@ -80,20 +80,20 @@ public class Thief_DisassembleTrap extends ThiefSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
-		Trap T=(Trap)traps.elements().nextElement();
+		final boolean success=proficiencyCheck(mob,0,auto);
+		final Trap T=(Trap)traps.elements().nextElement();
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,T,this,auto?CMMsg.MSG_OK_ACTION:CMMsg.MSG_DELICATE_HANDS_ACT,
+			final CMMsg msg=CMClass.getMsg(mob,T,this,auto?CMMsg.MSG_OK_ACTION:CMMsg.MSG_DELICATE_HANDS_ACT,
 													 CMMsg.MSG_DELICATE_HANDS_ACT,
 													 CMMsg.MSG_OK_ACTION,
 												auto?T.name()+" begins to glow.":
 													"<S-NAME> attempt(s) to safely dissassemble the "+T.name()+" trap.");
-			Room R=mob.location();
+			final Room R=mob.location();
 			if(R.okMessage(mob,msg))
 			{
 				R.send(mob,msg);
-				List<Item> components=T.getTrapComponents();
+				final List<Item> components=T.getTrapComponents();
 				if(components.size()==0)
 				{
 					mob.tell("You don't end up with any usable components.");
@@ -102,7 +102,7 @@ public class Thief_DisassembleTrap extends ThiefSkill
 				{
 					for(int i=0;i<components.size();i++)
 					{
-						Item I=components.get(i);
+						final Item I=components.get(i);
 						I.text();
 						I.recoverPhyStats();
 						R.addItem(I,ItemPossessor.Expire.Resource);
@@ -110,7 +110,7 @@ public class Thief_DisassembleTrap extends ThiefSkill
 					R.recoverRoomStats();
 					for(int i=0;i<components.size();i++)
 					{
-						Item I=components.get(i);
+						final Item I=components.get(i);
 						if(R.isContent(I))
 							if(!CMLib.commands().postGet(mob,null,I,true))
 								break;

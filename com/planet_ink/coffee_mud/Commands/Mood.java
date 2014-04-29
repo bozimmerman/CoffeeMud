@@ -42,10 +42,10 @@ public class Mood extends StdCommand
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		Ability A=CMClass.getAbility("Mood");
+		final Ability A=CMClass.getAbility("Mood");
 		if(A!=null)
 		{
-			Vector V=new XVector(commands);
+			final Vector V=new XVector(commands);
 			V.removeElementAt(0);
 			A.invoke(mob,V,mob,true,0);
 		}

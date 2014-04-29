@@ -433,13 +433,13 @@ public interface Wearable extends Environmental
 		public CODES()
 		{
 			super();
-			char c=Thread.currentThread().getThreadGroup().getName().charAt(0);
+			final char c=Thread.currentThread().getThreadGroup().getName().charAt(0);
 			if(insts==null) insts=new CODES[256];
 			if(insts[c]==null) insts[c]=this;
 			synchronized(this)
 			{
-				String[][] addExtra = CMProps.instance().getStrsStarting("ADDWEARLOC_");
-				String[][] repExtra = CMProps.instance().getStrsStarting("REPLACEWEARLOC_");
+				final String[][] addExtra = CMProps.instance().getStrsStarting("ADDWEARLOC_");
+				final String[][] repExtra = CMProps.instance().getStrsStarting("REPLACEWEARLOC_");
 				for(int i=0;i<Wearable.DEFAULT_WORN_CODES.length;i++)
 					add(DEFAULT_WORN_DESCS[i], DEFAULT_WORN_DEPENDENCYGRID[i],
 						DEFAULT_WORN_WEIGHTS[i], CMParms.indexOf(DEFAULT_WORN_ORDER,DEFAULT_WORN_CODES[i]),
@@ -449,11 +449,11 @@ public interface Wearable extends Environmental
 
 				for(int i=0;i<addExtra.length+repExtra.length;i++)
 				{
-					String[] array = (i>=addExtra.length)?repExtra[i-addExtra.length]:addExtra[i];
-					boolean replace = i>=addExtra.length;
-					String stat = array[0].toLowerCase().trim().replace('_',' ');
-					String p=array[1];
-					List<String> V=CMParms.parseCommas(p, false);
+					final String[] array = (i>=addExtra.length)?repExtra[i-addExtra.length]:addExtra[i];
+					final boolean replace = i>=addExtra.length;
+					final String stat = array[0].toLowerCase().trim().replace('_',' ');
+					final String p=array[1];
+					final List<String> V=CMParms.parseCommas(p, false);
 					if(V.size()!=6)
 					{
 						Log.errOut("Wearable","Bad coffeemud.ini wear loc row (requires 6 elements, separated by ,): "+p);
@@ -463,7 +463,7 @@ public interface Wearable extends Environmental
 					int oldLocationCodeIndex=-1;
 					if(replace)
 					{
-						int idx=CMParms.indexOf(DEFAULT_WORN_DESCS, stat);
+						final int idx=CMParms.indexOf(DEFAULT_WORN_DESCS, stat);
 						if(idx>=0)
 						{
 							oldLocationCodeIndex=idx;
@@ -475,22 +475,22 @@ public interface Wearable extends Environmental
 							continue;
 						}
 					}
-					String dependencyMaskStr=(V.get(0)).toLowerCase();
+					final String dependencyMaskStr=(V.get(0)).toLowerCase();
 					long dependencyMask=0;
-					List<String> subLocs = CMParms.parseAny(dependencyMaskStr, '|', true);
+					final List<String> subLocs = CMParms.parseAny(dependencyMaskStr, '|', true);
 					for(int s=0;s<subLocs.size();s++)
 					{
-						int idx=CMParms.indexOf(DEFAULT_WORN_DESCS, subLocs.get(s).toLowerCase());
+						final int idx=CMParms.indexOf(DEFAULT_WORN_DESCS, subLocs.get(s).toLowerCase());
 						if(idx>=0)
 							dependencyMask|=DEFAULT_WORN_CODES[idx];
 						else
 							Log.errOut("Wearable","Bad dependency mask in coffeemud.ini file: "+subLocs.get(s).toLowerCase());
 					}
-					double armorStrength=CMath.s_double(V.get(1));
-					int wornOrder=CMath.s_int(V.get(2));
-					double clothWeight=CMath.s_double(V.get(3));
-					double leatherWeight=CMath.s_double(V.get(4));
-					double metalWeight=CMath.s_double(V.get(5));
+					final double armorStrength=CMath.s_double(V.get(1));
+					final int wornOrder=CMath.s_int(V.get(2));
+					final double clothWeight=CMath.s_double(V.get(3));
+					final double leatherWeight=CMath.s_double(V.get(4));
+					final double metalWeight=CMath.s_double(V.get(5));
 					if(type.equalsIgnoreCase("ADD"))
 						add(stat, dependencyMask, armorStrength, wornOrder, clothWeight, leatherWeight, metalWeight);
 					else
@@ -576,7 +576,7 @@ public interface Wearable extends Environmental
 		public int findDex_ignoreCase(String rsc)
 		{
 			if(rsc==null) return -1;
-			int x=CMParms.indexOfIgnoreCase(descs, rsc.toLowerCase());
+			final int x=CMParms.indexOfIgnoreCase(descs, rsc.toLowerCase());
 			if(x>=0) return x;
 			return -1;
 		}
@@ -593,7 +593,7 @@ public interface Wearable extends Environmental
 		public long find_ignoreCase(String rsc)
 		{
 			if(rsc==null) return -1;
-			int x=CMParms.indexOfIgnoreCase(descs, rsc.toLowerCase());
+			final int x=CMParms.indexOfIgnoreCase(descs, rsc.toLowerCase());
 			if(x>=0) return allCodes[x];
 			return -1;
 		}
@@ -610,7 +610,7 @@ public interface Wearable extends Environmental
 		public int findDex_endsWith(String rsc)
 		{
 			if(rsc==null) return -1;
-			int x=CMParms.endsWith(descs, rsc.toLowerCase());
+			final int x=CMParms.endsWith(descs, rsc.toLowerCase());
 			if(x>=0) return x;
 			return -1;
 		}
@@ -627,7 +627,7 @@ public interface Wearable extends Environmental
 		public long find_endsWith(String rsc)
 		{
 			if(rsc==null) return -1;
-			int x=CMParms.endsWith(descs, rsc.toLowerCase());
+			final int x=CMParms.endsWith(descs, rsc.toLowerCase());
 			if(x>=0) return allCodes[x];
 			return -1;
 		}
@@ -646,7 +646,7 @@ public interface Wearable extends Environmental
 		 */
 		public String listedCodes(long wornCode)
 		{
-			StringBuffer buf=new StringBuffer("");
+			final StringBuffer buf=new StringBuffer("");
 			for(int wornNum=1;wornNum<total();wornNum++)
 			{
 				if(CMath.bset(wornCode,allCodes[wornNum]))
@@ -727,7 +727,7 @@ public interface Wearable extends Environmental
 		 * @return the name of the code
 		 */
 		public String name(long code) {
-			int x=CMParms.indexOf(allCodes, code);
+			final int x=CMParms.indexOf(allCodes, code);
 			if(x>=0)
 				return descs[x];
 			return "";
@@ -738,7 +738,7 @@ public interface Wearable extends Environmental
 		 * @return the name of the code
 		 */
 		public String nameup(long code) {
-			int x=CMParms.indexOf(allCodes, code);
+			final int x=CMParms.indexOf(allCodes, code);
 			if(x>=0)
 				return updescs[x];
 			return "";
@@ -798,7 +798,7 @@ public interface Wearable extends Environmental
 			armorWeights=Arrays.copyOf(armorWeights, armorWeights.length+1);
 			armorWeights[armorWeights.length-1]=armorStrength;
 			wornWeightPoints=Arrays.copyOf(wornWeightPoints, wornWeightPoints.length+1);
-			double[] newRow={clothWeight,leatherWeight,metalWeight};
+			final double[] newRow={clothWeight,leatherWeight,metalWeight};
 			wornWeightPoints[wornWeightPoints.length-1]=newRow;
 			insertInOrder(newCode,wornOrder);
 		}
@@ -806,15 +806,15 @@ public interface Wearable extends Environmental
 		private void insertInOrder(long newCode, int wornOrder)
 		{
 			if(wornOrder<0) return;
-			Vector<Long> V= new Vector<Long>();
-			for(int i=0;i<allCodesInOrder.length;i++)
-				V.add(Long.valueOf(allCodesInOrder[i]));
+			final Vector<Long> V= new Vector<Long>();
+			for (final long element : allCodesInOrder)
+				V.add(Long.valueOf(element));
 			V.remove(Long.valueOf(newCode));
 			if(wornOrder>=V.size())
 				V.add(Long.valueOf(newCode));
 			else
 				V.insertElementAt(Long.valueOf(newCode), wornOrder);
-			long[] newCodesInOrder = new long[V.size()];
+			final long[] newCodesInOrder = new long[V.size()];
 			for(int l=0;l<V.size();l++)
 				newCodesInOrder[l]=V.elementAt(l).longValue();
 			allCodesInOrder=newCodesInOrder;
@@ -828,7 +828,7 @@ public interface Wearable extends Environmental
 			updescs[codeIndex]=desc.toUpperCase();
 			dependencyMasks[codeIndex]=dependencyMask;
 			armorWeights[codeIndex]=armorStrength;
-			double[] newRow={clothWeight,leatherWeight,metalWeight};
+			final double[] newRow={clothWeight,leatherWeight,metalWeight};
 			wornWeightPoints[codeIndex]=newRow;
 			insertInOrder(allCodes[codeIndex],wornOrder);
 		}

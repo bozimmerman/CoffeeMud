@@ -57,7 +57,7 @@ public class Disease_SARS extends Disease
 		if(affected==null) return false;
 		if(!(affected instanceof MOB)) return true;
 
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		MOB diseaser=invoker;
 		if(diseaser==null) diseaser=mob;
 		if((!mob.amDead())&&((--diseaseTick)<=0))

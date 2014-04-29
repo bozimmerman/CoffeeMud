@@ -39,7 +39,7 @@ public class LevelNumber extends StdWebMacro
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
-		String last=httpReq.getUrlParameter("LEVEL");
+		final String last=httpReq.getUrlParameter("LEVEL");
 		if(last==null) return " @break@";
 		if(last.length()>0)
 			return clearWebMacros(last);

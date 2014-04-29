@@ -69,25 +69,25 @@ public class MassMailer implements Runnable
 
 	public int getFailureDays()
 	{
-		String s=page.getStr("FAILUREDAYS");
+		final String s=page.getStr("FAILUREDAYS");
 		if(s==null) return (365*20);
-		int x=CMath.s_int(s);
+		final int x=CMath.s_int(s);
 		if(x==0) return (365*20);
 		return x;
 	}
 
 	public int getEmailDays()
 	{
-		String s=page.getStr("EMAILDAYS");
+		final String s=page.getStr("EMAILDAYS");
 		if(s==null) return (365*20);
-		int x=CMath.s_int(s);
+		final int x=CMath.s_int(s);
 		if(x==0) return (365*20);
 		return x;
 	}
 
 	public boolean deleteEmailIfOld(String journalName, String key, long date, int days)
 	{
-		Calendar IQE=Calendar.getInstance();
+		final Calendar IQE=Calendar.getInstance();
 		IQE.setTimeInMillis(date);
 		IQE.add(Calendar.DATE,days);
 		if(IQE.getTimeInMillis()<System.currentTimeMillis())
@@ -106,10 +106,10 @@ public class MassMailer implements Runnable
 
 	protected boolean rightTimeToSendEmail(long email)
 	{
-		long curr=System.currentTimeMillis();
-		Calendar IQE=Calendar.getInstance();
+		final long curr=System.currentTimeMillis();
+		final Calendar IQE=Calendar.getInstance();
 		IQE.setTimeInMillis(email);
-		Calendar IQC=Calendar.getInstance();
+		final Calendar IQC=Calendar.getInstance();
 		IQC.setTimeInMillis(curr);
 		if(CMath.absDiff(email,curr)<(30*60*1000)) return true;
 		while(IQE.before(IQC))
@@ -125,19 +125,19 @@ public class MassMailer implements Runnable
 	@Override
 	public void run()
 	{
-		for(MassMailerEntry entry : entries)
+		for(final MassMailerEntry entry : entries)
 		{
 			final JournalsLibrary.JournalEntry mail=entry.mail;
 			final String journalName=entry.journalName;
 			final String overrideReplyTo=entry.overrideReplyTo;
 			final boolean usePrivateRules=entry.usePrivateRules;
 
-			String key=mail.key;
-			String from=mail.from;
-			String to=mail.to;
-			long date=mail.update;
-			String subj=mail.subj;
-			String msg=mail.msg.trim();
+			final String key=mail.key;
+			final String from=mail.from;
+			final String to=mail.to;
+			final long date=mail.update;
+			final String subj=mail.subj;
+			final String msg=mail.msg.trim();
 
 			if(to.equalsIgnoreCase("ALL")||(to.toUpperCase().trim().startsWith("MASK="))) continue;
 
@@ -148,7 +148,7 @@ public class MassMailer implements Runnable
 			final String toName;
 			if(CMLib.players().playerExists(to))
 			{
-				MOB toM=CMLib.players().getLoadPlayer(to);
+				final MOB toM=CMLib.players().getLoadPlayer(to);
 				// check to see if the sender is ignored
 				if((toM.playerStats()!=null)
 				&&(toM.playerStats().getIgnored().contains(from)))
@@ -168,7 +168,7 @@ public class MassMailer implements Runnable
 			else
 			if(CMLib.players().accountExists(to))
 			{
-				PlayerAccount P=CMLib.players().getLoadAccount(to);
+				final PlayerAccount P=CMLib.players().getLoadAccount(to);
 				if((P.getEmail().length()==0)) // no email addy to forward TO
 					continue;
 				toName=P.getAccountName();
@@ -195,7 +195,7 @@ public class MassMailer implements Runnable
 				else
 					SC=CMLib.smtp().getClient(toEmail);
 			}
-			catch(BadEmailAddressException be)
+			catch(final BadEmailAddressException be)
 			{
 				if((!usePrivateRules)
 				&&(!CMath.bset(mail.attributes, JournalsLibrary.JournalEntry.ATTRIBUTE_PROTECTED)))
@@ -207,7 +207,7 @@ public class MassMailer implements Runnable
 				// otherwise it has its n days
 				continue;
 			}
-			catch(java.io.IOException ioe)
+			catch(final java.io.IOException ioe)
 			{
 				if(!oldEmailComplaints.contains(toName))
 				{
@@ -219,7 +219,7 @@ public class MassMailer implements Runnable
 				continue;
 			}
 
-			String replyTo=(overrideReplyTo!=null)?(overrideReplyTo):from;
+			final String replyTo=(overrideReplyTo!=null)?(overrideReplyTo):from;
 			try
 			{
 				SC.sendMessage(from+"@"+domainName(),
@@ -231,7 +231,7 @@ public class MassMailer implements Runnable
 				//this email is HISTORY!
 				CMLib.database().DBDeleteJournal(journalName, key);
 			}
-			catch(java.io.IOException ioe)
+			catch(final java.io.IOException ioe)
 			{
 				// it has FAILUREDAYS days to get better.
 				if(deleteEmailIfOld(journalName, key, date,getFailureDays()))

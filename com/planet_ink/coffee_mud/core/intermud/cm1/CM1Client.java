@@ -39,8 +39,8 @@ import java.nio.channels.*;
 */
 public class CM1Client
 {
-	private String 			host;
-	private int 			port;
+	private final String 			host;
+	private final int 			port;
 	private Socket 			sock=null;
 	private BufferedReader	br=null;
 	private BufferedWriter 	bw=null;
@@ -54,12 +54,12 @@ public class CM1Client
 	public final static int s_int(final String INT)
 	{
 		try{ return Integer.parseInt(INT); }
-		catch(Exception e){ return 0;}
+		catch(final Exception e){ return 0;}
 	}
 
 	public synchronized List<String> transactMessages(String command)
 	{
-		LinkedList<String> list=new LinkedList<String>();
+		final LinkedList<String> list=new LinkedList<String>();
 		if(command.trim().length()==0) return list;
 		try
 		{
@@ -68,10 +68,10 @@ public class CM1Client
 			else
 			{
 				bw.write("BLOCK\n");
-				String s=br.readLine();
+				final String s=br.readLine();
 				if(!s.startsWith("[OK /BLOCK:"))
 					return list;
-				String eob=s.substring(11,s.length()-1);
+				final String eob=s.substring(11,s.length()-1);
 				bw.write(command+eob);
 			}
 			String s=br.readLine();
@@ -82,7 +82,7 @@ public class CM1Client
 				s=s.substring(4,s.length()-1);
 				if(s.startsWith("/MESSAGES:"))
 				{
-					int num=s_int(s.substring(9));
+					final int num=s_int(s.substring(9));
 					for(int i=0;i<num;i++)
 						list.add(br.readLine());
 				}
@@ -95,14 +95,14 @@ public class CM1Client
 			else
 			if(s.startsWith("[BLOCK "))
 			{
-				String eob=s.substring(7,s.length()-1);
-				StringBuilder str=new StringBuilder("");
+				final String eob=s.substring(7,s.length()-1);
+				final StringBuilder str=new StringBuilder("");
 				while(!str.toString().endsWith(eob))
 					str.append((char)br.read());
 				list.add(str.toString().substring(0,str.length()-eob.length()));
 			}
 		}
-		catch(Exception e)
+		catch(final Exception e)
 		{
 
 		}
@@ -111,7 +111,7 @@ public class CM1Client
 
 	public synchronized String transact(String command)
 	{
-		List<String> list=transactMessages(command);
+		final List<String> list=transactMessages(command);
 		if(list.size()==0) return "";
 		return list.get(0);
 	}
@@ -123,7 +123,7 @@ public class CM1Client
 			sock=new Socket(host,port);
 			br=new BufferedReader(new InputStreamReader(sock.getInputStream()));
 			bw=new BufferedWriter(new OutputStreamWriter(sock.getOutputStream()));
-			long timeout=System.currentTimeMillis() + (3 * 1000);
+			final long timeout=System.currentTimeMillis() + (3 * 1000);
 			String s=br.readLine();
 			while((System.currentTimeMillis()<timeout)
 			&&(!s.startsWith("CONNECTED TO")))
@@ -138,7 +138,7 @@ public class CM1Client
 			sock=null;
 			return false;
 		}
-		catch(Exception e)
+		catch(final Exception e)
 		{
 			return false;
 		}

@@ -46,7 +46,7 @@ public class Buy extends StdCommand
 		if((commands.size()>2)
 		&&(((String)commands.elementAt(commands.size()-2)).equalsIgnoreCase("for")))
 		{
-			MOB M=mob.location().fetchInhabitant((String)commands.lastElement());
+			final MOB M=mob.location().fetchInhabitant((String)commands.lastElement());
 			if(M==null)
 			{
 				mob.tell("There is noone called '"+((String)commands.lastElement())+"' here.");
@@ -57,7 +57,7 @@ public class Buy extends StdCommand
 			mobFor=M;
 		}
 
-		Environmental shopkeeper=CMLib.english().parseShopkeeper(mob,commands,"Buy what from whom?");
+		final Environmental shopkeeper=CMLib.english().parseShopkeeper(mob,commands,"Buy what from whom?");
 		if(shopkeeper==null) return false;
 		if(commands.size()==0)
 		{
@@ -79,7 +79,7 @@ public class Buy extends StdCommand
 		}
 
 		String whatName=CMParms.combine(commands,0);
-		Vector V=new Vector();
+		final Vector V=new Vector();
 		boolean allFlag=((String)commands.elementAt(0)).equalsIgnoreCase("all");
 		if(whatName.toUpperCase().startsWith("ALL.")){ allFlag=true; whatName="ALL "+whatName.substring(4);}
 		if(whatName.toUpperCase().endsWith(".ALL")){ allFlag=true; whatName="ALL "+whatName.substring(0,whatName.length()-4);}
@@ -88,8 +88,8 @@ public class Buy extends StdCommand
 		while(doBugFix || ((allFlag)&&(addendum<=maxToDo)))
 		{
 			doBugFix=false;
-			ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(shopkeeper);
-			Environmental itemToDo=SK.getShop().getStock(whatName,mob);
+			final ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(shopkeeper);
+			final Environmental itemToDo=SK.getShop().getStock(whatName,mob);
 			if(itemToDo==null) break;
 			if(CMLib.flags().canBeSeenBy(itemToDo,mob))
 				V.addElement(itemToDo);
@@ -111,8 +111,8 @@ public class Buy extends StdCommand
 		else
 		for(int v=0;v<V.size();v++)
 		{
-			Environmental thisThang=(Environmental)V.elementAt(v);
-			CMMsg newMsg=CMClass.getMsg(mob,shopkeeper,thisThang,CMMsg.MSG_BUY,"<S-NAME> buy(s) <O-NAME> from <T-NAMESELF>"+forName+".");
+			final Environmental thisThang=(Environmental)V.elementAt(v);
+			final CMMsg newMsg=CMClass.getMsg(mob,shopkeeper,thisThang,CMMsg.MSG_BUY,"<S-NAME> buy(s) <O-NAME> from <T-NAMESELF>"+forName+".");
 			if(mob.location().okMessage(mob,newMsg))
 				mob.location().send(mob,newMsg);
 		}

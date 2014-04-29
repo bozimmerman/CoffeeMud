@@ -67,7 +67,7 @@ public class Prayer_Doomspout extends Prayer implements DiseaseAffect
 			return false;
 		if((--plagueDown)<=0)
 		{
-			MOB mob=(MOB)affected;
+			final MOB mob=(MOB)affected;
 			plagueDown=4;
 			if(invoker==null) invoker=mob;
 			if(mob.location()==null) return false;
@@ -92,7 +92,7 @@ public class Prayer_Doomspout extends Prayer implements DiseaseAffect
 			}
 			if((CMLib.flags().canSpeak(mob))&&(ispoke))
 			{
-				MOB target=mob.location().fetchRandomInhabitant();
+				final MOB target=mob.location().fetchRandomInhabitant();
 				if((target!=null)
 				&&(CMLib.flags().canBeHeardSpeakingBy(mob,target))
 				&&(target!=invoker)
@@ -135,7 +135,7 @@ public class Prayer_Doomspout extends Prayer implements DiseaseAffect
 		// undo the affects of this spell
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		super.unInvoke();
 
@@ -161,22 +161,22 @@ public class Prayer_Doomspout extends Prayer implements DiseaseAffect
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		MOB target=getTarget(mob,commands,givenTarget);
+		final MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
 			// it worked, so build a copy of this ability,
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto)|CMMsg.MASK_MALICIOUS,auto?"":"^S<S-NAME> inflict(s) an unholy disease upon <T-NAMESELF>.^?");
-			CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_DISEASE|(auto?CMMsg.MASK_ALWAYS:0),null);
-			CMMsg msg3=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_MIND|(auto?CMMsg.MASK_ALWAYS:0),null);
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto)|CMMsg.MASK_MALICIOUS,auto?"":"^S<S-NAME> inflict(s) an unholy disease upon <T-NAMESELF>.^?");
+			final CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_DISEASE|(auto?CMMsg.MASK_ALWAYS:0),null);
+			final CMMsg msg3=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_MIND|(auto?CMMsg.MASK_ALWAYS:0),null);
 			if((mob.location().okMessage(mob,msg))
 			&&(mob.location().okMessage(mob,msg2))
 			&&(mob.location().okMessage(mob,msg3)))

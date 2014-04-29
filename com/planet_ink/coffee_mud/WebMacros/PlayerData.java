@@ -118,7 +118,7 @@ public class PlayerData extends StdWebMacro
 
 	public static String getBasic(MOB M, int i)
 	{
-		StringBuffer str=new StringBuffer("");
+		final StringBuffer str=new StringBuffer("");
 		switch(i)
 		{
 		case 0: str.append(M.Name()+", "); break;
@@ -138,7 +138,7 @@ public class PlayerData extends StdWebMacro
 		{
 				for(int c=M.charStats().numClasses()-1;c>=0;c--)
 				{
-					CharClass C=M.charStats().getMyClass(c);
+					final CharClass C=M.charStats().getMyClass(c);
 					str.append(C.name(M.baseCharStats().getCurrentClassLevel())+" ("+M.charStats().getClassLevel(C)+") ");
 				}
 				str.append(", ");
@@ -162,8 +162,8 @@ public class PlayerData extends StdWebMacro
 		case 21: str.append(M.getLiegeID()+", "); break;
 		case 22:
 		case 23: {
-					StringBuilder buf=new StringBuilder("");
-					for(Pair<Clan,Integer> p : M.clans())
+					final StringBuilder buf=new StringBuilder("");
+					for(final Pair<Clan,Integer> p : M.clans())
 						buf.append(p.first.getName()).append(", ");
 					if(buf.length()>2)
 						str.append(buf.substring(0, buf.length()-2));
@@ -172,7 +172,7 @@ public class PlayerData extends StdWebMacro
 		case 24: str.append(M.fetchFaction(CMLib.factions().AlignID())+", ");
 				 break;
 		case 25: {
-					Faction.FRange FR=CMLib.factions().getRange(CMLib.factions().AlignID(),M.fetchFaction(CMLib.factions().AlignID()));
+					final Faction.FRange FR=CMLib.factions().getRange(CMLib.factions().AlignID(),M.fetchFaction(CMLib.factions().AlignID()));
 					if(FR!=null)
 						str.append(FR.name()+", ");
 					else
@@ -196,7 +196,7 @@ public class PlayerData extends StdWebMacro
 		{
 				for(int inv=0;inv<M.numItems();inv++)
 				{
-					Item I=M.getItem(inv);
+					final Item I=M.getItem(inv);
 					if((I!=null)&&(I.container()==null))
 						  str.append(I.name()+", ");
 				}
@@ -229,7 +229,7 @@ public class PlayerData extends StdWebMacro
 		case 47: str.append(M.maxItems()+", "); break;
 		case 48:
 		{
-				 String[] paths=CMLib.protocol().mxpImagePath(M.image());
+				 final String[] paths=CMLib.protocol().mxpImagePath(M.image());
 				 if(paths[0].length()>0)
 					 str.append(paths[0]+paths[1]+", ");
 				 break;
@@ -244,10 +244,10 @@ public class PlayerData extends StdWebMacro
 				 break;
 		case 51: if(M.playerStats()!=null)
 				 {
-					long lastDateTime=-1;
+					final long lastDateTime=-1;
 					for(int level=0;level<=M.phyStats().level();level++)
 					{
-						long dateTime=M.playerStats().leveledDateTime(level);
+						final long dateTime=M.playerStats().leveledDateTime(level);
 						if((dateTime>1529122205)&&(dateTime!=lastDateTime))
 						{
 							str.append("<TR>");
@@ -268,10 +268,10 @@ public class PlayerData extends StdWebMacro
 		case 56: str.append(M.basePhyStats().speed()+", "); break;
 		case 57:
 		{
-			for(Enumeration<String> x=M.expertises();x.hasMoreElements();)
+			for(final Enumeration<String> x=M.expertises();x.hasMoreElements();)
 			{
-				String E=x.nextElement();
-				ExpertiseLibrary.ExpertiseDefinition X=CMLib.expertises().getDefinition(E);
+				final String E=x.nextElement();
+				final ExpertiseLibrary.ExpertiseDefinition X=CMLib.expertises().getDefinition(E);
 				if(X==null)
 					str.append(E+", ");
 				else
@@ -281,7 +281,7 @@ public class PlayerData extends StdWebMacro
 		}
 		case 58:
 		{
-			for(Enumeration<MOB.Tattoo> e=M.tattoos();e.hasMoreElements();)
+			for(final Enumeration<MOB.Tattoo> e=M.tattoos();e.hasMoreElements();)
 			  str.append(e.nextElement().toString()+", ");
 			break;
 		}
@@ -289,10 +289,10 @@ public class PlayerData extends StdWebMacro
 		{
 			if(M.playerStats()!=null)
 			{
-				List<String> flags=CMParms.parseSemicolons(M.playerStats().getSetSecurityFlags(null), true);
+				final List<String> flags=CMParms.parseSemicolons(M.playerStats().getSetSecurityFlags(null), true);
 				for(int b=0;b<flags.size();b++)
 				{
-					String B=flags.get(b);
+					final String B=flags.get(b);
 					if(B!=null)	str.append(B+", ");
 				}
 			}
@@ -303,18 +303,18 @@ public class PlayerData extends StdWebMacro
 			if(M.playerStats()!=null)
 				for(int b=0;b<M.playerStats().getTitles().size();b++)
 				{
-					String B=M.playerStats().getTitles().get(b);
+					final String B=M.playerStats().getTitles().get(b);
 					if(B!=null)	str.append(B+", ");
 				}
 				break;
 		}
 		case 61:
 		{
-			for(Enumeration e=M.fetchFactions();e.hasMoreElements();)
+			for(final Enumeration e=M.fetchFactions();e.hasMoreElements();)
 			{
-				String FID=(String)e.nextElement();
-				Faction F=CMLib.factions().getFaction(FID);
-				int value=M.fetchFaction(FID);
+				final String FID=(String)e.nextElement();
+				final Faction F=CMLib.factions().getFaction(FID);
+				final int value=M.fetchFaction(FID);
 				if(F!=null)	str.append(F.name()+" ("+value+"), ");
 			}
 			break;
@@ -353,24 +353,24 @@ public class PlayerData extends StdWebMacro
 		if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
 			return CMProps.getVar(CMProps.Str.MUDSTATUS);
 
-		java.util.Map<String,String> parms=parseParms(parm);
-		String last=httpReq.getUrlParameter("PLAYER");
+		final java.util.Map<String,String> parms=parseParms(parm);
+		final String last=httpReq.getUrlParameter("PLAYER");
 		if(last==null) return " @break@";
 		if(last.length()>0)
 		{
 			MOB M=CMLib.players().getLoadPlayer(last);
 			if(M==null)
 			{
-				MOB authM=Authenticate.getAuthenticatedMob(httpReq);
+				final MOB authM=Authenticate.getAuthenticatedMob(httpReq);
 				if((authM!=null)&&(authM.Name().equalsIgnoreCase(last)))
 					M=authM;
 				else
 					return " @break@";
 			}
 
-			boolean firstTime=(!httpReq.isUrlParameter("ACTION"))
+			final boolean firstTime=(!httpReq.isUrlParameter("ACTION"))
 							||(httpReq.getUrlParameter("ACTION")).equals("FIRSTTIME");
-			StringBuffer str=new StringBuffer("");
+			final StringBuffer str=new StringBuffer("");
 			for(int i=0;i<MOB.AUTODESC.length;i++)
 			{
 				if(parms.containsKey(MOB.AUTODESC[i]))
@@ -380,12 +380,12 @@ public class PlayerData extends StdWebMacro
 					str.append((set?"ON":"OFF")+",");
 				}
 			}
-			for(int i : CharStats.CODES.ALL())
+			for(final int i : CharStats.CODES.ALL())
 			{
-				String stat=CharStats.CODES.NAME(i);
+				final String stat=CharStats.CODES.NAME(i);
 				if(!stat.equalsIgnoreCase("GENDER"))
 				{
-					CharStats C=M.charStats();
+					final CharStats C=M.charStats();
 					if(parms.containsKey(stat))
 					{
 						String old=httpReq.getUrlParameter(stat);
@@ -400,12 +400,12 @@ public class PlayerData extends StdWebMacro
 					}
 				}
 			}
-			for(int i : CharStats.CODES.ALL())
+			for(final int i : CharStats.CODES.ALL())
 			{
-				String stat=CharStats.CODES.NAME(i);
+				final String stat=CharStats.CODES.NAME(i);
 				if(!stat.equalsIgnoreCase("GENDER"))
 				{
-					CharStats C=M.baseCharStats();
+					final CharStats C=M.baseCharStats();
 					if(parms.containsKey("BASE"+stat))
 					{
 						String old=httpReq.getUrlParameter("BASE"+stat);
@@ -430,9 +430,9 @@ public class PlayerData extends StdWebMacro
 				String old=httpReq.getUrlParameter("RACE");
 				if((firstTime)||(old.length()==0))
 					old=""+M.baseCharStats().getMyRace().ID();
-				for(Enumeration r=CMClass.races();r.hasMoreElements();)
+				for(final Enumeration r=CMClass.races();r.hasMoreElements();)
 				{
-					Race R2=(Race)r.nextElement();
+					final Race R2=(Race)r.nextElement();
 					str.append("<OPTION VALUE=\""+R2.ID()+"\"");
 					if(R2.ID().equals(old))
 						str.append(" SELECTED");
@@ -444,9 +444,9 @@ public class PlayerData extends StdWebMacro
 				String old=httpReq.getUrlParameter("DEITY");
 				if(firstTime) old=M.getWorshipCharID();
 				str.append("<OPTION "+((old.length()==0)?"SELECTED":"")+" VALUE=\"\">Godless");
-				for(Enumeration e=CMLib.map().deities();e.hasMoreElements();)
+				for(final Enumeration e=CMLib.map().deities();e.hasMoreElements();)
 				{
-					Deity E=(Deity)e.nextElement();
+					final Deity E=(Deity)e.nextElement();
 					str.append("<OPTION VALUE=\""+E.Name()+"\"");
 					if(E.Name().equalsIgnoreCase(old))
 						str.append(" SELECTED");
@@ -458,18 +458,18 @@ public class PlayerData extends StdWebMacro
 				if(M.playerStats()!=null)
 				{
 					int b=0;
-					Vector titles=new Vector();
+					final Vector titles=new Vector();
 					if(firstTime) titles.addAll(M.playerStats().getTitles());
 					else
 					while(httpReq.isUrlParameter("TITLE"+b))
 					{
-						String B=httpReq.getUrlParameter("TITLE"+b);
+						final String B=httpReq.getUrlParameter("TITLE"+b);
 						if((B!=null)&&(B.trim().length()>0)) titles.addElement(B);
 						b++;
 					}
 					for(b=0;b<titles.size();b++)
 					{
-						String B=(String)titles.elementAt(b);
+						final String B=(String)titles.elementAt(b);
 						if(B!=null)	str.append("<INPUT TYPE=TEXT NAME=TITLE"+b+" SIZE="+B.length()+" VALUE=\""+CMStrings.replaceAll(B,"\"","&quot;")+"\"><BR>");
 					}
 					str.append("<INPUT TYPE=TEXT NAME=TITLE"+titles.size()+" SIZE=60 VALUE=\"\">");
@@ -482,7 +482,7 @@ public class PlayerData extends StdWebMacro
 					old=""+M.fetchFaction(CMLib.factions().AlignID());
 				if(CMLib.factions().getFaction(CMLib.factions().AlignID())!=null)
 				{
-					for(Faction.Align v : Faction.Align.values())
+					for(final Faction.Align v : Faction.Align.values())
 						if(v!=Faction.Align.INDIFF)
 						{
 							str.append("<OPTION VALUE="+v.toString());
@@ -505,10 +505,10 @@ public class PlayerData extends StdWebMacro
 			else
 			if(parms.containsKey("PLAYERCLANNEXT"))
 			{
-				String prevClan=httpReq.getUrlParameter("CLAN");
+				final String prevClan=httpReq.getUrlParameter("CLAN");
 				boolean found=false;
 				boolean next=false;
-				for(Pair<Clan, Integer> p : M.clans())
+				for(final Pair<Clan, Integer> p : M.clans())
 				{
 					if((prevClan == null)||(next))
 					{

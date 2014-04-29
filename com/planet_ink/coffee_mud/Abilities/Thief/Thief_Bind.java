@@ -14,7 +14,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -116,7 +115,7 @@ public class Thief_Bind extends ThiefSkill
 			super.unInvoke();
 			return;
 		}
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		super.unInvoke();
 		if(canBeUninvoked())
@@ -153,9 +152,9 @@ public class Thief_Bind extends ThiefSkill
 		if((commands.size()>0)&&((String)commands.firstElement()).equalsIgnoreCase("UNTIE"))
 		{
 			commands.removeElementAt(0);
-			MOB target=super.getTarget(mob,commands,givenTarget,false,true);
+			final MOB target=super.getTarget(mob,commands,givenTarget,false,true);
 			if(target==null) return false;
-			Ability A=target.fetchEffect(ID());
+			final Ability A=target.fetchEffect(ID());
 			if(A!=null)
 			{
 				if(mob.location().show(mob,target,null,CMMsg.MSG_HANDS,"<S-NAME> attempt(s) to unbind <T-NAMESELF>."))
@@ -170,7 +169,7 @@ public class Thief_Bind extends ThiefSkill
 		}
 
 
-		MOB target=getTarget(mob,commands,givenTarget);
+		final MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
 		if((!CMLib.flags().isSleeping(target))&&(CMLib.flags().canMove(target)&&(!auto)))
@@ -190,8 +189,8 @@ public class Thief_Bind extends ThiefSkill
 		if(success)
 		{
 			if(auto) maxRange=10;
-			String str=auto?"<T-NAME> become(s) bound by "+ropeName+".":"<S-NAME> bind(s) <T-NAME> with "+ropeName+".";
-			CMMsg msg=CMClass.getMsg(mob,target,this,(auto?CMMsg.MASK_ALWAYS:0)|CMMsg.MSG_THIEF_ACT|CMMsg.MASK_SOUND|CMMsg.MASK_MALICIOUS,auto?"":str,str,str);
+			final String str=auto?"<T-NAME> become(s) bound by "+ropeName+".":"<S-NAME> bind(s) <T-NAME> with "+ropeName+".";
+			final CMMsg msg=CMClass.getMsg(mob,target,this,(auto?CMMsg.MASK_ALWAYS:0)|CMMsg.MSG_THIEF_ACT|CMMsg.MASK_SOUND|CMMsg.MASK_MALICIOUS,auto?"":str,str,str);
 			if((target.location().okMessage(mob,msg))&&(target.fetchEffect(this.ID())==null))
 			{
 				target.location().send(mob,msg);
@@ -201,7 +200,7 @@ public class Thief_Bind extends ThiefSkill
 					{
 						maxRange=0;
 						double prof=0.0;
-						Ability A=mob.fetchAbility("Specialization_Ranged");
+						final Ability A=mob.fetchAbility("Specialization_Ranged");
 						if(A!=null) prof=CMath.div(A.proficiency(),20);
 						amountRemaining=(mob.charStats().getStat(CharStats.STAT_STRENGTH)+mob.phyStats().level()+(2*getXLEVELLevel(mob)))*((int)Math.round(5.0+prof));
 					}
@@ -212,12 +211,12 @@ public class Thief_Bind extends ThiefSkill
 				}
 				if((mob.getVictim()==target)&&(!auto))
 				{
-					Set<MOB> H=mob.getGroupMembers(new HashSet<MOB>());
+					final Set<MOB> H=mob.getGroupMembers(new HashSet<MOB>());
 					MOB M=null;
 					mob.makePeace();
-					for(Iterator i=H.iterator();i.hasNext();)
+					for (final Object element : H)
 					{
-						M=(MOB)i.next();
+						M=(MOB)element;
 						if(M.getVictim()==target) M.setVictim(null);
 					}
 				}

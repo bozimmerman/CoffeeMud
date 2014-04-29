@@ -62,7 +62,7 @@ public class Prayer_Monolith extends Prayer
 		if((affected==null)||(!(affected instanceof Item)))
 			return true;
 
-		MOB mob=msg.source();
+		final MOB mob=msg.source();
 		switch(wallType)
 		{
 		case TYP_ICE:
@@ -76,8 +76,8 @@ public class Prayer_Monolith extends Prayer
 					Item w=mob.fetchWieldedItem();
 					if(w==null) w=mob.myNaturalWeapon();
 					if(w==null) return false;
-					Room room=mob.location();
-					CMMsg msg2=CMClass.getMsg(mob,null,CMMsg.MSG_WEAPONATTACK,"^F^<FIGHT^><S-NAME> hack(s) at the monolith of ice with "+w.name()+".^</FIGHT^>^?");
+					final Room room=mob.location();
+					final CMMsg msg2=CMClass.getMsg(mob,null,CMMsg.MSG_WEAPONATTACK,"^F^<FIGHT^><S-NAME> hack(s) at the monolith of ice with "+w.name()+".^</FIGHT^>^?");
 					CMLib.color().fixSourceFightColor(msg2);
 					if(room.okMessage(mob,msg2))
 					{
@@ -87,7 +87,7 @@ public class Prayer_Monolith extends Prayer
 						{
 							for(int i=0;i<room.numInhabitants();i++)
 							{
-								MOB M=room.fetchInhabitant(i);
+								final MOB M=room.fetchInhabitant(i);
 								if((M.isInCombat())
 								&&(M.getVictim()==invoker)
 								&&(M.rangeToTarget()>0)
@@ -118,7 +118,7 @@ public class Prayer_Monolith extends Prayer
 			&&(((Weapon)msg.tool()).weaponClassification()==Weapon.CLASS_RANGED))
 			{
 				mob.location().show(mob,invoker,CMMsg.MSG_OK_VISUAL,"<S-NAME> fire(s) "+msg.tool().name()+" at <T-NAME>.  The missile enters the monolith of air.");
-				MOB M=CMClass.getFactoryMOB();
+				final MOB M=CMClass.getFactoryMOB();
 				M.setLocation(mob.location());
 				M.setName("The monolith of air");
 				M.setVictim(mob);
@@ -188,7 +188,7 @@ public class Prayer_Monolith extends Prayer
 					((Room)theWall.owner()).show(actorM,null,CMMsg.MSG_OK_VISUAL,"The monolith of stone crumbles.");
 					break;
 				}
-				Item wall=theWall;
+				final Item wall=theWall;
 				theWall=null;
 				wall.destroy();
 			}
@@ -216,20 +216,20 @@ public class Prayer_Monolith extends Prayer
 				   &&(theWall!=null)
 				   &&(invoker.location()!=null))
 				{
-					Room room=invoker.location();
+					final Room room=invoker.location();
 					if(!invoker.location().isContent(theWall))
 						unInvoke();
 					else
 					for(int m=0;m<room.numInhabitants();m++)
 					{
-						MOB mob=room.fetchInhabitant(m);
+						final MOB mob=room.fetchInhabitant(m);
 						if((mob!=null)
 						&&(mob!=invoker)
 						&&(mob.isInCombat())
 						&&(mob.getVictim()==invoker)
 						&&(mob.rangeToTarget()==1))
 						{
-							int damage = CMLib.dice().roll((int)Math.round((adjustedLevel(invoker,0)+(2.0*super.getX1Level(invoker())))/4.0),6,1);
+							final int damage = CMLib.dice().roll((int)Math.round((adjustedLevel(invoker,0)+(2.0*super.getX1Level(invoker())))/4.0),6,1);
 							CMLib.combat().postDamage(invoker,mob,this,damage,CMMsg.MASK_MALICIOUS|CMMsg.MASK_ALWAYS|CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,"The monolith of fire flares and <DAMAGE> <T-NAME>!");
 						}
 					}
@@ -251,7 +251,7 @@ public class Prayer_Monolith extends Prayer
 		}
 		for(int i=0;i<mob.location().numItems();i++)
 		{
-			Item I=mob.location().getItem(i);
+			final Item I=mob.location().getItem(i);
 			if((I!=null)&&(I.fetchEffect(ID())!=null))
 			{
 				mob.tell("There is already a monolith here.");
@@ -266,10 +266,10 @@ public class Prayer_Monolith extends Prayer
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		Physical target = mob.location();
+		final Physical target = mob.location();
 
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
@@ -279,7 +279,7 @@ public class Prayer_Monolith extends Prayer
 			// what happened.
 
 			wallType=CMLib.dice().roll(1,4,-1);
-			String text=text().toUpperCase().trim();
+			final String text=text().toUpperCase().trim();
 			if((text.indexOf("STONE")>=0)||(text.indexOf("EARTH")>=0))
 				wallType=TYP_EARTH;
 			else
@@ -328,7 +328,7 @@ public class Prayer_Monolith extends Prayer
 			}
 			if(I!=null)
 			{
-				CMMsg msg = CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?I.name()+" appears!":"^S<S-NAME> "+prayForWord(mob)+" to construct "+I.name()+"!^?");
+				final CMMsg msg = CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?I.name()+" appears!":"^S<S-NAME> "+prayForWord(mob)+" to construct "+I.name()+"!^?");
 				if(mob.location().okMessage(mob,msg))
 				{
 					mob.location().send(mob,msg);

@@ -44,17 +44,17 @@ public class SpecialistMage extends Mage
 	public void initializeClass()
 	{
 		super.initializeClass();
-		for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
+		for(final Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 		{
-			Ability A=a.nextElement();
+			final Ability A=a.nextElement();
 			if(A!=null)
 			{
-				int level=CMLib.ableMapper().getQualifyingLevel(ID(),true,A.ID());
+				final int level=CMLib.ableMapper().getQualifyingLevel(ID(),true,A.ID());
 				if((!CMLib.ableMapper().getDefaultGain(ID(),true,A.ID()))
 				&&(level>0)
 				&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SPELL))
 				{
-					boolean secret=CMLib.ableMapper().getSecretSkill(ID(),true,A.ID());
+					final boolean secret=CMLib.ableMapper().getSecretSkill(ID(),true,A.ID());
 					if((A.classificationCode()&Ability.ALL_DOMAINS)==opposed())
 					{
 						if(CMLib.ableMapper().getDefaultGain(ID(),true,A.ID()))
@@ -76,13 +76,13 @@ public class SpecialistMage extends Mage
 	@Override
 	public String getOtherBonusDesc()
 	{
-		String chosen=CMStrings.capitalizeAndLower(Ability.DOMAIN_DESCS[domain()>>5].replace('_',' '));
+		final String chosen=CMStrings.capitalizeAndLower(Ability.DOMAIN_DESCS[domain()>>5].replace('_',' '));
 		return "At 5th level, receives bonus damage from "+chosen+" as levels advance.  At 10th level, receives double duration on your "+chosen+" magic, and half duration from malicious "+chosen+" magic.";
 	}
 	@Override
 	public String getOtherLimitsDesc()
 	{
-		String opposed=CMStrings.capitalizeAndLower(Ability.DOMAIN_DESCS[opposed()>>5].replace('_',' '));
+		final String opposed=CMStrings.capitalizeAndLower(Ability.DOMAIN_DESCS[opposed()>>5].replace('_',' '));
 		return "Unable to cast "+opposed+" spells.  Receives penalty damage from "+opposed+" as levels advance.  Receives double duration from malicious "+opposed+" magic, half duration on other "+opposed+" effects.";
 	}
 
@@ -90,10 +90,10 @@ public class SpecialistMage extends Mage
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!(myHost instanceof MOB)) return super.okMessage(myHost,msg);
-		MOB myChar=(MOB)myHost;
+		final MOB myChar=(MOB)myHost;
 		if((msg.tool()==null)||(!(msg.tool() instanceof Ability)))
 		   return super.okMessage(myChar,msg);
-		int domain=((Ability)msg.tool()).classificationCode()&Ability.ALL_DOMAINS;
+		final int domain=((Ability)msg.tool()).classificationCode()&Ability.ALL_DOMAINS;
 		if(msg.amISource(myChar)
 		&&(myChar.isMine(msg.tool())))
 		{
@@ -142,9 +142,9 @@ public class SpecialistMage extends Mage
 									 int duration)
 	{
 		if(myChar==null) return duration;
-		boolean lessTen=myChar.charStats().getClassLevel(this)<10;
+		final boolean lessTen=myChar.charStats().getClassLevel(this)<10;
 
-		int domain=skill.classificationCode()&Ability.ALL_DOMAINS;
+		final int domain=skill.classificationCode()&Ability.ALL_DOMAINS;
 		if((skill.invoker()==myChar)
 		||(skill.abstractQuality()!=Ability.QUALITY_MALICIOUS))
 		{

@@ -63,9 +63,9 @@ public class FaithHelper extends StdBehavior
 	{
 		super.executeMsg(affecting,msg);
 		if((msg.target()==null)||(!(msg.target() instanceof MOB))) return;
-		MOB source=msg.source();
-		MOB observer=(MOB)affecting;
-		MOB target=(MOB)msg.target();
+		final MOB source=msg.source();
+		final MOB observer=(MOB)affecting;
+		final MOB target=(MOB)msg.target();
 
 		if((target==null)||(observer==null)) return;
 		if((source!=observer)

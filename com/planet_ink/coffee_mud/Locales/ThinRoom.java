@@ -99,10 +99,10 @@ public class ThinRoom implements Room
 			myR=CMLib.map().getRoom(roomID);
 			if(myR==null)
 			{
-				Map<String,Room> V=CMLib.database().DBReadRoomData(roomID,false);
+				final Map<String,Room> V=CMLib.database().DBReadRoomData(roomID,false);
 				if(V.size()>0)
 				{
-					Iterator<String> i=V.keySet().iterator();
+					final Iterator<String> i=V.keySet().iterator();
 					myR=V.get(i.next());
 					while(i.hasNext()) V.remove(i.next());
 					CMLib.database().DBReadRoomExits(roomID,myR,false);
@@ -324,12 +324,12 @@ public class ThinRoom implements Room
 	{
 		try
 		{
-			ThinRoom E=(ThinRoom)this.clone();
+			final ThinRoom E=(ThinRoom)this.clone();
 			//CMClass.bumpCounter(E,CMClass.CMObjectType.LOCALE);//removed for mem & perf
 			return E;
 
 		}
-		catch(CloneNotSupportedException e)
+		catch(final CloneNotSupportedException e)
 		{
 			return this.newInstance();
 		}
@@ -361,7 +361,7 @@ public class ThinRoom implements Room
 		{
 			return this.getClass().newInstance();
 		}
-		catch(Exception e)
+		catch(final Exception e)
 		{
 			Log.errOut(ID(),e);
 		}

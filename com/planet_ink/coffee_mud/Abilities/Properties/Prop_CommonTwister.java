@@ -48,12 +48,12 @@ public class Prop_CommonTwister extends Property
 	{
 		super.setMiscText(text);
 		changes.clear();
-		List<String> V=CMParms.parseSemicolons(text,true);
+		final List<String> V=CMParms.parseSemicolons(text,true);
 		for(int v=0;v<V.size();v++)
 		{
-			String s=V.get(v);
-			String skill=CMParms.getParmStr(s,"SKILL","");
-			String mask=CMParms.getParmStr(s,"MASK","");
+			final String s=V.get(v);
+			final String skill=CMParms.getParmStr(s,"SKILL","");
+			final String mask=CMParms.getParmStr(s,"MASK","");
 			if((skill.length()>0)&&(mask.length()>0))
 				changes.addElement(skill,mask,s);
 		}
@@ -71,11 +71,11 @@ public class Prop_CommonTwister extends Property
 		   ||((affected instanceof Item)&&(msg.source().isMine(affected)))
 		   ||((affected instanceof MOB)&&(msg.source()==affected))))
 		{
-			Vector poss=new Vector();
-			int randomResource=CMLib.dice().roll(1,RawMaterial.CODES.TOTAL()-1,0);
+			final Vector poss=new Vector();
+			final int randomResource=CMLib.dice().roll(1,RawMaterial.CODES.TOTAL()-1,0);
 			if(text().length()==0)
 			{
-				Item I=CMLib.materials().makeItemResource(randomResource);
+				final Item I=CMLib.materials().makeItemResource(randomResource);
 				msg.target().setName(I.Name());
 				msg.target().setDisplayText(I.displayText());
 				if(msg.target() instanceof Item)
@@ -87,23 +87,23 @@ public class Prop_CommonTwister extends Property
 				if(((String)changes.elementAt(v,1)).equals("*")
 				||(((String)changes.elementAt(v,1)).equalsIgnoreCase(msg.tool().ID())))
 				{
-					String two=(String)changes.elementAt(v,2);
+					final String two=(String)changes.elementAt(v,2);
 					if(two.equals("*")
 					||(CMLib.english().containsString(msg.target().name(),two)))
 						poss.addElement(changes.elementAt(v,3));
 				}
 			}
 			if(poss.size()==0) return true;
-			String var=(String)poss.elementAt(CMLib.dice().roll(1,poss.size(),-1));
-			String newname=CMParms.getParmStr(var,"NAME","");
-			String newdisp=CMParms.getParmStr(var,"DISPLAY","");
-			String newmat=CMParms.getParmStr(var,"MATERIAL","");
+			final String var=(String)poss.elementAt(CMLib.dice().roll(1,poss.size(),-1));
+			final String newname=CMParms.getParmStr(var,"NAME","");
+			final String newdisp=CMParms.getParmStr(var,"DISPLAY","");
+			final String newmat=CMParms.getParmStr(var,"MATERIAL","");
 
 			if(newname.length()>0)
 			{
 				if(newname.equals("*"))
 				{
-					Item I=CMLib.materials().makeItemResource(randomResource);
+					final Item I=CMLib.materials().makeItemResource(randomResource);
 					msg.target().setName(I.Name());
 				}
 				else
@@ -113,7 +113,7 @@ public class Prop_CommonTwister extends Property
 			{
 				if(newdisp.equals("*"))
 				{
-					Item I=CMLib.materials().makeItemResource(randomResource);
+					final Item I=CMLib.materials().makeItemResource(randomResource);
 					msg.target().setDisplayText(I.displayText());
 				}
 				else
@@ -121,7 +121,7 @@ public class Prop_CommonTwister extends Property
 			}
 			if((newmat.length()>0)&&(msg.target() instanceof Item))
 			{
-				String oldMatName=RawMaterial.CODES.NAME(((Item)msg.target()).material()).toLowerCase();
+				final String oldMatName=RawMaterial.CODES.NAME(((Item)msg.target()).material()).toLowerCase();
 				int newMatCode=-1;
 				if(newmat.equals("*"))
 					newMatCode=randomResource;
@@ -136,7 +136,7 @@ public class Prop_CommonTwister extends Property
 					if(newMatCode>=0)
 					{
 						((Item)msg.target()).setMaterial(newMatCode);
-						String newMatName=RawMaterial.CODES.NAME(newMatCode).toLowerCase();
+						final String newMatName=RawMaterial.CODES.NAME(newMatCode).toLowerCase();
 						msg.target().setName(CMStrings.replaceAll(msg.target().name(),oldMatName,newMatName));
 						msg.target().setDisplayText(CMStrings.replaceAll(msg.target().name(),oldMatName,newMatName));
 						msg.target().setName(CMStrings.replaceAll(msg.target().name(),CMStrings.capitalizeAndLower(oldMatName),CMStrings.capitalizeAndLower(newMatName)));

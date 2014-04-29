@@ -141,9 +141,9 @@ public class Prayer_InfuseHoliness extends Prayer
 				mob.tell("The faithless may not infuse holiness in a room.");
 				return false;
 			}
-			Area A=mob.location().getArea();
+			final Area A=mob.location().getArea();
 			Room R=null;
-			for(Enumeration e=A.getMetroMap();e.hasMoreElements();)
+			for(final Enumeration e=A.getMetroMap();e.hasMoreElements();)
 			{
 				R=(Room)e.nextElement();
 				if(CMLib.law().getClericInfused((Room)target)==D)
@@ -157,10 +157,10 @@ public class Prayer_InfuseHoliness extends Prayer
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"A holy aura appears around <T-NAME>.":"^S<S-NAME> "+prayForWord(mob)+" to infuse a holy aura around <T-NAMESELF>.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"A holy aura appears around <T-NAME>.":"^S<S-NAME> "+prayForWord(mob)+" to infuse a holy aura around <T-NAMESELF>.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

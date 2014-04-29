@@ -58,7 +58,7 @@ public class Chant_SummonPlants extends Chant
 		super.unInvoke();
 		if(canBeUninvoked())
 		{
-			Item plants=littlePlants; // protects against uninvoke loops!
+			final Item plants=littlePlants; // protects against uninvoke loops!
 			littlePlants=null;
 			plants.destroy();
 			PlantsLocation.recoverRoomStats();
@@ -85,7 +85,7 @@ public class Chant_SummonPlants extends Chant
 
 	public static Item buildPlant(MOB mob, Room room)
 	{
-		Item newItem=CMClass.getItem("GenItem");
+		final Item newItem=CMClass.getItem("GenItem");
 		newItem.setMaterial(RawMaterial.RESOURCE_GREENS);
 		switch(CMLib.dice().roll(1,5,0))
 		{
@@ -115,7 +115,7 @@ public class Chant_SummonPlants extends Chant
 			newItem.setDescription("Happy flowers with little blue and purple blooms.");
 			break;
 		}
-		Chant_SummonPlants newChant=new Chant_SummonPlants();
+		final Chant_SummonPlants newChant=new Chant_SummonPlants();
 		newItem.basePhyStats().setLevel(10+(10*newChant.getX1Level(mob)));
 		newItem.basePhyStats().setWeight(1);
 		newItem.setSecretIdentity(mob.Name());
@@ -139,13 +139,13 @@ public class Chant_SummonPlants extends Chant
 
 	public Item buildMyThing(MOB mob, Room room)
 	{
-		Area A=room.getArea();
-		boolean bonusWorthy=(Druid_MyPlants.myPlant(room,mob,0)==null);
-		Vector V=Druid_MyPlants.myAreaPlantRooms(mob,room.getArea());
+		final Area A=room.getArea();
+		final boolean bonusWorthy=(Druid_MyPlants.myPlant(room,mob,0)==null);
+		final Vector V=Druid_MyPlants.myAreaPlantRooms(mob,room.getArea());
 		int pct=0;
 		if(A.getAreaIStats()[Area.Stats.VISITABLE_ROOMS.ordinal()]>10)
 			pct=(int)Math.round(100.0*CMath.div(V.size(),A.getAreaIStats()[Area.Stats.VISITABLE_ROOMS.ordinal()]));
-		Item I=buildMyPlant(mob,room);
+		final Item I=buildMyPlant(mob,room);
 		if((I!=null)
 		&&((mob.charStats().getCurrentClass().baseClass().equalsIgnoreCase("Druid"))||(CMSecurity.isASysOp(mob))))
 		{
@@ -153,10 +153,10 @@ public class Chant_SummonPlants extends Chant
 			{
 				if(pct>0)
 				{
-					int newPct=(int)Math.round(100.0*CMath.div(V.size(),A.getAreaIStats()[Area.Stats.VISITABLE_ROOMS.ordinal()]));
+					final int newPct=(int)Math.round(100.0*CMath.div(V.size(),A.getAreaIStats()[Area.Stats.VISITABLE_ROOMS.ordinal()]));
 					if((newPct>=50)&&(A.fetchEffect("Chant_DruidicConnection")==null))
 					{
-						Ability A2=CMClass.getAbility("Chant_DruidicConnection");
+						final Ability A2=CMClass.getAbility("Chant_DruidicConnection");
 						if(A2!=null) A2.invoke(mob,A,true,0);
 					}
 				}
@@ -215,7 +215,7 @@ public class Chant_SummonPlants extends Chant
 		{
 			if(!rightPlace(mob,false))
 				return Ability.QUALITY_INDIFFERENT;
-			Item myPlant=Druid_MyPlants.myPlant(mob.location(),mob,0);
+			final Item myPlant=Druid_MyPlants.myPlant(mob.location(),mob,0);
 			if(myPlant==null)
 				return super.castingQuality(mob, target,Ability.QUALITY_BENEFICIAL_SELF);
 		}
@@ -231,10 +231,10 @@ public class Chant_SummonPlants extends Chant
 			return false;
 
 		// now see if it worked
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":"^S<S-NAME> chant(s) to the ground.^?");
+			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":"^S<S-NAME> chant(s) to the ground.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

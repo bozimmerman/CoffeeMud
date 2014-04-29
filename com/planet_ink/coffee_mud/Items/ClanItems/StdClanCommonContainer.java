@@ -66,10 +66,10 @@ public class StdClanCommonContainer extends StdClanContainer
 		&&(!CMLib.flags().isAnimalIntelligence((MOB)owner())))
 		{
 			workDown=CMLib.dice().roll(1,5,0);
-			MOB M=(MOB)owner();
+			final MOB M=(MOB)owner();
 			if(M.fetchEffect(readableText())==null)
 			{
-				Ability A=CMClass.getAbility(readableText());
+				final Ability A=CMClass.getAbility(readableText());
 				if((A!=null)&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_COMMON_SKILL))
 				{
 					A.setProficiency(100);
@@ -83,7 +83,7 @@ public class StdClanCommonContainer extends StdClanContainer
 							if((I==null)||(I==this)||(!I.amWearingAt(Wearable.IN_INVENTORY)))
 								I=null;
 						}
-						Vector V=new Vector();
+						final Vector V=new Vector();
 						if(I!=null)	V.addElement(I.name());
 						A.invoke(M,V,null,false,phyStats().level());
 					}

@@ -51,23 +51,23 @@ public class Restring extends StdCommand
 		throws java.io.IOException
 	{
 		String allWord=CMParms.combine(commands,1);
-		int x=allWord.indexOf('@');
+		final int x=allWord.indexOf('@');
 		MOB srchMob=mob;
 		Item srchContainer=null;
 		Room srchRoom=mob.location();
 		if(x>0)
 		{
-			String rest=allWord.substring(x+1).trim();
+			final String rest=allWord.substring(x+1).trim();
 			allWord=allWord.substring(0,x).trim();
 			if(rest.equalsIgnoreCase("room"))
 				srchMob=null;
 			else
 			if(rest.length()>0)
 			{
-				MOB M=srchRoom.fetchInhabitant(rest);
+				final MOB M=srchRoom.fetchInhabitant(rest);
 				if(M==null)
 				{
-					Item I = srchRoom.findItem(null, rest);
+					final Item I = srchRoom.findItem(null, rest);
 					if(I instanceof Container)
 						srchContainer=I;
 					else

@@ -42,7 +42,7 @@ public class Topics extends ATopics
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		Properties helpFile=CMLib.help().getHelpFile();
+		final Properties helpFile=CMLib.help().getHelpFile();
 		if(helpFile.size()==0)
 		{
 			if(mob!=null)

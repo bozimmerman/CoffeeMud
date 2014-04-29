@@ -46,7 +46,7 @@ public class StdGridArea extends StdArea implements Area, GridZones {
 		if(CMSecurity.isDisabled(CMSecurity.DisFlag.FATAREAS)
 		&&(ID().equals("StdGridArea")))
 		{
-			Area A=CMClass.getAreaType("StdThinGridArea");
+			final Area A=CMClass.getAreaType("StdThinGridArea");
 			if(A!=null) return A;
 		}
 		return super.newInstance();
@@ -55,7 +55,7 @@ public class StdGridArea extends StdArea implements Area, GridZones {
 	@Override
 	public String getNewRoomID(Room startRoom, int direction)
 	{
-		XYVector xy=posFromRoomID(startRoom);
+		final XYVector xy=posFromRoomID(startRoom);
 		int xChange=0;
 		int yChange=0;
 		switch(direction)
@@ -79,7 +79,7 @@ public class StdGridArea extends StdArea implements Area, GridZones {
 				if((newID!=null)&&(newID.length()>0))
 				{
 					newID=Name()+"#"+newID;
-					Room duplicateRoom=getRoom(newID);
+					final Room duplicateRoom=getRoom(newID);
 					if((duplicateRoom==null)
 					||(duplicateRoom==startRoom))
 						return newID;
@@ -90,7 +90,7 @@ public class StdGridArea extends StdArea implements Area, GridZones {
 		for(int x=0;x<xGridSize();x++)
 			for(int y=0;y<yGridSize();y++)
 			{
-				Room R=getRoom(Name()+"#"+roomIDFromPos(x,y));
+				final Room R=getRoom(Name()+"#"+roomIDFromPos(x,y));
 				if(R==null) return Name()+"#"+roomIDFromPos(x,y);
 			}
 		// not even a next in line exists!
@@ -100,14 +100,14 @@ public class StdGridArea extends StdArea implements Area, GridZones {
 	protected String roomIDFromPos(int x, int y)
 	{
 		if((x<0)||(y<0)||(y>=yGridSize())||(x>=xGridSize())) return null;
-		String s=Integer.toString(y);
+		final String s=Integer.toString(y);
 		if(x>0) return x+(ZEROES.substring(ZEROES.length()-(yLength-s.length())))+s;
 		return s;
 	}
 	@Override
 	public Room getGridChild(int x, int y)
 	{
-		String roomID=roomIDFromPos(x,y);
+		final String roomID=roomIDFromPos(x,y);
 		if(roomID==null) return null;
 		return getRoom(Name()+"#"+roomID);
 	}
@@ -117,21 +117,21 @@ public class StdGridArea extends StdArea implements Area, GridZones {
 		if(roomID.length()==0) return null;
 		if(roomID.endsWith(")"))
 		{
-			int y=roomID.lastIndexOf("#(");
+			final int y=roomID.lastIndexOf("#(");
 			if(y>0) roomID=roomID.substring(0,y);
 		}
-		int x=roomID.indexOf('#');
+		final int x=roomID.indexOf('#');
 		if(x<0) return null;
 		if(!roomID.substring(0,x).equalsIgnoreCase(Name())) return null;
 		roomID=roomID.substring(x+1);
 		if(!CMath.isNumber(roomID)) return null;
-		int len=(""+ySize).length();
+		final int len=(""+ySize).length();
 		if(roomID.length()<=len)
 			return new XYVector(0,CMath.s_int(roomID));
-		String xStr=roomID.substring(0,roomID.length()-len);
+		final String xStr=roomID.substring(0,roomID.length()-len);
 		String yStr=roomID.substring(roomID.length()-len);
 		while(yStr.startsWith("0")) yStr=yStr.substring(1);
-		XYVector xy = new XYVector(CMath.s_int(xStr),CMath.s_int(yStr));
+		final XYVector xy = new XYVector(CMath.s_int(xStr),CMath.s_int(yStr));
 		if((xy.x<0)||(xy.y<0)||(xy.x>=xGridSize())||(xy.y>=yGridSize()))
 			return null;
 		return xy;

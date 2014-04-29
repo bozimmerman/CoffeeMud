@@ -147,7 +147,7 @@ public class Trapper extends Thief
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!(myHost instanceof MOB)) return super.okMessage(myHost,msg);
-		MOB myChar=(MOB)myHost;
+		final MOB myChar=(MOB)myHost;
 		if(msg.amISource(myChar)
 		&&(!myChar.isMonster())
 		&&(msg.tool() instanceof Ability)
@@ -182,7 +182,7 @@ public class Trapper extends Thief
 					{
 						C=myChar.charStats().getMyClass(c);
 						if(C==null) continue;
-						int qlvl=CMLib.ableMapper().getQualifyingLevel(C.ID(),false,msg.tool().ID());
+						final int qlvl=CMLib.ableMapper().getQualifyingLevel(C.ID(),false,msg.tool().ID());
 						if((qlvl>=0)
 						&&(myChar.charStats().getClassLevel(C)>=qlvl)
 						&&((chosenC==null)||(chosenC.ID().equals(ID()))))

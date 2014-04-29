@@ -54,15 +54,15 @@ public class MiniWebServer extends Thread
 	public static final	String	  NAME				= "MiniWebServer";
 	public static final String	  POMVERSION		= "2.1";
 	public static 		double	  VERSION;
-	static { try { VERSION=Double.parseDouble(POMVERSION); } catch(Exception e){ VERSION=0.0;} }
+	static { try { VERSION=Double.parseDouble(POMVERSION); } catch(final Exception e){ VERSION=0.0;} }
 
 	private volatile boolean	  shutdownRequested	= false; // notice of external shutdown request
 	private Selector			  servSelector 		= null;  // server io selector
-	private MWThreadExecutor 	  executor;					 // request handler thread pool
+	private final MWThreadExecutor 	  executor;					 // request handler thread pool
 	private Thread				  timeoutThread		= null;  // thread to timeout connected but idle channels
-	private MiniWebConfig		  config;					 // list of all standard http ports to listen on
+	private final MiniWebConfig		  config;					 // list of all standard http ports to listen on
 	private SSLContext	 		  sslContext;
-	private String				  serverName;				 // a friendly name for this server instance
+	private final String				  serverName;				 // a friendly name for this server instance
 	private final LinkedList<HTTPIOHandler>  		handlers;			// list of connected channels.. managed by timeoutthread
 	private final Map<ServerSocketChannel, Boolean>	servChannels; 		// map of socket channels to an SSL boolean
 	private final LinkedList<Runnable>				registerOps;
@@ -108,9 +108,9 @@ public class MiniWebServer extends Thread
 	 */
 	public List<Runnable> getOverdueThreads()
 	{
-		Collection<MWRunWrap> wraps=executor.getTimeoutOutRuns(Integer.MAX_VALUE);
-		Vector<Runnable> overDueV=new Vector<Runnable>(wraps.size());
-		for(MWRunWrap wrap : wraps)
+		final Collection<MWRunWrap> wraps=executor.getTimeoutOutRuns(Integer.MAX_VALUE);
+		final Vector<Runnable> overDueV=new Vector<Runnable>(wraps.size());
+		for(final MWRunWrap wrap : wraps)
 			overDueV.add(wrap.getRunnable());
 		return overDueV;
 	}
@@ -123,8 +123,8 @@ public class MiniWebServer extends Thread
 	 */
 	private void openChannel(int listenPort, Boolean isSSL) throws IOException
 	{
-		ServerSocketChannel servChan = ServerSocketChannel.open();
-		ServerSocket serverSocket = servChan.socket();
+		final ServerSocketChannel servChan = ServerSocketChannel.open();
+		final ServerSocket serverSocket = servChan.socket();
 		serverSocket.bind (new InetSocketAddress (listenPort));
 		servChan.configureBlocking (false);
 		servChan.register (servSelector, SelectionKey.OP_ACCEPT);
@@ -143,14 +143,14 @@ public class MiniWebServer extends Thread
 		boolean portOpen=false;
 		IOException lastException=null;
 
-		for(int listenPort : config.getHttpListenPorts())
+		for(final int listenPort : config.getHttpListenPorts())
 		{
 			try
 			{
 				openChannel(listenPort, Boolean.FALSE);
 				portOpen=true;
 			}
-			catch(IOException e)
+			catch(final IOException e)
 			{
 				lastException=e;
 				config.getLogger().severe("Port "+listenPort+": "+e.getMessage());
@@ -158,14 +158,14 @@ public class MiniWebServer extends Thread
 		}
 		if(sslContext != null)
 		{
-			for(int listenPort : config.getHttpsListenPorts())
+			for(final int listenPort : config.getHttpsListenPorts())
 			{
 				try
 				{
 					openChannel(listenPort, Boolean.TRUE);
 					portOpen=true;
 				}
-				catch(IOException e)
+				catch(final IOException e)
 				{
 					lastException=e;
 					config.getLogger().severe("Port "+listenPort+": "+e.getMessage());
@@ -199,7 +199,7 @@ public class MiniWebServer extends Thread
 						config.getSessions().cleanUpSessions();
 					}
 				}
-				catch(InterruptedException e) {}
+				catch(final InterruptedException e) {}
 				finally
 				{
 					config.getLogger().info( "Timeout Thread shutdown");
@@ -219,8 +219,8 @@ public class MiniWebServer extends Thread
 	{
 		if (key.isAcceptable()) // a connection was made, so add the handler
 		{
-			ServerSocketChannel server = (ServerSocketChannel) key.channel();
-			SocketChannel channel = server.accept();
+			final ServerSocketChannel server = (ServerSocketChannel) key.channel();
+			final SocketChannel channel = server.accept();
 			if (channel != null)
 			{
 				HTTPIOHandler handler;
@@ -239,7 +239,7 @@ public class MiniWebServer extends Thread
 		if(key.isReadable() // bytes were received on one of the channel .. so read!
 		|| (((key.interestOps() & SelectionKey.OP_WRITE)==SelectionKey.OP_WRITE) && key.isWritable()))
 		{
-			HTTPIOHandler handler = (HTTPIOHandler)key.attachment();
+			final HTTPIOHandler handler = (HTTPIOHandler)key.attachment();
 			//config.getLogger().finer("Read/Write: "+handler.getName());
 			if(!handler.isCloseable())
 			{
@@ -250,7 +250,7 @@ public class MiniWebServer extends Thread
 		else
 		if(key.attachment() instanceof HTTPIOHandler)
 		{
-			HTTPIOHandler handler = (HTTPIOHandler)key.attachment();
+			final HTTPIOHandler handler = (HTTPIOHandler)key.attachment();
 			config.getLogger().finer("Rejected handler key for "+handler.getName());
 		}
 	}
@@ -267,9 +267,9 @@ public class MiniWebServer extends Thread
 		synchronized(handlers)
 		{
 			// remove any stray handlers from time to time
-			for(Iterator<HTTPIOHandler> i = handlers.iterator(); i.hasNext(); )
+			for(final Iterator<HTTPIOHandler> i = handlers.iterator(); i.hasNext(); )
 			{
-				HTTPIOHandler handler=i.next();
+				final HTTPIOHandler handler=i.next();
 				if(handler.isCloseable())
 				{
 					if(handlersToShutDown == null)
@@ -283,7 +283,7 @@ public class MiniWebServer extends Thread
 		}
 		if(handlersToShutDown != null)
 		{
-			for(HTTPIOHandler handler : handlersToShutDown)
+			for(final HTTPIOHandler handler : handlersToShutDown)
 			{
 				handler.closeAndWait();
 			}
@@ -304,7 +304,7 @@ public class MiniWebServer extends Thread
 			openChannels(); // open the socket channel
 			startTimeoutThread(); // start the channel timeout thread
 		}
-		catch(IOException e)
+		catch(final IOException e)
 		{
 			config.getLogger().throwing("", "", e); // this is also fatal
 			close();
@@ -314,12 +314,12 @@ public class MiniWebServer extends Thread
 		{
 			try
 			{
-				int n = servSelector.select();
+				final int n = servSelector.select();
 				synchronized(registerOps)
 				{
 					while(!registerOps.isEmpty())
 					{
-						Runnable registerOp=registerOps.removeFirst();
+						final Runnable registerOp=registerOps.removeFirst();
 						registerOp.run();
 					}
 				}
@@ -328,10 +328,10 @@ public class MiniWebServer extends Thread
 					continue;
 				}
 
-				Iterator<SelectionKey> it = servSelector.selectedKeys().iterator();
+				final Iterator<SelectionKey> it = servSelector.selectedKeys().iterator();
 				while (it.hasNext())
 				{
-					SelectionKey key = it.next();
+					final SelectionKey key = it.next();
 					try
 					{
 						handleSelectionKey(key);
@@ -342,15 +342,15 @@ public class MiniWebServer extends Thread
 					}
 				}
 			}
-			catch(CancelledKeyException t)
+			catch(final CancelledKeyException t)
 			{
 				// ignore
 			}
-			catch(IOException e)
+			catch(final IOException e)
 			{
 				config.getLogger().severe(e.getMessage());
 			}
-			catch(Exception e)
+			catch(final Exception e)
 			{
 				config.getLogger().throwing("","",e);
 			}
@@ -372,13 +372,13 @@ public class MiniWebServer extends Thread
 		try
 		{
 			servSelector.close();
-		}catch(Exception e){} // ugh, why can't there be an "i don't care" exception syntax in java
-		for(ServerSocketChannel servChan : servChannels.keySet())
+		}catch(final Exception e){} // ugh, why can't there be an "i don't care" exception syntax in java
+		for(final ServerSocketChannel servChan : servChannels.keySet())
 		{
 			try
 			{
 				servChan.close();
-			}catch(Exception e){}
+			}catch(final Exception e){}
 		}
 		if(!executor.isShutdown())
 		{
@@ -386,7 +386,7 @@ public class MiniWebServer extends Thread
 			{
 				executor.awaitTermination(10, TimeUnit.SECONDS);
 			}
-			catch (InterruptedException e)
+			catch (final InterruptedException e)
 			{
 				executor.shutdownNow();
 			}
@@ -397,7 +397,7 @@ public class MiniWebServer extends Thread
 		}
 		synchronized(handlers)
 		{
-			for(HTTPIOHandler handler : handlers)
+			for(final HTTPIOHandler handler : handlers)
 			{
 				handler.closeAndWait();
 			}
@@ -430,7 +430,7 @@ public class MiniWebServer extends Thread
 							handlers.add(handler);
 						}
 					}
-					catch (Exception e)
+					catch (final Exception e)
 					{
 						config.getLogger().throwing("", "", e);
 					}
@@ -536,7 +536,7 @@ public class MiniWebServer extends Thread
 		Log.instance().configureLogFile("miniweb", 2);
 		String debug="OFF";
 		String iniFilename="mw.ini";
-		for(String arg : args)
+		for(final String arg : args)
 		{
 			if(arg.startsWith("BOOT="))
 				iniFilename=arg.substring(5);
@@ -547,7 +547,7 @@ public class MiniWebServer extends Thread
 		{
 			config=MiniWebServer.createConfig(Log.instance(), new FileInputStream(iniFilename));
 		}
-		catch (Exception e)
+		catch (final Exception e)
 		{
 			e.printStackTrace();
 			System.exit(-1);
@@ -556,7 +556,7 @@ public class MiniWebServer extends Thread
 
 		debug=config.getDebugFlag();
 
-		for(String arg : args)
+		for(final String arg : args)
 		{
 			if(arg.equalsIgnoreCase("DEBUG"))
 			{
@@ -579,7 +579,7 @@ public class MiniWebServer extends Thread
 		{
 			t.join();
 		}
-		catch(InterruptedException e)
+		catch(final InterruptedException e)
 		{
 			e.printStackTrace(System.err);
 		}

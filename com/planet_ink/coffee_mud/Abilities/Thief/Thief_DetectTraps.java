@@ -48,7 +48,7 @@ public class Thief_DetectTraps extends ThiefSkill
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		String whatTounlock=CMParms.combine(commands,0);
+		final String whatTounlock=CMParms.combine(commands,0);
 		Physical unlockThis=givenTarget;
 		Room nextRoom=null;
 		int dirCode=-1;
@@ -67,7 +67,7 @@ public class Thief_DetectTraps extends ThiefSkill
 			unlockThis=getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_UNWORNONLY);
 		if(unlockThis==null) return false;
 
-		int oldProficiency=proficiency();
+		final int oldProficiency=proficiency();
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
@@ -81,7 +81,7 @@ public class Thief_DetectTraps extends ThiefSkill
 				if(mob.location().getExitInDir(d)==unlockThis){ dirCode=d; break;}
 			if(dirCode>=0)
 			{
-				Exit exit=mob.location().getReverseExit(dirCode);
+				final Exit exit=mob.location().getReverseExit(dirCode);
 				Trap opTrap=null;
 				Trap roomTrap=null;
 				if(nextRoom!=null) roomTrap=CMLib.utensils().fetchMyTrap(nextRoom);
@@ -102,8 +102,8 @@ public class Thief_DetectTraps extends ThiefSkill
 				}
 			}
 		}
-		String add=(dirCode>=0)?" "+Directions.getInDirectionName(dirCode):"";
-		CMMsg msg=CMClass.getMsg(mob,unlockThis,this,auto?CMMsg.MSG_OK_ACTION:CMMsg.MSG_DELICATE_HANDS_ACT,auto?null:"<S-NAME> look(s) "+((unlockThis==null)?"":unlockThis.name())+add+" over very carefully.");
+		final String add=(dirCode>=0)?" "+Directions.getInDirectionName(dirCode):"";
+		final CMMsg msg=CMClass.getMsg(mob,unlockThis,this,auto?CMMsg.MSG_OK_ACTION:CMMsg.MSG_DELICATE_HANDS_ACT,auto?null:"<S-NAME> look(s) "+((unlockThis==null)?"":unlockThis.name())+add+" over very carefully.");
 		if((unlockThis!=null)&&(mob.location().okMessage(mob,msg)))
 		{
 			mob.location().send(mob,msg);

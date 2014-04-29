@@ -76,7 +76,7 @@ public class Fighter_ArmorTweaking extends FighterSkill
 		&&(!((Item)affected).amDestroyed())
 		&&(((Item)affected).owner() instanceof MOB))
 		{
-			MOB M=(MOB)((Item)affected).owner();
+			final MOB M=(MOB)((Item)affected).owner();
 			if((!M.amDead())&&(CMLib.flags().isInTheGame(M,true))&&(!((Item)affected).amWearingAt(Wearable.IN_INVENTORY)))
 				M.tell(M,affected,null,"<T-NAME> no longer feel(s) quite as snuggly tweaked.");
 		}
@@ -108,7 +108,7 @@ public class Fighter_ArmorTweaking extends FighterSkill
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 
-		Item armor=super.getTarget(mob,null,givenTarget,null,commands,Wearable.FILTER_WORNONLY);
+		final Item armor=super.getTarget(mob,null,givenTarget,null,commands,Wearable.FILTER_WORNONLY);
 		if(armor==null) return false;
 		if((!armor.amWearingAt(Wearable.WORN_ABOUT_BODY))
 		&&(!armor.amWearingAt(Wearable.WORN_ARMS))
@@ -128,7 +128,7 @@ public class Fighter_ArmorTweaking extends FighterSkill
 			mob.tell("You are a bit too busy to do that right now.");
 			return false;
 		}
-		int bonus=(int)Math.round(CMath.mul(0.10+(0.10*getXLEVELLevel(mob)),armor.phyStats().armor()));
+		final int bonus=(int)Math.round(CMath.mul(0.10+(0.10*getXLEVELLevel(mob)),armor.phyStats().armor()));
 		if(bonus<1)
 		{
 			mob.tell(armor.name()+" is too weak of an armor to provide any more benefit from tweaking.");
@@ -138,16 +138,16 @@ public class Fighter_ArmorTweaking extends FighterSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			String str=auto?armor.name()+" snuggly covers <S-NAME>!":"<S-NAME> tweak(s) <T-NAMESELF> until it is as snuggly protective as possible.";
-			CMMsg msg=CMClass.getMsg(mob,armor,this,CMMsg.MSG_NOISYMOVEMENT,str);
+			final String str=auto?armor.name()+" snuggly covers <S-NAME>!":"<S-NAME> tweak(s) <T-NAMESELF> until it is as snuggly protective as possible.";
+			final CMMsg msg=CMClass.getMsg(mob,armor,this,CMMsg.MSG_NOISYMOVEMENT,str);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				beneficialAffect(mob,armor,asLevel,0);
-				Ability A=armor.fetchEffect(ID());
+				final Ability A=armor.fetchEffect(ID());
 				if(A!=null){ A.setMiscText(""+bonus); A.makeLongLasting();}
 				armor.recoverPhyStats();
 				mob.location().recoverRoomStats();

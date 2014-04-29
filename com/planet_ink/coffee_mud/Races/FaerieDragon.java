@@ -44,16 +44,16 @@ public class FaerieDragon extends StdRace
 	@Override public int weightVariance(){return 15;}
 	@Override public long forbiddenWornBits(){return Wearable.WORN_WIELD|Wearable.WORN_WAIST|Wearable.WORN_BACK|Wearable.WORN_ABOUT_BODY|Wearable.WORN_FEET|Wearable.WORN_HANDS;}
 	@Override public String racialCategory(){return "Dragon";}
-	private String[]racialAbilityNames={"Spell_Invisibility","Spell_FaerieFire","WingFlying"};
-	private int[]racialAbilityLevels={5,5,1};
-	private int[]racialAbilityProficiencies={100,100,100};
-	private boolean[]racialAbilityQuals={false,false,false};
+	private final String[]racialAbilityNames={"Spell_Invisibility","Spell_FaerieFire","WingFlying"};
+	private final int[]racialAbilityLevels={5,5,1};
+	private final int[]racialAbilityProficiencies={100,100,100};
+	private final boolean[]racialAbilityQuals={false,false,false};
 	@Override protected String[] racialAbilityNames(){return racialAbilityNames;}
 	@Override protected int[] racialAbilityLevels(){return racialAbilityLevels;}
 	@Override protected int[] racialAbilityProficiencies(){return racialAbilityProficiencies;}
 	@Override protected boolean[] racialAbilityQuals(){return racialAbilityQuals;}
-	private String[]culturalAbilityNames={"Draconic"};
-	private int[]culturalAbilityProficiencies={100};
+	private final String[]culturalAbilityNames={"Draconic"};
+	private final int[]culturalAbilityProficiencies={100};
 	@Override public String[] culturalAbilityNames(){return culturalAbilityNames;}
 	@Override public int[] culturalAbilityProficiencies(){return culturalAbilityProficiencies;}
 
@@ -61,7 +61,7 @@ public class FaerieDragon extends StdRace
 	private static final int[] parts={0 ,2 ,2 ,1 ,1 ,0 ,0 ,1 ,4 ,4 ,1 ,0 ,1 ,1 ,1 ,2 };
 	@Override public int[] bodyMask(){return parts;}
 
-	private int[] agingChart={0,5,20,110,325,500,850,950,1050};
+	private final int[] agingChart={0,5,20,110,325,500,850,950,1050};
 	@Override public int[] getAgingChart(){return agingChart;}
 
 	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
@@ -99,7 +99,7 @@ public class FaerieDragon extends StdRace
 	@Override
 	public String healthText(MOB viewer, MOB mob)
 	{
-		double pct=(CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));
+		final double pct=(CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));
 
 		if(pct<.10)
 			return "^r" + mob.name(viewer) + "^r is raging in bloody pain!^N";

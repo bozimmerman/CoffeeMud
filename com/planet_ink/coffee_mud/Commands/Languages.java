@@ -42,7 +42,7 @@ public class Languages extends Skills
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		StringBuffer msg=new StringBuffer("");
+		final StringBuffer msg=new StringBuffer("");
 		if(parsedOutIndividualSkill(mob,CMParms.combine(commands,1),Ability.ACODE_SPELL))
 			return true;
 		msg.append("\n\r^HLanguages known:^? "+getAbilities(mob,mob,Ability.ACODE_LANGUAGE,-1,true,parseOutLevel(commands))+"\n\r");

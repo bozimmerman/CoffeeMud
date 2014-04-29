@@ -100,7 +100,7 @@ public class StdClanFlag extends StdItem implements ClanItem
 			&&(clanID().length()>0)
 			&&(msg.source().getClanRole(clanID())!=null))
 			{
-				Room R=msg.source().location();
+				final Room R=msg.source().location();
 				if(R==null)
 					return;
 				if((msg.targetMinor()==CMMsg.TYP_DROP)&&(msg.trailerMsgs()==null))
@@ -111,7 +111,7 @@ public class StdClanFlag extends StdItem implements ClanItem
 				else
 				if((msg.targetMinor()==CMMsg.TYP_LOOK)||(msg.targetMinor()==CMMsg.TYP_EXAMINE))
 				{
-					LegalBehavior B=CMLib.law().getLegalBehavior(R);
+					final LegalBehavior B=CMLib.law().getLegalBehavior(R);
 					String s="";
 					if(B!=null) s=B.conquestInfo(CMLib.law().getLegalObject(R));
 					if(s.length()>0)
@@ -125,12 +125,12 @@ public class StdClanFlag extends StdItem implements ClanItem
 				&&(CMSecurity.isAllowed(msg.source(),R,CMSecurity.SecFlag.CMDROOMS))
 				&&(msg.targetMessage()!=null))
 				{
-					String msgStr=CMStrings.getSayFromMessage(msg.targetMessage().toUpperCase());
+					final String msgStr=CMStrings.getSayFromMessage(msg.targetMessage().toUpperCase());
 					final String alert="I HEREBY DECLARE THIS AREA";
-					int msgIndex=msgStr.indexOf(alert);
+					final int msgIndex=msgStr.indexOf(alert);
 					if(msgIndex>=0)
 					{
-						LegalBehavior B=CMLib.law().getLegalBehavior(R);
+						final LegalBehavior B=CMLib.law().getLegalBehavior(R);
 						if(B!=null) B.setControlPoints(clanID(),B.controlPoints()+1);
 					}
 				}
@@ -149,7 +149,7 @@ public class StdClanFlag extends StdItem implements ClanItem
 				||(msg.targetMinor()==CMMsg.TYP_PULL)
 				||(msg.targetMinor()==CMMsg.TYP_CAST_SPELL))
 				{
-					Room R=CMLib.map().roomLocation(this);
+					final Room R=CMLib.map().roomLocation(this);
 					if(CMLib.clans().findRivalrousClan(msg.source())==null)
 					{
 						msg.source().tell("You must belong to an elligible clan to take a clan item.");
@@ -160,7 +160,7 @@ public class StdClanFlag extends StdItem implements ClanItem
 					{
 						for(int i=0;i<R.numInhabitants();i++)
 						{
-							MOB M=R.fetchInhabitant(i);
+							final MOB M=R.fetchInhabitant(i);
 							if((M!=null)
 							&&(M.isMonster())
 							&&(M.getClanRole(clanID())!=null)
@@ -173,7 +173,7 @@ public class StdClanFlag extends StdItem implements ClanItem
 							}
 						}
 						String rulingClan="";
-						LegalBehavior B=CMLib.law().getLegalBehavior(R);
+						final LegalBehavior B=CMLib.law().getLegalBehavior(R);
 						if(B!=null) rulingClan=B.rulingOrganization();
 						if(msg.source().getClanRole(rulingClan)==null)
 						{
@@ -191,7 +191,7 @@ public class StdClanFlag extends StdItem implements ClanItem
 				if((msg.targetMinor()==CMMsg.TYP_DROP)
 				&&(!CMath.bset(msg.targetMajor(), CMMsg.MASK_INTERMSG)))
 				{
-					Room R=msg.source().location();
+					final Room R=msg.source().location();
 					LandTitle T=null;
 					Area A=null;
 					LegalBehavior B=null;
@@ -227,7 +227,7 @@ public class StdClanFlag extends StdItem implements ClanItem
 				boolean foundOne=false;
 				for(int i=0;i<msg.source().location().numInhabitants();i++)
 				{
-					MOB M=msg.source().location().fetchInhabitant(i);
+					final MOB M=msg.source().location().fetchInhabitant(i);
 					if((M!=null)
 					&&(!M.isMonster())
 					&&(M.getClanRole(clanID())!=null))
@@ -247,8 +247,8 @@ public class StdClanFlag extends StdItem implements ClanItem
 			&&(msg.amITarget(this))
 			&&(msg.targetMinor()==CMMsg.TYP_DROP))
 			{
-				LegalBehavior B=CMLib.law().getLegalBehavior(msg.source().location());
-				String rulingClan=(B!=null)?B.rulingOrganization():"";
+				final LegalBehavior B=CMLib.law().getLegalBehavior(msg.source().location());
+				final String rulingClan=(B!=null)?B.rulingOrganization():"";
 				if(rulingClan.length()==0)
 					msg.source().tell("Area '"+msg.source().location().getArea().name()+"' is presently neutral.");
 				else
@@ -257,7 +257,7 @@ public class StdClanFlag extends StdItem implements ClanItem
 					if(!rulingClan.equals(clanID()))
 					{
 						int relation=Clan.REL_WAR;
-						Clan C=CMLib.clans().getClan(clanID());
+						final Clan C=CMLib.clans().getClan(clanID());
 						if(C==null)
 						{
 							msg.source().tell("This ancient relic from a lost clan fades out of existence.");

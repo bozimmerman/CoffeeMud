@@ -55,7 +55,7 @@ public class CoffeeTables extends StdLibrary implements StatisticsLibrary
 			return;
 		if(todays==null)
 		{
-			Calendar S=Calendar.getInstance();
+			final Calendar S=Calendar.getInstance();
 			S.set(Calendar.HOUR_OF_DAY,0);
 			S.set(Calendar.MINUTE,0);
 			S.set(Calendar.SECOND,0);
@@ -67,7 +67,7 @@ public class CoffeeTables extends StdLibrary implements StatisticsLibrary
 				{
 					if(todays==null)
 					{
-						Calendar C=Calendar.getInstance();
+						final Calendar C=Calendar.getInstance();
 						C.set(Calendar.HOUR_OF_DAY,23);
 						C.set(Calendar.MINUTE,59);
 						C.set(Calendar.SECOND,59);
@@ -81,7 +81,7 @@ public class CoffeeTables extends StdLibrary implements StatisticsLibrary
 			}
 			return;
 		}
-		long now=System.currentTimeMillis();
+		final long now=System.currentTimeMillis();
 		if((now>todays.endTime())
 		&&(!CMLib.time().date2MonthDateString(now, true).equals(CMLib.time().date2MonthDateString(todays.endTime(), true))))
 		{
@@ -91,12 +91,12 @@ public class CoffeeTables extends StdLibrary implements StatisticsLibrary
 				&&(!CMLib.time().date2MonthDateString(now, true).equals(CMLib.time().date2MonthDateString(todays.endTime(), true))))
 				{
 					CMLib.database().DBUpdateStat(todays.startTime(),todays.data());
-					Calendar S=Calendar.getInstance();
+					final Calendar S=Calendar.getInstance();
 					S.set(Calendar.HOUR_OF_DAY,0);
 					S.set(Calendar.MINUTE,0);
 					S.set(Calendar.SECOND,0);
 					S.set(Calendar.MILLISECOND,0);
-					Calendar C=Calendar.getInstance();
+					final Calendar C=Calendar.getInstance();
 					C.set(Calendar.HOUR_OF_DAY,23);
 					C.set(Calendar.MINUTE,59);
 					C.set(Calendar.SECOND,59);
@@ -104,7 +104,7 @@ public class CoffeeTables extends StdLibrary implements StatisticsLibrary
 					todays=(CoffeeTableRow)CMClass.getCommon("DefaultCoffeeTableRow");
 					todays.setStartTime(S.getTimeInMillis());
 					todays.setEndTime(C.getTimeInMillis());
-					CoffeeTableRow testRow=(CoffeeTableRow)CMLib.database().DBReadStat(todays.startTime());
+					final CoffeeTableRow testRow=(CoffeeTableRow)CMLib.database().DBReadStat(todays.startTime());
 					if(testRow!=null)
 						todays=testRow;
 					else
@@ -139,7 +139,7 @@ public class CoffeeTables extends StdLibrary implements StatisticsLibrary
 				tickStatus=Tickable.STATUS_ALIVE;
 				isDebugging=CMSecurity.isDebugging(DbgFlag.STATSTHREAD);
 				setThreadStatus(serviceClient,"checking database health");
-				String ok=CMLib.database().errorStatus();
+				final String ok=CMLib.database().errorStatus();
 				if((ok.length()!=0)&&(!ok.startsWith("OK")))
 				{
 					Log.errOut(serviceClient.getName(),"DB: "+ok);

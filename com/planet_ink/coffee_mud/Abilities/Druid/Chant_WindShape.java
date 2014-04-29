@@ -51,7 +51,7 @@ public class Chant_WindShape extends Chant
 		// undo the affects of this spell
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		super.unInvoke();
 
@@ -69,13 +69,13 @@ public class Chant_WindShape extends Chant
 		if(!(affected instanceof MOB))
 			return true;
 
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		if((msg.amITarget(mob))
 		   &&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
 		   &&(msg.tool()!=null)
 		   &&(msg.tool() instanceof Item))
 		{
-			int recovery=(int)Math.round(CMath.div((msg.value()),4.0));
+			final int recovery=(int)Math.round(CMath.div((msg.value()),4.0));
 			msg.setValue(msg.value()-recovery);
 		}
 		return true;
@@ -95,7 +95,7 @@ public class Chant_WindShape extends Chant
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
@@ -103,7 +103,7 @@ public class Chant_WindShape extends Chant
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> chant(s) for <T-NAMESELF> be given the shape of the wind.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> chant(s) for <T-NAMESELF> be given the shape of the wind.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

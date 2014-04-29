@@ -40,20 +40,20 @@ public class RaceClassNext extends StdWebMacro
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
-		java.util.Map<String,String> parms=parseParms(parm);
-		String race=httpReq.getUrlParameter("RACE");
+		final java.util.Map<String,String> parms=parseParms(parm);
+		final String race=httpReq.getUrlParameter("RACE");
 		if(race.length()==0) return " @break@";
-		Race R=CMClass.getRace(race);
-		String last=httpReq.getUrlParameter("CLASS");
+		final Race R=CMClass.getRace(race);
+		final String last=httpReq.getUrlParameter("CLASS");
 		if(parms.containsKey("RESET"))
 		{
 			if(last!=null) httpReq.removeUrlParameter("CLASS");
 			return "";
 		}
 		String lastID="";
-		for(Enumeration c=CMClass.charClasses();c.hasMoreElements();)
+		for(final Enumeration c=CMClass.charClasses();c.hasMoreElements();)
 		{
-			CharClass C=(CharClass)c.nextElement();
+			final CharClass C=(CharClass)c.nextElement();
 			if(((CMProps.isTheme(C.availabilityCode()))||(parms.containsKey("ALL")))
 				&&(CMStrings.containsIgnoreCase(C.getRequiredRaceList(),"All")
 					||CMStrings.containsIgnoreCase(C.getRequiredRaceList(),R.ID())

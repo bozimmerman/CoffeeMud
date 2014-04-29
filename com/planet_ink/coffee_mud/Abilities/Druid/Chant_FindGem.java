@@ -43,7 +43,7 @@ public class Chant_FindGem extends Chant_FindPlant
 	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
 	@Override public long flags(){return Ability.FLAG_TRACKING;}
 
-	private int[] myMats={RawMaterial.MATERIAL_PRECIOUS,
+	private final int[] myMats={RawMaterial.MATERIAL_PRECIOUS,
 						  RawMaterial.MATERIAL_GLASS};
 	@Override protected int[] okMaterials(){	return myMats;}
 	@Override protected int[] okResources(){	return null;}

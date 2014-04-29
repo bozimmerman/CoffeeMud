@@ -49,11 +49,11 @@ public class Trap_RoomPit extends StdTrap
 		&&(canBeUninvoked())
 		&&(pit.size()>1))
 		{
-			Room R1=(Room)pit.firstElement();
-			Room R2=(Room)pit.lastElement();
+			final Room R1=(Room)pit.firstElement();
+			final Room R2=(Room)pit.lastElement();
 			while(R1.numInhabitants()>0)
 			{
-				MOB M=R1.fetchInhabitant(0);
+				final MOB M=R1.fetchInhabitant(0);
 				if(M!=null)
 				{
 					M.killMeDead(false);
@@ -62,14 +62,14 @@ public class Trap_RoomPit extends StdTrap
 			}
 			while(R2.numInhabitants()>0)
 			{
-				MOB M=R2.fetchInhabitant(0);
+				final MOB M=R2.fetchInhabitant(0);
 				if(M!=null)
 				{
 					M.killMeDead(false);
 					R2.delInhabitant(M);
 				}
 			}
-			Room R=R2.getRoomInDir(Directions.UP);
+			final Room R=R2.getRoomInDir(Directions.UP);
 			if((R!=null)&&(R.getRoomInDir(Directions.DOWN)==R2))
 			{
 				R.rawDoors()[Directions.DOWN]=null;
@@ -128,8 +128,8 @@ public class Trap_RoomPit extends StdTrap
 	{
 		if((pit==null)||(pit.size()<2))
 		{
-			Vector V=new Vector();
-			Room myPitUp=CMClass.getLocale("ClimbableSurface");
+			final Vector V=new Vector();
+			final Room myPitUp=CMClass.getLocale("ClimbableSurface");
 			myPitUp.setRoomID("");
 			myPitUp.setSavable(false);
 			myPitUp.setArea(target.location().getArea());
@@ -138,8 +138,8 @@ public class Trap_RoomPit extends StdTrap
 			myPitUp.setDescription("The walls here are slick and tall.  The trap door is just above you.");
 			myPitUp.recoverPhyStats();
 
-			Exit exit=CMClass.getExit("StdOpenDoorway");
-			Room myPit=CMClass.getLocale("StdRoom");
+			final Exit exit=CMClass.getExit("StdOpenDoorway");
+			final Room myPit=CMClass.getLocale("StdRoom");
 			myPit.setSavable(false);
 			myPit.setRoomID("");
 			myPit.setArea(target.location().getArea());
@@ -169,7 +169,7 @@ public class Trap_RoomPit extends StdTrap
 		&&(msg.tool()!=null)
 		&&(msg.tool() instanceof Exit))
 		{
-			Room room=(Room)affected;
+			final Room room=(Room)affected;
 			if((room.getExitInDir(Directions.DOWN)==msg.tool())
 			||(room.getReverseExit(Directions.DOWN)==msg.tool()))
 			{
@@ -187,7 +187,7 @@ public class Trap_RoomPit extends StdTrap
 		else
 		{
 			target.location().show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> hit(s) the pit floor with a THUMP!");
-			int damage=CMLib.dice().roll(trapLevel()+abilityCode(),6,1);
+			final int damage=CMLib.dice().roll(trapLevel()+abilityCode(),6,1);
 			CMLib.combat().postDamage(invoker(),target,this,damage,CMMsg.MASK_MALICIOUS|CMMsg.MASK_ALWAYS|CMMsg.TYP_JUSTICE,-1,null);
 		}
 		CMLib.commands().postLook(target,true);
@@ -209,7 +209,7 @@ public class Trap_RoomPit extends StdTrap
 			{
 				super.spring(target);
 				makePit(target);
-				Exit door=CMClass.getExit("StdClosedDoorway");
+				final Exit door=CMClass.getExit("StdClosedDoorway");
 				door.setSavable(false);
 				door.setOpenDelayTicks(10);
 				((Room)pit.lastElement()).setRawExit(Directions.UP,door);

@@ -63,7 +63,7 @@ public class GenCaged extends GenItem implements CagedAnimal
 		basePhyStats().setLevel(M.basePhyStats().level());
 		basePhyStats().setWeight(M.basePhyStats().weight());
 		basePhyStats().setHeight(M.basePhyStats().height());
-		StringBuffer itemstr=new StringBuffer("");
+		final StringBuffer itemstr=new StringBuffer("");
 		itemstr.append("<MOBITEM>");
 		itemstr.append(CMLib.xml().convertXMLtoTag("MICLASS",CMClass.classID(M)));
 		itemstr.append(CMLib.xml().convertXMLtoTag("MISTART",CMLib.map().getExtendedRoomID(M.getStartRoom())));
@@ -90,7 +90,7 @@ public class GenCaged extends GenItem implements CagedAnimal
 		&&((basePhyStats().ability()&ABILITY_MOBPROGRAMMATICALLY)==0)
 		&&((msg.targetMinor()==CMMsg.TYP_GET)||(msg.targetMinor()==CMMsg.TYP_DROP)))
 		{
-			MOB M=unCageMe();
+			final MOB M=unCageMe();
 			if((M!=null)&&(msg.source().location()!=null))
 				M.bringToLife(msg.source().location(),true);
 			destroy();
@@ -103,22 +103,22 @@ public class GenCaged extends GenItem implements CagedAnimal
 	{
 		MOB M=null;
 		if(cageText().length()==0) return M;
-		List<XMLLibrary.XMLpiece> buf=CMLib.xml().parseAllXML(cageText());
+		final List<XMLLibrary.XMLpiece> buf=CMLib.xml().parseAllXML(cageText());
 		if(buf==null)
 		{
 			Log.errOut("Caged","Error parsing 'MOBITEM'.");
 			return M;
 		}
-		XMLLibrary.XMLpiece iblk=CMLib.xml().getPieceFromPieces(buf,"MOBITEM");
+		final XMLLibrary.XMLpiece iblk=CMLib.xml().getPieceFromPieces(buf,"MOBITEM");
 		if((iblk==null)||(iblk.contents==null))
 		{
 			Log.errOut("Caged","Error parsing 'MOBITEM'.");
 			return M;
 		}
-		String itemi=CMLib.xml().getValFromPieces(iblk.contents,"MICLASS");
-		String startr=CMLib.xml().getValFromPieces(iblk.contents,"MISTART");
-		Environmental newOne=CMClass.getMOB(itemi);
-		List<XMLLibrary.XMLpiece> idat=CMLib.xml().getContentsFromPieces(iblk.contents,"MIDATA");
+		final String itemi=CMLib.xml().getValFromPieces(iblk.contents,"MICLASS");
+		final String startr=CMLib.xml().getValFromPieces(iblk.contents,"MISTART");
+		final Environmental newOne=CMClass.getMOB(itemi);
+		final List<XMLLibrary.XMLpiece> idat=CMLib.xml().getContentsFromPieces(iblk.contents,"MIDATA");
 		if((idat==null)||(newOne==null)||(!(newOne instanceof MOB)))
 		{
 			Log.errOut("Caged","Error parsing 'MOBITEM' data.");
@@ -132,7 +132,7 @@ public class GenCaged extends GenItem implements CagedAnimal
 			CMLib.coffeeMaker().resetGenMOB(M,M.text());
 		if((startr.length()>0)&&(!startr.equalsIgnoreCase("null")))
 		{
-			Room R=CMLib.map().getRoom(startr);
+			final Room R=CMLib.map().getRoom(startr);
 			if(R!=null)
 				M.setStartRoom(R);
 		}

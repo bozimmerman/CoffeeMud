@@ -70,7 +70,7 @@ public class I3Server {
 			Log.sysOut("I3Server", "InterMud3 Core (c)1996 George Reese");
 			serverClient.start();
 		}
-		catch(Exception e)
+		catch(final Exception e)
 		{
 			serverClient=null;
 			Log.errOut("I3Server",e);
@@ -111,12 +111,12 @@ public class I3Server {
 		{
 			try
 			{
-				ShutdownPacket shutdown=new ShutdownPacket();
+				final ShutdownPacket shutdown=new ShutdownPacket();
 				shutdown.send();
-			}catch(Exception e){}
+			}catch(final Exception e){}
 		serverClient.shutdown();
 		started=false;
-		}catch(Exception e){}
+		}catch(final Exception e){}
 	}
 
 	static public void removeObject(ServerObject ob)

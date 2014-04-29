@@ -74,14 +74,14 @@ public class PairSVector<T,K> extends SVector<Pair<T,K>> implements List<Pair<T,
 	}
 	public boolean containsFirst(T t)
 	{
-		for(Iterator<Pair<T,K>> i=iterator();i.hasNext();)
+		for(final Iterator<Pair<T,K>> i=iterator();i.hasNext();)
 			if((t==null)?i.next()==null:t.equals(i.next().first))
 				return true;
 		return false;
 	}
 	public boolean containsSecond(K k)
 	{
-		for(Iterator<Pair<T,K>> i=iterator();i.hasNext();)
+		for(final Iterator<Pair<T,K>> i=iterator();i.hasNext();)
 			if((k==null)?i.next()==null:k.equals(i.next().second))
 				return true;
 		return false;
@@ -101,7 +101,7 @@ public class PairSVector<T,K> extends SVector<Pair<T,K>> implements List<Pair<T,
 			for(int i=index;i<size();i++)
 				if((t==null ? get(i).first==null : t.equals(get(i).first)))
 					return i;
-		}catch(Exception e){}
+		}catch(final Exception e){}
 		return -1;
 	}
 	public synchronized int indexOfSecond(K k, int index)
@@ -111,7 +111,7 @@ public class PairSVector<T,K> extends SVector<Pair<T,K>> implements List<Pair<T,
 			for(int i=index;i<size();i++)
 				if((k==null ? get(i).second==null : k.equals(get(i).second)))
 					return i;
-		}catch(Exception e){}
+		}catch(final Exception e){}
 		return -1;
 	}
 	public synchronized int lastIndexOfFirst(T t, int index)
@@ -121,7 +121,7 @@ public class PairSVector<T,K> extends SVector<Pair<T,K>> implements List<Pair<T,
 			for(int i=index;i>=0;i--)
 				if((t==null ? get(i).first==null : t.equals(get(i).first)))
 					return i;
-		}catch(Exception e){}
+		}catch(final Exception e){}
 		return -1;
 	}
 	public synchronized int lastIndexOfSecond(K k, int index)
@@ -131,7 +131,7 @@ public class PairSVector<T,K> extends SVector<Pair<T,K>> implements List<Pair<T,
 			for(int i=index;i>=0;i--)
 				if((k==null ? get(i).second==null : k.equals(get(i).second)))
 					return i;
-		}catch(Exception e){}
+		}catch(final Exception e){}
 		return -1;
 	}
 	public synchronized int lastIndexOfFirst(T t)
@@ -190,14 +190,14 @@ public class PairSVector<T,K> extends SVector<Pair<T,K>> implements List<Pair<T,
 	}
 	public T[] toArrayFirst(T[] a)
 	{
-		T[] objs= toArray(a);
+		final T[] objs= toArray(a);
 		for(int x=0;x<size();x++)
 			objs[x] = getFirst(x);
 		return objs;
 	}
 	public K[] toArraySecond(K[] a)
 	{
-		K[] objs= toArray(a);
+		final K[] objs= toArray(a);
 		for(int x=0;x<size();x++)
 			objs[x] = getSecond(x);
 		return objs;

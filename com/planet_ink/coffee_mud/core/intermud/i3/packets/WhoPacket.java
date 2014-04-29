@@ -80,10 +80,10 @@ public class WhoPacket extends Packet {
 
 		for(i=0; i<who.size(); i++)
 		{
-			Vector v = (Vector)who.elementAt(i);
-			String nom = (String)v.elementAt(0);
-			int idle = ((Integer)v.elementAt(1)).intValue();
-			String xtra = (String)v.elementAt(2);
+			final Vector v = (Vector)who.elementAt(i);
+			final String nom = (String)v.elementAt(0);
+			final int idle = ((Integer)v.elementAt(1)).intValue();
+			final String xtra = (String)v.elementAt(2);
 
 			str += "({\"" + nom + "\"," + idle + ",\"" + xtra + "\",}),";
 		}

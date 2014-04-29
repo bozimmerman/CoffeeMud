@@ -45,7 +45,7 @@ public class StdTimeZone extends StdArea
 	@Override
 	public CMObject copyOf()
 	{
-		CMObject O=super.copyOf();
+		final CMObject O=super.copyOf();
 		if(O instanceof Area) ((Area)O).setTimeObj((TimeClock)CMClass.getCommon("DefaultTimeClock"));
 		return O;
 	}
@@ -63,7 +63,7 @@ public class StdTimeZone extends StdArea
 	{
 		super.addChild(area);
 		area.setTimeObj(getTimeObj());
-		for(Enumeration<Area> cA=area.getChildren();cA.hasMoreElements();)
+		for(final Enumeration<Area> cA=area.getChildren();cA.hasMoreElements();)
 			cA.nextElement().setTimeObj(getTimeObj());
 	}
 }

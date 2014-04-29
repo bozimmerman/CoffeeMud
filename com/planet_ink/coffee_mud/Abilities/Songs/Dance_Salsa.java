@@ -46,14 +46,14 @@ public class Dance_Salsa extends Dance
 		if(!super.tick(ticking,tickID))
 			return false;
 
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		if(mob==null)
 			return false;
 
-		Vector choices=new Vector();
+		final Vector choices=new Vector();
 		for(int i=0;i<mob.location().numInhabitants();i++)
 		{
-			MOB M=mob.location().fetchInhabitant(i);
+			final MOB M=mob.location().fetchInhabitant(i);
 			if((M!=null)
 			&&(M!=mob)
 			&&(CMLib.flags().canBeSeenBy(M,mob))
@@ -64,7 +64,7 @@ public class Dance_Salsa extends Dance
 		}
 		if(choices.size()>0)
 		{
-			MOB M=(MOB)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1));
+			final MOB M=(MOB)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1));
 			if(CMLib.dice().rollPercentage()==1)
 			{
 				Item I=mob.fetchFirstWornItem(Wearable.WORN_WAIST);

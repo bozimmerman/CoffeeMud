@@ -46,16 +46,16 @@ public class Prayer_Disenchant extends Prayer
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		Item target=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_ANY);
+		final Item target=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_ANY);
 		if(target==null) return false;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		int levelBonus=mob.phyStats().level()+(2*super.getXLEVELLevel(mob));
+		final int levelBonus=mob.phyStats().level()+(2*super.getXLEVELLevel(mob));
 		int levelDiff=levelBonus-target.phyStats().level();
 		levelDiff=levelDiff*5;
-		boolean success=proficiencyCheck(mob,5+levelDiff,auto);
+		final boolean success=proficiencyCheck(mob,5+levelDiff,auto);
 
 		if(success)
 		{
@@ -63,7 +63,7 @@ public class Prayer_Disenchant extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> appear(s) neutralized!":"^S<S-NAME> "+prayForWord(mob)+" to neutralize <T-NAMESELF>.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> appear(s) neutralized!":"^S<S-NAME> "+prayForWord(mob)+" to neutralize <T-NAMESELF>.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

@@ -48,7 +48,7 @@ public class ChannelUserRequest extends Packet {
 			type = Packet.CHAN_USER_REQ;
 			userToRequest = (String)v.elementAt(6);
 		}
-		catch( ClassCastException e )
+		catch( final ClassCastException e )
 		{
 			throw new InvalidPacketException();
 		}
@@ -66,7 +66,7 @@ public class ChannelUserRequest extends Packet {
 	@Override
 	public String toString()
 	{
-		String str="({\"chan-user-req\",5,\"" + I3Server.getMudName() +
+		final String str="({\"chan-user-req\",5,\"" + I3Server.getMudName() +
 			   "\",0,\"" + target_mud + "\",0,\"" + userToRequest + "\",})";
 		return str;
 	}

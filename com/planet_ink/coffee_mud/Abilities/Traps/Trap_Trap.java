@@ -75,8 +75,8 @@ public class Trap_Trap extends StdAbility implements Trap
 		if(level<qualifyingClassLevel) level=qualifyingClassLevel;
 		level+=trapBonus;
 		if(level>=100) level=99;
-		int rejuv=((100-level)*30);
-		Trap T=(Trap)copyOf();
+		final int rejuv=((100-level)*30);
+		final Trap T=(Trap)copyOf();
 		T.setReset(rejuv);
 		T.setInvoker(mob);
 		P.addEffect(T);
@@ -104,11 +104,11 @@ public class Trap_Trap extends StdAbility implements Trap
 				mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The room fills with gas!");
 				for(int i=0;i<mob.location().numInhabitants();i++)
 				{
-					MOB target=mob.location().fetchInhabitant(i);
+					final MOB target=mob.location().fetchInhabitant(i);
 					if(target==null) break;
 
 					int dmg=CMLib.dice().roll(target.phyStats().level(),10,1);
-					CMMsg msg=CMClass.getMsg(invoker(),target,this,CMMsg.MSG_OK_ACTION,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_GAS,CMMsg.MSG_NOISYMOVEMENT,null);
+					final CMMsg msg=CMClass.getMsg(invoker(),target,this,CMMsg.MSG_OK_ACTION,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_GAS,CMMsg.MSG_NOISYMOVEMENT,null);
 					if(target.location().okMessage(target,msg))
 					{
 						target.location().send(target,msg);
@@ -120,9 +120,9 @@ public class Trap_Trap extends StdAbility implements Trap
 			}
 			else
 			{
-				MOB target=mob;
+				final MOB target=mob;
 				int dmg=CMLib.dice().roll(target.phyStats().level(),10,1);
-				CMMsg msg=CMClass.getMsg(invoker(),target,this,CMMsg.MSG_OK_ACTION,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_GAS,CMMsg.MSG_NOISYMOVEMENT,null);
+				final CMMsg msg=CMClass.getMsg(invoker(),target,this,CMMsg.MSG_OK_ACTION,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_GAS,CMMsg.MSG_NOISYMOVEMENT,null);
 				if(target.location().okMessage(target,msg))
 				{
 					target.location().send(target,msg);
@@ -140,9 +140,9 @@ public class Trap_Trap extends StdAbility implements Trap
 		else
 		if(mob.location().show(mob,affected,this,CMMsg.MSG_OK_ACTION,"<S-NAME> trigger(s) a needle trap set in <T-NAME>!"))
 		{
-			MOB target=mob;
+			final MOB target=mob;
 			int dmg=CMLib.dice().roll(target.phyStats().level(),5,1);
-			CMMsg msg=CMClass.getMsg(invoker(),target,this,CMMsg.MSG_OK_ACTION,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE,CMMsg.MSG_NOISYMOVEMENT,null);
+			final CMMsg msg=CMClass.getMsg(invoker(),target,this,CMMsg.MSG_OK_ACTION,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE,CMMsg.MSG_NOISYMOVEMENT,null);
 			if(target.location().okMessage(target,msg))
 			{
 				target.location().send(target,msg);
@@ -150,7 +150,7 @@ public class Trap_Trap extends StdAbility implements Trap
 					dmg=(int)Math.round(CMath.div(dmg,2.0));
 				CMLib.combat().postDamage(invoker(),target,this,dmg,CMMsg.MASK_ALWAYS|CMMsg.MASK_MALICIOUS|CMMsg.TYP_JUSTICE,Weapon.TYPE_PIERCING,"The needle <DAMAGE> <T-NAME>!");
 
-				Ability P=CMClass.getAbility("Poison");
+				final Ability P=CMClass.getAbility("Poison");
 				if(P!=null) P.invoke(invoker(),target,true,0);
 			}
 		}
@@ -163,15 +163,15 @@ public class Trap_Trap extends StdAbility implements Trap
 		else
 		if(mob.location().show(mob,affected,this,CMMsg.MSG_OK_ACTION,"<S-NAME> trigger(s) a blade trap set in <T-NAME>!"))
 		{
-			MOB target=mob;
+			final MOB target=mob;
 			int dmg=CMLib.dice().roll(target.phyStats().level(),2,0);
-			CMMsg msg=CMClass.getMsg(invoker(),target,this,CMMsg.MSG_OK_ACTION,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE,CMMsg.MSG_NOISYMOVEMENT,null);
+			final CMMsg msg=CMClass.getMsg(invoker(),target,this,CMMsg.MSG_OK_ACTION,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE,CMMsg.MSG_NOISYMOVEMENT,null);
 			if(target.location().okMessage(target,msg))
 			{
 				target.location().send(target,msg);
 				if(msg.value()>0)
 					dmg=(int)Math.round(CMath.div(dmg,2.0));
-				Ability P=CMClass.getAbility("Poison");
+				final Ability P=CMClass.getAbility("Poison");
 				if(P!=null) P.invoke(invoker(),target,true,0);
 				CMLib.combat().postDamage(invoker(),target,this,dmg,CMMsg.MASK_ALWAYS|CMMsg.MASK_MALICIOUS|CMMsg.TYP_JUSTICE,Weapon.TYPE_PIERCING,"The blade <DAMAGE> <T-NAME>!");
 			}
@@ -186,7 +186,7 @@ public class Trap_Trap extends StdAbility implements Trap
 		if(mob.location().show(mob,affected,this,CMMsg.MSG_OK_ACTION,"<S-NAME> trigger(s) a trap set in <T-NAME>!"))
 		{
 			String spell=text();
-			int x=spell.indexOf(';');
+			final int x=spell.indexOf(';');
 			Vector V=new Vector();
 			V.addElement(mob.name());
 			if(x>0)
@@ -195,7 +195,7 @@ public class Trap_Trap extends StdAbility implements Trap
 				V.insertElementAt(mob.name(),0);
 				spell=spell.substring(0,x);
 			}
-			Ability A=CMClass.findAbility(spell);
+			final Ability A=CMClass.findAbility(spell);
 			if(A==null)
 			{
 				mob.location().showHappens(CMMsg.MSG_OK_VISUAL,"But nothing happened...");
@@ -241,7 +241,7 @@ public class Trap_Trap extends StdAbility implements Trap
 				myPitUp.recoverPhyStats();
 
 			}
-			Exit exit=CMClass.getExit("StdClosedDoorway");
+			final Exit exit=CMClass.getExit("StdClosedDoorway");
 			exit.setSavable(false);
 			myPitUp.setRawExit(Directions.UP,exit);
 			myPitUp.rawDoors()[Directions.UP]=mob.location();
@@ -257,7 +257,7 @@ public class Trap_Trap extends StdAbility implements Trap
 			else
 			{
 				mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> hit(s) the pit floor with a THUMP!");
-				int damage=CMLib.dice().roll(mob.phyStats().level(),3,1);
+				final int damage=CMLib.dice().roll(mob.phyStats().level(),3,1);
 				CMLib.combat().postDamage(invoker(),mob,this,damage,CMMsg.MASK_MALICIOUS|CMMsg.TYP_JUSTICE,-1,null);
 			}
 			CMLib.commands().postLook(mob,true);
@@ -322,7 +322,7 @@ public class Trap_Trap extends StdAbility implements Trap
 		&&(canBeUninvoked())
 		&&(myPitUp!=null))
 		{
-			Room R=myPitUp.getRoomInDir(Directions.UP);
+			final Room R=myPitUp.getRoomInDir(Directions.UP);
 			if((R!=null)&&(R.getRoomInDir(Directions.DOWN)==myPitUp))
 			{
 				R.rawDoors()[Directions.DOWN]=null;

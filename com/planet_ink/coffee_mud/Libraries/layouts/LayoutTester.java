@@ -25,15 +25,15 @@ public class LayoutTester
 {
 	public static void draw(LayoutManager layout, int size, int dir)
 	{
-		List<LayoutNode> V=layout.generate(size, dir);
+		final List<LayoutNode> V=layout.generate(size, dir);
 
 		System.out.println("Layout "+layout.name()+", size="+V.size()+": "+continuityCheck(V));
 		long lowestX=Long.MAX_VALUE;
 		long lowestY=Long.MAX_VALUE;
 		long highestX=Long.MIN_VALUE;
 		long highestY=Long.MIN_VALUE;
-		Hashtable<Long,Vector<LayoutNode>> HY = new Hashtable<Long,Vector<LayoutNode>>();
-		for(LayoutNode ls : V)
+		final Hashtable<Long,Vector<LayoutNode>> HY = new Hashtable<Long,Vector<LayoutNode>>();
+		for(final LayoutNode ls : V)
 		{
 			if(ls.coord()[0]<lowestX) lowestX = ls.coord()[0];
 			if(ls.coord()[1]<lowestY) lowestY = ls.coord()[1];
@@ -46,11 +46,11 @@ public class LayoutTester
 		}
 		for(long y=lowestY;y<=highestY;y++)
 		{
-			Vector<LayoutNode> ys = HY.get(Long.valueOf(y));
+			final Vector<LayoutNode> ys = HY.get(Long.valueOf(y));
 			if(ys != null)
 			{
-				Hashtable<Long,LayoutNode> H = new Hashtable<Long,LayoutNode>();
-				for(LayoutNode xs : ys) H.put(Long.valueOf(xs.coord()[0]),xs);
+				final Hashtable<Long,LayoutNode> H = new Hashtable<Long,LayoutNode>();
+				for(final LayoutNode xs : ys) H.put(Long.valueOf(xs.coord()[0]),xs);
 				for(int i=0;i<3;i++)
 				{
 					for(long x=lowestX;x<=highestX;x++)
@@ -67,8 +67,8 @@ public class LayoutTester
 	{
 		for(int s=0;s<set.size();s++)
 		{
-			LayoutNode node = set.get(s);
-			for(Enumeration<LayoutNode> e=node.links().elements();e.hasMoreElements();)
+			final LayoutNode node = set.get(s);
+			for(final Enumeration<LayoutNode> e=node.links().elements();e.hasMoreElements();)
 				if(!set.contains(e.nextElement()))
 					return false;
 		}
@@ -78,7 +78,7 @@ public class LayoutTester
 	public static void main(String[] args)
 	{
 		Directions.instance();
-		int d=Directions.NORTH;
+		final int d=Directions.NORTH;
 		{
 			draw(new BoxCityLayout(),25, d);
 			draw(new BoxCityLayout(), 50, d);

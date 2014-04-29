@@ -40,7 +40,7 @@ public class RequestParameter extends StdWebMacro
 	private static HashSet<String> modifiers=new HashSet<String>();
 	static
 	{
-		for(MODIFIER M : MODIFIER.values())
+		for(final MODIFIER M : MODIFIER.values())
 			modifiers.add(M.name());
 	}
 
@@ -48,15 +48,15 @@ public class RequestParameter extends StdWebMacro
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		String str="";
-		java.util.Map<String,String> parms=parseParms(parm);
-		for(String key : parms.keySet())
+		final java.util.Map<String,String> parms=parseParms(parm);
+		for(final String key : parms.keySet())
 		{
 			if(!modifiers.contains(key))
 				if(httpReq.isUrlParameter(key))
 					str+=httpReq.getUrlParameter(key);
 		}
 		boolean capCase=false;
-		for(String key : parms.keySet())
+		for(final String key : parms.keySet())
 		{
 			if(modifiers.contains(key))
 			{

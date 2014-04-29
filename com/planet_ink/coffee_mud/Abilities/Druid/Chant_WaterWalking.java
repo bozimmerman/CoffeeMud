@@ -49,7 +49,7 @@ public class Chant_WaterWalking extends Chant
 		super.affectPhyStats(affected,affectableStats);
 		if(affected instanceof MOB)
 		{
-			MOB mob=(MOB)affected;
+			final MOB mob=(MOB)affected;
 			if(triggerNow||
 			   ((mob.location()!=null)
 				&&((mob.location().domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE)
@@ -64,7 +64,7 @@ public class Chant_WaterWalking extends Chant
 	{
 		if(!super.okMessage(myHost,msg)) return false;
 		if(affected==null) return true;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		if((msg.amISource(mob))
 		&&(mob.location()!=null)
 		&&(msg.target()!=null)
@@ -87,7 +87,7 @@ public class Chant_WaterWalking extends Chant
 			{
 				for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 				{
-					Room R=mob.location().getRoomInDir(d);
+					final Room R=mob.location().getRoomInDir(d);
 					if((R!=null)
 					&&(mob.location().getReverseExit(d)==msg.tool())
 					&&((R.domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE)
@@ -116,7 +116,7 @@ public class Chant_WaterWalking extends Chant
 		// undo the affects of this spell
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		super.unInvoke();
 
 		if(canBeUninvoked())
@@ -154,7 +154,7 @@ public class Chant_WaterWalking extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> chant(s) to <T-NAMESELF>.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> chant(s) to <T-NAMESELF>.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

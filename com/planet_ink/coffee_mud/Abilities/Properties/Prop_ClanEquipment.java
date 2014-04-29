@@ -107,7 +107,7 @@ public class Prop_ClanEquipment extends Property implements TriggeredAffect
 	public String accountForYourself()
 	{
 		// My slightly complicated way of showing the clan effect when ID'd
-		StringBuffer id=new StringBuffer(clanType+" "+clanName+" Bonus: ");
+		final StringBuffer id=new StringBuffer(clanType+" "+clanName+" Bonus: ");
 		if((affected instanceof Weapon)&&(!(affected instanceof Wand))&&(TypeOfEffect<1000))
 		{
 			id.append("Does "+(1*PowerLevel)+"-"+(6*PowerLevel)+" additional "+type.toLowerCase()+" damage.");
@@ -131,7 +131,7 @@ public class Prop_ClanEquipment extends Property implements TriggeredAffect
 	public void setMiscText(String text)
 	{
 		super.setMiscText(text);
-		Vector<String> V=CMParms.parse(text);
+		final Vector<String> V=CMParms.parse(text);
 		if(V.size()<4)
 		{
 			return;
@@ -252,7 +252,7 @@ public class Prop_ClanEquipment extends Property implements TriggeredAffect
 	{
 		if((mob.isMine(me))&&(!me.amWearingAt(Wearable.IN_INVENTORY)))
 		{
-			int x=message.toUpperCase().indexOf(secretWord.toUpperCase());
+			final int x=message.toUpperCase().indexOf(secretWord.toUpperCase());
 			return (x>=0);
 		}
 		return false;
@@ -270,17 +270,17 @@ public class Prop_ClanEquipment extends Property implements TriggeredAffect
 			{
 				target=(MOB)afftarget;
 			}
-			int x=message.toUpperCase().indexOf(secretWord.toUpperCase());
+			final int x=message.toUpperCase().indexOf(secretWord.toUpperCase());
 			if(x>=0)
 			{
 				message=message.substring(x+secretWord.length());
-				int y=message.indexOf('\'');
+				final int y=message.indexOf('\'');
 				if(y>=0)
 				{
 					message=message.substring(0,y);
 				}
 				message=message.trim();
-				Ability wandUse=mob.fetchAbility("Skill_WandUse");
+				final Ability wandUse=mob.fetchAbility("Skill_WandUse");
 				if((wandUse==null)||(!wandUse.proficiencyCheck(mob,0,false)))
 				{
 					mob.tell(me.name()+" glows faintly for a moment, then fades.");
@@ -290,7 +290,7 @@ public class Prop_ClanEquipment extends Property implements TriggeredAffect
 					if(useAsWand(mob,wandUse.abilityCode()))
 					{
 						mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,me.name()+" glows brightly.");
-						int flameDamage=CMLib.dice().roll(1,6*PowerLevel,1*PowerLevel);
+						final int flameDamage=CMLib.dice().roll(1,6*PowerLevel,1*PowerLevel);
 						CMLib.combat().postDamage(mob,target,null,flameDamage,CMMsg.MASK_MALICIOUS|CMMsg.MASK_ALWAYS|TypeOfEffect,WeaponType,
 								"^F^<FIGHT^>The magic of "+clanName+" <DAMAGE> <T-NAME>!^</FIGHT^>^?");
 						wandUse.helpProficiency(mob, 0);
@@ -304,7 +304,7 @@ public class Prop_ClanEquipment extends Property implements TriggeredAffect
 	public static void initAdjustments(CharStats adjCharStats)
 	{
 		// ensure we get no NULL errors
-		for(int i : CharStats.CODES.SAVING_THROWS())
+		for(final int i : CharStats.CODES.SAVING_THROWS())
 			adjCharStats.setStat(i,0);
 	}
 
@@ -322,7 +322,7 @@ public class Prop_ClanEquipment extends Property implements TriggeredAffect
 		if((affected!=null)&&(affected instanceof Armor)&&(!(affected instanceof Shield))&&(activated)
 				&&(!((Armor)affected).amWearingAt(Wearable.IN_INVENTORY)))
 		{
-			for(int i : CharStats.CODES.SAVING_THROWS())
+			for(final int i : CharStats.CODES.SAVING_THROWS())
 				affectedStats.setStat(i,affectedStats.getStat(i)+EQadjCharStats.getStat(i));
 		}
 		super.affectCharStats(affectedMOB,affectedStats);
@@ -364,8 +364,8 @@ public class Prop_ClanEquipment extends Property implements TriggeredAffect
 				&&(msg.target() instanceof MOB)&&(msg.tool() instanceof Weapon)&&(!(msg.tool() instanceof Wand))&&(TypeOfEffect<1000)
 				&&(!((MOB)msg.target()).amDead()))
 		{
-			double flameDamage=CMLib.dice().roll(1,6*PowerLevel,1*PowerLevel);
-			String str="^F^<FIGHT^>The magic of "+clanName+" <DAMAGE> <T-NAME>!^</FIGHT^>^?";
+			final double flameDamage=CMLib.dice().roll(1,6*PowerLevel,1*PowerLevel);
+			final String str="^F^<FIGHT^>The magic of "+clanName+" <DAMAGE> <T-NAME>!^</FIGHT^>^?";
 			CMLib.combat().postDamage(msg.source(),(MOB)msg.target(),null,(int)Math.round(flameDamage),
 					CMMsg.MASK_MALICIOUS|CMMsg.MASK_ALWAYS|TypeOfEffect,WeaponType,str);
 		}
@@ -379,13 +379,13 @@ public class Prop_ClanEquipment extends Property implements TriggeredAffect
 					&&((lastMessage==null)||(lastMessage.indexOf("The magic around")<0))
 					&&((msg.targetMajor(CMMsg.MASK_HANDS))||(msg.targetMajor(CMMsg.MASK_MOVE))))
 			{
-				CMMsg msg2=CMClass.getMsg(mob,source,this,CMMsg.MSG_CAST_ATTACK_VERBAL_SPELL,null);
+				final CMMsg msg2=CMClass.getMsg(mob,source,this,CMMsg.MSG_CAST_ATTACK_VERBAL_SPELL,null);
 				if((source!=null)&&(source.location().okMessage(source,msg2)))
 				{
 					source.location().send(source,msg2);
 					if(msg2.value()<=0)
 					{
-						int damage=CMLib.dice().roll(1,3*PowerLevel,1*PowerLevel);
+						final int damage=CMLib.dice().roll(1,3*PowerLevel,1*PowerLevel);
 						CMLib.combat().postDamage(mob,source,this,damage,CMMsg.MASK_MALICIOUS|CMMsg.MASK_ALWAYS|TypeOfEffect,WeaponType,
 								"^F^<FIGHT^>The magic of "+clanName+" around <S-NAME> <DAMAGE> <T-NAME>!^</FIGHT^>^?");
 						if((!source.isInCombat())&&(source.isMonster())&&(source!=mob)&&(source.location()==mob.location())&&(source.location().isInhabitant(mob))&&(CMLib.flags().canBeSeenBy(mob,source)))
@@ -411,7 +411,7 @@ public class Prop_ClanEquipment extends Property implements TriggeredAffect
 					boolean alreadyWanding=false;
 					final List<CMMsg> trailers =msg.trailerMsgs();
 					if(trailers!=null)
-						for(CMMsg msg2 : trailers)
+						for(final CMMsg msg2 : trailers)
 							if(msg2.targetMinor()==CMMsg.TYP_WAND_USE)
 								alreadyWanding=true;
 					final String said=CMStrings.getSayFromMessage(msg.sourceMessage());

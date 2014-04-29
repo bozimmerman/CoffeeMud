@@ -48,7 +48,7 @@ public class Wolf extends StdRace
 	private static final int[] parts={0 ,2 ,2 ,1 ,1 ,0 ,0 ,1 ,4 ,4 ,1 ,0 ,1 ,1 ,1 ,0 };
 	@Override public int[] bodyMask(){return parts;}
 
-	private int[] agingChart={0,1,2,4,7,15,20,21,22};
+	private final int[] agingChart={0,1,2,4,7,15,20,21,22};
 	@Override public int[] getAgingChart(){return agingChart;}
 
 	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
@@ -77,7 +77,7 @@ public class Wolf extends StdRace
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
-		MOB mob=(MOB)myHost;
+		final MOB mob=(MOB)myHost;
 		if(msg.amISource(mob)
 		&&(!msg.amITarget(mob))
 		&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
@@ -91,7 +91,7 @@ public class Wolf extends StdRace
 		&&(((msg.value())>(((MOB)msg.target()).maxState().getHitPoints()/20)))
 		&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.AUTODISEASE)))
 		{
-			Ability A=CMClass.getAbility("Disease_Lycanthropy");
+			final Ability A=CMClass.getAbility("Disease_Lycanthropy");
 			if((A!=null)&&(((MOB)msg.target()).fetchEffect(A.ID())==null))
 				A.invoke(mob,(MOB)msg.target(),true,0);
 		}
@@ -134,7 +134,7 @@ public class Wolf extends StdRace
 	@Override
 	public String healthText(MOB viewer, MOB mob)
 	{
-		double pct=(CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));
+		final double pct=(CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));
 
 		if(pct<.10)
 			return "^r" + mob.name(viewer) + "^r is hovering on deaths door!^N";

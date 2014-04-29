@@ -57,9 +57,9 @@ public class Run extends Go
 	{
 		if(mob==null)
 			return super.execute(mob, commands,metaFlags);
-		boolean wasSet = CMath.bset(mob.getBitmap(),MOB.ATT_AUTORUN);
+		final boolean wasSet = CMath.bset(mob.getBitmap(),MOB.ATT_AUTORUN);
 		mob.setBitmap(mob.getBitmap() | MOB.ATT_AUTORUN);
-		boolean returnValue = super.execute(mob, commands,metaFlags);
+		final boolean returnValue = super.execute(mob, commands,metaFlags);
 		if(!wasSet)
 			mob.setBitmap(CMath.unsetb(mob.getBitmap(),MOB.ATT_AUTORUN));
 		return returnValue;

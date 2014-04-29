@@ -61,7 +61,7 @@ public class DelayedTransporter extends ActiveTicker
 		int x=myParms.indexOf(';');
 		if(x>0)
 		{
-			String parmText=myParms.substring(0,x);
+			final String parmText=myParms.substring(0,x);
 			myParms=myParms.substring(x+1);
 			super.setParms(parmText);
 		}
@@ -89,11 +89,11 @@ public class DelayedTransporter extends ActiveTicker
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);
-		Room room=this.getBehaversRoom(ticking);
+		final Room room=this.getBehaversRoom(ticking);
 		if((room!=null)&&(destRoomNames!=null)&&(destRoomNames.size()>0))
 		for(int i=0;i<room.numInhabitants();i++)
 		{
-			MOB inhab=room.fetchInhabitant(i);
+			final MOB inhab=room.fetchInhabitant(i);
 			if(inhab!=null)
 			{
 				Integer I=(Integer)transportees.get(inhab.Name());
@@ -106,8 +106,8 @@ public class DelayedTransporter extends ActiveTicker
 				if(I.intValue()>=minTicks)
 					if((CMLib.dice().rollPercentage()<chance)||(I.intValue()>maxTicks))
 					{
-						String roomName=(String)destRoomNames.elementAt(CMLib.dice().roll(1,destRoomNames.size(),-1));
-						Room otherRoom=CMLib.map().getRoom(roomName);
+						final String roomName=(String)destRoomNames.elementAt(CMLib.dice().roll(1,destRoomNames.size(),-1));
+						final Room otherRoom=CMLib.map().getRoom(roomName);
 						if(otherRoom==null)
 							inhab.tell("You are whisked nowhere at all, since '"+roomName+"' is nowhere to be found.");
 						else

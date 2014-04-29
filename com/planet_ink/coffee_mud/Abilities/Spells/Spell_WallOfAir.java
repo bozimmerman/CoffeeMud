@@ -54,7 +54,7 @@ public class Spell_WallOfAir extends Spell
 		if((affected==null)||(!(affected instanceof Item)))
 			return true;
 
-		MOB mob=msg.source();
+		final MOB mob=msg.source();
 
 		if((invoker!=null)
 		&&(mob.isInCombat())
@@ -68,7 +68,7 @@ public class Spell_WallOfAir extends Spell
 		&&(((Weapon)msg.tool()).weaponClassification()==Weapon.CLASS_RANGED))
 		{
 			mob.location().show(mob,invoker,msg.tool(),CMMsg.MSG_OK_VISUAL,"<S-NAME> fire(s) <O-NAME> at <T-NAME>.  The missile enters the wall of air.");
-			MOB M=CMClass.getMOB("StdMOB");
+			final MOB M=CMClass.getMOB("StdMOB");
 			M.setLocation(mob.location());
 			M.setName("The wall of air");
 			M.setVictim(mob);
@@ -98,7 +98,7 @@ public class Spell_WallOfAir extends Spell
 			&&(((Room)theWall.owner()).isContent(theWall)))
 			{
 				((Room)theWall.owner()).showHappens(CMMsg.MSG_OK_VISUAL,"The wall of air dissipates.");
-				Item wall=theWall;
+				final Item wall=theWall;
 				theWall=null;
 				wall.destroy();
 			}
@@ -129,7 +129,7 @@ public class Spell_WallOfAir extends Spell
 		}
 		for(int i=0;i<mob.location().numItems();i++)
 		{
-			Item I=mob.location().getItem(i);
+			final Item I=mob.location().getItem(i);
 			if((I!=null)&&(I.fetchEffect(ID())!=null))
 			{
 				mob.tell("There is already a wall of air here.");
@@ -144,10 +144,10 @@ public class Spell_WallOfAir extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		Physical target = mob.location();
+		final Physical target = mob.location();
 
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
@@ -156,11 +156,11 @@ public class Spell_WallOfAir extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 
-			CMMsg msg = CMClass.getMsg(mob, target, this,verbalCastCode(mob,target,auto),auto?"An swirling wall of air appears!":"^S<S-NAME> conjur(s) up a swirling wall of air!^?");
+			final CMMsg msg = CMClass.getMsg(mob, target, this,verbalCastCode(mob,target,auto),auto?"An swirling wall of air appears!":"^S<S-NAME> conjur(s) up a swirling wall of air!^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				Item I=CMClass.getItem("GenItem");
+				final Item I=CMClass.getItem("GenItem");
 				I.setName("a wall of air");
 				I.setDisplayText("");
 				I.setDescription("The air is swirling dangerously.");

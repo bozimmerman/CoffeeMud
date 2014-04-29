@@ -55,7 +55,7 @@ public class Thief_Shadowpass extends ThiefSkill
 			mob.tell("You can only shadowpass from the shadows to the shadows.");
 			return false;
 		}
-		List<Integer> trail=new Vector<Integer>();
+		final List<Integer> trail=new Vector<Integer>();
 		int v=0;
 		for(;v<commands.size();v++)
 		{
@@ -71,12 +71,12 @@ public class Thief_Shadowpass extends ThiefSkill
 			else
 			if(CMath.isNumberFollowedByString(s))
 			{
-				Entry<Integer,String> pair=CMath.getNumberFollowedByString(s);
+				final Entry<Integer,String> pair=CMath.getNumberFollowedByString(s);
 				num=pair.getKey().intValue();
 				s=pair.getValue();
 			}
 
-			int direction=Directions.getGoodDirectionCode(s);
+			final int direction=Directions.getGoodDirectionCode(s);
 			if(direction<0) break;
 			if((R.getRoomInDir(direction)==null)||(R.getExitInDir(direction)==null))
 				break;
@@ -87,15 +87,15 @@ public class Thief_Shadowpass extends ThiefSkill
 				trail.add(Integer.valueOf(direction));
 			}
 		}
-		boolean kaplah=((v==commands.size())&&(R!=null)&&(mob.location()!=R)&&(CMLib.flags().isInDark(R)));
+		final boolean kaplah=((v==commands.size())&&(R!=null)&&(mob.location()!=R)&&(CMLib.flags().isInDark(R)));
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success && (mob.location()!=R))
 		{
-			CMMsg msg=CMClass.getMsg(mob,R,this,auto?CMMsg.MSG_OK_VISUAL:CMMsg.MSG_DELICATE_HANDS_ACT,"You begin the shadowpass ...",CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);
+			final CMMsg msg=CMClass.getMsg(mob,R,this,auto?CMMsg.MSG_OK_VISUAL:CMMsg.MSG_DELICATE_HANDS_ACT,"You begin the shadowpass ...",CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);
 			if((mob.location().okMessage(mob,msg))&&(R!=null)&&(R.okMessage(mob,msg)))
 			{
 				mob.location().send(mob,msg);
@@ -104,7 +104,7 @@ public class Thief_Shadowpass extends ThiefSkill
 				R=mob.location();
 				for(int i=0;i<trail.size();i++)
 				{
-					int dir=trail.get(i).intValue();
+					final int dir=trail.get(i).intValue();
 					if(!kaplah)
 					{
 						if((!CMLib.tracking().walk(mob,dir,false,true,true))||(!CMLib.flags().isInDark(mob.location())))
@@ -127,7 +127,7 @@ public class Thief_Shadowpass extends ThiefSkill
 		else
 		for(int i=0;i<trail.size();i++)
 		{
-			int dir=trail.get(i).intValue();
+			final int dir=trail.get(i).intValue();
 			if((!CMLib.tracking().walk(mob,dir,false,true,true))||(!CMLib.flags().isInDark(mob.location())))
 			{
 				CMLib.commands().postLook(mob,true);

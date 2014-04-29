@@ -77,7 +77,7 @@ public class Fighter_Charge extends FighterSkill
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
-		int xlvl=getXLEVELLevel(invoker());
+		final int xlvl=getXLEVELLevel(invoker());
 		affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+(2*(affected.phyStats().level()+xlvl)));
 		affectableStats.setDamage(affectableStats.damage()+(affected.phyStats().level())+abilityCode()+xlvl);
 		affectableStats.setArmor(affectableStats.armor()+(2*(xlvl+affected.phyStats().level())));
@@ -99,8 +99,8 @@ public class Fighter_Charge extends FighterSkill
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		boolean notInCombat=!mob.isInCombat();
-		MOB target=this.getTarget(mob,commands,givenTarget);
+		final boolean notInCombat=!mob.isInCombat();
+		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
 		if((mob.isInCombat())
@@ -123,14 +123,14 @@ public class Fighter_Charge extends FighterSkill
 			return false;
 
 		// now see if it worked
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
 			// it worked, so build a copy of this ability,
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MALICIOUS|CMMsg.MSG_ADVANCE,"^F^<FIGHT^><S-NAME> charge(s) at <T-NAMESELF>!^</FIGHT^>^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MALICIOUS|CMMsg.MSG_ADVANCE,"^F^<FIGHT^><S-NAME> charge(s) at <T-NAMESELF>!^</FIGHT^>^?");
 			CMLib.color().fixSourceFightColor(msg);
 			if(mob.location().okMessage(mob,msg))
 			{

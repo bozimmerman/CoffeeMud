@@ -53,7 +53,7 @@ public class Paladin_Defend extends StdAbility
 		if((affected==null)||(!(affected instanceof MOB))||(invoker==null))
 			return true;
 
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		if(invoker.location()!=mob.location())
 			unInvoke();
 		else
@@ -98,14 +98,14 @@ public class Paladin_Defend extends StdAbility
 		{
 			if(fullRound)
 			{
-				MOB mob=(MOB)affected;
+				final MOB mob=(MOB)affected;
 				if(!mob.isInCombat())
 					unInvoke();
 				if(mob.location()!=null)
 				{
 					if(mob.location().show(mob,null,this,CMMsg.MSG_OK_VISUAL,"<S-YOUPOSS> successful defence <S-HAS-HAVE> allowed <S-HIM-HER> to disengage."))
 					{
-						MOB victim=mob.getVictim();
+						final MOB victim=mob.getVictim();
 						if((victim!=null)&&(victim.getVictim()==mob))
 							victim.makePeace();
 						mob.makePeace();
@@ -125,7 +125,7 @@ public class Paladin_Defend extends StdAbility
 		if(!CMLib.flags().aliveAwakeMobile(mob,false))
 			return false;
 
-		Ability A=mob.fetchEffect(ID());
+		final Ability A=mob.fetchEffect(ID());
 		if(A!=null)
 		{
 			A.unInvoke();
@@ -146,7 +146,7 @@ public class Paladin_Defend extends StdAbility
 		if(!super.invoke(mob,commands,mob,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
@@ -154,7 +154,7 @@ public class Paladin_Defend extends StdAbility
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_CAST_SOMANTIC_SPELL,"^S<S-NAME> assume(s) an all-out defensive posture.^?");
+			final CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_CAST_SOMANTIC_SPELL,"^S<S-NAME> assume(s) an all-out defensive posture.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

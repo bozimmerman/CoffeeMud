@@ -82,7 +82,7 @@ public class Prayer_DrunkenStupor extends Prayer
 		if(!super.tick(ticking,tickID))
 			return false;
 
-		Ability A=getInebriation();
+		final Ability A=getInebriation();
 		if(A!=null)
 			A.tick(ticking,tickID);
 
@@ -92,7 +92,7 @@ public class Prayer_DrunkenStupor extends Prayer
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
-		Ability A=getInebriation();
+		final Ability A=getInebriation();
 		if(A!=null) A.executeMsg(myHost, msg);
 		super.executeMsg(myHost, msg);
 	}
@@ -104,7 +104,7 @@ public class Prayer_DrunkenStupor extends Prayer
 		if(!super.okMessage(myHost,msg))
 			return false;
 
-		Ability A=getInebriation();
+		final Ability A=getInebriation();
 		if((A==null)||(!A.okMessage(myHost, msg)))
 			return false;
 
@@ -127,7 +127,7 @@ public class Prayer_DrunkenStupor extends Prayer
 	{
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		super.unInvoke();
 		if(canBeUninvoked())
@@ -138,21 +138,21 @@ public class Prayer_DrunkenStupor extends Prayer
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		MOB target=this.getTarget(mob,commands,givenTarget);
+		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
 			// it worked, so build a copy of this ability,
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto)|CMMsg.MASK_MALICIOUS,auto?"":"^S<S-NAME> "+prayForWord(mob)+" to inflict a drunken stupor upon <T-NAMESELF>.^?");
-			CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_MIND|(auto?CMMsg.MASK_ALWAYS:0),null);
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto)|CMMsg.MASK_MALICIOUS,auto?"":"^S<S-NAME> "+prayForWord(mob)+" to inflict a drunken stupor upon <T-NAMESELF>.^?");
+			final CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_MIND|(auto?CMMsg.MASK_ALWAYS:0),null);
 			if((mob.location().okMessage(mob,msg))&&(mob.location().okMessage(mob,msg2)))
 			{
 				mob.location().send(mob,msg);

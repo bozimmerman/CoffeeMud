@@ -74,10 +74,10 @@ public class DrinkCmd extends StdCommand
 		else
 		if(thisThang instanceof Container)
 		{
-			List<Item> V=((Container)thisThang).getContents();
+			final List<Item> V=((Container)thisThang).getContents();
 			for(int v=0;v<V.size();v++)
 			{
-				Item I=V.get(v);
+				final Item I=V.get(v);
 				if((I instanceof Drink)&&(I instanceof RawMaterial))
 				{
 					tool=thisThang;
@@ -87,7 +87,7 @@ public class DrinkCmd extends StdCommand
 				}
 			}
 		}
-		CMMsg newMsg=CMClass.getMsg(mob,thisThang,tool,CMMsg.MSG_DRINK,str+CMLib.protocol().msp("drink.wav",10));
+		final CMMsg newMsg=CMClass.getMsg(mob,thisThang,tool,CMMsg.MSG_DRINK,str+CMLib.protocol().msp("drink.wav",10));
 		if(mob.location().okMessage(mob,newMsg))
 			mob.location().send(mob,newMsg);
 		return false;

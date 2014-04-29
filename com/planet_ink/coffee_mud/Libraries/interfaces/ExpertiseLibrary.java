@@ -125,29 +125,29 @@ public interface ExpertiseLibrary extends CMLibrary
 			CMLib.ableMapper().addPreRequisites(ID,new Vector<String>(),uncompiledFinalMask.trim());
 		}
 
-		private List<SkillCost> costs=new LinkedList<SkillCost>();
+		private final List<SkillCost> costs=new LinkedList<SkillCost>();
 		public void addCost(CostType type, Double value)
 		{
 			costs.add(new SkillCost(type,value));
 		}
 		public String costDescription()
 		{
-			StringBuffer costStr=new StringBuffer("");
-			for(SkillCost cost : costs)
+			final StringBuffer costStr=new StringBuffer("");
+			for(final SkillCost cost : costs)
 				costStr.append(cost.requirements(null)).append(", ");
 			if(costStr.length()==0) return "";
 			return costStr.substring(0,costStr.length()-2);
 		}
 		public boolean meetsCostRequirements(MOB mob)
 		{
-			for(SkillCost cost : costs)
+			for(final SkillCost cost : costs)
 				if(!cost.doesMeetCostRequirements(mob))
 					return false;
 			return true;
 		}
 		public void spendCostRequirements(MOB mob)
 		{
-			for(SkillCost cost : costs)
+			for(final SkillCost cost : costs)
 				cost.spendSkillCost(mob);
 		}
 		@Override public int compareTo(CMObject o) { return (o==this)?0:1; }

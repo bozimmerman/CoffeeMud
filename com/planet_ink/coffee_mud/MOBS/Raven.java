@@ -37,7 +37,7 @@ public class Raven extends StdMOB
 	public Raven()
 	{
 		super();
-		Random randomizer = new Random(System.currentTimeMillis());
+		final Random randomizer = new Random(System.currentTimeMillis());
 
 		username="a raven";
 		setDescription("It\\`s a small black bird with a long yellow beak.");

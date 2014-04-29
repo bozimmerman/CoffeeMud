@@ -39,18 +39,18 @@ public class ChannelBackLogNext extends StdWebMacro
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
-		java.util.Map<String,String> parms=parseParms(parm);
+		final java.util.Map<String,String> parms=parseParms(parm);
 		String last=httpReq.getUrlParameter("CHANNELBACKLOG");
 		if(parms.containsKey("RESET"))
 		{
 			if(last!=null) httpReq.removeUrlParameter("CHANNELBACKLOG");
 			return "";
 		}
-		String channel=httpReq.getUrlParameter("CHANNEL");
+		final String channel=httpReq.getUrlParameter("CHANNEL");
 		if(channel==null) return " @break@";
-		int channelInt=CMLib.channels().getChannelIndex(channel);
+		final int channelInt=CMLib.channels().getChannelIndex(channel);
 		if(channelInt<0) return " @break@";
-		MOB mob = Authenticate.getAuthenticatedMob(httpReq);
+		final MOB mob = Authenticate.getAuthenticatedMob(httpReq);
 		if(mob!=null)
 		{
 			if(CMLib.channels().mayReadThisChannel(mob,channelInt,true))
@@ -59,7 +59,7 @@ public class ChannelBackLogNext extends StdWebMacro
 				List<ChannelsLibrary.ChannelMsg> que=(List<ChannelsLibrary.ChannelMsg>)httpReq.getRequestObjects().get("CHANNELMSG_"+channelInt+" QUE");
 				if(que==null)
 				{
-					List<ChannelsLibrary.ChannelMsg> oldQue=CMLib.channels().getChannelQue(channelInt);
+					final List<ChannelsLibrary.ChannelMsg> oldQue=CMLib.channels().getChannelQue(channelInt);
 					que=new Vector<ChannelsLibrary.ChannelMsg>(oldQue.size());
 					que.addAll(oldQue);
 					httpReq.getRequestObjects().put("CHANNELMSG_"+channelInt+" QUE",que);
@@ -67,7 +67,7 @@ public class ChannelBackLogNext extends StdWebMacro
 
 				while(true)
 				{
-					int num=CMath.s_int(last);
+					final int num=CMath.s_int(last);
 					last=""+(num+1);
 					httpReq.addFakeUrlParameter("CHANNELBACKLOG",last);
 					if((num<0)||(num>=que.size()))
@@ -77,7 +77,7 @@ public class ChannelBackLogNext extends StdWebMacro
 							return "<!--EMPTY-->";
 						return " @break@";
 					}
-					boolean areareq=CMLib.channels().getChannel(channelInt).flags.contains(ChannelsLibrary.ChannelFlag.SAMEAREA);
+					final boolean areareq=CMLib.channels().getChannel(channelInt).flags.contains(ChannelsLibrary.ChannelFlag.SAMEAREA);
 
 					final ChannelsLibrary.ChannelMsg cmsg=que.get(num);
 					final CMMsg msg=cmsg.msg;

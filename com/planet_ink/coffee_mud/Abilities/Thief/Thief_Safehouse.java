@@ -68,10 +68,10 @@ public class Thief_Safehouse extends ThiefSkill
 	{
 		if(R!=null)
 		{
-			LegalBehavior law=CMLib.law().getLegalBehavior(R);
+			final LegalBehavior law=CMLib.law().getLegalBehavior(R);
 			if(law!=null)
 			{
-				Area A=CMLib.law().getLegalObject(R);
+				final Area A=CMLib.law().getLegalObject(R);
 				MOB M=null;
 				for(int r=0;r<R.numInhabitants();r++)
 				{
@@ -89,10 +89,10 @@ public class Thief_Safehouse extends ThiefSkill
 		if(mob==null) return false;
 		if(affected instanceof Room)
 		{
-			LegalBehavior law=CMLib.law().getLegalBehavior((Room)affected);
+			final LegalBehavior law=CMLib.law().getLegalBehavior((Room)affected);
 			if(law!=null)
 			{
-				Area A=CMLib.law().getLegalObject((Room)affected);
+				final Area A=CMLib.law().getLegalObject((Room)affected);
 				if(law.isAnyOfficer(A,mob)||law.isJudge(A,mob))
 					return true;
 			}
@@ -114,7 +114,7 @@ public class Thief_Safehouse extends ThiefSkill
 		if((target.domainType()==Room.DOMAIN_INDOORS_WOOD)||(target.domainType()==Room.DOMAIN_INDOORS_STONE))
 			for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 			{
-				Room R=target.getRoomInDir(d);
+				final Room R=target.getRoomInDir(d);
 				if((R!=null)&&(R.domainType()==Room.DOMAIN_OUTDOORS_CITY))
 					return true;
 			}
@@ -130,7 +130,7 @@ public class Thief_Safehouse extends ThiefSkill
 		Room target=mob.location();
 		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof Room))
 			target=(Room)givenTarget;
-		Ability A=target.fetchEffect(ID());
+		final Ability A=target.fetchEffect(ID());
 		if(A!=null)
 		{
 			mob.tell("This place is already a safehouse.");
@@ -163,7 +163,7 @@ public class Thief_Safehouse extends ThiefSkill
 			if((isGoodSafehouse(R))&&(!isLawHere(R)))
 			{
 				V=CMLib.tracking().findBastardTheBestWay(target,new XVector(R),flags,50+(2*getXLEVELLevel(mob)));
-				StringBuffer trail=new StringBuffer("");
+				final StringBuffer trail=new StringBuffer("");
 				int dir=CMLib.tracking().trackNextDirectionFromHere(V,target,true);
 				while(target!=R)
 				{
@@ -179,9 +179,9 @@ public class Thief_Safehouse extends ThiefSkill
 			return false;
 		}
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
-		CMMsg msg=CMClass.getMsg(mob,null,this,auto?CMMsg.MASK_ALWAYS:CMMsg.MSG_DELICATE_HANDS_ACT,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,auto?"":"<S-NAME> hide(s) out from the law here.");
+		final CMMsg msg=CMClass.getMsg(mob,null,this,auto?CMMsg.MASK_ALWAYS:CMMsg.MSG_DELICATE_HANDS_ACT,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,auto?"":"<S-NAME> hide(s) out from the law here.");
 		if(!success)
 			return beneficialVisualFizzle(mob,null,auto?"":"<S-NAME> attempt(s) hide out from the law here, but things are just too hot.");
 		else

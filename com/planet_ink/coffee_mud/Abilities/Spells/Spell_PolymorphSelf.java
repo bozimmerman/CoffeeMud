@@ -56,7 +56,7 @@ public class Spell_PolymorphSelf extends Spell
 				affectableStats.setName(CMLib.english().startWithAorAn(newRace.name())+" called "+affected.name());
 			else
 				affectableStats.setName(affected.name()+" the "+newRace.name());
-			int oldAdd=affectableStats.weight()-affected.basePhyStats().weight();
+			final int oldAdd=affectableStats.weight()-affected.basePhyStats().weight();
 			newRace.setHeightWeight(affectableStats,'M');
 			if(oldAdd>0) affectableStats.setWeight(affectableStats.weight()+oldAdd);
 		}
@@ -67,7 +67,7 @@ public class Spell_PolymorphSelf extends Spell
 		super.affectCharStats(affected,affectableStats);
 		if(newRace!=null)
 		{
-			int oldCat=affected.baseCharStats().ageCategory();
+			final int oldCat=affected.baseCharStats().ageCategory();
 			affectableStats.setMyRace(newRace);
 			if(affected.baseCharStats().getStat(CharStats.STAT_AGE)>0)
 				affectableStats.setStat(CharStats.STAT_AGE,newRace.getAgingChart()[oldCat]);
@@ -81,7 +81,7 @@ public class Spell_PolymorphSelf extends Spell
 		// undo the affects of this spell
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		super.unInvoke();
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
@@ -96,7 +96,7 @@ public class Spell_PolymorphSelf extends Spell
 		if((auto||mob.isMonster())&&((commands.size()<1)||(((String)commands.firstElement()).equals(mob.name()))))
 		{
 			commands.clear();
-			XVector<Race> V=new XVector<Race>(CMClass.races());
+			final XVector<Race> V=new XVector<Race>(CMClass.races());
 			for(int v=V.size()-1;v>=0;v--)
 				if(!CMath.bset(V.elementAt(v).availabilityCode(),Area.THEME_FANTASY))
 					V.removeElementAt(v);
@@ -108,11 +108,11 @@ public class Spell_PolymorphSelf extends Spell
 			mob.tell("You need to specify what to turn yourself into!");
 			return false;
 		}
-		String race=CMParms.combine(commands,0);
+		final String race=CMParms.combine(commands,0);
 		MOB target=mob;
 		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
 			target=(MOB)givenTarget;
-		Race R=CMClass.getRace(race);
+		final Race R=CMClass.getRace(race);
 		if((R==null)||(!CMath.bset(R.availabilityCode(),Area.THEME_FANTASY)))
 		{
 			mob.tell("You can't turn yourself into "+CMLib.english().startWithAorAn(race)+"!");
@@ -138,22 +138,22 @@ public class Spell_PolymorphSelf extends Spell
 			return false;
 
 		int mobStatTotal=0;
-		for(int s: CharStats.CODES.BASE())
+		for(final int s: CharStats.CODES.BASE())
 			mobStatTotal+=mob.baseCharStats().getStat(s);
 
-		MOB fakeMOB=CMClass.getFactoryMOB();
-		for(int s: CharStats.CODES.BASE())
+		final MOB fakeMOB=CMClass.getFactoryMOB();
+		for(final int s: CharStats.CODES.BASE())
 			fakeMOB.baseCharStats().setStat(s,mob.baseCharStats().getStat(s));
 		fakeMOB.baseCharStats().setMyRace(R);
 		fakeMOB.recoverCharStats();
 		fakeMOB.recoverPhyStats();
 		fakeMOB.recoverMaxState();
 		int fakeStatTotal=0;
-		for(int s: CharStats.CODES.BASE())
+		for(final int s: CharStats.CODES.BASE())
 			fakeStatTotal+=fakeMOB.charStats().getStat(s);
 
 		fakeMOB.destroy();
-		int statDiff=mobStatTotal-fakeStatTotal;
+		final int statDiff=mobStatTotal-fakeStatTotal;
 		boolean success=proficiencyCheck(mob,(statDiff*5),auto);
 		if(success)
 		{
@@ -162,7 +162,7 @@ public class Spell_PolymorphSelf extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> whisper(s) to <T-NAMESELF> about "+CMLib.english().makePlural(R.name())+".^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> whisper(s) to <T-NAMESELF> about "+CMLib.english().makePlural(R.name())+".^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

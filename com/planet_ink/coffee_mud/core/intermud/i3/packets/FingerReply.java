@@ -73,9 +73,9 @@ public class FingerReply extends Packet {
 			idle_time = v.elementAt(11).toString();
 			ip_time = v.elementAt(12).toString();
 			extra = v.elementAt(13).toString();
-			}catch(Exception e){ }
+			}catch(final Exception e){ }
 		}
-		catch( ClassCastException e )
+		catch( final ClassCastException e )
 		{
 			throw new InvalidPacketException();
 		}
@@ -91,9 +91,9 @@ public class FingerReply extends Packet {
 	{
 		String str = "({\"finger-reply\",5,\"" + I3Server.getMudName() +
 				 "\",0,\"" + target_mud + "\",\"" + target_name + "\",";
-		String[] responses={ visible_name, title, real_name, e_mail,
+		final String[] responses={ visible_name, title, real_name, e_mail,
 							loginout_time, idle_time, ip_time, extra };
-		for(String nom : responses)
+		for(final String nom : responses)
 		{
 			if(nom.length()==0)
 				str += "0,";

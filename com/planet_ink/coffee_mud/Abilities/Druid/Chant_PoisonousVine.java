@@ -48,14 +48,14 @@ public class Chant_PoisonousVine extends Chant_SummonVine
 	@Override
 	public MOB determineMonster(MOB caster, int material)
 	{
-		MOB victim=caster.getVictim();
-		MOB newMOB=CMClass.getMOB("GenMOB");
+		final MOB victim=caster.getVictim();
+		final MOB newMOB=CMClass.getMOB("GenMOB");
 		int level=adjustedLevel(caster,0);
 		if(level<1) level=1;
 		newMOB.basePhyStats().setLevel(level);
 		newMOB.basePhyStats().setAbility(13);
 		newMOB.baseCharStats().setMyRace(CMClass.getRace("Vine"));
-		String name="a poisonous vine";
+		final String name="a poisonous vine";
 		newMOB.setName(name);
 		newMOB.setDisplayText(name+" looks enraged!");
 		newMOB.setDescription("");
@@ -64,7 +64,7 @@ public class Chant_PoisonousVine extends Chant_SummonVine
 		A.setProficiency(100);
 		newMOB.addAbility(A);
 		A=null;
-		int classlevel=CMLib.ableMapper().qualifyingClassLevel(caster,this)-CMLib.ableMapper().qualifyingLevel(caster,this);
+		final int classlevel=CMLib.ableMapper().qualifyingClassLevel(caster,this)-CMLib.ableMapper().qualifyingLevel(caster,this);
 		switch(classlevel/5)
 		{
 		case 0:	A=CMClass.getAbility("Poison_BeeSting"); break;

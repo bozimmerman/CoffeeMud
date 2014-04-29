@@ -75,7 +75,7 @@ public class Prayer_Bless extends Prayer implements MendingSkill
 			super.unInvoke();
 			return;
 		}
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		if(canBeUninvoked())
 			mob.tell("Your aura of blessing fades.");
 		super.unInvoke();
@@ -83,12 +83,12 @@ public class Prayer_Bless extends Prayer implements MendingSkill
 
 	public static Item getSomething(MOB mob, boolean cursedOnly)
 	{
-		Vector good=new Vector();
-		Vector great=new Vector();
+		final Vector good=new Vector();
+		final Vector great=new Vector();
 		Item target=null;
 		for(int i=0;i<mob.numItems();i++)
 		{
-			Item I=mob.getItem(i);
+			final Item I=mob.getItem(i);
 			if((I.container()==null)&&((!cursedOnly)||(isCursed(I))))
 				if(I.amWearingAt(Wearable.IN_INVENTORY))
 					good.addElement(I);
@@ -105,10 +105,10 @@ public class Prayer_Bless extends Prayer implements MendingSkill
 
 	public static void endAllOtherBlessings(MOB from, Physical target, int level)
 	{
-		List<Ability> V=CMLib.flags().domainAffects(target,Ability.DOMAIN_BLESSING);
+		final List<Ability> V=CMLib.flags().domainAffects(target,Ability.DOMAIN_BLESSING);
 		for(int v=0;v<V.size();v++)
 		{
-			Ability A=V.get(v);
+			final Ability A=V.get(v);
 			if((CMLib.ableMapper().lowestQualifyingLevel(A.ID())<level)
 			||(from==A.invoker())
 			||(target==from)
@@ -118,20 +118,20 @@ public class Prayer_Bless extends Prayer implements MendingSkill
 	}
 	public static void endLowerBlessings(Physical target, int level)
 	{
-		List<Ability> V=CMLib.flags().domainAffects(target,Ability.DOMAIN_BLESSING);
+		final List<Ability> V=CMLib.flags().domainAffects(target,Ability.DOMAIN_BLESSING);
 		for(int v=0;v<V.size();v++)
 		{
-			Ability A=V.get(v);
+			final Ability A=V.get(v);
 			if(CMLib.ableMapper().lowestQualifyingLevel(A.ID())<level)
 				A.unInvoke();
 		}
 	}
 	public static void endLowerCurses(Physical target, int level)
 	{
-		List<Ability> V=CMLib.flags().domainAffects(target,Ability.DOMAIN_CURSING);
+		final List<Ability> V=CMLib.flags().domainAffects(target,Ability.DOMAIN_CURSING);
 		for(int v=0;v<V.size();v++)
 		{
-			Ability A=V.get(v);
+			final Ability A=V.get(v);
 			if(CMLib.ableMapper().lowestQualifyingLevel(A.ID())<=level)
 				A.unInvoke();
 		}
@@ -160,7 +160,7 @@ public class Prayer_Bless extends Prayer implements MendingSkill
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		MOB target=getTarget(mob,commands,givenTarget);
+		final MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
 		if(target instanceof Coins)
@@ -172,7 +172,7 @@ public class Prayer_Bless extends Prayer implements MendingSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
@@ -180,16 +180,16 @@ public class Prayer_Bless extends Prayer implements MendingSkill
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),(auto?"<T-NAME> appear(s) blessed!":"^S<S-NAME> bless(es) <T-NAMESELF>"+inTheNameOf(mob)+".^?")+CMLib.protocol().msp("bless.wav",10));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),(auto?"<T-NAME> appear(s) blessed!":"^S<S-NAME> bless(es) <T-NAMESELF>"+inTheNameOf(mob)+".^?")+CMLib.protocol().msp("bless.wav",10));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				Item I=getSomething(target,true);
-				HashSet<Item> alreadyDone=new HashSet<Item>();
+				final HashSet<Item> alreadyDone=new HashSet<Item>();
 				while((I!=null)&&(!alreadyDone.contains(I)))
 				{
 					alreadyDone.add(I);
-					CMMsg msg2=CMClass.getMsg(target,I,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_DROP,"<S-NAME> release(s) <T-NAME>.");
+					final CMMsg msg2=CMClass.getMsg(target,I,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_DROP,"<S-NAME> release(s) <T-NAME>.");
 					target.location().send(target,msg2);
 					endLowerCurses(I,CMLib.ableMapper().lowestQualifyingLevel(ID()));
 					I.recoverPhyStats();

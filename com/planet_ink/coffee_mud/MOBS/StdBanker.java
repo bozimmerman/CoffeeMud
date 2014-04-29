@@ -92,7 +92,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 
 	protected Item makeItem(String data)
 	{
-		int x=data.indexOf(';');
+		final int x=data.indexOf(';');
 		if(x<0) return null;
 		Item I=null;
 		if(data.substring(0,x).equals("COINS"))
@@ -116,12 +116,12 @@ public class StdBanker extends StdShopKeeper implements Banker
 	@Override
 	public boolean delDepositInventory(String depositorName, Item thisThang)
 	{
-		List<PlayerData> V=getRawPDDepositInventory(depositorName);
-		boolean money=thisThang instanceof Coins;
+		final List<PlayerData> V=getRawPDDepositInventory(depositorName);
+		final boolean money=thisThang instanceof Coins;
 		boolean found=false;
 		for(int v=V.size()-1;v>=0;v--)
 		{
-			DatabaseEngine.PlayerData PD=V.get(v);
+			final DatabaseEngine.PlayerData PD=V.get(v);
 			if(money&&(PD.xml).startsWith("COINS;"))
 			{
 				CMLib.database().DBDeleteData(PD.who,PD.section,PD.key);
@@ -129,7 +129,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 			}
 			if(!money)
 			{
-				Item I=makeItem(PD.xml);
+				final Item I=makeItem(PD.xml);
 				if(I==null) continue;
 				if(thisThang.sameAs(I))
 				{
@@ -154,12 +154,12 @@ public class StdBanker extends StdShopKeeper implements Banker
 	public List<Item> getDepositedItems(String depositorName)
 	{
 		if((depositorName==null)||(depositorName.length()==0)) return new Vector<Item>();
-		List<PlayerData> V=getRawPDDepositInventory(depositorName);
-		Vector<Item> mine=new Vector<Item>();
+		final List<PlayerData> V=getRawPDDepositInventory(depositorName);
+		final Vector<Item> mine=new Vector<Item>();
 		for(int v=0;v<V.size();v++)
 		{
-			DatabaseEngine.PlayerData PD=V.get(v);
-			Item I=makeItem(PD.xml);
+			final DatabaseEngine.PlayerData PD=V.get(v);
+			final Item I=makeItem(PD.xml);
 			if(I!=null)	mine.addElement(I);
 		}
 		return mine;
@@ -172,12 +172,12 @@ public class StdBanker extends StdShopKeeper implements Banker
 	@Override
 	public List<String> getAccountNames()
 	{
-		List<PlayerData> V=CMLib.database().DBReadData(bankChain());
-		HashSet<String> h=new HashSet<String>();
-		Vector<String> mine=new Vector<String>();
+		final List<PlayerData> V=CMLib.database().DBReadData(bankChain());
+		final HashSet<String> h=new HashSet<String>();
+		final Vector<String> mine=new Vector<String>();
 		for(int v=0;v<V.size();v++)
 		{
-			DatabaseEngine.PlayerData V2=V.get(v);
+			final DatabaseEngine.PlayerData V2=V.get(v);
 			if(!h.contains(V2.who))
 			{
 				h.add(V2.who);
@@ -189,26 +189,26 @@ public class StdBanker extends StdShopKeeper implements Banker
 
 	protected void bankLedger(String depositorName, String msg)
 	{
-		String date=CMLib.utensils().getFormattedDate(this);
+		final String date=CMLib.utensils().getFormattedDate(this);
 		CMLib.beanCounter().bankLedger(bankChain(),depositorName,date+": "+msg);
 	}
 
 	@Override
 	public Item findDepositInventory(String depositorName, String likeThis)
 	{
-		List<PlayerData> V=getRawPDDepositInventory(depositorName);
+		final List<PlayerData> V=getRawPDDepositInventory(depositorName);
 		if(CMath.s_int(likeThis)>0)
 			for(int v=0;v<V.size();v++)
 			{
-				DatabaseEngine.PlayerData PD=V.get(v);
+				final DatabaseEngine.PlayerData PD=V.get(v);
 				if(PD.xml.startsWith("COINS;"))
 					return makeItem(PD.xml);
 			}
 		else
 		for(int v=0;v<V.size();v++)
 		{
-			DatabaseEngine.PlayerData PD=V.get(v);
-			Item I=makeItem(PD.xml);
+			final DatabaseEngine.PlayerData PD=V.get(v);
+			final Item I=makeItem(PD.xml);
 			if(I==null) continue;
 			if(CMLib.english().containsString(I.Name(),likeThis))
 				return I;
@@ -232,7 +232,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 	@Override
 	public MoneyLibrary.DebtItem getDebtInfo(String depositorName)
 	{
-		Vector<MoneyLibrary.DebtItem> debt=CMLib.beanCounter().getDebtOwed(bankChain());
+		final Vector<MoneyLibrary.DebtItem> debt=CMLib.beanCounter().getDebtOwed(bankChain());
 		if(depositorName.length()==0) return null;
 		for(int d=0;d<debt.size();d++)
 			if(debt.elementAt(d).debtor.equalsIgnoreCase(depositorName))
@@ -271,12 +271,12 @@ public class StdBanker extends StdShopKeeper implements Banker
 				}
 				if(proceed)
 				{
-					List<PlayerData> bankDataV=CMLib.database().DBReadData(bankChain());
-					Vector<String> userNames=new Vector<String>();
+					final List<PlayerData> bankDataV=CMLib.database().DBReadData(bankChain());
+					final Vector<String> userNames=new Vector<String>();
 					for(int v=0;v<bankDataV.size();v++)
 					{
-						DatabaseEngine.PlayerData dat=bankDataV.get(v);
-						String name=dat.who;
+						final DatabaseEngine.PlayerData dat=bankDataV.get(v);
+						final String name=dat.who;
 						if(!userNames.contains(name))
 						{
 							if(!CMLib.players().playerExists(name))
@@ -290,16 +290,16 @@ public class StdBanker extends StdShopKeeper implements Banker
 								userNames.addElement(name);
 						}
 					}
-					Vector<MoneyLibrary.DebtItem> debts=CMLib.beanCounter().getDebtOwed(bankChain());
+					final Vector<MoneyLibrary.DebtItem> debts=CMLib.beanCounter().getDebtOwed(bankChain());
 					for(int u=0;u<userNames.size();u++)
 					{
-						String name=userNames.elementAt(u);
+						final String name=userNames.elementAt(u);
 						Coins coinItem=null;
 						int totalValue=0;
-						List<Item> items=getDepositedItems(name);
+						final List<Item> items=getDepositedItems(name);
 						for(int v=0;v<items.size();v++)
 						{
-							Item I=items.get(v);
+							final Item I=items.get(v);
 							if(I instanceof Coins)
 								coinItem=(Coins)I;
 							else
@@ -313,21 +313,21 @@ public class StdBanker extends StdShopKeeper implements Banker
 							newBalance+=CMath.mul(totalValue,itemInterest);
 						for(int d=debts.size()-1;d>=0;d--)
 						{
-							MoneyLibrary.DebtItem debtItem=debts.elementAt(d);
-							String debtor=debtItem.debtor;
+							final MoneyLibrary.DebtItem debtItem=debts.elementAt(d);
+							final String debtor=debtItem.debtor;
 							if(debtor.equalsIgnoreCase(name))
 							{
-								long debtDueAt=debtItem.due;
-								double intRate=debtItem.interest;
-								double dueAmount=debtItem.amt;
-								String reason=debtItem.reason;
-								double intDue=CMath.mul(intRate,dueAmount);
-								long timeRemaining=debtDueAt-System.currentTimeMillis();
+								final long debtDueAt=debtItem.due;
+								final double intRate=debtItem.interest;
+								final double dueAmount=debtItem.amt;
+								final String reason=debtItem.reason;
+								final double intDue=CMath.mul(intRate,dueAmount);
+								final long timeRemaining=debtDueAt-System.currentTimeMillis();
 								if((timeRemaining<0)&&(newBalance<((dueAmount)+intDue)))
 									newBalance=-1.0;
 								else
 								{
-									double amtDueNow=(timeRemaining<0)?(dueAmount+intDue):CMath.div((dueAmount+intDue),(timeRemaining/timeInterval));
+									final double amtDueNow=(timeRemaining<0)?(dueAmount+intDue):CMath.div((dueAmount+intDue),(timeRemaining/timeInterval));
 									if(newBalance>=amtDueNow)
 									{
 										CMLib.beanCounter().bankLedger(bankChain(),name,CMLib.utensils().getFormattedDate(this)+": Withdrawal of "+CMLib.beanCounter().nameCurrencyShort(this,amtDueNow)+": Loan payment made.");
@@ -344,7 +344,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 						{
 							for(int v=0;v<items.size();v++)
 							{
-								Item I=items.get(v);
+								final Item I=items.get(v);
 								if((I instanceof LandTitle)&&(((LandTitle)I).getOwnerName().length()>0))
 								{
 									((LandTitle)I).setOwnerName("");
@@ -368,7 +368,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 									CMLib.beanCounter().bankLedger(bankChain(),name,CMLib.utensils().getFormattedDate(this)+": Withdrawl of "+CMLib.beanCounter().nameCurrencyShort(this,coinItem.getTotalValue()-newBalance)+": Interest charged.");
 								delDepositInventory(name,coinItem);
 							}
-							String currency=CMLib.beanCounter().getCurrency(this);
+							final String currency=CMLib.beanCounter().getCurrency(this);
 							coinItem=CMLib.beanCounter().makeBestCurrency(currency,newBalance);
 							if(coinItem!=null)
 								addDepositInventory(name,coinItem);
@@ -379,14 +379,14 @@ public class StdBanker extends StdShopKeeper implements Banker
 				}
 			}
 		}
-		}catch(Exception e){Log.errOut("StdBanker",e);}
+		}catch(final Exception e){Log.errOut("StdBanker",e);}
 		return true;
 	}
 
 	@Override
 	public double getBalance(String depositorName)
 	{
-		Item old=findDepositInventory(depositorName,""+Integer.MAX_VALUE);
+		final Item old=findDepositInventory(depositorName,""+Integer.MAX_VALUE);
 		if((old!=null)&&(old instanceof Coins))
 			return ((Coins)old).getTotalValue();
 		return 0;
@@ -395,11 +395,11 @@ public class StdBanker extends StdShopKeeper implements Banker
 	@Override
 	public double totalItemsWorth(String depositorName)
 	{
-		List<Item> V=getDepositedItems(depositorName);
+		final List<Item> V=getDepositedItems(depositorName);
 		double min=0;
 		for(int v=0;v<V.size();v++)
 		{
-			Item I=V.get(v);
+			final Item I=V.get(v);
 			if(!(I instanceof Coins))
 				min+=I.value();
 		}
@@ -411,7 +411,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 	{
 		if(isSold(ShopKeeper.DEAL_CLANBANKER))
 		{
-			Pair<Clan,Integer> clanPair=CMLib.clans().findPrivilegedClan(mob, func);
+			final Pair<Clan,Integer> clanPair=CMLib.clans().findPrivilegedClan(mob, func);
 			if(clanPair!=null)
 				return clanPair.first.clanID();
 			else
@@ -435,7 +435,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
-		MOB mob=msg.source();
+		final MOB mob=msg.source();
 		if(msg.amITarget(this))
 		{
 			switch(msg.targetMinor())
@@ -453,7 +453,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 					location().send(this,msg2);
 					if(msg.tool() instanceof Coins)
 					{
-						Coins older=(Coins)msg.tool();
+						final Coins older=(Coins)msg.tool();
 						double newValue=older.getTotalValue();
 						Item old=findDepositInventory(depositorName,""+Integer.MAX_VALUE);
 						if((old==null)
@@ -463,14 +463,14 @@ public class StdBanker extends StdShopKeeper implements Banker
 							old=findDepositInventory(msg.source().getLiegeID(),""+Integer.MAX_VALUE);
 							if(old!=null)
 							{
-								MOB owner=CMLib.players().getPlayer(msg.source().getLiegeID());
+								final MOB owner=CMLib.players().getPlayer(msg.source().getLiegeID());
 								if(owner != null)
 									depositorName=owner.Name();
 							}
 						}
 						if((old!=null)&&(old instanceof Coins))
 							newValue+=((Coins)old).getTotalValue();
-						Coins item=CMLib.beanCounter().makeBestCurrency(CMLib.beanCounter().getCurrency(this),newValue);
+						final Coins item=CMLib.beanCounter().makeBestCurrency(CMLib.beanCounter().getCurrency(this),newValue);
 						bankLedger(depositorName,"Deposit of "+CMLib.beanCounter().nameCurrencyShort(this,newValue)+": "+msg.source().Name());
 						if(old!=null) delDepositInventory(depositorName,old);
 						if(item!=null)
@@ -485,12 +485,12 @@ public class StdBanker extends StdShopKeeper implements Banker
 						if(msg.targetMessage()!=null) msg.setTargetMessage(CMStrings.replaceAll(msg.targetMessage(),"<O-NAME>",msg.tool().name()));
 						if(msg.othersMessage()!=null) msg.setOthersMessage(CMStrings.replaceAll(msg.othersMessage(),"<O-NAME>",msg.tool().name()));
 						((Coins)msg.tool()).setNumberOfCoins(0); // prevents banker from accumulating wealth
-						double riches=CMLib.beanCounter().getTotalAbsoluteNativeValue(this);
+						final double riches=CMLib.beanCounter().getTotalAbsoluteNativeValue(this);
 						if(riches>0.0) CMLib.beanCounter().subtractMoney(this,riches);
 					}
 					else
 					{
-						Item item =(Item)msg.tool().copyOf();
+						final Item item =(Item)msg.tool().copyOf();
 						if(!item.amDestroyed())
 						{
 							addDepositInventory(depositorName,item);
@@ -505,14 +505,14 @@ public class StdBanker extends StdShopKeeper implements Banker
 			case CMMsg.TYP_BORROW:
 				if(CMLib.flags().aliveAwakeMobileUnbound(mob,true))
 				{
-					Item old=(Item)msg.tool();
+					final Item old=(Item)msg.tool();
 					if(old instanceof Coins)
 					{
-						String borrowerName=getBankClientName(msg.source(),Clan.Function.WITHDRAW,false);
+						final String borrowerName=getBankClientName(msg.source(),Clan.Function.WITHDRAW,false);
 						bankLedger(borrowerName,"Loan of "+old.Name()+": "+msg.source().Name());
 						addItem(old);
-						double amt=((Coins)old).getTotalValue();
-						CMMsg newMsg=CMClass.getMsg(this,msg.source(),old,CMMsg.MSG_GIVE,"<S-NAME> give(s) <O-NAME> to <T-NAMESELF>.");
+						final double amt=((Coins)old).getTotalValue();
+						final CMMsg newMsg=CMClass.getMsg(this,msg.source(),old,CMMsg.MSG_GIVE,"<S-NAME> give(s) <O-NAME> to <T-NAMESELF>.");
 						if(location().okMessage(this,newMsg))
 						{
 							location().send(this,newMsg);
@@ -520,11 +520,11 @@ public class StdBanker extends StdShopKeeper implements Banker
 						}
 						else
 							CMLib.commands().postDrop(this,old,true,false,false);
-						double interestRate=getLoanInterest();
+						final double interestRate=getLoanInterest();
 						int months=2;
 						while((months<(location().getArea().getTimeObj().getMonthsInYear()*10))
 							&&(CMath.div(amt,months)>250.0)) months++;
-						long dueAt=System.currentTimeMillis()+(timeInterval()*months);
+						final long dueAt=System.currentTimeMillis()+(timeInterval()*months);
 						CMLib.beanCounter().adjustDebt(borrowerName,bankChain(),amt,"Bank Loan",interestRate,dueAt);
 					}
 				}
@@ -533,7 +533,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 				if(CMLib.flags().aliveAwakeMobileUnbound(mob,true))
 				{
 					String withdrawerName=getBankClientName(msg.source(),Clan.Function.WITHDRAW,false);
-					Item old=(Item)msg.tool();
+					final Item old=(Item)msg.tool();
 					if(old instanceof Coins)
 					{
 						Item depositInventoryItem=findDepositInventory(withdrawerName,""+Integer.MAX_VALUE);
@@ -543,11 +543,11 @@ public class StdBanker extends StdShopKeeper implements Banker
 								||((depositInventoryItem instanceof Coins)
 										&&(((Coins)depositInventoryItem).getTotalValue()<((Coins)old).getTotalValue()))))
 						{
-							Item item2=findDepositInventory(msg.source().getLiegeID(),""+Integer.MAX_VALUE);
+							final Item item2=findDepositInventory(msg.source().getLiegeID(),""+Integer.MAX_VALUE);
 							if((item2!=null)&&(item2 instanceof Coins)&&(((Coins)item2).getTotalValue()>=((Coins)old).getTotalValue()))
 							{
 								depositInventoryItem=item2;
-								MOB owner=CMLib.players().getPlayer(msg.source().getLiegeID());
+								final MOB owner=CMLib.players().getPlayer(msg.source().getLiegeID());
 								if(owner!=null)
 									withdrawerName=owner.Name();
 							}
@@ -557,12 +557,12 @@ public class StdBanker extends StdShopKeeper implements Banker
 						&&(old instanceof Coins)
 						&&(((Coins)depositInventoryItem).getTotalValue()>=((Coins)old).getTotalValue()))
 						{
-							Coins coins=CMLib.beanCounter().makeBestCurrency(this,((Coins)depositInventoryItem).getTotalValue()-((Coins)old).getTotalValue());
+							final Coins coins=CMLib.beanCounter().makeBestCurrency(this,((Coins)depositInventoryItem).getTotalValue()-((Coins)old).getTotalValue());
 							bankLedger(withdrawerName,"Withdrawl of "+CMLib.beanCounter().nameCurrencyShort(this,((Coins)old).getTotalValue())+": "+msg.source().Name());
 							delDepositInventory(withdrawerName,depositInventoryItem);
 
 							addItem(old);
-							CMMsg newMsg=CMClass.getMsg(this,msg.source(),old,CMMsg.MSG_GIVE,"<S-NAME> give(s) <O-NAME> to <T-NAMESELF>.");
+							final CMMsg newMsg=CMClass.getMsg(this,msg.source(),old,CMMsg.MSG_GIVE,"<S-NAME> give(s) <O-NAME> to <T-NAMESELF>.");
 							if(location().okMessage(this,newMsg))
 							{
 								location().send(this,newMsg);
@@ -598,7 +598,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 						CMLib.commands().postSay(this,mob,"Thank you for your trust.",true,false);
 						if(location()!=null)
 							location().addItem(old,ItemPossessor.Expire.Player_Drop);
-						CMMsg msg2=CMClass.getMsg(mob,old,this,CMMsg.MSG_GET,null);
+						final CMMsg msg2=CMClass.getMsg(mob,old,this,CMMsg.MSG_GET,null);
 						if(location().okMessage(mob,msg2))
 							location().send(mob,msg2);
 					}
@@ -618,7 +618,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 				super.executeMsg(myHost,msg);
 				if(CMLib.flags().aliveAwakeMobileUnbound(mob,true))
 				{
-					String listerName=getBankClientName(msg.source(),Clan.Function.DEPOSIT_LIST,false);
+					final String listerName=getBankClientName(msg.source(),Clan.Function.DEPOSIT_LIST,false);
 					List<Item> V=null;
 					if(isSold(ShopKeeper.DEAL_CLANBANKER))
 						V=getDepositedItems(listerName);
@@ -627,7 +627,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 						V=getDepositedItems(listerName);
 						if(mob.isMarriedToLiege())
 						{
-							List<Item> V2=getDepositedItems(mob.getLiegeID());
+							final List<Item> V2=getDepositedItems(mob.getLiegeID());
 							if((V2!=null)&&(V2.size()>0))
 								V.addAll(V2);
 						}
@@ -635,7 +635,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 					for(int v=V.size()-1;v>=0;v--)
 						if(V.get(v) instanceof LandTitle)
 						{
-							LandTitle L=(LandTitle)V.get(v);
+							final LandTitle L=(LandTitle)V.get(v);
 							if(L.getOwnerObject()==null)
 							{
 								delDepositInventory(listerName,(Item)L);
@@ -646,13 +646,13 @@ public class StdBanker extends StdShopKeeper implements Banker
 					final int COL_LEN=ListingLibrary.ColFixer.fixColWidth(34.0,mob);
 					StringBuffer str=new StringBuffer("");
 					str.append("\n\rAccount balance at '"+bankChain()+"'.\n\r");
-					String c="^x[Item                              ] ";
+					final String c="^x[Item                              ] ";
 					str.append(c+c+"^.^N\n\r");
 					int colNum=0;
 					boolean otherThanCoins=false;
 					for(int i=0;i<V.size();i++)
 					{
-						Item I=V.get(i);
+						final Item I=V.get(i);
 						if(!(I instanceof Coins))
 						{
 							otherThanCoins=true;
@@ -670,7 +670,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 						str=new StringBuffer("\n\r^N");
 					else
 						str.append("\n\r\n\r");
-					double balance=getBalance(listerName);
+					final double balance=getBalance(listerName);
 					if(balance>0)
 					{
 						if(isSold(ShopKeeper.DEAL_CLANBANKER))
@@ -678,15 +678,15 @@ public class StdBanker extends StdShopKeeper implements Banker
 						else
 							str.append("Your balance is ^H"+CMLib.beanCounter().nameCurrencyLong(this,balance)+"^?.");
 					}
-					Vector<MoneyLibrary.DebtItem> debts=CMLib.beanCounter().getDebt(listerName,bankChain());
+					final Vector<MoneyLibrary.DebtItem> debts=CMLib.beanCounter().getDebt(listerName,bankChain());
 					if(debts!=null)
 					for(int d=0;d<debts.size();d++)
 					{
-						MoneyLibrary.DebtItem debt=debts.elementAt(d);
-						long debtDueAt=debt.due;
-						double intRate=debt.interest;
-						double dueAmount=debt.amt;
-						long timeRemaining=debtDueAt-System.currentTimeMillis();
+						final MoneyLibrary.DebtItem debt=debts.elementAt(d);
+						final long debtDueAt=debt.due;
+						final double intRate=debt.interest;
+						final double dueAmount=debt.amt;
+						final long timeRemaining=debtDueAt-System.currentTimeMillis();
 						if(timeRemaining>0)
 							str.append("\n\r"
 									+((isSold(ShopKeeper.DEAL_CLANBANKER))?CMStrings.capitalizeFirstLetter(listerName):"You")
@@ -697,14 +697,14 @@ public class StdBanker extends StdShopKeeper implements Banker
 					}
 					if(coinInterest!=0.0)
 					{
-						double cci=CMath.mul(Math.abs(coinInterest),100.0);
-						String ci=((coinInterest>0.0)?"pay ":"charge ")+cci+"% interest ";
+						final double cci=CMath.mul(Math.abs(coinInterest),100.0);
+						final String ci=((coinInterest>0.0)?"pay ":"charge ")+cci+"% interest ";
 						str.append("\n\rThey "+ci+"monthly on money deposited here.");
 					}
 					if(itemInterest!=0.0)
 					{
-						double cci=CMath.mul(Math.abs(itemInterest),100.0);
-						String ci=((itemInterest>0.0)?"pay ":"charge ")+cci+"% interest ";
+						final double cci=CMath.mul(Math.abs(itemInterest),100.0);
+						final String ci=((itemInterest>0.0)?"pay ":"charge ")+cci+"% interest ";
 						str.append("\n\rThey "+ci+"monthly on items deposited here.");
 					}
 					mob.tell(str.toString()+"^T");
@@ -724,7 +724,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
-		MOB mob=msg.source();
+		final MOB mob=msg.source();
 		if(msg.amITarget(this))
 		{
 			switch(msg.targetMinor())
@@ -736,10 +736,10 @@ public class StdBanker extends StdShopKeeper implements Banker
 						return false;
 					if(msg.tool()==null)
 						return false;
-					String listerName=getBankClientName(msg.source(),Clan.Function.DEPOSIT,true);
+					final String listerName=getBankClientName(msg.source(),Clan.Function.DEPOSIT,true);
 					if(listerName==null)
 						return false;
-					double balance=getBalance(listerName);
+					final double balance=getBalance(listerName);
 					if(msg.tool() instanceof Coins)
 					{
 						if((Double.MAX_VALUE-balance)<=((Coins)msg.tool()).getTotalValue())
@@ -764,7 +764,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 						mob.tell(this,msg.tool(),null,"<S-HE-SHE> refuses to accept <T-NAME> for deposit.");
 						return false;
 					}
-					double minbalance=(totalItemsWorth(listerName)/MIN_ITEM_BALANCE_DIVIDEND)+CMath.div(((Item)msg.tool()).value(),MIN_ITEM_BALANCE_DIVIDEND);
+					final double minbalance=(totalItemsWorth(listerName)/MIN_ITEM_BALANCE_DIVIDEND)+CMath.div(((Item)msg.tool()).value(),MIN_ITEM_BALANCE_DIVIDEND);
 					if(balance<minbalance)
 					{
 						if(isSold(ShopKeeper.DEAL_CLANBANKER))
@@ -791,7 +791,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 						return false;
 					MOB owner=msg.source();
 					double balance=getBalance(withdrawerName);
-					double collateral=totalItemsWorth(withdrawerName);
+					final double collateral=totalItemsWorth(withdrawerName);
 					if(msg.tool() instanceof Coins)
 					{
 						if(!((Coins)msg.tool()).getCurrency().equals(CMLib.beanCounter().getCurrency(this)))
@@ -804,7 +804,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 						&&(owner.isMarriedToLiege())
 						&&(balance<((Coins)msg.tool()).getTotalValue()))
 						{
-							MOB M=CMLib.players().getLoadPlayer(owner.getLiegeID());
+							final MOB M=CMLib.players().getLoadPlayer(owner.getLiegeID());
 							double b=0.0;
 							if(M!=null) b=getBalance(M.Name());
 							if((M!=null)&&(b>=((Coins)msg.tool()).getTotalValue()))
@@ -831,7 +831,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 					else
 					if(msg.tool() instanceof Item)
 					{
-						double debt=CMLib.beanCounter().getDebtOwed(withdrawerName,bankChain());
+						final double debt=CMLib.beanCounter().getDebtOwed(withdrawerName,bankChain());
 						if((debt>0.0)
 						&&((collateral-((Item)msg.tool()).value())<debt))
 						{
@@ -839,7 +839,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 							return false;
 						}
 					}
-					double minbalance=(collateral/MIN_ITEM_BALANCE_DIVIDEND);
+					final double minbalance=(collateral/MIN_ITEM_BALANCE_DIVIDEND);
 					if(msg.tool() instanceof Coins)
 					{
 						if(((Coins)msg.tool()).getTotalValue()>balance)
@@ -877,7 +877,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 					CMLib.commands().postSay(this,mob,"I'm sorry, only MONEY can be borrowed.",true,false);
 					return false;
 				}
-				String withdrawerName=getBankClientName(msg.source(),Clan.Function.WITHDRAW,true);
+				final String withdrawerName=getBankClientName(msg.source(),Clan.Function.WITHDRAW,true);
 				if(withdrawerName==null)
 					return false;
 				if((numberDeposited(withdrawerName)==0)
@@ -885,7 +885,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 					||(!msg.source().isMarriedToLiege())
 					||(numberDeposited(msg.source().getLiegeID())==0)))
 				{
-					StringBuffer str=new StringBuffer("");
+					final StringBuffer str=new StringBuffer("");
 					if(isSold(ShopKeeper.DEAL_CLANBANKER))
 						str.append(CMStrings.capitalizeFirstLetter(withdrawerName)+" does not have an account with us, I'm afraid.");
 					else
@@ -893,10 +893,10 @@ public class StdBanker extends StdShopKeeper implements Banker
 					CMLib.commands().postSay(this,mob,str.toString()+"^T",true,false);
 					return false;
 				}
-				double debt=CMLib.beanCounter().getDebtOwed(withdrawerName,bankChain());
+				final double debt=CMLib.beanCounter().getDebtOwed(withdrawerName,bankChain());
 				if(debt>0.0)
 				{
-					StringBuffer str=new StringBuffer("");
+					final StringBuffer str=new StringBuffer("");
 					if(isSold(ShopKeeper.DEAL_CLANBANKER))
 						str.append(CMStrings.capitalizeFirstLetter(withdrawerName)+" already has a "+CMLib.beanCounter().nameCurrencyShort(this,debt)+" loan out with us.");
 					else
@@ -904,10 +904,10 @@ public class StdBanker extends StdShopKeeper implements Banker
 					CMLib.commands().postSay(this,mob,str.toString()+"^T",true,false);
 					return false;
 				}
-				double collateralRemaining=((Coins)msg.tool()).getTotalValue()-totalItemsWorth(withdrawerName);
+				final double collateralRemaining=((Coins)msg.tool()).getTotalValue()-totalItemsWorth(withdrawerName);
 				if(collateralRemaining>0)
 				{
-					StringBuffer str=new StringBuffer("");
+					final StringBuffer str=new StringBuffer("");
 					if(isSold(ShopKeeper.DEAL_CLANBANKER))
 						str.append(CMStrings.capitalizeFirstLetter(withdrawerName)+" ");
 					else
@@ -923,7 +923,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 			{
 				if(!CMLib.coffeeShops().ignoreIfNecessary(msg.source(),finalIgnoreMask(),this))
 					return false;
-				String listerName=getBankClientName(msg.source(),Clan.Function.DEPOSIT_LIST,true);
+				final String listerName=getBankClientName(msg.source(),Clan.Function.DEPOSIT_LIST,true);
 				if(listerName==null)
 					return false;
 				if((numberDeposited(listerName)==0)
@@ -931,21 +931,21 @@ public class StdBanker extends StdShopKeeper implements Banker
 					||(!msg.source().isMarriedToLiege())
 					||(numberDeposited(msg.source().getLiegeID())==0)))
 				{
-					StringBuffer str=new StringBuffer("");
+					final StringBuffer str=new StringBuffer("");
 					if(isSold(ShopKeeper.DEAL_CLANBANKER))
 						str.append(CMStrings.capitalizeFirstLetter(listerName)+" does not have an account with us, I'm afraid.");
 					else
 						str.append("You don't have an account with us, I'm afraid.");
 					if(coinInterest!=0.0)
 					{
-						double cci=CMath.mul(Math.abs(coinInterest),100.0);
-						String ci=((coinInterest>0.0)?"pay ":"charge ")+cci+"% interest ";
+						final double cci=CMath.mul(Math.abs(coinInterest),100.0);
+						final String ci=((coinInterest>0.0)?"pay ":"charge ")+cci+"% interest ";
 						str.append("\n\rWe "+ci+"monthly on money deposited here.");
 					}
 					if(itemInterest!=0.0)
 					{
-						double cci=CMath.mul(Math.abs(itemInterest),100.0);
-						String ci=((itemInterest>0.0)?"pay ":"charge ")+cci+"% interest ";
+						final double cci=CMath.mul(Math.abs(itemInterest),100.0);
+						final String ci=((itemInterest>0.0)?"pay ":"charge ")+cci+"% interest ";
 						str.append("\n\rWe "+ci+"monthly on items kept with us.");
 					}
 					if(bankChain().length()>0)

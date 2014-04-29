@@ -42,8 +42,8 @@ public class Deposit extends StdCommand
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		Environmental shopkeeper=CMLib.english().parseShopkeeper(mob,commands,"Deposit how much with whom?");
-		ShopKeeper SHOP=CMLib.coffeeShops().getShopKeeper(shopkeeper);
+		final Environmental shopkeeper=CMLib.english().parseShopkeeper(mob,commands,"Deposit how much with whom?");
+		final ShopKeeper SHOP=CMLib.coffeeShops().getShopKeeper(shopkeeper);
 		if(shopkeeper==null) return false;
 		if((!(SHOP instanceof Banker))&&(!(SHOP instanceof PostOffice)))
 		{
@@ -55,7 +55,7 @@ public class Deposit extends StdCommand
 			mob.tell("Deposit what or how much?");
 			return false;
 		}
-		String thisName=CMParms.combine(commands,0);
+		final String thisName=CMParms.combine(commands,0);
 		Item thisThang=CMLib.english().bestPossibleGold(mob,null,thisName);
 		if(thisThang==null)
 		{

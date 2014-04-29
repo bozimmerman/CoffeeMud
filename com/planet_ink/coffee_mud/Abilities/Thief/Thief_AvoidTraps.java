@@ -55,7 +55,7 @@ public class Thief_AvoidTraps extends ThiefSkill
 	{
 		if(!(affected instanceof MOB))
 		   return super.okMessage(myHost,msg);
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		if(msg.amITarget(mob)
 		&&(!msg.amISource(mob))
 		&&(msg.tool()!=null)

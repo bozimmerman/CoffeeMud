@@ -14,7 +14,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -47,7 +46,7 @@ public class Prayer_Wave extends Prayer
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		Set<MOB> h=properTargets(mob,givenTarget,auto);
+		final Set<MOB> h=properTargets(mob,givenTarget,auto);
 		if(h==null) return false;
 		int dir=Directions.getGoodDirectionCode(CMParms.combine(commands,0));
 		if(dir<0)
@@ -56,8 +55,8 @@ public class Prayer_Wave extends Prayer
 			{
 				for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 				{
-					Room destRoom=mob.location().getRoomInDir(d);
-					Exit exitRoom=mob.location().getExitInDir(d);
+					final Room destRoom=mob.location().getRoomInDir(d);
+					final Exit exitRoom=mob.location().getExitInDir(d);
 					if((destRoom!=null)||(exitRoom!=null)||(d!=Directions.UP))
 					{ dir=d; break;}
 				}
@@ -69,8 +68,8 @@ public class Prayer_Wave extends Prayer
 				return false;
 			}
 		}
-		Room destRoom=mob.location().getRoomInDir(dir);
-		Exit exitRoom=mob.location().getExitInDir(dir);
+		final Room destRoom=mob.location().getRoomInDir(dir);
+		final Exit exitRoom=mob.location().getExitInDir(dir);
 		if((destRoom==null)||(exitRoom==null)||(dir==Directions.UP))
 		{
 			mob.tell("You can't wash your opponents that way!");
@@ -80,11 +79,11 @@ public class Prayer_Wave extends Prayer
 		if(!super.invoke(mob, commands, givenTarget, auto, asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
-		int numEnemies=h.size();
-		for(Iterator e=h.iterator();e.hasNext();)
+		final boolean success=proficiencyCheck(mob,0,auto);
+		final int numEnemies=h.size();
+		for (final Object element : h)
 		{
-			MOB target=(MOB)e.next();
+			final MOB target=(MOB)element;
 			if(target!=mob)
 			{
 				if(success)
@@ -94,18 +93,18 @@ public class Prayer_Wave extends Prayer
 					// affected MOB.  Then tell everyone else
 					// what happened.
 					final Room R=target.location();
-					CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto)|CMMsg.MASK_MALICIOUS,auto?"<T-NAME> <T-IS-ARE> swept away by a great wave!":"^S<S-NAME> sweep(s) <S-HIS-HER> hands over <T-NAMESELF>, "+prayingWord(mob)+".^?");
-					CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_WATER|(auto?CMMsg.MASK_ALWAYS:0),null);
+					final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto)|CMMsg.MASK_MALICIOUS,auto?"<T-NAME> <T-IS-ARE> swept away by a great wave!":"^S<S-NAME> sweep(s) <S-HIS-HER> hands over <T-NAMESELF>, "+prayingWord(mob)+".^?");
+					final CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_WATER|(auto?CMMsg.MASK_ALWAYS:0),null);
 					if((R.okMessage(mob,msg))&&((R.okMessage(mob,msg2))))
 					{
 						R.send(mob,msg);
 						R.send(mob,msg2);
 						if((msg.value()<=0)&&(msg2.value()<=0))
 						{
-							int harming=CMLib.dice().roll(1,adjustedLevel(mob,asLevel)/numEnemies,numEnemies);
+							final int harming=CMLib.dice().roll(1,adjustedLevel(mob,asLevel)/numEnemies,numEnemies);
 							CMLib.combat().postDamage(mob,target,this,harming,CMMsg.MASK_ALWAYS|CMMsg.TYP_WATER,Weapon.TYPE_BURSTING,"A crashing wave <DAMAGE> <T-NAME>!");
-							int chanceToStay=10+(target.charStats().getStat(CharStats.STAT_STRENGTH)-(mob.phyStats().level()+(2*super.getXLEVELLevel(mob)))*4);
-							int roll=CMLib.dice().rollPercentage();
+							final int chanceToStay=10+(target.charStats().getStat(CharStats.STAT_STRENGTH)-(mob.phyStats().level()+(2*super.getXLEVELLevel(mob)))*4);
+							final int roll=CMLib.dice().rollPercentage();
 							if((roll!=1)&&(roll>chanceToStay))
 							{
 								CMLib.tracking().walk(target,dir,true,false);

@@ -49,23 +49,23 @@ public class Shutdown
 		Socket sock=null;
 		try
 		{
-			StringBuffer msg=new StringBuffer("\033[1z<SHUTDOWN "+a[2]+" "+a[3]);
+			final StringBuffer msg=new StringBuffer("\033[1z<SHUTDOWN "+a[2]+" "+a[3]);
 			if(a.length>=5)
 				msg.append(" "+!(CMath.s_bool(a[4])));
 			if(a.length>=6)
 				for(int i=5;i<a.length;i++)
 				msg.append(" "+a[i]);
 			sock=new Socket(a[0],CMath.s_int(a[1]));
-			OutputStream rawout=sock.getOutputStream();
+			final OutputStream rawout=sock.getOutputStream();
 			rawout.write(CMStrings.strToBytes((msg.toString()+">\n")));
 			rawout.flush();
-			BufferedReader in=new BufferedReader(new InputStreamReader(sock.getInputStream()));
+			final BufferedReader in=new BufferedReader(new InputStreamReader(sock.getInputStream()));
 			String read="";
 			while(!read.startsWith("\033[1z<"))
 				read=in.readLine();
 			System.out.println(read.substring("\033[1z<".length()));
 		}
-		catch(Exception e){e.printStackTrace();}
-		finally { if(sock!=null) try{ sock.close(); } catch (IOException e) { } }
+		catch(final Exception e){e.printStackTrace();}
+		finally { if(sock!=null) try{ sock.close(); } catch (final IOException e) { } }
 	}
 }

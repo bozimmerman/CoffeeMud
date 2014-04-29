@@ -103,9 +103,9 @@ public class Druid_ShapeShift extends StdAbility
 		super.affectPhyStats(affected,affectableStats);
 		if((newRace!=null)&&(affected instanceof MOB))
 		{
-			int xlvl=getXLEVELLevel(invoker());
+			final int xlvl=getXLEVELLevel(invoker());
 			affectableStats.setName(CMLib.english().startWithAorAn(raceName.toLowerCase()));
-			int oldAdd=affectableStats.weight()-affected.basePhyStats().weight();
+			final int oldAdd=affectableStats.weight()-affected.basePhyStats().weight();
 			newRace.setHeightWeight(affectableStats,(char)((MOB)affected).charStats().getStat(CharStats.STAT_GENDER));
 			if(oldAdd>0) affectableStats.setWeight(affectableStats.weight()+oldAdd);
 			affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+
@@ -123,7 +123,7 @@ public class Druid_ShapeShift extends StdAbility
 		super.affectCharStats(affected,affectableStats);
 		if(newRace!=null)
 		{
-			int oldCat=affected.baseCharStats().ageCategory();
+			final int oldCat=affected.baseCharStats().ageCategory();
 			affectableStats.setMyRace(newRace);
 			if(affected.baseCharStats().getStat(CharStats.STAT_AGE)>0)
 				affectableStats.setStat(CharStats.STAT_AGE,newRace.getAgingChart()[oldCat]);
@@ -137,7 +137,7 @@ public class Druid_ShapeShift extends StdAbility
 		// undo the affects of this spell
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		super.unInvoke();
 		if((canBeUninvoked())&&(mob.location()!=null))
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> revert(s) to "+mob.charStats().raceName().toLowerCase()+" form.");
@@ -145,7 +145,7 @@ public class Druid_ShapeShift extends StdAbility
 
 	public int getClassLevel(MOB mob)
 	{
-		int qualClassLevel=CMLib.ableMapper().qualifyingClassLevel(mob,this)+(2*getXLEVELLevel(mob));
+		final int qualClassLevel=CMLib.ableMapper().qualifyingClassLevel(mob,this)+(2*getXLEVELLevel(mob));
 		int classLevel=qualClassLevel-CMLib.ableMapper().qualifyingLevel(mob,this);
 		if(qualClassLevel<0) classLevel=30;
 		return classLevel;
@@ -153,7 +153,7 @@ public class Druid_ShapeShift extends StdAbility
 
 	public void setRaceName(MOB mob)
 	{
-		int classLevel=getClassLevel(mob);
+		final int classLevel=getClassLevel(mob);
 		raceName=getRaceName(classLevel,myRaceCode);
 		newRace=getRace(classLevel,myRaceCode);
 	}
@@ -182,7 +182,7 @@ public class Druid_ShapeShift extends StdAbility
 
 	public int getRaceLevel(int classLevel)
 	{
-		int maxLevel=getMaxRaceLevel(classLevel);
+		final int maxLevel=getMaxRaceLevel(classLevel);
 		if((myRaceLevel<0)||(myRaceLevel>maxLevel))
 			return maxLevel;
 		return myRaceLevel;
@@ -226,7 +226,7 @@ public class Druid_ShapeShift extends StdAbility
 				if((((MOB)target).isInCombat())
 				&&(!Druid_ShapeShift.isShapeShifted((MOB)target)))
 				{
-					int qualClassLevel=CMLib.ableMapper().qualifyingClassLevel(mob,this)+(2*getXLEVELLevel(mob));
+					final int qualClassLevel=CMLib.ableMapper().qualifyingClassLevel(mob,this)+(2*getXLEVELLevel(mob));
 					int classLevel=qualClassLevel-CMLib.ableMapper().qualifyingLevel(mob,this);
 					if(qualClassLevel<0) classLevel=30;
 					if(getRaceLevel(classLevel)>=3)
@@ -251,17 +251,17 @@ public class Druid_ShapeShift extends StdAbility
 		}
 
 		this.myRaceLevel=-1;
-		int[] racesTaken=new int[forms.length];
+		final int[] racesTaken=new int[forms.length];
 		Vector allShapeshifts=new Vector();
 		if((myRaceCode>=0)&&(myRaceCode<racesTaken.length))
 			racesTaken[myRaceCode]++;
 
 		for(int a=0;a<mob.numAbilities();a++)
 		{
-			Ability A=mob.fetchAbility(a);
+			final Ability A=mob.fetchAbility(a);
 			if((A!=null)&&(A instanceof Druid_ShapeShift))
 			{
-				Druid_ShapeShift D=(Druid_ShapeShift)A;
+				final Druid_ShapeShift D=(Druid_ShapeShift)A;
 				allShapeshifts.addElement(D);
 				if((D.myRaceCode>=0)&&(D.myRaceCode<racesTaken.length))
 					racesTaken[D.myRaceCode]++;
@@ -273,7 +273,7 @@ public class Druid_ShapeShift extends StdAbility
 			if(mob.isMonster())
 			{
 				myRaceCode=CMLib.dice().roll(1,racesTaken.length,-1);
-				long t=System.currentTimeMillis();
+				final long t=System.currentTimeMillis();
 				while((racesTaken[myRaceCode]>0)&&((System.currentTimeMillis()-t)<10000))
 					myRaceCode=CMLib.dice().roll(1,racesTaken.length,-1);
 			}
@@ -286,8 +286,8 @@ public class Druid_ShapeShift extends StdAbility
 				{
 				if(!mob.session().confirm("You have not yet chosen your form, would you like to now (Y/n)?","Y"))
 					return false;
-				StringBuffer str=new StringBuffer("Choose from the following:\n\r");
-				StringBuffer choices=new StringBuffer("");
+				final StringBuffer str=new StringBuffer("Choose from the following:\n\r");
+				final StringBuffer choices=new StringBuffer("");
 				for(int i=0;i<forms.length;i++)
 				{
 					if(racesTaken[i]==0)
@@ -297,9 +297,9 @@ public class Druid_ShapeShift extends StdAbility
 					}
 				}
 				str.append("Please select: ");
-				String choice=mob.session().choose(str.toString(),choices.toString(),"");
+				final String choice=mob.session().choose(str.toString(),choices.toString(),"");
 				myRaceCode=CMath.s_int(choice)-1;
-				}catch(Exception e){}
+				}catch(final Exception e){}
 			}
 		}
 
@@ -309,7 +309,7 @@ public class Druid_ShapeShift extends StdAbility
 		String parm=CMParms.combine(commands,0);
 		if(parm.length()>0)
 		{
-			int raceLevel=getRaceLevel(mob);
+			final int raceLevel=getRaceLevel(mob);
 			for(int i1=raceLevel;i1>=0;i1--)
 				if(CMLib.english().containsString(shapes[i1][myRaceCode],parm))
 				{
@@ -323,7 +323,7 @@ public class Druid_ShapeShift extends StdAbility
 		// now check for alternate shapeshifts
 		if((triggerStrings().length>0)&&(parm.length()>0)&&(allShapeshifts.size()>1))
 		{
-			Vector V=allShapeshifts;
+			final Vector V=allShapeshifts;
 			allShapeshifts=new Vector();
 			while(V.size()>0)
 			{
@@ -331,7 +331,7 @@ public class Druid_ShapeShift extends StdAbility
 				int sortByLevel=Integer.MAX_VALUE;
 				for(int v=0;v<V.size();v++)
 				{
-					Ability A=(Ability)V.elementAt(v);
+					final Ability A=(Ability)V.elementAt(v);
 					int lvl=CMLib.ableMapper().qualifyingLevel(mob,A);
 					if(lvl<=0) lvl=CMLib.ableMapper().lowestQualifyingLevel(A.ID());
 					lvl+=getXLEVELLevel(mob);
@@ -345,10 +345,10 @@ public class Druid_ShapeShift extends StdAbility
 				allShapeshifts.addElement(choice);
 				V.removeElement(choice);
 			}
-			StringBuffer list=new StringBuffer("");
+			final StringBuffer list=new StringBuffer("");
 			for(int i=0;i<allShapeshifts.size();i++)
 			{
-				Druid_ShapeShift A=(Druid_ShapeShift)allShapeshifts.elementAt(i);
+				final Druid_ShapeShift A=(Druid_ShapeShift)allShapeshifts.elementAt(i);
 				if(A.myRaceCode>=0)
 				{
 					if((A.raceName==null)||(A.raceName.length()==0))
@@ -358,7 +358,7 @@ public class Druid_ShapeShift extends StdAbility
 					else
 					{
 						list.append(CMStrings.padLeft(""+(i+1),2)+") "+forms[A.myRaceCode]+": ");
-						int raceLevel=A.getRaceLevel(mob);
+						final int raceLevel=A.getRaceLevel(mob);
 						for(int i1=raceLevel;i1>=0;i1--)
 						{
 							list.append(shapes[i1][A.myRaceCode]);
@@ -375,12 +375,12 @@ public class Druid_ShapeShift extends StdAbility
 					}
 				}
 			}
-			int iparm=CMath.s_int(parm);
+			final int iparm=CMath.s_int(parm);
 			if(iparm>0)
 			{
 				if(iparm<=allShapeshifts.size())
 				{
-					Ability A=(Ability)allShapeshifts.elementAt(iparm-1);
+					final Ability A=(Ability)allShapeshifts.elementAt(iparm-1);
 					return A.invoke(mob,new Vector(),givenTarget,auto,asLevel);
 				}
 			}
@@ -391,7 +391,7 @@ public class Druid_ShapeShift extends StdAbility
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if((!appropriateToMyFactions(mob))&&(!auto))
 		{
@@ -408,7 +408,7 @@ public class Druid_ShapeShift extends StdAbility
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_OK_ACTION,null);
+			final CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_OK_ACTION,null);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

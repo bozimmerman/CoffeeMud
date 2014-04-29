@@ -73,7 +73,7 @@ public class Fighter_AxKick extends FighterSkill
 			return false;
 		}
 
-		MOB target=this.getTarget(mob,commands,givenTarget);
+		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
 		// the invoke method for spells receives as
@@ -84,7 +84,7 @@ public class Fighter_AxKick extends FighterSkill
 			return false;
 
 		// now see if it worked
-		boolean success=proficiencyCheck(mob,(mob.charStats().getStat(CharStats.STAT_DEXTERITY)-target.charStats().getStat(CharStats.STAT_DEXTERITY))*2,auto);
+		final boolean success=proficiencyCheck(mob,(mob.charStats().getStat(CharStats.STAT_DEXTERITY)-target.charStats().getStat(CharStats.STAT_DEXTERITY))*2,auto);
 		if(success)
 		{
 			// it worked, so build a copy of this ability,
@@ -92,9 +92,9 @@ public class Fighter_AxKick extends FighterSkill
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			int topDamage=adjustedLevel(mob,asLevel)+10;
+			final int topDamage=adjustedLevel(mob,asLevel)+10;
 			int damage=CMLib.dice().roll(1,topDamage,0);
-			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),null);
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),null);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

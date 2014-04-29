@@ -52,7 +52,7 @@ public class Teacher extends StdMOB
 		B=CMClass.getBehavior("CombatAbilities");
 		if(B!=null) addBehavior(B);
 
-		for(int i : CharStats.CODES.BASE())
+		for(final int i : CharStats.CODES.BASE())
 			baseCharStats().setStat(i,25);
 		baseCharStats().setMyRace(CMClass.getRace("Human"));
 		baseCharStats().getMyRace().startRacing(this,false);

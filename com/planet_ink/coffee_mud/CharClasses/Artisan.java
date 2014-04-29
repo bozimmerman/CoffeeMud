@@ -46,7 +46,7 @@ public class Artisan extends StdCharClass
 	@Override public String getManaFormula(){return "((@x4<@x5)/10)+(1*(1?2))"; }
 	@Override public int allowedArmorLevel(){return CharClass.ARMOR_CLOTH;}
 	@Override public int allowedWeaponLevel(){return CharClass.WEAPONS_DAGGERONLY;}
-	private HashSet disallowedWeapons=buildDisallowedWeaponClasses();
+	private final HashSet disallowedWeapons=buildDisallowedWeaponClasses();
 	@Override protected HashSet disallowedWeaponClasses(MOB mob){return disallowedWeapons;}
 	@Override public int availabilityCode(){return Area.THEME_FANTASY;}
 
@@ -54,7 +54,7 @@ public class Artisan extends StdCharClass
 	public Artisan()
 	{
 		super();
-		for(int i : CharStats.CODES.BASE())
+		for(final int i : CharStats.CODES.BASE())
 			maxStatAdj[i]=4;
 	}
 	@Override
@@ -176,7 +176,7 @@ public class Artisan extends StdCharClass
 	{
 		if((tickID==Tickable.TICKID_MOB)&&(ticking instanceof MOB))
 		{
-			MOB mob=(MOB)ticking;
+			final MOB mob=(MOB)ticking;
 			if(ID().equals(mob.charStats().getCurrentClass().ID())&&(CMLib.dice().rollPercentage()<20))
 			{
 				int exp=0;
@@ -215,7 +215,7 @@ public class Artisan extends StdCharClass
 		if(outfitChoices==null)
 		{
 			outfitChoices=new Vector();
-			Weapon w=CMClass.getWeapon("Dagger");
+			final Weapon w=CMClass.getWeapon("Dagger");
 			outfitChoices.add(w);
 		}
 		return outfitChoices;

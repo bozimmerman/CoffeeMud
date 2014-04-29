@@ -52,21 +52,21 @@ public class Chant_Den extends Chant
 			return;
 		if(!(affected instanceof Room))
 			return;
-		Room room=(Room)affected;
+		final Room room=(Room)affected;
 		if(canBeUninvoked())
 		{
-			Room R=room.getRoomInDir(Directions.UP);
+			final Room R=room.getRoomInDir(Directions.UP);
 			if((R!=null)&&(R.roomID().equalsIgnoreCase("")))
 			{
 				R.showHappens(CMMsg.MSG_OK_VISUAL,"The den fades away...");
 				while(R.numInhabitants()>0)
 				{
-					MOB M=R.fetchInhabitant(0);
+					final MOB M=R.fetchInhabitant(0);
 					if(M!=null)	room.bringMobHere(M,false);
 				}
 				while(R.numItems()>0)
 				{
-					Item I=R.getItem(0);
+					final Item I=R.getItem(0);
 					if(I!=null) room.moveItemTo(I);
 				}
 				R.destroy();
@@ -81,7 +81,7 @@ public class Chant_Den extends Chant
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		Physical target = mob.location();
+		final Physical target = mob.location();
 		if(target.fetchEffect(ID())!=null)
 		{
 			mob.tell("There is already a den here!");
@@ -97,8 +97,8 @@ public class Chant_Den extends Chant
 			mob.tell("This magic will not work here.");
 			return false;
 		}
-		Vector dirChoices=new Vector();
-		for(int dir : Directions.CODES())
+		final Vector dirChoices=new Vector();
+		for(final int dir : Directions.CODES())
 		{
 			if(mob.location().getRoomInDir(dir)==null)
 				dirChoices.addElement(Integer.valueOf(dir));
@@ -108,7 +108,7 @@ public class Chant_Den extends Chant
 			mob.tell("This magic will not work here.");
 			return false;
 		}
-		int d=((Integer)dirChoices.elementAt(CMLib.dice().roll(1,dirChoices.size(),-1))).intValue();
+		final int d=((Integer)dirChoices.elementAt(CMLib.dice().roll(1,dirChoices.size(),-1))).intValue();
 
 		// the invoke method for spells receives as
 		// parameters the invoker, and the REMAINING
@@ -117,7 +117,7 @@ public class Chant_Den extends Chant
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
@@ -126,12 +126,12 @@ public class Chant_Den extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 
-			CMMsg msg = CMClass.getMsg(mob, null, this, verbalCastCode(mob,null,auto), auto?"":"^S<S-NAME> chant(s) for a den!^?");
+			final CMMsg msg = CMClass.getMsg(mob, null, this, verbalCastCode(mob,null,auto), auto?"":"^S<S-NAME> chant(s) for a den!^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				mob.location().showHappens(CMMsg.MSG_OK_VISUAL,"Your den, carefully covered, appears to the "+Directions.getDirectionName(d)+"!");
-				Room newRoom=CMClass.getLocale("CaveRoom");
+				final Room newRoom=CMClass.getLocale("CaveRoom");
 				newRoom.setDisplayText("A musty den");
 				newRoom.setDescription("You are in a dark rocky den!");
 				newRoom.setArea(mob.location().getArea());
@@ -140,7 +140,7 @@ public class Chant_Den extends Chant
 				newRoom.rawDoors()[Directions.getOpDirectionCode(d)]=mob.location();
 				Ability A=CMClass.getAbility("Prop_RoomView");
 				A.setMiscText(CMLib.map().getExtendedRoomID(mob.location()));
-				Exit E=CMClass.getExit("Open");
+				final Exit E=CMClass.getExit("Open");
 				E.addNonUninvokableEffect(A);
 				A=CMClass.getAbility("Prop_PeaceMaker");
 				if(A!=null) newRoom.addEffect(A);

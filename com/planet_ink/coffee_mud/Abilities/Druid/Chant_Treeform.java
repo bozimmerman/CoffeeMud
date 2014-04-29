@@ -51,12 +51,12 @@ public class Chant_Treeform extends Chant
 		if(!(affected instanceof MOB))
 			return true;
 
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		if(msg.source().getVictim()==mob)
 			msg.source().setVictim(null);
 		if(mob.isInCombat())
 		{
-			MOB victim=mob.getVictim();
+			final MOB victim=mob.getVictim();
 			if(victim!=null) victim.makePeace();
 			mob.makePeace();
 		}
@@ -91,14 +91,14 @@ public class Chant_Treeform extends Chant
 				mob.setVictim(null);
 				return false;
 			}
-			Item item=CMClass.getItem("GenResource");
+			final Item item=CMClass.getItem("GenResource");
 			item.setName(mob.Name());
 			item.setDescription(mob.description());
 			item.setDisplayText(mob.displayText());
 			item.setMaterial(RawMaterial.RESOURCE_WOOD);
 			CMLib.flags().setGettable(item,false);
 			item.phyStats().setWeight(2000);
-			CMMsg msg2=CMClass.getMsg(msg.source(),item,msg.targetCode(),null);
+			final CMMsg msg2=CMClass.getMsg(msg.source(),item,msg.targetCode(),null);
 			if(!okMessage(msg.source(),msg2))
 				return false;
 		}
@@ -109,7 +109,7 @@ public class Chant_Treeform extends Chant
 			msg.source().setVictim(null);
 		if(mob.isInCombat())
 		{
-			MOB victim=mob.getVictim();
+			final MOB victim=mob.getVictim();
 			if(victim!=null) victim.makePeace();
 			mob.makePeace();
 		}
@@ -139,7 +139,7 @@ public class Chant_Treeform extends Chant
 		// undo the affects of this spell
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		super.unInvoke();
 		if(canBeUninvoked())
@@ -204,7 +204,7 @@ public class Chant_Treeform extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> chant(s) to <T-NAMESELF>.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> chant(s) to <T-NAMESELF>.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

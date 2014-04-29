@@ -49,7 +49,7 @@ public class Spell_CauseStink extends Spell
 	public void affectCharStats(MOB affectedMob, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMob, affectableStats);
-		int amount=affectableStats.getStat(CharStats.STAT_CHARISMA)/2;
+		final int amount=affectableStats.getStat(CharStats.STAT_CHARISMA)/2;
 		affectableStats.setStat(CharStats.STAT_CHARISMA, amount);
 		affectableStats.setStat(CharStats.STAT_MAX_CHARISMA_ADJ, affectableStats.getStat(CharStats.STAT_MAX_CHARISMA_ADJ)-amount);
 	}
@@ -62,8 +62,8 @@ public class Spell_CauseStink extends Spell
 		{
 			if(CMLib.dice().rollPercentage()>20) return true;
 			if(!(affected instanceof MOB)) return false;
-			MOB mob=(MOB)affected;
-			Room room=mob.location();
+			final MOB mob=(MOB)affected;
+			final Room room=mob.location();
 			if(room==null) return false;
 
 			String str=null;
@@ -83,22 +83,22 @@ public class Spell_CauseStink extends Spell
 			}
 			if(str!=null)
 			{
-				CMMsg msg=CMClass.getMsg(mob,null,CMMsg.MASK_ALWAYS|CMMsg.MASK_SOUND|CMMsg.MASK_EYES|CMMsg.TYP_GENERAL,str);
+				final CMMsg msg=CMClass.getMsg(mob,null,CMMsg.MASK_ALWAYS|CMMsg.MASK_SOUND|CMMsg.MASK_EYES|CMMsg.TYP_GENERAL,str);
 				if(room.okMessage(mob,msg))
 				for(int m=0;m<room.numInhabitants();m++)
 				{
-					MOB M2=room.fetchInhabitant(m);
+					final MOB M2=room.fetchInhabitant(m);
 					if((!M2.isMonster())&&(M2!=mob)&&(CMLib.flags().canSmell(M2)))
 						M2.executeMsg(M2,msg);
 				}
 			}
 			for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 			{
-				Room R=room.getRoomInDir(d);
+				final Room R=room.getRoomInDir(d);
 				if((R!=null)&&(R.numPCInhabitants()>0))
 					for(int i=0;i<R.numInhabitants();i++)
 					{
-						MOB M=R.fetchInhabitant(i);
+						final MOB M=R.fetchInhabitant(i);
 						if((M!=null)&&(!M.isMonster())&&(CMLib.flags().canSmell(M)))
 							M.tell("There is a very bad smell coming from "+Directions.getFromDirectionName(Directions.getOpDirectionCode(d))+".");
 					}
@@ -120,7 +120,7 @@ public class Spell_CauseStink extends Spell
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		MOB target=this.getTarget(mob,commands,givenTarget);
+		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
 		// the invoke method for spells receives as
@@ -139,7 +139,7 @@ public class Spell_CauseStink extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> point(s) and utter(s) a stinky spell at <T-NAMESELF>.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> point(s) and utter(s) a stinky spell at <T-NAMESELF>.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

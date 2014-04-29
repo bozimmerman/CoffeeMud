@@ -57,7 +57,7 @@ public class BodyPiercing extends CommonSkill
 		{
 			if((affected!=null)&&(affected instanceof MOB)&&(!aborted)&&(!helping)&&(target!=null))
 			{
-				MOB mob=(MOB)affected;
+				final MOB mob=(MOB)affected;
 				if(writing.length()==0)
 					commonEmote(mob,"<S-NAME> mess(es) up the piercing on "+target.name(mob)+".");
 				else
@@ -75,7 +75,7 @@ public class BodyPiercing extends CommonSkill
 	{
 		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Tickable.TICKID_MOB))
 		{
-			MOB mob=(MOB)affected;
+			final MOB mob=(MOB)affected;
 			if((target==null)
 			||(mob.location()!=target.location())
 			||(!CMLib.flags().canBeSeenBy(target,mob)))
@@ -107,7 +107,7 @@ public class BodyPiercing extends CommonSkill
 			}
 		}
 
-		MOB target=super.getTarget(mob,new XVector(name),givenTarget);
+		final MOB target=super.getTarget(mob,new XVector(name),givenTarget);
 		if(target==null) return false;
 		if((target.isMonster())
 		&&(CMLib.flags().aliveAwakeMobile(target,true))
@@ -118,17 +118,17 @@ public class BodyPiercing extends CommonSkill
 		}
 
 		int partNum=-1;
-		StringBuffer allParts=new StringBuffer("");
-		String[][] piercables={{"lip", "nose"},
+		final StringBuffer allParts=new StringBuffer("");
+		final String[][] piercables={{"lip", "nose"},
 								{"ears","left ear","right ear"},
 							   {"eyebrows"},
 							   {"nipples","belly button"}};
-		long[] piercable={Wearable.WORN_HEAD,
+		final long[] piercable={Wearable.WORN_HEAD,
 						  Wearable.WORN_EARS,
 						  Wearable.WORN_EYES,
 						  Wearable.WORN_TORSO};
 		String fullPartName=null;
-		Wearable.CODES codes = Wearable.CODES.instance();
+		final Wearable.CODES codes = Wearable.CODES.instance();
 		String wearLocName=null;
 		for(int i=0;i<codes.total();i++)
 		{
@@ -153,8 +153,8 @@ public class BodyPiercing extends CommonSkill
 			commonTell(mob,"'"+part+"' is not a valid location.  Valid locations include: "+allParts.toString().substring(2));
 			return false;
 		}
-		long wornCode=codes.get(partNum);
-		String wornName=fullPartName;
+		final long wornCode=codes.get(partNum);
+		final String wornName=fullPartName;
 
 		if((target.getWearPositions(wornCode)<=0)
 		||(target.freeWearPositions(wornCode,(short)(Short.MIN_VALUE+1),(short)0)<=0))
@@ -164,9 +164,9 @@ public class BodyPiercing extends CommonSkill
 		}
 
 		int numTattsDone=0;
-		for(Enumeration<MOB.Tattoo> e=target.tattoos();e.hasMoreElements();)
+		for(final Enumeration<MOB.Tattoo> e=target.tattoos();e.hasMoreElements();)
 		{
-			MOB.Tattoo T=e.nextElement();
+			final MOB.Tattoo T=e.nextElement();
 			if(T.tattooName.startsWith(wearLocName+":"))
 				numTattsDone++;
 		}
@@ -194,11 +194,11 @@ public class BodyPiercing extends CommonSkill
 		verb="piercing "+target.name()+" on the "+wornName;
 		displayText="You are "+verb;
 		if(!proficiencyCheck(mob,0,auto)) writing="";
-		int duration=getDuration(30,mob,1,6);
+		final int duration=getDuration(30,mob,1,6);
 		String msgStr="<S-NAME> start(s) piercing <T-NAMESELF> on the "+wornName.toLowerCase()+".";
 		if("REMOVE".equals(command))
 			msgStr="<S-NAME> heal(s) the piercing on <T-YOUPOSS> "+wornName.toLowerCase()+".";
-		CMMsg msg=CMClass.getMsg(mob,target,this,getActivityMessageType(),msgStr);
+		final CMMsg msg=CMClass.getMsg(mob,target,this,getActivityMessageType(),msgStr);
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
@@ -207,7 +207,7 @@ public class BodyPiercing extends CommonSkill
 			else
 			{
 				beneficialAffect(mob,mob,asLevel,duration);
-				BodyPiercing A=(BodyPiercing)mob.fetchEffect(ID());
+				final BodyPiercing A=(BodyPiercing)mob.fetchEffect(ID());
 				if(A!=null) A.target=target;
 			}
 		}

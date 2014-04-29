@@ -14,8 +14,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
-
 import java.util.*;
 
 /*
@@ -54,7 +52,7 @@ public class Spell_StinkingCloud extends Spell
 		&&(affected!=null)
 		&&(affected instanceof MOB))
 		{
-			MOB M=(MOB)affected;
+			final MOB M=(MOB)affected;
 			if((M.location()!=castingLocation)||(M.amDead()))
 				unInvoke();
 			else
@@ -62,7 +60,7 @@ public class Spell_StinkingCloud extends Spell
 			&&(M.location()!=null)
 			&&(CMLib.flags().canSmell(M)))
 			{
-				int damage= (M.phyStats().level()/2) + super.getXLEVELLevel(invoker);
+				final int damage= (M.phyStats().level()/2) + super.getXLEVELLevel(invoker);
 				if((M.curState().getHunger()<=0))
 					CMLib.combat().postDamage(invoker,M,this,damage,CMMsg.MASK_MALICIOUS|CMMsg.MASK_ALWAYS|CMMsg.TYP_GAS,-1,"<T-NAME> heave(s) in the stinking cloud.");
 				else
@@ -86,7 +84,7 @@ public class Spell_StinkingCloud extends Spell
 		   &&(affected instanceof MOB)
 		   &&(msg.amISource((MOB)affected)))
 		{
-			MOB mob=(MOB)affected;
+			final MOB mob=(MOB)affected;
 			if(CMLib.flags().canSmell(mob))
 				switch(msg.sourceMinor())
 				{
@@ -130,7 +128,7 @@ public class Spell_StinkingCloud extends Spell
 		// undo the affects of this spell
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		super.unInvoke();
 		if(canBeUninvoked())
@@ -170,30 +168,30 @@ public class Spell_StinkingCloud extends Spell
 		if(success)
 		{
 			if(mob.location().show(mob,null,this,verbalCastCode(mob,null,auto),auto?"":"^S<S-NAME> incant(s) and wave(s) <S-HIS-HER> arms around.  A horrendous cloud of green and orange gas appears!^?"))
-			for(Iterator f=h.iterator();f.hasNext();)
-			{
-				MOB target=(MOB)f.next();
-
-				// it worked, so build a copy of this ability,
-				// and add it to the affects list of the
-				// affected MOB.  Then tell everyone else
-				// what happened.
-				CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),null);
-				CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_GAS|(auto?CMMsg.MASK_ALWAYS:0),null);
-				if((mob.location().okMessage(mob,msg))
-				   &&(mob.location().okMessage(mob,msg2))
-				   &&(target.fetchEffect(this.ID())==null))
+				for (final Object element : h)
 				{
-					mob.location().send(mob,msg);
-					mob.location().send(mob,msg2);
-					if((msg.value()<=0)&&(msg2.value()<=0)&&(target.location()==mob.location()))
+					final MOB target=(MOB)element;
+
+					// it worked, so build a copy of this ability,
+					// and add it to the affects list of the
+					// affected MOB.  Then tell everyone else
+					// what happened.
+					final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),null);
+					final CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_GAS|(auto?CMMsg.MASK_ALWAYS:0),null);
+					if((mob.location().okMessage(mob,msg))
+					   &&(mob.location().okMessage(mob,msg2))
+					   &&(target.fetchEffect(this.ID())==null))
 					{
-						castingLocation=mob.location();
-						success=maliciousAffect(mob,target,asLevel,0,-1);
-						target.location().show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> become(s) enveloped in the stinking cloud!");
+						mob.location().send(mob,msg);
+						mob.location().send(mob,msg2);
+						if((msg.value()<=0)&&(msg2.value()<=0)&&(target.location()==mob.location()))
+						{
+							castingLocation=mob.location();
+							success=maliciousAffect(mob,target,asLevel,0,-1);
+							target.location().show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> become(s) enveloped in the stinking cloud!");
+						}
 					}
 				}
-			}
 		}
 		else
 			return maliciousFizzle(mob,null,"<S-NAME> incant(s), but the spell fizzles.");

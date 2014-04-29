@@ -76,9 +76,9 @@ public class Cow extends StdMOB implements Drink
 		super.executeMsg(myHost,msg);
 		if(msg.amITarget(this)&&(msg.targetMinor()==CMMsg.TYP_DRINK))
 		{
-			MOB mob=msg.source();
-			boolean thirsty=mob.curState().getThirst()<=0;
-			boolean full=!mob.curState().adjThirst(thirstQuenched(),mob.maxState().maxThirst(mob.baseWeight()));
+			final MOB mob=msg.source();
+			final boolean thirsty=mob.curState().getThirst()<=0;
+			final boolean full=!mob.curState().adjThirst(thirstQuenched(),mob.maxState().maxThirst(mob.baseWeight()));
 			if(thirsty)
 				mob.tell("You are no longer thirsty.");
 			else
@@ -92,8 +92,8 @@ public class Cow extends StdMOB implements Drink
 		&&(msg.target() instanceof Container)
 		&&(((Container)msg.target()).capacity()>0))
 		{
-			Container container=(Container)msg.target();
-			Item I=CMClass.getItem("GenLiquidResource");
+			final Container container=(Container)msg.target();
+			final Item I=CMClass.getItem("GenLiquidResource");
 			I.setName("some milk");
 			I.setDisplayText("some milk has been left here.");
 			I.setDescription("It looks like milk");

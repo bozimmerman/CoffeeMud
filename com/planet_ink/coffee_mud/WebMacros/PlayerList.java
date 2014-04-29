@@ -39,8 +39,8 @@ public class PlayerList extends StdWebMacro
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
-		StringBuffer s = new StringBuffer("");
-		for(Session S : CMLib.sessions().allIterable())
+		final StringBuffer s = new StringBuffer("");
+		for(final Session S : CMLib.sessions().allIterable())
 		{
 			MOB m = S.mob();
 			if((m!=null)&&(CMLib.flags().isCloaked(m))) continue;

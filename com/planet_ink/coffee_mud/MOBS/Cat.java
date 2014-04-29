@@ -41,7 +41,7 @@ public class Cat extends StdMOB
 	{
 		super();
 
-		Random randomizer = new Random(System.currentTimeMillis());
+		final Random randomizer = new Random(System.currentTimeMillis());
 
 		username="a cat";
 		setDescription("It\\`s furry with four legs, and a long fluffy tail.");

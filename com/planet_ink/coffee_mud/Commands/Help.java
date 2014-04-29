@@ -43,7 +43,7 @@ public class Help extends StdCommand
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		String helpStr=CMParms.combine(commands,1);
+		final String helpStr=CMParms.combine(commands,1);
 		if(CMLib.help().getHelpFile().size()==0)
 		{
 			mob.tell("No help is available.");
@@ -58,7 +58,7 @@ public class Help extends StdCommand
 			thisTag=CMLib.help().getHelpText(helpStr,CMLib.help().getArcHelpFile(),mob);
 		if(thisTag==null)
 		{
-			StringBuilder thisList=
+			final StringBuilder thisList=
 				CMLib.help().getHelpList(
 				helpStr,
 				CMLib.help().getHelpFile(),

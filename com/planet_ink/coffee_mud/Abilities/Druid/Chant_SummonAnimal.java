@@ -50,7 +50,7 @@ public class Chant_SummonAnimal extends Chant
 	@Override
 	public void unInvoke()
 	{
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		super.unInvoke();
 		if((canBeUninvoked())&&(mob!=null))
 		{
@@ -75,13 +75,13 @@ public class Chant_SummonAnimal extends Chant
 
 	public Vector outdoorChoices(Room R)
 	{
-		Vector choices=new Vector();
+		final Vector choices=new Vector();
 		if(R==null) return choices;
 		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 		{
-			Room room=R.getRoomInDir(d);
-			Exit exit=R.getExitInDir(d);
-			Exit opExit=R.getReverseExit(d);
+			final Room room=R.getRoomInDir(d);
+			final Exit exit=R.getExitInDir(d);
+			final Exit opExit=R.getReverseExit(d);
 			if((room!=null)
 			&&((room.domainType()&Room.INDOORS)==0)
 			&&(room.domainType()!=Room.DOMAIN_OUTDOORS_AIR)
@@ -97,12 +97,12 @@ public class Chant_SummonAnimal extends Chant
 	{
 		if(mob!=null)
 		{
-			Room R=mob.location();
+			final Room R=mob.location();
 			if(R!=null)
 			{
 				if((R.domainType()&Room.INDOORS)>0)
 					return Ability.QUALITY_INDIFFERENT;
-				Vector choices=outdoorChoices(mob.location());
+				final Vector choices=outdoorChoices(mob.location());
 				if(choices.size()==0)
 					return Ability.QUALITY_INDIFFERENT;
 			}
@@ -118,7 +118,7 @@ public class Chant_SummonAnimal extends Chant
 			mob.tell("You must be outdoors for this chant to work.");
 			return false;
 		}
-		Vector choices=outdoorChoices(mob.location());
+		final Vector choices=outdoorChoices(mob.location());
 		int fromDir=-1;
 		if(choices.size()==0)
 		{
@@ -126,23 +126,23 @@ public class Chant_SummonAnimal extends Chant
 			return false;
 		}
 		fromDir=((Integer)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1))).intValue();
-		Room newRoom=mob.location().getRoomInDir(fromDir);
-		int opDir=Directions.getOpDirectionCode(fromDir);
+		final Room newRoom=mob.location().getRoomInDir(fromDir);
+		final int opDir=Directions.getOpDirectionCode(fromDir);
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
 			invoker=mob;
-			CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":"^S<S-NAME> chant(s) and summon(s) a companion from the Java Plane.^?");
-			Room room=mob.location();
+			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":"^S<S-NAME> chant(s) and summon(s) a companion from the Java Plane.^?");
+			final Room room=mob.location();
 			if(room.okMessage(mob,msg))
 			{
 				room.send(mob,msg);
-				MOB target = determineMonster(mob, adjustedLevel(mob,asLevel));
+				final MOB target = determineMonster(mob, adjustedLevel(mob,asLevel));
 				target.bringToLife(newRoom,true);
 				CMLib.beanCounter().clearZeroMoney(target,null);
 				newRoom.showOthers(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> appears!");

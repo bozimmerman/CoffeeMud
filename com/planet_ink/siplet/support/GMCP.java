@@ -48,7 +48,7 @@ public class GMCP
 			data=data.trim();
 			String cmd;
 			String parms;
-			int x=data.indexOf(' ');
+			final int x=data.indexOf(' ');
 			if(x<0)
 			{
 				cmd=data;
@@ -69,7 +69,7 @@ public class GMCP
 			}
 			else
 				parms="{}";
-			ByteArrayOutputStream bout=new ByteArrayOutputStream();
+			final ByteArrayOutputStream bout=new ByteArrayOutputStream();
 			bout.write(TelnetFilter.IAC_);
 			bout.write(TelnetFilter.IAC_SB);
 			bout.write(TelnetFilter.IAC_GMCP);
@@ -78,7 +78,7 @@ public class GMCP
 			bout.write(TelnetFilter.IAC_SE);
 			return bout.toByteArray();
 		}
-		catch (Exception e)
+		catch (final Exception e)
 		{
 			return new byte[0];
 		}

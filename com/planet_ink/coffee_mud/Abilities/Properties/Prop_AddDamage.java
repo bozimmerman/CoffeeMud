@@ -52,7 +52,7 @@ public class Prop_AddDamage extends Property implements TriggeredAffect
 	@Override
 	public String accountForYourself()
 	{
-		String id="Does extra damage of the following amount and types: "+text();
+		final String id="Does extra damage of the following amount and types: "+text();
 		return id;
 	}
 
@@ -172,7 +172,7 @@ public class Prop_AddDamage extends Property implements TriggeredAffect
 			&&(msg.source().rangeToTarget()==0)
 			&&((msg.targetMajor(CMMsg.MASK_HANDS))||(msg.targetMajor(CMMsg.MASK_MOVE))))
 			{
-				CMMsg msg2=CMClass.getMsg(mob,msg.source(),this,CMMsg.MSG_CAST_ATTACK_VERBAL_SPELL,null);
+				final CMMsg msg2=CMClass.getMsg(mob,msg.source(),this,CMMsg.MSG_CAST_ATTACK_VERBAL_SPELL,null);
 				if(msg.source().location().okMessage(msg.source(),msg2))
 				{
 					msg.source().location().send(msg.source(),msg2);
@@ -191,7 +191,7 @@ public class Prop_AddDamage extends Property implements TriggeredAffect
 			&&(!(msg.tool() instanceof Wand)))
 			{
 				final int damage=getDamage(msg);
-				String str="^F^<FIGHT^><S-YOUPOSS> <O-NAME> <DAMAGE> <T-NAME>!^</FIGHT^>^?";
+				final String str="^F^<FIGHT^><S-YOUPOSS> <O-NAME> <DAMAGE> <T-NAME>!^</FIGHT^>^?";
 				synchronized(this)
 				{
 					if(!norecurse)
@@ -217,7 +217,7 @@ public class Prop_AddDamage extends Property implements TriggeredAffect
 			&&(!(msg.tool() instanceof Wand)))
 			{
 				final int damage=getDamage(msg);
-				String str="^F^<FIGHT^><S-NAME> <DAMAGE> <T-NAME>!^</FIGHT^>^?";
+				final String str="^F^<FIGHT^><S-NAME> <DAMAGE> <T-NAME>!^</FIGHT^>^?";
 				CMLib.combat().postDamage(mob,(MOB)msg.target(),this,Math.round(damage),
 					  CMMsg.MASK_MALICIOUS|CMMsg.MASK_ALWAYS|typeOfEffect,weaponType,str);
 			}

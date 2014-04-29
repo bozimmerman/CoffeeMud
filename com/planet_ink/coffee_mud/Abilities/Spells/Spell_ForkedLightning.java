@@ -44,7 +44,7 @@ public class Spell_ForkedLightning extends Spell
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		Set<MOB> h=properTargets(mob,givenTarget,auto);
+		final Set<MOB> h=properTargets(mob,givenTarget,auto);
 		if(h==null)
 		{
 			mob.tell("There doesn't appear to be anyone here worth electrocuting.");
@@ -58,36 +58,36 @@ public class Spell_ForkedLightning extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
 
 			if(mob.location().show(mob,null,this,verbalCastCode(mob,null,auto),(auto?"A thunderous crack of lightning erupts!":"^S<S-NAME> invoke(s) a thunderous crack of forked lightning.^?")+CMLib.protocol().msp("lightning.wav",40)))
-			for(Iterator f=h.iterator();f.hasNext();)
-			{
-				MOB target=(MOB)f.next();
-
-				// it worked, so build a copy of this ability,
-				// and add it to the affects list of the
-				// affected MOB.  Then tell everyone else
-				// what happened.
-				CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),null);
-				CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_ELECTRIC|(auto?CMMsg.MASK_ALWAYS:0),null);
-				if((mob.location().okMessage(mob,msg))&&((mob.location().okMessage(mob,msg2))))
+				for (final Object element : h)
 				{
-					mob.location().send(mob,msg);
-					mob.location().send(mob,msg2);
-					invoker=mob;
+					final MOB target=(MOB)element;
 
-					int maxDie=(int)Math.round(CMath.div(adjustedLevel(mob,asLevel)+(2*super.getX1Level(mob)),2.0));
-					int damage = CMLib.dice().roll(maxDie,7,1);
-					if((msg.value()>0)||(msg2.value()>0))
-						damage = (int)Math.round(CMath.div(damage,2.0));
-					if(target.location()==mob.location())
-						CMLib.combat().postDamage(mob,target,this,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_ELECTRIC,Weapon.TYPE_STRIKING,"A bolt <DAMAGE> <T-NAME>!");
+					// it worked, so build a copy of this ability,
+					// and add it to the affects list of the
+					// affected MOB.  Then tell everyone else
+					// what happened.
+					final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),null);
+					final CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_ELECTRIC|(auto?CMMsg.MASK_ALWAYS:0),null);
+					if((mob.location().okMessage(mob,msg))&&((mob.location().okMessage(mob,msg2))))
+					{
+						mob.location().send(mob,msg);
+						mob.location().send(mob,msg2);
+						invoker=mob;
+
+						final int maxDie=(int)Math.round(CMath.div(adjustedLevel(mob,asLevel)+(2*super.getX1Level(mob)),2.0));
+						int damage = CMLib.dice().roll(maxDie,7,1);
+						if((msg.value()>0)||(msg2.value()>0))
+							damage = (int)Math.round(CMath.div(damage,2.0));
+						if(target.location()==mob.location())
+							CMLib.combat().postDamage(mob,target,this,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_ELECTRIC,Weapon.TYPE_STRIKING,"A bolt <DAMAGE> <T-NAME>!");
+					}
 				}
-			}
 		}
 		else
 			return maliciousFizzle(mob,null,"<S-NAME> attempt(s) to invoke a ferocious spell, but the spell fizzles.");

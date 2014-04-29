@@ -48,7 +48,7 @@ public class Chant_Fertility extends Chant
 		// undo the affects of this spell
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		super.unInvoke();
 
@@ -63,10 +63,10 @@ public class Chant_Fertility extends Chant
 		// the sex rules
 		if(!(affected instanceof MOB)) return;
 
-		MOB myChar=(MOB)affected;
+		final MOB myChar=(MOB)affected;
 		if((msg.target()!=null)&&(msg.target() instanceof MOB))
 		{
-			MOB mate=(MOB)msg.target();
+			final MOB mate=(MOB)msg.target();
 			if((msg.amISource(myChar))
 			&&(msg.tool() instanceof Social)
 			&&(msg.tool().Name().equals("MATE <T-NAME>")
@@ -89,7 +89,7 @@ public class Chant_Fertility extends Chant
 					female=mate;
 					male=myChar;
 				}
-				Ability A=CMClass.getAbility("Pregnancy");
+				final Ability A=CMClass.getAbility("Pregnancy");
 				if((A!=null)
 				&&(female.fetchAbility(A.ID())==null)
 				&&(female.fetchEffect(A.ID())==null))
@@ -104,24 +104,24 @@ public class Chant_Fertility extends Chant
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		MOB target=this.getTarget(mob,commands,givenTarget);
+		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
 			// it worked, so build a copy of this ability,
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> chant(s) to <T-NAMESELF>.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> chant(s) to <T-NAMESELF>.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				Ability A=target.fetchEffect("Chant_StrikeBarren");
+				final Ability A=target.fetchEffect("Chant_StrikeBarren");
 				if(A!=null)
 				{
 					if(A.invoker()==null)

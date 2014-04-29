@@ -33,12 +33,12 @@ limitations under the License.
  */
 public class MultiPartData
 {
-	private Map<String,String> 	headers		= new HashMap<String,String>(); // headers pertaining only to this part
+	private final Map<String,String> 	headers		= new HashMap<String,String>(); // headers pertaining only to this part
 	private String 				contentType = MIMEType.bin.getType();   	// content type for the buffer of this part
 	private byte[] 				data		= new byte[0];  				// data buffer for this part
-	private List<MultiPartData> subParts	= new LinkedList<MultiPartData>(); // any sub-parts to this part
+	private final List<MultiPartData> subParts	= new LinkedList<MultiPartData>(); // any sub-parts to this part
 	private String				disposition = "form-data";  				// content-disposition for this part
-	private Map<String,String>  variables   = new HashMap<String,String>(); // content-disposition variables definition map
+	private final Map<String,String>  variables   = new HashMap<String,String>(); // content-disposition variables definition map
 
 	/**
 	 * If any headers were found for this multi-part OTHER than content-type
@@ -122,13 +122,13 @@ public class MultiPartData
 	 */
 	public void setDisposition(String dispositionStr)
 	{
-		String[] parts=dispositionStr.split(";");
+		final String[] parts=dispositionStr.split(";");
 		if(parts.length>0)
 		{
 			disposition=parts[0].trim();
 			for(int i=1;i<parts.length;i++)
 			{
-				String[] equates=parts[i].split("=",2);
+				final String[] equates=parts[i].split("=",2);
 				if(equates.length==2)
 				{
 					String value=equates[1].trim();

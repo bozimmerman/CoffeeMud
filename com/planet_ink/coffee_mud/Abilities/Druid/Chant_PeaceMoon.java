@@ -55,7 +55,7 @@ public class Chant_PeaceMoon extends Chant
 			super.unInvoke();
 			return;
 		}
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		if(canBeUninvoked())
 			mob.tell("You are no longer under the peace moon.");
 
@@ -76,7 +76,7 @@ public class Chant_PeaceMoon extends Chant
 			   &&(msg.source()!=msg.target()))
 			{
 				msg.source().tell("Nah, you feel too peaceful under that bright moon.");
-				MOB victim=msg.source().getVictim();
+				final MOB victim=msg.source().getVictim();
 				if(victim!=null) victim.makePeace();
 				msg.source().makePeace();
 			}
@@ -93,7 +93,7 @@ public class Chant_PeaceMoon extends Chant
 		if(affected==null) return false;
 		if(affected instanceof MOB)
 		{
-			MOB mob=(MOB)affected;
+			final MOB mob=(MOB)affected;
 			if(mob.location().fetchEffect(ID())==null)
 				unInvoke();
 			if(mob.isInCombat()) mob.makePeace();
@@ -101,16 +101,16 @@ public class Chant_PeaceMoon extends Chant
 		else
 		if(affected instanceof Room)
 		{
-			Room room=(Room)affected;
+			final Room room=(Room)affected;
 			if(!room.getArea().getClimateObj().canSeeTheMoon(room,this))
 				unInvoke();
 			else
 			for(int i=0;i<room.numInhabitants();i++)
 			{
-				MOB M=room.fetchInhabitant(i);
+				final MOB M=room.fetchInhabitant(i);
 				if((M!=null)&&(M.fetchEffect(ID())==null))
 				{
-					Ability A=(Ability)copyOf();
+					final Ability A=(Ability)copyOf();
 					M.addEffect(A);
 				}
 			}
@@ -121,7 +121,7 @@ public class Chant_PeaceMoon extends Chant
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		Room target=mob.location();
+		final Room target=mob.location();
 		if(target==null) return false;
 		if(!target.getArea().getClimateObj().canSeeTheMoon(target,null))
 		{
@@ -151,7 +151,7 @@ public class Chant_PeaceMoon extends Chant
 		// and added as String objects to a vector.
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
@@ -160,7 +160,7 @@ public class Chant_PeaceMoon extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> chant(s) to the sky.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> chant(s) to the sky.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

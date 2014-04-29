@@ -62,7 +62,7 @@ public class Prop_RestrictSpells extends Property
 			if((roomS!=null)&&(roomD!=null)&&(roomS==roomD))
 				roomD=null;
 
-			Ability A=(Ability)msg.tool();
+			final Ability A=(Ability)msg.tool();
 			if(((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_CHANT)
 			||((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SPELL)
 			||((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PRAYER)

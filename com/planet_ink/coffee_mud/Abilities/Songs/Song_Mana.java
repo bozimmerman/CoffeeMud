@@ -45,7 +45,7 @@ public class Song_Mana extends Song
 		if(!super.tick(ticking,tickID))
 			return false;
 
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		if(mob==null) return true;
 		if(invoker==null) return true;
 		//int level=invoker.phyStats().level();

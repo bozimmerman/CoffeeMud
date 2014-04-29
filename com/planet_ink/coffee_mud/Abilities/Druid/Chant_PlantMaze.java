@@ -83,7 +83,7 @@ public class Chant_PlantMaze extends Chant
 			return;
 		if(!(affected instanceof Room))
 			return;
-		Room room=(Room)affected;
+		final Room room=(Room)affected;
 		if((canBeUninvoked())&&(room instanceof GridLocale)&&(oldRoom!=null))
 			((GridLocale)room).clearGrid(oldRoom);
 		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
@@ -97,7 +97,7 @@ public class Chant_PlantMaze extends Chant
 	{
 		if(mob!=null)
 		{
-			Item myPlant=Druid_MyPlants.myPlant(mob.location(),mob,0);
+			final Item myPlant=Druid_MyPlants.myPlant(mob.location(),mob,0);
 			if(myPlant==null)
 				return Ability.QUALITY_INDIFFERENT;
 			if(mob.location().roomID().length()==0)
@@ -129,7 +129,7 @@ public class Chant_PlantMaze extends Chant
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
@@ -138,21 +138,21 @@ public class Chant_PlantMaze extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 
-			CMMsg msg = CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto), auto?"":"^S<S-NAME> chant(s) amazingly!^?");
+			final CMMsg msg = CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto), auto?"":"^S<S-NAME> chant(s) amazingly!^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				mob.location().showHappens(CMMsg.MSG_OK_VISUAL,"Something is happening...");
 
-				Room newRoom=CMClass.getLocale("WoodsMaze");
+				final Room newRoom=CMClass.getLocale("WoodsMaze");
 				((GridLocale)newRoom).setXGridSize(10+super.getX1Level(invoker())+super.getXLEVELLevel(invoker()));
 				((GridLocale)newRoom).setYGridSize(10+super.getX1Level(invoker())+super.getXLEVELLevel(invoker()));
 				String s=CMParms.parse(thePlants.name()).lastElement().toLowerCase();
 				if(!s.endsWith("s"))s=s+"s";
-				String nos=s.substring(0,s.length()-1).toLowerCase();
+				final String nos=s.substring(0,s.length()-1).toLowerCase();
 				newRoom.setDisplayText(CMStrings.capitalizeAndLower(nos)+" Maze");
 				newRoom.addNonUninvokableEffect(CMClass.getAbility("Prop_NoTeleportOut"));
-				StringBuffer desc=new StringBuffer("");
+				final StringBuffer desc=new StringBuffer("");
 				desc.append("This quaint glade is surrounded by tall "+s+".  A gentle breeze tosses leaves up into the air.");
 				desc.append("<P>");
 				desc.append("This forest of "+s+" is dark and thick here.  Ominous looking "+s+" seem to block every path, and the air is perfectly still.");
@@ -177,8 +177,8 @@ public class Chant_PlantMaze extends Chant
 				newRoom.setDescription(desc.toString());
 				for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 				{
-					Room R=mob.location().rawDoors()[d];
-					Exit E=mob.location().getRawExit(d);
+					final Room R=mob.location().rawDoors()[d];
+					final Exit E=mob.location().getRawExit(d);
 					if((R!=null)&&(R.roomID().length()>0))
 					{
 						newRoom.rawDoors()[d]=R;
@@ -187,20 +187,20 @@ public class Chant_PlantMaze extends Chant
 				}
 				newRoom.getArea().fillInAreaRoom(newRoom);
 				beneficialAffect(mob,newRoom,asLevel,0);
-				Vector everyone=new Vector();
+				final Vector everyone=new Vector();
 				for(int m=0;m<oldRoom.numInhabitants();m++)
 				{
-					MOB follower=oldRoom.fetchInhabitant(m);
+					final MOB follower=oldRoom.fetchInhabitant(m);
 					everyone.addElement(follower);
 				}
 
 				for(int m=0;m<everyone.size();m++)
 				{
-					MOB follower=(MOB)everyone.elementAt(m);
+					final MOB follower=(MOB)everyone.elementAt(m);
 					if(follower==null) continue;
-					Room newerRoom=((GridLocale)newRoom).getRandomGridChild();
-					CMMsg enterMsg=CMClass.getMsg(follower,newerRoom,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,"<S-NAME> appears out of "+thePlants.name()+".");
-					CMMsg leaveMsg=CMClass.getMsg(follower,oldRoom,this,verbalCastCode(mob,oldRoom,auto),"<S-NAME> disappear(s) into "+thePlants.name()+".");
+					final Room newerRoom=((GridLocale)newRoom).getRandomGridChild();
+					final CMMsg enterMsg=CMClass.getMsg(follower,newerRoom,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,"<S-NAME> appears out of "+thePlants.name()+".");
+					final CMMsg leaveMsg=CMClass.getMsg(follower,oldRoom,this,verbalCastCode(mob,oldRoom,auto),"<S-NAME> disappear(s) into "+thePlants.name()+".");
 					if(oldRoom.okMessage(follower,leaveMsg)&&newerRoom.okMessage(follower,enterMsg))
 					{
 						if(follower.isInCombat())

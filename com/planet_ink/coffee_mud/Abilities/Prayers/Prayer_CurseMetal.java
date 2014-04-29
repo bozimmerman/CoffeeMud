@@ -82,18 +82,18 @@ public class Prayer_CurseMetal extends Prayer
 		if(invoker==null)
 			return true;
 
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		for(int i=0;i<mob.numItems();i++)
 		{
-			Item item=mob.getItem(i);
+			final Item item=mob.getItem(i);
 			if((item!=null)
 			   &&(!item.amWearingAt(Wearable.IN_INVENTORY))
 			   &&(CMLib.flags().isMetal(item))
 			   &&(item.container()==null)
 			   &&(!mob.amDead()))
 			{
-				int damage=CMLib.dice().roll(1,6+super.getXLEVELLevel(invoker())+(2*super.getX1Level(invoker())),1);
+				final int damage=CMLib.dice().roll(1,6+super.getXLEVELLevel(invoker())+(2*super.getX1Level(invoker())),1);
 				CMLib.combat().postDamage(invoker,mob,this,damage,CMMsg.MASK_MALICIOUS|CMMsg.MASK_ALWAYS|CMMsg.TYP_FIRE,Weapon.TYPE_BURSTING,item.name()+" <DAMAGE> <T-NAME>!");
 				if(CMLib.dice().rollPercentage()<mob.charStats().getStat(CharStats.STAT_STRENGTH))
 				{
@@ -128,7 +128,7 @@ public class Prayer_CurseMetal extends Prayer
 		{
 			for(int i=0;i<affectedItems.size();i++)
 			{
-				Item I=(Item)affectedItems.elementAt(i);
+				final Item I=(Item)affectedItems.elementAt(i);
 				Ability A=I.fetchEffect(this.ID());
 				while(A!=null)
 				{
@@ -146,7 +146,7 @@ public class Prayer_CurseMetal extends Prayer
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		MOB target=this.getTarget(mob,commands,givenTarget);
+		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
 		// the invoke method for spells receives as
@@ -165,7 +165,7 @@ public class Prayer_CurseMetal extends Prayer
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> "+prayForWord(mob)+" to curse <T-NAMESELF>.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> "+prayForWord(mob)+" to curse <T-NAMESELF>.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

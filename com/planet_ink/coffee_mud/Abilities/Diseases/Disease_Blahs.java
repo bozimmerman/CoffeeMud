@@ -69,7 +69,7 @@ public class Disease_Blahs extends Disease
 			   ||(msg.sourceMinor()==CMMsg.TYP_TELL)
 			   ||(CMath.bset(msg.sourceMajor(),CMMsg.MASK_CHANNEL))))
 			{
-				Ability A=CMClass.getAbility("Blah");
+				final Ability A=CMClass.getAbility("Blah");
 				if(A!=null)
 				{
 					A.setProficiency(100);
@@ -94,7 +94,7 @@ public class Disease_Blahs extends Disease
 		if(affected==null) return false;
 		if(!(affected instanceof MOB)) return true;
 
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		if((mob.curState().getFatigue()<CharState.FATIGUED_MILLIS)
 		&&(mob.maxState().getFatigue()>Long.MIN_VALUE/2))
 			mob.curState().setFatigue(CharState.FATIGUED_MILLIS);

@@ -111,10 +111,10 @@ public class Play extends StdAbility
 		if((!super.tick(ticking,tickID))||(!(affected instanceof MOB)))
 			return false;
 
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		if((affected==invoker())&&(invoker()!=null)&&(invoker().location()!=originRoom))
 		{
-			Vector V=getInvokerScopeRoomSet(null);
+			final Vector V=getInvokerScopeRoomSet(null);
 			commonRoomSet.clear();
 			commonRoomSet.addAll(V);
 			originRoom=invoker().location();
@@ -133,7 +133,7 @@ public class Play extends StdAbility
 			if((mob.location()!=originRoom)
 			&&(CMLib.flags().isMobile(mob)))
 			{
-				int dir=this.getCorrectDirToOriginRoom(mob.location(),commonRoomSet.indexOf(mob.location()));
+				final int dir=this.getCorrectDirToOriginRoom(mob.location(),commonRoomSet.indexOf(mob.location()));
 				if(dir>=0)
 					CMLib.tracking().walk(mob,dir,false,false);
 			}
@@ -217,7 +217,7 @@ public class Play extends StdAbility
 		if(mob!=null)
 			for(int a=mob.numEffects()-1;a>=0;a--)
 			{
-				Ability A=mob.fetchEffect(a);
+				final Ability A=mob.fetchEffect(a);
 				if((A instanceof Play)
 				&&((invoker==null)||(A.invoker()==null)||(A.invoker()==invoker)))
 					((Play)A).unplayMe(mob,invoker);
@@ -229,7 +229,7 @@ public class Play extends StdAbility
 		if(mob!=null)
 			for(int a=mob.numEffects()-1;a>=0;a--)
 			{
-				Ability A=mob.fetchEffect(a);
+				final Ability A=mob.fetchEffect(a);
 				if((A instanceof Play)
 				&&(!A.ID().equals(ID()))
 				&&((invoker==null)||(A.invoker()==null)||(A.invoker()==invoker)))
@@ -240,11 +240,11 @@ public class Play extends StdAbility
 	protected boolean unplayMe(MOB mob, MOB invoker)
 	{
 		if(mob==null) return false;
-		Ability A=mob.fetchEffect(ID());
+		final Ability A=mob.fetchEffect(ID());
 		if((A instanceof Play)
 		&&((invoker==null)||(A.invoker()==null)||(A.invoker()==invoker)))
 		{
-			Play P=(Play)A;
+			final Play P=(Play)A;
 			if(P.timeOut==0)
 				P.timeOut = System.currentTimeMillis()
 						  + (CMProps.getTickMillis() * (((invoker()!=null)&&(invoker()!=mob))?super.getXTIMELevel(invoker()):0));
@@ -273,7 +273,7 @@ public class Play extends StdAbility
 		if(instrument==null)
 		for(int i=0;i<mob.numItems();i++)
 		{
-			Item I=mob.getItem(i);
+			final Item I=mob.getItem(i);
 			if((I!=null)
 			&&(I instanceof MusicalInstrument)
 			&&(I.container()==null)
@@ -304,9 +304,9 @@ public class Play extends StdAbility
 				 return new XVector(backupMob.location());
 			return new Vector();
 		}
-		int depth=super.getXMAXRANGELevel(invoker());
+		final int depth=super.getXMAXRANGELevel(invoker());
 		if(depth==0) return new XVector(invoker().location());
-		Vector rooms=new Vector();
+		final Vector rooms=new Vector();
 		// needs to be area-only, because of the aggro-tracking rule
 		TrackingLibrary.TrackingFlags flags;
 		flags = new TrackingLibrary.TrackingFlags()
@@ -332,7 +332,7 @@ public class Play extends StdAbility
 			E2=R.getExitInDir(d);
 			if((R2!=null)&&(E2!=null)&&(E2.isOpen()))
 			{
-				int dx=commonRoomSet.indexOf(R2);
+				final int dx=commonRoomSet.indexOf(R2);
 				if((dx>=0)&&(dx<lowest))
 				{
 					lowest=dx;
@@ -350,7 +350,7 @@ public class Play extends StdAbility
 			msgStr=str;
 		else
 		{
-			int dir=this.getCorrectDirToOriginRoom(R,v);
+			final int dir=this.getCorrectDirToOriginRoom(R,v);
 			String songOf=songOf();
 			if(!songOf.equals(this.instrumentName()))
 				songOf="the "+songOf;
@@ -370,7 +370,7 @@ public class Play extends StdAbility
 			R.sendOthers(mob,msg);
 		if(R!=originRoom)
 			mob.setLocation(R);
-		Set<MOB> h=properTargets(mob,givenTarget,auto);
+		final Set<MOB> h=properTargets(mob,givenTarget,auto);
 		if(R!=originRoom)
 		{
 			R.delInhabitant(mob);
@@ -407,7 +407,7 @@ public class Play extends StdAbility
 			if(instrument==null)
 			for(int i=0;i<mob.numItems();i++)
 			{
-				Item I=mob.getItem(i);
+				final Item I=mob.getItem(i);
 				if((I!=null)
 				&&(I instanceof MusicalInstrument)
 				&&(I.container()==null)
@@ -447,7 +447,7 @@ public class Play extends StdAbility
 		if((!auto)&&(!CMLib.flags().aliveAwakeMobileUnbound(mob,false)))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 		unplayAll(mob,mob);
 		if(success)
 		{
@@ -461,20 +461,20 @@ public class Play extends StdAbility
 				str="^S<S-NAME> start(s) playing "+songOfStr+instrumentName()+" again.^?";
 			for(int v=0;v<commonRoomSet.size();v++)
 			{
-				Room R=(Room)commonRoomSet.elementAt(v);
-				String msgStr=getCorrectMsgString(R,str,v);
-				CMMsg msg=CMClass.getMsg(mob,null,this,somanticCastCode(mob,null,auto),msgStr);
+				final Room R=(Room)commonRoomSet.elementAt(v);
+				final String msgStr=getCorrectMsgString(R,str,v);
+				final CMMsg msg=CMClass.getMsg(mob,null,this,somanticCastCode(mob,null,auto),msgStr);
 				if(R.okMessage(mob,msg))
 				{
-					Play newOne=(Play)this.copyOf();
+					final Play newOne=(Play)this.copyOf();
 
-					Set<MOB> h=this.sendMsgAndGetTargets(mob, R, msg, givenTarget, auto);
+					final Set<MOB> h=this.sendMsgAndGetTargets(mob, R, msg, givenTarget, auto);
 					if(h==null) continue;
 
-					for(Iterator f=h.iterator();f.hasNext();)
+					for (final Object element : h)
 					{
-						MOB follower=(MOB)f.next();
-						Room R2=follower.location();
+						final MOB follower=(MOB)element;
+						final Room R2=follower.location();
 
 						// malicious songs must not affect the invoker!
 						int msgType=CMMsg.MASK_MAGIC|CMMsg.MASK_SOUND|CMMsg.TYP_CAST_SPELL;
@@ -487,7 +487,7 @@ public class Play extends StdAbility
 						&&(follower.fetchEffect(this.ID())==null))
 						{
 							CMMsg msg2=CMClass.getMsg(mob,follower,this,msgType|CMMsg.MASK_HANDS,null,msgType,null,msgType,null);
-							CMMsg msg3=msg2;
+							final CMMsg msg3=msg2;
 							if((mindAttack())&&(follower!=mob))
 								msg2=CMClass.getMsg(mob,follower,this,mndMsgType|CMMsg.MASK_HANDS,null,mndMsgType,null,mndMsgType,null);
 							if((R.okMessage(mob,msg2))&&(R.okMessage(mob,msg3)))

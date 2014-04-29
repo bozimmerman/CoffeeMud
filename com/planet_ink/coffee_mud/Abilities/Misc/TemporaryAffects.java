@@ -51,8 +51,8 @@ public class TemporaryAffects extends StdAbility
 	@Override
 	public String displayText()
 	{
-		StringBuilder str = new StringBuilder("");
-		for(Object[] A : affects)
+		final StringBuilder str = new StringBuilder("");
+		for(final Object[] A : affects)
 			if(A[0] instanceof Ability)
 				str.append(((Ability)A[0]).displayText());
 		return str.toString();
@@ -60,7 +60,7 @@ public class TemporaryAffects extends StdAbility
 	@Override
 	public int abstractQuality()
 	{
-		for(Object[] A : affects)
+		for(final Object[] A : affects)
 			if(A[0] instanceof Ability)
 				if(((Ability)A[0]).abstractQuality()==Ability.QUALITY_MALICIOUS)
 					return Ability.QUALITY_MALICIOUS;
@@ -70,7 +70,7 @@ public class TemporaryAffects extends StdAbility
 	public long flags()
 	{
 		long flag=0;
-		for(Object[] A : affects)
+		for(final Object[] A : affects)
 			if(A[0] instanceof Ability)
 				flag |=((Ability)A[0]).flags();
 		return flag;
@@ -81,7 +81,7 @@ public class TemporaryAffects extends StdAbility
 	{
 		super.affectPhyStats(affected,affectableStats);
 		if(affected==null) return;
-		for(Object[] A : affects)
+		for(final Object[] A : affects)
 			if(A[0] instanceof StatsAffecting)
 				((StatsAffecting)A[0]).affectPhyStats(affected, affectableStats);
 	}
@@ -91,7 +91,7 @@ public class TemporaryAffects extends StdAbility
 	{
 		super.affectCharStats(affected, affectableStats);
 		if(affected==null) return;
-		for(Object[] A : affects)
+		for(final Object[] A : affects)
 			if(A[0] instanceof StatsAffecting)
 				((StatsAffecting)A[0]).affectCharStats(affected, affectableStats);
 	}
@@ -101,15 +101,15 @@ public class TemporaryAffects extends StdAbility
 	{
 		super.affectCharState(affected, affectableStats);
 		if(affected==null) return;
-		for(Object[] A : affects)
+		for(final Object[] A : affects)
 			if(A[0] instanceof StatsAffecting)
 				((StatsAffecting)A[0]).affectCharState(affected, affectableStats);
 	}
 
 	public void unAffectAffected(Object[] Os)
 	{
-		CMObject O = (CMObject)Os[0];
-		Physical P=affected;
+		final CMObject O = (CMObject)Os[0];
+		final Physical P=affected;
 		if(O instanceof Ability)
 		{
 			((Ability)O).unInvoke();
@@ -130,7 +130,7 @@ public class TemporaryAffects extends StdAbility
 	{
 		if(affected==null)
 			return;
-		for(Object[] A : affects)
+		for(final Object[] A : affects)
 			unAffectAffected(A);
 		affects.clear();
 		super.unInvoke();
@@ -143,20 +143,20 @@ public class TemporaryAffects extends StdAbility
 		if(txt.startsWith("-"))
 		{
 			txt=txt.substring(1).toLowerCase().trim();
-			for(Object[] A : affects)
+			for(final Object[] A : affects)
 				if(((CMObject)A[0]).ID().toLowerCase().equals(txt))
 				{
 					unAffectAffected(A);
 					return;
 				}
-			for(Object[] A : affects)
+			for(final Object[] A : affects)
 				if((A[0] instanceof Ability)
 				&&(((Environmental)A[0]).name().toLowerCase().startsWith(txt)))
 				{
 					unAffectAffected(A);
 					return;
 				}
-			for(Object[] A : affects)
+			for(final Object[] A : affects)
 				if((A[0] instanceof Behavior)
 				&&(((Behavior)A[0]).name().toLowerCase().startsWith(txt)))
 				{
@@ -170,12 +170,12 @@ public class TemporaryAffects extends StdAbility
 			if(txt.startsWith("+"))
 				txt=txt.substring(1);
 			else
-				for(Object[] A : affects)
+				for(final Object[] A : affects)
 					unAffectAffected(A);
 
 			int x=txt.indexOf(' ');
 			if(x<0) return;
-			String abilityStr=txt.substring(0,x).trim();
+			final String abilityStr=txt.substring(0,x).trim();
 			String numTicksStr=txt.substring(x+1).trim();
 			String parms="";
 			x=numTicksStr.indexOf(' ');
@@ -208,7 +208,7 @@ public class TemporaryAffects extends StdAbility
 	{
 		super.setAffectedOne(P);
 		if((affects!=null)&&(!initialized))
-			for(Object[] set : affects)
+			for(final Object[] set : affects)
 				finishInit((CMObject)set[0]);
 	}
 
@@ -236,7 +236,7 @@ public class TemporaryAffects extends StdAbility
 
 	public boolean destroyIfNecessary()
 	{
-		Physical E=affected;
+		final Physical E=affected;
 		if((affects.size()==0) && (E != null))
 		{
 			unInvoke();
@@ -251,7 +251,7 @@ public class TemporaryAffects extends StdAbility
 	{
 		if(destroyIfNecessary())
 			return true;
-		for(Object[] A : affects)
+		for(final Object[] A : affects)
 			if(!((MsgListener)A[0]).okMessage(myHost, msg))
 				return false;
 		return true;
@@ -262,7 +262,7 @@ public class TemporaryAffects extends StdAbility
 	{
 		if(destroyIfNecessary())
 			return;
-		for(Object[] A : affects)
+		for(final Object[] A : affects)
 			((MsgListener)A[0]).executeMsg(myHost, msg);
 	}
 
@@ -274,7 +274,7 @@ public class TemporaryAffects extends StdAbility
 		if(!super.tick(ticking, tickID))
 			return false;
 		super.makeLongLasting();
-		for(Object[] A : affects)
+		for(final Object[] A : affects)
 			if(!((Tickable)A[0]).tick(ticking, tickID))
 				unAffectAffected(A);
 			else
@@ -291,12 +291,12 @@ public class TemporaryAffects extends StdAbility
 			mob.tell("Specify a target, a property, number of ticks, and (optionally) some misc text!");
 			return false;
 		}
-		Vector V=new XVector(commands.firstElement());
-		Physical target=getAnyTarget(mob,V,givenTarget, Wearable.FILTER_ANY);
+		final Vector V=new XVector(commands.firstElement());
+		final Physical target=getAnyTarget(mob,V,givenTarget, Wearable.FILTER_ANY);
 		if(target==null) return false;
 		commands.removeElementAt(0);
 
-		String abilityStr = (String)commands.firstElement();
+		final String abilityStr = (String)commands.firstElement();
 		CMObject A=CMClass.getAbility(abilityStr);
 		if(A==null)
 			A=CMClass.getBehavior(abilityStr);
@@ -309,13 +309,13 @@ public class TemporaryAffects extends StdAbility
 			mob.tell("No such ability or behavior as "+abilityStr+"!");
 			return false;
 		}
-		String numTicks=((String)commands.elementAt(1)).trim();
+		final String numTicks=((String)commands.elementAt(1)).trim();
 		if((!CMath.isInteger(numTicks)) ||(CMath.s_int(numTicks)<=0))
 		{
 			mob.tell("'"+numTicks+"' is not a number of ticks!");
 			return false;
 		}
-		String parms=CMParms.combine(commands, 2);
+		final String parms=CMParms.combine(commands, 2);
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;

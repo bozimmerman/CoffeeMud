@@ -55,16 +55,16 @@ public class RandomMonsters extends ActiveTicker
 	@Override
 	public List<String> externalFiles()
 	{
-		Vector xmlfiles=new Vector();
-		String theseparms=getParms();
-		int x=theseparms.indexOf(';');
+		final Vector xmlfiles=new Vector();
+		final String theseparms=getParms();
+		final int x=theseparms.indexOf(';');
 		String filename=(x>=0)?theseparms.substring(x+1):theseparms;
 		if(filename.trim().length()==0)
 			return null;
-		int start=filename.indexOf("<MOBS>");
+		final int start=filename.indexOf("<MOBS>");
 		if((start<0)||(start>20))
 		{
-			int extraSemicolon=filename.indexOf(';');
+			final int extraSemicolon=filename.indexOf(';');
 			if(extraSemicolon>=0) filename=filename.substring(0,extraSemicolon);
 			if(filename.trim().length()>0)
 				xmlfiles.addElement(filename.trim());
@@ -78,7 +78,7 @@ public class RandomMonsters extends ActiveTicker
 	public void setParms(String newParms)
 	{
 		maintained=new Vector();
-		int x=newParms.indexOf(';');
+		final int x=newParms.indexOf(';');
 		String oldParms=newParms;
 		restrictedLocales=null;
 		if(x>=0)
@@ -88,11 +88,11 @@ public class RandomMonsters extends ActiveTicker
 			int extraX=newParms.indexOf("<MOBS>");
 			if(extraX<0)
 			{
-				String xtra=newParms.substring(x+1);
+				final String xtra=newParms.substring(x+1);
 				extraX=xtra.indexOf(';');
 				if(extraX>=0) extraParms=xtra.substring(extraX+1);
 			}
-			Vector<String> V=CMParms.parse(extraParms);
+			final Vector<String> V=CMParms.parse(extraParms);
 			for(int v=0;v<V.size();v++)
 			{
 				String s=V.elementAt(v);
@@ -113,7 +113,7 @@ public class RandomMonsters extends ActiveTicker
 					}
 					else
 					{
-						char c=s.charAt(0);
+						final char c=s.charAt(0);
 						s=s.substring(1).toUpperCase().trim();
 						int code=-1;
 						for(int i=0;i<Room.indoorDomainDescs.length;i++)
@@ -173,7 +173,7 @@ public class RandomMonsters extends ActiveTicker
 	public List<MOB> getMonsters(Tickable thang, String theseparms)
 	{
 		List<MOB> monsters=null;
-		int x=theseparms.indexOf(';');
+		final int x=theseparms.indexOf(';');
 		String thangName="null";
 		if(thang instanceof Room)
 			thangName=CMLib.map().getExtendedRoomID((Room)thang);
@@ -183,7 +183,7 @@ public class RandomMonsters extends ActiveTicker
 		else
 		if(thang!=null)
 			thangName=thang.name();
-		String thangID=CMClass.classID(thang);
+		final String thangID=CMClass.classID(thang);
 		String filename=(x>=0)?theseparms.substring(x+1):theseparms;
 		if(filename.trim().length()==0)
 		{
@@ -192,7 +192,7 @@ public class RandomMonsters extends ActiveTicker
 			Log.errOut("Blank XML/filename: '"+filename+"' on Behavior RandomMonsters on object "+thangName+" ("+thangID+").");
 			return null;
 		}
-		int start=filename.indexOf("<MOBS>");
+		final int start=filename.indexOf("<MOBS>");
 		if((start>=0)&&(start<=20))
 		{
 			int end=start+20;
@@ -200,7 +200,7 @@ public class RandomMonsters extends ActiveTicker
 			monsters=(List<MOB>)Resources.getResource("RANDOMMONSTERS-XML/"+filename.length()+"/"+filename.hashCode());
 			if(monsters!=null) return monsters;
 			monsters=new Vector();
-			String error=CMLib.coffeeMaker().addMOBsFromXML(filename,monsters,null);
+			final String error=CMLib.coffeeMaker().addMOBsFromXML(filename,monsters,null);
 			if(error.length()>0)
 			{
 				if(alreadyTriedLoad) return null;
@@ -219,14 +219,14 @@ public class RandomMonsters extends ActiveTicker
 		}
 		else
 		{
-			int extraSemicolon=filename.indexOf(';');
+			final int extraSemicolon=filename.indexOf(';');
 			if(extraSemicolon>=0) filename=filename.substring(0,extraSemicolon);
 			filename=filename.trim();
 			monsters=(List<MOB>)Resources.getResource("RANDOMMONSTERS-"+filename);
 			if((monsters==null)&&(!alreadyTriedLoad))
 			{
 				alreadyTriedLoad=true;
-				StringBuffer buf=Resources.getFileResource(filename,true);
+				final StringBuffer buf=Resources.getFileResource(filename,true);
 
 				if((buf==null)||(buf.length()<20))
 				{
@@ -239,7 +239,7 @@ public class RandomMonsters extends ActiveTicker
 					return null;
 				}
 				monsters=new Vector();
-				String error=CMLib.coffeeMaker().addMOBsFromXML(buf.toString(),monsters,null);
+				final String error=CMLib.coffeeMaker().addMOBsFromXML(buf.toString(),monsters,null);
 				if(error.length()>0)
 				{
 					Log.errOut("RandomMonsters: Error on import of: '"+filename+"' for '"+thangName+"' ("+thangID+"): "+error+".");
@@ -286,11 +286,11 @@ public class RandomMonsters extends ActiveTicker
 		{
 			try
 			{
-				MOB M=(MOB)maintained.elementAt(i);
+				final MOB M=(MOB)maintained.elementAt(i);
 				if((M.amDead())||(M.amDestroyed())||(M.location()==null)||(!M.location().isInhabitant(M)))
 					maintained.removeElement(M);
 			}
-			catch(Exception e){	}
+			catch(final Exception e){	}
 		}
 		if(maintained.size()>=maxMonsters)
 		{
@@ -301,7 +301,7 @@ public class RandomMonsters extends ActiveTicker
 		if((canAct(ticking,tickID))||(maintained.size()<minMonsters))
 		{
 			tickStatus=Tickable.STATUS_MISC;
-			List<MOB> monsters=getMonsters(ticking,getParms());
+			final List<MOB> monsters=getMonsters(ticking,getParms());
 			tickStatus=Tickable.STATUS_MISC+1;
 			if(monsters==null)
 			{
@@ -330,7 +330,7 @@ public class RandomMonsters extends ActiveTicker
 						if(ticking instanceof GridLocale)
 						{
 							tickStatus=Tickable.STATUS_MISC+8;
-							Room room=((GridLocale)ticking).getRandomGridChild();
+							final Room room=((GridLocale)ticking).getRandomGridChild();
 							tickStatus=Tickable.STATUS_MISC+9;
 							M.bringToLife(room,true);
 						}

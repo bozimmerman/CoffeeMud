@@ -52,7 +52,7 @@ public class Prayer_LinkedHealth extends Prayer
 		// undo the affects of this spell
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		super.unInvoke();
 
@@ -61,7 +61,7 @@ public class Prayer_LinkedHealth extends Prayer
 			if(buddy!=null)
 			{
 				mob.tell("Your health is no longer linked with "+buddy.name()+".");
-				Ability A=buddy.fetchEffect(ID());
+				final Ability A=buddy.fetchEffect(ID());
 				if(A!=null) A.unInvoke();
 			}
 		}
@@ -75,13 +75,13 @@ public class Prayer_LinkedHealth extends Prayer
 
 		if(!(affected instanceof MOB))
 			return true;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		if((msg.amITarget(mob))
 		&&(msg.targetMinor()==CMMsg.TYP_DAMAGE))
 		{
 			if((msg.tool()==null)||(!msg.tool().ID().equals(ID())))
 			{
-				int recovery=(int)Math.round(CMath.div((msg.value()),2.0));
+				final int recovery=(int)Math.round(CMath.div((msg.value()),2.0));
 				msg.setValue(recovery);
 				CMLib.combat().postDamage(msg.source(),buddy,this,recovery,CMMsg.MASK_ALWAYS|CMMsg.TYP_JUSTICE,Weapon.TYPE_BURSTING,"<T-NAME> absorb(s) damage from the harm to "+msg.target().name()+".");
 			}
@@ -91,7 +91,7 @@ public class Prayer_LinkedHealth extends Prayer
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		MOB target=this.getTarget(mob,commands,givenTarget);
+		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 		if(mob.fetchEffect(ID())!=null)
 		{
@@ -113,7 +113,7 @@ public class Prayer_LinkedHealth extends Prayer
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
@@ -121,7 +121,7 @@ public class Prayer_LinkedHealth extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> "+prayWord(mob)+" that <S-HIS-HER> health be linked with <T-NAME>.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> "+prayWord(mob)+" that <S-HIS-HER> health be linked with <T-NAME>.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

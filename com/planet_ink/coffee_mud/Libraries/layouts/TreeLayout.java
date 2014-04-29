@@ -60,8 +60,8 @@ public class TreeLayout extends AbstractLayout
 
 		public TreeStem nextNode()
 		{
-			long[] nextCoord = getCoord(currNode.coord(),dir);
-			TreeStem stem = new TreeStem(nextCoord,dir,lSet);
+			final long[] nextCoord = getCoord(currNode.coord(),dir);
+			final TreeStem stem = new TreeStem(nextCoord,dir,lSet);
 			if(!lSet.use(stem.currNode,LayoutTypes.street)) return null;
 			currNode.crossLink(stem.currNode);
 			patchRun(currNode,stem.currNode);
@@ -75,10 +75,10 @@ public class TreeLayout extends AbstractLayout
 
 		public TreeStem firstBranch()
 		{
-			int[] turns = getTurns(dir);
+			final int[] turns = getTurns(dir);
 			if((turns == null)||(turns.length<1)) return null;
-			long[] nextCoord = getCoord(currNode.coord(),turns[0]);
-			TreeStem newStem =  new TreeStem(nextCoord,turns[0],lSet);
+			final long[] nextCoord = getCoord(currNode.coord(),turns[0]);
+			final TreeStem newStem =  new TreeStem(nextCoord,turns[0],lSet);
 			if(!lSet.use(newStem.currNode,LayoutTypes.street)) return null;
 			currNode.flag(LayoutFlags.corner);
 			currNode.crossLink(newStem.currNode);
@@ -87,10 +87,10 @@ public class TreeLayout extends AbstractLayout
 		}
 		public TreeStem secondBranch()
 		{
-			int[] turns = getTurns(dir);
+			final int[] turns = getTurns(dir);
 			if((turns == null)||(turns.length<2)) return null;
-			long[] nextCoord = getCoord(currNode.coord(),turns[1]);
-			TreeStem newStem =  new TreeStem(nextCoord,turns[1],lSet);
+			final long[] nextCoord = getCoord(currNode.coord(),turns[1]);
+			final TreeStem newStem =  new TreeStem(nextCoord,turns[1],lSet);
 			if(!lSet.use(newStem.currNode,LayoutTypes.street)) return null;
 			currNode.crossLink(newStem.currNode);
 			patchRun(currNode,newStem.currNode);
@@ -101,13 +101,13 @@ public class TreeLayout extends AbstractLayout
 	@Override
 	public List<LayoutNode> generate(int num, int dir)
 	{
-		Vector<LayoutNode> set = new Vector<LayoutNode>();
+		final Vector<LayoutNode> set = new Vector<LayoutNode>();
 		Vector<TreeStem> progress = new Vector<TreeStem>();
 
-		long[] rootCoord = new long[]{0,0};
-		LayoutSet lSet = new LayoutSet(set,num);
+		final long[] rootCoord = new long[]{0,0};
+		final LayoutSet lSet = new LayoutSet(set,num);
 		originalDirection=dir;
-		TreeStem root = new TreeStem(rootCoord, dir, lSet);
+		final TreeStem root = new TreeStem(rootCoord, dir, lSet);
 		progress.add(root);
 		lSet.use(root.currNode,LayoutTypes.street);
 		root.currNode.flag(LayoutFlags.gate);
@@ -116,10 +116,10 @@ public class TreeLayout extends AbstractLayout
 
 		while(lSet.spaceAvailable())
 		{
-			Vector<TreeStem> newOnes = new Vector<TreeStem>();
-			for(Iterator<TreeStem> i =  progress.iterator(); i.hasNext() && lSet.spaceAvailable(); )
+			final Vector<TreeStem> newOnes = new Vector<TreeStem>();
+			for(final Iterator<TreeStem> i =  progress.iterator(); i.hasNext() && lSet.spaceAvailable(); )
 			{
-				TreeStem stem = i.next();
+				final TreeStem stem = i.next();
 				TreeStem branch = stem.nextNode();
 				if(branch != null) newOnes.add(branch);
 				branch = stem.firstBranch();
@@ -130,7 +130,7 @@ public class TreeLayout extends AbstractLayout
 			progress = new Vector<TreeStem>();
 			while(newOnes.size()> 0)
 			{
-				TreeStem b =  newOnes.elementAt(r.nextInt(newOnes.size()));
+				final TreeStem b =  newOnes.elementAt(r.nextInt(newOnes.size()));
 				progress.add(b);
 				newOnes.remove(b);
 			}

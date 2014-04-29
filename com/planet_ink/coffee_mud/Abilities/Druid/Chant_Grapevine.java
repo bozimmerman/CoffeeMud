@@ -61,7 +61,7 @@ public class Chant_Grapevine extends Chant
 	@Override
 	public CMObject copyOf()
 	{
-		Chant_Grapevine obj=(Chant_Grapevine)super.copyOf();
+		final Chant_Grapevine obj=(Chant_Grapevine)super.copyOf();
 		obj.myChants=new Vector<Ability>();
 		obj.myChants.addAll(myChants);
 		return obj;
@@ -72,16 +72,16 @@ public class Chant_Grapevine extends Chant
 	{
 		if((affected instanceof MOB)&&(myChants!=null))
 		{
-			List<Ability> V=myChants;
+			final List<Ability> V=myChants;
 			myChants=null;
 			for(int i=0;i<V.size();i++)
 			{
-				Ability A=V.get(i);
+				final Ability A=V.get(i);
 				if((A.affecting()!=null)
 				   &&(A.ID().equals(ID()))
 				   &&(A.affecting() instanceof Item))
 				{
-					Item I=(Item)A.affecting();
+					final Item I=(Item)A.affecting();
 					I.delEffect(A);
 				}
 			}
@@ -97,7 +97,7 @@ public class Chant_Grapevine extends Chant
 			mob.tell("You are already listening through a grapevine.");
 			return false;
 		}
-		Vector myRooms=Druid_MyPlants.myPlantRooms(mob);
+		final Vector myRooms=Druid_MyPlants.myPlantRooms(mob);
 		if((myRooms==null)||(myRooms.size()==0))
 		{
 			mob.tell("There doesn't appear to be any of your plants around to listen through.");
@@ -113,21 +113,21 @@ public class Chant_Grapevine extends Chant
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,myPlant,this,verbalCastCode(mob,myPlant,auto),auto?"":"^S<S-NAME> chant(s) to <T-NAMESELF> and listen(s) carefully to <T-HIM-HER>!^?");
+			final CMMsg msg=CMClass.getMsg(mob,myPlant,this,verbalCastCode(mob,myPlant,auto),auto?"":"^S<S-NAME> chant(s) to <T-NAMESELF> and listen(s) carefully to <T-HIM-HER>!^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				myChants=new Vector();
 				beneficialAffect(mob,mob,asLevel,0);
-				Chant_Grapevine C=(Chant_Grapevine)mob.fetchEffect(ID());
+				final Chant_Grapevine C=(Chant_Grapevine)mob.fetchEffect(ID());
 				if(C==null) return false;
 				for(int i=0;i<myRooms.size();i++)
 				{
-					Room R=(Room)myRooms.elementAt(i);
+					final Room R=(Room)myRooms.elementAt(i);
 					int ii=0;
 					myPlant=Druid_MyPlants.myPlant(R,mob,ii);
 					while(myPlant!=null)

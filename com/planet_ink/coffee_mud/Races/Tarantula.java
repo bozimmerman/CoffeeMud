@@ -43,10 +43,10 @@ public class Tarantula extends StdRace
 	@Override public int weightVariance(){return 0;}
 	@Override public long forbiddenWornBits(){return Integer.MAX_VALUE;}
 	@Override public String racialCategory(){return "Arachnid";}
-	private String[]racialAbilityNames={"Poison_Venom"};
-	private int[]racialAbilityLevels={1};
-	private int[]racialAbilityProficiencies={25};
-	private boolean[]racialAbilityQuals={false};
+	private final String[]racialAbilityNames={"Poison_Venom"};
+	private final int[]racialAbilityLevels={1};
+	private final int[]racialAbilityProficiencies={25};
+	private final boolean[]racialAbilityQuals={false};
 	@Override public String[] racialAbilityNames(){return racialAbilityNames;}
 	@Override public int[] racialAbilityLevels(){return racialAbilityLevels;}
 	@Override public int[] racialAbilityProficiencies(){return racialAbilityProficiencies;}
@@ -56,7 +56,7 @@ public class Tarantula extends StdRace
 	private static final int[] parts={2 ,99,0 ,1 ,0 ,0 ,0 ,1 ,8 ,8 ,0 ,0 ,1 ,0 ,0 ,0 };
 	@Override public int[] bodyMask(){return parts;}
 
-	private int[] agingChart={0,0,0,1,1,1,1,2,2};
+	private final int[] agingChart={0,0,0,1,1,1,1,2,2};
 	@Override public int[] getAgingChart(){return agingChart;}
 
 	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();

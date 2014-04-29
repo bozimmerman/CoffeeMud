@@ -71,7 +71,7 @@ public class TaxCollector extends StdBehavior
 
 	protected boolean belongsToAnOweingClan(MOB M)
 	{
-		for(String clanID : peopleWhoOwe)
+		for(final String clanID : peopleWhoOwe)
 			if(M.getClanRole(clanID)!=null)
 				return true;
 		return false;
@@ -79,32 +79,32 @@ public class TaxCollector extends StdBehavior
 
 	public double[] totalMoneyOwed(MOB collector,MOB M)
 	{
-		double[] owed=new double[4];
+		final double[] owed=new double[4];
 		if((peopleWhoOwe.contains(M.Name()))
 		||(belongsToAnOweingClan(M)))
 		{
 			for(int t=0;t<taxableProperties.size();t++)
 			{
-				LandTitle T=taxableProperties.get(t);
+				final LandTitle T=taxableProperties.get(t);
 				if((T.getOwnerName().equals(M.Name())
 					||(M.getClanRole(T.getOwnerName())!=null))
 				&&(T.backTaxes()>0))
 					owed[OWE_BACKTAXES]+=T.backTaxes();
 			}
 		}
-		LegalBehavior B=CMLib.law().getLegalBehavior(M.location());
+		final LegalBehavior B=CMLib.law().getLegalBehavior(M.location());
 		if(B!=null)
 		{
-			Area A2=CMLib.law().getLegalObject(M.location());
+			final Area A2=CMLib.law().getLegalObject(M.location());
 			if(A2!=null) owed[OWE_FINES]=B.finesOwed(M);
 			if((A2!=null)
 			&&(!B.isAnyOfficer(A2,M))
 			&&(!B.isJudge(A2,M)))
 			{
-				Law theLaw=B.legalInfo(A2);
+				final Law theLaw=B.legalInfo(A2);
 				if(theLaw!=null)
 				{
-					double cittax=CMath.s_double((String)theLaw.taxLaws().get("CITTAX"));
+					final double cittax=CMath.s_double((String)theLaw.taxLaws().get("CITTAX"));
 					if(cittax>0.0)
 						owed[OWE_CITIZENTAX]=CMath.mul(CMLib.beanCounter().getTotalAbsoluteShopKeepersValue(M,collector),CMath.div(cittax,100.0));
 				}
@@ -123,27 +123,27 @@ public class TaxCollector extends StdBehavior
 		super.executeMsg(oking,msg);
 		if((oking!=null)&&(oking instanceof MOB))
 		{
-			MOB mob=(MOB)oking;
+			final MOB mob=(MOB)oking;
 			if(msg.amITarget(mob)
 			&&(msg.targetMinor()==CMMsg.TYP_GIVE)
 			&&(msg.tool() instanceof Coins))
 			{
 				double paidAmount=((Coins)msg.tool()).getTotalValue();
 				if(paidAmount<=0.0) return;
-				double[] owed=totalMoneyOwed(mob,msg.source());
+				final double[] owed=totalMoneyOwed(mob,msg.source());
 				if(treasuryRoomID!=null)
 				{
-					Room treasuryR=CMLib.map().getRoom(treasuryRoomID);
+					final Room treasuryR=CMLib.map().getRoom(treasuryRoomID);
 					if(treasuryR!=null)
 					{
-						Coins COIN=CMLib.beanCounter().makeBestCurrency(CMLib.beanCounter().getCurrency(mob),paidAmount,treasuryR,treasuryContainer);
+						final Coins COIN=CMLib.beanCounter().makeBestCurrency(CMLib.beanCounter().getCurrency(mob),paidAmount,treasuryR,treasuryContainer);
 						if(COIN!=null) COIN.putCoinsBack();
 					}
 				}
 
 				if((demanded!=null)&&(demanded.contains(msg.source())))
 				{
-					int demanDex=demanded.indexOf(msg.source());
+					final int demanDex=demanded.indexOf(msg.source());
 					if(demanDex>=0)
 					{
 						paidAmount-=owed[OWE_CITIZENTAX];
@@ -155,8 +155,8 @@ public class TaxCollector extends StdBehavior
 
 				if(owed[OWE_FINES]>0)
 				{
-					LegalBehavior B=CMLib.law().getLegalBehavior(msg.source().location());
-					Area A2=CMLib.law().getLegalObject(msg.source().location());
+					final LegalBehavior B=CMLib.law().getLegalBehavior(msg.source().location());
+					final Area A2=CMLib.law().getLegalObject(msg.source().location());
 					if((B!=null)&&(A2!=null))
 					{
 						if(paidAmount>=owed[OWE_FINES])
@@ -178,7 +178,7 @@ public class TaxCollector extends StdBehavior
 				boolean paidBackTaxes=false;
 				for(int i=0;i<taxableProperties.size();i++)
 				{
-					LandTitle T=taxableProperties.get(i);
+					final LandTitle T=taxableProperties.get(i);
 					if(T.getOwnerName().equals(msg.source().Name())
 						||(msg.source().getClanRole(T.getOwnerName())!=null))
 					{
@@ -209,10 +209,10 @@ public class TaxCollector extends StdBehavior
 				}
 				if((paidBackTaxes)&&(numBackTaxesUnpaid==0)&&(mob.location()!=null))
 				{
-					LegalBehavior B=CMLib.law().getLegalBehavior(mob.location().getArea());
+					final LegalBehavior B=CMLib.law().getLegalBehavior(mob.location().getArea());
 					if((B!=null)&&(!msg.source().isMonster()))
 					{
-						Area A2=CMLib.law().getLegalObject(mob.location().getArea());
+						final Area A2=CMLib.law().getLegalObject(mob.location().getArea());
 						B.aquit(A2,msg.source(),new String[]{"TAXEVASION"});
 					}
 				}
@@ -220,7 +220,7 @@ public class TaxCollector extends StdBehavior
 				if((paidAmount>0)&&(numProperties>0))
 				for(int i=0;i<taxableProperties.size();i++)
 				{
-					LandTitle T=taxableProperties.get(i);
+					final LandTitle T=taxableProperties.get(i);
 					if(((T.getOwnerName().equals(msg.source().Name())))
 					&&(paidAmount>0))
 					{
@@ -239,17 +239,17 @@ public class TaxCollector extends StdBehavior
 	{
 		if((oking==null)||(!(oking instanceof MOB)))
 		   return super.okMessage(oking,msg);
-		MOB mob=(MOB)oking;
+		final MOB mob=(MOB)oking;
 		if(msg.amITarget(mob)
 		&&(msg.targetMinor()==CMMsg.TYP_GIVE)
 		&&(msg.tool() instanceof Coins))
 		{
-			String currency=CMLib.beanCounter().getCurrency(mob);
-			double[] owe=totalMoneyOwed(mob,msg.source());
-			double coins=((Coins)msg.tool()).getTotalValue();
+			final String currency=CMLib.beanCounter().getCurrency(mob);
+			final double[] owe=totalMoneyOwed(mob,msg.source());
+			final double coins=((Coins)msg.tool()).getTotalValue();
 			if((paid!=null)&&(paid.contains(msg.source())))
 				owe[OWE_TOTAL]-=owe[OWE_CITIZENTAX];
-			String owed=CMLib.beanCounter().nameCurrencyShort(currency,owe[OWE_TOTAL]);
+			final String owed=CMLib.beanCounter().nameCurrencyShort(currency,owe[OWE_TOTAL]);
 			if((!((Coins)msg.tool()).getCurrency().equals(CMLib.beanCounter().getCurrency(mob))))
 			{
 				msg.source().tell(mob.name(msg.source())+" refuses your money.");
@@ -276,26 +276,26 @@ public class TaxCollector extends StdBehavior
 		if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
 			return true;
 
-		MOB mob=(MOB)ticking;
+		final MOB mob=(MOB)ticking;
 		if(demanded==null) demanded=new DVector(2);
 		if(paid==null) paid=new DVector(2);
 
 		for(int i=paid.size()-1;i>=0;i--)
 		{
-			Long L=(Long)paid.elementAt(i,2);
+			final Long L=(Long)paid.elementAt(i,2);
 			if((System.currentTimeMillis()-L.longValue())>graceTime)
 				paid.removeElementAt(i);
 		}
 
-		Room R=mob.location();
+		final Room R=mob.location();
 		if((R!=null)&&(lastMonthChecked!=R.getArea().getTimeObj().getMonth()))
 		{
 			lastMonthChecked=R.getArea().getTimeObj().getMonth();
-			Law theLaw=CMLib.law().getTheLaw(R,mob);
+			final Law theLaw=CMLib.law().getTheLaw(R,mob);
 			if(theLaw!=null)
 			{
-				Area A2=CMLib.law().getLegalObject(R);
-				String taxs=(String)theLaw.taxLaws().get("PROPERTYTAX");
+				final Area A2=CMLib.law().getLegalObject(R);
+				final String taxs=(String)theLaw.taxLaws().get("PROPERTYTAX");
 				LandTitle T=null;
 				peopleWhoOwe.clear();
 				if((taxs!=null)&&(taxs.length()>0)&&(CMath.s_double(taxs)>0))
@@ -312,7 +312,7 @@ public class TaxCollector extends StdBehavior
 				else
 					taxableProperties.clear();
 
-				Law.TreasurySet treas=theLaw.getTreasuryNSafe(A2);
+				final Law.TreasurySet treas=theLaw.getTreasuryNSafe(A2);
 				treasuryRoomID=CMLib.map().getExtendedRoomID(treas.room);
 				treasuryContainer=treas.container;
 			}
@@ -323,7 +323,7 @@ public class TaxCollector extends StdBehavior
 		&&(CMLib.flags().aliveAwakeMobileUnbound(mob,true))
 		&&(R.numInhabitants()>1))
 		{
-			MOB M=R.fetchRandomInhabitant();
+			final MOB M=R.fetchRandomInhabitant();
 			if((M!=null)
 			&&(M!=mob)
 			&&(!CMLib.flags().isAnimalIntelligence(M))
@@ -332,11 +332,11 @@ public class TaxCollector extends StdBehavior
 			&&(CMLib.clans().findCommonRivalrousClans(mob, M).size()==0)
 			&&(CMLib.flags().canBeSeenBy(M,mob)))
 			{
-				int demandDex=demanded.indexOf(M);
+				final int demandDex=demanded.indexOf(M);
 				if((demandDex>=0)
 				&&((System.currentTimeMillis()-((Long)demanded.elementAt(demandDex,2)).longValue())>waitTime))
 				{
-					LegalBehavior B=CMLib.law().getLegalBehavior(R.getArea());
+					final LegalBehavior B=CMLib.law().getLegalBehavior(R.getArea());
 					if(M.isMonster()
 					&&(M.getStartRoom()!=null)
 					&&(CMLib.law().getLandTitle(M.getStartRoom())==null))
@@ -356,10 +356,10 @@ public class TaxCollector extends StdBehavior
 				}
 				if((!paid.contains(M))&&(demandDex<0))
 				{
-					double[] owe=totalMoneyOwed(mob,M);
-					StringBuffer say=new StringBuffer("");
-					String currency=CMLib.beanCounter().getCurrency(mob);
-					double denomination=CMLib.beanCounter().getLowestDenomination(currency);
+					final double[] owe=totalMoneyOwed(mob,M);
+					final StringBuffer say=new StringBuffer("");
+					final String currency=CMLib.beanCounter().getCurrency(mob);
+					final double denomination=CMLib.beanCounter().getLowestDenomination(currency);
 					if(owe[OWE_CITIZENTAX]>1.0)
 						say.append("You owe "+CMLib.beanCounter().getDenominationName(currency,denomination,Math.round(CMath.div(owe[OWE_CITIZENTAX],denomination)))+" in local taxes. ");
 					if(owe[OWE_BACKTAXES]>1.0)
@@ -372,7 +372,7 @@ public class TaxCollector extends StdBehavior
 						demanded.addElement(M,Long.valueOf(System.currentTimeMillis()));
 						if(M.isMonster())
 						{
-							Vector V=new Vector();
+							final Vector V=new Vector();
 							V.addElement("GIVE");
 							V.addElement(""+Math.round(owe[OWE_TOTAL]));
 							V.addElement(mob.name());
@@ -383,7 +383,7 @@ public class TaxCollector extends StdBehavior
 				}
 			}
 
-			Item I=R.getRandomItem();
+			final Item I=R.getRandomItem();
 			if((I!=null)&&(I instanceof Coins))
 				CMLib.commands().postGet(mob,I.container(),I,false);
 		}

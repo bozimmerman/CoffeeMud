@@ -49,7 +49,7 @@ public class Prayer_DivineLuck extends Prayer
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB,affectableStats);
-		for(int i : CharStats.CODES.SAVING_THROWS())
+		for(final int i : CharStats.CODES.SAVING_THROWS())
 			affectableStats.setStat(i,
 				affectableStats.getStat(i)
 					+1+((affectedMOB.phyStats().level()+(2*super.getXLEVELLevel(invoker())))/5));
@@ -61,14 +61,14 @@ public class Prayer_DivineLuck extends Prayer
 		super.affectPhyStats(affected,affectableStats);
 		if(affected==null) return;
 		if(!(affected instanceof MOB)) return;
-		MOB mob=(MOB)affected;
-		int xlvl=super.getXLEVELLevel(invoker());
+		final MOB mob=(MOB)affected;
+		final int xlvl=super.getXLEVELLevel(invoker());
 		affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+((affected.phyStats().level()+(2*xlvl))/5)+1);
 		affectableStats.setDamage(affectableStats.damage()+((affected.phyStats().level()+(2*xlvl))/5)+1);
 
 		if(mob.isInCombat())
 		{
-			MOB victim=mob.getVictim();
+			final MOB victim=mob.getVictim();
 			if(CMLib.flags().isEvil(victim))
 				affectableStats.setArmor(affectableStats.armor()-5-xlvl);
 		}
@@ -82,7 +82,7 @@ public class Prayer_DivineLuck extends Prayer
 		// undo the affects of this spell
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 
 		super.unInvoke();
 
@@ -104,7 +104,7 @@ public class Prayer_DivineLuck extends Prayer
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
@@ -112,7 +112,7 @@ public class Prayer_DivineLuck extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> become(s) divinely lucky.":"^S<S-NAME> "+prayWord(mob)+" for divine luck.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> become(s) divinely lucky.":"^S<S-NAME> "+prayWord(mob)+" for divine luck.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

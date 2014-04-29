@@ -40,14 +40,14 @@ public class JournalMessageNext extends StdWebMacro
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
-		java.util.Map<String,String> parms=parseParms(parm);
-		String journalName=httpReq.getUrlParameter("JOURNAL");
+		final java.util.Map<String,String> parms=parseParms(parm);
+		final String journalName=httpReq.getUrlParameter("JOURNAL");
 		if(journalName==null)
 			return " @break@";
 
 		if(CMLib.journals().isArchonJournalName(journalName))
 		{
-			MOB M = Authenticate.getAuthenticatedMob(httpReq);
+			final MOB M = Authenticate.getAuthenticatedMob(httpReq);
 			if((M==null)||(!CMSecurity.isASysOp(M)))
 				return " @break@";
 		}
@@ -66,16 +66,16 @@ public class JournalMessageNext extends StdWebMacro
 			}
 			return "";
 		}
-		MOB M = Authenticate.getAuthenticatedMob(httpReq);
+		final MOB M = Authenticate.getAuthenticatedMob(httpReq);
 		cardinal++;
 		JournalsLibrary.JournalEntry entry = null;
-		String page=httpReq.getUrlParameter("JOURNALPAGE");
-		String mpage=httpReq.getUrlParameter("MESSAGEPAGE");
-		String parent=httpReq.getUrlParameter("JOURNALPARENT");
-		String dbsearch=httpReq.getUrlParameter("DBSEARCH");
-		Clan setClan=CMLib.clans().getClan(httpReq.getUrlParameter("CLAN"));
-		JournalsLibrary.ForumJournal journal= CMLib.journals().getForumJournal(journalName,setClan);
-		List<JournalsLibrary.JournalEntry> msgs=JournalInfo.getMessages(journalName,journal,page,mpage,parent,dbsearch,httpReq.getRequestObjects());
+		final String page=httpReq.getUrlParameter("JOURNALPAGE");
+		final String mpage=httpReq.getUrlParameter("MESSAGEPAGE");
+		final String parent=httpReq.getUrlParameter("JOURNALPARENT");
+		final String dbsearch=httpReq.getUrlParameter("DBSEARCH");
+		final Clan setClan=CMLib.clans().getClan(httpReq.getUrlParameter("CLAN"));
+		final JournalsLibrary.ForumJournal journal= CMLib.journals().getForumJournal(journalName,setClan);
+		final List<JournalsLibrary.JournalEntry> msgs=JournalInfo.getMessages(journalName,journal,page,mpage,parent,dbsearch,httpReq.getRequestObjects());
 		while((entry==null)||(!CMLib.journals().canReadMessage(entry,srch,M,parms.containsKey("NOPRIV"))))
 		{
 			entry = JournalInfo.getNextEntry(msgs,last);

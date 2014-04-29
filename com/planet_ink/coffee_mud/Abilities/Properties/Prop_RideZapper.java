@@ -58,7 +58,7 @@ public class Prop_RideZapper extends Prop_HaveZapper
 		if(affected==null) return true;
 		if(!(affected instanceof Rideable)) return true;
 
-		MOB mob=msg.source();
+		final MOB mob=msg.source();
 		if(mob.location()==null) return true;
 
 		if(msg.amITarget(affected))

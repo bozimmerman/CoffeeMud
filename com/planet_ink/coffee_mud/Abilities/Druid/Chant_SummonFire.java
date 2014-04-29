@@ -58,7 +58,7 @@ public class Chant_SummonFire extends Chant
 		super.unInvoke();
 		if(canBeUninvoked())
 		{
-			Item fire=littleFire; // protects against uninvoke loops!
+			final Item fire=littleFire; // protects against uninvoke loops!
 			littleFire=null;
 			fire.destroy();
 			FireLocation.recoverRoomStats();
@@ -89,14 +89,14 @@ public class Chant_SummonFire extends Chant
 			return false;
 
 		// now see if it worked
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":"^S<S-NAME> chant(s) for fire.^?");
+			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":"^S<S-NAME> chant(s) for fire.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				Item I=CMClass.getItem("GenItem");
+				final Item I=CMClass.getItem("GenItem");
 				I.basePhyStats().setWeight(50);
 				I.setName("a magical campfire");
 				I.setDisplayText("A roaring magical campfire has been built here.");
@@ -104,7 +104,7 @@ public class Chant_SummonFire extends Chant
 				I.recoverPhyStats();
 				I.setMaterial(RawMaterial.RESOURCE_NOTHING);
 				I.setMiscText(I.text());
-				Ability B=CMClass.getAbility("Burning");
+				final Ability B=CMClass.getAbility("Burning");
 				I.addNonUninvokableEffect(B);
 
 				mob.location().addItem(I);

@@ -62,14 +62,14 @@ public class Fishing extends GatheringSkill
 	{
 		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Tickable.TICKID_MOB))
 		{
-			MOB mob=(MOB)affected;
+			final MOB mob=(MOB)affected;
 			if(tickUp==6)
 			{
 				if(found!=null)
 					commonTell(mob,"You got a tug on the line!");
 				else
 				{
-					StringBuffer str=new StringBuffer("Nothing is biting around here.\n\r");
+					final StringBuffer str=new StringBuffer("Nothing is biting around here.\n\r");
 					commonTell(mob,str.toString());
 					unInvoke();
 				}
@@ -86,16 +86,16 @@ public class Fishing extends GatheringSkill
 		{
 			if((affected!=null)&&(affected instanceof MOB))
 			{
-				MOB mob=(MOB)affected;
+				final MOB mob=(MOB)affected;
 				if((found!=null)&&(!aborted)&&(!helping))
 				{
-					int amount=CMLib.dice().roll(1,3,0)*(abilityCode());
+					final int amount=CMLib.dice().roll(1,3,0)*(abilityCode());
 					String s="s";
 					if(amount==1) s="";
 					mob.location().show(mob,null,getActivityMessageType(),"<S-NAME> manage(s) to catch "+amount+" pound"+s+" of "+foundShortName+".");
 					for(int i=0;i<amount;i++)
 					{
-						Item newFound=(Item)found.copyOf();
+						final Item newFound=(Item)found.copyOf();
 						mob.location().addItem(newFound,ItemPossessor.Expire.Player_Drop);
 						if((mob.riding()!=null)&&(mob.riding() instanceof Container))
 							newFound.setContainer((Container)mob.riding());
@@ -128,7 +128,7 @@ public class Fishing extends GatheringSkill
 		boolean maybeFish=false;
 		if(mob.location()!=null)
 		{
-			for(int fishCode : RawMaterial.CODES.FISHES())
+			for(final int fishCode : RawMaterial.CODES.FISHES())
 				if(mob.location().myResource()==fishCode)
 				{
 					foundFish=fishCode;
@@ -157,8 +157,8 @@ public class Fishing extends GatheringSkill
 			if(found!=null)
 				foundShortName=RawMaterial.CODES.NAME(found.material()).toLowerCase();
 		}
-		int duration=getDuration(mob,1);
-		CMMsg msg=CMClass.getMsg(mob,found,this,getActivityMessageType(),"<S-NAME> start(s) fishing.");
+		final int duration=getDuration(mob,1);
+		final CMMsg msg=CMClass.getMsg(mob,found,this,getActivityMessageType(),"<S-NAME> start(s) fishing.");
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

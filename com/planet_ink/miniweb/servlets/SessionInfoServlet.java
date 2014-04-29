@@ -42,19 +42,19 @@ public class SessionInfoServlet implements SimpleServlet
 		try
 		{
 			response.setMimeType(MIMEType.html.getType());
-			SimpleServletSession session = request.getSession();
+			final SimpleServletSession session = request.getSession();
 			response.getOutputStream().write("<html><body>".getBytes());
 			response.getOutputStream().write(("<h1>Hello Session#"+session.getSessionId()+"</h1>").getBytes());
-			String lastTouch = DateFormat.getDateTimeInstance().format(new Date(session.getSessionLastTouchTime()));
+			final String lastTouch = DateFormat.getDateTimeInstance().format(new Date(session.getSessionLastTouchTime()));
 			response.getOutputStream().write(("Last request was at: "+lastTouch+"<br>").getBytes());
-			String firstTouch = DateFormat.getDateTimeInstance().format(session.getSessionStart());
+			final String firstTouch = DateFormat.getDateTimeInstance().format(session.getSessionStart());
 			response.getOutputStream().write(("First request was at: "+firstTouch+"<br>").getBytes());
 			if(session.getUser().length()==0)
 				session.setUser("BOB the "+this.hashCode());
 			response.getOutputStream().write(("Your user name is: "+session.getUser()+"<br>").getBytes());
 			response.getOutputStream().write("</body></html>".getBytes());
 		}
-		catch (IOException e)
+		catch (final IOException e)
 		{
 			response.setStatusCode(500);
 		}

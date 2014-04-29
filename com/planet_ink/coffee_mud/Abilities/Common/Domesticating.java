@@ -57,7 +57,7 @@ public class Domesticating extends CommonSkill
 		&&(affected instanceof MOB)
 		&&(tickID==Tickable.TICKID_MOB))
 		{
-			MOB mob=(MOB)affected;
+			final MOB mob=(MOB)affected;
 			if((taming==null)||(!mob.location().isInhabitant(taming)))
 			{
 				messedUp=true;
@@ -74,7 +74,7 @@ public class Domesticating extends CommonSkill
 		{
 			if((affected!=null)&&(affected instanceof MOB))
 			{
-				MOB mob=(MOB)affected;
+				final MOB mob=(MOB)affected;
 				if((taming!=null)&&(!aborted))
 				{
 					if(messedUp)
@@ -110,7 +110,7 @@ public class Domesticating extends CommonSkill
 			str=(String)commands.elementAt(1);
 			newName=CMParms.combine(commands,2);
 		}
-		MOB M=mob.location().fetchInhabitant(str);
+		final MOB M=mob.location().fetchInhabitant(str);
 		if((M==null)||(!CMLib.flags().canBeSeenBy(M,mob)))
 		{
 			commonTell(mob,"You don't see anyone called '"+str+"' here.");
@@ -132,7 +132,7 @@ public class Domesticating extends CommonSkill
 				commonTell(mob,M,null,"You don't know how to domesticate <T-NAME>.");
 			return false;
 		}
-		String theName=newName;
+		final String theName=newName;
 		if((newName!=null)&&(M.amFollowing()==null))
 		{
 			commonTell(mob,"You can only name someones pet.");
@@ -152,7 +152,7 @@ public class Domesticating extends CommonSkill
 				return false;
 			}
 			String oldName=M.name();
-			Vector oldV=CMParms.parse(oldName);
+			final Vector oldV=CMParms.parse(oldName);
 			if(oldV.size()>1)
 			{
 				if(oldName.endsWith(", "+((String)oldV.lastElement())))
@@ -180,14 +180,14 @@ public class Domesticating extends CommonSkill
 		messedUp=!proficiencyCheck(mob,-(levelDiff*5),auto);
 		int duration=35+levelDiff;
 		if(duration<10) duration=10;
-		CMMsg msg=CMClass.getMsg(mob,null,this,getActivityMessageType(),
+		final CMMsg msg=CMClass.getMsg(mob,null,this,getActivityMessageType(),
 			(newName!=null)?"<S-NAME> name(s) "+M.name()+" '"+theName+"'.":"<S-NAME> start(s) domesticating "+M.name()+".");
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
 			if(newName!=null)
 			{
-				Ability A=CMClass.getAbility("Chant_BestowName");
+				final Ability A=CMClass.getAbility("Chant_BestowName");
 				if(A!=null)
 				{
 					A.setMiscText(newName);

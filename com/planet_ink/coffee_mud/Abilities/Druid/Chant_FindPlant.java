@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 
@@ -49,10 +48,10 @@ public class Chant_FindPlant extends Chant
 	protected int nextDirection=-2;
 	public int whatImLookingFor=-1;
 
-	private int[] myMats={RawMaterial.MATERIAL_VEGETATION,
+	private final int[] myMats={RawMaterial.MATERIAL_VEGETATION,
 						  RawMaterial.MATERIAL_WOODEN};
 	protected int[] okMaterials(){    return myMats;}
-	private int[] myRscs={RawMaterial.RESOURCE_COTTON,
+	private final int[] myRscs={RawMaterial.RESOURCE_COTTON,
 						  RawMaterial.RESOURCE_HEMP};
 	protected int[] okResources(){    return myRscs;}
 
@@ -66,7 +65,7 @@ public class Chant_FindPlant extends Chant
 				for(int m=0;m<okResources().length;m++)
 					if(!allResources.contains(Integer.valueOf(okResources()[m])))
 					   allResources.addElement(Integer.valueOf(okResources()[m]));
-			for(int cd : RawMaterial.CODES.ALL())
+			for(final int cd : RawMaterial.CODES.ALL())
 				if(okMaterials()!=null)
 					for(int m=0;m<okMaterials().length;m++)
 						if((cd&RawMaterial.MATERIAL_MASK)==okMaterials()[m])
@@ -91,7 +90,7 @@ public class Chant_FindPlant extends Chant
 			||(!(affected instanceof MOB)))
 				return false;
 
-			MOB mob=(MOB)affected;
+			final MOB mob=(MOB)affected;
 
 			if(nextDirection==999)
 			{
@@ -126,7 +125,7 @@ public class Chant_FindPlant extends Chant
 		if(!(affected instanceof MOB))
 			return;
 
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		if((msg.amISource(mob))
 		&&(msg.amITarget(mob.location()))
 		&&(CMLib.flags().canBeSeenBy(mob.location(),mob))
@@ -137,7 +136,7 @@ public class Chant_FindPlant extends Chant
 	public String itsHere(MOB mob, Room R)
 	{
 		if(R==null) return "";
-		Room room=R;
+		final Room room=R;
 		if(room.myResource()==whatImLookingFor)
 			return "There seems to be "+lookingFor+" around here.\n\r";
 		return "";
@@ -162,8 +161,8 @@ public class Chant_FindPlant extends Chant
 			mob.tell(target,null,null,"<S-NAME> <S-IS-ARE> already trying to "+name());
 			return false;
 		}
-		List<Ability> V=CMLib.flags().flaggedAffects(mob,Ability.FLAG_TRACKING);
-		for(Ability A : V) A.unInvoke();
+		final List<Ability> V=CMLib.flags().flaggedAffects(mob,Ability.FLAG_TRACKING);
+		for(final Ability A : V) A.unInvoke();
 
 		if((commands.size()==0)&&(text().length()>0))
 			commands.addElement(text());
@@ -172,10 +171,10 @@ public class Chant_FindPlant extends Chant
 			mob.tell("Find which "+lookingFor+"?  Use 'CHANT \""+name()+"\" LIST' for a list.");
 			return false;
 		}
-		String s=CMParms.combine(commands,0);
+		final String s=CMParms.combine(commands,0);
 		if(s.equalsIgnoreCase("LIST"))
 		{
-			StringBuffer msg=new StringBuffer("You may search for any of the following: ");
+			final StringBuffer msg=new StringBuffer("You may search for any of the following: ");
 			for(int i=0;i<allOkResources().size();i++)
 				msg.append(RawMaterial.CODES.NAME(((Integer)allOkResources().elementAt(i)).intValue()).toLowerCase()+", ");
 			mob.tell(msg.substring(0,msg.length()-2));
@@ -184,8 +183,8 @@ public class Chant_FindPlant extends Chant
 		whatImLookingFor=-1;
 		for(int i=0;i<allOkResources().size();i++)
 		{
-			int c=((Integer)allOkResources().elementAt(i)).intValue();
-			String d=RawMaterial.CODES.NAME(c);
+			final int c=((Integer)allOkResources().elementAt(i)).intValue();
+			final String d=RawMaterial.CODES.NAME(c);
 			if(d.equalsIgnoreCase(s))
 			{
 				lookingFor=d.toLowerCase();
@@ -202,25 +201,24 @@ public class Chant_FindPlant extends Chant
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		String here=itsHere(target,target.location());
+		final String here=itsHere(target,target.location());
 		if(here.length()>0)
 		{
 			target.tell(here);
 			return true;
 		}
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
-		Vector rooms=new Vector();
+		final Vector rooms=new Vector();
 		TrackingLibrary.TrackingFlags flags;
 		flags = new TrackingLibrary.TrackingFlags()
 				.plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS)
 				.plus(TrackingLibrary.TrackingFlag.NOAIR)
 				.plus(TrackingLibrary.TrackingFlag.NOWATER);
-		List<Room> checkSet=CMLib.tracking().getRadiantRooms(mob.location(),flags,50);
-		for(Iterator<Room> r=checkSet.iterator();r.hasNext();)
+		final List<Room> checkSet=CMLib.tracking().getRadiantRooms(mob.location(),flags,50);
+		for (final Room R : checkSet)
 		{
-			Room R=r.next();
 			if(itsHere(target,R).length()>0)
 				rooms.addElement(R);
 		}
@@ -234,11 +232,11 @@ public class Chant_FindPlant extends Chant
 
 		if((success)&&(theTrail!=null))
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> begin(s) to "+name().toLowerCase()+"s!":"^S<S-NAME> chant(s) for "+lookingFor+".^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> begin(s) to "+name().toLowerCase()+"s!":"^S<S-NAME> chant(s) for "+lookingFor+".^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				Chant_FindPlant newOne=(Chant_FindPlant)this.copyOf();
+				final Chant_FindPlant newOne=(Chant_FindPlant)this.copyOf();
 				if(target.fetchEffect(newOne.ID())==null)
 					target.addEffect(newOne);
 				target.recoverPhyStats();

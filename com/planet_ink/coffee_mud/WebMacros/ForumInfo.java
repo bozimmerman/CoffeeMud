@@ -42,8 +42,8 @@ public class ForumInfo extends StdWebMacro
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
-		java.util.Map<String,String> parms=parseParms(parm);
-		String last=httpReq.getUrlParameter("JOURNAL");
+		final java.util.Map<String,String> parms=parseParms(parm);
+		final String last=httpReq.getUrlParameter("JOURNAL");
 		if(last==null)
 			return " @break@";
 		boolean securityOverride=false;
@@ -52,19 +52,20 @@ public class ForumInfo extends StdWebMacro
 		&&parms.containsKey("ALLFORUMJOURNALS"))
 			securityOverride=true;
 
-		MOB M = Authenticate.getAuthenticatedMob(httpReq);
+		final MOB M = Authenticate.getAuthenticatedMob(httpReq);
 		if((!securityOverride)&&(CMLib.journals().isArchonJournalName(last))&&((M==null)||(!CMSecurity.isASysOp(M))))
 			return " @break@";
 
-		Clan setClan=CMLib.clans().getClan(httpReq.getUrlParameter("CLAN"));
-		JournalsLibrary.ForumJournal journal=CMLib.journals().getForumJournal(last,setClan);
+		final Clan setClan=CMLib.clans().getClan(httpReq.getUrlParameter("CLAN"));
+		final JournalsLibrary.ForumJournal journal=CMLib.journals().getForumJournal(last,setClan);
 		if(journal == null)
 			return " @break@";
 
-		StringBuffer str=new StringBuffer("");
+		final StringBuffer str=new StringBuffer("");
 		if(parms.containsKey("ISSMTPFORWARD"))
 		{
 			@SuppressWarnings("unchecked")
+			final
 			TreeMap<String, JournalsLibrary.SMTPJournal> set=(TreeMap<String, JournalsLibrary.SMTPJournal>) Resources.getResource("SYSTEM_SMTP_JOURNALS");
 			final JournalsLibrary.SMTPJournal entry =(set!=null) ? set.get(last.toUpperCase().trim()) : null;
 			final String email=((M!=null) &&(M.playerStats()!=null) && (M.playerStats().getEmail()!=null)) ? M.playerStats().getEmail() : "";
@@ -81,6 +82,7 @@ public class ForumInfo extends StdWebMacro
 		if(parms.containsKey("SMTPADDRESS"))
 		{
 			@SuppressWarnings("unchecked")
+			final
 			TreeMap<String, JournalsLibrary.SMTPJournal> set=(TreeMap<String, JournalsLibrary.SMTPJournal>) Resources.getResource("SYSTEM_SMTP_JOURNALS");
 			final JournalsLibrary.SMTPJournal entry =(set!=null) ? set.get(last.toUpperCase().trim()) : null;
 			if((entry!=null)&&(entry.forward))
@@ -122,7 +124,7 @@ public class ForumInfo extends StdWebMacro
 		if(parms.containsKey("EXPIRE"))
 			str.append( "").append(", ");
 
-		JournalsLibrary.JournalSummaryStats stats = CMLib.journals().getJournalStats(journal);
+		final JournalsLibrary.JournalSummaryStats stats = CMLib.journals().getJournalStats(journal);
 		if(stats == null)
 			return " @break@";
 

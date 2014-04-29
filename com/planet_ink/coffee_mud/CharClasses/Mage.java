@@ -50,7 +50,7 @@ public class Mage extends StdCharClass
 	@Override protected String armorFailMessage(){return "<S-NAME> watch(es) <S-HIS-HER> armor absorb <S-HIS-HER> magical energy!";}
 	@Override public int allowedArmorLevel(){return CharClass.ARMOR_CLOTH;}
 	@Override public int allowedWeaponLevel(){return CharClass.WEAPONS_MAGELIKE;}
-	private HashSet disallowedWeapons=buildDisallowedWeaponClasses();
+	private final HashSet disallowedWeapons=buildDisallowedWeaponClasses();
 	@Override protected HashSet disallowedWeaponClasses(MOB mob){return disallowedWeapons;}
 	@Override public int requiredArmorSourceMinor(){return CMMsg.TYP_CAST_SPELL;}
 	protected boolean grantSomeSpells(){return true;}
@@ -343,9 +343,9 @@ public class Mage extends StdCharClass
 		if(!grantSomeSpells())
 			return;
 
-		Vector grantable=new Vector();
+		final Vector grantable=new Vector();
 
-		int level=mob.charStats().getClassLevel(this);
+		final int level=mob.charStats().getClassLevel(this);
 		int numSpells=3;
 		if(level<8)
 			numSpells=3;
@@ -354,9 +354,9 @@ public class Mage extends StdCharClass
 			numSpells=2;
 		else
 			numSpells=1;
-		for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
+		for(final Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 		{
-			Ability A=a.nextElement();
+			final Ability A=a.nextElement();
 			if((CMLib.ableMapper().getQualifyingLevel(ID(),true,A.ID())==level)
 			&&((CMLib.ableMapper().getQualifyingLevel(ID(),true,A.ID())<=25)
 			&&(!CMLib.ableMapper().getSecretSkill(ID(),true,A.ID()))
@@ -366,7 +366,7 @@ public class Mage extends StdCharClass
 		}
 		for(int a=0;a<mob.numAbilities();a++)
 		{
-			Ability A=mob.fetchAbility(a);
+			final Ability A=mob.fetchAbility(a);
 			if(grantable.contains(A.ID()))
 			{
 				grantable.remove(A.ID());
@@ -376,7 +376,7 @@ public class Mage extends StdCharClass
 		for(int i=0;i<numSpells;i++)
 		{
 			if(grantable.size()==0) break;
-			String AID=(String)grantable.elementAt(CMLib.dice().roll(1,grantable.size(),-1));
+			final String AID=(String)grantable.elementAt(CMLib.dice().roll(1,grantable.size(),-1));
 			if(AID!=null)
 			{
 				grantable.removeElement(AID);
@@ -395,7 +395,7 @@ public class Mage extends StdCharClass
 		if(outfitChoices==null)
 		{
 			outfitChoices=new Vector();
-			Weapon w=CMClass.getWeapon("Quarterstaff");
+			final Weapon w=CMClass.getWeapon("Quarterstaff");
 			outfitChoices.add(w);
 		}
 		return outfitChoices;

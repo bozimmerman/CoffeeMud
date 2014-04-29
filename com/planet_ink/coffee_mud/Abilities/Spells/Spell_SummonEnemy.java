@@ -49,7 +49,7 @@ public class Spell_SummonEnemy extends Spell
 	@Override
 	public void unInvoke()
 	{
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		super.unInvoke();
 		if((canBeUninvoked())&&(mob!=null))
 		{
@@ -78,19 +78,19 @@ public class Spell_SummonEnemy extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
 			invoker=mob;
-			CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":"^S<S-NAME> conjur(s) the dark shadow of a living creature...^?");
+			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":"^S<S-NAME> conjur(s) the dark shadow of a living creature...^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				MOB target = determineMonster(mob, mob.phyStats().level());
+				final MOB target = determineMonster(mob, mob.phyStats().level());
 				if(target!=null)
 				{
-					CMMsg msg2=CMClass.getMsg(mob,target,this,verbalCastCode(mob,null,auto)|CMMsg.MASK_MALICIOUS,null);
+					final CMMsg msg2=CMClass.getMsg(mob,target,this,verbalCastCode(mob,null,auto)|CMMsg.MASK_MALICIOUS,null);
 					if(mob.location().okMessage(mob, msg2))
 					{
 						mob.location().send(mob, msg2);
@@ -119,10 +119,10 @@ public class Spell_SummonEnemy extends Spell
 		int tries=10000;
 		while((monster==null)&&((--tries)>0))
 		{
-			Room room=CMLib.map().getRandomRoom();
+			final Room room=CMLib.map().getRandomRoom();
 			if((room!=null)&&CMLib.flags().canAccess(caster,room)&&(room.numInhabitants()>0))
 			{
-				MOB mob=room.fetchRandomInhabitant();
+				final MOB mob=room.fetchRandomInhabitant();
 				if((mob!=null)
 				&&(!(mob instanceof Deity))
 				&&(mob.phyStats().level()>=level-(CMProps.getIntVar(CMProps.Int.EXPRATE)/2))

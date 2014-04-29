@@ -49,7 +49,7 @@ public class ChannelAdd extends Packet  {
 			type = Packet.CHAN_ADD;
 			channel = (String)v.elementAt(6);
 		}
-		catch( ClassCastException e )
+		catch( final ClassCastException e )
 		{
 			throw new InvalidPacketException();
 		}
@@ -76,8 +76,8 @@ public class ChannelAdd extends Packet  {
 	@Override
 	public String toString()
 	{
-		NameServer n = Intermud.getNameServer();
-		String str=
+		final NameServer n = Intermud.getNameServer();
+		final String str=
 			 "({\"channel-add\",5,\"" + I3Server.getMudName() + "\",\"" +
 			   sender_name + "\",\""+n.name+"\",0,\"" + channel + "\",0,})";
 		return str;

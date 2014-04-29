@@ -46,12 +46,12 @@ public class Goblinese extends StdLanguage
 	{
 		if(wordLists==null)
 		{
-			String[] one={"i","klpt","ih","g"};
-			String[] two={"te","il","ag","go"};
-			String[] three={"nik","rem","tit","nip","pop","pon","ipi","wip","pec"};
-			String[] four={"perp","merp","nerp","pein","noog","gobo","koer","werp","terp","tert","grlt","Jrl","gran","kert"};
-			String[] five={"whamb","thwam","nipgo","pungo","upoin","krepe","tungo","pongo","twang","hrgap","splt","krnch","baam","poww"};
-			String[] six={"tawthak","krsplt","palpep","poopoo","dungdung","owwie","greepnak","tengak","grnoc","pisspiss","phlyyytt","plllb","hrangnok","ticktick","nurang"};
+			final String[] one={"i","klpt","ih","g"};
+			final String[] two={"te","il","ag","go"};
+			final String[] three={"nik","rem","tit","nip","pop","pon","ipi","wip","pec"};
+			final String[] four={"perp","merp","nerp","pein","noog","gobo","koer","werp","terp","tert","grlt","Jrl","gran","kert"};
+			final String[] five={"whamb","thwam","nipgo","pungo","upoin","krepe","tungo","pongo","twang","hrgap","splt","krnch","baam","poww"};
+			final String[] six={"tawthak","krsplt","palpep","poopoo","dungdung","owwie","greepnak","tengak","grnoc","pisspiss","phlyyytt","plllb","hrangnok","ticktick","nurang"};
 			wordLists=new Vector<String[]>();
 			wordLists.add(one);
 			wordLists.add(two);

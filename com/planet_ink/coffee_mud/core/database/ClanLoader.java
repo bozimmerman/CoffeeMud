@@ -55,12 +55,12 @@ public class ClanLoader
 		try
 		{
 			D=DB.DBFetch();
-			ResultSet R=D.query("SELECT * FROM CMCLAN");
+			final ResultSet R=D.query("SELECT * FROM CMCLAN");
 			recordCount=DB.getRecordCount(D,R);
 			while(R.next())
 			{
 				currentRecordPos=R.getRow();
-				String name=DBConnections.getRes(R,"CMCLID");
+				final String name=DBConnections.getRes(R,"CMCLID");
 				C=(Clan)CMClass.getCommon("DefaultClan");
 				C.setName(name);
 				C.setPremise(DBConnections.getRes(R,"CMDESC"));
@@ -75,7 +75,7 @@ public class ClanLoader
 				updateBootStatus("Clans");
 			}
 		}
-		catch(Exception sqle)
+		catch(final Exception sqle)
 		{
 			Log.errOut("Clan",sqle);
 		}
@@ -88,7 +88,7 @@ public class ClanLoader
 
 	public void DBUpdate(Clan C)
 	{
-		String str="UPDATE CMCLAN SET "
+		final String str="UPDATE CMCLAN SET "
 				+"CMDESC='"+C.getPremise()+"',"
 				+"CMACPT='"+C.getAcceptanceSettings()+"',"
 				+"CMPOLI=?,"
@@ -104,7 +104,7 @@ public class ClanLoader
 	public void DBCreate(Clan C)
 	{
 		if(C.clanID().length()==0) return;
-		String str="INSERT INTO CMCLAN ("
+		final String str="INSERT INTO CMCLAN ("
 			+"CMCLID,"
 			+"CMTYPE,"
 			+"CMDESC,"

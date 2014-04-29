@@ -43,7 +43,7 @@ public class PollCmd extends StdCommand
 		throws java.io.IOException
 	{
 		if((mob==null)||mob.isMonster()) return false;
-		java.util.List<Poll>[] mypolls=CMLib.polls().getMyPollTypes(mob,(commands==null));
+		final java.util.List<Poll>[] mypolls=CMLib.polls().getMyPollTypes(mob,(commands==null));
 
 		if((mypolls[0].size()==0)&&(mypolls[2].size()==0))
 		{
@@ -61,7 +61,7 @@ public class PollCmd extends StdCommand
 			}
 		}
 
-		for(Poll P : mypolls[0])
+		for(final Poll P : mypolls[0])
 		{
 			CMLib.polls().processVote(P, mob);
 			if(P.mayISeeResults(mob))
@@ -78,7 +78,7 @@ public class PollCmd extends StdCommand
 				mob.tell("\n\r^HResults from "+mypolls[2].size()+" poll(s) <-IS-ARE> still available.^N\n\r");
 			return true;
 		}
-		for(Poll P : mypolls[1])
+		for(final Poll P : mypolls[1])
 		{
 			CMLib.polls().processVote(P, mob);
 			if(P.mayISeeResults(mob))
@@ -91,7 +91,7 @@ public class PollCmd extends StdCommand
 		if(mypolls[2].size()>0)
 			mob.tell("\n\r^HPrevious polling results:^N\n\r");
 		int i=0;
-		for(Poll P : mypolls[2])
+		for(final Poll P : mypolls[2])
 		{
 			if(P.mayISeeResults(mob))
 			{

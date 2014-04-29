@@ -47,13 +47,13 @@ public class Dance_Jingledress extends Dance
 		if(!super.tick(ticking,tickID))
 			return false;
 
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		if(mob==null)
 			return false;
 
 		if(invoker()!=null)
 		{
-			int healing=CMLib.dice().roll(2,adjustedLevel(invoker(),0),4);
+			final int healing=CMLib.dice().roll(2,adjustedLevel(invoker(),0),4);
 			CMLib.combat().postHealing(invoker(),mob,this,CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,healing,null);
 		}
 		return true;

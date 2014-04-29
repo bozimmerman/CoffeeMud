@@ -53,7 +53,7 @@ public class Fighter_PressurePoints extends MonkSkill
 		if(!(affected instanceof MOB))
 			return true;
 
-		MOB mob=(MOB)affected;
+		final MOB mob=(MOB)affected;
 		if(msg.amISource(mob)
 		&&(CMLib.flags().aliveAwakeMobile(mob,true))
 		&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
@@ -65,8 +65,8 @@ public class Fighter_PressurePoints extends MonkSkill
 		&&((mob.fetchAbility(ID())==null)||proficiencyCheck(null,(-90)+mob.charStats().getStat(CharStats.STAT_STRENGTH)+(2*getXLEVELLevel(mob)),false))
 		&&(!anyWeapons(msg.source())))
 		{
-			double pctRecovery=(CMath.div(proficiency(),100.0)*Math.random());
-			int bonus=(int)Math.round(CMath.mul((msg.value()),pctRecovery));
+			final double pctRecovery=(CMath.div(proficiency(),100.0)*Math.random());
+			final int bonus=(int)Math.round(CMath.mul((msg.value()),pctRecovery));
 			msg.setValue(msg.value()+bonus);
 			helpProficiency(mob, 0);
 		}

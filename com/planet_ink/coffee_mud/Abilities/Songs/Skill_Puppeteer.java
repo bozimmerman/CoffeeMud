@@ -49,7 +49,7 @@ public class Skill_Puppeteer extends BardSkill
 		if((affected==null)||(!(affected instanceof Item)))
 			return true;
 
-		Item puppet=(Item)affected;
+		final Item puppet=(Item)affected;
 
 		// when this spell is on a MOBs Affected list,
 		// it should consistantly prevent the mob
@@ -92,7 +92,7 @@ public class Skill_Puppeteer extends BardSkill
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		MOB M=invoker();
+		final MOB M=invoker();
 		if((affected!=null)
 		&&(affected instanceof Item)
 		&&(((Item)affected).owner()!=null)
@@ -102,7 +102,7 @@ public class Skill_Puppeteer extends BardSkill
 		{
 			if(M.isInCombat())
 			{
-				boolean isHit=(CMLib.combat().rollToHit(CMLib.combat().adjustedAttackBonus(M,M.getVictim())+(5*getXLEVELLevel(M))
+				final boolean isHit=(CMLib.combat().rollToHit(CMLib.combat().adjustedAttackBonus(M,M.getVictim())+(5*getXLEVELLevel(M))
 							+((Item)affected).phyStats().attackAdjustment(),CMLib.combat().adjustedArmor(M.getVictim()), 0));
 				if(!isHit)
 					M.location().show(M,M.getVictim(),affected,CMMsg.MSG_OK_ACTION,"<O-NAME> attacks <T-NAME> and misses!");
@@ -159,7 +159,7 @@ public class Skill_Puppeteer extends BardSkill
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		Item target=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_ANY);
+		final Item target=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_ANY);
 		if(target==null) return false;
 		if(target.fetchEffect(ID())!=null)
 		{
@@ -176,11 +176,11 @@ public class Skill_Puppeteer extends BardSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_NOISYMOVEMENT,CMMsg.TYP_DELICATE_HANDS_ACT,CMMsg.TYP_DELICATE_HANDS_ACT,null);
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_NOISYMOVEMENT,CMMsg.TYP_DELICATE_HANDS_ACT,CMMsg.TYP_DELICATE_HANDS_ACT,null);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

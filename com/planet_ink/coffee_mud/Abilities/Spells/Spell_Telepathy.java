@@ -44,23 +44,23 @@ public class Spell_Telepathy extends Spell
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		MOB target=this.getTarget(mob,commands,givenTarget);
+		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,somanticCastCode(mob,target,auto),auto?"":"^S<S-NAME> concentrate(s) on <T-NAMESELF>!^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,somanticCastCode(mob,target,auto),auto?"":"^S<S-NAME> concentrate(s) on <T-NAMESELF>!^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				StringBuilder thoughts=new StringBuilder("");
-				LegalBehavior LB=CMLib.law().getLegalBehavior(target.location());
-				Area AO=CMLib.law().getLegalObject(target.location());
+				final StringBuilder thoughts=new StringBuilder("");
+				final LegalBehavior LB=CMLib.law().getLegalBehavior(target.location());
+				final Area AO=CMLib.law().getLegalObject(target.location());
 				if((LB!=null)&&(AO!=null))
 				{
 					if(LB.isJudge(AO, target))
@@ -69,7 +69,7 @@ public class Spell_Telepathy extends Spell
 					if(LB.isAnyOfficer(AO, target))
 						thoughts.append("You detect the stern thoughts of a law officer.  ");
 				}
-				for(Enumeration<Behavior> b=target.behaviors();b.hasMoreElements();)
+				for(final Enumeration<Behavior> b=target.behaviors();b.hasMoreElements();)
 				{
 					final Behavior B=b.nextElement();
 					final String accounting=B.accountForYourself();

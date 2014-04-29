@@ -51,7 +51,7 @@ public class Skill_UndeadInvisibility extends StdSkill
 		&&(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_ALWAYS))
 		&&((msg.amITarget(affected))))
 		{
-			MOB target=(MOB)msg.target();
+			final MOB target=(MOB)msg.target();
 			if((!target.isInCombat())
 			&&(msg.source().location()==target.location())
 			&&(msg.source().charStats().getMyRace().racialCategory().equals("Undead"))

@@ -43,7 +43,7 @@ public class Reply extends StdCommand
 		throws java.io.IOException
 	{
 		if(mob==null) return false;
-		PlayerStats pstats=mob.playerStats();
+		final PlayerStats pstats=mob.playerStats();
 		if(pstats==null) return false;
 		if(pstats.getReplyToMOB()==null)
 		{
@@ -63,7 +63,7 @@ public class Reply extends StdCommand
 			mob.tell("Tell '"+pstats.getReplyToMOB().Name()+"' what?");
 			return false;
 		}
-		int replyType=pstats.getReplyType();
+		final int replyType=pstats.getReplyType();
 
 		switch(replyType)
 		{
@@ -78,7 +78,7 @@ public class Reply extends StdCommand
 			break;
 		case PlayerStats.REPLY_TELL:
 		{
-			Session S=pstats.getReplyToMOB().session();
+			final Session S=pstats.getReplyToMOB().session();
 			if(S!=null) S.snoopSuspension(1);
 			CMLib.commands().postSay(mob,pstats.getReplyToMOB(),CMParms.combine(commands,1),true,true);
 			if(S!=null) S.snoopSuspension(-11);
@@ -86,7 +86,7 @@ public class Reply extends StdCommand
 		}
 		case PlayerStats.REPLY_YELL:
 			{
-				Command C=CMClass.getCommand("Say");
+				final Command C=CMClass.getCommand("Say");
 				if((C!=null)&&(C.securityCheck(mob)))
 				{
 					commands.setElementAt("Yell",0);

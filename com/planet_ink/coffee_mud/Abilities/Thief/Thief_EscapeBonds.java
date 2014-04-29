@@ -52,21 +52,21 @@ public class Thief_EscapeBonds extends ThiefSkill
 	{
 		if((affected!=null)&&(affected instanceof MOB))
 		{
-			MOB mob=(MOB)affected;
+			final MOB mob=(MOB)affected;
 			if((!CMLib.flags().aliveAwakeMobile(mob,true))
 			||(!CMLib.flags().isBound(mob)))
 			{ unInvoke(); return false;}
-			List<Ability> V=CMLib.flags().flaggedAffects(mob,Ability.FLAG_BINDING);
+			final List<Ability> V=CMLib.flags().flaggedAffects(mob,Ability.FLAG_BINDING);
 			if(V.size()==0)
 			{ unInvoke(); return false;}
-			int newStrength=mob.charStats().getStat(CharStats.STAT_STRENGTH)
+			final int newStrength=mob.charStats().getStat(CharStats.STAT_STRENGTH)
 						   +getXLEVELLevel(mob)
 						   +(mob.charStats().getStat(CharStats.STAT_DEXTERITY)*2);
-			CMMsg msg=CMClass.getMsg(mob,null,null,CMMsg.MSG_HANDS,"<S-NAME> slip(s) and wiggle(s) in <S-HIS-HER> bonds.");
+			final CMMsg msg=CMClass.getMsg(mob,null,null,CMMsg.MSG_HANDS,"<S-NAME> slip(s) and wiggle(s) in <S-HIS-HER> bonds.");
 			for(int v=0;v<V.size();v++)
 			{
 				mob.charStats().setStat(CharStats.STAT_STRENGTH,newStrength);
-				Ability A=V.get(v);
+				final Ability A=V.get(v);
 				if(A.okMessage(mob,msg)) A.executeMsg(mob,msg);
 			}
 			mob.recoverCharStats();
@@ -77,7 +77,7 @@ public class Thief_EscapeBonds extends ThiefSkill
 	@Override
 	public void unInvoke()
 	{
-		MOB M=(MOB)affected;
+		final MOB M=(MOB)affected;
 		super.unInvoke();
 		if((M!=null)&&(!M.amDead()))
 		{
@@ -97,7 +97,7 @@ public class Thief_EscapeBonds extends ThiefSkill
 				return Ability.QUALITY_INDIFFERENT;
 			if((!CMLib.flags().aliveAwakeMobile(mob,true))||(!CMLib.flags().isBound(mob)))
 				return Ability.QUALITY_INDIFFERENT;
-			List<Ability> V=CMLib.flags().flaggedAffects(mob,Ability.FLAG_BINDING);
+			final List<Ability> V=CMLib.flags().flaggedAffects(mob,Ability.FLAG_BINDING);
 			if(V.size()==0)
 				return Ability.QUALITY_INDIFFERENT;
 			return super.castingQuality(mob, target,Ability.QUALITY_BENEFICIAL_SELF);
@@ -122,7 +122,7 @@ public class Thief_EscapeBonds extends ThiefSkill
 			mob.tell(target,null,null,"<T-NAME> <T-IS-ARE> not bound!");
 			return false;
 		}
-		List<Ability> V=CMLib.flags().flaggedAffects(mob,Ability.FLAG_BINDING);
+		final List<Ability> V=CMLib.flags().flaggedAffects(mob,Ability.FLAG_BINDING);
 		if(V.size()==0)
 		{
 			mob.tell(target,null,null,"<T-NAME> <T-IS-ARE> not bound by anything which can be slipped free of.");
@@ -132,9 +132,9 @@ public class Thief_EscapeBonds extends ThiefSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
-		CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_DELICATE_HANDS_ACT,auto?"<T-NAME> start(s) slipping from <T-HIS-HER> bonds.":"<S-NAME> attempt(s) to slip free of <S-HIS-HER> bonds.");
+		final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_DELICATE_HANDS_ACT,auto?"<T-NAME> start(s) slipping from <T-HIS-HER> bonds.":"<S-NAME> attempt(s) to slip free of <S-HIS-HER> bonds.");
 		if(!success)
 			return beneficialVisualFizzle(mob,null,"<S-NAME> attempt(s) to slip free of <S-HIS-HER> bonds, but can't seem to concentrate.");
 		else

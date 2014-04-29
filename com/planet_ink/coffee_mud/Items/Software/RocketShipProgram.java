@@ -65,7 +65,7 @@ public class RocketShipProgram extends GenShipProgram
 
 	protected String buildActivationMenu(List<ShipEngine> engines)
 	{
-		StringBuilder str=new StringBuilder();
+		final StringBuilder str=new StringBuilder();
 		str.append("^X").append(CMStrings.centerPreserve(" -- Fight Status -- ",60)).append("^.^N\n\r");
 		final SpaceObject spaceObject=CMLib.map().getSpaceObject(this,true);
 		final SpaceShip ship=(spaceObject instanceof SpaceShip)?(SpaceShip)spaceObject:null;
@@ -76,7 +76,7 @@ public class RocketShipProgram extends GenShipProgram
 		if(ship.getIsDocked() != null)
 		{
 			str.append("^H").append(CMStrings.padRight("Docked at ^w"+ship.getIsDocked().displayText(null),60)).append("^.^N\n\r");
-			SpaceObject planet=CMLib.map().getSpaceObject(ship.getIsDocked(), true);
+			final SpaceObject planet=CMLib.map().getSpaceObject(ship.getIsDocked(), true);
 			if(planet!=null)
 				str.append("^H").append(CMStrings.padRight("On Planet ^w"+planet.Name(),60)).append("^.^N\n\r");
 		}
@@ -85,13 +85,13 @@ public class RocketShipProgram extends GenShipProgram
 			str.append("^Z").append(CMStrings.centerPreserve(" -- System Malfunction-- ",60)).append("^.^N\n\r");
 		else
 		{
-			List<SpaceObject> orbs=CMLib.map().getSpaceObjectsWithin(shipSpaceObject,0,SpaceObject.DISTANCE_LIGHTMINUTE);
+			final List<SpaceObject> orbs=CMLib.map().getSpaceObjectsWithin(shipSpaceObject,0,SpaceObject.DISTANCE_LIGHTMINUTE);
 			SpaceObject orbitingPlanet=null;
 			SpaceObject altitudePlanet=null;
-			for(SpaceObject orb : orbs)
+			for(final SpaceObject orb : orbs)
 				if(orb instanceof Area)
 				{
-					long distance=CMLib.map().getDistanceFrom(shipSpaceObject, orb);
+					final long distance=CMLib.map().getDistanceFrom(shipSpaceObject, orb);
 					if((distance > orb.radius())&&((distance-orb.radius()) < orb.radius()*SpaceObject.MULTIPLIER_GRAVITY_RADIUS))
 						altitudePlanet=orb; // since they are sorted, this would be the nearest.
 					if((distance > orb.radius()*SpaceObject.MULTIPLIER_ORBITING_RADIUS_MIN)&&(distance<orb.radius()*SpaceObject.MULTIPLIER_ORBITING_RADIUS_MAX))
@@ -102,7 +102,7 @@ public class RocketShipProgram extends GenShipProgram
 			str.append("^H").append(CMStrings.padRight("Speed",10));
 			str.append("^N").append(CMStrings.padRight(Long.toString(ship.speed()),20));
 			str.append("^H").append(CMStrings.padRight("Direction",10));
-			String dirStr=new StringBuilder(""+Math.round(Math.toDegrees(ship.direction()[0])*100)/100.0).append(" mark ").append(Math.round(Math.toDegrees(ship.direction()[0])*100)/100.0).toString();
+			final String dirStr=new StringBuilder(""+Math.round(Math.toDegrees(ship.direction()[0])*100)/100.0).append(" mark ").append(Math.round(Math.toDegrees(ship.direction()[0])*100)/100.0).toString();
 			str.append("^N").append(CMStrings.padRight(dirStr,20));
 			str.append("\n\r");
 			str.append("^H").append(CMStrings.padRight("Location",10));
@@ -111,7 +111,7 @@ public class RocketShipProgram extends GenShipProgram
 			else
 				str.append("^N").append(CMStrings.padRight(CMParms.toStringList(shipSpaceObject.coordinates()),50));
 			str.append("^H").append(CMStrings.padRight("Facing",10));
-			String facStr=new StringBuilder(""+Math.round(Math.toDegrees(ship.facing()[0])*100)/100.0).append(" mark ").append(Math.round(Math.toDegrees(ship.facing()[0])*100)/100.0).toString();
+			final String facStr=new StringBuilder(""+Math.round(Math.toDegrees(ship.facing()[0])*100)/100.0).append(" mark ").append(Math.round(Math.toDegrees(ship.facing()[0])*100)/100.0).toString();
 			str.append("^N").append(CMStrings.padRight(facStr,20));
 			if(altitudePlanet!=null)
 			{
@@ -132,7 +132,7 @@ public class RocketShipProgram extends GenShipProgram
 		{
 			str.append("^X").append(CMStrings.centerPreserve(" -- Engines -- ",60)).append("^.^N\n\r");
 			int engineNumber=1;
-			for(ShipEngine engine : engines)
+			for(final ShipEngine engine : engines)
 			{
 				str.append("^H").append(CMStrings.padRight("ENGINE"+engineNumber,9));
 				str.append(CMStrings.padRight(engine.activated()?"^gACTIVE":"^rINACTIVE",9));
@@ -166,9 +166,9 @@ public class RocketShipProgram extends GenShipProgram
 				engines=new Vector<ShipEngine>(0);
 			else
 			{
-				List<Electronics> electronics=CMLib.tech().getMakeRegisteredElectronics(circuitKey);
+				final List<Electronics> electronics=CMLib.tech().getMakeRegisteredElectronics(circuitKey);
 				engines=new Vector<ShipEngine>(1);
-				for(Electronics E : electronics)
+				for(final Electronics E : electronics)
 					if(E instanceof ShipComponent.ShipEngine)
 						engines.add((ShipComponent.ShipEngine)E);
 
@@ -189,15 +189,15 @@ public class RocketShipProgram extends GenShipProgram
 
 	protected ShipEngine findEngineByName(String name)
 	{
-		List<ShipEngine> engines=getEngines();
+		final List<ShipEngine> engines=getEngines();
 		if(engines.size()==0) return null;
 		name=name.toUpperCase();
 		if(name.startsWith("ENGINE"))
 		{
-			String numStr=name.substring(6);
+			final String numStr=name.substring(6);
 			if(!CMath.isInteger(numStr))
 				return null;
-			int num=CMath.s_int(numStr);
+			final int num=CMath.s_int(numStr);
 			if((num>0)&&(num<=engines.size()))
 				return engines.get(num-1);
 			return null;
@@ -210,10 +210,10 @@ public class RocketShipProgram extends GenShipProgram
 
 	@Override public boolean isCommandString(String word, boolean isActive)
 	{
-		Vector<String> parsed=CMParms.parse(word);
+		final Vector<String> parsed=CMParms.parse(word);
 		if(parsed.size()==0)
 			return false;
-		String uword=parsed.get(0).toUpperCase();
+		final String uword=parsed.get(0).toUpperCase();
 		if(uword.startsWith("ENGINEHELP"))
 			return true;
 		return findEngineByName(uword)!=null;
@@ -248,13 +248,13 @@ public class RocketShipProgram extends GenShipProgram
 	{
 		synchronized(this)
 		{
-			Vector<String> parsed=CMParms.parse(message);
+			final Vector<String> parsed=CMParms.parse(message);
 			if(parsed.size()==0)
 			{
 				super.addScreenMessage("Error: No command.");
 				return;
 			}
-			String uword=parsed.get(0).toUpperCase();
+			final String uword=parsed.get(0).toUpperCase();
 			if(uword.equalsIgnoreCase("ENGINEHELP"))
 			{
 				super.addScreenMessage("^HENGINEHELP:^N\n\r^N"+"The ENGINE command instructs the given " +
@@ -265,7 +265,7 @@ public class RocketShipProgram extends GenShipProgram
 						"in sustained accelleration.");
 				return;
 			}
-			ShipEngine E=findEngineByName(uword);
+			final ShipEngine E=findEngineByName(uword);
 			if(E==null)
 			{
 				super.addScreenMessage("Error: Unknown engine '"+uword+"'.");
@@ -315,8 +315,8 @@ public class RocketShipProgram extends GenShipProgram
 				}
 			}
 
-			String code=Technical.TechCommand.THRUST.makeCommand(portDir,Integer.valueOf(amount));
-			CMMsg msg=CMClass.getMsg(mob, E, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, code, CMMsg.NO_EFFECT,null);
+			final String code=Technical.TechCommand.THRUST.makeCommand(portDir,Integer.valueOf(amount));
+			final CMMsg msg=CMClass.getMsg(mob, E, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, code, CMMsg.NO_EFFECT,null);
 			if(E.owner() instanceof Room)
 			{
 				if(((Room)E.owner()).okMessage(mob, msg))
@@ -337,7 +337,7 @@ public class RocketShipProgram extends GenShipProgram
 	@Override
 	public void onDeactivate(MOB mob, String message)
 	{
-		Vector<String> parsed=CMParms.parse(message);
+		final Vector<String> parsed=CMParms.parse(message);
 		if(parsed.size()==0)
 		{
 			super.addScreenMessage("Syntax Error!");
@@ -357,7 +357,7 @@ public class RocketShipProgram extends GenShipProgram
 			super.addScreenMessage("Unknown engine '"+uword+"'!");
 			return;
 		}
-		CMMsg msg=CMClass.getMsg(mob, E, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_DEACTIVATE|CMMsg.MASK_CNTRLMSG, "", CMMsg.NO_EFFECT,null);
+		final CMMsg msg=CMClass.getMsg(mob, E, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_DEACTIVATE|CMMsg.MASK_CNTRLMSG, "", CMMsg.NO_EFFECT,null);
 		if(E.owner() instanceof Room)
 		{
 			if(((Room)E.owner()).okMessage(mob, msg))

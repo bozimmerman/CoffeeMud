@@ -77,7 +77,7 @@ public enum HTTPStatus
 	private static Map<Integer, HTTPStatus> codeMap = new Hashtable<Integer, HTTPStatus>();
 	static
 	{
-		for(HTTPStatus status : HTTPStatus.values())
+		for(final HTTPStatus status : HTTPStatus.values())
 			codeMap.put(Integer.valueOf(status.statusCode), status);
 	}
 

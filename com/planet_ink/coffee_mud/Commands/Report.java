@@ -44,7 +44,7 @@ public class Report extends Skills
 	{
 		if(commands.size()<2)
 		{
-			StringBuffer buf=new StringBuffer(
+			final StringBuffer buf=new StringBuffer(
 								"say \"I have "+mob.curState().getHitPoints()
 							   +"/"+mob.maxState().getHitPoints()+" hit points, "
 							   +mob.curState().getMana()+"/"+mob.maxState().getMana()
@@ -56,28 +56,28 @@ public class Report extends Skills
 			&&(mob.getExpNeededLevel()<Integer.MAX_VALUE))
 			   buf.append(", and need "+mob.getExpNeededLevel()+" to level");
 			buf.append(".\"");
-			Command C=CMClass.getCommand("Say");
+			final Command C=CMClass.getCommand("Say");
 			if(C!=null) C.execute(mob,CMParms.parse(buf.toString()),metaFlags);
 		}
 		else
 		{
-			int level=parseOutLevel(commands);
-			String s=CMParms.combine(commands,1).toUpperCase();
-			StringBuffer say=new StringBuffer("");
+			final int level=parseOutLevel(commands);
+			final String s=CMParms.combine(commands,1).toUpperCase();
+			final StringBuffer say=new StringBuffer("");
 			if("AFFECTS".startsWith(s)||(s.equalsIgnoreCase("ALL")))
 			{
 
-				StringBuffer aff=new StringBuffer("\n\r^!I am affected by:^? ");
-				Command C=CMClass.getCommand("Affect");
+				final StringBuffer aff=new StringBuffer("\n\r^!I am affected by:^? ");
+				final Command C=CMClass.getCommand("Affect");
 				if(C!=null) aff.append(C.executeInternal(mob,metaFlags,mob).toString());
 				say.append(aff.toString());
 			}
 			if("STATS".startsWith(s)||(s.equalsIgnoreCase("ALL")))
 			{
-				StringBuffer stats=new StringBuffer("");
-				int max=CMProps.getIntVar(CMProps.Int.BASEMAXSTAT);
-				CharStats CT=mob.charStats();
-				for(int i : CharStats.CODES.BASE())
+				final StringBuffer stats=new StringBuffer("");
+				final int max=CMProps.getIntVar(CMProps.Int.BASEMAXSTAT);
+				final CharStats CT=mob.charStats();
+				for(final int i : CharStats.CODES.BASE())
 					stats.append("^c" + CMStrings.capitalizeAndLower(CMStrings.limit(CharStats.CODES.NAME(i),3))+": ^w"
 							+CMStrings.padRight(Integer.toString(CT.getStat(i)),2)
 							+"/"+(max+CT.getStat(CharStats.CODES.toMAXBASE(i)))+", ");
@@ -86,7 +86,7 @@ public class Report extends Skills
 			if(s.equalsIgnoreCase("ALL"))
 			{
 
-				Vector V=new Vector();
+				final Vector V=new Vector();
 				V.addElement(Integer.valueOf(Ability.ACODE_THIEF_SKILL));
 				V.addElement(Integer.valueOf(Ability.ACODE_SKILL));
 				V.addElement(Integer.valueOf(Ability.ACODE_COMMON_SKILL));
@@ -104,7 +104,7 @@ public class Report extends Skills
 			else
 			if("SKILLS".startsWith(s))
 			{
-				Vector V=new Vector();
+				final Vector V=new Vector();
 				V.addElement(Integer.valueOf(Ability.ACODE_THIEF_SKILL));
 				V.addElement(Integer.valueOf(Ability.ACODE_SKILL));
 				V.addElement(Integer.valueOf(Ability.ACODE_TECH));

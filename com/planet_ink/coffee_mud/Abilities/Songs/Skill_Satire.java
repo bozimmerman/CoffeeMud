@@ -46,18 +46,18 @@ public class Skill_Satire extends BardSkill
 
 	public void criminalFail(LegalBehavior B, Area A2, MOB mob, MOB witness)
 	{
-		String crime="disrespect for the law";
-		String desc="Everyone should respect the law.";
-		String crimeLocs="";
-		String crimeFlags="!witness";
-		String sentence=Law.PUNISHMENT_DESCS[0];
+		final String crime="disrespect for the law";
+		final String desc="Everyone should respect the law.";
+		final String crimeLocs="";
+		final String crimeFlags="!witness";
+		final String sentence=Law.PUNISHMENT_DESCS[0];
 		B.addWarrant(A2,mob,witness,crimeLocs,crimeFlags,crime,sentence,desc);
 	}
 
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		MOB target=getTarget(mob,commands,givenTarget);
+		final MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 		if(mob==target)
 		{
@@ -66,7 +66,7 @@ public class Skill_Satire extends BardSkill
 		}
 		LegalBehavior B=null;
 		Area A2=null;
-		Vector<MOB> forgivables=new Vector();
+		final Vector<MOB> forgivables=new Vector();
 		final Room room=mob.location();
 		if(room==null)
 		{
@@ -79,8 +79,8 @@ public class Skill_Satire extends BardSkill
 			mob.tell(mob,target,null,"<T-NAME> is not an officer here.");
 			return false;
 		}
-		Set<MOB> group = mob.getGroupMembers(new HashSet<MOB>());
-		for(MOB M : group)
+		final Set<MOB> group = mob.getGroupMembers(new HashSet<MOB>());
+		for(final MOB M : group)
 		{
 			if((M.location()==room)
 			&&(M!=mob)
@@ -111,7 +111,7 @@ public class Skill_Satire extends BardSkill
 		else
 			levelDiff=0;
 
-		boolean success=proficiencyCheck(mob,-levelDiff,auto);
+		final boolean success=proficiencyCheck(mob,-levelDiff,auto);
 
 		if(!success)
 		{
@@ -120,11 +120,11 @@ public class Skill_Satire extends BardSkill
 				criminalFail(B,A2,mob,target);
 			return false;
 		}
-		CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_VERBAL|CMMsg.TYP_JUSTICE,"<S-NAME> mock(s) <T-NAME>.");
+		final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_VERBAL|CMMsg.TYP_JUSTICE,"<S-NAME> mock(s) <T-NAME>.");
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
-			for(MOB M : forgivables)
+			for(final MOB M : forgivables)
 			{
 				if(B.aquit(A2, M, null))
 				{
