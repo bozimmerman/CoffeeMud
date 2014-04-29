@@ -692,14 +692,12 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 								Physical source,
 								Environmental target,
 								Environmental tool,
-								String msg,
+								final String msg,
 								boolean wrapOnly)
 	{
 		if(msg==null) return null;
 
 		if(msg.length()==0) return msg;
-		final String newMsg=(S==null)?null:CMLib.lang().sessionTranslation(msg);
-		if(newMsg!=null) msg=newMsg;
 
 		boolean doSagain=false;
 		boolean firstSdone=false;
