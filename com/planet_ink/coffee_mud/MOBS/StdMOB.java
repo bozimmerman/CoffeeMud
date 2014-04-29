@@ -92,7 +92,7 @@ public class StdMOB implements MOB
 	protected int				recoverTickCter = 1;
 	private long				expirationDate	= 0;
 	private int					manaConsumeCter = CMLib.dice().roll(1, 10, 0);
-	private double				freeActions		= 0.0;
+	private volatile double		freeActions		= 0.0;
 
 	// the core state values
 	public CharState			curState		= (CharState) CMClass.getCommon("DefaultCharState");
@@ -106,11 +106,11 @@ public class StdMOB implements MOB
 	protected String			liegeID			= "";
 	protected int				wimpHitPoint	= 0;
 	protected int				questPoint		= 0;
-	protected MOB				victim			= null;
-	protected MOB				amFollowing		= null;
-	protected MOB				soulMate		= null;
-	protected int				atRange			= -1;
-	protected long				peaceTime		= 0;
+	protected volatile MOB		victim			= null;
+	protected volatile MOB		amFollowing		= null;
+	protected volatile MOB		soulMate		= null;
+	protected volatile int		atRange			= -1;
+	protected volatile long		peaceTime		= 0;
 	protected boolean			kickFlag		= false;
 	protected MOB				me 				= this;
 
