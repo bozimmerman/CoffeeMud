@@ -106,11 +106,11 @@ public class StdMOB implements MOB
 	protected String			liegeID			= "";
 	protected int				wimpHitPoint	= 0;
 	protected int				questPoint		= 0;
-	protected volatile MOB		victim			= null;
-	protected volatile MOB		amFollowing		= null;
-	protected volatile MOB		soulMate		= null;
-	protected volatile int		atRange			= -1;
-	protected volatile long		peaceTime		= 0;
+	protected MOB				victim			= null;
+	protected MOB				amFollowing		= null;
+	protected MOB				soulMate		= null;
+	protected int				atRange			= -1;
+	protected long				peaceTime		= 0;
 	protected boolean			kickFlag		= false;
 	protected MOB				me 				= this;
 
