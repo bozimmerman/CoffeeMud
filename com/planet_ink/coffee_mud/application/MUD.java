@@ -71,7 +71,7 @@ public class MUD extends Thread implements MudHost
 	private volatile MudState state		 = MudState.STOPPED;
 	private ServerSocket	  servsock	 = null;
 	private boolean			  acceptConns= false;
-	private final String			  host		 = "MyHost";
+	private final String	  host		 = "MyHost";
 	private int				  port		 = 5555;
 	private final long		  startupTime= System.currentTimeMillis();
 	private final ThreadGroup threadGroup;
@@ -102,6 +102,7 @@ public class MUD extends Thread implements MudHost
 		setState(MudState.ACCEPTING);
 		serviceEngine.executeRunnable(threadGroup.getName(),new ConnectionAcceptor(sock));
 	}
+	
 	@Override public ThreadGroup threadGroup() { return threadGroup; }
 
 	private class ConnectionAcceptor implements CMRunnable
